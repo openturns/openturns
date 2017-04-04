@@ -9,5 +9,5 @@ legendre(6)=-1.12673 + 23.6614 * X^2 - 70.9843 * X^4 + 52.0551 * X^6
 legendre(7)=-8.47215 * X + 76.2494 * X^3 - 167.749 * X^5 + 103.844 * X^7
 legendre(8)=1.12741 - 40.5868 * X^2 + 223.228 * X^4 - 386.928 * X^6 + 207.283 * X^8
 legendre(9)=10.727 * X - 157.329 * X^3 + 613.583 * X^5 - 876.547 * X^7 + 413.925 * X^9
-legendre(10) roots=class=NumericalPoint name=Unnamed dimension=10 values=[-0.973907,-0.865063,-0.67941,-0.433395,-0.148874,0.148874,0.433395,0.67941,0.865063,0.973907]
-legendre(10) roots=class=NumericalPoint name=Unnamed dimension=10 values=[-0.973907,-0.865063,-0.67941,-0.433395,-0.148874,0.148874,0.433395,0.67941,0.865063,0.973907] and weights=class=NumericalPoint name=Unnamed dimension=10 values=[0.0333357,0.0747257,0.109543,0.134633,0.147762,0.147762,0.134633,0.109543,0.0747257,0.0333357]
+legendre(10) roots=class=Point name=Unnamed dimension=10 values=[-0.973907,-0.865063,-0.67941,-0.433395,-0.148874,0.148874,0.433395,0.67941,0.865063,0.973907]
+legendre(10) roots=class=Point name=Unnamed dimension=10 values=[-0.973907,-0.865063,-0.67941,-0.433395,-0.148874,0.148874,0.433395,0.67941,0.865063,0.973907] and weights=class=Point name=Unnamed dimension=10 values=[0.0333357,0.0747257,0.109543,0.134633,0.147762,0.147762,0.134633,0.109543,0.0747257,0.0333357]

@@ -39,8 +39,8 @@ Box::Box()
 }
 
 /* Constructor with parameters */
-Box::Box(const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(levels.getDimension(), 0.0), levels)
+Box::Box(const Point & levels)
+  : StratifiedExperiment(Point(levels.getDimension(), 0.0), levels)
   , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
@@ -50,24 +50,24 @@ Box::Box(const NumericalPoint & levels)
 
 /* Constructor with parameters */
 Box::Box(const Indices & levels)
-  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  : StratifiedExperiment(Point(levels.getSize(), 0.0), Point(levels.getSize(), 0.0))
   , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
-  setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
+  setLevels(Collection<Scalar>(levels.begin(), levels.end()));
 }
 
 Box::Box(const Indices & levels,
          const Interval & bounds)
-  : StratifiedExperiment(NumericalPoint(levels.getSize(), 0.0), NumericalPoint(levels.getSize(), 0.0))
+  : StratifiedExperiment(Point(levels.getSize(), 0.0), Point(levels.getSize(), 0.0))
   , bounds_(bounds)
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
-  setLevels(Collection<NumericalScalar>(levels.begin(), levels.end()));
+  setLevels(Collection<Scalar>(levels.begin(), levels.end()));
   if (bounds.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: the bounds dimension must match the levels dimension";
 }
 
@@ -81,14 +81,14 @@ Box * Box::clone() const
 /* Experiment plane generation
    The box [0, 1]^n is uniformly sampled in each dimension
    levels counts the number of interior points in each dimension */
-NumericalSample Box::generate() const
+Sample Box::generate() const
 {
   const UnsignedInteger dimension = levels_.getDimension();
   Indices bounds(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) bounds[i] = static_cast< UnsignedInteger > (round(levels_[i] + 2.0));
   Tuples::IndicesCollection tuples(Tuples(bounds).generate());
   const UnsignedInteger size = tuples.getSize();
-  NumericalSample boxPlane(size, dimension);
+  Sample boxPlane(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j)
       boxPlane[i][j] = tuples[i][j] / (levels_[j] + 1.0);
@@ -96,9 +96,9 @@ NumericalSample Box::generate() const
   // scale sample
   if (bounds_ != Interval(dimension))
   {
-    const NumericalPoint lowerBound(bounds_.getLowerBound());
-    const NumericalPoint upperBound(bounds_.getUpperBound());
-    const NumericalPoint delta(upperBound - lowerBound);
+    const Point lowerBound(bounds_.getLowerBound());
+    const Point upperBound(bounds_.getUpperBound());
+    const Point delta(upperBound - lowerBound);
     boxPlane *= delta;
     boxPlane += lowerBound;
   }
@@ -118,12 +118,12 @@ String Box::__repr__() const
 }
 
 /** Specific levels accessor */
-void Box::setLevels(const NumericalPoint & levels)
+void Box::setLevels(const Point & levels)
 {
   UnsignedInteger dimension = center_.getDimension();
   UnsignedInteger size = levels.getDimension();
   if (size != dimension) throw InvalidArgumentException(HERE) << "Error: levels dimension must equal center dimension for the Box design of experiment, here levels dimension=" << size << " and center dimension=" << dimension;
-  for (UnsignedInteger i = 0; i < dimension; ++i) if (levels[i] < 0.0) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment";
+  for (UnsignedInteger i = 0; i < dimension; ++i) if (!(levels[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment";
   StratifiedExperiment::setLevels(levels);
 }
 

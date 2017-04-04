@@ -85,7 +85,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
 
 /* Standard constructor  */
 SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
-    const NumericalScalar maximalFrequency,
+    const Scalar maximalFrequency,
     const UnsignedInteger nFrequency)
   : ProcessImplementation()
   , spectralModel_(model.getSpectralModel())
@@ -96,7 +96,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
   , alpha_(0)
   , fftAlgorithm_()
 {
-  if (maximalFrequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
+  if (!(maximalFrequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
   if (nFrequency < 1) throw InvalidArgumentException(HERE) << "Error: the number of frequency points in the positive domain must be at least 1.";
   frequencyStep_ = maximalFrequency_ / nFrequency_;
   // Adapt the time grid to the frequency discretization
@@ -108,7 +108,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
 
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
 SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralModel,
-    const NumericalScalar maximalFrequency,
+    const Scalar maximalFrequency,
     const UnsignedInteger nFrequency)
 
   : ProcessImplementation()
@@ -120,7 +120,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , alpha_(0)
   , fftAlgorithm_()
 {
-  if (maximalFrequency <= 0.0) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
+  if (!(maximalFrequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
   if (nFrequency < 1) throw InvalidArgumentException(HERE) << "Error: the number of frequency points in the positive domain must be at least 1.";
   frequencyStep_ = maximalFrequency_ / nFrequency_;
   // Adapt the time grid to the frequency discretization
@@ -154,16 +154,16 @@ TriangularComplexMatrix SpectralGaussianProcess::computeCholeskyFactor(const Uns
 {
   // Convert the index into a frequency
   // The index k corresponds to the kth positive discretization point in the frequency domain [-f_max, f_max] discretized using the center of the regular partition into 2N cells of the interval.
-  const NumericalScalar frequency = (k + 0.5) * frequencyStep_;
+  const Scalar frequency = (k + 0.5) * frequencyStep_;
   // Compute the DSP matrix
   HermitianMatrix spectralDensityMatrix(spectralModel_(frequency));
   // Flag to tell if the regularization has to be increased
   Bool continuationCondition = true;
   // Scale control values
-  NumericalScalar cumulatedScaling = 0.0;
-  const NumericalScalar startingScaling = ResourceMap::GetAsNumericalScalar("SpectralGaussianProcess-StartingScaling");
-  const NumericalScalar maximalScaling = ResourceMap::GetAsNumericalScalar("SpectralGaussianProcess-MaximalScaling");
-  NumericalScalar scaling = startingScaling;
+  Scalar cumulatedScaling = 0.0;
+  const Scalar startingScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-StartingScaling");
+  const Scalar maximalScaling = ResourceMap::GetAsScalar("SpectralGaussianProcess-MaximalScaling");
+  Scalar scaling = startingScaling;
   TriangularComplexMatrix choleskyFactor;
   while (continuationCondition)
   {
@@ -219,7 +219,7 @@ RegularGrid SpectralGaussianProcess::getFrequencyGrid() const
 }
 
 /* Maximal frequency accessor */
-NumericalScalar SpectralGaussianProcess::getMaximalFrequency() const
+Scalar SpectralGaussianProcess::getMaximalFrequency() const
 {
   return maximalFrequency_;
 }
@@ -231,7 +231,7 @@ UnsignedInteger SpectralGaussianProcess::getNFrequency() const
 }
 
 /* Frequency steps accessor */
-NumericalScalar SpectralGaussianProcess::getFrequencyStep() const
+Scalar SpectralGaussianProcess::getFrequencyStep() const
 {
   return frequencyStep_;
 }
@@ -283,15 +283,15 @@ void SpectralGaussianProcess::computeTimeGrid()
 /* Set the alpha vector */
 void SpectralGaussianProcess::computeAlpha()
 {
-  alpha_ = PersistentNumericalComplexCollection(2 * nFrequency_);
+  alpha_ = PersistentComplexCollection(2 * nFrequency_);
   // Convert the frequency into pulsation, take into account that there are 2*nFrequency points and that
   // a sqrt(2) factor is needed to switch from Box Muller transform to normal complex random variable
-  const NumericalScalar factor = 2.0 * nFrequency_ * sqrt(frequencyStep_);
-  const NumericalScalar beta = -M_PI * (1.0 - 1.0 / (2.0 * nFrequency_));
+  const Scalar factor = 2.0 * nFrequency_ * sqrt(frequencyStep_);
+  const Scalar beta = -M_PI * (1.0 - 1.0 / (2.0 * nFrequency_));
   for (UnsignedInteger index = 0; index < 2 * nFrequency_; ++index)
   {
-    const NumericalScalar theta = beta * index;
-    alpha_[index] = factor * NumericalComplex(cos(theta), sin(theta));
+    const Scalar theta = beta * index;
+    alpha_[index] = factor * Complex(cos(theta), sin(theta));
   }
 }
 
@@ -300,7 +300,7 @@ Field SpectralGaussianProcess::getRealization() const
 {
   // Build the big collection of size dimension * number of frequencies
   const UnsignedInteger twoNF = 2 * nFrequency_;
-  NumericalComplexCollection arrayCollection(dimension_ * twoNF);
+  ComplexCollection arrayCollection(dimension_ * twoNF);
   // Loop over the frequencies
   // Gaussian vector
   // Loop over half of the frequency range
@@ -308,8 +308,8 @@ Field SpectralGaussianProcess::getRealization() const
   {
     const TriangularComplexMatrix choleskyFactor(getCholeskyFactor(k));
     // Use matrix/vector product to optimize the loop
-    NumericalComplexCollection left(dimension_);
-    NumericalComplexCollection right(dimension_);
+    ComplexCollection left(dimension_);
+    ComplexCollection right(dimension_);
     // Compute both the left and the right points using the current Cholesky factor R.
     // We use the relation S(-f)=conjugate(S(f)) from which R(-f)=conjugate(R(f))
     // and R(-f).z = conjugate(R(f).conjugate(z))
@@ -318,17 +318,17 @@ Field SpectralGaussianProcess::getRealization() const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       // Care! Getting a realization of a random gaussian should be done using two intermediate variables
-      // NumericalComplex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
-      const NumericalScalar realLeft = DistFunc::rNormal();
-      const NumericalScalar imagLeft = DistFunc::rNormal();
-      left[i] = NumericalComplex(realLeft, imagLeft);
-      const NumericalScalar realRight = DistFunc::rNormal();
-      const NumericalScalar imagRight = DistFunc::rNormal();
-      right[i] = NumericalComplex(realRight, imagRight);
+      // Complex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
+      const Scalar realLeft = DistFunc::rNormal();
+      const Scalar imagLeft = DistFunc::rNormal();
+      left[i] = Complex(realLeft, imagLeft);
+      const Scalar realRight = DistFunc::rNormal();
+      const Scalar imagRight = DistFunc::rNormal();
+      right[i] = Complex(realRight, imagRight);
     }
     // Use an efficient matrix/vector product here
-    NumericalComplexCollection resultLeft(choleskyFactor * left);
-    NumericalComplexCollection resultRight(choleskyFactor * right);
+    ComplexCollection resultLeft(choleskyFactor * left);
+    ComplexCollection resultRight(choleskyFactor * right);
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       arrayCollection[i * twoNF + nFrequency_ - 1 - k] = conj(resultLeft[i]);
@@ -336,10 +336,10 @@ Field SpectralGaussianProcess::getRealization() const
     }
   } // Loop over the frequencies
   // From the big collection, build the inverse FFT by blocks
-  NumericalSample sampleValues(twoNF , dimension_);
+  Sample sampleValues(twoNF , dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));
+    const ComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));
     for (UnsignedInteger k = 0; k < twoNF; ++k) sampleValues[k][i] = std::real(inverseFFTResult[k] * alpha_[k]);
   }
   sampleValues.setDescription(getDescription());
@@ -361,8 +361,8 @@ Bool SpectralGaussianProcess::isNormal() const
 /* Adapt a time grid in order to have a power of two time stamps. Both the starting point and the end point are preserved. */
 RegularGrid SpectralGaussianProcess::AdaptGrid(const RegularGrid & grid)
 {
-  const NumericalScalar start = grid.getStart();
-  const NumericalScalar end = grid.getEnd();
+  const Scalar start = grid.getStart();
+  const Scalar end = grid.getEnd();
   UnsignedInteger powerOfTwo = SpecFunc::NextPowerOfTwo(grid.getN());
   return RegularGrid(start, (end - start) / powerOfTwo, powerOfTwo);
 }

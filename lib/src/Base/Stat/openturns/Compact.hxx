@@ -22,7 +22,7 @@
 #define OPENTURNS_COMPACT_HXX
 
 #include "openturns/HistoryStrategyImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,10 +52,10 @@ public:
 
   /** Store the point according to the strategy */
   using HistoryStrategyImplementation::store;
-  void store(const NumericalPoint & point);
+  void store(const Point & point);
 
   /** Sample accessor */
-  NumericalSample getSample() const;
+  Sample getSample() const;
 
   /** HalfMaximumSize accessor */
   UnsignedInteger getHalfMaximumSize() const;

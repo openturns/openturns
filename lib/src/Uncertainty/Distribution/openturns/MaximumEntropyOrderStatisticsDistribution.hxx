@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/ContinuousDistribution.hxx"
-#include "openturns/PiecewiseHermiteEvaluationImplementation.hxx"
+#include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -87,30 +87,30 @@ public:
   virtual MaximumEntropyOrderStatisticsDistribution * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
-  NumericalScalar computeCDFOld(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDFOld(const Point & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -121,9 +121,9 @@ private:
   MaximumEntropyOrderStatisticsDistribution getMarginalAsMaximumEntropyOrderStatisticsDistribution(const Indices & indices) const;
 public:
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
   /** Tell if the distribution uses approximations for the exponential terms */
   void useApproximation(const Bool flag = true);
@@ -135,7 +135,7 @@ public:
   Bool hasIndependentCopula() const;
 
   /** Get the kth approximation */
-  PiecewiseHermiteEvaluationImplementation getApproximation(const UnsignedInteger k = 0) const;
+  PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;
 
   /* Interface specific to MaximumEntropyOrderStatisticsDistribution */
 
@@ -158,28 +158,28 @@ private:
   MaximumEntropyOrderStatisticsDistribution(const DistributionCollection & coll,
       const Indices & partition,
       const Bool useApproximation,
-      const Collection<PiecewiseHermiteEvaluationImplementation> & exponentialFactorApproximation,
+      const Collection<PiecewiseHermiteEvaluation> & exponentialFactorApproximation,
       const Description & description);
 
   /** Build a C1 interpolation of the exponential factor between two marginals */
-  PiecewiseHermiteEvaluationImplementation interpolateExponentialFactor(const UnsignedInteger lower,
+  PiecewiseHermiteEvaluation interpolateExponentialFactor(const UnsignedInteger lower,
       const UnsignedInteger upper,
       const UnsignedInteger maximumSubdivision = ResourceMap::GetAsUnsignedInteger("MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision"),
-      const NumericalScalar shift = ResourceMap::GetAsNumericalScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift")) const;
+      const Scalar shift = ResourceMap::GetAsScalar("MaximumEntropyOrderStatisticsDistribution-SupportShift")) const;
 
   /** Build a C1 interpolation of the exponential factors in the PDF */
   void interpolateExponentialFactors();
 
 public:
   /** Compute the exponential factor */
-  NumericalScalar computeExponentialFactor(const UnsignedInteger k,
-      const NumericalScalar u,
-      const NumericalScalar v) const;
+  Scalar computeExponentialFactor(const UnsignedInteger k,
+                                  const Scalar u,
+                                  const Scalar v) const;
 
   /** Compute the factor */
-  NumericalScalar computeFactor(const UnsignedInteger k,
-                                const NumericalScalar u,
-                                const NumericalScalar v) const;
+  Scalar computeFactor(const UnsignedInteger k,
+                       const Scalar u,
+                       const Scalar v) const;
 private:
   /** The main parameter set of the distribution */
   DistributionPersistentCollection distributionCollection_;
@@ -191,7 +191,7 @@ private:
   mutable Bool useApproximation_;
 
   /** interpolation of the exponential factors in the PDF */
-  Collection<PiecewiseHermiteEvaluationImplementation> exponentialFactorApproximation_;
+  Collection<PiecewiseHermiteEvaluation> exponentialFactorApproximation_;
 
   /** Integration algorithm */
   GaussKronrod integrator_;

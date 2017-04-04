@@ -72,7 +72,7 @@ MACoeff : :class:`~openturns.ARMACoefficients`
 
 Returns
 -------
-coeff : :class:`~openturns.NumericalPoint`
+coeff : :class:`~openturns.Point`
     The AR and MA coefficients of the linear recurrence defining the process."
 
 // ---------------------------------------------------------------------
@@ -101,7 +101,7 @@ MACoeff : :class:`~openturns.ARMA`
 
 Returns
 -------
-criteria : :class:`~openturns.NumericalPoint` of  dimension 3
+criteria : :class:`~openturns.Point` of  dimension 3
     Values of the criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* of the estimated model. "
 
 // ---------------------------------------------------------------------

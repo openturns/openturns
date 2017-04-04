@@ -40,16 +40,16 @@ ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension)
 }
 
 /** Standard constructor with scale and amplitude parameters parameters */
-ExponentialModel::ExponentialModel(const NumericalPoint & scale,
-                                   const NumericalPoint & amplitude)
+ExponentialModel::ExponentialModel(const Point & scale,
+                                   const Point & amplitude)
   : StationaryCovarianceModel(scale, amplitude)
 {
   // Nothing to do
 }
 
 /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
-ExponentialModel::ExponentialModel(const NumericalPoint & scale,
-                                   const NumericalPoint & amplitude,
+ExponentialModel::ExponentialModel(const Point & scale,
+                                   const Point & amplitude,
                                    const CorrelationMatrix & spatialCorrelation)
   : StationaryCovarianceModel(scale, amplitude, spatialCorrelation)
 {
@@ -57,7 +57,7 @@ ExponentialModel::ExponentialModel(const NumericalPoint & scale,
 }
 
 /** Standard constructor with scale and spatial covariance parameters parameters */
-ExponentialModel::ExponentialModel(const NumericalPoint & scale,
+ExponentialModel::ExponentialModel(const Point & scale,
                                    const CovarianceMatrix & spatialCovariance)
   : StationaryCovarianceModel(scale, spatialCovariance)
 {
@@ -75,22 +75,22 @@ ExponentialModel * ExponentialModel::clone() const
  * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
-NumericalScalar ExponentialModel::computeStandardRepresentative(const NumericalPoint & tau) const
+Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   // Absolute value of tau / scale
-  NumericalPoint tauOverTheta(spatialDimension_);
+  Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar tauOverThetaNorm = tauOverTheta.norm();
+  const Scalar tauOverThetaNorm = tauOverTheta.norm();
   // Return value
   return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
 }
 
 
 /** Gradient */
-Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
-    const NumericalPoint & t) const
+Matrix ExponentialModel::partialGradient(const Point & s,
+    const Point & t) const
 {
   /* Computation of the gradient
    * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
@@ -98,11 +98,11 @@ Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
    */
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
-  const NumericalPoint tau(s - t);
-  const NumericalScalar absTau = tau.norm();
-  NumericalPoint tauOverTheta(spatialDimension_);
+  const Point tau(s - t);
+  const Scalar absTau = tau.norm();
+  Point tauOverTheta(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const NumericalScalar absTauOverTheta = tauOverTheta.norm();
+  const Scalar absTauOverTheta = tauOverTheta.norm();
 
   // TODO check
   if (absTau == 0)
@@ -112,9 +112,9 @@ Matrix ExponentialModel::partialGradient(const NumericalPoint & s,
   CovarianceMatrix covariance(operator()(tau));
   // symmetrize if not diagonal
   if (!isDiagonal_) covariance.getImplementation()->symmetrize();
-  NumericalPoint covariancePoint(*covariance.getImplementation());
+  Point covariancePoint(*covariance.getImplementation());
   // Compute the gradient part (gradient of rho)
-  NumericalPoint factor(spatialDimension_);
+  Point factor(spatialDimension_);
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
   {
     if ((spatialDimension_ == 1.0) && (tau[i] < 0))  factor[i] = 1.0 / scale_[i] ;
@@ -135,7 +135,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
 {
   const UnsignedInteger size = timeGrid.getN();
   const UnsignedInteger fullSize = size * dimension_;
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
 

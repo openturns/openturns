@@ -41,7 +41,7 @@ public:
   Geometric();
 
   /** Parameters constructor */
-  explicit Geometric(const NumericalScalar p);
+  explicit Geometric(const Scalar p);
 
 
   /** Comparison operator */
@@ -62,48 +62,48 @@ public:
   virtual Geometric * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
   using DiscreteDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using DiscreteDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
-  NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
+  Complex computeGeneratingFunction(const Complex & z) const;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -111,8 +111,8 @@ public:
   /* Interface specific to Geometric */
 
   /** P accessor */
-  void setP(const NumericalScalar p);
-  NumericalScalar getP() const;
+  void setP(const Scalar p);
+  Scalar getP() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -132,14 +132,14 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The P of the Geometric distribution */
-  NumericalScalar p_;
+  Scalar p_;
 
 }; /* class Geometric */
 

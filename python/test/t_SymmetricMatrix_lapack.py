@@ -15,7 +15,7 @@ try:
     print("matrix1=")
     print(matrix1.__str__())
 
-    pt = NumericalPoint(0)
+    pt = Point(0)
     pt.add(5.0)
     pt.add(0.0)
     print("pt=", pt)

@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,10 +44,10 @@ class OT_API ConstantRandomVector
 public:
 
   /** Default constructor */
-  ConstantRandomVector(const NumericalPointWithDescription & point);
+  ConstantRandomVector(const PointWithDescription & point);
 
   /** Parameter constructor */
-  ConstantRandomVector(const NumericalPoint & point);
+  ConstantRandomVector(const Point & point);
 
 
   /** Virtual constructor */
@@ -65,13 +65,13 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Numerical sample accessor */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
@@ -101,7 +101,7 @@ protected:
 private:
 
   /** The point where the vector realizes itself */
-  NumericalPoint point_;
+  Point point_;
 
 }; /* class ConstantRandomVector */
 

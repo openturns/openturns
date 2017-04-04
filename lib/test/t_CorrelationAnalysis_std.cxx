@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     Description formulas(1, "10+3*x0+x1");
 
-    NumericalMathFunction analytical(input, foutput, formulas);
+    Function analytical(input, foutput, formulas);
 
     // we create a collection of Normal centered distributions
     DistributionCollection aCollection;
@@ -63,10 +63,10 @@ int main(int argc, char *argv[])
     fullprint << "composite=" << composite << std::endl;
 
     // we create two input samples for the function
-    NumericalSample inputSample(randomVector.getSample(sampleSize));
-    NumericalSample outputSample(analytical(inputSample));
+    Sample inputSample(randomVector.getSample(sampleSize));
+    Sample outputSample(analytical(inputSample));
 
-    NumericalPoint src(CorrelationAnalysis::SRC(inputSample, outputSample));
+    Point src(CorrelationAnalysis::SRC(inputSample, outputSample));
     fullprint << "src=" << src << std::endl;
 
   }

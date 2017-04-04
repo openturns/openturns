@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     /* Default constructor */
     String type = "testResult";
     Bool testBool = 1;
-    NumericalScalar testVal = 0.372;
-    NumericalScalar testThres = 0.42;
+    Scalar testVal = 0.372;
+    Scalar testThres = 0.42;
     TestResult testResultTest(type, testBool, testVal, testThres);
 
     /* String converter */
@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
     fullprint << "testResultTest2 = testResultTest " << (testResultTest2 == testResultTest) << std::endl;
     String typeDiff = "testResult2";
     Bool testBoolDiff = 0;
-    NumericalScalar testValDiff = 0.02;
-    NumericalScalar testThresDiff = 0.12;
+    Scalar testValDiff = 0.02;
+    Scalar testThresDiff = 0.12;
     TestResult testResultTestDiff(typeDiff, testBoolDiff, testValDiff, testThresDiff);
     fullprint << "testResultTestDiff = testResultTest " << (testResultTestDiff == testResultTest) << std::endl;
 

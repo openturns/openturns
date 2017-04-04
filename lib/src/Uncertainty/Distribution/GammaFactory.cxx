@@ -44,12 +44,12 @@ GammaFactory * GammaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GammaFactory::Implementation GammaFactory::build(const NumericalSample & sample) const
+GammaFactory::Implementation GammaFactory::build(const Sample & sample) const
 {
   return buildAsGamma(sample).clone();
 }
 
-GammaFactory::Implementation GammaFactory::build(const NumericalPoint & parameters) const
+GammaFactory::Implementation GammaFactory::build(const Point & parameters) const
 {
   return buildAsGamma(parameters).clone();
 }
@@ -59,31 +59,31 @@ GammaFactory::Implementation GammaFactory::build() const
   return buildAsGamma().clone();
 }
 
-Gamma GammaFactory::buildAsGamma(const NumericalSample & sample) const
+Gamma GammaFactory::buildAsGamma(const Sample & sample) const
 {
   UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gamma distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar xMin = sample.getMin()[0];
-  const NumericalScalar gamma = xMin - std::abs(xMin) / (2.0 + size);
-  const NumericalScalar mu = sample.computeMean()[0];
-  const NumericalScalar sigma = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
+  const Scalar mu = sample.computeMean()[0];
+  const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
   if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution if data contains NaN or Inf";
   if (sigma == 0.0)
   {
-    Gamma result(SpecFunc::MaxNumericalScalar / SpecFunc::LogMaxNumericalScalar, 1.0, gamma);
+    Gamma result(SpecFunc::MaxScalar / SpecFunc::LogMaxScalar, 1.0, gamma);
     result.setDescription(sample.getDescription());
     return result;
   }
-  NumericalScalar lambda = (mu - gamma) / sigma;
-  const NumericalScalar k = lambda * lambda;
+  Scalar lambda = (mu - gamma) / sigma;
+  const Scalar k = lambda * lambda;
   lambda /= sigma;
   Gamma result(k, lambda, gamma);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-Gamma GammaFactory::buildAsGamma(const NumericalPoint & parameters) const
+Gamma GammaFactory::buildAsGamma(const Point & parameters) const
 {
   try
   {

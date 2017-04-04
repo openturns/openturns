@@ -34,13 +34,13 @@ int main(int argc, char *argv[])
   {
     ResourceMap::SetAsUnsignedInteger( "MeixnerDistribution-CDFIntegrationNodesNumber", 8 );
     ResourceMap::SetAsUnsignedInteger( "MeixnerDistribution-CDFDiscretization", 100 );
-    ResourceMap::SetAsNumericalScalar( "MeixnerDistribution-MaximumAbsoluteError", 1.0e-6 );
-    ResourceMap::SetAsNumericalScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-6 );
-    ResourceMap::SetAsNumericalScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-6 );
-    ResourceMap::SetAsNumericalScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-6 );
+    ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumAbsoluteError", 1.0e-6 );
+    ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-6 );
+    ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-6 );
+    ResourceMap::SetAsScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-6 );
     MeixnerDistribution distribution(1.5, 0.5, 2.5, -0.5);
     UnsignedInteger size = 1000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     MeixnerDistributionFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

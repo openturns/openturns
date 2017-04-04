@@ -44,8 +44,8 @@ public:
   MeixnerFactory();
 
   /** Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the NegativeBinomial(r, p) distribution */
-  MeixnerFactory(const NumericalScalar r,
-                 const NumericalScalar p);
+  MeixnerFactory(const Scalar r,
+                 const Scalar p);
 
   /** Virtual constructor */
   virtual MeixnerFactory * clone() const;
@@ -55,10 +55,10 @@ public:
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** R accessor */
-  NumericalScalar getR() const;
+  Scalar getR() const;
 
   /** P accessor */
-  NumericalScalar getP() const;
+  Scalar getP() const;
 
   /** String converter */
   String __repr__() const;
@@ -71,8 +71,8 @@ public:
 
 private:
   /** Parameters of the Meixner polynomial */
-  NumericalScalar r_;
-  NumericalScalar p_;
+  Scalar r_;
+  Scalar p_;
 
 } ; /* class MeixnerFactory */
 

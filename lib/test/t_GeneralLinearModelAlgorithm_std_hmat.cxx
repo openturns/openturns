@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
     foutput[0] = "f0";
     Description formulas(1);
     formulas[0] = "x0";
-    NumericalMathFunction model(input, foutput, formulas);
+    Function model(input, foutput, formulas);
 
-    NumericalSample X(sampleSize, spatialDimension);
-    NumericalSample X2(sampleSize, spatialDimension);
+    Sample X(sampleSize, spatialDimension);
+    Sample X2(sampleSize, spatialDimension);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
     {
       X[i][0] = 3.0 + i;
@@ -63,13 +63,13 @@ int main(int argc, char *argv[])
     X[1][0] = 3.0;
     X2[0][0] = 2.0;
     X2[1][0] = 4.0;
-    NumericalSample Y = model(X);
+    Sample Y = model(X);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
     {
       Y[i][0] += 0.01 * DistFunc::rNormal();
     }
     // Add a small noise to data
-    NumericalSample Y2 = model(X2);
+    Sample Y2 = model(X2);
 
     Basis basis = LinearBasisFactory(spatialDimension).build();
     DiracCovarianceModel covarianceModel(spatialDimension);
@@ -78,11 +78,11 @@ int main(int argc, char *argv[])
 
     // perform an evaluation
     GeneralLinearModelResult result = algo.getResult();
-    NumericalMathFunction metaModel = result.getMetaModel();
+    Function metaModel = result.getMetaModel();
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
-    const NumericalSample residual = metaModel(X) - Y;
-    assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 0.00013144), 1e-5, 1e-5);
-    assert_almost_equal(conditionalCovariance.getParameter(), NumericalPoint(1, 0.011464782674211804), 1e-5, 1e-3);
+    const Sample residual = metaModel(X) - Y;
+    assert_almost_equal(residual.computeCenteredMoment(2), Point(1, 0.00013144), 1e-5, 1e-5);
+    assert_almost_equal(conditionalCovariance.getParameter(), Point(1, 0.011464782674211804), 1e-5, 1e-3);
     std::cout << "Test Ok" << std::endl;
 
   }

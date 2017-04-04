@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_METAMODELVALIDATION_HXX
 #define OPENTURNS_METAMODELVALIDATION_HXX
 
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Graph.hxx"
 
@@ -47,9 +47,9 @@ public:
   MetaModelValidation();
 
   /** Constructor with parameters */
-  MetaModelValidation(const NumericalSample & inputSample,
-                      const NumericalSample & outputSample,
-                      const NumericalMathFunction & metaModel);
+  MetaModelValidation(const Sample & inputSample,
+                      const Sample & outputSample,
+                      const Function & metaModel);
 
   /** Virtual constructor */
   virtual MetaModelValidation * clone() const;
@@ -58,14 +58,14 @@ public:
   virtual String __repr__() const;
 
   /** Sample accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  virtual Sample getInputSample() const;
+  virtual Sample getOutputSample() const;
 
   /** Compute predictivity factor */
-  NumericalScalar computePredictivityFactor() const;
+  Scalar computePredictivityFactor() const;
 
   /** Get residual sample */
-  NumericalSample getResidualSample() const;
+  Sample getResidualSample() const;
 
   /** Get residual distribution */
   Distribution getResidualDistribution(const Bool smooth = true) const;
@@ -84,22 +84,22 @@ protected:
   void initialize() const;
 
   /** The input sample */
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /** The output sample */
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   /** The meta model */
-  NumericalMathFunction metaModel_;
+  Function metaModel_;
 
   /** Boolean argument */
   mutable Bool isInitialized_;
 
   /** Residual sample */
-  mutable NumericalSample residual_;
+  mutable Sample residual_;
 
   /** Q2 arguments  */
-  mutable NumericalScalar q2_;
+  mutable Scalar q2_;
 
 private:
 

@@ -42,7 +42,7 @@ QRMethod::QRMethod()
 
 /* Parameters constructor */
 QRMethod::QRMethod(const DesignProxy & proxy,
-                   const NumericalPoint & weight,
+                   const Point & weight,
                    const Indices & indices)
   : LeastSquaresMethodImplementation(proxy, weight, indices)
 {
@@ -103,44 +103,44 @@ void QRMethod::update(const Indices & addedIndices,
 
 
 /* Solve least-squares problem */
-NumericalPoint QRMethod::solve(const NumericalPoint & rhs)
+Point QRMethod::solve(const Point & rhs)
 {
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b(rhs);
+  Point b(rhs);
   if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
-  const NumericalPoint c(q_.getImplementation()->genVectProd(b, true));
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
+  const Point c(q_.getImplementation()->genVectProd(b, true));
+  const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
 
-NumericalPoint QRMethod::solveNormal(const NumericalPoint & rhs)
+Point QRMethod::solveNormal(const Point & rhs)
 {
   // G=R^T*R
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
-  NumericalPoint b(rhs);
+  Point b(rhs);
   if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
   }
-  const NumericalPoint c(r_.getImplementation()->solveLinearSystemTri(b, true, false, true)); // rhs, keep, lower, transpose
-  const NumericalPoint coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
+  const Point c(r_.getImplementation()->solveLinearSystemTri(b, true, false, true)); // rhs, keep, lower, transpose
+  const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
 
-NumericalPoint QRMethod::getHDiag() const
+Point QRMethod::getHDiag() const
 {
   const UnsignedInteger dimension = q_.getNbRows();
   const UnsignedInteger basisSize = currentIndices_.getSize();
-  NumericalPoint diag(dimension);
+  Point diag(dimension);
   MatrixImplementation::const_iterator q_iterator(q_.getImplementation()->begin());
   for (UnsignedInteger j = 0; j < basisSize; ++ j)
   {
@@ -164,7 +164,7 @@ CovarianceMatrix QRMethod::getGramInverse() const
   return invR.computeGram(false);
 }
 
-NumericalPoint QRMethod::getGramInverseDiag() const
+Point QRMethod::getGramInverseDiag() const
 {
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger dimension = r_.getNbRows();
@@ -172,11 +172,11 @@ NumericalPoint QRMethod::getGramInverseDiag() const
   const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
   const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
 
-  NumericalPoint diag(dimension);
+  Point diag(dimension);
   MatrixImplementation::const_iterator invRT_iterator(invRT.begin());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
     {
       value += (*invRT_iterator) * (*invRT_iterator);
@@ -187,14 +187,14 @@ NumericalPoint QRMethod::getGramInverseDiag() const
   return diag;
 }
 
-NumericalScalar QRMethod::getGramInverseTrace() const
+Scalar QRMethod::getGramInverseTrace() const
 {
   // G^{-1}=R^-1*R*^-T
   const UnsignedInteger dimension = r_.getNbRows();
   const MatrixImplementation b(*IdentityMatrix(dimension).getImplementation());
   const MatrixImplementation invRT(r_.getImplementation()->solveLinearSystemTri(b, true, false, true));
 
-  NumericalScalar traceInverse = 0.0;
+  Scalar traceInverse = 0.0;
   for (MatrixImplementation::const_iterator it = invRT.begin(); it != invRT.end(); ++it)
   {
     traceInverse += (*it) * (*it);

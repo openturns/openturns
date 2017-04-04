@@ -24,11 +24,11 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps = pow(0.1, 1.0 * digits);
+  Scalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -55,14 +55,14 @@ int main(int argc, char *argv[])
     Description formulas(outputFunc.getSize());
     formulas[0] = "-(6+x0^2-x1)";
     fullprint << "formulas=" << formulas << std::endl;
-    NumericalMathFunction myFunction(inputFunc, outputFunc, formulas);
+    Function myFunction(inputFunc, outputFunc, formulas);
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 5.0; // x0
     mean[1] = 2.1; // x1
-    NumericalPoint sigma(dim, 0.0);
+    Point sigma(dim, 0.0);
     sigma[0] = 3.3; // x0
     sigma[1] = 3.0; // x1
     IdentityMatrix R(dim);
@@ -109,8 +109,8 @@ int main(int argc, char *argv[])
     /* Stream out the result */
     FORMResult result(myAlgo.getResult());
     UnsignedInteger digits = 5;
-    fullprint << "importance factors=" << printNumericalPoint(result.getImportanceFactors(), digits) << std::endl;
-    fullprint << "importance factors (classical)=" << printNumericalPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
+    fullprint << "importance factors=" << printPoint(result.getImportanceFactors(), digits) << std::endl;
+    fullprint << "importance factors (classical)=" << printPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
 
     /* Graph 1 : Importance Factors graph */
     Graph importanceFactorsGraph(result.drawImportanceFactors());

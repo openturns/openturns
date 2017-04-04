@@ -28,6 +28,8 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,8 +49,8 @@ LevelSet::LevelSet(const UnsignedInteger dimension)
 }
 
 /* Parameters constructor, simplified interface for 1D case */
-LevelSet::LevelSet(const NumericalMathFunction & function,
-                   const NumericalScalar level)
+LevelSet::LevelSet(const Function & function,
+                   const Scalar level)
   : DomainImplementation(function.getInputDimension())
   , function_(function)
   , level_(level)
@@ -73,10 +75,10 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
   // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if both functions are less or equal to their respective level
   const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
-  NumericalMathFunction::NumericalMathFunctionCollection coll(2);
+  Function::FunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
@@ -99,10 +101,10 @@ LevelSet LevelSet::join(const LevelSet & other) const
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
   // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if at least on function is less or equal to its level
   const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
-  NumericalMathFunction::NumericalMathFunctionCollection coll(2);
+  Function::FunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, NumericalMathFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
@@ -117,7 +119,7 @@ LevelSet LevelSet::join(const LevelSet & other) const
 }
 
 /* Check if the given point is inside of the closed levelSet */
-Bool LevelSet::contains(const NumericalPoint & point) const
+Bool LevelSet::contains(const Point & point) const
 {
   if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << point.getDimension();
   // If a bounding box has been computed/provided
@@ -133,36 +135,36 @@ Bool LevelSet::operator == (const LevelSet & other) const
 }
 
 /* Functio accessor */
-NumericalMathFunction LevelSet::getFunction() const
+Function LevelSet::getFunction() const
 {
   return function_;
 }
 
-void LevelSet::setFunction(const NumericalMathFunction & function)
+void LevelSet::setFunction(const Function & function)
 {
   if (function.getInputDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given function has an input dimension=" << function.getInputDimension() << " incompatible with the levelSet dimension=" << dimension_;
   function_ = function;
 }
 
 /* Level accessor */
-NumericalScalar LevelSet::getLevel() const
+Scalar LevelSet::getLevel() const
 {
   return level_;
 }
 
-void LevelSet::setLevel(const NumericalScalar level)
+void LevelSet::setLevel(const Scalar level)
 {
   level_ = level;
 }
 
 /* Lower bound of the bounding box */
-void LevelSet::setLowerBound(const NumericalPoint & bound)
+void LevelSet::setLowerBound(const Point & bound)
 {
   if (bound.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a lower bound of dimension=" << dimension_ << ", got dimension=" << bound.getDimension();
   lowerBound_ = bound;
 }
 
-NumericalPoint LevelSet::getLowerBound() const
+Point LevelSet::getLowerBound() const
 {
   if (lowerBound_.getDimension() != dimension_) computeLowerBound();
   return lowerBound_;
@@ -170,31 +172,31 @@ NumericalPoint LevelSet::getLowerBound() const
 
 void LevelSet::computeLowerBound() const
 {
-  lowerBound_ = NumericalPoint(dimension_);
-  LinearFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  lowerBound_ = Point(dimension_);
+  LinearFunction translate(Point(1, level_), Point(1), IdentityMatrix(1));
   ComposedFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
-    LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
-    OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+    LinearFunction coordinate(Point(dimension_), Point(1), m);
+    OptimizationProblem problem(coordinate, equality, Function(), Interval());
     problem.setMinimization(true);
     Cobyla solver(problem);
-    solver.setStartingPoint(NumericalPoint(dimension_));
+    solver.setStartingPoint(Point(dimension_));
     solver.run();
     lowerBound_[i] = solver.getResult().getOptimalPoint()[i];
   }
 }
 
 /* Upper bound of the bounding box */
-void LevelSet::setUpperBound(const NumericalPoint & bound)
+void LevelSet::setUpperBound(const Point & bound)
 {
   if (bound.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected an upper bound of dimension=" << dimension_ << ", got dimension=" << bound.getDimension();
   upperBound_ = bound;
 }
 
-NumericalPoint LevelSet::getUpperBound() const
+Point LevelSet::getUpperBound() const
 {
   if (upperBound_.getDimension() != dimension_) computeUpperBound();
   return upperBound_;
@@ -202,18 +204,18 @@ NumericalPoint LevelSet::getUpperBound() const
 
 void LevelSet::computeUpperBound() const
 {
-  upperBound_ = NumericalPoint(dimension_);
-  LinearFunction translate(NumericalPoint(1, level_), NumericalPoint(1), IdentityMatrix(1));
+  upperBound_ = Point(dimension_);
+  LinearFunction translate(Point(1, level_), Point(1), IdentityMatrix(1));
   ComposedFunction equality(translate, function_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     Matrix m(1, dimension_);
     m(0, i) = 1.0;
-    LinearFunction coordinate(NumericalPoint(dimension_), NumericalPoint(1), m);
-    OptimizationProblem problem(coordinate, equality, NumericalMathFunction(), Interval());
+    LinearFunction coordinate(Point(dimension_), Point(1), m);
+    OptimizationProblem problem(coordinate, equality, Function(), Interval());
     problem.setMinimization(false);
     Cobyla solver(problem);
-    solver.setStartingPoint(NumericalPoint(dimension_));
+    solver.setStartingPoint(Point(dimension_));
     solver.run();
     upperBound_[i] = solver.getResult().getOptimalPoint()[i];
   }

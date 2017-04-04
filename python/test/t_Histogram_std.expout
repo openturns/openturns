@@ -1,25 +1,25 @@
 begin histo comp test
-Distribution  class=Histogram name=Histogram dimension=1 first=-1.5 width=class=NumericalPoint name=Unnamed dimension=4 values=[1,0.7,1.2,0.9] height=class=NumericalPoint name=Unnamed dimension=4 values=[0.0625,0.1875,0.4375,0.3125]
+Distribution  class=Histogram name=Histogram dimension=1 first=-1.5 width=class=Point name=Unnamed dimension=4 values=[1,0.7,1.2,0.9] height=class=Point name=Unnamed dimension=4 values=[0.0625,0.1875,0.4375,0.3125]
 Distribution  Histogram(origin = -1.5, {w0 = 1, h0 = 0.0625}, {w1 = 0.7, h1 = 0.1875}, {w2 = 1.2, h2 = 0.4375}, {w3 = 0.9, h3 = 0.3125})
 Elliptical =  False
 Continuous =  True
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[1.19686]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[1.92498]  last= class=NumericalPoint name=Unnamed dimension=1 values=[-0.111859]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.866401]
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.19686]
+oneSample first= class=Point name=Unnamed dimension=1 values=[1.92498]  last= class=Point name=Unnamed dimension=1 values=[-0.111859]
+mean= class=Point name=Unnamed dimension=1 values=[0.866401]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.732365]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[0]
-ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Point=  class=Point name=Unnamed dimension=1 values=[1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0]
 log pdf=-0.826679
 pdf     =0.437500
 pdf (FD)=0.437500
 cdf=0.543750
 ccdf=0.456250
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[2.14]
+quantile= class=Point name=Unnamed dimension=1 values=[2.14]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.7]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.7]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-0.7, 2.3]
 threshold= [0.95]
@@ -32,9 +32,9 @@ Unilateral confidence interval (lower tail)= [-1.5, 2.14]
 beta= [0.95]
 Unilateral confidence interval (upper tail)= [-0.7, 2.3]
 beta= [0.95]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.858125]
+mean= class=Point name=Unnamed dimension=1 values=[0.858125]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.720205]
-parameters= [class=NumericalPointWithDescription name=X0 dimension=9 description=[first,width_0,height_0,width_1,height_1,width_2,height_2,width_3,height_3] values=[-1.5,1,0.0625,0.7,0.1875,1.2,0.4375,0.9,0.3125]]
+parameters= [class=PointWithDescription name=X0 dimension=9 description=[first,width_0,height_0,width_1,height_1,width_2,height_2,width_3,height_3] values=[-1.5,1,0.0625,0.7,0.1875,1.2,0.4375,0.9,0.3125]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0.241118]
 standard moment n= 2  value= [0.257641]

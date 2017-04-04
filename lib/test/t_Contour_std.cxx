@@ -39,20 +39,20 @@ int main(int argc, char *argv[])
     outputVar[0] = "z";
     Description formula(1);
     formula[0] = "exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))";
-    NumericalMathFunction f(inputVar, outputVar, formula);
+    Function f(inputVar, outputVar, formula);
 
     // Generate the data for the curver to be drawn
-    NumericalPoint discretization(2);
+    Point discretization(2);
     UnsignedInteger nX = 75;
     UnsignedInteger nY = 75;
     discretization[0] = nX;
     discretization[1] = nY;
-    NumericalSample inputData(Box(discretization).generate());
-    inputData *= NumericalPoint(2, 10.0);
-    inputData += NumericalPoint(2, -5.0);
-    NumericalSample data(f(inputData));
+    Sample inputData(Box(discretization).generate());
+    inputData *= Point(2, 10.0);
+    inputData += Point(2, -5.0);
+    Sample data(f(inputData));
     UnsignedInteger size = 7;
-    NumericalPoint levels(size);
+    Point levels(size);
     for (UnsignedInteger i = 0; i < size; i++)
     {
       levels[i] = (0.5 + i) / size;

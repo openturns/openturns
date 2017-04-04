@@ -138,16 +138,16 @@ void MarginalDistribution::setDistributionAndIndices(const Distribution & distri
   setDimension(dimension);
   // Compute the range
   // From the underlying distribution
-  NumericalPoint distributionLowerBound(distribution.getRange().getLowerBound());
+  Point distributionLowerBound(distribution.getRange().getLowerBound());
   lowerBound_ = distributionLowerBound;
   Interval::BoolCollection distributionFiniteLowerBound(distribution.getRange().getFiniteLowerBound());
-  NumericalPoint distributionUpperBound(distribution.getRange().getUpperBound());
+  Point distributionUpperBound(distribution.getRange().getUpperBound());
   upperBound_ = distributionUpperBound;
   Interval::BoolCollection distributionFiniteUpperBound(distribution.getRange().getFiniteUpperBound());
   // For the marginal distribution
-  NumericalPoint lowerBound(dimension);
+  Point lowerBound(dimension);
   Interval::BoolCollection finiteLowerBound(dimension);
-  NumericalPoint upperBound(dimension);
+  Point upperBound(dimension);
   Interval::BoolCollection finiteUpperBound(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -174,36 +174,36 @@ MarginalDistribution * MarginalDistribution::clone() const
 }
 
 /* Get one realization of the MarginalDistribution */
-NumericalPoint MarginalDistribution::getRealization() const
+Point MarginalDistribution::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
-  const NumericalPoint distributionRealization(distribution_.getRealization());
-  NumericalPoint realization(dimension);
+  const Point distributionRealization(distribution_.getRealization());
+  Point realization(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     realization[i] = distributionRealization[indices_[i]];
   return realization;
 }
 
-NumericalSample MarginalDistribution::getSample(const UnsignedInteger size) const
+Sample MarginalDistribution::getSample(const UnsignedInteger size) const
 {
   return distribution_.getSample(size).getMarginal(indices_);
 }
 
 /* Get the CDF of the MarginalDistribution */
-NumericalScalar MarginalDistribution::computeCDF(const NumericalPoint & point) const
+Scalar MarginalDistribution::computeCDF(const Point & point) const
 {
-  const NumericalPoint x(expandPoint(point));
-  const NumericalScalar cdf = distribution_.computeCDF(x);
+  const Point x(expandPoint(point));
+  const Scalar cdf = distribution_.computeCDF(x);
   return cdf;
 }
 
-NumericalScalar MarginalDistribution::computeSurvivalFunction(const NumericalPoint & point) const
+Scalar MarginalDistribution::computeSurvivalFunction(const Point & point) const
 {
   return distribution_.computeSurvivalFunction(expandPoint(point, false));
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar MarginalDistribution::computeProbability(const Interval & interval) const
+Scalar MarginalDistribution::computeProbability(const Interval & interval) const
 {
   return distribution_.computeProbability(Interval(expandPoint(interval.getLowerBound(), false), expandPoint(interval.getUpperBound())));
 }
@@ -216,7 +216,7 @@ void MarginalDistribution::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint MarginalDistribution::getStandardDeviation() const
+Point MarginalDistribution::getStandardDeviation() const
 {
   return reducePoint(distribution_.getStandardDeviation());
 }
@@ -240,13 +240,13 @@ void MarginalDistribution::computeCovariance() const
 } // computeCovariance
 
 /* Get the skewness of the distribution */
-NumericalPoint MarginalDistribution::getSkewness() const
+Point MarginalDistribution::getSkewness() const
 {
   return reducePoint(distribution_.getSkewness());
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint MarginalDistribution::getKurtosis() const
+Point MarginalDistribution::getKurtosis() const
 {
   return reducePoint(distribution_.getKurtosis());
 }
@@ -363,23 +363,23 @@ Bool MarginalDistribution::isIntegral() const
 }
 
 /* Method to expand a given point in the marginal space to a point in the underlying distribution space */
-NumericalPoint MarginalDistribution::expandPoint(const NumericalPoint & point,
-    const Bool upper) const
+Point MarginalDistribution::expandPoint(const Point & point,
+                                        const Bool upper) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << point.getDimension();
-  NumericalPoint distributionPoint(upper ? upperBound_ : lowerBound_);
+  Point distributionPoint(upper ? upperBound_ : lowerBound_);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     distributionPoint[indices_[i]] = point[i];
   return distributionPoint;
 }
 
 /* Method to reduce a given point in the distribution space to a point in the marginal distribution space */
-NumericalPoint MarginalDistribution::reducePoint(const NumericalPoint & point) const
+Point MarginalDistribution::reducePoint(const Point & point) const
 {
   if (point.getDimension() != distribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << distribution_.getDimension() << ", got dimension=" << point.getDimension();
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint marginalPoint(dimension);
+  Point marginalPoint(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     marginalPoint[i] = point[indices_[i]];
   return marginalPoint;

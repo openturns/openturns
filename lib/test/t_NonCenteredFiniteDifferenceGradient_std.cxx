@@ -31,22 +31,18 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalScalar eps = 1e-4;
+    Scalar eps = 1e-4;
     /** Instance creation */
     Description input(2);
     input[0] = "x1";
     input[1] = "x2";
-    Description output(3);
-    output[0] = "f1";
-    output[1] = "f2";
-    output[2] = "f3";
     Description formula(3);
     formula[0] = "x1*sin(x2)";
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
-    NumericalMathFunction myFunc(input, output, formula);
-    NumericalPoint epsilon(myFunc.getInputDimension(), eps);
-    NumericalPoint in(epsilon.getDimension(), 1.0);
+    SymbolicFunction myFunc(input, formula);
+    Point epsilon(myFunc.getInputDimension(), eps);
+    Point in(epsilon.getDimension(), 1.0);
     NonCenteredFiniteDifferenceGradient myGradient(epsilon, myFunc.getEvaluation());
 
     fullprint << "myGradient=" << myGradient << std::endl;

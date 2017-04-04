@@ -22,6 +22,7 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,7 +37,7 @@ static const Factory<IteratedQuadrature> Factory_IteratedQuadrature;
 /* Constructor without parameters */
 IteratedQuadrature::IteratedQuadrature()
   : IntegrationAlgorithmImplementation()
-  , algorithm_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals"), ResourceMap::GetAsNumericalScalar("IteratedQuadrature-MaximumError"), GaussKronrodRule(GaussKronrodRule::G3K7)))
+  , algorithm_(GaussKronrod(ResourceMap::GetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals"), ResourceMap::GetAsScalar("IteratedQuadrature-MaximumError"), GaussKronrodRule(GaussKronrodRule::G3K7)))
 {
   // Nothing to do
 }
@@ -57,12 +58,12 @@ IteratedQuadrature * IteratedQuadrature::clone() const
 
 /* Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
  */
-NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & function,
-    const NumericalScalar a,
-    const NumericalScalar b,
-    const NumericalMathFunctionCollection & lowerBounds,
-    const NumericalMathFunctionCollection & upperBounds,
-    const Bool check) const
+Point IteratedQuadrature::integrate(const Function & function,
+                                    const Scalar a,
+                                    const Scalar b,
+                                    const FunctionCollection & lowerBounds,
+                                    const FunctionCollection & upperBounds,
+                                    const Bool check) const
 {
   const UnsignedInteger inputDimension = function.getInputDimension();
   if (check)
@@ -74,37 +75,37 @@ NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & funct
     // Second, check the input and output dimensions of each bound function
     for (UnsignedInteger i = 1; i < inputDimension; ++i)
     {
-      const NumericalMathFunction lower(lowerBounds[i - 1]);
+      const Function lower(lowerBounds[i - 1]);
       if (lower.getInputDimension() != i) throw InvalidArgumentException(HERE) << "Error: expected a lower bound function of rank=" << i - 1 << " to be of input dimension=" << i << ", got " << lower.getInputDimension();
       if (lower.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a lower bound function of rank=" << i - 1 << " to be of output dimension=1, got " << lower.getOutputDimension();
-      const NumericalMathFunction upper(lowerBounds[i - 1]);
+      const Function upper(lowerBounds[i - 1]);
       if (upper.getInputDimension() != i) throw InvalidArgumentException(HERE) << "Error: expected an upper bound function of rank=" << i - 1 << " to be of input dimension=" << i << ", got " << upper.getInputDimension();
       if (upper.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an upper bound function of rank=" << i - 1 << " to be of output dimension=1, got " << upper.getOutputDimension();
     } // bounds dimensions
   } // check
   if (inputDimension == 1) return algorithm_.integrate(function, Interval(a, b));
   // Prepare the integrand using a PartialFunctionWrapper::evaluate
-  const NumericalMathFunction partialFunction(PartialFunctionWrapper(*this, function, lowerBounds, upperBounds).clone());
+  const Function partialFunction(PartialFunctionWrapper(*this, function, lowerBounds, upperBounds).clone());
   return algorithm_.integrate(partialFunction, Interval(a, b));
 }
 
-NumericalPoint IteratedQuadrature::integrate(const NumericalMathFunction & function,
-    const Interval & interval) const
+Point IteratedQuadrature::integrate(const Function & function,
+                                    const Interval & interval) const
 {
   const UnsignedInteger inputDimension = function.getInputDimension();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
   if (interval.getDimension() == 1) return algorithm_.integrate(function, interval);
   // Build the bound functions associated with the interval
-  const NumericalPoint lower(interval.getLowerBound());
-  const NumericalPoint upper(interval.getUpperBound());
-  NumericalScalar a = lower[0];
-  NumericalScalar b = upper[0];
-  NumericalMathFunctionCollection lowerBounds(inputDimension - 1);
-  NumericalMathFunctionCollection upperBounds(inputDimension - 1);
+  const Point lower(interval.getLowerBound());
+  const Point upper(interval.getUpperBound());
+  Scalar a = lower[0];
+  Scalar b = upper[0];
+  FunctionCollection lowerBounds(inputDimension - 1);
+  FunctionCollection upperBounds(inputDimension - 1);
   for (UnsignedInteger i = 1; i < inputDimension; ++i)
   {
-    lowerBounds[i - 1] = NumericalMathFunction(NumericalSample(1, i), NumericalSample(1, NumericalPoint(1, lower[i])));
-    upperBounds[i - 1] = NumericalMathFunction(NumericalSample(1, i), NumericalSample(1, NumericalPoint(1, upper[i])));
+    lowerBounds[i - 1] = DatabaseFunction(Sample(1, i), Sample(1, Point(1, lower[i])));
+    upperBounds[i - 1] = DatabaseFunction(Sample(1, i), Sample(1, Point(1, upper[i])));
   }
   return integrate(function, a, b, lowerBounds, upperBounds, false);
 }

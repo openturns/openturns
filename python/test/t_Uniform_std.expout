@@ -1,30 +1,30 @@
 Distribution  class=Uniform name=Uniform dimension=1 a=-0.5 b=1.5
 Distribution  Uniform(a = -0.5, b = 1.5)
-Mean=  class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
+Mean=  class=Point name=Unnamed dimension=1 values=[0.5]
 Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.333333]
 Elliptical =  True
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[0.759753]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[1.26561]  last= class=NumericalPoint name=Unnamed dimension=1 values=[0.349444]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.506426]
+oneRealization= class=Point name=Unnamed dimension=1 values=[0.759753]
+oneSample first= class=Point name=Unnamed dimension=1 values=[1.26561]  last= class=Point name=Unnamed dimension=1 values=[0.349444]
+mean= class=Point name=Unnamed dimension=1 values=[0.506426]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.339061]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     = class=NumericalPoint name=Unnamed dimension=1 values=[0]
-ddf (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Point=  class=Point name=Unnamed dimension=1 values=[1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[0]
 log pdf=-0.693147
 pdf     =0.500000
 pdf (FD)=0.500000
 cdf=0.750000
 ccdf=0.250000
 characteristic function= (0.738460262604+0.403422680111j)
-pdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
-cdf gradient     = class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,-0.375]
-cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,-0.375]
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[1.4]
+pdf gradient     = class=Point name=Unnamed dimension=2 values=[0.25,-0.25]
+pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.25,-0.25]
+cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.125,-0.375]
+cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.125,-0.375]
+quantile= class=Point name=Unnamed dimension=1 values=[1.4]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-0.4]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.4]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-0.45, 1.45]
 threshold= 0.95
@@ -37,12 +37,12 @@ Unilateral confidence interval (lower tail)= [-0.5, 1.4]
 beta= 0.95
 Unilateral confidence interval (upper tail)= [-0.4, 1.5]
 beta= 0.95
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[0.57735]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[1.8]
+mean= class=Point name=Unnamed dimension=1 values=[0.5]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.57735]
+skewness= class=Point name=Unnamed dimension=1 values=[0]
+kurtosis= class=Point name=Unnamed dimension=1 values=[1.8]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.333333]
-parameters= [class=NumericalPointWithDescription name=X0 dimension=2 description=[a,b] values=[-0.5,1.5]]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[a,b] values=[-0.5,1.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0]
 standard moment n= 2  value= [0.333333]

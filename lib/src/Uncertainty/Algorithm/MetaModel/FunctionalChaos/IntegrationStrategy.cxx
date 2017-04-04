@@ -62,18 +62,18 @@ IntegrationStrategy::IntegrationStrategy(const Distribution & measure,
 }
 
 /* Parameter constructor */
-IntegrationStrategy::IntegrationStrategy(const NumericalSample & inputSample,
-    const NumericalPoint & weights,
-    const NumericalSample & outputSample)
+IntegrationStrategy::IntegrationStrategy(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample)
   : ProjectionStrategyImplementation(inputSample, weights, outputSample)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-IntegrationStrategy::IntegrationStrategy(const NumericalSample & inputSample,
-    const NumericalSample & outputSample)
-  : ProjectionStrategyImplementation(inputSample, NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
+IntegrationStrategy::IntegrationStrategy(const Sample & inputSample,
+    const Sample & outputSample)
+  : ProjectionStrategyImplementation(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
 {
   // Nothing to do
 }
@@ -94,15 +94,15 @@ String IntegrationStrategy::__repr__() const
 
 struct IntegrationStrategyCoefficientsPolicy
 {
-  const NumericalPoint & weightedOutput_;
+  const Point & weightedOutput_;
   const Matrix & designMatrix_;
   const Indices & addedRanks_;
-  NumericalPoint & alpha_;
+  Point & alpha_;
 
-  IntegrationStrategyCoefficientsPolicy(const NumericalPoint & weightedOutput,
+  IntegrationStrategyCoefficientsPolicy(const Point & weightedOutput,
                                         const Matrix & designMatrix,
                                         const Indices & addedRanks,
-                                        NumericalPoint & alpha)
+                                        Point & alpha)
     : weightedOutput_(weightedOutput)
     , designMatrix_(designMatrix)
     , addedRanks_(addedRanks)
@@ -116,9 +116,9 @@ struct IntegrationStrategyCoefficientsPolicy
     for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
     {
       const UnsignedInteger indexAdded = addedRanks_[j];
-      NumericalScalar result = 0.0;
+      Scalar result = 0.0;
       MatrixImplementation::const_iterator columnMatrix(designMatrix_.getImplementation()->begin() + indexAdded * designMatrix_.getNbRows());
-      for (NumericalPoint::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
+      for (Point::const_iterator outputSample = weightedOutput_.begin(); outputSample != weightedOutput_.end(); ++outputSample, ++columnMatrix)
       {
         result += (*outputSample) * (*columnMatrix);
       } // i
@@ -133,7 +133,7 @@ struct IntegrationStrategyCoefficientsPolicy
    For the moment, there is no specific strategy for improving the approximation of
    the L2 integral by a finite sum: the same input sample is used for all the calls
    to this method */
-void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & function,
+void IntegrationStrategy::computeCoefficients(const Function & function,
     const Basis & basis,
     const Indices & indices,
     const Indices & addedRanks,
@@ -159,7 +159,7 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
     proxy_ = DesignProxy(inputSample_, basis);
   }
   // First, copy the coefficients that are common with the previous partial basis
-  NumericalPoint alpha(0);
+  Point alpha(0);
   const UnsignedInteger conservedSize = conservedRanks.getSize();
   for (UnsignedInteger i = 0; i < conservedSize; ++i)
     alpha.add(alpha_k_p_[conservedRanks[i]]);
@@ -168,8 +168,8 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   const UnsignedInteger sampleSize = inputSample_.getSize();
   // Second, compute the coefficients of the new basis entries
   const Matrix designMatrix(proxy_.computeDesign(indices));
-  NumericalPoint addedAlpha(addedSize, 0.0);
-  NumericalPoint weightedOutput(sampleSize);
+  Point addedAlpha(addedSize, 0.0);
+  Point weightedOutput(sampleSize);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
     weightedOutput[i] = weights_[i] * outputSample_[i][marginalIndex];
   IntegrationStrategyCoefficientsPolicy policy(weightedOutput, designMatrix, addedRanks, addedAlpha);
@@ -178,10 +178,10 @@ void IntegrationStrategy::computeCoefficients(const NumericalMathFunction & func
   alpha_k_p_ = alpha;
   // The residual is the mean squared error between the model and the meta model
   residual_p_ = 0.0;
-  const NumericalPoint values(designMatrix * alpha_k_p_);
+  const Point values(designMatrix * alpha_k_p_);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
-    const NumericalScalar delta = outputSample_[i][marginalIndex] - values[i];
+    const Scalar delta = outputSample_[i][marginalIndex] - values[i];
     residual_p_ += delta * delta;
   }
   residual_p_ = sqrt(residual_p_) / sampleSize;

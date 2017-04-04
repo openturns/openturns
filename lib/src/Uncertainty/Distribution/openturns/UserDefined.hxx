@@ -44,11 +44,11 @@ public:
   UserDefined();
 
   /** Constructor from a sample */
-  explicit UserDefined(const NumericalSample & points);
+  explicit UserDefined(const Sample & points);
 
   /** Constructor from a sample and associated weights */
-  UserDefined(const NumericalSample & points,
-              const NumericalPoint & weights);
+  UserDefined(const Sample & points,
+              const Point & weights);
 
 
   /** Comparison operator */
@@ -69,39 +69,39 @@ public:
   virtual UserDefined * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using DiscreteDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Tell if the distribution is integer valued */
   Bool isIntegral() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Parameters value accessors */
-  NumericalPoint getParameter() const;
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -109,10 +109,10 @@ public:
   /* Interface specific to UserDefined */
 
   /** Data accessors */
-  void setData(const NumericalSample & points,
-               const NumericalPoint & weights);
-  NumericalSample getX() const;
-  NumericalPoint getP() const;
+  void setData(const Sample & points,
+               const Point & weights);
+  Sample getX() const;
+  Point getP() const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -121,7 +121,7 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Merge the identical points of the support */
-  void compactSupport(const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"));
+  void compactSupport(const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon"));
 
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;
@@ -146,15 +146,15 @@ private:
   void computeCovariance() const;
 
   /** Quantile computation for dimension=1 */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** The collection of couple (xi, pi) */
-  NumericalSample points_;
-  NumericalPoint probabilities_;
+  Sample points_;
+  Point probabilities_;
 
   /** The cumulative probabilities si = sum(pk, k=0..i) */
-  NumericalPoint cumulativeProbabilities_;
+  Point cumulativeProbabilities_;
 
   /** Flag to accelerate computations in case of uniform weights */
   Bool hasUniformWeights_;

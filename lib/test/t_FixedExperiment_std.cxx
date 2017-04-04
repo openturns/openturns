@@ -33,15 +33,15 @@ int main(int argc, char *argv[])
   {
     UnsignedInteger size = 5;
     UnsignedInteger dim = 6;
-    NumericalSample refSample(size, dim);
+    Sample refSample(size, dim);
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dim; ++j)
         refSample[i][j] = i + j;
     fullprint << "ref. sample=" << refSample << std::endl;
     FixedExperiment myPlane(refSample);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalPoint weights(0);
-    NumericalSample sample(myPlane.generateWithWeights(weights));
+    Point weights(0);
+    Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
   }

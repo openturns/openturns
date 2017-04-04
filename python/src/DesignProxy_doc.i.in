@@ -7,7 +7,7 @@ Can be useful for an iterative least squares problem resolution.
 
 Parameters
 ----------
-x : :class:`~openturns.NumericalSample`
+x : :class:`~openturns.Sample`
     Input sample
 psi : :class:`~openturns.Basis`
     Functional basis"
@@ -19,7 +19,7 @@ psi : :class:`~openturns.Basis`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     Input sample."
 
 // ---------------------------------------------------------------------
@@ -104,7 +104,7 @@ weight : sequence of float
 
 Returns
 -------
-weight : :class:`~openturns.NumericalPoint`
+weight : :class:`~openturns.Point`
     Weights on each basis term"
 
 // ---------------------------------------------------------------------

@@ -22,10 +22,10 @@
 #define OPENTURNS_INVERSENATAFELLIPTICALCOPULAGRADIENT_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SquareMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"
 
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for elliptical distributions
  */
 class OT_API InverseNatafEllipticalCopulaGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
@@ -55,7 +55,7 @@ public:
   virtual InverseNatafEllipticalCopulaGradient * clone() const;
 
   /** Gradient */
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

@@ -99,7 +99,7 @@ Returns
 -------
 isInside : bool
     Flag telling whether *point* is inside the simplex of index *index*.
-coordinates : :class:`~openturns.NumericalPoint`
+coordinates : :class:`~openturns.Point`
     The barycentric coordinates of the given point wrt the vertices of the simplex
 .
 
@@ -112,11 +112,11 @@ Examples
 >>> # Create a point A inside the simplex
 >>> pointA = [0.6, 0.3]
 >>> print(mesh2d.checkPointInSimplexWithCoordinates(pointA, 0))
-[True, class=NumericalPoint name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
+[True, class=Point name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
 >>> # Create a point B outside the simplex
 >>> pointB = [1.1, 0.6]
 >>> print(mesh2d.checkPointInSimplexWithCoordinates(pointB, 0))
-[False, class=NumericalPoint name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]"
+[False, class=Point name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]"
 
 // ---------------------------------------------------------------------
 
@@ -329,7 +329,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> mesh = ot.Mesh()
->>> vertices = ot.NumericalSample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
+>>> vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
 >>> vertices.setDescription(['X', 'Y'])
 >>> mesh.setVertices(vertices)
 >>> print(mesh.getDescription())
@@ -347,7 +347,7 @@ point : sequence of float
 
 Returns
 -------
-vertex : :class:`~openturns.NumericalPoint`
+vertex : :class:`~openturns.Point`
     Coordinates of the nearest vertex of *point*.
 
 Examples
@@ -400,7 +400,7 @@ Returns
 -------
 indices : :class:`~openturns.Indices`
     Collecton of 1 or 2 integers, the first one being the index of the vertex the closest to the given point and the second one the index of the containing simplex if the given point is inside of the mesh.
-coordinates : :class:`~openturns.NumericalPoint`
+coordinates : :class:`~openturns.Point`
     The barycentric coordinates of the given point wrt the vertices of the containing simplex. It is of dimension 0 if the point is not contained into the mesh.
 
 Examples
@@ -412,11 +412,11 @@ Examples
 >>> # Create a point A inside the simplex
 >>> pointA = [0.6, 0.3]
 >>> print(mesh2d.getNearestVertexAndSimplexIndicesWithCoordinates(pointA))
-[[1,0], class=NumericalPoint name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
+[[1,0], class=Point name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
 >>> # Create a point B outside the simplex
 >>> pointB = [1.1, 0.6]
 >>> print(mesh2d.getNearestVertexAndSimplexIndicesWithCoordinates(pointB))
-[[2], class=NumericalPoint name=Unnamed dimension=0 values=[]]
+[[2], class=Point name=Unnamed dimension=0 values=[]]
 "
 // ---------------------------------------------------------------------
 
@@ -493,7 +493,7 @@ index : int
 
 Returns
 -------
-vertex : :class:`~openturns.NumericalPoint`
+vertex : :class:`~openturns.Point`
     Coordinates in :math:`\Rset^{dim}` of the vertex of index *index*,
     where :math:`dim` is the dimension of the vertices of the mesh.
 
@@ -515,7 +515,7 @@ Examples
 
 Returns
 -------
-vertices : :class:`~openturns.NumericalSample`
+vertices : :class:`~openturns.Sample`
     Coordinates in :math:`\Rset^{dim}` of the vertices,
     where :math:`dim` is the dimension of the vertices of the mesh.
 
@@ -686,6 +686,6 @@ verticesSimplicesMap : :class:`~openturns.IndicesCollection`
 
 Returns
 -------
-weights : :class:`~openturns.NumericalPoint`
+weights : :class:`~openturns.Point`
     Weights such that an integral of a function over the mesh
     is a weighted sum of its values at the vertices."

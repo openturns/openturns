@@ -27,7 +27,7 @@ using namespace OT::Test;
 typedef Distribution::IsoProbabilisticTransformation IsoProbabilisticTransformation;
 typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilisticTransformation;
 
-NumericalPoint clean(NumericalPoint in)
+Point clean(Point in)
 {
   UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)
@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
   {
     // Instanciate one distribution object
     UnsignedInteger dim = 3;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dim);
@@ -73,14 +73,14 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 10000;
-    NumericalSample sample = distribution.getSample( size );
+    Sample sample = distribution.getSample( size );
     fullprint << "sample first=" << sample[0] << " last=" << sample[size - 1] << std::endl;
     fullprint << "sample mean=" << sample.computeMean() << std::endl;
     fullprint << "sample covariance=" << sample.computeCovariance() << std::endl;
 
     IsoProbabilisticTransformation transform(distribution.getIsoProbabilisticTransformation());
     fullprint << "isoprobabilistic transformation=" << transform << std::endl;
-    NumericalSample transformedSample(transform(sample));
+    Sample transformedSample(transform(sample));
     fullprint << "transformed sample first=" << transformedSample[0] << " last=" << transformedSample[size - 1] << std::endl;
     fullprint << "transformed sample mean=" << transformedSample.computeMean() << std::endl;
     fullprint << "transformed sample covariance=" << transformedSample.computeCovariance() << std::endl;
@@ -88,13 +88,13 @@ int main(int argc, char *argv[])
     // Test for evaluation
     InverseIsoProbabilisticTransformation inverseTransform(distribution.getInverseIsoProbabilisticTransformation());
     fullprint << "inverse isoprobabilistic transformation=" << inverseTransform << std::endl;
-    NumericalSample transformedBackSample(inverseTransform(transformedSample));
+    Sample transformedBackSample(inverseTransform(transformedSample));
     fullprint << "transformed back sample first=" << transformedBackSample[0] << " last=" << transformedBackSample[size - 1] << std::endl;
     fullprint << "transformed back sample mean=" << transformedBackSample.computeMean() << std::endl;
     fullprint << "transformed back sample covariance=" << transformedBackSample.computeCovariance() << std::endl;
-    NumericalPoint point(dim, 1.0);
+    Point point(dim, 1.0);
     fullprint << "point=" << point << std::endl;
-    NumericalPoint transformedPoint(transform(point));
+    Point transformedPoint(transform(point));
     fullprint << "transform value at point        =" << transformedPoint << std::endl;
     fullprint << "transform gradient at point     =" << transform.gradient(point).clean(1.0e-6) << std::endl;
     fullprint << "transform gradient at point (FD)=" << CenteredFiniteDifferenceGradient(1.0e-5, transform.getEvaluation()).gradient(point).clean(1.0e-6) << std::endl;

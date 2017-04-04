@@ -10,9 +10,9 @@ Available constructors:
 
 Parameters
 ----------
-x : :class:`~openturns.NumericalSample`
+x : :class:`~openturns.Sample`
     Input sample
-y : :class:`~openturns.NumericalSample`
+y : :class:`~openturns.Sample`
     Output sample
 weight : sequence of float
     Output weights

@@ -51,42 +51,42 @@ public:
   GeneralLinearModelAlgorithm();
 
   /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                               const Sample & outputSample,
+                               const CovarianceModel & covarianceModel,
+                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
+                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const Basis & basis,
-                                   const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
-
-  /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
-                                   const NumericalSample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const Basis & basis,
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                               const Sample & outputSample,
+                               const CovarianceModel & covarianceModel,
+                               const Basis & basis,
+                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
+                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const BasisCollection & basisCollection,
-                                   const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                               const Function & inputTransformation,
+                               const Sample & outputSample,
+                               const CovarianceModel & covarianceModel,
+                               const Basis & basis,
+                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
-                                   const NumericalSample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const BasisCollection & basisCollection,
-                                   const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                               const Sample & outputSample,
+                               const CovarianceModel & covarianceModel,
+                               const BasisCollection & basisCollection,
+                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
+                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
+
+  /** Parameters constructor */
+  GeneralLinearModelAlgorithm (const Sample & inputSample,
+                               const Function & inputTransformation,
+                               const Sample & outputSample,
+                               const CovarianceModel & covarianceModel,
+                               const BasisCollection & basisCollection,
+                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
   GeneralLinearModelAlgorithm * clone() const;
@@ -98,18 +98,18 @@ public:
   void run();
 
   /** input transformation accessor */
-  void setInputTransformation(const NumericalMathFunction & inputTransformation);
-  NumericalMathFunction getInputTransformation() const;
+  void setInputTransformation(const Function & inputTransformation);
+  Function getInputTransformation() const;
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** result accessor */
   GeneralLinearModelResult getResult();
 
   /** Objective function (reduced log-Likelihood) accessor */
-  NumericalMathFunction getObjectiveFunction();
+  Function getObjectiveFunction();
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
@@ -128,8 +128,8 @@ public:
   Interval getOptimizationBounds() const;
 
   /** Observation noise accessor */
-  void setNoise(const NumericalPoint & noise);
-  NumericalPoint getNoise() const;
+  void setNoise(const Point & noise);
+  Point getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -139,12 +139,12 @@ public:
 
 protected:
   // Maximize the reduced log-likelihood
-  NumericalScalar maximizeReducedLogLikelihood();
+  Scalar maximizeReducedLogLikelihood();
 
   // Compute the output log-likelihood function
-  NumericalPoint computeReducedLogLikelihood(const NumericalPoint & parameters) const;
-  NumericalScalar computeLapackLogDeterminantCholesky() const;
-  NumericalScalar computeHMatLogDeterminantCholesky() const;
+  Point computeReducedLogLikelihood(const Point & parameters) const;
+  Scalar computeLapackLogDeterminantCholesky() const;
+  Scalar computeHMatLogDeterminantCholesky() const;
 
   // Compute the design matrix on the normalized input sample
   void computeF();
@@ -162,17 +162,17 @@ protected:
 
 
   friend class KrigingAlgorithm;
-  NumericalPoint getRho() const;
+  Point getRho() const;
 
 private:
 
   // Helper class to compute the reduced log-likelihood function of the model
-  class ReducedLogLikelihoodEvaluation: public NumericalMathEvaluationImplementation
+  class ReducedLogLikelihoodEvaluation: public EvaluationImplementation
   {
   public:
     // Constructor from a GLM algorithm
     ReducedLogLikelihoodEvaluation(GeneralLinearModelAlgorithm & algorithm)
-      : NumericalMathEvaluationImplementation()
+      : EvaluationImplementation()
       , algorithm_(algorithm)
     {
       // Nothing to do
@@ -184,9 +184,9 @@ private:
     }
 
     // It is a simple call to the computeReducedLogLikelihood() of the algo
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
-      const NumericalPoint value(algorithm_.computeReducedLogLikelihood(point));
+      const Point value(algorithm_.computeReducedLogLikelihood(point));
       return value;
     }
 
@@ -236,8 +236,8 @@ private:
   }; // ReducedLogLikelihoodEvaluation
 
   /** set sample  method */
-  void setData(const NumericalSample & inputSample,
-               const NumericalSample & outputSample);
+  void setData(const Sample & inputSample,
+               const Sample & outputSample);
 
   /** Covariance model accessor */
   void setCovarianceModel(const CovarianceModel & covarianceModel);
@@ -248,20 +248,20 @@ private:
   void setBasisCollection(const BasisCollection & basisCollection);
 
   /** check that sample is centered to precison eps */
-  void checkYCentered(const NumericalSample & Y);
+  void checkYCentered(const Sample & Y);
 
   // The input data
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   // Standardized version of the input data
-  NumericalSample normalizedInputSample_;
+  Sample normalizedInputSample_;
 
   // Standardization function
-  NumericalMathFunction inputTransformation_;
+  Function inputTransformation_;
   mutable Bool normalize_;
 
   // The associated output data
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   // The covariance model parametric familly
   CovarianceModel covarianceModel_;
@@ -274,9 +274,9 @@ private:
   Interval optimizationBounds_;
 
   // The coefficients of the current output conditional expectation part
-  mutable NumericalPoint beta_;
+  mutable Point beta_;
   // Temporarly used to compute gamma
-  mutable NumericalPoint rho_;
+  mutable Point rho_;
   // The current output Gram matrix
   mutable Matrix F_;
 
@@ -304,15 +304,15 @@ private:
   /** Flag to tell if the parameters of the covariance model
       have to be optimized */
   Bool optimizeParameters_;
-  
+
   /** Observation noise */
-  NumericalPoint noise_;
+  Point noise_;
 
   /** Flag to tell if the amplitude parameters are estimated using an analytical derivation */
   Bool analyticalAmplitude_;
 
   /** Cache of the last computed reduced log-likelihood */
-  mutable NumericalScalar lastReducedLogLikelihood_;
+  mutable Scalar lastReducedLogLikelihood_;
 }; // class GeneralLinearModelAlgorithm
 
 

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for standard methods
+ *  @brief The test file of class Function for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -54,16 +54,16 @@ int main(int argc, char *argv[])
     SymbolicFunction right(input_r, formula_r);
 
     /** Compositon of left and right */
-    NumericalMathFunction composed(ComposedFunction(left, right));
+    Function composed(ComposedFunction(left, right));
 
     fullprint << "right=" << right << std::endl;
     fullprint << "left=" << left << std::endl;
     fullprint << "composed=" << composed << std::endl;
 
     /** Does it worked? */
-    NumericalPoint x(right.getInputDimension(), 1.0);
-    NumericalPoint y(right(x));
-    NumericalPoint z(left(y));
+    Point x(right.getInputDimension(), 1.0);
+    Point y(right(x));
+    Point z(left(y));
     Matrix Dy(right.gradient(x));
     Matrix Dz(left.gradient(y));
 

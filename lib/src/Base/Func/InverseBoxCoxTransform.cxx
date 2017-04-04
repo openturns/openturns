@@ -18,9 +18,9 @@
  *
  */
 #include "openturns/InverseBoxCoxTransform.hxx"
-#include "openturns/InverseBoxCoxEvaluationImplementation.hxx"
-#include "openturns/InverseBoxCoxGradientImplementation.hxx"
-#include "openturns/InverseBoxCoxHessianImplementation.hxx"
+#include "openturns/InverseBoxCoxEvaluation.hxx"
+#include "openturns/InverseBoxCoxGradient.hxx"
+#include "openturns/InverseBoxCoxHessian.hxx"
 #include "openturns/BoxCoxTransform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -29,50 +29,50 @@ CLASSNAMEINIT(InverseBoxCoxTransform);
 
 /* Default constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform()
-  : NumericalMathFunction(InverseBoxCoxEvaluationImplementation())
+  : Function(InverseBoxCoxEvaluation())
 {
   // Nothing to do
 }
 
 /* Standard parameter constructor */
-InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda)
-  : NumericalMathFunction()
+InverseBoxCoxTransform::InverseBoxCoxTransform(const Point & lambda)
+  : Function()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(lambda);
+  const InverseBoxCoxEvaluation evaluation(lambda);
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
-/* NumericalScalarCollection parameter constructor */
-InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalPoint & lambda,
-    const NumericalPoint & shift)
-  : NumericalMathFunction()
+/* ScalarCollection parameter constructor */
+InverseBoxCoxTransform::InverseBoxCoxTransform(const Point & lambda,
+    const Point & shift)
+  : Function()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(lambda, shift);
+  const InverseBoxCoxEvaluation evaluation(lambda, shift);
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
-/* 1D NumericalScalar parameter constructor */
-InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda)
-  : NumericalMathFunction()
+/* 1D Scalar parameter constructor */
+InverseBoxCoxTransform::InverseBoxCoxTransform(const Scalar & lambda)
+  : Function()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(NumericalPoint(1, lambda));
+  const InverseBoxCoxEvaluation evaluation(Point(1, lambda));
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
-InverseBoxCoxTransform::InverseBoxCoxTransform(const NumericalScalar & lambda,
-    const NumericalScalar & shift)
-  : NumericalMathFunction()
+InverseBoxCoxTransform::InverseBoxCoxTransform(const Scalar & lambda,
+    const Scalar & shift)
+  : Function()
 {
-  const InverseBoxCoxEvaluationImplementation evaluation(NumericalPoint(1, lambda), NumericalPoint(1, shift));
+  const InverseBoxCoxEvaluation evaluation(Point(1, lambda), Point(1, shift));
   setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradientImplementation(evaluation).clone());
-  setHessian(InverseBoxCoxHessianImplementation(evaluation).clone());
+  setGradient(InverseBoxCoxGradient(evaluation).clone());
+  setHessian(InverseBoxCoxHessian(evaluation).clone());
 }
 
 /* Virtual constructor */
@@ -82,15 +82,15 @@ InverseBoxCoxTransform * InverseBoxCoxTransform::clone() const
 }
 
 /* Lambda accessor */
-NumericalPoint InverseBoxCoxTransform::getLambda() const
+Point InverseBoxCoxTransform::getLambda() const
 {
-  return dynamic_cast<InverseBoxCoxEvaluationImplementation *>(getEvaluation().get())->getLambda();
+  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getLambda();
 }
 
 /* Shift accessor */
-NumericalPoint InverseBoxCoxTransform::getShift() const
+Point InverseBoxCoxTransform::getShift() const
 {
-  return dynamic_cast<InverseBoxCoxEvaluationImplementation *>(getEvaluation().get())->getShift();
+  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getShift();
 }
 
 /* Inverse accessor */

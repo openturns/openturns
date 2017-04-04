@@ -150,7 +150,7 @@ keep_intact : bool, optional
 
 Returns
 -------
-singular_values : :class:`~openturns.NumericalPoint`
+singular_values : :class:`~openturns.Point`
     The vector of singular values with size :math:`n = \min(n_r, n_c)` that
     form the diagonal of the :math:`n_r \times n_c` matrix
     :math:`\mat{\Sigma}` of the SVD decomposition.
@@ -194,7 +194,7 @@ keep_intact : bool, optional
 
 Returns
 -------
-singular_values : :class:`~openturns.NumericalPoint`
+singular_values : :class:`~openturns.Point`
     The vector of singular values with size :math:`n = \min(n_r, n_c)` that
     form the diagonal of the :math:`n_r \times n_c` matrix
     :math:`\mat{\Sigma}` of the SVD.
@@ -243,7 +243,7 @@ n_rows : int"
 
 Parameters
 ----------
-rhs : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix` with :math:`n_r` values or rows, respectively
+rhs : :class:`~openturns.Point` or :class:`~openturns.Matrix` with :math:`n_r` values or rows, respectively
     The right hand side member of the linear system.
 keep_intact : bool, optional
     A flag telling whether the present matrix can be overwritten or not.
@@ -251,7 +251,7 @@ keep_intact : bool, optional
 
 Returns
 -------
-solution : :class:`~openturns.NumericalPoint` or :class:`~openturns.Matrix`
+solution : :class:`~openturns.Point` or :class:`~openturns.Matrix`
     The solution of the rectangular linear system.
 
 Notes
@@ -271,7 +271,7 @@ Examples
 >>> import openturns as ot
 >>> import numpy as np
 >>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
->>> b = ot.NumericalPoint([1.0] * 3)
+>>> b = ot.Point([1.0] * 3)
 >>> x = M.solveLinearSystem(b)
 >>> np.testing.assert_array_almost_equal(M * x, b)"
 

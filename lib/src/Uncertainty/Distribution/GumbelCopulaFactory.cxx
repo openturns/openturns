@@ -43,12 +43,12 @@ GumbelCopulaFactory * GumbelCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const NumericalSample & sample) const
+GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const Sample & sample) const
 {
   return buildAsGumbelCopula(sample).clone();
 }
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const NumericalPoint & parameters) const
+GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const Point & parameters) const
 {
   return buildAsGumbelCopula(parameters).clone();
 }
@@ -58,18 +58,18 @@ GumbelCopulaFactory::Implementation GumbelCopulaFactory::build() const
   return buildAsGumbelCopula().clone();
 }
 
-GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalSample & sample) const
+GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample of dimension not equal to 2";
-  NumericalScalar tau = sample.computeKendallTau().operator()(0, 1);
+  Scalar tau = sample.computeKendallTau().operator()(0, 1);
   if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a GumbelCopula distribution from a sample with Kendall tau equal to 1";
   GumbelCopula result(1.0 / (1.0 - tau));
   result.setDescription(sample.getDescription());
   return result;
 }
 
-GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const NumericalPoint & parameters) const
+GumbelCopula GumbelCopulaFactory::buildAsGumbelCopula(const Point & parameters) const
 {
   try
   {

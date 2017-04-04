@@ -24,11 +24,11 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps = pow(0.1, 1.0 * digits);
+  Scalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -51,16 +51,16 @@ int main(int argc, char *argv[])
     input[1] = "F";
     input[2] = "L";
     input[3] = "I";
-    NumericalMathFunction myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
+    Function myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 50.0; // E
     mean[1] =  1.0; // F
     mean[2] = 10.0; // L
     mean[3] =  5.0; // I
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     IdentityMatrix R(dim);
     Normal myDistribution(mean, sigma, R);
 

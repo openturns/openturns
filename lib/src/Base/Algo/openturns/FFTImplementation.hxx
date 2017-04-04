@@ -25,7 +25,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/Tensor.hxx"
 
@@ -43,8 +43,8 @@ class OT_API FFTImplementation
 
 public:
 
-  typedef Collection<NumericalScalar>   NumericalScalarCollection;
-  typedef Collection<NumericalComplex>  NumericalComplexCollection;
+  typedef Collection<Scalar>   ScalarCollection;
+  typedef Collection<Complex>  ComplexCollection;
 
   /** Default constructor without parameters */
   FFTImplementation();
@@ -53,57 +53,57 @@ public:
   virtual FFTImplementation * clone() const;
 
   /** FFT transformation on real */
-  virtual NumericalComplexCollection transform(const NumericalScalarCollection & collection) const;
+  virtual ComplexCollection transform(const ScalarCollection & collection) const;
 
   /** FFT transformation on real - The transformation is applied on a part of the collection*/
-  virtual NumericalComplexCollection transform(const NumericalScalarCollection & collection,
+  virtual ComplexCollection transform(const ScalarCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
   /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
-  virtual NumericalComplexCollection transform(const NumericalScalarCollection & collection,
+  virtual ComplexCollection transform(const ScalarCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger step,
       const UnsignedInteger last) const;
 
   /** FFT transformation on complex */
-  virtual NumericalComplexCollection transform(const NumericalComplexCollection & collection) const;
+  virtual ComplexCollection transform(const ComplexCollection & collection) const;
 
   /** FFT transformation on complex - For some FFT implementation, the transformation is applied on a part of the collection */
-  virtual NumericalComplexCollection transform(const NumericalComplexCollection & collection,
+  virtual ComplexCollection transform(const ComplexCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
   /** FFT transformation on complex - For some FFT implementation, the need is to transform a regular sequence of the collection (between first and last, by step = step)*/
-  virtual NumericalComplexCollection transform(const NumericalComplexCollection & collection,
+  virtual ComplexCollection transform(const ComplexCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger step,
       const UnsignedInteger last) const;
 
   /** FFT inverse transformation */
-  virtual NumericalComplexCollection inverseTransform(const NumericalScalarCollection & collection) const;
+  virtual ComplexCollection inverseTransform(const ScalarCollection & collection) const;
 
   /** FFT inverse transformation - The transformation is applied on a part of the collection */
-  virtual NumericalComplexCollection inverseTransform(const NumericalScalarCollection & collection,
+  virtual ComplexCollection inverseTransform(const ScalarCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
   /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-  virtual NumericalComplexCollection inverseTransform(const NumericalScalarCollection & collection,
+  virtual ComplexCollection inverseTransform(const ScalarCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger step,
       const UnsignedInteger last) const;
 
   /** FFT inverse transformation */
-  virtual NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection) const;
+  virtual ComplexCollection inverseTransform(const ComplexCollection & collection) const;
 
   /** FFT inverse transformation - The transformation is applied on a part of the collection */
-  virtual NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection,
+  virtual ComplexCollection inverseTransform(const ComplexCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
   /** FFT transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-  virtual NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection,
+  virtual ComplexCollection inverseTransform(const ComplexCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger step,
       const UnsignedInteger last) const;
@@ -115,7 +115,7 @@ public:
   virtual ComplexMatrix transform2D(const Matrix & matrix) const;
 
   /** FFT 2D transformation on sample */
-  virtual ComplexMatrix transform2D(const NumericalSample & sample) const;
+  virtual ComplexMatrix transform2D(const Sample & sample) const;
 
   /** IFFT 2D transformation on complex */
   virtual ComplexMatrix inverseTransform2D(const ComplexMatrix & complexMatrix) const;
@@ -124,7 +124,7 @@ public:
   virtual ComplexMatrix inverseTransform2D(const Matrix & matrix) const;
 
   /** IFFT 2D transformation on sample */
-  virtual ComplexMatrix inverseTransform2D(const NumericalSample & sample) const;
+  virtual ComplexMatrix inverseTransform2D(const Sample & sample) const;
 
   /** FFT 3D transformation */
   virtual ComplexTensor transform3D(const ComplexTensor & tensor) const;

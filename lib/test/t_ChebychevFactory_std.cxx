@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
     {
       fullprint << "chebychev(" << i << ")=" << chebychev.build(i).__str__() << std::endl;
     }
-    NumericalPoint roots(chebychev.getRoots(10));
+    Point roots(chebychev.getRoots(10));
     fullprint << "chebychev(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
-    NumericalPoint nodes(chebychev.getNodesAndWeights(10, weights));
+    Point weights;
+    Point nodes(chebychev.getNodesAndWeights(10, weights));
     fullprint << "chebychev(10) nodes=" << nodes << " and weights=" << weights <<  std::endl;
   }
   catch (TestFailed & ex)

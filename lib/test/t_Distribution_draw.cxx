@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
   try
   {
     Normal dist1D(2.0, 4.0);
-    Normal dist2D(NumericalPoint(2, 2.0), NumericalPoint(2, 4.0), CorrelationMatrix(2));
-    Normal distND(NumericalPoint(5, 2.0), NumericalPoint(5, 4.0), CorrelationMatrix(5));
+    Normal dist2D(Point(2, 2.0), Point(2, 4.0), CorrelationMatrix(2));
+    Normal distND(Point(5, 2.0), Point(5, 4.0), CorrelationMatrix(5));
     // Check drawing methods for 1D distributions
     // PDF
     Graph graphPDF(dist1D.drawPDF());
@@ -75,27 +75,27 @@ int main(int argc, char *argv[])
     // PDF
     graphPDF = dist2D.drawPDF();
     graphPDF.draw("DefaultDrawPDF_2D.png");
-    graphPDF = dist2D.drawPDF(NumericalPoint(2, -4.0), NumericalPoint(2, 4.0), Indices(2, 101));
+    graphPDF = dist2D.drawPDF(Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
     graphPDF.draw("FullParametersDrawPDF_2D.png");
-    graphPDF = dist2D.drawPDF(NumericalPoint(2, -4.0), NumericalPoint(2, 4.0));
+    graphPDF = dist2D.drawPDF(Point(2, -4.0), Point(2, 4.0));
     graphPDF.draw("RangeDrawPDF_2D.png");
     graphPDF = dist2D.drawPDF(Indices(2, 101));
     graphPDF.draw("PointNumberDrawPDF_2D.png");
     // log-PDF
     graphLogPDF = dist2D.drawLogPDF();
     graphLogPDF.draw("DefaultDrawLogPDF_2D.png");
-    graphLogPDF = dist2D.drawLogPDF(NumericalPoint(2, -4.0), NumericalPoint(2, 4.0), Indices(2, 101));
+    graphLogPDF = dist2D.drawLogPDF(Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
     graphLogPDF.draw("FullParametersDrawLogPDF_2D.png");
-    graphLogPDF = dist2D.drawPDF(NumericalPoint(2, -4.0), NumericalPoint(2, 4.0));
+    graphLogPDF = dist2D.drawPDF(Point(2, -4.0), Point(2, 4.0));
     graphLogPDF.draw("RangeDrawLogPDF_2D.png");
     graphLogPDF = dist2D.drawLogPDF(Indices(2, 101));
     graphLogPDF.draw("PointNumberDrawLogPDF_2D.png");
     // CDF
     graphCDF = dist2D.drawCDF();
     graphCDF.draw("DefaultDrawCDF_2D.png");
-    graphCDF = dist2D.drawCDF(NumericalPoint(2, -4.0), NumericalPoint(2, 4.0), Indices(2, 101));
+    graphCDF = dist2D.drawCDF(Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
     graphCDF.draw("FullParametersDrawCDF_2D.png");
-    graphCDF = dist2D.drawCDF(NumericalPoint(2, -4.0), NumericalPoint(2, 4.0));
+    graphCDF = dist2D.drawCDF(Point(2, -4.0), Point(2, 4.0));
     graphCDF.draw("RangeDrawCDF_2D.png");
     graphCDF = dist2D.drawCDF(Indices(2, 101));
     graphCDF.draw("PointNumberDrawCDF_2D.png");
@@ -103,17 +103,17 @@ int main(int argc, char *argv[])
     // PDF
     graphPDF = distND.drawMarginal1DPDF(2, -4.0, 4.0, 101);
     graphPDF.draw("FullParametersDrawMarginal1DPDF_ND.png");
-    graphPDF = distND.drawMarginal2DPDF(2, 3, NumericalPoint(2, -4.0), NumericalPoint(2, 4.0), Indices(2, 101));
+    graphPDF = distND.drawMarginal2DPDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
     graphPDF.draw("FullParametersDrawMarginal2DPDF_ND.png");
     // log-PDF
     graphLogPDF = distND.drawMarginal1DLogPDF(2, -4.0, 4.0, 101);
     graphLogPDF.draw("FullParametersDrawMarginal1DLogPDF_ND.png");
-    graphLogPDF = distND.drawMarginal2DLogPDF(2, 3, NumericalPoint(2, -4.0), NumericalPoint(2, 4.0), Indices(2, 101));
+    graphLogPDF = distND.drawMarginal2DLogPDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
     graphPDF.draw("FullParametersDrawMarginal2DLogPDF_ND.png");
     // CDF
     graphCDF = distND.drawMarginal1DCDF(2, -4.0, 4.0, 101);
     graphCDF.draw("FullParametersDrawMarginal1DCDF_ND.png");
-    graphCDF = distND.drawMarginal2DCDF(2, 3, NumericalPoint(2, -4.0), NumericalPoint(2, 4.0), Indices(2, 101));
+    graphCDF = distND.drawMarginal2DCDF(2, 3, Point(2, -4.0), Point(2, 4.0), Indices(2, 101));
     graphCDF.draw("FullParametersDrawMarginal2DCDF_ND.png");
     // Quantile
     graphQuantile = dist2D.drawQuantile();

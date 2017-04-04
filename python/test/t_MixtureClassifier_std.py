@@ -15,14 +15,14 @@ try:
 
     # Instanciate one distribution object
     distribution = Mixture(
-        aCollection, NumericalPoint(aCollection.getSize(), 1.0))
+        aCollection, Point(aCollection.getSize(), 1.0))
     print("mixture=",  distribution)
     classifier = Classifier(MixtureClassifier(distribution))
-    inS = NumericalSample()
-    inS.add(NumericalPoint(1, 2.))
-    inS.add(NumericalPoint(1, 4.))
-    inS.add(NumericalPoint(1, 6.))
-    inS.add(NumericalPoint(1, 8.))
+    inS = Sample()
+    inS.add(Point(1, 2.))
+    inS.add(Point(1, 4.))
+    inS.add(Point(1, 6.))
+    inS.add(Point(1, 8.))
 
     for i in range(inS.getSize()):
         print("inP=",  inS[i], " class=",  classifier.classify(inS[i]))

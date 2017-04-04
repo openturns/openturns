@@ -48,16 +48,16 @@ SamplingStrategyImplementation * SamplingStrategyImplementation::clone() const
 }
 
 /* Generate a set of directions */
-NumericalSample SamplingStrategyImplementation::generate() const
+Sample SamplingStrategyImplementation::generate() const
 {
   throw NotYetImplementedException(HERE) << "In SamplingStrategyImplementation::generate() const";
 }
 
 /* Generate a uniform random unit vector */
-NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
+Point SamplingStrategyImplementation::getUniformUnitVectorRealization(const UnsignedInteger dimension) const
 {
-  NumericalPoint direction(dimension);
-  NumericalScalar norm = 0.0;
+  Point direction(dimension);
+  Scalar norm = 0.0;
   do
   {
     for (UnsignedInteger i = 0; i < dimension; ++i) direction[i] = DistFunc::rNormal();
@@ -68,7 +68,7 @@ NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization(c
 }
 
 /* Generate a uniform random unit vector */
-NumericalPoint SamplingStrategyImplementation::getUniformUnitVectorRealization() const
+Point SamplingStrategyImplementation::getUniformUnitVectorRealization() const
 {
   return getUniformUnitVectorRealization(dimension_);
 }

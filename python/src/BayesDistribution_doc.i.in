@@ -19,7 +19,7 @@ conditionedDist : :class:`~openturns.Distribution`, the distribution of :math:`\
 conditioningDist : :class:`~openturns.Distribution`, the distribution of :math:`\vect{Y}`, specified with its parameters.
     In the `BayesDistribution()` constructor,  `conditioningDist` is taken equal to :math:`\vect{Y} \sim Uniform(-1,1)`.
 
-linkFunction : :class:`~openturns.NumericalMathFunction`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+linkFunction : :class:`~openturns.Function`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
     In the `BayesDistribution()` constructor, `linkFunction`  is taken equal to :math:`g: \Rset \rightarrow \Rset^2`, :math:`g(y)=(y,y+1)`.
     In the `BayesDistribution(conditionedDist, conditioningDist)` constructor, we need :math:`p=q` and `linkFunction`  is taken equal to  :math:`g(\vect{y})=\vect{y}`.
 
@@ -78,7 +78,7 @@ conditioningDistribution : :class:`~openturns.Distribution`, the distribution of
 
 Returns
 -------
-linkFunction : :class:`~openturns.NumericalMathFunction`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+linkFunction : :class:`~openturns.Function`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
 "
 
 // ---------------------------------------------------------------------
@@ -107,5 +107,5 @@ conditioningDistribution : :class:`~openturns.Distribution`, the distribution of
 
 Parameters
 ----------
-linkFunction : :class:`~openturns.NumericalMathFunction`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
+linkFunction : :class:`~openturns.Function`, the function :math:`g: \Rset^p \rightarrow \Rset^q`, where :math:`p` is the dimension of `conditioningDist` and :math:`q` is the dimension of :math:`\vect{\Theta}`.
 "

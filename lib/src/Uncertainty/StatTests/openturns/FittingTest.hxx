@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/TestResult.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionFactory.hxx"
 #include "openturns/Pointer.hxx"
@@ -44,74 +44,74 @@ public:
   typedef Collection<Distribution>        DistributionCollection;
 
   /** Best model for a given numerical sample by BIC */
-  static Distribution BestModelBIC(const NumericalSample  & sample,
+  static Distribution BestModelBIC(const Sample  & sample,
                                    const DistributionFactoryCollection & factoryCollection);
 
   /** Best model for a given numerical sample by BIC */
-  static Distribution BestModelBIC(const NumericalSample  & sample,
+  static Distribution BestModelBIC(const Sample  & sample,
                                    const DistributionCollection & distributionCollection);
 
   /** Best model for a given numerical sample by Kolmogorov */
-  static Distribution BestModelKolmogorov(const NumericalSample  & sample,
+  static Distribution BestModelKolmogorov(const Sample  & sample,
                                           const DistributionFactoryCollection & factoryCollection,
                                           TestResult & bestResult);
 
   /** Best model for a given numerical sample by Kolmogorov */
-  static Distribution BestModelKolmogorov(const NumericalSample  & sample,
+  static Distribution BestModelKolmogorov(const Sample  & sample,
                                           const DistributionCollection & distributionCollection,
                                           TestResult & bestResult);
 
   /** Best model for a given numerical sample by ChiSquared */
-  static Distribution BestModelChiSquared(const NumericalSample  & sample,
+  static Distribution BestModelChiSquared(const Sample  & sample,
                                           const DistributionFactoryCollection & factoryCollection,
                                           TestResult & bestResult);
 
   /** Best model for a given numerical sample by ChiSquared */
-  static Distribution BestModelChiSquared(const NumericalSample  & sample,
+  static Distribution BestModelChiSquared(const Sample  & sample,
                                           const DistributionCollection & distributionCollection,
                                           TestResult & bestResult);
 
   /** Bayesian Information Criterion computation */
-  static NumericalScalar BIC(const NumericalSample & sample,
-                             const Distribution & distribution,
-                             const UnsignedInteger estimatedParameters = 0);
+  static Scalar BIC(const Sample & sample,
+                    const Distribution & distribution,
+                    const UnsignedInteger estimatedParameters = 0);
 
   /** Bayesian Information Criterion computation */
-  static NumericalScalar BIC(const NumericalSample & sample,
-                             const DistributionFactory & factory);
+  static Scalar BIC(const Sample & sample,
+                    const DistributionFactory & factory);
 
   /** Kolmogorov fitting test for continuous distributions */
-  static TestResult Kolmogorov(const NumericalSample & sample,
+  static TestResult Kolmogorov(const Sample & sample,
                                const Distribution & distribution,
-                               const NumericalScalar level = 0.95,
+                               const Scalar level = 0.95,
                                const UnsignedInteger estimatedParameters = 0);
 
   /** Kolmogorov fitting test for continuous distributions */
-  static TestResult Kolmogorov(const NumericalSample & sample,
+  static TestResult Kolmogorov(const Sample & sample,
                                const DistributionFactory & factory,
-                               const NumericalScalar level = 0.95);
+                               const Scalar level = 0.95);
 
   /** Two-sample Kolmogorov–Smirnov test */
-  static TestResult TwoSamplesKolmogorov (const NumericalSample & sample1,
-                                          const NumericalSample & sample2,
-                                          const NumericalScalar level = 0.95);
+  static TestResult TwoSamplesKolmogorov (const Sample & sample1,
+                                          const Sample & sample2,
+                                          const Scalar level = 0.95);
 
   /** ChiSquared fitting test for discrete distributions */
-  static TestResult ChiSquared(const NumericalSample & sample,
+  static TestResult ChiSquared(const Sample & sample,
                                const Distribution & distribution,
-                               const NumericalScalar level = 0.95,
+                               const Scalar level = 0.95,
                                const UnsignedInteger estimatedParameters = 0);
 
   /** ChiSquared fitting test for discrete distributions */
-  static TestResult ChiSquared(const NumericalSample & sample,
+  static TestResult ChiSquared(const Sample & sample,
                                const DistributionFactory & factory,
-                               const NumericalScalar level = 0.95);
+                               const Scalar level = 0.95);
 
 protected:
   /** Generic invocation of a R script for testing a distribution against a sample */
-  static TestResult RunRTest(const NumericalSample & sample,
+  static TestResult RunRTest(const Sample & sample,
                              const Distribution & distribution,
-                             const NumericalScalar level,
+                             const Scalar level,
                              const UnsignedInteger estimatedParameters,
                              const String & testName);
 

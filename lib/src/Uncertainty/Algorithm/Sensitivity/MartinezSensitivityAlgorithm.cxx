@@ -39,8 +39,8 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm()
 }
 
 /** Constructor with parameters */
-MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
   , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
@@ -51,7 +51,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const NumericalSample
 /** Constructor with distribution / model parameters */
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
   , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
@@ -61,7 +61,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Distribution & 
 
 /** Constructor with experiment / model parameters */
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
   , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
@@ -75,42 +75,42 @@ MartinezSensitivityAlgorithm * MartinezSensitivityAlgorithm::clone() const
   return new MartinezSensitivityAlgorithm(*this);
 }
 
-NumericalSample MartinezSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-    NumericalSample & VTi) const
+Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
+    Sample & VTi) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
-  NumericalSample varianceI(outputDimension, inputDimension);
-  VTi = NumericalSample(outputDimension, inputDimension);
+  Sample varianceI(outputDimension, inputDimension);
+  VTi = Sample(outputDimension, inputDimension);
 
   // Use reference samples
   // Reference sample yA
-  NumericalSample yA(sample, 0, size);
-  const NumericalPoint muA(yA.computeMean());
-  const NumericalPoint sigmaA(yA.computeStandardDeviationPerComponent());
+  Sample yA(sample, 0, size);
+  const Point muA(yA.computeMean());
+  const Point sigmaA(yA.computeStandardDeviationPerComponent());
   // center sample yA
   yA -= muA;
   // Reference sample yB
-  NumericalSample yB(sample, size, 2 * size);
-  const NumericalPoint muB(yB.computeMean());
-  const NumericalPoint sigmaB(yB.computeStandardDeviationPerComponent());
+  Sample yB(sample, size, 2 * size);
+  const Point muB(yB.computeMean());
+  const Point sigmaB(yB.computeStandardDeviationPerComponent());
   // center-reduce sample yB
   yB -= muB;
   yB /= sigmaB;
 
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
-    NumericalSample yE(sample, (2 + p) * size, (3 + p) * size);
-    const NumericalPoint muE(yE.computeMean());
-    const NumericalPoint sigmaE(yE.computeStandardDeviationPerComponent());
+    Sample yE(sample, (2 + p) * size, (3 + p) * size);
+    const Point muE(yE.computeMean());
+    const Point sigmaE(yE.computeStandardDeviationPerComponent());
     // center-reduce sample yB
     yE -= muE;
     yE /= sigmaE;
     // Compute yE * yB
-    const NumericalPoint yEDotyB(computeSumDotSamples(yE, yB));
+    const Point yEDotyB(computeSumDotSamples(yE, yB));
     // Compute yE * yA
-    const NumericalPoint yEDotyA(computeSumDotSamples(yE, yA));
+    const Point yEDotyA(computeSumDotSamples(yE, yA));
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {
       // Compute rho(yB, yE) with rho : Pearson correlation
@@ -142,22 +142,22 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
   // Compute Fisher transform
   // Build interval using sample variance
   // Mean reference is the Sensitivity values
-  const NumericalPoint aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const NumericalPoint aggregatedTotalOrder(getAggregatedTotalOrderIndices());
-  const NumericalScalar t = DistFunc::qNormal(1.0 - 0.5 * confidenceLevel_);
+  const Point aggregatedFirstOrder(getAggregatedFirstOrderIndices());
+  const Point aggregatedTotalOrder(getAggregatedTotalOrderIndices());
+  const Scalar t = DistFunc::qNormal(1.0 - 0.5 * confidenceLevel_);
   const UnsignedInteger size = size_;
   if (size <= 3)
     throw InvalidArgumentException(HERE) << "Could not compute asymptotic confidence interval for sensitivity indices with size=" << size
                                          << ", sample's size should be at least 4";
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   // First order interval
-  NumericalPoint firstOrderLowerBound(inputDimension, 0.0);
-  NumericalPoint firstOrderUpperBound(inputDimension, 0.0);
+  Point firstOrderLowerBound(inputDimension, 0.0);
+  Point firstOrderUpperBound(inputDimension, 0.0);
   // Total order interval
-  NumericalPoint totalOrderLowerBound(inputDimension, 0.0);
-  NumericalPoint totalOrderUpperBound(inputDimension, 0.0);
+  Point totalOrderLowerBound(inputDimension, 0.0);
+  Point totalOrderUpperBound(inputDimension, 0.0);
   // Numerical scalar that will be used
-  NumericalScalar z, rho;
+  Scalar z, rho;
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // Correlation indices evaluation
@@ -168,8 +168,8 @@ void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
     // Fisher transform
     z = 0.5 * std::log((1.0 + rho) / (1.0 - rho));
     // zmin/zmax
-    NumericalScalar zmin = std::tanh(z - t / std::sqrt(size - 3.0));
-    NumericalScalar zmax = std::tanh(z + t / std::sqrt(size - 3.0));
+    Scalar zmin = std::tanh(z - t / std::sqrt(size - 3.0));
+    Scalar zmax = std::tanh(z + t / std::sqrt(size - 3.0));
     // TODO if interval is outside [0,1], how to procede?
     firstOrderLowerBound[p] = zmin;
     firstOrderUpperBound[p] = zmax;

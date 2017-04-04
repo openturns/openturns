@@ -22,7 +22,7 @@
 #define OPENTURNS_CSV_PARSER_STATE_HXX
 
 #include <string>
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,11 +38,11 @@ struct OT_API CSVParserState
   std::string                   St;
   double                        Val;
   bool                          errors;
-  NumericalPoint                Point;
+  Point                         point;
   Description                   Header;
   FileName                      theFileName;
 
-  CSVParserState() : Type(NotSet), St(), Val(0.), errors(false), Point(), Header(), theFileName() {}
+  CSVParserState() : Type(NotSet), St(), Val(0.), errors(false), point(), Header(), theFileName() {}
 
 }; /* end struct CSVParserState */
 

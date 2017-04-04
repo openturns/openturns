@@ -41,7 +41,7 @@ public:
   SubSquareCopula();
 
   /** Default constructor */
-  explicit SubSquareCopula(const NumericalMathFunction & phi);
+  explicit SubSquareCopula(const Function & phi);
 
 
   /** Comparison operator */
@@ -60,44 +60,44 @@ public:
   virtual SubSquareCopula * clone() const;
 
   /** Get one realization of the SubSquareCopula distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the SubSquareCopula distribution */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the SubSquareCopula distribution */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x,
-                                        const NumericalPoint & y) const;
+  Scalar computeConditionalPDF(const Scalar x,
+                               const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x,
-                                        const NumericalPoint & y) const;
+  Scalar computeConditionalCDF(const Scalar x,
+                               const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q,
-      const NumericalPoint & y) const;
+  Scalar computeConditionalQuantile(const Scalar q,
+                                    const Point & y) const;
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 
   /** Phi accessors */
-  void setPhi(const NumericalMathFunction & phi);
-  NumericalMathFunction getPhi() const;
+  void setPhi(const Function & phi);
+  Function getPhi() const;
 
   /** Mass accessor */
-  NumericalScalar getMass();
+  Scalar getMass();
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -117,13 +117,13 @@ private:
   void computeMass() const;
 
   // SubSquare copula parameter
-  NumericalMathFunction phi_;
+  Function phi_;
 
   // Flag to tell if phi is zero
   Bool nullPhi_;
 
   // Mass
-  NumericalScalar mass_;
+  Scalar mass_;
 
 }; /* class SubSquareCopula */
 

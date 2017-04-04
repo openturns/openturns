@@ -44,8 +44,8 @@ public:
   JacobiFactory();
 
   /** Parameter constructor: (alpha, beta) is the order of the Jacobi polynomial, associated with the Beta(beta + 1, alpha + beta + 2, -1, 1) distribution in the ANALYSIS parameter set or to the Beta(alpha, beta, -1, 1) distribution in the PROBABILITY parameter set */
-  JacobiFactory(const NumericalScalar alpha,
-                const NumericalScalar beta,
+  JacobiFactory(const Scalar alpha,
+                const Scalar beta,
                 const ParameterSet parameterization = ANALYSIS);
 
   /** Virtual constructor */
@@ -56,10 +56,10 @@ public:
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** Alpha accessor */
-  NumericalScalar getAlpha() const;
+  Scalar getAlpha() const;
 
   /** Beta accessor */
-  NumericalScalar getBeta() const;
+  Scalar getBeta() const;
 
   /** String converter */
   String __repr__() const;
@@ -72,9 +72,9 @@ public:
 
 private:
   /* First parameter of the Jacobi polynomial */
-  NumericalScalar alpha_;
+  Scalar alpha_;
   /* Second parameter of the Jacobi polynomial */
-  NumericalScalar beta_;
+  Scalar beta_;
 
 } ; /* class JacobiFactory */
 

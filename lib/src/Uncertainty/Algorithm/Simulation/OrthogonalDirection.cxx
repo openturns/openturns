@@ -86,7 +86,7 @@ Matrix OrthogonalDirection::getUniformOrientationRealization() const
   for (UnsignedInteger indexDimension = 1; indexDimension < dimension_; indexDimension++)
   {
     Q(indexDimension, indexDimension) = 1.0;
-    NumericalPoint v(getUniformUnitVectorRealization(indexDimension + 1));
+    Point v(getUniformUnitVectorRealization(indexDimension + 1));
     for (UnsignedInteger index = 0; index <= indexDimension; ++index) column(index, 0) = v[index];
     Q = Q - ((2.0 * column) * (column.transpose() * Q));
   }
@@ -98,16 +98,16 @@ Matrix OrthogonalDirection::getUniformOrientationRealization() const
  * to the coefficients of the linear combination */
 void OrthogonalDirection::computePartialSample(const Indices & indices,
     const Matrix & Q,
-    NumericalSample & result) const
+    Sample & result) const
 {
   // Normalization factor of the linear combination
-  const NumericalScalar factor = 1.0 / sqrt(1.0 * size_);
+  const Scalar factor = 1.0 / sqrt(1.0 * size_);
   // We have 2^size linear combinations to generate
   const UnsignedInteger indexLinearCombinationMax = 1 << size_;
   // For each combination
   for (UnsignedInteger indexLinearCombination = 0; indexLinearCombination < indexLinearCombinationMax; ++indexLinearCombination)
   {
-    NumericalPoint direction(dimension_);
+    Point direction(dimension_);
     // The combination index is used as a mask to select the coefficients equal to 1.0 or to -1.0
     UnsignedInteger mask = indexLinearCombination;
     for (UnsignedInteger index = 0; index < size_; ++index)
@@ -115,7 +115,7 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
       // Which column of Q corresponds to the index position of indices?
       const UnsignedInteger column = indices[index];
       // Sign affected to this column
-      const NumericalScalar sign = 1.0 - 2.0 * (mask % 2);
+      const Scalar sign = 1.0 - 2.0 * (mask % 2);
       // Summation
       for (UnsignedInteger row = 0; row < dimension_; ++row) direction[row] += sign * Q(row, column);
       // Next bit of the mask
@@ -127,9 +127,9 @@ void OrthogonalDirection::computePartialSample(const Indices & indices,
 }
 
 /* Generate a set of directions */
-NumericalSample OrthogonalDirection::generate() const
+Sample OrthogonalDirection::generate() const
 {
-  NumericalSample result(0, dimension_);
+  Sample result(0, dimension_);
   Matrix Q(getUniformOrientationRealization());
   Indices indices(size_);
   // Start with the first lexicographic combination

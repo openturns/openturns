@@ -42,8 +42,8 @@ public:
   Gumbel();
 
   /** Parameters constructor */
-  Gumbel(const NumericalScalar alpha,
-         const NumericalScalar beta);
+  Gumbel(const Scalar alpha,
+         const Scalar beta);
 
   /** Comparison operator */
   Bool operator ==(const Gumbel & other) const;
@@ -63,51 +63,51 @@ public:
   virtual Gumbel * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the distribution */
   using ContinuousDistribution::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using ContinuousDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -115,12 +115,12 @@ public:
   /* Interface specific to Gumbel */
 
   /** Alpha accessor */
-  void setAlpha(const NumericalScalar alpha);
-  NumericalScalar getAlpha() const;
+  void setAlpha(const Scalar alpha);
+  Scalar getAlpha() const;
 
   /** Beta accessor */
-  void setBeta(const NumericalScalar beta);
-  NumericalScalar getBeta() const;
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -141,12 +141,12 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** The main parameter set of the distribution */
-  NumericalScalar alpha_;
-  NumericalScalar beta_;
+  Scalar alpha_;
+  Scalar beta_;
 
 
 }; /* class Gumbel */

@@ -32,7 +32,7 @@ X
 
 Returns
 -------
-recurrence_coefficients : list of :class:`NumericalPoint`
+recurrence_coefficients : list of :class:`Point`
     The list of recurrence coefficients that defined the orthogonal univariate
     polynomial from the very first univariate orthogonal polynomial
     :math:`P_0`.

@@ -133,7 +133,7 @@ algorithm : :class:`~openturns.OptimizationAlgorithm`
 
 Returns
 -------
-point : :class:`~openturns.NumericalPoint`
+point : :class:`~openturns.Point`
     Starting point of the optimization algorithm, declared in the physical
     space."
 

@@ -61,28 +61,28 @@ public:
   UnsignedInteger getSpatialDimension() const;
 
   /** Computation of the spectral density function */
-  virtual HermitianMatrix operator() (const NumericalScalar frequency) const;
+  virtual HermitianMatrix operator() (const Scalar frequency) const;
 
   /** Standard representative */
-  virtual NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
+  virtual Complex computeStandardRepresentative(const Scalar frequency) const;
 
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
                      const UnsignedInteger columnIndex = 0,
-		     const NumericalScalar minimumFrequency = ResourceMap::GetAsNumericalScalar("SpectralModel-DefaultMinimumFrequency"),
-		     const NumericalScalar maximumFrequency = ResourceMap::GetAsNumericalScalar("SpectralModel-DefaultMaximumFrequency"),
-		     const UnsignedInteger frequencyNumber = ResourceMap::GetAsUnsignedInteger("SpectralModel-DefaultFrequencyNumber"),
+                     const Scalar minimumFrequency = ResourceMap::GetAsScalar("SpectralModel-DefaultMinimumFrequency"),
+                     const Scalar maximumFrequency = ResourceMap::GetAsScalar("SpectralModel-DefaultMaximumFrequency"),
+                     const UnsignedInteger frequencyNumber = ResourceMap::GetAsUnsignedInteger("SpectralModel-DefaultFrequencyNumber"),
                      const Bool module = true) const;
 
   /** Amplitude accessor */
-  NumericalPoint getAmplitude() const;
+  Point getAmplitude() const;
 
-  void setAmplitude(const NumericalPoint & amplitude);
+  void setAmplitude(const Point & amplitude);
 
   /** Scale accessor */
-  NumericalPoint getScale() const;
+  Point getScale() const;
 
-  void setScale(const NumericalPoint & scale);
+  void setScale(const Point & scale);
 
   /** Spatial correlation accessor */
   CorrelationMatrix getSpatialCorrelation() const;

@@ -44,12 +44,12 @@ MeixnerDistributionFactory * MeixnerDistributionFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const NumericalSample & sample) const
+MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const Sample & sample) const
 {
   return buildAsMeixnerDistribution(sample).clone();
 }
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const NumericalPoint & parameters) const
+MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const Point & parameters) const
 {
   return buildAsMeixnerDistribution(parameters).clone();
 }
@@ -59,27 +59,27 @@ MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build() c
   return buildAsMeixnerDistribution().clone();
 }
 
-MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalSample & sample) const
+MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const Sample & sample) const
 {
   UnsignedInteger size = sample.getSize();
   if (size < 4) throw InvalidArgumentException(HERE) << "Error: cannot build a MeixnerDistribution distribution from a sample of size less than 4.";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a MeixnerDistribution distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar gamma1 = sample.computeSkewness()[0];
-  const NumericalScalar gamma2 = sample.computeKurtosis()[0];
-  const NumericalScalar upperBound = 3.0 + 2.0 * gamma1 * gamma1;
+  const Scalar gamma1 = sample.computeSkewness()[0];
+  const Scalar gamma2 = sample.computeKurtosis()[0];
+  const Scalar upperBound = 3.0 + 2.0 * gamma1 * gamma1;
   if (gamma2 <= upperBound) throw InvalidArgumentException(HERE) << "Error: cannot estimate a MeixnerDistribution distribution if the sample kurtosis=" << gamma2 << " is not greater than 2*skewness^2+3=" << upperBound;
-  const NumericalScalar m = sample.computeMean()[0];
-  const NumericalScalar s2 = sample.computeVariance()[0];
-  const NumericalScalar delta = 1.0 / (gamma2 - gamma1 * gamma1 - 3.0);
-  const NumericalScalar beta = ((0.0 < gamma1) - (gamma1 < 0.0)) * std::acos(2.0 - delta * (gamma2 - 3.0));
-  const NumericalScalar alpha = cbrt(s2 * (std::cos(beta) + 1.0));
-  const NumericalScalar mu = m - alpha * delta * std::tan(0.5 * beta);
+  const Scalar m = sample.computeMean()[0];
+  const Scalar s2 = sample.computeVariance()[0];
+  const Scalar delta = 1.0 / (gamma2 - gamma1 * gamma1 - 3.0);
+  const Scalar beta = ((0.0 < gamma1) - (gamma1 < 0.0)) * std::acos(2.0 - delta * (gamma2 - 3.0));
+  const Scalar alpha = cbrt(s2 * (std::cos(beta) + 1.0));
+  const Scalar mu = m - alpha * delta * std::tan(0.5 * beta);
   MeixnerDistribution result(alpha, beta, delta, mu);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const NumericalPoint & parameters) const
+MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const Point & parameters) const
 {
   try
   {

@@ -56,13 +56,13 @@ public:
                       const WeightedExperiment & weightedExperiment);
 
   /** Parameter constructor */
-  IntegrationStrategy(const NumericalSample & inputSample,
-                      const NumericalPoint & weights,
-                      const NumericalSample & outputSample);
+  IntegrationStrategy(const Sample & inputSample,
+                      const Point & weights,
+                      const Sample & outputSample);
 
   /** Parameter constructor */
-  IntegrationStrategy(const NumericalSample & inputSample,
-                      const NumericalSample & outputSample);
+  IntegrationStrategy(const Sample & inputSample,
+                      const Sample & outputSample);
 
   /** Virtual constructor */
   virtual IntegrationStrategy * clone() const;
@@ -71,7 +71,7 @@ public:
   String __repr__() const;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-  void computeCoefficients(const NumericalMathFunction & function,
+  void computeCoefficients(const Function & function,
                            const Basis & basis,
                            const Indices & indices,
                            const Indices & addedRanks,

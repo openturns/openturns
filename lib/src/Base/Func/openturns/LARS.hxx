@@ -46,18 +46,18 @@ public:
   virtual LARS * clone() const;
 
   /** Method to create new BasisSequence objects */
-  virtual BasisSequence build(const NumericalSample & x,
-                              const NumericalSample & y,
+  virtual BasisSequence build(const Sample & x,
+                              const Sample & y,
                               const Basis & psi,
                               const Indices & indices);
 #ifndef SWIG
-//   virtual BasisSequence build(const NumericalSample & y,
+//   virtual BasisSequence build(const Sample & y,
 //                               const Indices & indices,
 //                               const DesignProxy & proxy);
 
   virtual void initialize();
   virtual void updateBasis(LeastSquaresMethod & method,
-                            const NumericalSample & y);
+                           const Sample & y);
 #endif
   /** String converter */
   virtual String __repr__() const;
@@ -70,12 +70,12 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-  NumericalScalar relativeConvergence_;
+  Scalar relativeConvergence_;
 
-  NumericalPoint coefficients_;
-  NumericalPoint mu_;
-  NumericalScalar oldCoefficientsL1Norm_;
-  NumericalScalar coefficientsL1Norm_;
+  Point coefficients_;
+  Point mu_;
+  Scalar oldCoefficientsL1Norm_;
+  Scalar coefficientsL1Norm_;
 
   Indices predictors_;
   Indices inPredictors_;

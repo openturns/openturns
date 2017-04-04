@@ -38,7 +38,7 @@ class OT_API CorrelationMatrix
   CLASSNAME;
 
 public:
-  typedef Collection<NumericalScalar>       NumericalScalarCollection;
+  typedef Collection<Scalar>       ScalarCollection;
 
 
   /** Default constructor */
@@ -55,7 +55,7 @@ public:
 
   /** Constructor from external collection */
   CorrelationMatrix(const UnsignedInteger dim,
-                    const NumericalScalarCollection & elementsValues);
+                    const ScalarCollection & elementsValues);
 
   /** String converter */
   virtual String __repr__() const;

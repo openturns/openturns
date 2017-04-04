@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
 
     // Instanciate one distribution object
     UnsignedInteger dim = 1;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 2.0;
     CorrelationMatrix R = IdentityMatrix(dim);
     Normal distribution1(meanPoint, sigma, R);
@@ -50,15 +50,15 @@ int main(int argc, char *argv[])
     // Test for sampling
     UnsignedInteger size = 2000;
     UnsignedInteger nPoints = 20;
-    NumericalSample sample1(distribution1.getSample( size ));
-    NumericalSample sample2(distribution2.getSample( size ));
+    Sample sample1(distribution1.getSample( size ));
+    Sample sample2(distribution2.getSample( size ));
 
     // Construct empirical CDF for each sample
-    NumericalSample data1(nPoints, 2), data2(nPoints, 2);
-    NumericalPoint cursor1(2);
-    NumericalPoint cursor2(2);
-    NumericalScalar count1;
-    NumericalScalar count2;
+    Sample data1(nPoints, 2), data2(nPoints, 2);
+    Point cursor1(2);
+    Point cursor2(2);
+    Scalar count1;
+    Scalar count2;
 
     for(UnsignedInteger i = 0; i < nPoints; i++)
     {

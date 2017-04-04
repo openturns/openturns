@@ -103,14 +103,14 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
 }
 
 /* Sample generation */
-NumericalSample WeightedExperimentImplementation::generate() const
+Sample WeightedExperimentImplementation::generate() const
 {
-  NumericalPoint weights;
+  Point weights;
   return generateWithWeights(weights);
 }
 
 /* Sample generation with weights */
-NumericalSample WeightedExperimentImplementation::generateWithWeights(NumericalPoint & weights) const
+Sample WeightedExperimentImplementation::generateWithWeights(Point & weights) const
 {
   throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generateWithWeights()";
 }

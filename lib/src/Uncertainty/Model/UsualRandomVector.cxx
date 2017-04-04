@@ -61,21 +61,21 @@ UnsignedInteger UsualRandomVector::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint UsualRandomVector::getRealization() const
+Point UsualRandomVector::getRealization() const
 {
   return distribution_.getRealization();
 }
 
 /* Numerical sample accessor */
-NumericalSample UsualRandomVector::getSample(const UnsignedInteger size) const
+Sample UsualRandomVector::getSample(const UnsignedInteger size) const
 {
-  NumericalSample sample(distribution_.getSample(size));
+  Sample sample(distribution_.getSample(size));
   sample.setDescription(getDescription());
   return sample;
 }
 
 /* Mean accessor */
-NumericalPoint UsualRandomVector::getMean() const
+Point UsualRandomVector::getMean() const
 {
   return distribution_.getMean();
 }

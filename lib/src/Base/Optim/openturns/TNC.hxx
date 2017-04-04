@@ -48,14 +48,14 @@ public:
 
   /** Constructor with parameters */
   TNC(const OptimizationProblem & problem,
-      const NumericalPoint & scale,
-      const NumericalPoint & offset,
+      const Point & scale,
+      const Point & offset,
       const UnsignedInteger maxCGit,
-      const NumericalScalar eta,
-      const NumericalScalar stepmx,
-      const NumericalScalar accuracy,
-      const NumericalScalar fmin,
-      const NumericalScalar rescale);
+      const Scalar eta,
+      const Scalar stepmx,
+      const Scalar accuracy,
+      const Scalar fmin,
+      const Scalar rescale);
 
   /** Virtual constructor */
   virtual TNC * clone() const;
@@ -64,36 +64,36 @@ public:
   void run();
 
   /** Scale accessor */
-  NumericalPoint getScale() const;
-  void setScale(const NumericalPoint & scale);
+  Point getScale() const;
+  void setScale(const Point & scale);
 
   /** Offset accessor */
-  NumericalPoint getOffset() const;
-  void setOffset(const NumericalPoint & offset);
+  Point getOffset() const;
+  void setOffset(const Point & offset);
 
   /** MaxCGit accessor */
   UnsignedInteger getMaxCGit() const;
   void setMaxCGit(const UnsignedInteger maxCGit);
 
   /** Eta accessor */
-  NumericalScalar getEta() const;
-  void setEta(const NumericalScalar eta);
+  Scalar getEta() const;
+  void setEta(const Scalar eta);
 
   /** Stepmx accessor */
-  NumericalScalar getStepmx() const;
-  void setStepmx(const NumericalScalar stepmx);
+  Scalar getStepmx() const;
+  void setStepmx(const Scalar stepmx);
 
   /** Accuracy accessor */
-  NumericalScalar getAccuracy() const;
-  void setAccuracy(const NumericalScalar accuracy);
+  Scalar getAccuracy() const;
+  void setAccuracy(const Scalar accuracy);
 
   /** Fmin accessor */
-  NumericalScalar getFmin() const;
-  void setFmin(const NumericalScalar fmin);
+  Scalar getFmin() const;
+  void setFmin(const Scalar fmin);
 
   /** Rescale accessor */
-  NumericalScalar getRescale() const;
-  void setRescale(const NumericalScalar rescale);
+  Scalar getRescale() const;
+  void setRescale(const Scalar rescale);
 
   /** String converter */
   String __repr__() const;
@@ -114,18 +114,18 @@ private:
   static int ComputeObjectiveAndGradient(double *x, double *f, double *g, void *state);
 
   /** Specific parameters */
-  NumericalPoint scale_;
-  NumericalPoint offset_;
+  Point scale_;
+  Point offset_;
   UnsignedInteger maxCGit_;
-  NumericalScalar eta_;
-  NumericalScalar stepmx_;
-  NumericalScalar accuracy_;
-  NumericalScalar fmin_;
-  NumericalScalar rescale_;
+  Scalar eta_;
+  Scalar stepmx_;
+  Scalar accuracy_;
+  Scalar fmin_;
+  Scalar rescale_;
 
   /// temporary, used to track input/outputs
-  NumericalSample evaluationInputHistory_;
-  NumericalSample evaluationOutputHistory_;
+  Sample evaluationInputHistory_;
+  Sample evaluationOutputHistory_;
 
   void * p_nfeval_;
 

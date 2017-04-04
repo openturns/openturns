@@ -19,11 +19,11 @@
  *
  */
 #include "openturns/BoxCoxFactory.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/BoxCoxEvaluationImplementation.hxx"
+#include "openturns/BoxCoxEvaluation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/BoxCoxTransform.hxx"
@@ -32,7 +32,7 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -50,18 +50,18 @@ class BoxCoxSampleOptimization
 private:
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalSample sample_;
+  mutable Sample sample_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalScalar sumLog_;
+  mutable Scalar sumLog_;
 
   /** Optimization solver */
   mutable OptimizationAlgorithm solver_;
 
 public:
 
-  BoxCoxSampleOptimization(const NumericalSample & sample,
-                           const NumericalScalar sumLog)
+  BoxCoxSampleOptimization(const Sample & sample,
+                           const Scalar sumLog)
     : sample_(sample)
     , sumLog_(sumLog)
     , solver_(new Cobyla())
@@ -69,7 +69,7 @@ public:
     // Nothing to do
   }
 
-  BoxCoxSampleOptimization(const NumericalSample & sample,
+  BoxCoxSampleOptimization(const Sample & sample,
                            const OptimizationAlgorithm & solver)
     : sample_(sample)
     , sumLog_(0.0)
@@ -79,20 +79,20 @@ public:
   }
 
   /** Likelihood function */
-  NumericalPoint computeLogLikelihood(const NumericalPoint & lambda) const
+  Point computeLogLikelihood(const Point & lambda) const
   {
     const UnsignedInteger size = sample_.getSize();
     // Define BoxCox trannsformation for sample
-    BoxCoxEvaluationImplementation myBoxFunction(NumericalPoint(1, lambda[0]));
+    BoxCoxEvaluation myBoxFunction(Point(1, lambda[0]));
     // compute the mean of the transformed sample using the Box-Cox function
-    const NumericalSample outSample(myBoxFunction(sample_));
-    const NumericalScalar ratio = 1.0 - 1.0 / size;
-    const NumericalScalar sigma2 = outSample.computeVariance()[0];
-    NumericalScalar result = -0.5 * size * log(sigma2 * ratio);
+    const Sample outSample(myBoxFunction(sample_));
+    const Scalar ratio = 1.0 - 1.0 / size;
+    const Scalar sigma2 = outSample.computeVariance()[0];
+    Scalar result = -0.5 * size * log(sigma2 * ratio);
 
     // result is translated
     result += (lambda[0] - 1.0) * sumLog_;
-    return NumericalPoint(1, result);
+    return Point(1, result);
   }
 
   void computeSumLog() const
@@ -103,27 +103,27 @@ public:
     for (UnsignedInteger k = 0; k < size; ++k) sumLog_ += std::log(sample_[k][0]);
   }
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const
+  Function getLogLikelihoodFunction() const
   {
-    return bindMethod <BoxCoxSampleOptimization, NumericalPoint, NumericalPoint> ( *this, &BoxCoxSampleOptimization::computeLogLikelihood, 1, 1);
+    return bindMethod <BoxCoxSampleOptimization, Point, Point> ( *this, &BoxCoxSampleOptimization::computeLogLikelihood, 1, 1);
   }
 
-  NumericalPoint optimizeLogLikelihood() const
+  Point optimizeLogLikelihood() const
   {
     // Define optimization problem
     OptimizationProblem problem;
     problem.setObjective(getLogLikelihoodFunction());
     problem.setMinimization(false);
     solver_.setProblem(problem);
-    solver_.setStartingPoint(NumericalPoint(1, 1.0));
+    solver_.setStartingPoint(Point(1, 1.0));
     // run Optimization problem
     solver_.run();
     // Return optimization point
-    const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+    const Point optpoint(solver_.getResult().getOptimalPoint());
     return optpoint;
   }
 
-  NumericalScalar getSumLog() const
+  Scalar getSumLog() const
   {
     return sumLog_;
   }
@@ -137,8 +137,8 @@ class BoxCoxGLMOptimization
 private:
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalSample inputSample_;
-  mutable NumericalSample shiftedOutputSample_;
+  mutable Sample inputSample_;
+  mutable Sample shiftedOutputSample_;
   mutable CovarianceModel covarianceModel_;
   mutable BasisCollection basis_;
 
@@ -148,8 +148,8 @@ private:
 public:
 
 
-  BoxCoxGLMOptimization(const NumericalSample & inputSample,
-                        const NumericalSample & shiftedOutputSample,
+  BoxCoxGLMOptimization(const Sample & inputSample,
+                        const Sample & shiftedOutputSample,
                         const CovarianceModel & covarianceModel,
                         const BasisCollection & basis,
                         const OptimizationAlgorithm & solver)
@@ -163,41 +163,41 @@ public:
   }
 
   /** Likelihood function */
-  NumericalPoint computeLogLikelihood(const NumericalPoint & lambda) const
+  Point computeLogLikelihood(const Point & lambda) const
   {
     // Define BoxCox trannsformation for output sample
-    BoxCoxEvaluationImplementation myBoxFunction(lambda);
+    BoxCoxEvaluation myBoxFunction(lambda);
     // compute the mean of the transformed sample using the Box-Cox function
-    const NumericalSample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
+    const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
     // Use of GLM to estimate the best generalized linear model
     GeneralLinearModelAlgorithm algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
     algo.run();
     // Return the optimal log-likelihood
-    const NumericalScalar result = algo.getResult().getOptimalLogLikelihood();
-    return NumericalPoint(1, result);
+    const Scalar result = algo.getResult().getOptimalLogLikelihood();
+    return Point(1, result);
   }
 
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const
+  Function getLogLikelihoodFunction() const
   {
-    return bindMethod <BoxCoxGLMOptimization, NumericalPoint, NumericalPoint> ( *this, &BoxCoxGLMOptimization::computeLogLikelihood, 1, 1);
+    return bindMethod <BoxCoxGLMOptimization, Point, Point> ( *this, &BoxCoxGLMOptimization::computeLogLikelihood, 1, 1);
   }
 
-  NumericalPoint optimizeLogLikelihood() const
+  Point optimizeLogLikelihood() const
   {
     // Define optimization problem
     OptimizationProblem problem;
-    NumericalMathFunction objectiveFunction(getLogLikelihoodFunction());
+    Function objectiveFunction(getLogLikelihoodFunction());
     objectiveFunction.enableCache();
     objectiveFunction.enableHistory();
     problem.setObjective(objectiveFunction);
     problem.setMinimization(false);
     solver_.setProblem(problem);
-    solver_.setStartingPoint(NumericalPoint(1, 1.0));
+    solver_.setStartingPoint(Point(1, 1.0));
     // run Optimization problem
     solver_.run();
     // Return optimization point
-    const NumericalPoint optpoint(solver_.getResult().getOptimalPoint());
+    const Point optpoint(solver_.getResult().getOptimalPoint());
     return optpoint;
   }
 };
@@ -208,9 +208,9 @@ BoxCoxFactory::BoxCoxFactory()
   : PersistentObject()
   , solver_(new Cobyla())
 {
-  const NumericalScalar rhoBeg = ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoBeg");
+  const Scalar rhoBeg = ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoBeg");
   dynamic_cast<Cobyla*>(solver_.getImplementation().get())->setRhoBeg(rhoBeg);
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("BoxCoxFactory-DefaultRhoEnd"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoEnd"));
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun"));
 }
 
@@ -251,32 +251,32 @@ BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries) const
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
-                                     const NumericalPoint & shift) const
+                                     const Point & shift) const
 {
   return build(timeSeries.getSample(), shift);
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
-                                     const NumericalPoint & shift,
+                                     const Point & shift,
                                      Graph & graph) const
 {
   return build(timeSeries.getSample(), shift, graph);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample) const
+BoxCoxTransform BoxCoxFactory::build(const Sample & sample) const
 {
-  return build(sample, NumericalPoint(sample.getDimension()));
+  return build(sample, Point(sample.getDimension()));
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
-                                     const NumericalPoint & shift) const
+BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
+                                     const Point & shift) const
 {
   Graph tmp;
   return build(sample, shift, tmp);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
-                                     const NumericalPoint & shift,
+BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
+                                     const Point & shift,
                                      Graph & graph) const
 {
   // Check the input size
@@ -290,19 +290,19 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
     throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the sample dimension=" << dimension;
 
   // Shape parameters of the transformation
-  NumericalPoint lambda(dimension);
+  Point lambda(dimension);
   // Sum of the log-data
-  NumericalPoint sumLog(dimension);
+  Point sumLog(dimension);
 
   // Keep the shifted marginal samples
-  Collection< NumericalSample > marginalSamples(dimension);
+  Collection< Sample > marginalSamples(dimension);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // Extract the marginal sample and pply the shift
     marginalSamples[d] = sample.getMarginal(d);
-    marginalSamples[d] += NumericalPoint(1, shift[d]);
+    marginalSamples[d] += Point(1, shift[d]);
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], solver_);
-    const NumericalPoint optpoint = boxCoxOptimization.optimizeLogLikelihood();
+    const Point optpoint = boxCoxOptimization.optimizeLogLikelihood();
     // get the sum of the log-data
     sumLog[d] = boxCoxOptimization.getSumLog();
     // Store the result
@@ -310,30 +310,30 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   }
   // Graphical inspection
   graph = Graph("Box-Cox likelihood", "lambda", "log-likelihood", true, "topright");
-  const NumericalScalar lambdaMax = *std::max_element(lambda.begin(), lambda.end());
-  const NumericalScalar lambdaMin = *std::min_element(lambda.begin(), lambda.end());
-  const NumericalScalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));
-  const NumericalScalar xMax = std::max(0.0, 0.002 * round(1000.0 * lambdaMax));
+  const Scalar lambdaMax = *std::max_element(lambda.begin(), lambda.end());
+  const Scalar lambdaMin = *std::min_element(lambda.begin(), lambda.end());
+  const Scalar xMin = std::min(0.0, 0.002 * round(1000.0 * lambdaMin));
+  const Scalar xMax = std::max(0.0, 0.002 * round(1000.0 * lambdaMax));
   const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
-  NumericalSample lambdaValues(npts, 1);
+  Sample lambdaValues(npts, 1);
   for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
-    NumericalSample logLikelihoodValues(npts, 1);
+    Sample logLikelihoodValues(npts, 1);
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], sumLog[d]);
     for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = boxCoxOptimization.computeLogLikelihood(lambdaValues[i])[0];
     Curve curve(lambdaValues, logLikelihoodValues);
     curve.setColor(Curve::ConvertFromHSV((360.0 * d) / dimension, 1.0, 1.0));
     graph.add(curve);
-    NumericalPoint optimum(2);
+    Point optimum(2);
     optimum[0] = lambda[d];
     optimum[1] = boxCoxOptimization.computeLogLikelihood(optimum)[0];
-    Cloud cloud(NumericalSample(1, optimum));
+    Cloud cloud(Sample(1, optimum));
     cloud.setColor(curve.getColor());
     cloud.setPointStyle("circle");
     cloud.setLegend(String(OSS() << "lambda=" << lambda[d]));
     graph.add(cloud);
-    NumericalPoint bb(graph.getBoundingBox());
+    Point bb(graph.getBoundingBox());
     bb[3] += 0.1 * (bb[3] - bb[2]);
     graph.setBoundingBox(bb);
   }
@@ -341,8 +341,8 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & sample,
   return BoxCoxTransform(lambda, shift);
 }
 
-void BoxCoxFactory::checkGLMData(const NumericalSample & inputSample,
-                                 const NumericalSample & outputSample,
+void BoxCoxFactory::checkGLMData(const Sample & inputSample,
+                                 const Sample & outputSample,
                                  const CovarianceModel & covarianceModel,
                                  const BasisCollection & basis)
 {
@@ -370,32 +370,32 @@ void BoxCoxFactory::checkGLMData(const NumericalSample & inputSample,
 
 
 /** Build the factory from data by estimating the best generalized linear model */
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
-                                     const NumericalSample & outputSample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
+                                     const Sample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const Basis & basis,
-                                     const NumericalPoint & shift,
+                                     const Point & shift,
                                      GeneralLinearModelResult & result)
 {
   BasisCollection basisColl(outputSample.getDimension(), basis);
   return build(inputSample, outputSample, covarianceModel, basisColl, shift, result);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
-                                     const NumericalSample & outputSample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
+                                     const Sample & outputSample,
                                      const CovarianceModel & covarianceModel,
-                                     const NumericalPoint & shift,
+                                     const Point & shift,
                                      GeneralLinearModelResult & result)
 {
   BasisCollection basis;
   return build(inputSample, outputSample, covarianceModel, basis, shift, result);
 }
 
-BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
-                                     const NumericalSample & outputSample,
+BoxCoxTransform BoxCoxFactory::build(const Sample & inputSample,
+                                     const Sample & outputSample,
                                      const CovarianceModel & covarianceModel,
                                      const BasisCollection & basis,
-                                     const NumericalPoint & shift,
+                                     const Point & shift,
                                      GeneralLinearModelResult & result)
 {
   checkGLMData(inputSample, outputSample, covarianceModel, basis);
@@ -406,16 +406,16 @@ BoxCoxTransform BoxCoxFactory::build(const NumericalSample & inputSample,
     throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the output sample dimension=" << dimension;
 
   // Keep the shifted marginal samples
-  NumericalSample shiftedSample(outputSample);
+  Sample shiftedSample(outputSample);
   shiftedSample += shift;
 
   // optimization process
   BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis, solver_);
-  const NumericalPoint lambda = boxCoxOptimization.optimizeLogLikelihood();
+  const Point lambda = boxCoxOptimization.optimizeLogLikelihood();
   // Define BoxCox trannsformation for output sample
-  BoxCoxEvaluationImplementation myBoxFunction(lambda, shift);
+  BoxCoxEvaluation myBoxFunction(lambda, shift);
   // compute the transformed output sample using the Box-Cox function
-  const NumericalSample transformedOutputSample = myBoxFunction(outputSample);
+  const Sample transformedOutputSample = myBoxFunction(outputSample);
   // Build the GeneralLinearModelResult
   // Use of GLM to estimate the best generalized linear model
   GeneralLinearModelAlgorithm algo(inputSample, transformedOutputSample, covarianceModel, basis);

@@ -26,7 +26,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.NumericalPointWithDescription`
+param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
 Returns

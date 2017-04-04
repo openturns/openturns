@@ -24,8 +24,8 @@
 #define OPENTURNS_HISTORYSTRATEGYIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -50,14 +50,14 @@ public:
   virtual HistoryStrategyImplementation * clone() const;
 
   /** Store the point according to the strategy */
-  virtual void store(const NumericalPoint & point);
-  virtual void store(const NumericalSample & sample);
+  virtual void store(const Point & point);
+  virtual void store(const Sample & sample);
 
   /** Clear the history storage */
   void clear();
 
   /** History sample accessor */
-  virtual NumericalSample getSample() const;
+  virtual Sample getSample() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -70,7 +70,7 @@ public:
 
 protected:
   /** Data container */
-  NumericalSample sample_;
+  Sample sample_;
 
   /** Initialization flag */
   Bool isInitialized_;

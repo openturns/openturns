@@ -51,21 +51,21 @@ try:
     R = CorrelationMatrix(dimension)
     R[0, 1] = 0.8
     distribution = Normal(
-        NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R)
+        Point(dimension, 3.0), Point(dimension, 2.0), R)
     size = 100
     sample2D = distribution.getSample(size)
-    firstSample = NumericalSample(size, 1)
-    secondSample = NumericalSample(size, 1)
+    firstSample = Sample(size, 1)
+    secondSample = Sample(size, 1)
     for i in range(size):
-        firstSample[i] = NumericalPoint(1, sample2D[i, 0])
-        secondSample[i] = NumericalPoint(1, sample2D[i, 1])
+        firstSample[i] = Point(1, sample2D[i, 0])
+        secondSample[i] = Point(1, sample2D[i, 1])
 
     sampleSampleClouds = VisualTest.DrawClouds(
-        sample2D, Normal(NumericalPoint(dimension, 2.0), NumericalPoint(dimension, 3.0), R).getSample(size // 2))
+        sample2D, Normal(Point(dimension, 2.0), Point(dimension, 3.0), R).getSample(size // 2))
     print("sampleSampleClouds = ", sampleSampleClouds)
 
     sampleDistributionClouds = VisualTest.DrawClouds(
-        sample2D, Normal(NumericalPoint(dimension, 2.5), NumericalPoint(dimension, 1.0), R))
+        sample2D, Normal(Point(dimension, 2.5), Point(dimension, 1.0), R))
     print("sampleDistributionClouds = ", sampleDistributionClouds)
 
     # LinearModel tests
@@ -73,14 +73,14 @@ try:
     R = CorrelationMatrix(dimension)
     R[0, 1] = 0.8
     distribution = Normal(
-        NumericalPoint(dimension, 3.0), NumericalPoint(dimension, 2.0), R)
+        Point(dimension, 3.0), Point(dimension, 2.0), R)
     size = 100
     sample2D = distribution.getSample(size)
-    firstSample = NumericalSample(size, 1)
-    secondSample = NumericalSample(size, 1)
+    firstSample = Sample(size, 1)
+    secondSample = Sample(size, 1)
     for i in range(size):
-        firstSample[i] = NumericalPoint(1, sample2D[i, 0])
-        secondSample[i] = NumericalPoint(1, sample2D[i, 1])
+        firstSample[i] = Point(1, sample2D[i, 0])
+        secondSample[i] = Point(1, sample2D[i, 1])
 
     lmtest = LinearModelFactory().build(firstSample, secondSample)
     drawLinearModelVTest = VisualTest.DrawLinearModel(
@@ -107,7 +107,7 @@ try:
     formula[0] = expression
     outputVar = Description(1)
     outputVar[0] = "y"
-    model = NumericalMathFunction(inputVar, outputVar, formula)
+    model = Function(inputVar, outputVar, formula)
     outputSample = model(inputSample)
     cobwebValue = VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, "red", False)

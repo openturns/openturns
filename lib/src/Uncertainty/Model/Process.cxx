@@ -134,7 +134,7 @@ Field Process::getRealization() const
 }
 
 /* Continuous realization accessor */
-NumericalMathFunction Process::getContinuousRealization() const
+Function Process::getContinuousRealization() const
 {
   return getImplementation()->getContinuousRealization();
 }

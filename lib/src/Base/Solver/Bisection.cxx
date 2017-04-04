@@ -35,9 +35,9 @@ CLASSNAMEINIT(Bisection);
 static const Factory<Bisection> Factory_Bisection;
 
 /* Parameter constructor */
-Bisection::Bisection(const NumericalScalar absoluteError,
-                     const NumericalScalar relativeError,
-                     const NumericalScalar residualError,
+Bisection::Bisection(const Scalar absoluteError,
+                     const Scalar relativeError,
+                     const Scalar residualError,
                      const UnsignedInteger maximumFunctionEvaluation)
   : SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation)
 {
@@ -60,34 +60,34 @@ String Bisection::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the bisection method */
-NumericalScalar Bisection::solve(const NumericalMathFunction & function,
-                                 const NumericalScalar value,
-                                 const NumericalScalar infPoint,
-                                 const NumericalScalar supPoint,
-                                 const NumericalScalar infValue,
-                                 const NumericalScalar supValue) const
+Scalar Bisection::solve(const Function & function,
+                        const Scalar value,
+                        const Scalar infPoint,
+                        const Scalar supPoint,
+                        const Scalar infValue,
+                        const Scalar supValue) const
 {
   if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the bisection method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
   /* We transform function(x) = value into function(x) - value = 0 */
-  NumericalScalar a = infPoint;
-  NumericalScalar fA = infValue - value;
+  Scalar a = infPoint;
+  Scalar fA = infValue - value;
   if (std::abs(fA) <= getResidualError()) return a;
-  NumericalScalar b = supPoint;
-  NumericalScalar fB = supValue - value;
+  Scalar b = supPoint;
+  Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (fA * fB > 0.0) throw InternalException(HERE) << "Error: bisection method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
-  NumericalScalar c = a;
-  NumericalScalar fC = fA;
+  if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: bisection method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  Scalar c = a;
+  Scalar fC = fA;
   // Main loop
   for (;;)
   {
     // Current error on the root
-    const NumericalScalar error = 2.0 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
+    const Scalar error = 2.0 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
     // Mid-point step
-    const NumericalScalar delta = 0.5 * (b - a);
+    const Scalar delta = 0.5 * (b - a);
     // If the current approximation of the root is good enough, return it
     if ((std::abs(delta) <= error) || (std::abs(fC) <= getResidualError())) break;
     // c is now the mid-point
@@ -95,7 +95,7 @@ NumericalScalar Bisection::solve(const NumericalMathFunction & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fC = function(NumericalPoint(1, c))[0] - value;
+    fC = function(Point(1, c))[0] - value;
     ++usedFunctionEvaluation;
     // If the function takes a value at middle on the same side of value that at left
     if (fC * fA > 0.0)

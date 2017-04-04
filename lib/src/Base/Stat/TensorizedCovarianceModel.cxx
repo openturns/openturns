@@ -35,7 +35,7 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const UnsignedInteger dimen
   : CovarianceModelImplementation(1)
   , collection_(dimension, AbsoluteExponential(1))
 {
-  setAmplitude(NumericalPoint(dimension, 1));
+  setAmplitude(Point(dimension, 1));
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
@@ -52,7 +52,7 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
 
 /** Parameters constructor */
 TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollection & collection,
-    const NumericalPoint & scale)
+    const Point & scale)
   : CovarianceModelImplementation()
 {
   setCollection(collection);
@@ -68,7 +68,7 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   // Check if the given models have the same spatial dimension
   const UnsignedInteger size = collection.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
-  NumericalPoint amplitude(0);
+  Point amplitude(0);
   spatialDimension_ = collection[0].getSpatialDimension();
   // Get dimension: should be the same for all elements
   dimension_ = 0;
@@ -81,7 +81,7 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
 
     const UnsignedInteger localDimension = collection[i].getDimension();
     dimension_ += localDimension;
-    const NumericalPoint localAmplitude(collection[i].getAmplitude());
+    const Point localAmplitude(collection[i].getAmplitude());
     amplitude.add(localAmplitude);
   }
   // Set collection
@@ -102,8 +102,8 @@ TensorizedCovarianceModel * TensorizedCovarianceModel::clone() const
 }
 
 /* Computation of the covariance density function */
-CovarianceMatrix TensorizedCovarianceModel::operator() (const NumericalPoint & s,
-    const NumericalPoint & t) const
+CovarianceMatrix TensorizedCovarianceModel::operator() (const Point & s,
+    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
@@ -127,8 +127,8 @@ CovarianceMatrix TensorizedCovarianceModel::operator() (const NumericalPoint & s
 }
 
 /* Gradient */
-Matrix TensorizedCovarianceModel::partialGradient(const NumericalPoint & s,
-    const NumericalPoint & t) const
+Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
+    const Point & t) const
 {
   // Gradient definition results from definition of model
   // We should pay attention to the scaling factor scale_
@@ -169,13 +169,13 @@ Matrix TensorizedCovarianceModel::partialGradient(const NumericalPoint & s,
 }
 
 /* Parameters accessor */
-void TensorizedCovarianceModel::setFullParameter(const NumericalPoint & parameter)
+void TensorizedCovarianceModel::setFullParameter(const Point & parameter)
 {
   const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: parameter dimension should be " << getParameter().getDimension()
         << " (got " << parameter.getDimension() << ")";
-  NumericalPoint scale(spatialDimension_);
-  NumericalPoint amplitude(dimension_);
+  Point scale(spatialDimension_);
+  Point amplitude(dimension_);
   for (UnsignedInteger i = 0; i < scale_.getDimension(); ++i) scale[i] = parameter[i];
   for (UnsignedInteger i = 0; i < amplitude_.getDimension(); ++i) amplitude[i] = parameter[i + spatialDimension_];
   // set parameters
@@ -183,10 +183,10 @@ void TensorizedCovarianceModel::setFullParameter(const NumericalPoint & paramete
   setAmplitude(amplitude);
 }
 
-NumericalPoint TensorizedCovarianceModel::getFullParameter() const
+Point TensorizedCovarianceModel::getFullParameter() const
 {
   // Same convention : scale then amplitude parameters
-  NumericalPoint result(0);
+  Point result(0);
   result.add(scale_);
   result.add(amplitude_);
   return result;
@@ -200,17 +200,17 @@ Description TensorizedCovarianceModel::getFullParameterDescription() const
   return description;
 }
 
-void TensorizedCovarianceModel::setScale(const NumericalPoint & scale)
+void TensorizedCovarianceModel::setScale(const Point & scale)
 {
   if (scale.getDimension() != getSpatialDimension())
     throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setScale, incompatible dimension of the scale vector. Expected scale of size = " << spatialDimension_
                                          << ", vector size = " << scale.getDimension();
 
-  NumericalPoint scale0(collection_[0].getScale());
+  Point scale0(collection_[0].getScale());
   collection_[0].setScale(scale);
   for (UnsignedInteger i = 1; i < collection_.getSize(); ++i)
   {
-    NumericalPoint newScale(collection_[i].getScale());
+    Point newScale(collection_[i].getScale());
     for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
       newScale[j] *= scale[j] / scale0[j];
     collection_[i].setScale(newScale);
@@ -220,7 +220,7 @@ void TensorizedCovarianceModel::setScale(const NumericalPoint & scale)
 }
 
 /** Amplitude accessor */
-void TensorizedCovarianceModel::setAmplitude(const NumericalPoint & amplitude)
+void TensorizedCovarianceModel::setAmplitude(const Point & amplitude)
 {
   if (amplitude.getDimension() != getDimension())
     throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setAmplitude, incompatible dimension of the amplitude vector. Expected amplitude of size = " << dimension_
@@ -230,7 +230,7 @@ void TensorizedCovarianceModel::setAmplitude(const NumericalPoint & amplitude)
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
     const UnsignedInteger localDimension = collection_[i].getDimension();
-    NumericalPoint localAmplitude(collection_[i].getAmplitude());
+    Point localAmplitude(collection_[i].getAmplitude());
     for (UnsignedInteger j = 0; j < localDimension; ++j)
     {
       localAmplitude[j] = amplitude[index];

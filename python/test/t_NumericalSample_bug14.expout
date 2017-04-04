@@ -1,8 +1,0 @@
-sample1= class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=1 data=[[2],[2],[2],[2],[2]]
-sample2= class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=1 data=[[3],[2],[2],[2],[2]]
-sample1= class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=1 data=[[2],[-5],[2],[2],[2]]
-sample2= class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=1 data=[[3],[2],[2],[2],[2]]
-sample1= class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=5 dimension=1 data=[[2],[-5],[2],[6],[2]]
-sample1[2][0]= 2.0
-sample1[2, 0]= 2.0
-set item failed on purpose

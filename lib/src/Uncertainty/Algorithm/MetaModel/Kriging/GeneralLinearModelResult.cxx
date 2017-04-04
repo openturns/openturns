@@ -26,6 +26,7 @@
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,16 +41,16 @@ GeneralLinearModelResult::GeneralLinearModelResult()
 }
 
 /* Constructor with parameters & Cholesky factor */
-GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
-    const NumericalMathFunction & metaModel,
-    const NumericalPoint & residuals,
-    const NumericalPoint & relativeErrors,
+GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
+    const Sample & outputSample,
+    const Function & metaModel,
+    const Point & residuals,
+    const Point & relativeErrors,
     const BasisCollection & basis,
-    const NumericalPointCollection & trendCoefficients,
+    const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
-    const NumericalScalar optimalLogLikelihood)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+    const Scalar optimalLogLikelihood)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
   , inputTransformation_()
@@ -69,18 +70,18 @@ GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & input
 
 
 /* Constructor with parameters & Cholesky factor */
-GeneralLinearModelResult::GeneralLinearModelResult(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
-    const NumericalMathFunction & metaModel,
-    const NumericalPoint & residuals,
-    const NumericalPoint & relativeErrors,
+GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
+    const Sample & outputSample,
+    const Function & metaModel,
+    const Point & residuals,
+    const Point & relativeErrors,
     const BasisCollection & basis,
-    const NumericalPointCollection & trendCoefficients,
+    const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
-    const NumericalScalar optimalLogLikelihood,
+    const Scalar optimalLogLikelihood,
     const TriangularMatrix & covarianceCholeskyFactor,
     const HMatrix & covarianceHMatrix)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , inputTransformedData_(inputSample)
   , inputTransformation_()
@@ -142,7 +143,7 @@ GeneralLinearModelResult::BasisCollection GeneralLinearModelResult::getBasisColl
 }
 
 /* Trend coefficients accessor */
-GeneralLinearModelResult::NumericalPointCollection GeneralLinearModelResult::getTrendCoefficients() const
+GeneralLinearModelResult::PointCollection GeneralLinearModelResult::getTrendCoefficients() const
 {
   return beta_;
 }
@@ -153,12 +154,12 @@ CovarianceModel GeneralLinearModelResult::getCovarianceModel() const
   return covarianceModel_;
 }
 
-NumericalMathFunction GeneralLinearModelResult::getTransformation() const
+Function GeneralLinearModelResult::getTransformation() const
 {
   return inputTransformation_;
 }
 
-void GeneralLinearModelResult::setTransformation(const NumericalMathFunction & transformation)
+void GeneralLinearModelResult::setTransformation(const Function & transformation)
 {
   if (transformation.getInputDimension() != inputData_.getDimension())
     throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputData_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();
@@ -169,7 +170,7 @@ void GeneralLinearModelResult::setTransformation(const NumericalMathFunction & t
 }
 
 /* Optimal log-likelihood accessor */
-NumericalScalar GeneralLinearModelResult::getOptimalLogLikelihood() const
+Scalar GeneralLinearModelResult::getOptimalLogLikelihood() const
 {
   return optimalLogLikelihood_;
 }
@@ -182,9 +183,9 @@ Process GeneralLinearModelResult::getNoise() const
   {
     // Here it is assumed that the covariance model parameters are the
     // marginal amplitude.
-    const NumericalPoint sigma(covarianceModel_.getParameter());
+    const Point sigma(covarianceModel_.getParameter());
     const CorrelationMatrix R(covarianceModel_.getSpatialCorrelation());
-    const Normal dist(NumericalPoint(sigma.getSize(), 0.0), sigma, R);
+    const Normal dist(Point(sigma.getSize(), 0.0), sigma, R);
     WhiteNoise noise(dist);
     return noise;
   }
@@ -206,7 +207,7 @@ HMatrix GeneralLinearModelResult::getHMatCholeskyFactor() const
 }
 
 // Return input sample transformed
-NumericalSample GeneralLinearModelResult::getInputTransformedSample() const
+Sample GeneralLinearModelResult::getInputTransformedSample() const
 {
   return inputTransformedData_;
 }

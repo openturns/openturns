@@ -20,7 +20,7 @@ namespace OT {
     ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
 
     if (PySequence_Fast_GET_SIZE( newPyObj.get() ) != 4) 
-      throw InvalidArgumentException(HERE) << "Sequence passed as argument is not convertible to a TestResult. Expected sequence (String, Bool, NumericalScalar, NumericalScalar)";
+      throw InvalidArgumentException(HERE) << "Sequence passed as argument is not convertible to a TestResult. Expected sequence (String, Bool, Scalar, Scalar)";
 
     PyObject * item_0 = PySequence_Fast_GET_ITEM( newPyObj.get(), 0 ); check<_PyString_>( item_0 );
     PyObject * item_1 = PySequence_Fast_GET_ITEM( newPyObj.get(), 1 ); check<_PyBool_>( item_1 );
@@ -29,8 +29,8 @@ namespace OT {
 
     return OT::TestResult( convert<_PyString_,String>( item_0 ),
                                               convert<_PyBool_,Bool>( item_1 ),
-                                              convert<_PyFloat_,NumericalScalar>( item_2 ),
-                                              convert<_PyFloat_,NumericalScalar>( item_3 ) );
+                                              convert<_PyFloat_,Scalar>( item_2 ),
+                                              convert<_PyFloat_,Scalar>( item_3 ) );
   }
 
 

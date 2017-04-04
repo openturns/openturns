@@ -2,28 +2,28 @@ Distribution  class=Poisson name=Poisson dimension=1 lambda=10
 Distribution  Poisson(lambda = 10)
 Elliptical =  False
 Continuous =  False
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[14]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[10]  last= class=NumericalPoint name=Unnamed dimension=1 values=[10]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[9.9873]
+oneRealization= class=Point name=Unnamed dimension=1 values=[14]
+oneSample first= class=Point name=Unnamed dimension=1 values=[10]  last= class=Point name=Unnamed dimension=1 values=[10]
+mean= class=Point name=Unnamed dimension=1 values=[9.9873]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.93333]
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[12]
+Point=  class=Point name=Unnamed dimension=1 values=[12]
 log pdf=-2.356193
 pdf     =0.094780
 pdf (FD)=0.094780
 cdf=0.791556
 ccdf=0.208444
-pdf gradient     = class=NumericalPoint name=Unnamed dimension=1 values=[0.0189561]
-pdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[0.0189561]
-cdf gradient     = class=NumericalPoint name=Unnamed dimension=1 values=[-0.0947803]
-cdf gradient (FD)= class=NumericalPoint name=Unnamed dimension=1 values=[-0.0947803]
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[15]
+pdf gradient     = class=Point name=Unnamed dimension=1 values=[0.0189561]
+pdf gradient (FD)= class=Point name=Unnamed dimension=1 values=[0.0189561]
+cdf gradient     = class=Point name=Unnamed dimension=1 values=[-0.0947803]
+cdf gradient (FD)= class=Point name=Unnamed dimension=1 values=[-0.0947803]
+quantile= class=Point name=Unnamed dimension=1 values=[15]
 cdf(quantile)=0.951260
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[10]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[3.16228]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[0.316228]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[3.1]
+mean= class=Point name=Unnamed dimension=1 values=[10]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.16228]
+skewness= class=Point name=Unnamed dimension=1 values=[0.316228]
+kurtosis= class=Point name=Unnamed dimension=1 values=[3.1]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[10]
-parameters= [class=NumericalPointWithDescription name=X0 dimension=1 description=[lambda] values=[10]]
+parameters= [class=PointWithDescription name=X0 dimension=1 description=[lambda] values=[10]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [10]
 standard moment n= 2  value= [110]

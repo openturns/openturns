@@ -23,10 +23,10 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionEvaluationImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionGradientImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionHessianImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
+#include "openturns/ProductUniVariateFunctionEvaluation.hxx"
+#include "openturns/ProductUniVariateFunctionGradient.hxx"
+#include "openturns/ProductUniVariateFunctionHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,8 +40,8 @@ CLASSNAMEINIT(TensorizedUniVariateFunctionFactory);
 
 static const Factory<TensorizedUniVariateFunctionFactory> Factory_TensorizedUniVariateFunctionFactory;
 
-typedef Collection<NumericalPoint> NumericalPointCollection;
-typedef ProductUniVariateFunctionEvaluationImplementation::UniVariateFunctionCollection UniVariateFunctionCollection;
+typedef Collection<Point> PointCollection;
+typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVariateFunctionCollection;
 
 /* Default constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
@@ -109,8 +109,8 @@ TensorizedUniVariateFunctionFactory::FunctionFamilyCollection TensorizedUniVaria
 }
 
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index) const
 {
   // Compute the multi-indices using the EnumerateFunction
   const Indices indices(phi_(index));
@@ -121,10 +121,10 @@ NumericalMathFunction TensorizedUniVariateFunctionFactory::build(const UnsignedI
   {
     functions[i] = coll_[i].build(indices[i]);
   }
-  const Pointer<ProductUniVariateFunctionEvaluationImplementation> p_evaluation(ProductUniVariateFunctionEvaluationImplementation(functions).clone());
-  return NumericalMathFunctionImplementation(p_evaluation,
-         ProductUniVariateFunctionGradientImplementation(p_evaluation).clone(),
-         ProductUniVariateFunctionHessianImplementation(p_evaluation).clone());
+  const Pointer<ProductUniVariateFunctionEvaluation> p_evaluation(ProductUniVariateFunctionEvaluation(functions).clone());
+  return FunctionImplementation(p_evaluation,
+                                ProductUniVariateFunctionGradient(p_evaluation).clone(),
+                                ProductUniVariateFunctionHessian(p_evaluation).clone());
 }
 
 

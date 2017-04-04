@@ -59,7 +59,7 @@ OT_HistoryStrategy_doc
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     Numerical sample which is the collection of points stored by the history
     strategy."
 %enddef

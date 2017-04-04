@@ -40,19 +40,19 @@ int main(int argc, char *argv[])
     std::cout << "Test using NLOpt" << std::endl;
     std::cout << "================" << std::endl;
     // Calibration of default optimizer
-    ResourceMap::SetAsNumericalScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5);
-    ResourceMap::SetAsNumericalScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
+    ResourceMap::SetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5);
+    ResourceMap::SetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
     // Data & estimation
     const UnsignedInteger spatialDimension = 1;
-    NumericalSample X = Normal(0, 1).getSample(100);
+    Sample X = Normal(0, 1).getSample(100);
     X = X.sortAccordingToAComponent(0);
     SquaredExponential covarianceModel(1);
     Description inDescription(1);
     inDescription[0] = "x";
     Description formula(1);
     formula[0] = "x - 0.6 * cos(x/3)";
-    NumericalMathFunction model(inDescription, formula);
-    const NumericalSample Y = model(X);
+    SymbolicFunction model(inDescription, formula);
+    const Sample Y = model(X);
     const Basis basis = QuadraticBasisFactory(spatialDimension).build();
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis, true);
     NLopt solver("LN_NELDERMEAD");
@@ -61,11 +61,11 @@ int main(int argc, char *argv[])
 
     // perform an evaluation
     GeneralLinearModelResult result = algo.getResult();
-    const NumericalMathFunction metaModel = result.getMetaModel();
+    const Function metaModel = result.getMetaModel();
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
-    const NumericalSample residual = metaModel(X) - Y;
-    assert_almost_equal(residual.computeCenteredMoment(2), NumericalPoint(1, 1.06e-05), 1e-5, 1e-5);
-    NumericalPoint parameter(2);
+    const Sample residual = metaModel(X) - Y;
+    assert_almost_equal(residual.computeCenteredMoment(2), Point(1, 1.06e-05), 1e-5, 1e-5);
+    Point parameter(2);
     parameter[0] = 0.702138;
     parameter[1] = 0.00137;
     assert_almost_equal(conditionalCovariance.getParameter(), parameter, 2e-3, 1e-3);

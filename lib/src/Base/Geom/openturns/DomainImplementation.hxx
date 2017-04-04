@@ -22,7 +22,7 @@
 #define OPENTURNS_DOMAINIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,16 +52,16 @@ public:
   Bool isNumericallyEmpty() const;
 
   /** Check if the closed domain contains a given point */
-  virtual Bool contains(const NumericalPoint & point) const;
+  virtual Bool contains(const Point & point) const;
 
   /** Check if the given point is numerically inside of the domain, i.e. in its discretization */
-  Bool numericallyContains(const NumericalPoint & point) const;
+  Bool numericallyContains(const Point & point) const;
 
   /** Get the numerical volume of the discretization of the domain */
-  NumericalScalar getNumericalVolume() const;
+  Scalar getNumericalVolume() const;
 
   /** Get the volume of the domain */
-  NumericalScalar getVolume() const;
+  Scalar getVolume() const;
 
   /** String converter */
   String __repr__() const;
@@ -71,10 +71,10 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Lower bound of the bounding box */
-  virtual NumericalPoint getLowerBound() const;
+  virtual Point getLowerBound() const;
 
   /** Upper bound of the bounding box */
-  virtual NumericalPoint getUpperBound() const;
+  virtual Point getUpperBound() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -90,7 +90,7 @@ protected:
   UnsignedInteger dimension_;
 
   // The global volume
-  mutable NumericalScalar volume_;
+  mutable Scalar volume_;
 
   // Flag to tell if the global volume has already been computed
   mutable Bool isAlreadyComputedVolume_;

@@ -22,8 +22,8 @@
  */
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
-#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,8 +46,8 @@ KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm()
 
 /* Constructor with parameters */
 KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm(const Mesh & mesh,
-						   const CovarianceModel & covariance,
-    const NumericalScalar threshold)
+    const CovarianceModel & covariance,
+    const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , mesh_(mesh)
 {
@@ -87,7 +87,7 @@ void KarhunenLoeveP1Algorithm::run()
   CovarianceMatrix gram(mesh_.computeP1Gram());
   const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   if (!(gram.getDimension() == numVertices)) throw InternalException(HERE) << "Error: the P1 Gram matrix of the mesh has a dimension=" << gram.getDimension() << " different from the number of vertices=" << numVertices;
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
+  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   // Extend the Gram matrix of the mesh
@@ -96,18 +96,18 @@ void KarhunenLoeveP1Algorithm::run()
   CovarianceMatrix G;
   if (dimension == 1) G = gram;
   else
+  {
+    G = CovarianceMatrix(augmentedDimension);
+    for (UnsignedInteger i = 0; i < numVertices; ++i)
     {
-      G = CovarianceMatrix(augmentedDimension);
-      for (UnsignedInteger i = 0; i < numVertices; ++i)
-	{
-	  for (UnsignedInteger j = 0; j <= i; ++j)
-	    {
-	      const NumericalScalar gij = gram(i, j);
-	      for (UnsignedInteger k = 0; k < dimension; ++k)
-		G(i * dimension + k, j * dimension + k) = gij;
-	    } // Loop over j
-	} // Loop over i
-    }
+      for (UnsignedInteger j = 0; j <= i; ++j)
+      {
+        const Scalar gij = gram(i, j);
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+          G(i * dimension + k, j * dimension + k) = gij;
+      } // Loop over j
+    } // Loop over i
+  }
   // Discretize the covariance model
   LOGINFO("Discretize the covariance model");
   CovarianceMatrix C(covariance_.discretize(mesh_));
@@ -115,9 +115,9 @@ void KarhunenLoeveP1Algorithm::run()
   SquareMatrix M((C * G).getImplementation());
   LOGINFO("Solve the eigenvalue problem");
   SquareComplexMatrix eigenVectorsComplex;
-  SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+  SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
   LOGINFO("Post-process the eigenvalue problem");
-  NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectorsComplex(j, i).real();
@@ -125,7 +125,7 @@ void KarhunenLoeveP1Algorithm::run()
   }
   eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
   SquareMatrix eigenVectors(augmentedDimension);
-  NumericalPoint eigenValues(augmentedDimension);
+  Point eigenValues(augmentedDimension);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
@@ -134,35 +134,35 @@ void KarhunenLoeveP1Algorithm::run()
   LOGDEBUG(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
   LOGINFO("Extract the relevant eigenpairs");
   UnsignedInteger K = 0;
-  NumericalScalar cumulatedVariance = std::abs(eigenValues[0]);
+  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-    {
-      cumulatedVariance += eigenValues[K];
-      ++K;
-    }
+  {
+    cumulatedVariance += eigenValues[K];
+    ++K;
+  }
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(augmentedDimension, K);
-  NumericalPoint selectedEV(K);
+  Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
   const UnsignedInteger meshDimension = mesh_.getDimension();
-  NumericalSampleImplementation values(numVertices, dimension);
+  SampleImplementation values(numVertices, dimension);
   UnsignedInteger index = 0;
   for (UnsignedInteger k = 0; k < K; ++k)
   {
     selectedEV[k] = eigenValues[k];
     const MatrixImplementation a(*eigenVectors.getColumn(k).getImplementation());
     const MatrixImplementation Ga(G.getImplementation()->genProd(a));
-    const NumericalScalar norm = std::sqrt(a.genProd(Ga, true, false)[0]);
-    const NumericalScalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
+    const Scalar norm = std::sqrt(a.genProd(Ga, true, false)[0]);
+    const Scalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Store the eigen modes in two forms
     values.setData(a * factor);
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
-      modes.add(PiecewiseLinearEvaluationImplementation(mesh_.getVertices().getImplementation()->getData(), values));
+      modes.add(PiecewiseLinearEvaluation(mesh_.getVertices().getImplementation()->getData(), values));
     else
-      modes.add(P1LagrangeEvaluationImplementation(modesAsProcessSample.getField(k)));
+      modes.add(P1LagrangeEvaluation(modesAsProcessSample.getField(k)));
     // Build the relevant column of the transposed projection matrix
     const MatrixImplementation b(Ga * (factor / sqrt(selectedEV[k])));
     std::copy(b.begin(), b.end(), transposedProjection.begin() + index);

@@ -45,7 +45,7 @@ NormalFactory * NormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-NormalFactory::Implementation NormalFactory::build(const NumericalSample & sample) const
+NormalFactory::Implementation NormalFactory::build(const Sample & sample) const
 {
   return buildAsNormal(sample).clone();
 }
@@ -55,22 +55,22 @@ NormalFactory::Implementation NormalFactory::build() const
   return buildAsNormal().clone();
 }
 
-NormalFactory::Implementation NormalFactory::build(const NumericalPoint & parameters) const
+NormalFactory::Implementation NormalFactory::build(const Point & parameters) const
 {
   return buildAsNormal(parameters).clone();
 }
 
-Normal NormalFactory::buildAsNormal(const NumericalSample & sample) const
+Normal NormalFactory::buildAsNormal(const Sample & sample) const
 {
   if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from a sample of size < 2";
-  const NumericalPoint mean(sample.computeMean());
+  const Point mean(sample.computeMean());
   const CovarianceMatrix covariance(sample.computeCovariance());
   Normal result(mean, covariance);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-Normal NormalFactory::buildAsNormal(const NumericalPoint & parameters) const
+Normal NormalFactory::buildAsNormal(const Point & parameters) const
 {
   try
   {
@@ -93,12 +93,12 @@ Normal NormalFactory::buildAsNormal() const
 }
 
 
-DistributionFactoryResult NormalFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult NormalFactory::buildEstimator(const Sample & sample) const
 {
   if (sample.getDimension() > 1) return buildBootStrapEstimator(sample);
   Normal distribution(buildAsNormal(sample));
-  NumericalScalar mu = distribution.getMean()[0];
-  NumericalScalar sigma = distribution.getSigma()[0];
+  Scalar mu = distribution.getMean()[0];
+  Scalar sigma = distribution.getSigma()[0];
   const UnsignedInteger size = sample.getSize();
   ComposedDistribution::DistributionCollection coll;
   Normal muDistribution(mu, sigma / sqrt(1.0 * size));

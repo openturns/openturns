@@ -27,21 +27,21 @@ print("mean=", oneSample.computeMean())
 print("covariance=", oneSample.computeCovariance())
 
 # Define a point
-point = ot.NumericalPoint(distribution.getDimension(), 1.0)
+point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", point)
 
 # Show PDF and CDF of point
 eps = 1e-5
 DDF = distribution.computeDDF(point)
 print("ddf     =", DDF)
-print("ddf (FD)= %.6g" % ((distribution.computePDF(point + ot.NumericalPoint(1, eps)) -
-                           distribution.computePDF(point + ot.NumericalPoint(1, -eps))) / (2.0 * eps)))
+print("ddf (FD)= %.6g" % ((distribution.computePDF(point + ot.Point(1, eps)) -
+                           distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
 LPDF = distribution.computeLogPDF(point)
 print("log pdf= %.6g" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6g" % PDF)
-print("pdf (FD)=%.6g" % ((distribution.computeCDF(point + ot.NumericalPoint(1, eps)) -
-                          distribution.computeCDF(point + ot.NumericalPoint(1, -eps))) / (2.0 * eps)))
+print("pdf (FD)=%.6g" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
+                          distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
 CDF = distribution.computeCDF(point)
 print("cdf= %.6g" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
@@ -57,26 +57,31 @@ quantile = distribution.computeQuantile(0.95)
 print("quantile=", quantile)
 print("cdf(quantile)=", distribution.computeCDF(quantile))
 # Get 95% survival function
-inverseSurvival = ot.NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
-print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+print("Survival(inverseSurvival)=%.6f" %
+      distribution.computeSurvivalFunction(inverseSurvival))
 
 # Confidence regions
-interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+    0.95)
 print("Minimum volume interval=", interval)
-print("threshold=", ot.NumericalPoint(1, threshold))
+print("threshold=", ot.Point(1, threshold))
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
 print("Minimum volume level set=", levelSet)
-print("beta=", ot.NumericalPoint(1, beta))
-interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+print("beta=", ot.Point(1, beta))
+interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+    0.95)
 print("Bilateral confidence interval=", interval)
-print("beta=", ot.NumericalPoint(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+print("beta=", ot.Point(1, beta))
+interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    0.95, False)
 print("Unilateral confidence interval (lower tail)=", interval)
-print("beta=", ot.NumericalPoint(1, beta))
-interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+print("beta=", ot.Point(1, beta))
+interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    0.95, True)
 print("Unilateral confidence interval (upper tail)=", interval)
-print("beta=", ot.NumericalPoint(1, beta))
+print("beta=", ot.Point(1, beta))
 
 mean = distribution.getMean()
 print("mean=", mean)

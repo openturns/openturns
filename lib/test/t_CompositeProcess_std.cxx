@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
 
 
     /* Time grid creation */
-    NumericalScalar Tmin = 0.0;
-    NumericalScalar deltaT = 0.1;
+    Scalar Tmin = 0.0;
+    Scalar deltaT = 0.1;
     UnsignedInteger steps = 11;
 
     /* Initialization of the time grid timeGrid1*/
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     /* We build a 1D function */
     Description inputDescription(1, "x");
     Description formula(1, "2 * x + 5");
-    NumericalMathFunction myOneDimensionalFunction(inputDescription, formula);
+    SymbolicFunction myOneDimensionalFunction(inputDescription, formula);
 
     /* We build a spatial function */
     ValueFunction myFunction(myOneDimensionalFunction);

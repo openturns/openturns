@@ -22,7 +22,7 @@
 #define OPENTURNS_TRENDTRANSOFORM_HXX
 
 #include "openturns/VertexValueFunction.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,19 +42,19 @@ class OT_API TrendTransform
   CLASSNAME;
 public:
 
-  typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
+  typedef EvaluationImplementation::Implementation EvaluationPointer;
 
   /** Default constructor */
   TrendTransform();
 
   /** Parameter constructor */
-  TrendTransform(const NumericalMathFunction & function);
+  explicit TrendTransform(const Function & function);
 
   /** Parameter constructor */
-  TrendTransform(const EvaluationImplementation & p_evaluation);
+  TrendTransform(const EvaluationPointer & p_evaluation);
 
   /** Parameter constructor */
-  TrendTransform(const NumericalMathEvaluationImplementation & evaluation);
+  TrendTransform(const EvaluationImplementation & evaluation);
 
   /** Virtual constructor */
   virtual TrendTransform * clone() const;

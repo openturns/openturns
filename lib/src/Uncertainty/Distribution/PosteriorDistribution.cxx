@@ -23,7 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,7 +43,7 @@ PosteriorDistribution::PosteriorDistribution()
 {
   setName("PosteriorDistribution");
   // First, set the observations
-  observations_ = NumericalSample(1, conditionalDistribution_.getConditionedDistribution().getMean());
+  observations_ = Sample(1, conditionalDistribution_.getConditionedDistribution().getMean());
   // Then, set the conditional distribution. It also set the dimension.
   setConditionalDistribution(conditionalDistribution_);
   computeRange();
@@ -51,7 +51,7 @@ PosteriorDistribution::PosteriorDistribution()
 
 /* Parameters constructor */
 PosteriorDistribution::PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
-    const NumericalSample & observations)
+    const Sample & observations)
   : ContinuousDistribution(),
     conditionalDistribution_(),
     observations_(observations)
@@ -100,57 +100,57 @@ PosteriorDistribution * PosteriorDistribution::clone() const
 }
 
 /* Compute the likelihood of the observations */
-NumericalPoint PosteriorDistribution::computeLikelihood(const NumericalPoint & theta) const
+Point PosteriorDistribution::computeLikelihood(const Point & theta) const
 {
-  return NumericalPoint(1, std::exp(computeLogLikelihood(theta)[0]));
+  return Point(1, std::exp(computeLogLikelihood(theta)[0]));
 }
 
 /* Compute the log-likelihood of the observations */
-NumericalPoint PosteriorDistribution::computeLogLikelihood(const NumericalPoint & theta) const
+Point PosteriorDistribution::computeLogLikelihood(const Point & theta) const
 {
   Distribution conditionedDistribution(conditionalDistribution_.getConditionedDistribution());
   conditionedDistribution.setParameter(theta);
-  NumericalScalar logLikelihood = 0.0;
+  Scalar logLikelihood = 0.0;
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar atomicValue = conditionedDistribution.computeLogPDF(observations_[i]);
+    const Scalar atomicValue = conditionedDistribution.computeLogPDF(observations_[i]);
     logLikelihood += atomicValue;
   }
-  return NumericalPoint(1, logLikelihood);
+  return Point(1, logLikelihood);
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar PosteriorDistribution::computePDF(const NumericalPoint & point) const
+Scalar PosteriorDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point)[0];
+  const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point)[0];
   return std::exp(value);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar PosteriorDistribution::computeCDF(const NumericalPoint & point) const
+Scalar PosteriorDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   Description inputDescription(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) inputDescription[i] = String(OSS() << "x" << i);
   const SymbolicFunction f(inputDescription, Description(1, "1"));
-  const NumericalScalar cdf = conditionalDistribution_.computeExpectation(f, point)[0];
+  const Scalar cdf = conditionalDistribution_.computeExpectation(f, point)[0];
   return cdf;
 }
 
 /* Parameters value and description accessor */
-PosteriorDistribution::NumericalPointWithDescriptionCollection PosteriorDistribution::getParametersCollection() const
+PosteriorDistribution::PointWithDescriptionCollection PosteriorDistribution::getParametersCollection() const
 {
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::getParametersCollection() const";
 }
 
-void PosteriorDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)
 {
-  throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParametersCollection(const NumericalPointCollection & parametersCollection)";
+  throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)";
 }
 
 
@@ -164,7 +164,7 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
     logNormalizationFactor_ += conditionalDistribution_.computeLogPDF(observations_[i]);
-  if (logNormalizationFactor_ == SpecFunc::LogMinNumericalScalar) throw InvalidArgumentException(HERE) << "Error: the normalization factor is null with the given conditional distribution and observations.";
+  if (logNormalizationFactor_ == SpecFunc::LogMinScalar) throw InvalidArgumentException(HERE) << "Error: the normalization factor is null with the given conditional distribution and observations.";
   computeRange();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -177,7 +177,7 @@ ConditionalDistribution PosteriorDistribution::getConditionalDistribution() cons
 
 
 /* Observations accessor */
-void PosteriorDistribution::setObservations(const NumericalSample & observations)
+void PosteriorDistribution::setObservations(const Sample & observations)
 {
   if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot use a posterior distribution with no observation.";
   if (observations.getDimension() != conditionalDistribution_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the conditional distribution must have the same dimension as the observations.";
@@ -186,13 +186,13 @@ void PosteriorDistribution::setObservations(const NumericalSample & observations
   isAlreadyComputedCovariance_ = false;
 }
 
-NumericalSample PosteriorDistribution::getObservations() const
+Sample PosteriorDistribution::getObservations() const
 {
   return observations_;
 }
 
 /* Log normalization factor accessor */
-NumericalScalar PosteriorDistribution::getLogNormalizationFactor() const
+Scalar PosteriorDistribution::getLogNormalizationFactor() const
 {
   return logNormalizationFactor_;
 }
@@ -208,29 +208,29 @@ void PosteriorDistribution::computeMean() const
 {
   Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   const SymbolicFunction meanFunction(inputDescription, inputDescription);
-  const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
+  const Function likelihood(bindMethod<PosteriorDistribution, Point, Point>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
   mean_ = conditionalDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint PosteriorDistribution::getStandardDeviation() const
+Point PosteriorDistribution::getStandardDeviation() const
 {
   // To insure that the covariance has been computed
   getCovariance();
-  NumericalPoint sigma(getDimension());
+  Point sigma(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i) sigma[i] = std::sqrt(covariance_(i, i));
   return sigma;
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint PosteriorDistribution::getSkewness() const
+Point PosteriorDistribution::getSkewness() const
 {
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::getSkewness() const";
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint PosteriorDistribution::getKurtosis() const
+Point PosteriorDistribution::getKurtosis() const
 {
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::getKurtosis() const";
 }
@@ -248,17 +248,17 @@ void PosteriorDistribution::computeCovariance() const
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar muI = mean_[i];
+    const Scalar muI = mean_[i];
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      const NumericalScalar muJ = mean_[j];
+      const Scalar muJ = mean_[j];
       formulas[index] = String(OSS() << "(x" << i << "-" << muI << ")*(x" << j << "-" << muJ << ")");
       ++index;
     }
   }
   const SymbolicFunction covarianceFunction(inputDescription, formulas);
-  const NumericalMathFunction likelihood(bindMethod<PosteriorDistribution, NumericalPoint, NumericalPoint>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
-  const NumericalPoint result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
+  const Function likelihood(bindMethod<PosteriorDistribution, Point, Point>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
+  const Point result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
   index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)

@@ -54,40 +54,40 @@ String KFold::__repr__() const
 
 
 /* Perform cross-validation */
-NumericalScalar KFold::run(const NumericalSample & x,
-                           const NumericalSample & y,
-                           const NumericalPoint & weight,
-                           const Basis & basis,
-                           const Indices & indices) const
+Scalar KFold::run(const Sample & x,
+                  const Sample & y,
+                  const Point & weight,
+                  const Basis & basis,
+                  const Indices & indices) const
 {
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);
 }
 
-NumericalScalar KFold::run(const NumericalSample & y,
-                           const NumericalPoint & weight,
-                           const Indices & indices,
-                           const DesignProxy & proxy) const
+Scalar KFold::run(const Sample & y,
+                  const Point & weight,
+                  const Indices & indices,
+                  const DesignProxy & proxy) const
 {
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-NumericalScalar KFold::run(LeastSquaresMethod & method,
-                          const NumericalSample & y) const
+Scalar KFold::run(LeastSquaresMethod & method,
+                  const Sample & y) const
 {
-  const NumericalSample x(method.getInputSample());
+  const Sample x(method.getInputSample());
   const Basis basis(method.getBasis());
 
   const UnsignedInteger sampleSize = x.getSize();
-  const NumericalScalar variance = y.computeVariance()[0];
+  const Scalar variance = y.computeVariance()[0];
 
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
   if (k_ >= sampleSize) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
-  if (variance <= 0.0) throw InvalidArgumentException( HERE ) << "Null output sample variance.";
+  if (!(variance > 0.0)) throw InvalidArgumentException( HERE ) << "Null output sample variance.";
 
   // the size of a subsample
   const UnsignedInteger testSize = sampleSize / k_;
-  NumericalScalar quadraticResidual = 0.0;
+  Scalar quadraticResidual = 0.0;
 
   // Store the initial row filter if any
   const Indices initialRowFilter(method.getImplementation()->proxy_.getRowFilter());
@@ -98,8 +98,8 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
   {
     LOGINFO(OSS() << "Sub-sample " << i << " over " << k_ - 1);
     // build training/test samples
-    NumericalPoint yTest(0);
-    NumericalPoint rhs(0);
+    Point yTest(0);
+    Point rhs(0);
     Indices addedIndices(0);
     Indices conservedIndices(0);
     Indices removedIndices(0);
@@ -131,11 +131,11 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
     LOGINFO("Solve current least-squares problem");
     method.getImplementation()->proxy_.setRowFilter(rowFilter);
     method.update(addedIndices, conservedIndices, removedIndices, true);
-    const NumericalPoint coefficients(method.solve(rhs));
+    const Point coefficients(method.solve(rhs));
     // evaluate on the test sample
     method.getImplementation()->proxy_.setRowFilter(inverseRowFilter);
     const Matrix psiAk(method.computeWeightedDesign());
-    const NumericalPoint yHatTest(psiAk * coefficients);
+    const Point yHatTest(psiAk * coefficients);
     LOGINFO("Compute the residual");
 
     // The empirical error is the normalized L2 error
@@ -145,9 +145,9 @@ NumericalScalar KFold::run(LeastSquaresMethod & method,
   }
   // Restore the row filter
   method.getImplementation()->proxy_.setRowFilter(initialRowFilter);
-  const NumericalScalar empiricalError = quadraticResidual / (testSize * k_);
+  const Scalar empiricalError = quadraticResidual / (testSize * k_);
 
-  const NumericalScalar relativeError = empiricalError / variance;
+  const Scalar relativeError = empiricalError / variance;
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }

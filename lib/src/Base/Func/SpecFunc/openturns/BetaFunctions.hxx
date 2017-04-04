@@ -28,74 +28,74 @@ BEGIN_NAMESPACE_OPENTURNS
 
 namespace BetaFunctions
 {
-NumericalScalar IncompleteBeta(const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar x,
-                               const Bool tail = false);
+Scalar IncompleteBeta(const Scalar a,
+                      const Scalar b,
+                      const Scalar x,
+                      const Bool tail = false);
 
-NumericalScalar IncompleteBetaInverse(const NumericalScalar a,
-                                      const NumericalScalar b,
-                                      const NumericalScalar x,
-                                      const Bool tail = false);
+Scalar IncompleteBetaInverse(const Scalar a,
+                             const Scalar b,
+                             const Scalar x,
+                             const Bool tail = false);
 
-NumericalScalar IncompleteBetaP(const NumericalScalar a,
-                                const NumericalScalar b,
-                                const NumericalScalar x);
+Scalar IncompleteBetaP(const Scalar a,
+                       const Scalar b,
+                       const Scalar x);
 
-NumericalScalar IncompleteBetaQ(const NumericalScalar a,
-                                const NumericalScalar b,
-                                const NumericalScalar x);
+Scalar IncompleteBetaQ(const Scalar a,
+                       const Scalar b,
+                       const Scalar x);
 
-NumericalScalar RegularizedIncompleteBeta(const NumericalScalar a,
-    const NumericalScalar b,
-    const NumericalScalar x,
-    const Bool tail = false);
+Scalar RegularizedIncompleteBeta(const Scalar a,
+                                 const Scalar b,
+                                 const Scalar x,
+                                 const Bool tail = false);
 
-NumericalScalar RegularizedIncompleteBetaSlatec(const NumericalScalar a,
-    const NumericalScalar b,
-    const NumericalScalar x,
-    const Bool tail);
+Scalar RegularizedIncompleteBetaSlatec(const Scalar a,
+                                       const Scalar b,
+                                       const Scalar x,
+                                       const Bool tail);
 
-NumericalScalar RegularizedIncompleteBetaInverse(const NumericalScalar a,
-    const NumericalScalar b,
-    const NumericalScalar x,
-    const Bool tail = false);
+Scalar RegularizedIncompleteBetaInverse(const Scalar a,
+                                        const Scalar b,
+                                        const Scalar x,
+                                        const Bool tail = false);
 
-NumericalScalar RegularizedIncompleteBetaP(const NumericalScalar a,
-    const NumericalScalar b,
-    const NumericalScalar x);
+Scalar RegularizedIncompleteBetaP(const Scalar a,
+                                  const Scalar b,
+                                  const Scalar x);
 
-NumericalScalar RegularizedIncompleteBetaQ(const NumericalScalar a,
-    const NumericalScalar b,
-    const NumericalScalar x);
+Scalar RegularizedIncompleteBetaQ(const Scalar a,
+                                  const Scalar b,
+                                  const Scalar x);
 
-NumericalScalar RegularizedIncompleteBetaContinuedFraction(const NumericalScalar a,
-    const NumericalScalar b,
-    const NumericalScalar x);
+Scalar RegularizedIncompleteBetaContinuedFraction(const Scalar a,
+    const Scalar b,
+    const Scalar x);
 
-NumericalScalar BRATIO(const NumericalScalar a,
-                       const NumericalScalar b,
-                       const NumericalScalar x,
-                       const Bool tail);
+Scalar BRATIO(const Scalar a,
+              const Scalar b,
+              const Scalar x,
+              const Bool tail);
 
-NumericalScalar BPSER(const NumericalScalar a,
-                      const NumericalScalar b,
-                      const NumericalScalar x);
+Scalar BPSER(const Scalar a,
+             const Scalar b,
+             const Scalar x);
 
-NumericalScalar BUP(const NumericalScalar a,
-                    const NumericalScalar b,
-                    const NumericalScalar x,
-                    const NumericalScalar y,
-                    const UnsignedInteger n);
+Scalar BUP(const Scalar a,
+           const Scalar b,
+           const Scalar x,
+           const Scalar y,
+           const UnsignedInteger n);
 
-NumericalScalar ALGDIV(const NumericalScalar a,
-                       const NumericalScalar b);
+Scalar ALGDIV(const Scalar a,
+              const Scalar b);
 
-NumericalScalar BGRAT(const NumericalScalar a,
-                      const NumericalScalar b,
-                      const NumericalScalar x,
-                      const NumericalScalar y,
-                      const NumericalScalar w);
+Scalar BGRAT(const Scalar a,
+             const Scalar b,
+             const Scalar x,
+             const Scalar y,
+             const Scalar w);
 
 } // BetaFunctions
 

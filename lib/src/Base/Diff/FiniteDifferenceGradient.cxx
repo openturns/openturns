@@ -23,7 +23,7 @@
 
 #include "openturns/FiniteDifferenceGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,17 +33,17 @@ static const Factory<FiniteDifferenceGradient> Factory_FiniteDifferenceGradient;
 
 /* Default constructor */
 FiniteDifferenceGradient::FiniteDifferenceGradient()
-  : NumericalMathGradientImplementation()
-  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
+  : GradientImplementation()
+  , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
 }
 
 /* First Parameter constructor  */
 FiniteDifferenceGradient::FiniteDifferenceGradient(
-  const NumericalPoint & epsilon,
-  const EvaluationImplementation & p_evaluation)
-  : NumericalMathGradientImplementation()
+  const Point & epsilon,
+  const EvaluationPointer & p_evaluation)
+  : GradientImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(epsilon)
 {
@@ -60,11 +60,11 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(
 }
 
 /* SecondParameter constructor */
-FiniteDifferenceGradient::FiniteDifferenceGradient(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
-  : NumericalMathGradientImplementation()
+FiniteDifferenceGradient::FiniteDifferenceGradient(const Scalar epsilon,
+    const EvaluationPointer & p_evaluation)
+  : GradientImplementation()
   , p_evaluation_(p_evaluation)
-  , finiteDifferenceStep_(NumericalPoint(p_evaluation->getInputDimension(), epsilon))
+  , finiteDifferenceStep_(Point(p_evaluation->getInputDimension(), epsilon))
 {
   // Check if epsilon is exactly zero
   if (epsilon == 0.0)
@@ -74,12 +74,12 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(const NumericalScalar epsilon
 /*  Parameter constructor with FiniteDifferenceStep*/
 FiniteDifferenceGradient::FiniteDifferenceGradient(
   const FiniteDifferenceStep & finiteDifferenceStep,
-  const EvaluationImplementation & p_evaluation)
-  : NumericalMathGradientImplementation()
+  const EvaluationPointer & p_evaluation)
+  : GradientImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(finiteDifferenceStep)
 {
-  NumericalPoint epsilon(getEpsilon());
+  Point epsilon(getEpsilon());
   //Check if the dimension of the constant term is compatible with the linear and quadratic terms
   if (epsilon.getDimension() != p_evaluation->getInputDimension())
     throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
@@ -115,13 +115,13 @@ String FiniteDifferenceGradient:: __repr__() const
 }
 
 /* Accessor for epsilon */
-NumericalPoint FiniteDifferenceGradient::getEpsilon() const
+Point FiniteDifferenceGradient::getEpsilon() const
 {
   return finiteDifferenceStep_.getEpsilon();
 }
 
 /* Accessor for the evaluation */
-FiniteDifferenceGradient::EvaluationImplementation FiniteDifferenceGradient::getEvaluation() const
+FiniteDifferenceGradient::EvaluationPointer FiniteDifferenceGradient::getEvaluation() const
 {
   return p_evaluation_;
 }
@@ -150,15 +150,15 @@ FiniteDifferenceStep FiniteDifferenceGradient::getFiniteDifferenceStep() const
 }
 
 /* Evaluation method */
-Matrix FiniteDifferenceGradient::gradient(const NumericalPoint & inP) const
+Matrix FiniteDifferenceGradient::gradient(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In FiniteDifferenceGradient::gradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In FiniteDifferenceGradient::gradient(const Point & inP) const";
 }
 
 /* Method save() stores the object through the StorageManager */
 void FiniteDifferenceGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
   adv.saveAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );
 }
@@ -166,8 +166,8 @@ void FiniteDifferenceGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void FiniteDifferenceGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluation;
+  GradientImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluation;
   adv.loadAttribute( "evaluation_", evaluation );
   p_evaluation_ = evaluation.getImplementation();
   adv.loadAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );

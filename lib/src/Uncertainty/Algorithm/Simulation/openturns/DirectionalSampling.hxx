@@ -22,7 +22,7 @@
 #define OPENTURNS_DIRECTIONALSAMPLING_HXX
 
 #include "openturns/Simulation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/RootStrategy.hxx"
@@ -40,7 +40,7 @@ class OT_API DirectionalSampling :
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
+  typedef Collection<Scalar> ScalarCollection;
   typedef Distribution::Implementation            Implementation;
 
   /** for save/load mecanism */
@@ -78,19 +78,19 @@ public:
 private:
 
   /** Compute the block sample and the points that realized the event */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
   /** Compute the contribution of a direction to the probability given the roots of the performance function along the direction */
-  NumericalScalar computeContribution(const NumericalScalarCollection & roots);
+  Scalar computeContribution(const ScalarCollection & roots);
 
   /** Compute the mean point of a direction given the roots of the performance function along the direction */
-  NumericalScalar computeMeanContribution(const NumericalScalarCollection & roots);
+  Scalar computeMeanContribution(const ScalarCollection & roots);
 
   /** Compute the contribution of a set of direction to the probability given the contributions of each direction in the set */
-  NumericalScalar computeTotalContribution(const NumericalSample & directionSample);
+  Scalar computeTotalContribution(const Sample & directionSample);
 
   StandardEvent standardEvent_;
-  NumericalMathFunction standardFunction_;
+  Function standardFunction_;
   Implementation inputDistribution_;
   RootStrategy rootStrategy_;
   SamplingStrategy samplingStrategy_;

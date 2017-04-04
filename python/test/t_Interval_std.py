@@ -13,9 +13,9 @@ try:
     size = 2
     defaultInterval = Interval(2)
     print("defaultInterval=", repr(defaultInterval))
-    # Construction from 2 NumericalPoint
-    p1 = NumericalPoint(2, -1.0)
-    p2 = NumericalPoint(2, 2.0)
+    # Construction from 2 Point
+    p1 = Point(2, -1.0)
+    p2 = Point(2, 2.0)
     print("interval from 2 points=", repr(Interval(p1, p2)))
     print("pretty print=")
     print(Interval(p1, p2))
@@ -36,10 +36,10 @@ try:
     print("interval [p2, p1] empty? ", Interval(p2, p1).isEmpty())
     # Intersection
     interval1 = Interval(p1, p2)
-    p3 = NumericalPoint(2)
+    p3 = Point(2)
     p3[0] = 0.5
     p3[1] = -1.5
-    p4 = NumericalPoint(2)
+    p4 = Point(2)
     p4[0] = 1.5
     p4[1] = 2.5
     interval2 = Interval(p3, p4)

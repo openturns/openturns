@@ -64,7 +64,7 @@ try:
         transformedBackSample.computeMean()))
     print("transformed back sample covariance=", repr(
         transformedBackSample.computeCovariance()))
-    point = NumericalPoint(dim, 1.0)
+    point = Point(dim, 1.0)
     print("point=", repr(point))
     transformedPoint = transform(point)
     print("transform value at point        =", repr(transformedPoint))

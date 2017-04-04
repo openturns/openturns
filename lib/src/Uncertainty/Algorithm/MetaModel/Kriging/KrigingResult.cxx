@@ -22,6 +22,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,16 +37,16 @@ KrigingResult::KrigingResult()
 }
 
 /* Constructor with parameters & Cholesky factor */
-KrigingResult::KrigingResult(const NumericalSample & inputSample,
-                             const NumericalSample & outputSample,
-                             const NumericalMathFunction & metaModel,
-                             const NumericalPoint & residuals,
-                             const NumericalPoint & relativeErrors,
+KrigingResult::KrigingResult(const Sample & inputSample,
+                             const Sample & outputSample,
+                             const Function & metaModel,
+                             const Point & residuals,
+                             const Point & relativeErrors,
                              const BasisCollection & basis,
-                             const NumericalPointCollection & trendCoefficients,
+                             const PointCollection & trendCoefficients,
                              const CovarianceModel & covarianceModel,
-                             const NumericalSample & covarianceCoefficients)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+                             const Sample & covarianceCoefficients)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
   , inputTransformation_()
@@ -68,18 +69,18 @@ KrigingResult::KrigingResult(const NumericalSample & inputSample,
 
 
 /* Constructor with parameters & Cholesky factor */
-KrigingResult::KrigingResult(const NumericalSample & inputSample,
-                             const NumericalSample & outputSample,
-                             const NumericalMathFunction & metaModel,
-                             const NumericalPoint & residuals,
-                             const NumericalPoint & relativeErrors,
+KrigingResult::KrigingResult(const Sample & inputSample,
+                             const Sample & outputSample,
+                             const Function & metaModel,
+                             const Point & residuals,
+                             const Point & relativeErrors,
                              const BasisCollection & basis,
-                             const NumericalPointCollection & trendCoefficients,
+                             const PointCollection & trendCoefficients,
                              const CovarianceModel & covarianceModel,
-                             const NumericalSample & covarianceCoefficients,
+                             const Sample & covarianceCoefficients,
                              const TriangularMatrix & covarianceCholeskyFactor,
                              const HMatrix & covarianceHMatrix)
-  : MetaModelResult(NumericalMathFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
   , inputTransformation_()
@@ -141,12 +142,12 @@ String KrigingResult::__str__(const String & offset) const
 
 
 /* Design accessors */
-NumericalSample KrigingResult::getInputSample() const
+Sample KrigingResult::getInputSample() const
 {
   return inputSample_;
 }
 
-NumericalSample KrigingResult::getOutputSample() const
+Sample KrigingResult::getOutputSample() const
 {
   return outputSample_;
 }
@@ -159,7 +160,7 @@ KrigingResult::BasisCollection KrigingResult::getBasisCollection() const
 }
 
 /* Trend coefficients accessor */
-KrigingResult::NumericalPointCollection KrigingResult::getTrendCoefficients() const
+KrigingResult::PointCollection KrigingResult::getTrendCoefficients() const
 {
   return trendCoefficients_;
 }
@@ -171,17 +172,17 @@ CovarianceModel KrigingResult::getCovarianceModel() const
 }
 
 /* Covariance coefficients accessor */
-NumericalSample KrigingResult::getCovarianceCoefficients() const
+Sample KrigingResult::getCovarianceCoefficients() const
 {
   return covarianceCoefficients_;
 }
 
-NumericalMathFunction KrigingResult::getTransformation() const
+Function KrigingResult::getTransformation() const
 {
   return inputTransformation_;
 }
 
-void KrigingResult::setTransformation(const NumericalMathFunction & transformation)
+void KrigingResult::setTransformation(const Function & transformation)
 {
   if (transformation.getInputDimension() != inputSample_.getDimension())
     throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputSample_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();
@@ -192,7 +193,7 @@ void KrigingResult::setTransformation(const NumericalMathFunction & transformati
 }
 
 /* Compute mean of new points conditionnaly to observations */
-NumericalPoint KrigingResult::getConditionalMean(const NumericalSample & xi) const
+Point KrigingResult::getConditionalMean(const Sample & xi) const
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
@@ -206,32 +207,32 @@ NumericalPoint KrigingResult::getConditionalMean(const NumericalSample & xi) con
   // Need to think if it is required to reimplement a specific method
   // in order to avoid data copy
   // sample is of size xi.getSize() * covarianceModel.getDimension()
-  NumericalSample output = metaModel_.operator()(xi);
-  // Result is a NumericalPoint ==> data are transformed form NumericalSample to
-  // NumericalPoint by using a copy
-  NumericalPoint mean(output.getImplementation()->getData());
+  Sample output = metaModel_.operator()(xi);
+  // Result is a Point ==> data are transformed form Sample to
+  // Point by using a copy
+  Point mean(output.getImplementation()->getData());
   return mean;
 }
 
 /* Compute mean of new points conditionnaly to observations */
-NumericalPoint KrigingResult::getConditionalMean(const NumericalPoint & xi) const
+Point KrigingResult::getConditionalMean(const Point & xi) const
 {
   // Use of meta model evaluation
-  // For NumericalPoint, no problematic of copy
-  const NumericalPoint output = metaModel_.operator()(xi);
+  // For Point, no problematic of copy
+  const Point output = metaModel_.operator()(xi);
   return output;
 }
 
 struct KrigingResultCrossCovarianceFunctor
 {
-  const NumericalSample & conditionnedPoints_;
-  const NumericalSample & input_;
+  const Sample & conditionnedPoints_;
+  const Sample & input_;
   Matrix & output_;
   const CovarianceModel & model_;
   const UnsignedInteger dimension_;
 
-  KrigingResultCrossCovarianceFunctor(const NumericalSample & conditionnedPoints,
-                                      const NumericalSample & input,
+  KrigingResultCrossCovarianceFunctor(const Sample & conditionnedPoints,
+                                      const Sample & input,
                                       Matrix & output,
                                       const CovarianceModel & model)
     : conditionnedPoints_(conditionnedPoints)
@@ -270,7 +271,7 @@ struct KrigingResultCrossCovarianceFunctor
 
 
 /* Compute cross matrix method ==> not necessary square matrix  */
-Matrix KrigingResult::getCrossMatrix(const NumericalSample & x) const
+Matrix KrigingResult::getCrossMatrix(const Sample & x) const
 {
   // Use of TBB structures
   // The idea is that we work by blocks
@@ -311,14 +312,14 @@ void KrigingResult::computeF() const
     for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
     {
       // Here we use potential parallelism in the evaluation of the basis functions
-      const NumericalSample basisSample(localBasis[j](inputTransformedSample_));
+      const Sample basisSample(localBasis[j](inputTransformedSample_));
       for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample[i][0];
     }
   }
 }
 
 /* Compute covariance matrix conditionnaly to observations*/
-CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample & xi) const
+CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) const
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
@@ -332,7 +333,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, expected a non empty sample";
   // 0) Take into account transformation
-  NumericalSample sample;
+  Sample sample;
   // Transform data if necessary
   if (hasTransformation_)
     sample = inputTransformation_(xi);
@@ -419,7 +420,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
     for (UnsignedInteger j = 0; j < localBasisSize; ++ j )
     {
       // Here we use potential parallelism in the evaluation of the basis functions
-      const NumericalSample basisSample(localBasis[j](sample));
+      const Sample basisSample(localBasis[j](sample));
       for (UnsignedInteger i = 0; i < sampleSize; ++ i) fx(j + index, basisMarginal + i * outputDimension) = basisSample[i][0];
     }
     index = index + localBasisSize;
@@ -436,18 +437,18 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalSample &
 }
 
 /* Compute covariance matrix conditionnaly to observations*/
-CovarianceMatrix KrigingResult::getConditionalCovariance(const NumericalPoint & xi) const
+CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & xi) const
 {
-  const NumericalSample sample(1, xi);
+  const Sample sample(1, xi);
   return getConditionalCovariance(sample);
 }
 
 /* Compute joint normal distribution conditionnaly to observations*/
-Normal KrigingResult::operator()(const NumericalSample & xi) const
+Normal KrigingResult::operator()(const Sample & xi) const
 {
   // The Normal distribution is defined by its mean & covariance
   LOGINFO("In KrigingResult::operator() : evaluationg the mean");
-  const NumericalPoint mean = getConditionalMean(xi);
+  const Point mean = getConditionalMean(xi);
   LOGINFO("In KrigingResult::operator() : evaluationg the covariance");
   const CovarianceMatrix covarianceMatrix = getConditionalCovariance(xi);
   // Check the covariance matrix. Indeed, if point is very similar to one of the learning points, covariance is null
@@ -459,9 +460,9 @@ Normal KrigingResult::operator()(const NumericalSample & xi) const
 }
 
 /* Compute joint normal distribution conditionnaly to observations*/
-Normal KrigingResult::operator()(const NumericalPoint & xi) const
+Normal KrigingResult::operator()(const Point & xi) const
 {
-  NumericalSample sample(1, xi);
+  Sample sample(1, xi);
   return operator()(sample);
 }
 

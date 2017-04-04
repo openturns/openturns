@@ -24,10 +24,10 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/ComposedDistribution.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionEvaluationImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionGradientImplementation.hxx"
-#include "openturns/ProductUniVariateFunctionHessianImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
+#include "openturns/ProductUniVariateFunctionEvaluation.hxx"
+#include "openturns/ProductUniVariateFunctionGradient.hxx"
+#include "openturns/ProductUniVariateFunctionHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,8 +41,8 @@ CLASSNAMEINIT(OrthogonalProductFunctionFactory);
 
 static const Factory<OrthogonalProductFunctionFactory> Factory_OrthogonalProductFunctionFactory;
 
-typedef Collection<NumericalPoint> NumericalPointCollection;
-typedef ProductUniVariateFunctionEvaluationImplementation::UniVariateFunctionCollection UniVariateFunctionCollection;
+typedef Collection<Point> PointCollection;
+typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVariateFunctionCollection;
 
 /* Default constructor */
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory()
@@ -68,8 +68,8 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const Functio
   : OrthogonalFunctionFactory()
 {
   if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size";
-  buildTensorizedFunctionFactory(coll, phi); 
-  buildMeasure(coll); 
+  buildTensorizedFunctionFactory(coll, phi);
+  buildMeasure(coll);
 }
 
 
@@ -99,8 +99,8 @@ OrthogonalProductFunctionFactory::FunctionFamilyCollection OrthogonalProductFunc
 }
 
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction OrthogonalProductFunctionFactory::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function OrthogonalProductFunctionFactory::build(const UnsignedInteger index) const
 {
   return tensorizedFunctionFactory_.build(index);
 }
@@ -132,7 +132,7 @@ void OrthogonalProductFunctionFactory::load(Advocate & adv)
 
 /*  Build product function factory */
 void OrthogonalProductFunctionFactory::buildTensorizedFunctionFactory(const FunctionFamilyCollection & coll,
-     const EnumerateFunction & phi)
+    const EnumerateFunction & phi)
 {
   TensorizedUniVariateFunctionFactory::FunctionFamilyCollection functionColl;
   const UnsignedInteger size = coll.getSize();
@@ -140,7 +140,7 @@ void OrthogonalProductFunctionFactory::buildTensorizedFunctionFactory(const Func
   {
     functionColl.add(UniVariateFunctionFamily(*coll[i].getImplementation()));
   }
-  tensorizedFunctionFactory_.setFunctionFamilyCollection(functionColl); 
+  tensorizedFunctionFactory_.setFunctionFamilyCollection(functionColl);
   tensorizedFunctionFactory_.setEnumerateFunction(phi);
 }
 

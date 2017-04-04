@@ -36,7 +36,7 @@ ConstantStep::ConstantStep()
 }
 
 /* Parameters constructor */
-ConstantStep::ConstantStep(const NumericalPoint & epsilon)
+ConstantStep::ConstantStep(const Point & epsilon)
   : FiniteDifferenceStepImplementation(epsilon)
 {
   // Nothing to do
@@ -58,7 +58,7 @@ ConstantStep * ConstantStep::clone() const
 }
 
 /* Compute step */
-NumericalPoint ConstantStep::operator()(const NumericalPoint & inP) const
+Point ConstantStep::operator()(const Point & inP) const
 {
   const UnsignedInteger dimension = epsilon_.getDimension();
   if (dimension != inP.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension eps:" << dimension << " x:" << inP.getDimension();

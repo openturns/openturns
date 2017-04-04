@@ -42,7 +42,7 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction()
 
 /* Parameter constructor */
 HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const UnsignedInteger dimension,
-    const NumericalScalar q)
+    const Scalar q)
   : EnumerateFunctionImplementation(dimension)
   , weight_(dimension, 1.0)
 {
@@ -52,8 +52,8 @@ HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(c
 
 
 /* Parameter constructor */
-HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const NumericalPoint & weight,
-    const NumericalScalar q)
+HyperbolicAnisotropicEnumerateFunction::HyperbolicAnisotropicEnumerateFunction(const Point & weight,
+    const Scalar q)
   : EnumerateFunctionImplementation(weight.getDimension())
   , weight_(weight)
   , q_(q)
@@ -90,9 +90,9 @@ void HyperbolicAnisotropicEnumerateFunction::initialize()
 
 
 /* Returns the q-norm of the indice set */
-NumericalScalar HyperbolicAnisotropicEnumerateFunction::qNorm(const Indices & indices) const
+Scalar HyperbolicAnisotropicEnumerateFunction::qNorm(const Indices & indices) const
 {
-  NumericalScalar result = 0.0;
+  Scalar result = 0.0;
   UnsignedInteger dimension = indices.getSize();
   if (q_ == 1.0)
   {
@@ -139,7 +139,7 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
     {
       Indices nextIndices( current.first );
       ++ nextIndices[j];
-      NumericalScalar nextNorm = qNorm( nextIndices );
+      Scalar nextNorm = qNorm( nextIndices );
       ValueType next( nextIndices, nextNorm );
       IndiceCache::iterator it = candidates_.begin();
 
@@ -224,21 +224,21 @@ UnsignedInteger HyperbolicAnisotropicEnumerateFunction::getMaximumDegreeStrataIn
 
 
 /* Q accessor */
-void HyperbolicAnisotropicEnumerateFunction::setQ(const NumericalScalar q)
+void HyperbolicAnisotropicEnumerateFunction::setQ(const Scalar q)
 {
-  if (q <= 0.0) throw InvalidRangeException( HERE ) << "q parameter should be positive";
+  if (!(q > 0.0)) throw InvalidRangeException( HERE ) << "q parameter should be positive";
   q_ = q;
 }
 
 
-NumericalScalar HyperbolicAnisotropicEnumerateFunction::getQ() const
+Scalar HyperbolicAnisotropicEnumerateFunction::getQ() const
 {
   return q_;
 }
 
 
 /* Weight accessor */
-void HyperbolicAnisotropicEnumerateFunction::setWeight(const NumericalPoint & weight)
+void HyperbolicAnisotropicEnumerateFunction::setWeight(const Point & weight)
 {
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
   {
@@ -251,7 +251,7 @@ void HyperbolicAnisotropicEnumerateFunction::setWeight(const NumericalPoint & we
 }
 
 
-NumericalPoint HyperbolicAnisotropicEnumerateFunction::getWeight() const
+Point HyperbolicAnisotropicEnumerateFunction::getWeight() const
 {
   return weight_;
 }

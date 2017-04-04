@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
 
     # We create a numerical math function */
-    myFunction = NumericalMathFunction(
+    myFunction = Function(
         ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
 
     dim = myFunction.getInputDimension()
@@ -46,8 +46,8 @@ try:
     for i in range(dim - 1):
         R[i + 1, i] = 0.5
 
-    mean = NumericalPoint(dim, 0.0)
-    sigma = NumericalPoint(dim, 1.0)
+    mean = Point(dim, 0.0)
+    sigma = Point(dim, 1.0)
     myDistribution2 = Normal(mean, sigma, R)
 
     # We create a 'usual' RandomVector from the Distribution

@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
     // Big test case for correlated components
     // Instanciate one distribution object
     UnsignedInteger dim = 4;
-    NumericalPoint meanPoint(dim, 1.0);
-    NumericalPoint sigma(dim, 1.0);
+    Point meanPoint(dim, 1.0);
+    Point sigma(dim, 1.0);
     CorrelationMatrix R(dim);
     for (UnsignedInteger i = 1; i < dim; i++)
     {
@@ -47,12 +47,12 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 1000;
-    NumericalSample oneSample = distribution.getSample( size );
+    Sample oneSample = distribution.getSample( size );
     fullprint << "sample of size " << size << " first=" << oneSample[0] << " last=" << oneSample[oneSample.getSize() - 1] << std::endl;
-    NumericalPoint mean(oneSample.computeMean());
+    Point mean(oneSample.computeMean());
     fullprint << "mean error (relative)=" << (mean - meanPoint).norm() / meanPoint.norm() << std::endl;
     CovarianceMatrix covariance(oneSample.computeCovariance());
-    NumericalScalar errorCovariance = 0.0;
+    Scalar errorCovariance = 0.0;
     for (UnsignedInteger i = 0; i < dim; i++)
     {
       for (UnsignedInteger j = 0; j < dim; j++)
@@ -63,11 +63,11 @@ int main(int argc, char *argv[])
     fullprint << "covariance error (absolute, normalized)=" << errorCovariance / (dim * dim) << std::endl;
 
     // Define a point
-    NumericalPoint zero(dim, 0.0);
+    Point zero(dim, 0.0);
 
     // Show PDF of zero point
-    NumericalScalar zeroPDF = distribution.computePDF( zero );
-    NumericalScalar zeroCDF = distribution.computeCDF( zero );
+    Scalar zeroPDF = distribution.computePDF( zero );
+    Scalar zeroCDF = distribution.computeCDF( zero );
     fullprint << "Zero point= " << zero
               << " pdf=" << zeroPDF
               << " cdf=" << zeroCDF
@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
     {
       Distribution margin(distribution.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
-      fullprint << "margin PDF=" << margin.computePDF(NumericalPoint(1)) << std::endl;
-      fullprint << "margin CDF=" << margin.computeCDF(NumericalPoint(1)) << std::endl;
+      fullprint << "margin PDF=" << margin.computePDF(Point(1)) << std::endl;
+      fullprint << "margin CDF=" << margin.computeCDF(Point(1)) << std::endl;
       fullprint << "margin quantile=" << margin.computeQuantile(0.5) << std::endl;
       fullprint << "margin realization=" << margin.getRealization() << std::endl;
     }
@@ -91,9 +91,9 @@ int main(int argc, char *argv[])
     fullprint << "indices=" << indices << std::endl;
     Distribution margins(distribution.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
-    fullprint << "margins PDF=" << margins.computePDF(NumericalPoint(2)) << std::endl;
-    fullprint << "margins CDF=" << margins.computeCDF(NumericalPoint(2)) << std::endl;
-    NumericalPoint quantile = margins.computeQuantile(0.5);
+    fullprint << "margins PDF=" << margins.computePDF(Point(2)) << std::endl;
+    fullprint << "margins CDF=" << margins.computeCDF(Point(2)) << std::endl;
+    Point quantile = margins.computeQuantile(0.5);
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
@@ -101,8 +101,8 @@ int main(int argc, char *argv[])
 
     // Very big test case for independent components
     dim = 200;
-    meanPoint = NumericalPoint(dim, 0.1);
-    sigma = NumericalPoint(dim, 1.0);
+    meanPoint = Point(dim, 0.1);
+    sigma = Point(dim, 1.0);
 
     distribution = Normal(meanPoint, sigma, IdentityMatrix(dim));
     fullprint << "Has independent copula? " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
     fullprint << "covariance error (absolute, normalized)=" << errorCovariance / (dim * dim) << std::endl;
 
     // Define a point
-    zero = NumericalPoint(dim, 0.0);
+    zero = Point(dim, 0.0);
 
     // Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF( zero );

@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
   {
 
     /* We create a numerical point of dimension 1 */
-    NumericalPoint point(4);
-    const NumericalPoint & ref_point(point);
+    Point point(4);
+    const Point & ref_point(point);
 
     point[0] = 101;
     point[1] = 202;
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
     fullprint << "point = " << ref_point << std::endl;
 
-    /* We create a 'constant' RandomVector from the NumericalPoint */
+    /* We create a 'constant' RandomVector from the Point */
     RandomVector vect(point);
     fullprint << "vect=" << vect << std::endl;
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     input[1] = "F";
     input[2] = "L";
     input[3] = "I";
-    NumericalMathFunction myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
+    Function myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
 
     /* We create a composite random vector */
     RandomVector output(myFunction, vect);

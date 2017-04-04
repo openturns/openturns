@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     Description palette(Drawable::BuildDefaultPalette(size));
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      NumericalSample vertices(generator.getSample(3));
+      Sample vertices(generator.getSample(3));
       array[i] = OT::Polygon(vertices, palette[i], palette[size - i - 1]);
     }
     Graph graph("An array of polygons", "x", "y", true, "");

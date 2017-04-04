@@ -56,8 +56,8 @@ String IdentityMatrix::__repr__() const
 }
 
 /* Operator () : should do nothing, in order to prevent any modification on the matrix */
-NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j)
+Scalar & IdentityMatrix::operator() (const UnsignedInteger i,
+                                     const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);
@@ -65,7 +65,7 @@ NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & IdentityMatrix::operator() (const UnsignedInteger i,
+const Scalar & IdentityMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j);
@@ -104,8 +104,8 @@ CorrelationMatrix IdentityMatrix::operator * (const CorrelationMatrix & m) const
 }
 
 /* Resolution of a linear system */
-NumericalPoint IdentityMatrix::solveLinearSystem(const NumericalPoint & b,
-    const Bool keepIntact)
+Point IdentityMatrix::solveLinearSystem(const Point & b,
+                                        const Bool keepIntact)
 {
   return b;
 }
@@ -117,46 +117,46 @@ Matrix IdentityMatrix::solveLinearSystem(const Matrix & b,
 }
 
 /* Compute determinant */
-NumericalScalar IdentityMatrix::computeLogAbsoluteDeterminant(NumericalScalar & sign,
+Scalar IdentityMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
     const Bool keepIntact)
 {
   sign = 1.0;
   return 0.0;
 }
 
-NumericalScalar IdentityMatrix::computeDeterminant(const Bool keepIntact)
+Scalar IdentityMatrix::computeDeterminant(const Bool keepIntact)
 {
   return 1.0;
 }
 
 /* Compute eigenvalues */
-NumericalPoint IdentityMatrix::computeEigenValues(const Bool keepIntact)
+Point IdentityMatrix::computeEigenValues(const Bool keepIntact)
 {
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
-NumericalPoint IdentityMatrix::computeEV(SquareMatrix & v,
-    const Bool keepIntact)
+Point IdentityMatrix::computeEV(SquareMatrix & v,
+                                const Bool keepIntact)
 {
   v = *this;
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
 /* Compute singular values */
-NumericalPoint IdentityMatrix::computeSingularValues(const Bool keepIntact)
+Point IdentityMatrix::computeSingularValues(const Bool keepIntact)
 {
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
 /* Compute singular values */
-NumericalPoint IdentityMatrix::computeSVD(Matrix & u,
-    Matrix & vT,
-    const Bool fullSVD,
-    const Bool keepIntact)
+Point IdentityMatrix::computeSVD(Matrix & u,
+                                 Matrix & vT,
+                                 const Bool fullSVD,
+                                 const Bool keepIntact)
 {
   u = *this;
   vT = *this;
-  return NumericalPoint(getNbRows(), 1.0);
+  return Point(getNbRows(), 1.0);
 }
 
 /* Check if the matrix is SPD */

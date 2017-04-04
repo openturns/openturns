@@ -6,40 +6,40 @@ Elliptical distribution=  False
 Continuous =  True
 Elliptical =  False
 Independent =  False
-oneRealization= class=NumericalPoint name=Unnamed dimension=7 values=[0.629877,0.893758,0.102726,0.155617,0.816172,0.0632061,0.0560402]
-oneSample first= class=NumericalPoint name=Unnamed dimension=7 values=[0.714382,0.535485,0.361292,0.857057,0.68437,0.684575,0.881797]  last= class=NumericalPoint name=Unnamed dimension=7 values=[0.791736,0.439906,0.167406,0.184528,0.064039,0.0580909,0.0426336]
-mean= class=NumericalPoint name=Unnamed dimension=7 values=[0.499089,0.499413,0.497874,0.501718,0.499415,0.50039,0.499583]
+oneRealization= class=Point name=Unnamed dimension=7 values=[0.629877,0.893758,0.102726,0.155617,0.816172,0.0632061,0.0560402]
+oneSample first= class=Point name=Unnamed dimension=7 values=[0.714382,0.535485,0.361292,0.857057,0.68437,0.684575,0.881797]  last= class=Point name=Unnamed dimension=7 values=[0.791736,0.439906,0.167406,0.184528,0.064039,0.0580909,0.0426336]
+mean= class=Point name=Unnamed dimension=7 values=[0.499089,0.499413,0.497874,0.501718,0.499415,0.50039,0.499583]
 covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0852147,0.039409,-0.00137053,-0.00121037,1.81336e-05,0.00156707,0.00146308,0.039409,0.0838797,-0.00165553,-0.000669886,0.000708745,0.00204537,0.0015296,-0.00137053,-0.00165553,0.0831566,0.0407169,0.0200307,0.000666704,-0.00105049,-0.00121037,-0.000669886,0.0407169,0.0830004,2.41466e-06,-0.000754962,-0.00126905,1.81336e-05,0.000708745,0.0200307,2.41466e-06,0.0851139,0.000302005,-0.000421039,0.00156707,0.00204537,0.000666704,-0.000754962,0.000302005,0.0835141,0.057349,0.00146308,0.0015296,-0.00105049,-0.00126905,-0.000421039,0.057349,0.0838099]
-Point=  class=NumericalPoint name=Unnamed dimension=7 values=[0.6,0.6,0.6,0.6,0.6,0.6,0.6]
-ddf     = class=NumericalPoint name=Unnamed dimension=7 values=[0.580905,0.580905,0.91183,0.260523,0.130261,0.177648,0.177648]
+Point=  class=Point name=Unnamed dimension=7 values=[0.6,0.6,0.6,0.6,0.6,0.6,0.6]
+ddf     = class=Point name=Unnamed dimension=7 values=[0.580905,0.580905,0.91183,0.260523,0.130261,0.177648,0.177648]
 pdf     =2.185069
 cdf=0.058797
-quantile= class=NumericalPoint name=Unnamed dimension=7 values=[0.992521,0.992521,0.992521,0.992521,0.992521,0.992521,0.992521]
+quantile= class=Point name=Unnamed dimension=7 values=[0.992521,0.992521,0.992521,0.992521,0.992521,0.992521,0.992521]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=7 values=[0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738]
+InverseSurvival= class=Point name=Unnamed dimension=7 values=[0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738,0.00832738]
 Survival(inverseSurvival)=0.950000
-mean= class=NumericalPoint name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
+mean= class=Point name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0833333,0.0373929,0,0,0,0,0,0.0373929,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0402153,0.0199465,0,0,0,0,0.0402153,0.0833333,0,0,0,0,0,0.0199465,0,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0568528,0,0,0,0,0,0.0568528,0.0833333]
-parameters= [class=NumericalPointWithDescription name=ComposedCopula dimension=5 description=[copula_0_theta,copula_1_R_2_1,copula_1_R_3_1,copula_1_R_3_2,copula_2_theta] values=[3,0.5,0.25,0,2]]
+parameters= [class=PointWithDescription name=ComposedCopula dimension=5 description=[copula_0_theta,copula_1_R_2_1,copula_1_R_3_1,copula_1_R_3_2,copula_2_theta] values=[3,0.5,0.25,0,2]]
 indices= [1,2,3,5,6]
 margins= class=ComposedCopula name=ComposedCopula dimension=5 copula[0]=class=IndependentCopula name=IndependentCopula dimension=1 copula[1]=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1] copula[2]=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
 margins PDF=3.086065
 margins CDF=0.005401
-margins quantile= class=NumericalPoint name=Unnamed dimension=5 values=[0.989493,0.989493,0.989493,0.989493,0.989493]
+margins quantile= class=Point name=Unnamed dimension=5 values=[0.989493,0.989493,0.989493,0.989493,0.989493]
 margins CDF(quantile)=0.950000
-margins realization= class=NumericalPoint name=Unnamed dimension=5 values=[0.374352,0.645016,0.316395,0.102431,0.120505]
+margins realization= class=Point name=Unnamed dimension=5 values=[0.374352,0.645016,0.316395,0.102431,0.120505]
 isoprobabilistic transformation (general normal)= [(RosenblattEvaluation(FrankCopula(theta = 3)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(NatafEllipticalCopulaEvaluation(Copula(cholesky=[[  1         0         0        ]
  [ -0.57735   1.1547    0        ]
  [ -0.348155  0.174078  1.04447  ]], E=Normal(mu = 0, sigma = 1))->Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
  [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1,x2]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1])]
-isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(class=SklarCopula name=SklarCopula dimension=2 distribution=class=Student name=Student dimension=2 nu=3 mean=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] sigma=class=NumericalPoint name=Unnamed dimension=2 values=[3,3] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(NatafEllipticalCopulaEvaluation(Copula(cholesky=[[  1         0         0        ]
+isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(class=SklarCopula name=SklarCopula dimension=2 distribution=class=Student name=Student dimension=2 nu=3 mean=class=Point name=Unnamed dimension=2 values=[1,1] sigma=class=Point name=Unnamed dimension=2 values=[3,3] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(NatafEllipticalCopulaEvaluation(Copula(cholesky=[[  1         0         0        ]
  [ -0.57735   1.1547    0        ]
  [ -0.348155  0.174078  1.04447  ]], E=Normal(mu = 0, sigma = 1))->Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
  [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1,x2]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1])]
 isoprobabilistic transformation (independent)= NatafIndependentCopulaEvaluation(IndependentCopula(6)->Normal(6))
-isoprobabilistic transformation (single contributor)= (class=LinearNumericalMathEvaluationImplementation name=Unnamed center=[1,1] constant=[0,0] linear=[[ 0.333333 0        ]
+isoprobabilistic transformation (single contributor)= (class=LinearEvaluation name=Unnamed center=[1,1] constant=[0,0] linear=[[ 0.333333 0        ]
  [ 0        0.333333 ]])o(| y0 = Uniform(a = 0, b = 1) -> y0 : Student(nu = 3, mu = 1, sigma = 3)
 | y1 = Uniform(a = 0, b = 1) -> y1 : Student(nu = 3, mu = 1, sigma = 3)
 )

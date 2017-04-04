@@ -57,48 +57,48 @@ public:
   virtual IndependentCopula * clone() const;
 
   /** Get one realization of the IndependentCopula distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the distribution */
   using CopulaImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the IndependentCopula distribution */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the IndependentCopula distribution */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Compute the survival function */
   using CopulaImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product bilateral confidence interval containing a given probability of the distribution */
-  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the PDF gradient of the distribution */
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDF gradient of the distribution */
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the quantile of the IndependentCopula distribution */
   using DistributionImplementation::computeQuantile;
 #ifndef SWIG
-  NumericalPoint computeQuantile(const NumericalScalar prob,
-                                 const Bool tail,
-				 NumericalScalar & marginalProb) const;
+  Point computeQuantile(const Scalar prob,
+                        const Bool tail,
+                        Scalar & marginalProb) const;
 #endif
 
   /** Get the Kendall concordance of the distribution */
@@ -109,19 +109,19 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  virtual NumericalScalar computeConditionalDDF(const NumericalScalar x, const NumericalPoint & y) const;
+  virtual Scalar computeConditionalDDF(const Scalar x, const Point & y) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalPDF;
-  virtual NumericalScalar computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const;
+  virtual Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  virtual NumericalScalar computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const;
+  virtual Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
+  virtual Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the isoprobabilistic transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;

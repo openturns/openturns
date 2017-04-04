@@ -9,7 +9,7 @@ size = 200
 
 # input sample
 inputSample = ot.Uniform(-1.0, 1.0).getSample(size)
-outputSample = ot.NumericalSample(inputSample)
+outputSample = ot.Sample(inputSample)
 
 # Evaluation of y = ax + b (a: scale, b: translate)
 
@@ -23,7 +23,7 @@ outputSample += translate
 
 # Finally inverse transform using an arbitrary lambda
 lamb = [1.8]
-boxCoxFunction = ot.InverseBoxCoxEvaluationImplementation(lamb)
+boxCoxFunction = ot.InverseBoxCoxEvaluation(lamb)
 
 # transform y using BoxCox function
 outputSample = boxCoxFunction(outputSample)

@@ -47,15 +47,15 @@ public:
 
   /** Constructor with parameters */
   RiskyAndFast(const Solver & solver,
-               const NumericalScalar maximumDistance);
+               const Scalar maximumDistance);
 
 
   /** Virtual constructor */
   virtual RiskyAndFast * clone() const;
 
   /** Solve gives all the roots found applying the root strategy */
-  NumericalScalarCollection solve(const NumericalMathFunction & function,
-                                  const NumericalScalar value);
+  ScalarCollection solve(const Function & function,
+                         const Scalar value);
 
   /** String converter */
   String __repr__() const;

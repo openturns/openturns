@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/MatrixImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,14 +35,14 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ComplexMatrixImplementation
-  : public PersistentCollection<NumericalComplex>
+  : public PersistentCollection<Complex>
 
 {
   CLASSNAME;
 
 #ifndef SWIG
   /** Declaration of friend operators */
-  friend ComplexMatrixImplementation operator * (const NumericalComplex s,
+  friend ComplexMatrixImplementation operator * (const Complex s,
       const ComplexMatrixImplementation & matrix)
   {
     return matrix.operator * (s);
@@ -51,8 +51,8 @@ class OT_API ComplexMatrixImplementation
 
 public:
 
-  typedef Collection<NumericalComplex>        NumericalComplexCollection;
-  typedef Collection<NumericalScalar>         NumericalScalarCollection;
+  typedef Collection<Complex>        ComplexCollection;
+  typedef Collection<Scalar>         ScalarCollection;
 
   /** Default constructor */
   ComplexMatrixImplementation();
@@ -74,7 +74,7 @@ public:
   /** or the rest of the matrix is filled with zeros */
   ComplexMatrixImplementation(const UnsignedInteger rowDim,
                               const UnsignedInteger colDim,
-                              const NumericalComplexCollection & elementsValues);
+                              const ComplexCollection & elementsValues);
 
 
   /** Constructor from external collection */
@@ -83,7 +83,7 @@ public:
   /** or the rest of the matrix is filled with zeros */
   ComplexMatrixImplementation(const UnsignedInteger rowDim,
                               const UnsignedInteger colDim,
-                              const NumericalScalarCollection & elementsValues);
+                              const ScalarCollection & elementsValues);
 
   /** Constructor from MatrixImplementation */
   ComplexMatrixImplementation(const MatrixImplementation & matrix);
@@ -92,16 +92,16 @@ public:
   virtual ComplexMatrixImplementation * clone() const;
 
   /** Resolution of a linear system in case of a rectangular matrix */
-  NumericalComplexCollection solveLinearSystemRect(const NumericalComplexCollection & b,
+  ComplexCollection solveLinearSystemRect(const ComplexCollection & b,
       const Bool keepIntact = true);
 
   ComplexMatrixImplementation solveLinearSystemRect(const ComplexMatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Set small elements to zero */
-  virtual ComplexMatrixImplementation clean(const NumericalScalar threshold) const;
+  virtual ComplexMatrixImplementation clean(const Scalar threshold) const;
 
-  virtual ComplexMatrixImplementation cleanHerm(const NumericalScalar threshold) const;
+  virtual ComplexMatrixImplementation cleanHerm(const Scalar threshold) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -109,12 +109,12 @@ public:
 
   /** Operator () gives access to the elements of the ComplexMatrixImplementation (to modify these elements) */
   /** The element of the ComplexMatrixImplementation is designated by its row number i and its column number j */
-  NumericalComplex & operator () (const UnsignedInteger i,
+  Complex & operator () (const UnsignedInteger i,
                                   const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the ComplexMatrixImplementation (read only) */
   /** The element of the ComplexMatrixImplementation is designated by its row number i and its column number j */
-  const NumericalComplex & operator () (const UnsignedInteger i,
+  const Complex & operator () (const UnsignedInteger i,
                                         const UnsignedInteger j) const;
 
   /** Get the dimensions of the ComplexMatrixImplementation */
@@ -158,11 +158,11 @@ public:
   /** ComplexMatrixImplementation substraction with MatrixImplementation  */
   ComplexMatrixImplementation operator - (const MatrixImplementation & matrix) const;
 
-  /** Multiplication with a NumericalComplex */
-  ComplexMatrixImplementation operator * (const NumericalComplex s) const;
+  /** Multiplication with a Complex */
+  ComplexMatrixImplementation operator * (const Complex s) const;
 
-  /** Division by a NumericalComplex*/
-  ComplexMatrixImplementation operator / (const NumericalComplex s) const;
+  /** Division by a Complex*/
+  ComplexMatrixImplementation operator / (const Complex s) const;
 
   /** ComplexMatrixImplementation multiplications (must have consistent dimensions) */
   ComplexMatrixImplementation genProd(const ComplexMatrixImplementation & matrix) const;
@@ -180,24 +180,24 @@ public:
   ComplexMatrixImplementation symPower(const UnsignedInteger n) const;
   ComplexMatrixImplementation hermPower(const UnsignedInteger n) const;
 
-  /** Multiplications with a NumericalComplexCollection (must have consistent dimensions) */
-  NumericalComplexCollection genVectProd (const NumericalComplexCollection & pt) const;
-  NumericalComplexCollection genVectProd (const NumericalScalarCollection & pt) const;
-  NumericalComplexCollection genVectProd (const NumericalPoint & pt) const;
+  /** Multiplications with a ComplexCollection (must have consistent dimensions) */
+  ComplexCollection genVectProd (const ComplexCollection & pt) const;
+  ComplexCollection genVectProd (const ScalarCollection & pt) const;
+  ComplexCollection genVectProd (const Point & pt) const;
 
   /** Using some optimization (for Hermitian matrix) */
-  NumericalComplexCollection hermVectProd (const NumericalComplexCollection & pt) const;
-  NumericalComplexCollection hermVectProd (const NumericalScalarCollection & pt) const;
-  NumericalComplexCollection hermVectProd (const NumericalPoint & pt) const;
+  ComplexCollection hermVectProd (const ComplexCollection & pt) const;
+  ComplexCollection hermVectProd (const ScalarCollection & pt) const;
+  ComplexCollection hermVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
-  NumericalComplexCollection triangularVectProd(const NumericalComplexCollection & pt,
+  ComplexCollection triangularVectProd(const ComplexCollection & pt,
       const char side = 'L') const;
-  NumericalComplexCollection triangularVectProd(const NumericalScalarCollection & pt,
+  ComplexCollection triangularVectProd(const ScalarCollection & pt,
       const char side = 'L') const;
 
 
-  NumericalComplexCollection triangularVectProd(const NumericalPoint & pt,
+  ComplexCollection triangularVectProd(const Point & pt,
       const char side = 'L') const;
 
   /** Check if the matrix is self-adjoint */
@@ -230,7 +230,7 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalComplex * __baseaddress__ () const;
+  const Complex * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
@@ -258,7 +258,7 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
     const UnsignedInteger colDim,
     const InputIterator first,
     const InputIterator last)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim, 0.0),
+  : PersistentCollection<Complex>(rowDim * colDim, 0.0),
     nbRows_(rowDim),
     nbColumns_(colDim)
 {

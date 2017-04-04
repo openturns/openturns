@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   const UnsignedInteger size = 100;
 
-  ARMACoefficients ARCoefficients(NumericalPoint(1, 0.3));
+  ARMACoefficients ARCoefficients(Point(1, 0.3));
   ARMACoefficients MACoefficients(0);
   RegularGrid timeGrid(0.0, 0.1, size);
   // White noise ==> gaussian

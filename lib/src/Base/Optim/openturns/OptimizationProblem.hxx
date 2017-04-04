@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -55,31 +55,31 @@ public:
   OptimizationProblem(const Implementation & p_implementation);
 
   /** Constructor with parameters */
-  explicit OptimizationProblem(const NumericalMathFunction & objective);
+  explicit OptimizationProblem(const Function & objective);
 
   /** Constructor with parameters */
-  OptimizationProblem(const NumericalMathFunction & objective,
-                      const NumericalMathFunction & equalityConstraint,
-                      const NumericalMathFunction & inequalityConstraint,
+  OptimizationProblem(const Function & objective,
+                      const Function & equalityConstraint,
+                      const Function & inequalityConstraint,
                       const Interval & bounds);
 
   /** Constructor with parameters */
-  OptimizationProblem(const NumericalMathFunction & levelFunction,
-                      NumericalScalar levelValue);
+  OptimizationProblem(const Function & levelFunction,
+                      Scalar levelValue);
 
   /** Objective functions accessor */
-  NumericalMathFunction getObjective() const;
-  void setObjective(const NumericalMathFunction & objective);
+  Function getObjective() const;
+  void setObjective(const Function & objective);
   Bool hasMultipleObjective() const;
 
   /** Equality constraint function accessor */
-  NumericalMathFunction getEqualityConstraint() const;
-  void setEqualityConstraint(const NumericalMathFunction & equalityConstraint);
+  Function getEqualityConstraint() const;
+  void setEqualityConstraint(const Function & equalityConstraint);
   Bool hasEqualityConstraint() const;
 
   /** Inequality constraint function accessor */
-  NumericalMathFunction getInequalityConstraint() const;
-  void setInequalityConstraint(const NumericalMathFunction & inequalityConstraint);
+  Function getInequalityConstraint() const;
+  void setInequalityConstraint(const Function & inequalityConstraint);
   Bool hasInequalityConstraint() const;
 
   /** Bounds accessor */
@@ -88,13 +88,13 @@ public:
   Bool hasBounds() const;
 
   /** Level function accessor */
-  NumericalMathFunction getLevelFunction() const;
-  void setLevelFunction(const NumericalMathFunction & levelFunction);
+  Function getLevelFunction() const;
+  void setLevelFunction(const Function & levelFunction);
   Bool hasLevelFunction() const;
 
   /** Level value accessor */
-  NumericalScalar getLevelValue() const;
-  void setLevelValue(NumericalScalar levelValue);
+  Scalar getLevelValue() const;
+  void setLevelValue(Scalar levelValue);
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;

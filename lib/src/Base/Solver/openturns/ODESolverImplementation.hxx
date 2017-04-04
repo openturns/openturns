@@ -51,8 +51,8 @@ public:
   virtual String __repr__() const;
 
   /** Solve the ODE */
-  virtual NumericalSample solve(const NumericalPoint & initialState,
-                                const NumericalPoint & timeGrid) const;
+  virtual Sample solve(const Point & initialState,
+                       const Point & timeGrid) const;
 
   /** Transition function accessor */
   void setTransitionFunction(const FieldFunction & transitionFunction);

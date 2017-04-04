@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
       fullprint << "hermite(" << i << ")=" << hermite.build(i).__str__() << std::endl;
       //        fullprint << "hermite(" << i << ")=" << UniVariatePolynomial(clean(hermite.build(i).getCoefficients())).__str__() << std::endl;
     }
-    NumericalPoint roots(hermite.getRoots(10));
+    Point roots(hermite.getRoots(10));
     fullprint << "hermite(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
-    NumericalPoint nodes(hermite.getNodesAndWeights(10, weights));
+    Point weights;
+    Point nodes(hermite.getNodesAndWeights(10, weights));
     fullprint << "hermite(10) nodes=" << nodes << " and weights=" << weights <<  std::endl;
   }
   catch (TestFailed & ex)

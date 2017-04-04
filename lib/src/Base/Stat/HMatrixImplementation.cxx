@@ -38,7 +38,7 @@ CLASSNAMEINIT(HMatrixImplementation);
 static void trampoline_simple(void* user_context, int row, int col, void* result)
 {
   HMatrixRealAssemblyFunction* assembly_function = static_cast<HMatrixRealAssemblyFunction*>(user_context);
-  NumericalScalar *ptrValue = static_cast<NumericalScalar*>(result);
+  Scalar *ptrValue = static_cast<Scalar*>(result);
   *ptrValue = assembly_function->operator()(row, col);
 }
 
@@ -78,7 +78,7 @@ public:
   ParallelBlockData(UnsignedInteger outputDimension,
                     UnsignedInteger rowOffset, UnsignedInteger rowCount,
                     UnsignedInteger colOffset, UnsignedInteger colCount)
-    : list_couples_(rowCount*colCount)
+    : list_couples_(rowCount * colCount)
     , outputDimension_(outputDimension)
     , rowOffset_(rowOffset)
     , rowCount_(rowCount)
@@ -146,7 +146,7 @@ static void trampoline_compute(void* v_data,
   const int firstRowIndex(rowBlockBegin + row_start);
   const int firstColumnIndex(colBlockBegin + col_start);
   CovarianceMatrix localMat(outputDimension);
-  NumericalScalar * result = static_cast<NumericalScalar*>(block);
+  Scalar * result = static_cast<Scalar*>(block);
   for (std::vector<couple_data_t>::const_iterator cit = list_couples.begin(); cit != list_couples.end(); ++cit)
   {
     const int r_point_e = cit->point_1;
@@ -160,7 +160,7 @@ static void trampoline_compute(void* v_data,
 
     if (lastPoint1 != r_point_e || lastPoint2 != c_point_e)
     {
-      memset( &localMat.getImplementation()->operator[](0), 0, outputDimension * outputDimension * sizeof(NumericalScalar) );
+      memset( &localMat.getImplementation()->operator[](0), 0, outputDimension * outputDimension * sizeof(Scalar) );
       blockData->f_->compute( r_point_e,  c_point_e, &localMat );
       lastPoint1 = r_point_e;
       lastPoint2 = c_point_e;
@@ -322,7 +322,7 @@ void HMatrixImplementation::factorize(const String& method)
 #endif
 }
 
-void HMatrixImplementation::scale(NumericalScalar alpha)
+void HMatrixImplementation::scale(Scalar alpha)
 {
 #ifdef OPENTURNS_HAVE_HMAT
   static_cast<hmat_interface_t*>(hmatInterface_)->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
@@ -331,18 +331,18 @@ void HMatrixImplementation::scale(NumericalScalar alpha)
 #endif
 }
 
-void HMatrixImplementation::gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const
+void HMatrixImplementation::gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   // gemv() below reorders x indices, thus x is not constant.
-  NumericalPoint xcopy(x);
+  Point xcopy(x);
   static_cast<hmat_interface_t*>(hmatInterface_)->gemv(trans, &alpha, static_cast<hmat_matrix_t*>(hmat_), &xcopy[0], &beta, &y[0], 1);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
 #endif
 }
 
-void HMatrixImplementation::gemm(char transA, char transB, NumericalScalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, NumericalScalar beta)
+void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta)
 {
 #ifdef OPENTURNS_HAVE_HMAT
   static_cast<hmat_interface_t*>(hmatInterface_)->gemm(transA, transB, &alpha, static_cast<hmat_matrix_t*>(a.hmat_), static_cast<hmat_matrix_t*>(b.hmat_), &beta, static_cast<hmat_matrix_t*>(hmat_));
@@ -360,7 +360,7 @@ void HMatrixImplementation::transpose()
 #endif
 }
 
-NumericalScalar HMatrixImplementation::norm() const
+Scalar HMatrixImplementation::norm() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   return static_cast<hmat_interface_t*>(hmatInterface_)->norm(static_cast<hmat_matrix_t*>(hmat_));
@@ -369,10 +369,10 @@ NumericalScalar HMatrixImplementation::norm() const
 #endif
 }
 
-NumericalPoint HMatrixImplementation::getDiagonal() const
+Point HMatrixImplementation::getDiagonal() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  NumericalPoint diag(hmatClusterTree_.get()->getSize());
+  Point diag(hmatClusterTree_.get()->getSize());
   static_cast<hmat_interface_t*>(hmatInterface_)->extract_diagonal(static_cast<hmat_matrix_t*>(hmat_), &diag[0], diag.getDimension());
   return diag;
 #else
@@ -380,11 +380,11 @@ NumericalPoint HMatrixImplementation::getDiagonal() const
 #endif
 }
 
-NumericalPoint HMatrixImplementation::solve(const NumericalPoint& b, Bool trans) const
+Point HMatrixImplementation::solve(const Point& b, Bool trans) const
 {
   if (trans) throw NotYetImplementedException(HERE) << "transposed not yet supported in HMatrixImplementation::solve";
 #ifdef OPENTURNS_HAVE_HMAT
-  NumericalPoint result(b);
+  Point result(b);
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result[0], 1);
   return result;
 #else
@@ -404,11 +404,11 @@ Matrix HMatrixImplementation::solve(const Matrix& m, Bool trans) const
 #endif
 }
 
-NumericalPoint HMatrixImplementation::solveLower(const NumericalPoint& b, Bool trans) const
+Point HMatrixImplementation::solveLower(const Point& b, Bool trans) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   int t = trans;
-  NumericalPoint result(b);
+  Point result(b);
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result[0], 1);
   return result;
 #else

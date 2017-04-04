@@ -24,11 +24,11 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps = pow(0.1, 1.0 * digits);
+  Scalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -49,12 +49,12 @@ int main(int argc, char *argv[])
     inVars.add("y");
     Description outVar(1, "z");
     Description formula(1, "3*(1-x)^2*exp(-x^2-(y+1)^2)-10*(x/5-x^3-y^5)*exp(-x^2-y^2)-exp(-(x+1)^2-y^2)/3");
-    NumericalMathFunction model(inVars, outVar, formula);
+    Function model(inVars, outVar, formula);
 
     UnsignedInteger dim = model.getInputDimension();
-    NumericalPoint startingPoint(dim);
+    Point startingPoint(dim);
 
-    Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 3.0));
+    Interval bounds(Point(dim, -3.0), Point(dim, 3.0));
 
     // problem
     OptimizationProblem problem(model);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     // multistart
     Normal distribution(dim);
     LHSExperiment experiment(distribution, 20);
-    NumericalSample startingPoints(experiment.generate());
+    Sample startingPoints(experiment.generate());
     algo = MultiStart(solver, startingPoints);
     algo.run();
     result = algo.getResult();

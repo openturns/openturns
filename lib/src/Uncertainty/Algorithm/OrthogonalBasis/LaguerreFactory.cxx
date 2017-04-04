@@ -42,7 +42,7 @@ LaguerreFactory::LaguerreFactory()
 
 
 /* Parameter constructor: k is the order of the generalized Laguerre polynomial, associated with the Gamma(k+1, 1, 0) distribution */
-LaguerreFactory::LaguerreFactory(const NumericalScalar k,
+LaguerreFactory::LaguerreFactory(const Scalar k,
                                  const ParameterSet parameterization)
   : OrthogonalUniVariatePolynomialFactory( (parameterization == ANALYSIS ? Gamma(k + 1.0, 1.0, 0.0) : Gamma(k, 1.0, 0.0) ) ),
     k_(k)
@@ -64,13 +64,13 @@ LaguerreFactory::Coefficients LaguerreFactory::getRecurrenceCoefficients(const U
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar factor = sqrt(k_ + 1.0);
+    const Scalar factor = sqrt(k_ + 1.0);
     recurrenceCoefficients[0] = 1.0 / factor;
     recurrenceCoefficients[1] = -factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar factor = 1.0 / sqrt((n + 1.0) * (n + 1.0 + k_));
+  const Scalar factor = 1.0 / sqrt((n + 1.0) * (n + 1.0 + k_));
   recurrenceCoefficients[0] = factor;
   recurrenceCoefficients[1] = -(2.0 * n + 1.0 + k_) * factor;
   recurrenceCoefficients[2] = -sqrt((n + k_) * n) * factor;
@@ -78,7 +78,7 @@ LaguerreFactory::Coefficients LaguerreFactory::getRecurrenceCoefficients(const U
 }
 
 /* K accessor */
-NumericalScalar LaguerreFactory::getK() const
+Scalar LaguerreFactory::getK() const
 {
   return k_;
 }

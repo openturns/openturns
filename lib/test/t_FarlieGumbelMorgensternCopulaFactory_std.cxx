@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     FarlieGumbelMorgensternCopula distribution(0.7);
     UnsignedInteger size = 1000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     FarlieGumbelMorgensternCopulaFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

@@ -150,7 +150,7 @@ Examples
 
 Returns
 -------
-lowerBound : :class:`~openturns.NumericalPoint`
+lowerBound : :class:`~openturns.Point`
     Value of the lower bound.
 
 Examples
@@ -186,7 +186,7 @@ Examples
 
 Returns
 -------
-upperBound : :class:`~openturns.NumericalPoint`
+upperBound : :class:`~openturns.Point`
     Value of the upper bound.
 
 Examples

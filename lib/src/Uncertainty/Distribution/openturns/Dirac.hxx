@@ -41,10 +41,10 @@ public:
   Dirac();
 
   /** Parameters constructor */
-  explicit Dirac(const NumericalScalar p);
+  explicit Dirac(const Scalar p);
 
   /** Parameters constructor */
-  explicit Dirac(const NumericalPoint & point);
+  explicit Dirac(const Point & point);
 
   /** Comparison operator */
   Bool operator ==(const Dirac & other) const;
@@ -63,64 +63,64 @@ public:
   virtual Dirac * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get a sample of the distribution */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  NumericalPoint computeQuantile(const NumericalScalar prob,
-                                 const Bool tail = false) const;
+  Point computeQuantile(const Scalar prob,
+                        const Bool tail = false) const;
 
   /** Get the PDFGradient of the distribution */
   using DiscreteDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using DiscreteDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Compute the generating function, i.e. psi(z) = E(z^X) */
-  NumericalComplex computeGeneratingFunction(const NumericalComplex & z) const;
-  NumericalComplex computeLogGeneratingFunction(const NumericalComplex & z) const;
+  Complex computeGeneratingFunction(const Complex & z) const;
+  Complex computeLogGeneratingFunction(const Complex & z) const;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using DiscreteDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -137,8 +137,8 @@ public:
   /* Interface specific to Dirac */
 
   /** Point accessor */
-  void setPoint(const NumericalPoint & point);
-  NumericalPoint getPoint() const;
+  void setPoint(const Point & point);
+  Point getPoint() const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -166,11 +166,11 @@ private:
   void computeRange();
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** The support of the Dirac distribution */
-  NumericalPoint point_;
+  Point point_;
 
 }; /* class Dirac */
 

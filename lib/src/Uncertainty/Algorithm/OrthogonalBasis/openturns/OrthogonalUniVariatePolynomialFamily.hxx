@@ -55,11 +55,11 @@ public:
   OrthogonalUniVariatePolynomial build(const UnsignedInteger degree) const;
 
   /** Roots of the polynomial of degree n as the eigenvalues of the associated matrix */
-  NumericalPoint getRoots(const UnsignedInteger n) const;
+  Point getRoots(const UnsignedInteger n) const;
 
   /** Nodes and weights of the polynomial of degree n as the eigenvalues of the associated matrix, to build quadrature rules */
-  NumericalPoint getNodesAndWeights(const UnsignedInteger n,
-                                    NumericalPoint & weights) const;
+  Point getNodesAndWeights(const UnsignedInteger n,
+                           Point & weights) const;
 
   /** Measure accessor */
   Distribution getMeasure() const;

@@ -35,15 +35,15 @@ CLASSNAMEINIT(DistributionTransformation);
 
 /* Default constructor */
 DistributionTransformation::DistributionTransformation ()
-  : NumericalMathFunction()
+  : Function()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 DistributionTransformation::DistributionTransformation (const Distribution & distribution,
-                                                        const Distribution & measure)
-  : NumericalMathFunction(Build(distribution, measure))
+    const Distribution & measure)
+  : Function(Build(distribution, measure))
   , left_(distribution)
   , right_(measure)
 {
@@ -51,11 +51,11 @@ DistributionTransformation::DistributionTransformation (const Distribution & dis
 }
 
 /* Parameter constructor */
-NumericalMathFunction DistributionTransformation::Build (const Distribution & distribution,
-                                                         const Distribution & measure)
+Function DistributionTransformation::Build (const Distribution & distribution,
+    const Distribution & measure)
 {
 
-  NumericalMathFunction transformation;
+  Function transformation;
   LOGINFO("Build the iso-probabilistic transformation");
   const Bool noTransformation = (measure == distribution);
   const UnsignedInteger dimension = distribution.getDimension();
@@ -85,7 +85,7 @@ NumericalMathFunction DistributionTransformation::Build (const Distribution & di
       const MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
       const MarginalTransformationGradient gradientT(evaluationT);
       const MarginalTransformationHessian hessianT(evaluationT);
-      transformation = NumericalMathFunction(evaluationT.clone(), gradientT.clone(), hessianT.clone());
+      transformation = Function(evaluationT.clone(), gradientT.clone(), hessianT.clone());
     }
     // The third case is when both distributions share the same standard
     // distribution in which case the transformation is made of
@@ -96,8 +96,8 @@ NumericalMathFunction DistributionTransformation::Build (const Distribution & di
       {
         LOGINFO("Same standard space for input vector and basis");
         // The distributions share the same standard space, it is thus possible to transform one into the other by composition between their isoprobabilistic transformations. T = T^{-1}_Z o T_X and T^{-1} = T^{-1}_X o T_Z
-        const NumericalMathFunction TX(distribution.getIsoProbabilisticTransformation());
-        const NumericalMathFunction TinvZ(measure.getInverseIsoProbabilisticTransformation());
+        const Function TX(distribution.getIsoProbabilisticTransformation());
+        const Function TinvZ(measure.getInverseIsoProbabilisticTransformation());
         transformation = ComposedFunction(TinvZ, TX);
       }
       // The fourth and last case is when the standard spaces are different
@@ -106,8 +106,8 @@ NumericalMathFunction DistributionTransformation::Build (const Distribution & di
       else
       {
         LOGINFO("Different standard space for input vector and basis");
-        NumericalMathFunction TX;
-        NumericalMathFunction invTX;
+        Function TX;
+        Function invTX;
         if (distribution.getStandardDistribution().hasIndependentCopula())
         {
           LOGINFO("Normal standard space for input vector");
@@ -116,10 +116,10 @@ NumericalMathFunction DistributionTransformation::Build (const Distribution & di
         else
         {
           LOGINFO("Non-normal standard space for input vector");
-          TX = NumericalMathFunction(NumericalMathFunctionImplementation(RosenblattEvaluation(distribution.getImplementation()).clone()));
+          TX = Function(FunctionImplementation(RosenblattEvaluation(distribution.getImplementation()).clone()));
         }
-        NumericalMathFunction TZ;
-        NumericalMathFunction invTZ;
+        Function TZ;
+        Function invTZ;
         if (measure.getStandardDistribution().hasIndependentCopula())
         {
           LOGINFO("Normal standard space for basis");
@@ -128,7 +128,7 @@ NumericalMathFunction DistributionTransformation::Build (const Distribution & di
         else
         {
           LOGINFO("Non-normal standard space for basis");
-          invTZ = NumericalMathFunction(NumericalMathFunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
+          invTZ = Function(FunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
         }
         transformation = ComposedFunction(invTZ, TX);
       }

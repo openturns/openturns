@@ -5,7 +5,7 @@ import openturns as ot
 import math as m
 
 
-def printNumericalPoint(point, digits):
+def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
     format = "%." + str(digits) + "f"
@@ -24,7 +24,7 @@ def printNumericalPoint(point, digits):
 
 
 # bounds
-linear = ot.NumericalMathFunction(
+linear = ot.Function(
     ['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
 
 dim = 4
@@ -49,39 +49,39 @@ for algoName in algoNames:
         for inequality in [True, False]:
             for equality in [True, False]:
                 problem = ot.OptimizationProblem(
-                    linear, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+                    linear, ot.Function(), ot.Function(), bounds)
                 problem.setMinimization(minimization)
                 if inequality:
                     # x3 <= x1
-                    problem.setInequalityConstraint(ot.NumericalMathFunction(
+                    problem.setInequalityConstraint(ot.Function(
                         ['x1', 'x2', 'x3', 'x4'], ['ineq'], ['x1-x3']))
                 if equality:
                     # x4 = 2
-                    problem.setEqualityConstraint(ot.NumericalMathFunction(
+                    problem.setEqualityConstraint(ot.Function(
                         ['x1', 'x2', 'x3', 'x4'], ['eq'], ['x4-2']))
                 try:
                     ot.NLopt.SetSeed(0)
                     algo.setProblem(problem)
                     algo.setMaximumEvaluationNumber(5000)
                     algo.setStartingPoint(startingPoint)
-                    #algo.setInitialStep([0.1] * dim)
+                    # algo.setInitialStep([0.1] * dim)
                     localAlgo = ot.NLopt('LD_MMA')
                     algo.setLocalSolver(localAlgo)
                     print('algo=', algo)
                     algo.run()
                     result = algo.getResult()
-                    print('x^=', printNumericalPoint(
+                    print('x^=', printPoint(
                         result.getOptimalPoint(), 3))
                 except:
                     print('-- Not supported: algo=', algoName,
                           'inequality=', inequality, 'equality=', equality)
 
 # FORM
-f = ot.NumericalMathFunction(
+f = ot.Function(
     ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
 dim = f.getInputDimension()
 mean = [50.0, 1.0, 10.0, 5.0]
-sigma = ot.NumericalPoint(dim, 1.0)
+sigma = ot.Point(dim, 1.0)
 R = ot.IdentityMatrix(dim)
 distribution = ot.Normal(mean, sigma, R)
 vect = ot.RandomVector(distribution)

@@ -38,7 +38,7 @@ OT_LeastSquaresMethod_doc
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     Input sample."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getInputSample
@@ -51,7 +51,7 @@ OT_LeastSquaresMethod_getInputSample_doc
 
 Returns
 -------
-weight : :class:`~openturns.NumericalPoint`
+weight : :class:`~openturns.Point`
     Weights."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getWeight
@@ -125,7 +125,7 @@ b : sequence of float
 
 Returns
 -------
-a : :class:`~openturns.NumericalPoint`
+a : :class:`~openturns.Point`
     The solution."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solve
@@ -147,7 +147,7 @@ b : sequence of float
 
 Returns
 -------
-x : :class:`~openturns.NumericalPoint`
+x : :class:`~openturns.Point`
     The solution."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solveNormal
@@ -181,7 +181,7 @@ OT_LeastSquaresMethod_getGramInverse_doc
 
 Returns
 -------
-d : :class:`~openturns.NumericalPoint`
+d : :class:`~openturns.Point`
     The diagonal of the inverse Gram matrix."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseDiag
@@ -198,7 +198,7 @@ OT_LeastSquaresMethod_getGramInverseDiag_doc
 
 Returns
 -------
-x : :class:`~openturns.NumericalScalar`
+x : :class:`~openturns.Scalar`
     The trace of inverse Gram matrix."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseTrace
@@ -232,7 +232,7 @@ OT_LeastSquaresMethod_getH_doc
 
 Returns
 -------
-d : :class:`~openturns.NumericalPoint`
+d : :class:`~openturns.Point`
     The diagonal of H."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getHDiag

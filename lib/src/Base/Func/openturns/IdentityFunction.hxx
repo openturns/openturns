@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_IDENTITYFUNCTION_HXX
 #define OPENTURNS_IDENTITYFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * the function, the gradient or the hessian.
  */
 class OT_API IdentityFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:

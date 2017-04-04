@@ -90,9 +90,9 @@ Bool EventProcess::checkTimeSerieValuesInDomain(const Field & fld) const
 }
 
 /* Realization accessor */
-NumericalPoint EventProcess::getRealization() const
+Point EventProcess::getRealization() const
 {
-  return NumericalPoint(1, checkTimeSerieValuesInDomain(process_.getRealization()));
+  return Point(1, checkTimeSerieValuesInDomain(process_.getRealization()));
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -77,8 +77,8 @@ Uncertainty layer.
 
 -  Base layer: it contains all the classes not related to the
    probabilistic concepts. It covers the elementary data types (vectors
-   as NumericalPoint, samples as NumericalSamples), the concept of
-   models (NumericalMathFunction), the linear algebra (Matrix, Tensor)
+   as Point, samples as Samples), the concept of
+   models (Function), the linear algebra (Matrix, Tensor)
    and the general interest classes (memory management, resource
    management);
 

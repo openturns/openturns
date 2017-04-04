@@ -14,7 +14,7 @@ try:
 
         # We create a numerical math function
         inputVar = list(['X' + str(i) for i in range(dim)])
-        myFunction = NumericalMathFunction(inputVar, ['y'], ['0'])
+        myFunction = Function(inputVar, ['y'], ['0'])
 
         # We create a normal distribution point of dimension 1
         mean = [0.] * dim
@@ -34,22 +34,22 @@ try:
 
         std = Normal()
 
-        beta = NumericalPoint(3)
+        beta = Point(3)
         beta[0] = round(-std.computeQuantile(1e-3)[0])
         beta[1] = round(-std.computeQuantile(1e-5)[0])
         beta[2] = round(-std.computeQuantile(1e-7)[0])
 
-        importanceLevel = NumericalPoint(3)
+        importanceLevel = Point(3)
         importanceLevel[0] = 0.01
         importanceLevel[1] = 0.05
         importanceLevel[2] = 0.10
 
-        accuracyLevel = NumericalPoint(3)
+        accuracyLevel = Point(3)
         accuracyLevel[0] = 1.5
         accuracyLevel[1] = 2.0
         accuracyLevel[2] = 4.0
 
-        confidenceLevel = NumericalPoint(3)
+        confidenceLevel = Point(3)
         confidenceLevel[0] = 0.90
         confidenceLevel[1] = 0.95
         confidenceLevel[2] = 0.99
@@ -69,7 +69,7 @@ try:
         for indexBeta in range(beta.getDimension()):
 
             # We create the design point
-            designPoint = NumericalPoint(dim, 0.0)
+            designPoint = Point(dim, 0.0)
             designPoint[0] = beta[indexBeta]
 
             # loop on the importance level epsilon
@@ -100,7 +100,7 @@ try:
         for indexBeta in range(beta.getDimension()):
 
             # We create the design point
-            designPoint = NumericalPoint(dim, 0.0)
+            designPoint = Point(dim, 0.0)
             designPoint[0] = beta[indexBeta]
 
             # loop on the importance level epsilon

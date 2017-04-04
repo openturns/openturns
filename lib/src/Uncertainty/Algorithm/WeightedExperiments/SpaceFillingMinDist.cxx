@@ -55,23 +55,23 @@ String SpaceFillingMinDist::__repr__() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingMinDist::evaluate(const NumericalSample & sample) const
+Scalar SpaceFillingMinDist::evaluate(const Sample & sample) const
 {
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
-  const NumericalSample normalizedSample(normalize(sample));
-  const NumericalScalar* addr_sample = &normalizedSample[0][0];
-  NumericalScalar minDist = std::numeric_limits<NumericalScalar>::max();
+  const Sample normalizedSample(normalize(sample));
+  const Scalar* addr_sample = &normalizedSample[0][0];
+  Scalar minDist = std::numeric_limits<Scalar>::max();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar* ptI = addr_sample + dimension * i;
+    const Scalar* ptI = addr_sample + dimension * i;
     for (UnsignedInteger j = 0; j < i; ++j)
     {
-      const NumericalScalar* ptJ = addr_sample + dimension * j;
-      NumericalScalar squaredNorm = 0.0;
+      const Scalar* ptJ = addr_sample + dimension * j;
+      Scalar squaredNorm = 0.0;
       for (UnsignedInteger d = 0; d < dimension; ++d)
       {
-        const NumericalScalar delta(ptI[d] - ptJ[d]);
+        const Scalar delta(ptI[d] - ptJ[d]);
         squaredNorm += delta * delta;
       }
       minDist = std::min(minDist, squaredNorm);

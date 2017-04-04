@@ -41,14 +41,14 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
 }
 
 /* Default constructor */
-ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const NumericalSample & x,
-    const NumericalSample & y,
+ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
+    const Sample & y,
     const Basis & psi,
     const Indices & indices)
   : PersistentObject()
   , x_(x)
   , y_(y)
-  , weight_(NumericalPoint( x.getSize(), 1.0 ))
+  , weight_(Point( x.getSize(), 1.0 ))
   , hasUniformWeight_(true)
   , psi_(psi)
   , currentIndices_(indices)
@@ -64,9 +64,9 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
 }
 
 /* Default constructor */
-ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const NumericalSample & x,
-    const NumericalSample & y,
-    const NumericalPoint & weight,
+ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
+    const Sample & y,
+    const Point & weight,
     const Basis & psi,
     const Indices & indices)
   : PersistentObject()
@@ -96,32 +96,32 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementation::clo
 }
 
 /* Accessors */
-NumericalSample ApproximationAlgorithmImplementation::getX() const
+Sample ApproximationAlgorithmImplementation::getX() const
 {
   return x_;
 }
 
-NumericalSample ApproximationAlgorithmImplementation::getY() const
+Sample ApproximationAlgorithmImplementation::getY() const
 {
   return y_;
 }
 
 /* Weight accessors */
-void ApproximationAlgorithmImplementation::setWeight(const NumericalPoint & weight)
+void ApproximationAlgorithmImplementation::setWeight(const Point & weight)
 {
   const UnsignedInteger size = weight.getSize();
-  const NumericalScalar firstWeight = weight[0];
+  const Scalar firstWeight = weight[0];
   hasUniformWeight_ = true;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalScalar wI = weight[i];
-    if (wI <= 0.0) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
+    const Scalar wI = weight[i];
+    if (!(wI > 0.0)) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
     hasUniformWeight_ = hasUniformWeight_ && (wI == firstWeight);
   }
   weight_ = weight;
 }
 
-NumericalPoint ApproximationAlgorithmImplementation::getWeight() const
+Point ApproximationAlgorithmImplementation::getWeight() const
 {
   return weight_;
 }
@@ -161,37 +161,37 @@ String ApproximationAlgorithmImplementation::__str__(const String & offset) cons
 }
 
 
-void ApproximationAlgorithmImplementation::setCoefficients(const NumericalPoint & coefficients)
+void ApproximationAlgorithmImplementation::setCoefficients(const Point & coefficients)
 {
   coefficients_ = coefficients;
   isAlreadyComputedCoefficients_ = true;
 }
 
 
-NumericalPoint ApproximationAlgorithmImplementation::getCoefficients()
+Point ApproximationAlgorithmImplementation::getCoefficients()
 {
   if (! isAlreadyComputedCoefficients_) run();
 
   return coefficients_;
 }
 
-void ApproximationAlgorithmImplementation::setResidual(const NumericalScalar residual)
+void ApproximationAlgorithmImplementation::setResidual(const Scalar residual)
 {
   residual_ = residual;
 }
 
-NumericalScalar ApproximationAlgorithmImplementation::getResidual()
+Scalar ApproximationAlgorithmImplementation::getResidual()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return residual_;
 }
 
-void ApproximationAlgorithmImplementation::setRelativeError(const NumericalScalar relativeError)
+void ApproximationAlgorithmImplementation::setRelativeError(const Scalar relativeError)
 {
   relativeError_ = relativeError;
 }
 
-NumericalScalar ApproximationAlgorithmImplementation::getRelativeError()
+Scalar ApproximationAlgorithmImplementation::getRelativeError()
 {
   if (! isAlreadyComputedCoefficients_) run();
   return relativeError_;
@@ -225,7 +225,7 @@ void ApproximationAlgorithmImplementation::save(Advocate & adv) const
 void ApproximationAlgorithmImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  NumericalPoint weight;
+  Point weight;
   adv.loadAttribute("x_", x_);
   adv.loadAttribute("y_", y_);
   adv.loadAttribute("weight_", weight);

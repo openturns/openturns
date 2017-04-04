@@ -22,9 +22,9 @@
 #define OPENTURNS_INVERSEROSENBLATTEVALUATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"
 
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 class OT_API InverseRosenblattEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -53,10 +53,10 @@ public:
   virtual InverseRosenblattEvaluation * clone() const;
 
   /** Evaluation */
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

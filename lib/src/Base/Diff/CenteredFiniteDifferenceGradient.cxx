@@ -39,23 +39,23 @@ CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient() :
 }
 
 /* Parameter constructor */
-CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
-    const EvaluationImplementation & p_evaluation)
+CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Point & epsilon,
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 
 {
 }
 
 /* Parameter constructor */
-CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
+CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Scalar epsilon,
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(epsilon, p_evaluation)
 {
 }
 
 /* Parameter constructor */
 CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-    const EvaluationImplementation & p_evaluation)
+    const EvaluationPointer & p_evaluation)
   : FiniteDifferenceGradient(step, p_evaluation)
 {
   // Nothing to do
@@ -88,20 +88,20 @@ String CenteredFiniteDifferenceGradient::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Gradient () */
-Matrix CenteredFiniteDifferenceGradient::gradient(const NumericalPoint & inP) const
+Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
-  NumericalPoint step(finiteDifferenceStep_.operator()(inP));
+  Point step(finiteDifferenceStep_.operator()(inP));
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim points. */
-  NumericalSample gridPoints(2 * inputDimension, inP);
+  Sample gridPoints(2 * inputDimension, inP);
   for(UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     gridPoints[2 * i][i] += step[i];
     gridPoints[2 * i + 1][i] -= step[i];
   } // For i
   /* Evaluate the evaluation */
-  NumericalSample gridValues(p_evaluation_->operator()(gridPoints));
+  Sample gridValues(p_evaluation_->operator()(gridPoints));
   /* Compute the gradient */
   Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)

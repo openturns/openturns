@@ -18,7 +18,7 @@ OT::Matrix OT::Matrix::computeSVD(OT::Matrix & u, OT::Matrix & vT, const Bool fu
 %ignore OT::Matrix::getColumn;
 
 %template(MatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::MatrixImplementation>;
-%apply const NumericalScalarCollection & { const OT::Matrix::NumericalScalarCollection & };
+%apply const ScalarCollection & { const OT::Matrix::ScalarCollection & };
 
 %define OTMatrixGetAccessor(baseType, elementType, pythonElementType)
 PyObject * __getitem__(PyObject * args) const {
@@ -296,8 +296,8 @@ fail:
 
 
 %define OTMatrixAccessors()
-  OTMatrixGetAccessor(Matrix, NumericalScalar, _PyFloat_)
-  OTMatrixSetAccessor(Matrix, NumericalScalar, _PyFloat_)
+  OTMatrixGetAccessor(Matrix, Scalar, _PyFloat_)
+  OTMatrixSetAccessor(Matrix, Scalar, _PyFloat_)
 %enddef
 
 %include openturns/Matrix.hxx
@@ -332,11 +332,11 @@ namespace OT {
 
   OTMatrixAccessors()
 
-  Matrix __rmul__(const NumericalScalar s) { return s * (*self); }
+  Matrix __rmul__(const Scalar s) { return s * (*self); }
   Matrix __matmul__(const Matrix & other) { return *self * other; }
 
 #if SWIG_VERSION < 0x030011
-  Matrix __truediv__(const NumericalScalar s) { return (*self) / s; }
+  Matrix __truediv__(const Scalar s) { return (*self) / s; }
 #endif
 
 } // Matrix

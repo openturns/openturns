@@ -31,7 +31,7 @@ static const Factory<SoizeGhanemFactorEvaluation> Factory_SoizeGhanemFactorEvalu
 
 /* Default constructor */
 SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , measure_()
   , useCopula_()
   , copula_()
@@ -45,7 +45,7 @@ SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation()
 SoizeGhanemFactorEvaluation::SoizeGhanemFactorEvaluation(const Distribution & measure,
     const Collection<Distribution> & marginals,
     const Bool useCopula)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , measure_(measure)
   , useCopula_(useCopula)
   , copula_()
@@ -83,21 +83,21 @@ Bool SoizeGhanemFactorEvaluation::operator ==(const SoizeGhanemFactorEvaluation 
  *  arbitrary probability measure". SIAM Journal on Scientific Computing,
  *  Society for Industrial and Applied Mathematics, 2004, 26 (2), pp.395-410.
  */
-NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & inP) const
+Point SoizeGhanemFactorEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  NumericalPoint result(1);
+  Point result(1);
   if (useCopula_)
   {
-    NumericalPoint u(inputDimension);
+    Point u(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       u[i] = marginals_[i].computeCDF(inP[i]);
-    result[0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, copula_.computePDF(u)));
+    result[0] = 1.0 / std::sqrt(std::max(SpecFunc::MinScalar, copula_.computePDF(u)));
   }
   else
   {
-    NumericalScalar logFactor = 0.0;
+    Scalar logFactor = 0.0;
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       logFactor += marginals_[i].computeLogPDF(inP[i]);
     // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
@@ -112,29 +112,29 @@ NumericalPoint SoizeGhanemFactorEvaluation::operator() (const NumericalPoint & i
   return result;
 }
 
-NumericalSample SoizeGhanemFactorEvaluation::operator() (const NumericalSample & inS) const
+Sample SoizeGhanemFactorEvaluation::operator() (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
-  if (size == 0) return NumericalSample(0, 1);
-  NumericalSample result(size, 1);
+  if (size == 0) return Sample(0, 1);
+  Sample result(size, 1);
   if (useCopula_)
   {
-    NumericalSample u(size, 0);
+    Sample u(size, 0);
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       u.stack(marginals_[i].computeCDF(inS.getMarginal(i)));
-    const NumericalSample pdf(copula_.computePDF(u));
+    const Sample pdf(copula_.computePDF(u));
     for (UnsignedInteger i = 0; i < size; ++i)
-      result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinNumericalScalar, pdf[i][0]));
+      result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinScalar, pdf[i][0]));
   }
   else
   {
-    NumericalSample logFactor(size, 1);
+    Sample logFactor(size, 1);
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       logFactor += marginals_[i].computeLogPDF(inS.getMarginal(i));
     // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
-    const NumericalSample logResult(logFactor - measure_.computeLogPDF(inS));
+    const Sample logResult(logFactor - measure_.computeLogPDF(inS));
     for (UnsignedInteger i = 0; i < size; ++i)
       result[i][0] = std::exp(0.5 * logResult[i][0]);
   }
@@ -204,7 +204,7 @@ String SoizeGhanemFactorEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void SoizeGhanemFactorEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "measure_", measure_ );
   adv.saveAttribute( "marginals_", marginals_ );
   adv.saveAttribute( "useCopula_", useCopula_ );
@@ -215,7 +215,7 @@ void SoizeGhanemFactorEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SoizeGhanemFactorEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "measure_", measure_ );
   adv.loadAttribute( "marginals_", marginals_ );
   adv.loadAttribute( "useCopula_", useCopula_ );

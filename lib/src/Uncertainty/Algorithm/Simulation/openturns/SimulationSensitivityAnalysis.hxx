@@ -23,10 +23,10 @@
 
 #include <cmath>
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/ComparisonOperator.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -45,17 +45,17 @@ class OT_API SimulationSensitivityAnalysis
   CLASSNAME;
 public:
 
-  typedef NumericalMathFunction IsoProbabilisticTransformation;
+  typedef Function IsoProbabilisticTransformation;
 
   /** Default constructor */
   SimulationSensitivityAnalysis();
 
   /** Standard constructor */
-  SimulationSensitivityAnalysis(const NumericalSample & inputSample,
-                                const NumericalSample & outputSample,
+  SimulationSensitivityAnalysis(const Sample & inputSample,
+                                const Sample & outputSample,
                                 const IsoProbabilisticTransformation & transformation,
                                 const ComparisonOperator & comparisonOperator,
-                                const NumericalScalar threshold);
+                                const Scalar threshold);
 
   /** Standard constructor */
   explicit SimulationSensitivityAnalysis(const Event & event);
@@ -67,30 +67,30 @@ public:
   virtual SimulationSensitivityAnalysis * clone() const;
 
   /** Mean point in event domain computation */
-  NumericalPoint computeMeanPointInEventDomain() const;
-  NumericalPoint computeMeanPointInEventDomain(const NumericalScalar threshold) const;
+  Point computeMeanPointInEventDomain() const;
+  Point computeMeanPointInEventDomain(const Scalar threshold) const;
 
   /** Importance factors computation */
-  NumericalPointWithDescription computeImportanceFactors() const;
-  NumericalPointWithDescription computeImportanceFactors(const NumericalScalar threshold) const;
+  PointWithDescription computeImportanceFactors() const;
+  PointWithDescription computeImportanceFactors(const Scalar threshold) const;
 
 public:
 
   /** Importance factors drawing */
   Graph drawImportanceFactors() const;
   Graph drawImportanceFactorsRange(const Bool probabilityScale = true,
-                                   const NumericalScalar lower = -SpecFunc::MaxNumericalScalar,
-                                   const NumericalScalar upper = SpecFunc::MaxNumericalScalar) const;
+                                   const Scalar lower = -SpecFunc::MaxScalar,
+                                   const Scalar upper = SpecFunc::MaxScalar) const;
 
   /** Input sample accessors */
-  NumericalSample getInputSample() const;
+  Sample getInputSample() const;
 
   /** Output sample accessors */
-  NumericalSample getOutputSample() const;
+  Sample getOutputSample() const;
 
   /** Threshold accessors */
-  NumericalScalar getThreshold() const;
-  void setThreshold(const NumericalScalar threshold);
+  Scalar getThreshold() const;
+  void setThreshold(const Scalar threshold);
 
   /** Iso-probabilistic transformation accessor */
   IsoProbabilisticTransformation getTransformation() const;
@@ -111,10 +111,10 @@ public:
 protected:
 
   /* Input sample of the model */
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /* Associated output sample */
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   /* Iso probabilistic transformation associated with the input sample distribution */
   IsoProbabilisticTransformation transformation_;
@@ -123,7 +123,7 @@ protected:
   ComparisonOperator comparisonOperator_;
 
   /* Main threshold of interest */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
 }; // class SimulationSensitivityAnalysis
 

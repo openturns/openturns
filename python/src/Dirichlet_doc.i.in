@@ -69,7 +69,7 @@ Draw a sample:
 
 Returns
 -------
-theta : float, :class:`~openturns.NumericalPoint`"
+theta : float, :class:`~openturns.Point`"
 
 // ---------------------------------------------------------------------
 

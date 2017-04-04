@@ -53,7 +53,7 @@ Matrix::Matrix(const UnsignedInteger rowDim,
 /* or the rest of the matrix is filled with zeros */
 Matrix::Matrix(const UnsignedInteger rowDim,
                const UnsignedInteger colDim,
-               const Collection<NumericalScalar> & elementsValues)
+               const Collection<Scalar> & elementsValues)
   : TypedInterfaceObject<MatrixImplementation>(new MatrixImplementation(rowDim, colDim, elementsValues))
 {
   // Nothing to do
@@ -93,7 +93,7 @@ String Matrix::__str__(const String & offset) const
 }
 
 /* Set small elements to zero */
-Matrix Matrix::clean(const NumericalScalar threshold) const
+Matrix Matrix::clean(const Scalar threshold) const
 {
   return Implementation(getImplementation()->clean(threshold).clone());
 }
@@ -113,8 +113,8 @@ UnsignedInteger Matrix::getNbColumns() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalScalar & Matrix::operator() (const UnsignedInteger i,
-                                      const UnsignedInteger j)
+Scalar & Matrix::operator() (const UnsignedInteger i,
+                             const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);
@@ -122,8 +122,8 @@ NumericalScalar & Matrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & Matrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j) const
+const Scalar & Matrix::operator() (const UnsignedInteger i,
+                                   const UnsignedInteger j) const
 {
   return (*getImplementation())(i, j);
 }
@@ -187,27 +187,27 @@ Matrix Matrix::operator* (const IdentityMatrix & m) const
   return *this;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-NumericalPoint Matrix::operator* (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+Point Matrix::operator* (const Point & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
 
-/* Multiplication with a NumericalScalar */
-Matrix Matrix::operator* (const NumericalScalar s) const
+/* Multiplication with a Scalar */
+Matrix Matrix::operator* (const Scalar s) const
 {
   return Implementation((*getImplementation() * s).clone());
 }
 
-/* Division by a NumericalScalar*/
-Matrix Matrix::operator/ (const NumericalScalar s) const
+/* Division by a Scalar*/
+Matrix Matrix::operator/ (const Scalar s) const
 {
   return Implementation((*getImplementation() / s).clone());
 }
 
 /* Resolution of a linear system */
-NumericalPoint Matrix::solveLinearSystem(const NumericalPoint & b,
-    const Bool keepIntact)
+Point Matrix::solveLinearSystem(const Point & b,
+                                const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemRect(b, keepIntact);
 }
@@ -219,16 +219,16 @@ Matrix Matrix::solveLinearSystem(const Matrix & b,
 }
 
 /* Compute singular values */
-NumericalPoint Matrix::computeSingularValues(const Bool keepIntact)
+Point Matrix::computeSingularValues(const Bool keepIntact)
 {
   return getImplementation()->computeSingularValues(keepIntact);
 }
 
 /* Compute singular values */
-NumericalPoint Matrix::computeSVD(Matrix & u,
-                                  Matrix & vT,
-                                  const Bool fullSVD,
-                                  const Bool keepIntact)
+Point Matrix::computeSVD(Matrix & u,
+                         Matrix & vT,
+                         const Bool fullSVD,
+                         const Bool keepIntact)
 {
   return getImplementation()->computeSVD(*(u.getImplementation()), *(vT.getImplementation()), fullSVD, keepIntact);
 }
@@ -264,7 +264,7 @@ Bool Matrix::operator == (const Matrix & rhs) const
 }
 
 
-const NumericalScalar* Matrix::__baseaddress__() const
+const Scalar* Matrix::__baseaddress__() const
 {
   return getImplementation()->__baseaddress__();
 }

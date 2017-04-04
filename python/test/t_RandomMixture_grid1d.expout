@@ -1,4 +1,4 @@
-distribution =  class=RandomMixture name=RandomMixture distribution collection=[class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=5 values=[1,1,1,1,1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+distribution =  class=RandomMixture name=RandomMixture distribution collection=[class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=5 values=[1,1,1,1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
 range =  [0, 17.7224]
 mean =  [3]
 cov =  [[ 3 ]]

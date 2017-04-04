@@ -10,7 +10,7 @@ sample2 : 2-d sequence of float
 
 Returns
 -------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The PCC coefficients evaluated between the *sample2* and each coordinate of
     *sample1*.
 
@@ -33,7 +33,7 @@ sample2 : 2-d sequence of float
 
 Returns
 -------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The PRCC coefficients evaluated between the *sample2* and each coordinate of
     *sample1* (based on the rank values).
 
@@ -102,7 +102,7 @@ sample2 : 2-d sequence of float
 
 Returns
 -------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The SRC evaluated between the *sample2* and each coordinate of the *sample1*.
 
 See Also
@@ -124,7 +124,7 @@ sample2 : 2-d sequence of float
 
 Returns
 -------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The SRRC evaluated between the *sample2* and each coordinate of the
     *sample1* (based on the rank value).
 

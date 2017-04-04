@@ -31,7 +31,7 @@ static const Factory<ExpertMixture> Factory_ExpertMixture;
 
 /* Default constructor */
 ExpertMixture::ExpertMixture()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , experts_()
   , classifier_()
 {
@@ -42,7 +42,7 @@ ExpertMixture::ExpertMixture()
 /* Constructor */
 ExpertMixture::ExpertMixture(const Basis & experts,
                              const Classifier & classifier)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , experts_(experts)
   , classifier_(classifier)
 {
@@ -107,7 +107,7 @@ Classifier ExpertMixture::getClassifier() const
 
 
 /* Operator () */
-NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
+Point ExpertMixture::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a point of dimension=" << inP.getDimension();
@@ -115,17 +115,17 @@ NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
   const UnsignedInteger size = experts_.getSize();
   UnsignedInteger bestClass = 0;
   // Build the point (x, f(x)) for the first class and grade it according to the classifier
-  NumericalPoint mixedPoint(inP);
-  NumericalPoint bestValue(experts_[0](inP));
+  Point mixedPoint(inP);
+  Point bestValue(experts_[0](inP));
   mixedPoint.add(bestValue);
-  NumericalScalar bestGrade = classifier_.grade(mixedPoint, bestClass);
+  Scalar bestGrade = classifier_.grade(mixedPoint, bestClass);
   LOGDEBUG(OSS() << "Class index=" << 0 << ", grade=" << bestGrade << ", value=" << bestValue);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
-    const NumericalPoint localValue(experts_[classIndex](inP));
+    const Point localValue(experts_[classIndex](inP));
     for (UnsignedInteger i = 0; i < outputDimension; ++i) mixedPoint[inputDimension + i] = localValue[i];
-    const NumericalScalar grade = classifier_.grade(mixedPoint, classIndex);
+    const Scalar grade = classifier_.grade(mixedPoint, classIndex);
     LOGDEBUG(OSS() << "Class index=" << classIndex << ", grade=" << grade << ", value=" << localValue);
     // The best class will give the output value
     if (grade > bestGrade)
@@ -139,30 +139,30 @@ NumericalPoint ExpertMixture::operator() (const NumericalPoint & inP) const
   return bestValue;
 }
 
-NumericalSample ExpertMixture::operator() (const NumericalSample & inS) const
+Sample ExpertMixture::operator() (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << " and got a sample of dimension=" << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
-  NumericalSample bestValues(size, outputDimension);
+  Sample bestValues(size, outputDimension);
   const UnsignedInteger expertSize = experts_.getSize();
-  NumericalPoint bestGrades(size, -SpecFunc::MaxNumericalScalar);
+  Point bestGrades(size, -SpecFunc::MaxScalar);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++classIndex)
   {
     // Build the point (x, f(x)) for each other class and grade it according to the classifier
-    NumericalSample mixedSample(inS);
+    Sample mixedSample(inS);
     // Here is the evaluation of the expert over a sample, benefiting from possible
     // parallelism/vectorization
-    const NumericalSample localValues(experts_[classIndex](inS));
+    const Sample localValues(experts_[classIndex](inS));
     mixedSample.stack(localValues);
-    const NumericalPoint grades = classifier_.grade(mixedSample, Indices(size, classIndex));
+    const Point grades = classifier_.grade(mixedSample, Indices(size, classIndex));
     for (UnsignedInteger i = 0; i < size; ++i)
       if (grades[i] > bestGrades[i])
-	{
-	  bestGrades[i] = grades[i];
-	  bestValues[i] = localValues[i];
-	}
+      {
+        bestGrades[i] = grades[i];
+        bestValues[i] = localValues[i];
+      }
   } // classIndex
   return bestValues;
 }
@@ -183,7 +183,7 @@ UnsignedInteger ExpertMixture::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void ExpertMixture::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "experts_", experts_ );
   adv.saveAttribute( "classifier_", classifier_ );
 }
@@ -192,7 +192,7 @@ void ExpertMixture::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ExpertMixture::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "experts_", experts_ );
   adv.loadAttribute( "classifier_", classifier_ );
 }

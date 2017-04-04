@@ -22,14 +22,14 @@
 #define OPENTURNS_PROJECTIONSTRATEGYIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/DesignProxy.hxx"
 
@@ -54,7 +54,7 @@ class OT_API ProjectionStrategyImplementation
 
 public:
 
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   // friend class Factory<ProjectionStrategyImplementation>;
 
@@ -72,9 +72,9 @@ public:
                                    const WeightedExperiment & weightedExperiment);
 
   /** Parameter constructor */
-  ProjectionStrategyImplementation(const NumericalSample & inputSample,
-                                   const NumericalPoint & weights,
-                                   const NumericalSample & outputSample);
+  ProjectionStrategyImplementation(const Sample & inputSample,
+                                   const Point & weights,
+                                   const Sample & outputSample);
 
   /** Virtual constructor */
   virtual ProjectionStrategyImplementation * clone() const;
@@ -87,27 +87,27 @@ public:
   Distribution getMeasure() const;
 
   /** Sample accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  virtual Sample getInputSample() const;
+  virtual Sample getOutputSample() const;
 
   /** Weights accessor */
-  virtual NumericalPoint getWeights() const;
+  virtual Point getWeights() const;
 
   /** Residual accessor */
-  virtual NumericalScalar getResidual() const;
+  virtual Scalar getResidual() const;
 
   /** Relative error accessor */
-  virtual NumericalScalar getRelativeError() const;
+  virtual Scalar getRelativeError() const;
 
   /** Relative error accessor */
-  virtual NumericalPoint getCoefficients() const;
+  virtual Point getCoefficients() const;
 
   /** Experiment accessors */
   virtual void setExperiment(const WeightedExperiment & weightedExperiment);
   virtual WeightedExperiment getExperiment() const;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-  virtual void computeCoefficients(const NumericalMathFunction & function,
+  virtual void computeCoefficients(const Function & function,
                                    const Basis & basis,
                                    const Indices & indices,
                                    const Indices & addedRanks,
@@ -125,13 +125,13 @@ public:
 protected:
 
   /** The collection of Alpha_k coefficients */
-  NumericalPoint alpha_k_p_;
+  Point alpha_k_p_;
 
   /** Residual */
-  NumericalScalar residual_p_;
+  Scalar residual_p_;
 
   /** Relative error */
-  NumericalScalar relativeError_p_;
+  Scalar relativeError_p_;
 
   /** The measureing function for projection */
   Distribution measure_;
@@ -140,13 +140,13 @@ protected:
   WeightedExperiment weightedExperiment_;
 
   // The input sample which will be used for the projection
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   // The weights associated with the sample
-  NumericalPoint weights_;
+  Point weights_;
 
   // The sample value of the model
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   // Proxy to speed up evaluations of the basis over the input sample
   DesignProxy proxy_;

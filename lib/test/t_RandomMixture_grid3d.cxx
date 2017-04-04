@@ -57,12 +57,12 @@ int main(int argc, char *argv[])
     fullprint << "sigma = " << distribution.getStandardDeviation() << std::endl;
     const UnsignedInteger N = 4;
     Indices points(3, N);
-    NumericalPoint mean(distribution.getMean());
-    NumericalPoint sigma(distribution.getStandardDeviation());
-    NumericalPoint xMin(mean - 2.9 * sigma);
-    NumericalPoint xMax(mean + 2.9 * sigma);
-    NumericalSample grid;
-    NumericalSample result(distribution.computePDF(xMin, xMax, points, grid));
+    Point mean(distribution.getMean());
+    Point sigma(distribution.getStandardDeviation());
+    Point xMin(mean - 2.9 * sigma);
+    Point xMax(mean + 2.9 * sigma);
+    Sample grid;
+    Sample result(distribution.computePDF(xMin, xMax, points, grid));
     for (UnsignedInteger i = 0; i < grid.getSize(); ++i)
       fullprint << grid[i][0] << ";" << grid[i][1] << ";" << grid[i][2] << ";" << result[i][0] << std::endl;
     // 2) 3D test using FFT

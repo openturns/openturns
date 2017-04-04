@@ -40,7 +40,7 @@ LeastSquaresMethod::LeastSquaresMethod()
 
 /* Parameters constructor */
 LeastSquaresMethod::LeastSquaresMethod (const DesignProxy & proxy,
-                                        const NumericalPoint & weight,
+                                        const Point & weight,
                                         const Indices & indices)
   : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, weight, indices))
 {
@@ -80,27 +80,27 @@ String LeastSquaresMethod::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
-NumericalPoint LeastSquaresMethod::solve(const NumericalPoint & rhs)
+Point LeastSquaresMethod::solve(const Point & rhs)
 {
   return getImplementation()->solve(rhs);
 }
 
-NumericalPoint LeastSquaresMethod::solveNormal(const NumericalPoint & rhs)
+Point LeastSquaresMethod::solveNormal(const Point & rhs)
 {
   return getImplementation()->solveNormal(rhs);
 }
 
-NumericalPoint LeastSquaresMethod::getHDiag() const
+Point LeastSquaresMethod::getHDiag() const
 {
   return getImplementation()->getHDiag();
 }
 
-NumericalPoint LeastSquaresMethod::getGramInverseDiag() const
+Point LeastSquaresMethod::getGramInverseDiag() const
 {
   return getImplementation()->getGramInverseDiag();
 }
 
-NumericalScalar LeastSquaresMethod::getGramInverseTrace() const
+Scalar LeastSquaresMethod::getGramInverseTrace() const
 {
   return getImplementation()->getGramInverseTrace();
 }
@@ -133,12 +133,12 @@ Indices LeastSquaresMethod::getInitialIndices() const
   return getImplementation()->getInitialIndices();
 }
 
-NumericalSample LeastSquaresMethod::getInputSample() const
+Sample LeastSquaresMethod::getInputSample() const
 {
   return getImplementation()->getInputSample();
 }
 
-NumericalPoint LeastSquaresMethod::getWeight() const
+Point LeastSquaresMethod::getWeight() const
 {
   return getImplementation()->getWeight();
 }
@@ -149,9 +149,9 @@ Matrix LeastSquaresMethod::computeWeightedDesign(bool whole) const
 }
 
 LeastSquaresMethod LeastSquaresMethod::Build(const String name,
-                                             const DesignProxy & proxy,
-                                             const NumericalPoint & weight,
-                                             const Indices & indices)
+    const DesignProxy & proxy,
+    const Point & weight,
+    const Indices & indices)
 {
   if      (name == "SVD")      return SVDMethod(proxy, weight, indices);
   else if (name == "Cholesky") return CholeskyMethod(proxy, weight, indices);
@@ -162,8 +162,8 @@ LeastSquaresMethod LeastSquaresMethod::Build(const String name,
 
 
 LeastSquaresMethod LeastSquaresMethod::Build(const String name,
-                                             const DesignProxy & proxy,
-                                             const Indices & indices)
+    const DesignProxy & proxy,
+    const Indices & indices)
 {
   if      (name == "SVD")      return SVDMethod(proxy, indices);
   else if (name == "Cholesky") return CholeskyMethod(proxy, indices);

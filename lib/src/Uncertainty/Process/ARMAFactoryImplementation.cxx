@@ -156,9 +156,9 @@ ARMA ARMAFactoryImplementation::build(const TimeSeries & timeSeries) const
 }
 
 ARMA ARMAFactoryImplementation::build(const TimeSeries & timeSeries,
-                                      NumericalPoint & informationCriteria) const
+                                      Point & informationCriteria) const
 {
-  throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const TimeSeries & timeSeries, NumericalPoint & informationCriteria) const";
+  throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const TimeSeries & timeSeries, Point & informationCriteria) const";
 }
 
 /* Build method */
@@ -168,9 +168,9 @@ ARMA ARMAFactoryImplementation::build(const ProcessSample & sample) const
 }
 
 ARMA ARMAFactoryImplementation::build(const ProcessSample & sample,
-                                      NumericalPoint & informationCriteria) const
+                                      Point & informationCriteria) const
 {
-  throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const ProcessSample & sample, NumericalPoint & informationCriteria) const";
+  throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const ProcessSample & sample, Point & informationCriteria) const";
 }
 
 /* Method save() stores the object through the StorageManager */

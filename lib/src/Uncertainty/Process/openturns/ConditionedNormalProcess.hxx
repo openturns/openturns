@@ -90,7 +90,7 @@ private:
   KrigingResult krigingResult_;
 
   /** Trend part - conditionned by the mesh points */
-  NumericalSample trendEvaluationMesh_;
+  Sample trendEvaluationMesh_;
 
 }; /* class ConditionedNormalProcess */
 

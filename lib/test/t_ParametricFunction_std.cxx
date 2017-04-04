@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for parametric functions
+ *  @brief The test file of class Function for parametric functions
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -41,11 +41,11 @@ int main(int argc, char *argv[])
     set[0] = 3;
     set[1] = 1;
     Bool parametersSet = true;
-    NumericalPoint x(set.getSize());
+    Point x(set.getSize());
     x[0] = 1.0;
     x[1] = 2.0;
-    NumericalPoint referencePoint(2, 0.85);
-    NumericalMathFunction g2(f, set, referencePoint, parametersSet);
+    Point referencePoint(2, 0.85);
+    ParametricFunction g2(f, set, referencePoint, parametersSet);
     g2.enableHistory();
     fullprint << "g2=" << g2 << std::endl;
     fullprint << "g2(x)=" << g2(x) << std::endl;
@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
     fullprint << "parameter history=" << g2.getInputParameterHistory() << std::endl;
 
     // marginal extraction
-    NumericalMathFunction g2_0(g2.getMarginal(0));
-    NumericalPoint theta(2, 0.2);
+    Function g2_0(g2.getMarginal(0));
+    Point theta(2, 0.2);
     theta[1] = 50.0;
     fullprint << "g2_0(x, theta)=" << g2_0(x, theta) << std::endl;
 
@@ -64,10 +64,10 @@ int main(int argc, char *argv[])
     fullprint << "dg2_0/dtheta(x)=" << g2_0.parameterGradient(x) << std::endl;
 
     // single point, several parameters
-    NumericalSample thetas(3, 2);
+    Sample thetas(3, 2);
     thetas[0] = theta;
-    thetas[1] = NumericalPoint(2, 0.3);
-    thetas[1] = NumericalPoint(2, 0.4);
+    thetas[1] = Point(2, 0.3);
+    thetas[1] = Point(2, 0.4);
     fullprint << "g2_0(x, thetas)=" << g2_0(x, thetas) << std::endl;
   }
   catch (TestFailed & ex)

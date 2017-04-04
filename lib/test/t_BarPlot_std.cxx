@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
 
     // Instanciate one distribution object
     UnsignedInteger dim = 1;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 2.0;
     CorrelationMatrix R = IdentityMatrix(dim);
     Normal distribution1(meanPoint, sigma, R);
@@ -50,22 +50,22 @@ int main(int argc, char *argv[])
     // Test for sampling
     UnsignedInteger size = 2000;
     UnsignedInteger nBars = 20;
-    NumericalSample sample1(distribution1.getSample( size ));
-    NumericalSample sample2(distribution2.getSample( size ));
+    Sample sample1(distribution1.getSample( size ));
+    Sample sample2(distribution2.getSample( size ));
 
 
     // Construct histograms
-    NumericalScalar epsilon = 0.1;
-    NumericalScalar min1 = sample1.getMin()[0];
-    NumericalScalar max1 = sample1.getMax()[0] + epsilon;
-    NumericalScalar min2 = sample2.getMin()[0];
-    NumericalScalar max2 = sample2.getMax()[0] + epsilon;
-    NumericalPoint tmp(2);
+    Scalar epsilon = 0.1;
+    Scalar min1 = sample1.getMin()[0];
+    Scalar max1 = sample1.getMax()[0] + epsilon;
+    Scalar min2 = sample2.getMin()[0];
+    Scalar max2 = sample2.getMax()[0] + epsilon;
+    Point tmp(2);
     tmp[0] = (max1 - min1) / nBars;
     tmp[1] = 0;
-    NumericalSample data1(nBars, tmp);
+    Sample data1(nBars, tmp);
     tmp[0] = (max2 - min2) / nBars;
-    NumericalSample data2(nBars, tmp);
+    Sample data2(nBars, tmp);
     UnsignedInteger index;
 
     for(UnsignedInteger i = 0; i < size; i++)

@@ -46,21 +46,21 @@ Null * Null::clone() const
 }
 
 /* Store the point according to the strategy */
-void Null::store(const NumericalPoint & point)
+void Null::store(const Point & point)
 {
   if (!isInitialized_)
   {
-    sample_ = NumericalSample(0, point.getDimension());
+    sample_ = Sample(0, point.getDimension());
     isInitialized_ = true;
   }
 }
 
 /* Store the sample according to the strategy */
-void Null::store(const NumericalSample & sample)
+void Null::store(const Sample & sample)
 {
   if (!isInitialized_)
   {
-    sample_ = NumericalSample(0, sample.getDimension());
+    sample_ = Sample(0, sample.getDimension());
     isInitialized_ = true;
   }
 }

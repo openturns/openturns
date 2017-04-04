@@ -1,11 +1,11 @@
-distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=5 values=[1,1,1,1,1] constant=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=0.5 lambda=1 gamma=0,class=Gamma name=Gamma dimension=1 k=1 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=5 values=[1,1,1,1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
 distribution = RandomMixture(Gamma(k = 0.5, lambda = 1, gamma = 0) + Gamma(k = 0.5, lambda = 1, gamma = 0) + Gamma(k = 0.5, lambda = 1, gamma = 0) + Gamma(k = 0.5, lambda = 1, gamma = 0) + Gamma(k = 1, lambda = 1, gamma = 0))
-range = class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[17.7224] finite lower bound=[1] finite upper bound=[1]
-mean = class=NumericalPoint name=Unnamed dimension=1 values=[3]
+range = class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[17.7224] finite lower bound=[1] finite upper bound=[1]
+mean = class=Point name=Unnamed dimension=1 values=[3]
 cov = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
-sigma = class=NumericalPoint name=Unnamed dimension=1 values=[1.73205]
-xMin = class=NumericalPoint name=Unnamed dimension=1 values=[-3.755]
-xMax = class=NumericalPoint name=Unnamed dimension=1 values=[9.755]
+sigma = class=Point name=Unnamed dimension=1 values=[1.73205]
+xMin = class=Point name=Unnamed dimension=1 values=[-3.755]
+xMax = class=Point name=Unnamed dimension=1 values=[9.755]
 -3.90114;0.00235265;0
 -3.84701;0.002253;0
 -3.79289;0.00215744;0

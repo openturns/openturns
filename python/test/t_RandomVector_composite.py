@@ -8,9 +8,9 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    # We create a NumericalMathFunction
-    myFunction = NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1', 'y2'], [
-                                       '(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)', 'cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
+    # We create a Function
+    myFunction = Function(['x1', 'x2', 'x3', 'x4'], ['y1', 'y2'], [
+        '(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)', 'cos(x2*x2+x4)/(x1*x1+1+x3^4)'])
 
     # We create a distribution
     dim = myFunction.getInputDimension()
@@ -20,8 +20,8 @@ try:
     for i in range(1, dim):
         R[i, i - 1] = 0.5
 
-    m = NumericalPoint(dim, 1.0)
-    s = NumericalPoint(dim, 2.0)
+    m = Point(dim, 1.0)
+    s = Point(dim, 2.0)
     distribution = Normal(m, s, R)
     ref_distribution = distribution
     print("distribution = ", repr(ref_distribution))

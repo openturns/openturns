@@ -71,7 +71,7 @@ SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim)
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
 SymmetricMatrix::SymmetricMatrix(const UnsignedInteger dim,
-                                 const Collection<NumericalScalar> & elementsValues)
+                                 const Collection<Scalar> & elementsValues)
   : SquareMatrix(dim, elementsValues)
   , hasBeenSymmetrized_(false)
 {
@@ -130,8 +130,8 @@ String SymmetricMatrix::__str__(const String & offset) const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j)
+Scalar & SymmetricMatrix::operator() (const UnsignedInteger i,
+                                      const UnsignedInteger j)
 {
   copyOnWrite();
   hasBeenSymmetrized_ = false;
@@ -141,7 +141,7 @@ NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & SymmetricMatrix::operator() (const UnsignedInteger i,
+const Scalar & SymmetricMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (i > j) ? (*getImplementation())(i, j) : (*getImplementation())(j, i) ;
@@ -213,21 +213,21 @@ SymmetricMatrix SymmetricMatrix::operator * (const IdentityMatrix & m) const
 }
 
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-NumericalPoint SymmetricMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+Point SymmetricMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->symVectProd(pt) ;
 }
 
 
-/* Multiplication with a NumericalScalar */
-SymmetricMatrix SymmetricMatrix::operator * (const NumericalScalar & s) const
+/* Multiplication with a Scalar */
+SymmetricMatrix SymmetricMatrix::operator * (const Scalar & s) const
 {
   return Implementation((*getImplementation() * s ).clone());
 }
 
-/* Division by a NumericalScalar*/
-SymmetricMatrix SymmetricMatrix::operator / (const NumericalScalar & s) const
+/* Division by a Scalar*/
+SymmetricMatrix SymmetricMatrix::operator / (const Scalar & s) const
 {
   return Implementation((*getImplementation() / s ).clone());
 }
@@ -239,7 +239,7 @@ SymmetricMatrix SymmetricMatrix::power(const UnsignedInteger n) const
 }
 
 /* Resolution of a linear system */
-NumericalPoint SymmetricMatrix::solveLinearSystem(const NumericalPoint & b,
+Point SymmetricMatrix::solveLinearSystem(const Point & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemSym(b, keepIntact);
@@ -252,24 +252,24 @@ Matrix SymmetricMatrix::solveLinearSystem(const Matrix & b,
 }
 
 /* Compute determinant */
-NumericalScalar SymmetricMatrix::computeLogAbsoluteDeterminant(NumericalScalar & sign,
+Scalar SymmetricMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
     const Bool keepIntact)
 {
   return getImplementation()->computeLogAbsoluteDeterminantSym(sign, keepIntact);
 }
 
-NumericalScalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
+Scalar SymmetricMatrix::computeDeterminant(const Bool keepIntact)
 {
   return getImplementation()->computeDeterminantSym(keepIntact);
 }
 
 /* Compute eigenvalues */
-NumericalPoint SymmetricMatrix::computeEigenValues(const Bool keepIntact)
+Point SymmetricMatrix::computeEigenValues(const Bool keepIntact)
 {
   return getImplementation()->computeEigenValuesSym(keepIntact);
 }
-NumericalPoint SymmetricMatrix::computeEV(SquareMatrix & v,
-    const Bool keepIntact)
+Point SymmetricMatrix::computeEV(SquareMatrix & v,
+                                 const Bool keepIntact)
 {
   return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);
 }

@@ -45,12 +45,12 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalSample & sample,
-                       const NumericalScalar epsilon) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Sample & sample,
+                       const Scalar epsilon) const;
   Implementation build() const;
-  UserDefined buildAsUserDefined(const NumericalSample & sample,
-                                 const NumericalScalar epsilon = 0.0) const;
+  UserDefined buildAsUserDefined(const Sample & sample,
+                                 const Scalar epsilon = 0.0) const;
   UserDefined buildAsUserDefined() const;
 
 }; /* class UserDefinedFactory */

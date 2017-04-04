@@ -1,4 +1,4 @@
-histogramPolynomial=class=HistogramPolynomialFactory measure=class=Histogram name=Histogram dimension=1 first=-2 width=class=NumericalPoint name=Unnamed dimension=3 values=[1,2,1.5] height=class=NumericalPoint name=Unnamed dimension=3 values=[0.115942,0.289855,0.202899] legendre=class=LegendreFactory measure=class=Uniform name=Uniform dimension=1 a=-1 b=1
+histogramPolynomial=class=HistogramPolynomialFactory measure=class=Histogram name=Histogram dimension=1 first=-2 width=class=Point name=Unnamed dimension=3 values=[1,2,1.5] height=class=Point name=Unnamed dimension=3 values=[0.115942,0.289855,0.202899] legendre=class=LegendreFactory measure=class=Uniform name=Uniform dimension=1 a=-1 b=1
 histogramPolynomial(0)=1
 histogramPolynomial(1)=-0.311705 + 0.868995 * X
 histogramPolynomial(2)=-0.856068 - 0.53005 * X + 0.720074 * X^2
@@ -9,5 +9,5 @@ histogramPolynomial(6)=-0.672065 - 2.17033 * X + 3.26047 * X^2 + 3.00751 * X^3 -
 histogramPolynomial(7)=0.816364 - 2.08595 * X - 4.85092 * X^2 + 4.56489 * X^3 + 3.8474 * X^4 - 2.46825 * X^5 - 0.716834 * X^6 + 0.38213 * X^7
 histogramPolynomial(8)=0.471292 + 3.50174 * X - 3.93381 * X^2 - 8.64894 * X^3 + 5.54451 * X^4 + 4.85041 * X^5 - 2.47959 * X^6 - 0.747288 * X^7 + 0.344731 * X^8
 histogramPolynomial(9)=-0.893763 + 1.712 * X + 8.62475 * X^2 - 6.09001 * X^3 - 12.507 * X^4 + 6.25895 * X^5 + 5.47892 * X^6 - 2.39409 * X^7 - 0.728754 * X^8 + 0.302869 * X^9
-histogramPolynomial(10) roots=class=NumericalPoint name=Unnamed dimension=10 values=[-1.93832,-1.67917,-1.21469,-0.674631,-0.0599205,0.588202,1.20713,1.7752,2.19553,2.44117]
-histogramPolynomial(10) nodes=class=NumericalPoint name=Unnamed dimension=10 values=[-1.93832,-1.67917,-1.21469,-0.674631,-0.0599205,0.588202,1.20713,1.7752,2.19553,2.44117] and weights=class=NumericalPoint name=Unnamed dimension=10 values=[0.0182915,0.0415858,0.070671,0.165385,0.186558,0.185533,0.131996,0.100983,0.0684909,0.0305057]
+histogramPolynomial(10) roots=class=Point name=Unnamed dimension=10 values=[-1.93832,-1.67917,-1.21469,-0.674631,-0.0599205,0.588202,1.20713,1.7752,2.19553,2.44117]
+histogramPolynomial(10) nodes=class=Point name=Unnamed dimension=10 values=[-1.93832,-1.67917,-1.21469,-0.674631,-0.0599205,0.588202,1.20713,1.7752,2.19553,2.44117] and weights=class=Point name=Unnamed dimension=10 values=[0.0182915,0.0415858,0.070671,0.165385,0.186558,0.185533,0.131996,0.100983,0.0684909,0.0305057]

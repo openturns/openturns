@@ -33,20 +33,20 @@ static const Factory<Cobyla> Factory_Cobyla;
 /* Default constructor */
 Cobyla::Cobyla()
   : OptimizationAlgorithmImplementation()
-  , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
+  , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
 {
   // Nothing to do
 }
 
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
-  , rhoBeg_(ResourceMap::GetAsNumericalScalar("Cobyla-DefaultRhoBeg"))
+  , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
 {
   checkProblem(problem);
 }
 
 Cobyla::Cobyla(const OptimizationProblem & problem,
-               const NumericalScalar rhoBeg)
+               const Scalar rhoBeg)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
 {
@@ -75,7 +75,7 @@ void Cobyla::run()
   int n(dimension);
   int m(getProblem().getInequalityConstraint().getOutputDimension() + 2 * getProblem().getEqualityConstraint().getOutputDimension());
 
-  NumericalPoint x(getStartingPoint());
+  Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
 
@@ -89,13 +89,13 @@ void Cobyla::run()
     }
   }
 
-  NumericalScalar rhoEnd = getMaximumAbsoluteError();
+  Scalar rhoEnd = getMaximumAbsoluteError();
   int maxFun(getMaximumIterationNumber());
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
   // initialize history
-  evaluationInputHistory_ = NumericalSample(0, dimension);
-  evaluationOutputHistory_ = NumericalSample(0, 2);
+  evaluationInputHistory_ = Sample(0, dimension);
+  evaluationOutputHistory_ = Sample(0, 2);
 
   /*
    * cobyla : minimize a function subject to constraints
@@ -124,31 +124,31 @@ void Cobyla::run()
   // Update the result
   UnsignedInteger size = evaluationInputHistory_.getSize();
 
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
-  NumericalScalar constraintError = -1.0;
+  Scalar absoluteError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
+  Scalar constraintError = -1.0;
 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalPoint inP(evaluationInputHistory_[i]);
-    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    const Point inP(evaluationInputHistory_[i]);
+    const Point outP(evaluationOutputHistory_[i]);
     if (i > 0)
     {
-      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
-      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      const Point inPM(evaluationInputHistory_[i - 1]);
+      const Point outPM(evaluationOutputHistory_[i - 1]);
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
       constraintError = outP[1];
     }
-    result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+    result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   }
 
   result_.setOptimalPoint(x);
   const UnsignedInteger index = evaluationInputHistory_.find(x);
-  NumericalScalar bestValue = evaluationOutputHistory_[index][0];
-  result_.setOptimalValue(NumericalPoint(1, bestValue));
+  Scalar bestValue = evaluationOutputHistory_[index][0];
+  result_.setOptimalValue(Point(1, bestValue));
   result_.setIterationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
@@ -166,12 +166,12 @@ void Cobyla::run()
 }
 
 /* RhoBeg accessor */
-NumericalScalar Cobyla::getRhoBeg() const
+Scalar Cobyla::getRhoBeg() const
 {
   return rhoBeg_;
 }
 
-void Cobyla::setRhoBeg(const NumericalScalar rhoBeg)
+void Cobyla::setRhoBeg(const Scalar rhoBeg)
 {
   rhoBeg_ = rhoBeg;
 }
@@ -201,7 +201,7 @@ void Cobyla::load(Advocate & adv)
 }
 
 /*
- * Wrapper of the NumericalMathFunction operator() compatible with
+ * Wrapper of the Function operator() compatible with
  * cobyla signature
  */
 int Cobyla::ComputeObjectiveAndConstraint(int n,
@@ -214,29 +214,29 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   Cobyla *algorithm = static_cast<Cobyla *>(state);
 
   /* Convert the input vector in OpenTURNS format */
-  NumericalPoint inPoint(n);
-  memcpy(&inPoint[0], &x[0], n * sizeof(NumericalScalar));
+  Point inPoint(n);
+  memcpy(&inPoint[0], &x[0], n * sizeof(Scalar));
 
   const OptimizationProblem problem(algorithm->getProblem());
-  NumericalPoint outPoint(2);
+  Point outPoint(2);
 
-  NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
-  // cobyla freezes when dealing with MaxNumericalScalar
-  if (std::abs(result) == SpecFunc::MaxNumericalScalar) result /= 1.0e3;
+  Scalar result = problem.getObjective().operator()(inPoint)[0];
+  // cobyla freezes when dealing with MaxScalar
+  if (std::abs(result) == SpecFunc::MaxScalar) result /= 1.0e3;
   outPoint[0] = result;
 
-  const NumericalScalar sign = problem.isMinimization() ? 1.0 : -1.0;
+  const Scalar sign = problem.isMinimization() ? 1.0 : -1.0;
   *f = sign * result;
 
   UnsignedInteger shift = 0;
   UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
   UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
-  NumericalPoint constraintValue(nbIneqConst + 2 * nbEqConst);
+  Point constraintValue(nbIneqConst + 2 * nbEqConst);
 
   /* Compute the inequality constraints at inPoint */
   if (problem.hasInequalityConstraint())
   {
-    const NumericalPoint constraintInequalityValue(problem.getInequalityConstraint().operator()(inPoint));
+    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inPoint));
     for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
     shift += nbIneqConst;
   }
@@ -244,7 +244,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Compute the equality constraints at inPoint */
   if (problem.hasEqualityConstraint())
   {
-    const NumericalPoint constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
+    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
     shift += nbEqConst;
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
@@ -264,7 +264,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   }
 
   /* Convert the constraint vector in double format */
-  memcpy(&con[0], &constraintValue[0], constraintValue.getDimension() * sizeof(NumericalScalar));
+  memcpy(&con[0], &constraintValue[0], constraintValue.getDimension() * sizeof(Scalar));
 
   // only take violated constraints into account to compute error
   for (UnsignedInteger j = 0; j < constraintValue.getDimension(); ++ j)
@@ -278,15 +278,16 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   algorithm->evaluationOutputHistory_.add(outPoint);
   int returnValue = 0;
   if (algorithm->stopCallback_.first)
+  {
+    Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
+    if (stop)
     {
-      Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
-      if (stop) {
-	// This value is passed to algocobyla. Any non-zero value should work but 1
-	// is the most standard value.
-        returnValue = 1;
-        LOGWARN(OSS() << "Cobyla was stopped by user");
-      }
+      // This value is passed to algocobyla. Any non-zero value should work but 1
+      // is the most standard value.
+      returnValue = 1;
+      LOGWARN(OSS() << "Cobyla was stopped by user");
     }
+  }
   return returnValue;
 }
 

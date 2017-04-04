@@ -72,7 +72,7 @@ covariance : :class:`~openturns.CovarianceMatrix`
 
 Returns
 -------
-variance : :class:`~openturns.NumericalPoint`
+variance : :class:`~openturns.Point`
     Vector of marginal variances of :math:`(\xi_1,\dots,\xi_M)`. Its dimension is zero if the coefficients are correlated, in which case the covariance matrix is given by *getCovariance()*.
 "
 
@@ -94,7 +94,7 @@ basis : :class:`~openturns.Basis`
 
 Returns
 -------
-functions : :class:`~openturns.NumericalMathFunctionCollection`
+functions : :class:`~openturns.FunctionCollection`
     The collection of functions :math:`(\phi_i)_{i=1,\dots,M}` defining the covariance model.
 "
 

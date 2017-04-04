@@ -23,7 +23,7 @@
 
 
 #include "openturns/VertexValueFunction.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,19 +43,19 @@ class OT_API InverseTrendTransform
   CLASSNAME;
 public:
 
-  typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
+  typedef EvaluationImplementation::Implementation EvaluationPointer;
 
   /** Default constructor */
   InverseTrendTransform();
 
   /** Parameter constructor */
-  InverseTrendTransform(const NumericalMathFunction & function);
+  explicit InverseTrendTransform(const Function & function);
 
   /** Parameter constructor */
-  InverseTrendTransform(const EvaluationImplementation & p_evaluation);
+  InverseTrendTransform(const EvaluationPointer & p_evaluation);
 
   /** Parameter constructor */
-  InverseTrendTransform(const NumericalMathEvaluationImplementation & evaluation);
+  InverseTrendTransform(const EvaluationImplementation & evaluation);
 
   /** Virtual constructor */
   virtual InverseTrendTransform * clone() const;

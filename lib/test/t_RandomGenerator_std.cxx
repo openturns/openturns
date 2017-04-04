@@ -37,23 +37,23 @@ int main(int argc, char *argv[])
     RandomGeneratorState initialState(RandomGenerator::GetState());
     fullprint << "state index=" << initialState.getIndex() << " state array=" << initialState.getBuffer() << std::endl;
     // Test the generation of one realization
-    NumericalScalar realization = RandomGenerator::Generate();
+    Scalar realization = RandomGenerator::Generate();
     fullprint << "one realization=" << realization << std::endl;
     RandomGeneratorState state(RandomGenerator::GetState());
     fullprint << "new state index=" << state.getIndex() << std::endl;
     // Test the generation of several realizations
     UnsignedInteger size = 10000;
-    NumericalPoint several(RandomGenerator::Generate(size));
+    Point several(RandomGenerator::Generate(size));
     fullprint << size << " realizations, first=" << several[0] << ", last=" << several[size  - 1] << std::endl;
     // Test the state accessor for writing
     RandomGenerator::SetState(initialState);
     fullprint << "restoring initial state, one realization=" << RandomGenerator::Generate() << std::endl;
     // Test the uniformity of the random generator
     size = 100000;
-    NumericalPoint manyPoints(RandomGenerator::Generate(size));
+    Point manyPoints(RandomGenerator::Generate(size));
     UnsignedInteger slice = 10;
-    NumericalPoint frequencies(slice, 0.0);
-    NumericalScalar mean = 0.0;
+    Point frequencies(slice, 0.0);
+    Scalar mean = 0.0;
     for (UnsignedInteger i = 0; i < size; i++)
     {
       frequencies[(UnsignedInteger)(slice * manyPoints[i])]++;
@@ -64,12 +64,12 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < slice; i++)
     {
       frequencies[i] /= size;
-      fullprint << "frequency in slice [" << NumericalScalar(i) / slice << ", " << NumericalScalar(i + 1) / slice << "]=" << frequencies[i] << std::endl;
+      fullprint << "frequency in slice [" << Scalar(i) / slice << ", " << Scalar(i + 1) / slice << "]=" << frequencies[i] << std::endl;
     }
     fullprint << "One integer generation in [[0, " << slice - 1 << "]]=" << RandomGenerator::IntegerGenerate(slice) << std::endl;
     fullprint << "Another integer generation in [[0, " << slice - 1 << "]]=" << RandomGenerator::IntegerGenerate(slice) << std::endl;
     Collection<UnsignedInteger> manyUnsignedInteger(RandomGenerator::IntegerGenerate(size, slice));
-    frequencies = NumericalPoint(slice, 0.0);
+    frequencies = Point(slice, 0.0);
     mean = 0.0;
     for (UnsignedInteger i = 0; i < size; i++)
     {

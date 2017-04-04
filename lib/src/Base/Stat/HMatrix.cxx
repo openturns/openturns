@@ -65,20 +65,20 @@ void HMatrix::factorize(const String& method)
 }
 
 /** Compute x <- alpha * this */
-void HMatrix::scale(NumericalScalar alpha)
+void HMatrix::scale(Scalar alpha)
 {
   copyOnWrite();
   getImplementation()->scale(alpha);
 }
 
 /** Compute y <- alpha op(this) * x + beta * y */
-void HMatrix::gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const
+void HMatrix::gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const
 {
   getImplementation()->gemv(trans, alpha, x, beta, y);
 }
 
 /** Compute this <- alpha op(A) * p(B) + beta * this */
-void HMatrix::gemm(char transA, char transB, NumericalScalar alpha, const HMatrix& a, const HMatrix& b, NumericalScalar beta)
+void HMatrix::gemm(char transA, char transB, Scalar alpha, const HMatrix& a, const HMatrix& b, Scalar beta)
 {
   copyOnWrite();
   getImplementation()->gemm(transA, transB, alpha, *a.getImplementation(), *b.getImplementation(), beta);
@@ -92,19 +92,19 @@ void HMatrix::transpose()
 }
 
 /** Get the Frobenius norm */
-NumericalScalar HMatrix::norm() const
+Scalar HMatrix::norm() const
 {
   return getImplementation()->norm();
 }
 
 /** Get the diagonal */
-NumericalPoint HMatrix::getDiagonal() const
+Point HMatrix::getDiagonal() const
 {
   return getImplementation()->getDiagonal();
 }
 
 /** Solve system op(A)*X = b */
-NumericalPoint HMatrix::solve(const NumericalPoint& b, Bool trans) const
+Point HMatrix::solve(const Point& b, Bool trans) const
 {
   return getImplementation()->solve(b, trans);
 }
@@ -116,7 +116,7 @@ Matrix HMatrix::solve(const Matrix& m, Bool trans) const
 }
 
 /** Solve system op(L)*X = b */
-NumericalPoint HMatrix::solveLower(const NumericalPoint& b, Bool trans) const
+Point HMatrix::solveLower(const Point& b, Bool trans) const
 {
   return getImplementation()->solveLower(b, trans);
 }

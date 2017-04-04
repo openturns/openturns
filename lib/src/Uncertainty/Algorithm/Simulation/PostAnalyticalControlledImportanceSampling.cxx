@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/PostAnalyticalControlledImportanceSampling.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -56,34 +56,34 @@ PostAnalyticalControlledImportanceSampling * PostAnalyticalControlledImportanceS
 }
 
 /* Compute the block sample */
-NumericalSample PostAnalyticalControlledImportanceSampling::computeBlockSample()
+Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
 {
   const UnsignedInteger blockSize = getBlockSize();
-  const NumericalPoint standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
+  const Point standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   const Bool originFailure = analyticalResult_.getIsStandardPointOriginInFailureSpace();
   // Get the threshold and the reliability index
-  const NumericalScalar threshold = event_.getThreshold();
-  const NumericalScalar reliabilityIndex = analyticalResult_.getHasoferReliabilityIndex();
-  const NumericalScalar betaSquare = reliabilityIndex * reliabilityIndex;
+  const Scalar threshold = event_.getThreshold();
+  const Scalar reliabilityIndex = analyticalResult_.getHasoferReliabilityIndex();
+  const Scalar betaSquare = reliabilityIndex * reliabilityIndex;
   // Initialize the probability with the control probability
-  NumericalScalar probability = controlProbability_;
+  Scalar probability = controlProbability_;
   // First, compute a sample of the importance distribution. It is simply
   // the standard distribution translated to the design point
-  NumericalSample inputSample(standardDistribution_.getSample(blockSize));
+  Sample inputSample(standardDistribution_.getSample(blockSize));
   inputSample += standardSpaceDesignPoint;
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   // Then, modify in place this sample to take into account the change in the input distribution
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
-    const NumericalPoint realization(inputSample[i]);
+    const Point realization(inputSample[i]);
     Bool failureControl = dot(realization, standardSpaceDesignPoint) > betaSquare;
     // If the origin is not in the failure domain, the control is made using the linear event dot(u,u*) > beta^2,
     // else it is made using the linear event dot(u,u*) < beta^2.
     failureControl = (failureControl && !originFailure) || (!failureControl && originFailure);
     const Bool failureEvent = event_.getOperator()(blockSample[i][0], threshold);
     blockSample[i][0] = probability;
-    const NumericalScalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
+    const Scalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
     if (factor != 0.0) blockSample[i][0] = blockSample[i][0] + factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
   }
   return blockSample;

@@ -67,7 +67,7 @@ GraphImplementation::GraphImplementation(const String & title)
   : PersistentObject()
   , title_(title)
   , legendPosition_()
-  , legendFontSize_(ResourceMap::GetAsNumericalScalar("Graph-DefaultLegendFontSize"))
+  , legendFontSize_(ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"))
   , xTitle_()
   , yTitle_()
   , showAxes_(false)
@@ -91,7 +91,7 @@ GraphImplementation::GraphImplementation(const String & title,
     const String & yTitle,
     const Bool showAxes,
     const String & legendPosition,
-    const NumericalScalar legendFontSize,
+    const Scalar legendFontSize,
     const LogScale logScale)
   : PersistentObject()
   , title_(title)
@@ -115,7 +115,7 @@ GraphImplementation::GraphImplementation(const String & title,
   // Check if the given legend position is valid
 
   if (!IsValidLegendPosition(legendPosition)) throw InvalidArgumentException(HERE) << "The given legend position = " << legendPosition << " is invalid";
-  if (legendFontSize <= 0.0) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid, it must be > 0";
+  if (!(legendFontSize > 0.0)) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid, it must be > 0";
   legendPosition_ = legendPosition;
 }
 
@@ -496,8 +496,8 @@ std::map<SignedInteger, String> GraphImplementation::GetExtensionMap()
 
 /* The method that generates the graphic files */
 void GraphImplementation::draw(const String & file,
-                               const NumericalScalar width,
-                               const NumericalScalar height,
+                               const Scalar width,
+                               const Scalar height,
                                SignedInteger drawingFormat)
 {
   // Override format base on extension
@@ -631,7 +631,7 @@ void GraphImplementation::computeBoundingBox() const
     boundingBox_[3] = 1.0;
     return;
   }
-  NumericalSample boxes(size, 4);
+  Sample boxes(size, 4);
 
   // first, get each Drawable's bounding box and drawing command
   for(UnsignedInteger i = 0; i < size; ++i)
@@ -686,13 +686,13 @@ Description GraphImplementation::GetValidLegendPositions()
 }
 
 /* Get the legend font size */
-NumericalScalar GraphImplementation::getLegendFontSize() const
+Scalar GraphImplementation::getLegendFontSize() const
 {
   return legendFontSize_;
 }
 
 /* Set the legend font size */
-void GraphImplementation::setLegendFontSize(const NumericalScalar legendFontSize)
+void GraphImplementation::setLegendFontSize(const Scalar legendFontSize)
 {
   if(legendFontSize <= 0.0) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid";
 

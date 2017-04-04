@@ -22,7 +22,7 @@ tmax = 4.0
 # Draw the isocontours of the discretized covariance function
 myGraphRef = myFuncCovarianceRef.draw([t0, t0], [tmax, tmax])
 alld = myGraphRef.getDrawables()
-levels = ot.NumericalPoint(alld.getSize())
+levels = ot.Point(alld.getSize())
 for i in range(alld.getSize()):
     d = alld[i]
     d.setLineStyle("twodash")

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     Description formula;
     formula.add("sin(t)");
     formula.add("cos(t)");
-    NumericalMathFunction myFunc(inputVars, formula);
+    SymbolicFunction myFunc(inputVars, formula);
     InverseTrendTransform myInverseTrendFunc(myFunc);
 
     fullprint << "myInverseTrendFunc=" << myInverseTrendFunc << std::endl;
@@ -51,10 +51,10 @@ int main(int argc, char *argv[])
 
     /* Create a TimeSeries */
     RegularGrid tg(0.0, 0.1, 11);
-    NumericalSample data(tg.getN(), 2);
+    Sample data(tg.getN(), 2);
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
     {
-      const NumericalScalar instant = tg.getStart() + i * tg.getStep();
+      const Scalar instant = tg.getStart() + i * tg.getStep();
       data(i, 0) = i + 1 + sin(instant);
       data(i, 1) = i + cos(instant);
     }

@@ -52,28 +52,28 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Mean accessor */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
 
   /** Sobol index accessor */
-  NumericalScalar getSobolIndex(const Indices & variableIndices,
-                                const UnsignedInteger marginalIndex = 0) const;
-  NumericalScalar getSobolIndex(const UnsignedInteger variableIndex,
-                                const UnsignedInteger marginalIndex = 0) const;
+  Scalar getSobolIndex(const Indices & variableIndices,
+                       const UnsignedInteger marginalIndex = 0) const;
+  Scalar getSobolIndex(const UnsignedInteger variableIndex,
+                       const UnsignedInteger marginalIndex = 0) const;
 
   /** Sobol total index accessor */
-  NumericalScalar getSobolTotalIndex(const Indices & variableIndices,
-                                     const UnsignedInteger marginalIndex = 0) const;
-  NumericalScalar getSobolTotalIndex(const UnsignedInteger variableIndex,
-                                     const UnsignedInteger marginalIndex = 0) const;
+  Scalar getSobolTotalIndex(const Indices & variableIndices,
+                            const UnsignedInteger marginalIndex = 0) const;
+  Scalar getSobolTotalIndex(const UnsignedInteger variableIndex,
+                            const UnsignedInteger marginalIndex = 0) const;
 
   /** Sobol grouped index accessor */
-  NumericalScalar getSobolGroupedIndex(const Indices & variableIndices,
-				       const UnsignedInteger marginalIndex = 0) const;
-  NumericalScalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
-				       const UnsignedInteger marginalIndex = 0) const;
+  Scalar getSobolGroupedIndex(const Indices & variableIndices,
+                              const UnsignedInteger marginalIndex = 0) const;
+  Scalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
+                              const UnsignedInteger marginalIndex = 0) const;
 
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;

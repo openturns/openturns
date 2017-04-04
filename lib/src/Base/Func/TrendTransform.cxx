@@ -21,8 +21,8 @@
 #include "openturns/TrendTransform.hxx"
 #include "openturns/InverseTrendTransform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,7 +39,7 @@ TrendTransform::TrendTransform()
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const NumericalMathFunction & function)
+TrendTransform::TrendTransform(const Function & function)
   : VertexValueFunction(function.getInputDimension())
 {
   p_evaluation_ = function.getEvaluation() ;
@@ -49,7 +49,7 @@ TrendTransform::TrendTransform(const NumericalMathFunction & function)
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const EvaluationImplementation & p_evaluation)
+TrendTransform::TrendTransform(const EvaluationPointer & p_evaluation)
   : VertexValueFunction(p_evaluation->getInputDimension())
 {
   p_evaluation_ = p_evaluation;
@@ -59,7 +59,7 @@ TrendTransform::TrendTransform(const EvaluationImplementation & p_evaluation)
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const NumericalMathEvaluationImplementation & evaluation)
+TrendTransform::TrendTransform(const EvaluationImplementation & evaluation)
   : VertexValueFunction(evaluation.getInputDimension())
 {
   p_evaluation_ = evaluation.clone();
@@ -100,7 +100,7 @@ Field TrendTransform::operator() (const Field & inFld) const
 {
   if (inFld.getSpatialDimension() != p_evaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with mesh dimension=" << p_evaluation_->getInputDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
   if (inFld.getDimension() != p_evaluation_->getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with dimension=" << p_evaluation_->getOutputDimension() << ", got dimension=" << inFld.getDimension();
-  NumericalSample outputSample((*p_evaluation_)(inFld.getMesh().getVertices()));
+  Sample outputSample((*p_evaluation_)(inFld.getMesh().getVertices()));
   // finally as the function adds a trend, result
   for (UnsignedInteger k = 0; k < outputSample.getSize(); ++k) outputSample[k] = inFld.getValueAtIndex(k) + outputSample[k];
   ++callsNumber_;

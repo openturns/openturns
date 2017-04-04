@@ -26,7 +26,7 @@
 #include "openturns/SpaceFilling.hxx"
 #include "openturns/LHSResult.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Graph.hxx"
 
@@ -45,7 +45,7 @@ class OT_API LHSResult
 
 public:
 
-  typedef PersistentCollection<NumericalSample> NumericalSamplePersistentCollection;
+  typedef PersistentCollection<Sample> SamplePersistentCollection;
 
   /** Default constructor */
   LHSResult();
@@ -60,18 +60,18 @@ public:
   UnsignedInteger getNumberOfRestarts() const;
 
   /** Attributes for getting elements of result */
-  NumericalSample getOptimalDesign() const;
-  NumericalSample getOptimalDesign(UnsignedInteger restart) const;
-  NumericalScalar getOptimalValue() const;
-  NumericalScalar getOptimalValue(UnsignedInteger restart) const;
-  NumericalSample getAlgoHistory() const;
-  NumericalSample getAlgoHistory(UnsignedInteger restart) const;
-  NumericalScalar getC2() const;
-  NumericalScalar getC2(UnsignedInteger restart) const;
-  NumericalScalar getPhiP() const;
-  NumericalScalar getPhiP(UnsignedInteger restart) const;
-  NumericalScalar getMinDist() const;
-  NumericalScalar getMinDist(UnsignedInteger restart) const;
+  Sample getOptimalDesign() const;
+  Sample getOptimalDesign(UnsignedInteger restart) const;
+  Scalar getOptimalValue() const;
+  Scalar getOptimalValue(UnsignedInteger restart) const;
+  Sample getAlgoHistory() const;
+  Sample getAlgoHistory(UnsignedInteger restart) const;
+  Scalar getC2() const;
+  Scalar getC2(UnsignedInteger restart) const;
+  Scalar getPhiP() const;
+  Scalar getPhiP(UnsignedInteger restart) const;
+  Scalar getMinDist() const;
+  Scalar getMinDist(UnsignedInteger restart) const;
 
   /** Graphical methods - Draw criterion history */
   Graph drawHistoryCriterion(const String & title = "") const;
@@ -82,9 +82,9 @@ public:
   Graph drawHistoryTemperature(UnsignedInteger restart, const String & title = "") const;
 
   /** Add an optimal design with its history */
-  void add(const NumericalSample & optimalDesign, NumericalScalar criterion,
-           NumericalScalar C2, NumericalScalar PhiP, NumericalScalar MinDist,
-           const NumericalSample & algoHistory);
+  void add(const Sample & optimalDesign, Scalar criterion,
+           Scalar C2, Scalar PhiP, Scalar MinDist,
+           const Sample & algoHistory);
 
   /** String converter */
   String __repr__() const;
@@ -97,7 +97,7 @@ public:
 
 private:
   /** Method that draw data */
-  Graph drawCurveData(const NumericalSample & data, const String & title) const;
+  Graph drawCurveData(const Sample & data, const String & title) const;
 
   /** Method to extract field index from data */
   UnsignedInteger findDescription(const char *text) const;
@@ -110,19 +110,19 @@ private:
   UnsignedInteger restart_;
 
   /** Best criterion value */
-  mutable NumericalScalar optimalCriterion_;
+  mutable Scalar optimalCriterion_;
 
   /** Index of the best designs in all restarts */
   mutable UnsignedInteger optimalIndex_;
 
   /** Collection of best designs (size 1+restart_)*/
-  NumericalSamplePersistentCollection collDesigns_;
+  SamplePersistentCollection collDesigns_;
 
   /** Collection of algo histories (size 1+restart_, dimension depending on algorithm)*/
-  NumericalSamplePersistentCollection collAlgoHistory_;
+  SamplePersistentCollection collAlgoHistory_;
 
   /** Collection of all result criteria (size 1+restart_, dimension 4)*/
-  NumericalSample criteria_;
+  Sample criteria_;
 
 }; /* class LHSResult */
 

@@ -15,7 +15,7 @@ OT_SpaceFilling_doc
 
 Parameters
 ----------
-design : :class:`~openturns.NumericalSample` or 2d array like
+design : :class:`~openturns.Sample` or 2d array like
     The design
 
 Returns
@@ -47,7 +47,7 @@ OT_SpaceFilling_isMinimizationProblem
 
 Parameters
 ----------
-design : :class:`~openturns.NumericalSample`
+design : :class:`~openturns.Sample`
     The design to perturb (in-place)
 oldCriterion : float
     The previous value of the criterion

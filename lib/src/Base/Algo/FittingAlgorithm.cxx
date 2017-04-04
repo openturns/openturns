@@ -60,33 +60,33 @@ String FittingAlgorithm::__str__(const String & offset) const
   return getImplementation()->__str__( offset );
 }
 
-NumericalScalar FittingAlgorithm::run(const NumericalSample & x,
-                                      const NumericalSample & y,
-                                      const NumericalPoint & weight,
-                                      const Basis & basis,
-                                      const Indices & indices) const
+Scalar FittingAlgorithm::run(const Sample & x,
+                             const Sample & y,
+                             const Point & weight,
+                             const Basis & basis,
+                             const Indices & indices) const
 {
   return getImplementation()->run(x, y, weight, basis, indices);
 }
 
-NumericalScalar FittingAlgorithm::run(const NumericalSample & x,
-                                      const NumericalSample & y,
-                                      const Basis & basis,
-                                      const Indices & indices) const
+Scalar FittingAlgorithm::run(const Sample & x,
+                             const Sample & y,
+                             const Basis & basis,
+                             const Indices & indices) const
 {
   return getImplementation()->run(x, y, basis, indices);
 }
 
-NumericalScalar FittingAlgorithm::run(const NumericalSample & y,
-                                      const NumericalPoint & weight,
-                                      const Indices & indices,
-                                      const DesignProxy & proxy) const
+Scalar FittingAlgorithm::run(const Sample & y,
+                             const Point & weight,
+                             const Indices & indices,
+                             const DesignProxy & proxy) const
 {
   return getImplementation()->run(y, weight, indices, proxy);
 }
 
-NumericalScalar FittingAlgorithm::run(LeastSquaresMethod & method,
-                                      const NumericalSample & y) const
+Scalar FittingAlgorithm::run(LeastSquaresMethod & method,
+                             const Sample & y) const
 {
   return getImplementation()->run(method, y);
 }

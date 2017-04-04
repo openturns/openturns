@@ -37,7 +37,7 @@ static const Factory<GaussKronrod> Factory_GaussKronrod;
 GaussKronrod::GaussKronrod()
   : IntegrationAlgorithmImplementation()
   , maximumSubIntervals_(ResourceMap::GetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals"))
-  , maximumError_(ResourceMap::GetAsNumericalScalar("GaussKronrod-MaximumError"))
+  , maximumError_(ResourceMap::GetAsScalar("GaussKronrod-MaximumError"))
   , rule_()
 {
   // Check the maximum number of sub-intervals
@@ -46,7 +46,7 @@ GaussKronrod::GaussKronrod()
 
 /* Parameters constructor */
 GaussKronrod::GaussKronrod(const UnsignedInteger maximumSubIntervals,
-                           const NumericalScalar maximumError,
+                           const Scalar maximumError,
                            const GaussKronrodRule & rule)
   : IntegrationAlgorithmImplementation()
   , maximumSubIntervals_(maximumSubIntervals)
@@ -66,37 +66,37 @@ GaussKronrod * GaussKronrod::clone() const
 /* Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
  * is an 1D interval and f a scalar function
  */
-NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
-                                       const Interval & interval,
-                                       NumericalScalar & error) const
+Point GaussKronrod::integrate(const Function & function,
+                              const Interval & interval,
+                              Scalar & error) const
 {
   if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval should be 1D, here dimension=" << interval.getDimension();
-  NumericalPoint ai(0);
-  NumericalPoint bi(0);
-  NumericalSample fi(0, 0);
-  NumericalPoint ei(0);
+  Point ai(0);
+  Point bi(0);
+  Sample fi(0, 0);
+  Point ei(0);
   return integrate(function, interval.getLowerBound()[0], interval.getUpperBound()[0], error, ai, bi, fi, ei);
 }
 
-NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
-                                       const NumericalScalar a,
-                                       const NumericalScalar b,
-                                       NumericalScalar & error,
-                                       NumericalPoint & ai,
-                                       NumericalPoint & bi,
-                                       NumericalSample & fi,
-                                       NumericalPoint & ei) const
+Point GaussKronrod::integrate(const Function & function,
+                              const Scalar a,
+                              const Scalar b,
+                              Scalar & error,
+                              Point & ai,
+                              Point & bi,
+                              Sample & fi,
+                              Point & ei) const
 {
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can integrate only 1D function, here input dimension=" << function.getInputDimension();
   const UnsignedInteger outputDimension = function.getOutputDimension();
   if (outputDimension == 0) throw InvalidArgumentException(HERE) << "Error: can integrate only non-zero output dimension function";
-  NumericalPoint result(outputDimension);
-  ai = NumericalPoint(maximumSubIntervals_);
+  Point result(outputDimension);
+  ai = Point(maximumSubIntervals_);
   ai[0] = a;
-  bi = NumericalPoint(maximumSubIntervals_);
+  bi = Point(maximumSubIntervals_);
   bi[0] = b;
-  fi = NumericalSample(maximumSubIntervals_, outputDimension);
-  ei = NumericalPoint(maximumSubIntervals_);
+  fi = Sample(maximumSubIntervals_, outputDimension);
+  ei = Point(maximumSubIntervals_);
   UnsignedInteger ip = 0;
   UnsignedInteger im = 0;
   error = maximumError_;
@@ -109,12 +109,12 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
     fi[ip] = computeRule(function, ai[ip], bi[ip], ei[ip]);
     fi[im] = computeRule(function, ai[im], bi[im], ei[im]);
     UnsignedInteger iErrorMax = 0;
-    NumericalScalar errorMax = 0.0;
+    Scalar errorMax = 0.0;
     error = 0.0;
-    result = NumericalPoint(outputDimension);
+    result = Point(outputDimension);
     for (UnsignedInteger i = 0; i <= im; ++i)
     {
-      const NumericalScalar localError = ei[i];
+      const Scalar localError = ei[i];
       for (UnsignedInteger j = 0; j < outputDimension; ++j) result[j] += fi[i][j];
       error += localError * localError;
       // Add a test on the integration interval length to avoid too short intervals
@@ -135,42 +135,42 @@ NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
   return result;
 }
 
-NumericalPoint GaussKronrod::integrate(const NumericalMathFunction & function,
-                                       const NumericalScalar a,
-                                       const NumericalScalar b,
-                                       NumericalPoint & error,
-                                       NumericalPoint & ai,
-                                       NumericalPoint & bi,
-                                       NumericalSample & fi,
-                                       NumericalPoint & ei) const
+Point GaussKronrod::integrate(const Function & function,
+                              const Scalar a,
+                              const Scalar b,
+                              Point & error,
+                              Point & ai,
+                              Point & bi,
+                              Sample & fi,
+                              Point & ei) const
 {
-  // Here we initialize the error to a 1D NumericalPoint in order to use the interface with scalar error
-  error = NumericalPoint(1);
+  // Here we initialize the error to a 1D Point in order to use the interface with scalar error
+  error = Point(1);
   return integrate(function, a, b, error[0], ai, bi, fi, ei);
 }
 
 /* Compute the local GaussKronrod rule over [a, b]. */
-NumericalPoint GaussKronrod::computeRule(const NumericalMathFunction & function,
-    const NumericalScalar a,
-    const NumericalScalar b,
-    NumericalScalar & localError) const
+Point GaussKronrod::computeRule(const Function & function,
+                                const Scalar a,
+                                const Scalar b,
+                                Scalar & localError) const
 {
-  const NumericalScalar width = 0.5 * (b - a);
-  const NumericalScalar center = 0.5 * (a + b);
+  const Scalar width = 0.5 * (b - a);
+  const Scalar center = 0.5 * (a + b);
   // Generate the set of points
-  NumericalSample x(2 * rule_.order_ + 1, 1);
+  Sample x(2 * rule_.order_ + 1, 1);
   x[0][0] = center;
   for (UnsignedInteger i = 0; i < rule_.order_; ++i)
   {
-    const NumericalScalar t = width * rule_.otherKronrodNodes_[i];
+    const Scalar t = width * rule_.otherKronrodNodes_[i];
     x[2 * i + 1][0] = center - t;
     x[2 * i + 2][0] = center + t;
   }
   // Use possible parallelization of the evaluation
-  const NumericalSample y(function(x));
-  NumericalPoint value(y[0]);
-  NumericalPoint resultGauss(value * rule_.zeroGaussWeight_);
-  NumericalPoint resultGaussKronrod(value * rule_.zeroKronrodWeight_);
+  const Sample y(function(x));
+  Point value(y[0]);
+  Point resultGauss(value * rule_.zeroGaussWeight_);
+  Point resultGaussKronrod(value * rule_.zeroKronrodWeight_);
   for (UnsignedInteger j = 0; j < (rule_.order_ - 1) / 2; ++j)
   {
     value = y[4 * j + 1] + y[4 * j + 2];
@@ -198,14 +198,14 @@ void GaussKronrod::setMaximumSubIntervals(const UnsignedInteger maximumSubInterv
 }
 
 /* Maximum error accessor */
-NumericalScalar GaussKronrod::getMaximumError() const
+Scalar GaussKronrod::getMaximumError() const
 {
   return maximumError_;
 }
 
-void GaussKronrod::setMaximumError(const NumericalScalar maximumError)
+void GaussKronrod::setMaximumError(const Scalar maximumError)
 {
-  if (maximumError < 0.0) throw InvalidArgumentException(HERE) << "Error: the maximum error must be nonnegative, here maximum error=" << maximumError;
+  if (!(maximumError >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximum error must be nonnegative, here maximum error=" << maximumError;
   maximumError_ = maximumError;
 }
 

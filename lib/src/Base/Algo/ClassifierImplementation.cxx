@@ -41,7 +41,7 @@ ClassifierImplementation::ClassifierImplementation()
 }
 
 /* Default constructor */
-ClassifierImplementation::ClassifierImplementation(const NumericalSample & inputSample,
+ClassifierImplementation::ClassifierImplementation(const Sample & inputSample,
     const Indices & classes)
   : PersistentObject()
   , inputSample_(inputSample)
@@ -59,19 +59,19 @@ ClassifierImplementation * ClassifierImplementation::clone() const
 
 
 /* Classify a sample */
-UnsignedInteger ClassifierImplementation::classify(const NumericalPoint & inP) const
+UnsignedInteger ClassifierImplementation::classify(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In ClassifierImplementation::classify(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In ClassifierImplementation::classify(const Point & inP) const";
 }
 
 /* Classify a sample */
 struct ClassifyPolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   Indices & output_;
   const ClassifierImplementation * p_classifier_;
 
-  ClassifyPolicy( const NumericalSample & input,
+  ClassifyPolicy( const Sample & input,
                   Indices & output,
                   const ClassifierImplementation * p_classifier)
     : input_(input)
@@ -87,7 +87,7 @@ struct ClassifyPolicy
 }; /* end struct ClassifyPolicy */
 
 
-Indices ClassifierImplementation::classifyParallel(const NumericalSample & inS) const
+Indices ClassifierImplementation::classifyParallel(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
@@ -96,7 +96,7 @@ Indices ClassifierImplementation::classifyParallel(const NumericalSample & inS) 
   return result;
 }
 
-Indices ClassifierImplementation::classifySequential(const NumericalSample & inS) const
+Indices ClassifierImplementation::classifySequential(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices prediction(size);
@@ -105,7 +105,7 @@ Indices ClassifierImplementation::classifySequential(const NumericalSample & inS
   return prediction;
 }
 
-Indices ClassifierImplementation::classify(const NumericalSample & inS) const
+Indices ClassifierImplementation::classify(const Sample & inS) const
 {
   if (isParallel_)
     return classifyParallel(inS);
@@ -113,22 +113,22 @@ Indices ClassifierImplementation::classify(const NumericalSample & inS) const
 }
 
 /* Grade a point */
-NumericalScalar ClassifierImplementation::grade(const NumericalPoint & inP, const UnsignedInteger hClass) const
+Scalar ClassifierImplementation::grade(const Point & inP, const UnsignedInteger hClass) const
 {
-  throw NotYetImplementedException(HERE) << "In ClassifierImplementation::grade(const NumericalPoint & inP, const UnsignedInteger hClass) const";
+  throw NotYetImplementedException(HERE) << "In ClassifierImplementation::grade(const Point & inP, const UnsignedInteger hClass) const";
 }
 
 /* Grade a sample */
 struct GradePolicy
 {
-  const NumericalSample & input_;
+  const Sample & input_;
   const Indices & classes_;
-  NumericalPoint & output_;
+  Point & output_;
   const ClassifierImplementation * p_classifier_;
 
-  GradePolicy( const NumericalSample & input,
+  GradePolicy( const Sample & input,
                const Indices & classes,
-               NumericalPoint & output,
+               Point & output,
                const ClassifierImplementation * p_classifier)
     : input_(input)
     , classes_(classes)
@@ -145,27 +145,27 @@ struct GradePolicy
 
 
 /* Grade a sample */
-NumericalPoint ClassifierImplementation::gradeParallel(const NumericalSample & inS,
+Point ClassifierImplementation::gradeParallel(const Sample & inS,
     const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
-  NumericalPoint result(size);
+  Point result(size);
   const GradePolicy policy(inS, hClass, result, this);
   TBB::ParallelFor(0, size, policy);
   return result;
 }
 
-NumericalPoint ClassifierImplementation::gradeSequential(const NumericalSample & inS,
+Point ClassifierImplementation::gradeSequential(const Sample & inS,
     const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
-  NumericalPoint grades(size);
+  Point grades(size);
   for ( UnsignedInteger i = 0; i < size; ++ i )
     grades[i] = grade(inS[i], hClass[i]);
   return grades;
 }
 
-NumericalPoint ClassifierImplementation::grade(const NumericalSample & inS, const Indices & hClass) const
+Point ClassifierImplementation::grade(const Sample & inS, const Indices & hClass) const
 {
   const UnsignedInteger size = inS.getSize();
   if ( size != hClass.getSize() )

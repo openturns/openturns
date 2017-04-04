@@ -30,7 +30,7 @@ CLASSNAMEINIT(GaussProductExperiment);
 
 static const Factory<GaussProductExperiment> Factory_GaussProductExperiment;
 
-typedef Collection< NumericalPoint > NumericalPointCollection;
+typedef Collection< Point > PointCollection;
 
 /* Default constructor */
 GaussProductExperiment::GaussProductExperiment():
@@ -104,7 +104,7 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
 }
 
 /* Sample generation */
-NumericalSample GaussProductExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample GaussProductExperiment::generateWithWeights(Point & weights) const
 {
   if (!isAlreadyComputedNodesAndWeights_) computeNodesAndWeights();
   weights = weights_;
@@ -151,17 +151,17 @@ void GaussProductExperiment::computeNodesAndWeights() const
   const UnsignedInteger dimension = distribution_.getDimension();
   // Build the integration nodes and weights
   // First, get the marginal nodes and weights
-  NumericalPointCollection marginalNodes(dimension);
-  NumericalPointCollection marginalWeights(dimension);
+  PointCollection marginalNodes(dimension);
+  PointCollection marginalWeights(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger dI = marginalDegrees_[i];
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
   }
   // Second, multiplex everything
-  nodes_ = NumericalSample(size_, dimension);
+  nodes_ = Sample(size_, dimension);
   nodes_.setDescription(distribution_.getDescription());
-  weights_ = NumericalPoint(size_, 1.0);
+  weights_ = Point(size_, 1.0);
   Indices indices(dimension, 0);
   for (UnsignedInteger linearIndex = 0; linearIndex < size_; ++linearIndex)
   {

@@ -35,24 +35,24 @@ int main(int argc, char *argv[])
     // NonCentralStudent related functions
     {
       // dNonCentralStudent
-      NumericalScalar nuMin = 0.2;
-      NumericalScalar nuMax = 5.0;
+      Scalar nuMin = 0.2;
+      Scalar nuMax = 5.0;
       UnsignedInteger n1 = 5;
-      NumericalScalar deltaMin = 0.2;
-      NumericalScalar deltaMax = 5.0;
+      Scalar deltaMin = 0.2;
+      Scalar deltaMax = 5.0;
       UnsignedInteger n2 = 5;
-      NumericalScalar xMin = 0.1;
-      NumericalScalar xMax = 0.9;
+      Scalar xMin = 0.1;
+      Scalar xMax = 0.9;
       UnsignedInteger nX = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
         for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
-          NumericalScalar delta = deltaMin + (deltaMax - deltaMin) * i2 / (n2 - 1);
+          Scalar delta = deltaMin + (deltaMax - deltaMin) * i2 / (n2 - 1);
           for (UnsignedInteger iX = 0; iX < nX; ++iX)
           {
-            NumericalScalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+            Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
             fullprint << "dNonCentralStudent(" << nu << ", " << delta << ", " << x << ")=" << DistFunc::dNonCentralStudent(nu, delta, x) << std::endl;
           }
         }
@@ -60,24 +60,24 @@ int main(int argc, char *argv[])
     } // dNonCentralStudent
     {
       // pNonCentralStudent
-      NumericalScalar nuMin = 0.2;
-      NumericalScalar nuMax = 5.0;
+      Scalar nuMin = 0.2;
+      Scalar nuMax = 5.0;
       UnsignedInteger n1 = 5;
-      NumericalScalar deltaMin = 0.2;
-      NumericalScalar deltaMax = 5.0;
+      Scalar deltaMin = 0.2;
+      Scalar deltaMax = 5.0;
       UnsignedInteger n2 = 5;
-      NumericalScalar xMin = 0.1;
-      NumericalScalar xMax = 0.9;
+      Scalar xMin = 0.1;
+      Scalar xMax = 0.9;
       UnsignedInteger nX = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
         for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
-          NumericalScalar delta = deltaMin + (deltaMax - deltaMin) * i2 / (n2 - 1);
+          Scalar delta = deltaMin + (deltaMax - deltaMin) * i2 / (n2 - 1);
           for (UnsignedInteger iX = 0; iX < nX; ++iX)
           {
-            NumericalScalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+            Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
             fullprint << "pNonCentralStudent(" << nu << ", " << delta << ", " << x << ")=" << DistFunc::pNonCentralStudent(nu, delta, x) << ", complementary=" << DistFunc::pNonCentralStudent(nu, delta, x, true) << std::endl;
           }
         }
@@ -85,19 +85,19 @@ int main(int argc, char *argv[])
     } // pNonCentralStudent
     {
       // rNonCentralStudent
-      NumericalScalar nuMin = 0.2;
-      NumericalScalar nuMax = 5.0;
+      Scalar nuMin = 0.2;
+      Scalar nuMax = 5.0;
       UnsignedInteger n1 = 5;
-      NumericalScalar deltaMin = 0.2;
-      NumericalScalar deltaMax = 5.0;
+      Scalar deltaMin = 0.2;
+      Scalar deltaMax = 5.0;
       UnsignedInteger n2 = 5;
       UnsignedInteger nR = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-        NumericalScalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
+        Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
         for (UnsignedInteger i2 = 0; i2 < n2; ++i2)
         {
-          NumericalScalar delta = deltaMin + (deltaMax - deltaMin) * i2 / (n2 - 1);
+          Scalar delta = deltaMin + (deltaMax - deltaMin) * i2 / (n2 - 1);
           for (UnsignedInteger iR = 0; iR < nR; ++iR)
           {
             fullprint << "rNonCentralStudent(" << nu << ", " << delta << ")=" << DistFunc::rNonCentralStudent(nu, delta) << std::endl;

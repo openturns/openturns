@@ -27,10 +27,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 namespace KFactorFunctions
 {
-NumericalScalar KFactor(const NumericalScalar n,
-			const NumericalScalar nu,
-			const NumericalScalar p,
-			const NumericalScalar alpha);
+Scalar KFactor(const Scalar n,
+               const Scalar nu,
+               const Scalar p,
+               const Scalar alpha);
 } // KFactorFunctions
 
 END_NAMESPACE_OPENTURNS

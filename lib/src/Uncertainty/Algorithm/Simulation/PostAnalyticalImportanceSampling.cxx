@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/PostAnalyticalImportanceSampling.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -56,19 +56,19 @@ PostAnalyticalImportanceSampling * PostAnalyticalImportanceSampling::clone() con
 }
 
 /* Compute the block sample */
-NumericalSample PostAnalyticalImportanceSampling::computeBlockSample()
+Sample PostAnalyticalImportanceSampling::computeBlockSample()
 {
   const UnsignedInteger blockSize = getBlockSize();
-  const NumericalPoint standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
+  const Point standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   // Get the threshold and the reliability index
-  const NumericalScalar threshold = event_.getThreshold();
+  const Scalar threshold = event_.getThreshold();
   // First, compute a sample of the importance distribution. It is simply
   // the standard distribution translated to the design point
-  NumericalSample inputSample(standardDistribution_.getSample(blockSize));
+  Sample inputSample(standardDistribution_.getSample(blockSize));
   inputSample += standardSpaceDesignPoint;
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
-  // realizedEventSample = NumericalSample(blockSize_, inputSample.getDimension());
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  // realizedEventSample = Sample(blockSize_, inputSample.getDimension());
   // Then, modify in place this sample to take into account the change in the input distribution
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
@@ -77,7 +77,7 @@ NumericalSample PostAnalyticalImportanceSampling::computeBlockSample()
     if (isRealized)
     {
       // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
-      const NumericalScalar weight = standardDistribution_.computePDF(inputSample[i]) / standardDistribution_.computePDF(inputSample[i] - standardSpaceDesignPoint);
+      const Scalar weight = standardDistribution_.computePDF(inputSample[i]) / standardDistribution_.computePDF(inputSample[i] - standardSpaceDesignPoint);
       blockSample[i][0] = weight;
     }
     else blockSample[i][0] = 0.0;

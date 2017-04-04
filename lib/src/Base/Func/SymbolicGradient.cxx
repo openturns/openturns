@@ -29,7 +29,7 @@ static const Factory<SymbolicGradient> Factory_SymbolicGradient;
 
 /* Default constructor */
 SymbolicGradient::SymbolicGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_()
@@ -39,7 +39,7 @@ SymbolicGradient::SymbolicGradient()
 
 /* Default constructor */
 SymbolicGradient::SymbolicGradient(const SymbolicEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_(evaluation)
@@ -167,15 +167,15 @@ void SymbolicGradient::initialize() const
 }
 
 /* Gradient */
-Matrix SymbolicGradient::gradient(const NumericalPoint & inP) const
+Matrix SymbolicGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The gradient does not have an analytical expression.";
   const UnsignedInteger outputDimension = getOutputDimension();
   Matrix out(inputDimension, outputDimension);
-  NumericalPoint outP(parser_(inP));
+  Point outP(parser_(inP));
   ++ callsNumber_;
   UnsignedInteger parserIndex = 0;
   for (UnsignedInteger columnIndex = 0; columnIndex < outputDimension; ++ columnIndex)
@@ -203,7 +203,7 @@ UnsignedInteger SymbolicGradient::getOutputDimension() const
 
 /* Accessor to a specific formula */
 String SymbolicGradient::getFormula(const UnsignedInteger i,
-    const UnsignedInteger j) const
+                                    const UnsignedInteger j) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if ((i >= inputDimension) || (j >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";
@@ -238,14 +238,14 @@ SymbolicGradient::Implementation SymbolicGradient::getMarginal(const Indices & i
 /* Method save() stores the object through the StorageManager */
 void SymbolicGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SymbolicGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
   *this = SymbolicGradient(evaluation_);
 }

@@ -64,7 +64,7 @@ first : float
 
 Returns
 -------
-width : :class:`~openturns.NumericalPoint`
+width : :class:`~openturns.Point`
     The collection of :math:`\ell_i`, the width of class `i`."
 // ---------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ width : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-height : :class:`~openturns.NumericalPoint`
+height : :class:`~openturns.Point`
     The collection of :math:`h_i`, the height of class `i`."
 
 // ---------------------------------------------------------------------
@@ -93,7 +93,7 @@ first : float
 
 Parameters
 ----------
-width : :class:`~openturns.NumericalPoint`
+width : :class:`~openturns.Point`
     The collection of :math:`\ell_i`, the width of class `i`.
-height : :class:`~openturns.NumericalPoint`
+height : :class:`~openturns.Point`
     The collection of :math:`h_i`, the height of class `i`."

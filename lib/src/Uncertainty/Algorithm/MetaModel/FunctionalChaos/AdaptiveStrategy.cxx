@@ -82,9 +82,9 @@ void AdaptiveStrategy::computeInitialBasis()
 
 
 /* Update the basis for the next iteration of approximation */
-void AdaptiveStrategy::updateBasis(const NumericalPoint & alpha_k,
-                                   const NumericalScalar residual,
-                                   const NumericalScalar relativeError)
+void AdaptiveStrategy::updateBasis(const Point & alpha_k,
+                                   const Scalar residual,
+                                   const Scalar relativeError)
 
 {
   getImplementation()->updateBasis(alpha_k, residual, relativeError);
@@ -92,7 +92,7 @@ void AdaptiveStrategy::updateBasis(const NumericalPoint & alpha_k,
 
 
 /* Psi accessor */
-AdaptiveStrategy::NumericalMathFunctionCollection AdaptiveStrategy::getPsi() const
+AdaptiveStrategy::FunctionCollection AdaptiveStrategy::getPsi() const
 {
   return getImplementation()->getPsi();
 }

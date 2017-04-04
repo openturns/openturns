@@ -63,11 +63,11 @@ Compact * Compact::clone() const
 }
 
 /* Store the point according to the strategy */
-void Compact::store(const NumericalPoint & point)
+void Compact::store(const Point & point)
 {
   if (!isInitialized_)
   {
-    sample_ = NumericalSample(2 * halfMaximumSize_, point.getDimension());
+    sample_ = Sample(2 * halfMaximumSize_, point.getDimension());
     index_ = 0;
     step_ = 1;
     throwingCounter_ = 0;
@@ -93,11 +93,11 @@ void Compact::store(const NumericalPoint & point)
 }
 
 /* Sample accessor */
-NumericalSample Compact::getSample() const
+Sample Compact::getSample() const
 {
   // If nothing has been stored
   if (!isInitialized_) return sample_;
-  NumericalSample outSample(index_, sample_.getDimension());
+  Sample outSample(index_, sample_.getDimension());
   for (UnsignedInteger i = 0; i < index_; ++i) outSample[i] = sample_[i];
   return outSample;
 }

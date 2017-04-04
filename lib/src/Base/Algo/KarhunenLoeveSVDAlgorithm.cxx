@@ -21,8 +21,8 @@
  *
  */
 #include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
-#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -51,7 +51,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm()
 
 /* Constructor with parameters */
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-    const NumericalScalar threshold,
+    const Scalar threshold,
     const Bool centeredSample)
   : KarhunenLoeveAlgorithmImplementation(CovarianceModel(), threshold)
   , sample_(sample)
@@ -67,8 +67,8 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
 
 /* Constructor with parameters */
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-    const NumericalPoint & verticesWeights,
-    const NumericalScalar threshold,
+    const Point & verticesWeights,
+    const Scalar threshold,
     const Bool centeredSample)
   : KarhunenLoeveAlgorithmImplementation(CovarianceModel(), threshold)
   , sample_(sample)
@@ -84,9 +84,9 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
 
 /* Constructor with parameters */
 KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-    const NumericalPoint & verticesWeights,
-    const NumericalPoint & sampleWeights,
-    const NumericalScalar threshold,
+    const Point & verticesWeights,
+    const Point & sampleWeights,
+    const Scalar threshold,
     const Bool centeredSample)
   : KarhunenLoeveAlgorithmImplementation(CovarianceModel(), threshold)
   , sample_(sample)
@@ -123,26 +123,26 @@ void KarhunenLoeveSVDAlgorithm::run()
   const UnsignedInteger augmentedDimension = verticesNumber * dimension;
   MatrixImplementation designMatrix(augmentedDimension, kTilde);
   // Compute the empirical mean if the sample is not centered
-  NumericalPoint mean;
+  Point mean;
   if (!centeredSample_)
+  {
+    LOGINFO("Noncentered sample: compute mean");
+    const Scalar unbiasedRatio = size / (size - 1.0);
+    mean = Point(augmentedDimension);
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      LOGINFO("Noncentered sample: compute mean");
-      const NumericalScalar unbiasedRatio = size / (size - 1.0);
-      mean = NumericalPoint(augmentedDimension);
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  mean += sampleWeights_[i] * sample_[i].getImplementation()->getData();
-	  sampleWeights_[i] *= unbiasedRatio;
-	}
+      mean += sampleWeights_[i] * sample_[i].getImplementation()->getData();
+      sampleWeights_[i] *= unbiasedRatio;
     }
+  }
   if (uniformVerticesWeights_)
   {
     LOGINFO("Uniform vertices weights");
     UnsignedInteger shift = 0;
-    const NumericalScalar coeff = std::sqrt(verticesWeights_[0]);
+    const Scalar coeff = std::sqrt(verticesWeights_[0]);
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {
-      NumericalPoint data = sample_[i].getImplementation()->getData();
+      Point data = sample_[i].getImplementation()->getData();
       if (!centeredSample_) data -= mean;
       data *= coeff * std::sqrt(sampleWeights_[i]);
       std::copy(data.begin(), data.end(), designMatrix.begin() + shift);
@@ -150,26 +150,26 @@ void KarhunenLoeveSVDAlgorithm::run()
     }
   } // uniformVerticesWeights
   else
-  // Take the vertices weights into account
+    // Take the vertices weights into account
   {
     LOGINFO("Non-uniform vertices weights");
-    NumericalPoint coeffs(verticesNumber);
+    Point coeffs(verticesNumber);
     for (UnsignedInteger j = 0; j < verticesNumber; ++j)
       coeffs[j] = std::sqrt(verticesWeights_[j]);
     UnsignedInteger shift = 0;
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {
-      const NumericalScalar wI = std::sqrt(sampleWeights_[i]);
-      const NumericalSample currentSample(sample_[i]);
+      const Scalar wI = std::sqrt(sampleWeights_[i]);
+      const Sample currentSample(sample_[i]);
       for (UnsignedInteger j = 0; j < verticesNumber; ++j)
       {
-        const NumericalScalar wJ = coeffs[j];
-	const NumericalPoint currentPoint(currentSample[j]);
+        const Scalar wJ = coeffs[j];
+        const Point currentPoint(currentSample[j]);
         for (UnsignedInteger k = 0; k < dimension; ++k)
-	  {
-	    designMatrix[shift] = wI * wJ * currentPoint[k];
-	    ++shift;
-	  } // k
+        {
+          designMatrix[shift] = wI * wJ * currentPoint[k];
+          ++shift;
+        } // k
       } // j
     } // i
   } // !uniformWeights
@@ -177,20 +177,20 @@ void KarhunenLoeveSVDAlgorithm::run()
   // Compute the SVD decomposition of the design matrix
   MatrixImplementation U;
   MatrixImplementation Vt;
-  const NumericalPoint svd(designMatrix.computeSVD(U, Vt));
+  const Point svd(designMatrix.computeSVD(U, Vt));
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
-  NumericalPoint eigenValues(svd.getDimension());
+  Point eigenValues(svd.getDimension());
   for (UnsignedInteger i = 0; i < svd.getDimension(); ++i)
     eigenValues[i] = svd[i] * svd[i];
   LOGINFO("Extract the relevant eigenpairs");
   UnsignedInteger K = 0;
-  NumericalScalar cumulatedVariance = std::abs(eigenValues[0]);
+  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-    {
-      cumulatedVariance += eigenValues[K];
-      ++K;
-    }
+  {
+    cumulatedVariance += eigenValues[K];
+    ++K;
+  }
   LOGINFO("Create eigenmodes values");
   // Stores the eigenmodes values in-place to avoid wasting memory
   MatrixImplementation & eigenModesValues = U;
@@ -202,61 +202,61 @@ void KarhunenLoeveSVDAlgorithm::run()
     {
       for (UnsignedInteger i = 0; i < verticesNumber; ++i)
       {
-	const NumericalScalar coefficient = 1.0 / std::sqrt(verticesWeights_[i]);
-	for (UnsignedInteger k = 0; k < dimension; ++k)
-	  {
-	    eigenModesValues[index] *= coefficient;
-	    ++index;
-	  } // k
+        const Scalar coefficient = 1.0 / std::sqrt(verticesWeights_[i]);
+        for (UnsignedInteger k = 0; k < dimension; ++k)
+        {
+          eigenModesValues[index] *= coefficient;
+          ++index;
+        } // k
       } // i
     } // j
   } // !uniformVerticesWeights_
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(augmentedDimension, K);
-  NumericalPoint selectedEV(K);
+  Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(sample_.getMesh(), 0, dimension);
   const UnsignedInteger meshDimension = sample_.getMesh().getDimension();
-  NumericalSampleImplementation values(verticesNumber, dimension);
+  SampleImplementation values(verticesNumber, dimension);
   UnsignedInteger index = 0;
   LOGINFO("Create modes and projection");
   for (UnsignedInteger k = 0; k < K; ++k)
   {
     selectedEV[k] = eigenValues[k];
     MatrixImplementation a(eigenModesValues.getColumn(k));
-    const NumericalScalar factor = a[0] < 0.0 ? -1.0 : 1.0;
+    const Scalar factor = a[0] < 0.0 ? -1.0 : 1.0;
     // Store the eigen modes in two forms
     values.setData(a * factor);
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
-      modes.add(PiecewiseLinearEvaluationImplementation(sample_.getMesh().getVertices().getImplementation()->getData(), values));
+      modes.add(PiecewiseLinearEvaluation(sample_.getMesh().getVertices().getImplementation()->getData(), values));
     else
-      modes.add(P1LagrangeEvaluationImplementation(modesAsProcessSample.getField(k)));
+      modes.add(P1LagrangeEvaluation(modesAsProcessSample.getField(k)));
     // Build the relevant column of the transposed projection matrix
     // \vect{\alpha}=\diag{1/\sqrt{\lambda}}[(\sqrt{W}^{-1}U)^tW]F
     //              =\diag{1/\sqrt{\lambda}}[(W.eigenModesValues)^t]F
     // so M^t=[W.eigenModesValues.\diag{1/\sqrt{\lambda}}]^t
     if (uniformVerticesWeights_)
-      {
-	a *= (factor * verticesWeights_[0] / sqrt(selectedEV[k]));
-	std::copy(a.begin(), a.end(), transposedProjection.begin() + index);
-	index += augmentedDimension;
-      } // uniformVerticesWeights_
+    {
+      a *= (factor * verticesWeights_[0] / sqrt(selectedEV[k]));
+      std::copy(a.begin(), a.end(), transposedProjection.begin() + index);
+      index += augmentedDimension;
+    } // uniformVerticesWeights_
     else
+    {
+      const Scalar inverseSqrtLambda = factor / sqrt(selectedEV[k]);
+      UnsignedInteger shift = 0;
+      for (UnsignedInteger i = 0; i < verticesNumber; ++i)
       {
-	const NumericalScalar inverseSqrtLambda = factor / sqrt(selectedEV[k]);
-	UnsignedInteger shift = 0;
-	for (UnsignedInteger i = 0; i < verticesNumber; ++i)
-	  {
-	    const NumericalScalar coefficient = verticesWeights_[i] * inverseSqrtLambda;
-	    for (UnsignedInteger j = 0; j < dimension; ++j)
-	      {
-		transposedProjection[index] = coefficient * a[shift];
-		++shift;
-		++index;
-	      } // j
-	  } // i
-      } // !uniformVerticesWeights_
+        const Scalar coefficient = verticesWeights_[i] * inverseSqrtLambda;
+        for (UnsignedInteger j = 0; j < dimension; ++j)
+        {
+          transposedProjection[index] = coefficient * a[shift];
+          ++shift;
+          ++index;
+        } // j
+      } // i
+    } // !uniformVerticesWeights_
   } // k
   LOGINFO("Create KL result");
   covariance_ = RankMCovarianceModel(selectedEV, modes);
@@ -270,42 +270,42 @@ ProcessSample KarhunenLoeveSVDAlgorithm::getSample() const
 }
 
 /* Vertices weights accessor */
-NumericalPoint KarhunenLoeveSVDAlgorithm::getVerticesWeights() const
+Point KarhunenLoeveSVDAlgorithm::getVerticesWeights() const
 {
   return verticesWeights_;
 }
 
-void KarhunenLoeveSVDAlgorithm::setVerticesWeights(const NumericalPoint & verticesWeights)
+void KarhunenLoeveSVDAlgorithm::setVerticesWeights(const Point & verticesWeights)
 {
   const UnsignedInteger verticesNumber = sample_.getMesh().getVerticesNumber();
   if (!(verticesWeights.getSize() == verticesNumber)) throw InvalidArgumentException(HERE) << "Error: expected vertices weights of dimension=" << verticesNumber << ", got dimension=" << verticesWeights.getSize();
-  const NumericalScalar weight0 = verticesWeights[0];
+  const Scalar weight0 = verticesWeights[0];
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
-    {
-      if (verticesWeights[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
-      uniformVerticesWeights_ = uniformVerticesWeights_ && (verticesWeights[i] == weight0);
-    }
+  {
+    if (!(verticesWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
+    uniformVerticesWeights_ = uniformVerticesWeights_ && (verticesWeights[i] == weight0);
+  }
   verticesWeights_ = verticesWeights;
 }
 
 /* Sample weights accessor */
-NumericalPoint KarhunenLoeveSVDAlgorithm::getSampleWeights() const
+Point KarhunenLoeveSVDAlgorithm::getSampleWeights() const
 {
   return sampleWeights_;
 }
 
-void KarhunenLoeveSVDAlgorithm::setSampleWeights(const NumericalPoint & sampleWeights)
+void KarhunenLoeveSVDAlgorithm::setSampleWeights(const Point & sampleWeights)
 {
   const UnsignedInteger sampleSize = sample_.getSize();
   if (!(sampleWeights.getSize() == sampleSize)) throw InvalidArgumentException(HERE) << "Error: expected sample weights of dimension=" << sampleSize << ", got dimension=" << sampleWeights.getSize();
-  const NumericalScalar weight0 = sampleWeights[0];
-  NumericalScalar weightSum = 0.0;
+  const Scalar weight0 = sampleWeights[0];
+  Scalar weightSum = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
-    {
-      if (sampleWeights[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];
-      uniformSampleWeights_ = uniformSampleWeights_ && (sampleWeights[i] == weight0);
-      weightSum += sampleWeights[i];
-    }
+  {
+    if (!(sampleWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];
+    uniformSampleWeights_ = uniformSampleWeights_ && (sampleWeights[i] == weight0);
+    weightSum += sampleWeights[i];
+  }
   // Normalize the sample weights to have an unbiased estimator of the mean
   sampleWeights_ = sampleWeights / weightSum;
 }

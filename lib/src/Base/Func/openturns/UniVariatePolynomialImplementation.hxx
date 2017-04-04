@@ -22,7 +22,7 @@
 #define OPENTURNS_UNIVARIATEPOLYNOMIALIMPLEMENTATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/UniVariateFunctionImplementation.hxx"
@@ -44,8 +44,8 @@ class OT_API UniVariatePolynomialImplementation
 public:
 
   typedef Pointer<UniVariatePolynomialImplementation> Implementation;
-  typedef Matrix::NumericalComplexCollection          NumericalComplexCollection;
-  typedef NumericalPoint                              Coefficients;
+  typedef Matrix::ComplexCollection          ComplexCollection;
+  typedef Point                              Coefficients;
 
   /** Default constructor */
   UniVariatePolynomialImplementation();
@@ -63,19 +63,19 @@ public:
                          const String & offset) const;
 
   /** UniVariatePolynomialImplementation are evaluated as functors */
-  virtual NumericalScalar operator() (const NumericalScalar x) const;
-  NumericalComplex operator() (const NumericalComplex z) const;
+  virtual Scalar operator() (const Scalar x) const;
+  Complex operator() (const Complex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
-  virtual NumericalScalar gradient(const NumericalScalar x) const;
+  virtual Scalar gradient(const Scalar x) const;
 
-  virtual NumericalScalar hessian(const NumericalScalar x) const;
+  virtual Scalar hessian(const Scalar x) const;
 
   /** Compute the derivative of the polynomial */
   UniVariatePolynomialImplementation derivate() const;
 
-  /** Multiply the polynomial P by a NumericalScalar */
-  UniVariatePolynomialImplementation operator * (const NumericalScalar scalar) const;
+  /** Multiply the polynomial P by a Scalar */
+  UniVariatePolynomialImplementation operator * (const Scalar scalar) const;
 
   /** Multiply the polynomial P by a polynomial Q */
   UniVariatePolynomialImplementation operator * (const UniVariatePolynomialImplementation & uniVariatePolynomial) const;
@@ -97,7 +97,7 @@ public:
   UnsignedInteger getDegree() const;
 
   /** Root of the polynomial of degree n as the eigenvalues of the associated matrix */
-  NumericalComplexCollection getRoots() const;
+  ComplexCollection getRoots() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

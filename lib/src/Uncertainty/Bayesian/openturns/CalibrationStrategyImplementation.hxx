@@ -46,10 +46,10 @@ class OT_API CalibrationStrategyImplementation
 public:
 
   /** Default constructor with parameters */
-  CalibrationStrategyImplementation(const Interval & range = Interval(ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultLowerBound"),
-                                    ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultUpperBound")),
-                                    const NumericalScalar expansionFactor = ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultExpansionFactor"),
-                                    const NumericalScalar shrinkFactor = ResourceMap::GetAsNumericalScalar("CalibrationStrategy-DefaultShrinkFactor"),
+  CalibrationStrategyImplementation(const Interval & range = Interval(ResourceMap::GetAsScalar("CalibrationStrategy-DefaultLowerBound"),
+                                    ResourceMap::GetAsScalar("CalibrationStrategy-DefaultUpperBound")),
+                                    const Scalar expansionFactor = ResourceMap::GetAsScalar("CalibrationStrategy-DefaultExpansionFactor"),
+                                    const Scalar shrinkFactor = ResourceMap::GetAsScalar("CalibrationStrategy-DefaultShrinkFactor"),
                                     const UnsignedInteger calibrationStep = ResourceMap::GetAsUnsignedInteger("CalibrationStrategy-DefaultCalibrationStep"));
 
   /** String converter */
@@ -60,12 +60,12 @@ public:
   Interval getRange() const;
 
   /** Expansion factor accessor */
-  void setExpansionFactor(NumericalScalar expansionFactor);
-  NumericalScalar getExpansionFactor() const;
+  void setExpansionFactor(Scalar expansionFactor);
+  Scalar getExpansionFactor() const;
 
   /** Shrink factor accessor */
-  void setShrinkFactor(NumericalScalar shrinkFactor);
-  NumericalScalar getShrinkFactor() const;
+  void setShrinkFactor(Scalar shrinkFactor);
+  Scalar getShrinkFactor() const;
 
   /** Calibration period */
   void setCalibrationStep(const UnsignedInteger calibrationStep);
@@ -77,7 +77,7 @@ public:
   virtual CalibrationStrategyImplementation * clone() const;
 
   /** @copydoc CalibrationStrategy::computeUpdateFactor() const */
-  virtual NumericalScalar computeUpdateFactor(const NumericalScalar rho) const;
+  virtual Scalar computeUpdateFactor(const Scalar rho) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -87,8 +87,8 @@ public:
 
 private:
   Interval range_;
-  NumericalScalar shrinkFactor_;
-  NumericalScalar expansionFactor_;
+  Scalar shrinkFactor_;
+  Scalar expansionFactor_;
 
   /// period between recalibrations
   UnsignedInteger calibrationStep_;

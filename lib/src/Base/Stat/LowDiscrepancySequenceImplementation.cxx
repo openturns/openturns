@@ -65,33 +65,33 @@ UnsignedInteger LowDiscrepancySequenceImplementation::getDimension() const
 
 
 /* Generate a low discrepancy vector of numbers uniformly distributed over [0, 1) */
-NumericalPoint LowDiscrepancySequenceImplementation::generate() const
+Point LowDiscrepancySequenceImplementation::generate() const
 {
   throw NotYetImplementedException(HERE) << "In LowDiscrepancySequenceImplementation::generate()";
 }
 
 
 /* Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-NumericalSample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size) const
+Sample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size) const
 {
-  NumericalSample sequenceSample(size, dimension_);
+  Sample sequenceSample(size, dimension_);
   for(UnsignedInteger i = 0; i < size ; ++i) sequenceSample[i] = generate();
   return sequenceSample;
 }
 
 
 /* Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-NumericalScalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(const NumericalSample & sample)
+Scalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(const Sample & sample)
 {
   // computationnaly heavy function : O(N²), let N the size of the sample
   const UnsignedInteger size = sample.getSize();
 
   // discrepancy is the maximum of the local discrepancy
-  const NumericalPoint lowerPoint(sample.getDimension());
-  NumericalScalar discrepancy = 0.0;
+  const Point lowerPoint(sample.getDimension());
+  Scalar discrepancy = 0.0;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar local = ComputeLocalDiscrepancy(sample, Interval(lowerPoint, sample[i]));
+    const Scalar local = ComputeLocalDiscrepancy(sample, Interval(lowerPoint, sample[i]));
     if(local > discrepancy)
       discrepancy = local;
   }
@@ -126,7 +126,7 @@ void LowDiscrepancySequenceImplementation::load(Advocate & adv)
 
 
 /* Compute the local discrepancy of a sample, given a multidimensionnal interval */
-NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(const NumericalSample & sample,
+Scalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(const Sample & sample,
     const Interval & interval)
 {
   if (sample.getDimension() != interval.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample must have the same dimension as the given interval.";
@@ -137,7 +137,7 @@ NumericalScalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(co
     if (interval.numericallyContains(sample[j])) ++inPoints;
   // The local discrepancy is the absolute difference between the fraction of points
   // that fall into the given interval and its volume
-  return std::abs(static_cast<NumericalScalar>(inPoints) / size - interval.getNumericalVolume());
+  return std::abs(static_cast<Scalar>(inPoints) / size - interval.getNumericalVolume());
 }
 
 /* Get the needed prime numbers */

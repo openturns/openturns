@@ -58,10 +58,10 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Returns a realization */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Returns a realization */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
 }; /* class Sampler */
 

@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-void printSample(String name, NumericalSample sample)
+void printSample(String name, Sample sample)
 {
   OStream fullprint(std::cout);
 
@@ -33,7 +33,7 @@ void printSample(String name, NumericalSample sample)
   {
     if (counter != 0)  fullprint << ";";
     fullprint << "[" ;
-    NumericalPoint point(sample[counter]);
+    Point point(sample[counter]);
     for (UnsignedInteger coordinate = 0; coordinate < point.getDimension(); coordinate++)
     {
       if (coordinate != 0)  fullprint << ",";
@@ -57,12 +57,12 @@ int main(int argc, char *argv[])
     Description input(2);
     input[0] = "x1";
     input[1] = "x2";
-    NumericalMathFunction myFunction(input, Description(1, "y1"), Description(1, "(x1-0.6)*(x1-0.6)-x2*x2"));
+    Function myFunction(input, Description(1, "y1"), Description(1, "(x1-0.6)*(x1-0.6)-x2*x2"));
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
-    NumericalPoint mean(dim, 0.0);
-    NumericalPoint sigma(dim, 1.0);
+    Point mean(dim, 0.0);
+    Point sigma(dim, 1.0);
     IdentityMatrix R(dim);
     Normal myDistribution(mean, sigma, R);
 
@@ -77,17 +77,17 @@ int main(int argc, char *argv[])
     StandardEvent myStandardEvent(output, Greater(), seuil);
 
     /* We create the design point */
-    NumericalPoint designPoint(dim, 0.0);
+    Point designPoint(dim, 0.0);
     double C(0.6);
     designPoint[0] = - sqrt(seuil) + C;
 
     /* We create the "second" design point */
-    NumericalPoint pseudoDesignPoint(dim, 0.0);
+    Point pseudoDesignPoint(dim, 0.0);
     pseudoDesignPoint[0] = sqrt(seuil) + C;
 
-    NumericalScalar importanceLevel = 0.01;
-    NumericalScalar accuracyLevel = 2;
-    NumericalScalar confidenceLevel = 0.999;
+    Scalar importanceLevel = 0.01;
+    Scalar accuracyLevel = 2;
+    Scalar confidenceLevel = 0.999;
 
     StrongMaximumTest myTest(myStandardEvent, designPoint, importanceLevel, accuracyLevel, confidenceLevel);
     fullprint << "myTest=" << myTest << std::endl;

@@ -11,22 +11,23 @@ algo = ot.GaussKronrod(
 
 value = algo.integrate(f, ot.Interval(a, b))[0]
 
-ai = ot.NumericalPoint()
-bi = ot.NumericalPoint()
-fi = ot.NumericalSample()
-ei = ot.NumericalPoint()
-error = ot.NumericalPoint()
+ai = ot.Point()
+bi = ot.Point()
+fi = ot.Sample()
+ei = ot.Point()
+error = ot.Point()
 value2 = algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]
 
 ai.add(b)
 g = f.draw(a, b, 512)
-lower = ot.Cloud(ai, ot.NumericalPoint(ai.getDimension()))
+lower = ot.Cloud(ai, ot.Point(ai.getDimension()))
 lower.setColor("magenta")
 lower.setPointStyle('circle')
 g.add(lower)
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle(r"GaussKronrod example: $\int_{-5/2}^{9/2}|\sin(t)|\,dt=$"+str(value))
+plt.suptitle(
+    r"GaussKronrod example: $\int_{-5/2}^{9/2}|\sin(t)|\,dt=$" + str(value))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(g, figure=fig, axes=[axis], add_legend=False)

@@ -23,9 +23,9 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,8 +48,8 @@ public:
   LinearTaylor();
 
   /** Constructor with parameters */
-  LinearTaylor(const NumericalPoint & center,
-               const NumericalMathFunction & inputFunction);
+  LinearTaylor(const Point & center,
+               const Function & inputFunction);
 
 
   /** Virtual constructor */
@@ -62,28 +62,28 @@ public:
   void run();
 
   /** Center accessor */
-  NumericalPoint getCenter() const;
+  Point getCenter() const;
 
   /** Constant accessor */
-  NumericalPoint getConstant() const;
+  Point getConstant() const;
 
   /** Linear accessor */
   Matrix getLinear() const;
 
   /** Input function accessor */
-  NumericalMathFunction getInputFunction() const;
+  Function getInputFunction() const;
 
   /** Response surface accessor */
-  NumericalMathFunction getResponseSurface() const;
+  Function getResponseSurface() const;
 
 protected:
 
 private:
 
-  NumericalPoint center_;
-  NumericalMathFunction inputFunction_;
-  NumericalMathFunction responseSurface_;
-  NumericalPoint constant_;
+  Point center_;
+  Function inputFunction_;
+  Function responseSurface_;
+  Point constant_;
   Matrix linear_;
 
 }; /* class LinearTaylor */

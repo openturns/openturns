@@ -23,95 +23,95 @@
 #define OPENTURNS_INCGAM_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 namespace GammaFunctions
 {
-void incgam(const NumericalScalar a,
-            const NumericalScalar x,
-            NumericalScalar & p,
-            NumericalScalar & q,
+void incgam(const Scalar a,
+            const Scalar x,
+            Scalar & p,
+            Scalar & q,
             SignedInteger & ierr);
 
-void invincgam(const NumericalScalar a,
-               const NumericalScalar p,
-               const NumericalScalar q,
-               NumericalScalar & xr,
+void invincgam(const Scalar a,
+               const Scalar p,
+               const Scalar q,
+               Scalar & xr,
                SignedInteger & ierr);
 
 // computes (exp(x)-1)/x;
-NumericalScalar exmin1(const NumericalScalar x);
+Scalar exmin1(const Scalar x);
 
 // computes (exp(x)-1-x)/(0.5*x*x)
-NumericalScalar exmin1minx(const NumericalScalar x);
+Scalar exmin1minx(const Scalar x);
 
 // computes ln(1+x)-x
-NumericalScalar lnec(const NumericalScalar x);
+Scalar lnec(const Scalar x);
 
 // partition the domain of the incomplete gamma function
-NumericalScalar alpha(const NumericalScalar x);
+Scalar alpha(const Scalar x);
 
 // dompart is approx. of  x^a * exp(-x) / gamma(a+1) ;
-NumericalScalar dompart(const NumericalScalar a,
-                        const NumericalScalar x,
-                        const Bool qt);
+Scalar dompart(const Scalar a,
+               const Scalar x,
+               const Bool qt);
 
 // a[0]/2+a[1]T1(x)+...a[n]Tn(x); series of Chebychev polynomials
-NumericalScalar chepolsum(const NumericalScalar x,
-                          const NumericalPoint & a);
+Scalar chepolsum(const Scalar x,
+                 const Point & a);
 
 // function g in 1/gamma(x+1) = 1+x*(x-1)*g(x), -1 <= x <= 1
-NumericalScalar auxgam(const NumericalScalar x);
+Scalar auxgam(const Scalar x);
 
 // gamstar(x) = exp(stirling(x)), x > 0; or
 // gamma(x)/(exp(-x+(x-0.5)*ln(x))/sqrt(2pi)
-NumericalScalar gamstar(const NumericalScalar x);
+Scalar gamstar(const Scalar x);
 
-NumericalScalar errorfunction(const NumericalScalar x,
-                              const Bool erfcc,
-                              const Bool expo);
+Scalar errorfunction(const Scalar x,
+                     const Bool erfcc,
+                     const Bool expo);
 
-NumericalScalar fractio(const NumericalScalar x,
-                        const NumericalPoint & r,
-                        const NumericalPoint & s);
+Scalar fractio(const Scalar x,
+               const Point & r,
+               const Point & s);
 
-NumericalScalar pqasymp(const NumericalScalar a,
-                        const NumericalScalar x,
-                        const NumericalScalar dp,
-                        const Bool p);
+Scalar pqasymp(const Scalar a,
+               const Scalar x,
+               const Scalar dp,
+               const Bool p);
 
-NumericalScalar saeta(const NumericalScalar a,
-                      const NumericalScalar eta);
+Scalar saeta(const Scalar a,
+             const Scalar eta);
 
-NumericalScalar qfraction(const NumericalScalar a,
-                          const NumericalScalar x,
-                          const NumericalScalar dp);
+Scalar qfraction(const Scalar a,
+                 const Scalar x,
+                 const Scalar dp);
 
-NumericalScalar qtaylor(const NumericalScalar a,
-                        const NumericalScalar x,
-                        const NumericalScalar dp);
+Scalar qtaylor(const Scalar a,
+               const Scalar x,
+               const Scalar dp);
 
-NumericalScalar ptaylor(const NumericalScalar a,
-                        const NumericalScalar x,
-                        const NumericalScalar dp);
+Scalar ptaylor(const Scalar a,
+               const Scalar x,
+               const Scalar dp);
 
-NumericalScalar eps1(const NumericalScalar eta);
+Scalar eps1(const Scalar eta);
 
-NumericalScalar eps2(const NumericalScalar eta);
+Scalar eps2(const Scalar eta);
 
-NumericalScalar eps3(const NumericalScalar eta);
+Scalar eps3(const Scalar eta);
 
-NumericalScalar lambdaeta(const NumericalScalar eta);
+Scalar lambdaeta(const Scalar eta);
 
-NumericalScalar invq(const NumericalScalar x);
+Scalar invq(const Scalar x);
 
-NumericalScalar inverfc(const NumericalScalar x);
+Scalar inverfc(const Scalar x);
 
-NumericalScalar ratfun(const NumericalScalar x,
-                       const NumericalPoint & ak,
-                       const NumericalPoint & bk);
+Scalar ratfun(const Scalar x,
+              const Point & ak,
+              const Point & bk);
 
 } // GammaFunctions
 

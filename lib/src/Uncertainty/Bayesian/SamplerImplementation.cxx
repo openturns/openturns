@@ -71,15 +71,15 @@ UnsignedInteger SamplerImplementation::getDimension() const
 }
 
 
-NumericalPoint SamplerImplementation::getRealization() const
+Point SamplerImplementation::getRealization() const
 {
   throw NotYetImplementedException(HERE) << "In SamplerImplementation::getRealization() const";
 }
 
 
-NumericalSample SamplerImplementation::getSample(const UnsignedInteger size) const
+Sample SamplerImplementation::getSample(const UnsignedInteger size) const
 {
-  NumericalSample sample(size, getDimension());
+  Sample sample(size, getDimension());
   for (UnsignedInteger i = 0; i < size; ++ i)
     sample[i] = getRealization();
   return sample;

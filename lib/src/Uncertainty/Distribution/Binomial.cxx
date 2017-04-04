@@ -46,7 +46,7 @@ Binomial::Binomial()
 
 /* Parameters constructor */
 Binomial::Binomial(const UnsignedInteger n,
-                   const NumericalScalar p)
+                   const Scalar p)
   : DiscreteDistribution(),
     n_(n),
     p_(-1.0)
@@ -97,94 +97,94 @@ Binomial * Binomial::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Binomial::getRealization() const
+Point Binomial::getRealization() const
 {
-  return NumericalPoint(1, DistFunc::rBinomial(n_, p_));
+  return Point(1, DistFunc::rBinomial(n_, p_));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Binomial::computePDF(const NumericalPoint & point) const
+Scalar Binomial::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
   return std::exp(SpecFunc::LnGamma(n_ + 1.0) - SpecFunc::LnGamma(n_ - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + (n_ - k) * log1p(-p_));
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Binomial::computeCDF(const NumericalPoint & point) const
+Scalar Binomial::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return 0.0;
   if (k > n_ - supportEpsilon_) return 1.0;
   // Complementary relation for incomplete regularized Beta function: I(a, b, x) = 1 - I(b, a, 1-x)
   return DistFunc::pBeta(n_ - floor(k), floor(k) + 1, 1.0 - p_);
 }
 
-NumericalScalar Binomial::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar Binomial::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
   if (k > n_ + supportEpsilon_) return 0.0;
   // Complementary relation for incomplete regularized Beta function: I(a, b, x) = 1 - I(b, a, 1-x)
-  NumericalScalar value = DistFunc::pBeta(floor(k) + 1, n_ - floor(k), p_);
+  Scalar value = DistFunc::pBeta(floor(k) + 1, n_ - floor(k), p_);
   return value;
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint Binomial::computePDFGradient(const NumericalPoint & point) const
+Point Binomial::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
-  NumericalPoint pdfGradient(1, 0.0);
+  const Scalar k = point[0];
+  Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  throw NotYetImplementedException(HERE) << "In Binomial::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Binomial::computePDFGradient(const Point & point) const";
 }
 
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Binomial::computeCDFGradient(const NumericalPoint & point) const
+Point Binomial::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
-  if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
-  throw NotYetImplementedException(HERE) << "In Binomial::computeCDFGradient(const NumericalPoint & point) const";
+  const Scalar k = point[0];
+  if (k < -supportEpsilon_) return Point(1, 0.0);
+  throw NotYetImplementedException(HERE) << "In Binomial::computeCDFGradient(const Point & point) const";
 }
 
 /* Compute the mean of the distribution */
 void Binomial::computeMean() const
 {
-  mean_ = NumericalPoint(1, n_ * p_);
+  mean_ = Point(1, n_ * p_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Binomial::getStandardDeviation() const
+Point Binomial::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(n_ * p_ * (1.0 - p_)));
+  return Point(1, std::sqrt(n_ * p_ * (1.0 - p_)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Binomial::getSkewness() const
+Point Binomial::getSkewness() const
 {
   if ((p_ == 0.0) || (p_ == 1.0)) throw NotDefinedException(HERE) << "Error: the skewness is not defined for the Binomial distribution when p is zero or one.";
-  return NumericalPoint(1, (1.0 - 2.0 * p_) / std::sqrt(n_ * p_ * (1.0 - p_)));
+  return Point(1, (1.0 - 2.0 * p_) / std::sqrt(n_ * p_ * (1.0 - p_)));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Binomial::getKurtosis() const
+Point Binomial::getKurtosis() const
 {
   if ((p_ == 0.0) || (p_ == 1.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is not defined for the Binomial distribution when p is zero or one.";
-  return NumericalPoint(1, 3.0 - 6.0 / n_ + 1.0 / (n_ * p_ * (1.0 - p_)));
+  return Point(1, 3.0 - 6.0 / n_ + 1.0 / (n_ * p_ * (1.0 - p_)));
 }
 
 /* Compute the covariance of the distribution */
@@ -196,29 +196,29 @@ void Binomial::computeCovariance() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Binomial::getSupport(const Interval & interval) const
+Sample Binomial::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
-  const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), NumericalScalar(n_)));
-  NumericalSample result(0, 1);
-  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
+  const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), Scalar(n_)));
+  Sample result(0, 1);
+  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(Point(1, k));
   return result;
 }
 
 /* Parameters value accessor */
-NumericalPoint Binomial::getParameter() const
+Point Binomial::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = n_;
   point[1] = p_;
   return point;
 }
 
-void Binomial::setParameter(const NumericalPoint & parameter)
+void Binomial::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Binomial(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
   setWeight(w);
 }
@@ -239,7 +239,7 @@ Bool Binomial::isElliptical() const
 }
 
 /* P accessor */
-void Binomial::setP(const NumericalScalar p)
+void Binomial::setP(const Scalar p)
 {
   if ((p < 0.0) || (p > 1.0)) throw InvalidArgumentException(HERE) << "P must be in [0, 1], here p=" << p;
   if (p != p_)
@@ -252,7 +252,7 @@ void Binomial::setP(const NumericalScalar p)
 }
 
 /* P accessor */
-NumericalScalar Binomial::getP() const
+Scalar Binomial::getP() const
 {
   return p_;
 }
@@ -286,24 +286,24 @@ void Binomial::computeRange()
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Binomial::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Scalar Binomial::computeScalarQuantile(const Scalar prob,
+                                       const Bool tail) const
 {
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, prob=" << prob << ", tail=" << (tail ? "true" : "false"));
   if (prob <= 0.0) return (tail ? n_ : 0.0);
   if (prob >= 1.0) return (tail ? 0.0 : n_);
   // Initialization by the Cornish-Fisher expansion
-  NumericalScalar qNorm = DistFunc::qNormal(prob, tail);
-  NumericalScalar gamma1 = getSkewness()[0];
-  NumericalScalar gamma2 = getKurtosis()[0] - 3.0;
-  NumericalScalar quantile = round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0));
+  Scalar qNorm = DistFunc::qNormal(prob, tail);
+  Scalar gamma1 = getSkewness()[0];
+  Scalar gamma2 = getKurtosis()[0] - 3.0;
+  Scalar quantile = round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0));
   if (quantile < 0.0) quantile = 0.0;
   if (quantile > n_) quantile = n_;
   // CDF of the guess
-  NumericalScalar cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
+  Scalar cdf = tail ? computeComplementaryCDF(quantile) : computeCDF(quantile);
   LOGDEBUG(OSS() << "in Binomial::computeScalarQuantile, Cornish-Fisher estimate=" << quantile << ", cdf=" << cdf);
-  NumericalScalar oldCDF = cdf;
-  const NumericalScalar step = tail ? -1.0 : 1.0;
+  Scalar oldCDF = cdf;
+  const Scalar step = tail ? -1.0 : 1.0;
   // Do we have to
   while (cdf >= prob)
   {
@@ -330,29 +330,29 @@ NumericalScalar Binomial::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Binomial::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Binomial::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
+  const Complex value(1.0 - p_ + p_ * std::exp(Complex(0.0, x)));
   return std::pow(value, n_);
 }
 
-NumericalComplex Binomial::computeLogCharacteristicFunction(const NumericalScalar x) const
+Complex Binomial::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
-  return NumericalScalar(n_) * std::log(value);
+  const Complex value(1.0 - p_ + p_ * std::exp(Complex(0.0, x)));
+  return Scalar(n_) * std::log(value);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Binomial::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Binomial::computeGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * z);
+  const Complex value(1.0 - p_ + p_ * z);
   return std::pow(value, n_);
 }
 
-NumericalComplex Binomial::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex Binomial::computeLogGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * z);
-  return NumericalComplex(n_) * std::log(value);
+  const Complex value(1.0 - p_ + p_ * z);
+  return Complex(n_) * std::log(value);
 }
 
 /* Method save() stores the object through the StorageManager */

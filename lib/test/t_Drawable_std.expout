@@ -5,7 +5,7 @@ RGBA colors (31, 63, 127, 191)=#1f3f7fbf
 RGBA colors (0.1, 0.2, 0.3, 0.4)=#1a334d66
 HSV colors (215.0, 0.2, 0.3)=#3d444d
 HSVA colors (215.0, 0.2, 0.3, 0.4)=#3d444d66
-HSV (215.0, 0.2, 0.3) to RGB=class=NumericalPoint name=Unnamed dimension=3 values=[0.24,0.265,0.3]
+HSV (215.0, 0.2, 0.3) to RGB=class=Point name=Unnamed dimension=3 values=[0.24,0.265,0.3]
 Line styles=[blank,solid,dashed,dotted,dotdash,longdash,twodash]
 Point styles=[bullet,circle,diamond,dot,fcircle,fdiamond,fsquare,ftriangleup,none,plus,square,star,times,triangledown,triangleup]
 Fill styles=[solid,shaded]

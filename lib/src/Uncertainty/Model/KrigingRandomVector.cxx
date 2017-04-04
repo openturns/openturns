@@ -31,17 +31,17 @@ static const Factory<KrigingRandomVector> Factory_KrigingRandomVector;
 
 /* Default constructor */
 KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,
-    const NumericalPoint & point)
+    const Point & point)
   : UsualRandomVector(krigingResult(point))
   , krigingResult_(krigingResult)
-  , sample_(NumericalSample(1, point))
+  , sample_(Sample(1, point))
 {
   // Nothing to do
 }
 
 /* Default constructor */
 KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,
-    const NumericalSample & sample)
+    const Sample & sample)
   : UsualRandomVector(krigingResult(sample))
   , krigingResult_(krigingResult)
   , sample_(sample)
@@ -65,13 +65,13 @@ String KrigingRandomVector::__repr__() const
 }
 
 /** Get a realization of the process */
-NumericalPoint KrigingRandomVector::getRealization() const
+Point KrigingRandomVector::getRealization() const
 {
   return getDistribution().getRealization();
 }
 
 /** Get a sample of realizations of the process */
-NumericalSample KrigingRandomVector::getSample(const UnsignedInteger size) const
+Sample KrigingRandomVector::getSample(const UnsignedInteger size) const
 {
   return getDistribution().getSample(size);
 }

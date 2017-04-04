@@ -11,7 +11,7 @@ dimension = 2
 
 # ARMACoefficients intializing
 # Overwide bug 471
-ResourceMap.SetAsNumericalScalar('BoxCox-RootEpsilon', 1.0e-6)
+ResourceMap.SetAsScalar('BoxCox-RootEpsilon', 1.0e-6)
 
 # Make a realization of an ARMA model
 # Tmin , Tmax and N points for TimeGrid
@@ -24,7 +24,7 @@ sigma = 0.1
 cov = CovarianceMatrix(dimension)
 cov[0, 0] = sigma
 cov[1, 1] = 2.0 * sigma
-whiteNoiseDistribution = Normal(NumericalPoint(dimension, 0.0), cov)
+whiteNoiseDistribution = Normal(Point(dimension, 0.0), cov)
 
 # Building a process from a White Noise
 whiteNoise = WhiteNoise(whiteNoiseDistribution)
@@ -85,4 +85,4 @@ factory.setInitialConditions(phi, theta, cov)
 
 result = ARMA(factory.build(timeSeries))
 print('original process = ', myARMA)
-#print('Estimated ARMA= ', result)
+# print('Estimated ARMA= ', result)

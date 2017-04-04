@@ -12,10 +12,10 @@ try:
     defaultDimension = 1
 
     # Amplitude values
-    amplitude = NumericalPoint(defaultDimension, 1.0)
+    amplitude = Point(defaultDimension, 1.0)
 
     # Scale values
-    scale = NumericalPoint(defaultDimension, 1.0)
+    scale = Point(defaultDimension, 1.0)
 
     # Default constructor
     myDefautModel = CauchyModel()

@@ -1,14 +1,14 @@
 parameters=[[w_0 : 0.142857, mean_0 : -3, standard_deviation_0 : 1, w_1 : 0.285714, mean_0 : 1, standard_deviation_0 : 2, w_2 : 0.571429, mean_0 : 3, standard_deviation_0 : 3]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.57143]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[13.1429]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[60.2857]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[503.429]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[3610.86]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.57143]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[13.1429]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[60.2857]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[503.429]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[3610.86]
 Standard representative=Mixture((w = 0.142857, d = Normal(mu = -3, sigma = 1)), (w = 0.285714, d = Normal(mu = 1, sigma = 2)), (w = 0.571429, d = Normal(mu = 3, sigma = 3)))
-weights=class=NumericalPoint name=Unnamed dimension=3 values=[0.142857,0.285714,0.571429]
-New weights=class=NumericalPoint name=Unnamed dimension=3 values=[0.157303,0.393258,0.449438]
-Distribution class=Mixture name=Mixture dimension=3 distributionCollection=[class=Normal name=Normal dimension=3 mean=class=NumericalPoint name=Unnamed dimension=3 values=[0.5,-0.5,1] sigma=class=NumericalPoint name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1],class=Normal name=Normal dimension=3 mean=class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2] sigma=class=NumericalPoint name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1],class=Normal name=Normal dimension=3 mean=class=NumericalPoint name=Unnamed dimension=3 values=[2.5,1.5,3] sigma=class=NumericalPoint name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1]] weightsDistribution=class=UserDefined name=UserDefined dimension=1 points=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=1 data=[[0],[1],[2]] probabilities=class=NumericalPoint name=Unnamed dimension=3 values=[0.333333,0.333333,0.333333]
+weights=class=Point name=Unnamed dimension=3 values=[0.142857,0.285714,0.571429]
+New weights=class=Point name=Unnamed dimension=3 values=[0.157303,0.393258,0.449438]
+Distribution class=Mixture name=Mixture dimension=3 distributionCollection=[class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.5,-0.5,1] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1],class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[1.5,0.5,2] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1],class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[2.5,1.5,3] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1]] weightsDistribution=class=UserDefined name=UserDefined dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=1 data=[[0],[1],[2]] probabilities=class=Point name=Unnamed dimension=3 values=[0.333333,0.333333,0.333333]
 Distribution Mixture((w = 0.333333, d = Normal(mu = [0.5,-0.5,1], sigma = [2,3,1], R = [[ 1   0.5 0   ]
  [ 0.5 1   0.5 ]
  [ 0   0.5 1   ]])), (w = 0.333333, d = Normal(mu = [1.5,0.5,2], sigma = [2,3,1], R = [[ 1   0.5 0   ]
@@ -18,23 +18,23 @@ Distribution Mixture((w = 0.333333, d = Normal(mu = [0.5,-0.5,1], sigma = [2,3,1
  [ 0   0.5 1   ]])))
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=3 values=[2.07328,-1.03125,2.18976]
-oneSample first=class=NumericalPoint name=Unnamed dimension=3 values=[-1.86277,-0.862642,2.91223] last=class=NumericalPoint name=Unnamed dimension=3 values=[1.56533,-1.10765,2.76013]
-mean=class=NumericalPoint name=Unnamed dimension=3 values=[1.64038,0.699193,2.03941]
+oneRealization=class=Point name=Unnamed dimension=3 values=[2.07328,-1.03125,2.18976]
+oneSample first=class=Point name=Unnamed dimension=3 values=[-1.86277,-0.862642,2.91223] last=class=Point name=Unnamed dimension=3 values=[1.56533,-1.10765,2.76013]
+mean=class=Point name=Unnamed dimension=3 values=[1.64038,0.699193,2.03941]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.88439,3.99293,0.644831,3.99293,9.41608,2.09091,0.644831,2.09091,1.58061]
-Point= class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1]
-ddf     =class=NumericalPoint name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
+Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
+ddf     =class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
+ddf (FD)=class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
 log pdf=-5.13516
 pdf     =0.00588609
 cdf=0.11511
 ccdf=0.88489
 survival =0.316559
-Inverse survival=class=NumericalPoint name=Unnamed dimension=3 values=[-2.96551,-5.93727,-0.617253]
+Inverse survival=class=Point name=Unnamed dimension=3 values=[-2.96551,-5.93727,-0.617253]
 Survival(inverse survival)=0.95
-quantile=class=NumericalPoint name=Unnamed dimension=3 values=[5.96551,6.93727,4.61725]
+quantile=class=Point name=Unnamed dimension=3 values=[5.96551,6.93727,4.61725]
 cdf(quantile)=0.95
-mean=class=NumericalPoint name=Unnamed dimension=3 values=[1.5,0.5,2]
+mean=class=Point name=Unnamed dimension=3 values=[1.5,0.5,2]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,3.66667,0.666667,3.66667,9.66667,2.16667,0.666667,2.16667,1.66667]
 correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.545921,0.239046,0.545921,1,0.539796,0.239046,0.539796,1]
 parameters=[[mean_0 : 0.5, standard_deviation_0 : 2],[mean_0 : 1.5, standard_deviation_0 : 2],[mean_0 : 2.5, standard_deviation_0 : 2],[atom_0_R_1_0 : 0.5, atom_0_R_2_0 : 0, atom_0_R_2_1 : 0.5, atom_1_R_1_0 : 0.5, atom_1_R_2_0 : 0, atom_1_R_2_1 : 0.5, atom_2_R_1_0 : 0.5, atom_2_R_2_0 : 0, atom_2_R_2_1 : 0.5]]

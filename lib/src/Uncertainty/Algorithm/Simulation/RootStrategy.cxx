@@ -53,8 +53,8 @@ RootStrategy::RootStrategy()
 }
 
 /* Solve gives all the roots found applying the root strategy */
-RootStrategy::NumericalScalarCollection RootStrategy::solve(const NumericalMathFunction & function,
-    const NumericalScalar value)
+RootStrategy::ScalarCollection RootStrategy::solve(const Function & function,
+    const Scalar value)
 {
   return getImplementation()->solve(function, value);
 }
@@ -72,37 +72,37 @@ Solver RootStrategy::getSolver() const
 }
 
 /* Maximum distance accessor */
-void RootStrategy::setMaximumDistance(const NumericalScalar maximumDistance)
+void RootStrategy::setMaximumDistance(const Scalar maximumDistance)
 {
   copyOnWrite();
   getImplementation()->setMaximumDistance(maximumDistance);
 }
 
-NumericalScalar RootStrategy::getMaximumDistance() const
+Scalar RootStrategy::getMaximumDistance() const
 {
   return getImplementation()->getMaximumDistance();
 }
 
 /* Step size accessor */
-void RootStrategy::setStepSize(const NumericalScalar stepSize)
+void RootStrategy::setStepSize(const Scalar stepSize)
 {
   copyOnWrite();
   getImplementation()->setStepSize(stepSize);
 }
 
-NumericalScalar RootStrategy::getStepSize() const
+Scalar RootStrategy::getStepSize() const
 {
   return getImplementation()->getStepSize();
 }
 
 /* Value of the performance function at the origin accessor */
-void RootStrategy::setOriginValue(const NumericalScalar originValue)
+void RootStrategy::setOriginValue(const Scalar originValue)
 {
   copyOnWrite();
   getImplementation()->setOriginValue(originValue);
 }
 
-NumericalScalar RootStrategy::getOriginValue() const
+Scalar RootStrategy::getOriginValue() const
 {
   return getImplementation()->getOriginValue();
 }

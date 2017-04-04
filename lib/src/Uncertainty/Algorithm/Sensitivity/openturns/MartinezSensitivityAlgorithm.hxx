@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MARTINEZSENSITIVITYALGORITHM_HXX
 #define OPENTURNS_MARTINEZSENSITIVITYALGORITHM_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,19 +43,19 @@ public:
   MartinezSensitivityAlgorithm();
 
   /** Constructor with parameters */
-  MartinezSensitivityAlgorithm(const NumericalSample & inputDesign,
-                               const NumericalSample & outputDesign,
+  MartinezSensitivityAlgorithm(const Sample & inputDesign,
+                               const Sample & outputDesign,
                                const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
   MartinezSensitivityAlgorithm(const Distribution & distribution,
                                const UnsignedInteger size,
-                               const NumericalMathFunction & model,
+                               const Function & model,
                                const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   MartinezSensitivityAlgorithm(const WeightedExperiment & experiment,
-                               const NumericalMathFunction & model,
+                               const Function & model,
                                const Bool computeSecondOrder = true);
 
   /** Virtual constructor */
@@ -79,8 +79,8 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  NumericalSample computeIndices(const NumericalSample & sample,
-                                 NumericalSample & VTi) const;
+  Sample computeIndices(const Sample & sample,
+                        Sample & VTi) const;
 
   // Compute the fisher transform
   void computeAsymptoticInterval() const;

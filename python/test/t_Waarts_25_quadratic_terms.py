@@ -33,16 +33,16 @@ try:
     for i in range(1, dim):
         formulas[0] = formulas[0] + \
             " - (" + inputFunction[i] + " ^ 2.0) / " + str(i)
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    limitState = Function(inputFunction, outputFunction, formulas)
 
     #
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.2)
+    mean = Point(dim, 0.2)
     mean[0] = 0.5
 
-    sigma = NumericalPoint(dim, 0.1)
+    sigma = Point(dim, 0.1)
 
     R = CorrelationMatrix(dim)
     myDistribution = Normal(mean, sigma, R)

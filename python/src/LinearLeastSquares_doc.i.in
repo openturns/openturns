@@ -10,7 +10,7 @@ Parameters
 ----------
 dataIn : 2-d sequence of float
     Input data.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated.
 dataOut : 2-d sequence of float
     Output data. If not specified, this sample is computed such as:
@@ -101,7 +101,7 @@ Examples
 
 Returns
 -------
-dataIn : :class:`~openturns.NumericalSample`
+dataIn : :class:`~openturns.Sample`
     Input data."
 
 // ---------------------------------------------------------------------
@@ -111,7 +111,7 @@ dataIn : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-constantVector : :class:`~openturns.NumericalPoint`
+constantVector : :class:`~openturns.Point`
     Constant vector of the approximation, equal to :math:`a_0`."
 
 // ---------------------------------------------------------------------
@@ -121,7 +121,7 @@ constantVector : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-dataOut : :class:`~openturns.NumericalSample`
+dataOut : :class:`~openturns.Sample`
     Output data. If not specified in the constructor, the sample is computed
     such as: :math:`dataOut = h(dataIn)`."
 
@@ -142,7 +142,7 @@ dataOut : 2-d sequence of float
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated."
 
 // ---------------------------------------------------------------------
@@ -162,7 +162,7 @@ linearMatrix : :class:`~openturns.Matrix`
 
 Returns
 -------
-approximation : :class:`~openturns.NumericalMathFunction`
+approximation : :class:`~openturns.Function`
     An approximation of the function :math:`h` by Linear Least Squares."
 
 // ---------------------------------------------------------------------

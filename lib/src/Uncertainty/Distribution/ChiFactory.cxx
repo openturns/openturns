@@ -42,12 +42,12 @@ ChiFactory * ChiFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ChiFactory::Implementation ChiFactory::build(const NumericalSample & sample) const
+ChiFactory::Implementation ChiFactory::build(const Sample & sample) const
 {
   return buildAsChi(sample).clone();
 }
 
-ChiFactory::Implementation ChiFactory::build(const NumericalPoint & parameters) const
+ChiFactory::Implementation ChiFactory::build(const Point & parameters) const
 {
   return buildAsChi(parameters).clone();
 }
@@ -57,15 +57,15 @@ ChiFactory::Implementation ChiFactory::build() const
   return buildAsChi().clone();
 }
 
-Chi ChiFactory::buildAsChi(const NumericalSample & sample) const
+Chi ChiFactory::buildAsChi(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Chi distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar sumSquares = 0.0;
+  Scalar sumSquares = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar xI = sample[i][0];
+    const Scalar xI = sample[i][0];
     sumSquares += xI * xI;
   }
   try
@@ -80,7 +80,7 @@ Chi ChiFactory::buildAsChi(const NumericalSample & sample) const
   }
 }
 
-Chi ChiFactory::buildAsChi(const NumericalPoint & parameters) const
+Chi ChiFactory::buildAsChi(const Point & parameters) const
 {
   try
   {

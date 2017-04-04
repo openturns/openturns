@@ -24,7 +24,7 @@
 #include "openturns/EnumerateFunctionImplementation.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,11 +54,11 @@ public:
 
   /** Parameter constructor */
   EnumerateFunction(const UnsignedInteger dimension,
-                    const NumericalScalar q);
+                    const Scalar q);
 
   /** Parameter constructor */
-  EnumerateFunction(const NumericalPoint & weight,
-                    const NumericalScalar q);
+  EnumerateFunction(const Point & weight,
+                    const Scalar q);
 
   /** String converter */
   String __repr__() const;

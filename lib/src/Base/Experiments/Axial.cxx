@@ -36,8 +36,8 @@ Axial::Axial()
 }
 
 /* Constructor with parameters */
-Axial::Axial(const NumericalPoint & center,
-             const NumericalPoint & levels)
+Axial::Axial(const Point & center,
+             const Point & levels)
   : StratifiedExperiment(center, levels)
 {
   // Nothing to do
@@ -45,8 +45,8 @@ Axial::Axial(const NumericalPoint & center,
 
 /* Constructor with parameters */
 Axial::Axial(const UnsignedInteger dimension,
-             const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
+             const Point & levels)
+  : StratifiedExperiment(Point(dimension, 0.0), levels)
 {
   // Nothing to do
 }
@@ -58,7 +58,7 @@ Axial * Axial::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Axial::generate() const
+Sample Axial::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();
@@ -66,13 +66,13 @@ NumericalSample Axial::generate() const
   const UnsignedInteger levelNumber = levels_.getDimension();
   /* Size of the sample to be generated: 1 + 2 x number of levels x dimension */
   const UnsignedInteger size = 1 + 2 * levelNumber * dimension;
-  NumericalSample axialPlane(size, center_);
+  Sample axialPlane(size, center_);
   axialPlane.setName("Axial plane");
   UnsignedInteger index = 1;
   /* For each level of the axial plane */
   for(UnsignedInteger levelIndex = 0; levelIndex < levelNumber; ++levelIndex)
   {
-    const NumericalScalar levelValue = levels_[levelIndex];
+    const Scalar levelValue = levels_[levelIndex];
     /* For each vertex of one half of the current level */
     for(UnsignedInteger vertex = 0; vertex < dimension; ++vertex)
     {

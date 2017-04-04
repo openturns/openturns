@@ -39,7 +39,7 @@ public:
 
 
   /** Standard constructor */
-  FORMResult(const NumericalPoint & standardSpaceDesignPoint,
+  FORMResult(const Point & standardSpaceDesignPoint,
              const Event & limitStateVariable,
              const Bool isStandardPointOriginInFailureSpace);
 
@@ -50,16 +50,16 @@ public:
   virtual FORMResult * clone() const;
 
   /** EventProbability accessor */
-  NumericalScalar getEventProbability() const;
+  Scalar getEventProbability() const;
 
   /** GeneralisedReliabilityIndex accessor */
-  NumericalScalar getGeneralisedReliabilityIndex() const;
+  Scalar getGeneralisedReliabilityIndex() const;
 
   /** EventProbabilitySensitivity accessor */
   Sensitivity getEventProbabilitySensitivity() const;
 
   /** HasoferReliabilityIndexSensitivitygraph */
-  GraphCollection drawEventProbabilitySensitivity(NumericalScalar width = ResourceMap::GetAsNumericalScalar("AnalyticalResult-DefaultWidth")) const;
+  GraphCollection drawEventProbabilitySensitivity(Scalar width = ResourceMap::GetAsScalar("AnalyticalResult-DefaultWidth")) const;
 
   /** String converter */
   String __repr__() const;
@@ -82,16 +82,16 @@ private:
   void computeEventProbabilitySensitivity() const;
 
   /** EventProbability accessor */
-  void setEventProbability(const NumericalScalar & eventProbability);
+  void setEventProbability(const Scalar & eventProbability);
 
   /** GeneralisedReliabilityIndex accessor */
-  void setGeneralisedReliabilityIndex(const NumericalScalar & generalisedReliabilityIndex);
+  void setGeneralisedReliabilityIndex(const Scalar & generalisedReliabilityIndex);
 
   /** EventProbabilitySensitivity accessor */
   void setEventProbabilitySensitivity(const Sensitivity & eventProbabilitySensitivity);
 
-  mutable NumericalScalar eventProbability_;
-  mutable NumericalScalar generalisedReliabilityIndex_;
+  mutable Scalar eventProbability_;
+  mutable Scalar generalisedReliabilityIndex_;
   mutable Sensitivity eventProbabilitySensitivity_;
   mutable Bool isAlreadyComputedEventProbabilitySensitivity_;
 

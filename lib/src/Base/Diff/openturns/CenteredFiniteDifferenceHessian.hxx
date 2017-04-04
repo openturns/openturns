@@ -25,9 +25,9 @@
 #define OPENTURNS_CENTEREDFINITEDIFFERENCEHESSIAN_HXX
 
 #include "openturns/FiniteDifferenceHessian.hxx"
-#include "openturns/NumericalMathHessianImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/HessianImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -49,21 +49,21 @@ class OT_API CenteredFiniteDifferenceHessian
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>               EvaluationImplementation;
+  typedef Pointer<EvaluationImplementation>               EvaluationPointer;
 
   /** Default constructor */
   CenteredFiniteDifferenceHessian();
   /** Parameter constructor */
-  CenteredFiniteDifferenceHessian(const NumericalPoint & epsilon,
-                                  const EvaluationImplementation & p_evaluation);
+  CenteredFiniteDifferenceHessian(const Point & epsilon,
+                                  const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
-  CenteredFiniteDifferenceHessian(const NumericalScalar epsilon,
-                                  const EvaluationImplementation & p_evaluation);
+  CenteredFiniteDifferenceHessian(const Scalar epsilon,
+                                  const EvaluationPointer & p_evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   CenteredFiniteDifferenceHessian(const FiniteDifferenceStep & finiteDifferenceStep,
-                                  const EvaluationImplementation & p_evaluation);
+                                  const EvaluationPointer & p_evaluation);
 
   /* Virtual constructor */
   virtual CenteredFiniteDifferenceHessian * clone() const;
@@ -83,7 +83,7 @@ public:
    * @param in The point where the hessian is computed
    * @result A tensor
    */
-  virtual SymmetricTensor hessian(const NumericalPoint & inP) const;
+  virtual SymmetricTensor hessian(const Point & inP) const;
 
 protected:
 

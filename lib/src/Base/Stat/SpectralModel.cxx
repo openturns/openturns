@@ -69,46 +69,46 @@ UnsignedInteger SpectralModel::getSpatialDimension() const
   return getImplementation()->getSpatialDimension();
 }
 
-HermitianMatrix SpectralModel::operator() (const NumericalScalar frequency) const
+HermitianMatrix SpectralModel::operator() (const Scalar frequency) const
 {
   return getImplementation()->operator()(frequency);
 }
 
-NumericalComplex SpectralModel::computeStandardRepresentative(const NumericalScalar frequency) const
+Complex SpectralModel::computeStandardRepresentative(const Scalar frequency) const
 {
   return getImplementation()->computeStandardRepresentative(frequency);
 }
 
 /* Drawing method */
 Graph SpectralModel::draw(const UnsignedInteger rowIndex,
-			  const UnsignedInteger columnIndex,
-			  const NumericalScalar minimumFrequency,
-			  const NumericalScalar maximumFrequency,
-			  const UnsignedInteger frequencyNumber,
-			  const Bool module) const
+                          const UnsignedInteger columnIndex,
+                          const Scalar minimumFrequency,
+                          const Scalar maximumFrequency,
+                          const UnsignedInteger frequencyNumber,
+                          const Bool module) const
 {
   return getImplementation()->draw(rowIndex, columnIndex, minimumFrequency, maximumFrequency, frequencyNumber, module);
 }
 
 /** Amplitude accessor */
-NumericalPoint SpectralModel::getAmplitude() const
+Point SpectralModel::getAmplitude() const
 {
   return getImplementation()->getAmplitude();
 }
 
-void SpectralModel::setAmplitude(const NumericalPoint & amplitude)
+void SpectralModel::setAmplitude(const Point & amplitude)
 {
   copyOnWrite();
   return getImplementation()->setAmplitude(amplitude);
 }
 
 /** Scale accessor */
-NumericalPoint SpectralModel::getScale() const
+Point SpectralModel::getScale() const
 {
   return getImplementation()->getScale();
 }
 
-void SpectralModel::setScale(const NumericalPoint & scale)
+void SpectralModel::setScale(const Point & scale)
 {
   copyOnWrite();
   return getImplementation()->setScale(scale);

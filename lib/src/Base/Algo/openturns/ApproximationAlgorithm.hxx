@@ -49,11 +49,11 @@ public:
   ApproximationAlgorithm(const Implementation & p_implementation);
 
   /** Sample accessors */
-  NumericalSample getX() const;
-  NumericalSample getY() const;
+  Sample getX() const;
+  Sample getY() const;
 
   /** Weights accessors */
-  NumericalPoint getWeight() const;
+  Point getWeight() const;
 
   /** Basis accessor */
   Basis getPsi() const;
@@ -73,13 +73,13 @@ public:
 #endif
 
   /** Acccessor to the coefficients of the selected metamodel on the provided basis */
-  NumericalPoint getCoefficients();
+  Point getCoefficients();
 
   /** Acccessor to the residual of the selected metamodel on the provided basis */
-  NumericalScalar getResidual();
+  Scalar getResidual();
 
   /** Acccessor to the residual of the selected metamodel on the provided basis */
-  NumericalScalar getRelativeError();
+  Scalar getRelativeError();
 
 }; /* class ApproximationAlgorithm */
 

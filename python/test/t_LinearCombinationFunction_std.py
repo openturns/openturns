@@ -16,7 +16,7 @@ functions.append(ot.SymbolicFunction(inVar, formula))
 coefficients = [0.3, 2.9]
 # Third, build the function
 myFunction = ot.LinearCombinationFunction(functions, coefficients)
-inPoint = ot.NumericalPoint([1.2, 2.3, 3.4])
+inPoint = ot.Point([1.2, 2.3, 3.4])
 print('myFunction=', myFunction)
 print('Value at ', inPoint, '=', myFunction(inPoint))
 print('Gradient at ', inPoint, '=', myFunction.gradient(inPoint))

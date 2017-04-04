@@ -36,12 +36,12 @@ GumbelAB::GumbelAB()
   // Nothing to do
 }
 
-GumbelAB::GumbelAB(const NumericalScalar a, const NumericalScalar b)
+GumbelAB::GumbelAB(const Scalar a, const Scalar b)
   : DistributionParametersImplementation()
   , a_(a)
   , b_(b)
 {
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
+  if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
 }
 
 /* Virtual constructor */
@@ -60,11 +60,11 @@ Bool GumbelAB::operator ==(const GumbelAB & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution GumbelAB::getDistribution() const
 {
-  NumericalPoint newParameters(2);
+  Point newParameters(2);
   newParameters[0] = a_;
   newParameters[1] = b_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
   return GumbelFactory().build(nativeParameters);
 }
 
@@ -72,10 +72,10 @@ Distribution GumbelAB::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix GumbelAB::gradient() const
 {
-  const NumericalScalar dalphada = 0.0;
-  const NumericalScalar dalphadb = -1 / (b_ * b_);
-  const NumericalScalar dbetada = 1.0;
-  const NumericalScalar dbetadb = 0.0;
+  const Scalar dalphada = 0.0;
+  const Scalar dalphadb = -1 / (b_ * b_);
+  const Scalar dbetada = 1.0;
+  const Scalar dbetadb = 0.0;
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dalphada;
@@ -89,18 +89,18 @@ Matrix GumbelAB::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint GumbelAB::operator () (const NumericalPoint & inP) const
+Point GumbelAB::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar a = inP[0];
-  const NumericalScalar b = inP[1];
+  const Scalar a = inP[0];
+  const Scalar b = inP[1];
 
-  if (b <= 0.0) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
+  if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
 
-  const NumericalScalar alpha = 1 / b;
-  const NumericalScalar beta = a;
+  const Scalar alpha = 1 / b;
+  const Scalar beta = a;
 
-  NumericalPoint nativeParameters(inP);
+  Point nativeParameters(inP);
   nativeParameters[0] = alpha;
   nativeParameters[1] = beta;
 
@@ -108,18 +108,18 @@ NumericalPoint GumbelAB::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
+Point GumbelAB::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar alpha = inP[0];
-  const NumericalScalar beta = inP[1];
+  const Scalar alpha = inP[0];
+  const Scalar beta = inP[1];
 
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "alpha must be > 0, here alpha=" << alpha;
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "alpha must be > 0, here alpha=" << alpha;
 
-  const NumericalScalar a = beta;
-  const NumericalScalar b = 1.0 / alpha;
+  const Scalar a = beta;
+  const Scalar b = 1.0 / alpha;
 
-  NumericalPoint abParameters(inP);
+  Point abParameters(inP);
   abParameters[0] = a;
   abParameters[1] = b;
 
@@ -127,16 +127,16 @@ NumericalPoint GumbelAB::inverse(const NumericalPoint & inP) const
 }
 
 /* Parameters value and description accessor */
-void GumbelAB::setValues(const NumericalPoint & inP)
+void GumbelAB::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   a_ = inP[0];
   b_ = inP[1];
 }
 
-NumericalPoint GumbelAB::getValues() const
+Point GumbelAB::getValues() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = a_;
   point[1] = b_;
   return point;

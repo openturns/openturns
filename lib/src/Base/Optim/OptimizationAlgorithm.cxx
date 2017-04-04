@@ -56,12 +56,12 @@ OptimizationAlgorithm::OptimizationAlgorithm(const OptimizationProblem & problem
 }
 
 /* Starting point accessor */
-NumericalPoint OptimizationAlgorithm::getStartingPoint() const
+Point OptimizationAlgorithm::getStartingPoint() const
 {
   return getImplementation()->getStartingPoint();
 }
 
-void OptimizationAlgorithm::setStartingPoint(const NumericalPoint & startingPoint)
+void OptimizationAlgorithm::setStartingPoint(const Point & startingPoint)
 {
   copyOnWrite();
   getImplementation()->setStartingPoint(startingPoint);
@@ -106,52 +106,52 @@ void OptimizationAlgorithm::setMaximumIterationNumber(const UnsignedInteger maxi
 }
 
 /* Maximum absolute error accessor */
-NumericalScalar OptimizationAlgorithm::getMaximumAbsoluteError() const
+Scalar OptimizationAlgorithm::getMaximumAbsoluteError() const
 {
   return getImplementation()->getMaximumAbsoluteError();
 }
 
 /* Maximum absolute error accessor */
-void OptimizationAlgorithm::setMaximumAbsoluteError(const NumericalScalar maximumAbsoluteError)
+void OptimizationAlgorithm::setMaximumAbsoluteError(const Scalar maximumAbsoluteError)
 {
   copyOnWrite();
   getImplementation()->setMaximumAbsoluteError(maximumAbsoluteError);
 }
 
 /* Maximum relative error accessor */
-NumericalScalar OptimizationAlgorithm::getMaximumRelativeError() const
+Scalar OptimizationAlgorithm::getMaximumRelativeError() const
 {
   return getImplementation()->getMaximumRelativeError();
 }
 
 /* Maximum relative error accessor */
-void OptimizationAlgorithm::setMaximumRelativeError(const NumericalScalar maximumRelativeError)
+void OptimizationAlgorithm::setMaximumRelativeError(const Scalar maximumRelativeError)
 {
   copyOnWrite();
   getImplementation()->setMaximumRelativeError(maximumRelativeError);
 }
 
 /* Maximum residual error accessor */
-NumericalScalar OptimizationAlgorithm::getMaximumResidualError() const
+Scalar OptimizationAlgorithm::getMaximumResidualError() const
 {
   return getImplementation()->getMaximumResidualError();
 }
 
 /* Maximum residual error accessor */
-void OptimizationAlgorithm::setMaximumResidualError(const NumericalScalar maximumResidualError)
+void OptimizationAlgorithm::setMaximumResidualError(const Scalar maximumResidualError)
 {
   copyOnWrite();
   getImplementation()->setMaximumResidualError(maximumResidualError);
 }
 
 /* Maximum constraint error accessor */
-NumericalScalar OptimizationAlgorithm::getMaximumConstraintError() const
+Scalar OptimizationAlgorithm::getMaximumConstraintError() const
 {
   return getImplementation()->getMaximumConstraintError();
 }
 
 /* Maximum constraint error accessor */
-void OptimizationAlgorithm::setMaximumConstraintError(const NumericalScalar maximumConstraintError)
+void OptimizationAlgorithm::setMaximumConstraintError(const Scalar maximumConstraintError)
 {
   copyOnWrite();
   getImplementation()->setMaximumConstraintError(maximumConstraintError);

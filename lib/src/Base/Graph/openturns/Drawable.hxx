@@ -51,7 +51,7 @@ public:
   /* Here is the interface */
 
   /** Accessor for bounding box of the drawable */
-  NumericalPoint getBoundingBox() const;
+  Point getBoundingBox() const;
 
   /** Legend accessor */
   virtual String getLegend() const;
@@ -84,12 +84,12 @@ public:
   void setPattern(const String style);
 
   /** Accessor for center */
-  NumericalPoint getCenter() const;
-  void setCenter(const NumericalPoint & center);
+  Point getCenter() const;
+  void setCenter(const Point & center);
 
   /** Accessor for radius */
-  NumericalScalar getRadius() const;
-  void setRadius(const NumericalScalar radius);
+  Scalar getRadius() const;
+  void setRadius(const Scalar radius);
 
   /** Accessor for labels */
   Description getLabels() const;
@@ -100,20 +100,20 @@ public:
   void setPalette(const Description & palette);
 
   /** Accessor for origin */
-  NumericalScalar getOrigin() const;
-  void setOrigin(const NumericalScalar origin);
+  Scalar getOrigin() const;
+  void setOrigin(const Scalar origin);
 
   /** Accessor for first coordinate */
-  NumericalSample getX() const;
-  void setX(const NumericalSample & x);
+  Sample getX() const;
+  void setX(const Sample & x);
 
   /** Accessor for second coordinate */
-  NumericalSample getY() const;
-  void setY(const NumericalSample & y);
+  Sample getY() const;
+  void setY(const Sample & y);
 
   /** Accessor for levels */
-  NumericalPoint getLevels() const;
-  void setLevels(const NumericalPoint & levels);
+  Point getLevels() const;
+  void setLevels(const Point & levels);
 
   /** Accessor for drawLabels */
   Bool getDrawLabels() const;
@@ -128,7 +128,7 @@ public:
   void setTextPositions(const Description & textPositions);
 
   /** Accessor for data */
-  NumericalSample getData() const;
+  Sample getData() const;
 
   /** Generate R commands for plotting the graphic */
   String draw() const;
@@ -172,31 +172,31 @@ public:
                                 const UnsignedInteger alpha);
 
   /** Convert an RGB triplet to a valid hexadecimal code */
-  static String ConvertFromRGB(const NumericalScalar red,
-                               const NumericalScalar green,
-                               const NumericalScalar blue);
+  static String ConvertFromRGB(const Scalar red,
+                               const Scalar green,
+                               const Scalar blue);
 
   /** Convert an RGBA quadruplet to a valid hexadecimal code */
-  static String ConvertFromRGBA(const NumericalScalar red,
-                                const NumericalScalar green,
-                                const NumericalScalar blue,
-                                const NumericalScalar alpha);
+  static String ConvertFromRGBA(const Scalar red,
+                                const Scalar green,
+                                const Scalar blue,
+                                const Scalar alpha);
 
   /** Convert an HSV triplet into an RGB triplet */
-  static NumericalPoint ConvertFromHSVIntoRGB(const NumericalScalar hue,
-      const NumericalScalar saturation,
-      const NumericalScalar value);
+  static Point ConvertFromHSVIntoRGB(const Scalar hue,
+                                     const Scalar saturation,
+                                     const Scalar value);
 
   /** Convert an HSV triplet to a valid hexadecimal code */
-  static String ConvertFromHSV(const NumericalScalar hue,
-                               const NumericalScalar saturation,
-                               const NumericalScalar value);
+  static String ConvertFromHSV(const Scalar hue,
+                               const Scalar saturation,
+                               const Scalar value);
 
   /** Convert an HSVA quadruplet to a valid hexadecimal code */
-  static String ConvertFromHSVA(const NumericalScalar hue,
-                                const NumericalScalar saturation,
-                                const NumericalScalar value,
-                                const NumericalScalar alpha);
+  static String ConvertFromHSVA(const Scalar hue,
+                                const Scalar saturation,
+                                const Scalar value,
+                                const Scalar alpha);
 
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);

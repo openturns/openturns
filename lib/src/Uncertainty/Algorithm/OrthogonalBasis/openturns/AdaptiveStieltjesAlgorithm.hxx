@@ -71,8 +71,8 @@ public:
 private:
 
   /** Compute dot products taking into account the singularities of the weights */
-  NumericalPoint computeDotProduct(const NumericalMathFunction & kernel,
-				   const UnsignedInteger n) const;
+  Point computeDotProduct(const Function & kernel,
+                          const UnsignedInteger n) const;
 
   // Structure used to compute the two dot-products needed for the computation of three-terms relation coefficients
   struct DotProductWrapper
@@ -85,24 +85,24 @@ private:
     };
 
     // This method allows to compute <qN, qN>
-    NumericalPoint kernelSym(const NumericalPoint & point) const
+    Point kernelSym(const Point & point) const
     {
-      const NumericalScalar pdf = weight_.computePDF(point);
-      const NumericalScalar x = point[0];
-      const NumericalScalar qNX = qN_(x);
-      NumericalPoint result(1);
+      const Scalar pdf = weight_.computePDF(point);
+      const Scalar x = point[0];
+      const Scalar qNX = qN_(x);
+      Point result(1);
       result[0] = qNX * qNX * pdf;
       return result;
     };
 
     // This method allows to compute <qN, qN> and <x.qN, qN>
-    NumericalPoint kernelGen(const NumericalPoint & point) const
+    Point kernelGen(const Point & point) const
     {
-      const NumericalScalar pdf = weight_.computePDF(point);
-      const NumericalScalar x = point[0];
-      const NumericalScalar qNX = qN_(x);
-      const NumericalScalar xQNX = x * qNX;
-      NumericalPoint result(2);
+      const Scalar pdf = weight_.computePDF(point);
+      const Scalar x = point[0];
+      const Scalar qNX = qN_(x);
+      const Scalar xQNX = x * qNX;
+      Point result(2);
       result[0] = qNX * qNX * pdf;
       result[1] = xQNX * qNX * pdf;
       return result;
@@ -116,7 +116,7 @@ private:
   mutable CoefficientsPersistentCollection monicRecurrenceCoefficients_;
 
   /** Cache to store the squared norm of the monic orthogonal polynomials */
-  mutable NumericalPoint monicSquaredNorms_;
+  mutable Point monicSquaredNorms_;
 
   /** Flag to tell if the underlying distribution is symmetric */
   Bool isElliptical_;

@@ -586,7 +586,7 @@ OT_Graph_getPDF_doc
 
 Returns
 -------
-boundingBox : :class:`~openturns.NumericalPoint` of dimension 4
+boundingBox : :class:`~openturns.Point` of dimension 4
     Bounding box of the drawable element, which is a rectangle determined
     by its range along X and its range along Y.
     The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."

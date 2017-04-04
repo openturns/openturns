@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
     RandomVector vector(distribution);
     std::cout << "vector=" << vector << std::endl;
     Wilks algo(vector);
-    NumericalPoint alpha(2);
+    Point alpha(2);
     alpha[0] = 0.9;
     alpha[1] = 0.95;
-    NumericalPoint beta(2);
+    Point beta(2);
     beta[0] = 0.9;
     beta[1] = 0.95;
     for (UnsignedInteger a = 0; a < 2; a++)

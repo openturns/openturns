@@ -25,7 +25,7 @@ antecedent : :class:`~openturns.RandomVector`
     RandomVector :math:`\vect{X}` of Usual type to define a
     :class:`~openturns.CompositeRandomVector` as the image through the function
     :math:`f` of :math:`\vect{X}`: :math:`\vect{Y}=f(\vect{X})`.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`f` to define a :class:`~openturns.CompositeRandomVector` as
     the image through this function of the antecedent :math:`\vect{X}`:
     :math:`\vect{Y}=f(\vect{X})`.
@@ -89,11 +89,11 @@ OT_RandomVector_getAntecedent_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getFunction_doc
-"Accessor to the NumericalMathFunction in case of a composite RandomVector.
+"Accessor to the Function in case of a composite RandomVector.
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function used to define a :class:`~openturns.CompositeRandomVector` as the
     image through this function of the antecedent :math:`\vect{X}`:
     :math:`\vect{Y}=f(\vect{X})`."
@@ -131,7 +131,7 @@ OT_RandomVector_getCovariance_doc
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     Mean of the considered :class:`~openturns.UsualRandomVector`.
 
 Examples
@@ -235,7 +235,7 @@ n : int, :math:`n \geq 0`
 
 Returns
 -------
-realizations : :class:`~openturns.NumericalSample`
+realizations : :class:`~openturns.Sample`
     n sequences of values randomly determined from the RandomVector definition.
     In the case of an event: n realizations of the event (considered as a
     Bernoulli variable) which are boolean values (1 for the realization of the
@@ -332,7 +332,7 @@ OT_RandomVector_setDescription_doc
 
 Returns
 -------
-aRealization : :class:`~openturns.NumericalPoint`
+aRealization : :class:`~openturns.Point`
     Sequence of values randomly determined from the RandomVector definition.
     In the case of an event: one realization of the event (considered as a
     Bernoulli variable) which is a boolean value (1 for the realization of the

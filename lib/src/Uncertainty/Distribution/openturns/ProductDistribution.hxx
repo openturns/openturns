@@ -61,68 +61,68 @@ public:
   virtual ProductDistribution * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 private:
-  NumericalScalar computePDFQ1(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computePDFQ2(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computePDFQ3(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computePDFQ4(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
+  Scalar computePDFQ1(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
+  Scalar computePDFQ2(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
+  Scalar computePDFQ3(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
+  Scalar computePDFQ4(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
 public:
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 private:
-  NumericalScalar computeCDFQ1(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computeCDFQ2(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computeCDFQ3(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
-  NumericalScalar computeCDFQ4(const NumericalScalar x,
-                               const NumericalScalar a,
-                               const NumericalScalar b,
-                               const NumericalScalar c,
-                               const NumericalScalar d) const;
+  Scalar computeCDFQ1(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
+  Scalar computeCDFQ2(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
+  Scalar computeCDFQ3(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
+  Scalar computeCDFQ4(const Scalar x,
+                      const Scalar a,
+                      const Scalar b,
+                      const Scalar c,
+                      const Scalar d) const;
 public:
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -150,7 +150,7 @@ public:
   Bool isIntegral() const;
 
   /** Get the PDF singularities inside of the range - 1D only */
-  NumericalPoint getSingularities() const;
+  Point getSingularities() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -168,35 +168,35 @@ private:
   {
     const Distribution left_;
     const Distribution right_;
-    const NumericalScalar x_;
+    const Scalar x_;
     const Bool isZero_;
-    const NumericalScalar pdf0_;
+    const Scalar pdf0_;
 
     PDFKernelWrapper(const Distribution & left,
                      const Distribution & right,
-                     const NumericalScalar x):
-      left_(left), right_(right), x_(x), isZero_(std::abs(x) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
+                     const Scalar x):
+      left_(left), right_(right), x_(x), isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? right.computePDF(0.0) : 0.0) {};
 
-    NumericalPoint eval(const NumericalPoint & point) const
+    Point eval(const Point & point) const
     {
-      const NumericalScalar value = left_.computePDF(point);
-      if (value == 0.0) return NumericalPoint(1, 0.0);
-      const NumericalScalar u = point[0];
-      const NumericalScalar absU = std::abs(u);
+      const Scalar value = left_.computePDF(point);
+      if (value == 0.0) return Point(1, 0.0);
+      const Scalar u = point[0];
+      const Scalar absU = std::abs(u);
       // x_ == 0
       if (isZero_)
       {
-        if (pdf0_ == 0.0) return NumericalPoint(1, 0.0);
-        if (absU == 0.0) return NumericalPoint(1, SpecFunc::MaxNumericalScalar);
-        return NumericalPoint(1, value * pdf0_ / absU);
+        if (pdf0_ == 0.0) return Point(1, 0.0);
+        if (absU == 0.0) return Point(1, SpecFunc::MaxScalar);
+        return Point(1, value * pdf0_ / absU);
       }
       // x_ != 0
       if (absU == 0.0)
       {
-        const NumericalScalar epsilon = 1e-7;
-        return NumericalPoint(1, value * 0.5 * (right_.computePDF(x_ / epsilon) + right_.computePDF(-x_ / epsilon)) / epsilon);
+        const Scalar epsilon = 1e-7;
+        return Point(1, value * 0.5 * (right_.computePDF(x_ / epsilon) + right_.computePDF(-x_ / epsilon)) / epsilon);
       }
-      return NumericalPoint(1, value * right_.computePDF(x_ / u) / absU);
+      return Point(1, value * right_.computePDF(x_ / u) / absU);
     };
   }; // struct PDFKernelWrapper
 
@@ -205,36 +205,36 @@ private:
   {
     const Distribution left_;
     const Distribution right_;
-    const NumericalScalar x_;
+    const Scalar x_;
     const Bool isZero_;
-    const NumericalScalar cdf0_;
-    const NumericalScalar ccdf0_;
+    const Scalar cdf0_;
+    const Scalar ccdf0_;
 
     CDFKernelWrapper(const Distribution & left,
                      const Distribution & right,
-                     const NumericalScalar x):
+                     const Scalar x):
       left_(left), right_(right), x_(x), isZero_(std::abs(x) == 0.0), cdf0_(isZero_ ? right.computeCDF(0.0) : 0.0), ccdf0_(isZero_ ? right.computeComplementaryCDF(0.0) : 0.0) {};
 
-    NumericalPoint eval(const NumericalPoint & point) const
+    Point eval(const Point & point) const
     {
-      const NumericalScalar value = left_.computePDF(point);
-      if (value == 0.0) return NumericalPoint(1, 0.0);
+      const Scalar value = left_.computePDF(point);
+      if (value == 0.0) return Point(1, 0.0);
       // x_ == 0
-      if (isZero_) return NumericalPoint(1, value * cdf0_);
-      const NumericalScalar u = point[0];
-      if (u == 0.0) return NumericalPoint(1, x_ < 0.0 ? 0.0 : value);
-      return NumericalPoint(1, value * right_.computeCDF(x_ / u));
+      if (isZero_) return Point(1, value * cdf0_);
+      const Scalar u = point[0];
+      if (u == 0.0) return Point(1, x_ < 0.0 ? 0.0 : value);
+      return Point(1, value * right_.computeCDF(x_ / u));
     };
 
-    NumericalPoint evalComplementary(const NumericalPoint & point) const
+    Point evalComplementary(const Point & point) const
     {
-      const NumericalScalar value = left_.computePDF(point);
-      if (value == 0.0) return NumericalPoint(1, 0.0);
+      const Scalar value = left_.computePDF(point);
+      if (value == 0.0) return Point(1, 0.0);
       // x_ == 0
-      if (isZero_) return NumericalPoint(1, value * ccdf0_);
-      const NumericalScalar u = point[0];
-      if (u == 0.0) return NumericalPoint(1, x_ < 0.0 ? 0.0 : value);
-      return NumericalPoint(1, value * right_.computeComplementaryCDF(x_ / u));
+      if (isZero_) return Point(1, value * ccdf0_);
+      const Scalar u = point[0];
+      if (u == 0.0) return Point(1, x_ < 0.0 ? 0.0 : value);
+      return Point(1, value * right_.computeComplementaryCDF(x_ / u));
     };
 
   }; // struct CDFKernelWrapper
@@ -244,19 +244,19 @@ private:
   {
     const Distribution left_;
     const Distribution right_;
-    const NumericalScalar x_;
+    const Scalar x_;
 
     CFKernelWrapper(const Distribution & left,
                     const Distribution & right,
-                    const NumericalScalar x):
+                    const Scalar x):
       left_(left), right_(right), x_(x) {};
 
-    NumericalPoint eval(const NumericalPoint & point) const
+    Point eval(const Point & point) const
     {
-      NumericalPoint value(2);
-      const NumericalScalar u = point[0];
-      const NumericalComplex phi(right_.computeCharacteristicFunction(u * x_));
-      const NumericalScalar pdf = left_.computePDF(point);
+      Point value(2);
+      const Scalar u = point[0];
+      const Complex phi(right_.computeCharacteristicFunction(u * x_));
+      const Scalar pdf = left_.computePDF(point);
       value[0] = pdf * phi.real();
       value[1] = pdf * phi.imag();
       return value;

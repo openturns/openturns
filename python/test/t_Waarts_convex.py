@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from openturns import *
-#from math import *
+# from math import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
@@ -23,7 +23,7 @@ try:
     formulas = Description(outputFunction.getSize())
     formulas[0] = "2.5 + 0.1*(X1-X2)^2.0 - (X1+X2)/sqrt(2.0)"
 
-    EtatLimite = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    EtatLimite = Function(inputFunction, outputFunction, formulas)
 
     dim = EtatLimite.getInputDimension()
     print(dim)
@@ -32,11 +32,11 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     mean[0] = 0.0
     mean[1] = 0.0
 
-    sigma = NumericalPoint(dim, 0.0)
+    sigma = Point(dim, 0.0)
     sigma[0] = 1.0
     sigma[1] = 1.0
 

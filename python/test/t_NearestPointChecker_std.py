@@ -11,15 +11,15 @@ try:
     try:
         # Function
         sampleSize = 20
-        levelFunction = NumericalMathFunction(
+        levelFunction = Function(
             ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
         myOperator = LessOrEqual()
         threshold = 2.0
-        mySample = NumericalSample(0, levelFunction.getInputDimension())
+        mySample = Sample(0, levelFunction.getInputDimension())
         random = 0.1
 
         for index in range(sampleSize):
-            point = NumericalPoint(levelFunction.getInputDimension())
+            point = Point(levelFunction.getInputDimension())
             norm = 0.0
             for coordinate in range(levelFunction.getInputDimension()):
                 point[coordinate] = sqrt(-2.0 * log(random))

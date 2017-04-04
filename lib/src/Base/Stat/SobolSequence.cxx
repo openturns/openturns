@@ -33,10 +33,10 @@ static const Factory<SobolSequence> Factory_SobolSequence;
 
 const UnsignedInteger    SobolSequence::MaximumNumberOfDimension = 40;
 const UnsignedInteger    SobolSequence::MaximumBase2Logarithm    = 62;
-const NumericalScalar SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
+const Scalar SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
 const UnsignedInteger    SobolSequence::MaximumInitialDegree     = 8;
 
-const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension*MaximumInitialDegree] =
+const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension * MaximumInitialDegree] =
 {
   1,   0,   0,   0,   0,   0,   0,   0,
   1,   0,   0,   0,   0,   0,   0,   0,
@@ -166,10 +166,10 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint SobolSequence::generate() const
+Point SobolSequence::generate() const
 {
   // initialize a point with values 2^-MaximumBase2Logarithm
-  NumericalPoint sequencePoint(dimension_, Epsilon);
+  Point sequencePoint(dimension_, Epsilon);
 
   // compute the position of the lowest 0 bit in the binary representation of seed_
   const UnsignedInteger positionOfLowest0BitOfSeed = computePositionOfLowest0Bit(seed_);

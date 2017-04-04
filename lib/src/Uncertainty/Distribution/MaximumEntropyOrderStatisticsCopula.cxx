@@ -98,7 +98,7 @@ MaximumEntropyOrderStatisticsCopula * MaximumEntropyOrderStatisticsCopula::clone
 }
 
 /* Get the kth approximation */
-PiecewiseHermiteEvaluationImplementation MaximumEntropyOrderStatisticsCopula::getApproximation(const UnsignedInteger k) const
+PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsCopula::getApproximation(const UnsignedInteger k) const
 {
   return distribution_.getApproximation(k);
 }
@@ -138,17 +138,17 @@ void MaximumEntropyOrderStatisticsCopula::setDistributionCollection(const Distri
 
 
 /* Parameters value and description accessor */
-MaximumEntropyOrderStatisticsCopula::NumericalPointWithDescriptionCollection MaximumEntropyOrderStatisticsCopula::getParametersCollection() const
+MaximumEntropyOrderStatisticsCopula::PointWithDescriptionCollection MaximumEntropyOrderStatisticsCopula::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPointWithDescriptionCollection parameters(dimension);
+  PointWithDescriptionCollection parameters(dimension);
   const Description description(getDescription());
   // First put the marginal parameters
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
   {
-    // Each marginal distribution must output a collection of parameters of size 1, even if it contains an empty NumericalPoint
-    const NumericalPointWithDescriptionCollection marginalParameters(distribution_.distributionCollection_[marginalIndex].getParametersCollection());
-    NumericalPointWithDescription point(marginalParameters[0]);
+    // Each marginal distribution must output a collection of parameters of size 1, even if it contains an empty Point
+    const PointWithDescriptionCollection marginalParameters(distribution_.distributionCollection_[marginalIndex].getParametersCollection());
+    PointWithDescription point(marginalParameters[0]);
     Description marginalParametersDescription(point.getDescription());
     // Here we must add a unique prefix to the marginal parameters description in order to deambiguate the parameters of different marginals sharing the same description
     for (UnsignedInteger i = 0; i < point.getDimension(); ++i) marginalParametersDescription[i] = (OSS() << marginalParametersDescription[i] << "_marginal_" << marginalIndex);
@@ -160,7 +160,7 @@ MaximumEntropyOrderStatisticsCopula::NumericalPointWithDescriptionCollection Max
 } // getParametersCollection
 
 
-void MaximumEntropyOrderStatisticsCopula::setParametersCollection(const NumericalPointCollection& parametersCollection)
+void MaximumEntropyOrderStatisticsCopula::setParametersCollection(const PointCollection& parametersCollection)
 {
   distribution_.setParametersCollection(parametersCollection);
 }

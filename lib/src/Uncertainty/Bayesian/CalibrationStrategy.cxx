@@ -44,8 +44,8 @@ CalibrationStrategy::CalibrationStrategy(const Interval & range)
 
 /* Constructor with parameters */
 CalibrationStrategy::CalibrationStrategy(const Interval & range,
-    const NumericalScalar expansionFactor,
-    const NumericalScalar shrinkFactor)
+    const Scalar expansionFactor,
+    const Scalar shrinkFactor)
   : TypedInterfaceObject<CalibrationStrategyImplementation>(new CalibrationStrategyImplementation(range,
       expansionFactor,
       shrinkFactor))
@@ -55,8 +55,8 @@ CalibrationStrategy::CalibrationStrategy(const Interval & range,
 
 /* Constructor with parameters */
 CalibrationStrategy::CalibrationStrategy(const Interval & range,
-    const NumericalScalar expansionFactor,
-    const NumericalScalar shrinkFactor,
+    const Scalar expansionFactor,
+    const Scalar shrinkFactor,
     const UnsignedInteger calibrationStep)
   : TypedInterfaceObject<CalibrationStrategyImplementation>(new CalibrationStrategyImplementation(range,
       expansionFactor,
@@ -88,26 +88,26 @@ Interval CalibrationStrategy::getRange() const
 }
 
 
-void CalibrationStrategy::setExpansionFactor(const NumericalScalar expansionFactor)
+void CalibrationStrategy::setExpansionFactor(const Scalar expansionFactor)
 {
   copyOnWrite();
   getImplementation()->setExpansionFactor(expansionFactor);
 }
 
 
-NumericalScalar CalibrationStrategy::getExpansionFactor() const
+Scalar CalibrationStrategy::getExpansionFactor() const
 {
   return getImplementation()->getExpansionFactor();
 }
 
 
-void CalibrationStrategy::setShrinkFactor(const NumericalScalar shrinkFactor)
+void CalibrationStrategy::setShrinkFactor(const Scalar shrinkFactor)
 {
   copyOnWrite();
   getImplementation()->setShrinkFactor(shrinkFactor);
 }
 
-NumericalScalar CalibrationStrategy::getShrinkFactor() const
+Scalar CalibrationStrategy::getShrinkFactor() const
 {
   return getImplementation()->getShrinkFactor();
 }
@@ -127,7 +127,7 @@ UnsignedInteger CalibrationStrategy::getCalibrationStep() const
 
 
 /* Return true if comparison succeeds */
-NumericalScalar CalibrationStrategy::computeUpdateFactor(const NumericalScalar rho) const
+Scalar CalibrationStrategy::computeUpdateFactor(const Scalar rho) const
 {
   return getImplementation()->computeUpdateFactor(rho);
 }

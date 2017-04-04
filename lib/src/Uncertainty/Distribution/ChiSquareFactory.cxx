@@ -43,12 +43,12 @@ ChiSquareFactory * ChiSquareFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ChiSquareFactory::Implementation ChiSquareFactory::build(const NumericalSample & sample) const
+ChiSquareFactory::Implementation ChiSquareFactory::build(const Sample & sample) const
 {
   return buildAsChiSquare(sample).clone();
 }
 
-ChiSquareFactory::Implementation ChiSquareFactory::build(const NumericalPoint & parameters) const
+ChiSquareFactory::Implementation ChiSquareFactory::build(const Point & parameters) const
 {
   return buildAsChiSquare(parameters).clone();
 }
@@ -58,22 +58,22 @@ ChiSquareFactory::Implementation ChiSquareFactory::build() const
   return buildAsChiSquare().clone();
 }
 
-DistributionFactoryResult ChiSquareFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult ChiSquareFactory::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample, true);
 }
 
-ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalSample & sample) const
+ChiSquare ChiSquareFactory::buildAsChiSquare(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a ChiSquare distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a ChiSquare distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar mean = sample.computeMean()[0];
+  const Scalar mean = sample.computeMean()[0];
   ChiSquare result(mean);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-ChiSquare ChiSquareFactory::buildAsChiSquare(const NumericalPoint & parameters) const
+ChiSquare ChiSquareFactory::buildAsChiSquare(const Point & parameters) const
 {
   try
   {

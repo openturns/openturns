@@ -91,7 +91,7 @@ OT_API
 OStream & operator << (OStream & OS, long double val);
 
 OT_API
-OStream & operator << (OStream & OS, const NumericalComplex & c);
+OStream & operator << (OStream & OS, const Complex & c);
 
 OT_API
 OStream & operator << (OStream & OS, const void * ptr);

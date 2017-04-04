@@ -42,8 +42,8 @@ public:
 
   /** Parameters constructor */
   KernelMixture(const Distribution & kernel,
-                const NumericalPoint & bandwidth,
-                const NumericalSample & sample);
+                const Point & bandwidth,
+                const Sample & sample);
 
 
   /** Comparison operator */
@@ -62,12 +62,12 @@ public:
   Distribution getKernel() const;
 
   /** Bandwidth accessor */
-  void setBandwidth(const NumericalPoint & bandwidth);
-  NumericalPoint getBandwidth() const;
+  void setBandwidth(const Point & bandwidth);
+  Point getBandwidth() const;
 
   /** Sample accessor */
-  void setInternalSample(const NumericalSample & sample);
-  NumericalSample getInternalSample() const;
+  void setInternalSample(const Sample & sample);
+  Sample getInternalSample() const;
 
 
   /* Here is the interface that all derived class must implement */
@@ -76,39 +76,39 @@ public:
   virtual KernelMixture * clone() const;
 
   /** Get one realization of the KernelMixture */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the KernelMixture */
   using ContinuousDistribution::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the KernelMixture */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the KernelMixture */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDF gradient of the distribution */
   using ContinuousDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -117,16 +117,16 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
@@ -152,8 +152,8 @@ protected:
 private:
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
@@ -173,28 +173,28 @@ private:
   Distribution kernel_;
 
   /** The bandwidth of the KernelMixture */
-  NumericalPoint bandwidth_;
+  Point bandwidth_;
 
   /** The componentwise bandwidth inverse of the KernelMixture */
-  NumericalPoint bandwidthInverse_;
+  Point bandwidthInverse_;
 
   /** The (n\product_{k=1}^{dim}h_k)^{-1} normalization factor */
-  NumericalScalar normalizationFactor_;
+  Scalar normalizationFactor_;
 
   /** The sample of the kernelMixture */
-  NumericalSample sample_;
+  Sample sample_;
 
   /** PDF approximation associated to the CDF approximation */
-  PiecewiseHermiteEvaluationImplementation pdfApproximationCDF_;
+  PiecewiseHermiteEvaluation pdfApproximationCDF_;
 
   /** CDF approximation */
-  PiecewiseHermiteEvaluationImplementation cdfApproximation_;
+  PiecewiseHermiteEvaluation cdfApproximation_;
 
   /** PDF approximation associated to the CCDF approximation */
-  PiecewiseHermiteEvaluationImplementation pdfApproximationCCDF_;
+  PiecewiseHermiteEvaluation pdfApproximationCCDF_;
 
   /** Complementary CDF approximation */
-  PiecewiseHermiteEvaluationImplementation ccdfApproximation_;
+  PiecewiseHermiteEvaluation ccdfApproximation_;
 
   /** Do I have an approximation for the CDF? */
   Bool useApproximatePDFCDF_;

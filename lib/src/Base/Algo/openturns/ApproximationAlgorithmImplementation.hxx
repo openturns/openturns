@@ -22,8 +22,8 @@
 #define OPENTURNS_APPROXIMATIONALGORITHMIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -45,15 +45,15 @@ public:
   ApproximationAlgorithmImplementation();
 
   /** Default constructor */
-  ApproximationAlgorithmImplementation(const NumericalSample & x,
-                                       const NumericalSample & y,
+  ApproximationAlgorithmImplementation(const Sample & x,
+                                       const Sample & y,
                                        const Basis & psi,
                                        const Indices & indices);
 
   /** Default constructor */
-  ApproximationAlgorithmImplementation(const NumericalSample & x,
-                                       const NumericalSample & y,
-                                       const NumericalPoint & weight,
+  ApproximationAlgorithmImplementation(const Sample & x,
+                                       const Sample & y,
+                                       const Point & weight,
                                        const Basis & psi,
                                        const Indices & indices);
 
@@ -61,14 +61,14 @@ public:
   virtual ApproximationAlgorithmImplementation * clone() const;
 
   /** Sample accessors */
-  NumericalSample getX() const;
-  NumericalSample getY() const;
+  Sample getX() const;
+  Sample getY() const;
 
   /** Weigths accessor */
 protected:
-  void setWeight(const NumericalPoint & weight);
+  void setWeight(const Point & weight);
 public:
-  NumericalPoint getWeight() const;
+  Point getWeight() const;
 
   /** Basis accessor */
   Basis getPsi() const;
@@ -84,12 +84,12 @@ public:
 #endif
 
   /** Accessor to the coefficients of the selected metamodel on the provided basis */
-  NumericalPoint getCoefficients();
+  Point getCoefficients();
 
   /** Accessor to the residual of the selected metamodel on the provided basis */
-  NumericalScalar getResidual();
+  Scalar getResidual();
 
-  NumericalScalar getRelativeError();
+  Scalar getRelativeError();
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
@@ -103,20 +103,20 @@ public:
 
 protected:
 
-  void setCoefficients(const NumericalPoint & coefficients);
+  void setCoefficients(const Point & coefficients);
 
-  void setResidual(const NumericalScalar residual);
+  void setResidual(const Scalar residual);
 
-  void setRelativeError(const NumericalScalar relativeError);
+  void setRelativeError(const Scalar relativeError);
 
   /** Input sample */
-  NumericalSample x_;
+  Sample x_;
 
   /** Output sample */
-  NumericalSample y_;
+  Sample y_;
 
   /** Weights */
-  NumericalPoint weight_;
+  Point weight_;
 
   /** Flag to tell if the weights are uniform */
   Bool hasUniformWeight_;
@@ -129,13 +129,13 @@ protected:
 
 private:
   /** Regression coefficients */
-  NumericalPoint coefficients_;
+  Point coefficients_;
 
   /** Residual */
-  NumericalScalar residual_;
+  Scalar residual_;
 
   /** Relative error */
-  NumericalScalar relativeError_;
+  Scalar relativeError_;
 
   /** Verbosity flag */
   Bool verbose_;

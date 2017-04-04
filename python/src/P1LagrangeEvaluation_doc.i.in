@@ -1,0 +1,57 @@
+%feature("docstring") OT::P1LagrangeEvaluation
+"Data based math evaluation implementation.
+
+Available constructors:
+
+    P1LagrangeEvaluation(*field*)
+
+Parameters
+----------
+field : :class:`~openturns.Field`
+    Field :math:`\cF` defining the parameters of a P1 Lagrange interpolation function.
+
+See also
+--------
+Function, AggregatedEvaluation, DualLinearCombinationEvaluation,
+LinearFunction
+
+Notes
+-----
+It returns a :class:`~openturns.Function` that implements the P1 Lagrange interpolation function :math:`f : \cD_N \rightarrow \Rset^p` :
+
+.. math::
+    \forall \vect{x} \in \Rset^n, f(\vect{x}) = \sum_{\vect{\xi}_i\in\cV(\vect{x})}\alpha_i f(\vect{\xi}_i)
+
+where :math:`\cD_N` is a :class:`~openturns.Mesh`, :math:`\cV(\vect{x})` is the simplex in :math:`\cD_N` that contains :math:`\vect{x}`, :math:`\alpha_i` are the barycentric coordinates of :math:`\vect{x}` wrt the vertices :math:`\vect{\xi}_i` of :math:`\cV(\vect{x})`:
+
+.. math::
+    \vect{x}=\sum_{\vect{\xi}_i\in\cV(\vect{x})}\alpha_i\vect{\xi}_i
+
+Examples
+--------
+Create a P1 Lagrange evaluation:
+
+>>> import openturns as ot
+>>> field = ot.Field(ot.RegularGrid(0.0, 1.0, 4), [[0.5], [1.5], [1.0], [-0.5]])
+>>> evaluation = ot.P1LagrangeEvaluation(field)
+>>> print(evaluation([2.3]))
+[0.55]"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::getField
+"Accessor to the field defining the functions.
+
+Returns
+-------
+field : :class:`~openturns.Field`
+    The field defining the function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::P1LagrangeEvaluation::setField
+"Accessor to the field defining the functions.
+
+Parameters
+----------
+field : :class:`~openturns.Field`
+    The field defining the function."

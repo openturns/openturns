@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
 
 
     /*Using deltaT constructor */
-    NumericalScalar start = -2.0;
-    NumericalScalar step = 0.1;
+    Scalar start = -2.0;
+    Scalar step = 0.1;
     UnsignedInteger n = 10;
     RegularGrid regularGrid(start, step, n);
     fullprint << "regularGrid = " << regularGrid << std::endl;

@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   try
   {
     // Defining RandomMixture
-    NumericalPoint weights(0);
+    Point weights(0);
     Collection< Distribution > coll(0);
     coll.add(Gamma(0.5, 1.0));
     weights.add(1.0);
@@ -51,11 +51,11 @@ int main(int argc, char *argv[])
     // Compute PDF on regular grid
     const UnsignedInteger N = 256;
     Indices points(1, N);
-    NumericalPoint mean(distribution.getMean());
-    NumericalPoint sigma(distribution.getStandardDeviation());
-    NumericalPoint xMin(mean - 3.9 * sigma);
-    NumericalPoint xMax(mean + 3.9 * sigma);
-    NumericalSample grid;
+    Point mean(distribution.getMean());
+    Point sigma(distribution.getStandardDeviation());
+    Point xMin(mean - 3.9 * sigma);
+    Point xMax(mean + 3.9 * sigma);
+    Sample grid;
     fullprint << "distribution = " << distribution << std::endl;
     fullprint << "distribution = " << distribution.__str__() << std::endl;
     fullprint << "range = " << distribution.getRange() << std::endl;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     fullprint << "sigma = " << distribution.getStandardDeviation() << std::endl;
     fullprint << "xMin = " << xMin << std::endl;
     fullprint << "xMax = " << xMax << std::endl;
-    NumericalSample result(distribution.computePDF(xMin, xMax, points, grid));
+    Sample result(distribution.computePDF(xMin, xMax, points, grid));
     for (UnsignedInteger i = 0; i < grid.getSize(); ++i)
       fullprint << grid[i][0] << ";" << result[i][0] << ";" << referenceDistribution.computePDF(grid[i]) << std::endl;
   }

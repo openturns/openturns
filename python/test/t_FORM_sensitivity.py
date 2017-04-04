@@ -7,7 +7,7 @@ from math import *
 from math import *
 
 
-def printNumericalPoint(point, digits):
+def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
     for i in range(point.getDimension()):
@@ -38,16 +38,16 @@ try:
     formulas = Description(outputFunc.getSize())
     formulas[0] = "-(6+x0^2-x1)"
     print("formulas=", formulas)
-    myFunction = NumericalMathFunction(inputFunc, outputFunc, formulas)
+    myFunction = Function(inputFunc, outputFunc, formulas)
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
 # x0
     mean[0] = 5.0
 # x1
     mean[1] = 2.1
-    sigma = NumericalPoint(dim, 0.0)
+    sigma = Point(dim, 0.0)
 # x0
     sigma[0] = 3.3
 # x1
@@ -105,7 +105,7 @@ try:
         # Stream out the result
         result = FORMResult(myAlgo.getResult())
         digits = 5
-        print("importance factors=", printNumericalPoint(
+        print("importance factors=", printPoint(
             result.getImportanceFactors(), digits))
         print("Hasofer reliability index=%.6f" %
               result.getHasoferReliabilityIndex())

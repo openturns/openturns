@@ -64,28 +64,28 @@ public:
   virtual NormalCopula * clone() const;
 
   /** Get one realization of the NormalCopula distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 protected:
-  NumericalSample getSampleParallel(const UnsignedInteger size) const;
+  Sample getSampleParallel(const UnsignedInteger size) const;
 public:
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the DDF of the NormalCopula distribution */
   using CopulaImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the NormalCopula distribution */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the NormalCopula distribution */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
   using CopulaImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the shape matrix of the copula */
   CorrelationMatrix getShapeMatrix() const;
@@ -94,25 +94,25 @@ public:
   CorrelationMatrix getKendallTau() const;
 
   /** Get the PDF gradient of the distribution */
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDF gradient of the distribution */
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x,
-                                        const NumericalPoint & y) const;
+  Scalar computeConditionalPDF(const Scalar x,
+                               const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x,
-                                        const NumericalPoint & y) const;
+  Scalar computeConditionalCDF(const Scalar x,
+                               const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q,
-      const NumericalPoint & y) const;
+  Scalar computeConditionalQuantile(const Scalar q,
+                                    const Point & y) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
@@ -131,13 +131,13 @@ public:
   Bool hasIndependentCopula() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;

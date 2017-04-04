@@ -39,7 +39,7 @@ public:
   ConstantStep();
 
   /** Parameters constructor */
-  explicit ConstantStep(const NumericalPoint & eps);
+  explicit ConstantStep(const Point & eps);
 
   /** String converter */
   virtual String __repr__() const;
@@ -50,7 +50,7 @@ public:
   virtual ConstantStep * clone() const;
 
   /** Compute step */
-  NumericalPoint operator()(const NumericalPoint & inP) const;
+  Point operator()(const Point & inP) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

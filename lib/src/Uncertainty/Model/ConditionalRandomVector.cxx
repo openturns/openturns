@@ -72,14 +72,14 @@ UnsignedInteger ConditionalRandomVector::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint ConditionalRandomVector::getRealization() const
+Point ConditionalRandomVector::getRealization() const
 {
-  NumericalPoint parameters;
+  Point parameters;
   return getRealization(parameters);
 }
 
 /* Realization accessor */
-NumericalPoint ConditionalRandomVector::getRealization(NumericalPoint & parameters) const
+Point ConditionalRandomVector::getRealization(Point & parameters) const
 {
   parameters = randomParameters_.getRealization();
   distribution_.setParameter(parameters);

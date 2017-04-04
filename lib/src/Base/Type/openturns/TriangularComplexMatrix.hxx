@@ -45,7 +45,7 @@ class OT_API TriangularComplexMatrix :
   CLASSNAME;
 
 #ifndef SWIG
-  friend TriangularComplexMatrix operator * (const NumericalComplex s,
+  friend TriangularComplexMatrix operator * (const Complex s,
       const TriangularComplexMatrix & m);
 #endif
 
@@ -85,12 +85,12 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalComplex & operator () (const UnsignedInteger i,
+  Complex & operator () (const UnsignedInteger i,
                                   const UnsignedInteger j) ;
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalComplex & operator () (const UnsignedInteger i,
+  const Complex & operator () (const UnsignedInteger i,
                                         const UnsignedInteger j) const;
 #endif
 
@@ -107,8 +107,8 @@ public:
   /** Substraction operator with ComplexMatrix */
   SquareComplexMatrix operator - (const SquareComplexMatrix & m) const;
 
-  /** Multiplication with a NumericalComplex */
-  TriangularComplexMatrix operator * (const NumericalComplex s) const;
+  /** Multiplication with a Complex */
+  TriangularComplexMatrix operator * (const Complex s) const;
 
   /** ComplexMatrix multiplications */
   ComplexMatrix operator * (const ComplexMatrix & m) const;
@@ -135,16 +135,16 @@ public:
   TriangularComplexMatrix operator * (const IdentityMatrix & m) const;
 
   /** Multiplication with a NumericaComplexCollection (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalComplexCollection & p) const;
+  ComplexCollection operator * (const ComplexCollection & p) const;
 
   /** Multiplication with a NumericaScalarCollection (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalScalarCollection & p) const;
+  ComplexCollection operator * (const ScalarCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  ComplexCollection operator * (const Point & p) const;
 
-  /** Division by a NumericalComplex*/
-  TriangularComplexMatrix operator / (const NumericalComplex s) const;
+  /** Division by a Complex*/
+  TriangularComplexMatrix operator / (const Complex s) const;
 
 private:
 
@@ -154,7 +154,7 @@ private:
 }; /* class TriangularComplexMatrix */
 
 
-inline TriangularComplexMatrix operator * (const NumericalComplex s,
+inline TriangularComplexMatrix operator * (const Complex s,
     const TriangularComplexMatrix & m)
 {
   return m.operator * (s);

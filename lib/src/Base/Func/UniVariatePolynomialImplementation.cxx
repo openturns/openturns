@@ -21,7 +21,7 @@
 #include "openturns/UniVariatePolynomialImplementation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/FFT.hxx"
@@ -82,7 +82,7 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
   Bool firstTerm = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar aI = coefficients_[i];
+    const Scalar aI = coefficients_[i];
     // Only deal with non-zero coefficients
     if (String(OSS(false) << std::abs(aI)) != "0")
     {
@@ -124,20 +124,20 @@ String UniVariatePolynomialImplementation::__str__(const String & variableName,
 
 
 /* UniVariatePolynomialImplementation are evaluated as functors */
-NumericalScalar UniVariatePolynomialImplementation::operator() (const NumericalScalar x) const
+Scalar UniVariatePolynomialImplementation::operator() (const Scalar x) const
 {
   const UnsignedInteger size = coefficients_.getSize();
-  NumericalScalar y(coefficients_[size - 1]); /* y represents the value of P(x)*/
+  Scalar y(coefficients_[size - 1]); /* y represents the value of P(x)*/
   // Evaluation using Horner scheme
   for (UnsignedInteger i = size - 1; i > 0; --i) y = y * x + coefficients_[i - 1];
 
   return y;
 }
 
-NumericalComplex UniVariatePolynomialImplementation::operator() (const NumericalComplex z) const
+Complex UniVariatePolynomialImplementation::operator() (const Complex z) const
 {
   const UnsignedInteger size = coefficients_.getSize();
-  NumericalComplex y(coefficients_[size - 1]); /* y represents the value of P(x)*/
+  Complex y(coefficients_[size - 1]); /* y represents the value of P(x)*/
   // Evaluation using Horner scheme
   for (UnsignedInteger i = size - 1; i > 0; --i) y = y * z + coefficients_[i - 1];
 
@@ -146,11 +146,11 @@ NumericalComplex UniVariatePolynomialImplementation::operator() (const Numerical
 
 
 /* UniVariatePolynomialImplementation derivative */
-NumericalScalar UniVariatePolynomialImplementation::gradient(const NumericalScalar x) const
+Scalar UniVariatePolynomialImplementation::gradient(const Scalar x) const
 {
   const UnsignedInteger size = coefficients_.getSize();
   if (size == 1) return 0.0;
-  NumericalScalar y((size - 1 ) * coefficients_[size - 1]); /* y represents the value of P'(x)*/
+  Scalar y((size - 1 ) * coefficients_[size - 1]); /* y represents the value of P'(x)*/
   // Evaluation using Horner scheme
   for (UnsignedInteger i = size - 1; i > 1; --i) y = y * x + (i - 1) * coefficients_[i - 1];
 
@@ -158,7 +158,7 @@ NumericalScalar UniVariatePolynomialImplementation::gradient(const NumericalScal
 }
 
 
-NumericalScalar UniVariatePolynomialImplementation::hessian(const NumericalScalar x) const
+Scalar UniVariatePolynomialImplementation::hessian(const Scalar x) const
 {
   return derivate().gradient(x);
 }
@@ -174,8 +174,8 @@ UniVariatePolynomialImplementation UniVariatePolynomialImplementation::derivate(
   return derivativeCoefficients;
 }
 
-/* Multiply the polynomial P by a NumericalScalar */
-UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator * (const NumericalScalar scal) const
+/* Multiply the polynomial P by a Scalar */
+UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator * (const Scalar scal) const
 {
   if (scal == 0.0) return UniVariatePolynomialImplementation();
   return UniVariatePolynomialImplementation(coefficients_ * scal);
@@ -200,7 +200,7 @@ UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator 
   {
     for (UnsignedInteger i = 0; i < resultDimension; ++i)
     {
-      NumericalScalar coefficientValue = 0.0;
+      Scalar coefficientValue = 0.0;
       const UnsignedInteger jMin = i >= rightDegree ? (i - rightDegree) : 0;
       const UnsignedInteger jMax = i >= leftDegree ? leftDegree : i;
       for (UnsignedInteger j = jMin; j <= jMax; j++)
@@ -212,8 +212,8 @@ UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator 
   {
     const FFT fft;
     const UnsignedInteger powerOfTwo = SpecFunc::NextPowerOfTwo(resultDimension);
-    NumericalComplexCollection leftCoefficients(powerOfTwo);
-    NumericalComplexCollection rightCoefficients(powerOfTwo);
+    ComplexCollection leftCoefficients(powerOfTwo);
+    ComplexCollection rightCoefficients(powerOfTwo);
     for (UnsignedInteger i = 0; i <= leftDegree; ++i) leftCoefficients[i] = coefficients_[i];
     for (UnsignedInteger i = 0; i <= rightDegree; ++i) rightCoefficients[i] = factorCoefficients[i];
     leftCoefficients = fft.transform(leftCoefficients);
@@ -247,9 +247,9 @@ UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator 
   const UnsignedInteger lhsSize = leftCoefficients.getSize();
   const UnsignedInteger rhsSize = rightCoefficients.getSize();
   // If the left hand side has a degree greater than the right hand side, add enough zeros to the coefficients in order to equal the degrees
-  if (lhsSize > rhsSize) rightCoefficients.add(NumericalPoint(lhsSize - rhsSize, 0.0));
+  if (lhsSize > rhsSize) rightCoefficients.add(Point(lhsSize - rhsSize, 0.0));
   // Else the right hand side has a degree greater than the left hand side, add enough zeros to the coefficients in order to equal the degrees
-  else leftCoefficients.add(NumericalPoint(rhsSize - lhsSize, 0.0));
+  else leftCoefficients.add(Point(rhsSize - lhsSize, 0.0));
   // Then, we just have to sum-up the degrees
   UniVariatePolynomialImplementation sum(leftCoefficients + rightCoefficients);
   sum.compactCoefficients();
@@ -284,11 +284,11 @@ UnsignedInteger UniVariatePolynomialImplementation::getDegree() const
 
 
 /* Root of the polynomial of degree n as the eigenvalues of the associated  matrix */
-UniVariatePolynomialImplementation::NumericalComplexCollection UniVariatePolynomialImplementation::getRoots() const
+UniVariatePolynomialImplementation::ComplexCollection UniVariatePolynomialImplementation::getRoots() const
 {
   const UnsignedInteger degree = getDegree();
   if (degree == 0) throw NotDefinedException(HERE) << "Error: cannot compute the roots of a constant polynomial.";
-  const NumericalScalar scale = -1.0 / coefficients_[degree];
+  const Scalar scale = -1.0 / coefficients_[degree];
   SquareMatrix m(degree);
   m(0, degree - 1) = coefficients_[0] * scale;
   for (UnsignedInteger i = 1; i < degree; ++i)

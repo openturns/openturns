@@ -56,8 +56,8 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j) const;
+  const Scalar & operator () (const UnsignedInteger i,
+                              const UnsignedInteger j) const;
 #endif
 
   /** Multiplications */
@@ -75,21 +75,21 @@ public:
 #endif
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
-                                   const Bool keepIntact = true);
+  Point solveLinearSystem(const Point & b,
+                          const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);
 
   /** Compute determinant */
-  NumericalScalar computeLogAbsoluteDeterminant(NumericalScalar & sign,
-      const Bool keepIntact = true);
-  NumericalScalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
+                                       const Bool keepIntact = true);
+  Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
-  NumericalPoint computeEigenValues(const Bool keepIntact = true);
-  NumericalPoint computeEV(SquareMatrix & v,
-                           const Bool keepIntact = true);
+  Point computeEigenValues(const Bool keepIntact = true);
+  Point computeEV(SquareMatrix & v,
+                  const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
   virtual Bool isPositiveDefinite(const Bool keepIntact = true);
@@ -98,12 +98,12 @@ public:
   TriangularMatrix computeCholesky(const Bool keepIntact = true);
 
   /** Compute singular values */
-  NumericalPoint computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSVD(Matrix & u,
-                            Matrix & vT,
-                            const Bool fullSVD = false,
-                            const Bool keepIntact = true);
+  Point computeSVD(Matrix & u,
+                   Matrix & vT,
+                   const Bool fullSVD = false,
+                   const Bool keepIntact = true);
 
 protected:
 
@@ -115,8 +115,8 @@ private:
 
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j);
+  Scalar & operator () (const UnsignedInteger i,
+                        const UnsignedInteger j);
 }; /* class IdentityMatrix */
 
 END_NAMESPACE_OPENTURNS

@@ -25,7 +25,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {
@@ -36,11 +36,11 @@ int main(int argc, char *argv[])
   try
   {
     // First, compute the volume of the unit ball in R^n
-    NumericalScalar a = -1.0;
-    NumericalScalar b = 1.0;
+    Scalar a = -1.0;
+    Scalar b = 1.0;
     String formula("1.0");
-    Collection< NumericalMathFunction > lower(0);
-    Collection< NumericalMathFunction > upper(0);
+    Collection< Function > lower(0);
+    Collection< Function > upper(0);
     IteratedQuadrature algo(GaussKronrod(20, 1.0e-6, GaussKronrodRule(GaussKronrodRule::G3K7)));
     for (UnsignedInteger n = 0; n < 3; ++n)
     {
@@ -51,21 +51,21 @@ int main(int argc, char *argv[])
       if (n > 0)
       {
         formula += String("-") + inVars[n - 1] + String("^2");
-        lower.add(NumericalMathFunction(inVarsBounds, Description(1, String("-sqrt(") + formula + String(")"))));
-        upper.add(NumericalMathFunction(inVarsBounds, Description(1, String("sqrt(") + formula + String(")"))));
+        lower.add(SymbolicFunction(inVarsBounds, Description(1, String("-sqrt(") + formula + String(")"))));
+        upper.add(SymbolicFunction(inVarsBounds, Description(1, String("sqrt(") + formula + String(")"))));
       }
-      NumericalMathFunction integrand(inVars, Description(1, "1.0"));
-      NumericalScalar value = algo.integrate(integrand, a, b, lower, upper)[0];
+      SymbolicFunction integrand(inVars, Description(1, "1.0"));
+      Scalar value = algo.integrate(integrand, a, b, lower, upper)[0];
       fullprint << "dim=" << n + 1 << ", volume=" << value << ", calls=" << integrand.getCallsNumber() << std::endl;
     }
     // Second, integrate a multi-valued function
-    Interval bounds(NumericalPoint(3, -1.0), NumericalPoint(3, 1.0));
+    Interval bounds(Point(3, -1.0), Point(3, 1.0));
     Description vars(Description::BuildDefault(3, "x"));
     Description formulas(2);
     formulas[0] = "x0^2 + 2*x1^2 + 3*x2^2";
     formulas[1] = "x2^2 + 2*x1^2 + 3*x0^2";
-    NumericalMathFunction integrand(vars, formulas);
-    NumericalPoint value(algo.integrate(integrand, bounds));
+    SymbolicFunction integrand(vars, formulas);
+    Point value(algo.integrate(integrand, bounds));
     fullprint << "value=" << value << ", calls=" << integrand.getCallsNumber() << std::endl;
   }
   catch (TestFailed & ex)

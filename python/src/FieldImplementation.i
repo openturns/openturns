@@ -21,7 +21,7 @@
 namespace OT{
 %extend FieldImplementation {
 
-const NumericalPoint __getitem__ (SignedInteger index) const
+const Point __getitem__ (SignedInteger index) const
 {
   if (index < 0) {
     index += self->getSize();
@@ -30,7 +30,7 @@ const NumericalPoint __getitem__ (SignedInteger index) const
 }
 
 void __setitem__ (SignedInteger index,
-                  const NumericalPoint & val)
+                  const Point & val)
 {
   if (index < 0) {
     index += self->getSize();
@@ -38,7 +38,7 @@ void __setitem__ (SignedInteger index,
   self->at(index) = val;
 }
 
-NumericalScalar __getitem__(PyObject * args) const {
+Scalar __getitem__(PyObject * args) const {
 
           OT::UnsignedInteger arg2 ;
           OT::UnsignedInteger arg3 ;
@@ -71,7 +71,7 @@ fail:
 
 
 
-void __setitem__(PyObject * args, NumericalScalar val) {
+void __setitem__(PyObject * args, Scalar val) {
 
           OT::UnsignedInteger arg2 ;
           OT::UnsignedInteger arg3 ;

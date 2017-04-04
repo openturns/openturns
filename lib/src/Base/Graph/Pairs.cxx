@@ -35,7 +35,7 @@ CLASSNAMEINIT(Pairs);
 static const Factory<Pairs> Factory_Pairs;
 
 /* Default constructor */
-Pairs::Pairs(const NumericalSample & data,
+Pairs::Pairs(const Sample & data,
              const String & title)
   : DrawableImplementation(data)
 {
@@ -45,7 +45,7 @@ Pairs::Pairs(const NumericalSample & data,
 }
 
 /* Constructor with parameters*/
-Pairs::Pairs(const NumericalSample & data,
+Pairs::Pairs(const Sample & data,
              const String & title,
              const Description & labels,
              const String & color,
@@ -72,7 +72,7 @@ String Pairs::__repr__() const
 }
 
 /* Accessor for first coordinate */
-NumericalSample Pairs::getData() const
+Sample Pairs::getData() const
 {
   return data_;
 }
@@ -140,7 +140,7 @@ void Pairs::setTitle(const String & title)
 }
 
 /* Check for data validity */
-void Pairs::checkData(const NumericalSample & data) const
+void Pairs::checkData(const Sample & data) const
 {
   if (data.getDimension() < 2)
   {

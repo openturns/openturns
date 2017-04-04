@@ -37,39 +37,39 @@ public:
 
   /** Constructor with parameters */
   SubsetSampling(const Event & event,
-                 const NumericalScalar proposalRange = ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultProposalRange"),
-                 const NumericalScalar conditionalProbability = ResourceMap::GetAsNumericalScalar("SubsetSampling-DefaultConditionalProbability"));
+                 const Scalar proposalRange = ResourceMap::GetAsScalar("SubsetSampling-DefaultProposalRange"),
+                 const Scalar conditionalProbability = ResourceMap::GetAsScalar("SubsetSampling-DefaultConditionalProbability"));
 
   /** Virtual constructor */
   virtual SubsetSampling * clone() const;
 
   /** The range of the uniform proposal pdf */
-  void setProposalRange(NumericalScalar proposalRange);
-  NumericalScalar getProposalRange() const;
+  void setProposalRange(Scalar proposalRange);
+  Scalar getProposalRange() const;
 
   /** Ratio parameter */
-  void setConditionalProbability(NumericalScalar conditionalProbability);
-  NumericalScalar getConditionalProbability() const;
+  void setConditionalProbability(Scalar conditionalProbability);
+  Scalar getConditionalProbability() const;
 
   /** Accessor to the achieved number of steps */
   UnsignedInteger getNumberOfSteps();
 
   /** Stepwise result accessors */
-  NumericalPoint getThresholdPerStep() const;
-  NumericalPoint getGammaPerStep() const;
-  NumericalPoint getCoefficientOfVariationPerStep() const;
-  NumericalPoint getProbabilityEstimatePerStep() const;
+  Point getThresholdPerStep() const;
+  Point getGammaPerStep() const;
+  Point getCoefficientOfVariationPerStep() const;
+  Point getProbabilityEstimatePerStep() const;
 
   /** Keep event sample */
   void setKeepEventSample(bool keepEventSample);
 
   /** Event input/output sample accessor */
-  NumericalSample getEventInputSample() const;
-  NumericalSample getEventOutputSample() const;
+  Sample getEventInputSample() const;
+  Sample getEventOutputSample() const;
 
   /** i-subset */
   void setISubset(Bool iSubset);
-  void setBetaMin(NumericalScalar betaMin);
+  void setBetaMin(Scalar betaMin);
 
   /** Performs the actual computation. */
   void run();
@@ -85,46 +85,46 @@ public:
 
 private:
   /** Compute the block sample */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
   /** Compute the new threshold corresponding to the target failure probability */
-  NumericalScalar computeThreshold();
+  Scalar computeThreshold();
 
   /** compute probability estimate on the current sample */
-  NumericalScalar computeProbability(NumericalScalar probabilityEstimate, NumericalScalar threshold);
+  Scalar computeProbability(Scalar probabilityEstimate, Scalar threshold);
 
   /** Sort new seeds */
-  void initializeSeed(NumericalScalar threshold);
+  void initializeSeed(Scalar threshold);
 
   /** Compute the correlation on markov chains at the current state of the algorithm */
-  NumericalScalar computeVarianceGamma(NumericalScalar currentFailureProbability, NumericalScalar threshold);
+  Scalar computeVarianceGamma(Scalar currentFailureProbability, Scalar threshold);
 
   /** Generate new points in the conditional failure domain */
-  void generatePoints(NumericalScalar threshold);
+  void generatePoints(Scalar threshold);
 
   // some parameters
-  NumericalScalar proposalRange_;// width of the proposal pdf
-  NumericalScalar conditionalProbability_;// target probability at each subset
+  Scalar proposalRange_;// width of the proposal pdf
+  Scalar conditionalProbability_;// target probability at each subset
   Bool iSubset_;// conditional pre-sampling
-  NumericalScalar betaMin_;// pre-sampling hypersphere exclusion radius
+  Scalar betaMin_;// pre-sampling hypersphere exclusion radius
   Bool keepEventSample_;// do we keep the event sample ?
 
   // some results
   UnsignedInteger numberOfSteps_;// number of subset steps
-  NumericalPoint thresholdPerStep_;// intermediate thresholds
-  NumericalPoint gammaPerStep_;// intermediate gammas
-  NumericalPoint coefficientOfVariationPerStep_;// intermediate COVS
-  NumericalPoint probabilityEstimatePerStep_;// intermediate PFs
-  NumericalSample eventInputSample_;// event input sample
-  NumericalSample eventOutputSample_;// event output sample
+  Point thresholdPerStep_;// intermediate thresholds
+  Point gammaPerStep_;// intermediate gammas
+  Point coefficientOfVariationPerStep_;// intermediate COVS
+  Point probabilityEstimatePerStep_;// intermediate PFs
+  Sample eventInputSample_;// event input sample
+  Sample eventOutputSample_;// event output sample
 
   // attributes used for conveniency, not to be saved/loaded
   StandardEvent standardEvent_;// the algorithm happens in U
   UnsignedInteger dimension_;// input dimension
-  NumericalSample currentPointSample_;// X
-  NumericalSample currentLevelSample_;//f(X)
+  Sample currentPointSample_;// X
+  Sample currentLevelSample_;//f(X)
   UnsignedInteger seedNumber_;// number of seed points
-  
+
 } ; /* class SubsetSampling */
 
 END_NAMESPACE_OPENTURNS

@@ -46,7 +46,7 @@ class OT_API Tensor :
 public:
 
   typedef TypedInterfaceObject<TensorImplementation>::Implementation Implementation;
-  typedef Collection<NumericalScalar>       NumericalScalarCollection;
+  typedef Collection<Scalar>       ScalarCollection;
 
   /** Default constructor */
   Tensor();
@@ -68,13 +68,13 @@ public:
   Tensor(const UnsignedInteger rowDim,
          const UnsignedInteger colDim,
          const UnsignedInteger sheetDim,
-         const NumericalScalarCollection & elementsValues);
+         const ScalarCollection & elementsValues);
 
   /** Constructor with implementation */
   Tensor(const Implementation & i);
 
   /** Set small elements to zero */
-  Tensor clean(const NumericalScalar & threshold) const;
+  Tensor clean(const Scalar & threshold) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -85,15 +85,15 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  NumericalScalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j,
-                                 const UnsignedInteger k);
+  Scalar & operator () (const UnsignedInteger i,
+                        const UnsignedInteger j,
+                        const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  const NumericalScalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j,
-                                       const UnsignedInteger k) const;
+  const Scalar & operator () (const UnsignedInteger i,
+                              const UnsignedInteger j,
+                              const UnsignedInteger k) const;
 #endif
 
   /** getSheet returns the sheet specified by its sheet number k */
@@ -119,7 +119,7 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalScalar * __baseaddress__ () const;
+  const Scalar * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 

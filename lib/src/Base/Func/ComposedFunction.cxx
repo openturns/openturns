@@ -19,11 +19,11 @@
  *
  */
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/NoNumericalMathGradientImplementation.hxx"
-#include "openturns/NoNumericalMathHessianImplementation.hxx"
-#include "openturns/ComposedNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ComposedNumericalMathGradientImplementation.hxx"
-#include "openturns/ComposedNumericalMathHessianImplementation.hxx"
+#include "openturns/NoGradient.hxx"
+#include "openturns/NoHessian.hxx"
+#include "openturns/ComposedEvaluation.hxx"
+#include "openturns/ComposedGradient.hxx"
+#include "openturns/ComposedHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,7 +34,7 @@ static const Factory<ComposedFunction> Factory_ComposedFunction;
 
 /* Default constructor */
 ComposedFunction::ComposedFunction()
-  : NumericalMathFunctionImplementation()
+  : FunctionImplementation()
   , p_leftFunction_()
   , p_rightFunction_()
 {
@@ -43,16 +43,16 @@ ComposedFunction::ComposedFunction()
 
 /* Composition constructor */
 ComposedFunction::ComposedFunction(const Implementation & p_left,
-    const Implementation & p_right)
-  : NumericalMathFunctionImplementation(new ComposedNumericalMathEvaluationImplementation(p_left->getEvaluation(), p_right->getEvaluation()),
-                                        new NoNumericalMathGradientImplementation(),
-                                        new NoNumericalMathHessianImplementation())
+                                   const Implementation & p_right)
+  : FunctionImplementation(new ComposedEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
+                           new NoGradient(),
+                           new NoHessian())
   , p_leftFunction_(p_left)
   , p_rightFunction_(p_right)
 {
   try
   {
-    GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
+    GradientPointer p_gradientImplementation(new ComposedGradient(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(p_left->getUseDefaultGradientImplementation() || p_right->getUseDefaultGradientImplementation());
   }
@@ -62,7 +62,7 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
   }
   try
   {
-    HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
+    HessianPointer p_hessianImplementation(new ComposedHessian(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(p_left->getUseDefaultHessianImplementation() || p_right->getUseDefaultHessianImplementation());
   }
@@ -73,17 +73,17 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
 }
 
 /* Composition constructor */
-ComposedFunction::ComposedFunction(const NumericalMathFunction & left,
-    const NumericalMathFunction & right)
-  : NumericalMathFunctionImplementation(new ComposedNumericalMathEvaluationImplementation(left.getEvaluation(), right.getEvaluation()),
-                                        new NoNumericalMathGradientImplementation(),
-                                        new NoNumericalMathHessianImplementation())
+ComposedFunction::ComposedFunction(const Function & left,
+                                   const Function & right)
+  : FunctionImplementation(new ComposedEvaluation(left.getEvaluation(), right.getEvaluation()),
+                           new NoGradient(),
+                           new NoHessian())
   , p_leftFunction_(left.getImplementation())
   , p_rightFunction_(right.getImplementation())
 {
   try
   {
-    GradientImplementation p_gradientImplementation(new ComposedNumericalMathGradientImplementation(left.getGradient(), right.getEvaluation(), right.getGradient()));
+    GradientPointer p_gradientImplementation(new ComposedGradient(left.getGradient(), right.getEvaluation(), right.getGradient()));
     setGradient(p_gradientImplementation);
     setUseDefaultGradientImplementation(left.getUseDefaultGradientImplementation() || right.getUseDefaultGradientImplementation());
   }
@@ -93,7 +93,7 @@ ComposedFunction::ComposedFunction(const NumericalMathFunction & left,
   }
   try
   {
-    HessianImplementation p_hessianImplementation(new ComposedNumericalMathHessianImplementation(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
+    HessianPointer p_hessianImplementation(new ComposedHessian(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
     setHessian(p_hessianImplementation);
     setUseDefaultHessianImplementation(left.getUseDefaultHessianImplementation() || right.getUseDefaultHessianImplementation());
   }
@@ -147,12 +147,12 @@ String ComposedFunction::__repr__() const
  *
  * the needed gradient is [(dH/dp)(x,p)]^t
  */
-Matrix ComposedFunction::parameterGradient(const NumericalPoint & inP) const
+Matrix ComposedFunction::parameterGradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // y = G(x, pg)
-  const NumericalPoint y(p_rightFunction_->operator()(inP));
+  const Point y(p_rightFunction_->operator()(inP));
   // (dG/dpg)(x, pg)
   const Matrix rightGradientP(p_rightFunction_->parameterGradient(inP));
   // (dF/dy)(y, pf)
@@ -186,7 +186,7 @@ Matrix ComposedFunction::parameterGradient(const NumericalPoint & inP) const
 /* Method save() stores the object through the StorageManager */
 void ComposedFunction::save(Advocate & adv) const
 {
-  NumericalMathFunctionImplementation::save(adv);
+  FunctionImplementation::save(adv);
   adv.saveAttribute( "leftFunction_", *p_leftFunction_ );
   adv.saveAttribute( "rightFunction_", *p_rightFunction_ );
 }
@@ -194,8 +194,8 @@ void ComposedFunction::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComposedFunction::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathFunctionImplementation> functionValue;
-  NumericalMathFunctionImplementation::load(adv);
+  TypedInterfaceObject<FunctionImplementation> functionValue;
+  FunctionImplementation::load(adv);
   adv.loadAttribute( "leftFunction_", functionValue );
   p_leftFunction_ = functionValue.getImplementation();
   adv.loadAttribute( "rightFunction_", functionValue );

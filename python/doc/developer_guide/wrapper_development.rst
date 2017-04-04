@@ -29,7 +29,7 @@ These two methods will be described in the following sections.
 PythonFunction
 ~~~~~~~~~~~~~~
 
-A PythonFunction is a NumericalMathFunction where the ``_exec`` or
+A PythonFunction is a Function where the ``_exec`` or
 ``_exec_sample`` function are launched in a Python interpreter. Here is
 an example of how to implement it:
 
@@ -39,7 +39,7 @@ Some explanations of the code :
    point. The in and out array size must correspond to the sizes set in
    the PythonFunction constructor. In this example, X will be an array
    of size 2 and Y must be an array of size 1. The output point can be a
-   Python list, an  NumericalPoint or a Numpy array.
+   Python list, an  Point or a Numpy array.
 
 -  Construct the PythonFunction by passing function reference.
 
@@ -49,7 +49,7 @@ must return an output sample. For further details on speed optimization
 see paragraph [speedo]. Here is an example using ``_exec_sample``
 function:
 
-The output sample can be a NumericalSample, a Python list of list or a
+The output sample can be a Sample, a Python list of list or a
 Numpy array of array. This function is optional. If ``_exec_sample`` is
 not implemented and  must compute a sample, the ``_exec`` function is
 called several time: once for each point of the sample. On contrary, if
@@ -436,7 +436,7 @@ Optimizations of any parts of this benchmark are welcome.
 
    ::
 
-        model = ot.NumericalMathFunction( ('x0','x1'), ('y',),
+        model = ot.Function( ('x0','x1'), ('y',),
         ('cos((x0+1) ^ 2) - sin(x1)',) )
 
 

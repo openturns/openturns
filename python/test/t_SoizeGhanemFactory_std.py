@@ -16,7 +16,7 @@ x = [0.5] * 2
 kMax = 5
 ot.ResourceMap.SetAsUnsignedInteger(
     "IteratedQuadrature-MaximumSubIntervals", 2048)
-ot.ResourceMap.SetAsNumericalScalar(
+ot.ResourceMap.SetAsScalar(
     "IteratedQuadrature-MaximumError",    1.0e-6)
 for soize in factories:
     distribution = soize.getMeasure()

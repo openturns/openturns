@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {
@@ -51,10 +51,10 @@ int main(int argc, char *argv[])
     SquareComplexMatrix squareComplexMatrix1(2);
 
     /* Check operator() methods */
-    squareComplexMatrix1(0, 0) = NumericalComplex(1.0, 1.0) ;
-    squareComplexMatrix1(0, 1) = NumericalComplex(3.0, 1.0) ;
-    squareComplexMatrix1(1, 0) = NumericalComplex(0.0, 1.0) ;
-    squareComplexMatrix1(1, 1) = NumericalComplex(5.0, 1.0) ;
+    squareComplexMatrix1(0, 0) = Complex(1.0, 1.0) ;
+    squareComplexMatrix1(0, 1) = Complex(3.0, 1.0) ;
+    squareComplexMatrix1(1, 0) = Complex(0.0, 1.0) ;
+    squareComplexMatrix1(1, 1) = Complex(5.0, 1.0) ;
 
     /* String converter */
     fullprint << "squareComplexMatrix1 = " << squareComplexMatrix1 << std::endl;
@@ -121,20 +121,20 @@ int main(int argc, char *argv[])
     fullprint << "test 9 : multiplication with a numerical point method" << std::endl;
 
     /* Create the numerical point */
-    NumericalComplexCollection pt(2) ;
-    pt[0] = NumericalComplex(1.0, 1.0)  ;
-    pt[1] = NumericalComplex(0.0, 1.0) ;
+    ComplexCollection pt(2) ;
+    pt[0] = Complex(1.0, 1.0)  ;
+    pt[1] = Complex(0.0, 1.0) ;
     fullprint << "pt = " << pt << std::endl;
 
     /* Check the product method */
-    NumericalComplexCollection ptResult = squareComplexMatrix1.operator * ( pt )  ;
+    ComplexCollection ptResult = squareComplexMatrix1.operator * ( pt )  ;
     fullprint << "ptResult = " << ptResult << std::endl;
 
     /** MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */
     fullprint << "test 10 : multiplication and division by a numerical scalar methods" << std::endl;
 
     /* Check the multiplication method */
-    NumericalComplex s(2.0, 1.0);
+    Complex s(2.0, 1.0);
     SquareComplexMatrix scalprod1 = squareComplexMatrix1.operator * (s) ;
     SquareComplexMatrix scalprod2 = s * squareComplexMatrix1 ;
     fullprint << "scalprod1 = " << scalprod1 << std::endl;

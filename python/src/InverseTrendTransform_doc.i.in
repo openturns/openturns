@@ -3,7 +3,7 @@
 
 Parameters
 ----------
-myInverseTrendFunc : :class:`~openturns.NumericalMathFunction`
+myInverseTrendFunc : :class:`~openturns.Function`
     The  inverse trend function :math:`f_{trend}^{-1}`.
 
 

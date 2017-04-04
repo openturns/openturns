@@ -127,7 +127,7 @@ sample : :class:`~openturns.ProcessSample`
 
 Returns
 -------
-weights : :class:`~openturns.NumericalPoint`
+weights : :class:`~openturns.Point`
     The points defining the quadrature rule supported by the mesh of
     the sample.
 "

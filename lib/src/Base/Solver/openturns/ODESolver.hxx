@@ -59,8 +59,8 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Perform cross-validation */
-  NumericalSample solve(const NumericalPoint & initialState,
-                        const NumericalPoint & timeGrid) const;
+  Sample solve(const Point & initialState,
+               const Point & timeGrid) const;
 
   /** Transition function accessor */
   void setTransitionFunction(const FieldFunction & transitionFunction);

@@ -7,7 +7,7 @@ from math import *
 TESTPREAMBLE()
 
 try:
-    #Log.Show( Log.Flags() | Log.INFO )
+    # Log.Show( Log.Flags() | Log.INFO )
 
       # Problem parameters
     dimension = 8
@@ -16,7 +16,7 @@ try:
     # Reference analytical values
     meanTh = 1.0
     covTh = 1.0
-    a = NumericalPoint(dimension)
+    a = Point(dimension)
     a[0] = 1.0
     a[1] = 2.0
     a[2] = 5.0
@@ -38,7 +38,7 @@ try:
             str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
     covTh = covTh - 1.0
 
-    model = NumericalMathFunction(inputVariables, outputVariables, formula)
+    model = Function(inputVariables, outputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * dimension)

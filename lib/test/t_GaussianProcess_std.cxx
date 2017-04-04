@@ -40,9 +40,9 @@ int main(int argc, char *argv[])
     const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
-    NumericalPoint amplitude(defaultDimension, 1.0);
+    Point amplitude(defaultDimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(spatialDimension, 1.0);
+    Point scale(spatialDimension, 1.0);
 
     /* Second order model with parameters */
     ExponentialCauchy myModel(scale, amplitude);
@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
     SecondOrderModel mySecondOrderModel(myModel);
     fullprint << "mySecondOrderModel=" << mySecondOrderModel << std::endl;
 
-    const NumericalScalar tmin = 0.0;
-    const NumericalScalar step = 0.1;
+    const Scalar tmin = 0.0;
+    const Scalar step = 0.1;
     const UnsignedInteger n = 11;
 
     RegularGrid myTimeGrid(tmin, step, n);
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With constant trend */
-    TrendTransform trend(NumericalMathFunction("t", "4.0"));
+    TrendTransform trend(SymbolicFunction("t", "4.0"));
     GaussianProcess myProcess2(trend, myCovModel, myTimeGrid);
     fullprint << "myProcess2=" << myProcess2 << std::endl;
     fullprint << "is stationary? " << myProcess2.isStationary() << std::endl;
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With varying trend */
-    TrendTransform trend3(NumericalMathFunction("t", "sin(t)"));
+    TrendTransform trend3(SymbolicFunction("t", "sin(t)"));
     GaussianProcess myProcess3(trend3, myCovModel, myTimeGrid);
     fullprint << "myProcess3=" << myProcess3 << std::endl;
     fullprint << "is stationary? " << myProcess3.isStationary() << std::endl;

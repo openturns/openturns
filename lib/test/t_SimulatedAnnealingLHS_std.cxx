@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   std::cout << "Bounds of uniform distributions=" << distribution.getRange() << std::endl;
 
   // Generate design without optimization
-  NumericalSample design(lhs.generate());
+  Sample design(lhs.generate());
   std::cout << "design=" << design << std::endl;
 
   // Define space fillings
@@ -38,9 +38,9 @@ int main(int argc, char **argv)
   // --------------------------------------------------
 
   // Geometric profile
-  const NumericalScalar T0(10.0);
+  const Scalar T0(10.0);
   const UnsignedInteger iMax(2000);
-  const NumericalScalar c(0.95);
+  const Scalar c(0.95);
   const GeometricProfile geomProfile(T0, c, iMax);
 
   // 1) Simulated Annealing LHS with geometric temperature profile, C2 optimization
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
   // print lhs
   std::cout << "optimal lhs=" << optimalSA_C2 << std::endl;
 
-  NumericalSample design_C2(optimalSA_C2.generate());
+  Sample design_C2(optimalSA_C2.generate());
   LHSResult result_C2(optimalSA_C2.getResult());
 
   std::cout << "Best design using geometric temperature and C2 space filling=" << design_C2 << std::endl;
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
   // print lhs
   std::cout << "optimal lhs=" << optimalSA_PhiP << std::endl;
 
-  NumericalSample design_PhiP(optimalSA_PhiP.generate());
+  Sample design_PhiP(optimalSA_PhiP.generate());
   LHSResult result_PhiP(optimalSA_PhiP.getResult());
 
   std::cout << "Best design using linear temperature profile and PhiP space filling=" << design_PhiP << std::endl;
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
   // 3) Simulated Annealing LHS with linear temperature profile, PhiP optimization and nStart > 0
   const UnsignedInteger nStart = 10;
-  NumericalSample design_PhiP_restart(optimalSA_PhiP.generateWithRestart(nStart));
+  Sample design_PhiP_restart(optimalSA_PhiP.generateWithRestart(nStart));
   LHSResult result_PhiP_restart(optimalSA_PhiP.getResult());
 
   std::cout << "Best design using linear temperature profile and PhiP space filling=" << design_PhiP_restart << std::endl;
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
             << std::endl;
   for(UnsignedInteger i = 0; i < nStart; ++i)
   {
-    NumericalSample design_PhiP_i(result_PhiP_restart.getOptimalDesign(i));
+    Sample design_PhiP_i(result_PhiP_restart.getOptimalDesign(i));
     std::cout << "  Intermediate design for restart iteration number " << i << " " << design_PhiP_i << std::endl;
     std::cout << "  Final criteria: C2=" << result_PhiP_restart.getC2(i)
               << ", PhiP=" << result_PhiP_restart.getPhiP(i)

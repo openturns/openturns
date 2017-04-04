@@ -41,8 +41,8 @@ ExponentialCauchy::ExponentialCauchy()
   // Nothing to do
 }
 
-ExponentialCauchy::ExponentialCauchy(const NumericalPoint & scale,
-                                     const NumericalPoint & amplitude)
+ExponentialCauchy::ExponentialCauchy(const Point & scale,
+                                     const Point & amplitude)
   : SecondOrderModelImplementation(AbsoluteExponential(scale, amplitude), CauchyModel(scale, amplitude))
 {
   // Nothing to do
@@ -74,13 +74,13 @@ String ExponentialCauchy::__str__(const String & offset) const
 }
 
 /* Amplitude accessor */
-NumericalPoint ExponentialCauchy::getAmplitude() const
+Point ExponentialCauchy::getAmplitude() const
 {
   return static_cast<AbsoluteExponential*>(covarianceModel_.getImplementation().get())->getAmplitude();
 }
 
 /* Scale accessor */
-NumericalPoint ExponentialCauchy::getScale() const
+Point ExponentialCauchy::getScale() const
 {
   return static_cast<AbsoluteExponential*>(covarianceModel_.getImplementation().get())->getScale();
 }

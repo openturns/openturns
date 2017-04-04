@@ -53,7 +53,7 @@ True"
 
 Returns
 -------
-x : float, :class:`~openturns.NumericalPoint`
+x : float, :class:`~openturns.Point`
     The deterministic value."
 
 // ---------------------------------------------------------------------

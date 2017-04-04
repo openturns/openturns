@@ -22,7 +22,7 @@
 #define OPENTURNS_LEASTSQUARESMETHODIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/FunctionalBasis.hxx"
 #include "openturns/DesignProxy.hxx"
 
@@ -48,7 +48,7 @@ public:
 
   /** Parameters constructor */
   LeastSquaresMethodImplementation(const DesignProxy & proxy,
-                                   const NumericalPoint & weight,
+                                   const Point & weight,
                                    const Indices & indices);
 
   /** Parameters constructor */
@@ -62,10 +62,10 @@ public:
   virtual String __repr__() const;
 
   /** Input sample accessor */
-  virtual NumericalSample getInputSample() const;
+  virtual Sample getInputSample() const;
 
   /** Weight accessor */
-  virtual NumericalPoint getWeight() const;
+  virtual Point getWeight() const;
 
   /** Basis accessor */
   virtual Basis getBasis() const;
@@ -77,8 +77,8 @@ public:
   virtual Indices getInitialIndices() const;
 
   /** Solve least-squares problem, ie x=\argmin |D(Mx-b)|^2 */
-  virtual NumericalPoint solve(const NumericalPoint & rhs);
-  virtual NumericalPoint solveNormal(const NumericalPoint & rhs);
+  virtual Point solve(const Point & rhs);
+  virtual Point solveNormal(const Point & rhs);
 
   /** Get the inverse of the Gram matrix */
   virtual CovarianceMatrix getGramInverse() const;
@@ -87,13 +87,13 @@ public:
   virtual SymmetricMatrix getH() const;
 
   /** Get the diagonal of H */
-  virtual NumericalPoint getHDiag() const;
+  virtual Point getHDiag() const;
 
   /** Get the diagonal of the Gram inverse */
-  virtual NumericalPoint getGramInverseDiag() const;
+  virtual Point getGramInverseDiag() const;
 
   /** Get the trace of the Gram inverse */
-  virtual NumericalScalar getGramInverseTrace() const;
+  virtual Scalar getGramInverseTrace() const;
 
   /** Update */
   virtual void update(const Indices & addedIndices,
@@ -121,16 +121,16 @@ public:
 
 protected:
   /** Weight accessor, check for positivness and uniformity, compute the square roots */
-  void setWeight(const NumericalPoint & weight);
+  void setWeight(const Point & weight);
 
   /** Proxy to the input sample and the basis */
   DesignProxy proxy_;
 
   /** Weights for the least-squares norm. The size is positive if and only if the weights are not uniform. */
-  NumericalPoint weight_;
+  Point weight_;
 
   /** Square-roots of the weights for the least-squares norm. The size is positive if and only if the weights are not uniform. */
-  NumericalPoint weightSqrt_;
+  Point weightSqrt_;
 
   /** Flag to tell if the points have uniform weights */
   Bool hasUniformWeight_;

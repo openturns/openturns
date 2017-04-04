@@ -31,30 +31,30 @@ static const Factory<HMatrixParameters> Factory_HMatrixParameters;
 
 HMatrixParameters::HMatrixParameters()
   : PersistentObject()
-  , assemblyEpsilon_(ResourceMap::GetAsNumericalScalar("HMatrix-AssemblyEpsilon"))
-  , recompressionEpsilon_(ResourceMap::GetAsNumericalScalar("HMatrix-RecompressionEpsilon"))
-  , admissibilityFactor_(ResourceMap::GetAsNumericalScalar("HMatrix-AdmissibilityFactor"))
+  , assemblyEpsilon_(ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon"))
+  , recompressionEpsilon_(ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon"))
+  , admissibilityFactor_(ResourceMap::GetAsScalar("HMatrix-AdmissibilityFactor"))
   , clusteringAlgorithm_(ResourceMap::Get("HMatrix-ClusteringAlgorithm"))
 {
   // Convert numerical value into a string
   const UnsignedInteger resourceCompressionMethod = ResourceMap::GetAsUnsignedInteger("HMatrix-CompressionMethod");
   switch(resourceCompressionMethod)
   {
-  case 0:
-    compressionMethod_ = "SVD";
-    break;
-  case 1:
-    compressionMethod_ = "ACA full";
-    break;
-  case 2:
-    compressionMethod_ = "ACA partial";
-    break;
-  case 3:
-    compressionMethod_ = "ACA+";
-    break;
-  default:
-    throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial) or 3 (ACA+)";
-    break;
+    case 0:
+      compressionMethod_ = "SVD";
+      break;
+    case 1:
+      compressionMethod_ = "ACA full";
+      break;
+    case 2:
+      compressionMethod_ = "ACA partial";
+      break;
+    case 3:
+      compressionMethod_ = "ACA+";
+      break;
+    default:
+      throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial) or 3 (ACA+)";
+      break;
   }
 }
 
@@ -65,34 +65,34 @@ HMatrixParameters * HMatrixParameters::clone() const
 }
 
 /** accessor for assembly epsilon */
-void HMatrixParameters::setAssemblyEpsilon(const NumericalScalar assemblyEpsilon)
+void HMatrixParameters::setAssemblyEpsilon(const Scalar assemblyEpsilon)
 {
   assemblyEpsilon_ = assemblyEpsilon;
 }
 
-NumericalScalar HMatrixParameters::getAssemblyEpsilon() const
+Scalar HMatrixParameters::getAssemblyEpsilon() const
 {
   return assemblyEpsilon_;
 }
 
 /** accessor for recompression epsilon */
-void HMatrixParameters::setRecompressionEpsilon(const NumericalScalar recompressionEpsilon)
+void HMatrixParameters::setRecompressionEpsilon(const Scalar recompressionEpsilon)
 {
   recompressionEpsilon_ = recompressionEpsilon;
 }
 
-NumericalScalar HMatrixParameters::getRecompressionEpsilon() const
+Scalar HMatrixParameters::getRecompressionEpsilon() const
 {
   return recompressionEpsilon_;
 }
 
 /** accessor for admissibility factor */
-void HMatrixParameters::setAdmissibilityFactor(const NumericalScalar admissibilityFactor)
+void HMatrixParameters::setAdmissibilityFactor(const Scalar admissibilityFactor)
 {
   admissibilityFactor_ = admissibilityFactor;
 }
 
-NumericalScalar HMatrixParameters::getAdmissibilityFactor() const
+Scalar HMatrixParameters::getAdmissibilityFactor() const
 {
   return admissibilityFactor_;
 }

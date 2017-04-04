@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     Logistic distribution(2., 2.5);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     LogisticFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

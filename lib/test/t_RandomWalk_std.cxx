@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
   try
   {
 
-    const NumericalScalar Tmin = 0.0;
-    const NumericalScalar deltaT = 0.1;
+    const Scalar Tmin = 0.0;
+    const Scalar deltaT = 0.1;
     const UnsignedInteger N = 11;
 
     /* Initialization of the RegularGrid timeGrid1*/
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     /* Distribution choice */
     Distribution dist = Uniform();
     fullprint << "dist = " << dist << std::endl;
-    NumericalPoint origin(dist.getDimension());
+    Point origin(dist.getDimension());
 
     Process process = RandomWalk(origin, dist);
 

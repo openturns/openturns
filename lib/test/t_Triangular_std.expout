@@ -11,66 +11,66 @@ Distribution class=Triangular name=Triangular dimension=1 a=-0.5 m=1.5 b=2.5
 Distribution Triangular(a = -0.5, m = 1.5, b = 2.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.44403]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1.90705] last=class=NumericalPoint name=Unnamed dimension=1 values=[1.09635]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.17256]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.44403]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.90705] last=class=Point name=Unnamed dimension=1 values=[1.09635]
+mean=class=Point name=Unnamed dimension=1 values=[1.17256]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.39567]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.333333]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.333333]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.333333]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.333333]
 log pdf=-0.693147
 pdf     =0.5
 pdf (FD)=0.5
 cdf=0.375
 ccdf=0.625
 survival=0.625
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.0477226]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0477226]
 Survival(inverse survival)=0.95
 characteristic function=(0.312305,0.758322)
 log characteristic function=(-0.198312,1.18013)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.5]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.125]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.724745]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.0833333,-0.25,-0.166667]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.5]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.1875,-0.1875,-0.125]
+quantile=class=Point name=Unnamed dimension=1 values=[0.724745]
 cdf(quantile)=0.25
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.0527864] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.27639] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.0527864] upper bound=class=Point name=Unnamed dimension=1 values=[2.27639] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 1.5, b = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Triangular(a = -0.5, m = 1.5, b = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 1.5, b = 2.5)) level=1.90333
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 1.5, b = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Triangular(a = -0.5, m = 1.5, b = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Triangular(a = -0.5, m = 1.5, b = 2.5)) level=1.90333
 beta=0.149071
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.112702] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.22614] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.112702] upper bound=class=Point name=Unnamed dimension=1 values=[2.22614] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.1127] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[2.1127] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0477226] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.5] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0477226] upper bound=class=Point name=Unnamed dimension=1 values=[2.5] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[2]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.666667]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.666667]
+Point= class=Point name=Unnamed dimension=1 values=[2]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.666667]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.666667]
 pdf     =0.333333
 pdf (FD)=0.333333
 cdf=0.916667
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[0.111111,0.333333,0.222222]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[0.111111,0.333333,0.222222]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=3 values=[-0.0277778,-0.0833333,-0.222222]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.0277778,-0.0833333,-0.222222]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[2.1127]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.111111,0.333333,0.222222]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.111111,0.333333,0.222222]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.0277778,-0.0833333,-0.222222]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.0277778,-0.0833333,-0.222222]
+quantile=class=Point name=Unnamed dimension=1 values=[2.1127]
 cdf(quantile)=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.16667]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.62361]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[-0.305441]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[2.4]
+mean=class=Point name=Unnamed dimension=1 values=[1.16667]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.62361]
+skewness=class=Point name=Unnamed dimension=1 values=[-0.305441]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.4]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.388889]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[a : -0.5, m : 1.5, b : 2.5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.111111]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.185185]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.037037]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.0748971]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.0178326]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.111111]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.185185]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0.037037]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.0748971]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0.0178326]
 Standard representative=Triangular(a = -1, m = 0.333333, b = 1)

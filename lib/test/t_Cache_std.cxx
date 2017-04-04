@@ -24,8 +24,8 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef PersistentCollection<NumericalScalar> KeyType;
-typedef PersistentCollection<NumericalScalar> ValueType;
+typedef PersistentCollection<Scalar> KeyType;
+typedef PersistentCollection<Scalar> ValueType;
 typedef Cache<KeyType, ValueType>              TestCache;
 
 int main(int argc, char *argv[])

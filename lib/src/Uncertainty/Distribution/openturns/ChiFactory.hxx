@@ -44,11 +44,11 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
-  Chi buildAsChi(const NumericalSample & sample) const;
-  Chi buildAsChi(const NumericalPoint & parameters) const;
+  Chi buildAsChi(const Sample & sample) const;
+  Chi buildAsChi(const Point & parameters) const;
   Chi buildAsChi() const;
 
 

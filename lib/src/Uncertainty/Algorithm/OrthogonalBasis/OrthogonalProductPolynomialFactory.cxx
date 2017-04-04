@@ -24,10 +24,10 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/ComposedDistribution.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
-#include "openturns/ProductPolynomialEvaluationImplementation.hxx"
-#include "openturns/ProductPolynomialGradientImplementation.hxx"
-#include "openturns/ProductPolynomialHessianImplementation.hxx"
+#include "openturns/FunctionImplementation.hxx"
+#include "openturns/ProductPolynomialEvaluation.hxx"
+#include "openturns/ProductPolynomialGradient.hxx"
+#include "openturns/ProductPolynomialHessian.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -42,8 +42,8 @@ CLASSNAMEINIT(OrthogonalProductPolynomialFactory);
 
 static const Factory<OrthogonalProductPolynomialFactory> Factory_OrthogonalProductPolynomialFactory;
 
-typedef Collection<NumericalPoint> NumericalPointCollection;
-typedef ProductPolynomialEvaluationImplementation::PolynomialCollection PolynomialCollection;
+typedef Collection<Point> PointCollection;
+typedef ProductPolynomialEvaluation::PolynomialCollection PolynomialCollection;
 
 /* Default constructor */
 OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory()
@@ -97,8 +97,8 @@ OrthogonalProductPolynomialFactory::PolynomialFamilyCollection OrthogonalProduct
   return coll_;
 }
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function OrthogonalProductPolynomialFactory::build(const UnsignedInteger index) const
 {
   // Compute the multi-indices using the EnumerateFunction
   Indices indices(phi_(index));
@@ -109,7 +109,7 @@ NumericalMathFunction OrthogonalProductPolynomialFactory::build(const UnsignedIn
   {
     polynomials[i] = coll_[i].build(indices[i]);
   }
-  return NumericalMathFunctionImplementation(ProductPolynomialEvaluationImplementation(polynomials).clone(), ProductPolynomialGradientImplementation(polynomials).clone(), ProductPolynomialHessianImplementation(polynomials).clone());
+  return FunctionImplementation(ProductPolynomialEvaluation(polynomials).clone(), ProductPolynomialGradient(polynomials).clone(), ProductPolynomialHessian(polynomials).clone());
 }
 
 
@@ -152,8 +152,8 @@ void OrthogonalProductPolynomialFactory::buildMeasure()
 }
 
 /* Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
-NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & degrees,
-    NumericalPoint & weights) const
+Sample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & degrees,
+    Point & weights) const
 {
   const UnsignedInteger degreesSize = degrees.getSize();
   if (degreesSize != coll_.getSize()) throw InvalidArgumentException(HERE) << "Error: the degrees size must match the size of the orthogonal univariate polynomials factories size.";
@@ -161,20 +161,20 @@ NumericalSample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Ind
   for (UnsignedInteger i = 0; i < degreesSize; ++i) isConstant = isConstant && (degrees[i] == 0);
   if (isConstant) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
   // First, get the nodes and weights of the marginal factories
-  NumericalPointCollection marginalNodes;
-  NumericalPointCollection marginalWeights;
+  PointCollection marginalNodes;
+  PointCollection marginalWeights;
   UnsignedInteger totalSize = 1;
   for (UnsignedInteger i = 0; i < degreesSize; ++i)
   {
     const UnsignedInteger d = degrees[i];
     totalSize *= d;
-    NumericalPoint w;
+    Point w;
     marginalNodes.add(coll_[i].getNodesAndWeights(d, w));
     marginalWeights.add(w);
   }
   // Perform the tensor product
-  NumericalSample nodes(totalSize, degreesSize);
-  weights = NumericalPoint(totalSize, 1.0);
+  Sample nodes(totalSize, degreesSize);
+  weights = Point(totalSize, 1.0);
   Indices indices(degreesSize, 0);
   for (UnsignedInteger i = 0; i < totalSize; ++i)
   {

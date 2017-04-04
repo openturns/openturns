@@ -13,7 +13,7 @@ try:
     yuniform = Uniform(1.9, 2.1)
     y = yuniform.getSample(size)
     w = [1.0] * size
-    f = NumericalMathFunction(['x'], ['y'], ['2.0*x'])
+    f = Function(['x'], ['y'], ['2.0*x'])
     coll = []
     coll.append(f)
     basis = Basis(coll)

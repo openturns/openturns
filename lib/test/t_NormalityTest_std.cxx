@@ -86,11 +86,11 @@ int main(int argc, char *argv[])
   distributionCollection.add(poisson);
   discreteDistributionCollection.add(poisson);
 
-  NumericalSample x(3, 1);
+  Sample x(3, 1);
   x[0][0] = 1.0;
   x[1][0] = 2.0;
   x[2][0] = 3.0;
-  NumericalPoint p(3);
+  Point p(3);
   p[0] = 0.3;
   p[1] = 0.2;
   p[2] = 0.5;
@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
   UnsignedInteger continuousDistributionNumber = continuousDistributionCollection.getSize();
   UnsignedInteger discreteDistributionNumber = discreteDistributionCollection.getSize();
   UnsignedInteger distributionNumber = continuousDistributionNumber + discreteDistributionNumber;
-  Collection<NumericalSample> sampleCollection(distributionNumber);
-  Collection<NumericalSample> continuousSampleCollection(continuousDistributionNumber);
-  Collection<NumericalSample> discreteSampleCollection(discreteDistributionNumber);
+  Collection<Sample> sampleCollection(distributionNumber);
+  Collection<Sample> continuousSampleCollection(continuousDistributionNumber);
+  Collection<Sample> discreteSampleCollection(discreteDistributionNumber);
   for (UnsignedInteger i = 0; i < continuousDistributionNumber; i++)
   {
     continuousSampleCollection[i] = continuousDistributionCollection[i].getSample(size);
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     sampleCollection[continuousDistributionNumber + i] = discreteSampleCollection[i];
   }
   // Test the normality of several samples using the Anderson Darling test
-  NumericalPoint andersonDarlingResult(distributionNumber);
+  Point andersonDarlingResult(distributionNumber);
   for (UnsignedInteger i = 0; i < distributionNumber; i++)
   {
     TestResult result(NormalityTest::AndersonDarlingNormal(sampleCollection[i]));
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
   }
   fullprint << "andersonDarlingResult=" << andersonDarlingResult << std::endl;
   // Test the normality of several samples using the Cramer Von Mises test
-  NumericalPoint cramerVonMisesResult(distributionNumber);
+  Point cramerVonMisesResult(distributionNumber);
   for (UnsignedInteger i = 0; i < distributionNumber; i++)
   {
     TestResult result(NormalityTest::CramerVonMisesNormal(sampleCollection[i]));

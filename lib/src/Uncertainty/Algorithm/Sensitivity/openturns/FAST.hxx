@@ -38,20 +38,20 @@ class OT_API FAST
 {
 public:
 
-  typedef Collection<NumericalComplex> NumericalComplexCollection;
+  typedef Collection<Complex> ComplexCollection;
 
   /** Constructor with model */
-  FAST(const NumericalMathFunction & model,
+  FAST(const Function & model,
        const Distribution & inputsDistribution,
        const UnsignedInteger samplingSize,
        const UnsignedInteger resamplingSize = ResourceMap::GetAsUnsignedInteger("FAST-DefaultResamplingSize"),
        const UnsignedInteger interferenceFactor = ResourceMap::GetAsUnsignedInteger("FAST-DefaultInterferenceFactor"));
 
   /** First order indices accessor */
-  NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;
@@ -66,7 +66,7 @@ private:
   void run() const;
 
   /** The model */
-  NumericalMathFunction model_;
+  Function model_;
 
   /** Inputs distribution */
   Distribution inputsDistribution_;
@@ -78,10 +78,10 @@ private:
   UnsignedInteger interferenceFactor_;
 
   /** First order indices */
-  mutable NumericalSample firstOrderIndice_;
+  mutable Sample firstOrderIndice_;
 
   /** Total order indices */
-  mutable NumericalSample totalOrderIndice_;
+  mutable Sample totalOrderIndice_;
 
   /** Store if indices are already computed */
   mutable Bool alreadyComputedIndices_;

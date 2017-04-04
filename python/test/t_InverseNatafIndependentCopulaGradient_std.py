@@ -12,7 +12,7 @@ try:
     dim = 2
     transformation = InverseNatafIndependentCopulaGradient(dim)
     print("transformation=", repr(transformation))
-    point = NumericalPoint(dim, 0.75)
+    point = Point(dim, 0.75)
     print("transformation(", point, ")=", repr(
         transformation.gradient(point).clean(1e-6)))
     print("input dimension=", transformation.getInputDimension())

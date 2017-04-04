@@ -43,7 +43,7 @@ Bernoulli::Bernoulli()
 }
 
 /* Parameters constructor */
-Bernoulli::Bernoulli(const NumericalScalar p)
+Bernoulli::Bernoulli(const Scalar p)
   : DiscreteDistribution(),
     p_(-1.0)
 {
@@ -92,18 +92,18 @@ Bernoulli * Bernoulli::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Bernoulli::getRealization() const
+Point Bernoulli::getRealization() const
 {
-  return NumericalPoint(1, (RandomGenerator::Generate() < p_ ? 1.0 : 0.0));
+  return Point(1, (RandomGenerator::Generate() < p_ ? 1.0 : 0.0));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Bernoulli::computePDF(const NumericalPoint & point) const
+Scalar Bernoulli::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (std::abs(k) < supportEpsilon_) return 1.0 - p_;
   if (std::abs(k - 1.0) < supportEpsilon_) return p_;
   return 0.0;
@@ -111,11 +111,11 @@ NumericalScalar Bernoulli::computePDF(const NumericalPoint & point) const
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Bernoulli::computeCDF(const NumericalPoint & point) const
+Scalar Bernoulli::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   // k < 0.0
   if (k < -supportEpsilon_) return 0.0;
   // k >= 1.0
@@ -125,81 +125,81 @@ NumericalScalar Bernoulli::computeCDF(const NumericalPoint & point) const
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint Bernoulli::computePDFGradient(const NumericalPoint & point) const
+Point Bernoulli::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
-  NumericalPoint pdfGradient(1, 0.0);
+  const Scalar k = point[0];
+  Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  throw NotYetImplementedException(HERE) << "In Bernoulli::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In Bernoulli::computePDFGradient(const Point & point) const";
 }
 
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Bernoulli::computeCDFGradient(const NumericalPoint & point) const
+Point Bernoulli::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
-  if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
-  throw NotYetImplementedException(HERE) << "In Bernoulli::computeCDFGradient(const NumericalPoint & point) const";
+  const Scalar k = point[0];
+  if (k < -supportEpsilon_) return Point(1, 0.0);
+  throw NotYetImplementedException(HERE) << "In Bernoulli::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Bernoulli::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Scalar Bernoulli::computeScalarQuantile(const Scalar prob,
+                                        const Bool tail) const
 {
   if (prob < 1.0 - p_) return (tail ? 1.0 : 0.0);
   return (tail ? 0.0 : 1.0);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Bernoulli::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Bernoulli::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * std::exp(NumericalComplex(0.0, x)));
+  const Complex value(1.0 - p_ + p_ * std::exp(Complex(0.0, x)));
   return value;
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Bernoulli::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Bernoulli::computeGeneratingFunction(const Complex & z) const
 {
-  const NumericalComplex value(1.0 - p_ + p_ * z);
+  const Complex value(1.0 - p_ + p_ * z);
   return value;
 }
 
 /* Compute the mean of the distribution */
 void Bernoulli::computeMean() const
 {
-  mean_ = NumericalPoint(1, p_);
+  mean_ = Point(1, p_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Bernoulli::getStandardDeviation() const
+Point Bernoulli::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(p_ * (1.0 - p_)));
+  return Point(1, std::sqrt(p_ * (1.0 - p_)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Bernoulli::getSkewness() const
+Point Bernoulli::getSkewness() const
 {
   if ((p_ == 0.0) || (p_ == 1.0)) throw NotDefinedException(HERE) << "Error: the skewness is not defined for the Bernoulli distribution when p is zero or one.";
-  return NumericalPoint(1, (1.0 - 2.0 * p_) / std::sqrt(p_ * (1.0 - p_)));
+  return Point(1, (1.0 - 2.0 * p_) / std::sqrt(p_ * (1.0 - p_)));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Bernoulli::getKurtosis() const
+Point Bernoulli::getKurtosis() const
 {
   if ((p_ == 0.0) || (p_ == 1.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is not defined for the Bernoulli distribution when p is zero or one.";
-  return NumericalPoint(1, 3.0 + (6.0 * p_ * (1.0 - p_) + 1.0) / (p_ * (1.0 - p_)));
+  return Point(1, 3.0 + (6.0 * p_ * (1.0 - p_) + 1.0) / (p_ * (1.0 - p_)));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Bernoulli::getStandardMoment(const UnsignedInteger n) const
+Point Bernoulli::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n == 0) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, p_);
+  if (n == 0) return Point(1, 0.0);
+  return Point(1, p_);
 }
 
 /* Compute the covariance of the distribution */
@@ -211,26 +211,26 @@ void Bernoulli::computeCovariance() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Bernoulli::getSupport(const Interval & interval) const
+Sample Bernoulli::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
   const UnsignedInteger kMax = static_cast< UnsignedInteger > (std::min(floor(interval.getUpperBound()[0]), 1.0));
-  NumericalSample result(0, 1);
-  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(NumericalPoint(1, k));
+  Sample result(0, 1);
+  for (UnsignedInteger k = kMin; k <= kMax; ++k) result.add(Point(1, k));
   return result;
 }
 
 /* Parameters value and description accessor */
-NumericalPoint Bernoulli::getParameter() const
+Point Bernoulli::getParameter() const
 {
-  return NumericalPoint(1, p_);
+  return Point(1, p_);
 }
 
-void Bernoulli::setParameter(const NumericalPoint & parameter)
+void Bernoulli::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Bernoulli(parameter[0]);
   setWeight(w);
 }
@@ -247,7 +247,7 @@ Bool Bernoulli::isElliptical() const
 }
 
 /* P accessor */
-void Bernoulli::setP(const NumericalScalar p)
+void Bernoulli::setP(const Scalar p)
 {
   if ((p < 0.0) || (p > 1.0)) throw InvalidArgumentException(HERE) << "P must be in [0, 1], here p=" << p;
   if (p != p_)
@@ -260,7 +260,7 @@ void Bernoulli::setP(const NumericalScalar p)
 }
 
 /* P accessor */
-NumericalScalar Bernoulli::getP() const
+Scalar Bernoulli::getP() const
 {
   return p_;
 }

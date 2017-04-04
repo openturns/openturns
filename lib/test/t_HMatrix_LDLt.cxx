@@ -27,19 +27,19 @@ using namespace OT::Test;
 
 class TestHMatrixRealAssemblyFunction : public HMatrixRealAssemblyFunction
 {
-  const NumericalSample& vertices_;
-  const NumericalScalar scaling_;
+  const Sample& vertices_;
+  const Scalar scaling_;
 public:
-  TestHMatrixRealAssemblyFunction(const NumericalSample& vertices, NumericalScalar scaling)
+  TestHMatrixRealAssemblyFunction(const Sample& vertices, Scalar scaling)
     : vertices_(vertices)
     , scaling_(scaling)
   {}
-  inline NumericalScalar operator() (NumericalPoint pt1, NumericalPoint pt2) const
+  inline Scalar operator() (Point pt1, Point pt2) const
   {
-    NumericalPoint difference(pt1 - pt2);
+    Point difference(pt1 - pt2);
     return exp(-std::abs(difference.norm()) / scaling_);
   }
-  NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const
+  Scalar operator() (UnsignedInteger i, UnsignedInteger j) const
   {
     return operator()(vertices_[i], vertices_[j]);
   }
@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
     indices.add(n);
     indices.add(n);
     const IntervalMesher intervalMesher(indices);
-    const NumericalPoint lowerBound(2, 0.0);
-    const NumericalPoint upperBound(2, 1.0);
+    const Point lowerBound(2, 0.0);
+    const Point upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
-    const NumericalSample vertices2D(mesh2D.getVertices());
-    NumericalSample vertices(vertices2D.getSize(), 3);
+    const Sample vertices2D(mesh2D.getVertices());
+    Sample vertices(vertices2D.getSize(), 3);
     for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
     {
       vertices[i][0] = vertices2D[i][0];
@@ -83,16 +83,16 @@ int main(int argc, char *argv[])
 
     hmat.factorize("LDLt");
 
-    NumericalPoint mean(vertices.computeMean());
-    NumericalPoint rhs(vertices.getSize());
+    Point mean(vertices.computeMean());
+    Point rhs(vertices.getSize());
     for (UnsignedInteger i = 0; i < vertices.getSize(); ++i)
     {
       rhs[i] = simpleAssembly(vertices[i], mean);
     }
-    NumericalPoint rhsCopy(rhs);
-    NumericalScalar rhsCopyNorm = rhsCopy.norm();
+    Point rhsCopy(rhs);
+    Scalar rhsCopyNorm = rhsCopy.norm();
 
-    NumericalPoint result(hmat.solve(rhs));
+    Point result(hmat.solve(rhs));
 
     for (UnsignedInteger i = 0; i < vertices.getSize(); ++i)
     {
@@ -101,8 +101,8 @@ int main(int argc, char *argv[])
         rhsCopy[i] -= simpleAssembly(i, j) * result[j];
       }
     }
-    NumericalScalar diffNorm = rhsCopy.norm();
-    NumericalScalar threshold = 1.e-4;
+    Scalar diffNorm = rhsCopy.norm();
+    Scalar threshold = 1.e-4;
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)

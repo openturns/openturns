@@ -9,10 +9,10 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dim = 2
-    meanPoint = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5
     meanPoint[1] = -0.5
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     sigma[0] = 2.0
     sigma[1] = 3.0
     R = CorrelationMatrix(dim)

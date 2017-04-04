@@ -42,11 +42,11 @@ public:
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & amplitude);
+                       const Point & amplitude);
 
   /** Parameters constructor */
   DiracCovarianceModel(const UnsignedInteger spatialDimension,
-                       const NumericalPoint & amplitude,
+                       const Point & amplitude,
                        const CorrelationMatrix & correlation);
 
   /** Parameters constructor */
@@ -58,29 +58,29 @@ public:
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
+  CovarianceMatrix operator() (const Point & tau) const;
 
   /** Discretize the covariance function */
   using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const NumericalSample & vertices) const;
-  NumericalSample discretizeRow(const NumericalSample & vertices,
-                                const UnsignedInteger p) const;
+  CovarianceMatrix discretize(const Sample & vertices) const;
+  Sample discretizeRow(const Sample & vertices,
+                       const UnsignedInteger p) const;
 
   using StationaryCovarianceModel::discretizeAndFactorize;
-  TriangularMatrix discretizeAndFactorize(const NumericalSample & vertices) const;
+  TriangularMatrix discretizeAndFactorize(const Sample & vertices) const;
   // discretize with use of HMatrix
   using StationaryCovarianceModel::discretizeHMatrix;
-  HMatrix discretizeHMatrix(const NumericalSample & vertices,
-                            const NumericalScalar nuggetFactor,
+  HMatrix discretizeHMatrix(const Sample & vertices,
+                            const Scalar nuggetFactor,
                             const HMatrixParameters & parameters) const;
 
   /** Gradient */
-  Matrix partialGradient(const NumericalPoint & s,
-                         const NumericalPoint & t) const;
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const;
 
   /** Scale/amplitude set accessors */
-  void setScale(const NumericalPoint & scale);
-  void setAmplitude(const NumericalPoint & amplitude);
+  void setScale(const Point & scale);
+  void setAmplitude(const Point & amplitude);
   void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
   /** Is it a stationary covariance model ? */
@@ -100,11 +100,11 @@ public:
 
 protected:
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
-  
+
   friend struct DiracCovarianceModelDiscretizePolicy;
   friend struct DiracCovarianceModelDiscretizeAndFactorizePolicy;
   mutable TriangularMatrix covarianceFactor_;

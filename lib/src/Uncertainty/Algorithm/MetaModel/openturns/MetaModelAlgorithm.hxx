@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_METAMODELALGORITHM_HXX
 #define OPENTURNS_METAMODELALGORITHM_HXX
 
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/MetaModelResult.hxx"
 
@@ -48,7 +48,7 @@ public:
 
   /** Constructor with parameters */
   MetaModelAlgorithm(const Distribution & distribution,
-                     const NumericalMathFunction & model);
+                     const Function & model);
 
   /** Virtual constructor */
   virtual MetaModelAlgorithm * clone() const;
@@ -64,8 +64,8 @@ public:
   virtual void run();
 
   /** Sample accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  virtual Sample getInputSample() const;
+  virtual Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -79,7 +79,7 @@ protected:
   Distribution distribution_;
 
   /** The model */
-  NumericalMathFunction model_;
+  Function model_;
 
 
 private:

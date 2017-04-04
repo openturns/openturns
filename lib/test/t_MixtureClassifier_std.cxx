@@ -40,17 +40,17 @@ int main(int argc, char *argv[])
     aCollection.add( Triangular(7., 8., 9.) );
 
     // Instanciate one distribution object
-    Mixture distribution(aCollection, NumericalPoint(aCollection.getSize(), 1.0));
+    Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
     fullprint << "mixture=" << distribution.__str__() << std::endl;
     Classifier classifier(MixtureClassifier(distribution).clone());
-    NumericalSample inS;
-    inS.add(NumericalPoint(1, 2.));
-    inS.add(NumericalPoint(1, 4.));
-    inS.add(NumericalPoint(1, 6.));
-    inS.add(NumericalPoint(1, 8.));
+    Sample inS;
+    inS.add(Point(1, 2.));
+    inS.add(Point(1, 4.));
+    inS.add(Point(1, 6.));
+    inS.add(Point(1, 8.));
     for (UnsignedInteger i = 0; i < inS.getSize(); ++ i)
     {
-      fullprint << "inP=" << NumericalPoint(inS[i]).__str__() << " class=" << classifier.classify(inS[i]) << std::endl;
+      fullprint << "inP=" << Point(inS[i]).__str__() << " class=" << classifier.classify(inS[i]) << std::endl;
     }
     fullprint << "classes=" << classifier.classify(inS) << std::endl;
 
@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
     {
       for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
       {
-        fullprint << "inP=" << NumericalPoint(inS[i]).__str__() << " grade|" << j << "=" << classifier.grade(inS[i], j) << std::endl;
+        fullprint << "inP=" << Point(inS[i]).__str__() << " grade|" << j << "=" << classifier.grade(inS[i], j) << std::endl;
       }
     }
 
     for (UnsignedInteger j = 0; j < aCollection.getSize(); ++ j )
     {
-      fullprint << "grades|" << j << "=" << NumericalPoint(classifier.grade(inS, Indices(inS.getSize(), j))).__str__() << std::endl;
+      fullprint << "grades|" << j << "=" << Point(classifier.grade(inS, Indices(inS.getSize(), j))).__str__() << std::endl;
     }
   }
   catch (TestFailed & ex)

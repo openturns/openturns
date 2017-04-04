@@ -7,7 +7,7 @@ mesh = ot.IntervalMesher([256]).build(ot.Interval(-1.0, 1.0))
 threshold = 0.001
 factory = ot.KarhunenLoeveP1Factory(mesh, threshold)
 model = ot.AbsoluteExponential([1.0])
-ev = ot.NumericalPoint()
+ev = ot.Point()
 modes = factory.buildAsProcessSample(model, ev)
 for i in range(modes.getSize()):
     modes[i] = ot.Field(mesh, modes[i].getValues() * [sqrt(ev[i])])

@@ -55,54 +55,54 @@ public:
 
   /** Get the DDF of the distribution */
   using DistributionImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
   using DistributionImplementation::computeLogPDF;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeComplementaryCDF;
-  virtual NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  virtual Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using DistributionImplementation::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using DistributionImplementation::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  virtual NumericalPoint computeQuantile(const NumericalScalar prob,
-                                         const Bool tail = false) const;
+  virtual Point computeQuantile(const Scalar prob,
+                                const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
-  Interval computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product bilateral confidence interval containing a given probability of the distribution */
-  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const;
+  Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
 
   /** Get the product unilateral confidence interval containing a given probability of the distribution */
-  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, const Bool tail, NumericalScalar & marginalProb) const;
+  Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProb) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -114,22 +114,22 @@ public:
   virtual Bool isContinuous() const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  virtual NumericalScalar getRoughness() const;
+  virtual Scalar getRoughness() const;
 
   /** Get the mean of the distribution */
-  virtual NumericalPoint getMean() const;
+  virtual Point getMean() const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;

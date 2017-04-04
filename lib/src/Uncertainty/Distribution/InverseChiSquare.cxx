@@ -43,7 +43,7 @@ InverseChiSquare::InverseChiSquare()
 }
 
 /* Parameters constructor */
-InverseChiSquare::InverseChiSquare(const NumericalScalar nu)
+InverseChiSquare::InverseChiSquare(const Scalar nu)
   : ContinuousDistribution()
   , nu_(0.0)
   , normalizationFactor_(0.0)
@@ -85,9 +85,9 @@ String InverseChiSquare::__str__(const String & offset) const
 }
 
 /* K accessor */
-void InverseChiSquare::setNu(const NumericalScalar nu)
+void InverseChiSquare::setNu(const Scalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
   if (nu != nu_)
   {
     nu_ = nu;
@@ -96,7 +96,7 @@ void InverseChiSquare::setNu(const NumericalScalar nu)
   }
 }
 
-NumericalScalar InverseChiSquare::getNu() const
+Scalar InverseChiSquare::getNu() const
 {
   return nu_;
 }
@@ -110,8 +110,8 @@ InverseChiSquare * InverseChiSquare::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void InverseChiSquare::computeRange()
 {
-  const NumericalPoint lowerBound(1, 0.0);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, 0.0);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -124,12 +124,12 @@ void InverseChiSquare::update()
   // normalizationFactor = log(2*k^{k-1}/Gamma(k))
   //                     = log(2) + (k+1)log(k) - log(Gamma(k))
   // which is expanded wrt k
-  const NumericalScalar k = 0.5 * nu_;
+  const Scalar k = 0.5 * nu_;
   if (k >= 6.9707081224932495879)
   {
-    static const NumericalScalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
-    const NumericalScalar ik = 1.0 / k;
-    const NumericalScalar ik2 = ik * ik;
+    static const Scalar alpha[10] = {0.91893853320467274177, 0.83333333333333333333e-1, -0.27777777777777777778e-2, 0.79365079365079365079e-3, -0.59523809523809523810e-3, 0.84175084175084175084e-3, -0.19175269175269175269e-2, 0.64102564102564102564e-2, -0.29550653594771241830e-1, 0.17964437236883057316};
+    const Scalar ik = 1.0 / k;
+    const Scalar ik2 = ik * ik;
     normalizationFactor_ = std::log(2.0) + k + 1.5 * std::log(k) - (alpha[0] + ik * (alpha[1] + ik2 * (alpha[2] + ik2 * (alpha[3] + ik2 * (alpha[4] + ik2 * (alpha[5] + ik2 * (alpha[6] + ik2 * (alpha[7] + ik2 * (alpha[8] + ik2 * alpha[9])))))))));
   }
   // For small k, the normalization factor is:
@@ -142,25 +142,25 @@ void InverseChiSquare::update()
 
 
 /* Get one realization of the distribution */
-NumericalPoint InverseChiSquare::getRealization() const
+Point InverseChiSquare::getRealization() const
 {
-  return NumericalPoint(1, 1.0 / (2.0 * DistFunc::rGamma(0.5 * nu_)));
+  return Point(1, 1.0 / (2.0 * DistFunc::rGamma(0.5 * nu_)));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint InverseChiSquare::computeDDF(const NumericalPoint & point) const
+Point InverseChiSquare::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, (1.0 / (2.0 * x) - (0.5 * nu_ + 1.0)) * computePDF(point) / x);
+  const Scalar x = point[0];
+  if (x <= 0.0) return Point(1, 0.0);
+  return Point(1, (1.0 / (2.0 * x) - (0.5 * nu_ + 1.0)) * computePDF(point) / x);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar InverseChiSquare::computePDF(const NumericalPoint & point) const
+Scalar InverseChiSquare::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -168,84 +168,84 @@ NumericalScalar InverseChiSquare::computePDF(const NumericalPoint & point) const
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar InverseChiSquare::computeLogPDF(const NumericalPoint & point) const
+Scalar InverseChiSquare::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   // From textbook, we have log(PDF(x)) =  log(lambda)-log(Gamma(k))-(k+1)*log(lambda*x)-1/(lambda*x)
-  const NumericalScalar u = 2.0 * point[0];
-  if (u <= 0.0) return SpecFunc::LogMinNumericalScalar;
+  const Scalar u = 2.0 * point[0];
+  if (u <= 0.0) return SpecFunc::LogMinScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - (k-1)*log(k)-(k+1)*log(2*x)-1/(2*x)
-  const NumericalScalar k = 0.5 * nu_;
+  const Scalar k = 0.5 * nu_;
   if (k >= 6.9707081224932495879) return normalizationFactor_ - (k + 1.0) * std::log(k * u) - 1.0 / u;
   return normalizationFactor_ - (k + 1.0) * std::log(u) - 1.0 / u;
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar InverseChiSquare::computeCDF(const NumericalPoint & point) const
+Scalar InverseChiSquare::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // No test here as the CDF is continuous for all k
   if (x <= 0.0) return 0.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 / x, true);
 }
 
-NumericalScalar InverseChiSquare::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar InverseChiSquare::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   // No test here as the CDF is continuous for all k
   if (x <= 0.0) return 1.0;
   return DistFunc::pGamma(0.5 * nu_, 0.5 / x);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex InverseChiSquare::computeCharacteristicFunction(const NumericalScalar x) const
+Complex InverseChiSquare::computeCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeCharacteristicFunction(x);
 }
 
-NumericalComplex InverseChiSquare::computeLogCharacteristicFunction(const NumericalScalar x) const
+Complex InverseChiSquare::computeLogCharacteristicFunction(const Scalar x) const
 {
   return DistributionImplementation::computeLogCharacteristicFunction(x);
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint InverseChiSquare::computePDFGradient(const NumericalPoint & point) const
+Point InverseChiSquare::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(2);
-  const NumericalScalar x = point[0];
+  Point pdfGradient(2);
+  const Scalar x = point[0];
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar pdf = computePDF(point);
+  const Scalar pdf = computePDF(point);
   pdfGradient[0] = -(std::log(2.0) + std::log(x) + SpecFunc::DiGamma(0.5 * nu_)) * pdf;
   pdfGradient[1] = 0.5 * (0.5 / x - nu_) * pdf;
   return pdfGradient;
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint InverseChiSquare::computeCDFGradient(const NumericalPoint & point) const
+Point InverseChiSquare::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar x = point[0];
+  Point cdfGradient(2, 0.0);
+  const Scalar x = point[0];
   if (x <= 0.0) return cdfGradient;
-  const NumericalScalar lambdaXInverse = 0.5 / x;
-  const NumericalScalar pdf = computePDF(x);
-  const NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  const Scalar lambdaXInverse = 0.5 / x;
+  const Scalar pdf = computePDF(x);
+  const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(0.5 * nu_ + eps, lambdaXInverse, true) - DistFunc::pGamma(0.5 * nu_ - eps, lambdaXInverse, true)) / (2.0 * eps);
   cdfGradient[1] = 0.5 * pdf * x;
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar InverseChiSquare::computeScalarQuantile(const NumericalScalar prob,
+Scalar InverseChiSquare::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return 0.5 / DistFunc::qGamma(0.5 * nu_, prob, !tail);
@@ -254,37 +254,37 @@ NumericalScalar InverseChiSquare::computeScalarQuantile(const NumericalScalar pr
 /* Compute the mean of the distribution */
 void InverseChiSquare::computeMean() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "InverseChiSquare mean is defined only for nu > 2, here nu=" << nu_;
-  mean_ = NumericalPoint(1, 1.0 / (nu_ - 2.0));
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "InverseChiSquare mean is defined only for nu > 2, here nu=" << nu_;
+  mean_ = Point(1, 1.0 / (nu_ - 2.0));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint InverseChiSquare::getStandardDeviation() const
+Point InverseChiSquare::getStandardDeviation() const
 {
-  if (nu_ <= 4.0) throw NotDefinedException(HERE) << "InverseChiSquare standard deviation is defined only for nu > 4, here nu=" << nu_;
-  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
+  if (!(nu_ > 4.0)) throw NotDefinedException(HERE) << "InverseChiSquare standard deviation is defined only for nu > 4, here nu=" << nu_;
+  return Point(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint InverseChiSquare::getSkewness() const
+Point InverseChiSquare::getSkewness() const
 {
-  if (nu_ <= 6.0) throw NotDefinedException(HERE) << "InverseChiSquare skewness is defined only for nu > 6, here nu=" << nu_;
-  return NumericalPoint(1, 8.0 * std::sqrt(0.5 * nu_ - 2.0) / (nu_ - 6.0));
+  if (!(nu_ > 6.0)) throw NotDefinedException(HERE) << "InverseChiSquare skewness is defined only for nu > 6, here nu=" << nu_;
+  return Point(1, 8.0 * std::sqrt(0.5 * nu_ - 2.0) / (nu_ - 6.0));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint InverseChiSquare::getKurtosis() const
+Point InverseChiSquare::getKurtosis() const
 {
-  if (nu_ <= 8.0) throw NotDefinedException(HERE) << "InverseChiSquare kurtosis is defined only for nu > 8, here nu=" << nu_;
-  return NumericalPoint(1, 12.0 * (0.5 * nu_ * (0.5 * nu_ + 3.0) - 10.0) / ((nu_ - 6.0) * (nu_ - 8.0)));
+  if (!(nu_ > 8.0)) throw NotDefinedException(HERE) << "InverseChiSquare kurtosis is defined only for nu > 8, here nu=" << nu_;
+  return Point(1, 12.0 * (0.5 * nu_ * (0.5 * nu_ + 3.0) - 10.0) / ((nu_ - 6.0) * (nu_ - 8.0)));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint InverseChiSquare::getStandardMoment(const UnsignedInteger n) const
+Point InverseChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
   if (nu_ <= 2.0 * n) throw NotDefinedException(HERE) << "InverseChiSquare standard moment of order " << 2.0 * n << " is defined only for nu > " << 2.0 * n << ", here k=" << nu_;
-  return NumericalPoint(1, std::exp(SpecFunc::LogGamma(0.5 * nu_ - n) - SpecFunc::LogGamma(0.5 * nu_)));
+  return Point(1, std::exp(SpecFunc::LogGamma(0.5 * nu_ - n) - SpecFunc::LogGamma(0.5 * nu_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -296,22 +296,22 @@ InverseChiSquare::Implementation InverseChiSquare::getStandardRepresentative() c
 /* Compute the covariance of the distribution */
 void InverseChiSquare::computeCovariance() const
 {
-  if (nu_ <= 4.0) throw NotDefinedException(HERE) << "InverseChiSquare covariance is defined only for nu > 4, here nu=" << nu_;
+  if (!(nu_ > 4.0)) throw NotDefinedException(HERE) << "InverseChiSquare covariance is defined only for nu > 4, here nu=" << nu_;
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = 2.0 / ((nu_ - 2.0) * (nu_ - 2.0) * (nu_ - 4.0));
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Parameters value accessor */
-NumericalPoint InverseChiSquare::getParameter() const
+Point InverseChiSquare::getParameter() const
 {
-  return NumericalPoint(1, nu_);
+  return Point(1, nu_);
 }
 
-void InverseChiSquare::setParameter(const NumericalPoint & parameter)
+void InverseChiSquare::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = InverseChiSquare(parameter[0]);
   setWeight(w);
 }

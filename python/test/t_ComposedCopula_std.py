@@ -42,44 +42,49 @@ try:
     print("covariance=", repr(oneSample.computeCovariance()))
 
     # Define a point
-    point = NumericalPoint(copula.getDimension(), 0.6)
+    point = Point(copula.getDimension(), 0.6)
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point
-    # NumericalScalar eps(1e-5)
+    # Scalar eps(1e-5)
     DDF = copula.computeDDF(point)
     print("ddf     =", repr(DDF))
     PDF = copula.computePDF(point)
     print("pdf     =%.6f" % PDF)
     CDF = copula.computeCDF(point)
     print("cdf=%.6f" % CDF)
-    #    NumericalPoint PDFgr = copula.computePDFGradient( point )
+    #    Point PDFgr = copula.computePDFGradient( point )
     #    print "pdf gradient     =", PDFgr
-    #    NumericalPoint CDFgr = copula.computeCDFGradient( point )
+    #    Point CDFgr = copula.computeCDFGradient( point )
     #    print "cdf gradient     =", CDFgr
     quantile = copula.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % copula.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          copula.computeSurvivalFunction(inverseSurvival))
     # Confidence regions
     if copula.getDimension() <= 2:
-        threshold = NumericalPoint()
-        print("Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold))
+        threshold = Point()
+        print("Minimum volume interval=",
+              copula.computeMinimumVolumeInterval(0.95, threshold))
         print("threshold=", threshold)
-        beta = NumericalPoint()
+        beta = Point()
         levelSet = copula.computeMinimumVolumeLevelSet(0.95, beta)
         print("Minimum volume level set=", levelSet)
         print("beta=", beta)
-        print("Bilateral confidence interval=", copula.computeBilateralConfidenceInterval(0.95, beta))
+        print("Bilateral confidence interval=",
+              copula.computeBilateralConfidenceInterval(0.95, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (lower tail)=", copula.computeUnilateralConfidenceInterval(0.95, False, beta))
+        print("Unilateral confidence interval (lower tail)=",
+              copula.computeUnilateralConfidenceInterval(0.95, False, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (upper tail)=", copula.computeUnilateralConfidenceInterval(0.95, True, beta))
+        print("Unilateral confidence interval (upper tail)=",
+              copula.computeUnilateralConfidenceInterval(0.95, True, beta))
         print("beta=", beta)
-        
+
     mean = copula.getMean()
     print("mean=", repr(mean))
     covariance = copula.getCovariance()
@@ -91,7 +96,7 @@ try:
 
     # Extract a 5-D marginal
     dim = 5
-    point = NumericalPoint(dim, 0.25)
+    point = Point(dim, 0.25)
     indices = Indices(dim, 0)
     indices[0] = 1
     indices[1] = 2
@@ -113,7 +118,7 @@ try:
           copula.getIsoProbabilisticTransformation())
     # General case with non-normal standard distribution
     collection[0] = SklarCopula(Student(
-        3.0, NumericalPoint(2, 1.0), NumericalPoint(2, 3.0), CorrelationMatrix(2)))
+        3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)))
     copula = ComposedCopula(collection)
     print("isoprobabilistic transformation (general non-normal)=",
           copula.getIsoProbabilisticTransformation())
@@ -126,7 +131,7 @@ try:
           copula.getIsoProbabilisticTransformation())
     # Special case, single contributor
     collection = [SklarCopula(Student(
-        3.0, NumericalPoint(2, 1.0), NumericalPoint(2, 3.0), CorrelationMatrix(2)))]
+        3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)))]
     copula = ComposedCopula(collection)
     print("isoprobabilistic transformation (single contributor)=",
           copula.getIsoProbabilisticTransformation())

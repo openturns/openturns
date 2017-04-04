@@ -24,9 +24,9 @@
 #include "openturns/OrthogonalFunctionFactory.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 
@@ -59,8 +59,8 @@ public:
   OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll,
                                      const EnumerateFunction & phi);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
@@ -72,8 +72,8 @@ public:
   virtual OrthogonalProductPolynomialFactory * clone() const;
 
   /** Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
-  NumericalSample getNodesAndWeights(const Indices & degrees,
-                                     NumericalPoint & weights) const;
+  Sample getNodesAndWeights(const Indices & degrees,
+                            Point & weights) const;
 
   /** String converter */
   virtual String __repr__() const;

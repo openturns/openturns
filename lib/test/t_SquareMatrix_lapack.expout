@@ -1,6 +1,6 @@
 matrix1 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=matrix1 rows=2 columns=2 values=[1,2,5,12]
-pt = class=NumericalPoint name=Unnamed dimension=2 values=[5,0]
-result = class=NumericalPoint name=Unnamed dimension=2 values=[30,-5]
+pt = class=Point name=Unnamed dimension=2 values=[5,0]
+result = class=Point name=Unnamed dimension=2 values=[30,-5]
 determinant = 2
 ev = [(0.155711,0),(12.8443,0)]
 ev=[(0.155711,0),(12.8443,0)]

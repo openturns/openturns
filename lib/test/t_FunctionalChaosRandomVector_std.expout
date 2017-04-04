@@ -1,1 +1,1 @@
-caught exception: Error: trying to build a CompositeRandomVector from a RandomVector and a NumericalMathFunction with incompatible dimensions, here RandomVector dimension=1 and NumericalMathFunction input dimension=0
+caught exception: Error: trying to build a CompositeRandomVector from a RandomVector and a Function with incompatible dimensions, here RandomVector dimension=1 and Function input dimension=0

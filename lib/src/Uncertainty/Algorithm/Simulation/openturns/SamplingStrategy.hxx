@@ -55,7 +55,7 @@ public:
 
 
   /** Generate a set of directions */
-  NumericalSample generate() const;
+  Sample generate() const;
 
   /** Dimension accessor */
   void setDimension(const UnsignedInteger dimension);

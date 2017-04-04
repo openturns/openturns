@@ -23,10 +23,11 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,7 +39,7 @@ static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 FunctionalBasisProcess::FunctionalBasisProcess()
   : ProcessImplementation()
   , distribution_(Normal())
-  , basis_(Collection<NumericalMathFunction>(1, SymbolicFunction("t", "t")))
+  , basis_(Collection<Function>(1, SymbolicFunction("t", "t")))
   , state_(1, 0.0)
 {
   // Set the dimension of the process
@@ -93,18 +94,18 @@ String FunctionalBasisProcess::__repr__() const
 CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
-  Collection<NumericalMathFunction> functions(dimension);
+  Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
     functions[i] = basis_.build(i);
   if (distribution_.hasIndependentCopula())
-    {
-      // We use the standard deviation as it is an O(dim) computation
-      // in the general case, while covariance is an O(n^2) computation
-      NumericalPoint coefficients(distribution_.getStandardDeviation());
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-	coefficients[i] *= coefficients[i];
-      return RankMCovarianceModel(coefficients, functions);
-    }
+  {
+    // We use the standard deviation as it is an O(dim) computation
+    // in the general case, while covariance is an O(n^2) computation
+    Point coefficients(distribution_.getStandardDeviation());
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      coefficients[i] *= coefficients[i];
+    return RankMCovarianceModel(coefficients, functions);
+  }
   return RankMCovarianceModel(distribution_.getCovariance(), functions);
 }
 
@@ -131,12 +132,12 @@ Field FunctionalBasisProcess::getRealization() const
   const UnsignedInteger timeGridSize = mesh_.getVerticesNumber();
   const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
-  NumericalSample result(timeGridSize, NumericalPoint(dimension_, 0.0));
+  Sample result(timeGridSize, Point(dimension_, 0.0));
   // Loop over the basis
   for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    NumericalSample currentBasisContribution(basis_[j](mesh_.getVertices()));
-    currentBasisContribution *= NumericalPoint(dimension_, state_[j]);
+    Sample currentBasisContribution(basis_[j](mesh_.getVertices()));
+    currentBasisContribution *= Point(dimension_, state_[j]);
     result += currentBasisContribution;
   }
   result.setDescription(getDescription());
@@ -145,10 +146,10 @@ Field FunctionalBasisProcess::getRealization() const
 
 
 /* Continuous realization accessor */
-NumericalMathFunction FunctionalBasisProcess::getContinuousRealization() const
+Function FunctionalBasisProcess::getContinuousRealization() const
 {
   state_ = distribution_.getRealization();
-  return NumericalMathFunction(basis_, state_);
+  return LinearCombinationFunction(basis_, state_);
 }
 
 /* Compute the next steps of the process */
@@ -166,14 +167,14 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futureTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
-  NumericalSample result(stepNumber, NumericalPoint(dimension_, 0.0));
+  Sample result(stepNumber, Point(dimension_, 0.0));
   for (UnsignedInteger i = 0; i  < stepNumber; ++i)
   {
-    const NumericalPoint t(1, futureTimeGrid.getValue(i));
+    const Point t(1, futureTimeGrid.getValue(i));
     // Loop over the basis using the previous state
     for (UnsignedInteger j = 0; j < basisSize; ++j) result[i] += basis_[j](t) * state_[j];
   }

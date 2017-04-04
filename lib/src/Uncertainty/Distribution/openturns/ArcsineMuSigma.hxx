@@ -40,7 +40,7 @@ public:
   ArcsineMuSigma();
 
   /** Constructor with parameters */
-  ArcsineMuSigma(const NumericalScalar mu, const NumericalScalar sigma);
+  ArcsineMuSigma(const Scalar mu, const Scalar sigma);
 
   /** Virtual constructor */
   virtual ArcsineMuSigma * clone() const;
@@ -58,13 +58,13 @@ public:
   Matrix gradient() const;
 
   /** Conversion operator */
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
-  NumericalPoint inverse(const NumericalPoint & inP) const;
+  Point inverse(const Point & inP) const;
 
   /** Parameters value and description accessor */
-  virtual void setValues(const NumericalPoint & values);
-  virtual NumericalPoint getValues() const;
+  virtual void setValues(const Point & values);
+  virtual Point getValues() const;
   virtual Description getDescription() const;
 
   /** String converter */
@@ -73,8 +73,8 @@ public:
 
 private:
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
+  Scalar mu_;
+  Scalar sigma_;
 }; /* class ArcsineMuSigma */
 
 

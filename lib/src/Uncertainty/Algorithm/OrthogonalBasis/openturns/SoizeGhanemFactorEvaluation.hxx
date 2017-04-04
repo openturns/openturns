@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SOIZEGHANEMFACTOREVALUATION_HXX
 #define OPENTURNS_SOIZEGHANEMFACTOREVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /* Multiplicative factor of the multivariate basis */
 /* Evaluation part */
 class OT_API SoizeGhanemFactorEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -66,9 +66,9 @@ public:
   String __str__(const String & offset) const;
 
   /** Operator () */
-  using NumericalMathEvaluationImplementation::operator();
-  NumericalPoint operator() (const NumericalPoint & inP) const;
-  NumericalSample operator() (const NumericalSample & inS) const;
+  using EvaluationImplementation::operator();
+  Point operator() (const Point & inP) const;
+  Sample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

@@ -24,9 +24,9 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/DomainImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,14 +46,14 @@ public:
   explicit LevelSet(const UnsignedInteger dimension = 1);
 
   /** Parameters constructor, simplified for 1D case */
-  explicit LevelSet(const NumericalMathFunction & function,
-                    const NumericalScalar level = 0.0);
+  explicit LevelSet(const Function & function,
+                    const Scalar level = 0.0);
 
   /** Virtual constructor method */
   virtual LevelSet * clone() const;
 
   /** Check if the given point is inside of the closed levelSet */
-  Bool contains(const NumericalPoint & point) const;
+  Bool contains(const Point & point) const;
 
   /** Returns the levelSet equals to the intersection between the levelSet and another one */
   LevelSet intersect(const LevelSet & other) const;
@@ -65,20 +65,20 @@ public:
   Bool operator == (const LevelSet & other) const;
 
   /** Function accessor */
-  NumericalMathFunction getFunction() const;
-  void setFunction(const NumericalMathFunction & function);
+  Function getFunction() const;
+  void setFunction(const Function & function);
 
   /** Level accessor */
-  NumericalScalar getLevel() const;
-  void setLevel(const NumericalScalar level);
+  Scalar getLevel() const;
+  void setLevel(const Scalar level);
 
   /** Lower bound of the bounding box */
-  void setLowerBound(const NumericalPoint & bound);
-  NumericalPoint getLowerBound() const;
+  void setLowerBound(const Point & bound);
+  Point getLowerBound() const;
 
   /** Upper bound of the bounding box */
-  void setUpperBound(const NumericalPoint & bound);
-  NumericalPoint getUpperBound() const;
+  void setUpperBound(const Point & bound);
+  Point getUpperBound() const;
 
   /** String converter */
   String __repr__() const;
@@ -99,16 +99,16 @@ private:
   void computeUpperBound() const;
 
   /** Function defining the level set*/
-  NumericalMathFunction function_;
+  Function function_;
 
   /** Level defining the level set */
-  NumericalScalar level_;
+  Scalar level_;
 
   /** Lower bound of the bounding box */
-  mutable NumericalPoint lowerBound_;
+  mutable Point lowerBound_;
 
   /** Upper bound of the bounding box */
-  mutable NumericalPoint upperBound_;
+  mutable Point upperBound_;
 }; /* class LevelSet */
 
 END_NAMESPACE_OPENTURNS

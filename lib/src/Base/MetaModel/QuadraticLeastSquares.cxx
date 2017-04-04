@@ -30,13 +30,13 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(QuadraticLeastSquares);
 
 /* Constructor with parameters */
-QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
-    const NumericalMathFunction & inputFunction)
+QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
+    const Function & inputFunction)
   : PersistentObject(),
     dataIn_(dataIn),
-    dataOut_(NumericalSample(0, inputFunction.getOutputDimension())),
+    dataOut_(Sample(0, inputFunction.getOutputDimension())),
     inputFunction_(inputFunction),
-    constant_(NumericalPoint(inputFunction_.getOutputDimension())),
+    constant_(Point(inputFunction_.getOutputDimension())),
     linear_(Matrix(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension())),
     quadratic_(SymmetricTensor(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension()))
 {
@@ -45,13 +45,13 @@ QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
 }
 
 /* Constructor with parameters */
-QuadraticLeastSquares::QuadraticLeastSquares(const NumericalSample & dataIn,
-    const NumericalSample & dataOut)
+QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
+    const Sample & dataOut)
   : PersistentObject(),
     dataIn_(dataIn),
-    dataOut_(NumericalSample(0, dataOut.getDimension())),
-    inputFunction_(NumericalMathFunction()),
-    constant_(NumericalPoint(dataOut.getDimension())),
+    dataOut_(Sample(0, dataOut.getDimension())),
+    inputFunction_(Function()),
+    constant_(Point(dataOut.getDimension())),
     linear_(Matrix(dataIn.getDimension(), dataOut.getDimension())),
     quadratic_(SymmetricTensor(dataIn.getDimension(), dataOut.getDimension()))
 {
@@ -101,7 +101,7 @@ void QuadraticLeastSquares::run()
   {
     /* build the componentMatrix */
     /* get the current sample x */
-    const NumericalPoint currentSample(dataIn_[sampleIndex]);
+    const Point currentSample(dataIn_[sampleIndex]);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -158,25 +158,25 @@ void QuadraticLeastSquares::run()
       } // Off-diagonal terms
     } // quadratic term
   } // output components
-  const NumericalPoint center(inputDimension, 0.0);
+  const Point center(inputDimension, 0.0);
   responseSurface_ = QuadraticFunction(center, constant_, linear_, quadratic_);
 }
 
 /* DataIn accessor */
-NumericalSample QuadraticLeastSquares::getDataIn() const
+Sample QuadraticLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
-NumericalSample QuadraticLeastSquares::getDataOut()
+Sample QuadraticLeastSquares::getDataOut()
 {
   // If the response surface has been defined with an input function and the output data have not already been computed, compute them
   if (inputFunction_.getEvaluation()->isActualImplementation() && (dataOut_.getSize() == 0)) dataOut_ = inputFunction_(dataIn_);
   return dataOut_;
 }
 
-void QuadraticLeastSquares::setDataOut(const NumericalSample & dataOut)
+void QuadraticLeastSquares::setDataOut(const Sample & dataOut)
 {
   if (inputFunction_.getEvaluation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: cannot set the output data in a response surface defined with a function, here function=" << inputFunction_;
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();
@@ -184,7 +184,7 @@ void QuadraticLeastSquares::setDataOut(const NumericalSample & dataOut)
 }
 
 /* Constant accessor */
-NumericalPoint QuadraticLeastSquares::getConstant() const
+Point QuadraticLeastSquares::getConstant() const
 {
   return constant_;
 }
@@ -202,13 +202,13 @@ SymmetricTensor QuadraticLeastSquares::getQuadratic() const
 }
 
 /* Function accessor */
-NumericalMathFunction QuadraticLeastSquares::getInputFunction() const
+Function QuadraticLeastSquares::getInputFunction() const
 {
   return inputFunction_;
 }
 
 /* Response surface accessor */
-NumericalMathFunction QuadraticLeastSquares::getResponseSurface() const
+Function QuadraticLeastSquares::getResponseSurface() const
 {
   return responseSurface_;
 }

@@ -20,7 +20,7 @@
  */
 #include "openturns/NegativeBinomialFactory.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/DiscreteDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -50,38 +50,38 @@ NegativeBinomialFactory * NegativeBinomialFactory::clone() const
 struct NegativeBinomialFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  NegativeBinomialFactoryParameterConstraint(const NumericalSample & sample,
-      const NumericalScalar mean):
+  NegativeBinomialFactoryParameterConstraint(const Sample & sample,
+      const Scalar mean):
     sample_(sample),
     mean_(mean)
   {
     // Nothing to do
   };
 
-  NumericalPoint computeConstraint(const NumericalPoint & parameter) const
+  Point computeConstraint(const Point & parameter) const
   {
-    const NumericalScalar r = parameter[0];
-    if (r <= 0.0) throw InvalidArgumentException(HERE) << "Error: the r parameter must be positive.";
+    const Scalar r = parameter[0];
+    if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: the r parameter must be positive.";
     const UnsignedInteger size = sample_.getSize();
     /* \sum_{i=1}^N \psi(x_i + r) */
-    NumericalScalar sumPsi = 0.0;
+    Scalar sumPsi = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i) sumPsi += SpecFunc::Psi(sample_[i][0] + r);
-    const NumericalScalar value = sumPsi + size * (std::log(r / (r + mean_)) - SpecFunc::Psi(r));
-    return NumericalPoint(1, value);
+    const Scalar value = sumPsi + size * (std::log(r / (r + mean_)) - SpecFunc::Psi(r));
+    return Point(1, value);
   }
 
   // The data
-  const NumericalSample & sample_;
+  const Sample & sample_;
   // Mean value
-  NumericalScalar mean_;
+  Scalar mean_;
 };
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const NumericalSample & sample) const
+NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Sample & sample) const
 {
   return buildAsNegativeBinomial(sample).clone();
 }
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const NumericalPoint & parameters) const
+NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Point & parameters) const
 {
   return buildAsNegativeBinomial(parameters).clone();
 }
@@ -91,17 +91,17 @@ NegativeBinomialFactory::Implementation NegativeBinomialFactory::build() const
   return buildAsNegativeBinomial().clone();
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalSample & sample) const
+NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar mean = 0.0;
-  NumericalScalar var = 0.0;
-  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  Scalar mean = 0.0;
+  Scalar var = 0.0;
+  const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar x = sample[i][0];
+    const Scalar x = sample[i][0];
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
     if (std::abs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample made of nonnegative integers, here x=" << x;
@@ -110,40 +110,40 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Numerica
   }
   // Build the constraint
   NegativeBinomialFactoryParameterConstraint constraint(sample, mean);
-  const NumericalMathFunction f(bindMethod<NegativeBinomialFactoryParameterConstraint, NumericalPoint, NumericalPoint>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
+  const Function f(bindMethod<NegativeBinomialFactoryParameterConstraint, Point, Point>(constraint, &NegativeBinomialFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval using the moment estimate
-  NumericalScalar a = 1.0;
-  NumericalScalar b = 2.0;
+  Scalar a = 1.0;
+  Scalar b = 2.0;
   // Try to improve the starting point of the bracketing using the moment estimate of r
   if (var > mean)
   {
-    const NumericalScalar rMoment = mean * mean / (var - mean);
+    const Scalar rMoment = mean * mean / (var - mean);
     a = 0.5 * rMoment;
     b = 2.0 * rMoment;
   }
-  NumericalScalar fA = f(NumericalPoint(1, a))[0];
-  NumericalScalar fB = f(NumericalPoint(1, b))[0];
+  Scalar fA = f(Point(1, a))[0];
+  Scalar fB = f(Point(1, b))[0];
   // While f has the same sign at the two bounds, update the interval
   while ((fA * fB > 0.0))
   {
     a = 0.5 * a;
-    fA = f(NumericalPoint(1, a))[0];
+    fA = f(Point(1, a))[0];
     if (fA * fB <= 0.0) break;
     b = 2.0 * b;
-    fB = f(NumericalPoint(1, b))[0];
+    fB = f(Point(1, b))[0];
   }
   // Solve the constraint equation
-  Brent solver(ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsNumericalScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
+  Brent solver(ResourceMap::GetAsScalar("NegativeBinomialFactory-AbsolutePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-RelativePrecision"), ResourceMap::GetAsScalar("NegativeBinomialFactory-ResidualPrecision"), ResourceMap::GetAsUnsignedInteger("NegativeBinomialFactory-MaximumIteration"));
   // R estimate
-  const NumericalScalar r = solver.solve(f, 0.0, a, b, fA, fB);
+  const Scalar r = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding p estimate
-  const NumericalScalar p = 1.0 / (r / mean + 1.0);
+  const Scalar p = 1.0 / (r / mean + 1.0);
   NegativeBinomial result(r, p);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const NumericalPoint & parameters) const
+NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Point & parameters) const
 {
   try
   {

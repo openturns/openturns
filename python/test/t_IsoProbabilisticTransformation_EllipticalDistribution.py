@@ -23,10 +23,10 @@ try:
 
     # Instanciate one distribution object
     dim = 3
-    meanPoint = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5
     meanPoint[1] = -0.5
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     sigma[0] = 2.0
     sigma[1] = 3.0
     R = CorrelationMatrix(dim)
@@ -60,7 +60,7 @@ try:
         transformedBackSample.computeMean()))
     print("transformed back sample covariance=", repr(
         transformedBackSample.computeCovariance()))
-    point = NumericalPoint(dim, 1.0)
+    point = Point(dim, 1.0)
     print("point=", repr(point))
     transformedPoint = transform(point)
     print("transform value at point        =", repr(transformedPoint))

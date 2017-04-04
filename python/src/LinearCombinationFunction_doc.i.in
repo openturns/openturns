@@ -21,7 +21,7 @@ Available constructor:
 
 Parameters
 ----------
-functionCollection : sequence of :class:`~openturns.NumericalMathFunction`
+functionCollection : sequence of :class:`~openturns.Function`
     Collection of functions to sum.
 scalarCoefficientColl : sequence of float
     Collection of scalar weights.

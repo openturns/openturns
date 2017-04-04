@@ -63,8 +63,8 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  NumericalPoint getRealization() const;
-  NumericalPoint getRealization(NumericalPoint & parameters) const;
+  Point getRealization() const;
+  Point getRealization(Point & parameters) const;
 
   /** Distribution accessor */
   Distribution getDistribution() const;

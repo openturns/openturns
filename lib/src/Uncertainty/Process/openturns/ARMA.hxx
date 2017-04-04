@@ -95,7 +95,7 @@ public:
   void setWhiteNoise(const WhiteNoise & whiteNoise);
 
   /** Computation of nThermalization */
-  UnsignedInteger computeNThermalization(const NumericalScalar epsilon) const;
+  UnsignedInteger computeNThermalization(const Scalar epsilon) const;
 
   /** Nthermalization accessor - Visibility is done */
   UnsignedInteger getNThermalization() const;

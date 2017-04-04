@@ -30,6 +30,7 @@
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -138,24 +139,24 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 
   // First, mesh the bounding box
   const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));
-  NumericalSample boundingVertices(boundingMesh.getVertices());
+  Sample boundingVertices(boundingMesh.getVertices());
   const UnsignedInteger numVertices = boundingVertices.getSize();
   const Mesh::IndicesCollection boundingSimplices(boundingMesh.getSimplices());
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
   // Second, keep only the simplices with a majority of vertices in the level set
-  const NumericalMathFunction function(levelSet.getFunction());
-  NumericalSample values(function(boundingVertices));
-  const NumericalScalar level = levelSet.getLevel();
+  const Function function(levelSet.getFunction());
+  Sample values(function(boundingVertices));
+  const Scalar level = levelSet.getLevel();
   Mesh::IndicesCollection goodSimplices(0);
-  NumericalSample goodVertices(0, dimension);
+  Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
   Indices flagGoodVertices(numVertices, 0);
   // Vertices that have moved
-  NumericalSample movedVertices(0, dimension);
+  Sample movedVertices(0, dimension);
   // Flag for the vertices that have moved
   Indices flagMovedVertices(0);
   // Prepare the optimization problem for the projection
-  NumericalMathFunction shiftFunction;
+  Function shiftFunction;
   OptimizationProblem problem;
   if (project)
   {
@@ -165,10 +166,10 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       linear(i, i) = 1.0;
       linear(i, dimension + i) = 1.0;
     }
-    LinearFunction shiftFunctionBase(NumericalPoint(2 * dimension), NumericalPoint(dimension), linear);
+    LinearFunction shiftFunctionBase(Point(2 * dimension), Point(dimension), linear);
     Indices parameters(dimension);
     parameters.fill();
-    shiftFunction = NumericalMathFunction(shiftFunctionBase, parameters, NumericalPoint(dimension));
+    shiftFunction = ParametricFunction(shiftFunctionBase, parameters, Point(dimension));
     problem.setLevelValue(level);
   } // project
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
@@ -192,16 +193,16 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
-        NumericalSample localVertices(dimension + 1, dimension);
-        NumericalPoint localValues(dimension + 1, dimension);
+        Sample localVertices(dimension + 1, dimension);
+        Point localValues(dimension + 1, dimension);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
           const UnsignedInteger index = currentSimplex[j];
           localVertices[j] = boundingVertices[index];
           localValues[j] = values[index][0];
         }
-        NumericalPoint center(dimension);
-        NumericalScalar centerValue = 0.0;
+        Point center(dimension);
+        Scalar centerValue = 0.0;
         // First pass: compute the center of the good points
         for (UnsignedInteger j = 0; j <= dimension; ++j)
           if (localValues[j] <= level)
@@ -222,8 +223,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
             // C(v*) [inside], M(level) [on], B(v) [outside]
             // (M-C)/(B-C) = (level-v*)/(v-v*) = a
             // M-B=(v-level)/(v-v*)(C-B)
-            const NumericalPoint currentVertex(boundingVertices[globalVertexIndex]);
-            const NumericalPoint delta((center - currentVertex) * (localValues[j] - centerValue) / (localValues[j] - centerValue));
+            const Point currentVertex(boundingVertices[globalVertexIndex]);
+            const Point delta((center - currentVertex) * (localValues[j] - centerValue) / (localValues[j] - centerValue));
             // If no projection, just add the linear correction
             flagMovedVertices.add(globalVertexIndex);
             if (!project) movedVertices.add(currentVertex + delta);
@@ -235,36 +236,36 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
               ComposedFunction levelFunction(function, shiftFunction);
               problem.setLevelFunction(levelFunction);
               solver_.setStartingPoint(delta);
-	      OptimizationResult result;
+              OptimizationResult result;
               // Here we have to catch exceptions raised by the gradient
               try
               {
                 solver_.run();
-		result = solver_.getResult();
+                result = solver_.getResult();
               }
               catch(...)
               {
-		LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
+                LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << ", using finite differences for gradient");
                 // Here we may have to fix the gradient eg in the case of analytical functions, when Ev3 does not handle the expression.
-                const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
-                levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + NumericalPoint(dimension, epsilon), levelFunction.getEvaluation()).clone());
+                const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
+                levelFunction.setGradient(CenteredFiniteDifferenceGradient((localVertices.getMin() - localVertices.getMax()) * epsilon + Point(dimension, epsilon), levelFunction.getEvaluation()).clone());
                 problem.setLevelFunction(levelFunction);
                 solver_.setProblem(problem);
-		// Try with the new gradients
-		try
-		  {
-		    solver_.run();
-		    result = solver_.getResult();
-		  }
-		catch(...)
-		  {
-		    // There is definitely a problem with this vertex. Try a gradient-free solver
-		    Cobyla solver(solver_.getProblem());
-		    solver.setStartingPoint(solver_.getStartingPoint());
-		    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
-		    solver.run();
-		    result = solver.getResult();
-		  } // Even finite differences gradient failed?
+                // Try with the new gradients
+                try
+                {
+                  solver_.run();
+                  result = solver_.getResult();
+                }
+                catch(...)
+                {
+                  // There is definitely a problem with this vertex. Try a gradient-free solver
+                  Cobyla solver(solver_.getProblem());
+                  solver.setStartingPoint(solver_.getStartingPoint());
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver_ << " and finite differences for gradient, switching to solver=" << solver);
+                  solver.run();
+                  result = solver.getResult();
+                } // Even finite differences gradient failed?
               } // Gradient failed ?
               movedVertices.add(currentVertex + result.getOptimalPoint());
             } // project

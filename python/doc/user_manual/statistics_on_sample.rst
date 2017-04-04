@@ -11,7 +11,7 @@ Sample
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalSample
+    Sample
 
 Building distributions from samples
 ===================================

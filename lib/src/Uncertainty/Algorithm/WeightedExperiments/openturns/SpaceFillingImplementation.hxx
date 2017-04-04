@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StorageManager.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 namespace OT
 {
@@ -50,10 +50,13 @@ public:
   SpaceFillingImplementation * clone() const;
 
   /** Evaluate criterion on a sample */
-  virtual NumericalScalar evaluate(const NumericalSample& sample) const;
+  virtual Scalar evaluate(const Sample& sample) const;
 
   /** Accessor */
-  Bool isMinimizationProblem() const { return minimization_; }
+  Bool isMinimizationProblem() const
+  {
+    return minimization_;
+  }
 
   /** String converter */
   virtual String __repr__() const;
@@ -65,12 +68,12 @@ public:
   void load(Advocate & adv);
 
   /** Compute criterion when performing an elementary perturbation */
-  virtual NumericalScalar perturbLHS(NumericalSample& oldDesign, NumericalScalar oldCriterion,
-      UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+  virtual Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
+                            UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
 
 protected:
   /** Normalize argument before computing criterion */
-  NumericalSample normalize(const NumericalSample & sample) const;
+  Sample normalize(const Sample & sample) const;
 
 
 private:

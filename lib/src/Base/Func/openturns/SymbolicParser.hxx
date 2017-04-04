@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_SYMBOLICPARSER_HXX
 #define OPENTURNS_SYMBOLICPARSER_HXX
 
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -36,7 +36,7 @@ public:
   /** Default constructor */
   SymbolicParser();
 
-  NumericalPoint operator()(const NumericalPoint & inP) const;
+  Point operator()(const Point & inP) const;
 
   void setVariablesFormulas(const Description & inputVariablesNames,
                             const Description & formulas);
@@ -49,7 +49,7 @@ protected:
   Description inputVariablesNames_;
   Description formulas_;
   mutable Collection<Pointer<MuParser> > parsers_;
-  mutable NumericalPoint inputStack_;
+  mutable Point inputStack_;
 
 };
 

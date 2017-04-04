@@ -9,7 +9,7 @@ Parameters
 center : sequence of float
     Point :math:`\vect{x}_0` where the Taylor expansion of the function
     :math:`h` is performed.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated.
 
 Notes
@@ -65,7 +65,7 @@ Examples
 
 Returns
 -------
-center : :class:`~openturns.NumericalPoint`
+center : :class:`~openturns.Point`
     Point :math:`\vect{x}_0` where the Taylor expansion of the function is
     performed."
 
@@ -76,7 +76,7 @@ center : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-constantVector : :class:`~openturns.NumericalPoint`
+constantVector : :class:`~openturns.Point`
     Constant vector of the approximation, equal to :math:`h(x_0)`."
 
 // ---------------------------------------------------------------------
@@ -97,7 +97,7 @@ gradient : :class:`~openturns.Matrix`
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function :math:`h` to be approximated."
 
 // ---------------------------------------------------------------------
@@ -107,7 +107,7 @@ function : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-approximation : :class:`~openturns.NumericalMathFunction`
+approximation : :class:`~openturns.Function`
     An approximation of the function :math:`h` by a Linear Taylor expansion at
     the point :math:`\vect{x}_0`."
 

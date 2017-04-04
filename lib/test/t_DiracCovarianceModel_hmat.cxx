@@ -30,12 +30,12 @@ hmatrix__str__(const HMatrix & hmat)
 {
   if (hmat.getNbRows() == 0 || hmat.getNbColumns() == 0) return "[]";
 
-  NumericalSample res(hmat.getNbRows(), hmat.getNbColumns());
+  Sample res(hmat.getNbRows(), hmat.getNbColumns());
   for ( UnsignedInteger i = 0; i < hmat.getNbRows(); ++i)
   {
-    NumericalPoint x(hmat.getNbColumns());
+    Point x(hmat.getNbColumns());
     x[i] = 1.0;
-    NumericalPoint y(hmat.getNbRows());
+    Point y(hmat.getNbRows());
     hmat.gemv('N', 1.0, x, 0.0, y);
     res[i] = y;
   }
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     DiracCovarianceModel myDefautModel;
     fullprint << "myDefautModel = " << myDefautModel << std::endl;
     // Amplitude of dimension 2
-    NumericalPoint amplitude(dimension);
+    Point amplitude(dimension);
     for (UnsignedInteger k = 0; k < dimension; ++k) amplitude[k] = 1.5 + 2.0 * k;
     // Model of dimension 2
     DiracCovarianceModel myModel1(spatialDimension, amplitude);
@@ -81,8 +81,8 @@ int main(int argc, char *argv[])
     // Evaluation on some points
     Indices levels(spatialDimension, 1);
     Box box(levels);
-    const NumericalSample vertices = box.generate();
-    const NumericalScalar nuggetFactor = ResourceMap::GetAsNumericalScalar("CovarianceModel-DefaultNuggetFactor");
+    const Sample vertices = box.generate();
+    const Scalar nuggetFactor = ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor");
     const HMatrixParameters parameters;
 
     fullprint << "Discretization on a grid of vertices" << std::endl;

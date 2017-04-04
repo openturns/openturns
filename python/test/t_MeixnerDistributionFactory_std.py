@@ -7,12 +7,18 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    ResourceMap.SetAsUnsignedInteger( "MeixnerDistribution-CDFIntegrationNodesNumber", 8 )
-    ResourceMap.SetAsUnsignedInteger( "MeixnerDistribution-CDFDiscretization", 100 )
-    ResourceMap.SetAsNumericalScalar( "MeixnerDistribution-MaximumAbsoluteError", 1.0e-6 )
-    ResourceMap.SetAsNumericalScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-6 )
-    ResourceMap.SetAsNumericalScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-6 )
-    ResourceMap.SetAsNumericalScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-6 )
+    ResourceMap.SetAsUnsignedInteger(
+        "MeixnerDistribution-CDFIntegrationNodesNumber", 8)
+    ResourceMap.SetAsUnsignedInteger(
+        "MeixnerDistribution-CDFDiscretization", 100)
+    ResourceMap.SetAsScalar(
+        "MeixnerDistribution-MaximumAbsoluteError", 1.0e-6)
+    ResourceMap.SetAsScalar(
+        "MeixnerDistribution-MaximumRelativeError", 1.0e-6)
+    ResourceMap.SetAsScalar(
+        "MeixnerDistribution-MaximumConstraintError", 1.0e-6)
+    ResourceMap.SetAsScalar(
+        "MeixnerDistribution-MaximumObjectiveError", 1.0e-6)
     distribution = MeixnerDistribution(1.5, 0.5, 2.5, -0.5)
     size = 1000
     sample = distribution.getSample(size)

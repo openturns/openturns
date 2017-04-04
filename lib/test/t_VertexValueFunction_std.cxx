@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     inputVars.add("t");
     inputVars.add("x");
     Description formula(1, "x + t^2");
-    NumericalMathFunction myFunc(inputVars, formula);
+    SymbolicFunction myFunc(inputVars, formula);
     VertexValueFunction myTemporalFunc(myFunc);
 
     fullprint << "myTemporalFunc=" << myTemporalFunc << std::endl;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     fullprint << "myTemporalFunc output dimension=" << myTemporalFunc.getOutputDimension() << std::endl;
     /* Create a TimeSeries */
     RegularGrid tg(0.0, 0.2, 6);
-    NumericalSample data(tg.getN(), myFunc.getInputDimension() - 1);
+    Sample data(tg.getN(), myFunc.getInputDimension() - 1);
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
       for (UnsignedInteger j = 0; j < data.getDimension(); ++j)
         data(i, j) = i * data.getDimension() + j;

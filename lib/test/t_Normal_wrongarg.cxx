@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public Normal
 {
 public:
-  TestObject() : Normal(NumericalPoint(1), NumericalPoint(1), CorrelationMatrix(1)) {}
+  TestObject() : Normal(Point(1), Point(1), CorrelationMatrix(1)) {}
   virtual ~TestObject() {}
 };
 
@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
     {
 
       // Instanciate one distribution object
-      NumericalPoint meanPoint(1);
+      Point meanPoint(1);
       meanPoint[0] = 1.0;
-      NumericalPoint sigma(1);
+      Point sigma(1);
       sigma[0] = 1.0;
       CorrelationMatrix R(1);
       R(0, 0) = 1.0;

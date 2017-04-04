@@ -24,11 +24,11 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+inline String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps = pow(0.1, 1.0 * digits);
+  Scalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -53,12 +53,12 @@ int main(int argc, char *argv[])
     Description outVar(1, "y1");
     Description formula(1, "x1+2*x2-3*x3+4*x4");
 
-    NumericalMathFunction linear(inVars, outVar, formula);
+    Function linear(inVars, outVar, formula);
 
     UnsignedInteger dim = linear.getInputDimension();
-    NumericalPoint startingPoint(dim);
+    Point startingPoint(dim);
 
-    Interval bounds(NumericalPoint(dim, -3.0), NumericalPoint(dim, 5.0));
+    Interval bounds(Point(dim, -3.0), Point(dim, 5.0));
 
     Description algoNames(NLopt::GetAlgorithmNames());
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
@@ -81,27 +81,27 @@ int main(int argc, char *argv[])
         for (UnsignedInteger inequality = 0; inequality < 2; ++inequality)
           for (UnsignedInteger equality = 0; equality < 2; ++equality)
           {
-            OptimizationProblem problem(linear, NumericalMathFunction(), NumericalMathFunction(), bounds);
+            OptimizationProblem problem(linear, SymbolicFunction(), SymbolicFunction(), bounds);
             problem.setMinimization(minimization == 0);
             if (inequality == 0)
               // x3 <= x1
-              problem.setInequalityConstraint(NumericalMathFunction(inVars, Description(1, "ineq"), Description(1, "x1-x3")));
+              problem.setInequalityConstraint(SymbolicFunction(inVars, Description(1, "x1-x3")));
             if (equality == 0)
               // x4 = 2
-              problem.setEqualityConstraint(NumericalMathFunction(inVars, Description(1, "eq"), Description(1, "x4-2")));
+              problem.setEqualityConstraint(SymbolicFunction(inVars, Description(1, "x4-2")));
             try
             {
               NLopt::SetSeed(0);
               algo.setProblem(problem);
               algo.setMaximumEvaluationNumber(5000);
-              //algo.setInitialStep(NumericalPoint(dim, 0.1));
+              //algo.setInitialStep(Point(dim, 0.1));
               NLopt localAlgo("LD_MMA");
               algo.setLocalSolver(localAlgo);
               algo.setStartingPoint(startingPoint);
               fullprint << "algo=" << algo << std::endl;
               algo.run();
               OptimizationResult result(algo.getResult());
-              fullprint << "x^=" << printNumericalPoint(result.getOptimalPoint(), 3) << std::endl;
+              fullprint << "x^=" << printPoint(result.getOptimalPoint(), 3) << std::endl;
             }
             catch (...)
             {

@@ -23,8 +23,8 @@
 
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/WeightedExperiment.hxx"
 
@@ -48,25 +48,25 @@ public:
   SobolIndicesAlgorithmImplementation();
 
   /** Constructor with parameters */
-  SobolIndicesAlgorithmImplementation(const NumericalSample & inputDesign,
-                                      const NumericalSample & outputDesign,
+  SobolIndicesAlgorithmImplementation(const Sample & inputDesign,
+                                      const Sample & outputDesign,
                                       const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
   SobolIndicesAlgorithmImplementation(const Distribution & distribution,
                                       const UnsignedInteger size,
-                                      const NumericalMathFunction & model,
+                                      const Function & model,
                                       const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   SobolIndicesAlgorithmImplementation(const WeightedExperiment & experiment,
-                                      const NumericalMathFunction & model,
+                                      const Function & model,
                                       const Bool computeSecondOrder = true);
   /** Virtual constructor */
   virtual SobolIndicesAlgorithmImplementation * clone() const;
 
   /** First order indices accessor */
-  virtual NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  virtual Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the first order indices accessor */
   virtual Interval getFirstOrderIndicesInterval() const;
@@ -75,24 +75,24 @@ public:
   virtual SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  virtual NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  virtual Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the total order indices accessor */
   virtual Interval getTotalOrderIndicesInterval() const;
 
   /** Aggregated first order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedFirstOrderIndices() const;
+  Point getAggregatedFirstOrderIndices() const;
 
   /** Aggregated total order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedTotalOrderIndices() const;
+  Point getAggregatedTotalOrderIndices() const;
 
   // Setters for bootstrap size
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
   // Setters for bootstrap confidence level
-  NumericalScalar getBootstrapConfidenceLevel() const;
-  void setBootstrapConfidenceLevel(const NumericalScalar confidenceLevel);
+  Scalar getBootstrapConfidenceLevel() const;
+  void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
 
   /** String converter */
   virtual String __repr__() const;
@@ -106,17 +106,17 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-  static NumericalSample Generate(const Distribution & distribution,
-                                  const UnsignedInteger size,
-                                  const Bool computeSecondOrder = true);
+  static Sample Generate(const Distribution & distribution,
+                         const UnsignedInteger size,
+                         const Bool computeSecondOrder = true);
 
-  static NumericalSample Generate(const WeightedExperiment & experiment,
-                                  const Bool computeSecondOrder = true);
+  static Sample Generate(const WeightedExperiment & experiment,
+                         const Bool computeSecondOrder = true);
 
-  static Graph DrawImportanceFactors(const NumericalPointWithDescription & importanceFactors,
+  static Graph DrawImportanceFactors(const PointWithDescription & importanceFactors,
                                      const String & title);
 
-  static Graph DrawImportanceFactors(const NumericalPoint & values,
+  static Graph DrawImportanceFactors(const Point & values,
                                      const Description & names,
                                      const String & title);
 
@@ -130,37 +130,37 @@ protected:
 
 
   /** Internal method that compute Vi/VTi using a collection of samples */
-  virtual NumericalSample computeIndices(const NumericalSample & design,
-                                         NumericalSample & VTi) const;
+  virtual Sample computeIndices(const Sample & design,
+                                Sample & VTi) const;
 
   /** Internal method that returns a boostrap NS collection of size inputDimension + 2 */
-  NumericalSample getBootstrapDesign(const Indices & indices) const;
+  Sample getBootstrapDesign(const Indices & indices) const;
 
   /** Function that computes merged indices using Vi/VTi + variance  */
-  NumericalPoint computeAggregatedIndices(const NumericalSample & Vi,
-                                          const NumericalSample & VTi,
-                                          const NumericalPoint & variance,
-                                          NumericalPoint & mergedTotal) const;
+  Point computeAggregatedIndices(const Sample & Vi,
+                                 const Sample & VTi,
+                                 const Point & variance,
+                                 Point & mergedTotal) const;
 
   /** void method that computes confidence interval */
   void computeIndicesInterval() const;
 
-  /** Multiplication and sum of two NumericalSamples */
-  NumericalPoint computeSumDotSamples(const NumericalSample & x,
-                                      const NumericalSample & y) const;
+  /** Multiplication and sum of two Samples */
+  Point computeSumDotSamples(const Sample & x,
+                             const Sample & y) const;
 
-  /** Multiplication and sum of two (sub)samples that are in the same NumericalSamples */
-  NumericalPoint computeSumDotSamples(const NumericalSample & sample,
-                                      const UnsignedInteger size,
-                                      const UnsignedInteger indexX,
-                                      const UnsignedInteger indexY) const;
+  /** Multiplication and sum of two (sub)samples that are in the same Samples */
+  Point computeSumDotSamples(const Sample & sample,
+                             const UnsignedInteger size,
+                             const UnsignedInteger indexX,
+                             const UnsignedInteger indexY) const;
 
-
-  /** Designs : input & output designs */
-  NumericalSample inputDesign_;
 
   /** Designs : input & output designs */
-  NumericalSample outputDesign_;
+  Sample inputDesign_;
+
+  /** Designs : input & output designs */
+  Sample outputDesign_;
 
   /** Simulation size */
   UnsignedInteger size_;
@@ -169,22 +169,22 @@ protected:
   UnsignedInteger bootstrapSize_;
 
   /** Confidence level for Bootstrap */
-  NumericalScalar confidenceLevel_;
+  Scalar confidenceLevel_;
 
   /** Variance of the reference output sample */
-  NumericalPoint referenceVariance_;
+  Point referenceVariance_;
 
   /** Variance conditionnaly to the i-th variable => Si = Vi/Var*/
-  mutable NumericalSample varianceI_;
+  mutable Sample varianceI_;
 
   /** Variance totale of the i-th variable => STi = VTi/Var */
-  mutable NumericalSample varianceTI_;
+  mutable Sample varianceTI_;
 
   /** Aggregated first order indices */
-  mutable NumericalPoint mergedFirstOrderIndices_;
+  mutable Point mergedFirstOrderIndices_;
 
   /** Aggregated total order indices */
-  mutable NumericalPoint mergedTotalOrderIndices_;
+  mutable Point mergedTotalOrderIndices_;
 
   /** Second order indices */
   mutable SymmetricTensor secondOrderIndices_;

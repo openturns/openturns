@@ -20,7 +20,7 @@ timeGrid : sequence of float
 
 Returns
 -------
-values : :class:`~openturns.NumericalSample`
+values : :class:`~openturns.Sample`
     The solution of the equation at grid points."
 %enddef
 %feature("docstring") OT::ODESolverImplementation::solve

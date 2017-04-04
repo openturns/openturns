@@ -1,48 +1,48 @@
 distribution=Normal(mu = 0, sigma = 1)
-vector=class=RandomVector implementation=class=UsualRandomVector distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[0] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+vector=class=RandomVector implementation=class=UsualRandomVector distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 alpha=0.9
 beta=0.9
 n(0.9, 0.9, 0)=22
-Quantile of level=0.9 with confidence=0.9 using upper statistics=0 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.43725]
+Quantile of level=0.9 with confidence=0.9 using upper statistics=0 gives estimate=class=Point name=Unnamed dimension=1 values=[1.43725]
 n(0.9, 0.9, 1)=38
-Quantile of level=0.9 with confidence=0.9 using upper statistics=1 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.85579]
+Quantile of level=0.9 with confidence=0.9 using upper statistics=1 gives estimate=class=Point name=Unnamed dimension=1 values=[1.85579]
 n(0.9, 0.9, 2)=52
-Quantile of level=0.9 with confidence=0.9 using upper statistics=2 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.70938]
+Quantile of level=0.9 with confidence=0.9 using upper statistics=2 gives estimate=class=Point name=Unnamed dimension=1 values=[1.70938]
 n(0.9, 0.9, 3)=65
-Quantile of level=0.9 with confidence=0.9 using upper statistics=3 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.49156]
+Quantile of level=0.9 with confidence=0.9 using upper statistics=3 gives estimate=class=Point name=Unnamed dimension=1 values=[1.49156]
 n(0.9, 0.9, 4)=78
-Quantile of level=0.9 with confidence=0.9 using upper statistics=4 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.48031]
+Quantile of level=0.9 with confidence=0.9 using upper statistics=4 gives estimate=class=Point name=Unnamed dimension=1 values=[1.48031]
 beta=0.95
 n(0.9, 0.95, 0)=29
-Quantile of level=0.9 with confidence=0.95 using upper statistics=0 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.94606]
+Quantile of level=0.9 with confidence=0.95 using upper statistics=0 gives estimate=class=Point name=Unnamed dimension=1 values=[1.94606]
 n(0.9, 0.95, 1)=46
-Quantile of level=0.9 with confidence=0.95 using upper statistics=1 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.73945]
+Quantile of level=0.9 with confidence=0.95 using upper statistics=1 gives estimate=class=Point name=Unnamed dimension=1 values=[1.73945]
 n(0.9, 0.95, 2)=61
-Quantile of level=0.9 with confidence=0.95 using upper statistics=2 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.70642]
+Quantile of level=0.9 with confidence=0.95 using upper statistics=2 gives estimate=class=Point name=Unnamed dimension=1 values=[1.70642]
 n(0.9, 0.95, 3)=76
-Quantile of level=0.9 with confidence=0.95 using upper statistics=3 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.7657]
+Quantile of level=0.9 with confidence=0.95 using upper statistics=3 gives estimate=class=Point name=Unnamed dimension=1 values=[1.7657]
 n(0.9, 0.95, 4)=89
-Quantile of level=0.9 with confidence=0.95 using upper statistics=4 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.44503]
+Quantile of level=0.9 with confidence=0.95 using upper statistics=4 gives estimate=class=Point name=Unnamed dimension=1 values=[1.44503]
 alpha=0.95
 beta=0.9
 n(0.95, 0.9, 0)=45
-Quantile of level=0.95 with confidence=0.9 using upper statistics=0 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[2.0749]
+Quantile of level=0.95 with confidence=0.9 using upper statistics=0 gives estimate=class=Point name=Unnamed dimension=1 values=[2.0749]
 n(0.95, 0.9, 1)=77
-Quantile of level=0.95 with confidence=0.9 using upper statistics=1 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.89271]
+Quantile of level=0.95 with confidence=0.9 using upper statistics=1 gives estimate=class=Point name=Unnamed dimension=1 values=[1.89271]
 n(0.95, 0.9, 2)=105
-Quantile of level=0.95 with confidence=0.9 using upper statistics=2 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.6379]
+Quantile of level=0.95 with confidence=0.9 using upper statistics=2 gives estimate=class=Point name=Unnamed dimension=1 values=[1.6379]
 n(0.95, 0.9, 3)=132
-Quantile of level=0.95 with confidence=0.9 using upper statistics=3 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[2.04098]
+Quantile of level=0.95 with confidence=0.9 using upper statistics=3 gives estimate=class=Point name=Unnamed dimension=1 values=[2.04098]
 n(0.95, 0.9, 4)=158
-Quantile of level=0.95 with confidence=0.9 using upper statistics=4 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[1.90887]
+Quantile of level=0.95 with confidence=0.9 using upper statistics=4 gives estimate=class=Point name=Unnamed dimension=1 values=[1.90887]
 beta=0.95
 n(0.95, 0.95, 0)=59
-Quantile of level=0.95 with confidence=0.95 using upper statistics=0 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[3.0788]
+Quantile of level=0.95 with confidence=0.95 using upper statistics=0 gives estimate=class=Point name=Unnamed dimension=1 values=[3.0788]
 n(0.95, 0.95, 1)=93
-Quantile of level=0.95 with confidence=0.95 using upper statistics=1 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[2.49498]
+Quantile of level=0.95 with confidence=0.95 using upper statistics=1 gives estimate=class=Point name=Unnamed dimension=1 values=[2.49498]
 n(0.95, 0.95, 2)=124
-Quantile of level=0.95 with confidence=0.95 using upper statistics=2 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[2.13718]
+Quantile of level=0.95 with confidence=0.95 using upper statistics=2 gives estimate=class=Point name=Unnamed dimension=1 values=[2.13718]
 n(0.95, 0.95, 3)=153
-Quantile of level=0.95 with confidence=0.95 using upper statistics=3 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[2.19774]
+Quantile of level=0.95 with confidence=0.95 using upper statistics=3 gives estimate=class=Point name=Unnamed dimension=1 values=[2.19774]
 n(0.95, 0.95, 4)=181
-Quantile of level=0.95 with confidence=0.95 using upper statistics=4 gives estimate=class=NumericalPoint name=Unnamed dimension=1 values=[2.45554]
+Quantile of level=0.95 with confidence=0.95 using upper statistics=4 gives estimate=class=Point name=Unnamed dimension=1 values=[2.45554]

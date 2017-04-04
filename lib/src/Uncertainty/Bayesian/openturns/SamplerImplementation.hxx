@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,10 +64,10 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** @copydoc Sampler::getRealization() const */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 
   /** @copydoc Sampler::getSample() const */
-  virtual NumericalSample getSample(const UnsignedInteger size) const;
+  virtual Sample getSample(const UnsignedInteger size) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

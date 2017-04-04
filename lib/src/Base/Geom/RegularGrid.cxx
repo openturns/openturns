@@ -41,8 +41,8 @@ RegularGrid::RegularGrid()
 }
 
 /* Parameters constructor */
-RegularGrid::RegularGrid(const NumericalScalar start,
-                         const NumericalScalar step,
+RegularGrid::RegularGrid(const Scalar start,
+                         const Scalar step,
                          const UnsignedInteger n)
   : Mesh()
   , start_(start)
@@ -53,7 +53,7 @@ RegularGrid::RegularGrid(const NumericalScalar start,
   if (n >= 1)
   {
     // The mesh is the description by extension of the grid
-    vertices_ = NumericalSample(n, 1);
+    vertices_ = Sample(n, 1);
     for (UnsignedInteger i = 0; i < n; ++i) vertices_[i][0] = start_ + i * step_;
     // Here we know that n > 0
     simplices_ = IndicesCollection(n - 1);
@@ -101,18 +101,18 @@ Bool RegularGrid::operator != (const RegularGrid & rhs) const
   return !operator==(rhs);
 }
 
-NumericalScalar RegularGrid::getStart() const
+Scalar RegularGrid::getStart() const
 {
   return start_;
 }
 
 /* This method computes the timestamp of the very next step past the time series (STL convention) */
-NumericalScalar RegularGrid::getEnd() const
+Scalar RegularGrid::getEnd() const
 {
   return start_ + step_ * n_;
 }
 
-NumericalScalar RegularGrid::getStep() const
+Scalar RegularGrid::getStep() const
 {
   return step_;
 }
@@ -122,13 +122,13 @@ UnsignedInteger RegularGrid::getN() const
   return n_;
 }
 
-NumericalScalar RegularGrid::getValue(const UnsignedInteger i) const
+Scalar RegularGrid::getValue(const UnsignedInteger i) const
 {
   if (i >= n_) throw OutOfBoundException(HERE) << "Error: the given index i=" << i << " must be less than the number of ticks n=" << n_;
   return vertices_[i][0];
 }
 
-NumericalPoint RegularGrid::getValues() const
+Point RegularGrid::getValues() const
 {
   return vertices_.getImplementation()->getData();
 }
@@ -140,10 +140,10 @@ Bool RegularGrid::isRegular() const
 }
 
 /* Get the index of the nearest vertex */
-UnsignedInteger RegularGrid::getNearestVertexIndex(const NumericalPoint & point) const
+UnsignedInteger RegularGrid::getNearestVertexIndex(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension 1, got a point of dimension " << point.getDimension();
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= start_) return 0;
   if (x >= start_ + (n_ - 1) * step_) return n_ - 1;
   return static_cast<UnsignedInteger>(round((x - start_) / step_));

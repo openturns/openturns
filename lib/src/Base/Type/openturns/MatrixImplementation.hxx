@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,14 +38,14 @@ BEGIN_NAMESPACE_OPENTURNS
 class ComplexMatrixImplementation;
 
 class OT_API MatrixImplementation
-  : public PersistentCollection<NumericalScalar>
+  : public PersistentCollection<Scalar>
 
 {
   CLASSNAME;
 
 #ifndef SWIG
   /** Declaration of friend operators */
-  friend MatrixImplementation operator * (const NumericalScalar s,
+  friend MatrixImplementation operator * (const Scalar s,
                                           const MatrixImplementation & matrix)
   {
     return matrix.operator * (s);
@@ -55,8 +55,8 @@ class OT_API MatrixImplementation
 
 public:
 
-  typedef Collection<NumericalScalar>       NumericalScalarCollection;
-  typedef Collection<NumericalComplex>      NumericalComplexCollection;
+  typedef Collection<Scalar>       ScalarCollection;
+  typedef Collection<Complex>      ComplexCollection;
 
   /** Default constructor */
   MatrixImplementation();
@@ -78,7 +78,7 @@ public:
   /** or the rest of the matrix is filled with zeros */
   MatrixImplementation(const UnsignedInteger rowDim,
                        const UnsignedInteger colDim,
-                       const NumericalScalarCollection & elementsValues);
+                       const ScalarCollection & elementsValues);
 
   /** Virtual constructor */
   virtual MatrixImplementation * clone() const;
@@ -89,13 +89,13 @@ public:
 
   /** Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j);
+  Scalar & operator () (const UnsignedInteger i,
+                        const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the MatrixImplementation (read only) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j) const;
+  const Scalar & operator () (const UnsignedInteger i,
+                              const UnsignedInteger j) const;
 
   /** Get the dimensions of the MatrixImplementation */
   /** Number of rows */
@@ -138,28 +138,28 @@ public:
   MatrixImplementation genPower(const UnsignedInteger n) const;
   MatrixImplementation symPower(const UnsignedInteger n) const;
 
-  /** Multiplications with a NumericalPoint (must have consistent dimensions) */
-  NumericalPoint genVectProd (const NumericalPoint & pt,
-                              const Bool transpose = false) const;
-  NumericalPoint symVectProd (const NumericalPoint & pt) const;
+  /** Multiplications with a Point (must have consistent dimensions) */
+  Point genVectProd (const Point & pt,
+                     const Bool transpose = false) const;
+  Point symVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
-  NumericalScalarCollection triangularVectProd (const NumericalScalarCollection & pt,
-      const char side = 'L') const;
-  NumericalScalarCollection triangularVectProd (const NumericalPoint & pt,
-      const char side = 'L') const;
+  ScalarCollection triangularVectProd (const ScalarCollection & pt,
+                                       const char side = 'L') const;
+  ScalarCollection triangularVectProd (const Point & pt,
+                                       const char side = 'L') const;
 
-  /** Multiplication with a NumericalScalar */
-  MatrixImplementation operator * (const NumericalScalar s) const;
+  /** Multiplication with a Scalar */
+  MatrixImplementation operator * (const Scalar s) const;
 
-  /** In-place Multiplication with a NumericalScalar */
-  MatrixImplementation & operator *= (const NumericalScalar s);
+  /** In-place Multiplication with a Scalar */
+  MatrixImplementation & operator *= (const Scalar s);
 
-  /** Division by a NumericalScalar*/
-  MatrixImplementation operator / (const NumericalScalar s) const;
+  /** Division by a Scalar*/
+  MatrixImplementation operator / (const Scalar s) const;
 
-  /** In-place Division by a NumericalScalar*/
-  MatrixImplementation & operator /= (const NumericalScalar s);
+  /** In-place Division by a Scalar*/
+  MatrixImplementation & operator /= (const Scalar s);
 
   /** Symmetrize MatrixImplementation in case it is a symmetric matrix (stored as a triangular matrix) */
   void symmetrize() const;
@@ -168,22 +168,22 @@ public:
   void triangularize(const Bool isLowerTriangular) const;
 
   /** Resolution of a linear system in case of a rectangular matrix */
-  NumericalPoint solveLinearSystemRect(const NumericalPoint & b,
-                                       const Bool keepIntact = true);
+  Point solveLinearSystemRect(const Point & b,
+                              const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemRect(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a square matrix */
-  NumericalPoint solveLinearSystemSquare(const NumericalPoint & b,
-                                         const Bool keepIntact = true);
+  Point solveLinearSystemSquare(const Point & b,
+                                const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemSquare(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a triangular matrix */
-  NumericalPoint solveLinearSystemTri(const NumericalPoint & b,
-                                      const Bool keepIntact = true,
-                                      const Bool lower = true,
-                                      const Bool transpose = false);
+  Point solveLinearSystemTri(const Point & b,
+                             const Bool keepIntact = true,
+                             const Bool lower = true,
+                             const Bool transpose = false);
 
   MatrixImplementation solveLinearSystemTri(const MatrixImplementation & b,
       const Bool keepIntact = true,
@@ -191,14 +191,14 @@ public:
       const Bool transpose = false);
 
   /** Resolution of a linear system in case of a symmetric matrix */
-  NumericalPoint solveLinearSystemSym(const NumericalPoint & b,
-                                      const Bool keepIntact = true);
+  Point solveLinearSystemSym(const Point & b,
+                             const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemSym(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
   /** Resolution of a linear system in case of a covariance matrix */
-  NumericalPoint solveLinearSystemCov(const NumericalPoint & b,
-                                      const Bool keepIntact = true);
+  Point solveLinearSystemCov(const Point & b,
+                             const Bool keepIntact = true);
   MatrixImplementation solveLinearSystemCov(const MatrixImplementation & b,
       const Bool keepIntact = true);
 
@@ -208,32 +208,32 @@ public:
                                       const char uplo = 'L') const;
 
   /** Compute determinant */
-  NumericalScalar computeLogAbsoluteDeterminant(NumericalScalar & sign,
-      const Bool keepIntact = true);
-  NumericalScalar computeDeterminant(const Bool keepIntact = true);
-  NumericalScalar computeLogAbsoluteDeterminantSym(NumericalScalar & sign,
-      const Bool keepIntact = true);
-  NumericalScalar computeDeterminantSym(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
+                                       const Bool keepIntact = true);
+  Scalar computeDeterminant(const Bool keepIntact = true);
+  Scalar computeLogAbsoluteDeterminantSym(Scalar & sign,
+                                          const Bool keepIntact = true);
+  Scalar computeDeterminantSym(const Bool keepIntact = true);
 
   /** Compute trace */
-  NumericalScalar computeTrace() const;
+  Scalar computeTrace() const;
 
   /** Compute eigenvalues */
-  NumericalComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
-  NumericalComplexCollection computeEVSquare(ComplexMatrixImplementation & v,
+  ComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
+  ComplexCollection computeEVSquare(ComplexMatrixImplementation & v,
       const Bool keepIntact = true);
-  NumericalPoint computeEigenValuesSym(const Bool keepIntact = true);
-  NumericalPoint computeEVSym(MatrixImplementation & v,
-                              const Bool keepIntact = true);
+  Point computeEigenValuesSym(const Bool keepIntact = true);
+  Point computeEVSym(MatrixImplementation & v,
+                     const Bool keepIntact = true);
 
   /** Compute singular values */
-  NumericalPoint computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues(const Bool keepIntact = true);
 
   /** Build the singular value decomposition */
-  NumericalPoint computeSVD(MatrixImplementation & u,
-                            MatrixImplementation & vT,
-                            const Bool fullSVD = false,
-                            const Bool keepIntact = true);
+  Point computeSVD(MatrixImplementation & u,
+                   MatrixImplementation & vT,
+                   const Bool fullSVD = false,
+                   const Bool keepIntact = true);
 
   /** Check if the matrix is symmetric */
   virtual Bool isSymmetric() const;
@@ -245,20 +245,20 @@ public:
   virtual Bool hasUnitRange() const;
 
   /** Set small elements to zero */
-  virtual MatrixImplementation clean(const NumericalScalar threshold) const;
+  virtual MatrixImplementation clean(const Scalar threshold) const;
 
-  virtual MatrixImplementation cleanSym(const NumericalScalar threshold) const;
+  virtual MatrixImplementation cleanSym(const Scalar threshold) const;
 
   /** Build the Cholesky factorization of the matrix */
   virtual MatrixImplementation computeCholesky(const Bool keepIntact = true);
 
   /** Update in-place the Cholesky factor L of an SPD matrix M given a rank-one update vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M + vv^t */
   static void CholeskyUpdate(MatrixImplementation & cholesky,
-                             const NumericalPoint & vector);
+                             const Point & vector);
 
   /** Downdate in-place the Cholesky factor L of an SPD matrix M given a rank-one downdate vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M - vv^t */
   static void CholeskyDowndate(MatrixImplementation & cholesky,
-                               const NumericalPoint & vector);
+                               const Point & vector);
 
   /** Build the QR factorization of the matrix */
   virtual MatrixImplementation computeQR(MatrixImplementation & R,
@@ -289,7 +289,7 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalScalar * __baseaddress__ () const;
+  const Scalar * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
@@ -319,7 +319,7 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const InputIterator first,
     const InputIterator last)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0),
+  : PersistentCollection<Scalar>(rowDim * colDim, 0.0),
     nbRows_(rowDim),
     nbColumns_(colDim)
 {

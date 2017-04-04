@@ -8,9 +8,9 @@ RandomGenerator.SetSeed(0)
 
 try:
 
-    meanPoint = NumericalPoint(1)
+    meanPoint = Point(1)
     meanPoint[0] = 1.0
-    sigma = NumericalPoint(1)
+    sigma = Point(1)
     sigma[0] = 3.0
     R = CorrelationMatrix(1)
     R[0, 0] = 1.0
@@ -44,7 +44,7 @@ try:
     anotherSample = distribution.getSample(size)
 
     # Define a point
-    zero = NumericalPoint(dimension, 0.0)
+    zero = Point(dimension, 0.0)
 
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)
@@ -63,9 +63,9 @@ try:
     print("indices=", repr(indices))
     margins = distribution.getMarginal(indices)
     print("margins=", repr(margins))
-    print("margins PDF=%.6f" % margins.computePDF(NumericalPoint(2)))
-    print("margins CDF=%.6f" % margins.computeCDF(NumericalPoint(2)))
-    quantile = NumericalPoint(margins.computeQuantile(0.5))
+    print("margins PDF=%.6f" % margins.computePDF(Point(2)))
+    print("margins CDF=%.6f" % margins.computeCDF(Point(2)))
+    quantile = Point(margins.computeQuantile(0.5))
     print("margins quantile=", repr(quantile))
     print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
     print("margins realization=", repr(margins.getRealization()))

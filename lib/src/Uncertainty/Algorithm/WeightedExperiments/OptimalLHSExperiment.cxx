@@ -41,7 +41,7 @@ OptimalLHSExperiment::OptimalLHSExperiment(const LHSExperiment & lhs)
 
 /* Default constructor */
 OptimalLHSExperiment::OptimalLHSExperiment(const LHSExperiment & lhs,
-                                                   const SpaceFilling & spaceFilling)
+    const SpaceFilling & spaceFilling)
   : WeightedExperimentImplementation(lhs.getDistribution(), lhs.getSize())
   , spaceFilling_(spaceFilling)
 {
@@ -59,7 +59,7 @@ void OptimalLHSExperiment::setLHS(const LHSExperiment & lhs)
   const UnsignedInteger dimension = distribution.getDimension();
   marginals_.resize(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
-     marginals_[j] = distribution.getMarginal(j);
+    marginals_[j] = distribution.getMarginal(j);
 }
 
 /* Virtual constructor method */
@@ -115,29 +115,29 @@ void OptimalLHSExperiment::load(Advocate & adv)
 }
 
 /* Rank transformation */
-NumericalSample OptimalLHSExperiment::rankTransform(const NumericalSample design) const
+Sample OptimalLHSExperiment::rankTransform(const Sample design) const
 {
   const Distribution distribution(getLHS().getDistribution());
   const UnsignedInteger size = design.getSize();
   const UnsignedInteger dimension = distribution.getDimension();
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   result.setDescription(design.getDescription());
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      result[i][j] = distribution.getMarginal(j).computeCDF(NumericalPoint(1, design[i][j]));
+      result[i][j] = distribution.getMarginal(j).computeCDF(Point(1, design[i][j]));
     }
   }
   return result;
 }
 
-NumericalSample OptimalLHSExperiment::inverseRankTransform(const NumericalSample design) const
+Sample OptimalLHSExperiment::inverseRankTransform(const Sample design) const
 {
   const Distribution distribution(getLHS().getDistribution());
   const UnsignedInteger size = design.getSize();
   const UnsignedInteger dimension = distribution.getDimension();
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   result.setDescription(design.getDescription());
   for (UnsignedInteger i = 0; i < size; ++ i)
   {

@@ -28,20 +28,20 @@ BEGIN_NAMESPACE_OPENTURNS
 
 namespace GammaFunctions
 {
-NumericalScalar IncompleteGamma(const NumericalScalar a,
-                                const NumericalScalar x,
-                                const Bool tail = false);
+Scalar IncompleteGamma(const Scalar a,
+                       const Scalar x,
+                       const Bool tail = false);
 
-NumericalScalar IncompleteGammaInverse(const NumericalScalar a,
-                                       const NumericalScalar x,
-                                       const Bool tail = false);
+Scalar IncompleteGammaInverse(const Scalar a,
+                              const Scalar x,
+                              const Bool tail = false);
 
-NumericalScalar RegularizedIncompleteGamma(const NumericalScalar a,
-    const NumericalScalar x,
-    const Bool tail = false);
+Scalar RegularizedIncompleteGamma(const Scalar a,
+                                  const Scalar x,
+                                  const Bool tail = false);
 
-NumericalScalar RegularizedIncompleteGammaInverse(const NumericalScalar a,
-    const NumericalScalar x,
+Scalar RegularizedIncompleteGammaInverse(const Scalar a,
+    const Scalar x,
     const Bool tail = false);
 
 } // GammaFunctions

@@ -80,12 +80,12 @@ public:
   /** Build method */
   virtual ARMA build(const TimeSeries & timeSeries) const;
   virtual ARMA build(const TimeSeries & timeSeries,
-                     NumericalPoint & informationCriteria) const;
+                     Point & informationCriteria) const;
 
   /** Build method */
   virtual ARMA build(const ProcessSample & sample) const;
   virtual ARMA build(const ProcessSample & sample,
-                     NumericalPoint & informationCriteria) const;
+                     Point & informationCriteria) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

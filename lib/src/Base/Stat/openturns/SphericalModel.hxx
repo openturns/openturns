@@ -24,7 +24,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StationaryCovarianceModel.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
 
@@ -49,19 +49,19 @@ public:
   explicit SphericalModel(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with amplitude and range parameters parameters */
-  SphericalModel(const NumericalPoint & scale,
-                 const NumericalPoint & amplitude,
-                 const NumericalScalar radius = 1);
+  SphericalModel(const Point & scale,
+                 const Point & amplitude,
+                 const Scalar radius = 1);
 
   /** Virtual copy constructor */
   virtual SphericalModel * clone() const;
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
-  NumericalScalar computeAsScalar(const NumericalPoint & tau) const;
+  CovarianceMatrix operator() (const Point & tau) const;
+  Scalar computeAsScalar(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;
@@ -77,8 +77,8 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Radius accessor */
-  NumericalScalar getRadius() const;
-  void setRadius(const NumericalScalar radius);
+  Scalar getRadius() const;
+  void setRadius(const Scalar radius);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -89,13 +89,13 @@ public:
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
 private :
 
-  NumericalScalar radius_;
+  Scalar radius_;
 
 } ; /* class SphericalModel */
 

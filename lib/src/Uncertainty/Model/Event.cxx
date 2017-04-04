@@ -32,7 +32,7 @@ CLASSNAMEINIT(Event);
 
 /* Default constructor for save/load */
 Event::Event()
-  : RandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), RandomVector(NumericalPoint(1, 0.0))), Less(), 0.0)
+  : RandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), RandomVector(Point(1, 0.0))), Less(), 0.0)
 {
   // Nothing to do
 }
@@ -40,7 +40,7 @@ Event::Event()
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
-             const NumericalScalar threshold)
+             const Scalar threshold)
   : RandomVector(antecedent, op, threshold)
 {
   // Nothing to do

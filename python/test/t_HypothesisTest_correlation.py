@@ -9,20 +9,20 @@ R = CorrelationMatrix(dim)
 for i in range(dim):
     for j in range(i):
         R[i, j] = (i + j + 1.0) / (2.0 * dim)
-mean = NumericalPoint(dim, 2.0)
-sigma = NumericalPoint(dim, 3.0)
+mean = Point(dim, 2.0)
+sigma = Point(dim, 3.0)
 distribution = Normal(mean, sigma, R)
 
 size = 100
 sample = distribution.getSample(size)
-sampleX = NumericalSample(size, dim - 1)
-sampleY = NumericalSample(size, 1)
+sampleX = Sample(size, dim - 1)
+sampleY = Sample(size, 1)
 for i in range(size):
     sampleY[i, 0] = sample[i, 0]
     for j in range(1, dim):
         sampleX[i, j - 1] = sample[i, j]
 
-sampleZ = NumericalSample(size, 1)
+sampleZ = Sample(size, 1)
 for i in range(size):
     sampleZ[i, 0] = sampleY[i, 0] * sampleY[i, 0]
 
@@ -37,7 +37,7 @@ print('PartialPearsonXY=', HypothesisTest.PartialPearson(
     sampleX, sampleY, selection, 0.90))
 
 selection2 = Indices(1, 0)
-sampleX0 = NumericalSample(size, 1)
+sampleX0 = Sample(size, 1)
 for i in range(size):
     sampleX0[i, 0] = sampleX[i, 0]
 

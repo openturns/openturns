@@ -6,10 +6,10 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
-    alpha = NumericalPoint(2)
+    alpha = Point(2)
     alpha[0] = 0.90
     alpha[1] = 0.95
-    beta = NumericalPoint(2)
+    beta = Point(2)
     beta[0] = 0.90
     beta[1] = 0.95
     for a in range(2):

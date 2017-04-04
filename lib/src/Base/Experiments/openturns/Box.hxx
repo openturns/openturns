@@ -44,7 +44,7 @@ public:
   Box();
 
   /** Constructor with parameters */
-  explicit Box(const NumericalPoint & levels);
+  explicit Box(const Point & levels);
 
   explicit Box(const Indices & levels);
 
@@ -57,13 +57,13 @@ public:
   /** Experiment plane generation :
    *  The box [0, 1]^n is uniformly sampled in each dimension
    */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Specific levels accessor */
-  void setLevels(const NumericalPoint & levels);
+  void setLevels(const Point & levels);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

@@ -41,7 +41,7 @@ class OT_API AdaptiveStrategy
 
 public:
 
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   /** Constructor from an orthogonal basis */
   AdaptiveStrategy();
@@ -61,15 +61,15 @@ public:
   void computeInitialBasis();
 
   /** Update the basis for the next iteration of approximation */
-  void updateBasis(const NumericalPoint & alpha_k,
-                   const NumericalScalar residual,
-                   const NumericalScalar relativeError);
+  void updateBasis(const Point & alpha_k,
+                   const Scalar residual,
+                   const Scalar relativeError);
 
   /** Basis accessor */
   OrthogonalBasis getBasis() const;
 
   /** Psi accessor */
-  NumericalMathFunctionCollection getPsi() const;
+  FunctionCollection getPsi() const;
 
   /** String converter */
   virtual String __repr__() const;

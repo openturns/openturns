@@ -46,11 +46,11 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
-  GeneralizedPareto buildAsGeneralizedPareto(const NumericalSample & sample) const;
-  GeneralizedPareto buildAsGeneralizedPareto(const NumericalPoint & parameters) const;
+  GeneralizedPareto buildAsGeneralizedPareto(const Sample & sample) const;
+  GeneralizedPareto buildAsGeneralizedPareto(const Point & parameters) const;
   GeneralizedPareto buildAsGeneralizedPareto() const;
 
   /** Optimization solver accessor */
@@ -64,13 +64,13 @@ public:
 protected:
 
   /** Algorithm associated with the method of moments */
-  GeneralizedPareto buildMethodOfMoments(const NumericalSample & sample) const;
+  GeneralizedPareto buildMethodOfMoments(const Sample & sample) const;
 
   /** Algoritm associated with the method of exponential regression model */
-  GeneralizedPareto buildMethodOfExponentialRegression(const NumericalSample & sample) const;
+  GeneralizedPareto buildMethodOfExponentialRegression(const Sample & sample) const;
 
   /** Algorithm associated with the method of modified moments */
-  GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const NumericalSample & sample) const;
+  GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const Sample & sample) const;
 
   /** Optimization solver */
   mutable OptimizationAlgorithm  solver_;

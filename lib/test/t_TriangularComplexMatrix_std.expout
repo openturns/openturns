@@ -26,7 +26,7 @@ diff = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixI
 test 8 : matrix multiplication method
 prod = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(3,1),(3,-1),(26,0)]
 test 9 : multiplication with a numerical point method
-pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+pt = class=Point name=Unnamed dimension=2 values=[1,2]
 ptResult = [(1,0),(11,1)]
 test 10 : multiplication with a numerical complex collection method
 ptComplexe = [(1,5),(0,1)]

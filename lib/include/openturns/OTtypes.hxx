@@ -51,14 +51,20 @@ typedef std::string String;
 typedef unsigned long Id;
 
 /**
- * Type NumericalScalar is a floating point number representation
+ * Type Scalar is a floating point number representation
  */
+typedef double Scalar;
+
+/** @deprecated */
 typedef double NumericalScalar;
 
 /**
- * Type NumericalComplex is a complex floating point number representation
+ * Type Complex is a complex floating point number representation
  */
-typedef std::complex<NumericalScalar> NumericalComplex;
+typedef std::complex<Scalar> Complex;
+
+/** @deprecated */
+typedef std::complex<Scalar> NumericalComplex;
 
 /**
  * Type FileName stores file names and pathes

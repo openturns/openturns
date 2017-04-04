@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_CANONICALTENSORGRADIENT_HXX
 #define OPENTURNS_CANONICALTENSORGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/CanonicalTensorEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class that implement the gradient of a canonical tensor.
  */
 class OT_API CanonicalTensorGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
@@ -55,8 +55,8 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  using NumericalMathGradientImplementation::gradient;
-  Matrix gradient(const NumericalPoint & inP) const;
+  using GradientImplementation::gradient;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

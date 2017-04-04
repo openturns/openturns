@@ -29,10 +29,10 @@ class TestHMatrixTensorRealAssemblyFunction : public HMatrixTensorRealAssemblyFu
 {
 private:
   const CovarianceModel & covarianceModel_;
-  const NumericalSample & vertices_;
+  const Sample & vertices_;
 
 public:
-  TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const NumericalSample & vertices)
+  TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
     : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
@@ -41,7 +41,7 @@ public:
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* result) const
   {
     CovarianceMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
-    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
   }
 };
 
@@ -66,14 +66,14 @@ int main(int argc, char *argv[])
     indices.add(n);
     indices.add(n);
     const IntervalMesher intervalMesher(indices);
-    const NumericalPoint lowerBound(2, 0.0);
-    const NumericalPoint upperBound(2, 1.0);
+    const Point lowerBound(2, 0.0);
+    const Point upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
-    const NumericalSample vertices(mesh2D.getVertices());
-    NumericalPoint xMin(vertices.getMin());
-    NumericalPoint xMax(vertices.getMax());
-    NumericalPoint scale(2, 0.1);
-    CovarianceModel covarianceModel(ExponentialModel(scale, NumericalPoint(2, 1.0)));
+    const Sample vertices(mesh2D.getVertices());
+    Point xMin(vertices.getMin());
+    Point xMax(vertices.getMax());
+    Point scale(2, 0.1);
+    CovarianceModel covarianceModel(ExponentialModel(scale, Point(2, 1.0)));
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix
@@ -82,12 +82,12 @@ int main(int argc, char *argv[])
 
     HMatrix hmatRef(hmat);
     hmatRef.assemble(blockAssembly, 'L');
-    NumericalScalar refNorm = hmatRef.norm();
+    Scalar refNorm = hmatRef.norm();
 
     hmat.factorize("LLt");
 
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
-    NumericalScalar threshold = 1.e-10;
+    Scalar threshold = 1.e-10;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)

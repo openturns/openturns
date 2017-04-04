@@ -51,9 +51,9 @@ public:
   Solver(const SolverImplementation & implementation);
 
   /** Second parameter constructor */
-  Solver(const NumericalScalar absoluteError,
-         const NumericalScalar relativeError,
-         const NumericalScalar residualError,
+  Solver(const Scalar absoluteError,
+         const Scalar relativeError,
+         const Scalar residualError,
          const UnsignedInteger maximumFunctionEvaluation);
 
 
@@ -64,30 +64,30 @@ public:
   virtual String __repr__() const;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
-                                const NumericalScalar value,
-                                const NumericalScalar infPoint,
-                                const NumericalScalar supPoint) const;
+  virtual Scalar solve(const Function & function,
+                       const Scalar value,
+                       const Scalar infPoint,
+                       const Scalar supPoint) const;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
-                                const NumericalScalar value,
-                                const NumericalScalar infPoint,
-                                const NumericalScalar supPoint,
-                                const NumericalScalar infValue,
-                                const NumericalScalar supValue) const;
+  virtual Scalar solve(const Function & function,
+                       const Scalar value,
+                       const Scalar infPoint,
+                       const Scalar supPoint,
+                       const Scalar infValue,
+                       const Scalar supValue) const;
 
   /** Absolute error accessor */
-  void setAbsoluteError(const NumericalScalar absoluteError);
-  NumericalScalar getAbsoluteError() const;
+  void setAbsoluteError(const Scalar absoluteError);
+  Scalar getAbsoluteError() const;
 
   /** Relative error accessor */
-  void setRelativeError(const NumericalScalar relativeError);
-  NumericalScalar getRelativeError() const;
+  void setRelativeError(const Scalar relativeError);
+  Scalar getRelativeError() const;
 
   /** Residual error accessor */
-  void setResidualError(const NumericalScalar residualError);
-  NumericalScalar getResidualError() const;
+  void setResidualError(const Scalar residualError);
+  Scalar getResidualError() const;
 
   /** Maximum function evaluation accessor */
   void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);

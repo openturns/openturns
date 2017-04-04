@@ -49,7 +49,7 @@ public:
 
   /** Default constructor */
   OrdinalSumCopula(const CopulaCollection & coll,
-                   const NumericalPoint & bounds);
+                   const Point & bounds);
 
   /** Comparison operator */
   Bool operator ==(const OrdinalSumCopula & other) const;
@@ -67,8 +67,8 @@ public:
   const CopulaCollection & getCopulaCollection() const;
 
   /** Bounds accessor */
-  void setBounds(const NumericalPoint & bounds);
-  const NumericalPoint & getBounds() const;
+  void setBounds(const Point & bounds);
+  const Point & getBounds() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -76,31 +76,31 @@ public:
   virtual OrdinalSumCopula * clone() const;
 
   /** Get one realization of the OrdinalSumCopula */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the OrdinalSumCopula */
   using CopulaImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the OrdinalSumCopula */
   using CopulaImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the OrdinalSumCopula */
   using CopulaImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
 
   /** Get the PDF gradient of the distribution */
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDF gradient of the distribution */
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
@@ -108,24 +108,24 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalPDF;
-  virtual NumericalScalar computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const;
+  virtual Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  virtual NumericalScalar computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const;
+  virtual Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  virtual NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
+  virtual Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & setParametersCollection);
+  void setParametersCollection(const PointCollection & setParametersCollection);
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -151,23 +151,23 @@ public:
 
 private:
   /** Find the block number of a given real wrt the bounds. Returns -1 if negative and -2 if greater than 1 */
-  SignedInteger findBlock(const NumericalScalar x) const;
+  SignedInteger findBlock(const Scalar x) const;
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const;
 
   /** Check if the given point is in the given block */
-  Bool isInBlock(const NumericalPoint & point,
+  Bool isInBlock(const Point & point,
                  const UnsignedInteger index) const;
 
   /** The collection of distribution of the ComposedCopula */
   CopulaPersistentCollection copulaCollection_;
 
   /** Bounds of the ordinal sum */
-  NumericalPoint bounds_;
+  Point bounds_;
 
   /** Lenghts of the blocks */
-  NumericalPoint blockLengths_;
+  Point blockLengths_;
 
   /** Discrete distribution to select the component of the sum for sampling */
   UserDefined blockDistribution_;

@@ -49,7 +49,7 @@ realization : :class:`~openturns.Field`
 
 Returns
 -------
-realization : :class:`~openturns.NumericalMathFunction`
+realization : :class:`~openturns.Function`
     Each process of the collection is continuously realized on the common domain :math:`\cD_0`."
 
 // ---------------------------------------------------------------------

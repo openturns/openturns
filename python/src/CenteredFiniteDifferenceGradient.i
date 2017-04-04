@@ -15,14 +15,14 @@ namespace OT {
    return new OT::CenteredFiniteDifferenceGradient(other);
  }
 
- CenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
-                                  const NumericalMathEvaluationImplementation & evaluation)
+ CenteredFiniteDifferenceGradient(const Point & epsilon,
+                                  const EvaluationImplementation & evaluation)
  {
    return new OT::CenteredFiniteDifferenceGradient(epsilon, evaluation.clone());
  }
 
- CenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
-                                  const NumericalMathEvaluationImplementation & evaluation)
+ CenteredFiniteDifferenceGradient(const Scalar epsilon,
+                                  const EvaluationImplementation & evaluation)
  {
    return new OT::CenteredFiniteDifferenceGradient(epsilon, evaluation.clone());
  }

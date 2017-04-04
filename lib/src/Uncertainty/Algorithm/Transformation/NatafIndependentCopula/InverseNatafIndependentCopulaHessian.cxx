@@ -36,7 +36,7 @@ static const Factory<InverseNatafIndependentCopulaHessian> Factory_InverseNatafI
 
 /* Default constructor */
 InverseNatafIndependentCopulaHessian::InverseNatafIndependentCopulaHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , dimension_()
 {
   // Nothing to do
@@ -44,7 +44,7 @@ InverseNatafIndependentCopulaHessian::InverseNatafIndependentCopulaHessian()
 
 /* Parameter constructor */
 InverseNatafIndependentCopulaHessian::InverseNatafIndependentCopulaHessian(const UnsignedInteger dimension)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , dimension_(dimension)
 {
   // Nothing to do
@@ -73,12 +73,12 @@ String InverseNatafIndependentCopulaHessian::__repr__() const
  * Hijk = d2Si/dujduk = Phi''(ui) if i = j = k
  *                    = 0 else
  */
-SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const Point & inP) const
 {
   SymmetricTensor result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalScalar x = inP[i];
+    const Scalar x = inP[i];
     // 0.3989422804014326779399462 = 1/sqrt(2*Pi)
     result(i, i, i) = -0.3989422804014326779399462 * x * exp(-0.5 * x * x);
   }
@@ -100,14 +100,14 @@ UnsignedInteger InverseNatafIndependentCopulaHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void InverseNatafIndependentCopulaHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseNatafIndependentCopulaHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

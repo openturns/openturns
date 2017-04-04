@@ -1,9 +1,9 @@
 // SWIG file OrthogonalUniVariatePolynomialFactory.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::NumericalPoint & weights ($*ltype temp) %{ temp = OT::NumericalPoint(); $1 = &temp; %}
-%typemap(argout) OT::NumericalPoint & weights %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::NumericalPoint(*$1), SWIG_TypeQuery("OT::NumericalPoint *"), SWIG_POINTER_OWN |  0 )); %}
-OT::NumericalPoint OT::OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const OT::UnsignedInteger n, OT::NumericalPoint & weights) const;
+%typemap(in, numinputs=0) OT::Point & weights ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
+%typemap(argout) OT::Point & weights %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+OT::Point OT::OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const OT::UnsignedInteger n, OT::Point & weights) const;
 
 %{
 #include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
@@ -14,5 +14,5 @@ OT::NumericalPoint OT::OrthogonalUniVariatePolynomialFactory::getNodesAndWeights
 %include openturns/OrthogonalUniVariatePolynomialFactory.hxx
 namespace OT{ %extend OrthogonalUniVariatePolynomialFactory { OrthogonalUniVariatePolynomialFactory(const OrthogonalUniVariatePolynomialFactory & other) { return new OT::OrthogonalUniVariatePolynomialFactory(other); } } }
 
-%clear OT::NumericalPoint & weights;
+%clear OT::Point & weights;
 

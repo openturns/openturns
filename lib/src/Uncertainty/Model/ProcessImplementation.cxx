@@ -21,9 +21,9 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/PiecewiseLinearEvaluationImplementation.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/RegularGrid.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -160,17 +160,17 @@ Field ProcessImplementation::getRealization() const
 }
 
 /* Continuous realization accessor */
-NumericalMathFunction ProcessImplementation::getContinuousRealization() const
+Function ProcessImplementation::getContinuousRealization() const
 {
   // The continuous realization is obtained by a piecewise linear interpolation
   const Field field(getRealization());
-  const NumericalSample values(field.getValues());
+  const Sample values(field.getValues());
   if (getSpatialDimension() == 1)
   {
-    const NumericalPoint locations(mesh_.getVertices().getImplementation()->getData());
-    return PiecewiseLinearEvaluationImplementation(locations, values);
+    const Point locations(mesh_.getVertices().getImplementation()->getData());
+    return PiecewiseLinearEvaluation(locations, values);
   }
-  return P1LagrangeEvaluationImplementation(field);
+  return P1LagrangeEvaluation(field);
 }
 
 ProcessSample ProcessImplementation::getSample(const UnsignedInteger size) const

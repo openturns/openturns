@@ -7,7 +7,7 @@
 %include Tensor_doc.i
 
 %template(TensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::TensorImplementation>;
-%apply const NumericalScalarCollection & { const OT::Tensor::NumericalScalarCollection & };
+%apply const ScalarCollection & { const OT::Tensor::ScalarCollection & };
 
 %define OTTensorAccessors(baseType, elementType, pythonElementType)
 
@@ -128,7 +128,7 @@ namespace OT {
 
   Tensor(PyObject * pyObj) { return new OT::Tensor( OT::convert<OT::_PySequence_,OT::Tensor>(pyObj) ); }
 
-  OTTensorAccessors(Tensor, NumericalScalar, _PyFloat_)
+  OTTensorAccessors(Tensor, Scalar, _PyFloat_)
 
 } // Tensor
 } // OT

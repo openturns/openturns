@@ -1,8 +1,0 @@
-sample1=class=NumericalSample name=Sample1 implementation=class=NumericalSampleImplementation name=Sample1 size=3 dimension=2 data=[[10,20],[11,21],[12,22]]
-sample2=class=NumericalSample name=Sample2 implementation=class=NumericalSampleImplementation name=Sample2 size=3 dimension=2 data=[[30,40],[31,41],[32,42]]
-sample1 + sample2=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=2 data=[[40,60],[42,62],[44,64]]
-sample2 - sample1=class=NumericalSample name=Unnamed implementation=class=NumericalSampleImplementation name=Unnamed size=3 dimension=2 data=[[20,20],[20,20],[20,20]]
-sample3=class=NumericalSample name=Sample2 implementation=class=NumericalSampleImplementation name=Sample2 size=3 dimension=2 data=[[40,60],[42,62],[44,64]]
-sample4=class=NumericalSample name=Sample2 implementation=class=NumericalSampleImplementation name=Sample2 size=3 dimension=2 data=[[20,20],[20,20],[20,20]]
-after a translation of vector=class=NumericalPoint name=Unnamed dimension=2 values=[5,5] sample1=class=NumericalSample name=Sample1 implementation=class=NumericalSampleImplementation name=Sample1 size=3 dimension=2 data=[[15,25],[16,26],[17,27]]
-after a scaling of vector=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] sample1=class=NumericalSample name=Sample1 implementation=class=NumericalSampleImplementation name=Sample1 size=3 dimension=2 data=[[30,50],[32,52],[34,54]]

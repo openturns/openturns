@@ -23,9 +23,9 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Field.hxx"
@@ -50,23 +50,23 @@ public:
 
   /** Default constructor */
   explicit KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
-					     const NumericalScalar threshold,
-					     const NumericalPoint & eigenvalues,
-					     const Basis & modes,
-					     const ProcessSample & modesAsProcessSample,
-					     const Matrix & projection);
+      const Scalar threshold,
+      const Point & eigenvalues,
+      const Basis & modes,
+      const ProcessSample & modesAsProcessSample,
+      const Matrix & projection);
 
   /** Virtual constructor */
   virtual KarhunenLoeveResultImplementation * clone() const;
 
   /** Threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
   /** Covariance model accessor */
   CovarianceModel getCovarianceModel() const;
 
   /** Eigenvalues accessor */
-  NumericalPoint getEigenValues() const;
+  Point getEigenValues() const;
 
   /** Modes accessors */
   Basis getModes() const;
@@ -80,14 +80,14 @@ public:
   Matrix getProjectionMatrix() const;
 
   /** Projection method */
-  NumericalPoint project(const NumericalMathFunction & function) const;
-  NumericalPoint project(const Field & field) const;
-  NumericalSample project(const Basis & basis) const;
-  NumericalSample project(const ProcessSample & sample) const;
+  Point project(const Function & function) const;
+  Point project(const Field & field) const;
+  Sample project(const Basis & basis) const;
+  Sample project(const ProcessSample & sample) const;
 
   /** Lift method */
-  NumericalMathFunction lift(const NumericalPoint & coefficients) const;
-  Field liftAsField(const NumericalPoint & coefficients) const;
+  Function lift(const Point & coefficients) const;
+  Field liftAsField(const Point & coefficients) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -104,10 +104,10 @@ protected:
   CovarianceModel covariance_;
 
   /** Threshold */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
   /** Eigenvalues */
-  NumericalPoint eigenvalues_;
+  Point eigenvalues_;
 
   /** Modes */
   Basis modes_;

@@ -44,12 +44,12 @@ InverseNormalFactory * InverseNormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-InverseNormalFactory::Implementation InverseNormalFactory::build(const NumericalSample & sample) const
+InverseNormalFactory::Implementation InverseNormalFactory::build(const Sample & sample) const
 {
   return buildAsInverseNormal(sample).clone();
 }
 
-InverseNormalFactory::Implementation InverseNormalFactory::build(const NumericalPoint & parameters) const
+InverseNormalFactory::Implementation InverseNormalFactory::build(const Point & parameters) const
 {
   return buildAsInverseNormal(parameters).clone();
 }
@@ -59,21 +59,21 @@ InverseNormalFactory::Implementation InverseNormalFactory::build() const
   return buildAsInverseNormal().clone();
 }
 
-InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample & sample) const
+InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of dimension different from 1";
-  const NumericalScalar mu = sample.computeMean()[0];
-  NumericalScalar lambda = -1.0;
+  const Scalar mu = sample.computeMean()[0];
+  Scalar lambda = -1.0;
   if (ResourceMap::Get("InverseNormalFactory-Method") == "MLE")
     // Maximum likelihood estimation
   {
-    NumericalScalar sum = 0.0;
+    Scalar sum = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalScalar xI = sample[i][0];
-      if (xI <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample with non positive values";
+      const Scalar xI = sample[i][0];
+      if (!(xI > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample with non positive values";
       sum += 1.0 / sample[i][0];
     }
     lambda = 1.0 / (sum / size - 1.0 / mu);
@@ -85,7 +85,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalSample &
   return result;
 }
 
-InverseNormal InverseNormalFactory::buildAsInverseNormal(const NumericalPoint & parameters) const
+InverseNormal InverseNormalFactory::buildAsInverseNormal(const Point & parameters) const
 {
   try
   {

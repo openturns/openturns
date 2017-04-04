@@ -85,22 +85,22 @@ IndependentCopula * IndependentCopula::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint IndependentCopula::getRealization() const
+Point IndependentCopula::getRealization() const
 {
   return RandomGenerator::Generate(getDimension());
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint IndependentCopula::computeDDF(const NumericalPoint & point) const
+Point IndependentCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  return NumericalPoint(dimension, 0.0);
+  return Point(dimension, 0.0);
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar IndependentCopula::computeProbability(const Interval & interval) const
+Scalar IndependentCopula::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -109,9 +109,9 @@ NumericalScalar IndependentCopula::computeProbability(const Interval & interval)
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
   if (intersect.isNumericallyEmpty()) return 0.0;
-  const NumericalPoint lower(intersect.getLowerBound());
-  const NumericalPoint upper(intersect.getUpperBound());
-  NumericalScalar value = 1.0;
+  const Point lower(intersect.getLowerBound());
+  const Point upper(intersect.getUpperBound());
+  Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     value *= upper[i] - lower[i];
@@ -120,14 +120,14 @@ NumericalScalar IndependentCopula::computeProbability(const Interval & interval)
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar IndependentCopula::computePDF(const NumericalPoint & point) const
+Scalar IndependentCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   for (UnsignedInteger i = 0; i < dimension; i++)
   {
-    NumericalScalar x = point[i];
+    Scalar x = point[i];
     // If one component is outside of the support, the PDF is null
     if ((x <= 0.0) || (x >= 1.0)) return 0.0;
   }
@@ -136,15 +136,15 @@ NumericalScalar IndependentCopula::computePDF(const NumericalPoint & point) cons
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar IndependentCopula::computeCDF(const NumericalPoint & point) const
+Scalar IndependentCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar value = 1.0;
+  Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < dimension; i++)
   {
-    NumericalScalar x = point[i];
+    Scalar x = point[i];
     // If one component is at the left of the support of its matginal distribution, the CDF is null
     if (x <= 0.0) return 0.0;
     // If the component is inside of the support, multiply the value of the CDF by x
@@ -155,9 +155,9 @@ NumericalScalar IndependentCopula::computeCDF(const NumericalPoint & point) cons
 }
 
 /* Get the survival function of the distribution */
-NumericalScalar IndependentCopula::computeSurvivalFunction(const NumericalPoint & point) const
+Scalar IndependentCopula::computeSurvivalFunction(const Point & point) const
 {
-  return computeCDF(NumericalPoint(getDimension(), 1.0) - point);
+  return computeCDF(Point(getDimension(), 1.0) - point);
 }
 
 /* Get the Kendall concordance of the distribution */
@@ -167,52 +167,52 @@ CorrelationMatrix IndependentCopula::getKendallTau() const
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint IndependentCopula::computePDFGradient(const NumericalPoint & point) const
+Point IndependentCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  return NumericalPoint(0, 0.0);
+  return Point(0, 0.0);
 }
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint IndependentCopula::computeCDFGradient(const NumericalPoint & point) const
+Point IndependentCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  return NumericalPoint(0, 0.0);
+  return Point(0, 0.0);
 }
 
 
 /* Get the quantile of the distribution */
-NumericalPoint IndependentCopula::computeQuantile(const NumericalScalar prob,
+Point IndependentCopula::computeQuantile(const Scalar prob,
     const Bool tail,
-    NumericalScalar & marginalProb) const
+    Scalar & marginalProb) const
 {
-  if (prob < 0.0 || prob > 1.0) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
-  const NumericalScalar q = tail ? 1.0 - prob : prob;
+  if (!(prob < 0.0 || prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  const Scalar q = tail ? 1.0 - prob : prob;
   marginalProb = std::pow(q, 1.0 / dimension_);
-  if (q == 0.0) return NumericalPoint(dimension_, 0.0);
-  if (q == 1.0) return NumericalPoint(dimension_, 1.0);
-  return NumericalPoint(dimension_, marginalProb);
+  if (q == 0.0) return Point(dimension_, 0.0);
+  if (q == 1.0) return Point(dimension_, 1.0);
+  return Point(dimension_, marginalProb);
 }
 
 /** Get the product minimum volume interval containing a given probability of the distribution */
-Interval IndependentCopula::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval IndependentCopula::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /** Get the product bilateral confidence interval containing a given probability of the distribution */
-Interval IndependentCopula::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval IndependentCopula::computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   marginalProb = std::pow(prob, 1.0 / dimension_);
-  return Interval(NumericalPoint(dimension_, 0.5 * (1.0 - marginalProb)), NumericalPoint(dimension_, 0.5 * (1.0 + marginalProb)));
+  return Interval(Point(dimension_, 0.5 * (1.0 - marginalProb)), Point(dimension_, 0.5 * (1.0 + marginalProb)));
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
-LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   const Description inVars(Description::BuildDefault(dimension_, "x"));
   OSS formula;
@@ -244,13 +244,13 @@ void IndependentCopula::computeCovariance() const
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar IndependentCopula::computeConditionalDDF(const NumericalScalar x, const NumericalPoint & y) const
+Scalar IndependentCopula::computeConditionalDDF(const Scalar x, const Point & y) const
 {
   return 0.0;
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar IndependentCopula::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const
+Scalar IndependentCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -260,7 +260,7 @@ NumericalScalar IndependentCopula::computeConditionalPDF(const NumericalScalar x
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar IndependentCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
+Scalar IndependentCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -270,7 +270,7 @@ NumericalScalar IndependentCopula::computeConditionalCDF(const NumericalScalar x
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar IndependentCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+Scalar IndependentCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";

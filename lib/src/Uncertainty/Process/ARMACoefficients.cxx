@@ -56,7 +56,7 @@ ARMACoefficients::ARMACoefficients(const SquareMatrixCollection & collection)
 }
 
 /* Default constructor */
-ARMACoefficients::ARMACoefficients(const NumericalPoint & scalarCoefficients)
+ARMACoefficients::ARMACoefficients(const Point & scalarCoefficients)
   : PersistentCollection<SquareMatrix>(scalarCoefficients.getSize(), SquareMatrix(1))
 {
   dimension_ = 1;
@@ -68,7 +68,7 @@ ARMACoefficients::ARMACoefficients(const UniVariatePolynomial & polynomial)
   : PersistentCollection<SquareMatrix>(polynomial.getDegree() + 1, SquareMatrix(1))
 {
   dimension_ = 1;
-  const NumericalPoint coefficients(polynomial.getCoefficients());
+  const Point coefficients(polynomial.getCoefficients());
   for (UnsignedInteger i = 0 ; i < getSize() ; ++i ) (*this)[i](0, 0) = coefficients[i];
 }
 
@@ -108,11 +108,11 @@ void ARMACoefficients::add(const SquareMatrix & matrix)
   PersistentCollection<SquareMatrix>::add(matrix);
 }
 
-void ARMACoefficients::add(const NumericalScalar scalar)
+void ARMACoefficients::add(const Scalar scalar)
 {
   if (dimension_ != 1)
     throw InvalidArgumentException(HERE) << "Could not add the coefficient. The dimension is greater than 1.";
-  PersistentCollection<SquareMatrix>::add(SquareMatrix(1, NumericalPoint(1, scalar)));
+  PersistentCollection<SquareMatrix>::add(SquareMatrix(1, Point(1, scalar)));
 }
 
 

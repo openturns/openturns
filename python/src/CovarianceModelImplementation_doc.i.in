@@ -247,7 +247,7 @@ Notes
 -----
 This method si similar to the *discretize* method. This method requires that 
 OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, NumericalSample) 
+The method is helpfull for very large parameters (Mesh, grid, Sample) 
 as its compress data.
 "
 %enddef
@@ -280,7 +280,7 @@ Notes
 -----
 This method si similar to the *discretizeAndFactorize* method. This method 
 requires that OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, NumericalSample) 
+The method is helpfull for very large parameters (Mesh, grid, Sample) 
 as its compress data.
 "
 %enddef
@@ -303,7 +303,7 @@ OT_CovarianceModel_discretizeRow_doc
 
 Returns
 -------
-amplitude : :class:`~openturns.NumericalPoint`
+amplitude : :class:`~openturns.Point`
     The amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance 
     function."
 %enddef
@@ -363,7 +363,7 @@ OT_CovarianceModel_get_nugget_factor_doc
 
 Returns
 -------
-parameters : :class:`~openturns.NumericalPoint`
+parameters : :class:`~openturns.Point`
     List of the scale parameter :math:`\vect{\theta} \in \Rset^n` and the
     amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance
     function.
@@ -393,7 +393,7 @@ OT_CovarianceModel_getParameterDescription_doc
 
 Returns
 -------
-scale : :class:`~openturns.NumericalPoint`
+scale : :class:`~openturns.Point`
     The scale parameter :math:`\vect{\theta} \in \Rset^n` used in the 
     covariance function."
 %enddef
@@ -509,7 +509,7 @@ OT_CovarianceModel_parameterGradient_doc
 
 Parameters
 ----------
-amplitude : :class:`~openturns.NumericalPoint`
+amplitude : :class:`~openturns.Point`
     The amplitude parameter :math:`\vect{\sigma} \in \Rset^d` to be used in the
     covariance function. 
     Its size must be equal to the dimension of the covariance function."
@@ -524,7 +524,7 @@ OT_CovarianceModel_setAmplitude_doc
 
 Parameters
 ----------
-scale : :class:`~openturns.NumericalPoint`
+scale : :class:`~openturns.Point`
     The scale parameter :math:`\vect{\theta} \in \Rset^n` to be used in the
     covariance function.
     Its size must be equal to the spatial dimension of the covariance function."
@@ -555,7 +555,7 @@ OT_CovarianceModel_set_nugget_factor_doc
 
 Returns
 -------
-parameters : :class:`~openturns.NumericalPointWithDescription`
+parameters : :class:`~openturns.PointWithDescription`
     List of the scale parameter :math:`\vect{\theta} \in \Rset^n` and the
     amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance
     function.

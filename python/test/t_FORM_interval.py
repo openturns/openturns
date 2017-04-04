@@ -26,16 +26,16 @@ def buildEvent(vector, interval):
             return ot.Event(vector, Less(), upperBound[0])
         if finiteLowerBound[0] and finiteUpperBound[0]:
             print('case 3')
-            testFunction = ot.NumericalMathFunction(
+            testFunction = ot.SymbolicFunction(
                 'x', 'min(x-(' + str(lowerBound[0]) + '), (' + str(upperBound[0]) + ') - x)')
-            newVector = ot.RandomVector(ot.NumericalMathFunction(
+            newVector = ot.RandomVector(ot.Function(
                 testFunction, vector.getFunction()), vector.getAntecedent())
             return ot.Event(newVector, Greater(), 0.0)
         # Here we build an event that is always true and much cheaper to
         # compute
         print('case 4')
         inputDimension = vector.getFunction().getInputDimension()
-        return ot.Event(ot.RandomVector(ot.NumericalMathFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
+        return ot.Event(ot.RandomVector(ot.SymbolicFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
     # General case
     numConstraints = 0
     inVars = ot.Description.BuildDefault(dimension, 'y')
@@ -50,11 +50,11 @@ def buildEvent(vector, interval):
         # Here we build an event that is always true and much cheaper to
         # compute
         inputDimension = vector.getFunction().getInputDimension()
-        return ot.Event(ot.RandomVector(ot.NumericalMathFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
+        return ot.Event(ot.RandomVector(ot.SymbolicFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
     # Only one constraint
     if slacks.getSize() == 1:
         print('case 6')
-        testFunction = ot.NumericalMathFunction(inVars, [slacks[0]])
+        testFunction = ot.SymbolicFunction(inVars, [slacks[0]])
     # Several constraints
     else:
         print('case 7')
@@ -62,8 +62,8 @@ def buildEvent(vector, interval):
         for i in range(1, slacks.getSize()):
             formula += ',' + slacks[i]
         formula += ')'
-        testFunction = ot.NumericalMathFunction(inVars, [formula])
-    newVector = ot.RandomVector(ot.NumericalMathFunction(
+        testFunction = ot.SymbolicFunction(inVars, [formula])
+    newVector = ot.RandomVector(ot.Function(
         testFunction, vector.getFunction()), vector.getAntecedent())
     return ot.Event(newVector, Greater(), 0.0)
 
@@ -71,11 +71,11 @@ def buildEvent(vector, interval):
 ot.ResourceMap.SetAsUnsignedInteger('Simulation-DefaultBlockSize', 100)
 ot.ResourceMap.SetAsUnsignedInteger(
     'Simulation-DefaultMaximumOuterSampling', 100)
-ot.ResourceMap.SetAsNumericalScalar(
+ot.ResourceMap.SetAsScalar(
     'Simulation-DefaultMaximumCoefficientOfVariation', 0.0)
-ot.ResourceMap.SetAsNumericalScalar(
+ot.ResourceMap.SetAsScalar(
     'Simulation-DefaultMaximumStandardDeviation', 0.0)
-ot.ResourceMap.SetAsNumericalScalar(
+ot.ResourceMap.SetAsScalar(
     'RootStrategyImplementation-DefaultStepSize', 0.1)
 
 algorithms = ['MonteCarlo',
@@ -114,20 +114,20 @@ for domain in intervals:
     print('#' * 50)
     print('domain=\n', domain)
     outDim = domain.getDimension()
-    f = ot.NumericalMathFunction(inVars, inVars[0:outDim])
+    f = ot.SymbolicFunction(inVars, inVars[0:outDim])
     Y = ot.RandomVector(f, X)
-    #event = buildEvent(Y, domain)
+    # event = buildEvent(Y, domain)
     event = ot.Event(Y, domain)
 
     ot.RandomGenerator.SetSeed(0)
-    #algo = getattr(openturns, algoName)(event)
+    # algo = getattr(openturns, algoName)(event)
     algo = ot.MonteCarlo(event)
     algo.run()
     res = algo.getResult().getProbabilityEstimate()
     print('MC p=%.6g' % res)
 
     ot.RandomGenerator.SetSeed(0)
-    #algo = getattr(openturns, algoName)(event)
+    # algo = getattr(openturns, algoName)(event)
     algo = ot.FORM(ot.Cobyla(), event, X.getMean())
     algo.run()
     res = algo.getResult().getEventProbability()

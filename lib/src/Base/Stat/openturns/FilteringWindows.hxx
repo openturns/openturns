@@ -62,7 +62,7 @@ public:
   String __str__(const String & offset = "") const;
 
   /** functor - evaluation of filter using () */
-  NumericalScalar operator()(const NumericalScalar t) const;
+  Scalar operator()(const Scalar t) const;
 
 } ; /* class FilteringWindows */
 

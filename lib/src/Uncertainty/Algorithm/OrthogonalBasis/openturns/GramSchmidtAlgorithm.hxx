@@ -43,7 +43,7 @@ class OT_API GramSchmidtAlgorithm
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
+  typedef Collection<Scalar> ScalarCollection;
   typedef Collection<Coefficients>    CoefficientsCollection;
 
   /** Default constructor */
@@ -79,17 +79,17 @@ public:
 private:
 
   /** Return the order-th raw moment of the underlying measure */
-  NumericalScalar getStandardMoment(const UnsignedInteger order) const;
+  Scalar getStandardMoment(const UnsignedInteger order) const;
 
   /** Build the coefficients of the kth orthonormal polynomial */
   UniVariatePolynomial buildPolynomial(const UnsignedInteger k) const;
 
   /** Compute the dot product between two general polynomials according to the measure */
-  NumericalScalar dotProduct(const UniVariatePolynomial & p1,
-                             const UniVariatePolynomial & p2) const;
+  Scalar dotProduct(const UniVariatePolynomial & p1,
+                    const UniVariatePolynomial & p2) const;
 
   /** Cache to store the raw moments */
-  mutable NumericalScalarCollection standardMoments_;
+  mutable ScalarCollection standardMoments_;
 
   /** Cache to store the coefficients of the orthonormal polynomials */
   mutable CoefficientsCollection coefficientsCache_;

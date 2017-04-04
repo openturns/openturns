@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     UnsignedInteger dim = 2;
     InverseNatafIndependentCopulaEvaluation transformation(dim);
     fullprint << "transformation=" << transformation << std::endl;
-    NumericalPoint point(dim, 0.75);
+    Point point(dim, 0.75);
     fullprint << "transformation(" << point << ")=" << transformation(point) << std::endl;
     fullprint << "transformation parameters gradient=" << transformation.parameterGradient(point) << std::endl;
     fullprint << "input dimension=" << transformation.getInputDimension() << std::endl;

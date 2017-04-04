@@ -28,7 +28,7 @@ try:
         if (i > 0):
             formulas[0] = formulas[0] + " + "
 
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    limitState = Function(inputFunction, outputFunction, formulas)
 
     dim = limitState.getInputDimension()
 
@@ -36,9 +36,9 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
 
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
 
     R = CorrelationMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
@@ -74,7 +74,7 @@ try:
     # myAlgoC2.run()
 
     resultC = FORMResult(myAlgoC.getResult())
-    #resultC2 = SORMResult(myAlgoC2.getResult())
+    # resultC2 = SORMResult(myAlgoC2.getResult())
 
     #
     # FORM/SORM Abdo Rackwitz
@@ -138,10 +138,10 @@ try:
 
     #
     # Importance Sampling with Standard Event
-    meanSE = NumericalPoint(dim, 0.0)
+    meanSE = Point(dim, 0.0)
     for i in range(resultAR.getStandardSpaceDesignPoint().getDimension()):
         meanSE[i] = resultAR.getStandardSpaceDesignPoint()[i]
-    sigmaSE = NumericalPoint(dim, 1.0)
+    sigmaSE = Point(dim, 1.0)
     CorrSE = IdentityMatrix(dim)
     myImportanceSE = Normal(meanSE, sigmaSE, CorrSE)
 
@@ -154,11 +154,11 @@ try:
     myISS.run()
 
     # Importance Sampling avec Event
-    meanE = NumericalPoint(dim, 0.0)
+    meanE = Point(dim, 0.0)
     for i in range(resultC.getPhysicalSpaceDesignPoint().getDimension()):
         meanE[i] = resultC.getPhysicalSpaceDesignPoint()[i]
 
-    sigmaE = NumericalPoint(dim, 0.0)
+    sigmaE = Point(dim, 0.0)
     for i in range(resultC.getPhysicalSpaceDesignPoint().getDimension()):
         sigmaE[i] = sqrt(Covariance[i, i])
 
@@ -189,18 +189,18 @@ try:
     beta_hasoferC = resultC.getHasoferReliabilityIndex()
     SensitivityC = resultC.getEventProbabilitySensitivity()
 
-    #PFBreitC2 = resultC2.getEventProbabilityBreitung()
-    #BetaBreitC2 = resultC2.getGeneralisedReliabilityIndexBreitung()
+    # PFBreitC2 = resultC2.getEventProbabilityBreitung()
+    # BetaBreitC2 = resultC2.getGeneralisedReliabilityIndexBreitung()
     # PFHBC2=resultC2.getEventProbabilityHohenBichler()
     # BetaHBC2=resultC2.getGeneralisedReliabilityIndexHohenBichler()
-    #PFTvedtC2 = resultC2.getEventProbabilityTvedt()
-    #BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt()
-    #CurvC2 = resultC2.getSortedCurvatures()
-    #u_starC2 = resultC2.getStandardSpaceDesignPoint()
-    #x_starC2 = resultC2.getPhysicalSpaceDesignPoint()
-    #PtC2 = resultC2.getIsStandardPointOriginInFailureSpace() and "true" or "false"
-    #gammaC2 = resultC2.getImportanceFactors()
-    #beta_hasoferC2 = resultC2.getHasoferReliabilityIndex()
+    # PFTvedtC2 = resultC2.getEventProbabilityTvedt()
+    # BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt()
+    # CurvC2 = resultC2.getSortedCurvatures()
+    # u_starC2 = resultC2.getStandardSpaceDesignPoint()
+    # x_starC2 = resultC2.getPhysicalSpaceDesignPoint()
+    # PtC2 = resultC2.getIsStandardPointOriginInFailureSpace() and "true" or "false"
+    # gammaC2 = resultC2.getImportanceFactors()
+    # beta_hasoferC2 = resultC2.getHasoferReliabilityIndex()
 
     #
     # FORM/SORM Abdo Rackwitz
@@ -214,18 +214,18 @@ try:
     beta_hasoferAR = resultAR.getHasoferReliabilityIndex()
     SensitivityAR = resultAR.getEventProbabilitySensitivity()
 
-    #PFBreitAR2 = resultAR2.getEventProbabilityBreitung()
-    #BetaBreitAR2 = resultAR2.getGeneralisedReliabilityIndexBreitung()
+    # PFBreitAR2 = resultAR2.getEventProbabilityBreitung()
+    # BetaBreitAR2 = resultAR2.getGeneralisedReliabilityIndexBreitung()
     # PFHBAR2=resultAR2.getEventProbabilityHohenBichler()
     # BetaHBAR2=resultAR2.getGeneralisedReliabilityIndexHohenBichler()
-    #PFTvedtAR2 = resultAR2.getEventProbabilityTvedt()
-    #BetaTvedtAR2 = resultAR2.getGeneralisedReliabilityIndexTvedt()
-    #CurvAR2 = resultAR2.getSortedCurvatures()
-    #u_starAR2 = resultAR2.getStandardSpaceDesignPoint()
-    #x_starAR2 = resultAR2.getPhysicalSpaceDesignPoint()
-    #PtAR2 = resultAR2.getIsStandardPointOriginInFailureSpace() and "true" or "false"
-    #gammaAR2 = resultAR2.getImportanceFactors()
-    #beta_hasoferAR2 = resultAR2.getHasoferReliabilityIndex()
+    # PFTvedtAR2 = resultAR2.getEventProbabilityTvedt()
+    # BetaTvedtAR2 = resultAR2.getGeneralisedReliabilityIndexTvedt()
+    # CurvAR2 = resultAR2.getSortedCurvatures()
+    # u_starAR2 = resultAR2.getStandardSpaceDesignPoint()
+    # x_starAR2 = resultAR2.getPhysicalSpaceDesignPoint()
+    # PtAR2 = resultAR2.getIsStandardPointOriginInFailureSpace() and "true" or "false"
+    # gammaAR2 = resultAR2.getImportanceFactors()
+    # beta_hasoferAR2 = resultAR2.getHasoferReliabilityIndex()
 
     #
     # Monte Carlo

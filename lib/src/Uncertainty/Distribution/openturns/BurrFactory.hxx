@@ -45,11 +45,11 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
-  Burr buildAsBurr(const NumericalSample & sample) const;
-  Burr buildAsBurr(const NumericalPoint & parameters) const;
+  Burr buildAsBurr(const Sample & sample) const;
+  Burr buildAsBurr(const Point & parameters) const;
   Burr buildAsBurr() const;
 
 }; /* class BurrFactory */

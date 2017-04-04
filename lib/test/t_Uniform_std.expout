@@ -11,54 +11,54 @@ Distribution class=Uniform name=Uniform dimension=1 a=-0.5 b=1.5
 Distribution Uniform(a = -0.5, b = 1.5)
 Elliptical = true
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.759753]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1.26561] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.349444]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.506426]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.759753]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.26561] last=class=Point name=Unnamed dimension=1 values=[0.349444]
+mean=class=Point name=Unnamed dimension=1 values=[0.506426]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.339061]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[0]
 log pdf=-0.693147
 pdf     =0.5
 pdf (FD)=0.5
 cdf=0.75
 ccdf=0.25
 survival=0.25
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[-0.4]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[-0.4]
 Survival(inverse survival)=0.95
 characteristic function=(0.73846,0.403423)
 log characteristic function=(-0.172604,0.5)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.25,-0.25]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,-0.375]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.125,-0.375]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[1.4]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.25,-0.25]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.25,-0.25]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.125,-0.375]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.125,-0.375]
+quantile=class=Point name=Unnamed dimension=1 values=[1.4]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.45] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.45] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.45] upper bound=class=Point name=Unnamed dimension=1 values=[1.45] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x,outputVariable] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[1 * abs(x - (0.5))] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[1 * abs(x - (0.5))] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[outputVariable] formulas=[1 * abs(x - (0.5))] level=0.95
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[1 * abs(x - (0.5))] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[1 * abs(x - (0.5))] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[1 * abs(x - (0.5))] level=0.95
 beta=0.95
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.45] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.45] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.45] upper bound=class=Point name=Unnamed dimension=1 values=[1.45] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.4] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[1.4] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.4] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.5] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.4] upper bound=class=Point name=Unnamed dimension=1 values=[1.5] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.57735]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[1.8]
+mean=class=Point name=Unnamed dimension=1 values=[0.5]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.57735]
+skewness=class=Point name=Unnamed dimension=1 values=[0]
+kurtosis=class=Point name=Unnamed dimension=1 values=[1.8]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.333333]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[a : -0.5, b : 1.5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.333333]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.2]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[0]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.333333]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.2]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0]
 Standard representative=Uniform(a = -1, b = 1)

@@ -13,7 +13,7 @@ namespace OT {
 %extend IdentityMatrix {
   IdentityMatrix(const IdentityMatrix & other) { return new OT::IdentityMatrix(other); }
 
-PyObject * __setitem__(PyObject * args, NumericalScalar val)
+PyObject * __setitem__(PyObject * args, Scalar val)
 {
   SWIG_exception_fail(SWIG_RuntimeError, "method IdentityMatrix___setitem__ is not available because these matrices are read-only");
   return SWIG_Py_Void();

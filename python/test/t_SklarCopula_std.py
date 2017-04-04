@@ -20,10 +20,10 @@ try:
     print("Mean      =", repr(copula.getMean()))
     print("Mean (ref)=", repr(copulaRef.getMean()))
     ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 20)
-    ResourceMap.SetAsNumericalScalar("GaussKronrod-MaximumError",  1.0e-4)
+    ResourceMap.SetAsScalar("GaussKronrod-MaximumError",  1.0e-4)
     print("Covariance      =", repr(copula.getCovariance()))
     ResourceMap.SetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals", 100)
-    ResourceMap.SetAsNumericalScalar("GaussKronrod-MaximumError",  1.0e-12)
+    ResourceMap.SetAsScalar("GaussKronrod-MaximumError",  1.0e-12)
     print("Covariance (ref)=", repr(copulaRef.getCovariance()))
 
     # Is this copula an elliptical distribution?
@@ -51,7 +51,7 @@ try:
     print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
 
     # Define a point
-    point = NumericalPoint(dim, 0.2)
+    point = Point(dim, 0.2)
 
     # Show PDF and CDF of point
     pointPDF = copula.computePDF(point)
@@ -70,25 +70,29 @@ try:
     print("Quantile (ref)=", repr(quantileRef))
     print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          copula.computeSurvivalFunction(inverseSurvival))
     # Confidence regions
     if copula.getDimension() <= 2:
-        threshold = NumericalPoint()
-        print("Minimum volume interval=", copula.computeMinimumVolumeInterval(0.95, threshold))
+        threshold = Point()
+        print("Minimum volume interval=",
+              copula.computeMinimumVolumeInterval(0.95, threshold))
         print("threshold=", threshold)
-        beta = NumericalPoint()
+        beta = Point()
         levelSet = copula.computeMinimumVolumeLevelSet(0.95, beta)
         print("Minimum volume level set=", levelSet)
         print("beta=", beta)
-        print("Bilateral confidence interval=", copula.computeBilateralConfidenceInterval(0.95, beta))
+        print("Bilateral confidence interval=",
+              copula.computeBilateralConfidenceInterval(0.95, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (lower tail)=", copula.computeUnilateralConfidenceInterval(0.95, False, beta))
+        print("Unilateral confidence interval (lower tail)=",
+              copula.computeUnilateralConfidenceInterval(0.95, False, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (upper tail)=", copula.computeUnilateralConfidenceInterval(0.95, True, beta))
+        print("Unilateral confidence interval (upper tail)=",
+              copula.computeUnilateralConfidenceInterval(0.95, True, beta))
         print("beta=", beta)
-    
 
     # Extract the marginals
     for i in range(dim):
@@ -96,13 +100,13 @@ try:
         marginRef = copulaRef.getMarginal(i)
         print("margin=", repr(margin))
         print("margin PDF      =%.6f" %
-              margin.computePDF(NumericalPoint(1, 0.25)))
+              margin.computePDF(Point(1, 0.25)))
         print("margin PDF (ref)=%.6f" %
-              marginRef.computePDF(NumericalPoint(1, 0.25)))
+              marginRef.computePDF(Point(1, 0.25)))
         print("margin CDF      =%.6f" %
-              margin.computeCDF(NumericalPoint(1, 0.25)))
+              margin.computeCDF(Point(1, 0.25)))
         print("margin CDF (ref)=%.6f" %
-              marginRef.computeCDF(NumericalPoint(1, 0.25)))
+              marginRef.computeCDF(Point(1, 0.25)))
         print("margin quantile      =", repr(margin.computeQuantile(0.95)))
         print("margin quantile (ref)=", repr(marginRef.computeQuantile(0.95)))
         print("margin realization=", repr(margin.getRealization()))
@@ -115,12 +119,12 @@ try:
     margin = copula.getMarginal(indices)
     marginRef = copulaRef.getMarginal(indices)
     print("margin=", repr(margin))
-    print("margin PDF      =%.6f" % margin.computePDF(NumericalPoint(2, 0.25)))
+    print("margin PDF      =%.6f" % margin.computePDF(Point(2, 0.25)))
     print("margin PDF (ref)=%.6f" %
-          marginRef.computePDF(NumericalPoint(2, 0.25)))
-    print("margin CDF      =%.6f" % margin.computeCDF(NumericalPoint(2, 0.25)))
+          marginRef.computePDF(Point(2, 0.25)))
+    print("margin CDF      =%.6f" % margin.computeCDF(Point(2, 0.25)))
     print("margin CDF (ref)=%.6f" %
-          marginRef.computeCDF(NumericalPoint(2, 0.25)))
+          marginRef.computeCDF(Point(2, 0.25)))
     print("margin quantile      =", repr(margin.computeQuantile(0.95)))
     print("margin quantile (ref)=", repr(marginRef.computeQuantile(0.95)))
     print("margin realization=", repr(margin.getRealization()))

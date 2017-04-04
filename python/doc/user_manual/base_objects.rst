@@ -84,10 +84,10 @@ Vectors
     BoolCollection
     Description
     Indices
-    NumericalPoint
-    NumericalPointWithDescription
-    NumericalComplexCollection
-    NumericalScalarCollection
+    Point
+    PointWithDescription
+    ComplexCollection
+    ScalarCollection
 
 Comparison operators
 ====================

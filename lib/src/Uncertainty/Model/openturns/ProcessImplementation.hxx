@@ -22,9 +22,9 @@
 #define OPENTURNS_PROCESSIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/TimeSeries.hxx"
@@ -94,7 +94,7 @@ public:
   virtual Field getRealization() const;
 
   /** Continuous realization accessor */
-  virtual NumericalMathFunction getContinuousRealization() const;
+  virtual Function getContinuousRealization() const;
 
   /** Process sample accessors */
   virtual ProcessSample getSample(const UnsignedInteger size) const;

@@ -31,6 +31,7 @@
 #include "openturns/NormalCopula.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -147,15 +148,15 @@ ComposedCopula * ComposedCopula::clone() const
 }
 
 /* Get one realization of the ComposedCopula */
-NumericalPoint ComposedCopula::getRealization() const
+Point ComposedCopula::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = copulaCollection_.getSize();
-  NumericalPoint result(dimension);
+  Point result(dimension);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPoint realization(copulaCollection_[i].getRealization());
+    const Point realization(copulaCollection_[i].getRealization());
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
@@ -167,25 +168,25 @@ NumericalPoint ComposedCopula::getRealization() const
 }
 
 /* Get the DDF of the ComposedCopula */
-NumericalPoint ComposedCopula::computeDDF(const NumericalPoint & point) const
+Point ComposedCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalPoint DDF(getDimension());
+  Point DDF(getDimension());
   const UnsignedInteger size = copulaCollection_.getSize();
-  NumericalPoint copulaPDF(size);
-  NumericalPointCollection copulaDDF(size);
-  NumericalScalar productPDF = 1.0;
+  Point copulaPDF(size);
+  PointCollection copulaDDF(size);
+  Scalar productPDF = 1.0;
   UnsignedInteger index = 0;
   // First, compute the several elements
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // If one component is outside of the support, the PDF is null
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return NumericalPoint(dimension);
+    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return Point(dimension);
     const Copula copula(copulaCollection_[i]);
     const UnsignedInteger copulaDimension = copula.getDimension();
-    NumericalPoint component(copulaDimension);
+    Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       component[j] = point[index];
@@ -199,7 +200,7 @@ NumericalPoint ComposedCopula::computeDDF(const NumericalPoint & point) const
   index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPoint currentDDF(copulaDDF[i] * (productPDF / copulaPDF[i]));
+    const Point currentDDF(copulaDDF[i] * (productPDF / copulaPDF[i]));
     const UnsignedInteger currentDimension = currentDDF.getDimension();
     for (UnsignedInteger j = 0; j < currentDimension; ++j)
     {
@@ -211,21 +212,21 @@ NumericalPoint ComposedCopula::computeDDF(const NumericalPoint & point) const
 }
 
 /* Get the PDF of the ComposedCopula */
-NumericalScalar ComposedCopula::computePDF(const NumericalPoint & point) const
+Scalar ComposedCopula::computePDF(const Point & point) const
 {
   /* PDF = PDF_copula1x...xPDF_copula_n */
   const UnsignedInteger dimension = getDimension();
   if (isIndependent_) return IndependentCopula(dimension).computePDF(point);
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   const UnsignedInteger size = copulaCollection_.getSize();
-  NumericalScalar productPDF = 1.0;
+  Scalar productPDF = 1.0;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // If one component is outside of the support, the PDF is null
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
-    NumericalPoint component(copulaDimension);
+    Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       component[j] = point[index];
@@ -237,7 +238,7 @@ NumericalScalar ComposedCopula::computePDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the ComposedCopula */
-NumericalScalar ComposedCopula::computeCDF(const NumericalPoint & point) const
+Scalar ComposedCopula::computeCDF(const Point & point) const
 {
   /* CDF = CDF_copula1x...xCDF_copula_n */
   const UnsignedInteger dimension = getDimension();
@@ -245,7 +246,7 @@ NumericalScalar ComposedCopula::computeCDF(const NumericalPoint & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const UnsignedInteger size = copulaCollection_.getSize();
-  NumericalScalar productCDF = 1.0;
+  Scalar productCDF = 1.0;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -253,20 +254,20 @@ NumericalScalar ComposedCopula::computeCDF(const NumericalPoint & point) const
     if (point[i] <= 0.0) return 0.0;
     // If the component is inside of the support, update the CDF value
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
-    NumericalPoint component(copulaDimension);
+    Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       component[j] = point[index];
       ++index;
     }
-    const NumericalScalar cdf = copulaCollection_[i].computeCDF(component);
+    const Scalar cdf = copulaCollection_[i].computeCDF(component);
     productCDF *= cdf;
   }
   return productCDF;
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar ComposedCopula::computeProbability(const Interval & interval) const
+Scalar ComposedCopula::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (isIndependent_) return IndependentCopula(dimension).computeProbability(interval);
@@ -276,16 +277,16 @@ NumericalScalar ComposedCopula::computeProbability(const Interval & interval) co
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
   if (intersect.isNumericallyEmpty()) return 0.0;
-  const NumericalPoint lowerIntersect(intersect.getLowerBound());
-  const NumericalPoint upperIntersect(intersect.getUpperBound());
+  const Point lowerIntersect(intersect.getLowerBound());
+  const Point upperIntersect(intersect.getUpperBound());
   const UnsignedInteger size = copulaCollection_.getSize();
-  NumericalScalar value = 1.0;
+  Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Copula copula(copulaCollection_[i]);
     const UnsignedInteger copulaDimension = copula.getDimension();
-    NumericalPoint lower(copulaDimension);
-    NumericalPoint upper(copulaDimension);
+    Point lower(copulaDimension);
+    Point upper(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       lower[j] = lowerIntersect[j];
@@ -297,7 +298,7 @@ NumericalScalar ComposedCopula::computeProbability(const Interval & interval) co
 }
 
 /* Get the survival function of the distribution */
-NumericalScalar ComposedCopula::computeSurvivalFunction(const NumericalPoint & point) const
+Scalar ComposedCopula::computeSurvivalFunction(const Point & point) const
 {
   /* Survival = Survival_copula1x...xSurvival_copula_n */
   const UnsignedInteger dimension = getDimension();
@@ -305,7 +306,7 @@ NumericalScalar ComposedCopula::computeSurvivalFunction(const NumericalPoint & p
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   const UnsignedInteger size = copulaCollection_.getSize();
-  NumericalScalar productSurvival = 1.0;
+  Scalar productSurvival = 1.0;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -313,13 +314,13 @@ NumericalScalar ComposedCopula::computeSurvivalFunction(const NumericalPoint & p
     if (point[i] >= 1.0) return 0.0;
     // If the component is inside of the support, update the Survival value
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
-    NumericalPoint component(copulaDimension);
+    Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
       component[j] = point[index];
       ++index;
     }
-    const NumericalScalar survival = copulaCollection_[i].computeSurvivalFunction(component);
+    const Scalar survival = copulaCollection_[i].computeSurvivalFunction(component);
     productSurvival *= survival;
   }
   return productSurvival;
@@ -368,25 +369,25 @@ CorrelationMatrix ComposedCopula::getShapeMatrix() const
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint ComposedCopula::computePDFGradient(const NumericalPoint & point) const
+Point ComposedCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In ComposedCopula::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In ComposedCopula::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint ComposedCopula::computeCDFGradient(const NumericalPoint & point) const
+Point ComposedCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In ComposedCopula::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In ComposedCopula::computeCDFGradient(const Point & point) const";
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar ComposedCopula::computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const
+Scalar ComposedCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -402,13 +403,13 @@ NumericalScalar ComposedCopula::computeConditionalPDF(const NumericalScalar x, c
   }
   // Extract the relevant part of the conditioning
   const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
-  NumericalPoint conditioningVector(conditioningSize);
+  Point conditioningVector(conditioningSize);
   for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
   return copulaCollection_[copulaIndex].computeConditionalPDF(x, conditioningVector);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar ComposedCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
+Scalar ComposedCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -424,13 +425,13 @@ NumericalScalar ComposedCopula::computeConditionalCDF(const NumericalScalar x, c
   }
   // Extract the relevant part of the conditioning
   const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
-  NumericalPoint conditioningVector(conditioningSize);
+  Point conditioningVector(conditioningSize);
   for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
   return copulaCollection_[copulaIndex].computeConditionalCDF(x, conditioningVector);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar ComposedCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+Scalar ComposedCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension == 0) return q;
@@ -449,7 +450,7 @@ NumericalScalar ComposedCopula::computeConditionalQuantile(const NumericalScalar
   }
   // Extract the relevant part of the conditioning
   const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
-  NumericalPoint conditioningVector(conditioningSize);
+  Point conditioningVector(conditioningSize);
   for (UnsignedInteger i = 0; i < conditioningSize; ++i)
   {
     conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
@@ -507,19 +508,19 @@ ComposedCopula::Implementation ComposedCopula::getMarginal(const Indices & indic
 }
 
 /* Parameters value and description accessor */
-ComposedCopula::NumericalPointWithDescriptionCollection ComposedCopula::getParametersCollection() const
+ComposedCopula::PointWithDescriptionCollection ComposedCopula::getParametersCollection() const
 {
-  NumericalPointWithDescriptionCollection parameters(1);
+  PointWithDescriptionCollection parameters(1);
   // No marginal parameter
   // Put the dependence parameters
-  NumericalPointWithDescription point(0);
+  PointWithDescription point(0);
   Description description(0);
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
-    // even if the NumericalPoint are empty
-    const NumericalPointWithDescription copulaParameters(copulaCollection_[i].getParametersCollection()[0]);
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
+    const PointWithDescription copulaParameters(copulaCollection_[i].getParametersCollection()[0]);
     const Description parametersDescription(copulaParameters.getDescription());
     const String copulaName(copulaCollection_[i].getName());
     const UnsignedInteger parameterDimension = copulaParameters.getDimension();
@@ -535,30 +536,30 @@ ComposedCopula::NumericalPointWithDescriptionCollection ComposedCopula::getParam
   return parameters;
 } // getParametersCollection
 
-void ComposedCopula::setParametersCollection(const NumericalPointCollection & parametersCollection)
+void ComposedCopula::setParametersCollection(const PointCollection & parametersCollection)
 {
   // Check if the given parameters are ok
   if (parametersCollection.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: the given collection has a size=" << parametersCollection.getSize() << " but should be of size=1";
   // Dependence parameters
-  const NumericalPoint parameters(parametersCollection[0]);
+  const Point parameters(parametersCollection[0]);
   const UnsignedInteger parametersDimension = parameters.getDimension();
   // Index within the given parametersCollection
   UnsignedInteger globalIndex = 0;
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // All distributions, including copulas, must output a collection of NumericalPoint of size at least 1,
-    // even if the NumericalPoint are empty
+    // All distributions, including copulas, must output a collection of Point of size at least 1,
+    // even if the Point are empty
     const UnsignedInteger atomParametersDimension = copulaCollection_[i].getParametersCollection()[0].getDimension();
     // ith copula parameters
-    NumericalPoint point(atomParametersDimension);
+    Point point(atomParametersDimension);
     for (UnsignedInteger j = 0; j < atomParametersDimension; ++j)
     {
       if (globalIndex >= parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
       point[j] = parameters[globalIndex];
       ++globalIndex;
     } // atom parameters
-    copulaCollection_[i].setParametersCollection(NumericalPointCollection(1, point));
+    copulaCollection_[i].setParametersCollection(PointCollection(1, point));
   } // atoms
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
 }
@@ -595,7 +596,7 @@ ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilist
   // General case: return the transformation as an aggregated function of pre/post processed isoprobabilistic transformations built using the elementary copulas. These transformations are the isoprobabilistic transformations of the elementary copulas if they lead to the standard Normal space, else a Rosenblatt transformation is substituted
   const Description allVariables(Description::BuildDefault(dimension, "x"));
   UnsignedInteger shift = 0;
-  Collection< NumericalMathFunction > atomTransformations(size);
+  Collection< Function > atomTransformations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // First, build the mapping between the full components and the components of the current copula
@@ -607,7 +608,7 @@ ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilist
     if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getIsoProbabilisticTransformation(), projection);
     else atomTransformations[i] = ComposedFunction(RosenblattEvaluation(copulaCollection_[i]), projection);
   }
-  return NumericalMathFunction(atomTransformations);
+  return AggregatedFunction(atomTransformations);
 }
 
 /* Get the inverse isoprobabilist transformation */
@@ -622,7 +623,7 @@ ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverse
   // General case: return the transformation as an aggregated function of pre/post processed isoprobabilistic transformations built using the elementary copulas. These transformations are the isoprobabilistic transformations of the elementary copulas if they lead to the standard Normal space, else a Rosenblatt transformation is substituted
   const Description allVariables(Description::BuildDefault(dimension, "x"));
   UnsignedInteger shift = 0;
-  Collection< NumericalMathFunction > atomTransformations(size);
+  Collection< Function > atomTransformations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // First, build the mapping between the full components and the components of the current copula
@@ -634,7 +635,7 @@ ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverse
     if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getInverseIsoProbabilisticTransformation(), projection);
     else atomTransformations[i] = ComposedFunction(InverseRosenblattEvaluation(copulaCollection_[i]), projection);
   }
-  return NumericalMathFunction(atomTransformations);
+  return AggregatedFunction(atomTransformations);
 }
 
 /* Compute the covariance of the distribution */

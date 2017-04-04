@@ -10,13 +10,14 @@ algo = ot.GaussLegendre([20])
 value, nodes = algo.integrateWithNodes(f, ot.Interval(a, b))
 
 g = f.draw(a, b, 512)
-lower = ot.Cloud(nodes, ot.NumericalSample(nodes.getSize(), 1))
+lower = ot.Cloud(nodes, ot.Sample(nodes.getSize(), 1))
 lower.setColor("magenta")
 lower.setPointStyle('circle')
 g.add(lower)
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle(r"GaussLegendre example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$"+str(value[0]))
+plt.suptitle(
+    r"GaussLegendre example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(value[0]))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(g, figure=fig, axes=[axis], add_legend=False)

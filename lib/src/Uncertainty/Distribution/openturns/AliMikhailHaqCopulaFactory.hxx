@@ -47,16 +47,16 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
-  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalSample & sample) const;
-  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const NumericalPoint & parameters) const;
+  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const Sample & sample) const;
+  AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const Point & parameters) const;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula() const;
 
 private:
   // Compute Kendall's tau from AliMikhailHaq copula's parameter
-  NumericalScalar KendallTauFromParameter(const NumericalScalar theta) const;
+  Scalar KendallTauFromParameter(const Scalar theta) const;
 
 }; /* class AliMikhailHaqCopulaFactory */
 

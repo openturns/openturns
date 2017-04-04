@@ -32,17 +32,17 @@ int main(int argc, char *argv[])
 
   UnsignedInteger size = 100;
   Uniform xuniform(0.9, 1.1);
-  NumericalSample x( xuniform.getSample(size) );
+  Sample x( xuniform.getSample(size) );
   Uniform yuniform(1.9, 2.1);
-  NumericalSample y( yuniform.getSample(size) );
-  NumericalMathFunction f( Description(1, "x"), Description(1, "y"), Description(1, "2.0*x") );
+  Sample y( yuniform.getSample(size) );
+  Function f( Description(1, "x"), Description(1, "y"), Description(1, "2.0*x") );
   Basis basis;
   basis.add(f);
   Indices indices(basis.getSize());
   indices.fill();
   FittingAlgorithm fittingAlgo = CorrectedLeaveOneOut();
 
-  NumericalScalar result = fittingAlgo.run(x, y, basis, indices);
+  Scalar result = fittingAlgo.run(x, y, basis, indices);
 
   fullprint << "result = " << result << std::endl;
 
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     size = 2;
     x = xuniform.getSample(size);
     y = yuniform.getSample(size);
-    NumericalMathFunction f2( Description(1, "x"), Description(1, "y"), Description(1, "x^2") );
+    Function f2( Description(1, "x"), Description(1, "y"), Description(1, "x^2") );
     basis.add(f2);
-    NumericalMathFunction f3( Description(1, "x"), Description(1, "y"), Description(1, "x^3") );
+    Function f3( Description(1, "x"), Description(1, "y"), Description(1, "x^3") );
     basis.add(f3);
     indices = Indices(basis.getSize());
     indices.fill();

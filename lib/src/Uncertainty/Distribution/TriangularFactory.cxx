@@ -44,7 +44,7 @@ TriangularFactory * TriangularFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-TriangularFactory::Implementation TriangularFactory::build(const NumericalSample & sample) const
+TriangularFactory::Implementation TriangularFactory::build(const Sample & sample) const
 {
   return buildAsTriangular(sample).clone();
 }
@@ -54,36 +54,36 @@ TriangularFactory::Implementation TriangularFactory::build() const
   return buildAsTriangular().clone();
 }
 
-TriangularFactory::Implementation TriangularFactory::build(const NumericalPoint & parameters) const
+TriangularFactory::Implementation TriangularFactory::build(const Point & parameters) const
 {
   return buildAsTriangular(parameters).clone();
 }
 
-Triangular TriangularFactory::buildAsTriangular(const NumericalSample & sample) const
+Triangular TriangularFactory::buildAsTriangular(const Sample & sample) const
 {
-  const NumericalScalar size = sample.getSize();
+  const Scalar size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Triangular distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  const NumericalScalar xMin = sample.getMin()[0];
-  const NumericalScalar a = xMin - std::abs(xMin) / (size + 2);
-  const NumericalScalar xMax = sample.getMax()[0];
-  const NumericalScalar b = xMax + std::abs(xMax) / (size + 2);
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar a = xMin - std::abs(xMin) / (size + 2);
+  const Scalar xMax = sample.getMax()[0];
+  const Scalar b = xMax + std::abs(xMax) / (size + 2);
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon;
+    const Scalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
     Triangular result(xMin - delta, xMin, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;
   }
-  const NumericalScalar m = 3.0 * sample.computeMean()[0] - a - b;
+  const Scalar m = 3.0 * sample.computeMean()[0] - a - b;
   Triangular result(a, m, b);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-Triangular TriangularFactory::buildAsTriangular(const NumericalPoint & parameters) const
+Triangular TriangularFactory::buildAsTriangular(const Point & parameters) const
 {
   try
   {

@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     // We create a sample and we fill it
     const UnsignedInteger size = 6;
     const UnsignedInteger dimension = 1;
-    NumericalSample sample(size, dimension);
+    Sample sample(size, dimension);
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dimension; ++j)
         sample[i][j] = i + j + 1;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     //    TimeSeriesCollection collection;
     //    collection.add(timeSerie);
 
-    //    sample.scale( NumericalPoint( 1, 0.1 ) );
+    //    sample.scale( Point( 1, 0.1 ) );
     //    TimeSeries newtimeSeries(timeGrid, sample);
     //    collection.add( newtimeSeries );
 

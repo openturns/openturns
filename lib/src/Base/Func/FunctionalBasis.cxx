@@ -42,13 +42,13 @@ FunctionalBasis::FunctionalBasis(const FunctionalBasisImplementation & implement
   // Nothing to do
 }
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction FunctionalBasis::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function FunctionalBasis::build(const UnsignedInteger index) const
 {
   return getImplementation()->build(index);
 }
 
-NumericalMathFunction FunctionalBasis::operator[](const UnsignedInteger index) const
+Function FunctionalBasis::operator[](const UnsignedInteger index) const
 {
   return getImplementation()->operator[](index);
 }

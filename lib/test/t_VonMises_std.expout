@@ -11,56 +11,56 @@ Distribution class=VonMises name=VonMises dimension=1 mu=-0.5 kappa=1.5
 Distribution VonMises(mu = -0.5, kappa=1.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.492446]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[-0.494608] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.388969]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.474891]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.492446]
+oneSample first=class=Point name=Unnamed dimension=1 values=[-0.494608] last=class=Point name=Unnamed dimension=1 values=[0.388969]
+mean=class=Point name=Unnamed dimension=1 values=[-0.474891]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.986948]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.160799]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.160799]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.160799]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.160799]
 log pdf=-2.23056
 pdf     =0.107468
 pdf (FD)=0.107468
 cdf=0.915928
 ccdf=0.0840718
 survival=0.0840718
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[-2.1122]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[-2.1122]
 Survival(inverse survival)=0.95
 characteristic function=(0.523156,-0.285801)
 log characteristic function=(-0.517291,-0.5)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[0.160799,-0.0564635]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[0.160799,-0.0564635]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.0815561,0.0925495]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.0815561,0.0925495]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[1.42908]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.160799,-0.0564635]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[0.160799,-0.0564635]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0815561,0.0925495]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.0815561,0.0925495]
+quantile=class=Point name=Unnamed dimension=1 values=[1.42908]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2.71399] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.71399] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-2.71399] upper bound=class=Point name=Unnamed dimension=1 values=[1.71399] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(VonMises(mu = -0.5, kappa=1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(VonMises(mu = -0.5, kappa=1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(VonMises(mu = -0.5, kappa=1.5)) level=3.2363
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(VonMises(mu = -0.5, kappa=1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(VonMises(mu = -0.5, kappa=1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(VonMises(mu = -0.5, kappa=1.5)) level=3.2363
 beta=0.0393091
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2.46547] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.0656] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-2.46547] upper bound=class=Point name=Unnamed dimension=1 values=[2.0656] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-3.14159] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.42908] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-3.14159] upper bound=class=Point name=Unnamed dimension=1 values=[1.42908] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-2.1122] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[3.14159] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-2.1122] upper bound=class=Point name=Unnamed dimension=1 values=[3.14159] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[-0.427827]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.05959]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.410037]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.70254]
+mean=class=Point name=Unnamed dimension=1 values=[-0.427827]
+standard deviation=class=Point name=Unnamed dimension=1 values=[1.05959]
+skewness=class=Point name=Unnamed dimension=1 values=[0.410037]
+kurtosis=class=Point name=Unnamed dimension=1 values=[3.70254]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.12273]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[mu : -0.5, kappa : 1.5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.427827]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.30577]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[-1.03152]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[5.0989]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[-4.03982]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[-0.427827]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.30577]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[-1.03152]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[5.0989]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[-4.03982]
 Standard representative=VonMises(mu = -0.5, kappa=1.5)
 Circular mean=-0.5
 Circular variance=0.403867

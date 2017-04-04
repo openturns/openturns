@@ -38,15 +38,15 @@ int main(int argc, char *argv[])
     UnsignedInteger spatialDimension = 1;
 
     // Create the function to estimate
-    NumericalMathFunction model("x0", "x0");
+    SymbolicFunction model("x0", "x0");
 
-    NumericalSample X(sampleSize, spatialDimension);
+    Sample X(sampleSize, spatialDimension);
     for (UnsignedInteger i = 0; i < sampleSize; ++ i)
       X[i][0] = 3.0 + (8.0 * i) / sampleSize;
-    NumericalSample Y = model(X);
+    Sample Y = model(X);
 
     // Add a small noise to data
-    Y += GaussianProcess(AbsoluteExponential(NumericalPoint(1, 0.1), NumericalPoint(1, 0.2)), Mesh(X)).getRealization().getValues();
+    Y += GaussianProcess(AbsoluteExponential(Point(1, 0.1), Point(1, 0.2)), Mesh(X)).getRealization().getValues();
 
     Basis basis = LinearBasisFactory(spatialDimension).build();
     // Case of a misspecified covariance model

@@ -23,8 +23,8 @@
 #ifndef OPENTURNS_FINITEDIFFERENCEGRADIENT_HXX
 #define OPENTURNS_FINITEDIFFERENCEGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
 
@@ -39,27 +39,27 @@ BEGIN_NAMESPACE_OPENTURNS
  * finite difference formula
  */
 class OT_API FiniteDifferenceGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>                          EvaluationImplementation;
+  typedef Pointer<EvaluationImplementation>                          EvaluationPointer;
 
   /** Default constructor */
   FiniteDifferenceGradient();
 
   /** First Parameter constructor  */
-  FiniteDifferenceGradient(const NumericalPoint & epsilon,
-                           const EvaluationImplementation & p_evaluation);
+  FiniteDifferenceGradient(const Point & epsilon,
+                           const EvaluationPointer & p_evaluation);
 
   /** SecondParameter constructor */
-  FiniteDifferenceGradient(const NumericalScalar epsilon,
-                           const EvaluationImplementation & p_evaluation);
+  FiniteDifferenceGradient(const Scalar epsilon,
+                           const EvaluationPointer & p_evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   FiniteDifferenceGradient(const FiniteDifferenceStep & finiteDifferenceStep,
-                           const EvaluationImplementation & p_evaluation);
+                           const EvaluationPointer & p_evaluation);
 
   /** Comparison operator */
   virtual Bool operator ==(const FiniteDifferenceGradient & other) const;
@@ -78,10 +78,10 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the epsilon */
-  virtual NumericalPoint getEpsilon() const;
+  virtual Point getEpsilon() const;
 
   /** Accessor for the evaluation */
-  virtual EvaluationImplementation getEvaluation() const;
+  virtual EvaluationPointer getEvaluation() const;
 
   /** Accessor for the finite difference step */
   virtual void setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep);
@@ -102,10 +102,10 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const Point & inP) const;
 
 protected:
-  EvaluationImplementation p_evaluation_;
+  EvaluationPointer p_evaluation_;
   FiniteDifferenceStep finiteDifferenceStep_;
 
 

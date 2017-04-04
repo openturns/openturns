@@ -42,19 +42,19 @@ public:
   MauntzKucherenkoSensitivityAlgorithm();
 
   /** Constructor with parameters */
-  MauntzKucherenkoSensitivityAlgorithm(const NumericalSample & inputDesign,
-                                       const NumericalSample & outputDesign,
+  MauntzKucherenkoSensitivityAlgorithm(const Sample & inputDesign,
+                                       const Sample & outputDesign,
                                        const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
   MauntzKucherenkoSensitivityAlgorithm(const Distribution & distribution,
                                        const UnsignedInteger size,
-                                       const NumericalMathFunction & model,
+                                       const Function & model,
                                        const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   MauntzKucherenkoSensitivityAlgorithm(const WeightedExperiment & experiment,
-                                       const NumericalMathFunction & model,
+                                       const Function & model,
                                        const Bool computeSecondOrder = true);
 
   /** Virtual constructor */
@@ -72,8 +72,8 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  NumericalSample computeIndices(const NumericalSample & sample,
-                                 NumericalSample & VTi) const;
+  Sample computeIndices(const Sample & sample,
+                        Sample & VTi) const;
 
 }; /* class MauntzKucherenkoSensitivityAlgorithm */
 

@@ -43,8 +43,8 @@ Interval::Interval(const UnsignedInteger dimension)
 }
 
 /* Parameters constructor, simplified interface for 1D case */
-Interval::Interval(const NumericalScalar lowerBound,
-                   const NumericalScalar upperBound)
+Interval::Interval(const Scalar lowerBound,
+                   const Scalar upperBound)
   : DomainImplementation(1)
   , lowerBound_(1, lowerBound)
   , upperBound_(1, upperBound)
@@ -55,20 +55,20 @@ Interval::Interval(const NumericalScalar lowerBound,
 }
 
 /* Parameters constructor */
-Interval::Interval(const NumericalPoint & lowerBound,
-                   const NumericalPoint & upperBound)
+Interval::Interval(const Point & lowerBound,
+                   const Point & upperBound)
   : DomainImplementation(lowerBound.getDimension())
   , lowerBound_(lowerBound)
   , upperBound_(upperBound)
   , finiteLowerBound_(getDimension(), true)
   , finiteUpperBound_(getDimension(), true)
 {
-  if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two NumericalPoint of different dimensions";
+  if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
 }
 
 /* Parameters constructor */
-Interval::Interval(const NumericalPoint & lowerBound,
-                   const NumericalPoint & upperBound,
+Interval::Interval(const Point & lowerBound,
+                   const Point & upperBound,
                    const BoolCollection & finiteLowerBound,
                    const BoolCollection & finiteUpperBound)
   : DomainImplementation(lowerBound.getDimension())
@@ -77,7 +77,7 @@ Interval::Interval(const NumericalPoint & lowerBound,
   , finiteLowerBound_(finiteLowerBound)
   , finiteUpperBound_(finiteUpperBound)
 {
-  if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two NumericalPoint of different dimensions";
+  if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
   if ((finiteLowerBound.getSize() != getDimension()) || (finiteUpperBound.getSize() != getDimension())) throw InvalidArgumentException(HERE) << "Error: cannot build an interval with lower bound flags or upper bound flags of improper dimension";
 }
 
@@ -95,13 +95,13 @@ Interval Interval::intersect(const Interval & other) const
   // else check dimension compatibility
   if (other.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot intersect intervals of different dimensions";
   // Extract other elements
-  const NumericalPoint otherLower(other.getLowerBound());
-  const NumericalPoint otherUpper(other.getUpperBound());
+  const Point otherLower(other.getLowerBound());
+  const Point otherUpper(other.getUpperBound());
   const BoolCollection otherFiniteLower(other.getFiniteLowerBound());
   const BoolCollection otherFiniteUpper(other.getFiniteUpperBound());
   // Built intersection elements
-  NumericalPoint intersectLower(getDimension());
-  NumericalPoint intersectUpper(getDimension());
+  Point intersectLower(getDimension());
+  Point intersectUpper(getDimension());
   BoolCollection intersectFiniteLower(getDimension());
   BoolCollection intersectFiniteUpper(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
@@ -122,13 +122,13 @@ Interval Interval::join(const Interval & other) const
   // else check dimension compatibility
   if (other.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot intersect intervals of different dimensions";
   // Extract other elements
-  const NumericalPoint otherLower(other.getLowerBound());
-  const NumericalPoint otherUpper(other.getUpperBound());
+  const Point otherLower(other.getLowerBound());
+  const Point otherUpper(other.getUpperBound());
   const BoolCollection otherFiniteLower(other.getFiniteLowerBound());
   const BoolCollection otherFiniteUpper(other.getFiniteUpperBound());
   // Built intersection elements
-  NumericalPoint intersectLower(getDimension());
-  NumericalPoint intersectUpper(getDimension());
+  Point intersectLower(getDimension());
+  Point intersectUpper(getDimension());
   BoolCollection intersectFiniteLower(getDimension());
   BoolCollection intersectFiniteUpper(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
@@ -149,7 +149,7 @@ Bool Interval::isEmpty() const
 }
 
 /* Check if the given point is inside of the closed interval */
-Bool Interval::contains(const NumericalPoint & point) const
+Bool Interval::contains(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << point.getDimension();
@@ -185,7 +185,7 @@ void Interval::computeVolume() const
 }
 
 /* Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
-Bool Interval::numericallyContains(const NumericalPoint & point) const
+Bool Interval::numericallyContains(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << point.getDimension();
@@ -203,8 +203,8 @@ Interval Interval::operator +(const Interval & rhs) const
         << getDimension()
         << "; RHS dimension = "
         << rhs.getDimension();
-  const NumericalPoint lowerBound(lowerBound_ + rhs.getLowerBound());
-  const NumericalPoint upperBound(upperBound_ + rhs.getUpperBound());
+  const Point lowerBound(lowerBound_ + rhs.getLowerBound());
+  const Point upperBound(upperBound_ + rhs.getUpperBound());
   Interval::BoolCollection finiteLowerBound(rhs.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(rhs.getFiniteUpperBound());
   for(UnsignedInteger i = 0; i < (getDimension()); ++i)
@@ -249,8 +249,8 @@ Interval Interval::operator -(const Interval & rhs) const
         << getDimension()
         << "; RHS dimension = "
         << rhs.getDimension();
-  const NumericalPoint lowerBound(lowerBound_ - rhs.getUpperBound());
-  const NumericalPoint upperBound(upperBound_ - rhs.getLowerBound());
+  const Point lowerBound(lowerBound_ - rhs.getUpperBound());
+  const Point upperBound(upperBound_ - rhs.getLowerBound());
   Interval::BoolCollection finiteLowerBound(rhs.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(rhs.getFiniteUpperBound());
   for(UnsignedInteger i = 0; i < (getDimension()); ++i)
@@ -287,12 +287,12 @@ Interval & Interval::operator -=(const Interval & other)
 
 
 /* Product operator */
-Interval Interval::operator *(const NumericalScalar scalar) const
+Interval Interval::operator *(const Scalar scalar) const
 {
   // Special case for multiplication by 0. We assume that 0 x (+/-inf) = 0.
-  if (scalar == 0.0) return Interval(NumericalPoint(getDimension(), 0.0), NumericalPoint(getDimension(), 0.0));
-  NumericalPoint lowerBound(lowerBound_);
-  NumericalPoint upperBound(upperBound_);
+  if (scalar == 0.0) return Interval(Point(getDimension(), 0.0), Point(getDimension(), 0.0));
+  Point lowerBound(lowerBound_);
+  Point upperBound(upperBound_);
   Interval::BoolCollection finiteLowerBound(finiteLowerBound_);
   Interval::BoolCollection finiteUpperBound(finiteUpperBound_);
   if (scalar > 0.0) return Interval(scalar * lowerBound, scalar * upperBound, finiteLowerBound, finiteUpperBound);
@@ -300,13 +300,13 @@ Interval Interval::operator *(const NumericalScalar scalar) const
 }
 
 /*  In-place product operator */
-Interval & Interval::operator *=(const NumericalScalar scalar)
+Interval & Interval::operator *=(const Scalar scalar)
 {
   // Special case for multiplication by 0. We assume that 0 x (+/-inf) = 0.
   if (scalar == 0.0)
   {
-    lowerBound_ = NumericalPoint(getDimension());
-    upperBound_ = NumericalPoint(getDimension());
+    lowerBound_ = Point(getDimension());
+    upperBound_ = Point(getDimension());
     finiteLowerBound_ = BoolCollection(getDimension(), true);
     finiteUpperBound_ = BoolCollection(getDimension(), true);
     return *this;
@@ -317,7 +317,7 @@ Interval & Interval::operator *=(const NumericalScalar scalar)
     upperBound_ *= scalar;
     return *this;
   }
-  const NumericalPoint tmpBound(lowerBound_);
+  const Point tmpBound(lowerBound_);
   lowerBound_ = scalar * upperBound_;
   upperBound_ = scalar * tmpBound;
   const BoolCollection tmpFiniteBound(finiteLowerBound_);
@@ -343,24 +343,24 @@ Bool Interval::operator != (const Interval & other) const
 }
 
 /* Lower bound accessor */
-NumericalPoint Interval::getLowerBound() const
+Point Interval::getLowerBound() const
 {
   return lowerBound_;
 }
 
-void Interval::setLowerBound(const NumericalPoint & lowerBound)
+void Interval::setLowerBound(const Point & lowerBound)
 {
   if (lowerBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given lower bound has a dimension incompatible with the interval dimension.";
   lowerBound_ = lowerBound;
 }
 
 /* Upper bound accessor */
-NumericalPoint Interval::getUpperBound() const
+Point Interval::getUpperBound() const
 {
   return upperBound_;
 }
 
-void Interval::setUpperBound(const NumericalPoint & upperBound)
+void Interval::setUpperBound(const Point & upperBound)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given upper bound has a dimension incompatible with the interval dimension.";
   upperBound_ = upperBound;

@@ -17,7 +17,7 @@ try:
     dt = 0.1
     myTimeGrid = RegularGrid(t0, dt, N)
 
-    # Create a NumericalSample
+    # Create a Sample
     # parameters of gaussien impose a few risk to get negative values
     mySample = Uniform().getSample(N)
 
@@ -25,7 +25,7 @@ try:
     myRealization = TimeSeries(myTimeGrid, mySample)
 
     # Create the lambda parameter
-    lambdaVector = NumericalPoint(dimension)
+    lambdaVector = Point(dimension)
     for index in range(dimension):
         lambdaVector[index] = (index + 2.) * 0.1
 

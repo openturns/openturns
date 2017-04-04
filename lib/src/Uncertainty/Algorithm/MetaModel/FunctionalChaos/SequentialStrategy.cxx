@@ -58,7 +58,7 @@ void SequentialStrategy::computeInitialBasis()
 {
   // Start with the first vector
   currentVectorIndex_ = 0;
-  Psi_k_p_ = NumericalMathFunctionCollection(1, basis_.build(currentVectorIndex_));
+  Psi_k_p_ = FunctionCollection(1, basis_.build(currentVectorIndex_));
   I_p_ = Indices(1, currentVectorIndex_);
   addedPsi_k_ranks_ = Indices(1, currentVectorIndex_);
   removedPsi_k_ranks_ = Indices(0);
@@ -67,9 +67,9 @@ void SequentialStrategy::computeInitialBasis()
 }
 
 /* Update the basis for the next iteration of approximation */
-void SequentialStrategy::updateBasis(const NumericalPoint & alpha_k,
-                                     const NumericalScalar residual,
-                                     const NumericalScalar relativeError)
+void SequentialStrategy::updateBasis(const Point & alpha_k,
+                                     const Scalar residual,
+                                     const Scalar relativeError)
 {
   if (verbose_)
   {
@@ -86,7 +86,7 @@ void SequentialStrategy::updateBasis(const NumericalPoint & alpha_k,
   conservedPsi_k_ranks_.fill();
   if (currentVectorIndex_ < maximumDimension_)
   {
-    const NumericalMathFunction newVector(basis_.build(currentVectorIndex_));
+    const Function newVector(basis_.build(currentVectorIndex_));
     Psi_k_p_.add(newVector);
     I_p_.add(currentVectorIndex_);
     addedPsi_k_ranks_ = Indices(1, currentVectorIndex_);

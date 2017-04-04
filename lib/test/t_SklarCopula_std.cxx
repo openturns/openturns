@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
 
     CorrelationMatrix R = IdentityMatrix(dim);
     for(UnsignedInteger i = 0; i < dim - 1; i++) R(i, i + 1) = 0.25;
-    NumericalPoint mean(dim);
+    Point mean(dim);
     mean[0] = 1.0;
     mean[1] = 2.0;
     mean[2] = 3.0;
-    NumericalPoint sigma(dim);
+    Point sigma(dim);
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     sigma[2] = 1.0;
@@ -62,29 +62,29 @@ int main(int argc, char *argv[])
     fullprint << "Independent copula= " << (copula.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for realization of copula
-    NumericalPoint oneRealization = copula.getRealization();
+    Point oneRealization = copula.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
     UnsignedInteger size = 10;
-    NumericalSample oneSample = copula.getSample( size );
+    Sample oneSample = copula.getSample( size );
     fullprint << "oneSample=" << oneSample << std::endl;
 
     // Test for sampling
     size = 1000;
-    NumericalSample anotherSample = copula.getSample( size );
+    Sample anotherSample = copula.getSample( size );
     fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
     fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
     // Define a point
-    NumericalPoint point(dim, 0.2);
+    Point point(dim, 0.2);
 
     // Show DDF, PDF and CDF of point
-    NumericalPoint  pointDDF = copula.computeDDF( point );
-    NumericalScalar pointPDF = copula.computePDF( point );
-    NumericalScalar pointCDF = copula.computeCDF( point );
-    NumericalScalar pointPDFRef = copulaRef.computePDF( point );
-    NumericalScalar pointCDFRef = copulaRef.computeCDF( point );
+    Point  pointDDF = copula.computeDDF( point );
+    Scalar pointPDF = copula.computePDF( point );
+    Scalar pointCDF = copula.computeCDF( point );
+    Scalar pointPDFRef = copulaRef.computePDF( point );
+    Scalar pointCDFRef = copulaRef.computeCDF( point );
     fullprint << "point= " << point
               << " ddf=" << pointDDF
               << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
@@ -93,15 +93,15 @@ int main(int argc, char *argv[])
               << " cdf=" << pointCDF
               << " cdf (ref)=" << pointCDFRef
               << std::endl;
-    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    Scalar Survival = copula.computeSurvivalFunction(point);
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
-    NumericalPoint InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
+    Point InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
     fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
     // Get 50% quantile
-    NumericalPoint quantile = copula.computeQuantile( 0.5 );
-    NumericalPoint quantileRef = copulaRef.computeQuantile( 0.5 );
+    Point quantile = copula.computeQuantile( 0.5 );
+    Point quantileRef = copulaRef.computeQuantile( 0.5 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "QuantileRef=" << quantileRef << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
@@ -109,10 +109,10 @@ int main(int argc, char *argv[])
     if (copula.getDimension() <= 2)
     {
       // Confidence regions
-      NumericalScalar threshold;
+      Scalar threshold;
       fullprint << "Minimum volume interval=" << copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
       fullprint << "threshold=" << threshold << std::endl;
-      NumericalScalar beta;
+      Scalar beta;
       LevelSet levelSet(copula.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
       fullprint << "Minimum volume level set=" << levelSet << std::endl;
       fullprint << "beta=" << beta << std::endl;
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     }
     // Covariance and correlation
     ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 20 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-4 );
+    ResourceMap::SetAsScalar( "GaussKronrod-MaximumError",  1.0e-4 );
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
     CorrelationMatrix correlation = copula.getCorrelation();
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
     CorrelationMatrix kendall = copula.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
     ResourceMap::SetAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
-    ResourceMap::SetAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
+    ResourceMap::SetAsScalar( "GaussKronrod-MaximumError",  1.0e-12 );
 
     // Extract the marginals
     for (UnsignedInteger i = 0; i < dim; i++)
@@ -143,10 +143,10 @@ int main(int argc, char *argv[])
       Copula margin(copula.getMarginal(i));
       Copula marginRef(copulaRef.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
-      fullprint << "margin PDF      =" << margin.computePDF(NumericalPoint(1, 0.25)) << std::endl;
-      fullprint << "margin PDF (ref)=" << marginRef.computePDF(NumericalPoint(1, 0.25)) << std::endl;
-      fullprint << "margin CDF      =" << margin.computeCDF(NumericalPoint(1, 0.25)) << std::endl;
-      fullprint << "margin CDF (ref)=" << marginRef.computeCDF(NumericalPoint(1, 0.25)) << std::endl;
+      fullprint << "margin PDF      =" << margin.computePDF(Point(1, 0.25)) << std::endl;
+      fullprint << "margin PDF (ref)=" << marginRef.computePDF(Point(1, 0.25)) << std::endl;
+      fullprint << "margin CDF      =" << margin.computeCDF(Point(1, 0.25)) << std::endl;
+      fullprint << "margin CDF (ref)=" << marginRef.computeCDF(Point(1, 0.25)) << std::endl;
       fullprint << "margin quantile      =" << margin.computeQuantile(0.95) << std::endl;
       fullprint << "margin quantile (ref)=" << marginRef.computeQuantile(0.95) << std::endl;
       fullprint << "margin realization=" << margin.getRealization() << std::endl;
@@ -160,10 +160,10 @@ int main(int argc, char *argv[])
     Copula margins(copula.getMarginal(indices));
     Copula marginsRef(copulaRef.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
-    fullprint << "margins PDF      =" << margins.computePDF(NumericalPoint(2, 0.25)) << std::endl;
-    fullprint << "margins PDF (ref)=" << marginsRef.computePDF(NumericalPoint(2, 0.25)) << std::endl;
-    fullprint << "margins CDF      =" << margins.computeCDF(NumericalPoint(2, 0.25)) << std::endl;
-    fullprint << "margins CDF (ref)=" << marginsRef.computeCDF(NumericalPoint(2, 0.25)) << std::endl;
+    fullprint << "margins PDF      =" << margins.computePDF(Point(2, 0.25)) << std::endl;
+    fullprint << "margins PDF (ref)=" << marginsRef.computePDF(Point(2, 0.25)) << std::endl;
+    fullprint << "margins CDF      =" << margins.computeCDF(Point(2, 0.25)) << std::endl;
+    fullprint << "margins CDF (ref)=" << marginsRef.computeCDF(Point(2, 0.25)) << std::endl;
     quantile = margins.computeQuantile(0.95);
     quantileRef = marginsRef.computeQuantile(0.95);
     fullprint << "margins quantile      =" << quantile << std::endl;

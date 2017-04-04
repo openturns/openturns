@@ -22,7 +22,7 @@ diff = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation 
 test 8 : matrix multiplication method
 prod = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,17]
 test 9 : multiplication with a numerical point method
-pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+pt = class=Point name=Unnamed dimension=2 values=[1,2]
 ptResult = [1,9]
 test 10 : multiplication with a numerical scalar collection method
 ptScalar = [1,0]

@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     distributions[i] = Uniform();
 
   LHSExperiment lhs(ComposedDistribution(distributions), size);
-  NumericalSample design(lhs.generate());
+  Sample design(lhs.generate());
 
   // Defining space fillings
   SpaceFillingC2 spaceFillingC2;

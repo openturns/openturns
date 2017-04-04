@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Compact.hxx"
 #include "openturns/OptimizationProblem.hxx"
 
@@ -50,57 +50,57 @@ public:
 
 
   /** Standard constructor */
-  OptimizationResult(const NumericalPoint & optimalPoint,
-                     const NumericalPoint & optimalValue,
+  OptimizationResult(const Point & optimalPoint,
+                     const Point & optimalValue,
                      const UnsignedInteger iterationNumber,
-                     const NumericalScalar absoluteError,
-                     const NumericalScalar relativeError,
-                     const NumericalScalar residualError,
-                     const NumericalScalar constraintError,
+                     const Scalar absoluteError,
+                     const Scalar relativeError,
+                     const Scalar residualError,
+                     const Scalar constraintError,
                      const OptimizationProblem & problem);
 
   /** Virtual constructor */
   virtual OptimizationResult * clone() const;
 
   /** OptimalPoint accessors */
-  void setOptimalPoint(const NumericalPoint & optimalPoint);
-  NumericalPoint getOptimalPoint() const;
+  void setOptimalPoint(const Point & optimalPoint);
+  Point getOptimalPoint() const;
 
   /** Optimal value accessor */
-  void setOptimalValue(const NumericalPoint & optimalValue);
-  NumericalPoint getOptimalValue() const;
+  void setOptimalValue(const Point & optimalValue);
+  Point getOptimalValue() const;
 
   /** Iteration number accessor */
   void setIterationNumber(const UnsignedInteger iterationNumber);
   UnsignedInteger getIterationNumber() const;
 
   /** Absolute error accessor */
-  NumericalScalar getAbsoluteError() const;
-  NumericalSample getAbsoluteErrorHistory() const;
+  Scalar getAbsoluteError() const;
+  Sample getAbsoluteErrorHistory() const;
 
   /** Relative error accessor */
-  NumericalScalar getRelativeError() const;
-  NumericalSample getRelativeErrorHistory() const;
+  Scalar getRelativeError() const;
+  Sample getRelativeErrorHistory() const;
 
   /** Residual error accessor */
-  NumericalScalar getResidualError() const;
-  NumericalSample getResidualErrorHistory() const;
+  Scalar getResidualError() const;
+  Sample getResidualErrorHistory() const;
 
   /** Constraint error accessor */
-  NumericalScalar getConstraintError() const;
-  NumericalSample getConstraintErrorHistory() const;
+  Scalar getConstraintError() const;
+  Sample getConstraintErrorHistory() const;
 
   /** Input / output sample accessor */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Problem accessor */
   void setProblem(const OptimizationProblem & problem);
   OptimizationProblem getProblem() const;
 
   /** Lagrange multipliers accessor */
-  void setLagrangeMultipliers(const NumericalPoint & lagrangeMultipliers);
-  NumericalPoint getLagrangeMultipliers() const;
+  void setLagrangeMultipliers(const Point & lagrangeMultipliers);
+  Point getLagrangeMultipliers() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -112,12 +112,12 @@ public:
   void load(Advocate & adv);
 
   /** Incremental history storage */
-  void store(const NumericalPoint & inP,
-             const NumericalPoint & outP,
-             const NumericalScalar absoluteError,
-             const NumericalScalar relativeError,
-             const NumericalScalar residualError,
-             const NumericalScalar constraintError);
+  void store(const Point & inP,
+             const Point & outP,
+             const Scalar absoluteError,
+             const Scalar relativeError,
+             const Scalar residualError,
+             const Scalar constraintError);
 
   /** Draw error history graph */
   Graph drawErrorHistory() const;
@@ -127,31 +127,31 @@ public:
 
 protected:
   /** Absolute error accessor */
-  void setAbsoluteError(const NumericalScalar absoluteError);
-  void setAbsoluteErrorHistory(const NumericalSample & absoluteError);
+  void setAbsoluteError(const Scalar absoluteError);
+  void setAbsoluteErrorHistory(const Sample & absoluteError);
 
   /** Relative error accessor */
-  void setRelativeError(const NumericalScalar relativeError);
-  void setRelativeErrorHistory(const NumericalSample & relativeError);
+  void setRelativeError(const Scalar relativeError);
+  void setRelativeErrorHistory(const Sample & relativeError);
 
   /** Residual error accessor */
-  void setResidualError(const NumericalScalar residualError);
-  void setResidualErrorHistory(const NumericalSample & residualError);
+  void setResidualError(const Scalar residualError);
+  void setResidualErrorHistory(const Sample & residualError);
 
   /** Constraint error accessor */
-  void setConstraintError(const NumericalScalar constraintError);
-  void setConstraintErrorHistory(const NumericalSample & constraintError);
+  void setConstraintError(const Scalar constraintError);
+  void setConstraintErrorHistory(const Sample & constraintError);
 
 private:
 
-  NumericalPoint  optimalPoint_;
-  NumericalPoint  optimalValue_;
+  Point  optimalPoint_;
+  Point  optimalValue_;
   UnsignedInteger    iterationNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
-  NumericalScalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
-  NumericalScalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
-  NumericalScalar residualError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
-  NumericalScalar constraintError_; /**< Value of ||constraints(x_n)|| for the active constraints */
-  NumericalPoint lagrangeMultipliers_;
+  Scalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
+  Scalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
+  Scalar residualError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
+  Scalar constraintError_; /**< Value of ||constraints(x_n)|| for the active constraints */
+  Point lagrangeMultipliers_;
   Compact absoluteErrorHistory_;
   Compact relativeErrorHistory_;
   Compact residualErrorHistory_;

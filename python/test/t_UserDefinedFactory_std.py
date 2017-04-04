@@ -7,10 +7,10 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    sample = NumericalSample(3, 2)
-    sample[0] = NumericalPoint((1.0, 1.5))
-    sample[1] = NumericalPoint((2.0, 2.5))
-    sample[2] = NumericalPoint((3.0, 3.5))
+    sample = Sample(3, 2)
+    sample[0] = Point((1.0, 1.5))
+    sample[1] = Point((2.0, 2.5))
+    sample[2] = Point((3.0, 3.5))
 
     factory = UserDefinedFactory()
     estimatedDistribution = factory.build(sample)

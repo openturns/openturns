@@ -23,7 +23,7 @@
 
 #include "openturns/FiniteDifferenceHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,17 +33,17 @@ static const Factory<FiniteDifferenceHessian> Factory_FiniteDifferenceHessian;
 
 /* Default constructor */
 FiniteDifferenceHessian::FiniteDifferenceHessian()
-  : NumericalMathHessianImplementation()
-  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
+  : HessianImplementation()
+  , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
 }
 
 /* First Parameter constructor  */
 FiniteDifferenceHessian::FiniteDifferenceHessian(
-  const NumericalPoint & epsilon,
-  const EvaluationImplementation & p_evaluation)
-  : NumericalMathHessianImplementation()
+  const Point & epsilon,
+  const EvaluationPointer & p_evaluation)
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(epsilon)
 {
@@ -57,11 +57,11 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
 }
 
 /* SecondParameter constructor */
-FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
-    const EvaluationImplementation & p_evaluation)
-  : NumericalMathHessianImplementation()
+FiniteDifferenceHessian::FiniteDifferenceHessian(const Scalar epsilon,
+    const EvaluationPointer & p_evaluation)
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
-  , finiteDifferenceStep_(NumericalPoint(p_evaluation->getInputDimension(), epsilon))
+  , finiteDifferenceStep_(Point(p_evaluation->getInputDimension(), epsilon))
 {
   // Check if epsilon is exactly zero
   if (epsilon == 0.0) throw InvalidArgumentException(HERE) << "The given scalar epsilon is equal to 0.0";
@@ -70,12 +70,12 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(const NumericalScalar epsilon,
 /*  Parameter constructor with FiniteDifferenceStep*/
 FiniteDifferenceHessian::FiniteDifferenceHessian(
   const FiniteDifferenceStep & finiteDifferenceStep,
-  const EvaluationImplementation & p_evaluation)
-  : NumericalMathHessianImplementation()
+  const EvaluationPointer & p_evaluation)
+  : HessianImplementation()
   , p_evaluation_(p_evaluation)
   , finiteDifferenceStep_(finiteDifferenceStep)
 {
-  NumericalPoint epsilon(getEpsilon());
+  Point epsilon(getEpsilon());
   //Check if the dimension of the constant term is compatible with the linear and quadratic terms
   if (epsilon.getDimension() != p_evaluation->getInputDimension()) throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
 
@@ -109,13 +109,13 @@ String FiniteDifferenceHessian:: __repr__() const
 }
 
 /* Accessor for epsilon */
-NumericalPoint FiniteDifferenceHessian::getEpsilon() const
+Point FiniteDifferenceHessian::getEpsilon() const
 {
   return finiteDifferenceStep_.getEpsilon();
 }
 
 /* Accessor for the evaluation */
-FiniteDifferenceHessian::EvaluationImplementation FiniteDifferenceHessian::getEvaluation() const
+FiniteDifferenceHessian::EvaluationPointer FiniteDifferenceHessian::getEvaluation() const
 {
   return p_evaluation_;
 }
@@ -144,15 +144,15 @@ FiniteDifferenceStep FiniteDifferenceHessian::getFiniteDifferenceStep() const
 }
 
 /* Evaluation method */
-SymmetricTensor FiniteDifferenceHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor FiniteDifferenceHessian::hessian(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In FiniteDifferenceHessian::hessian(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In FiniteDifferenceHessian::hessian(const Point & inP) const";
 }
 
 /* Method save() stores the object through the StorageManager */
 void FiniteDifferenceHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
   adv.saveAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );
 }
@@ -160,8 +160,8 @@ void FiniteDifferenceHessian::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void FiniteDifferenceHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluation;
+  HessianImplementation::load(adv);
+  TypedInterfaceObject<EvaluationImplementation> evaluation;
   adv.loadAttribute( "evaluation_", evaluation );
   p_evaluation_ = evaluation.getImplementation();
   adv.loadAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );

@@ -8,11 +8,11 @@ RandomGenerator.SetSeed(0)
 
 try:
     PlatformInfo.SetNumericalPrecision(5)
-    mean = NumericalPoint(3)
+    mean = Point(3)
     mean[0] = 1.0
     mean[1] = 2.0
     mean[2] = 3.0
-    sigma = NumericalPoint(3)
+    sigma = Point(3)
     sigma[0] = 2.0
     sigma[1] = 3.0
     sigma[2] = 4.0
@@ -86,7 +86,7 @@ try:
     print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
 
     # Define a point
-    zero = NumericalPoint(dim, 0.0)
+    zero = Point(dim, 0.0)
 
     # Show PDF and CDF of zero point
     zeroPDF = distribution.computePDF(zero)
@@ -95,30 +95,35 @@ try:
           zeroPDF, " cdf=%.6f" % zeroCDF)
 
     # Get 95% quantile
-    quantile = NumericalPoint(distribution.computeQuantile(0.95))
+    quantile = Point(distribution.computeQuantile(0.95))
     print("Quantile=", repr(quantile))
     print("CDF(quantile)=%.6f" % distribution.computeCDF(quantile))
 
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          distribution.computeSurvivalFunction(inverseSurvival))
     # Confidence regions
     if distribution.getDimension() <= 2:
-        threshold = NumericalPoint()
-        print("Minimum volume interval=", distribution.computeMinimumVolumeInterval(0.95, threshold))
+        threshold = Point()
+        print("Minimum volume interval=",
+              distribution.computeMinimumVolumeInterval(0.95, threshold))
         print("threshold=", threshold)
-        beta = NumericalPoint()
+        beta = Point()
         levelSet = distribution.computeMinimumVolumeLevelSet(0.95, beta)
         print("Minimum volume level set=", levelSet)
         print("beta=", beta)
-        print("Bilateral confidence interval=", distribution.computeBilateralConfidenceInterval(0.95, beta))
+        print("Bilateral confidence interval=",
+              distribution.computeBilateralConfidenceInterval(0.95, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (lower tail)=", distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
+        print("Unilateral confidence interval (lower tail)=",
+              distribution.computeUnilateralConfidenceInterval(0.95, False, beta))
         print("beta=", beta)
-        print("Unilateral confidence interval (upper tail)=", distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
+        print("Unilateral confidence interval (upper tail)=",
+              distribution.computeUnilateralConfidenceInterval(0.95, True, beta))
         print("beta=", beta)
-    
+
     # Reference : Normal nD, correlation matrix = identity
     ref = Normal(mean, sigma,  CorrelationMatrix(dim))
     print("Reference=")
@@ -129,8 +134,8 @@ try:
     for i in range(dim):
         margin = distribution.getMarginal(i)
         print("margin=", repr(margin))
-        print("margin PDF=%.6f" % margin.computePDF(NumericalPoint(1)))
-        print("margin CDF=%.6f" % margin.computeCDF(NumericalPoint(1)))
+        print("margin PDF=%.6f" % margin.computePDF(Point(1)))
+        print("margin CDF=%.6f" % margin.computeCDF(Point(1)))
         print("margin quantile=", repr(margin.computeQuantile(0.5)))
         print("margin realization=", repr(margin.getRealization()))
 
@@ -141,9 +146,9 @@ try:
     print("indices=", repr(indices))
     margins = distribution.getMarginal(indices)
     print("margins=", repr(margins))
-    print("margins PDF=%.6f" % margins.computePDF(NumericalPoint(2)))
-    print("margins CDF=%.6f" % margins.computeCDF(NumericalPoint(2)))
-    quantile = NumericalPoint(margins.computeQuantile(0.5))
+    print("margins PDF=%.6f" % margins.computePDF(Point(2)))
+    print("margins CDF=%.6f" % margins.computeCDF(Point(2)))
+    quantile = Point(margins.computeQuantile(0.5))
     print("margins quantile=", repr(quantile))
     print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
     print("margins realization=", repr(margins.getRealization()))
@@ -165,7 +170,7 @@ try:
     print("Parameters ", repr(distribution.getParametersCollection()))
 
     # Show PDF and CDF at point
-    point = NumericalPoint(dim, 0.0)
+    point = Point(dim, 0.0)
     print("PDF      =%.6f" % distribution.computePDF(point))
     print("PDF (ref)=%.6f" % distributionRef.computePDF(point))
     print("CDF      =%.6f" % distribution.computeCDF(point))

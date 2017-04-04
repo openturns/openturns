@@ -35,10 +35,10 @@ try:
     formulas[
         0] = "min(0.1 * (u1 - u2)^2.0 - (u1 + u2) / sqrt(2.0) + 3.0, 0.1 * (u1 - u2)^2.0 + (u1 + u2) / sqrt(2.0) + 3.0, u1 - u2 + 3.5 * sqrt(2.0), -u1 + u2 + 3.5 * sqrt(2.0))"
 
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
-    limitState.setGradient(CenteredFiniteDifferenceGradient(ResourceMap.GetAsNumericalScalar(
+    limitState = Function(inputFunction, outputFunction, formulas)
+    limitState.setGradient(CenteredFiniteDifferenceGradient(ResourceMap.GetAsScalar(
         "CenteredFiniteDifferenceGradient-DefaultEpsilon"), limitState.getEvaluation()))
-    limitState.setHessian(CenteredFiniteDifferenceHessian(ResourceMap.GetAsNumericalScalar(
+    limitState.setHessian(CenteredFiniteDifferenceHessian(ResourceMap.GetAsScalar(
         "CenteredFiniteDifferenceHessian-DefaultEpsilon"), limitState.getEvaluation()))
     dim = limitState.getInputDimension()
 
@@ -46,9 +46,9 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
 
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
 
     R = IdentityMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
@@ -96,8 +96,8 @@ try:
     myAbdoRackwitz.setMaximumResidualError(1.0e-10)
     myAbdoRackwitz.setMaximumConstraintError(1.0e-10)
 
-    myAlgoAR = FORM(myAbdoRackwitz, myEvent, start + NumericalPoint(2, 1))
-    myAlgoAR2 = SORM(myAbdoRackwitz, myEvent, start + NumericalPoint(2, 1))
+    myAlgoAR = FORM(myAbdoRackwitz, myEvent, start + Point(2, 1))
+    myAlgoAR2 = SORM(myAbdoRackwitz, myEvent, start + Point(2, 1))
 
     myAlgoAR.run()
     myAlgoAR2.run()

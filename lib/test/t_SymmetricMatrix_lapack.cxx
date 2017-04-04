@@ -39,17 +39,17 @@ int main(int argc, char *argv[])
     fullprint << "matrix1=" << matrix1 << std::endl;
     fullprint << "matrix1=\n" << matrix1.__str__() << std::endl;
 
-    NumericalPoint pt ;
+    Point pt ;
     pt.add(5.0);
     pt.add(0.0);
     fullprint << "pt=" << pt << std::endl;
 
-    NumericalPoint result ;
+    Point result ;
     result = matrix1.solveLinearSystem(pt);
     fullprint << "result=" << result << std::endl;
     //    fullprint << "verif. " << matrix1 * result - pt << std::endl;
 
-    NumericalScalar determinant ;
+    Scalar determinant ;
     determinant = matrix1.computeDeterminant();
     fullprint << "determinant=" << determinant << std::endl;
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     fullprint << "result2=" << result2 << std::endl;
     fullprint << "result2=\n" << result2.__str__() << std::endl;
 
-    Collection<NumericalScalar> ev(2);
+    Collection<Scalar> ev(2);
     ev = matrix1.computeEigenValues();
     fullprint << "ev=" << ev << std::endl;
 
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
     matrix3(2, 2) = 2.5;
 
     fullprint << "matrix3=\n" << matrix3.__str__() << std::endl;
-    NumericalScalar sign;
-    NumericalScalar value = matrix3.computeLogAbsoluteDeterminant(sign);
+    Scalar sign;
+    Scalar value = matrix3.computeLogAbsoluteDeterminant(sign);
     fullprint << "log(|det|)=" << value << ", sign=" << sign << std::endl;
     value = matrix3.computeDeterminant();
     fullprint << "det=" << value << std::endl;

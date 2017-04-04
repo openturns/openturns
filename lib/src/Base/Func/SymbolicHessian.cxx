@@ -31,7 +31,7 @@ static const Factory<SymbolicHessian> Factory_SymbolicHessian;
 
 /* Default constructor */
 SymbolicHessian::SymbolicHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_()
@@ -41,7 +41,7 @@ SymbolicHessian::SymbolicHessian()
 
 /* Default constructor */
 SymbolicHessian::SymbolicHessian(const SymbolicEvaluation & evaluation)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
   , evaluation_(evaluation)
@@ -194,16 +194,16 @@ void SymbolicHessian::initialize() const
 }
 
 /* Hessian */
-SymmetricTensor SymbolicHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor SymbolicHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   if (!isInitialized_) initialize();
   if (!isAnalytical_) throw InternalException(HERE) << "The hessian does not have an analytical expression.";
   const UnsignedInteger outputDimension = getOutputDimension();
   SymmetricTensor out(inputDimension, outputDimension);
   ++ callsNumber_;
-  NumericalPoint outP(parser_(inP));
+  Point outP(parser_(inP));
   UnsignedInteger parserIndex = 0;
   for (UnsignedInteger sheetIndex = 0; sheetIndex < outputDimension; ++ sheetIndex)
   {
@@ -221,8 +221,8 @@ SymmetricTensor SymbolicHessian::hessian(const NumericalPoint & inP) const
 
 /* Accessor to a specific formula */
 String SymbolicHessian::getFormula(const UnsignedInteger i,
-    const UnsignedInteger j,
-    const UnsignedInteger k) const
+                                   const UnsignedInteger j,
+                                   const UnsignedInteger k) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if ((i >= inputDimension) || (j >= inputDimension) || (k >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the hessian dimensions.";
@@ -285,14 +285,14 @@ SymbolicHessian::Implementation SymbolicHessian::getMarginal(const Indices & ind
 /* Method save() stores the object through the StorageManager */
 void SymbolicHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SymbolicHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
   *this = SymbolicHessian(evaluation_);
 }

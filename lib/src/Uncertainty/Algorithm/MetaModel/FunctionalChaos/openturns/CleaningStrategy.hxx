@@ -49,7 +49,7 @@ public:
   CleaningStrategy(const OrthogonalBasis & basis,
                    const UnsignedInteger maximumDimension,
                    const UnsignedInteger maximumSize,
-                   const NumericalScalar significanceFactor,
+                   const Scalar significanceFactor,
                    const Bool verbose = false);
 
   /** Virtual constructor */
@@ -59,9 +59,9 @@ public:
   void computeInitialBasis();
 
   /** Update the basis for the next iteration of approximation */
-  void updateBasis(const NumericalPoint & alpha_k,
-                   const NumericalScalar residual,
-                   const NumericalScalar relativeError);
+  void updateBasis(const Point & alpha_k,
+                   const Scalar residual,
+                   const Scalar relativeError);
 
   /** String converter */
   virtual String __repr__() const;
@@ -74,8 +74,8 @@ public:
   void setMaximumSize(const UnsignedInteger maximumSize);
 
   /** Significance factor */
-  NumericalScalar getSignificanceFactor() const;
-  void setSignificanceFactor(const NumericalScalar significanceFactor);
+  Scalar getSignificanceFactor() const;
+  void setSignificanceFactor(const Scalar significanceFactor);
 
   /** Verbose accessor */
   Bool getVerbose() const;
@@ -103,7 +103,7 @@ private:
   UnsignedInteger maximumSize_;
 
   // Relative significance factor of a vector
-  NumericalScalar significanceFactor_;
+  Scalar significanceFactor_;
 
   // Verbose
   Bool verbose_;

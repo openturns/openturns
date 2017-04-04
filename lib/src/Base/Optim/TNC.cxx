@@ -22,7 +22,7 @@
 
 #include "openturns/TNC.hxx"
 #include "algotnc.h"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
@@ -41,11 +41,11 @@ static const Factory<TNC> Factory_TNC;
 TNC::TNC()
   : OptimizationAlgorithmImplementation()
   , maxCGit_(ResourceMap::GetAsUnsignedInteger("TNC-DefaultMaxCGit"))
-  , eta_(ResourceMap::GetAsNumericalScalar("TNC-DefaultEta"))
-  , stepmx_(ResourceMap::GetAsNumericalScalar("TNC-DefaultStepmx"))
-  , accuracy_(ResourceMap::GetAsNumericalScalar("TNC-DefaultAccuracy"))
-  , fmin_(ResourceMap::GetAsNumericalScalar("TNC-DefaultFmin"))
-  , rescale_(ResourceMap::GetAsNumericalScalar("TNC-DefaultRescale"))
+  , eta_(ResourceMap::GetAsScalar("TNC-DefaultEta"))
+  , stepmx_(ResourceMap::GetAsScalar("TNC-DefaultStepmx"))
+  , accuracy_(ResourceMap::GetAsScalar("TNC-DefaultAccuracy"))
+  , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
+  , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
   , p_nfeval_(0)
 {
   // Nothing to do
@@ -55,11 +55,11 @@ TNC::TNC()
 TNC::TNC(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
   , maxCGit_(ResourceMap::GetAsUnsignedInteger("TNC-DefaultMaxCGit"))
-  , eta_(ResourceMap::GetAsNumericalScalar("TNC-DefaultEta"))
-  , stepmx_(ResourceMap::GetAsNumericalScalar("TNC-DefaultStepmx"))
-  , accuracy_(ResourceMap::GetAsNumericalScalar("TNC-DefaultAccuracy"))
-  , fmin_(ResourceMap::GetAsNumericalScalar("TNC-DefaultFmin"))
-  , rescale_(ResourceMap::GetAsNumericalScalar("TNC-DefaultRescale"))
+  , eta_(ResourceMap::GetAsScalar("TNC-DefaultEta"))
+  , stepmx_(ResourceMap::GetAsScalar("TNC-DefaultStepmx"))
+  , accuracy_(ResourceMap::GetAsScalar("TNC-DefaultAccuracy"))
+  , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
+  , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
   , p_nfeval_(0)
 {
   checkProblem(problem);
@@ -67,14 +67,14 @@ TNC::TNC(const OptimizationProblem & problem)
 
 /* Constructor with parameters */
 TNC::TNC (const OptimizationProblem & problem,
-          const NumericalPoint & scale,
-          const NumericalPoint & offset,
+          const Point & scale,
+          const Point & offset,
           const UnsignedInteger maxCGit,
-          const NumericalScalar eta,
-          const NumericalScalar stepmx,
-          const NumericalScalar accuracy,
-          const NumericalScalar fmin,
-          const NumericalScalar rescale)
+          const Scalar eta,
+          const Scalar stepmx,
+          const Scalar accuracy,
+          const Scalar fmin,
+          const Scalar rescale)
   : OptimizationAlgorithmImplementation(problem)
   , scale_(scale)
   , offset_(offset)
@@ -111,15 +111,15 @@ void TNC::run()
   Interval boundConstraints(getProblem().getBounds());
   if (!getProblem().hasBounds())
   {
-    boundConstraints = Interval(NumericalPoint(dimension, 0.0), NumericalPoint(dimension, 1.0), Interval::BoolCollection(dimension, false), Interval::BoolCollection(dimension, false));
+    boundConstraints = Interval(Point(dimension, 0.0), Point(dimension, 1.0), Interval::BoolCollection(dimension, false), Interval::BoolCollection(dimension, false));
   }
 
-  NumericalPoint x(getStartingPoint());
+  Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
 
-  NumericalPoint low(boundConstraints.getLowerBound());
-  NumericalPoint up(boundConstraints.getUpperBound());
+  Point low(boundConstraints.getLowerBound());
+  Point up(boundConstraints.getUpperBound());
   Interval::BoolCollection finiteLow(boundConstraints.getFiniteLowerBound());
   Interval::BoolCollection finiteUp(boundConstraints.getFiniteUpperBound());
   /* Set the infinite bounds to HUGE_VAL (defined in cmath) with the correct signs */
@@ -130,18 +130,18 @@ void TNC::run()
   }
 
   tnc_message message((getVerbose() ? TNC_MSG_ALL : TNC_MSG_NONE));
-  NumericalPoint scale(getScale());
-  NumericalPoint offset(getOffset());
+  Point scale(getScale());
+  Point offset(getOffset());
   double *refScale(scale.getDimension() == 0 ? NULL : &scale[0]);
   double *refOffset(offset.getDimension() == 0 ? NULL : &offset[0]);
   int nfeval = 0;
   p_nfeval_ = &nfeval;
 
   // clear history
-  evaluationInputHistory_ = NumericalSample(0.0, dimension);
-  evaluationOutputHistory_ = NumericalSample(0.0, 2);
+  evaluationInputHistory_ = Sample(0.0, dimension);
+  evaluationOutputHistory_ = Sample(0.0, 2);
 
-  NumericalScalar f = -1.0;
+  Scalar f = -1.0;
 
   /*
    * tnc : minimize a function with variables subject to bounds, using
@@ -207,19 +207,19 @@ void TNC::run()
   // Update the result
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
-  NumericalScalar constraintError = -1.0;
+  Scalar absoluteError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
+  Scalar constraintError = -1.0;
 
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const NumericalPoint inP(evaluationInputHistory_[i]);
-    const NumericalPoint outP(evaluationOutputHistory_[i]);
+    const Point inP(evaluationInputHistory_[i]);
+    const Point outP(evaluationOutputHistory_[i]);
     if (i > 0)
     {
-      const NumericalPoint inPM(evaluationInputHistory_[i - 1]);
-      const NumericalPoint outPM(evaluationOutputHistory_[i - 1]);
+      const Point inPM(evaluationInputHistory_[i - 1]);
+      const Point outPM(evaluationOutputHistory_[i - 1]);
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
@@ -236,13 +236,13 @@ void TNC::run()
         constraintError += inP[j] - up[j];
       }
     } // for j
-    result_.store(inP, NumericalPoint(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+    result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   } // for i
 
   /* Store the result */
   result_.setOptimalPoint(x);
-  const NumericalScalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
-  result_.setOptimalValue(NumericalPoint(1, sign * f));
+  const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
+  result_.setOptimalValue(Point(1, sign * f));
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
@@ -259,23 +259,23 @@ void TNC::run()
 }
 
 /* Scale accessor */
-NumericalPoint TNC::getScale() const
+Point TNC::getScale() const
 {
   return scale_;
 }
 
-void TNC::setScale(const NumericalPoint & scale)
+void TNC::setScale(const Point & scale)
 {
   scale_ = scale;
 }
 
 /* Offset accessor */
-NumericalPoint TNC::getOffset() const
+Point TNC::getOffset() const
 {
   return offset_;
 }
 
-void TNC::setOffset(const NumericalPoint & offset)
+void TNC::setOffset(const Point & offset)
 {
   offset_ = offset;
 }
@@ -292,56 +292,56 @@ void TNC::setMaxCGit(const UnsignedInteger maxCGit)
 }
 
 /* Eta accessor */
-NumericalScalar TNC::getEta() const
+Scalar TNC::getEta() const
 {
   return eta_;
 }
 
-void TNC::setEta(const NumericalScalar eta)
+void TNC::setEta(const Scalar eta)
 {
   eta_ = eta;
 }
 
 /* Stepmx accessor */
-NumericalScalar TNC::getStepmx() const
+Scalar TNC::getStepmx() const
 {
   return stepmx_;
 }
 
-void TNC::setStepmx(const NumericalScalar stepmx)
+void TNC::setStepmx(const Scalar stepmx)
 {
   stepmx_ = stepmx;
 }
 
 /* Accuracy accessor */
-NumericalScalar TNC::getAccuracy() const
+Scalar TNC::getAccuracy() const
 {
   return accuracy_;
 }
 
-void TNC::setAccuracy(const NumericalScalar accuracy)
+void TNC::setAccuracy(const Scalar accuracy)
 {
   accuracy_ = accuracy;
 }
 
 /* Fmin accessor */
-NumericalScalar TNC::getFmin() const
+Scalar TNC::getFmin() const
 {
   return fmin_;
 }
 
-void TNC::setFmin(const NumericalScalar fmin)
+void TNC::setFmin(const Scalar fmin)
 {
   fmin_ = fmin;
 }
 
 /* Rescale accessor */
-NumericalScalar TNC::getRescale() const
+Scalar TNC::getRescale() const
 {
   return rescale_;
 }
 
-void TNC::setRescale(const NumericalScalar rescale)
+void TNC::setRescale(const Scalar rescale)
 {
   rescale_ = rescale;
 }
@@ -392,7 +392,7 @@ void TNC::load(Advocate & adv)
 }
 
 /*
- * Wrapper of the NumericalMathFunction operator() compatible with
+ * Wrapper of the Function operator() compatible with
  * TNC signature
  */
 int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *state)
@@ -401,25 +401,25 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
   /* Convert the input vector in OpenTURNS format */
   const UnsignedInteger dimension = algorithm->getStartingPoint().getDimension();
-  NumericalPoint inPoint(dimension);
-  memcpy(&inPoint[0], &x[0], dimension * sizeof(NumericalScalar));
+  Point inPoint(dimension);
+  memcpy(&inPoint[0], &x[0], dimension * sizeof(Scalar));
   const OptimizationProblem problem(algorithm->getProblem());
 
   /* Used for history purpose. We store the value of the objective function in the first component and the norm of its gradient in the second component. */
-  NumericalPoint outPoint(2);
+  Point outPoint(2);
 
   /* Compute the objective function at inPoint */
-  const NumericalScalar result = problem.getObjective().operator()(inPoint)[0];
+  const Scalar result = problem.getObjective().operator()(inPoint)[0];
   outPoint[0] = result;
 
-  const NumericalScalar sign = problem.isMinimization() ? 1.0 : -1.0;
+  const Scalar sign = problem.isMinimization() ? 1.0 : -1.0;
   *f = sign * result;
 
-  NumericalPoint objectiveGradient;
+  Point objectiveGradient;
   try
   {
-    // Here we take the sign into account and convert the result into a NumericalPoint in one shot
-    objectiveGradient = problem.getObjective().gradient(inPoint) * NumericalPoint(1, sign);
+    // Here we take the sign into account and convert the result into a Point in one shot
+    objectiveGradient = problem.getObjective().gradient(inPoint) * Point(1, sign);
   }
   catch(...)
   {
@@ -427,7 +427,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   }
 
   /* Convert the gradient into the output format */
-  memcpy(&g[0], &objectiveGradient[0], dimension * sizeof(NumericalScalar));
+  memcpy(&g[0], &objectiveGradient[0], dimension * sizeof(Scalar));
 
   outPoint[1] = objectiveGradient.norm();
 

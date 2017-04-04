@@ -29,7 +29,7 @@ try:
     formulas = Description(outputFunction.getSize())
     formulas[0] = "r - s^2"
 
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    limitState = Function(inputFunction, outputFunction, formulas)
 
     dim = limitState.getInputDimension()
 
@@ -37,11 +37,11 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim)
+    mean = Point(dim)
     mean[0] = 11.0
     mean[1] = 1.5
 
-    sigma = NumericalPoint(dim)
+    sigma = Point(dim)
     sigma[0] = 1.0
     sigma[1] = 0.5
 

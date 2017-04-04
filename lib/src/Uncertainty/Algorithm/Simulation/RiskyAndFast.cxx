@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/RiskyAndFast.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -49,7 +49,7 @@ RiskyAndFast::RiskyAndFast(const Solver & solver):
 
 /* Constructor with parameters */
 RiskyAndFast::RiskyAndFast(const Solver & solver,
-                           const NumericalScalar maximumDistance):
+                           const Scalar maximumDistance):
   RootStrategyImplementation(solver, maximumDistance, 0.0)
 {
   // Nothing to do
@@ -62,12 +62,12 @@ RiskyAndFast * RiskyAndFast::clone() const
 }
 
 /* Solve gives all the roots found applying the root strategy */
-RiskyAndFast::NumericalScalarCollection RiskyAndFast::solve(const NumericalMathFunction & function,
-    const NumericalScalar value)
+RiskyAndFast::ScalarCollection RiskyAndFast::solve(const Function & function,
+    const Scalar value)
 {
-  NumericalScalarCollection result(0);
-  const NumericalScalar infPoint = 0.0;
-  NumericalScalar infValue = 0.0;
+  ScalarCollection result(0);
+  const Scalar infPoint = 0.0;
+  Scalar infValue = 0.0;
   // Get the value of the function at the origin
   try
   {
@@ -76,11 +76,11 @@ RiskyAndFast::NumericalScalarCollection RiskyAndFast::solve(const NumericalMathF
   // If it has not yet been computed, compute it and store it
   catch (NotDefinedException &)
   {
-    infValue = function(NumericalPoint(1, infPoint))[0];
+    infValue = function(Point(1, infPoint))[0];
     setOriginValue(infValue);
   }
-  const NumericalScalar supPoint = getMaximumDistance();
-  const NumericalScalar supValue = function(NumericalPoint(1, supPoint))[0];
+  const Scalar supPoint = getMaximumDistance();
+  const Scalar supValue = function(Point(1, supPoint))[0];
   Solver solver(getSolver());
   // If the origin is in the failure domain we don't look for additional roots
   if (infValue == value)

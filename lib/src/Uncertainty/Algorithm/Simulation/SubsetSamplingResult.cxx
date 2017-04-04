@@ -38,11 +38,11 @@ SubsetSamplingResult::SubsetSamplingResult()
 
 /* Constructor with parameters */
 SubsetSamplingResult::SubsetSamplingResult(const Event & event,
-    const NumericalScalar probabilityEstimate,
-    const NumericalScalar varianceEstimate,
+    const Scalar probabilityEstimate,
+    const Scalar varianceEstimate,
     const UnsignedInteger outerSampling,
     const UnsignedInteger blockSize,
-    const NumericalScalar coefficientOfVariation)
+    const Scalar coefficientOfVariation)
   : SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize),
     coefficientOfVariation_(coefficientOfVariation)
 {
@@ -57,7 +57,7 @@ SubsetSamplingResult * SubsetSamplingResult::clone() const
 
 
 /* Coefficient of variation estimate accessor */
-NumericalScalar SubsetSamplingResult::getCoefficientOfVariation() const
+Scalar SubsetSamplingResult::getCoefficientOfVariation() const
 {
   return coefficientOfVariation_;
 }

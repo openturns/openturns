@@ -10,7 +10,7 @@ Parameters
 ----------
 dim : int, :math:`dim \geq 0`
     Dimension of the LevelSet.
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
     LevelSet.
 level : float
@@ -106,7 +106,7 @@ True"
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
     LevelSet.
 
@@ -125,7 +125,7 @@ Examples
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
     LevelSet.
 

@@ -1,4 +1,4 @@
-g2= ParametricEvaluationImplementation([x0,x1,x2,x3,x4]->[sin(x0) + x1 * cos(x2) / exp(x3),-2.0 * x0 + x1 * x2^2 + cos(x3),x0 / (abs(x1) * x2^2 + x3 + 1.0)], parameters positions=[3,1], parameters=[x3 : 0.85, x1 : 0.85], input positions=[0,2,4])
+g2= ParametricEvaluation([x0,x1,x2,x3,x4]->[sin(x0) + x1 * cos(x2) / exp(x3),-2.0 * x0 + x1 * x2^2 + cos(x3),x0 / (abs(x1) * x2^2 + x3 + 1.0)], parameters positions=[3,1], parameters=[x3 : 0.85, x1 : 0.85], input positions=[0,2,4])
 g2(x)= [0.690284,2.05998,0.190476]
-g3= ParametricEvaluationImplementation([x0,x1,x2,x3,x4]->[sin(x0) + x1 * cos(x2) / exp(x3),-2.0 * x0 + x1 * x2^2 + cos(x3),x0 / (abs(x1) * x2^2 + x3 + 1.0)], parameters positions=[0,2,4], parameters=[x0 : 1, x2 : 2, x4 : 0], input positions=[3,1])
+g3= ParametricEvaluation([x0,x1,x2,x3,x4]->[sin(x0) + x1 * cos(x2) / exp(x3),-2.0 * x0 + x1 * x2^2 + cos(x3),x0 / (abs(x1) * x2^2 + x3 + 1.0)], parameters positions=[0,2,4], parameters=[x0 : 1, x2 : 2, x4 : 0], input positions=[3,1])
 g3(x)= [0.690284,2.05998,0.190476]

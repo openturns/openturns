@@ -24,7 +24,7 @@
 #define OPENTURNS_NONCENTEREDFINITEDIFFERENCEGRADIENT_HXX
 
 #include "openturns/FiniteDifferenceGradient.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,22 +46,22 @@ class OT_API NonCenteredFiniteDifferenceGradient
   CLASSNAME;
 public:
 
-  typedef Pointer<NumericalMathEvaluationImplementation>        EvaluationImplementation;
+  typedef Pointer<EvaluationImplementation>        EvaluationPointer;
 
   /** Default constructor */
   NonCenteredFiniteDifferenceGradient();
 
   /** Parameter constructor */
-  NonCenteredFiniteDifferenceGradient(const NumericalPoint & epsilon,
-                                      const EvaluationImplementation & p_evaluation);
+  NonCenteredFiniteDifferenceGradient(const Point & epsilon,
+                                      const EvaluationPointer & p_evaluation);
 
   /** Second parameter constructor */
-  NonCenteredFiniteDifferenceGradient(const NumericalScalar epsilon,
-                                      const EvaluationImplementation & p_evaluation);
+  NonCenteredFiniteDifferenceGradient(const Scalar epsilon,
+                                      const EvaluationPointer & p_evaluation);
 
   /** Constructor from finite difference step */
   NonCenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-                                      const EvaluationImplementation & p_evaluation);
+                                      const EvaluationPointer & p_evaluation);
 
   /** Virtual constructor */
   virtual NonCenteredFiniteDifferenceGradient * clone() const;
@@ -78,7 +78,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const NumericalPoint & inP) const;
+  virtual Matrix gradient(const Point & inP) const;
 
 protected:
 

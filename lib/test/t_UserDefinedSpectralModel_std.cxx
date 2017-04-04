@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-NumericalScalar clean(NumericalScalar in)
+Scalar clean(Scalar in)
 {
   // For -0.0 trouble
   if (std::abs(in) < 1.e-6) return 0.0;
@@ -38,9 +38,9 @@ HermitianMatrix clean(HermitianMatrix in)
   for(UnsignedInteger i = 0; i < dim; i++)
     for(UnsignedInteger j = 0; j <= i; j++)
     {
-      NumericalScalar realIJ = clean(real(in(i, j)));
-      NumericalScalar imagIJ = clean(imag(in(i, j)));
-      in(i, j) = NumericalComplex(realIJ, imagIJ);
+      Scalar realIJ = clean(real(in(i, j)));
+      Scalar imagIJ = clean(imag(in(i, j)));
+      in(i, j) = Complex(realIJ, imagIJ);
     }
   return in;
 }
@@ -61,9 +61,9 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 2;
 
     /* Amplitude values */
-    NumericalPoint amplitude(dimension);
+    Point amplitude(dimension);
     /* Scale values */
-    NumericalPoint scale(dimension);
+    Point scale(dimension);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     RegularGrid samplingGrid(-0.4, 1.0 / 16, 5 * size);
     for (UnsignedInteger i = 0; i < samplingGrid.getN(); ++i)
     {
-      NumericalScalar frequency = samplingGrid.getValue(i);
+      Scalar frequency = samplingGrid.getValue(i);
       fullprint << "frequency=" << clean(frequency) << ", myModel=\n" << clean(myModel(frequency)) << ", referenceModel=\n" << clean(referenceModel(frequency)) << std::endl;
     }
 

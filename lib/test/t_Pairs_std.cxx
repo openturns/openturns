@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
 
     // Instanciate one distribution object
     UnsignedInteger dim = 5;
-    NumericalPoint meanPoint(dim, 0.0);
-    NumericalPoint sigma(dim, 5.0);
+    Point meanPoint(dim, 0.0);
+    Point sigma(dim, 5.0);
     CorrelationMatrix R(dim);
 
     Normal distribution(meanPoint, sigma, R);
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 1000;
-    NumericalSample sample(distribution.getSample( size ));
+    Sample sample(distribution.getSample( size ));
 
     // Create an empty graph
     Graph myGraph("Pairs", " ", " ", true, "topright");

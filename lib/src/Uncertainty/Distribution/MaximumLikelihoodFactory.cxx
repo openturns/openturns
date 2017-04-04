@@ -28,13 +28,13 @@
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,10 +57,10 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
 {
   // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */
@@ -85,14 +85,14 @@ String MaximumLikelihoodFactory::__str__(const String & offset) const
   return this->getClassName();
 }
 
-class LogLikelihoodEvaluation : public NumericalMathEvaluationImplementation
+class LogLikelihoodEvaluation : public EvaluationImplementation
 {
 public:
-  LogLikelihoodEvaluation(const NumericalSample & sample,
-                                        const Distribution & distribution,
-                                        const NumericalPoint & knownParameterValues,
-                                        const Indices & knownParameterIndices)
-    : NumericalMathEvaluationImplementation()
+  LogLikelihoodEvaluation(const Sample & sample,
+                          const Distribution & distribution,
+                          const Point & knownParameterValues,
+                          const Indices & knownParameterIndices)
+    : EvaluationImplementation()
     , sample_(sample)
     , distribution_(distribution)
     , knownParameterValues_(knownParameterValues)
@@ -139,12 +139,12 @@ public:
     return description;
   }
 
-  NumericalPoint operator() (const NumericalPoint & parameter) const
+  Point operator() (const Point & parameter) const
   {
-    NumericalScalar result = 0.0;
+    Scalar result = 0.0;
     // Define conditinned distribution
     Distribution distribution(distribution_);
-    NumericalPoint effectiveParameter(distribution.getParameter());
+    Point effectiveParameter(distribution.getParameter());
     // set unknown values
     UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
@@ -163,32 +163,32 @@ public:
     }
     catch (Exception &)
     {
-      return NumericalPoint(1, SpecFunc::LogMinNumericalScalar);
+      return Point(1, SpecFunc::LogMinScalar);
     }
     // Take into account the mean over sample
     // Parallelization (evaluation over a sample) is handeled by distribution_
-    const NumericalSample logPdfSample = distribution.computeLogPDF(sample_);
-    const NumericalScalar logPdf = logPdfSample.computeMean()[0];
-    result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinNumericalScalar;
-    return NumericalPoint(1, result);
+    const Sample logPdfSample = distribution.computeLogPDF(sample_);
+    const Scalar logPdf = logPdfSample.computeMean()[0];
+    result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinScalar;
+    return Point(1, result);
   }
 
 private:
-  NumericalSample sample_;
+  Sample sample_;
   Distribution distribution_;
-  NumericalPoint knownParameterValues_;
+  Point knownParameterValues_;
   Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
 };
 
-class LogLikelihoodGradient : public NumericalMathGradientImplementation
+class LogLikelihoodGradient : public GradientImplementation
 {
 public:
-  LogLikelihoodGradient(const NumericalSample & sample,
+  LogLikelihoodGradient(const Sample & sample,
                         const Distribution & distribution,
-                        const NumericalPoint & knownParameterValues,
+                        const Point & knownParameterValues,
                         const Indices & knownParameterIndices)
-    : NumericalMathGradientImplementation()
+    : GradientImplementation()
     , sample_(sample)
     , distribution_(distribution)
     , knownParameterValues_(knownParameterValues)
@@ -235,11 +235,11 @@ public:
     return description;
   }
 
-  Matrix gradient(const NumericalPoint & parameter) const
+  Matrix gradient(const Point & parameter) const
   {
     // Define conditinned distribution
     Distribution distribution(distribution_);
-    NumericalPoint effectiveParameter(distribution.getParameter());
+    Point effectiveParameter(distribution.getParameter());
     // set unknown values
     UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
@@ -256,22 +256,22 @@ public:
     // Matrix result
     MatrixImplementation result(parameter.getSize(), 1);
     // Evaluate the gradient
-    const NumericalSample logPdfGradientSample(distribution.computeLogPDFGradient(sample_).getMarginal(unknownParameterIndices_));
-    const NumericalPoint logPdfGradient(logPdfGradientSample.computeMean());
+    const Sample logPdfGradientSample(distribution.computeLogPDFGradient(sample_).getMarginal(unknownParameterIndices_));
+    const Point logPdfGradient(logPdfGradientSample.computeMean());
     // Result as Matrix
     result = MatrixImplementation(getInputDimension(), 1, logPdfGradient);
     return result;
   }
 
 private:
-  NumericalSample sample_;
+  Sample sample_;
   Distribution distribution_;
-  NumericalPoint knownParameterValues_;
+  Point knownParameterValues_;
   Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
 };
 
-NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & sample) const
+Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -284,7 +284,7 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
 
   // Define NumericalMathEvaluation using the LogLikelihoodEvaluation wrapper
   LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
-  NumericalMathFunction logLikelihood(logLikelihoodWrapper.clone());
+  Function logLikelihood(logLikelihoodWrapper.clone());
   // Define NumericalMathGradient using the LogLikelihoodEvaluation wrapper
   LogLikelihoodGradient logLikelihoodGradientWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
@@ -297,11 +297,11 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != logLikelihood.getInputDimension())
   {
-    NumericalPoint effectiveParameter(distribution_.getParameter());
+    Point effectiveParameter(distribution_.getParameter());
     LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << logLikelihood.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
     // extract unknown values
-    NumericalPoint parameter;
+    Point parameter;
     for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
     {
       if (!knownParameterIndices_.contains(j))
@@ -312,9 +312,9 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
   solver.setProblem(problem);
   solver.run();
 
-  NumericalPoint effectiveParameter(effectiveParameterSize);
+  Point effectiveParameter(effectiveParameterSize);
   // set unknown values
-  NumericalPoint parameter(solver.getResult().getOptimalPoint());
+  Point parameter(solver.getResult().getOptimalPoint());
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
   {
@@ -334,7 +334,7 @@ NumericalPoint MaximumLikelihoodFactory::buildParameter(const NumericalSample & 
 }
 
 
-DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::build(const NumericalSample & sample) const
+DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));
@@ -354,7 +354,7 @@ Interval MaximumLikelihoodFactory::getOptimizationBounds() const
   return optimizationBounds_;
 }
 
-void MaximumLikelihoodFactory::setOptimizationInequalityConstraint(const NumericalMathFunction & optimizationInequalityConstraint)
+void MaximumLikelihoodFactory::setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint)
 {
   optimizationInequalityConstraint_ = optimizationInequalityConstraint;
 }
@@ -381,7 +381,7 @@ OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationSolver() const
   return getOptimizationAlgorithm();
 }
 
-void MaximumLikelihoodFactory::setKnownParameter(const NumericalPoint & values,
+void MaximumLikelihoodFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
@@ -394,7 +394,7 @@ Indices MaximumLikelihoodFactory::getKnownParameterIndices() const
   return knownParameterIndices_;
 }
 
-NumericalPoint MaximumLikelihoodFactory::getKnownParameterValues() const
+Point MaximumLikelihoodFactory::getKnownParameterValues() const
 {
   return knownParameterValues_;
 }

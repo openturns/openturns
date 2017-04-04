@@ -14,28 +14,28 @@ try:
     myStudy = ot.Study()
     myStudy.setStorageManager(ot.XMLStorageManager(fileName))
 
-    # Add a PersistentObject to the Study (here a NumericalPoint)
-    p1 = ot.NumericalPoint(3, 0.)
+    # Add a PersistentObject to the Study (here a Point)
+    p1 = ot.Point(3, 0.)
     p1.setName('Good')
     p1[0] = 10.
     p1[1] = 11.
     p1[2] = 12.
     myStudy.add(p1)
 
-    # Add another PersistentObject to the Study (here a NumericalSample)
-    s1 = ot.NumericalSample(3, 2)
+    # Add another PersistentObject to the Study (here a Sample)
+    s1 = ot.Sample(3, 2)
     s1.setName('mySample')
-    p2 = ot.NumericalPoint(2, 0.)
+    p2 = ot.Point(2, 0.)
     p2.setName('One')
     p2[0] = 100.
     p2[1] = 200.
     s1[0] = p2
-    p3 = ot.NumericalPoint(2, 0.)
+    p3 = ot.Point(2, 0.)
     p3.setName('Two')
     p3[0] = 101.
     p3[1] = 201.
     s1[1] = p3
-    p4 = ot.NumericalPoint(2, 0.)
+    p4 = ot.Point(2, 0.)
     p4.setName('Three')
     p4[0] = 102.
     p4[1] = 202.
@@ -43,7 +43,7 @@ try:
     myStudy.add('mySample', s1)
 
     # Add a point with a description
-    pDesc = ot.NumericalPointWithDescription(p1)
+    pDesc = ot.PointWithDescription(p1)
     desc = pDesc.getDescription()
     desc[0] = 'x'
     desc[1] = 'y'
@@ -61,8 +61,8 @@ try:
     matrix[1, 2] = 5
     myStudy.add('m', matrix)
 
-    # Create a NumericalPoint that we will try to reinstaciate after reloading
-    point = ot.NumericalPoint(2, 1000.)
+    # Create a Point that we will try to reinstaciate after reloading
+    point = ot.Point(2, 1000.)
     point.setName('point')
     myStudy.add('point', point)
 
@@ -70,7 +70,8 @@ try:
     simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
     myStudy.add('simulationResult', simulationResult)
 
-    cNameList = ['MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
+    cNameList = [
+        'MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
                  'DirectionalSampling', 'RandomizedLHS', 'SimulationSensitivityAnalysis']
     for cName in cNameList:
         otClass = getattr(ot, cName)
@@ -81,7 +82,7 @@ try:
     beta = ot.Beta(3.0, 5.0, -1.0, 4.0)
     myStudy.add('beta', beta)
 
-    # Create an analytical NumericalMathFunction
+    # Create an analytical Function
     input = ot.Description(3)
     input[0] = 'a'
     input[1] = 'b'
@@ -94,7 +95,7 @@ try:
     formulas[0] = 'a+b+c'
     formulas[1] = 'a-b*c'
     formulas[2] = '(a+2*b^2+3*c^3)/6'
-    analytical = ot.NumericalMathFunction(input, output, formulas)
+    analytical = ot.Function(input, output, formulas)
     analytical.setName('analytical')
     myStudy.add('analytical', analytical)
 
@@ -120,7 +121,7 @@ try:
     output2[0] = 'd'
     formula2 = ot.Description(1)
     formula2[0] = 'y^2-x'
-    model = ot.NumericalMathFunction(input2, output2, formula2)
+    model = ot.Function(input2, output2, formula2)
     model.setName('sum')
     input3 = ot.RandomVector(ot.Normal(2))
     input3.setName('input')
@@ -128,9 +129,9 @@ try:
     output3.setName('output')
     event = ot.Event(output3, ot.Greater(), 1.0)
     event.setName('failureEvent')
-    designPoint = ot.NumericalPoint(2, 0.0)
+    designPoint = ot.Point(2, 0.0)
     designPoint[0] = 1.0
-    formResult = ot.FORMResult(ot.NumericalPoint(2, 1.0), event, False)
+    formResult = ot.FORMResult(ot.Point(2, 1.0), event, False)
     formResult.setName('formResult')
     formResult.getImportanceFactors()
     formResult.getEventProbabilitySensitivity()
@@ -165,8 +166,8 @@ try:
 
     # TensorApproximationAlgorithm/Result
     dim = 1
-    model = ot.NumericalMathFunction(['x'], ['y'], ['x*sin(x)'])
-    distribution = ot.ComposedDistribution([ot.Uniform()]*dim)
+    model = ot.Function(['x'], ['y'], ['x*sin(x)'])
+    distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
     factoryCollection = [ot.FourierSeriesFactory()] * dim
     functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
     size = 10
@@ -174,7 +175,8 @@ try:
     Y = model(X)
     nk = [5] * dim
     rank = 1
-    algo = ot.TensorApproximationAlgorithm(X, Y, distribution, functionFactory, nk, rank)
+    algo = ot.TensorApproximationAlgorithm(
+        X, Y, distribution, functionFactory, nk, rank)
     algo.run()
     tensorResult = algo.getResult()
     myStudy.add('tensorResult', tensorResult)
@@ -191,14 +193,14 @@ try:
     myStudy.load()
     # print 'loaded Study = ' , myStudy
 
-    # Create a NumericalPoint from the one stored in the Study
-    point = ot.NumericalPoint()
+    # Create a Point from the one stored in the Study
+    point = ot.Point()
     myStudy.fillObject('point', point)
 
     print('point = ', repr(point))
 
-    # Create a NumericalSample from the one stored in the Study
-    sample = ot.NumericalSample()
+    # Create a Sample from the one stored in the Study
+    sample = ot.Sample()
     myStudy.fillObject('mySample', sample)
 
     print('sample = ', repr(sample))
@@ -237,9 +239,9 @@ try:
 
     print('randomGeneratorState = ', randomGeneratorState)
 
-    # Create an analytical NumericalMathFunction from the one stored in the
+    # Create an analytical Function from the one stored in the
     # Study
-    analytical = ot.NumericalMathFunction()
+    analytical = ot.Function()
     myStudy.fillObject('analytical', analytical)
 
     print('analytical = ', analytical)
@@ -259,7 +261,8 @@ try:
     # Tensor
     tensorResult = ot.MetaModelResult()
     myStudy.fillObject('tensorResult', tensorResult)
-    ot.testing.assert_almost_equal(tensorResult.getMetaModel()(tensorIn), tensorRef)
+    ot.testing.assert_almost_equal(
+        tensorResult.getMetaModel()(tensorIn), tensorRef)
 
     # cleanup
     os.remove(fileName)

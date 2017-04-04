@@ -127,10 +127,10 @@ class PythonRandomVector(object):
 
         Returns
         -------
-        realization : :class:`~openturns.NumericalPoint`
+        realization : :class:`~openturns.Point`
             Sequence of values randomly determined from the RandomVector definition.
         """
-        raise RuntimeError('You must define a method getRealization() -> X, where X is a NumericalPoint')
+        raise RuntimeError('You must define a method getRealization() -> X, where X is a Point')
 
     def getMean(self):
         """
@@ -138,10 +138,10 @@ class PythonRandomVector(object):
 
         Returns
         -------
-        mean : :class:`~openturns.NumericalPoint`
+        mean : :class:`~openturns.Point`
             Mean of the RandomVector.
         """
-        raise RuntimeError('You must define a method mean -> X, where X is a NumericalPoint')
+        raise RuntimeError('You must define a method mean -> X, where X is a Point')
 
     def getCovariance(self):
         """

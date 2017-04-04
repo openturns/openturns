@@ -24,8 +24,8 @@
 #include "openturns/FunctionalChaosAlgorithm.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalMathFunctionImplementation.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/FunctionImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DatabaseFunction.hxx"
 #include "openturns/FixedStrategy.hxx"
@@ -52,7 +52,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+typedef Collection<Function> FunctionCollection;
 
 CLASSNAMEINIT(FunctionalChaosAlgorithm);
 
@@ -64,57 +64,57 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm()
   : MetaModelAlgorithm()
   , adaptiveStrategy_(FixedStrategy(OrthogonalProductPolynomialFactory(), 0))
   , projectionStrategy_(LeastSquaresStrategy())
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Nothing to do
 }
 
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
   : MetaModelAlgorithm( distribution, model )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Nothing to do
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
   projectionStrategy_.getImplementation()->inputSample_ = inputSample;
   projectionStrategy_.getImplementation()->measure_ = UserDefined(inputSample);
-  projectionStrategy_.getImplementation()->weights_ = NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize());
+  projectionStrategy_.getImplementation()->weights_ = Point(inputSample.getSize(), 1.0 / inputSample.getSize());
   projectionStrategy_.getImplementation()->weightedExperiment_ = FixedExperiment(inputSample);
   projectionStrategy_.getImplementation()->outputSample_ = outputSample;
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalPoint & weights,
-    const NumericalSample & outputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -127,38 +127,38 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Function & model,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm( distribution, model )
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy())
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Nothing to do
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalSample & outputSample)
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample)
   : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_()
   , projectionStrategy_()
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -176,10 +176,10 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   {
     TestResult bestResult;
     // Here we remove the duplicate entries in the marginal sample using the automatic compaction of the support in the UserDefined class
-    const NumericalSample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
+    const Sample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
-    if (bestResult.getPValue() > ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
+    if (bestResult.getPValue() > ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
     else marginals[i] = ks.build(marginalSample.getMarginal(i));
     marginals[i].setDescription(Description(1, inputDescription[i]));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
@@ -187,7 +187,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
   }
   // For the dependence structure, we test first the independent copula, then the normal copula, but not a non-parametric copula as the penalty on the meta-model evaluation speed is most of the time prohibitive
   setDistribution(ComposedDistribution(marginals, NormalCopulaFactory().build(inputSample)));
-  const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-QNorm" ));
+  const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-QNorm" ));
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
   const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree" );
   // For small sample size, use sparse regression
@@ -212,15 +212,15 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & input
 }
 
 /* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-    const NumericalPoint & weights,
-    const NumericalSample & outputSample,
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
   : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
-  , maximumResidual_(ResourceMap::GetAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
@@ -242,12 +242,12 @@ String FunctionalChaosAlgorithm::__repr__() const
 
 
 /* Maximum residual accessors */
-void FunctionalChaosAlgorithm::setMaximumResidual(NumericalScalar residual)
+void FunctionalChaosAlgorithm::setMaximumResidual(Scalar residual)
 {
   maximumResidual_ = residual;
 }
 
-NumericalScalar FunctionalChaosAlgorithm::getMaximumResidual() const
+Scalar FunctionalChaosAlgorithm::getMaximumResidual() const
 {
   return maximumResidual_;
 }
@@ -299,7 +299,7 @@ void FunctionalChaosAlgorithm::run()
   if (noTransformation) composedModel_ = model_;
   else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
-  const NumericalSample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
+  const Sample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
   if (databaseProjection && !noTransformation) projectionStrategy_.getImplementation()->inputSample_ = transformation_(initialInputSample);
   // Second, compute the results for each marginal output and merge
   // these marginal results.
@@ -308,16 +308,16 @@ void FunctionalChaosAlgorithm::run()
   // polynomials with vector coefficients
   // We build the coefficients of the combination. As some indices may be
   // missing, we have to take care of the different sparsity patterns
-  NumericalPoint residuals(outputDimension);
-  NumericalPoint relativeErrors(outputDimension);
-  std::map<UnsignedInteger, NumericalPoint> coefficientsMap;
+  Point residuals(outputDimension);
+  Point relativeErrors(outputDimension);
+  std::map<UnsignedInteger, Point> coefficientsMap;
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
   {
     LOGINFO(OSS() << "Work on output marginal " << outputIndex << " over " << outputDimension - 1);
     Indices marginalIndices;
-    NumericalPoint marginalAlpha_k;
-    NumericalScalar marginalResidual = -1.0;
-    NumericalScalar marginalRelativeError = -1.0;
+    Point marginalAlpha_k;
+    Scalar marginalResidual = -1.0;
+    Scalar marginalRelativeError = -1.0;
     // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
     runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
     residuals[outputIndex] = marginalResidual;
@@ -325,31 +325,31 @@ void FunctionalChaosAlgorithm::run()
     for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
     {
       // Deal only with non-zero coefficients
-      const NumericalScalar marginalAlpha_kj = marginalAlpha_k[j];
+      const Scalar marginalAlpha_kj = marginalAlpha_k[j];
       // To avoid -0.0
       if (std::abs(marginalAlpha_kj) != 0.0)
       {
         // Current index in the decomposition of the current marginal output
         const UnsignedInteger index = marginalIndices[j];
         // If the current index is not in the map, create it
-        if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = NumericalPoint(outputDimension, 0.0);
+        if (coefficientsMap.find(index) == coefficientsMap.end()) coefficientsMap[index] = Point(outputDimension, 0.0);
         // Add the current scalar coefficient to the corresponding component of the vectorial coefficient
         coefficientsMap[index][outputIndex] = marginalAlpha_kj;
       }
     } // Loop over the marginal indices
   } // Loop over the output dimension
   // At this point, the map contains all the associations (index, vector coefficient). It remains to present these data into the proper form and to build the associated partial basis
-  std::map<UnsignedInteger, NumericalPoint>::iterator iter;
+  std::map<UnsignedInteger, Point>::iterator iter;
   // Full set of indices
   Indices I_k(0);
   // Full set of vectorial coefficients
-  NumericalSample alpha_k(0, outputDimension);
+  Sample alpha_k(0, outputDimension);
   // Full set of partial basis functions.
-  NumericalMathFunctionCollection Psi_k(0);
+  FunctionCollection Psi_k(0);
   for (iter = coefficientsMap.begin(); iter != coefficientsMap.end(); ++iter)
   {
     const UnsignedInteger i = iter->first;
-    const NumericalPoint currentCoefficient(iter->second);
+    const Point currentCoefficient(iter->second);
     I_k.add(i);
     alpha_k.add(currentCoefficient);
     // We could reuse the function
@@ -367,9 +367,9 @@ void FunctionalChaosAlgorithm::run()
 /* Marginal computation */
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     Indices & indices,
-    NumericalPoint & coefficients,
-    NumericalScalar & residual,
-    NumericalScalar & relativeError)
+    Point & coefficients,
+    Scalar & residual,
+    Scalar & relativeError)
 {
   // Initialize the projection basis Phi_k_p_ and I_p_
   LOGINFO("Compute the initial basis");
@@ -411,13 +411,13 @@ FunctionalChaosResult FunctionalChaosAlgorithm::getResult() const
 }
 
 
-NumericalSample FunctionalChaosAlgorithm::getInputSample() const
+Sample FunctionalChaosAlgorithm::getInputSample() const
 {
   return projectionStrategy_.getInputSample();
 }
 
 
-NumericalSample FunctionalChaosAlgorithm::getOutputSample() const
+Sample FunctionalChaosAlgorithm::getOutputSample() const
 {
   return projectionStrategy_.getOutputSample();
 }

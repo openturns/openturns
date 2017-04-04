@@ -23,4 +23,4 @@ OrthogonalUniVariateFunctionFamily(const OrthogonalUniVariateFunctionFamily & ot
 
 }
 
-%clear OT::NumericalPoint & weights;
+%clear OT::Point & weights;

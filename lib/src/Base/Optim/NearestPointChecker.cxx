@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/NearestPointChecker.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,10 +33,10 @@ CLASSNAMEINIT(NearestPointChecker);
  *         and a level value
  */
 /* Constructor with parameters */
-NearestPointChecker::NearestPointChecker(const NumericalMathFunction & levelFunction,
+NearestPointChecker::NearestPointChecker(const Function & levelFunction,
     const ComparisonOperator & comparisonOperator,
-    const NumericalScalar threshold,
-    const NumericalSample & sample):
+    const Scalar threshold,
+    const Sample & sample):
   PersistentObject(),
   levelFunction_(levelFunction),
   comparisonOperator_(comparisonOperator),
@@ -53,13 +53,13 @@ NearestPointChecker * NearestPointChecker::clone() const
 }
 
 /* LevelFunction accessor */
-NumericalMathFunction NearestPointChecker::getLevelFunction() const
+Function NearestPointChecker::getLevelFunction() const
 {
   return levelFunction_;
 }
 
 /* LevelFunction accessor */
-void NearestPointChecker::setLevelFunction(const NumericalMathFunction & levelFunction)
+void NearestPointChecker::setLevelFunction(const Function & levelFunction)
 {
   levelFunction_ = levelFunction;
 }
@@ -89,25 +89,25 @@ ComparisonOperator NearestPointChecker::getComparisonOperator() const
 }
 
 /* threshold accessor */
-void NearestPointChecker::setThreshold(const NumericalScalar threshold)
+void NearestPointChecker::setThreshold(const Scalar threshold)
 {
   threshold_ = threshold;
 }
 
 /* threshold accessor */
-NumericalScalar NearestPointChecker::getThreshold() const
+Scalar NearestPointChecker::getThreshold() const
 {
   return threshold_;
 }
 
 /* sample accessor */
-void NearestPointChecker::setSample(const NumericalSample & sample)
+void NearestPointChecker::setSample(const Sample & sample)
 {
   sample_ = sample;
 }
 
 /* sample accessor */
-const NumericalSample & NearestPointChecker::getSample() const
+const Sample & NearestPointChecker::getSample() const
 {
   return sample_;
 }
@@ -118,9 +118,9 @@ void  NearestPointChecker::run()
   /* Total number of points to be sampled */
   UnsignedInteger pointNumber = sample_.getSize();
   /* Compute the level function on the sample */
-  NumericalSample levelValuesSample(getLevelFunction()(sample_));
-  NumericalSample notVerifyingPoints(0, NumericalPoint(sample_.getDimension()));
-  NumericalSample notVerifyingValues(0, NumericalPoint(levelValuesSample.getDimension()));
+  Sample levelValuesSample(getLevelFunction()(sample_));
+  Sample notVerifyingPoints(0, Point(sample_.getDimension()));
+  Sample notVerifyingValues(0, Point(levelValuesSample.getDimension()));
   /* If there is something to classify */
   if (pointNumber > 0)
   {
@@ -138,8 +138,8 @@ void  NearestPointChecker::run()
       else // the point violates the constraint
       {
         /* Exchange the point with the last point not already classified */
-        NumericalPoint point(sample_[toBeClassified]);
-        NumericalPoint value(levelValuesSample[toBeClassified]);
+        Point point(sample_[toBeClassified]);
+        Point value(levelValuesSample[toBeClassified]);
         sample_[toBeClassified] = sample_[notClassified];
         sample_[notClassified] = point;
         levelValuesSample[toBeClassified] = levelValuesSample[notClassified];
@@ -150,12 +150,12 @@ void  NearestPointChecker::run()
     /* At the end, we still have to check the point at the position toBeClassified but without updating notClassified, which should be already equals to 0 and then could try to become < 0 */
     if (getComparisonOperator().compare(levelValuesSample[toBeClassified][0], getThreshold())) toBeClassified++;
 
-    /* we split the sample_ in 2 NumericalSample : one with the left side (points verifying the constraint) and the other with the right side (points not verifying the constraint) */
+    /* we split the sample_ in 2 Sample : one with the left side (points verifying the constraint) and the other with the right side (points not verifying the constraint) */
     if (toBeClassified < pointNumber)
     {
       notVerifyingPoints = sample_.split(toBeClassified);
 
-      /* we split the levelValuesSample in 2 NumericalSamples : one with the left side (points verifying the constraint) and the other with the right side (points not verifying the constraint) */
+      /* we split the levelValuesSample in 2 Samples : one with the left side (points verifying the constraint) and the other with the right side (points not verifying the constraint) */
       notVerifyingValues = levelValuesSample.split(toBeClassified);
     }
   }

@@ -30,7 +30,7 @@ static const Factory<UniVariateFunctionEvaluation> Factory_UniVariateFunctionEva
 
 /* Default constructor */
 UniVariateFunctionEvaluation::UniVariateFunctionEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_()
 {
   // Nothing to do
@@ -39,7 +39,7 @@ UniVariateFunctionEvaluation::UniVariateFunctionEvaluation()
 
 /* Constructor */
 UniVariateFunctionEvaluation::UniVariateFunctionEvaluation(const UniVariateFunction & function)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , function_(function)
 {
   // Set the descriptions
@@ -59,7 +59,7 @@ UniVariateFunctionEvaluation * UniVariateFunctionEvaluation::clone() const
 String UniVariateFunctionEvaluation::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-                   << " function=" << function_;
+         << " function=" << function_;
 }
 
 String UniVariateFunctionEvaluation::__str__(const String & offset) const
@@ -71,11 +71,11 @@ String UniVariateFunctionEvaluation::__str__(const String & offset) const
 
 
 /* Operator (): Evaluate a product of 1D polynomials for one sample */
-NumericalPoint UniVariateFunctionEvaluation::operator() (const NumericalPoint & inP) const
+Point UniVariateFunctionEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inDimension(inP.getDimension());
   if (inDimension != 1) throw InvalidArgumentException(HERE) << "Error: trying to evaluate an UniVariateFunction with an argument of invalid dimension";
-  const NumericalPoint result(1, function_(inP[0]));
+  const Point result(1, function_(inP[0]));
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
@@ -100,14 +100,14 @@ UnsignedInteger UniVariateFunctionEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void UniVariateFunctionEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("function_", function_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void UniVariateFunctionEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("function_", function_);
 }
 

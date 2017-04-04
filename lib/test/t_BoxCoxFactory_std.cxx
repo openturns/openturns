@@ -34,18 +34,18 @@ int main(int argc, char *argv[])
   {
     // TimeGrid parameters
     const UnsignedInteger n = 101;
-    const NumericalScalar timeStart = 0.0;
-    const NumericalScalar timeStep = 0.1;
+    const Scalar timeStart = 0.0;
+    const Scalar timeStep = 0.1;
     RegularGrid timeGrid(timeStart, timeStep, n);
 
     // White noise
     const WhiteNoise whiteNoise(Uniform(), timeGrid);
 
     // Composite process
-    const CompositeProcess process(ValueFunction(NumericalMathFunction("x", "x+2")), whiteNoise);
+    const CompositeProcess process(ValueFunction(SymbolicFunction("x", "x+2")), whiteNoise);
     // A realization of the process
     const TimeSeries timeSeries(process.getRealization());
-    const NumericalSample sample(timeSeries.getSample());
+    const Sample sample(timeSeries.getSample());
 
     // Now we build the factory
     BoxCoxFactory factory;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     fullprint << "myBoxCox (sample)     =" << factory.build(sample) << std::endl;
 
     // Creation of the BoxCoxTransform using shift
-    NumericalPoint shift(1, 1.0);
+    Point shift(1, 1.0);
     BoxCoxTransform myBoxCoxShift(factory.build(timeSeries, shift));
 
     fullprint << "myBoxCox with shift (time-series)=" << myBoxCoxShift << std::endl;

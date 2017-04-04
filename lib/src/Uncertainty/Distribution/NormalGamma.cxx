@@ -53,19 +53,19 @@ NormalGamma::NormalGamma()
 }
 
 /* Parameters constructor */
-NormalGamma::NormalGamma(const NumericalScalar mu,
-                         const NumericalScalar kappa,
-                         const NumericalScalar alpha,
-                         const NumericalScalar beta)
+NormalGamma::NormalGamma(const Scalar mu,
+                         const Scalar kappa,
+                         const Scalar alpha,
+                         const Scalar beta)
   : BayesDistribution()
   , mu_(mu)
   , kappa_(kappa)
   , alpha_(alpha)
   , beta_(beta)
 {
-  if (kappa_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
-  if (alpha_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
-  if (beta_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
+  if (!(kappa_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
+  if (!(alpha_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
+  if (!(beta_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
   setName("NormalGamma");
   const Description inVars(1, "lambda");
   Description formulas(2);
@@ -82,15 +82,15 @@ NormalGamma::NormalGamma(const NumericalScalar mu,
 /* Compute the numerical range of the distribution given the parameters values */
 void NormalGamma::computeRange()
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   // Lower bound
-  NumericalPoint lowerBound(2, 0.0);
-  //const NumericalScalar lambdaMin(conditioningDistribution_.computeQuantile(epsilon)[0]);
-  const NumericalScalar lambdaMax = conditioningDistribution_.computeQuantile(epsilon, true)[0];
+  Point lowerBound(2, 0.0);
+  //const Scalar lambdaMin(conditioningDistribution_.computeQuantile(epsilon)[0]);
+  const Scalar lambdaMax = conditioningDistribution_.computeQuantile(epsilon, true)[0];
   const Normal deconditionedDistribution(mu_, 1.0 / std::sqrt(kappa_ * lambdaMax));
   lowerBound[0] = deconditionedDistribution.computeQuantile(epsilon)[0];
   // Upper bound
-  NumericalPoint upperBound(2, lambdaMax);
+  Point upperBound(2, lambdaMax);
   upperBound[0] = deconditionedDistribution.computeQuantile(epsilon, true)[0];
   Interval::BoolCollection finiteLowerBound(2, false);
   finiteLowerBound[1] = true;
@@ -138,58 +138,58 @@ NormalGamma * NormalGamma::clone() const
 }
 
 /* Mu accessor */
-void NormalGamma::setMu(const NumericalScalar mu)
+void NormalGamma::setMu(const Scalar mu)
 {
   if (mu != mu_) mu_ = mu;
 }
 
-NumericalScalar NormalGamma::getMu() const
+Scalar NormalGamma::getMu() const
 {
   return mu_;
 }
 
 
 /* Kappa accessor */
-void NormalGamma::setKappa(const NumericalScalar kappa)
+void NormalGamma::setKappa(const Scalar kappa)
 {
   if (kappa != kappa_)
   {
-    if (kappa_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
+    if (!(kappa_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
     kappa_ = kappa;
   }
 }
 
-NumericalScalar NormalGamma::getKappa() const
+Scalar NormalGamma::getKappa() const
 {
   return kappa_;
 }
 
 /* Alpha accessor */
-void NormalGamma::setAlpha(const NumericalScalar alpha)
+void NormalGamma::setAlpha(const Scalar alpha)
 {
   if (!(alpha == alpha_))
   {
-    if (alpha_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
+    if (!(alpha_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
     alpha_ = alpha;
   }
 }
 
-NumericalScalar NormalGamma::getAlpha() const
+Scalar NormalGamma::getAlpha() const
 {
   return alpha_;
 }
 
 /* Beta accessor */
-void NormalGamma::setBeta(const NumericalScalar beta)
+void NormalGamma::setBeta(const Scalar beta)
 {
   if (!(beta == beta_))
   {
-    if (beta_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
+    if (!(beta_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
     beta_ = beta;
   }
 }
 
-NumericalScalar NormalGamma::getBeta() const
+Scalar NormalGamma::getBeta() const
 {
   return beta_;
 }

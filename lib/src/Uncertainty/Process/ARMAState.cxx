@@ -37,8 +37,8 @@ ARMAState::ARMAState()
 }
 
 /* Standard constructor */
-ARMAState::ARMAState(const NumericalSample & x,
-                     const NumericalSample & epsilon)
+ARMAState::ARMAState(const Sample & x,
+                     const Sample & epsilon)
   : PersistentObject()
   , x_(x)
   , epsilon_(epsilon)
@@ -88,20 +88,20 @@ String ARMAState::__str__(const String & offset) const
 
 
 /* Data X accessor */
-NumericalSample ARMAState::getX() const
+Sample ARMAState::getX() const
 {
   return x_;
 }
 
-void ARMAState::setXEpsilon(const NumericalSample & x,
-                            const NumericalSample & epsilon)
+void ARMAState::setXEpsilon(const Sample & x,
+                            const Sample & epsilon)
 {
   x_ = x;
   epsilon_ = epsilon;
 }
 
 /* Epsilon \epsilon accessor */
-NumericalSample ARMAState::getEpsilon() const
+Sample ARMAState::getEpsilon() const
 {
   return epsilon_;
 }

@@ -44,12 +44,12 @@ DiracFactory * DiracFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-DiracFactory::Implementation DiracFactory::build(const NumericalSample & sample) const
+DiracFactory::Implementation DiracFactory::build(const Sample & sample) const
 {
   return buildAsDirac(sample).clone();
 }
 
-DiracFactory::Implementation DiracFactory::build(const NumericalPoint & parameters) const
+DiracFactory::Implementation DiracFactory::build(const Point & parameters) const
 {
   return buildAsDirac(parameters).clone();
 }
@@ -59,20 +59,20 @@ DiracFactory::Implementation DiracFactory::build() const
   return buildAsDirac().clone();
 }
 
-Dirac DiracFactory::buildAsDirac(const NumericalSample & sample) const
+Dirac DiracFactory::buildAsDirac(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from an empty sample";
-  NumericalPoint point(sample[0]);
+  Point point(sample[0]);
   // Check that all the points are equal up to the discrete distribution support precision
-  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 1; i < size; ++i) if ((point - sample[i]).norm() > supportEpsilon) throw InvalidArgumentException(HERE) << "Error: cannot build a Dirac distribution from a sample containing different points";
   Dirac result(point);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-Dirac DiracFactory::buildAsDirac(const NumericalPoint & parameters) const
+Dirac DiracFactory::buildAsDirac(const Point & parameters) const
 {
   try
   {

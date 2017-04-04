@@ -48,7 +48,7 @@ MonteCarlo * MonteCarlo::clone() const
 }
 
 /* Compute the block sample */
-NumericalSample MonteCarlo::computeBlockSample()
+Sample MonteCarlo::computeBlockSample()
 {
   return event_.getSample(blockSize_);
 }

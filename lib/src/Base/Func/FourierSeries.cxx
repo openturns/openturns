@@ -71,21 +71,21 @@ String FourierSeries::__str__(const String & offset) const
 
 
 /* FourierSeries are evaluated as functors */
-NumericalScalar FourierSeries::operator() (const NumericalScalar x) const
+Scalar FourierSeries::operator() (const Scalar x) const
 {
-  const NumericalScalar coef = k_ == 0 ? 1.0 : M_SQRT2;
+  const Scalar coef = k_ == 0 ? 1.0 : M_SQRT2;
   return coef * (isCosine_ ? cos(k_ * x) : sin(k_ * x));
 }
 
 /* FourierSeries gradient */
-NumericalScalar FourierSeries::gradient(const NumericalScalar x) const
+Scalar FourierSeries::gradient(const Scalar x) const
 {
   if (k_ == 0) return 0.0;
   return M_SQRT2 * k_ * (isCosine_ ? -sin(k_ * x) : cos(k_ * x));
 }
 
 /* FourierSeries hessian */
-NumericalScalar FourierSeries::hessian(const NumericalScalar x) const
+Scalar FourierSeries::hessian(const Scalar x) const
 {
   if (k_ == 0) return 0.0;
   return M_SQRT2 * k_ * k_ * (isCosine_ ? -cos(k_ * x) : -sin(k_ * x));

@@ -8,7 +8,7 @@ Available constructors:
 
 Parameters
 ----------
-functionsColl : list of :class:`~openturns.NumericalMathFunction`
+functionsColl : list of :class:`~openturns.Function`
     Functions constituting the Basis.
 size : int
     Size of the Basis.
@@ -20,7 +20,7 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(dimension):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)"
 %enddef
 %feature("docstring") OT::BasisImplementation
@@ -33,7 +33,7 @@ OT_Basis_doc
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function added in the Basis.
 
 Examples
@@ -43,9 +43,9 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(2):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
->>> basis.add(ot.NumericalMathFunction(input, ['y'], [input[2]]))"
+>>> basis.add(ot.SymbolicFunction(input, [input[2]]))"
 %enddef
 %feature("docstring") OT::BasisImplementation::add
 OT_Basis_add_doc
@@ -62,7 +62,7 @@ index : int, :math:`index \geq 0`
 
 Returns
 -------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     The function at the index *index* of the Basis.
 
 Examples
@@ -72,7 +72,7 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(dimension):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
 >>> print(basis.build(0).getEvaluation())
 [x0,x1,x2]->[x0]"
@@ -118,7 +118,7 @@ indices : list of int
 
 Returns
 -------
-subBasis : list of :class:`~openturns.NumericalMathFunction`
+subBasis : list of :class:`~openturns.Function`
     Functions defining a sub-basis.
 
 Examples
@@ -128,7 +128,7 @@ Examples
 >>> input = ['x0', 'x1', 'x2']
 >>> functions = []
 >>> for i in range(dimension):
-...     functions.append(ot.NumericalMathFunction(input, ['y'], [input[i]]))
+...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
 >>> subbasis = basis.getSubBasis([1])
 >>> print(subbasis[0].getEvaluation())

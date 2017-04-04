@@ -38,10 +38,10 @@ static const Factory<SimulatedAnnealingLHS> Factory_SimulatedAnnealingLHS;
 
 /** Geometric temperature profil */
 SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const TemperatureProfile & profile,
-  const SpaceFilling & spaceFilling)
-    : OptimalLHSExperiment(lhs, spaceFilling)
-    , profile_(profile)
-    , initialDesign_()
+    const SpaceFilling & spaceFilling)
+  : OptimalLHSExperiment(lhs, spaceFilling)
+  , profile_(profile)
+  , initialDesign_()
 {
   if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
   {
@@ -51,13 +51,13 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const Te
 }
 
 /** SimulatedAnnealingLHS constructor with LHS*/
-SimulatedAnnealingLHS::SimulatedAnnealingLHS (const NumericalSample & initialDesign,
-                                              const Distribution & distribution,
-                                              const TemperatureProfile & profile,
-                                              const SpaceFilling & spaceFilling)
-    : OptimalLHSExperiment()
-    , profile_(profile)
-    , initialDesign_(initialDesign)
+SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
+    const Distribution & distribution,
+    const TemperatureProfile & profile,
+    const SpaceFilling & spaceFilling)
+  : OptimalLHSExperiment()
+  , profile_(profile)
+  , initialDesign_(initialDesign)
 {
   if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
   {
@@ -80,13 +80,13 @@ SimulatedAnnealingLHS * SimulatedAnnealingLHS::clone() const
 }
 
 /* Generate design method */
-NumericalSample SimulatedAnnealingLHS::generateWithWeights(NumericalPoint & weights) const
+Sample SimulatedAnnealingLHS::generateWithWeights(Point & weights) const
 {
-  weights = NumericalPoint(size_, 1.0 / size_);
+  weights = Point(size_, 1.0 / size_);
   return generateWithRestart(0);
 }
 
-NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) const
+Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) const
 {
   // LHSResult returns resuls for all restarts
   LHSResult result(spaceFilling_, nRestart);
@@ -94,7 +94,7 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
   {
     // history has dimension 3 :crit, proba & temperature
     // Total size depends on convergency
-    NumericalSample history(0, 3);
+    Sample history(0, 3);
     Description historyDescription(3);
     historyDescription[0] = spaceFilling_.getImplementation()->getName() + " criterion";
     historyDescription[1] = "Probability";
@@ -103,12 +103,12 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
     LOGDEBUG("Starting simulated annealing process");
 
     // Starting sample, in the [0,1]^d space
-    NumericalSample optimalDesign(rankTransform(initialDesign_.getSize() > 0 ? initialDesign_ : lhs_.generate()));
+    Sample optimalDesign(rankTransform(initialDesign_.getSize() > 0 ? initialDesign_ : lhs_.generate()));
 
     // Starting implementation
     UnsignedInteger iteration(0);
-    NumericalScalar T(profile_.getT0());
-    NumericalScalar optimalValue(spaceFilling_.evaluate(optimalDesign));
+    Scalar T(profile_.getT0());
+    Scalar optimalValue(spaceFilling_.evaluate(optimalDesign));
     const UnsignedInteger iMax(profile_.getIMax());
     while(iteration < iMax && T > 0)
     {
@@ -123,9 +123,9 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
       //          newCriterion are almost equal, architectures may go to different
       //          branches.  In order to have the same random generator state,
       //          RandomGenerator::Generate() is called here.
-      const NumericalScalar bernoulliTrial = RandomGenerator::Generate();
-      const NumericalScalar newCriterion = spaceFilling_.perturbLHS(optimalDesign, optimalValue, row1, row2, columnIndex);
-      const NumericalScalar criteriaDifference = std::min(std::exp((optimalValue-newCriterion)/T), 1.0);
+      const Scalar bernoulliTrial = RandomGenerator::Generate();
+      const Scalar newCriterion = spaceFilling_.perturbLHS(optimalDesign, optimalValue, row1, row2, columnIndex);
+      const Scalar criteriaDifference = std::min(std::exp((optimalValue - newCriterion) / T), 1.0);
       // Decision with respect to criteriaDifference
       if (optimalValue >= newCriterion)
       {
@@ -141,7 +141,7 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
         }
       }
       LOGDEBUG(OSS() << "Current optimal value =" << optimalValue);
-      NumericalPoint historyElement(3);
+      Point historyElement(3);
       historyElement[0] = optimalValue;
       historyElement[1] = criteriaDifference;
       historyElement[2] = T;
@@ -152,7 +152,7 @@ NumericalSample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRest
     }
     LOGDEBUG("End of simulated annealing process");
     // Transform again optimalDesign
-    NumericalSample optimalDesignX(inverseRankTransform(optimalDesign));
+    Sample optimalDesignX(inverseRankTransform(optimalDesign));
     // Add elements to result
     result.add(optimalDesignX, optimalValue, SpaceFillingC2().evaluate(optimalDesign), SpaceFillingPhiP().evaluate(optimalDesign), SpaceFillingMinDist().evaluate(optimalDesign), history);
   }

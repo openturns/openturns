@@ -88,7 +88,7 @@ OT_ProjectionStrategy_doc
 
 Returns
 -------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     Coefficients :math:`(\alpha_k)_{k \in K}`."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getCoefficients
@@ -114,7 +114,7 @@ OT_ProjectionStrategy_getExperiment_doc
 
 Returns
 -------
-X : :class:`~openturns.NumericalSample`
+X : :class:`~openturns.Sample`
     Input Sample."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getInputSample
@@ -140,7 +140,7 @@ OT_ProjectionStrategy_getMeasure_doc
 
 Returns
 -------
-Y : :class:`~openturns.NumericalSample`
+Y : :class:`~openturns.Sample`
     Output Sample."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getOutputSample
@@ -179,7 +179,7 @@ OT_ProjectionStrategy_getResidual_doc
 
 Returns
 -------
-w : :class:`~openturns.NumericalPoint`
+w : :class:`~openturns.Point`
     Weights of the design of experiments."
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getWeights

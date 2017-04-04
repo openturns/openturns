@@ -12,7 +12,7 @@ try:
     dim = 2
     transformation = NatafIndependentCopulaHessian(dim)
     print("transformation=", repr(transformation))
-    point = NumericalPoint(dim, 0.75)
+    point = Point(dim, 0.75)
     print("transformation(", point, ")=", repr(transformation.hessian(point)))
     print("input dimension=", transformation.getInputDimension())
     print("output dimension=", transformation.getOutputDimension())

@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
     // Test the constructor based on marginal degrees and distribution
     GaussProductExperiment myPlane(distribution, marginalDegrees);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalPoint weights(0);
-    NumericalSample sample(myPlane.generateWithWeights(weights));
+    Point weights(0);
+    Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
   }

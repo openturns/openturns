@@ -47,7 +47,7 @@ public:
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  NumericalPoint generate() const;
+  Point generate() const;
 
   /** String converter */
   String __repr__() const;

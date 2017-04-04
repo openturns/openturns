@@ -48,25 +48,25 @@ SpaceFillingPhiP * SpaceFillingPhiP::clone() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingPhiP::evaluate(const NumericalSample & sample) const
+Scalar SpaceFillingPhiP::evaluate(const Sample & sample) const
 {
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
-  NumericalScalar sum = 0.0;
-  const NumericalScalar* addr_sample = &sample[0][0];
+  Scalar sum = 0.0;
+  const Scalar* addr_sample = &sample[0][0];
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar* ptI(addr_sample + i * dimension);
+    const Scalar* ptI(addr_sample + i * dimension);
     for (UnsignedInteger j = 0; j < i; ++j)
     {
-      NumericalScalar squaredNorm = 0.0;
-      const NumericalScalar* ptJ(addr_sample + j * dimension);
+      Scalar squaredNorm = 0.0;
+      const Scalar* ptJ(addr_sample + j * dimension);
       for (UnsignedInteger d = 0; d < dimension; ++d)
       {
-        const NumericalScalar delta(ptI[d] - ptJ[d]);
+        const Scalar delta(ptI[d] - ptJ[d]);
         squaredNorm += delta * delta;
       }
-      if (squaredNorm == 0.0) return std::numeric_limits<NumericalScalar>::max();
+      if (squaredNorm == 0.0) return std::numeric_limits<Scalar>::max();
       sum += std::exp(-0.5 * p_ * std::log(squaredNorm));
     }
   }
@@ -74,49 +74,49 @@ NumericalScalar SpaceFillingPhiP::evaluate(const NumericalSample & sample) const
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFillingPhiP::perturbLHS(NumericalSample& oldDesign, OT::NumericalScalar oldCriterion,
-    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
+Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
+                                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   if (row1 == row2) return oldCriterion;
   if (p_ > 5) return SpaceFillingImplementation::perturbLHS(oldDesign, oldCriterion, row1, row2, column);
 
   const UnsignedInteger size(oldDesign.getSize());
   const UnsignedInteger dimension(oldDesign.getDimension());
-  const NumericalScalar* addr_sample = &oldDesign[0][0];
+  const Scalar* addr_sample = &oldDesign[0][0];
 
-  NumericalScalar result = (oldCriterion <= 0.0 ? 0.0 : std::exp(p_ * std::log(oldCriterion)));
-  NumericalScalar oldSum = 0.0;
-  NumericalScalar* pt1(&oldDesign[0][0] + dimension * row1);
-  NumericalScalar* pt2(&oldDesign[0][0] + dimension * row2);
+  Scalar result = (oldCriterion <= 0.0 ? 0.0 : std::exp(p_ * std::log(oldCriterion)));
+  Scalar oldSum = 0.0;
+  Scalar* pt1(&oldDesign[0][0] + dimension * row1);
+  Scalar* pt2(&oldDesign[0][0] + dimension * row2);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (i == row1 || i == row2) continue;
-    const NumericalScalar* ptI(addr_sample + dimension * i);
-    NumericalScalar d1 = 0.0;
-    NumericalScalar d2 = 0.0;
+    const Scalar* ptI(addr_sample + dimension * i);
+    Scalar d1 = 0.0;
+    Scalar d2 = 0.0;
     for(UnsignedInteger d = 0; d < dimension; ++d)
     {
-      const NumericalScalar delta1(pt1[d] - ptI[d]);
+      const Scalar delta1(pt1[d] - ptI[d]);
       d1 += delta1 * delta1;
-      const NumericalScalar delta2(pt2[d] - ptI[d]);
+      const Scalar delta2(pt2[d] - ptI[d]);
       d2 += delta2 * delta2;
     }
     oldSum += std::exp(-0.5 * p_ * std::log(d1)) + std::exp(-0.5 * p_ * std::log(d2));
   }
   // Swap coordinates
   std::swap(pt1[column], pt2[column]);
-  NumericalScalar newSum = 0.0;
+  Scalar newSum = 0.0;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (i == row1 || i == row2) continue;
-    const NumericalScalar* ptI(addr_sample + dimension * i);
-    NumericalScalar d1 = 0.0;
-    NumericalScalar d2 = 0.0;
+    const Scalar* ptI(addr_sample + dimension * i);
+    Scalar d1 = 0.0;
+    Scalar d2 = 0.0;
     for(UnsignedInteger d = 0; d < dimension; ++d)
     {
-      const NumericalScalar delta1(pt1[d] - ptI[d]);
+      const Scalar delta1(pt1[d] - ptI[d]);
       d1 += delta1 * delta1;
-      const NumericalScalar delta2(pt2[d] - ptI[d]);
+      const Scalar delta2(pt2[d] - ptI[d]);
       d2 += delta2 * delta2;
     }
     newSum += std::exp(-0.5 * p_ * std::log(d1)) + std::exp(-0.5 * p_ * std::log(d2));

@@ -30,7 +30,7 @@ try:
     print("covariance=", repr(oneSample.computeCovariance()))
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 3.0)
+    point = Point(distribution.getDimension(), 3.0)
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point
@@ -40,7 +40,7 @@ try:
     print("pdf     =%.6f" % PDF)
     # by the finite difference technique from CDF
     print("pdf (FD)=%.6f" % (distribution.computeCDF(
-        point + NumericalPoint(1, 0)) - distribution.computeCDF(point + NumericalPoint(1, -1))))
+        point + Point(1, 0)) - distribution.computeCDF(point + Point(1, -1))))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDF = distribution.computeCDF(point)
@@ -48,7 +48,7 @@ try:
     PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
-    PDFgrFD = NumericalPoint(1)
+    PDFgrFD = Point(1)
     PDFgrFD[0] = (Geometric(distribution.getP() + eps).computePDF(point) -
                   Geometric(distribution.getP() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
@@ -57,7 +57,7 @@ try:
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
     # by the finite difference technique
-    CDFgrFD = NumericalPoint(1)
+    CDFgrFD = Point(1)
     CDFgrFD[0] = (Geometric(distribution.getP() + eps).computeCDF(point) -
                   Geometric(distribution.getP() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=", repr(CDFgrFD))

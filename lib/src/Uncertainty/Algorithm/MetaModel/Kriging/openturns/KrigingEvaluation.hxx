@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KRIGINGEVALUATION_HXX
 #define OPENTURNS_KRIGINGEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Collection.hxx"
@@ -35,14 +35,14 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class permits prediction on a gaussian process
  */
 class OT_API KrigingEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME
 
 public:
 
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -51,10 +51,10 @@ public:
 
   /** Constructor with parameters */
   KrigingEvaluation(const BasisCollection & basis,
-                    const NumericalSample & inputSample,
+                    const Sample & inputSample,
                     const CovarianceModel & correlationModel,
-                    const NumericalPointCollection & beta,
-                    const NumericalSample & gamma);
+                    const PointCollection & beta,
+                    const Sample & gamma);
 
   /** Virtual constructor */
   virtual KrigingEvaluation * clone() const;
@@ -70,8 +70,8 @@ public:
   virtual Bool isActualImplementation() const;
 
   /** Operator () */
-  virtual NumericalPoint operator()(const NumericalPoint & inP) const;
-  virtual NumericalSample operator()(const NumericalSample & inS) const;
+  virtual Point operator()(const Point & inP) const;
+  virtual Sample operator()(const Sample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -91,14 +91,14 @@ protected:
   BasisPersistentCollection basis_;
 
   /// Training (input) sample
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /// Correlation model
   CovarianceModel covarianceModel_;
 
   /// Regression weights
-  NumericalPointPersistentCollection beta_;
-  NumericalSample gamma_;
+  PointPersistentCollection beta_;
+  Sample gamma_;
 
 private:
   friend struct KrigingEvaluationPointFunctor;

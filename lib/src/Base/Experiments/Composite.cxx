@@ -39,8 +39,8 @@ Composite::Composite()
 }
 
 /* Constructor with parameters */
-Composite::Composite(const NumericalPoint & center,
-                     const NumericalPoint & levels)
+Composite::Composite(const Point & center,
+                     const Point & levels)
   : StratifiedExperiment(center, levels)
 {
   // Nothing to do
@@ -48,8 +48,8 @@ Composite::Composite(const NumericalPoint & center,
 
 /* Constructor with parameters */
 Composite::Composite(const UnsignedInteger dimension,
-                     const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
+                     const Point & levels)
+  : StratifiedExperiment(Point(dimension, 0.0), levels)
 {
   // Nothing to do
 }
@@ -61,7 +61,7 @@ Composite * Composite::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Composite::generate() const
+Sample Composite::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();
@@ -74,12 +74,12 @@ NumericalSample Composite::generate() const
   /* A composite plane is made of an axial plane and a factorial plane with the same levels */
   /* First the axial plane */
   Axial axial(center_, levels_);
-  const NumericalSample axialPlane(axial.generate());
+  const Sample axialPlane(axial.generate());
   /* Second the factorial plane */
   Factorial factorial(center_, levels_);
-  const NumericalSample factorialPlane(factorial.generate());
+  const Sample factorialPlane(factorial.generate());
   /* We create the composite plane by copying the factorial plane (larger than the axial plane) then we append all the elements of the axial plane excepted its first one, which is the center of the plane and thus already present in the factorial plane */
-  NumericalSample compositePlane(size, center_);
+  Sample compositePlane(size, center_);
   compositePlane.setName("Composite plane");
   UnsignedInteger index = 0;
   size = factorialPlane.getSize();

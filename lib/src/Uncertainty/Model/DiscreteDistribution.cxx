@@ -30,7 +30,7 @@ CLASSNAMEINIT(DiscreteDistribution);
 /* Default constructor */
 DiscreteDistribution::DiscreteDistribution()
   : DistributionImplementation()
-  , supportEpsilon_(ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon"))
+  , supportEpsilon_(ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon"))
 {
   // Nothing to do
 }
@@ -75,12 +75,12 @@ Bool DiscreteDistribution::isIntegral() const
 }
 
 /* Support tolerance accessor */
-void DiscreteDistribution::setSupportEpsilon(const NumericalScalar epsilon)
+void DiscreteDistribution::setSupportEpsilon(const Scalar epsilon)
 {
   supportEpsilon_ = epsilon;
 }
 
-NumericalScalar DiscreteDistribution::getSupportEpsilon() const
+Scalar DiscreteDistribution::getSupportEpsilon() const
 {
   return supportEpsilon_;
 }

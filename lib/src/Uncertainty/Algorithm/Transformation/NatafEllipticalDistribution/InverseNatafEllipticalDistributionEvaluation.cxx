@@ -36,19 +36,19 @@ static const Factory<InverseNatafEllipticalDistributionEvaluation> Factory_Inver
 
 /* Default constructor */
 InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation()
-  : LinearNumericalMathEvaluationImplementation()
+  : LinearEvaluation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
+InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistributionEvaluation(const Point & mean,
     const TriangularMatrix & cholesky)
-  : LinearNumericalMathEvaluationImplementation(
-    NumericalPoint(mean.getDimension(), 0.0),
-    mean,
-    cholesky.transpose()
-  )
+  : LinearEvaluation(
+      Point(mean.getDimension(), 0.0),
+      mean,
+      cholesky.transpose()
+    )
 {
   // Nothing to do
 }
@@ -91,7 +91,7 @@ String InverseNatafEllipticalDistributionEvaluation::__repr__() const
  *
  */
 
-Matrix InverseNatafEllipticalDistributionEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix InverseNatafEllipticalDistributionEvaluation::parameterGradient(const Point & inP) const
 {
   UnsignedInteger inputDimension = getInputDimension();
   Matrix result(2 * inputDimension, inputDimension);
@@ -105,13 +105,13 @@ Matrix InverseNatafEllipticalDistributionEvaluation::parameterGradient(const Num
 /* Method save() stores the object through the StorageManager */
 void InverseNatafEllipticalDistributionEvaluation::save(Advocate & adv) const
 {
-  LinearNumericalMathEvaluationImplementation::save(adv);
+  LinearEvaluation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseNatafEllipticalDistributionEvaluation::load(Advocate & adv)
 {
-  LinearNumericalMathEvaluationImplementation::load(adv);
+  LinearEvaluation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

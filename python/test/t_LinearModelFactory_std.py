@@ -18,12 +18,12 @@ try:
 
     # lm build
     size = 20
-    oneSample = NumericalSample(size, 1)
-    twoSample = NumericalSample(size, 1)
+    oneSample = Sample(size, 1)
+    twoSample = Sample(size, 1)
     for i in range(size):
-        oneSample[i] = NumericalPoint(
+        oneSample[i] = Point(
             1, 7.0 * sin(-3.5 + (6.5 * i) / (size - 1.0)) + 2.0)
-        twoSample[i] = NumericalPoint(
+        twoSample[i] = Point(
             1, -2.0 * oneSample[i, 0] + 3.0 + 0.05 * sin(oneSample[i, 0]))
     test = lmfact.build(oneSample, twoSample)
     print("test = ", repr(test))

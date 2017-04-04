@@ -33,8 +33,8 @@ static const Factory<NonCentralChiSquare> Factory_NonCentralChiSquare;
 
 
 /* Default constructor */
-NonCentralChiSquare::NonCentralChiSquare(const NumericalScalar nu,
-    const NumericalScalar lambda)
+NonCentralChiSquare::NonCentralChiSquare(const Scalar nu,
+    const Scalar lambda)
   : ContinuousDistribution()
   , nu_(0.0)
   , lambda_(0.0)
@@ -85,13 +85,13 @@ NonCentralChiSquare * NonCentralChiSquare::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint NonCentralChiSquare::getRealization() const
+Point NonCentralChiSquare::getRealization() const
 {
   return DistFunc::rNonCentralChiSquare(nu_, lambda_, 1);
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar NonCentralChiSquare::computePDF(const NumericalPoint & point) const
+Scalar NonCentralChiSquare::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -99,7 +99,7 @@ NumericalScalar NonCentralChiSquare::computePDF(const NumericalPoint & point) co
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar NonCentralChiSquare::computeCDF(const NumericalPoint & point) const
+Scalar NonCentralChiSquare::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -108,24 +108,24 @@ NumericalScalar NonCentralChiSquare::computeCDF(const NumericalPoint & point) co
 }
 
 /** Get the PDFGradient of the distribution */
-NumericalPoint NonCentralChiSquare::computePDFGradient(const NumericalPoint & point) const
+Point NonCentralChiSquare::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalScalar eps = std::pow(pdfEpsilon_, 1.0 / 3.0);
-  NumericalPoint pdfGradient(2);
+  Scalar eps = std::pow(pdfEpsilon_, 1.0 / 3.0);
+  Point pdfGradient(2);
   pdfGradient[0] = (DistFunc::dNonCentralChiSquare(nu_ + eps, lambda_, point[0], pdfEpsilon_, maximumIteration_) - DistFunc::dNonCentralChiSquare(nu_ - eps, lambda_, point[0], pdfEpsilon_, maximumIteration_)) / (2.0 * eps);
   pdfGradient[1] = (DistFunc::dNonCentralChiSquare(nu_, lambda_ + eps, point[0], pdfEpsilon_, maximumIteration_) - DistFunc::dNonCentralChiSquare(nu_, lambda_ - eps, point[0], pdfEpsilon_, maximumIteration_)) / (2.0 * eps);
   return pdfGradient;
 }
 
 /** Get the CDFGradient of the distribution */
-NumericalPoint NonCentralChiSquare::computeCDFGradient(const NumericalPoint & point) const
+Point NonCentralChiSquare::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
-  NumericalPoint cdfGradient(2);
+  Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  Point cdfGradient(2);
   cdfGradient[0] = (DistFunc::pNonCentralChiSquare(nu_ + eps, lambda_, point[0], false, cdfEpsilon_, maximumIteration_) - DistFunc::pNonCentralChiSquare(nu_ - eps, lambda_, point[0], false, cdfEpsilon_, maximumIteration_)) / (2.0 * eps);
   cdfGradient[1] = (DistFunc::pNonCentralChiSquare(nu_, lambda_ + eps, point[0], false, cdfEpsilon_, maximumIteration_) - DistFunc::pNonCentralChiSquare(nu_, lambda_ - eps, point[0], false, cdfEpsilon_, maximumIteration_)) / (2.0 * eps);
   return cdfGradient;
@@ -134,48 +134,48 @@ NumericalPoint NonCentralChiSquare::computeCDFGradient(const NumericalPoint & po
 /* Compute the mean of the distribution */
 void NonCentralChiSquare::computeMean() const
 {
-  mean_ = NumericalPoint(1, nu_ + lambda_);
+  mean_ = Point(1, nu_ + lambda_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint NonCentralChiSquare::getStandardDeviation() const
+Point NonCentralChiSquare::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(2.0 * (nu_ + 2.0 * lambda_)));
+  return Point(1, std::sqrt(2.0 * (nu_ + 2.0 * lambda_)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint NonCentralChiSquare::getSkewness() const
+Point NonCentralChiSquare::getSkewness() const
 {
   if (nu_ == 0.0) throw NotDefinedException(HERE) << "Error: the skewness is not defined for nu=0.";
-  if (lambda_ == 0.0) return NumericalPoint(1, 2.0 * M_SQRT2 / std::sqrt(nu_));
-  return NumericalPoint(1, (nu_ + 3.0 * lambda_) * std::pow(2.0 / (nu_ + 2.0 * lambda_), 1.5));
+  if (lambda_ == 0.0) return Point(1, 2.0 * M_SQRT2 / std::sqrt(nu_));
+  return Point(1, (nu_ + 3.0 * lambda_) * std::pow(2.0 / (nu_ + 2.0 * lambda_), 1.5));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint NonCentralChiSquare::getKurtosis() const
+Point NonCentralChiSquare::getKurtosis() const
 {
   if (nu_ == 0.0) throw NotDefinedException(HERE) << "Error: the kurtosis is not defined for nu=0.";
-  if (lambda_ == 0.0) return NumericalPoint(1, 3.0 + 12.0 / nu_);
-  return NumericalPoint(1, 3.0 + 12.0 * (nu_ + 4.0 * lambda_) / std::pow(nu_ + 2.0 * lambda_, 2.0));
+  if (lambda_ == 0.0) return Point(1, 3.0 + 12.0 / nu_);
+  return Point(1, 3.0 + 12.0 * (nu_ + 4.0 * lambda_) / std::pow(nu_ + 2.0 * lambda_, 2.0));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint NonCentralChiSquare::getStandardMoment(const UnsignedInteger n) const
+Point NonCentralChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
-  UniVariatePolynomial p(NumericalPoint(1, 1.0));
-  NumericalPoint derivativeFactor(3);
+  UniVariatePolynomial p(Point(1, 1.0));
+  Point derivativeFactor(3);
   derivativeFactor[0] = 1.0;
   derivativeFactor[1] = -4.0;
   derivativeFactor[2] = 4.0;
   for (UnsignedInteger k = 0; k < n; ++k)
   {
-    NumericalPoint polynomialFactor(2);
+    Point polynomialFactor(2);
     polynomialFactor[0] = lambda_ + 4.0 * k + nu_;
     polynomialFactor[1] = -8.0 * k - 2.0 * nu_;
     p = p.derivate() * UniVariatePolynomial(derivativeFactor) + p * UniVariatePolynomial(polynomialFactor);
   }
-  return NumericalPoint(1, p.getCoefficients()[0]);
+  return Point(1, p.getCoefficients()[0]);
 }
 
 /* Compute the covariance of the distribution */
@@ -187,29 +187,29 @@ void NonCentralChiSquare::computeCovariance() const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex NonCentralChiSquare::computeCharacteristicFunction(const NumericalScalar x) const
+Complex NonCentralChiSquare::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex NonCentralChiSquare::computeLogCharacteristicFunction(const NumericalScalar x) const
+Complex NonCentralChiSquare::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex denominator(1.0, -2.0 * x);
-  return NumericalComplex(0.0, lambda_ * x) / denominator - 0.5 * nu_ * std::log(denominator);
+  const Complex denominator(1.0, -2.0 * x);
+  return Complex(0.0, lambda_ * x) / denominator - 0.5 * nu_ * std::log(denominator);
 }
 
-NumericalPoint NonCentralChiSquare::getParameter() const
+Point NonCentralChiSquare::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = nu_;
   point[1] = lambda_;
   return point;
 }
 
-void NonCentralChiSquare::setParameter(const NumericalPoint & parameter)
+void NonCentralChiSquare::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = NonCentralChiSquare(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -223,9 +223,9 @@ Description NonCentralChiSquare::getParameterDescription() const
 }
 
 /* Nu accessor */
-void NonCentralChiSquare::setNu(const NumericalScalar nu)
+void NonCentralChiSquare::setNu(const Scalar nu)
 {
-  if (nu < 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
+  if (!(nu >= 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
   if (nu != nu_)
   {
     nu_ = nu;
@@ -235,11 +235,11 @@ void NonCentralChiSquare::setNu(const NumericalScalar nu)
   }
 }
 
-void NonCentralChiSquare::setNuLambda(const NumericalScalar nu,
-                                      const NumericalScalar lambda)
+void NonCentralChiSquare::setNuLambda(const Scalar nu,
+                                      const Scalar lambda)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
-  if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+  if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
   if ((nu != nu_) || (lambda != lambda_))
   {
     nu_ = nu;
@@ -251,16 +251,16 @@ void NonCentralChiSquare::setNuLambda(const NumericalScalar nu,
 }
 
 /* Nu accessor */
-NumericalScalar NonCentralChiSquare::getNu() const
+Scalar NonCentralChiSquare::getNu() const
 {
   return nu_;
 }
 
 
 /* Lambda accessor */
-void NonCentralChiSquare::setLambda(const NumericalScalar lambda)
+void NonCentralChiSquare::setLambda(const Scalar lambda)
 {
-  if (lambda < 0.0) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
+  if (!(lambda >= 0.0)) throw InvalidArgumentException(HERE) << "Lambda MUST be nonnegative";
   if (lambda != lambda_)
   {
     lambda_ = lambda;
@@ -271,7 +271,7 @@ void NonCentralChiSquare::setLambda(const NumericalScalar lambda)
 }
 
 /* Lambda accessor */
-NumericalScalar NonCentralChiSquare::getLambda() const
+Scalar NonCentralChiSquare::getLambda() const
 {
   return lambda_;
 }

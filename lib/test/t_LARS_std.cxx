@@ -32,28 +32,28 @@ int main(int argc, char *argv[])
 
   // Problem parameters
   UnsignedInteger dimension = 3;
-  NumericalScalar a = 7.0;
-  NumericalScalar b = 0.1;
+  Scalar a = 7.0;
+  Scalar b = 0.1;
   // Reference analytical values
-  NumericalScalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
-  NumericalPoint sob_1(3);
+  Scalar covTh = (pow(b, 2.0) * pow(M_PI, 8.0)) / 18.0 + (b * pow(M_PI, 4.0)) / 5.0 + (pow(a, 2.0)) / 8.0 + 1.0 / 2.0;
+  Point sob_1(3);
   sob_1[0] = (b * pow(M_PI, 4.0) / 5.0 + pow(b, 2.0) * pow(M_PI, 8.0) / 50.0 + 1.0 / 2.0) / covTh;
   sob_1[1] = (pow(a, 2.0) / 8.0) / covTh;
   sob_1[2] = 0.0;
-  NumericalPoint sob_2(3);
+  Point sob_2(3);
   sob_2[0] = 0.0;
   sob_2[1] = (pow(b, 2.0) * pow(M_PI, 8.0) / 18.0 - pow(b, 2.0) * pow(M_PI, 8.0) / 50.0) / covTh;
   sob_2[2] = 0.0;
-  NumericalPoint sob_3(1, 0.0);
-  NumericalPoint sob_T1(3);
+  Point sob_3(1, 0.0);
+  Point sob_T1(3);
   sob_T1[0] = sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0];
   sob_T1[1] = sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0];
   sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0];
-  NumericalPoint sob_T2(3);
+  Point sob_T2(3);
   sob_T2[0] = sob_2[0] + sob_2[1] + sob_3[0];
   sob_T2[1] = sob_2[0] + sob_2[2] + sob_3[0];
   sob_T2[2] = sob_2[1] + sob_2[2] + sob_3[0];
-  NumericalPoint sob_T3(sob_3);
+  Point sob_T3(sob_3);
   // Create the Ishigami function
   Description inputVariables(dimension);
   inputVariables[0] = "xi1";
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
   outputVariables[0] = "y";
   Description formula(1);
   formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-  NumericalMathFunction model(inputVariables, outputVariables, formula);
+  Function model(inputVariables, outputVariables, formula);
 
   // Create the input distribution
   Collection<Distribution> marginalX(dimension);
@@ -93,17 +93,17 @@ int main(int argc, char *argv[])
   MarginalTransformationEvaluation evaluationT(MarginalTransformationEvaluation(marginalX, marginalZ));
   MarginalTransformationGradient gradientT(evaluationT);
   MarginalTransformationHessian hessianT(evaluationT);
-  NumericalMathFunction xToU(evaluationT.clone(), gradientT.clone(), hessianT.clone());
+  Function xToU(evaluationT.clone(), gradientT.clone(), hessianT.clone());
 
   // generate samples
-  NumericalSample x( experiment.generate() );
-  NumericalSample u( xToU(x) );
-  NumericalSample y( model(x) );
+  Sample x( experiment.generate() );
+  Sample u( xToU(x) );
+  Sample y( model(x) );
 
   // build basis
   UnsignedInteger degree = 10;
   UnsignedInteger basisSize = enumerateFunction.getStrataCumulatedCardinal(degree);
-  Collection<NumericalMathFunction> coll;
+  Collection<Function> coll;
   for ( UnsignedInteger i = 0; i < basisSize; ++ i )
   {
     coll.add(productBasis.build(i));

@@ -24,7 +24,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,9 +52,9 @@ public:
 
   /** Constructor with parameters */
   SQP(const OptimizationProblem & problem,
-      const NumericalScalar tau,
-      const NumericalScalar omega,
-      const NumericalScalar smooth);
+      const Scalar tau,
+      const Scalar omega,
+      const Scalar smooth);
 
   /** Virtual constructor */
   virtual SQP * clone() const;
@@ -63,16 +63,16 @@ public:
   void run();
 
   /** Tau accessor */
-  NumericalScalar getTau() const;
-  void setTau(const NumericalScalar tau);
+  Scalar getTau() const;
+  void setTau(const Scalar tau);
 
   /** Omega accessor */
-  NumericalScalar getOmega() const;
-  void setOmega(const NumericalScalar tau);
+  Scalar getOmega() const;
+  void setOmega(const Scalar tau);
 
   /** Smooth accessor */
-  NumericalScalar getSmooth() const;
-  void setSmooth(const NumericalScalar tau);
+  Scalar getSmooth() const;
+  void setSmooth(const Scalar tau);
 
   /** String converter */
   String __repr__() const;
@@ -90,34 +90,34 @@ protected:
 private:
 
   /** Perform a line search in the given direction */
-  NumericalScalar computeLineSearch();
+  Scalar computeLineSearch();
 
   /** Initialize internal state */
   void initialize();
 
   /** Multiplicative decrease of linear step */
-  NumericalScalar tau_;
+  Scalar tau_;
 
   /** Armijo factor */
-  NumericalScalar omega_;
+  Scalar omega_;
 
   /** Growing factor in penalization term */
-  NumericalScalar smooth_;
+  Scalar smooth_;
 
   /** SQP current penalization factor */
-  NumericalScalar currentSigma_;
+  Scalar currentSigma_;
 
   /** SQP current point */
-  NumericalPoint currentPoint_;
+  Point currentPoint_;
 
   /** SQP current direction */
-  NumericalPoint currentDirection_;
+  Point currentDirection_;
 
   /** SQP current level value */
-  NumericalScalar currentLevelValue_;
+  Scalar currentLevelValue_;
 
   /** SQP current gradient as a column vector */
-  NumericalPoint currentGradient_;
+  Point currentGradient_;
 
   /** SQP current hessian as a symmetric tensor */
   SymmetricMatrix currentHessian_;
@@ -126,10 +126,10 @@ private:
   SymmetricMatrix currentSystemMatrix_;
 
   /** SQP current system second member as a column vector */
-  NumericalPoint currentSecondMember_;
+  Point currentSecondMember_;
 
   /** SQP current Lagrange multiplier */
-  NumericalScalar currentLambda_;
+  Scalar currentLambda_;
 
 }; /* class SQP */
 

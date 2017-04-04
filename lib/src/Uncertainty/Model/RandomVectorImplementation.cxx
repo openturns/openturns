@@ -83,22 +83,22 @@ UnsignedInteger RandomVectorImplementation::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint RandomVectorImplementation::getRealization() const
+Point RandomVectorImplementation::getRealization() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getRealization() const";
 }
 
 /* Numerical sample accessor */
-NumericalSample RandomVectorImplementation::getSample(const UnsignedInteger size) const
+Sample RandomVectorImplementation::getSample(const UnsignedInteger size) const
 {
-  NumericalSample result(size, getDimension());
+  Sample result(size, getDimension());
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = getRealization();
   result.setDescription(getDescription());
   return result;
 }
 
 /* Mean accessor */
-NumericalPoint RandomVectorImplementation::getMean() const
+Point RandomVectorImplementation::getMean() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getMean() const";
 }
@@ -128,7 +128,7 @@ RandomVectorImplementation::Antecedent RandomVectorImplementation::getAntecedent
 }
 
 /* Fake method due to pbs with dynamic_cast and Pointer */
-NumericalMathFunction RandomVectorImplementation::getFunction() const
+Function RandomVectorImplementation::getFunction() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getFunction() const";
 }
@@ -158,7 +158,7 @@ Domain RandomVectorImplementation::getDomain() const
 }
 
 /* Fake method due to pbs with dynamic_cast and Pointer */
-NumericalScalar RandomVectorImplementation::getThreshold() const
+Scalar RandomVectorImplementation::getThreshold() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getThreshold() const";
 }

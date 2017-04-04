@@ -15,7 +15,7 @@ OT_SpaceFillingMinDist_doc
 
 Parameters
 ----------
-design : :class:`~openturns.NumericalSample` or 2-d array like
+design : :class:`~openturns.Sample` or 2-d array like
     The design
 
 Returns

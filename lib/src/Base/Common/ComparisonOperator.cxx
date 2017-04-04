@@ -42,12 +42,12 @@ ComparisonOperator::ComparisonOperator(const ComparisonOperatorImplementation & 
 
 
 /* Return true if comparison succeeds */
-Bool ComparisonOperator::operator()(const NumericalScalar a,
-                                    const NumericalScalar b) const
+Bool ComparisonOperator::operator()(const Scalar a,
+                                    const Scalar b) const
 {
   return (*getImplementation())(a, b);
 }
-Bool ComparisonOperator::compare(NumericalScalar a, NumericalScalar b) const
+Bool ComparisonOperator::compare(Scalar a, Scalar b) const
 {
   return (*getImplementation())(a, b);
 }

@@ -39,7 +39,7 @@ class OT_API FunctionalBasis
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   FunctionalBasis();
@@ -47,10 +47,10 @@ public:
   /** Constructor from implementation */
   FunctionalBasis(const FunctionalBasisImplementation & implementation);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
-  NumericalMathFunction operator[](const UnsignedInteger index) const;
+  Function operator[](const UnsignedInteger index) const;
 
   /** Tells whether the basis is orthogonal */
   Bool isOrthogonal() const;

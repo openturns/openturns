@@ -11,10 +11,10 @@ TESTPREAMBLE()
 sampleSize = 6
 dimension = 1
 
-f = NumericalMathFunction(['x0'], ['y'], ['x0 * sin(x0)'])
+f = Function(['x0'], ['y'], ['x0 * sin(x0)'])
 
-X = NumericalSample(sampleSize, dimension)
-X2 = NumericalSample(sampleSize, dimension)
+X = Sample(sampleSize, dimension)
+X2 = Sample(sampleSize, dimension)
 for i in range(sampleSize):
     X[i, 0] = 3.0 + i
     X2[i, 0] = 2.5 + i
@@ -45,9 +45,9 @@ assert_almost_equal(result.getRelativeErrors(), [5.20873e-21])
 var = result.getConditionalCovariance(X)
 
 # assert_almost_equal could not be applied to matrices
-# application to NumericalPoint
-covariancePoint = NumericalPoint(var.getImplementation())
-theoricalVariance = NumericalPoint(sampleSize * sampleSize)
+# application to Point
+covariancePoint = Point(var.getImplementation())
+theoricalVariance = Point(sampleSize * sampleSize)
 assert_almost_equal(covariancePoint, theoricalVariance, 8.95e-7, 8.95e-7)
 
 # Test 2
@@ -63,7 +63,7 @@ inputSample = box.generate()
 inputSample *= 10.0
 
 
-model = NumericalMathFunction(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
+model = Function(['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
 outputSample = model(inputSample)
 
 # Validation
@@ -100,9 +100,9 @@ assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
 var = result.getConditionalCovariance(inputSample)
 
 # assert_almost_equal could not be applied to matrices
-# application to NumericalPoint
-covariancePoint = NumericalPoint(var.getImplementation())
-theoricalVariance = NumericalPoint(covariancePoint.getSize(), 0.0)
+# application to Point
+covariancePoint = Point(var.getImplementation())
+theoricalVariance = Point(covariancePoint.getSize(), 0.0)
 assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
 
 # Estimation

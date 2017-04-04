@@ -45,9 +45,9 @@ GeneralizedExtremeValue::GeneralizedExtremeValue()
 }
 
 /* Parameters constructor to use when the two bounds are finite */
-GeneralizedExtremeValue::GeneralizedExtremeValue(const NumericalScalar mu,
-						 const NumericalScalar sigma,
-						 const NumericalScalar xi)
+GeneralizedExtremeValue::GeneralizedExtremeValue(const Scalar mu,
+    const Scalar sigma,
+    const Scalar xi)
   : ContinuousDistribution()
 {
   setName("GeneralizedExtremeValue");
@@ -106,68 +106,68 @@ void GeneralizedExtremeValue::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint GeneralizedExtremeValue::getRealization() const
+Point GeneralizedExtremeValue::getRealization() const
 {
   return actualDistribution_.getRealization();
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint GeneralizedExtremeValue::computeDDF(const NumericalPoint & point) const
+Point GeneralizedExtremeValue::computeDDF(const Point & point) const
 {
   return actualDistribution_.computeDDF(point);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computePDF(const NumericalPoint & point) const
+Scalar GeneralizedExtremeValue::computePDF(const Point & point) const
 {
   return actualDistribution_.computePDF(point);
 }
 
 
 /* Get the log-PDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeLogPDF(const NumericalPoint & point) const
+Scalar GeneralizedExtremeValue::computeLogPDF(const Point & point) const
 {
   return actualDistribution_.computeLogPDF(point);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeCDF(const NumericalPoint & point) const
+Scalar GeneralizedExtremeValue::computeCDF(const Point & point) const
 {
   return actualDistribution_.computeCDF(point);
 }
 
-NumericalScalar GeneralizedExtremeValue::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar GeneralizedExtremeValue::computeComplementaryCDF(const Point & point) const
 {
   return actualDistribution_.computeComplementaryCDF(point);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex GeneralizedExtremeValue::computeCharacteristicFunction(const NumericalScalar x) const
+Complex GeneralizedExtremeValue::computeCharacteristicFunction(const Scalar x) const
 {
   return actualDistribution_.computeCharacteristicFunction(x);
 }
 
-NumericalComplex GeneralizedExtremeValue::computeLogCharacteristicFunction(const NumericalScalar x) const
+Complex GeneralizedExtremeValue::computeLogCharacteristicFunction(const Scalar x) const
 {
   return actualDistribution_.computeLogCharacteristicFunction(x);
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint GeneralizedExtremeValue::computePDFGradient(const NumericalPoint & point) const
+Point GeneralizedExtremeValue::computePDFGradient(const Point & point) const
 {
   return actualDistribution_.computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint GeneralizedExtremeValue::computeCDFGradient(const NumericalPoint & point) const
+Point GeneralizedExtremeValue::computeCDFGradient(const Point & point) const
 {
   return actualDistribution_.computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar GeneralizedExtremeValue::computeScalarQuantile(const NumericalScalar prob,
+Scalar GeneralizedExtremeValue::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return actualDistribution_.computeQuantile(prob, tail)[0];
@@ -181,19 +181,19 @@ void GeneralizedExtremeValue::computeMean() const
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint GeneralizedExtremeValue::getStandardDeviation() const
+Point GeneralizedExtremeValue::getStandardDeviation() const
 {
   return actualDistribution_.getStandardDeviation();
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint GeneralizedExtremeValue::getSkewness() const
+Point GeneralizedExtremeValue::getSkewness() const
 {
   return actualDistribution_.getSkewness();
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint GeneralizedExtremeValue::getKurtosis() const
+Point GeneralizedExtremeValue::getKurtosis() const
 {
   return actualDistribution_.getKurtosis();
 }
@@ -212,16 +212,16 @@ void GeneralizedExtremeValue::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint GeneralizedExtremeValue::getParameter() const
+Point GeneralizedExtremeValue::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = xi_;
   return point;
 }
 
-void GeneralizedExtremeValue::setParameter(const NumericalPoint & parameter)
+void GeneralizedExtremeValue::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   setMuSigmaXi(parameter[0], parameter[1], parameter[2]);
@@ -238,73 +238,73 @@ Description GeneralizedExtremeValue::getParameterDescription() const
 }
 
 /* Mu accessor */
-void GeneralizedExtremeValue::setMu(const NumericalScalar mu)
+void GeneralizedExtremeValue::setMu(const Scalar mu)
 {
   setMuSigmaXi(mu, sigma_, xi_);
 }
 
-NumericalScalar GeneralizedExtremeValue::getMu() const
+Scalar GeneralizedExtremeValue::getMu() const
 {
   return mu_;
 }
 
 
 /* Sigma accessor */
-void GeneralizedExtremeValue::setSigma(const NumericalScalar sigma)
+void GeneralizedExtremeValue::setSigma(const Scalar sigma)
 {
   setMuSigmaXi(mu_, sigma, xi_);
 }
 
-NumericalScalar GeneralizedExtremeValue::getSigma() const
+Scalar GeneralizedExtremeValue::getSigma() const
 {
   return sigma_;
 }
 
 /* Xi accessor */
-void GeneralizedExtremeValue::setXi(const NumericalScalar xi)
+void GeneralizedExtremeValue::setXi(const Scalar xi)
 {
   setMuSigmaXi(mu_, sigma_, xi);
 }
 
-NumericalScalar GeneralizedExtremeValue::getXi() const
+Scalar GeneralizedExtremeValue::getXi() const
 {
   return xi_;
 }
 
 /* All parameters accessor */
-void GeneralizedExtremeValue::setMuSigmaXi(const NumericalScalar mu,
-					   const NumericalScalar sigma,
-					   const NumericalScalar xi)
+void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
+    const Scalar sigma,
+    const Scalar xi)
 {
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive value for sigma, here sigma=" << sigma;
   mu_ = mu;
   sigma_ = sigma;
   xi_ = xi;
   // Now build the actual Frechet/Gumbel/Weibull distribution
-  const NumericalScalar xiEpsilon = ResourceMap::GetAsNumericalScalar("GeneralizedExtremeValue-XiThreshold");
+  const Scalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
   // Weibull case
   if (xi_ < -xiEpsilon)
-    {
-      const NumericalScalar alpha = -sigma / xi;
-      const NumericalScalar beta = -1.0 / xi;
-      const NumericalScalar gamma = sigma / xi - mu;
-      actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
-    }
+  {
+    const Scalar alpha = -sigma / xi;
+    const Scalar beta = -1.0 / xi;
+    const Scalar gamma = sigma / xi - mu;
+    actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
+  }
   // Frechet case
   else if (xi_ > xiEpsilon)
-    {
-      const NumericalScalar alpha = 1.0 / xi;
-      const NumericalScalar beta = sigma / xi;
-      const NumericalScalar gamma = mu - sigma / xi;
-      actualDistribution_ = Frechet(alpha, beta, gamma);
-    }
+  {
+    const Scalar alpha = 1.0 / xi;
+    const Scalar beta = sigma / xi;
+    const Scalar gamma = mu - sigma / xi;
+    actualDistribution_ = Frechet(alpha, beta, gamma);
+  }
   // Gumbel case
   else
-    {
-      const NumericalScalar alpha = 1.0 / sigma;
-      const NumericalScalar beta = mu;
-      actualDistribution_ = Gumbel(alpha, beta);
-    }
+  {
+    const Scalar alpha = 1.0 / sigma;
+    const Scalar beta = mu;
+    actualDistribution_ = Gumbel(alpha, beta);
+  }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
 }
@@ -314,81 +314,81 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
 {
   // Try to cast the given distribution into a Gumbel distribution
   try
+  {
+    const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(distribution.getImplementation().get());
+    // If it worked create the actual distribution
+    if (p_gumbel)
     {
-      const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(distribution.getImplementation().get());
-      // If it worked create the actual distribution
-      if (p_gumbel)
-	{
-	  mu_ = p_gumbel->getBeta();
-	  sigma_ = 1.0 / p_gumbel->getAlpha();
-	  xi_ = 0.0;
-	  actualDistribution_ = Gumbel(*p_gumbel);
-	  isAlreadyComputedMean_ = false;
-	  isAlreadyComputedCovariance_ = false;
-	  return;
-	} // p_gumbel
-    }
+      mu_ = p_gumbel->getBeta();
+      sigma_ = 1.0 / p_gumbel->getAlpha();
+      xi_ = 0.0;
+      actualDistribution_ = Gumbel(*p_gumbel);
+      isAlreadyComputedMean_ = false;
+      isAlreadyComputedCovariance_ = false;
+      return;
+    } // p_gumbel
+  }
   catch (...)
-    {
-      // Nothing to do
-    }
+  {
+    // Nothing to do
+  }
   // Try to cast the given distribution into a Frechet distribution
   try
+  {
+    const Frechet* p_frechet = dynamic_cast<const Frechet*>(distribution.getImplementation().get());
+    // If it worked create the actual distribution
+    if (p_frechet)
     {
-      const Frechet* p_frechet = dynamic_cast<const Frechet*>(distribution.getImplementation().get());
-      // If it worked create the actual distribution
-      if (p_frechet)
-	{
-	  xi_ = 1.0 / p_frechet->getAlpha();
-	  sigma_ = p_frechet->getBeta() * xi_;
-	  mu_ = p_frechet->getGamma() + p_frechet->getBeta();
-	  actualDistribution_ = Frechet(*p_frechet);
-	  isAlreadyComputedMean_ = false;
-	  isAlreadyComputedCovariance_ = false;
-	  return;
-	} // p_frechet
-    }
+      xi_ = 1.0 / p_frechet->getAlpha();
+      sigma_ = p_frechet->getBeta() * xi_;
+      mu_ = p_frechet->getGamma() + p_frechet->getBeta();
+      actualDistribution_ = Frechet(*p_frechet);
+      isAlreadyComputedMean_ = false;
+      isAlreadyComputedCovariance_ = false;
+      return;
+    } // p_frechet
+  }
   catch (...)
-    {
-      // Nothing to do
-    }  
+  {
+    // Nothing to do
+  }
   // Try to cast the given distribution into a RandomMixture
   // with a Weibull atom with negative coefficient
   try
+  {
+    const RandomMixture* p_mixture = dynamic_cast<const RandomMixture*>(distribution.getImplementation().get());
+    // If it worked try to catch the atom into a Weibull distribution
+    if (p_mixture)
     {
-      const RandomMixture* p_mixture = dynamic_cast<const RandomMixture*>(distribution.getImplementation().get());
-      // If it worked try to catch the atom into a Weibull distribution
-      if (p_mixture)
-	{
-	  // First, the easy checks:
-	  // + its diension is 1
-	  // + there is only one atom
-	  // + its weight is negative
-	  if ((p_mixture->getDimension() == 1) &&
-	      (p_mixture->getDistributionCollection().getSize() == 1) &&
-	      (p_mixture->getWeights()(0, 0) < 0.0))
-	    {
-	      // Try to catch the unique atom into a Weibull distribution
-	      const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
-	      if (p_weibull)
-		{
-		  const NumericalScalar constant = p_mixture->getConstant()[0];
-		  const NumericalScalar weight = p_mixture->getWeights()(0, 0);
-		  xi_ = -1.0 / p_weibull->getBeta();
-		  sigma_ = -(weight * p_weibull->getAlpha()) * xi_;
-		  mu_ = constant + sigma_ / xi_ - p_weibull->getGamma() * weight;
-		  actualDistribution_ = RandomMixture(*p_mixture);
-		  isAlreadyComputedMean_ = false;
-		  isAlreadyComputedCovariance_ = false;
-		  return;
-		} // p_weibull
-	    } // mixture basic check
-	} // p_mixture
-    }
+      // First, the easy checks:
+      // + its diension is 1
+      // + there is only one atom
+      // + its weight is negative
+      if ((p_mixture->getDimension() == 1) &&
+          (p_mixture->getDistributionCollection().getSize() == 1) &&
+          (p_mixture->getWeights()(0, 0) < 0.0))
+      {
+        // Try to catch the unique atom into a Weibull distribution
+        const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
+        if (p_weibull)
+        {
+          const Scalar constant = p_mixture->getConstant()[0];
+          const Scalar weight = p_mixture->getWeights()(0, 0);
+          xi_ = -1.0 / p_weibull->getBeta();
+          sigma_ = -(weight * p_weibull->getAlpha()) * xi_;
+          mu_ = constant + sigma_ / xi_ - p_weibull->getGamma() * weight;
+          actualDistribution_ = RandomMixture(*p_mixture);
+          isAlreadyComputedMean_ = false;
+          isAlreadyComputedCovariance_ = false;
+          return;
+        } // p_weibull
+      } // mixture basic check
+    } // p_mixture
+  }
   catch (...)
-    {
-      throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
-    }
+  {
+    throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
+  }
 }
 
 Distribution GeneralizedExtremeValue::getActualDistribution() const

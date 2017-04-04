@@ -70,9 +70,9 @@ LeastSquaresStrategy::LeastSquaresStrategy(const Distribution & measure,
 }
 
 /* Parameter constructor */
-LeastSquaresStrategy::LeastSquaresStrategy(const NumericalSample & inputSample,
-    const NumericalPoint & weights,
-    const NumericalSample & outputSample,
+LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
   : ProjectionStrategyImplementation(inputSample, weights, outputSample)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
@@ -81,10 +81,10 @@ LeastSquaresStrategy::LeastSquaresStrategy(const NumericalSample & inputSample,
 }
 
 /* Parameter constructor */
-LeastSquaresStrategy::LeastSquaresStrategy(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+LeastSquaresStrategy::LeastSquaresStrategy(const Sample & inputSample,
+    const Sample & outputSample,
     const ApproximationAlgorithmImplementationFactory & factory)
-  : ProjectionStrategyImplementation(inputSample, NumericalPoint(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
+  : ProjectionStrategyImplementation(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample)
   , p_approximationAlgorithmImplementationFactory_( factory.clone() )
 {
   // Nothing to do
@@ -108,7 +108,7 @@ String LeastSquaresStrategy::__repr__() const
    For the moment, there is no specific strategy for improving the approximation of
    the L2 integral by a finite sum: the same input sample is used for all the calls
    to this method */
-void LeastSquaresStrategy::computeCoefficients(const NumericalMathFunction & function,
+void LeastSquaresStrategy::computeCoefficients(const Function & function,
     const Basis & basis,
     const Indices & indices,
     const Indices & addedRanks,

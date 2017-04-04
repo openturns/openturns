@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_INVERSEBOXCOXTRANSFORM_HXX
 #define OPENTURNS_INVERSEBOXCOXTRANSFORM_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class BoxCoxTransform;
 
 class OT_API InverseBoxCoxTransform
-  : public NumericalMathFunction
+  : public Function
 
 {
   CLASSNAME;
@@ -46,25 +46,25 @@ public:
   InverseBoxCoxTransform();
 
   /** Standard parameter constructor */
-  InverseBoxCoxTransform(const NumericalPoint & lambda);
+  explicit InverseBoxCoxTransform(const Point & lambda);
 
-  InverseBoxCoxTransform(const NumericalPoint & lambda,
-                         const NumericalPoint & shift);
+  InverseBoxCoxTransform(const Point & lambda,
+                         const Point & shift);
 
-  /** 1D NumericalScalar parameter constructor */
-  InverseBoxCoxTransform(const NumericalScalar & lambda);
+  /** 1D Scalar parameter constructor */
+  explicit InverseBoxCoxTransform(const Scalar & lambda);
 
-  InverseBoxCoxTransform(const NumericalScalar & lambda,
-                         const NumericalScalar & shift);
+  InverseBoxCoxTransform(const Scalar & lambda,
+                         const Scalar & shift);
 
   /** Virtual constructor */
   InverseBoxCoxTransform * clone() const;
 
   /** Lambda accessor */
-  NumericalPoint getLambda () const;
+  Point getLambda () const;
 
   /** Shift accessor */
-  NumericalPoint getShift () const;
+  Point getShift () const;
 
   /** Inverse accessor */
   BoxCoxTransform getInverse() const;

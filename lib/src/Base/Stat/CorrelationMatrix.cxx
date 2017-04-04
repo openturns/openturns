@@ -58,7 +58,7 @@ CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim)
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
 CorrelationMatrix::CorrelationMatrix(const UnsignedInteger dim,
-                                     const Collection<NumericalScalar> &elementsValues)
+                                     const Collection<Scalar> &elementsValues)
   : CovarianceMatrix(dim, elementsValues)
 {
   // Nothing to do

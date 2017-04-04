@@ -45,22 +45,22 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalSample & sample,
-		       const NumericalScalar bandwidth) const;
-  Implementation build(const NumericalSample & sample,
-		       const UnsignedInteger binNumber) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Sample & sample,
+                       const Scalar bandwidth) const;
+  Implementation build(const Sample & sample,
+                       const UnsignedInteger binNumber) const;
   Implementation build() const;
-  Histogram buildAsHistogram(const NumericalSample & sample) const;
-  Histogram buildAsHistogram(const NumericalSample & sample,
-		       const NumericalScalar bandwidth) const;
-  Histogram buildAsHistogram(const NumericalSample & sample,
-		       const UnsignedInteger binNumber) const;
+  Histogram buildAsHistogram(const Sample & sample) const;
+  Histogram buildAsHistogram(const Sample & sample,
+                             const Scalar bandwidth) const;
+  Histogram buildAsHistogram(const Sample & sample,
+                             const UnsignedInteger binNumber) const;
   Histogram buildAsHistogram() const;
 
   /** Compute the bandwidth according to Silverman's rule */
-  NumericalScalar computeSilvermanBandwidth(const NumericalSample & sample,
-					    const Bool useQuantile = true) const;
+  Scalar computeSilvermanBandwidth(const Sample & sample,
+                                   const Bool useQuantile = true) const;
 
 }; /* class HistogramFactory */
 

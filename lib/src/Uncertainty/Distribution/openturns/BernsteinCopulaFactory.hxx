@@ -24,7 +24,7 @@
 
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,22 +47,22 @@ public:
 
   /** Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build(const NumericalSample & sample);
+  virtual Distribution build(const Sample & sample);
 
   /** Build a Bernstein copula based on the given sample and bin number */
-  virtual Distribution build(const NumericalSample & sample,
+  virtual Distribution build(const Sample & sample,
                              const UnsignedInteger binNumber);
 
- private:
-  virtual Distribution buildParallel(const NumericalSample & sample,
-				     const UnsignedInteger binNumber);
+private:
+  virtual Distribution buildParallel(const Sample & sample,
+                                     const UnsignedInteger binNumber);
 
-  virtual Distribution buildSequential(const NumericalSample & sample,
-				       const UnsignedInteger binNumber);
- public:
+  virtual Distribution buildSequential(const Sample & sample,
+                                       const UnsignedInteger binNumber);
+public:
 
   /** Compute the number of bins according to the inverse power rule */
-  UnsignedInteger computeBinNumber(const NumericalSample & sample);
+  UnsignedInteger computeBinNumber(const Sample & sample);
 
   /** Parallelization flag accessor */
   void setParallel(const Bool flag);

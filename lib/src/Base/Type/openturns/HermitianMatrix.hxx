@@ -45,14 +45,14 @@ class OT_API HermitianMatrix :
   CLASSNAME;
 
 #ifndef SWIG
-  friend HermitianMatrix operator * (const NumericalComplex s,
+  friend HermitianMatrix operator * (const Complex s,
                                      const HermitianMatrix & m);
 #endif
 
 public:
 
-  typedef Collection<NumericalComplex>                       NumericalComplexCollection;
-  typedef Collection<NumericalScalar>                        NumericalScalarCollection;
+  typedef Collection<Complex>                       ComplexCollection;
+  typedef Collection<Scalar>                        ScalarCollection;
   typedef TypedInterfaceObject<ComplexMatrixImplementation>::Implementation     Implementation ;
 
   /** Default constructor */
@@ -93,12 +93,12 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalComplex & operator () (const UnsignedInteger i,
+  Complex & operator () (const UnsignedInteger i,
                                   const UnsignedInteger j) ;
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalComplex operator () (const UnsignedInteger i,
+  const Complex operator () (const UnsignedInteger i,
                                       const UnsignedInteger j) const;
 #endif
 
@@ -121,8 +121,8 @@ public:
   using SquareComplexMatrix::operator *;
 #endif
 
-  /** Multiplication with a NumericalComplex */
-  HermitianMatrix operator * (const NumericalComplex s) const;
+  /** Multiplication with a Complex */
+  HermitianMatrix operator * (const Complex s) const;
 
   /** ComplexMatrix multiplications (must have consistent dimensions) */
   ComplexMatrix operator * (const ComplexMatrix & m) const;
@@ -149,13 +149,13 @@ public:
   HermitianMatrix operator * (const IdentityMatrix & m) const;
 
   /** Multiplication with a NumericaComplexCollection (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalComplexCollection & p) const;
+  ComplexCollection operator * (const ComplexCollection & p) const;
 
   /** Multiplication with a NumericaScalarCollection (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalScalarCollection & p) const;
+  ComplexCollection operator * (const ScalarCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  ComplexCollection operator * (const Point & p) const;
 
 #ifndef _MSC_VER
   using SquareComplexMatrix::operator *;
@@ -164,8 +164,8 @@ public:
   /** HermitianMatrix integer power */
   HermitianMatrix power(const UnsignedInteger n) const;
 
-  /** Division by a NumericalComplex*/
-  HermitianMatrix operator / (const NumericalComplex s) const;
+  /** Division by a Complex*/
+  HermitianMatrix operator / (const Complex s) const;
 
   /** Compute the Cholesky factor  */
   TriangularComplexMatrix computeCholesky(const Bool keepIntact = true);
@@ -180,7 +180,7 @@ private:
 ; /* class HermitianMatrix */
 
 
-inline HermitianMatrix operator * (const NumericalComplex s,
+inline HermitianMatrix operator * (const Complex s,
                                    const HermitianMatrix & m)
 {
   return m.operator * (s);

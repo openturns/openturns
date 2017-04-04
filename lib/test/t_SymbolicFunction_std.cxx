@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for analytical
+ *  @brief The test file of class Function for analytical
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     /* Check the creation of the elementary functions */
     for (UnsignedInteger i = 0; i < elementaryFunctions.getSize(); ++i)
     {
-      NumericalPoint x(1, 0.4 / 3);
+      Point x(1, 0.4 / 3);
 
       // acosh only defined for 1 <= x <= pi
       if ( elementaryFunctions[i] == String("acosh") )
@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
       SymbolicFunction f("x", "2*" + elementaryFunctions[i] + "(3*x)");
       fullprint << "f=" << f.__str__() << std::endl;
       fullprint << "f(" << x[0] << ")=" << std::scientific << std::setprecision(4) << f(x)[0] << std::endl;
-      NumericalScalar df = CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()).gradient(x)(0, 0);
-      NumericalScalar grad_f = 0.0;
+      Scalar df = CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()).gradient(x)(0, 0);
+      Scalar grad_f = 0.0;
       try
       {
         grad_f = f.gradient(x)(0, 0);
@@ -87,21 +87,21 @@ int main(int argc, char *argv[])
       catch(...)
       {
         fullprint << "finite difference" << std::endl;
-        f.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()));
+        f.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), f.getEvaluation()));
         grad_f = f.gradient(x)(0, 0);
       }
       fullprint << "df(" << x[0] << ")=" << std::scientific << std::setprecision(4) << grad_f << std::endl;
-      NumericalScalar error = std::abs(grad_f) > 1.0e-5 ? std::abs(df / grad_f - 1.0) : std::abs(df - grad_f);
+      Scalar error = std::abs(grad_f) > 1.0e-5 ? std::abs(df / grad_f - 1.0) : std::abs(df - grad_f);
       if (error > 1e-5) std::cout << "GRADIENT ERROR! error=" << error << ", check " + elementaryFunctions[i] << std::endl;
-      NumericalScalar d2f = CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()).hessian(x)(0, 0, 0);
-      NumericalScalar hess_f = 0.0;
+      Scalar d2f = CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()).hessian(x)(0, 0, 0);
+      Scalar hess_f = 0.0;
       try
       {
         hess_f = f.hessian(x)(0, 0, 0);
       }
       catch(...)
       {
-        f.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()));
+        f.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), f.getEvaluation()));
         hess_f = f.hessian(x)(0, 0, 0);
       }
       std::cout << "d2f(" << x[0] << ")=" << std::scientific << std::setprecision(4) << hess_f << std::endl;
@@ -116,8 +116,8 @@ int main(int argc, char *argv[])
     form[1] = "x0-x1";
 
     SymbolicFunction nmf(inp, form);
-    NumericalMathFunction marginal0(nmf.getMarginal(0));
-    NumericalMathFunction marginal1(nmf.getMarginal(1));
+    Function marginal0(nmf.getMarginal(0));
+    Function marginal1(nmf.getMarginal(1));
     fullprint << "marginal 0=" << marginal0.__str__() << std::endl;
     fullprint << "marginal 1=" << marginal1.__str__() << std::endl;
 
@@ -136,15 +136,15 @@ int main(int argc, char *argv[])
     marginals[1] = Uniform(-M_PI, M_PI);
     marginals[2] = Uniform(-M_PI, M_PI);
     ComposedDistribution distribution(marginals);
-    NumericalSample inputsSample(distribution.getSample(100));
+    Sample inputsSample(distribution.getSample(100));
 
-    NumericalPoint refResultValues(100, 0.);
+    Point refResultValues(100, 0.);
     for (UnsignedInteger i = 0; i < 100; ++ i)
     {
       refResultValues[i] = model(inputsSample[i])[0];
     }
 
-    NumericalSample resultSample(model(inputsSample));
+    Sample resultSample(model(inputsSample));
 
     fullprint << "First reference value : " << refResultValues[0] << std::endl;
     fullprint << "First result calculated : " << resultSample[0][0] << std::endl;

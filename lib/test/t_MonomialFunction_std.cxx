@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
     // Default constructor: null polynomial
     MonomialFunction P0;
-    NumericalScalar point = 1.2;
+    Scalar point = 1.2;
     fullprint <<  "P0 :" << P0.__str__() << std::endl;
     fullprint <<  "P0(" << point <<  ")=" << P0(point) << std::endl;
 

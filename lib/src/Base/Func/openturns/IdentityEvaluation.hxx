@@ -22,9 +22,9 @@
 #ifndef OPENTURNS_IDENTITYEVALUATION_HXX
 #define OPENTURNS_IDENTITYEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IdentityEvaluation
  */
 class OT_API IdentityEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -53,10 +53,10 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   /** Operator () */
-  virtual NumericalSample operator() (const NumericalSample & inS) const;
+  virtual Sample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

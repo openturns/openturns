@@ -43,12 +43,12 @@ ClaytonCopulaFactory * ClaytonCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const NumericalSample & sample) const
+ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Sample & sample) const
 {
   return buildAsClaytonCopula(sample).clone();
 }
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const NumericalPoint & parameters) const
+ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Point & parameters) const
 {
   return buildAsClaytonCopula(parameters).clone();
 }
@@ -58,18 +58,18 @@ ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build() const
   return buildAsClaytonCopula().clone();
 }
 
-ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalSample & sample) const
+ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample of dimension not equal to 2";
-  NumericalScalar tau = sample.computeKendallTau().operator()(0, 1);
+  Scalar tau = sample.computeKendallTau().operator()(0, 1);
   if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample with Kendall tau equal to 1";
   ClaytonCopula result(2.0 * tau / (1.0 - tau));
   result.setDescription(sample.getDescription());
   return result;
 }
 
-ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const NumericalPoint & parameters) const
+ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Point & parameters) const
 {
   try
   {

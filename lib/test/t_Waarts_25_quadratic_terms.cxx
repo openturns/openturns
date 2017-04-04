@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-NumericalScalar clean(NumericalScalar in)
+Scalar clean(Scalar in)
 {
   if (std::abs(in) < 1.e-10) in = 0.0;
   return in;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     Description formulas(outputFunction.getSize());
     formulas[0] = "R-(S01^2.0)/1.0-(S02^2.0)/2.0-(S03^2.0)/3.0-(S04^2.0)/4.0-(S05^2.0)/5.0-(S06^2.0)/6.0-(S07^2.0)/7.0-(S08^2.0)/8.0-(S09^2.0)/9.0-(S10^2.0)/10.0-(S11^2.0)/11.0-(S12^2.0)/12.0-(S13^2.0)/13.0-(S14^2.0)/14.0-(S15^2.0)/15.0-(S16^2.0)/16.0-(S17^2.0)/17.0-(S18^2.0)/18.0-(S19^2.0)/19.0-(S20^2.0)/20.0-(S21^2.0)/21.0-(S22^2.0)/22.0-(S23^2.0)/23.0-(S24^2.0)/24.0-(S25^2.0)/25.0";
 
-    NumericalMathFunction EtatLimite(inputFunction, outputFunction, formulas);
+    Function EtatLimite(inputFunction, outputFunction, formulas);
 
     UnsignedInteger dim = EtatLimite.getInputDimension();
     fullprint << dim << std::endl;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     //   # Probabilistic model;
     //   #########################################################################################################;
 
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 0.5;
     mean[1] = 0.2;
     mean[2] = 0.2;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     mean[24] = 0.2;
     mean[25] = 0.2;
 
-    NumericalPoint sigma(dim, 0.0);
+    Point sigma(dim, 0.0);
     sigma[0] = 0.1;
     sigma[1] = 0.1;
     sigma[2] = 0.1;
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
     CorrelationMatrix CORR(dim);
     Normal myDistribution(mean, sigma, CORR);
 
-    NumericalPoint start(myDistribution.getMean());
+    Point start(myDistribution.getMean());
     CovarianceMatrix Covariance = myDistribution.getCovariance();
 
     //   #########################################################################################################;
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 
     //   #########################################################################################################;
     //   # Monte Carlo;
-    NumericalScalar CoV_MC = 0.5;
+    Scalar CoV_MC = 0.5;
     MonteCarlo myMC(myEvent);
     myMC.setMaximumOuterSampling(8000);
     myMC.setBlockSize(1);
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
 
     //   #########################################################################################################;
     //   # LHS;
-    NumericalScalar CoV_LHS = 0.1;
+    Scalar CoV_LHS = 0.1;
     LHS myLHS(myEvent);
     myLHS.setMaximumOuterSampling(8000);
     myLHS.setBlockSize(1);
@@ -222,71 +222,71 @@ int main(int argc, char *argv[])
 
         #########################################################################################################;
         # FORM/SORM Cobyla*/;
-    NumericalScalar PfC = resultC.getEventProbability();
-    NumericalScalar Beta_generalizedC = resultC.getGeneralisedReliabilityIndex();
-    NumericalPoint u_starC = resultC.getStandardSpaceDesignPoint();
-    NumericalPoint x_starC = resultC.getPhysicalSpaceDesignPoint();
+    Scalar PfC = resultC.getEventProbability();
+    Scalar Beta_generalizedC = resultC.getGeneralisedReliabilityIndex();
+    Point u_starC = resultC.getStandardSpaceDesignPoint();
+    Point x_starC = resultC.getPhysicalSpaceDesignPoint();
     Bool PtC = resultC.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaC = resultC.getImportanceFactors();
-    NumericalPoint gammaCC = resultC.getImportanceFactors(true);
-    NumericalScalar beta_hasoferC = resultC.getHasoferReliabilityIndex();
+    Point gammaC = resultC.getImportanceFactors();
+    Point gammaCC = resultC.getImportanceFactors(true);
+    Scalar beta_hasoferC = resultC.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityC = resultC.getEventProbabilitySensitivity();
 
-    NumericalScalar PFBreitC2 = resultC2.getEventProbabilityBreitung();
-    NumericalScalar BetaBreitC2 = resultC2.getGeneralisedReliabilityIndexBreitung();
-    NumericalScalar PFHBC2 = resultC2.getEventProbabilityHohenBichler();
-    NumericalScalar BetaHBC2 = resultC2.getGeneralisedReliabilityIndexHohenBichler();
-    NumericalScalar PFTvedtC2 = resultC2.getEventProbabilityTvedt();
-    NumericalScalar BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt();
-    NumericalPoint CurvC2 = resultC2.getSortedCurvatures();
-    NumericalPoint u_starC2 = resultC2.getStandardSpaceDesignPoint();
-    NumericalPoint x_starC2 = resultC2.getPhysicalSpaceDesignPoint();
+    Scalar PFBreitC2 = resultC2.getEventProbabilityBreitung();
+    Scalar BetaBreitC2 = resultC2.getGeneralisedReliabilityIndexBreitung();
+    Scalar PFHBC2 = resultC2.getEventProbabilityHohenBichler();
+    Scalar BetaHBC2 = resultC2.getGeneralisedReliabilityIndexHohenBichler();
+    Scalar PFTvedtC2 = resultC2.getEventProbabilityTvedt();
+    Scalar BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt();
+    Point CurvC2 = resultC2.getSortedCurvatures();
+    Point u_starC2 = resultC2.getStandardSpaceDesignPoint();
+    Point x_starC2 = resultC2.getPhysicalSpaceDesignPoint();
     Bool PtC2 = resultC2.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaC2 = resultC2.getImportanceFactors();
-    NumericalPoint gammaCC2 = resultC2.getImportanceFactors(true);
-    NumericalScalar beta_hasoferC2 = resultC2.getHasoferReliabilityIndex();
+    Point gammaC2 = resultC2.getImportanceFactors();
+    Point gammaCC2 = resultC2.getImportanceFactors(true);
+    Scalar beta_hasoferC2 = resultC2.getHasoferReliabilityIndex();
 
     //   #########################################################################################################;
     //   # FORM/SORM Abdo Rackwitz;
-    NumericalScalar PfAR = resultAR.getEventProbability();
-    NumericalScalar Beta_generalizedAR = resultAR.getGeneralisedReliabilityIndex();
-    NumericalPoint u_starAR = resultAR.getStandardSpaceDesignPoint();
-    NumericalPoint x_starAR = resultAR.getPhysicalSpaceDesignPoint();
+    Scalar PfAR = resultAR.getEventProbability();
+    Scalar Beta_generalizedAR = resultAR.getGeneralisedReliabilityIndex();
+    Point u_starAR = resultAR.getStandardSpaceDesignPoint();
+    Point x_starAR = resultAR.getPhysicalSpaceDesignPoint();
     Bool PtAR = resultAR.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaAR = resultAR.getImportanceFactors();
-    NumericalPoint gammaCAR = resultAR.getImportanceFactors(true);
-    NumericalScalar beta_hasoferAR = resultAR.getHasoferReliabilityIndex();
+    Point gammaAR = resultAR.getImportanceFactors();
+    Point gammaCAR = resultAR.getImportanceFactors(true);
+    Scalar beta_hasoferAR = resultAR.getHasoferReliabilityIndex();
     Analytical::Sensitivity SensitivityAR = resultAR.getEventProbabilitySensitivity();
 
-    NumericalScalar PFBreitAR2 = resultAR2.getEventProbabilityBreitung();
-    NumericalScalar BetaBreitAR2 = resultAR2.getGeneralisedReliabilityIndexBreitung();
-    NumericalScalar PFHBAR2 = resultAR2.getEventProbabilityHohenBichler();
-    NumericalScalar BetaHBAR2 = resultAR2.getGeneralisedReliabilityIndexHohenBichler();
-    NumericalScalar PFTvedtAR2 = resultAR2.getEventProbabilityTvedt();
-    NumericalScalar BetaTvedtAR2 = resultAR2.getGeneralisedReliabilityIndexTvedt();
-    NumericalPoint CurvAR2 = resultAR2.getSortedCurvatures();
-    NumericalPoint u_starAR2 = resultAR2.getStandardSpaceDesignPoint();
-    NumericalPoint x_starAR2 = resultAR2.getPhysicalSpaceDesignPoint();
+    Scalar PFBreitAR2 = resultAR2.getEventProbabilityBreitung();
+    Scalar BetaBreitAR2 = resultAR2.getGeneralisedReliabilityIndexBreitung();
+    Scalar PFHBAR2 = resultAR2.getEventProbabilityHohenBichler();
+    Scalar BetaHBAR2 = resultAR2.getGeneralisedReliabilityIndexHohenBichler();
+    Scalar PFTvedtAR2 = resultAR2.getEventProbabilityTvedt();
+    Scalar BetaTvedtAR2 = resultAR2.getGeneralisedReliabilityIndexTvedt();
+    Point CurvAR2 = resultAR2.getSortedCurvatures();
+    Point u_starAR2 = resultAR2.getStandardSpaceDesignPoint();
+    Point x_starAR2 = resultAR2.getPhysicalSpaceDesignPoint();
     Bool PtAR2 = resultAR2.getIsStandardPointOriginInFailureSpace();
-    NumericalPoint gammaAR2 = resultAR2.getImportanceFactors();
-    NumericalPoint gammaCAR2 = resultAR2.getImportanceFactors(true);
-    NumericalScalar beta_hasoferAR2 = resultAR2.getHasoferReliabilityIndex();
+    Point gammaAR2 = resultAR2.getImportanceFactors();
+    Point gammaCAR2 = resultAR2.getImportanceFactors(true);
+    Scalar beta_hasoferAR2 = resultAR2.getHasoferReliabilityIndex();
 
     //   ######################################/*###################################################################;
     //   # Monte Carlo*/;
     SimulationResult ResultMC = myMC.getResult();
-    NumericalScalar PFMC = ResultMC.getProbabilityEstimate();
-    NumericalScalar CVMC = ResultMC.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_MC = ResultMC.getVarianceEstimate();
-    NumericalScalar length90MC = ResultMC.getConfidenceLength(0.90);
+    Scalar PFMC = ResultMC.getProbabilityEstimate();
+    Scalar CVMC = ResultMC.getCoefficientOfVariation();
+    Scalar Variance_PF_MC = ResultMC.getVarianceEstimate();
+    Scalar length90MC = ResultMC.getConfidenceLength(0.90);
 
     //   #########################################################################################################;
     //   # LHS;
     SimulationResult ResultLHS = myLHS.getResult();
-    NumericalScalar PFLHS = ResultLHS.getProbabilityEstimate();
-    NumericalScalar CVLHS = ResultLHS.getCoefficientOfVariation();
-    NumericalScalar Variance_PF_LHS = ResultLHS.getVarianceEstimate();
-    NumericalScalar length90LHS = ResultLHS.getConfidenceLength(0.90);
+    Scalar PFLHS = ResultLHS.getProbabilityEstimate();
+    Scalar CVLHS = ResultLHS.getCoefficientOfVariation();
+    Scalar Variance_PF_LHS = ResultLHS.getVarianceEstimate();
+    Scalar length90LHS = ResultLHS.getConfidenceLength(0.90);
 
     //   #########################################################################################################;
     //   # Printting;

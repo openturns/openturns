@@ -37,8 +37,8 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm()
 }
 
 /** Constructor with parameters */
-JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
@@ -48,7 +48,7 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const NumericalSample & i
 /** Constructor with distribution / model parameters */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
@@ -58,7 +58,7 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Distribution & dist
 
 /** Constructor with experiment / model parameters */
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
@@ -72,20 +72,20 @@ JansenSensitivityAlgorithm * JansenSensitivityAlgorithm::clone() const
 }
 
 /** Internal method that compute Vi/VTi using a huge sample */
-NumericalSample JansenSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-    NumericalSample & VTi) const
+Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
+    Sample & VTi) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
-  NumericalSample varianceI(outputDimension, inputDimension);
-  VTi = NumericalSample(outputDimension, inputDimension);
+  Sample varianceI(outputDimension, inputDimension);
+  VTi = Sample(outputDimension, inputDimension);
 
   // Use reference samples
   // Reference sample yA
-  const NumericalSample yA(sample, 0, size);
+  const Sample yA(sample, 0, size);
   // Reference sample yB
-  const NumericalSample yB(sample, size, 2 * size);
+  const Sample yB(sample, size, 2 * size);
 
   // main loop
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
@@ -93,17 +93,17 @@ NumericalSample JansenSensitivityAlgorithm::computeIndices(const NumericalSample
 
     // Compute yE - yB / yE - yA
     // Copy elements of yE
-    NumericalSample yEMinusyB(sample, (2 + p) * size, (3 + p) * size);
+    Sample yEMinusyB(sample, (2 + p) * size, (3 + p) * size);
     // Copy in yEMinusyA
-    NumericalSample yEMinusyA(yEMinusyB);
+    Sample yEMinusyA(yEMinusyB);
     // Remove yB from yEMinusyB
     yEMinusyB -= yB;
     // Remove yA from yEMinusyA
     yEMinusyA -= yA;
     // Sum of squared elements
-    const NumericalPoint squaredSumyBMinusyE(computeSumDotSamples(yEMinusyB, yEMinusyB));
+    const Point squaredSumyBMinusyE(computeSumDotSamples(yEMinusyB, yEMinusyB));
     // Sum of squared elements
-    const NumericalPoint squaredSumyAMinusyE(computeSumDotSamples(yEMinusyA, yEMinusyA));
+    const Point squaredSumyAMinusyE(computeSumDotSamples(yEMinusyA, yEMinusyA));
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {

@@ -22,10 +22,10 @@
 #define OPENTURNS_MARGINALTRANSFORMATIONEVALUATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Distribution.hxx"
@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 class OT_API MarginalTransformationEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -66,11 +66,11 @@ public:
   virtual MarginalTransformationEvaluation * clone() const;
 
   /** Evaluation */
-  using NumericalMathEvaluationImplementation::operator();
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  using EvaluationImplementation::operator();
+  Point operator () (const Point & inP) const;
 
   /** Gradient according to the marginal parameters */
-  Matrix parameterGradient(const NumericalPoint & inP) const;
+  Matrix parameterGradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
@@ -94,7 +94,7 @@ public:
   Collection<UnsignedInteger> getSimplifications() const;
 
   /** Expressions accessor */
-  Collection<NumericalMathFunction> getExpressions() const;
+  Collection<Function> getExpressions() const;
 
   /** String converter */
   String __repr__() const;
@@ -127,7 +127,7 @@ private:
   Collection<UnsignedInteger> simplifications_;
 
   // Collection of simpler expressions
-  Collection<NumericalMathFunction> expressions_;
+  Collection<Function> expressions_;
 }; /* MarginalTransformationEvaluation */
 
 

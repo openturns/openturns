@@ -13,7 +13,7 @@ try:
     size = 16
 
     # collection for test
-    collection = NumericalComplexCollection(size)
+    collection = ComplexCollection(size)
 
     # Fill the data with artificial values
 
@@ -31,12 +31,12 @@ try:
     print("collection = ", collection)
 
     # FFT transform
-    transformedCollection = NumericalComplexCollection(
+    transformedCollection = ComplexCollection(
         myFFT.transform(collection))
     print("FFT result = ", transformedCollection)
 
     # Inverse transformation
-    inverseTransformedCollection = NumericalComplexCollection(
+    inverseTransformedCollection = ComplexCollection(
         myFFT.inverseTransform(transformedCollection))
     print("FFT back=", inverseTransformedCollection)
 

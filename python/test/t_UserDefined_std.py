@@ -31,7 +31,7 @@ try:
     print("oneSample=Ok", repr(oneSample))
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 2.0)
+    point = Point(distribution.getDimension(), 2.0)
 
     # Show PDF and CDF of a point
     pointPDF = distribution.computePDF(point)
@@ -49,7 +49,7 @@ try:
 
     # To prevent automatic compaction
     ResourceMap.SetAsUnsignedInteger("UserDefined-SmallSize", 5)
-    sample = NumericalSample(40, 3)
+    sample = Sample(40, 3)
     for i in range(4):
         for j in range(3):
             sample[i, j] = 10 * (i // 3 + 1) + 0.1 * (j + 1)

@@ -14,7 +14,7 @@ try:
     matrix1[1, 1] = 12.0
     print("matrix1 = ", matrix1)
 
-    pt = NumericalPoint()
+    pt = Point()
     pt.add(5.0)
     pt.add(0.0)
     print("pt = ", pt)

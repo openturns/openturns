@@ -46,7 +46,7 @@ public:
   /** Virtual copy constructor */
   virtual FilteringWindowsImplementation * clone() const;
 
-  virtual NumericalScalar operator()(const NumericalScalar t) const;
+  virtual Scalar operator()(const Scalar t) const;
 
   /** String converter */
   virtual String __repr__() const;

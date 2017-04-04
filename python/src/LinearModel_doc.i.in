@@ -25,7 +25,7 @@ confInterval : :class:`~openturns.Interval`
 
 Returns
 -------
-pvalues : collection of :class:`~openturns.NumericalScalar`
+pvalues : collection of :class:`~openturns.Scalar`
     The collection of the p-values of the linear model coefficients."
 
 // ---------------------------------------------------------------------
@@ -40,7 +40,7 @@ sampleX : 2-d sequence of float
 
 Returns
 -------
-Y : :class:`~openturns.NumericalSample`
+Y : :class:`~openturns.Sample`
     The response :math:`Y` evaluated through the linear model on the sample
     *sampleX*."
 
@@ -51,7 +51,7 @@ Y : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-coef : :class:`~openturns.NumericalPoint`
+coef : :class:`~openturns.Point`
     The coefficients of the linear model: :math:`(a_0, a_1, \ldots, a_n)`."
 
 // ---------------------------------------------------------------------
@@ -68,5 +68,5 @@ Ysample: 2-d sequence of float
 
 Returns
 -------
-residual : :class:`~openturns.NumericalSample`
+residual : :class:`~openturns.Sample`
     The residuals computed on each point."

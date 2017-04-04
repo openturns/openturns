@@ -12,8 +12,8 @@ try:
     size = 64
     dimension = 1
     timeGrid = RegularGrid(0.0, 0.1, size)
-    amplitude = NumericalPoint(dimension, 2.0)
-    scale = NumericalPoint(dimension, 1.0)
+    amplitude = Point(dimension, 2.0)
+    scale = Point(dimension, 1.0)
     model = ExponentialCauchy(scale, amplitude)
     myProcess = SpectralGaussianProcess(model, timeGrid)
 

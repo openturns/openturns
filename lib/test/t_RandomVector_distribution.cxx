@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
   {
 
     /* We create a distribution */
-    NumericalPoint meanPoint(1);
+    Point meanPoint(1);
     meanPoint[0] = 1.0;
-    NumericalPoint sigma(1);
+    Point sigma(1);
     sigma[0] = 1.0;
     CorrelationMatrix R(1);
     R(0, 0) = 1.0;

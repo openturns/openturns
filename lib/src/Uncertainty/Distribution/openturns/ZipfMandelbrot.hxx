@@ -37,15 +37,15 @@ class OT_API ZipfMandelbrot
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalScalar> NumericalScalarCollection;
+  typedef Collection<Scalar> ScalarCollection;
 
   /** Default constructor */
   ZipfMandelbrot();
 
   /** Parameters constructor */
   ZipfMandelbrot(const UnsignedInteger n,
-                 const NumericalScalar q,
-                 const NumericalScalar s);
+                 const Scalar q,
+                 const Scalar s);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
@@ -66,24 +66,24 @@ public:
   virtual ZipfMandelbrot * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
@@ -91,12 +91,12 @@ public:
   /* Interface specific to ZipfMandelbrot */
 
   /** Q accessor */
-  void setQ(const NumericalScalar q);
-  NumericalScalar getQ() const;
+  void setQ(const Scalar q);
+  Scalar getQ() const;
 
   /** S accessor */
-  void setS(const NumericalScalar s);
-  NumericalScalar getS() const;
+  void setS(const Scalar s);
+  Scalar getS() const;
 
   /** N accessor */
   void setN(const UnsignedInteger n);
@@ -104,11 +104,11 @@ public:
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -122,17 +122,17 @@ public:
 protected:
 
   /* Compute generalized harmonic numbers */
-  NumericalScalar getHarmonicNumbers(UnsignedInteger const) const;
+  Scalar getHarmonicNumbers(UnsignedInteger const) const;
   void computeHarmonicNumbers();
 
-  NumericalScalarCollection harmonicNumbers_;
+  ScalarCollection harmonicNumbers_;
 
 
 private:
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the mean of the distribution */
   void computeMean() const;
@@ -147,10 +147,10 @@ private:
   UnsignedInteger n_;
 
   /** The q probability parameter of the ZipfMandelbrot distribution */
-  NumericalScalar q_;
+  Scalar q_;
 
   /** The s probability parameter of the ZipfMandelbrot distribution */
-  NumericalScalar s_;
+  Scalar s_;
 
 }; /* class ZipfMandelbrot */
 

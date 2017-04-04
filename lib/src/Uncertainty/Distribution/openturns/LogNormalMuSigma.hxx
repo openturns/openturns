@@ -40,7 +40,7 @@ public:
   LogNormalMuSigma();
 
   /** Constructor with parameters */
-  LogNormalMuSigma(const NumericalScalar mu, const NumericalScalar sigma, const NumericalScalar gamma = 0.);
+  LogNormalMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma = 0.);
 
   /** Virtual constructor */
   virtual LogNormalMuSigma * clone() const;
@@ -55,13 +55,13 @@ public:
   Matrix gradient() const;
 
   /** Conversion operator */
-  NumericalPoint operator () (const NumericalPoint & inP) const;
+  Point operator () (const Point & inP) const;
 
-  NumericalPoint inverse(const NumericalPoint & inP) const;
+  Point inverse(const Point & inP) const;
 
   /** Parameters value and description accessor */
-  virtual void setValues(const NumericalPoint & values);
-  virtual NumericalPoint getValues() const;
+  virtual void setValues(const Point & values);
+  virtual Point getValues() const;
   virtual Description getDescription() const;
 
   /** String converter */
@@ -70,9 +70,9 @@ public:
 
 private:
   /** The main parameter set of the distribution */
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
-  NumericalScalar gamma_;
+  Scalar mu_;
+  Scalar sigma_;
+  Scalar gamma_;
 }; /* class LogNormalMuSigma */
 
 

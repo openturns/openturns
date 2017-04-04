@@ -21,8 +21,8 @@ diff = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation 
 test number nine : matrix multiplication method
 prod = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[10,14,14,20]
 test number ten : multiplication with a numerical point method
-pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
-ptResult = class=NumericalPoint name=Unnamed dimension=2 values=[7,10]
+pt = class=Point name=Unnamed dimension=2 values=[1,2]
+ptResult = class=Point name=Unnamed dimension=2 values=[7,10]
 test number eleven : multiplication and division by a numerical scalar methods
 scalprod1 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
 scalprod2 = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]

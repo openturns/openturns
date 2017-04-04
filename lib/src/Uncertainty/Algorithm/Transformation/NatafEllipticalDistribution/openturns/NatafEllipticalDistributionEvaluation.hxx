@@ -22,9 +22,9 @@
 #define OPENTURNS_NATAFELLIPTICALDISTRIBUTIONEVALUATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 class OT_API NatafEllipticalDistributionEvaluation
-  : public LinearNumericalMathEvaluationImplementation
+  : public LinearEvaluation
 {
   CLASSNAME;
 public:
@@ -45,14 +45,14 @@ public:
   NatafEllipticalDistributionEvaluation();
 
   /** Parameter constructor */
-  NatafEllipticalDistributionEvaluation(const NumericalPoint & mean,
+  NatafEllipticalDistributionEvaluation(const Point & mean,
                                         const TriangularMatrix & inverseCholesky);
 
   /** Virtual constructor */
   virtual NatafEllipticalDistributionEvaluation * clone() const;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const NumericalPoint & inP) const;
+  virtual Matrix parameterGradient(const Point & inP) const;
 
   /** String converter */
   virtual String __repr__() const;

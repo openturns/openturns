@@ -57,8 +57,8 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const NumericalPoint & s,
-                               const NumericalPoint & t) const;
+  CovarianceMatrix operator() (const Point & s,
+                               const Point & t) const;
 private:
   CovarianceMatrix operator() (const UnsignedInteger i,
                                const UnsignedInteger j) const;
@@ -67,8 +67,8 @@ public:
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   using CovarianceModelImplementation::discretize;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;
-  virtual NumericalSample discretizeRow(const NumericalSample & vertices,
-                                        const UnsignedInteger p) const;
+  virtual Sample discretizeRow(const Sample & vertices,
+                               const UnsignedInteger p) const;
 
   /** Mesh accessor */
   Mesh getMesh() const;

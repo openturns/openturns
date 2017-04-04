@@ -25,6 +25,7 @@
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,7 +41,7 @@ class OT_API IteratedQuadrature
 
 public:
 
-  typedef Collection< NumericalMathFunction > NumericalMathFunctionCollection;
+  typedef Collection< Function > FunctionCollection;
 
   /** Default constructor without parameters */
   IteratedQuadrature();
@@ -54,16 +55,16 @@ public:
   /** Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
    */
   using IntegrationAlgorithmImplementation::integrate;
-  NumericalPoint integrate(const NumericalMathFunction & function,
-                           const Interval & interval) const;
+  Point integrate(const Function & function,
+                  const Interval & interval) const;
 
   // This method allows to get the estimated integration error as a scalar
-  NumericalPoint integrate(const NumericalMathFunction & function,
-                           const NumericalScalar a,
-                           const NumericalScalar b,
-                           const NumericalMathFunctionCollection & lowerBounds,
-                           const NumericalMathFunctionCollection & upperBounds,
-                           const Bool check = true) const;
+  Point integrate(const Function & function,
+                  const Scalar a,
+                  const Scalar b,
+                  const FunctionCollection & lowerBounds,
+                  const FunctionCollection & upperBounds,
+                  const Bool check = true) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -74,15 +75,15 @@ public:
 private:
 
   // Class to compute in a recursive way a multidimensional integral
-  class PartialFunctionWrapper: public NumericalMathFunctionImplementation
+  class PartialFunctionWrapper: public FunctionImplementation
   {
   public:
     /* Default constructor */
     PartialFunctionWrapper(const IteratedQuadrature & quadrature,
-                           const NumericalMathFunction & function,
-                           const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds,
-                           const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds)
-      : NumericalMathFunctionImplementation()
+                           const Function & function,
+                           const IteratedQuadrature::FunctionCollection & lowerBounds,
+                           const IteratedQuadrature::FunctionCollection & upperBounds)
+      : FunctionImplementation()
       , quadrature_(quadrature)
       , function_(function)
       , lowerBounds_(lowerBounds)
@@ -91,49 +92,49 @@ private:
       // Nothing to do
     }
 
-    NumericalPoint operator()(const NumericalPoint & point) const
+    Point operator()(const Point & point) const
     {
       // Create the arguments of the local integration problem
       const Indices index(1, 0);
-      const NumericalMathFunction function(function_, index, point);
+      const ParametricFunction function(function_, index, point);
       const UnsignedInteger size = lowerBounds_.getSize() - 1;
-      const NumericalScalar a = lowerBounds_[0](point)[0];
-      const NumericalScalar b = upperBounds_[0](point)[0];
-      IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
-      IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
+      const Scalar a = lowerBounds_[0](point)[0];
+      const Scalar b = upperBounds_[0](point)[0];
+      IteratedQuadrature::FunctionCollection lowerBounds(size);
+      IteratedQuadrature::FunctionCollection upperBounds(size);
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, point);
-        upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, point);
+        lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, point);
+        upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, point);
       }
-      const NumericalPoint value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
+      const Point value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
       for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
         if (!SpecFunc::IsNormal(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
       return value;
     }
 
-    NumericalSample operator()(const NumericalSample & sample) const
+    Sample operator()(const Sample & sample) const
     {
       const UnsignedInteger sampleSize = sample.getSize();
       const UnsignedInteger outputDimension = function_.getOutputDimension();
       const UnsignedInteger size = lowerBounds_.getSize() - 1;
-      IteratedQuadrature::NumericalMathFunctionCollection lowerBounds(size);
-      IteratedQuadrature::NumericalMathFunctionCollection upperBounds(size);
-      NumericalSample result(sampleSize, outputDimension);
+      IteratedQuadrature::FunctionCollection lowerBounds(size);
+      IteratedQuadrature::FunctionCollection upperBounds(size);
+      Sample result(sampleSize, outputDimension);
       const Indices index(1, 0);
-      const NumericalSample sampleA(lowerBounds_[0](sample));
-      const NumericalSample sampleB(upperBounds_[0](sample));
+      const Sample sampleA(lowerBounds_[0](sample));
+      const Sample sampleB(upperBounds_[0](sample));
       for (UnsignedInteger k = 0; k < sampleSize; ++k)
       {
-        const NumericalPoint x(sample[k]);
+        const Point x(sample[k]);
         // Create the arguments of the local integration problem
-        const NumericalMathFunction function(function_, index, x);
-        const NumericalScalar a = sampleA[k][0];
-        const NumericalScalar b = sampleB[k][0];
+        const ParametricFunction function(function_, index, x);
+        const Scalar a = sampleA[k][0];
+        const Scalar b = sampleB[k][0];
         for (UnsignedInteger i = 0; i < size; ++i)
         {
-          lowerBounds[i] = NumericalMathFunction(lowerBounds_[i + 1], index, x);
-          upperBounds[i] = NumericalMathFunction(upperBounds_[i + 1], index, x);
+          lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, x);
+          upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, x);
         } // Loop over bound functions
         result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
         for (UnsignedInteger i = 0; i < outputDimension; ++i)
@@ -169,9 +170,9 @@ private:
 
   private:
     const IteratedQuadrature & quadrature_;
-    const NumericalMathFunction & function_;
-    const IteratedQuadrature::NumericalMathFunctionCollection & lowerBounds_;
-    const IteratedQuadrature::NumericalMathFunctionCollection & upperBounds_;
+    const Function & function_;
+    const IteratedQuadrature::FunctionCollection & lowerBounds_;
+    const IteratedQuadrature::FunctionCollection & upperBounds_;
   }; // class PartialFunctionWrapper
 
   /* Underlying integration algorithm */

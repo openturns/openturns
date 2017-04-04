@@ -32,7 +32,7 @@ static const Factory<KrigingGradient> Factory_KrigingGradient;
 
 /* Constructor with parameters */
 KrigingGradient::KrigingGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , basis_()
   , inputSample_()
   , covarianceModel_()
@@ -45,11 +45,11 @@ KrigingGradient::KrigingGradient()
 
 /* Constructor with parameters */
 KrigingGradient::KrigingGradient(const BasisCollection & basis,
-                                 const NumericalSample & inputSample,
+                                 const Sample & inputSample,
                                  const CovarianceModel & covarianceModel,
-                                 const NumericalPointCollection & beta,
-                                 const NumericalSample & gamma)
-  : NumericalMathGradientImplementation()
+                                 const PointCollection & beta,
+                                 const Sample & gamma)
+  : GradientImplementation()
   , basis_(basis)
   , inputSample_(inputSample)
   , covarianceModel_(covarianceModel)
@@ -66,7 +66,7 @@ KrigingGradient::KrigingGradient(const BasisCollection & basis,
   }
   if (covarianceModel.getSpatialDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the spatial dimension=" << covarianceModel.getSpatialDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getDimension();
-  setParameter(NumericalPoint(getInputDimension()));
+  setParameter(Point(getInputDimension()));
 }
 
 /* Virtual constructor */
@@ -105,7 +105,7 @@ Bool KrigingGradient::isActualImplementation() const
   return true;
 }
 
-Matrix KrigingGradient::gradient(const NumericalPoint & inP) const
+Matrix KrigingGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger p = inP.getSize();
   if (p != getInputDimension())
@@ -129,7 +129,7 @@ Matrix KrigingGradient::gradient(const NumericalPoint & inP) const
     {
       // Get the row of size dimension x dimension
       const Matrix gradient_i_j(dimension, dimension, *gradient_i.getRow(j).getImplementation());
-      const NumericalPoint localValue(gradient_i_j * gamma_[i]);
+      const Point localValue(gradient_i_j * gamma_[i]);
       for (UnsignedInteger k = 0; k < dimension; ++k) result(j, k) += localValue[k];
     }
   }
@@ -143,10 +143,10 @@ Matrix KrigingGradient::gradient(const NumericalPoint & inP) const
   {
     // Get local basis -> basis_[i]
     const Basis localBasis(basis_[i]);
-    const NumericalPoint betaBasis(beta_[i]);
+    const Point betaBasis(beta_[i]);
     const UnsignedInteger localBasisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
-    // We write explicitely the linear combination instead of using a LinearCombinationGradientImplementation
+    // We write explicitely the linear combination instead of using a LinearCombinationGradient
     for (UnsignedInteger j = 0; j < localBasisSize; ++j)
     {
       const Matrix gradient_bj(localBasis[j].gradient(inP) * betaBasis[j]);
@@ -175,7 +175,7 @@ UnsignedInteger KrigingGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void KrigingGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("covarianceModel_", covarianceModel_);
@@ -186,7 +186,7 @@ void KrigingGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void KrigingGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("covarianceModel_", covarianceModel_);

@@ -38,8 +38,8 @@ SimulationResult::SimulationResult()
 
 /* Standard constructor */
 SimulationResult::SimulationResult(const Event & event,
-                                   const NumericalScalar probabilityEstimate,
-                                   const NumericalScalar varianceEstimate,
+                                   const Scalar probabilityEstimate,
+                                   const Scalar varianceEstimate,
                                    const UnsignedInteger outerSampling,
                                    const UnsignedInteger blockSize)
   : TypedInterfaceObject<SimulationResultImplementation>(new SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize))
@@ -68,43 +68,43 @@ Event SimulationResult::getEvent() const
 }
 
 /* Probability estimate accessor */
-NumericalScalar SimulationResult::getProbabilityEstimate() const
+Scalar SimulationResult::getProbabilityEstimate() const
 {
   return getImplementation()->getProbabilityEstimate();
 }
 
-void SimulationResult::setProbabilityEstimate(const NumericalScalar probabilityEstimate)
+void SimulationResult::setProbabilityEstimate(const Scalar probabilityEstimate)
 {
   copyOnWrite();
   getImplementation()->setProbabilityEstimate(probabilityEstimate);
 }
 
 /* Variance estimate accessor */
-NumericalScalar SimulationResult::getVarianceEstimate() const
+Scalar SimulationResult::getVarianceEstimate() const
 {
   return getImplementation()->getVarianceEstimate();
 }
 
-void SimulationResult::setVarianceEstimate(const NumericalScalar varianceEstimate)
+void SimulationResult::setVarianceEstimate(const Scalar varianceEstimate)
 {
   copyOnWrite();
   getImplementation()->setVarianceEstimate(varianceEstimate);
 }
 
 /* Coefficient of variation estimate accessor */
-NumericalScalar SimulationResult::getCoefficientOfVariation() const
+Scalar SimulationResult::getCoefficientOfVariation() const
 {
   return getImplementation()->getCoefficientOfVariation();
 }
 
 /* Standard deviation estimate accessor */
-NumericalScalar SimulationResult::getStandardDeviation() const
+Scalar SimulationResult::getStandardDeviation() const
 {
   return getImplementation()->getStandardDeviation();
 }
 
 /* Mean point conditioned to the event realization accessor */
-NumericalPoint SimulationResult::getMeanPointInEventDomain() const
+Point SimulationResult::getMeanPointInEventDomain() const
 {
   return getImplementation()->getMeanPointInEventDomain();
 }
@@ -128,7 +128,7 @@ String SimulationResult::__repr__() const
 }
 
 /* Confidence length */
-NumericalScalar SimulationResult::getConfidenceLength(const NumericalScalar level) const
+Scalar SimulationResult::getConfidenceLength(const Scalar level) const
 {
   return getImplementation()->getConfidenceLength(level);
 }
@@ -146,7 +146,7 @@ void SimulationResult::setBlockSize(const UnsignedInteger blockSize)
 }
 
 /* Importance factors accessor */
-NumericalPointWithDescription SimulationResult::getImportanceFactors() const
+PointWithDescription SimulationResult::getImportanceFactors() const
 {
   return getImplementation()->getImportanceFactors();
 }

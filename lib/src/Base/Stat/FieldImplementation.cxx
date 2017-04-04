@@ -39,9 +39,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<NumericalSample>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Sample>);
 
-static const Factory<PersistentCollection<NumericalSample> > Factory_PersistentCollection_NumericalSample;
+static const Factory<PersistentCollection<Sample> > Factory_PersistentCollection_Sample;
 
 CLASSNAMEINIT(FieldImplementation);
 
@@ -77,7 +77,7 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
 
 /* Constructor from a Mesh and a sample */
 FieldImplementation::FieldImplementation(const Mesh & mesh,
-    const NumericalSample & values)
+    const Sample & values)
   : PersistentObject()
   , mesh_(mesh)
   , values_(values)
@@ -137,7 +137,7 @@ NSI_const_point FieldImplementation::operator[](const UnsignedInteger index) con
   return values_[index];
 }
 
-NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
+Scalar & FieldImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   isAlreadyComputedSpatialMean_ = false;
@@ -149,7 +149,7 @@ NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & FieldImplementation::operator () (const UnsignedInteger i,
+const Scalar & FieldImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
@@ -173,8 +173,8 @@ NSI_const_point FieldImplementation::at (const UnsignedInteger index) const
   return (*this)[index];
 }
 
-NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
-    const UnsignedInteger j)
+Scalar & FieldImplementation::at (const UnsignedInteger i,
+                                  const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
@@ -182,8 +182,8 @@ NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
   return (*this)[i][j];
 }
 
-const NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
-    const UnsignedInteger j) const
+const Scalar & FieldImplementation::at (const UnsignedInteger i,
+                                        const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
@@ -191,40 +191,40 @@ const NumericalScalar & FieldImplementation::at (const UnsignedInteger i,
 }
 
 /* Data accessors */
-NumericalPoint FieldImplementation::getValueAtIndex(const UnsignedInteger index) const
+Point FieldImplementation::getValueAtIndex(const UnsignedInteger index) const
 {
   return values_[index];
 }
 
 void FieldImplementation::setValueAtIndex(const UnsignedInteger index,
-    const NumericalPoint & val)
+    const Point & val)
 {
   isAlreadyComputedSpatialMean_ = false;
   values_[index] = val;
 }
 
-NumericalPoint FieldImplementation::getValueAtNearestPosition(const NumericalPoint & position) const
+Point FieldImplementation::getValueAtNearestPosition(const Point & position) const
 {
   return values_[mesh_.getNearestVertexIndex(position)];
 }
 
-void FieldImplementation::setValueAtNearestPosition(const NumericalPoint & position,
-    const NumericalPoint & val)
+void FieldImplementation::setValueAtNearestPosition(const Point & position,
+    const Point & val)
 {
   isAlreadyComputedSpatialMean_ = false;
   values_[mesh_.getNearestVertexIndex(position)] = val;
 }
 
 
-NumericalPoint FieldImplementation::getValueAtNearestTime(const NumericalScalar timestamp) const
+Point FieldImplementation::getValueAtNearestTime(const Scalar timestamp) const
 {
-  return getValueAtNearestPosition(NumericalPoint(1, timestamp));
+  return getValueAtNearestPosition(Point(1, timestamp));
 }
 
-void FieldImplementation::setValueAtNearestTime(const NumericalScalar timestamp, const NumericalPoint & val)
+void FieldImplementation::setValueAtNearestTime(const Scalar timestamp, const Point & val)
 {
   isAlreadyComputedSpatialMean_ = false;
-  setValueAtNearestPosition(NumericalPoint(1, timestamp), val);
+  setValueAtNearestPosition(Point(1, timestamp), val);
 }
 
 
@@ -274,7 +274,7 @@ String FieldImplementation::__repr__() const
 
 String FieldImplementation::__str__(const String & offset) const
 {
-  NumericalSample data(mesh_.getVertices());
+  Sample data(mesh_.getVertices());
   data.stack(values_);
   return data.__str__(offset);
 }
@@ -283,8 +283,8 @@ String FieldImplementation::__str__(const String & offset) const
 struct FieldSpatialMeanFunctor
 {
   const FieldImplementation & field_;
-  NumericalScalar volumeAccumulator_;
-  NumericalPoint accumulator_;
+  Scalar volumeAccumulator_;
+  Point accumulator_;
 
   FieldSpatialMeanFunctor(const FieldImplementation & field)
     : field_(field), volumeAccumulator_(0.0), accumulator_(field.getDimension(), 0.0) {}
@@ -298,9 +298,9 @@ struct FieldSpatialMeanFunctor
     const UnsignedInteger dimension = field_.getDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const NumericalScalar volume = field_.mesh_.computeSimplexVolume(i);
+      const Scalar volume = field_.mesh_.computeSimplexVolume(i);
       const Indices simplex(field_.mesh_.getSimplex(i));
-      NumericalPoint meanValue(dimension, 0.0);
+      Point meanValue(dimension, 0.0);
       for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
       volumeAccumulator_ += volume;
       accumulator_ += (volume / dimension) * meanValue;
@@ -327,40 +327,40 @@ void FieldImplementation::computeSpatialMean() const
 
 
 /* Compute the spatial mean of the field */
-NumericalPoint FieldImplementation::getSpatialMean() const
+Point FieldImplementation::getSpatialMean() const
 {
   if (!isAlreadyComputedSpatialMean_) computeSpatialMean();
   return spatialMean_;
 }
 
 /* Compute the spatial mean of the field */
-NumericalPoint FieldImplementation::getTemporalMean() const
+Point FieldImplementation::getTemporalMean() const
 {
   if (!mesh_.isRegular() || (mesh_.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the temporal mean is defined only when the mesh is regular and of dimension 1.";
   return values_.computeMean();
 }
 
 /* Return the values stored in the field as a sample */
-NumericalSample FieldImplementation::getSample() const
+Sample FieldImplementation::getSample() const
 {
   return values_;
 }
 
-NumericalSample FieldImplementation::getValues() const
+Sample FieldImplementation::getValues() const
 {
   return values_;
 }
 
-void FieldImplementation::setValues(const NumericalSample & values)
+void FieldImplementation::setValues(const Sample & values)
 {
   if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: expected a sample of size=" << mesh_.getVerticesNumber() << ", got size=" << values.getSize();
   values_ = values;
 }
 
 /* Return the field as a sample, ie its values and positions */
-NumericalSample FieldImplementation::asSample() const
+Sample FieldImplementation::asSample() const
 {
-  NumericalSample data(mesh_.getVertices());
+  Sample data(mesh_.getVertices());
   data.stack(values_);
   return data;
 }
@@ -369,7 +369,7 @@ NumericalSample FieldImplementation::asSample() const
 Mesh FieldImplementation::asDeformedMesh() const
 {
   if (getDimension() != getSpatialDimension()) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << values_.getDimension() << " does not match the mesh dimension=" << getSpatialDimension();
-  NumericalSample data(mesh_.getVertices());
+  Sample data(mesh_.getVertices());
   data += values_;
   return Mesh(data, mesh_.getSimplices());
 }
@@ -394,59 +394,59 @@ Graph FieldImplementation::draw() const
     // Get the bounding box of the mesh to set the head size of the arrow
     // It must be independent from the values as we want the same size for
     // all the arrows
-    const NumericalSample vertices(mesh_.getVertices());
-    const NumericalPoint xMin(vertices.getMin());
-    const NumericalPoint xMax(vertices.getMax());
-    const NumericalScalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsNumericalScalar("Field-ArrowRatio");
-    const NumericalScalar rho = ResourceMap::GetAsNumericalScalar("Field-ArrowScaling");
+    const Sample vertices(mesh_.getVertices());
+    const Point xMin(vertices.getMin());
+    const Point xMax(vertices.getMax());
+    const Scalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsScalar("Field-ArrowRatio");
+    const Scalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
     const UnsignedInteger size = values_.getSize();
-    NumericalSample normValues(size, 1);
+    Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)
-      normValues[i][0] = NumericalPoint(values_[i]).norm();
-    NumericalScalar normMin = normValues.getMin()[0];
-    NumericalScalar normMax = normValues.getMax()[0];
+      normValues[i][0] = Point(values_[i]).norm();
+    Scalar normMin = normValues.getMin()[0];
+    Scalar normMax = normValues.getMax()[0];
     if (normMax == normMin) normMax = normMin + 1.0;
     const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");
     Description palette(levelsNumber);
     for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
-    
+
     for (UnsignedInteger i = 0; i < values_.getSize(); ++i)
+    {
+      const Point x(vertices[i]);
+      Point v(values_[i]);
+      Scalar arrowLength = v.norm();
+      const UnsignedInteger paletteIndex = static_cast<UnsignedInteger>((levelsNumber - 0.5) * (arrowLength - normMin) / (normMax - normMin));
+      const String color = palette[paletteIndex];
+      v *= rho;
+      arrowLength *= rho;
+      // Draw the arrow head only if the arrow is large enough
+      if (arrowLength > delta)
       {
-	const NumericalPoint x(vertices[i]);
-	NumericalPoint v(values_[i]);
-	NumericalScalar arrowLength = v.norm();
-	const UnsignedInteger paletteIndex = static_cast<UnsignedInteger>((levelsNumber - 0.5) * (arrowLength - normMin) / (normMax - normMin));
-	const String color = palette[paletteIndex];
-	v *= rho;
-	arrowLength *= rho;
-	// Draw the arrow head only if the arrow is large enough
-	if (arrowLength > delta)
-	  {
-	    NumericalSample data(6, 2);
-	    const NumericalPoint u(v / arrowLength);
-	    data[0] = x;
-	    data[1] = x + v - u * delta;
-	    data[2][0] = data[1][0] + u[1] * (-0.5 * delta);
-	    data[2][1] = data[1][1] + u[0] * ( 0.5 * delta);
-	    data[3] = x + v;
-	    data[4][0] = data[1][0] + u[1] * ( 0.5 * delta);
-	    data[4][1] = data[1][1] + u[0] * (-0.5 * delta);
-	    data[5] = data[1];
-	    Curve curve(data);
-	    curve.setColor(color);
-	    graph.add(curve);
-	  } // arrowLength > delta
-	else
-	  {
-	    NumericalSample data(2, 2);
-	    data[0] = x;
-	    data[1] = x + v;
-	    Curve curve(data);
-	    curve.setColor(color);
-	    graph.add(curve);
-	  } // arrowLength <= delta
-      } // for i
+        Sample data(6, 2);
+        const Point u(v / arrowLength);
+        data[0] = x;
+        data[1] = x + v - u * delta;
+        data[2][0] = data[1][0] + u[1] * (-0.5 * delta);
+        data[2][1] = data[1][1] + u[0] * ( 0.5 * delta);
+        data[3] = x + v;
+        data[4][0] = data[1][0] + u[1] * ( 0.5 * delta);
+        data[4][1] = data[1][1] + u[0] * (-0.5 * delta);
+        data[5] = data[1];
+        Curve curve(data);
+        curve.setColor(color);
+        graph.add(curve);
+      } // arrowLength > delta
+      else
+      {
+        Sample data(2, 2);
+        data[0] = x;
+        data[1] = x + v;
+        Curve curve(data);
+        curve.setColor(color);
+        graph.add(curve);
+      } // arrowLength <= delta
+    } // for i
     return graph;
   }
   return drawMarginal(0, false);
@@ -458,7 +458,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
   if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
   const UnsignedInteger meshDimension = getSpatialDimension();
   if (meshDimension > 2) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
-  const NumericalSample marginalValues(values_.getMarginal(index));
+  const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
   Graph graph(title, description_[0], "Values", true, "topright");
   if (meshDimension == 1)
@@ -483,11 +483,11 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
     if (interpolate)
     {
       // Compute the iso-values
-      NumericalPoint levels(levelsNumber);
+      Point levels(levelsNumber);
       Description palette(levelsNumber);
       for (UnsignedInteger i = 0; i < levelsNumber; ++i)
       {
-        const NumericalScalar q = (i + 1.0) / (levelsNumber + 1.0);
+        const Scalar q = (i + 1.0) / (levelsNumber + 1.0);
         levels[i] = marginalValues.computeQuantile(q)[0];
         palette[i] = Curve::ConvertFromHSV((270.0 * (levelsNumber - i - 1)) / levelsNumber, 1.0, 1.0);
       }
@@ -499,9 +499,9 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         UnsignedInteger i0 = currentSimplex[0];
         UnsignedInteger i1 = currentSimplex[1];
         UnsignedInteger i2 = currentSimplex[2];
-        NumericalScalar v0 = marginalValues[i0][0];
-        NumericalScalar v1 = marginalValues[i1][0];
-        NumericalScalar v2 = marginalValues[i2][0];
+        Scalar v0 = marginalValues[i0][0];
+        Scalar v1 = marginalValues[i1][0];
+        Scalar v2 = marginalValues[i2][0];
         // Sort the vertices such that v0 <= v1 <= v2
         if (v0 > v1)
         {
@@ -523,38 +523,38 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         // For the current simplex, check all levels
         for (UnsignedInteger j = 0; j < levelsNumber; ++j)
         {
-          const NumericalScalar level = levels[j];
+          const Scalar level = levels[j];
           if ((level >= v0) && (level <= v2))
           {
-            const NumericalPoint x0(mesh_.getVertex(i0));
-            const NumericalPoint x1(mesh_.getVertex(i1));
-            const NumericalPoint x2(mesh_.getVertex(i2));
-            NumericalSample data(2, 2);
+            const Point x0(mesh_.getVertex(i0));
+            const Point x1(mesh_.getVertex(i1));
+            const Point x2(mesh_.getVertex(i2));
+            Sample data(2, 2);
             // The first point is on the [x0, x2] segment as v0 <= level <= v2 and v0 < v2
             data[0] = x0 + ((level - v0) / (v2 - v0)) * (x2 - x0);
             // if level <= v1, the second point is on the [x0, x1] segment
             if (level <= v1)
-	      {
-		if (v1 == v0) data[1] = x1;
-		else data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
-	      }
-	    // if level >= v1, the second point is on the [x1, x2] segment
+            {
+              if (v1 == v0) data[1] = x1;
+              else data[1] = x0 + ((level - v0) / (v1 - v0)) * (x1 - x0);
+            }
+            // if level >= v1, the second point is on the [x1, x2] segment
             else
-	      {
-		if (v2 == v1) data[1] = x1;
-		else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
-	      }
+            {
+              if (v2 == v1) data[1] = x1;
+              else data[1] = x2 + ((level - v2) / (v1 - v2)) * (x1 - x2);
+            }
             graph.add(Curve(data, palette[j], "solid"));
           } // (level >= v0) && (level <= v2)
         } // j
       } // i
       // Simple colorbar
-      const NumericalScalar minValue = marginalValues.getMin()[0];
-      const NumericalScalar maxValue = marginalValues.getMax()[0];
-      const NumericalPoint xMin(mesh_.getVertices().getMin());
+      const Scalar minValue = marginalValues.getMin()[0];
+      const Scalar maxValue = marginalValues.getMax()[0];
+      const Point xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
-        Cloud point(NumericalSample(1, xMin));
+        Cloud point(Sample(1, xMin));
         point.setPointStyle("none");
         point.setColor(palette[i]);
         if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));
@@ -567,12 +567,12 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       const UnsignedInteger size = marginalValues.getSize();
       Description palette(size);
       for (UnsignedInteger i = 0; i < size; ++i) palette[i] = Curve::ConvertFromHSV((270.0 * (size - i - 1)) / size, 1.0, 1.0);
-      const NumericalScalar minValue = marginalValues.getMin()[0];
-      const NumericalScalar maxValue = marginalValues.getMax()[0];
+      const Scalar minValue = marginalValues.getMin()[0];
+      const Scalar maxValue = marginalValues.getMax()[0];
       const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
       if (simplicesNumber > 0)
       {
-        NumericalSample data(0, 2);
+        Sample data(0, 2);
         Description colors(0);
         for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
         {
@@ -580,7 +580,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           data.add(mesh_.getVertex(simplex[0]));
           data.add(mesh_.getVertex(simplex[1]));
           data.add(mesh_.getVertex(simplex[2]));
-          const NumericalScalar meanValue = (marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0;
+          const Scalar meanValue = (marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0;
           const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
           colors.add(color);
         }
@@ -591,7 +591,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
       {
         for (UnsignedInteger i = 0; i < size; ++i)
         {
-          Cloud point(NumericalSample(1, mesh_.getVertex(i)));
+          Cloud point(Sample(1, mesh_.getVertex(i)));
           const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (marginalValues[i][0] - minValue) / (maxValue - minValue)))]);
           point.setColor(color);
           point.setPointStyle("bullet");
@@ -599,10 +599,10 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         }
       } // No simplex
       // Simple colorbar
-      const NumericalPoint xMin(mesh_.getVertices().getMin());
+      const Point xMin(mesh_.getVertices().getMin());
       for (SignedInteger i = levelsNumber - 1; i >= 0; --i)
       {
-        Cloud point(NumericalSample(1, xMin));
+        Cloud point(Sample(1, xMin));
         point.setPointStyle("none");
         point.setColor(palette[(i * (size - 1)) / (levelsNumber - 1)]);
         if ((i == static_cast<SignedInteger>(levelsNumber) - 1) || (i == 0)) point.setLegend(String(OSS() << 0.001 * round(1000.0 * (minValue + i * (maxValue - minValue) / (levelsNumber - 1)))));

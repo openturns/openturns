@@ -1,0 +1,21 @@
+%feature("docstring") OT::DualLinearCombinationGradient
+"Dual linear combination gradient implementation.
+
+Available constructors:
+
+    DualLinearCombinationGradient(*myDLCEI*)
+    
+Parameters
+----------
+myDLCEI : :class:`~openturns.DualLinearCombinationEvaluation`
+    A dual linear combination evaluation implementation.
+
+See also
+--------
+DualLinearCombinationEvaluation,
+DualLinearCombinationHessian
+
+Notes
+-----
+It returns the implementation of the gradient. By default, the analytical
+gradient is implemented."

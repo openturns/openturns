@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
     {
       fullprint << "legendre(" << i << ")=" << legendre.build(i).__str__() << std::endl;
     }
-    NumericalPoint roots(legendre.getRoots(10));
+    Point roots(legendre.getRoots(10));
     fullprint << "legendre(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
+    Point weights;
     roots = legendre.getNodesAndWeights(10, weights);
     fullprint << "legendre(10) roots=" << roots << " and weights=" << weights << std::endl;
   }

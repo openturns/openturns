@@ -69,7 +69,7 @@ Mixture::Mixture(const DistributionCollection & coll)
   if ((getDimension() == 1) && (coll.getSize() >= ResourceMap::GetAsUnsignedInteger("Mixture-SmallSize")) && (coll.getSize() < ResourceMap::GetAsUnsignedInteger("Mixture-LargeSize")))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
-    Collection<PiecewiseHermiteEvaluationImplementation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
+    Collection<PiecewiseHermiteEvaluation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
     pdfApproximationCDF_ = interpolation[0];
     cdfApproximation_ = interpolation[1];
     pdfApproximationCCDF_ = interpolation[2];
@@ -80,7 +80,7 @@ Mixture::Mixture(const DistributionCollection & coll)
 
 /* Parameters constructor */
 Mixture::Mixture(const DistributionCollection & coll,
-                 const NumericalPoint & weights)
+                 const Point & weights)
   : DistributionImplementation()
   , distributionCollection_()
   , weightsDistribution_()
@@ -101,7 +101,7 @@ Mixture::Mixture(const DistributionCollection & coll,
   if ((getDimension() == 1) && (coll.getSize() >= ResourceMap::GetAsUnsignedInteger("Mixture-SmallSize")) && (coll.getSize() < ResourceMap::GetAsUnsignedInteger("Mixture-LargeSize")))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the ContinuousDistribution class in order to use both the PDF and the CDF
-    Collection<PiecewiseHermiteEvaluationImplementation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
+    Collection<PiecewiseHermiteEvaluation> interpolation(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("Mixture-PDFCDFDiscretization")));
     pdfApproximationCDF_ = interpolation[0];
     cdfApproximation_ = interpolation[1];
     pdfApproximationCCDF_ = interpolation[2];
@@ -150,15 +150,15 @@ String Mixture::__str__(const String & offset) const
 }
 
 /* Weights accessor */
-NumericalPoint Mixture::getWeights() const
+Point Mixture::getWeights() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
-  NumericalPoint weights(size);
+  Point weights(size);
   for (UnsignedInteger i = 0; i < size; ++i) weights[i] = distributionCollection_[i].getWeight();
   return weights;
 }
 
-void Mixture::setWeights(const NumericalPoint & weights)
+void Mixture::setWeights(const Point & weights)
 {
   const DistributionCollection coll(distributionCollection_);
   setDistributionCollectionWithWeights( coll, weights);
@@ -191,20 +191,20 @@ UserDefined Mixture::getWeightsDistribution() const
 void Mixture::setDistributionCollection(const DistributionCollection & coll)
 {
   const UnsignedInteger size = coll.getSize();
-  NumericalPoint weights(size);
+  Point weights(size);
   for (UnsignedInteger i = 0; i < size; ++i) weights[i] = coll[i].getWeight();
   setDistributionCollectionWithWeights(coll, weights);
 }
 
 void Mixture::setDistributionCollectionWithWeights(const DistributionCollection & coll,
-    const NumericalPoint & weights)
+    const Point & weights)
 {
   // Not const because the collection will be simplified and its size reduced
   UnsignedInteger size = coll.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Mixture based on an empty distribution collection.";
   if (weights.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the number of weights=" << weights.getSize() << " is different from the number of distributions=" << size << ".";
-  NumericalScalar maximumWeight = weights[0];
-  NumericalScalar weightSum = maximumWeight;
+  Scalar maximumWeight = weights[0];
+  Scalar weightSum = maximumWeight;
   UnsignedInteger dimension = coll[0].getDimension();
   // First loop, check the atoms dimensions and the weigths values
   for(UnsignedInteger i = 1; i < size; ++i)
@@ -212,12 +212,12 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     if (dimension != coll[i].getDimension())
       // We throw an exception because the collection has distributions of different sizes
       throw InvalidArgumentException(HERE) << "Collection of distributions has distributions of different dimensions";
-    NumericalScalar w = weights[i];
-    if (w < 0.0) throw InvalidArgumentException(HERE) << "Distribution " << i << " has a negative weight, w=" << w;
+    Scalar w = weights[i];
+    if (!(w >= 0.0)) throw InvalidArgumentException(HERE) << "Distribution " << i << " has a negative weight, w=" << w;
     if (w > maximumWeight) maximumWeight = w;
     weightSum += w;
   } /* end for */
-  const NumericalScalar smallWeight = ResourceMap::GetAsNumericalScalar("Mixture-SmallWeight");
+  const Scalar smallWeight = ResourceMap::GetAsScalar("Mixture-SmallWeight");
   if (weightSum < smallWeight)
     // We throw an exception because the collection of distributions has only distributions with small weight: they cannot be renormalized
     throw InvalidArgumentException(HERE) << "Collection of distributions has atoms with too small total weight=" << weightSum << " for a threshold equal to Mixture-SmallWeight=" << smallWeight;
@@ -227,7 +227,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   isCopula_ = true;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar w = weights[i];
+    Scalar w = weights[i];
     if (w < smallWeight * maximumWeight)
     {
       LOGINFO(OSS() << "Warning! The distribution number " << i << " has a too small weight=" << w << " for a relative threshold equal to Mixture-SmallWeight=" << smallWeight << " with respect to the maximum weight=" << maximumWeight << ". It is removed from the collection.");
@@ -247,12 +247,12 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   size = distributionCollection_.getSize();
 
   // We set the member with the collection passed as argument and we renormalize it in place
-  NumericalSample x(size, 1);
-  NumericalPoint p(size);
+  Sample x(size, 1);
+  Point p(size);
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar normalizedWeight = distributionCollection_[i].getWeight() / weightSum;
+    const Scalar normalizedWeight = distributionCollection_[i].getWeight() / weightSum;
     distributionCollection_[i].setWeight(normalizedWeight);
     x[i][0] = i;
     p[i] = normalizedWeight;
@@ -282,7 +282,7 @@ Mixture * Mixture::clone() const
 
 
 /* Get one realization of the Mixture */
-NumericalPoint Mixture::getRealization() const
+Point Mixture::getRealization() const
 {
   // Select the atom following the weightsDistribution
   const UnsignedInteger index = static_cast<UnsignedInteger>(round(weightsDistribution_.getRealization()[0]));
@@ -291,12 +291,12 @@ NumericalPoint Mixture::getRealization() const
 
 
 /* Get the DDF of the Mixture */
-NumericalPoint Mixture::computeDDF(const NumericalPoint & point) const
+Point Mixture::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalPoint ddfValue(dimension, 0.0);
+  Point ddfValue(dimension, 0.0);
   if (!getRange().numericallyContains(point)) return ddfValue;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) ddfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeDDF(point);
@@ -304,7 +304,7 @@ NumericalPoint Mixture::computeDDF(const NumericalPoint & point) const
 }
 
 /* Get the PDF of the Mixture */
-NumericalScalar Mixture::computePDF(const NumericalPoint & point) const
+Scalar Mixture::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -313,7 +313,7 @@ NumericalScalar Mixture::computePDF(const NumericalPoint & point) const
     if (point[0] < getMean()[0]) return pdfApproximationCDF_.derivate(point)[0];
     else return pdfApproximationCCDF_.derivate(point)[0];
   }
-  NumericalScalar pdfValue = 0.0;
+  Scalar pdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   if (!getRange().numericallyContains(point)) return pdfValue;
   for(UnsignedInteger i = 0; i < size; ++i) pdfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computePDF(point);
@@ -321,7 +321,7 @@ NumericalScalar Mixture::computePDF(const NumericalPoint & point) const
 }
 
 /* Get the CDF of the Mixture */
-NumericalScalar Mixture::computeCDF(const NumericalPoint & point) const
+Scalar Mixture::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -331,26 +331,26 @@ NumericalScalar Mixture::computeCDF(const NumericalPoint & point) const
     if (point[0] < getMean()[0]) return cdfApproximation_(point)[0];
     else return 1.0 - ccdfApproximation_(point)[0];
   }
-  NumericalScalar cdfValue = 0.0;
+  Scalar cdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) cdfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDF(point);
   return cdfValue;
 }
 
 /* Get the survival function of the Mixture */
-NumericalScalar Mixture::computeSurvivalFunction(const NumericalPoint & point) const
+Scalar Mixture::computeSurvivalFunction(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalScalar survivalValue = 0.0;
+  Scalar survivalValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) survivalValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeSurvivalFunction(point);
   return survivalValue;
 }
 
 /* Compute the probability content of an interval */
-NumericalScalar Mixture::computeProbability(const Interval & interval) const
+Scalar Mixture::computeProbability(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
@@ -362,40 +362,40 @@ NumericalScalar Mixture::computeProbability(const Interval & interval) const
   // If the interval is the range
   if (reducedInterval == getRange()) return 1.0;
 
-  NumericalScalar probability = 0.0;
+  Scalar probability = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) probability += distributionCollection_[i].getWeight() * distributionCollection_[i].computeProbability(reducedInterval);
   return probability;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Mixture::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Mixture::computeCharacteristicFunction(const Scalar x) const
 {
-  NumericalComplex cfValue(0.0);
+  Complex cfValue(0.0);
   UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) cfValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCharacteristicFunction(x);
   return cfValue;
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint Mixture::computePDFGradient(const NumericalPoint & point) const
+Point Mixture::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradientValue;
+  Point pdfGradientValue;
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) pdfGradientValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computePDFGradient(point);
   return pdfGradientValue;
 }
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Mixture::computeCDFGradient(const NumericalPoint & point) const
+Point Mixture::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradientValue(getDimension(), 0.0);
+  Point cdfGradientValue(getDimension(), 0.0);
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) cdfGradientValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDFGradient(point);
   return cdfGradientValue;
@@ -443,7 +443,7 @@ Mixture::Implementation Mixture::getMarginal(const Indices & indices) const
 /* Compute the mean of the Mixture */
 void Mixture::computeMean() const
 {
-  mean_ = NumericalPoint(getDimension(), 0.0);
+  mean_ = Point(getDimension(), 0.0);
   const UnsignedInteger size = distributionCollection_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) mean_ += distributionCollection_[i].getWeight() * distributionCollection_[i].getMean();
   isAlreadyComputedMean_ = true;
@@ -460,15 +460,15 @@ void Mixture::computeCovariance() const
   // First, compute E(X.X^t)
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar weightI = distributionCollection_[i].getWeight();
+    const Scalar weightI = distributionCollection_[i].getWeight();
     const CovarianceMatrix covarianceI(distributionCollection_[i].getCovariance());
-    const NumericalPoint meanI(distributionCollection_[i].getMean());
+    const Point meanI(distributionCollection_[i].getMean());
     for(UnsignedInteger row = 0; row < dimension; ++row)
       for(UnsignedInteger column = 0; column <= row; ++column)
         covariance_(row, column) += weightI * (covarianceI(row, column) + meanI[row] * meanI[column]);
   } /* end for */
   // Then, substract E(X).E(X)^t
-  const NumericalPoint mean(getMean());
+  const Point mean(getMean());
   for(UnsignedInteger row = 0; row < dimension; ++row)
     for(UnsignedInteger column = 0; column <= row; ++column)
       covariance_(row, column) -= mean[row] * mean[column];
@@ -476,19 +476,19 @@ void Mixture::computeCovariance() const
 }
 
 /** Parameters value and description accessor */
-Mixture::NumericalPointWithDescriptionCollection Mixture::getParametersCollection() const
+Mixture::PointWithDescriptionCollection Mixture::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = distributionCollection_.getSize();
   // Special case for dimension=1
   if (dimension == 1)
   {
-    NumericalPointWithDescriptionCollection parameters(1);
+    PointWithDescriptionCollection parameters(1);
     Description description;
-    // Form a big NumericalPoint from the parameters of each atom and its weight
+    // Form a big Point from the parameters of each atom and its weight
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const NumericalPointWithDescription atomParameters(distributionCollection_[i].getParametersCollection()[0]);
+      const PointWithDescription atomParameters(distributionCollection_[i].getParametersCollection()[0]);
       const Description atomDescription(atomParameters.getDescription());
       const UnsignedInteger atomParameterDimension = atomParameters.getDimension();
       // Add the current atom parameters
@@ -505,22 +505,22 @@ Mixture::NumericalPointWithDescriptionCollection Mixture::getParametersCollectio
     return parameters;
   }
   // General case
-  NumericalPointWithDescriptionCollection parameters(size + 1);
+  PointWithDescriptionCollection parameters(size + 1);
   Description description;
   // First put the marginal parameters
   for (UnsignedInteger marginalIndex = 0; marginalIndex < size; ++marginalIndex)
   {
-    // Each marginal distribution must output a collection of parameters of size 1, even if it contains an empty NumericalPoint
-    const NumericalPointWithDescriptionCollection marginalParameters(distributionCollection_[marginalIndex].getParametersCollection());
-    NumericalPointWithDescription point(marginalParameters[0]);
+    // Each marginal distribution must output a collection of parameters of size 1, even if it contains an empty Point
+    const PointWithDescriptionCollection marginalParameters(distributionCollection_[marginalIndex].getParametersCollection());
+    PointWithDescription point(marginalParameters[0]);
     point.setName(distributionCollection_[marginalIndex].getName());
     parameters[marginalIndex] = point;
   } // marginalIndex
 
-  // Form a big NumericalPoint from the dependence parameters of each atom
+  // Form a big Point from the dependence parameters of each atom
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPointWithDescription atomDependenceParameters(distributionCollection_[i].getParametersCollection()[dimension]);
+    const PointWithDescription atomDependenceParameters(distributionCollection_[i].getParametersCollection()[dimension]);
     const Description atomDescription(atomDependenceParameters.getDescription());
     const UnsignedInteger atomParameterDimension = atomDependenceParameters.getDimension();
     const String prefix(OSS() << "atom_" << i << "_");
@@ -591,35 +591,35 @@ Bool Mixture::hasIndependentCopula() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Mixture::getSupport(const Interval & interval) const
+Sample Mixture::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   // Fill a std::set with the points in the support of each atom in order to automatically remove duplicates
-  std::set<NumericalPoint> setSupport;
+  std::set<Point> setSupport;
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {
-    const NumericalSample atomSupport(distributionCollection_[i].getSupport(interval));
+    const Sample atomSupport(distributionCollection_[i].getSupport(interval));
     for (UnsignedInteger j = 0; j < atomSupport.getSize(); ++j) setSupport.insert(atomSupport[j]);
   }
-  NumericalSample support(0, getDimension());
-  for (std::set<NumericalPoint>::iterator i = setSupport.begin(); i != setSupport.end(); ++i)
+  Sample support(0, getDimension());
+  for (std::set<Point>::iterator i = setSupport.begin(); i != setSupport.end(); ++i)
     support.add(*i);
   return support;
 }
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint Mixture::getSingularities() const
+Point Mixture::getSingularities() const
 {
   if (getDimension() > 1) throw InternalException(HERE) << "Error: getSingularities() is defined for 1D distributions only";
-  NumericalPoint singularities(0);
+  Point singularities(0);
   // Aggregate all the singularities of the atoms including the bounds of the range
   // as it can be singularities within the mixture range
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
-    {
-      singularities.add(distributionCollection_[i].getRange().getLowerBound()[0]);
-      singularities.add(distributionCollection_[i].getSingularities());
-      singularities.add(distributionCollection_[i].getRange().getUpperBound()[0]);
-    }
+  {
+    singularities.add(distributionCollection_[i].getRange().getLowerBound()[0]);
+    singularities.add(distributionCollection_[i].getSingularities());
+    singularities.add(distributionCollection_[i].getRange().getUpperBound()[0]);
+  }
   // The singularities of a distribution have to be strictly included into the
   // range of the distribution. As the range of a mixture is the bounding box
   // of the ranges of the atoms, the bounds of the mixture range are within

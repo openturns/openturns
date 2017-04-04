@@ -44,18 +44,18 @@ public:
   Factorial();
 
   /** Constructor with parameters */
-  Factorial(const NumericalPoint & center,
-            const NumericalPoint & levels);
+  Factorial(const Point & center,
+            const Point & levels);
 
   /** Constructor with parameters */
   Factorial(const UnsignedInteger dimension,
-            const NumericalPoint & levels);
+            const Point & levels);
 
   /** Virtual constructor */
   virtual Factorial * clone() const;
 
   /** Experiment plane generation */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** String converter */
   virtual String __repr__() const;

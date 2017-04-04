@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    distribution = Multinomial(5, NumericalPoint(3, 0.25))
+    distribution = Multinomial(5, Point(3, 0.25))
     size = 10000
     sample = distribution.getSample(size)
     factory = MultinomialFactory()

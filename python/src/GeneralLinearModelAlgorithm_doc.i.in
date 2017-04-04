@@ -12,9 +12,9 @@ Available constructors:
 
 Parameters
 ----------
-inputSample, outputSample : :class:`~openturns.NumericalSample` or 2d-array
+inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^n` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^d`.
-inputTransformation : :class:`~openturns.NumericalMathFunction`
+inputTransformation : :class:`~openturns.Function`
     Function :math:`T` used to normalize the input sample.
 
     If used, the meta model is built on the transformed data.
@@ -189,7 +189,7 @@ Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.NumericalSample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
+>>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = f(inputSample)
 
 Create the algorithm:
@@ -211,7 +211,7 @@ Get the resulting meta model:
 
 Returns
 -------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     Function *T* that normalizes the input."
 
 // ---------------------------------------------------------------------
@@ -221,7 +221,7 @@ transformation : :class:`~openturns.NumericalMathFunction`
 
 Parameters
 ----------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     Function that normalizes the input.
     The input dimension should be the same as input's sample dimension, output dimension
     should be output sample's dimension"
@@ -245,7 +245,7 @@ result : :class:`~openturns.GeneralLinearModelResult`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     The input sample :math:`(\vect{x}_k)_{1 \leq k \leq N}`."
 
 // ---------------------------------------------------------------------
@@ -255,7 +255,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     The output sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` ."
 
 // ---------------------------------------------------------------------
@@ -265,7 +265,7 @@ outputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-logLikelihood : :class:`~openturns.NumericalMathFunction`
+logLikelihood : :class:`~openturns.Function`
     The log-likelihood function degined in :eq:`logLikelihood` as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
 
 Notes
@@ -279,7 +279,7 @@ Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x0'], ['x0 * sin(x0)'])
->>> inputSample = ot.NumericalSample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
+>>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = f(inputSample)
 
 Create the algorithm:

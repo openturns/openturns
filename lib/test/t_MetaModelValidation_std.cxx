@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(3);
     // Problem parameters
     UnsignedInteger dimension = 3;
-    NumericalScalar a = 7.0;
-    NumericalScalar b = 0.1;
+    Scalar a = 7.0;
+    Scalar b = 0.1;
     // Create the Ishigami function
     Description inputVariables(dimension);
     inputVariables[0] = "xi1";
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     outputVariables[0] = "y";
     Description formula(1);
     formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-    NumericalMathFunction model(inputVariables, outputVariables, formula);
+    Function model(inputVariables, outputVariables, formula);
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension);
@@ -61,13 +61,13 @@ int main(int argc, char *argv[])
 
     // Get input & output sample
     LHSExperiment lhs(distribution, samplingSize);
-    NumericalSample inputSample = lhs.generate();
-    NumericalSample outputSample = model(inputSample);
+    Sample inputSample = lhs.generate();
+    Sample outputSample = model(inputSample);
 
     // Validation of results on independent samples
     const UnsignedInteger validationSize = 10;
-    NumericalSample inputValidation = distribution.getSample(validationSize);
-    NumericalSample outputValidation = model(inputValidation);
+    Sample inputValidation = distribution.getSample(validationSize);
+    Sample outputValidation = model(inputValidation);
 
     // 1) SPC algorithm
     // Create the orthogonal basis
@@ -109,11 +109,11 @@ int main(int argc, char *argv[])
     // KrigingAlgorithm
     Basis basis(QuadraticBasisFactory(dimension).build());
     // model computed
-    NumericalPoint scale(3);
+    Point scale(3);
     scale[0] = 1.933;
     scale[1] = 1.18;
     scale[2] = 1.644;
-    NumericalPoint amplitude(1, 10.85);
+    Point amplitude(1, 10.85);
     CovarianceModel covarianceModel = GeneralizedExponential(scale, amplitude, 2.0);
 
 

@@ -20,10 +20,10 @@ for n in range(3):
     if (n > 0):
         formula += "-" + inVars[n - 1] + "^2"
         lower.append(
-            ot.NumericalMathFunction(inVarsBounds, ["-sqrt(" + formula + ")"]))
+            ot.SymbolicFunction(inVarsBounds, ["-sqrt(" + formula + ")"]))
         upper.append(
-            ot.NumericalMathFunction(inVarsBounds, ["sqrt(" + formula + ")"]))
-    integrand = ot.NumericalMathFunction(inVars, ["1.0"])
+            ot.SymbolicFunction(inVarsBounds, ["sqrt(" + formula + ")"]))
+    integrand = ot.SymbolicFunction(inVars, ["1.0"])
     value = algo.integrate(integrand, a, b, lower, upper)[0]
     print("dim=", n + 1, ", volume= %.12g" %
           value, ", calls=", integrand.getCallsNumber())
@@ -31,6 +31,6 @@ for n in range(3):
 bounds = ot.Interval([-1.0] * 3, [1.0] * 3)
 vars = ["x0", "x1", "x2"]
 formulas = ["x0^2 + 2*x1^2 + 3*x2^2", "x2^2 + 2*x1^2 + 3*x0^2"]
-integrand = ot.NumericalMathFunction(vars, formulas)
+integrand = ot.SymbolicFunction(vars, formulas)
 value = algo.integrate(integrand, bounds)
 print("value=", value, ", calls=", integrand.getCallsNumber())

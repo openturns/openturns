@@ -49,16 +49,16 @@ Available usages:
 
 Parameters
 ----------
-f : :class:`~openturns.NumericalMathFunction`, :math:`f: \Rset^d \mapsto \Rset^p`
+f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
     The integrand function.
 interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d` 
     The integration domain. 
-xi : :class:`~openturns.NumericalSample`
+xi : :class:`~openturns.Sample`
     The integration nodes.
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint`
+value : :class:`~openturns.Point`
     Approximation of the integral.
 
 
@@ -89,7 +89,7 @@ discretization : :class:`~openturns.Indices`
 
 Returns
 -------
-nodes : :class:`~openturns.NumericalSample`
+nodes : :class:`~openturns.Sample`
     The tensorized Gauss-Legendre integration nodes on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
 
 // ---------------------------------------------------------------------
@@ -98,6 +98,6 @@ nodes : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-weights : :class:`~openturns.NumericalPoint`
+weights : :class:`~openturns.Point`
     The tensorized Gauss-Legendre integration weights on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
 

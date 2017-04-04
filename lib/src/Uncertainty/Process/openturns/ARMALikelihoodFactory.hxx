@@ -120,7 +120,7 @@ private :
   mutable Matrix blockPhiTThetaTMatrix_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalScalar sigma2_;
+  mutable Scalar sigma2_;
 
   /** Bool variables */
   mutable Bool hasInitializedARCoefficients_;
@@ -137,7 +137,7 @@ private :
   SquareMatrix computeW0Matrix() const;
 
   /** Likelihood function ==> Compute the reduced form of the likelihood */
-  NumericalScalar computeLogLikelihood(const NumericalPoint & beta) const;
+  Scalar computeLogLikelihood(const Point & beta) const;
 
   /** Run the default initilization of coefficients / covariance for the optimization */
   void defaultInitialize() const;
@@ -158,7 +158,7 @@ private :
   Matrix computeEta() const;
 
   /** Compute h vectors */
-  NumericalPoint computeVectorh(const Matrix & rxi, const Matrix & eta, const Matrix & matV1_Omega_V1TCholesky) const;
+  Point computeVectorh(const Matrix & rxi, const Matrix & eta, const Matrix & matV1_Omega_V1TCholesky) const;
 
   /** Compute H^{T} H matrix */
   SymmetricMatrix computeHTH(const Matrix & rxi) const;
@@ -167,13 +167,13 @@ private :
   CovarianceMatrix computeI_MTHTHM(const SymmetricMatrix & matrix_HTH, const Matrix & matV1_Omega_V1TCholesky) const;
 
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const;
+  Function getLogLikelihoodFunction() const;
 
   /** Likelihood constraint accessor */
-  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+  Function getLogLikelihoodInequalityConstraint() const;
 
   /** likelihood estimate */
-  NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & beta ) const;
+  Point computeLogLikelihoodInequalityConstraint( const Point & beta ) const;
 
   /** only used to pass data to be used in computeLogLikelihood and computeLogLikelihoodInequalityConstraint  */
   mutable UnsignedInteger inputDimension_;

@@ -22,10 +22,10 @@
 #define OPENTURNS_RANDOMVECTORIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ComparisonOperator.hxx"
@@ -72,13 +72,13 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 
   /** Numerical sample accessor */
-  virtual NumericalSample getSample(const UnsignedInteger size) const;
+  virtual Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
-  virtual NumericalPoint getMean() const;
+  virtual Point getMean() const;
 
   /** Covariance accessor */
   virtual CovarianceMatrix getCovariance() const;
@@ -93,7 +93,7 @@ public:
   virtual Antecedent getAntecedent() const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
-  virtual NumericalMathFunction getFunction() const;
+  virtual Function getFunction() const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
   virtual Distribution getDistribution() const;
@@ -108,7 +108,7 @@ public:
   virtual Process getProcess() const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
-  virtual NumericalScalar getThreshold() const;
+  virtual Scalar getThreshold() const;
 
   /** Description accessor */
   virtual void setDescription(const Description & description);

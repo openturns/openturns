@@ -43,13 +43,13 @@ UserDefinedFactory * UserDefinedFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-UserDefinedFactory::Implementation UserDefinedFactory::build(const NumericalSample & sample) const
+UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & sample) const
 {
   return buildAsUserDefined(sample, 0.0).clone();
 }
 
-UserDefinedFactory::Implementation UserDefinedFactory::build(const NumericalSample & sample,
-    const NumericalScalar epsilon) const
+UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & sample,
+    const Scalar epsilon) const
 {
   return buildAsUserDefined(sample, epsilon).clone();
 }
@@ -59,13 +59,13 @@ UserDefinedFactory::Implementation UserDefinedFactory::build() const
   return buildAsUserDefined().clone();
 }
 
-UserDefined UserDefinedFactory::buildAsUserDefined(const NumericalSample & sample,
-    const NumericalScalar epsilon) const
+UserDefined UserDefinedFactory::buildAsUserDefined(const Sample & sample,
+    const Scalar epsilon) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
-  const NumericalScalar p = 1.0 / NumericalScalar(size);
-  UserDefined result(sample, NumericalPoint(size, p));
+  const Scalar p = 1.0 / Scalar(size);
+  UserDefined result(sample, Point(size, p));
   result.compactSupport(epsilon);
   result.setDescription(sample.getDescription());
   return result;

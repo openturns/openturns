@@ -24,7 +24,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/SpectralModel.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -48,16 +48,16 @@ public:
   CauchyModel();
 
   /** Standard constructor with scale and amplitude parameters parameters */
-  CauchyModel(const NumericalPoint & scale,
-              const NumericalPoint & amplitude);
+  CauchyModel(const Point & scale,
+              const Point & amplitude);
 
   /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
-  CauchyModel(const NumericalPoint & scale,
-              const NumericalPoint & amplitude,
+  CauchyModel(const Point & scale,
+              const Point & amplitude,
               const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale and spatial covariance parameters parameters */
-  CauchyModel(const NumericalPoint & scale,
+  CauchyModel(const Point & scale,
               const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
@@ -65,7 +65,7 @@ public:
 
   /** Computation of the spectral density function */
   using SpectralModelImplementation::computeStandardRepresentative;
-  NumericalComplex computeStandardRepresentative(const NumericalScalar frequency) const;
+  Complex computeStandardRepresentative(const Scalar frequency) const;
 
   /** String converter */
   String __repr__() const;

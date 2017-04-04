@@ -40,7 +40,7 @@ public:
   Dirichlet();
 
   /** Parameters constructor */
-  Dirichlet(const NumericalPoint & theta);
+  Dirichlet(const Point & theta);
 
   /** Comparison operator */
   Bool operator ==(const Dirichlet & other) const;
@@ -60,35 +60,35 @@ public:
   virtual Dirichlet * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Parameters value and description accessor */
-  virtual NumericalPointWithDescriptionCollection getParametersCollection() const;
+  virtual PointWithDescriptionCollection getParametersCollection() const;
   using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -96,20 +96,20 @@ public:
   /* Interface specific to Dirichlet */
 
   /** Theta accessor */
-  void setTheta(const NumericalPoint & theta);
-  NumericalPoint getTheta() const;
+  void setTheta(const Point & theta);
+  Point getTheta() const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -150,8 +150,8 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
@@ -160,12 +160,12 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  NumericalPoint theta_;
-  NumericalScalar sumTheta_;
-  NumericalScalar normalizationFactor_;
+  Point theta_;
+  Scalar sumTheta_;
+  Scalar normalizationFactor_;
   mutable Bool isInitializedCDF_;
-  mutable NumericalPointCollection integrationNodes_;
-  mutable NumericalPointCollection integrationWeights_;
+  mutable PointCollection integrationNodes_;
+  mutable PointCollection integrationWeights_;
 }; /* class Dirichlet */
 
 

@@ -22,8 +22,8 @@
 #define OPENTURNS_BOXCOXFACTORY_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/BoxCoxTransform.hxx"
 #include "openturns/Graph.hxx"
@@ -63,36 +63,36 @@ public:
   /** Build the factory from data by estimating the best \lambda which maximizes the log-likelihood function */
   BoxCoxTransform build(const Field & timeSeries) const;
   BoxCoxTransform build(const Field & timeSeries,
-                        const NumericalPoint & shift) const;
+                        const Point & shift) const;
   BoxCoxTransform build(const Field & timeSeries,
-                        const NumericalPoint & shift,
+                        const Point & shift,
                         Graph & graph) const;
-  BoxCoxTransform build(const NumericalSample & sample) const;
-  BoxCoxTransform build(const NumericalSample & sample,
-                        const NumericalPoint & shift) const;
-  BoxCoxTransform build(const NumericalSample & sample,
-                        const NumericalPoint & shift,
+  BoxCoxTransform build(const Sample & sample) const;
+  BoxCoxTransform build(const Sample & sample,
+                        const Point & shift) const;
+  BoxCoxTransform build(const Sample & sample,
+                        const Point & shift,
                         Graph & graph) const;
 
   /** Build the factory from data by estimating the best generalized linear model */
-  BoxCoxTransform build(const NumericalSample & inputSample,
-                        const NumericalSample & outputSample,
+  BoxCoxTransform build(const Sample & inputSample,
+                        const Sample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const Basis & basis,
-                        const NumericalPoint & shift,
+                        const Point & shift,
                         GeneralLinearModelResult & result);
 
-  BoxCoxTransform build(const NumericalSample & inputSample,
-                        const NumericalSample & outputSample,
+  BoxCoxTransform build(const Sample & inputSample,
+                        const Sample & outputSample,
                         const CovarianceModel & covarianceModel,
                         const BasisCollection & basis,
-                        const NumericalPoint & shift,
+                        const Point & shift,
                         GeneralLinearModelResult & result);
 
-  BoxCoxTransform build(const NumericalSample & inputSample,
-                        const NumericalSample & outputSample,
+  BoxCoxTransform build(const Sample & inputSample,
+                        const Sample & outputSample,
                         const CovarianceModel & covarianceModel,
-                        const NumericalPoint & shift,
+                        const Point & shift,
                         GeneralLinearModelResult & result);
 
   /** Optimization solver accessor */
@@ -108,8 +108,8 @@ protected:
   /** Optimization solver */
   OptimizationAlgorithm  solver_;
 
-  void checkGLMData(const NumericalSample & inputSample,
-                    const NumericalSample & outputSample,
+  void checkGLMData(const Sample & inputSample,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const BasisCollection & basis);
 

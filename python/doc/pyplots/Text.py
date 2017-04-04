@@ -16,8 +16,8 @@ cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 
 # Display extrema indices
-x1 = [ x[0] for x in sample[:,0]]
-x2 = [ x[0] for x in sample[:,1]]
+x1 = [x[0] for x in sample[:, 0]]
+x2 = [x[0] for x in sample[:, 1]]
 idx = [0] * 4
 idx[0] = x1.index(min(x1))
 idx[1] = x1.index(max(x1))
@@ -26,7 +26,7 @@ idx[3] = x2.index(max(x2))
 
 labels = ot.Description(sample.getSize())
 for i in range(4):
-  labels[idx[i]] = str(idx[i])
+    labels[idx[i]] = str(idx[i])
 
 position = ot.Description(sample.getSize(), "top")
 position[idx[0]] = "right"

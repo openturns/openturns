@@ -47,7 +47,7 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
   // Nothing to do
 }
 
-OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & objective)
+OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective)
   : PersistentObject()
   , objective_(objective)
   , minimization_(true)
@@ -59,9 +59,9 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Numer
 /*
  * @brief General multi-objective equality, inequality and bound constraints
  */
-OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & objective,
-    const NumericalMathFunction & equalityConstraint,
-    const NumericalMathFunction & inequalityConstraint,
+OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective,
+    const Function & equalityConstraint,
+    const Function & inequalityConstraint,
     const Interval & bounds)
   : PersistentObject()
   , objective_(objective)
@@ -74,8 +74,8 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Numer
 }
 
 /* Constructor for nearest point problem */
-OptimizationProblemImplementation::OptimizationProblemImplementation(const NumericalMathFunction & levelFunction,
-    NumericalScalar levelValue)
+OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & levelFunction,
+    Scalar levelValue)
   : PersistentObject()
   , objective_()
   , equalityConstraint_()
@@ -95,19 +95,19 @@ OptimizationProblemImplementation * OptimizationProblemImplementation::clone() c
 }
 
 /* Objective accessor */
-NumericalMathFunction OptimizationProblemImplementation::getObjective() const
+Function OptimizationProblemImplementation::getObjective() const
 {
   return objective_;
 }
 
-void OptimizationProblemImplementation::setObjective(const NumericalMathFunction & objective)
+void OptimizationProblemImplementation::setObjective(const Function & objective)
 {
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
     // clear constraints, bounds
     LOGWARN(OSS() << "Clearing constraints and bounds");
-    equalityConstraint_ = NumericalMathFunction();
-    inequalityConstraint_ = NumericalMathFunction();
+    equalityConstraint_ = Function();
+    inequalityConstraint_ = Function();
     bounds_ = Interval(0);
   }
   clearLevelFunction();
@@ -123,12 +123,12 @@ Bool OptimizationProblemImplementation::hasMultipleObjective() const
 }
 
 /* Equality constraint accessor */
-NumericalMathFunction OptimizationProblemImplementation::getEqualityConstraint() const
+Function OptimizationProblemImplementation::getEqualityConstraint() const
 {
   return equalityConstraint_;
 }
 
-void OptimizationProblemImplementation::setEqualityConstraint(const NumericalMathFunction & equalityConstraint)
+void OptimizationProblemImplementation::setEqualityConstraint(const Function & equalityConstraint)
 {
   if ((equalityConstraint.getInputDimension() > 0) && (equalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
@@ -142,12 +142,12 @@ Bool OptimizationProblemImplementation::hasEqualityConstraint() const
 }
 
 /* Inequality constraint accessor */
-NumericalMathFunction OptimizationProblemImplementation::getInequalityConstraint() const
+Function OptimizationProblemImplementation::getInequalityConstraint() const
 {
   return inequalityConstraint_;
 }
 
-void OptimizationProblemImplementation::setInequalityConstraint(const NumericalMathFunction & inequalityConstraint)
+void OptimizationProblemImplementation::setInequalityConstraint(const Function & inequalityConstraint)
 {
   if ((inequalityConstraint.getInputDimension() > 0) && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
@@ -179,20 +179,20 @@ Bool OptimizationProblemImplementation::hasBounds() const
 }
 
 /* Level function accessor */
-NumericalMathFunction OptimizationProblemImplementation::getLevelFunction() const
+Function OptimizationProblemImplementation::getLevelFunction() const
 {
   return levelFunction_;
 }
 
-void OptimizationProblemImplementation::setLevelFunction(const NumericalMathFunction & levelFunction)
+void OptimizationProblemImplementation::setLevelFunction(const Function & levelFunction)
 {
   if (levelFunction.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: level function has an output dimension=" << levelFunction.getOutputDimension() << " but only dimension 1 is supported.";
 
   levelFunction_ = levelFunction;
   dimension_ = levelFunction_.getInputDimension();
   // Update objective function
-  const NumericalPoint center(dimension_);
-  const NumericalPoint constant(1);
+  const Point center(dimension_);
+  const Point constant(1);
   const Matrix linear(dimension_, 1);
   const IdentityMatrix identity(dimension_);
   const SymmetricTensor quadratic(dimension_, 1, *(identity.getImplementation().get()));
@@ -206,12 +206,12 @@ Bool OptimizationProblemImplementation::hasLevelFunction() const
 }
 
 /* Level value accessor */
-NumericalScalar OptimizationProblemImplementation::getLevelValue() const
+Scalar OptimizationProblemImplementation::getLevelValue() const
 {
   return levelValue_;
 }
 
-void OptimizationProblemImplementation::setLevelValue(NumericalScalar levelValue)
+void OptimizationProblemImplementation::setLevelValue(Scalar levelValue)
 {
   levelValue_ = levelValue;
   // Update constraints
@@ -220,18 +220,18 @@ void OptimizationProblemImplementation::setLevelValue(NumericalScalar levelValue
 
 void OptimizationProblemImplementation::setNearestPointConstraints()
 {
-  const NumericalPoint center(dimension_);
+  const Point center(dimension_);
   const Matrix linear(dimension_, 1);
-  LinearFunction constantFunction(center, NumericalPoint(1, levelValue_), linear.transpose());
-  NumericalMathFunction equalityConstraint(levelFunction_);
+  LinearFunction constantFunction(center, Point(1, levelValue_), linear.transpose());
+  Function equalityConstraint(levelFunction_);
   equalityConstraint_ = equalityConstraint.operator - (constantFunction);
-  inequalityConstraint_ = NumericalMathFunction();
+  inequalityConstraint_ = Function();
 }
 
 void OptimizationProblemImplementation::clearLevelFunction()
 {
   LOGWARN(OSS() << "Clearing level function");
-  levelFunction_ = NumericalMathFunction();
+  levelFunction_ = Function();
   levelValue_ = 0.0;
 }
 

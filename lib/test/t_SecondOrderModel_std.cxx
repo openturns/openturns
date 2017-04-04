@@ -39,9 +39,9 @@ int main(int argc, char *argv[])
     const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
-    NumericalPoint amplitude(dimension, 1.0);
+    Point amplitude(dimension, 1.0);
     /* Scale values */
-    NumericalPoint scale(spatialDimension, 1.0);
+    Point scale(spatialDimension, 1.0);
 
     /* Covariance model */
     ExponentialModel myCovarianceModel(scale, amplitude);
@@ -56,8 +56,8 @@ int main(int argc, char *argv[])
     fullprint << "myModel = " << myModel << std::endl;
 
     /* Some computations ==> call the sub models methods */
-    const NumericalScalar instant = 1.0;
-    const NumericalScalar frequency = 0.5;
+    const Scalar instant = 1.0;
+    const Scalar frequency = 0.5;
     fullprint << "covariance matrix at t = " << instant << " : " << myModel.computeCovariance(instant) << std::endl;
     fullprint << "covariance matrix at t = " << -instant << " : " << myModel.computeCovariance(-instant) << std::endl;
     fullprint << "spectral density at f = " << frequency << " : " << myModel.computeSpectralDensity(frequency) << std::endl;

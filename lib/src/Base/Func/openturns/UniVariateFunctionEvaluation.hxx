@@ -21,10 +21,10 @@
 #ifndef OPENTURNS_UNIVARIATEFUNCTIONEVALUATION_HXX
 #define OPENTURNS_UNIVARIATEFUNCTIONEVALUATION_HXX
 
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/UniVariateFunction.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 
 
@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API UniVariateFunctionEvaluation
-  : public NumericalMathEvaluationImplementation
+  : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -55,7 +55,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual NumericalPoint operator() (const NumericalPoint & inP) const;
+  virtual Point operator() (const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -74,8 +74,8 @@ public:
 protected:
 
   friend class Factory<UniVariateFunctionEvaluation>;
-  friend class ProductUniVariateFunctionGradientImplementation;
-  friend class ProductUniVariateFunctionHessianImplementation;
+  friend class ProductUniVariateFunctionGradient;
+  friend class ProductUniVariateFunctionHessian;
 
   /* Default constructor */
   UniVariateFunctionEvaluation();

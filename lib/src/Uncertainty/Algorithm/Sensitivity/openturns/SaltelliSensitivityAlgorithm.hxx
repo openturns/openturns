@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SALTELLISENSITIVITYALGORITHM_HXX
 #define OPENTURNS_SALTELLISENSITIVITYALGORITHM_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,19 +43,19 @@ public:
   SaltelliSensitivityAlgorithm();
 
   /** Constructor with parameters */
-  SaltelliSensitivityAlgorithm(const NumericalSample & inputDesign,
-                               const NumericalSample & outputDesign,
+  SaltelliSensitivityAlgorithm(const Sample & inputDesign,
+                               const Sample & outputDesign,
                                const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
   SaltelliSensitivityAlgorithm(const Distribution & distribution,
                                const UnsignedInteger size,
-                               const NumericalMathFunction & model,
+                               const Function & model,
                                const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   SaltelliSensitivityAlgorithm(const WeightedExperiment & experiment,
-                               const NumericalMathFunction & model,
+                               const Function & model,
                                const Bool computeSecondOrder = true);
   /** Virtual constructor */
   virtual SaltelliSensitivityAlgorithm * clone() const;
@@ -72,8 +72,8 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  NumericalSample computeIndices(const NumericalSample & sample,
-                                 NumericalSample & VTi) const;
+  Sample computeIndices(const Sample & sample,
+                        Sample & VTi) const;
 
 }; /* class SaltelliSensitivityAlgorithm */
 

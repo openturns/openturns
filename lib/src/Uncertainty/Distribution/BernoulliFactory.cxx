@@ -46,12 +46,12 @@ BernoulliFactory * BernoulliFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-BernoulliFactory::Implementation BernoulliFactory::build(const NumericalSample & sample) const
+BernoulliFactory::Implementation BernoulliFactory::build(const Sample & sample) const
 {
   return buildAsBernoulli(sample).clone();
 }
 
-BernoulliFactory::Implementation BernoulliFactory::build(const NumericalPoint & parameters) const
+BernoulliFactory::Implementation BernoulliFactory::build(const Point & parameters) const
 {
   return buildAsBernoulli(parameters).clone();
 }
@@ -61,16 +61,16 @@ BernoulliFactory::Implementation BernoulliFactory::build() const
   return buildAsBernoulli().clone();
 }
 
-Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalSample & sample) const
+Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Bernoulli distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar sum = 0.0;
-  const NumericalScalar supportEpsilon = ResourceMap::GetAsNumericalScalar("DiscreteDistribution-SupportEpsilon");
+  Scalar sum = 0.0;
+  const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalScalar x = sample[i][0];
+    const Scalar x = sample[i][0];
     const int iX(static_cast<int>(round(x)));
     if ((std::abs(x - iX) > supportEpsilon) || ((iX != 0) && (iX != 1))) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample made of 0 and 1.";
     sum += x;
@@ -80,7 +80,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalSample & sample) con
   return result;
 }
 
-Bernoulli BernoulliFactory::buildAsBernoulli(const NumericalPoint & parameters) const
+Bernoulli BernoulliFactory::buildAsBernoulli(const Point & parameters) const
 {
   try
   {
@@ -99,7 +99,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli() const
   return Bernoulli();
 }
 
-DistributionFactoryResult BernoulliFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult BernoulliFactory::buildEstimator(const Sample & sample) const
 {
   Bernoulli distribution(buildAsBernoulli(sample));
   const UnsignedInteger size = sample.getSize();

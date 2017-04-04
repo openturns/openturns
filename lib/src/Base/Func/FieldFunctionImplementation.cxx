@@ -114,16 +114,16 @@ Mesh FieldFunctionImplementation::getOutputMesh(const Mesh & inputMesh) const
 
 
 /* Operator () */
-NumericalPoint FieldFunctionImplementation::operator() (const NumericalScalar timeStamp,
-    const NumericalPoint & inP) const
+Point FieldFunctionImplementation::operator() (const Scalar timeStamp,
+    const Point & inP) const
 {
-  return (*this)(NumericalPoint(1, timeStamp), inP);
+  return (*this)(Point(1, timeStamp), inP);
 }
 
-NumericalPoint FieldFunctionImplementation::operator() (const NumericalPoint & location,
-    const NumericalPoint & inP) const
+Point FieldFunctionImplementation::operator() (const Point & location,
+    const Point & inP) const
 {
-  return (*this)(Field(Mesh(NumericalSample(1, location), Collection<Indices>(0)), NumericalSample(1, inP))).getValues()[0];
+  return (*this)(Field(Mesh(Sample(1, location), Collection<Indices>(0)), Sample(1, inP))).getValues()[0];
 }
 
 Field FieldFunctionImplementation::operator() (const Field & inFld) const

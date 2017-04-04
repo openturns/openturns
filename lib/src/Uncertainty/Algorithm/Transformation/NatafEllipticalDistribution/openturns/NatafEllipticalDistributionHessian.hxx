@@ -22,7 +22,7 @@
 #define OPENTURNS_NATAFELLIPTICALDISTRIBUTIONHESSIAN_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/ConstantHessian.hxx"
 #include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf gradient for elliptical distributions
  */
 class OT_API NatafEllipticalDistributionHessian
-  : public ConstantNumericalMathHessianImplementation
+  : public ConstantHessian
 {
   CLASSNAME;
 public:

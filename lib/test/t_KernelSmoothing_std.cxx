@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
   try
   {
     UnsignedInteger dim = 2;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dim);
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     // Instanciate one distribution object
     Normal distribution(meanPoint, sigma, R);
     UnsignedInteger discretization = 300;
-    NumericalSample sample(distribution.getSample(discretization));
+    Sample sample(distribution.getSample(discretization));
     Collection<Distribution> kernels;
     kernels.add(Normal());
     kernels.add(Epanechnikov());
@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
       fullprint << "mean(smoothed)=[" << smoothed.getMean()[0] << ", " << smoothed.getMean()[1] << "] mean(exact)=[" << distribution.getMean()[0] << ", " << distribution.getMean()[1] << "]" << std::endl;
       fullprint << "covariance(smoothed)=" << smoothed.getCovariance() << " covariance(exact)=" << distribution.getCovariance() << std::endl;
       // Define a point
-      NumericalPoint point( smoothed.getDimension(), 0.0 );
+      Point point( smoothed.getDimension(), 0.0 );
 
       // Show PDF and CDF of point point
-      NumericalScalar pointPDF = smoothed.computePDF( point );
-      NumericalScalar pointCDF = smoothed.computeCDF( point );
+      Scalar pointPDF = smoothed.computePDF( point );
+      Scalar pointCDF = smoothed.computeCDF( point );
       fullprint << "Point= " << point << std::endl;
       fullprint << " pdf(smoothed)= " << pointPDF << " pdf(exact)=" << distribution.computePDF( point ) << std::endl;
       fullprint << " cdf(smoothed)= " << pointCDF << " cdf(exact)=" << distribution.computeCDF( point ) << std::endl;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     Collection<Distribution> distributionCollection(2);
     distributionCollection[0] = Normal(0.0, 1.0);
     distributionCollection[1] = Beta(0.7, 1.6, -1.0, 2.0);
-    Collection<NumericalSample> sampleCollection(2);
+    Collection<Sample> sampleCollection(2);
     sampleCollection[0] = distributionCollection[0].getSample(discretization);
     sampleCollection[1] = distributionCollection[1].getSample(discretization);
     for (UnsignedInteger i = 0; i < kernels.getSize(); ++i)
@@ -89,9 +89,9 @@ int main(int argc, char *argv[])
       KernelSmoothing smoother(kernel);
       for (UnsignedInteger j = 0; j < 2; ++j)
       {
-        NumericalScalar hSilverman = smoother.computeSilvermanBandwidth(sampleCollection[j])[0];
-        NumericalScalar hPlugin = smoother.computePluginBandwidth(sampleCollection[j])[0];
-        NumericalScalar hMixed = smoother.computeMixedBandwidth(sampleCollection[j])[0];
+        Scalar hSilverman = smoother.computeSilvermanBandwidth(sampleCollection[j])[0];
+        Scalar hPlugin = smoother.computePluginBandwidth(sampleCollection[j])[0];
+        Scalar hMixed = smoother.computeMixedBandwidth(sampleCollection[j])[0];
         fullprint << "Silverman's bandwidth=" << hSilverman << " plugin bandwidth=" << hPlugin << " mixed bandwidth=" << hMixed << std::endl;
         for (UnsignedInteger k = 0; k < 2; ++k)
         {
@@ -99,11 +99,11 @@ int main(int argc, char *argv[])
           Distribution smoothed(smoother.build(sampleCollection[j]));
           fullprint << "Bounded underlying distribution? " << (j == 0 ? "False" : "True") << " bounded reconstruction? " << (k == 0 ? "False" : "True") << std::endl;
           // Define a point
-          NumericalPoint point( smoothed.getDimension(), -0.9 );
+          Point point( smoothed.getDimension(), -0.9 );
 
           // Show PDF and CDF of point point
-          NumericalScalar pointPDF = smoothed.computePDF( point );
-          NumericalScalar pointCDF = smoothed.computeCDF( point );
+          Scalar pointPDF = smoothed.computePDF( point );
+          Scalar pointCDF = smoothed.computeCDF( point );
           fullprint << " pdf(smoothed)= " << pointPDF << " pdf(exact)=" << distributionCollection[j].computePDF( point ) << std::endl;
           fullprint << " cdf(smoothed)= " << pointCDF << " cdf(exact)=" << distributionCollection[j].computeCDF( point ) << std::endl;
         }
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
       Distribution ks1(KernelSmoothing(Normal(), true, 64).build(sample));
       Distribution ks2(KernelSmoothing(Normal(), true, 1024).build(sample));
       Distribution ks3(KernelSmoothing(Normal(), false).build(sample));
-      NumericalPoint point(1, 0.3);
+      Point point(1, 0.3);
       fullprint << "with low  bin count, pdf=" << ks1.computePDF(point) << std::endl;
       fullprint << "with high bin count, pdf=" << ks2.computePDF(point) << std::endl;
       fullprint << "without   binning,   pdf=" << ks3.computePDF(point) << std::endl;

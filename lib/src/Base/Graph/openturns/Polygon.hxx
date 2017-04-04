@@ -22,7 +22,7 @@
 #define OPENTURNS_POLYGON_HXX
 
 #include "openturns/DrawableImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,21 +47,21 @@ public:
   explicit Polygon(const String & legend = "");
 
   /** Default constructor */
-  explicit Polygon(const NumericalSample & data,
+  explicit Polygon(const Sample & data,
                    const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Polygon(const NumericalSample & dataX,
-          const NumericalSample & dataY,
+  Polygon(const Sample & dataX,
+          const Sample & dataY,
           const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Polygon(const NumericalPoint & dataX,
-          const NumericalPoint & dataY,
+  Polygon(const Point & dataX,
+          const Point & dataY,
           const String & legend = "");
 
   /** Constructor with parameters */
-  Polygon(const NumericalSample & data,
+  Polygon(const Sample & data,
           const String & color,
           const String & edgeColor,
           const String & legend = "");
@@ -90,7 +90,7 @@ public:
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 

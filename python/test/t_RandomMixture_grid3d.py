@@ -27,7 +27,7 @@ try:
     sigma = distribution.getStandardDeviation()
     xMin = mean - 2.9 * sigma
     xMax = mean + 2.9 * sigma
-    grid = NumericalSample()
+    grid = Sample()
     result, grid = distribution.computePDF(xMin, xMax, points)
     print("x;y;z;PDF")
     for i in range(grid.getSize()):

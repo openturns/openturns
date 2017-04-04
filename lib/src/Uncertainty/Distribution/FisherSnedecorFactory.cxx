@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/FisherSnedecorFactory.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TNC.hxx"
@@ -46,12 +46,12 @@ FisherSnedecorFactory * FisherSnedecorFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const NumericalSample & sample) const
+FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const Sample & sample) const
 {
   return buildAsFisherSnedecor(sample).clone();
 }
 
-FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const NumericalPoint & parameters) const
+FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const Point & parameters) const
 {
   return buildAsFisherSnedecor(parameters).clone();
 }
@@ -61,32 +61,32 @@ FisherSnedecorFactory::Implementation FisherSnedecorFactory::build() const
   return buildAsFisherSnedecor().clone();
 }
 
-DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const Sample & sample) const
 {
   return buildMaximumLikelihoodEstimator(sample, true);
 }
 
-FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalSample & sample) const
+FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sample) const
 {
   const UnsignedInteger dimension = build()->getParameterDimension();
   MaximumLikelihoodFactory factory(buildAsFisherSnedecor());
 
   // override starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
-  solver.setStartingPoint(NumericalPoint(dimension, 0.0));
+  solver.setStartingPoint(Point(dimension, 0.0));
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
-  NumericalPoint parametersLowerBound;
-  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D1LowerBound"));
-  parametersLowerBound.add(ResourceMap::GetAsNumericalScalar("FisherSnedecorFactory-D2LowerBound"));
-  Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
+  Point parametersLowerBound;
+  parametersLowerBound.add(ResourceMap::GetAsScalar("FisherSnedecorFactory-D1LowerBound"));
+  parametersLowerBound.add(ResourceMap::GetAsScalar("FisherSnedecorFactory-D2LowerBound"));
+  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 
   return buildAsFisherSnedecor(factory.buildParameter(sample));
 }
 
-FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const NumericalPoint & parameters) const
+FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Point & parameters) const
 {
   try
   {

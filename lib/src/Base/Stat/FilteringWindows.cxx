@@ -55,7 +55,7 @@ FilteringWindows::FilteringWindows(FilteringWindowsImplementation * p_implementa
 }
 
 /* functor - evaluation of filter using () */
-NumericalScalar FilteringWindows::operator()(const NumericalScalar t) const
+Scalar FilteringWindows::operator()(const Scalar t) const
 {
   return getImplementation()->operator()(t);
 }

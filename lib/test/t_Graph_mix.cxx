@@ -35,10 +35,10 @@ int main(int argc, char *argv[])
 
     // Instanciate one distribution object
     UnsignedInteger dim = 2;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 12.0;
     meanPoint[1] = 5.0;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 3.0;
     sigma[1] = 1.0;
     CorrelationMatrix R = IdentityMatrix(dim);
@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 200;
-    NumericalSample sample(distribution.getSample( size ));
-    NumericalSample tmp(2, NumericalPoint(2));
+    Sample sample(distribution.getSample( size ));
+    Sample tmp(2, Point(2));
     tmp[0][0] = sample.getMin()[0];
     tmp[0][1] = meanPoint[1] - sigma[1] / sigma[0] * (meanPoint[0] - tmp[0][0]);
     tmp[1][0] = sample.getMax()[0];
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     // Create the line
     Curve myLine(tmp, "red", "solid", 2, "Line");
 
-    NumericalPoint data(0);
+    Point data(0);
     Description palette;
     Description labels;
 
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
     labels.add("cumul candidats < 3.5% ");
     palette.add("purple");
 
-    NumericalPoint centre(2);
+    Point centre(2);
     centre[0] = 7.0;
     centre[1] = 10.0;
     // Create the piechart

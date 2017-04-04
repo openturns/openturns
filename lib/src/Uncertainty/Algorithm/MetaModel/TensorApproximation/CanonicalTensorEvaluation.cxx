@@ -30,19 +30,19 @@ static const Factory<CanonicalTensorEvaluation> Factory_CanonicalTensorEvaluatio
 
 
 CanonicalTensorEvaluation::CanonicalTensorEvaluation()
-: NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
 
 
 CanonicalTensorEvaluation::CanonicalTensorEvaluation(const FunctionFamilyCollection & functionFamilies,
-                                                     const Indices & nk,
-                                                     const UnsignedInteger rank)
-: NumericalMathEvaluationImplementation()
-, degrees_(nk)
-, coefficients_(nk.getSize())
-, basis_(nk.getSize())
+    const Indices & nk,
+    const UnsignedInteger rank)
+  : EvaluationImplementation()
+  , degrees_(nk)
+  , coefficients_(nk.getSize())
+  , basis_(nk.getSize())
 {
   const UnsignedInteger dimension = functionFamilies.getSize();
   if (dimension != nk.getSize())
@@ -52,11 +52,11 @@ CanonicalTensorEvaluation::CanonicalTensorEvaluation(const FunctionFamilyCollect
 
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    coefficients_[j] = NumericalSample(rank, nk[j]);
+    coefficients_[j] = Sample(rank, nk[j]);
     basis_[j] = Basis(nk[j]);
     for (UnsignedInteger k = 0; k < nk[j]; ++ k)
     {
-      basis_[j][k] = NumericalMathFunction(UniVariateFunctionEvaluation(functionFamilies[j].build(k)));
+      basis_[j][k] = Function(UniVariateFunctionEvaluation(functionFamilies[j].build(k)));
     }
   }
 }
@@ -75,13 +75,13 @@ Indices CanonicalTensorEvaluation::getDegrees() const
 
 
 /* Coefficients accessor along i-th component */
-void CanonicalTensorEvaluation::setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const NumericalPoint & coefficients)
+void CanonicalTensorEvaluation::setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const Point & coefficients)
 {
   coefficients_[j][i] = coefficients;
 }
 
 
-NumericalPoint CanonicalTensorEvaluation::getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const
+Point CanonicalTensorEvaluation::getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const
 {
   return coefficients_[j][i];
 }
@@ -107,12 +107,12 @@ void CanonicalTensorEvaluation::setRank(const UnsignedInteger rank)
     if (rank > oldRank)
     {
       // add coefficients
-      coefficients_[j].add(NumericalSample(rank - oldRank, degrees_[j]));
+      coefficients_[j].add(Sample(rank - oldRank, degrees_[j]));
     }
     else if (rank < oldRank)
     {
       // remove coefficients
-      coefficients_[j] = NumericalSample(coefficients_[j], 0, rank);
+      coefficients_[j] = Sample(coefficients_[j], 0, rank);
     }
   }
 }
@@ -139,9 +139,9 @@ CanonicalTensorEvaluation CanonicalTensorEvaluation::getMarginalRank(const Unsig
 String CanonicalTensorEvaluation::__repr__() const
 {
   return OSS() << "class=" << getClassName()
-               << " degrees=" << degrees_
-               << " coefficients=" << coefficients_
-               << " basis=" << basis_;
+         << " degrees=" << degrees_
+         << " coefficients=" << coefficients_
+         << " basis=" << basis_;
 }
 
 String CanonicalTensorEvaluation::__str__(const String & offset) const
@@ -150,22 +150,22 @@ String CanonicalTensorEvaluation::__str__(const String & offset) const
 }
 
 /* Evaluation operator */
-NumericalPoint CanonicalTensorEvaluation::operator() (const NumericalPoint & inP) const
+Point CanonicalTensorEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << ", got dimension=" << inP.getDimension();
 
   const UnsignedInteger m = getRank();
-  NumericalPoint prodI(m, 1.0);
+  Point prodI(m, 1.0);
 
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
-    const NumericalPoint xj(1, inP[j]);
+    const Point xj(1, inP[j]);
     const Basis basisI(getBasis(j));
     const UnsignedInteger basisSize = degrees_[j];
 
     // compute phi_(j,k)(xj)
-    NumericalPoint phiX(basisSize);
+    Point phiX(basisSize);
     for (UnsignedInteger k = 0; k < basisSize; ++ k)
     {
       phiX[k] = basisI[k](xj)[0];
@@ -173,8 +173,8 @@ NumericalPoint CanonicalTensorEvaluation::operator() (const NumericalPoint & inP
 
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      const NumericalPoint coeffI(getCoefficients(i, j));
-      NumericalScalar sumI = 0.0;
+      const Point coeffI(getCoefficients(i, j));
+      Scalar sumI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)
       {
         if (coeffI[k] != 0.0)
@@ -186,13 +186,13 @@ NumericalPoint CanonicalTensorEvaluation::operator() (const NumericalPoint & inP
     }
   }
 
-  NumericalScalar sumR = 0.0;
+  Scalar sumR = 0.0;
   for (UnsignedInteger i = 0; i < m; ++ i)
   {
     sumR += prodI[i];
   }
 
-  const NumericalPoint outP(1, sumR);
+  const Point outP(1, sumR);
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
@@ -216,7 +216,7 @@ UnsignedInteger CanonicalTensorEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void CanonicalTensorEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("degrees_", degrees_);
   adv.saveAttribute("coefficients_", coefficients_);
   adv.saveAttribute("basis_", basis_);
@@ -225,7 +225,7 @@ void CanonicalTensorEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void CanonicalTensorEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("degrees_", degrees_);
   adv.loadAttribute("coefficients_", coefficients_);
   adv.loadAttribute("basis_", basis_);

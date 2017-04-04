@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
     const UnsignedInteger p = 6;
     const UnsignedInteger q = 4;
 
-    NumericalSample valuesX(p, dim);
-    NumericalSample valuesEpsilon(q, dim);
+    Sample valuesX(p, dim);
+    Sample valuesEpsilon(q, dim);
 
     /**/
     for(UnsignedInteger j = 0 ; j < dim ; ++j)

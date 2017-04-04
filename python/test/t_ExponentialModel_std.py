@@ -13,10 +13,10 @@ try:
     spatialDimension = 1
 
     # Amplitude values
-    amplitude = NumericalPoint(defaultDimension, 2.0)
+    amplitude = Point(defaultDimension, 2.0)
 
     # Scale values
-    scale = NumericalPoint(spatialDimension, 1.0)
+    scale = Point(spatialDimension, 1.0)
 
     # Default constructor
     myDefautModel = ExponentialModel()

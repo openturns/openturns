@@ -23,7 +23,7 @@
 #define OPENTURNS_GAUSSKRONRODRULE_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -63,19 +63,19 @@ public:
   UnsignedInteger getOrder() const;
 
   /** Zero Gauss weight accessor */
-  NumericalScalar getZeroGaussWeight() const;
+  Scalar getZeroGaussWeight() const;
 
   /** Other Gauss weight accessor */
-  NumericalPoint getOtherGaussWeights() const;
+  Point getOtherGaussWeights() const;
 
   /** Other Kronrod nodes accessor */
-  NumericalPoint getOtherKronrodNodes() const;
+  Point getOtherKronrodNodes() const;
 
   /** Zero Kronrod weight accessor */
-  NumericalScalar getZeroKronrodWeight() const;
+  Scalar getZeroKronrodWeight() const;
 
   /** Other Kronrod weight accessor */
-  NumericalPoint getOtherKronrodWeights() const;
+  Point getOtherKronrodWeights() const;
 
 private:
 
@@ -88,19 +88,19 @@ private:
   UnsignedInteger order_;
 
   /** Gauss weight of node 0.0 */
-  NumericalScalar zeroGaussWeight_;
+  Scalar zeroGaussWeight_;
 
   /** Gauss weights of the nonzero nodes */
-  NumericalPoint otherGaussWeights_;
+  Point otherGaussWeights_;
 
   /** Kronrod nodes */
-  NumericalPoint otherKronrodNodes_;
+  Point otherKronrodNodes_;
 
   /** Kronrod weight of node 0.0 */
-  NumericalScalar zeroKronrodWeight_;
+  Scalar zeroKronrodWeight_;
 
   /** Kronrod weights of the nonzero nodes */
-  NumericalPoint otherKronrodWeights_;
+  Point otherKronrodWeights_;
 
 } ; /* class GaussKronrodRule */
 

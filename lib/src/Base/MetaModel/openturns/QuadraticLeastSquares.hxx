@@ -23,9 +23,9 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,12 +44,12 @@ public:
 
 
   /** Constructor with parameters */
-  QuadraticLeastSquares(const NumericalSample & dataIn,
-                        const NumericalMathFunction & inputFunction);
+  QuadraticLeastSquares(const Sample & dataIn,
+                        const Function & inputFunction);
 
   /** Constructor with parameters */
-  QuadraticLeastSquares(const NumericalSample & dataIn,
-                        const NumericalSample & dataOut);
+  QuadraticLeastSquares(const Sample & dataIn,
+                        const Sample & dataOut);
 
 
   /** Virtual constructor */
@@ -62,7 +62,7 @@ public:
   void run();
 
   /** Constant accessor */
-  NumericalPoint getConstant() const;
+  Point getConstant() const;
 
   /** Linear accessor */
   Matrix getLinear() const;
@@ -71,26 +71,26 @@ public:
   SymmetricTensor getQuadratic() const;
 
   /** Input function accessor */
-  NumericalMathFunction getInputFunction() const;
+  Function getInputFunction() const;
 
   /** Response surface accessor */
-  NumericalMathFunction getResponseSurface() const;
+  Function getResponseSurface() const;
 
   /** DataIn accessor */
-  NumericalSample getDataIn() const;
+  Sample getDataIn() const;
 
   /** DataOut accessor */
-  void setDataOut(const NumericalSample & dataOut);
-  NumericalSample getDataOut();
+  void setDataOut(const Sample & dataOut);
+  Sample getDataOut();
 
 protected:
 
 private:
-  NumericalSample dataIn_;
-  NumericalSample dataOut_;
-  NumericalMathFunction inputFunction_;
-  NumericalMathFunction responseSurface_;
-  NumericalPoint constant_;
+  Sample dataIn_;
+  Sample dataOut_;
+  Function inputFunction_;
+  Function responseSurface_;
+  Point constant_;
   Matrix linear_;
   SymmetricTensor quadratic_;
 

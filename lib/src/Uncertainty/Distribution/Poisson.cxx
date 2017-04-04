@@ -43,7 +43,7 @@ Poisson::Poisson()
 }
 
 /* Parameters constructor */
-Poisson::Poisson(const NumericalScalar lambda)
+Poisson::Poisson(const Scalar lambda)
   : DiscreteDistribution()
   , lambda_(0.0)
 {
@@ -92,89 +92,89 @@ Poisson * Poisson::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Poisson::getRealization() const
+Point Poisson::getRealization() const
 {
-  return NumericalPoint(1, DistFunc::rPoisson(lambda_));
+  return Point(1, DistFunc::rPoisson(lambda_));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Poisson::computePDF(const NumericalPoint & point) const
+Scalar Poisson::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
   return std::exp(k * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0));
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Poisson::computeCDF(const NumericalPoint & point) const
+Scalar Poisson::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return 0.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_, true);
 }
 
-NumericalScalar Poisson::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar Poisson::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < -supportEpsilon_) return 1.0;
   return DistFunc::pGamma(floor(k) + 1.0, lambda_);
 }
 
 /* Get the PDF gradient of the distribution */
-NumericalPoint Poisson::computePDFGradient(const NumericalPoint & point) const
+Point Poisson::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
-  NumericalPoint pdfGradient(1, 0.0);
+  const Scalar k = point[0];
+  Point pdfGradient(1, 0.0);
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return pdfGradient;
-  return NumericalPoint(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
+  return Point(1, (k - lambda_) * std::exp((k - 1.0) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0)));
 }
 
 
 /* Get the CDF gradient of the distribution */
-NumericalPoint Poisson::computeCDFGradient(const NumericalPoint & point) const
+Point Poisson::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
-  if (k < -supportEpsilon_) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
+  const Scalar k = point[0];
+  if (k < -supportEpsilon_) return Point(1, 0.0);
+  return Point(1, -std::exp(floor(k) * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(floor(k) + 1.0)));
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Poisson::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Scalar Poisson::computeScalarQuantile(const Scalar prob,
+                                      const Bool tail) const
 {
   return DistFunc::qPoisson(lambda_, prob, tail);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Poisson::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Poisson::computeCharacteristicFunction(const Scalar x) const
 {
   return std::exp(computeLogCharacteristicFunction(x));
 }
 
-NumericalComplex Poisson::computeLogCharacteristicFunction(const NumericalScalar x) const
+Complex Poisson::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return lambda_ * (std::exp(NumericalComplex(0.0, x)) - 1.0);
+  return lambda_ * (std::exp(Complex(0.0, x)) - 1.0);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Poisson::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Poisson::computeGeneratingFunction(const Complex & z) const
 {
   return std::exp(computeLogGeneratingFunction(z));
 }
 
-NumericalComplex Poisson::computeLogGeneratingFunction(const NumericalComplex & z) const
+Complex Poisson::computeLogGeneratingFunction(const Complex & z) const
 {
   return lambda_ * (z - 1.0);
 }
@@ -182,26 +182,26 @@ NumericalComplex Poisson::computeLogGeneratingFunction(const NumericalComplex & 
 /* Compute the mean of the distribution */
 void Poisson::computeMean() const
 {
-  mean_ = NumericalPoint(1, lambda_);
+  mean_ = Point(1, lambda_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Poisson::getStandardDeviation() const
+Point Poisson::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(lambda_));
+  return Point(1, std::sqrt(lambda_));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Poisson::getSkewness() const
+Point Poisson::getSkewness() const
 {
-  return NumericalPoint(1, 1.0 / std::sqrt(lambda_));
+  return Point(1, 1.0 / std::sqrt(lambda_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Poisson::getKurtosis() const
+Point Poisson::getKurtosis() const
 {
-  return NumericalPoint(1, 3.0 + 1.0 / lambda_);
+  return Point(1, 3.0 + 1.0 / lambda_);
 }
 
 /* Compute the covariance of the distribution */
@@ -213,27 +213,27 @@ void Poisson::computeCovariance() const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Poisson::getSupport(const Interval & interval) const
+Sample Poisson::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
   const UnsignedInteger kMax = static_cast< UnsignedInteger > (floor(interval.getUpperBound()[0]));
-  NumericalSample result(0, 1);
+  Sample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k)
-    result.add(NumericalPoint(1, k));
+    result.add(Point(1, k));
   return result;
 }
 
 /* Parameters value accessor */
-NumericalPoint Poisson::getParameter() const
+Point Poisson::getParameter() const
 {
-  return NumericalPoint(1, lambda_);
+  return Point(1, lambda_);
 }
 
-void Poisson::setParameter(const NumericalPoint & parameter)
+void Poisson::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Poisson(parameter[0]);
   setWeight(w);
 }
@@ -245,9 +245,9 @@ Description Poisson::getParameterDescription() const
 }
 
 /* Lambda accessor */
-void Poisson::setLambda(const NumericalScalar lambda)
+void Poisson::setLambda(const Scalar lambda)
 {
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Lambda must be positive, here lambda=" << lambda;
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Lambda must be positive, here lambda=" << lambda;
   if (lambda != lambda_)
   {
     lambda_ = lambda;
@@ -258,7 +258,7 @@ void Poisson::setLambda(const NumericalScalar lambda)
 }
 
 /* Lambda accessor */
-NumericalScalar Poisson::getLambda() const
+Scalar Poisson::getLambda() const
 {
   return lambda_;
 }

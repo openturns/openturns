@@ -35,13 +35,13 @@ namespace KFactorFunctions
 
 #define KFactorFunctions_RMAX 8.5
 
-class KernelFunction: public NumericalMathEvaluationImplementation
+class KernelFunction: public EvaluationImplementation
 {
 public:
-  KernelFunction(const NumericalScalar nu,
-                 const NumericalScalar p,
-                 const NumericalScalar n)
-    : NumericalMathEvaluationImplementation()
+  KernelFunction(const Scalar nu,
+                 const Scalar p,
+                 const Scalar n)
+    : EvaluationImplementation()
     , nu_(nu)
     , p_(p)
     , x_(1.0)
@@ -57,13 +57,13 @@ public:
     return new KernelFunction(*this);
   }
 
-  NumericalPoint operator() (const NumericalPoint & point) const
+  Point operator() (const Point & point) const
   {
-    const NumericalScalar z = point[0];
-    return NumericalPoint(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * normal_.computePDF(z));
+    const Scalar z = point[0];
+    return Point(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * normal_.computePDF(z));
   }
 
-  void setX(const NumericalScalar x)
+  void setX(const Scalar x)
   {
     x_ = x;
   }
@@ -82,12 +82,12 @@ public:
   {
     OSS oss(true);
     oss << "class=KernelFunction"
-	<< " nu=" << nu_
-	<< " p=" << p_
-	<< " x=" << x_
-	<< " n=" << n_
-	<< " chiSquare=" << chiSquare_
-	<< " normal=" << normal_;
+        << " nu=" << nu_
+        << " p=" << p_
+        << " x=" << x_
+        << " n=" << n_
+        << " chiSquare=" << chiSquare_
+        << " normal=" << normal_;
     return oss;
   }
 
@@ -95,32 +95,32 @@ public:
   {
     OSS oss(false);
     oss << "KernelFunction("
-	<< "nu=" << nu_
-	<< ", p=" << p_
-	<< ", x=" << n_
-	<< ", n=" << n_
-	<< ", chiSquare=" << chiSquare_
-	<< ", normal=" << normal_
-	<< ")";
+        << "nu=" << nu_
+        << ", p=" << p_
+        << ", x=" << n_
+        << ", n=" << n_
+        << ", chiSquare=" << chiSquare_
+        << ", normal=" << normal_
+        << ")";
     return oss;
   }
 
 private:
-  NumericalScalar nu_;
-  NumericalScalar p_;
-  NumericalScalar x_;
-  NumericalScalar n_;
+  Scalar nu_;
+  Scalar p_;
+  Scalar x_;
+  Scalar n_;
   ChiSquare chiSquare_;
   Normal normal_;
 }; // KernelFunction
 
-class ConstraintFunction: public NumericalMathEvaluationImplementation
+class ConstraintFunction: public EvaluationImplementation
 {
 public:
-  ConstraintFunction(const NumericalScalar nu,
-                     const NumericalScalar p,
-                     const NumericalScalar n)
-    : NumericalMathEvaluationImplementation()
+  ConstraintFunction(const Scalar nu,
+                     const Scalar p,
+                     const Scalar n)
+    : EvaluationImplementation()
     , nu_(nu)
     , p_(p)
     , n_(n)
@@ -134,11 +134,11 @@ public:
     return new ConstraintFunction(*this);
   }
 
-  NumericalPoint operator() (const NumericalPoint & point) const
+  Point operator() (const Point & point) const
   {
-    const NumericalScalar x = point[0];
+    const Scalar x = point[0];
     kernel_.setX(x);
-    return GaussKronrod(ResourceMap::GetAsUnsignedInteger("KFactor-DefaultIntegrationNodesNumber"), ResourceMap::GetAsNumericalScalar("KFactor-Precision"), GaussKronrodRule(GaussKronrodRule::G7K15)).integrate(kernel_, Interval(0.0, KFactorFunctions_RMAX / std::sqrt(n_)));
+    return GaussKronrod(ResourceMap::GetAsUnsignedInteger("KFactor-DefaultIntegrationNodesNumber"), ResourceMap::GetAsScalar("KFactor-Precision"), GaussKronrodRule(GaussKronrodRule::G7K15)).integrate(kernel_, Interval(0.0, KFactorFunctions_RMAX / std::sqrt(n_)));
   }
 
   UnsignedInteger getInputDimension() const
@@ -155,10 +155,10 @@ public:
   {
     OSS oss(true);
     oss << "class=ConstraintFunction"
-	<< " nu=" << nu_
-	<< " p=" << p_
-	<< " n=" << n_
-	<< " kernel=" << kernel_;
+        << " nu=" << nu_
+        << " p=" << p_
+        << " n=" << n_
+        << " kernel=" << kernel_;
     return oss;
   }
 
@@ -166,33 +166,33 @@ public:
   {
     OSS oss(false);
     oss << "ConstraintFunction("
-	<< "nu=" << nu_
-	<< ", p=" << p_
-	<< ", n=" << n_
-	<< ", kernel=" << kernel_
-	<< ")";
+        << "nu=" << nu_
+        << ", p=" << p_
+        << ", n=" << n_
+        << ", kernel=" << kernel_
+        << ")";
     return oss;
   }
 
 private:
-  NumericalScalar nu_;
-  NumericalScalar p_;
-  NumericalScalar n_;
+  Scalar nu_;
+  Scalar p_;
+  Scalar n_;
   mutable KernelFunction kernel_;
 }; // ConstraintFunction
 
-NumericalScalar KFactor(const NumericalScalar n,
-                        const NumericalScalar nu,
-                        const NumericalScalar p,
-                        const NumericalScalar alpha)
+Scalar KFactor(const Scalar n,
+               const Scalar nu,
+               const Scalar p,
+               const Scalar alpha)
 {
   if (!(n >= 1.0)) throw InvalidArgumentException(HERE) << "Error: n must be greater than 1, here n=" << n;
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: p must be in [0, 1], here p=" << p;
   if (!((alpha >= 0.0) && (alpha <= 1.0))) throw InvalidArgumentException(HERE) << "Error: alpha must be in [0, 1], here alpha=" << alpha;
   const ConstraintFunction constraint(nu, p, n);
-  const Brent solver(ResourceMap::GetAsNumericalScalar("KFactor-Precision"), ResourceMap::GetAsNumericalScalar("KFactor-Precision"), ResourceMap::GetAsNumericalScalar("KFactor-Precision"), ResourceMap::GetAsUnsignedInteger("KFactor-MaximumIteration"));
-  return solver.solve(constraint, 0.5 * (1.0 - alpha), SpecFunc::NumericalScalarEpsilon, KFactorFunctions_RMAX);
+  const Brent solver(ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsUnsignedInteger("KFactor-MaximumIteration"));
+  return solver.solve(constraint, 0.5 * (1.0 - alpha), SpecFunc::ScalarEpsilon, KFactorFunctions_RMAX);
 }
 
 } // KFactorFunctions

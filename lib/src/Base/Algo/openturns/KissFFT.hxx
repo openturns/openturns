@@ -48,18 +48,18 @@ public:
   KissFFT * clone() const;
 
   /** FFT transformation on complex */
-  NumericalComplexCollection transform(const NumericalComplexCollection & collection) const;
+  ComplexCollection transform(const ComplexCollection & collection) const;
 
   /** FFT transformation  with application on a block-part of the collection */
-  NumericalComplexCollection transform(const NumericalComplexCollection & collection,
+  ComplexCollection transform(const ComplexCollection & collection,
                                        const UnsignedInteger first,
                                        const UnsignedInteger size) const;
 
   /** FFT inverse transformation */
-  NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection) const;
+  ComplexCollection inverseTransform(const ComplexCollection & collection) const;
 
   /** FFT inverse transformation with application on a block-part of the collection */
-  NumericalComplexCollection inverseTransform(const NumericalComplexCollection & collection,
+  ComplexCollection inverseTransform(const ComplexCollection & collection,
       const UnsignedInteger first,
       const UnsignedInteger size) const;
 
@@ -70,7 +70,7 @@ public:
   ComplexMatrix transform2D(const Matrix & matrix) const;
 
   /** FFT 2D transformation on sample */
-  ComplexMatrix transform2D(const NumericalSample & sample) const;
+  ComplexMatrix transform2D(const Sample & sample) const;
 
   /** IFFT 2D transformation on complex */
   ComplexMatrix inverseTransform2D(const ComplexMatrix & complexMatrix) const;
@@ -79,7 +79,7 @@ public:
   ComplexMatrix inverseTransform2D(const Matrix & matrix) const;
 
   /** IFFT 2D transformation on sample */
-  ComplexMatrix inverseTransform2D(const NumericalSample & sample) const;
+  ComplexMatrix inverseTransform2D(const Sample & sample) const;
 
   /** FFT 3D transformation */
   ComplexTensor transform3D(const ComplexTensor & tensor) const;

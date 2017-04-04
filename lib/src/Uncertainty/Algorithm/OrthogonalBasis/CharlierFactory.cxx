@@ -43,11 +43,11 @@ CharlierFactory::CharlierFactory()
 
 
 /* Parameter constructor: lambda is the order of the generalized Charlier polynomial, associated with the Poisson(lambda) distribution */
-CharlierFactory::CharlierFactory(const NumericalScalar lambda)
+CharlierFactory::CharlierFactory(const Scalar lambda)
   : OrthogonalUniVariatePolynomialFactory( Poisson(lambda) ),
     lambda_(lambda)
 {
-  if (lambda <= 0.0) throw InvalidArgumentException(HERE) << "Error: must have lambda>0 to build Charlier polynomials.";
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Error: must have lambda>0 to build Charlier polynomials.";
   initializeCache();
 }
 
@@ -65,13 +65,13 @@ CharlierFactory::Coefficients CharlierFactory::getRecurrenceCoefficients(const U
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar factor = sqrt(lambda_);
+    const Scalar factor = sqrt(lambda_);
     recurrenceCoefficients[0] = -1.0 / factor;
     recurrenceCoefficients[1] = factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar factor = 1.0 / sqrt((n + 1.0) * lambda_);
+  const Scalar factor = 1.0 / sqrt((n + 1.0) * lambda_);
   recurrenceCoefficients[0] = -factor;
   recurrenceCoefficients[1] = (n + lambda_) * factor;
   recurrenceCoefficients[2] = -sqrt(1.0 - 1.0 / (n + 1.0));
@@ -79,7 +79,7 @@ CharlierFactory::Coefficients CharlierFactory::getRecurrenceCoefficients(const U
 }
 
 /* LAMBDA accessor */
-NumericalScalar CharlierFactory::getLambda() const
+Scalar CharlierFactory::getLambda() const
 {
   return lambda_;
 }

@@ -39,21 +39,21 @@ int main(int argc, char *argv[])
     outVar[0] = "y";
     Description formula(1);
 
-    Collection<NumericalMathFunction> functions(3);
+    Collection<Function> functions(3);
 
     formula[0] = "1";
-    functions[0] = NumericalMathFunction(inVar, outVar, formula);
+    functions[0] = SymbolicFunction(inVar, formula);
 
     formula[0] = "cos(2 * t)";
-    functions[1] = NumericalMathFunction(inVar, outVar, formula);
+    functions[1] = SymbolicFunction(inVar, formula);
 
     formula[0] = "sin(2 * t)";
-    functions[2] = NumericalMathFunction(inVar, outVar, formula);
+    functions[2] = SymbolicFunction(inVar, formula);
 
 
     // We build the weights
-    NumericalSample coefficients(0, 2);
-    NumericalPoint p(2);
+    Sample coefficients(0, 2);
+    Point p(2);
     p[0] = 1.5;
     p[1] = 2.5;
     coefficients.add(p);
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     coefficients.add(p);
 
     // Third, build the function
-    NumericalMathFunction myFunction(functions, coefficients);
+    DualLinearCombinationFunction myFunction(functions, coefficients);
 
 
     // Fourth : we build a time series for estimation
@@ -74,12 +74,12 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 2;
 
     // Fix the realization as a Normal
-    Normal noiseDistribution(NumericalPoint(dimension, 0.), NumericalPoint(dimension, 1.), CorrelationMatrix(dimension));
+    Normal noiseDistribution(Point(dimension, 0.), Point(dimension, 1.), CorrelationMatrix(dimension));
 
     // TimeGrid parameters
     const UnsignedInteger N = 1000;
-    const NumericalScalar timeStart = 0.;
-    const NumericalScalar timeStep = 0.1;
+    const Scalar timeStart = 0.;
+    const Scalar timeStep = 0.1;
     RegularGrid timeGrid(timeStart, timeStep, N);
 
     // White noise

@@ -44,7 +44,7 @@ class OT_API SquareComplexMatrix :
   CLASSNAME;
 
 #ifndef SWIG
-  friend SquareComplexMatrix operator * (const NumericalComplex s,
+  friend SquareComplexMatrix operator * (const Complex s,
                                          const SquareComplexMatrix & m);
 #endif
 
@@ -62,7 +62,7 @@ public:
   /** do not correspond, either the collection is truncated */
   /** or the rest of the matrix is filled with zeros */
   SquareComplexMatrix(const UnsignedInteger dimension,
-                      const NumericalComplexCollection & elementsValues);
+                      const ComplexCollection & elementsValues);
 
   /** Constructor with implementation */
   SquareComplexMatrix(const Implementation & i);
@@ -102,20 +102,20 @@ public:
   /** SquareComplexMatrix integer power */
   SquareComplexMatrix power(const UnsignedInteger n) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalComplexCollection & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  ComplexCollection operator * (const ComplexCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalScalarCollection & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  ComplexCollection operator * (const ScalarCollection & p) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalComplexCollection operator * (const NumericalPoint & p) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  ComplexCollection operator * (const Point & p) const;
 
-  /** Multiplication with a NumericalComplex */
-  SquareComplexMatrix operator * (const NumericalComplex s) const;
+  /** Multiplication with a Complex */
+  SquareComplexMatrix operator * (const Complex s) const;
 
-  /** Division by a NumericalComplex*/
-  SquareComplexMatrix operator / (const NumericalComplex s) const;
+  /** Division by a Complex*/
+  SquareComplexMatrix operator / (const Complex s) const;
 
 
 }
@@ -123,7 +123,7 @@ public:
 ; /* class SquareComplexMatrix */
 
 
-inline SquareComplexMatrix operator * (const NumericalComplex s,
+inline SquareComplexMatrix operator * (const Complex s,
                                        const SquareComplexMatrix & m)
 {
   return m.operator * (s);

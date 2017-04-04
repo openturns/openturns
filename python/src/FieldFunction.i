@@ -2,7 +2,7 @@
 
 %{
 #include "openturns/FieldFunction.hxx"
-#include "openturns/PythonFieldFunctionImplementation.hxx"
+#include "openturns/PythonFieldFunction.hxx"
 
 namespace OT {
 
@@ -50,7 +50,7 @@ namespace OT {
     } else if (!PyCallable_Check( pyObj )) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a FieldFunction";
     }
-    OT::FieldFunction pythonFunction(new OT::PythonFieldFunctionImplementation(pyObj));
+    OT::FieldFunction pythonFunction(new OT::PythonFieldFunction(pyObj));
     return pythonFunction;
   }
 

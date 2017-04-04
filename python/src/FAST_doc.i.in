@@ -6,7 +6,7 @@ Available constructor:
 
 Parameters
 ----------
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Definition of the model to analyse.
 distribution : :class:`~openturns.Distribution`
     Contains the distributions of each model's input.
@@ -115,7 +115,7 @@ marginalIndex : int, :math:`0 \leq i < n`, optional
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     List of the first order indices of all the inputs."
 
 // ---------------------------------------------------------------------
@@ -131,7 +131,7 @@ marginalIndex : int, :math:`0 \leq i < n`, optional
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     List of the total-effect order indices of all the inputs."
 
 // ---------------------------------------------------------------------

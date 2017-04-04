@@ -40,21 +40,21 @@ public:
   explicit AbsoluteExponential(const UnsignedInteger spatialDimension = 1);
 
   /** Parameters constructor */
-  AbsoluteExponential(const NumericalPoint & scale);
+  AbsoluteExponential(const Point & scale);
 
   /** Parameters constructor */
-  AbsoluteExponential(const NumericalPoint & scale,
-                      const NumericalPoint & amplitude);
+  AbsoluteExponential(const Point & scale,
+                      const Point & amplitude);
 
   /** Virtual copy constructor */
   AbsoluteExponential * clone() const;
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** String converter */
   String __repr__() const;

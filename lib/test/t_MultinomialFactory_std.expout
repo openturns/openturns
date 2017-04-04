@@ -1,6 +1,6 @@
-Distribution          =class=Multinomial name=Multinomial dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
-Estimated distribution=class=Multinomial name=Multinomial dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.2527,0.24672,0.25122] n=5
-Default distribution=class=Multinomial name=Multinomial dimension=1 p=class=NumericalPoint name=Unnamed dimension=1 values=[0.5] n=1
-Multinomial          =class=Multinomial name=Multinomial dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
-Estimated multinomial=class=Multinomial name=Multinomial dimension=3 p=class=NumericalPoint name=Unnamed dimension=3 values=[0.2527,0.24672,0.25122] n=5
-Default multinomial=class=Multinomial name=Multinomial dimension=1 p=class=NumericalPoint name=Unnamed dimension=1 values=[0.5] n=1
+Distribution          =class=Multinomial name=Multinomial dimension=3 p=class=Point name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
+Estimated distribution=class=Multinomial name=Multinomial dimension=3 p=class=Point name=Unnamed dimension=3 values=[0.2527,0.24672,0.25122] n=5
+Default distribution=class=Multinomial name=Multinomial dimension=1 p=class=Point name=Unnamed dimension=1 values=[0.5] n=1
+Multinomial          =class=Multinomial name=Multinomial dimension=3 p=class=Point name=Unnamed dimension=3 values=[0.25,0.25,0.25] n=5
+Estimated multinomial=class=Multinomial name=Multinomial dimension=3 p=class=Point name=Unnamed dimension=3 values=[0.2527,0.24672,0.25122] n=5
+Default multinomial=class=Multinomial name=Multinomial dimension=1 p=class=Point name=Unnamed dimension=1 values=[0.5] n=1

@@ -49,21 +49,21 @@ public:
 
   /** Standard constructor  */
   GaussianProcess(const TrendTransform & trend,
-                        const SecondOrderModel  & model,
-                        const Mesh & mesh);
+                  const SecondOrderModel  & model,
+                  const Mesh & mesh);
 
   /** Standard constructor  */
   GaussianProcess(const TrendTransform & trend,
-                        const CovarianceModel & covarianceModel,
-                        const Mesh & mesh);
+                  const CovarianceModel & covarianceModel,
+                  const Mesh & mesh);
 
   /** Standard constructor  */
   GaussianProcess(const SecondOrderModel  & model,
-                        const Mesh & mesh);
+                  const Mesh & mesh);
 
   /** Standard constructor  */
   GaussianProcess(const CovarianceModel & covarianceModel,
-                        const Mesh & mesh);
+                  const Mesh & mesh);
 
   /** Virtual constructor */
   virtual GaussianProcess * clone() const;
@@ -84,9 +84,9 @@ public:
   /** Realization accessor */
   Field getRealization() const;
 private:
-  NumericalSample getRealizationCholesky() const;
-  NumericalSample getRealizationGibbs() const;
-  NumericalSample getRealizationHMatrix() const;
+  Sample getRealizationCholesky() const;
+  Sample getRealizationGibbs() const;
+  Sample getRealizationHMatrix() const;
 public:
 
   /** Covariance model accessor */
@@ -138,7 +138,7 @@ protected:
   /** Trend function */
   TrendTransform trend_;
 
-  mutable NumericalPoint stationaryTrendValue_;
+  mutable Point stationaryTrendValue_;
 
   /** Sampling method */
   UnsignedInteger samplingMethod_;

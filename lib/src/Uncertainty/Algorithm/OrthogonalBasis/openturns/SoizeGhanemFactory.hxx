@@ -26,9 +26,9 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -59,8 +59,8 @@ public:
                      const EnumerateFunction & phi,
                      const Bool useCopula = true);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
@@ -94,7 +94,7 @@ private:
   Bool hasIndependentCopula_;
 
   /** Adaptation factor */
-  NumericalMathFunction adaptationFactor_;
+  Function adaptationFactor_;
 } ; /* class SoizeGhanemFactory */
 
 

@@ -66,10 +66,10 @@ public:
 
   /** Build method ==> estimating the coefficients */
   ARMA build(const TimeSeries & timeSeries,
-             NumericalPoint & informationCriteria) const;
+             Point & informationCriteria) const;
   ARMA build(const TimeSeries & timeSeries) const;
   ARMA build(const ProcessSample & sample,
-             NumericalPoint & informationCriteria) const;
+             Point & informationCriteria) const;
   ARMA build(const ProcessSample & sample) const;
 
   /** Verbosity accessor */
@@ -84,8 +84,8 @@ public:
   Collection< WhittleFactoryState > getHistory() const;
 
   /** Starting points accessor */
-  void setStartingPoints(const Collection< NumericalPoint > & startingPoints);
-  Collection< NumericalPoint > getStartingPoints() const;
+  void setStartingPoints(const Collection< Point > & startingPoints);
+  Collection< Point > getStartingPoints() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -96,10 +96,10 @@ public:
 private :
 
   /** Likelihood function ==> Compute the reduced form of the likelihood */
-  NumericalScalar computeLogLikelihood(const NumericalPoint & theta) const;
+  Scalar computeLogLikelihood(const Point & theta) const;
 
   /** Log likelihood maximization, shared among the different build() methods */
-  ARMA maximizeLogLikelihood(NumericalPoint & InformationCriterion) const;
+  ARMA maximizeLogLikelihood(Point & InformationCriterion) const;
 
   /** Compute the spectral density at the relevant normalized frequencies */
   void computeSpectralDensity(const UserDefinedSpectralModel & spectralModel) const;
@@ -115,7 +115,7 @@ private :
   WelchFactory spectralFactory_;
 
   /** Frequency grid to be used in internal */
-  mutable NumericalPoint normalizedFrequencies_;
+  mutable Point normalizedFrequencies_;
 
   /** Time grid associated with the given data */
   mutable RegularGrid timeGrid_;
@@ -124,10 +124,10 @@ private :
   mutable UnsignedInteger m_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalPoint spectralDensity_;
+  mutable Point spectralDensity_;
 
   /** only used to pass data to be used in computeLogLikeliHood */
-  mutable NumericalScalar sigma2_;
+  mutable Scalar sigma2_;
 
   /** Verbosity control */
   Bool verbose_;
@@ -139,19 +139,19 @@ private :
   mutable PersistentCollection< WhittleFactoryState > history_;
 
   /** Starting points for the estimation process */
-  PersistentCollection< NumericalPoint > startingPoints_;
+  PersistentCollection< Point > startingPoints_;
 
   /** Likelihood function accessor */
-  NumericalMathFunction getLogLikelihoodFunction() const;
+  Function getLogLikelihoodFunction() const;
 
   /** likelihood estimate */
-  NumericalPoint computeLogLikelihoodInequalityConstraint( const NumericalPoint & theta ) const;
+  Point computeLogLikelihoodInequalityConstraint( const Point & theta ) const;
 
   /** only used to pass data to be used in computeLogLikelihoodInequalityConstraint */
   mutable UnsignedInteger nbInequalityConstraint_;
 
   /** Likelihood constraint accessor */
-  NumericalMathFunction getLogLikelihoodInequalityConstraint() const;
+  Function getLogLikelihoodInequalityConstraint() const;
 
   /** Optimization solver accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;

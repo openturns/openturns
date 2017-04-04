@@ -45,12 +45,12 @@ TruncatedNormalFactory * TruncatedNormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const NumericalSample & sample) const
+TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Sample & sample) const
 {
   return buildAsTruncatedNormal(sample).clone();
 }
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const NumericalPoint & parameters) const
+TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Point & parameters) const
 {
   return buildAsTruncatedNormal(parameters).clone();
 }
@@ -61,43 +61,43 @@ TruncatedNormalFactory::Implementation TruncatedNormalFactory::build() const
 }
 
 
-TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSample & sample) const
+TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // In order to avoid numerical stability issues, we normalize the data to [-1, 1]
-  const NumericalScalar xMin = sample.getMin()[0];
-  const NumericalScalar xMax = sample.getMax()[0];
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
   if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMax)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    const NumericalScalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::NumericalScalarEpsilon;
+    const Scalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
     TruncatedNormal result(xMin, 1.0, xMin - delta, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;
   }
   // X_norm = alpha * (X - beta)
-  const NumericalScalar alpha = 2.0 / (xMax - xMin);
-  const NumericalScalar beta = 0.5 * (xMin + xMax);
-  NumericalSample normalizedSample(sample);
-  normalizedSample -= NumericalPoint(1, beta);
-  normalizedSample *= NumericalPoint(1, alpha);
+  const Scalar alpha = 2.0 / (xMax - xMin);
+  const Scalar beta = 0.5 * (xMin + xMax);
+  Sample normalizedSample(sample);
+  normalizedSample -= Point(1, beta);
+  normalizedSample *= Point(1, alpha);
 
   const UnsignedInteger dimension = 2;// optimize (mu, sigma)
-  NumericalPoint parametersLowerBound(dimension, -SpecFunc::MaxNumericalScalar);
-  parametersLowerBound[1] = ResourceMap::GetAsNumericalScalar( "TruncatedNormalFactory-SigmaLowerBound");
+  Point parametersLowerBound(dimension, -SpecFunc::MaxScalar);
+  parametersLowerBound[1] = ResourceMap::GetAsScalar( "TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
   parametersLowerFlags[1] = true;
-  NumericalPoint startingPoint(dimension);
+  Point startingPoint(dimension);
   startingPoint[0] = normalizedSample.computeMean()[0];
   startingPoint[1] = normalizedSample.computeStandardDeviationPerComponent()[0];
 
-  const NumericalScalar oneEps = 1.0 + 1.0 / size;
+  const Scalar oneEps = 1.0 + 1.0 / size;
 
   MaximumLikelihoodFactory factory(buildAsTruncatedNormal());
 
   // bounds are fixed
-  NumericalPoint knownParameterValues(2, oneEps);
+  Point knownParameterValues(2, oneEps);
   knownParameterValues[0] = -oneEps;
   Indices knownParameterIndices(2);
   knownParameterIndices.fill(2);
@@ -109,15 +109,15 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
-  Interval bounds(parametersLowerBound, NumericalPoint(dimension, SpecFunc::MaxNumericalScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
+  Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxScalar), parametersLowerFlags, Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 
-  const NumericalPoint parameters(factory.buildParameter(normalizedSample));
+  const Point parameters(factory.buildParameter(normalizedSample));
 
   // The parameters are scaled back
   // X_norm = alpha * (X - beta)
   // X = beta + X_norm / alpha
-  NumericalPoint scaledParameters(4, beta);
+  Point scaledParameters(4, beta);
   scaledParameters[0] += parameters[0] / alpha;// mu
   scaledParameters[1] = parameters[1] / alpha;// sigma
   scaledParameters[2] -= oneEps / alpha;// a
@@ -128,7 +128,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalSa
   return result;
 }
 
-TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const NumericalPoint & parameters) const
+TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Point & parameters) const
 {
   try
   {

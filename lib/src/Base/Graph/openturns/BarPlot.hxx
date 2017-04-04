@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DrawableImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,13 +43,13 @@ class OT_API BarPlot : public DrawableImplementation
 public:
 
   /** Default constructor */
-  BarPlot(const NumericalSample & data,
-          const NumericalScalar origin,
+  BarPlot(const Sample & data,
+          const Scalar origin,
           const String & legend = "");
 
   /** Constructor with parameters */
-  BarPlot(const NumericalSample & data,
-          const NumericalScalar origin,
+  BarPlot(const Sample & data,
+          const Scalar origin,
           const String & color,
           const String & fillStyle,
           const String & lineStyle,
@@ -57,8 +57,8 @@ public:
           const String & legend = "");
 
   /** Constructor with old parameters */
-  BarPlot(const NumericalSample & data,
-          const NumericalScalar origin,
+  BarPlot(const Sample & data,
+          const Scalar origin,
           const String & color,
           const String & fillStyle,
           const String & lineStyle,
@@ -68,8 +68,8 @@ public:
   String __repr__() const;
 
   /** Accessor for origin */
-  NumericalScalar getOrigin() const;
-  void setOrigin(const NumericalScalar origin);
+  Scalar getOrigin() const;
+  void setOrigin(const Scalar origin);
 
   /** Accessor for boundingbox */
   BoundingBox getBoundingBox() const;
@@ -89,7 +89,7 @@ public:
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
 private:
 
@@ -97,7 +97,7 @@ private:
   friend class Factory<BarPlot>;
 
   /** Origin of the BarPlot */
-  NumericalScalar origin_;
+  Scalar origin_;
 
 }; /* class BarPlot */
 

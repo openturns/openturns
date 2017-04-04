@@ -30,7 +30,7 @@
 #include "openturns/TNC.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,10 +53,10 @@ MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution
 {
   // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
-  solver_.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
-  solver_.setMaximumRelativeError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumRelativeError"));
-  solver_.setMaximumResidualError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumObjectiveError"));
-  solver_.setMaximumConstraintError(ResourceMap::GetAsNumericalScalar("MethodOfMomentsFactory-MaximumConstraintError"));
+  solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
+  solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumRelativeError"));
+  solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumObjectiveError"));
+  solver_.setMaximumConstraintError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumConstraintError"));
 }
 
 /* Virtual constructor */
@@ -81,14 +81,14 @@ String MethodOfMomentsFactory::__str__(const String & offset) const
   return this->getClassName();
 }
 
-class MethodOfMomentsEvaluation : public NumericalMathEvaluationImplementation
+class MethodOfMomentsEvaluation : public EvaluationImplementation
 {
 public:
-  MethodOfMomentsEvaluation(const NumericalPoint & refMoments,
-                                        const Distribution & distribution,
-                                        const NumericalPoint & knownParameterValues,
-                                        const Indices & knownParameterIndices)
-    : NumericalMathEvaluationImplementation()
+  MethodOfMomentsEvaluation(const Point & refMoments,
+                            const Distribution & distribution,
+                            const Point & knownParameterValues,
+                            const Indices & knownParameterIndices)
+    : EvaluationImplementation()
     , refMoments_(refMoments)
     , refSign_(refMoments.getSize())
     , distribution_(distribution)
@@ -141,10 +141,10 @@ public:
     return description;
   }
 
-  NumericalPoint operator() (const NumericalPoint & parameter) const
+  Point operator() (const Point & parameter) const
   {
     UnsignedInteger parameterDimension = distribution_.getParameterDimension();
-    NumericalPoint effectiveParameter(parameterDimension);
+    Point effectiveParameter(parameterDimension);
     // set unknown values
     UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
@@ -164,11 +164,11 @@ public:
     }
     catch (Exception &)
     {
-      return NumericalPoint(1, SpecFunc::MaxNumericalScalar);
+      return Point(1, SpecFunc::MaxScalar);
     }
 
     // compute moments of conditioned distribution
-    NumericalPoint moments(parameterDimension);
+    Point moments(parameterDimension);
     moments[0] = distribution.getMean()[0];
     for (UnsignedInteger j = 1; j < parameterDimension; ++ j)
     {
@@ -176,27 +176,27 @@ public:
     }
 
     // compute sum of deltas between centered homogenized moments
-    NumericalScalar result = 0.0;
+    Scalar result = 0.0;
     for (UnsignedInteger j = 0; j < parameterDimension; ++ j)
     {
-      const NumericalScalar sign = moments[j] < 0.0 ? -1.0 : 1.0;
-      const NumericalScalar slack = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
+      const Scalar sign = moments[j] < 0.0 ? -1.0 : 1.0;
+      const Scalar slack = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
       result += slack * slack;
     }
-    const NumericalScalar sigma2 = distribution.getCovariance()(0, 0);
-    return NumericalPoint(1, result / sigma2);
+    const Scalar sigma2 = distribution.getCovariance()(0, 0);
+    return Point(1, result / sigma2);
   }
 
 private:
-  NumericalPoint refMoments_;
-  NumericalPoint refSign_;
+  Point refMoments_;
+  Point refSign_;
   Distribution distribution_;
-  NumericalPoint knownParameterValues_;
+  Point knownParameterValues_;
   Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
 };
 
-NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sample) const
+Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -208,7 +208,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
 
-  NumericalPoint refMoments(effectiveParameterSize);
+  Point refMoments(effectiveParameterSize);
   refMoments[0] =  sample.computeMean()[0];
   for (UnsignedInteger j = 1; j < effectiveParameterSize; ++ j)
   {
@@ -217,7 +217,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
 
   // Define NumericalMathEvaluation using the MethodOfMomentsEvaluation wrapper
   MethodOfMomentsEvaluation methodOfMomentsWrapper(refMoments, distribution_, knownParameterValues_, knownParameterIndices_);
-  NumericalMathFunction momentsObjective(methodOfMomentsWrapper.clone());
+  Function momentsObjective(methodOfMomentsWrapper.clone());
 
   // Define optimisation problem
   OptimizationProblem problem(problem_);
@@ -225,11 +225,11 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
   OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != momentsObjective.getInputDimension())
   {
-    NumericalPoint effectiveParameter(distribution_.getParameter());
+    Point effectiveParameter(distribution_.getParameter());
     LOGINFO(OSS() << "Warning! The given starting point=" << solver.getStartingPoint() << " has a dimension=" << solver.getStartingPoint().getDimension() << " which is different from the expected parameter dimension=" << momentsObjective.getInputDimension() << ". Switching to the default parameter value=" << effectiveParameter);
 
     // extract unknown values
-    NumericalPoint parameter;
+    Point parameter;
     for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
     {
       if (!knownParameterIndices_.contains(j))
@@ -239,9 +239,9 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
   }
   solver.setProblem(problem);
   solver.run();
-  NumericalPoint effectiveParameter(effectiveParameterSize);
+  Point effectiveParameter(effectiveParameterSize);
   // set unknown values
-  NumericalPoint parameter(solver.getResult().getOptimalPoint());
+  Point parameter(solver.getResult().getOptimalPoint());
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
   {
@@ -261,7 +261,7 @@ NumericalPoint MethodOfMomentsFactory::buildParameter(const NumericalSample & sa
 }
 
 
-DistributionFactoryImplementation::Implementation MethodOfMomentsFactory::build(const NumericalSample & sample) const
+DistributionFactoryImplementation::Implementation MethodOfMomentsFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));
@@ -303,7 +303,7 @@ OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationSolver() const
   return getOptimizationAlgorithm();
 }
 
-void MethodOfMomentsFactory::setKnownParameter(const NumericalPoint & values,
+void MethodOfMomentsFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE);
@@ -316,7 +316,7 @@ Indices MethodOfMomentsFactory::getKnownParameterIndices() const
   return knownParameterIndices_;
 }
 
-NumericalPoint MethodOfMomentsFactory::getKnownParameterValues() const
+Point MethodOfMomentsFactory::getKnownParameterValues() const
 {
   return knownParameterValues_;
 }

@@ -44,8 +44,8 @@ OrthogonalBasis::OrthogonalBasis(const OrthogonalFunctionFactory & implementatio
 }
 
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction OrthogonalBasis::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function OrthogonalBasis::build(const UnsignedInteger index) const
 {
   return getImplementation()->build(index);
 }

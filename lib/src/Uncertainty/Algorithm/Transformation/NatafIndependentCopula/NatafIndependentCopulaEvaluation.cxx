@@ -37,7 +37,7 @@ static const Factory<NatafIndependentCopulaEvaluation> Factory_NatafIndependentC
 
 /* Default constructor */
 NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , dimension_()
 {
   // Nothing to do
@@ -45,7 +45,7 @@ NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation()
 
 /* Parameter constructor */
 NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation(const UnsignedInteger dimension)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , dimension_(dimension)
 {
   Description description(Description::BuildDefault(dimension_, "X"));
@@ -84,12 +84,12 @@ String NatafIndependentCopulaEvaluation::__str__(const String & offset) const
  * The Nataf transform T reads:
  * Ti(xi) = Q(xi), where Q = Phi^{-1} and Phi is the CDF of the standard normal distribution
  */
-NumericalPoint NatafIndependentCopulaEvaluation::operator () (const NumericalPoint & inP) const
+Point NatafIndependentCopulaEvaluation::operator () (const Point & inP) const
 {
-  NumericalPoint result(dimension_);
+  Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    const NumericalScalar x = inP[i];
+    const Scalar x = inP[i];
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaEvaluation if all the components are not in [0, 1], here in=" << inP;
     result[i] = DistFunc::qNormal(x);
   }
@@ -104,7 +104,7 @@ NumericalPoint NatafIndependentCopulaEvaluation::operator () (const NumericalPoi
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameters are not taken into account. */
 
-Matrix NatafIndependentCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix NatafIndependentCopulaEvaluation::parameterGradient(const Point & inP) const
 {
   return Matrix(0, dimension_);
 }
@@ -124,14 +124,14 @@ UnsignedInteger NatafIndependentCopulaEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafIndependentCopulaEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void NatafIndependentCopulaEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

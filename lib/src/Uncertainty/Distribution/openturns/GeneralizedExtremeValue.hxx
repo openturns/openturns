@@ -41,9 +41,9 @@ public:
   GeneralizedExtremeValue();
 
   /** Parameters constructor to use when the two bounds are finite */
-  GeneralizedExtremeValue(const NumericalScalar mu,
-			  const NumericalScalar sigma,
-			  const NumericalScalar xi);
+  GeneralizedExtremeValue(const Scalar mu,
+                          const Scalar sigma,
+                          const Scalar xi);
 
   /** Comparison operator */
   Bool operator ==(const GeneralizedExtremeValue & other) const;
@@ -61,51 +61,51 @@ public:
   virtual GeneralizedExtremeValue * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the distribution */
   using DistributionImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
   using DistributionImplementation::computeLogPDF;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
   using DistributionImplementation::computeComplementaryCDF;
-  NumericalScalar computeComplementaryCDF(const NumericalPoint & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using DistributionImplementation::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using DistributionImplementation::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -113,16 +113,16 @@ public:
   /* Interface specific to GeneralizedExtremeValue */
 
   /** Mu accessor */
-  void setMu(const NumericalScalar mu);
-  NumericalScalar getMu() const;
+  void setMu(const Scalar mu);
+  Scalar getMu() const;
 
   /** Sigma bound accessor */
-  void setSigma(const NumericalScalar sigma);
-  NumericalScalar getSigma() const;
+  void setSigma(const Scalar sigma);
+  Scalar getSigma() const;
 
   /** Xi accessor */
-  void setXi(const NumericalScalar xi);
-  NumericalScalar getXi() const;
+  void setXi(const Scalar xi);
+  Scalar getXi() const;
 
   /** Actual distribution accessor */
   void setActualDistribution(const Distribution & distribution);
@@ -139,8 +139,8 @@ protected:
 private:
 
   /** Get the quantile of the distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
@@ -152,15 +152,15 @@ private:
   void computeCovariance() const;
 
   /** Set the whole set of parameters with check */
-  void setMuSigmaXi(const NumericalScalar mu,
-		    const NumericalScalar sigma,
-		    const NumericalScalar xi);
-  
+  void setMuSigmaXi(const Scalar mu,
+                    const Scalar sigma,
+                    const Scalar xi);
+
   /** The actual distribution in {Weibull, Frechet, Gumbel} */
   Distribution actualDistribution_;
-  NumericalScalar mu_;
-  NumericalScalar sigma_;
-  NumericalScalar xi_;
+  Scalar mu_;
+  Scalar sigma_;
+  Scalar xi_;
 }; /* class GeneralizedExtremeValue */
 
 

@@ -33,25 +33,25 @@ int main(int argc, char *argv[])
 
   try
   {
-    ResourceMap::SetAsNumericalScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10);
+    ResourceMap::SetAsScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10);
     UnsignedInteger dim = 1;
-    Interval domain(NumericalPoint(dim, -1.0), NumericalPoint(dim, 1.0));
+    Interval domain(Point(dim, -1.0), Point(dim, 1.0));
     OrthogonalProductPolynomialFactory basis(Collection<OrthogonalUniVariatePolynomialFamily>(dim, LegendreFactory()));
     UnsignedInteger basisSize = 5;
     LHSExperiment experiment(basis.getMeasure(), 100);
     Bool mustScale = false;
-    NumericalScalar threshold = 0.0001;
-    AbsoluteExponential model(NumericalPoint(dim, 1.0));
+    Scalar threshold = 0.0001;
+    AbsoluteExponential model(Point(dim, 1.0));
     KarhunenLoeveQuadratureAlgorithm algo(domain, model, experiment, basis, basisSize, mustScale, threshold);
     algo.run();
     KarhunenLoeveResult result(algo.getResult());
-    NumericalPoint lambda(result.getEigenValues());
+    Point lambda(result.getEigenValues());
     ProcessSample KLModes(result.getModesAsProcessSample());
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
     GaussianProcess process(model, KLModes.getMesh());
     ProcessSample sample(process.getSample(10));
-    NumericalSample coefficients(result.project(sample));
+    Sample coefficients(result.project(sample));
     fullprint << "KL coefficients=" << coefficients << std::endl;
     Basis KLFunctions(result.getModes());
     fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
@@ -63,11 +63,11 @@ int main(int argc, char *argv[])
       KarhunenLoeveQuadratureAlgorithm algo2(domain, model, marginalDegree, threshold);
       algo2.run();
       KarhunenLoeveResult result(algo2.getResult());
-      NumericalPoint lambda(result.getEigenValues());
+      Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
-      NumericalSample coefficients(result.project(sample));
+      Sample coefficients(result.project(sample));
       fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
       fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;

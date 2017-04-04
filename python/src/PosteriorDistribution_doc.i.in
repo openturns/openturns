@@ -69,7 +69,7 @@ observations : 2-d sequence of float
 
 Returns
 -------
-observations : :class:`~openturns.NumericalSample`
+observations : :class:`~openturns.Sample`
     Observations."
 
 // ---------------------------------------------------------------------

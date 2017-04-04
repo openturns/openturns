@@ -39,9 +39,9 @@ CLASSNAMEINIT(LHSResult);
 LHSResult::LHSResult()
   : PersistentObject()
   , optimalIndex_(0)
-  , criteria_(NumericalSample(0, 4))
+  , criteria_(Sample(0, 4))
 {
-  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
+  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
 }
 
 /* Default constructor */
@@ -50,9 +50,9 @@ LHSResult::LHSResult(const SpaceFilling & spaceFilling, UnsignedInteger restart)
   , spaceFilling_(spaceFilling)
   , restart_(restart)
   , optimalIndex_(0)
-  , criteria_(NumericalSample(0, 4))
+  , criteria_(Sample(0, 4))
 {
-  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxNumericalScalar : -SpecFunc::MaxNumericalScalar;
+  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
 }
 
 LHSResult * LHSResult::clone() const
@@ -61,8 +61,8 @@ LHSResult * LHSResult::clone() const
 }
 
 
-void LHSResult::add(const NumericalSample & optimalDesign, NumericalScalar criterion,
-         NumericalScalar C2, NumericalScalar PhiP, NumericalScalar MinDist, const NumericalSample & algoHistory)
+void LHSResult::add(const Sample & optimalDesign, Scalar criterion,
+                    Scalar C2, Scalar PhiP, Scalar MinDist, const Sample & algoHistory)
 {
   if (spaceFilling_.isMinimizationProblem() && (criterion < optimalCriterion_))
   {
@@ -76,7 +76,7 @@ void LHSResult::add(const NumericalSample & optimalDesign, NumericalScalar crite
     optimalIndex_ = criteria_.getSize();
     optimalCriterion_ = criterion;
   }
-  NumericalPoint criteria(4);
+  Point criteria(4);
   criteria[0] = criterion;
   criteria[1] = C2;
   criteria[2] = PhiP;
@@ -94,72 +94,72 @@ UnsignedInteger LHSResult::getNumberOfRestarts() const
 }
 
 /** Attributes for getting elements of result */
-NumericalSample LHSResult::getOptimalDesign() const
+Sample LHSResult::getOptimalDesign() const
 {
   return collDesigns_[optimalIndex_];
 }
 
-NumericalSample LHSResult::getOptimalDesign(UnsignedInteger restart) const
+Sample LHSResult::getOptimalDesign(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
   return collDesigns_[restart];
 }
 
-NumericalScalar LHSResult::getOptimalValue() const
+Scalar LHSResult::getOptimalValue() const
 {
   return criteria_[optimalIndex_][0];
 }
 
-NumericalScalar LHSResult::getOptimalValue(UnsignedInteger restart) const
+Scalar LHSResult::getOptimalValue(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
   return criteria_[restart][0];
 }
 
-NumericalSample LHSResult::getAlgoHistory() const
+Sample LHSResult::getAlgoHistory() const
 {
   return collAlgoHistory_[optimalIndex_];
 }
 
-NumericalSample LHSResult::getAlgoHistory(UnsignedInteger restart) const
+Sample LHSResult::getAlgoHistory(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
   return collAlgoHistory_[restart];
 }
 
-NumericalScalar LHSResult::getC2() const
+Scalar LHSResult::getC2() const
 {
   return criteria_[optimalIndex_][1];
 }
 
-NumericalScalar LHSResult::getC2(UnsignedInteger restart) const
+Scalar LHSResult::getC2(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
   return criteria_[restart][1];
 }
 
-NumericalScalar LHSResult::getPhiP() const
+Scalar LHSResult::getPhiP() const
 {
   return criteria_[optimalIndex_][2];
 }
 
-NumericalScalar LHSResult::getPhiP(UnsignedInteger restart) const
+Scalar LHSResult::getPhiP(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
   return criteria_[restart][2];
 }
 
-NumericalScalar LHSResult::getMinDist() const
+Scalar LHSResult::getMinDist() const
 {
   return criteria_[optimalIndex_][3];
 }
 
-NumericalScalar LHSResult::getMinDist(UnsignedInteger restart) const
+Scalar LHSResult::getMinDist(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
@@ -179,7 +179,7 @@ UnsignedInteger LHSResult::findDescription(const char *text) const
   return 0;
 }
 
-Graph LHSResult::drawCurveData(const NumericalSample & data, const String & title) const
+Graph LHSResult::drawCurveData(const Sample & data, const String & title) const
 {
   Curve curve(data);
   curve.setColor("red");
@@ -199,7 +199,7 @@ Graph LHSResult::drawHistoryCriterion(const String & title) const
     const UnsignedInteger idx(findDescription("criterion"));
     if (idx == 0)
       throw InvalidArgumentException(HERE) << "Could not draw criterion history, data not found";
-    drawTitle = collAlgoHistory_[0].getDescription()[idx-1]+" history of optimal design";
+    drawTitle = collAlgoHistory_[0].getDescription()[idx - 1] + " history of optimal design";
   }
   return drawHistoryCriterion(optimalIndex_, drawTitle);
 }
@@ -214,7 +214,7 @@ Graph LHSResult::drawHistoryCriterion(UnsignedInteger restart, const String & ti
   if (collAlgoHistory_[restart].getSize() == 0)
     throw InvalidArgumentException(HERE) << "Could not draw criterion history, data are empty";
 
-  const NumericalSample data(collAlgoHistory_[restart].getMarginal(idx-1));
+  const Sample data(collAlgoHistory_[restart].getMarginal(idx - 1));
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = String(OSS() << data.getDescription()[0] << " history of restart number=" << restart);
   return drawCurveData(data, drawTitle);
@@ -237,7 +237,7 @@ Graph LHSResult::drawHistoryTemperature(UnsignedInteger restart, const String & 
   if (collAlgoHistory_[restart].getSize() == 0)
     throw InvalidArgumentException(HERE) << "Could not draw temperature history, data are empty";
 
-  const NumericalSample data(collAlgoHistory_[restart].getMarginal(idx-1));
+  const Sample data(collAlgoHistory_[restart].getMarginal(idx - 1));
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = String(OSS() << "Temperature history of restart number=" << restart);
   return drawCurveData(data, drawTitle);
@@ -261,11 +261,11 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
     throw InvalidArgumentException(HERE) << "Could not draw probability history, data are empty";
 
   const UnsignedInteger size(collAlgoHistory_[restart].getSize());
-  NumericalSample data(size, 2);
+  Sample data(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data[i][0] = i;
-    data[i][1] = collAlgoHistory_[restart][i][idx-1];
+    data[i][1] = collAlgoHistory_[restart][i][idx - 1];
   }
   Description description(2);
   description[0] = "Iterations";

@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
     inputDimension = 2
 
-    x = NumericalPoint(inputDimension)
+    x = Point(inputDimension)
     for i in range(inputDimension):
         x[i] = 2. + i
 
@@ -19,7 +19,7 @@ try:
     basis = factory.build()
     print("basis=", basis)
 
-    f = NumericalMathFunction(basis)
+    f = AggregatedFunction(basis)
     y = f(x)
     print("y=", y)
 
@@ -28,7 +28,7 @@ try:
     basis = factory.build()
     print("basis=", basis)
 
-    f = NumericalMathFunction(basis)
+    f = AggregatedFunction(basis)
     y = f(x)
     print("y=", y)
 
@@ -37,7 +37,7 @@ try:
     basis = factory.build()
     print("basis=", basis)
 
-    f = NumericalMathFunction(basis)
+    f = AggregatedFunction(basis)
     y = f(x)
     print("y=", y)
 

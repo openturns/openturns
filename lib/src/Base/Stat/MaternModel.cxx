@@ -31,31 +31,31 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 /* Default constructor */
 MaternModel::MaternModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(NumericalPoint(spatialDimension, ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta")), NumericalPoint(1, 1.0))
-  , nu_(ResourceMap::GetAsNumericalScalar("MaternModel-DefaultNu"))
-  , sqrt2nuOverTheta_(NumericalPoint(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsNumericalScalar("MaternModel-DefaultTheta") ))
+  : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
+  , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
+  , sqrt2nuOverTheta_(Point(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
   // Compute the normalization factor
   logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
 }
 
 /** Parameters constructor */
-MaternModel::MaternModel(const NumericalPoint & scale,
-                         const NumericalScalar nu)
-  : StationaryCovarianceModel(scale, NumericalPoint(1, 1.0))
+MaternModel::MaternModel(const Point & scale,
+                         const Scalar nu)
+  : StationaryCovarianceModel(scale, Point(1, 1.0))
   , nu_(0.0)
-  , sqrt2nuOverTheta_(NumericalPoint(scale.getDimension(), 0.0))
+  , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
   setNu(nu);
 }
 
 /** Parameters constructor */
-MaternModel::MaternModel(const NumericalPoint & scale,
-                         const NumericalPoint & amplitude,
-                         const NumericalScalar nu)
+MaternModel::MaternModel(const Point & scale,
+                         const Point & amplitude,
+                         const Scalar nu)
   : StationaryCovarianceModel(scale, amplitude)
   , nu_(0.0)
-  , sqrt2nuOverTheta_(NumericalPoint(scale.getDimension(), 0.0))
+  , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
@@ -70,52 +70,52 @@ MaternModel * MaternModel::clone() const
 }
 
 /* Computation of the covariance  function */
-NumericalScalar MaternModel::computeStandardRepresentative(const NumericalPoint & tau) const
+Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  NumericalPoint scaledTau(spatialDimension_);
+  Point scaledTau(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
-  const NumericalScalar scaledPoint = scaledTau.norm();
-  if (scaledPoint <= SpecFunc::NumericalScalarEpsilon)
+  const Scalar scaledPoint = scaledTau.norm();
+  if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return 1.0 + nuggetFactor_;
   else
     return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 /* Gradient */
-Matrix MaternModel::partialGradient(const NumericalPoint & s,
-                                    const NumericalPoint & t) const
+Matrix MaternModel::partialGradient(const Point & s,
+                                    const Point & t) const
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
-  const NumericalPoint tau(s - t);
-  NumericalPoint scaledTau(spatialDimension_);
+  const Point tau(s - t);
+  Point scaledTau(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
-  const NumericalScalar scaledTauNorm = scaledTau.norm();
-  const NumericalScalar norm2 = scaledTauNorm * scaledTauNorm;
+  const Scalar scaledTauNorm = scaledTau.norm();
+  const Scalar norm2 = scaledTauNorm * scaledTauNorm;
   // For zero norm
   if (norm2 == 0.0)
   {
     // Infinite gradient for nu < 1/2
-    if (nu_ < 0.5) return Matrix(spatialDimension_, 1, NumericalPoint(spatialDimension_, -SpecFunc::MaxNumericalScalar));
+    if (nu_ < 0.5) return Matrix(spatialDimension_, 1, Point(spatialDimension_, -SpecFunc::MaxScalar));
     // Non-zero gradient for nu = 1/2
     if (nu_ == 0.5)
     {
       Matrix gradient(spatialDimension_, 1);
-      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0]/ scale_[i];
+      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
       return gradient;
     }
     // Zero gradient for p > 1
     return Matrix(spatialDimension_, 1);
   }
   // General case
-  const NumericalScalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
-  NumericalPoint tauDotsquareSqrt2nuOverTheta(spatialDimension_);
+  const Scalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
+  Point tauDotsquareSqrt2nuOverTheta(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) tauDotsquareSqrt2nuOverTheta[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
   return Matrix(spatialDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0] * amplitude_[0];
 }
 
-void MaternModel::setScale(const NumericalPoint & scale)
+void MaternModel::setScale(const Point & scale)
 {
   // First set scale
   StationaryCovarianceModel::setScale(scale);
@@ -123,16 +123,16 @@ void MaternModel::setScale(const NumericalPoint & scale)
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
 }
 
-void MaternModel::setFullParameter(const NumericalPoint & parameter)
+void MaternModel::setFullParameter(const Point & parameter)
 {
   CovarianceModelImplementation::setFullParameter(parameter);
   setNu(parameter[parameter.getSize() - 1]);
 }
 
-NumericalPoint MaternModel::getFullParameter() const
+Point MaternModel::getFullParameter() const
 {
   // Get the generic parameter
-  NumericalPoint parameter(CovarianceModelImplementation::getFullParameter());
+  Point parameter(CovarianceModelImplementation::getFullParameter());
   // Add the specific one
   parameter.add(nu_);
   return parameter;
@@ -171,14 +171,14 @@ String MaternModel::__str__(const String & offset) const
 }
 
 /* Nu accessor */
-NumericalScalar MaternModel::getNu() const
+Scalar MaternModel::getNu() const
 {
   return nu_;
 }
 
-void MaternModel::setNu(const NumericalScalar nu)
+void MaternModel::setNu(const Scalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Error: nu must be positive.";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive.";
   if (!(nu == nu_))
   {
     nu_ = nu;

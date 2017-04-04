@@ -22,7 +22,7 @@
 #define OPENTURNS_ORTHOGONALPRODUCTFUNCTIONFACTORY_HXX
 
 #include "openturns/OrthogonalFunctionFactory.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
 #include "openturns/TensorizedUniVariateFunctionFactory.hxx"
@@ -59,8 +59,8 @@ public:
   OrthogonalProductFunctionFactory(const FunctionFamilyCollection & coll,
                                    const EnumerateFunction & phi);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
   /** Return the enumerate function that translate unidimensional indices nto multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;

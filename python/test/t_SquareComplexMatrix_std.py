@@ -82,7 +82,7 @@ print('prod = ', repr(prod))
 print('test : multiplication with a numerical point method')
 
 # Create the numerical point
-pt = ot.NumericalComplexCollection(2)
+pt = ot.ComplexCollection(2)
 pt[0] = 1. + 1j
 pt[1] = 1j
 print('pt = ', repr(pt))

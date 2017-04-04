@@ -42,8 +42,8 @@ Rayleigh::Rayleigh()
 }
 
 /* Parameters constructor */
-Rayleigh::Rayleigh(const NumericalScalar sigma,
-                   const NumericalScalar gamma)
+Rayleigh::Rayleigh(const Scalar sigma,
+                   const Scalar gamma)
   : ContinuousDistribution()
   , sigma_(0.0)
   , gamma_(gamma)
@@ -95,8 +95,8 @@ Rayleigh * Rayleigh::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Rayleigh::computeRange()
 {
-  const NumericalPoint lowerBound(1, gamma_);
-  const NumericalPoint upperBound(computeUpperBound());
+  const Point lowerBound(1, gamma_);
+  const Point upperBound(computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
@@ -104,55 +104,55 @@ void Rayleigh::computeRange()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Rayleigh::getRealization() const
+Point Rayleigh::getRealization() const
 {
-  return NumericalPoint(1, gamma_ + sigma_ * std::sqrt(-2.0 * std::log(RandomGenerator::Generate())));
+  return Point(1, gamma_ + sigma_ * std::sqrt(-2.0 * std::log(RandomGenerator::Generate())));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Rayleigh::computeDDF(const NumericalPoint & point) const
+Point Rayleigh::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
-  if (x <= 0.0) return NumericalPoint(1, 0.0);
-  const NumericalScalar y = x / sigma_;
-  const NumericalScalar sigma2 = sigma_ * sigma_;
-  return NumericalPoint(1, -std::exp(-0.5 * y * y) * (x - sigma_) * (x + sigma_) / (sigma2 * sigma2));
+  const Scalar x = point[0] - gamma_;
+  if (x <= 0.0) return Point(1, 0.0);
+  const Scalar y = x / sigma_;
+  const Scalar sigma2 = sigma_ * sigma_;
+  return Point(1, -std::exp(-0.5 * y * y) * (x - sigma_) * (x + sigma_) / (sigma2 * sigma2));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Rayleigh::computePDF(const NumericalPoint & point) const
+Scalar Rayleigh::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  const NumericalScalar y = x / (sigma_ * sigma_);
+  const Scalar y = x / (sigma_ * sigma_);
   return y * std::exp(-0.5 * x * y);
 }
 
-NumericalScalar Rayleigh::computeLogPDF(const NumericalPoint & point) const
+Scalar Rayleigh::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
-  if (x <= 0.0) return SpecFunc::LogMinNumericalScalar;
-  const NumericalScalar y = x / (sigma_ * sigma_);
+  const Scalar x = point[0] - gamma_;
+  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  const Scalar y = x / (sigma_ * sigma_);
   return std::log(y) - 0.5 * x * y;
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Rayleigh::computeCDF(const NumericalPoint & point) const
+Scalar Rayleigh::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
+  const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  const NumericalScalar y = x / sigma_;
+  const Scalar y = x / sigma_;
   return 1.0 - std::exp(-0.5 * y * y);
 }
 
@@ -165,36 +165,36 @@ NumericalScalar Rayleigh::computeCDF(const NumericalPoint & point) const
    = (1 - sigma * x * (sqrt(2) * dawson(sigma * x / sqrt(2)) - i * exp(-sigma^2 * x^2 / 2) * sqrt(pi/2))) * exp(i * gamma * x)
    = (1 - t * (2 * dawson(t) - i * exp(-t * t) * sqrt(pi))) * exp(i * gamma * x) with t = sigma * x / sqrt(2)
 */
-NumericalComplex Rayleigh::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Rayleigh::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalScalar t = sigma_ * x / std::sqrt(2.0);
-  return NumericalComplex(1 - 2 * t * SpecFunc::Dawson(t), t * std::exp(-t * t) * std::sqrt(M_PI)) * std::exp(NumericalComplex(0.0, x * gamma_));
+  const Scalar t = sigma_ * x / std::sqrt(2.0);
+  return Complex(1 - 2 * t * SpecFunc::Dawson(t), t * std::exp(-t * t) * std::sqrt(M_PI)) * std::exp(Complex(0.0, x * gamma_));
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Rayleigh::computePDFGradient(const NumericalPoint & point) const
+Point Rayleigh::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
-  NumericalPoint pdfGradient(2, 0.0);
+  const Scalar x = point[0] - gamma_;
+  Point pdfGradient(2, 0.0);
   if (x <= 0.0) return pdfGradient;
-  const NumericalScalar sigma2 = sigma_ * sigma_;
-  const NumericalScalar factor1 = computePDF(point) / sigma2;
-  const NumericalScalar factor2 = (x - sigma_) * (x + sigma_);
+  const Scalar sigma2 = sigma_ * sigma_;
+  const Scalar factor1 = computePDF(point) / sigma2;
+  const Scalar factor2 = (x - sigma_) * (x + sigma_);
   pdfGradient[0] = factor1 * (factor2 - sigma2) / sigma_;
   pdfGradient[1] = factor1 *  factor2 / x;
   return pdfGradient;
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Rayleigh::computeCDFGradient(const NumericalPoint & point) const
+Point Rayleigh::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0] - gamma_;
-  NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar pdf = computePDF(point);
+  const Scalar x = point[0] - gamma_;
+  Point cdfGradient(2, 0.0);
+  const Scalar pdf = computePDF(point);
   if (x <= 0.0) return cdfGradient;
   cdfGradient[0] = -x * pdf / sigma_;
   cdfGradient[1] = -pdf;
@@ -202,8 +202,8 @@ NumericalPoint Rayleigh::computeCDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Rayleigh::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Scalar Rayleigh::computeScalarQuantile(const Scalar prob,
+                                       const Bool tail) const
 {
   if (tail) return gamma_ + sigma_ * std::sqrt(-2.0 * std::log(prob));
   return gamma_ + sigma_ * std::sqrt(-2.0 * log1p(-prob));
@@ -213,35 +213,35 @@ NumericalScalar Rayleigh::computeScalarQuantile(const NumericalScalar prob,
 void Rayleigh::computeMean() const
 {
   // 1.253314137315500251207882 = sqrt(pi/2)
-  mean_ = NumericalPoint(1, gamma_ + 1.253314137315500251207882 * sigma_);
+  mean_ = Point(1, gamma_ + 1.253314137315500251207882 * sigma_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Rayleigh::getStandardDeviation() const
+Point Rayleigh::getStandardDeviation() const
 {
   // 0.6551363775620335530939357 = sqrt(2 - pi / 2)
-  return NumericalPoint(1, 0.6551363775620335530939357 * sigma_);
+  return Point(1, 0.6551363775620335530939357 * sigma_);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Rayleigh::getSkewness() const
+Point Rayleigh::getSkewness() const
 {
   // 0.631110657818937138918970 = 2 * sqrt(pi / (4 - pi)) * (pi - 3) / (4 - pi)
-  return NumericalPoint(1, 0.631110657818937138918970);
+  return Point(1, 0.631110657818937138918970);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Rayleigh::getKurtosis() const
+Point Rayleigh::getKurtosis() const
 {
   // 3.245089300687638062848667 = 3 - (6 * pi^2 - 24 * pi + 16) / (4 - pi)^2
-  return NumericalPoint(1, 3.245089300687638062848667);
+  return Point(1, 3.245089300687638062848667);
 }
 
 /* Get the moments of the distribution */
-NumericalPoint Rayleigh::getStandardMoment(const UnsignedInteger n) const
+Point Rayleigh::getStandardMoment(const UnsignedInteger n) const
 {
-  return NumericalPoint(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
+  return Point(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -260,18 +260,18 @@ void Rayleigh::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Rayleigh::getParameter() const
+Point Rayleigh::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = sigma_;
   point[1] = gamma_;
   return point;
 }
 
-void Rayleigh::setParameter(const NumericalPoint & parameter)
+void Rayleigh::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Rayleigh(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -286,9 +286,9 @@ Description Rayleigh::getParameterDescription() const
 }
 
 /* Sigma accessor */
-void Rayleigh::setSigma(const NumericalScalar sigma)
+void Rayleigh::setSigma(const Scalar sigma)
 {
-  if (sigma <= 0.) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
   if (sigma != sigma_)
   {
     sigma_ = sigma;
@@ -298,13 +298,13 @@ void Rayleigh::setSigma(const NumericalScalar sigma)
   }
 }
 
-NumericalScalar Rayleigh::getSigma() const
+Scalar Rayleigh::getSigma() const
 {
   return sigma_;
 }
 
 /* Gamma accessor */
-void Rayleigh::setGamma(const NumericalScalar gamma)
+void Rayleigh::setGamma(const Scalar gamma)
 {
   if (gamma != gamma_)
   {
@@ -315,7 +315,7 @@ void Rayleigh::setGamma(const NumericalScalar gamma)
   }
 }
 
-NumericalScalar Rayleigh::getGamma() const
+Scalar Rayleigh::getGamma() const
 {
   return gamma_;
 }

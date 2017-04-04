@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
   UnsignedInteger dimension = 8;
 
   // Reference analytical values
-  NumericalScalar covTh = 1.0;
-  NumericalPoint a(dimension);
+  Scalar covTh = 1.0;
+  Point a(dimension);
   a[0] = 1.0;
   a[1] = 2.0;
   a[2] = 5.0;
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
   }
   --covTh;
 
-  NumericalMathFunction model(inputVariables, outputVariables, formula);
+  Function model(inputVariables, outputVariables, formula);
 
   // Create the input distribution
   Collection<Distribution> marginalX(dimension);
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
   {
     polynomialCollection[i] = LegendreFactory();
   }
-  const NumericalScalar q = 0.4;
+  const Scalar q = 0.4;
   HyperbolicAnisotropicEnumerateFunction enumerateFunction(dimension, q);
   OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 

@@ -40,7 +40,7 @@ static const Factory<MatrixImplementation> Factory_MatrixImplementation;
 // All the pivots with a magnitude less than this threshold are considered as zero
 /* Default constructor */
 MatrixImplementation::MatrixImplementation()
-  : PersistentCollection<NumericalScalar>()
+  : PersistentCollection<Scalar>()
   , nbRows_(0)
   , nbColumns_(0)
 {
@@ -52,7 +52,7 @@ MatrixImplementation::MatrixImplementation()
 /* The MatrixImplementation is viewed as a set of column vectors read one after another */
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0)
+  : PersistentCollection<Scalar>(rowDim * colDim, 0.0)
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
@@ -62,8 +62,8 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
 /* Constructor from external collection */
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
-    const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim, 0.0)
+    const Collection<Scalar> & elementsValues)
+  : PersistentCollection<Scalar>(rowDim * colDim, 0.0)
   , nbRows_(rowDim)
   , nbColumns_(colDim)
 {
@@ -85,7 +85,7 @@ String MatrixImplementation::__repr__() const
          << " name=" << getName()
          << " rows=" << nbRows_
          << " columns=" << nbColumns_
-         << " values=" << PersistentCollection<NumericalScalar>::__repr__();
+         << " values=" << PersistentCollection<Scalar>::__repr__();
 }
 
 String MatrixImplementation::__str__(const String & offset) const
@@ -131,7 +131,7 @@ String MatrixImplementation::__str__(const String & offset) const
 /* Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
 /* The element of the MatrixImplementation is designated by its row number i and its column number j */
 /* the first element of the MatrixImplementation is m(0,0) */
-NumericalScalar & MatrixImplementation::operator() (const UnsignedInteger i,
+Scalar & MatrixImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
@@ -141,7 +141,7 @@ NumericalScalar & MatrixImplementation::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the MatrixImplementation (read only) */
 /* The element of the MatrixImplementation is designated by its row number i and its column number j */
-const NumericalScalar & MatrixImplementation::operator() (const UnsignedInteger i,
+const Scalar & MatrixImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
@@ -331,14 +331,14 @@ MatrixImplementation MatrixImplementation::symProd (const MatrixImplementation &
   return mult;
 }
 
-/* Multiplications with a NumericalPoint (must have consistent dimensions) */
-NumericalPoint MatrixImplementation::genVectProd (const NumericalPoint & pt, const Bool transposed) const
+/* Multiplications with a Point (must have consistent dimensions) */
+Point MatrixImplementation::genVectProd (const Point & pt, const Bool transposed) const
 {
   int k = transposed ? nbRows_ : nbColumns_;
   if (k != (int)pt.getDimension()) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product: columns=" << k << " / vector dimension=" << pt.getDimension() << ".";
 
   int l = transposed ? nbColumns_ : nbRows_;
-  NumericalPoint prod(l);
+  Point prod(l);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
   char trans = transposed ? 'T' : 'N';
   int one = 1;
@@ -353,11 +353,11 @@ NumericalPoint MatrixImplementation::genVectProd (const NumericalPoint & pt, con
   return prod;
 }
 
-NumericalPoint MatrixImplementation::symVectProd (const NumericalPoint & pt) const
+Point MatrixImplementation::symVectProd (const Point & pt) const
 {
   if (nbColumns_ != pt.getDimension() ) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix/vector product";
 
-  NumericalPoint prod(nbRows_);
+  Point prod(nbRows_);
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
   char uplo('L');
@@ -391,8 +391,8 @@ MatrixImplementation MatrixImplementation::computeGram (const Bool transposed) c
   return C;
 }
 
-/* Multiplication by a NumericalScalar */
-MatrixImplementation MatrixImplementation::operator* (const NumericalScalar s) const
+/* Multiplication by a Scalar */
+MatrixImplementation MatrixImplementation::operator* (const Scalar s) const
 {
   if (s == 0.0) return MatrixImplementation(nbRows_, nbColumns_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
@@ -405,8 +405,8 @@ MatrixImplementation MatrixImplementation::operator* (const NumericalScalar s) c
   return scalprod;
 }
 
-/* In-place Multiplication by a NumericalScalar */
-MatrixImplementation & MatrixImplementation::operator*= (const NumericalScalar s)
+/* In-place Multiplication by a Scalar */
+MatrixImplementation & MatrixImplementation::operator*= (const Scalar s)
 {
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   double alpha(s);
@@ -417,8 +417,8 @@ MatrixImplementation & MatrixImplementation::operator*= (const NumericalScalar s
   return *this;
 }
 
-/* Division by a NumericalScalar*/
-MatrixImplementation MatrixImplementation::operator/ (const NumericalScalar s) const
+/* Division by a Scalar*/
+MatrixImplementation MatrixImplementation::operator/ (const Scalar s) const
 {
   if (s == 0.0) throw InvalidArgumentException(HERE);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
@@ -431,8 +431,8 @@ MatrixImplementation MatrixImplementation::operator/ (const NumericalScalar s) c
   return scalprod;
 }
 
-/* In-place division by a NumericalScalar */
-MatrixImplementation & MatrixImplementation::operator/= (const NumericalScalar s)
+/* In-place division by a Scalar */
+MatrixImplementation & MatrixImplementation::operator/= (const Scalar s)
 {
   if (s == 0.0) throw InvalidArgumentException(HERE);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
@@ -466,7 +466,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   int m(nbRows_);
   int n(matrix.nbColumns_);
 
-  NumericalScalar alpha = 1.0;
+  Scalar alpha = 1.0;
 
   // Lapack routine
   dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
@@ -540,7 +540,7 @@ MatrixImplementation MatrixImplementation::symPower(const UnsignedInteger n) con
 /* Empty returns true if there is no element in the MatrixImplementation */
 Bool MatrixImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<NumericalScalar>::isEmpty()));
+  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<Scalar>::isEmpty()));
 }
 
 /* Returns true if triangular lower or upper */
@@ -566,8 +566,8 @@ Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
 
   if (&lhs != &rhs)   // Not the same object
   {
-    const Collection<NumericalScalar> & refLhs(static_cast<const Collection<NumericalScalar> >(lhs));
-    const Collection<NumericalScalar> & refRhs(static_cast<const Collection<NumericalScalar> >(rhs));
+    const Collection<Scalar> & refLhs(static_cast<const Collection<Scalar> >(lhs));
+    const Collection<Scalar> & refRhs(static_cast<const Collection<Scalar> >(rhs));
     equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && refLhs == refRhs);
   }
 
@@ -577,7 +577,7 @@ Bool MatrixImplementation::operator == (const MatrixImplementation & rhs) const
 
 Bool MatrixImplementation::isSymmetric() const
 {
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("Matrix-SymmetryThreshold");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-SymmetryThreshold");
   if ( nbRows_ == nbColumns_ )
   {
     for ( UnsignedInteger i = 1; i < nbRows_; ++ i )
@@ -636,7 +636,7 @@ Bool MatrixImplementation::hasUnitRange() const
 }
 
 /* Set small elements to zero */
-MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold) const
+MatrixImplementation MatrixImplementation::clean(const Scalar threshold) const
 {
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;
@@ -644,7 +644,7 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
   for (UnsignedInteger j = 0; j < nbColumns_; ++j)
     for (UnsignedInteger i = 0; i < nbRows_; ++i)
     {
-      const NumericalScalar value = (*this)(i, j);
+      const Scalar value = (*this)(i, j);
       // Things are done this way to prevent spurious -0.0
       if (std::abs(value) < 0.5 * threshold) result(i, j) = 0.0;
       else result(i, j) = threshold * round(value / threshold);
@@ -653,7 +653,7 @@ MatrixImplementation MatrixImplementation::clean(const NumericalScalar threshold
 }
 
 /* Set small elements to zero */
-MatrixImplementation MatrixImplementation::cleanSym(const NumericalScalar threshold) const
+MatrixImplementation MatrixImplementation::cleanSym(const Scalar threshold) const
 {
   symmetrize();
   return clean(threshold);
@@ -681,7 +681,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
   double lwork_d = -1.;
   int info = -1;
   std::vector<int> jpiv(n);
-  double rcond(ResourceMap::GetAsNumericalScalar("Matrix-DefaultSmallPivot"));
+  double rcond(ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot"));
   int rank = -1;
 
   MatrixImplementation Q;
@@ -690,7 +690,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
 
   dgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &lwork_d, &lwork, &info);
   lwork = static_cast<int>(lwork_d);
-  NumericalPoint work(lwork);
+  Point work(lwork);
   dgelsy_(&m, &n, &nrhs, &A[0], &m, &B[0], &p, &jpiv[0], &rcond, &rank, &work[0], &lwork, &info);
 
   MatrixImplementation result(n, q);
@@ -703,14 +703,14 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
 /* Resolution of a linear system : rectangular matrix
  * Mx = b, M is an mxn matrix, b is an m-dimensional
  * vector and x is an n-dimensional vector */
-NumericalPoint MatrixImplementation::solveLinearSystemRect (const NumericalPoint & b,
+Point MatrixImplementation::solveLinearSystemRect (const Point & b,
     const Bool keepIntact)
 {
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
-  // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
+  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
   return solveLinearSystemRect(MatrixImplementation(m, 1, b), keepIntact);
 }
 
@@ -758,7 +758,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemTri (const MatrixImp
 }
 
 /* Resolution of a linear system : square matrix */
-NumericalPoint MatrixImplementation::solveLinearSystemTri (const NumericalPoint & b,
+Point MatrixImplementation::solveLinearSystemTri (const Point & b,
     const Bool keepIntact,
     const Bool lower,
     const Bool transposed)
@@ -766,7 +766,7 @@ NumericalPoint MatrixImplementation::solveLinearSystemTri (const NumericalPoint 
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
+  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
   return solveLinearSystemTri(MatrixImplementation(m, 1, b), keepIntact, lower, transposed);
 }
 
@@ -796,13 +796,13 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const Matrix
 }
 
 /* Resolution of a linear system : square matrix */
-NumericalPoint MatrixImplementation::solveLinearSystemSquare (const NumericalPoint & b,
+Point MatrixImplementation::solveLinearSystemSquare (const Point & b,
     const Bool keepIntact)
 {
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
+  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
   return solveLinearSystemRect(MatrixImplementation(m, 1, b), keepIntact);
 }
 
@@ -830,7 +830,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
 
   dsysv_(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &lwork_d, &lwork, &info, &luplo);
   lwork = static_cast<int>(lwork_d);
-  NumericalPoint work(lwork);
+  Point work(lwork);
   dsysv_(&uplo, &n, &nrhs, &A[0], &n, &ipiv[0], &B[0], &n, &work[0], &lwork, &info, &luplo);
 
   if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular.";
@@ -838,14 +838,14 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
 }
 
 /* Resolution of a linear system : symmetric matrix */
-NumericalPoint MatrixImplementation::solveLinearSystemSym (const NumericalPoint & b,
+Point MatrixImplementation::solveLinearSystemSym (const Point & b,
     const Bool keepIntact)
 {
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   MatrixImplementation B(dimension, 1, b);
-  // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
+  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
   return solveLinearSystemSym(B, keepIntact);
 }
 
@@ -877,34 +877,34 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCov (const MatrixImp
 }
 
 /* Resolution of a linear system : symmetric matrix */
-NumericalPoint MatrixImplementation::solveLinearSystemCov (const NumericalPoint & b,
+Point MatrixImplementation::solveLinearSystemCov (const Point & b,
     const Bool keepIntact)
 {
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   MatrixImplementation B(dimension, 1, b);
-  // A MatrixImplementation is also a collection of NumericalScalar, so it is automatically converted into a NumericalPoint
+  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
   return solveLinearSystemCov(B, keepIntact);
 }
 
 /* Compute determinant */
-NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalScalar & sign,
+Scalar MatrixImplementation::computeLogAbsoluteDeterminant (Scalar & sign,
     const Bool keepIntact)
 {
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the determinant of an empty matrix";
-  NumericalScalar logAbsoluteDeterminant = 0.0;
+  Scalar logAbsoluteDeterminant = 0.0;
   sign = 1.0;
   if (n <= 2)
   {
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     if (n == 1) value = (*this)(0, 0);
     else value = (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
     if (value == 0.0)
     {
       sign = 0.0;
-      logAbsoluteDeterminant = SpecFunc::LogMinNumericalScalar;
+      logAbsoluteDeterminant = SpecFunc::LogMinScalar;
     }
     else
     {
@@ -923,17 +923,17 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
 
     // LU Factorization with LAPACK
     dgetrf_(&n, &n, &A[0], &n, &ipiv[0], &info);
-    if (info > 0) return SpecFunc::LogMinNumericalScalar;
+    if (info > 0) return SpecFunc::LogMinScalar;
     // Determinant computation
     for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
     {
-      const NumericalScalar pivot = A[i * (ipiv.size() + 1)];
+      const Scalar pivot = A[i * (ipiv.size() + 1)];
       if (std::abs(pivot) == 0.0)
       {
-        logAbsoluteDeterminant = SpecFunc::LogMinNumericalScalar;
+        logAbsoluteDeterminant = SpecFunc::LogMinScalar;
         sign = 0.0;
       }
-      if (logAbsoluteDeterminant > SpecFunc::LogMinNumericalScalar) logAbsoluteDeterminant += log(std::abs(pivot));
+      if (logAbsoluteDeterminant > SpecFunc::LogMinScalar) logAbsoluteDeterminant += log(std::abs(pivot));
       if (pivot < 0.0) sign = -sign;
       if (ipiv[i] != int(i + 1)) sign = -sign;
     }
@@ -942,18 +942,18 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminant (NumericalSc
 }
 
 /* Compute determinant */
-NumericalScalar MatrixImplementation::computeDeterminant (const Bool keepIntact)
+Scalar MatrixImplementation::computeDeterminant (const Bool keepIntact)
 {
   if (nbRows_ == 1) return (*this)(0, 0);
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
-  NumericalScalar sign = 0.0;
-  const NumericalScalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
-  if (logAbsoluteDeterminant == SpecFunc::LogMinNumericalScalar) return 0.0;
+  Scalar sign = 0.0;
+  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
+  if (logAbsoluteDeterminant == SpecFunc::LogMinScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
 
 /* Compute determinant for a symmetric matrix */
-NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (NumericalScalar & sign,
+Scalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Scalar & sign,
     const Bool keepIntact)
 {
   symmetrize();
@@ -964,7 +964,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      std::vector<int> ipiv (n);
      char uplo('L');
      int info;
-     NumericalScalar determinant = 1.0;
+     Scalar determinant = 1.0;
      int lwork(-1);
      double lwork_d;
      int luplo(1);
@@ -975,7 +975,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      MatrixImplementation A(*this);
      dsytrf_(&uplo, &n, &A[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
      lwork = static_cast<int>(lwork_d);
-     NumericalPoint work(lwork);
+     Point work(lwork);
      dsytrf_(&uplo, &n, &A[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
      // Determinant computation
      for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
@@ -988,7 +988,7 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
      {
      dsytrf_(&uplo, &n, &(*this)[0], &n, &ipiv[0],&lwork_d, &lwork, &info, &luplo);
      lwork = static_cast<int>(lwork_d);
-     NumericalPoint work(lwork);
+     Point work(lwork);
      dsytrf_(&uplo, &n, &(*this)[0], &n, &ipiv[0],&work[0], &lwork, &info, &luplo);
      // Determinant computation
      for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
@@ -1002,33 +1002,33 @@ NumericalScalar MatrixImplementation::computeLogAbsoluteDeterminantSym (Numerica
 }
 
 /* Compute determinant for a symmetric matrix */
-NumericalScalar MatrixImplementation::computeDeterminantSym (const Bool keepIntact)
+Scalar MatrixImplementation::computeDeterminantSym (const Bool keepIntact)
 {
   if (nbRows_ == 1) return (*this)(0, 0);
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(1, 0) * (*this)(1, 0);
-  NumericalScalar sign = 0.0;
-  const NumericalScalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
-  if (logAbsoluteDeterminant == SpecFunc::LogMinNumericalScalar) return 0.0;
+  Scalar sign = 0.0;
+  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
+  if (logAbsoluteDeterminant == SpecFunc::LogMinScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
 
 /* Compute trace */
-NumericalScalar MatrixImplementation::computeTrace() const
+Scalar MatrixImplementation::computeTrace() const
 {
-  NumericalScalar trace = 0.0;
+  Scalar trace = 0.0;
   for (UnsignedInteger i = 0; i < nbRows_; ++i) trace += (*this)(i, i);
   return trace;
 }
 
 /* Compute the eigenvalues of a square matrix */
-MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)
 {
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobvl('N');
   char jobvr('N');
-  NumericalPoint wr(n, 0.0);
-  NumericalPoint wi(n, 0.0);
+  Point wr(n, 0.0);
+  Point wi(n, 0.0);
   double vl = 0.;
   double vr = 0.;
   int ldvl(1);
@@ -1045,24 +1045,24 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEi
 
   dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
   lwork = static_cast<int>(lwork_d);
-  NumericalPoint work(lwork);
+  Point work(lwork);
   dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr, &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
 
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
-  NumericalComplexCollection eigenValues(n);
-  for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i) eigenValues[i] = NumericalComplex(wr[i], wi[i]);
+  ComplexCollection eigenValues(n);
+  for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i) eigenValues[i] = Complex(wr[i], wi[i]);
   return eigenValues;
 }
 
-MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEVSquare (ComplexMatrixImplementation & v,
+MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquare (ComplexMatrixImplementation & v,
     const Bool keepIntact)
 {
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobvl('N');
   char jobvr('V');
-  NumericalPoint wr(n, 0.0);
-  NumericalPoint wi(n, 0.0);
+  Point wr(n, 0.0);
+  Point wi(n, 0.0);
   double vl;
   MatrixImplementation vr(n, n);
   int ldvl(1);
@@ -1079,14 +1079,14 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEV
 
   dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &lwork_d, &lwork, &info, &ljobvl, &ljobvr);
   lwork = static_cast<int>(lwork_d);
-  NumericalPoint work(lwork);
+  Point work(lwork);
   dgeev_(&jobvl, &jobvr, &n, &A[0], &n, &wr[0], &wi[0], &vl, &ldvl, &vr[0], &ldvr, &work[0], &lwork, &info, &ljobvl, &ljobvr);
 
   // Cast the eigenvalues into OpenTURNS data structures
-  NumericalComplexCollection eigenValues(n);
+  ComplexCollection eigenValues(n);
   for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
   {
-    eigenValues[i] = NumericalComplex(wr[i], wi[i]);
+    eigenValues[i] = Complex(wr[i], wi[i]);
   }
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   // Cast the eigenvectors into OpenTURNS data structures
@@ -1105,8 +1105,8 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEV
     {
       for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(n); ++i)
       {
-        v(i, j)     = NumericalComplex(vr(i, j),  vr(i, j + 1));
-        v(i, j + 1) = NumericalComplex(vr(i, j), -vr(i, j + 1));
+        v(i, j)     = Complex(vr(i, j),  vr(i, j + 1));
+        v(i, j + 1) = Complex(vr(i, j), -vr(i, j + 1));
       }
       j += 2;
     }
@@ -1115,13 +1115,13 @@ MatrixImplementation::NumericalComplexCollection MatrixImplementation::computeEV
 }
 
 /* Compute the eigenvalues of a symmetric matrix */
-NumericalPoint MatrixImplementation::computeEigenValuesSym (const Bool keepIntact)
+Point MatrixImplementation::computeEigenValuesSym (const Bool keepIntact)
 {
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobz('N');
   char uplo('L');
-  NumericalPoint w(n, 0.0);
+  Point w(n, 0.0);
   int lwork(-1);
   double lwork_d;
   int info;
@@ -1134,21 +1134,21 @@ NumericalPoint MatrixImplementation::computeEigenValuesSym (const Bool keepIntac
 
   dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
   lwork = static_cast<int>(lwork_d);
-  NumericalPoint work(lwork);
+  Point work(lwork);
   dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
 
   if (info != 0) throw InternalException(HERE) << "Error: the QR algorithm failed to converge.";
   return w;
 }
 
-NumericalPoint MatrixImplementation::computeEVSym (MatrixImplementation & v,
+Point MatrixImplementation::computeEVSym (MatrixImplementation & v,
     const Bool keepIntact)
 {
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobz('V');
   char uplo('L');
-  NumericalPoint w(n, 0.0);
+  Point w(n, 0.0);
   int lwork(-1);
   double lwork_d;
   int info;
@@ -1161,7 +1161,7 @@ NumericalPoint MatrixImplementation::computeEVSym (MatrixImplementation & v,
 
   dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &lwork_d, &lwork, &info, &ljobz, &luplo);
   lwork = static_cast<int>(lwork_d);
-  NumericalPoint work(lwork);
+  Point work(lwork);
   dsyev_(&jobz, &uplo, &n, &A[0], &n, &w[0], &work[0], &lwork, &info, &ljobz, &luplo);
   v = A;
 
@@ -1170,14 +1170,14 @@ NumericalPoint MatrixImplementation::computeEVSym (MatrixImplementation & v,
 }
 
 /* Compute the singular values of a matrix */
-NumericalPoint MatrixImplementation::computeSingularValues(const Bool keepIntact)
+Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
 {
   int m(nbRows_);
   int n(nbColumns_);
   if ((m == 0) || (n == 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values of an empty matrix";
   char jobz('N');
-  NumericalPoint S(std::min(m, n), 0.0);
-  NumericalPoint work(1, 0.0);
+  Point S(std::min(m, n), 0.0);
+  Point work(1, 0.0);
   MatrixImplementation u(1, 1);
   int ldu(1);
   int ldvt(1);
@@ -1194,7 +1194,7 @@ NumericalPoint MatrixImplementation::computeSingularValues(const Bool keepIntact
   // First call to compute the optimal work size
   dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   lwork = static_cast<int>(work[0]);
-  work = NumericalPoint(lwork, 0.0);
+  work = Point(lwork, 0.0);
   // Second call to compute the SVD
   dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
 
@@ -1203,10 +1203,10 @@ NumericalPoint MatrixImplementation::computeSingularValues(const Bool keepIntact
 }
 
 /* Compute the singular values and singular decomposition of a matrix */
-NumericalPoint MatrixImplementation::computeSVD(MatrixImplementation & u,
-    MatrixImplementation & vT,
-    const Bool fullSVD,
-    const Bool keepIntact)
+Point MatrixImplementation::computeSVD(MatrixImplementation & u,
+                                       MatrixImplementation & vT,
+                                       const Bool fullSVD,
+                                       const Bool keepIntact)
 {
   int m(nbRows_);
   int n(nbColumns_);
@@ -1216,8 +1216,8 @@ NumericalPoint MatrixImplementation::computeSVD(MatrixImplementation & u,
   u = MatrixImplementation(m, ( fullSVD ? m : std::min(m, n)));
   int ldvt = (fullSVD ? n : std::min(m, n));
   vT = MatrixImplementation(( fullSVD ? n : std::min(m, n)), n);
-  NumericalPoint S(std::min(m, n), 0.0);
-  NumericalPoint work(1, 0.0);
+  Point S(std::min(m, n), 0.0);
+  Point work(1, 0.0);
   int lwork(-1);
   std::vector<int> iwork(8 * std::min(m, n));
   int info(0);
@@ -1230,7 +1230,7 @@ NumericalPoint MatrixImplementation::computeSVD(MatrixImplementation & u,
   // First call to compute the optimal work size
   dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
   lwork = static_cast<int>(work[0]);
-  work = NumericalPoint(lwork, 0.0);
+  work = Point(lwork, 0.0);
   // Second call to compute the SVD
   dgesdd_(&jobz, &m, &n, &A[0], &m, &S[0], &u[0], &ldu, &vT[0], &ldvt, &work[0], &lwork, &iwork[0], &info, &ljobz);
 
@@ -1256,7 +1256,7 @@ Bool MatrixImplementation::isPositiveDefinite(const Bool keepIntact)
   return (info == 0) ;
 }
 
-MatrixImplementation::NumericalScalarCollection MatrixImplementation::triangularVectProd(const NumericalScalarCollection & pt,
+MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const ScalarCollection & pt,
     const char side) const
 {
   char uplo(side);
@@ -1277,14 +1277,14 @@ MatrixImplementation::NumericalScalarCollection MatrixImplementation::triangular
   int lda(nbRows_);
   int one(1);
 
-  NumericalScalarCollection x(nbRows_);
+  ScalarCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
   dtrmv_(&uplo, &trans, &diag, &n, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
-MatrixImplementation::NumericalScalarCollection MatrixImplementation::triangularVectProd(const NumericalPoint & pt,
+MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const Point & pt,
     const char side) const
 {
   return triangularVectProd(pt.getCollection(), side);
@@ -1314,13 +1314,13 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
 
 /* Update in-place the Cholesky factor L of an SPD matrix M given a rank-one update vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M + vv^t */
 void MatrixImplementation::CholeskyUpdate(MatrixImplementation & cholesky,
-    const NumericalPoint & vector)
+    const Point & vector)
 {
   UnsignedInteger dimension = cholesky.nbRows_;
   if (dimension != cholesky.nbColumns_) throw InvalidDimensionException(HERE) << "Cannot update a non-square Cholesky factor";
   if (dimension != vector.getDimension()) throw InvalidDimensionException(HERE) << "Incompatible Cholesky factor dimension and vector dimension";
   // Working copy of vector
-  NumericalPoint work(vector);
+  Point work(vector);
   int size = dimension;
   int one = 1;
   UnsignedInteger shift = 0;
@@ -1352,17 +1352,17 @@ void MatrixImplementation::CholeskyUpdate(MatrixImplementation & cholesky,
 
 /* Downdate in-place the Cholesky factor L of an SPD matrix M given a rank-one downdate vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M - vv^t */
 void MatrixImplementation::CholeskyDowndate(MatrixImplementation & cholesky,
-    const NumericalPoint & vector)
+    const Point & vector)
 {
   UnsignedInteger dimension = cholesky.nbRows_;
   if (dimension != cholesky.nbColumns_) throw InvalidDimensionException(HERE) << "Cannot update a non-square Cholesky factor";
   if (dimension != vector.getDimension()) throw InvalidDimensionException(HERE) << "Incompatible Cholesky factor dimension and vector dimension";
   // Working copy of vector
-  NumericalPoint work(cholesky.solveLinearSystemTri(vector));
+  Point work(cholesky.solveLinearSystemTri(vector));
   // Parameters of the Givens rotation
-  NumericalScalar qs = sqrt(1.0 - work.normSquare());
-  NumericalPoint cosI(dimension);
-  NumericalPoint sinI(dimension);
+  Scalar qs = sqrt(1.0 - work.normSquare());
+  Point cosI(dimension);
+  Point sinI(dimension);
   for (SignedInteger i = dimension - 1; i >= 0; --i)
   {
     // Generate Givens rotation
@@ -1375,7 +1375,7 @@ void MatrixImplementation::CholeskyDowndate(MatrixImplementation & cholesky,
       sinI[i] = -sinI[i];
     }
   }
-  work = NumericalPoint(dimension, 0.0);
+  work = Point(dimension, 0.0);
   int size(0);
   int one(1);
   UnsignedInteger shift = (dimension - 1) * (dimension + 1);
@@ -1416,7 +1416,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
 
   if ((m == 0) || (n == 0)) throw InvalidDimensionException(HERE) << "Cannot compute the QR decomposition of an empty matrix";
   int k = std::min(m, n);
-  NumericalPoint tau(k);
+  Point tau(k);
   int lwork = -1;
   int info = -1;
   double lwork_d = -1.;
@@ -1429,7 +1429,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
   if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
   // Here is the optimal size of the working space
   lwork = static_cast<int>(lwork_d);
-  NumericalPoint work(lwork);
+  Point work(lwork);
   // Second call to compute the decomposition
   dgeqrf_(&m, &n, &Q[0], &lda, &tau[0], &work[0], &lwork, &info);
   if (info != 0) throw InternalException(HERE) << "Lapack DGEQRF: error code=" << info;
@@ -1449,7 +1449,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
   if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
   // Here is the optimal size of the working space
   lwork = static_cast<int>(lwork_d);
-  work = NumericalPoint(lwork);
+  work = Point(lwork);
   // Second call to compute the product of reflectors
   if (fullQR && (m > n))
   {
@@ -1474,7 +1474,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
 /* Method save() stores the object through the StorageManager */
 void MatrixImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<NumericalScalar>::save(adv);
+  PersistentCollection<Scalar>::save(adv);
   adv.saveAttribute( "nbRows_",    nbRows_);
   adv.saveAttribute( "nbColumns_", nbColumns_);
 }
@@ -1482,20 +1482,20 @@ void MatrixImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MatrixImplementation::load(Advocate & adv)
 {
-  PersistentCollection<NumericalScalar>::load(adv);
+  PersistentCollection<Scalar>::load(adv);
 
   adv.loadAttribute( "nbRows_",    nbRows_);
   adv.loadAttribute( "nbColumns_", nbColumns_);
 }
 
-const NumericalScalar* MatrixImplementation::__baseaddress__() const
+const Scalar* MatrixImplementation::__baseaddress__() const
 {
   return &(*this)[0];
 }
 
 UnsignedInteger MatrixImplementation::__elementsize__() const
 {
-  return sizeof(NumericalScalar);
+  return sizeof(Scalar);
 }
 
 UnsignedInteger MatrixImplementation::__stride__(UnsignedInteger dim) const

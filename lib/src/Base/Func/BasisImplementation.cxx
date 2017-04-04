@@ -44,27 +44,27 @@ BasisImplementation * BasisImplementation::clone() const
   return new BasisImplementation(*this);
 }
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction BasisImplementation::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function BasisImplementation::build(const UnsignedInteger index) const
 {
-  throw NotYetImplementedException(HERE) << "In NumericalMathFunction BasisImplementation::build(const UnsignedInteger index) const";
+  throw NotYetImplementedException(HERE) << "In Function BasisImplementation::build(const UnsignedInteger index) const";
 }
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction BasisImplementation::operator[](const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function BasisImplementation::operator[](const UnsignedInteger index) const
 {
   return build(index);
 }
 
-NumericalMathFunction & BasisImplementation::operator[](const UnsignedInteger index)
+Function & BasisImplementation::operator[](const UnsignedInteger index)
 {
   throw NotYetImplementedException(HERE) << "In BasisImplementation::operator[](const UnsignedInteger index)";
 }
 
-BasisImplementation::NumericalMathFunctionCollection BasisImplementation::getSubBasis(const Indices& indices) const
+BasisImplementation::FunctionCollection BasisImplementation::getSubBasis(const Indices& indices) const
 {
   const UnsignedInteger size = indices.getSize();
-  NumericalMathFunctionCollection coll(size);
+  FunctionCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     coll[i] = operator[](indices[i]);
@@ -72,9 +72,9 @@ BasisImplementation::NumericalMathFunctionCollection BasisImplementation::getSub
   return coll;
 }
 
-void BasisImplementation::add(const NumericalMathFunction & elt)
+void BasisImplementation::add(const Function & elt)
 {
-  throw NotYetImplementedException(HERE) << "In BasisImplementation::add(const NumericalMathFunction & elt)";
+  throw NotYetImplementedException(HERE) << "In BasisImplementation::add(const Function & elt)";
 }
 
 UnsignedInteger BasisImplementation::getDimension() const

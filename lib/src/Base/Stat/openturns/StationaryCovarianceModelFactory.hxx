@@ -61,7 +61,7 @@ public:
 
   /** Build a user defined covariance model based on a spectral model and a frequency grid */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel,
-										   const RegularGrid & frequencyGrid) const;
+      const RegularGrid & frequencyGrid) const;
 
   /** Build a user defined covariance model based on a user defined spectral model */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const UserDefinedSpectralModel & mySpectralModel) const;

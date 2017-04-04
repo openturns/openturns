@@ -9,7 +9,7 @@ Parameters
 limitStateVariable : :class:`~openturns.RandomVector`
     This RandomVector must be of type *Composite*, which means it must have
     been defined with the fourth usage of declaration of a RandomVector
-    (from a NumericalMathFunction and an antecedent Distribution) or with
+    (from a Function and an antecedent Distribution) or with
     the class :class:`~openturns.CompositeRandomVector`.
 
 Notes
@@ -135,7 +135,7 @@ covariance : :class:`~openturns.CovarianceMatrix`
 Returns
 -------
 gradient : :class:`~openturns.Matrix`
-    Gradient of the NumericalMathFunction which defines the random vector at
+    Gradient of the Function which defines the random vector at
     the mean point of the input random vector."
 
 // ---------------------------------------------------------------------
@@ -146,7 +146,7 @@ gradient : :class:`~openturns.Matrix`
 Returns
 -------
 hessian : :class:`~openturns.SymmetricTensor`
-    Hessian of the NumericalMathFunction which defines the random vector at
+    Hessian of the Function which defines the random vector at
     the mean point of the input random vector."
 
 // ---------------------------------------------------------------------
@@ -156,7 +156,7 @@ hessian : :class:`~openturns.SymmetricTensor`
 
 Returns
 -------
-factors : :class:`~openturns.NumericalPoint`
+factors : :class:`~openturns.Point`
     Importance factors of the inputs : only when randVect is of dimension 1."
 
 // ---------------------------------------------------------------------
@@ -176,7 +176,7 @@ limitStateVariable : :class:`~openturns.RandomVector`
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     Approximation at the first order of the mean of the random vector."
 
 // ---------------------------------------------------------------------
@@ -186,9 +186,9 @@ mean : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     Approximation at the second order of the mean of the random vector
-    (it requires that the hessian of the NumericalMathFunction has been defined)."
+    (it requires that the hessian of the Function has been defined)."
 
 // ---------------------------------------------------------------------
 
@@ -197,8 +197,8 @@ mean : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-value : :class:`~openturns.NumericalPoint`
-    Value of the NumericalMathFunction which defines the random vector at
+value : :class:`~openturns.Point`
+    Value of the Function which defines the random vector at
     the mean point of the input random vector."
 
 // ---------------------------------------------------------------------

@@ -45,16 +45,16 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
-  FrankCopula buildAsFrankCopula(const NumericalSample & sample) const;
-  FrankCopula buildAsFrankCopula(const NumericalPoint & parameters) const;
+  FrankCopula buildAsFrankCopula(const Sample & sample) const;
+  FrankCopula buildAsFrankCopula(const Point & parameters) const;
   FrankCopula buildAsFrankCopula() const;
 
 private:
   // Compute Kendall's tau from Frank copula's parameter
-  NumericalPoint KendallTauFromParameter(const NumericalPoint & theta) const;
+  Point KendallTauFromParameter(const Point & theta) const;
 
 }; /* class FrankCopulaFactory */
 

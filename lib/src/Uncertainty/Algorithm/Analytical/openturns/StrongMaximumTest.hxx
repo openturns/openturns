@@ -22,9 +22,9 @@
 #define OPENTURNS_STRONGMAXTEST_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StandardEvent.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,16 +46,16 @@ public:
 
   /** Standard constructor */
   StrongMaximumTest(const StandardEvent & event,
-                    const NumericalPoint & standardSpaceDesignPoint,
-                    const NumericalScalar importanceLevel,
-                    const NumericalScalar accuracyLevel,
-                    const NumericalScalar confidenceLevel);
+                    const Point & standardSpaceDesignPoint,
+                    const Scalar importanceLevel,
+                    const Scalar accuracyLevel,
+                    const Scalar confidenceLevel);
 
   /** Standard constructor */
   StrongMaximumTest(const StandardEvent & event,
-                    const NumericalPoint & standardSpaceDesignPoint,
-                    const NumericalScalar importanceLevel,
-                    const NumericalScalar accuracyLevel,
+                    const Point & standardSpaceDesignPoint,
+                    const Scalar importanceLevel,
+                    const Scalar accuracyLevel,
                     const UnsignedInteger pointNumber);
 
 
@@ -63,55 +63,55 @@ public:
   virtual StrongMaximumTest * clone() const;
 
   /** standardSpaceDesignPoint accessor */
-  NumericalPoint getStandardSpaceDesignPoint() const;
+  Point getStandardSpaceDesignPoint() const;
 
   /** Event accessor */
   StandardEvent getEvent() const;
 
   /** ImportanceLevel accessor */
-  NumericalScalar getImportanceLevel() const;
+  Scalar getImportanceLevel() const;
 
   /** AccuracyLevel accessor */
-  NumericalScalar getAccuracyLevel() const;
+  Scalar getAccuracyLevel() const;
 
   /** ConfidenceLevel accessor */
-  NumericalScalar getConfidenceLevel() const;
+  Scalar getConfidenceLevel() const;
 
   /** DesignPointVicinity accessor */
-  NumericalScalar  getDesignPointVicinity() const;
+  Scalar  getDesignPointVicinity() const;
 
   /** PointNumber accessor */
   UnsignedInteger getPointNumber() const;
 
   /** DeltaEpsilon accessor */
-  NumericalScalar getDeltaEpsilon() const;
+  Scalar getDeltaEpsilon() const;
 
   /** The function that runs the Strong Max Test */
   void run();
 
   /** NearDesignPointVerifyingEventPoints accessor */
-  NumericalSample getNearDesignPointVerifyingEventPoints() const;
+  Sample getNearDesignPointVerifyingEventPoints() const;
 
   /** FarDesignPointVerifyingEventPoints accessor */
-  NumericalSample getFarDesignPointVerifyingEventPoints() const;
+  Sample getFarDesignPointVerifyingEventPoints() const;
 
   /** NearDesignPointViolatingEventPoints accessor */
-  NumericalSample getNearDesignPointViolatingEventPoints() const;
+  Sample getNearDesignPointViolatingEventPoints() const;
 
   /** FarDesignPointViolatingEventPoints accessor */
-  NumericalSample getFarDesignPointViolatingEventPoints() const;
+  Sample getFarDesignPointViolatingEventPoints() const;
 
   /** NearDesignPointVerifyingEventValues accessor */
-  NumericalSample getNearDesignPointVerifyingEventValues() const;
+  Sample getNearDesignPointVerifyingEventValues() const;
 
   /** FarDesignPointVerifyingEventValues accessor */
-  NumericalSample getFarDesignPointVerifyingEventValues() const;
+  Sample getFarDesignPointVerifyingEventValues() const;
 
   /** NearDesignPointViolatingEventValues accessor */
-  NumericalSample getNearDesignPointViolatingEventValues() const;
+  Sample getNearDesignPointViolatingEventValues() const;
 
   /** FarDesignPointViolatingEventValues accessor */
-  NumericalSample getFarDesignPointViolatingEventValues() const;
+  Sample getFarDesignPointViolatingEventValues() const;
 
   /** String converter */
   String __repr__() const;
@@ -127,22 +127,22 @@ protected:
 private:
 
   /** AccuracyLevel accessor */
-  void setAccuracyLevel(const NumericalScalar accuracyLevel);
+  void setAccuracyLevel(const Scalar accuracyLevel);
 
   /** ConfidenceLevel accessor */
-  void setConfidenceLevel( const NumericalScalar confidenceLevel);
+  void setConfidenceLevel( const Scalar confidenceLevel);
 
   /** PointNumber accessor */
   void setPointNumber(const UnsignedInteger pointNumber);
 
   /** ImportanceLevel accessor */
-  void setImportanceLevel(const NumericalScalar importanceLevel);
+  void setImportanceLevel(const Scalar importanceLevel);
 
   /** standardSpaceDesignPoint accessor */
-  void setStandardSpaceDesignPoint(const NumericalPoint & standardSpaceDesignPoint );
+  void setStandardSpaceDesignPoint(const Point & standardSpaceDesignPoint );
 
   /** DesignPointVicinity accessor */
-  void setDesignPointVicinity(const NumericalScalar designPointVicinity);
+  void setDesignPointVicinity(const Scalar designPointVicinity);
 
   /** Event accessor */
   void setEvent(const StandardEvent & event);
@@ -155,35 +155,35 @@ private:
 
 
   /** the function that samples the sphere (radius) with N points */
-  NumericalSample sampleSphere(const NumericalScalar radius,
-                               const UnsignedInteger dimension,
-                               const UnsignedInteger pointNumber) const;
+  Sample sampleSphere(const Scalar radius,
+                      const UnsignedInteger dimension,
+                      const UnsignedInteger pointNumber) const;
 
   /**  the function that evaluates the HyperSphereSurfaceRatio (see documentation) */
-  NumericalScalar computeHyperSphereSurfaceRatio();
+  Scalar computeHyperSphereSurfaceRatio();
 
   /**  the function that evaluates delta_epsilon (see documentation) */
-  NumericalScalar computeDeltaEpsilon();
+  Scalar computeDeltaEpsilon();
 
   /** the function that evaluates if a point is in the vicinity of the design point */
-  Bool isInTheVicinityOfTheDesignPoint(const NumericalPoint & numericalPoint);
+  Bool isInTheVicinityOfTheDesignPoint(const Point & numericalPoint);
 
   StandardEvent event_;
-  NumericalPoint standardSpaceDesignPoint_;
-  NumericalScalar importanceLevel_;
-  NumericalScalar accuracyLevel_;
-  NumericalScalar confidenceLevel_;
-  NumericalScalar designPointVicinity_; // cosinus of the cone around the standard design point
+  Point standardSpaceDesignPoint_;
+  Scalar importanceLevel_;
+  Scalar accuracyLevel_;
+  Scalar confidenceLevel_;
+  Scalar designPointVicinity_; // cosinus of the cone around the standard design point
   UnsignedInteger pointNumber_;
-  NumericalScalar deltaEpsilon_;
-  NumericalSample nearDesignPointVerifyingEventPoints_;
-  NumericalSample nearDesignPointVerifyingEventValues_;
-  NumericalSample farDesignPointVerifyingEventPoints_;
-  NumericalSample farDesignPointVerifyingEventValues_;
-  NumericalSample nearDesignPointViolatingEventPoints_;
-  NumericalSample nearDesignPointViolatingEventValues_;
-  NumericalSample farDesignPointViolatingEventPoints_;
-  NumericalSample farDesignPointViolatingEventValues_;
+  Scalar deltaEpsilon_;
+  Sample nearDesignPointVerifyingEventPoints_;
+  Sample nearDesignPointVerifyingEventValues_;
+  Sample farDesignPointVerifyingEventPoints_;
+  Sample farDesignPointVerifyingEventValues_;
+  Sample nearDesignPointViolatingEventPoints_;
+  Sample nearDesignPointViolatingEventValues_;
+  Sample farDesignPointViolatingEventPoints_;
+  Sample farDesignPointViolatingEventValues_;
 
 }; // class StrongMaximumTest
 

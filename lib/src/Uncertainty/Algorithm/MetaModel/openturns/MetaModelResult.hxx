@@ -22,8 +22,8 @@
 #define OPENTURNS_METAMODELRESULT_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,29 +44,29 @@ public:
   MetaModelResult();
 
   /** Standard constructor */
-  MetaModelResult(const NumericalMathFunction & model,
-                  const NumericalMathFunction & metaModel,
-                  const NumericalPoint & residuals,
-                  const NumericalPoint & relativeErrors);
+  MetaModelResult(const Function & model,
+                  const Function & metaModel,
+                  const Point & residuals,
+                  const Point & relativeErrors);
 
   /** Virtual constructor */
   virtual MetaModelResult * clone() const;
 
   /** Model accessor */
-  virtual void setModel(const NumericalMathFunction & model);
-  virtual NumericalMathFunction getModel() const;
+  virtual void setModel(const Function & model);
+  virtual Function getModel() const;
 
   /** MetaModel accessor */
-  virtual void setMetaModel(const NumericalMathFunction & metaModel);
-  virtual NumericalMathFunction getMetaModel() const;
+  virtual void setMetaModel(const Function & metaModel);
+  virtual Function getMetaModel() const;
 
   /** Marginal residuals accessor */
-  virtual void setResiduals(const NumericalPoint & residuals);
-  virtual NumericalPoint getResiduals() const;
+  virtual void setResiduals(const Point & residuals);
+  virtual Point getResiduals() const;
 
   /** Marginal relative errors accessor */
-  virtual void setRelativeErrors(const NumericalPoint & relativeErrors);
-  virtual NumericalPoint getRelativeErrors() const;
+  virtual void setRelativeErrors(const Point & relativeErrors);
+  virtual Point getRelativeErrors() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -80,16 +80,16 @@ public:
 protected:
 
   // The initial model
-  NumericalMathFunction model_;
+  Function model_;
 
   // The corresponding meta-model
-  NumericalMathFunction metaModel_;
+  Function metaModel_;
 
   // The marginal residuals
-  NumericalPoint residuals_;
+  Point residuals_;
 
   // The marginal relative errors
-  NumericalPoint relativeErrors_;
+  Point relativeErrors_;
 
 }; // class MetaModelResult
 

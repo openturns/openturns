@@ -22,10 +22,10 @@
 #define OPENTURNS_MARGINALTRANSFORMATIONGRADIENT_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,12 +35,12 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 class OT_API MarginalTransformationGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
 
-  typedef NumericalMathGradientImplementation NumericalMathGradientImplementation; // Required by SWIG
+  typedef GradientImplementation GradientImplementation; // Required by SWIG
   typedef Collection<Distribution>            DistributionCollection;
 
   /** Default constructor */
@@ -54,7 +54,7 @@ public:
   virtual MarginalTransformationGradient * clone() const;
 
   /** Gradient */
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

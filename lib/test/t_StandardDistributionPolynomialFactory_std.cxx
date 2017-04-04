@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 UniVariatePolynomial clean(const UniVariatePolynomial & polynomial)
 {
-  NumericalPoint coefficients(polynomial.getCoefficients());
+  Point coefficients(polynomial.getCoefficients());
   for (UnsignedInteger i = 0; i < coefficients.getDimension(); ++i)
     if (std::abs(coefficients[i]) < 1.0e-10) coefficients[i] = 0.0;
   return coefficients;
@@ -65,10 +65,10 @@ int main(int argc, char *argv[])
       fullprint << "polynomialFactory(" << name << "=" << polynomialFactory << std::endl;
       for (UnsignedInteger i = 0; i < iMax; ++i)
         fullprint << name << " polynomial(" << i << ")=" << clean(polynomialFactory.build(i)).__str__() << std::endl;
-      NumericalPoint roots(polynomialFactory.getRoots(iMax - 1));
+      Point roots(polynomialFactory.getRoots(iMax - 1));
       fullprint << name << " polynomial(" << iMax - 1 << ") roots=" << roots << std::endl;
-      NumericalPoint weights;
-      NumericalPoint nodes(polynomialFactory.getNodesAndWeights(iMax - 1, weights));
+      Point weights;
+      Point nodes(polynomialFactory.getNodesAndWeights(iMax - 1, weights));
       fullprint << name << " polynomial(" << iMax - 1 << ") nodes=" << nodes << " and weights=" << weights <<  std::endl;
     }
   }

@@ -53,23 +53,23 @@ public:
   SobolIndicesAlgorithm(const Implementation & p_implementation);
 
   /** Constructor with parameters */
-  SobolIndicesAlgorithm(const NumericalSample & inputDesign,
-                        const NumericalSample & outputDesign,
+  SobolIndicesAlgorithm(const Sample & inputDesign,
+                        const Sample & outputDesign,
                         const UnsignedInteger size);
 
   /** Constructor with parameters */
   SobolIndicesAlgorithm(const Distribution & distribution,
                         const UnsignedInteger size,
-                        const NumericalMathFunction & model,
+                        const Function & model,
                         const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   SobolIndicesAlgorithm(const WeightedExperiment & experiment,
-                        const NumericalMathFunction & model,
+                        const Function & model,
                         const Bool computeSecondOrder = true);
 
   /** First order indices accessor */
-  NumericalPoint getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the first order indices accessor */
   Interval getFirstOrderIndicesInterval() const;
@@ -78,24 +78,24 @@ public:
   SymmetricMatrix getSecondOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Total order indices accessor */
-  NumericalPoint getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
+  Point getTotalOrderIndices(const UnsignedInteger marginalIndex = 0) const;
 
   /** Interval for the total order indices accessor */
   Interval getTotalOrderIndicesInterval() const;
 
   /** Aggregated first order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedFirstOrderIndices() const;
+  Point getAggregatedFirstOrderIndices() const;
 
   /** Aggregated total order indices accessor for multivariate samples */
-  NumericalPoint getAggregatedTotalOrderIndices() const;
+  Point getAggregatedTotalOrderIndices() const;
 
   // Setters for bootstrap size
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
   // Setters for bootstrap confidence level
-  NumericalScalar getBootstrapConfidenceLevel() const;
-  void setBootstrapConfidenceLevel(const NumericalScalar confidenceLevel);
+  Scalar getBootstrapConfidenceLevel() const;
+  void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;

@@ -53,7 +53,7 @@ try:
     print("test 4 : constructor with collection method")
 
     # Create the collection of values
-    elementsValues = NumericalComplexCollection()
+    elementsValues = ComplexCollection()
     elementsValues.add(1. - 1j)
     elementsValues.add(2. - 1j)
     elementsValues.add(3. - 1j)
@@ -113,7 +113,7 @@ try:
     print("test 9 : multiplication with a numerical point method")
 
     # Create the numerical point
-    pt = NumericalPoint()
+    pt = Point()
     pt.add(1.)
     pt.add(2.)
     print("pt = ", repr(pt))
@@ -151,7 +151,7 @@ try:
     print("test 11 : multiplication with a numerical point method")
 
     # Create the numerical point
-    pt_test = NumericalPoint()
+    pt_test = Point()
     pt_test.add(1.)
     pt_test.add(2.)
     print("pt_test = ", repr(pt_test))

@@ -46,8 +46,8 @@ public:
   Domain(const DomainImplementation & implementation);
 
   /** Standard constructor based on Interval(a,b) */
-  Domain(const NumericalPoint & a,
-         const NumericalPoint & b);
+  Domain(const Point & a,
+         const Point & b);
 
   /** Check if the domain is empty, ie if its volume is zero */
   Bool isEmpty() const;
@@ -56,25 +56,25 @@ public:
   Bool isNumericallyEmpty() const;
 
   /** Check if the closed domain contains a given point */
-  virtual Bool contains(const NumericalPoint & point) const;
+  virtual Bool contains(const Point & point) const;
 
   /** Check if the given point is numerically inside of the domain, i.e. in its discretization */
-  Bool numericallyContains(const NumericalPoint & point) const;
+  Bool numericallyContains(const Point & point) const;
 
   /** Get the numerical volume of the discretization of the domain */
-  NumericalScalar getNumericalVolume() const;
+  Scalar getNumericalVolume() const;
 
   /** Get the volume of the domain */
-  NumericalScalar getVolume() const;
+  Scalar getVolume() const;
 
   /** Dimension accessors */
   virtual UnsignedInteger getDimension() const;
 
   /** Lower bound of the bounding box */
-  NumericalPoint getLowerBound() const;
+  Point getLowerBound() const;
 
   /** Upper bound of the bounding box */
-  NumericalPoint getUpperBound() const;
+  Point getUpperBound() const;
 
 }; /* class Domain */
 

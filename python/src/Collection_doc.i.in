@@ -7,11 +7,11 @@ Examples
 
 - Collection of **real values**:
 
->>> ot.NumericalScalarCollection(2)
+>>> ot.ScalarCollection(2)
 [0,0]
->>> ot.NumericalScalarCollection(2, 3.25)
+>>> ot.ScalarCollection(2, 3.25)
 [3.25,3.25]
->>> vector = ot.NumericalScalarCollection([2.0, 1.5, 2.6])
+>>> vector = ot.ScalarCollection([2.0, 1.5, 2.6])
 >>> vector
 [2,1.5,2.6]
 >>> vector[1] = 4.2
@@ -23,11 +23,11 @@ Examples
 
 - Collection of **complex values**:
 
->>> ot.NumericalComplexCollection(2)
+>>> ot.ComplexCollection(2)
 [(0,0),(0,0)]
->>> ot.NumericalComplexCollection(2, 3+4j)
+>>> ot.ComplexCollection(2, 3+4j)
 [(3,4),(3,4)]
->>> vector = ot.NumericalComplexCollection([2+3j, 1-4j, 3.0])
+>>> vector = ot.ComplexCollection([2+3j, 1-4j, 3.0])
 >>> vector
 [(2,3),(1,-4),(3,0)]
 >>> vector[1] = 4+3j
@@ -82,7 +82,7 @@ value : type depends on the type of the collection.
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint(2)
+>>> x = ot.Point(2)
 >>> x.add(1.)
 >>> print(x)
 [0,0,1]"
@@ -110,10 +110,10 @@ element : type depends on the type of the collection
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint(2)
+>>> x = ot.Point(2)
 >>> x.clear()
 >>> x
-class=NumericalPoint name=Unnamed dimension=0 values=[]"
+class=Point name=Unnamed dimension=0 values=[]"
 
 // ---------------------------------------------------------------------
 
@@ -138,7 +138,7 @@ isEmpty : bool
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint(2)
+>>> x = ot.Point(2)
 >>> x.isEmpty()
 False
 >>> x.clear()
@@ -163,7 +163,7 @@ away, else the new elements are set to the default value of the element type.
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.NumericalPoint(2, 4)
+>>> x = ot.Point(2, 4)
 >>> print(x)
 [4,4]
 >>> x.resize(1)

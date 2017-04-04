@@ -41,18 +41,18 @@ public:
   typedef Pointer<DistributionImplementation> Implementation;
 
   /** Default constructor */
-  explicit Student(const NumericalScalar nu = 3.0,
+  explicit Student(const Scalar nu = 3.0,
                    const UnsignedInteger dimension = 1);
 
   /** Parameters constructor */
-  Student(const NumericalScalar nu,
-          const NumericalScalar mu,
-          const NumericalScalar sigma = 1.0);
+  Student(const Scalar nu,
+          const Scalar mu,
+          const Scalar sigma = 1.0);
 
   /** Parameters constructor */
-  Student(const NumericalScalar nu,
-          const NumericalPoint & mu,
-          const NumericalPoint & sigma,
+  Student(const Scalar nu,
+          const Point & mu,
+          const Point & sigma,
           const CorrelationMatrix & R);
 
 
@@ -74,38 +74,38 @@ public:
   virtual Student * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the CDF of the distribution */
   using EllipticalDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the PDFGradient of the distribution */
   using EllipticalDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using EllipticalDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Compute the radial distribution CDF */
-  NumericalScalar computeRadialDistributionCDF(const NumericalScalar radius,
-      const Bool tail = false) const;
+  Scalar computeRadialDistributionCDF(const Scalar radius,
+                                      const Bool tail = false) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  NumericalScalar computeConditionalPDF(const NumericalScalar x, const NumericalPoint & y) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  NumericalScalar computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
-  NumericalScalar computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -114,34 +114,34 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Get the mean of the distribution */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the covariance of the distribution */
   CovarianceMatrix getCovariance() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using EllipticalDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
   /** Parameters value accessor */
-  NumericalPoint getParameter() const;
-  void setParameter(const NumericalPoint & parameter);
+  Point getParameter() const;
+  void setParameter(const Point & parameter);
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -152,23 +152,23 @@ public:
   /* Interface specific to Student */
 
   /** Nu accessor */
-  void setNu(const NumericalScalar nu);
-  NumericalScalar getNu() const;
+  void setNu(const Scalar nu);
+  Scalar getNu() const;
 
   /** Mu accessor */
-  void setMu(const NumericalScalar mu);
-  NumericalScalar getMu() const;
+  void setMu(const Scalar mu);
+  Scalar getMu() const;
 
   /** Compute the density generator of the ellipticalal generator, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^(-1)(x-mu))                      */
-  NumericalScalar computeDensityGenerator(const NumericalScalar betaSquare) const;
+  Scalar computeDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
-  NumericalScalar computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const;
+  Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
 
   /** Compute the seconde derivative of the density generator */
-  NumericalScalar computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const;
+  Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -181,14 +181,14 @@ protected:
 private:
 
   /** Quantile computation for dimension=1 */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** The nu of the Student distribution */
-  NumericalScalar nu_;
+  Scalar nu_;
 
   /** Specific normalization factor for the Student distribution */
-  NumericalScalar studentNormalizationFactor_;
+  Scalar studentNormalizationFactor_;
 }; /* class Student */
 
 

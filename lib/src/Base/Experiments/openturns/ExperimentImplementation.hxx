@@ -23,7 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,7 +54,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
 protected:
 

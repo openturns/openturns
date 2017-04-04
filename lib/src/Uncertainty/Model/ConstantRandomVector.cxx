@@ -30,7 +30,7 @@ CLASSNAMEINIT(ConstantRandomVector);
 static const Factory<ConstantRandomVector> Factory_ConstantRandomVector;
 
 /* Default constructor */
-ConstantRandomVector::ConstantRandomVector(const NumericalPointWithDescription & point)
+ConstantRandomVector::ConstantRandomVector(const PointWithDescription & point)
   : RandomVectorImplementation()
   , point_(point)
 {
@@ -39,7 +39,7 @@ ConstantRandomVector::ConstantRandomVector(const NumericalPointWithDescription &
 }
 
 /* Parameter constructor */
-ConstantRandomVector::ConstantRandomVector(const NumericalPoint & point)
+ConstantRandomVector::ConstantRandomVector(const Point & point)
   : RandomVectorImplementation()
   , point_(point)
 {
@@ -76,21 +76,21 @@ UnsignedInteger ConstantRandomVector::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint ConstantRandomVector::getRealization() const
+Point ConstantRandomVector::getRealization() const
 {
   return point_;
 }
 
 /* Numerical sample accessor */
-NumericalSample ConstantRandomVector::getSample(const UnsignedInteger size) const
+Sample ConstantRandomVector::getSample(const UnsignedInteger size) const
 {
-  NumericalSample sample(size, point_);
+  Sample sample(size, point_);
   sample.setDescription(getDescription());
   return sample;
 }
 
 /* Mean accessor */
-NumericalPoint ConstantRandomVector::getMean() const
+Point ConstantRandomVector::getMean() const
 {
   return point_;
 }
@@ -108,7 +108,7 @@ CovarianceMatrix ConstantRandomVector::getCovariance() const
 ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal random vector must be in the range [0, dim-1]";
-  return new ConstantRandomVector(NumericalPoint(1, point_[i]));
+  return new ConstantRandomVector(Point(1, point_[i]));
 }
 
 /* Get the marginal random vector corresponding to indices components */
@@ -116,7 +116,7 @@ ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const Ind
 {
   if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();
-  NumericalPoint marginalPoint(marginalDimension);
+  Point marginalPoint(marginalDimension);
   for (UnsignedInteger i = 0; i < marginalDimension; ++i) marginalPoint[i] = point_[indices[i]];
   return new ConstantRandomVector(marginalPoint);
 }

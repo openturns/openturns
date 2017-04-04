@@ -34,8 +34,8 @@ static const Factory<SpectralModelImplementation> Factory_SpectralModelImplement
 SpectralModelImplementation::SpectralModelImplementation()
   : PersistentObject()
   , dimension_(1)
-  , scale_(NumericalPoint(1, 1.0))
-  , amplitude_(NumericalPoint(1, 1.0))
+  , scale_(Point(1, 1.0))
+  , amplitude_(Point(1, 1.0))
   , spatialDimension_(1)
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
@@ -44,8 +44,8 @@ SpectralModelImplementation::SpectralModelImplementation()
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
-    const NumericalPoint & amplitude)
+SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
+    const Point & amplitude)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
   , scale_(0)
@@ -60,8 +60,8 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
-    const NumericalPoint & amplitude,
+SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
+    const Point & amplitude,
     const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
   , dimension_(amplitude.getDimension())
@@ -80,7 +80,7 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   updateSpatialCovariance();
 }
 
-SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & scale,
+SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , dimension_(spatialCovariance.getDimension())
@@ -94,7 +94,7 @@ SpectralModelImplementation::SpectralModelImplementation(const NumericalPoint & 
   // Check scale values
   setScale(scale);
   spatialCovariance_ = HermitianMatrix(dimension_);
-  amplitude_ = NumericalPoint(dimension_);
+  amplitude_ = Point(dimension_);
   // As spatialCovariance is a covariance matrix, we convert it into an HermitianMatrix
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -142,28 +142,28 @@ UnsignedInteger SpectralModelImplementation::getSpatialDimension() const
 }
 
 /* Computation of the spectral density function */
-HermitianMatrix SpectralModelImplementation::operator() (const NumericalScalar frequency) const
+HermitianMatrix SpectralModelImplementation::operator() (const Scalar frequency) const
 {
   // Spectral density is given as the Fourier transform of the stationary covariance function
   // With the formal expression of stationary covariance, ie C(x,y) = S * rho( |x- y|/|scale|),
   // the dsp writes as S * \hat{rho}(f)
-  NumericalComplex rho = computeStandardRepresentative(frequency);
+  Complex rho = computeStandardRepresentative(frequency);
   return spatialCovariance_ * rho;
 }
 
 /** Standard representative */
-NumericalComplex SpectralModelImplementation::computeStandardRepresentative(const NumericalScalar frequency) const
+Complex SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const
 {
-  throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::computeStandardRepresentative(const NumericalScalar frequency) const";
+  throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const";
 }
 
 /* Amplitude accessor */
-NumericalPoint SpectralModelImplementation::getAmplitude() const
+Point SpectralModelImplementation::getAmplitude() const
 {
   return amplitude_;
 }
 
-void SpectralModelImplementation::setAmplitude(const NumericalPoint & amplitude)
+void SpectralModelImplementation::setAmplitude(const Point & amplitude)
 {
   for (UnsignedInteger index = 0; index < dimension_; ++index)
     if (amplitude[index] <= 0)
@@ -173,12 +173,12 @@ void SpectralModelImplementation::setAmplitude(const NumericalPoint & amplitude)
 }
 
 /* Scale accessor */
-NumericalPoint SpectralModelImplementation::getScale() const
+Point SpectralModelImplementation::getScale() const
 {
   return scale_;
 }
 
-void SpectralModelImplementation::setScale(const NumericalPoint & scale)
+void SpectralModelImplementation::setScale(const Point & scale)
 {
   for (UnsignedInteger index = 0; index < spatialDimension_; ++index)
     if (scale[index] <= 0)
@@ -226,18 +226,18 @@ String SpectralModelImplementation::__str__(const String & offset) const
 /* Drawing method */
 Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
                                         const UnsignedInteger columnIndex,
-					const NumericalScalar minimumFrequency,
-					const NumericalScalar maximumFrequency,
-					const UnsignedInteger frequencyNumber,
+                                        const Scalar minimumFrequency,
+                                        const Scalar maximumFrequency,
+                                        const UnsignedInteger frequencyNumber,
                                         const Bool module) const
 {
   if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
   if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
-  NumericalSample data(frequencyNumber, 2);
+  Sample data(frequencyNumber, 2);
   for (UnsignedInteger i = 0; i < frequencyNumber; ++i)
   {
-    const NumericalScalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);
-    const NumericalComplex value((*this)(f)(rowIndex, columnIndex));
+    const Scalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);
+    const Complex value((*this)(f)(rowIndex, columnIndex));
     data[i][0] = f;
     if (module) data[i][1] = std::abs(value);
     else data[i][1] = std::arg(value);

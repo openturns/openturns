@@ -70,7 +70,7 @@ public:
   Process getProcess() const;
 
   /** Realization accessor */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

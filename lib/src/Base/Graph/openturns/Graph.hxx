@@ -61,7 +61,7 @@ public:
         const String & yTitle,
         const Bool showAxes,
         const String & legendPosition = "",
-        const NumericalScalar legendFontSize = ResourceMap::GetAsNumericalScalar("Graph-DefaultLegendFontSize"),
+        const Scalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"),
         const LogScale logScale = GraphImplementation::NONE);
 
 
@@ -143,8 +143,8 @@ public:
 
   /** The method that generates the graphic files */
   void draw(const String & file,
-            const NumericalScalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
-            const NumericalScalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
+            const Scalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
+            const Scalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
             SignedInteger format = GraphImplementation::ALL);
 
   /** Get the R command corresponding to the graph */
@@ -171,10 +171,10 @@ public:
   void setLegendPosition(const String & position);
 
   /** Get the legend font size */
-  NumericalScalar getLegendFontSize() const;
+  Scalar getLegendFontSize() const;
 
   /** Set the legend font size */
-  void setLegendFontSize(const NumericalScalar legendFontSize);
+  void setLegendFontSize(const Scalar legendFontSize);
 
   /** Check for legend position validity */
   static Bool IsValidLegendPosition(const String & position);

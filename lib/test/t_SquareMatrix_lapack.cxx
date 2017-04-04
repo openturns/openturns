@@ -40,20 +40,20 @@ int main(int argc, char *argv[])
     matrix1(1, 1) = 12.0;
     fullprint << "matrix1 = " << matrix1 << std::endl;
 
-    NumericalPoint pt ;
+    Point pt ;
     pt.add(5.0) ;
     pt.add(0.0) ;
     fullprint << "pt = " << pt << std::endl;
 
-    NumericalPoint result ;
+    Point result ;
     result = matrix1.solveLinearSystem(pt);
     fullprint << "result = " << result << std::endl;
 
-    NumericalScalar determinant ;
+    Scalar determinant ;
     determinant = matrix1.computeDeterminant();
     fullprint << "determinant = " << determinant << std::endl;
 
-    Collection<NumericalComplex> ev(2);
+    Collection<Complex> ev(2);
     ev = matrix1.computeEigenValues();
     fullprint << "ev = " << ev << std::endl;
     SquareComplexMatrix evect(2);
@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
     matrix2(2, 2) = 2.5;
 
     fullprint << "matrix2=\n" << matrix2.__str__() << std::endl;
-    NumericalScalar sign;
-    NumericalScalar value = matrix2.computeLogAbsoluteDeterminant(sign);
+    Scalar sign;
+    Scalar value = matrix2.computeLogAbsoluteDeterminant(sign);
     fullprint << "log(|det|)=" << value << ", sign=" << sign << std::endl;
     value = matrix2.computeDeterminant();
     fullprint << "det=" << value << std::endl;

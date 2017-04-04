@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    fullprint << "Default q : " << ResourceMap::GetAsNumericalScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ") << std::endl << std::endl;
+    fullprint << "Default q : " << ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ") << std::endl << std::endl;
 
     // first verify consistency with LinearEnumerateFunction
     UnsignedInteger size = 10;
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
     // values with varying q
     size = 25;
-    NumericalPoint qValues;
+    Point qValues;
     qValues.add(0.75);
     qValues.add(0.5);
     qValues.add(0.25);
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     {
       for (UnsignedInteger j = 0; j < qValues.getDimension(); ++ j)
       {
-        NumericalScalar q = qValues[j];
+        Scalar q = qValues[j];
         fullprint << "First " << size << " values dimension=" << dimension << " q=" << q << std::endl;
         HyperbolicAnisotropicEnumerateFunction f( dimension,  q);
         for (UnsignedInteger index = 0; index < size; ++index)

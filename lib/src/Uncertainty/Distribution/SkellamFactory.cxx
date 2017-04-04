@@ -44,12 +44,12 @@ SkellamFactory * SkellamFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-SkellamFactory::Implementation SkellamFactory::build(const NumericalSample & sample) const
+SkellamFactory::Implementation SkellamFactory::build(const Sample & sample) const
 {
   return buildAsSkellam(sample).clone();
 }
 
-SkellamFactory::Implementation SkellamFactory::build(const NumericalPoint & parameters) const
+SkellamFactory::Implementation SkellamFactory::build(const Point & parameters) const
 {
   return buildAsSkellam(parameters).clone();
 }
@@ -59,12 +59,12 @@ SkellamFactory::Implementation SkellamFactory::build() const
   return buildAsSkellam().clone();
 }
 
-DistributionFactoryResult SkellamFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult SkellamFactory::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample, true);
 }
 
-Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
+Skellam SkellamFactory::buildAsSkellam(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Skellam distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -72,20 +72,20 @@ Skellam SkellamFactory::buildAsSkellam(const NumericalSample & sample) const
   const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    NumericalScalar x = sample[i][0];
+    Scalar x = sample[i][0];
     if (x != trunc(x)) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample with integer components, here sample[" << i << "][0]=" << x;
   }
-  const NumericalScalar mean = sample.computeMean()[0];
-  const NumericalScalar var = sample.computeVariance()[0];
-  const NumericalScalar lambda2 = 0.5 * (var - mean);
-  if (lambda2 <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a skellam distribution only if lambda2 > 0, here lambda2=" << lambda2;
-  const NumericalScalar lambda1 = 0.5 * (var + mean);
+  const Scalar mean = sample.computeMean()[0];
+  const Scalar var = sample.computeVariance()[0];
+  const Scalar lambda2 = 0.5 * (var - mean);
+  if (!(lambda2 > 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a skellam distribution only if lambda2 > 0, here lambda2=" << lambda2;
+  const Scalar lambda1 = 0.5 * (var + mean);
   Skellam result(lambda1, lambda2);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-Skellam SkellamFactory::buildAsSkellam(const NumericalPoint & parameters) const
+Skellam SkellamFactory::buildAsSkellam(const Point & parameters) const
 {
   try
   {

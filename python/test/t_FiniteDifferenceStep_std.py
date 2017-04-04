@@ -8,13 +8,13 @@ RandomGenerator.SetSeed(0)
 
 try:
     dimension = 2
-    epsilon = NumericalPoint(dimension, 1e-4)
-    x = NumericalPoint(dimension, 2.0)
+    epsilon = Point(dimension, 1e-4)
+    x = Point(dimension, 2.0)
 
     step = ConstantStep(epsilon)
     print('step type=', step.getClassName(), 'step value=', step(x))
 
-    eta = NumericalPoint(dimension, 1.0)
+    eta = Point(dimension, 1.0)
     step = BlendedStep(epsilon, eta)
     print('step type=', step.getClassName(), 'step value=', step(x))
 

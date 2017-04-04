@@ -46,7 +46,7 @@ HaarWavelet::HaarWavelet(const UnsignedInteger j,
   // Nothing to do
   if (!isScaling)
   {
-    const NumericalScalar denominator = 1 << j;
+    const Scalar denominator = 1 << j;
     value_ = std::sqrt(denominator);
     a_ = k / denominator;
     m_ = (k + 0.5) / denominator;
@@ -87,7 +87,7 @@ String HaarWavelet::__str__(const String & offset) const
 
 
 /* HaarWavelet are evaluated as functors */
-NumericalScalar HaarWavelet::operator() (const NumericalScalar x) const
+Scalar HaarWavelet::operator() (const Scalar x) const
 {
   if (isScaling_) return ((x < 0.0 || x > 1.0) ? 0.0 : 1.0);
   if (x < a_) return 0.0;
@@ -97,13 +97,13 @@ NumericalScalar HaarWavelet::operator() (const NumericalScalar x) const
 }
 
 /* HaarWavelet gradient */
-NumericalScalar HaarWavelet::gradient(const NumericalScalar x) const
+Scalar HaarWavelet::gradient(const Scalar x) const
 {
   return 0.0;
 }
 
 /* HaarWavelet hessian */
-NumericalScalar HaarWavelet::hessian(const NumericalScalar x) const
+Scalar HaarWavelet::hessian(const Scalar x) const
 {
   return 0.0;
 }

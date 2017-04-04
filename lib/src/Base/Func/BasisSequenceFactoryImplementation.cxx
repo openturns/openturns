@@ -35,7 +35,7 @@ static const Factory<BasisSequenceFactoryImplementation> Factory_BasisSequenceFa
 BasisSequenceFactoryImplementation::BasisSequenceFactoryImplementation(const Bool verbose)
   : PersistentObject()
   , verbose_(verbose)
-  , maximumRelativeConvergence_(SpecFunc::MinNumericalScalar)
+  , maximumRelativeConvergence_(SpecFunc::MinScalar)
 {
   // Nothing to do
 }
@@ -72,8 +72,8 @@ Bool BasisSequenceFactoryImplementation::getVerbose() const
 }
 
 /* Method to create new BasisSequence objects */
-BasisSequence BasisSequenceFactoryImplementation::build(const NumericalSample & x,
-    const NumericalSample & y,
+BasisSequence BasisSequenceFactoryImplementation::build(const Sample & x,
+    const Sample & y,
     const Basis & psi,
     const Indices & indices)
 {
@@ -81,7 +81,7 @@ BasisSequence BasisSequenceFactoryImplementation::build(const NumericalSample & 
   return build(y, indices, proxy);
 }
 
-BasisSequence BasisSequenceFactoryImplementation::build(const NumericalSample & y,
+BasisSequence BasisSequenceFactoryImplementation::build(const Sample & y,
     const Indices & indices,
     const DesignProxy & proxy)
 {
@@ -90,7 +90,7 @@ BasisSequence BasisSequenceFactoryImplementation::build(const NumericalSample & 
 }
 
 BasisSequence BasisSequenceFactoryImplementation::build(LeastSquaresMethod & method,
-                                                        const NumericalSample & y)
+    const Sample & y)
 {
 //   BasisSequence basisSequence(method.buildCurrentBasis());
   BasisSequence basisSequence(method.getBasis());
@@ -114,18 +114,18 @@ void BasisSequenceFactoryImplementation::initialize()
 }
 
 
-void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & method, const NumericalSample & y)
+void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & method, const Sample & y)
 {
   throw NotYetImplementedException(HERE) << " in BasisSequenceFactoryImplementation::updateBasis";
 }
 
 /* Stopping criterion on the L1-norm of the coefficients accessor */
-void BasisSequenceFactoryImplementation::setMaximumRelativeConvergence(const NumericalScalar maximumRelativeConvergence)
+void BasisSequenceFactoryImplementation::setMaximumRelativeConvergence(const Scalar maximumRelativeConvergence)
 {
   maximumRelativeConvergence_ = maximumRelativeConvergence;
 }
 
-NumericalScalar BasisSequenceFactoryImplementation::getMaximumRelativeConvergence() const
+Scalar BasisSequenceFactoryImplementation::getMaximumRelativeConvergence() const
 {
   return maximumRelativeConvergence_;
 }

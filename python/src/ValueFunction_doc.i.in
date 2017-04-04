@@ -8,7 +8,7 @@ Available constructors:
 
 Parameters
 ----------
-g : :class:`~openturns.NumericalMathFunction`
+g : :class:`~openturns.Function`
     Function :math:`g: \Rset^d \mapsto \Rset^q`.
 meshDimension : int, :math:`n \geq 0`
     Dimension of the vertices of the mesh :math:`\cM`. This data is required
@@ -58,7 +58,7 @@ mesh of the field on which :math:`g` will be applied:
 >>> myValueFunction = ot.ValueFunction(g, n)
 >>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
->>> data = ot.NumericalSample(tg.getN(), g.getInputDimension())
+>>> data = ot.Sample(tg.getN(), g.getInputDimension())
 >>> for i in range(data.getSize()):
 ...     for j in range(data.getDimension()):
 ...         data[i, j] = i * data.getDimension() + j
@@ -87,13 +87,13 @@ mesh of the field on which :math:`g` will be applied:
 
 Returns
 -------
-g : :class:`~openturns.NumericalMathEvaluationImplementation`
+g : :class:`~openturns.EvaluationImplementation`
     Evaluation function of :math:`g: \Rset^d \mapsto \Rset^q`.
 
 Examples
 --------
 >>> import openturns as ot
->>> g = ot.NumericalMathFunction('x', 'x^2')
+>>> g = ot.SymbolicFunction(['x'], ['x^2'])
 >>> n = 1
 >>> myValueFunction = ot.ValueFunction(g, n)
 >>> print(myValueFunction.getEvaluation())

@@ -43,9 +43,9 @@ WhittleFactoryState::WhittleFactoryState()
 
 /* Standard constructor */
 WhittleFactoryState::WhittleFactoryState(const UnsignedInteger p,
-    const NumericalPoint & theta,
-    const NumericalScalar sigma2,
-    const NumericalPoint & informationCriteria,
+    const Point & theta,
+    const Scalar sigma2,
+    const Point & informationCriteria,
     const RegularGrid & timeGrid)
   : PersistentObject()
   , p_(p)
@@ -55,7 +55,7 @@ WhittleFactoryState::WhittleFactoryState(const UnsignedInteger p,
   , timeGrid_(timeGrid)
 {
   // Check the variance
-  if (sigma2_ <= 0.0) throw InvalidArgumentException(HERE) << "Error: the given variance must be positive, here sigma2=" << sigma2;
+  if (!(sigma2_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: the given variance must be positive, here sigma2=" << sigma2;
   // Check the AR order with respect to the number of parameters
   if (p > theta.getSize()) throw InvalidArgumentException(HERE) << "Error: the AR order p=" << p << " is greater than the number of parameters n=" << theta.getSize();
 }
@@ -102,13 +102,13 @@ UnsignedInteger WhittleFactoryState::getQ() const
 }
 
 /* Theta accessor */
-NumericalPoint WhittleFactoryState::getTheta() const
+Point WhittleFactoryState::getTheta() const
 {
   return theta_;
 }
 
 /* Sigma2 accessor */
-NumericalScalar WhittleFactoryState::getSigma2() const
+Scalar WhittleFactoryState::getSigma2() const
 {
   return sigma2_;
 }
@@ -116,7 +116,7 @@ NumericalScalar WhittleFactoryState::getSigma2() const
 /* AR coefficients accessor */
 ARMACoefficients WhittleFactoryState::getARCoefficients() const
 {
-  NumericalPoint arCoefficients(p_);
+  Point arCoefficients(p_);
   for (UnsignedInteger k = 0; k < p_; ++k) arCoefficients[k] = theta_[k];
   return ARMACoefficients(arCoefficients);
 }
@@ -125,7 +125,7 @@ ARMACoefficients WhittleFactoryState::getARCoefficients() const
 ARMACoefficients WhittleFactoryState::getMACoefficients() const
 {
   const UnsignedInteger q = getQ();
-  NumericalPoint maCoefficients(q);
+  Point maCoefficients(q);
   for (UnsignedInteger k = 0; k < q; ++k) maCoefficients[k] = theta_[k + p_];
   return ARMACoefficients(maCoefficients);
 }
@@ -145,7 +145,7 @@ ARMA WhittleFactoryState::getARMA() const
 }
 
 /* Information criteria accessor */
-NumericalPoint WhittleFactoryState::getInformationCriteria() const
+Point WhittleFactoryState::getInformationCriteria() const
 {
   return informationCriteria_;
 }

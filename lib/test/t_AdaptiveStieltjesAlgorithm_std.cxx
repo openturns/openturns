@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-NumericalPoint clean(NumericalPoint in)
+Point clean(Point in)
 {
   UnsignedInteger dim = in.getDimension();
   for(UnsignedInteger i = 0; i < dim; i++)

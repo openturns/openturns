@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 try:
     # Create an intance
-    myFunc = NumericalMathFunction("x", "x^2")
+    myFunc = SymbolicFunction("x", "x^2")
     mySpatialFunc = ValueFunction(myFunc)
 
     print("mySpatialFunc=", mySpatialFunc)
@@ -22,7 +22,7 @@ try:
           mySpatialFunc.getOutputDimension())
     # Create a TimeSeries
     tg = RegularGrid(0.0, 0.2, 6)
-    data = NumericalSample(tg.getN(), myFunc.getInputDimension())
+    data = Sample(tg.getN(), myFunc.getInputDimension())
     for i in range(data.getSize()):
         for j in range(data.getDimension()):
             data[i, j] = i * data.getDimension() + j

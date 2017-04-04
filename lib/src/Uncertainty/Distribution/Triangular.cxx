@@ -42,9 +42,9 @@ Triangular::Triangular()
 }
 
 /* Parameters constructor */
-Triangular::Triangular(const NumericalScalar a,
-                       const NumericalScalar m,
-                       const NumericalScalar b)
+Triangular::Triangular(const Scalar a,
+                       const Scalar m,
+                       const Scalar b)
   : ContinuousDistribution()
   , a_(0.0)
   , m_(0.0)
@@ -102,88 +102,88 @@ void Triangular::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Triangular::getRealization() const
+Point Triangular::getRealization() const
 {
-  const NumericalScalar ma = m_ - a_;
-  const NumericalScalar ba = b_ - a_;
-  const NumericalScalar prob = RandomGenerator::Generate();
-  if (ba * prob < ma) return NumericalPoint(1, a_ + std::sqrt(prob * ba * ma));
-  return NumericalPoint(1, b_ - std::sqrt((1.0 - prob) * ba * (b_ - m_)));
+  const Scalar ma = m_ - a_;
+  const Scalar ba = b_ - a_;
+  const Scalar prob = RandomGenerator::Generate();
+  if (ba * prob < ma) return Point(1, a_ + std::sqrt(prob * ba * ma));
+  return Point(1, b_ - std::sqrt((1.0 - prob) * ba * (b_ - m_)));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint Triangular::computeDDF(const NumericalPoint & point) const
+Point Triangular::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
-  const NumericalScalar ddf = 2.0 / (b_ - a_);
-  if (x < m_) return NumericalPoint(1, ddf / (m_ - a_));
-  return NumericalPoint(1, ddf / (m_ - b_));
+  const Scalar x = point[0];
+  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
+  const Scalar ddf = 2.0 / (b_ - a_);
+  if (x < m_) return Point(1, ddf / (m_ - a_));
+  return Point(1, ddf / (m_ - b_));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Triangular::computePDF(const NumericalPoint & point) const
+Scalar Triangular::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return 0.0;
-  const NumericalScalar pdf = 2.0 / (b_ - a_);
+  const Scalar pdf = 2.0 / (b_ - a_);
   if (x < m_) return pdf * (x - a_) / (m_ - a_);
   return pdf * (x - b_) / (m_ - b_);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Triangular::computeCDF(const NumericalPoint & point) const
+Scalar Triangular::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_) return 1.0;
-  const NumericalScalar cdf = 1.0 / (b_ - a_);
+  const Scalar cdf = 1.0 / (b_ - a_);
   if (x < m_) return (x - a_) * (x - a_) * cdf / (m_ - a_);
   return 1.0 - (x - b_) * (x - b_) * cdf / (b_ - m_);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Triangular::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Triangular::computeCharacteristicFunction(const Scalar x) const
 {
-  if (std::abs(x) < 1.0e-8) return NumericalComplex(1.0, (a_ + b_ + m_) * x / 3.0);
-  const NumericalScalar ba = b_ - a_;
-  const NumericalScalar bm = b_ - m_;
-  const NumericalScalar ma = m_ - a_;
-  return 2.0 / (x * x) * (-std::exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + std::exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - std::exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
+  if (std::abs(x) < 1.0e-8) return Complex(1.0, (a_ + b_ + m_) * x / 3.0);
+  const Scalar ba = b_ - a_;
+  const Scalar bm = b_ - m_;
+  const Scalar ma = m_ - a_;
+  return 2.0 / (x * x) * (-std::exp(Complex(0.0, a_ * x)) / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - std::exp(Complex(0.0, b_ * x)) / (ba * bm));
 }
 
-NumericalComplex Triangular::computeLogCharacteristicFunction(const NumericalScalar x) const
+Complex Triangular::computeLogCharacteristicFunction(const Scalar x) const
 {
   if (std::abs(x) < pdfEpsilon_) return 0.0;
-  const NumericalScalar ba = b_ - a_;
-  const NumericalScalar bm = b_ - m_;
-  const NumericalScalar ma = m_ - a_;
-  return  M_LN2 - 2.0 * std::log(std::abs(x)) + std::log(-std::exp(NumericalComplex(0.0, a_ * x)) / (ba * ma) + std::exp(NumericalComplex(0.0, m_ * x)) / (bm * ma) - std::exp(NumericalComplex(0.0, b_ * x)) / (ba * bm));
+  const Scalar ba = b_ - a_;
+  const Scalar bm = b_ - m_;
+  const Scalar ma = m_ - a_;
+  return  M_LN2 - 2.0 * std::log(std::abs(x)) + std::log(-std::exp(Complex(0.0, a_ * x)) / (ba * ma) + std::exp(Complex(0.0, m_ * x)) / (bm * ma) - std::exp(Complex(0.0, b_ * x)) / (ba * bm));
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Triangular::computePDFGradient(const NumericalPoint & point) const
+Point Triangular::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if ((x <= a_) || (x > b_)) return NumericalPoint(1, 0.0);
-  NumericalPoint pdfGradient(3);
-  const NumericalScalar ba = b_ - a_;
-  const NumericalScalar ma = m_ - a_;
-  const NumericalScalar bm = b_ - m_;
-  const NumericalScalar bx = b_ - x;
-  const NumericalScalar xa = x - a_;
-  const NumericalScalar fact = 2.0 / ba;
+  const Scalar x = point[0];
+  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
+  Point pdfGradient(3);
+  const Scalar ba = b_ - a_;
+  const Scalar ma = m_ - a_;
+  const Scalar bm = b_ - m_;
+  const Scalar bx = b_ - x;
+  const Scalar xa = x - a_;
+  const Scalar fact = 2.0 / ba;
   if (x < m_)
   {
     pdfGradient[0] = fact * (-a_ * xa + x * ba - m_ * bx) / (ba * ma * ma);
@@ -198,28 +198,28 @@ NumericalPoint Triangular::computePDFGradient(const NumericalPoint & point) cons
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Triangular::computeCDFGradient(const NumericalPoint & point) const
+Point Triangular::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if ((x < a_) || (x > b_)) return NumericalPoint(1, 0.0);
-  NumericalPoint cdfGradient(3);
-  const NumericalScalar ba = b_ - a_;
-  const NumericalScalar ma = m_ - a_;
-  const NumericalScalar bm = b_ - m_;
-  const NumericalScalar bx = b_ - x;
-  const NumericalScalar xa = x - a_;
-  const NumericalScalar xm = x - m_;
+  const Scalar x = point[0];
+  if ((x < a_) || (x > b_)) return Point(1, 0.0);
+  Point cdfGradient(3);
+  const Scalar ba = b_ - a_;
+  const Scalar ma = m_ - a_;
+  const Scalar bm = b_ - m_;
+  const Scalar bx = b_ - x;
+  const Scalar xa = x - a_;
+  const Scalar xm = x - m_;
   if (x < m_)
   {
-    const NumericalScalar fact = xa / (ba * ma);
+    const Scalar fact = xa / (ba * ma);
     cdfGradient[0] = fact * (xm * ba - bx * ma) / (ma * ba);
     cdfGradient[1] = -fact * xa / ma;
     cdfGradient[2] = -xa / ba;
     return cdfGradient;
   }
-  const NumericalScalar fact = bx / (ba * bm);
+  const Scalar fact = bx / (ba * bm);
   cdfGradient[0] = -fact * bx / ba;
   cdfGradient[1] = -fact * bx / bm;
   cdfGradient[2] = -fact * (ba * xm + xa * bm) / (bm * ba);
@@ -227,12 +227,12 @@ NumericalPoint Triangular::computeCDFGradient(const NumericalPoint & point) cons
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Triangular::computeScalarQuantile(const NumericalScalar prob,
+Scalar Triangular::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  const NumericalScalar ma = m_ - a_;
-  const NumericalScalar ba = b_ - a_;
-  const NumericalScalar bm = b_ - m_;
+  const Scalar ma = m_ - a_;
+  const Scalar ba = b_ - a_;
+  const Scalar bm = b_ - m_;
   if (tail)
   {
     if (bm < prob * ba) return a_ + std::sqrt((1.0 - prob) * ba * ma);
@@ -243,7 +243,7 @@ NumericalScalar Triangular::computeScalarQuantile(const NumericalScalar prob,
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar Triangular::getRoughness() const
+Scalar Triangular::getRoughness() const
 {
   // 1.333333333333333333333333 = 4/3
   return 1.333333333333333333333333 / (b_ - a_);
@@ -252,63 +252,63 @@ NumericalScalar Triangular::getRoughness() const
 /* Compute the mean of the distribution */
 void Triangular::computeMean() const
 {
-  mean_ = NumericalPoint(1, (a_ + m_ + b_) / 3.0);
+  mean_ = Point(1, (a_ + m_ + b_) / 3.0);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Triangular::getStandardDeviation() const
+Point Triangular::getStandardDeviation() const
 {
-  const NumericalScalar ma = m_ - a_;
-  const NumericalScalar bm = b_ - m_;
-  return NumericalPoint(1, std::sqrt((bm * bm + bm * ma + ma * ma) / 18.0));
+  const Scalar ma = m_ - a_;
+  const Scalar bm = b_ - m_;
+  return Point(1, std::sqrt((bm * bm + bm * ma + ma * ma) / 18.0));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Triangular::getSkewness() const
+Point Triangular::getSkewness() const
 {
-  const NumericalScalar ma = m_ - a_;
-  const NumericalScalar bm = b_ - m_;
-  const NumericalScalar ba = b_ - a_;
-  const NumericalScalar den = std::pow(bm * bm + bm * ma + ma * ma, 1.5);
-  NumericalScalar num = (ba + ma) * (bm - ma) * (bm + ba);
+  const Scalar ma = m_ - a_;
+  const Scalar bm = b_ - m_;
+  const Scalar ba = b_ - a_;
+  const Scalar den = std::pow(bm * bm + bm * ma + ma * ma, 1.5);
+  Scalar num = (ba + ma) * (bm - ma) * (bm + ba);
   // 0.2828427124746190097603378 = sqrt(2) / 5
-  return NumericalPoint(1, 0.2828427124746190097603378 * num / den);
+  return Point(1, 0.2828427124746190097603378 * num / den);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Triangular::getKurtosis() const
+Point Triangular::getKurtosis() const
 {
   // 2.4 = 12/5
-  return NumericalPoint(1, 2.4);
+  return Point(1, 2.4);
 }
 
 /* Compute the covariance of the distribution */
 void Triangular::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar ma = m_ - a_;
-  const NumericalScalar bm = b_ - m_;
+  const Scalar ma = m_ - a_;
+  const Scalar bm = b_ - m_;
   covariance_(0, 0) = (bm * bm + bm * ma + ma * ma) / 18.0;
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Triangular::getStandardMoment(const UnsignedInteger n) const
+Point Triangular::getStandardMoment(const UnsignedInteger n) const
 {
-  const NumericalScalar mu = ((m_ - a_) + (m_ - b_)) / (b_ - a_);
+  const Scalar mu = ((m_ - a_) + (m_ - b_)) / (b_ - a_);
   // Even order
   if (n % 2 == 0)
   {
     // Vertical part?
-    if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 1.0));
+    if (1.0 - std::abs(mu) < ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 1.0));
     // Usual case
-    return NumericalPoint(1, 2.0 * (1.0 - std::pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+    return Point(1, 2.0 * (1.0 - std::pow(mu, n + 2.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
   }
   // Odd order
   // Vertical part?
-  if (1.0 - std::abs(mu) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultPDFEpsilon")) return NumericalPoint(1, 1.0 / (n + 2.0));
-  return NumericalPoint(1, 2.0 * mu * (1.0 - std::pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
+  if (1.0 - std::abs(mu) < ResourceMap::GetAsScalar("Distribution-DefaultPDFEpsilon")) return Point(1, 1.0 / (n + 2.0));
+  return Point(1, 2.0 * mu * (1.0 - std::pow(mu, n + 1.0)) / ((n + 1.0) * (n + 2.0) * (1.0 - mu) * (1.0 + mu)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -318,19 +318,19 @@ Triangular::Implementation Triangular::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Triangular::getParameter() const
+Point Triangular::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = a_;
   point[1] = m_;
   point[2] = b_;
   return point;
 }
 
-void Triangular::setParameter(const NumericalPoint & parameter)
+void Triangular::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Triangular(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
@@ -349,15 +349,15 @@ Description Triangular::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool Triangular::isElliptical() const
 {
-  return std::abs(m_ - 0.5 * (a_ + b_)) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon");
+  return std::abs(m_ - 0.5 * (a_ + b_)) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
 }
 
 /* Interface specific to Triangular */
 
 /* A accessor */
-void Triangular::setAMB(const NumericalScalar a,
-                        const NumericalScalar m,
-                        const NumericalScalar b)
+void Triangular::setAMB(const Scalar a,
+                        const Scalar m,
+                        const Scalar b)
 {
   if (a >= b) throw InvalidArgumentException(HERE) << "A MUST be less than b";
   if ((m < a) || (m > b)) throw InvalidArgumentException(HERE) << "M MUST be enclosed between a and b";
@@ -372,32 +372,32 @@ void Triangular::setAMB(const NumericalScalar a,
   }
 }
 
-NumericalScalar Triangular::getA() const
+Scalar Triangular::getA() const
 {
   return a_;
 }
 
 
 /* M accessor */
-NumericalScalar Triangular::getM() const
+Scalar Triangular::getM() const
 {
   return m_;
 }
 
 
 /* B accessor */
-NumericalScalar Triangular::getB() const
+Scalar Triangular::getB() const
 {
   return b_;
 }
 
 
 /* Get the PDF singularities inside of the range - 1D only */
-NumericalPoint Triangular::getSingularities() const
+Point Triangular::getSingularities() const
 {
-  if (m_ == a_) return NumericalPoint(0);
-  if (m_ == b_) return NumericalPoint(0);
-  return NumericalPoint(1, m_);
+  if (m_ == a_) return Point(0);
+  if (m_ == b_) return Point(0);
+  return Point(1, m_);
 }
 
 /* Method save() stores the object through the StorageManager */

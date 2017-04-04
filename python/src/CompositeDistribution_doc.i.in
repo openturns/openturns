@@ -5,13 +5,13 @@ Helper class for defining the push-forward distribution of a given univariate
 distribution by a given scalar function.
 
 Available constructors:
-    CompositeDistribution(*g=NumericalMathFunction('x', 'x'), distX=Uniform(0.0,1.0)*)
+    CompositeDistribution(*g=Function('x', 'x'), distX=Uniform(0.0,1.0)*)
 
     CompositeDistribution(*g, distX, a, v*)
 
 Parameters
 ----------
-g : :class:`~openturns.NumericalMathFunction`, :math:`\Rset \rightarrow \Rset`
+g : :class:`~openturns.Function`, :math:`\Rset \rightarrow \Rset`
 distX : :class:`~openturns.Distribution`, univariate
 a : sequence of float of dimension :math:`N+1`, :math:`a[0]=\inf \supp{distX}`, :math:`a[N]=\sup \supp{distX}`
     The bounds of the intervals on which :math:`g` is monotone, sorted in
@@ -61,7 +61,7 @@ Create a distribution:
 >>> aN = distX.getRange().getUpperBound()
 >>> a = [a0[0], 0.0, 0.0, aN[0]]
 >>> g = ot.SymbolicFunction(['x'], ['1.0/x'])
->>> v = [g(a0)[0], -ot.SpecFunc.MaxNumericalScalar, ot.SpecFunc.MaxNumericalScalar, g(aN)[0]]
+>>> v = [g(a0)[0], -ot.SpecFunc.MaxScalar, ot.SpecFunc.MaxScalar, g(aN)[0]]
 >>> distT = ot.CompositeDistribution(g, distX, a, v)
 
 
@@ -76,7 +76,7 @@ Draw a sample:
 
 Returns
 -------
-g :  :class:`~openturns.NumericalMathFunction`, :math:`\Rset \rightarrow \Rset`
+g :  :class:`~openturns.Function`, :math:`\Rset \rightarrow \Rset`
     the function :math:`g`."
 
 // ---------------------------------------------------------------------
@@ -96,7 +96,7 @@ distX : :class:`~openturns.Distribution`, univariate
 
 Parameters
 ----------
-g :  :class:`~openturns.NumericalMathFunction`, :math:`\Rset \rightarrow \Rset`
+g :  :class:`~openturns.Function`, :math:`\Rset \rightarrow \Rset`
     the function :math:`g`."
 // ---------------------------------------------------------------------
 

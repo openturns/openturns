@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_DATABASEFUNCTION_HXX
 #define OPENTURNS_DATABASEFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API DatabaseFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:
@@ -43,8 +43,8 @@ public:
   DatabaseFunction();
 
   /** Parameter constructor */
-  DatabaseFunction (const NumericalSample & inputSample,
-                    const NumericalSample & outputSample,
+  DatabaseFunction (const Sample & inputSample,
+                    const Sample & outputSample,
                     const Bool enableCache = true);
 
   /** Comparison operator */

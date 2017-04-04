@@ -16,7 +16,7 @@ for r in range(rank):
     for j in range(dim):
         tensorEval.setCoefficients(r, j, [1.0] * nk[j])
 
-f = ot.NumericalMathFunction(tensorEval)
+f = ot.Function(tensorEval)
 print(tensorEval)
 
 x = [1.0] * dim
@@ -28,7 +28,7 @@ print(y)
 ottest.assert_almost_equal(y, [-1.45674])
 
 tensorEval.setRank(1)
-f = ot.NumericalMathFunction(tensorEval)
+f = ot.Function(tensorEval)
 print(tensorEval)
 
 y = f(x)

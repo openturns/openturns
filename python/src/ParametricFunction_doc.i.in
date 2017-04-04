@@ -9,7 +9,7 @@ marked by the *indices* set to the values of *referencePoint*.
 
 Parameters
 ----------
-function : :class:`~openturns.NumericalMathFunction`
+function : :class:`~openturns.Function`
     Function with full parameters from which the parametric function is built.
 indices : sequence of int
     Indices of the frozen variables.

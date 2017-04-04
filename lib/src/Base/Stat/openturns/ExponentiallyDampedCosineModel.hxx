@@ -24,7 +24,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StationaryCovarianceModel.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
 
@@ -49,19 +49,19 @@ public:
   explicit ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension = 1);
 
   /** Standard constructor with scale and amplitude parameters */
-  ExponentiallyDampedCosineModel(const NumericalPoint & scale,
-                                 const NumericalPoint & amplitude,
-                                 const NumericalScalar frequency);
+  ExponentiallyDampedCosineModel(const Point & scale,
+                                 const Point & amplitude,
+                                 const Scalar frequency);
 
   /** Virtual copy constructor */
   virtual ExponentiallyDampedCosineModel * clone() const;
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  NumericalScalar computeStandardRepresentative(const NumericalPoint & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const;
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const NumericalPoint & tau) const;
-  NumericalScalar computeAsScalar(const NumericalPoint & tau) const;
+  CovarianceMatrix operator() (const Point & tau) const;
+  Scalar computeAsScalar(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;
@@ -77,14 +77,14 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Frequency accessor */
-  void setFrequency(const NumericalScalar frequency);
-  NumericalScalar getFrequency() const;
+  void setFrequency(const Scalar frequency);
+  Scalar getFrequency() const;
 
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
 public:
@@ -98,7 +98,7 @@ public:
 private :
 
   /** Frequency */
-  NumericalScalar frequency_;
+  Scalar frequency_;
 
 } ; /* class ExponentiallyDampedCosineModel */
 

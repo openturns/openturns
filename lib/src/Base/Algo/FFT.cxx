@@ -56,13 +56,13 @@ FFT::FFT(FFTImplementation * p_implementation)
 
 
 /* FFT transformation on real */
-FFT::NumericalComplexCollection FFT::transform(const NumericalScalarCollection & collection) const
+FFT::ComplexCollection FFT::transform(const ScalarCollection & collection) const
 {
   return getImplementation()->transform(collection);
 }
 
 /** FFT transformation on real - The transformation is applied on a part of the collection*/
-FFT::NumericalComplexCollection FFT::transform(const NumericalScalarCollection & collection,
+FFT::ComplexCollection FFT::transform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
@@ -70,7 +70,7 @@ FFT::NumericalComplexCollection FFT::transform(const NumericalScalarCollection &
 }
 
 /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
-FFT::NumericalComplexCollection FFT::transform(const NumericalScalarCollection & collection,
+FFT::ComplexCollection FFT::transform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
@@ -79,13 +79,13 @@ FFT::NumericalComplexCollection FFT::transform(const NumericalScalarCollection &
 }
 
 /* FFT transformation on complex */
-FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection & collection) const
+FFT::ComplexCollection FFT::transform(const ComplexCollection & collection) const
 {
   return getImplementation()->transform(collection);
 }
 
 /* FFT transformation on complex. The transformation is applied on a part of the collection */
-FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection & collection,
+FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
@@ -94,7 +94,7 @@ FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection 
 
 
 /* FFT transformation on complex. This transforms a regular sequence of the collection (between first and last, with elements separated by step)*/
-FFT::NumericalComplexCollection FFT::transform(const NumericalComplexCollection & collection,
+FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
@@ -117,7 +117,7 @@ ComplexMatrix FFT::transform2D(const Matrix & matrix) const
 }
 
 /** FFT 2D transformation on complex */
-ComplexMatrix FFT::transform2D(const NumericalSample & sample) const
+ComplexMatrix FFT::transform2D(const Sample & sample) const
 {
   return getImplementation()->transform2D(sample);
 }
@@ -134,13 +134,13 @@ ComplexTensor FFT::transform3D(const Tensor & tensor) const
   return getImplementation()->transform3D(tensor);
 }
 
-FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalScalarCollection & collection) const
+FFT::ComplexCollection FFT::inverseTransform(const ScalarCollection & collection) const
 {
   return getImplementation()->inverseTransform(collection);
 }
 
 /** FFT inverse transformation - The transformation is applied on a part of the collection */
-FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalScalarCollection & collection,
+FFT::ComplexCollection FFT::inverseTransform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
@@ -148,7 +148,7 @@ FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalScalarColle
 }
 
 /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalScalarCollection & collection,
+FFT::ComplexCollection FFT::inverseTransform(const ScalarCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
@@ -157,13 +157,13 @@ FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalScalarColle
 }
 
 /* FFT inverse transformation */
-FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexCollection & collection) const
+FFT::ComplexCollection FFT::inverseTransform(const ComplexCollection & collection) const
 {
   return getImplementation()->inverseTransform(collection);
 }
 
 /* FFT transformation on complex. The transformation is applied on a part of the collection */
-FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexCollection & collection,
+FFT::ComplexCollection FFT::inverseTransform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger size) const
 {
@@ -172,7 +172,7 @@ FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexColl
 
 
 /* FFT transformation on complex. This transforms a regular sequence of the collection (between first and last, with elements separated by step)*/
-FFT::NumericalComplexCollection FFT::inverseTransform(const NumericalComplexCollection & collection,
+FFT::ComplexCollection FFT::inverseTransform(const ComplexCollection & collection,
     const UnsignedInteger first,
     const UnsignedInteger step,
     const UnsignedInteger last) const
@@ -194,7 +194,7 @@ ComplexMatrix FFT::inverseTransform2D(const Matrix & matrix) const
 }
 
 /** IFFT 2D transformation on sample */
-ComplexMatrix FFT::inverseTransform2D(const NumericalSample & sample) const
+ComplexMatrix FFT::inverseTransform2D(const Sample & sample) const
 {
   return getImplementation()->inverseTransform2D(sample);
 }

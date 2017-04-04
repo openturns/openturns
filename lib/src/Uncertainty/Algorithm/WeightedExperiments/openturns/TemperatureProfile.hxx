@@ -56,10 +56,10 @@ public:
 #endif
 
   /** Compute temperature */
-  NumericalScalar operator()(UnsignedInteger i) const;
+  Scalar operator()(UnsignedInteger i) const;
 
   /** get T0 */
-  NumericalScalar getT0() const;
+  Scalar getT0() const;
 
   /** get iMax */
   UnsignedInteger getIMax() const;

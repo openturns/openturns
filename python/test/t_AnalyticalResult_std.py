@@ -8,7 +8,7 @@ from math import *
 TESTPREAMBLE()
 
 
-def printNumericalPoint(point, digits):
+def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)
     for i in range(point.getDimension()):
@@ -26,17 +26,17 @@ def printNumericalPoint(point, digits):
 
 try:
     # We create a numerical math function
-    myFunction = NumericalMathFunction(
+    myFunction = Function(
         ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     mean[0] = 50.0  # E
     mean[1] = 1.0  # F
     mean[2] = 10.0  # L
     mean[3] = 5.0  # I
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     R = IdentityMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
 
@@ -55,17 +55,17 @@ try:
     print("result=", result)
 
     digits = 5
-    print("standard space design point=", printNumericalPoint(
+    print("standard space design point=", printPoint(
         result.getStandardSpaceDesignPoint(), digits))
-    print("physical space design point=", printNumericalPoint(
+    print("physical space design point=", printPoint(
         result.getPhysicalSpaceDesignPoint(), digits))
     print("is standard point origin in failure space? ",
           result.getIsStandardPointOriginInFailureSpace())
-    print("importance factors=", printNumericalPoint(
+    print("importance factors=", printPoint(
         result.getImportanceFactors(), digits))
-    print("importance factors(classical)=", printNumericalPoint(
+    print("importance factors(classical)=", printPoint(
         result.getImportanceFactors(AnalyticalResult.CLASSICAL), digits))
-    print("importance factors(physical) =", printNumericalPoint(
+    print("importance factors(physical) =", printPoint(
         result.getImportanceFactors(AnalyticalResult.PHYSICAL), digits))
     print("Hasofer reliability index=%.5f" %
           result.getHasoferReliabilityIndex())

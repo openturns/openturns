@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     collection[0] = FrankCopula(3.0);
     collection[1] = NormalCopula(R);
     collection[2] = ClaytonCopula(2.0);
-    NumericalPoint bounds(2);
+    Point bounds(2);
     bounds[0] = 0.2;
     bounds[1] = 0.7;
     OrdinalSumCopula copula(collection, bounds);
@@ -59,12 +59,12 @@ int main(int argc, char *argv[])
     fullprint << "Independent = " << (copula.hasIndependentCopula() ? "true" : "false") << std::endl;
 
     // Test for realization of copula
-    NumericalPoint oneRealization = copula.getRealization();
+    Point oneRealization = copula.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
 
     // Test for sampling
     UnsignedInteger size = 10000;
-    NumericalSample oneSample = copula.getSample( size );
+    Sample oneSample = copula.getSample( size );
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
@@ -73,37 +73,37 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(precision);
 
     // Define a point
-    NumericalPoint point( copula.getDimension(), 0.6 );
+    Point point( copula.getDimension(), 0.6 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
-    //NumericalScalar eps(1e-5);
-    NumericalPoint DDF = copula.computeDDF( point );
+    //Scalar eps(1e-5);
+    Point DDF = copula.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-    NumericalPoint ddfFD(copula.getDimension());
+    Point ddfFD(copula.getDimension());
     fullprint << "ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point) << std::endl;
-    NumericalScalar PDF = copula.computePDF( point );
+    Scalar PDF = copula.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
-    NumericalScalar CDF = copula.computeCDF( point );
+    Scalar CDF = copula.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
-    NumericalScalar Survival = copula.computeSurvivalFunction(point);
+    Scalar Survival = copula.computeSurvivalFunction(point);
     fullprint << "Survival      =" << Survival << std::endl;
     fullprint << "Survival (ref)=" << copula.computeSurvivalFunction(point) << std::endl;
-    NumericalPoint InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
+    Point InverseSurvival = copula.computeInverseSurvivalFunction(0.95);
     fullprint << "Inverse survival=" << InverseSurvival << std::endl;
     fullprint << "Survival(inverse survival)=" << copula.computeSurvivalFunction(InverseSurvival) << std::endl;
     // Get 50% quantile
-    NumericalPoint quantile = copula.computeQuantile( 0.5 );
+    Point quantile = copula.computeQuantile( 0.5 );
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
 
     if (copula.getDimension() <= 2)
     {
       // Confidence regions
-      NumericalScalar threshold;
+      Scalar threshold;
       fullprint << "Minimum volume interval=" << copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
       fullprint << "threshold=" << threshold << std::endl;
-      NumericalScalar beta;
+      Scalar beta;
       LevelSet levelSet(copula.computeMinimumVolumeLevelSetWithThreshold(0.95, beta));
       fullprint << "Minimum volume level set=" << levelSet << std::endl;
       fullprint << "beta=" << beta << std::endl;
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
       fullprint << "beta=" << beta << std::endl;
     }
 
-    NumericalPoint mean = copula.getMean();
+    Point mean = copula.getMean();
     fullprint << "mean=" << mean << std::endl;
     precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(5);
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
     CorrelationMatrix kendall = copula.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
     PlatformInfo::SetNumericalPrecision(precision);
-    OrdinalSumCopula::NumericalPointWithDescriptionCollection parameters = copula.getParametersCollection();
+    OrdinalSumCopula::PointWithDescriptionCollection parameters = copula.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
 
   }

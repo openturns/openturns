@@ -64,7 +64,7 @@ public:
 private:
 
   /** Compute the block sample */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
   /** Instrumental importance distribution */
   Distribution importanceDistribution_;

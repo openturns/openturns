@@ -51,8 +51,8 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
 /* Parameters constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
     const Distribution & conditional,
-    const NumericalSample & observations,
-    const NumericalPoint & initialState,
+    const Sample & observations,
+    const Point & initialState,
     const DistributionCollection & proposal)
   : MCMC(prior, conditional, observations, initialState)
   , calibrationStrategy_(proposal.getSize())
@@ -67,10 +67,10 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution &
 /* Parameters constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
     const Distribution & conditional,
-    const NumericalMathFunction & model,
-    const NumericalSample & parameters,
-    const NumericalSample & observations,
-    const NumericalPoint & initialState,
+    const Function & model,
+    const Sample & parameters,
+    const Sample & observations,
+    const Point & initialState,
     const DistributionCollection & proposal)
   : MCMC(prior, conditional, model, parameters, observations, initialState)
   , calibrationStrategy_(proposal.getSize())
@@ -100,12 +100,12 @@ RandomWalkMetropolisHastings* RandomWalkMetropolisHastings::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-NumericalPoint RandomWalkMetropolisHastings::getRealization() const
+Point RandomWalkMetropolisHastings::getRealization() const
 {
   const UnsignedInteger dimension = initialState_.getDimension();
 
   // update factor
-  NumericalPoint delta(dimension, 1.0);
+  Point delta(dimension, 1.0);
 
   // number of samples accepted until calibration step
   Indices accepted(dimension);
@@ -117,7 +117,7 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
   if (samplesNumber_ == 0)
   {
     currentLogLikelihood_ = computeLogLikelihood(currentState_);
-    if (currentLogLikelihood_ <= SpecFunc::LogMinNumericalScalar)
+    if (currentLogLikelihood_ <= SpecFunc::LogMinScalar)
       throw InvalidArgumentException(HERE) << "The likelihood of the initial state should be positive";
   }
 
@@ -125,17 +125,17 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     // accumulates the updates over each components
-    NumericalPoint newState(currentState_);
+    Point newState(currentState_);
 
     history_.store(currentState_);
 
-    NumericalScalar logLikelihoodCandidate = currentLogLikelihood_;
+    Scalar logLikelihoodCandidate = currentLogLikelihood_;
 
     // update each chain component
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       // new candidate for the j-th component
-      NumericalPoint nextState(newState);
+      Point nextState(newState);
 
       Bool nonRejectedComponent = nonRejectedComponents_.contains(j);
       if (!nonRejectedComponent)
@@ -149,17 +149,17 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
         nextState[j] = getPrior().getMarginal(j).getRealization()[0];
       }
 
-      const NumericalScalar nextLogLikelihood = computeLogLikelihood(nextState);
+      const Scalar nextLogLikelihood = computeLogLikelihood(nextState);
 
       // alpha = likehood(newstate)/likehood(oldstate)
-      const NumericalScalar alphaLog = nextLogLikelihood  - currentLogLikelihood_;
+      const Scalar alphaLog = nextLogLikelihood  - currentLogLikelihood_;
 
       // acceptance test
-      const NumericalScalar uLog = log(RandomGenerator::Generate());
+      const Scalar uLog = log(RandomGenerator::Generate());
       if (nonRejectedComponent || (uLog < alphaLog))
       {
         // the likelihood can be 0 wrt the observations because of a non-rejected component (always ok wrt prior)
-        if (nextLogLikelihood == SpecFunc::LogMinNumericalScalar)
+        if (nextLogLikelihood == SpecFunc::LogMinScalar)
           throw InternalException(HERE) << "Cannot update the (non-accepted) component #" << j << " with null likelihood wrt observations";
 
         logLikelihoodCandidate = nextLogLikelihood;
@@ -185,10 +185,10 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
         if ((samplesNumber_ % calibrationStep) == (calibrationStep - 1))
         {
           // compute the current acceptation rate
-          NumericalScalar rho = 1.0 * accepted[j] / (1.0 * calibrationStep);
+          Scalar rho = 1.0 * accepted[j] / (1.0 * calibrationStep);
 
           // compute factor
-          NumericalScalar factor = calibrationStrategy_[j].computeUpdateFactor(rho);
+          Scalar factor = calibrationStrategy_[j].computeUpdateFactor(rho);
 
           // update delta
           delta[j] *= factor;
@@ -215,13 +215,13 @@ NumericalPoint RandomWalkMetropolisHastings::getRealization() const
 }
 
 
-NumericalPoint RandomWalkMetropolisHastings::getAcceptanceRate() const
+Point RandomWalkMetropolisHastings::getAcceptanceRate() const
 {
   const UnsignedInteger dimension = initialState_.getDimension();
-  NumericalPoint acceptanceRate(dimension);
+  Point acceptanceRate(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    acceptanceRate[j] = static_cast<NumericalScalar>(acceptedNumber_[j]) / samplesNumber_;
+    acceptanceRate[j] = static_cast<Scalar>(acceptedNumber_[j]) / samplesNumber_;
   }
   return acceptanceRate;
 }
@@ -256,7 +256,7 @@ void RandomWalkMetropolisHastings::setProposal(const RandomWalkMetropolisHasting
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     Bool symmetric = proposal[i].isElliptical();
-    symmetric = symmetric && (std::abs(proposal[i].getMean()[0]) < ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon"));
+    symmetric = symmetric && (std::abs(proposal[i].getMean()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"));
     if (!symmetric) throw InvalidArgumentException(HERE) << "The proposal density is not symmetric.";
   }
   proposal_ = proposal;

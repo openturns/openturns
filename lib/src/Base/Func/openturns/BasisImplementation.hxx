@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_BASISIMPLEMENTATION_HXX
 #define OPENTURNS_BASISIMPLEMENTATION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,21 +37,21 @@ class OT_API BasisImplementation
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor */
   BasisImplementation();
 
-  /** Build the NumericalMathFunction of the given index */
-  virtual NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  virtual Function build(const UnsignedInteger index) const;
 
-  /** Build the NumericalMathFunction of the given index */
-  virtual NumericalMathFunction operator[](const UnsignedInteger index) const;
-  virtual NumericalMathFunction & operator[](const UnsignedInteger index);
+  /** Build the Function of the given index */
+  virtual Function operator[](const UnsignedInteger index) const;
+  virtual Function & operator[](const UnsignedInteger index);
 
   /** Accessor to the sub-basis */
-  virtual NumericalMathFunctionCollection getSubBasis(const Indices & indices) const;
+  virtual FunctionCollection getSubBasis(const Indices & indices) const;
 
   /** Virtual constructor */
   virtual BasisImplementation * clone() const;
@@ -68,7 +68,7 @@ public:
   virtual Bool isOrthogonal() const;
   virtual Bool isFunctional() const;
 
-  virtual void add(const NumericalMathFunction & elt);
+  virtual void add(const Function & elt);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

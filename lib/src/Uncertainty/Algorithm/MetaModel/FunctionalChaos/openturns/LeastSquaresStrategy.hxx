@@ -62,13 +62,13 @@ public:
                        const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
-  LeastSquaresStrategy(const NumericalSample & inputSample,
-                       const NumericalPoint & weights,
-                       const NumericalSample & outputSample,
+  LeastSquaresStrategy(const Sample & inputSample,
+                       const Point & weights,
+                       const Sample & outputSample,
                        const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
-  LeastSquaresStrategy(const NumericalSample & inputSample,
-                       const NumericalSample & outputSample,
+  LeastSquaresStrategy(const Sample & inputSample,
+                       const Sample & outputSample,
                        const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Virtual constructor */
@@ -78,7 +78,7 @@ public:
   String __repr__() const;
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-  void computeCoefficients(const NumericalMathFunction & function,
+  void computeCoefficients(const Function & function,
                            const Basis & basis,
                            const Indices & indices,
                            const Indices & addedRanks,

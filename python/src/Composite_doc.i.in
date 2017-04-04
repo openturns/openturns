@@ -26,7 +26,7 @@ as the union of an :class:`~openturns.Axial` pattern and a
 
 In order to scale each direction and translate the grid structure onto the
 proper center, use the operator :math:`*=` and :math:`+=` of
-:class:`~openturns.NumericalSample`.
+:class:`~openturns.Sample`.
 
 See also
 --------

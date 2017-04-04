@@ -24,6 +24,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,7 +35,7 @@ static const Factory<MarginalTransformationEvaluation> Factory_MarginalTransform
 
 /* Default constructor */
 MarginalTransformationEvaluation::MarginalTransformationEvaluation():
-  NumericalMathEvaluationImplementation(),
+  EvaluationImplementation(),
   inputDistributionCollection_(),
   outputDistributionCollection_(),
   direction_()
@@ -46,7 +47,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation():
 MarginalTransformationEvaluation::MarginalTransformationEvaluation(const DistributionCollection & inputDistributionCollection,
     const DistributionCollection & outputDistributionCollection,
     const Bool simplify):
-  NumericalMathEvaluationImplementation(),
+  EvaluationImplementation(),
   inputDistributionCollection_(inputDistributionCollection),
   outputDistributionCollection_(outputDistributionCollection),
   direction_(FROMTO),
@@ -77,35 +78,35 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
       const String yName(getOutputDescription()[i]);
       const String inputClass(inputDistribution.getImplementation()->getClassName());
       const String outputClass(outputDistribution.getImplementation()->getClassName());
-      const NumericalPoint inputParameters(inputDistribution.getParametersCollection()[0]);
-      const NumericalPoint outputParameters(outputDistribution.getParametersCollection()[0]);
+      const Point inputParameters(inputDistribution.getParametersCollection()[0]);
+      const Point outputParameters(outputDistribution.getParametersCollection()[0]);
       // The first obvious simplification: the distributions share the same standard representative.
       if (inputClass == outputClass)
       {
         const Distribution inputStandardDistribution(inputDistribution.getStandardRepresentative());
-        const NumericalPoint inputStandardRepresentativeParameters(inputStandardDistribution.getParametersCollection()[0]);
+        const Point inputStandardRepresentativeParameters(inputStandardDistribution.getParametersCollection()[0]);
         const Distribution outputStandardDistribution(outputDistribution.getStandardRepresentative());
-        const NumericalPoint outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
-        const NumericalScalar difference = (inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm();
-        const Bool sameParameters = difference < ResourceMap::GetAsNumericalScalar("MarginalTransformationEvaluation-ParametersEpsilon");
+        const Point outputStandardRepresentativeParameters(outputStandardDistribution.getParametersCollection()[0]);
+        const Scalar difference = (inputStandardRepresentativeParameters - outputStandardRepresentativeParameters).norm();
+        const Bool sameParameters = difference < ResourceMap::GetAsScalar("MarginalTransformationEvaluation-ParametersEpsilon");
         if (sameParameters)
         {
           // The transformation is the composition of two affine transformations: (input distribution->standard representative of input distribution) and (standard representative of output distribution->output distribution)
           // The two affine transformations are obtained using quantiles in order to deal with distributions with no moments
-          const NumericalScalar q25Input = inputDistribution.computeQuantile(0.25)[0];
-          const NumericalScalar q75Input = inputDistribution.computeQuantile(0.75)[0];
-          const NumericalScalar q25Output = outputDistribution.computeQuantile(0.25)[0];
-          const NumericalScalar q75Output = outputDistribution.computeQuantile(0.75)[0];
-          const NumericalScalar a = 0.5 * (q75Output + q25Output);
+          const Scalar q25Input = inputDistribution.computeQuantile(0.25)[0];
+          const Scalar q75Input = inputDistribution.computeQuantile(0.75)[0];
+          const Scalar q25Output = outputDistribution.computeQuantile(0.25)[0];
+          const Scalar q75Output = outputDistribution.computeQuantile(0.75)[0];
+          const Scalar a = 0.5 * (q75Output + q25Output);
           // Here, b > 0 by construction
-          const NumericalScalar b = (q75Output - q25Output) / (q75Input - q25Input);
-          const NumericalScalar c = -0.5 * (q75Input + q25Input);
+          const Scalar b = (q75Output - q25Output) / (q75Input - q25Input);
+          const Scalar c = -0.5 * (q75Input + q25Input);
           OSS oss;
           oss.setPrecision(20);
           // First case, b = 1: we don't need to center the input variable
           if (b == 1.0)
           {
-            const NumericalScalar alpha = a + c;
+            const Scalar alpha = a + c;
             if (alpha != 0.0) oss << alpha << "+";
             oss << xName;
           } // b == 1
@@ -123,16 +124,16 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
             else oss << xName;
           } // b != 1
           const String formula(oss);
-          expressions_[i] = NumericalMathFunction(xName, formula, yName);
+          expressions_[i] = SymbolicFunction(xName, formula);
           simplifications_[i] = 1;
         } // sameParameters
       } // inputClass == outputClass
       if (((inputClass == "ChiSquare") || (inputClass == "Exponential") || (inputClass == "Gamma")) &&
           ((outputClass == "ChiSquare") || (outputClass == "Exponential") || (outputClass == "Gamma")))
       {
-        NumericalScalar k1 = -1.0;
-        NumericalScalar lambda1 = -1.0;
-        NumericalScalar gamma1 = -1.0;
+        Scalar k1 = -1.0;
+        Scalar lambda1 = -1.0;
+        Scalar gamma1 = -1.0;
         if (inputClass == "ChiSquare")
         {
           k1 = 0.5 * inputParameters[0];
@@ -151,9 +152,9 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
           lambda1 = inputParameters[1];
           gamma1 = inputParameters[2];
         }
-        NumericalScalar k2 = -1.0;
-        NumericalScalar lambda2 = -1.0;
-        NumericalScalar gamma2 = -1.0;
+        Scalar k2 = -1.0;
+        Scalar lambda2 = -1.0;
+        Scalar gamma2 = -1.0;
         if (outputClass == "ChiSquare")
         {
           k2 = 0.5 * outputParameters[0];
@@ -186,18 +187,18 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
             else oss << " + " << -gamma1 << "))";
           }
           const String formula(oss);
-          expressions_[i] = NumericalMathFunction(xName, formula, yName);
+          expressions_[i] = SymbolicFunction(xName, formula);
           simplifications_[i] = 1;
         } // k1 == k2
       } // ChiSquare || Exponential || Gamma vs ChiSquare || Exponential || Gamma
       // Normal -> LogNormal simplification
       if ((inputClass == "Normal") && (outputClass == "LogNormal"))
       {
-        const NumericalScalar mu1 = inputParameters[0];
-        const NumericalScalar sigma1 = inputParameters[1];
-        const NumericalScalar muLog2 = outputParameters[0];
-        const NumericalScalar sigmaLog2 = outputParameters[1];
-        const NumericalScalar gamma2 = outputParameters[2];
+        const Scalar mu1 = inputParameters[0];
+        const Scalar sigma1 = inputParameters[1];
+        const Scalar muLog2 = outputParameters[0];
+        const Scalar sigmaLog2 = outputParameters[1];
+        const Scalar gamma2 = outputParameters[2];
         OSS oss;
         oss.setPrecision(20);
         if (gamma2 != 0.0) oss << gamma2 << " + ";
@@ -209,29 +210,29 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
         if (sigma1 != 1.0) oss << " / " << sigma1;
         oss << ")";
         const String formula(oss);
-        expressions_[i] = NumericalMathFunction(xName, formula, yName);
+        expressions_[i] = SymbolicFunction(xName, formula);
         simplifications_[i] = 1;
       } // Normal -> LogNormal simplification
       // LogNormal -> Normal simplification
       if ((inputClass == "LogNormal") && (outputClass == "Normal"))
       {
-        const NumericalScalar muLog1 = inputParameters[0];
-        const NumericalScalar sigmaLog1 = inputParameters[1];
-        const NumericalScalar gamma1 = inputParameters[2];
-        const NumericalScalar mu2 = outputParameters[0];
-        const NumericalScalar sigma2 = outputParameters[1];
+        const Scalar muLog1 = inputParameters[0];
+        const Scalar sigmaLog1 = inputParameters[1];
+        const Scalar gamma1 = inputParameters[2];
+        const Scalar mu2 = outputParameters[0];
+        const Scalar sigma2 = outputParameters[1];
         OSS oss;
         oss.setPrecision(20);
         if (mu2 != 0.0) oss << mu2 << " + ";
         if (sigma2 != 1.0) oss << sigma2 << " * ";
         if (muLog1 != 0.0) oss << "(";
-        oss << "log(max(" << SpecFunc::MinNumericalScalar << ", " << xName;
+        oss << "log(max(" << SpecFunc::MinScalar << ", " << xName;
         if (gamma1 != 0.0) oss << " - " << gamma1;
         oss << "))";
         if (muLog1 != 0.0) oss << " - " << muLog1 << ")";
         if (sigmaLog1 != 1.0) oss << " / " << sigmaLog1;
         const String formula(oss);
-        expressions_[i] = NumericalMathFunction(xName, formula, yName);
+        expressions_[i] = SymbolicFunction(xName, formula);
         simplifications_[i] = 1;
       } // LogNormal -> Normal simplification
     } // Loop over the components
@@ -241,7 +242,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
 /* Parameter constructor */
 MarginalTransformationEvaluation::MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
     const UnsignedInteger direction):
-  NumericalMathEvaluationImplementation(),
+  EvaluationImplementation(),
   inputDistributionCollection_(0),
   outputDistributionCollection_(0),
   direction_(direction),
@@ -269,7 +270,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   // Get all the parameters
   // The notion of parameters is used only for transformation from or to a standard space, so we have to extract the parameters of either the input distributions or the output distribution depending on the direction
   const UnsignedInteger size = distributionCollection.getSize();
-  NumericalPoint parameter(0);
+  Point parameter(0);
   Description parameterDescription(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -287,24 +288,24 @@ MarginalTransformationEvaluation * MarginalTransformationEvaluation::clone() con
 }
 
 /* Evaluation */
-NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoint & inP) const
+Point MarginalTransformationEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
-  NumericalPoint result(dimension);
+  Point result(dimension);
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
-  const NumericalScalar tailThreshold = ResourceMap::GetAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
+  const Scalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (simplifications_[i]) result[i] = expressions_[i](NumericalPoint(1, inP[i]))[0];
+    if (simplifications_[i]) result[i] = expressions_[i](Point(1, inP[i]))[0];
     else
     {
-      NumericalScalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
+      Scalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
       // For accuracy reason, check if we are in the upper tail of the distribution
       const Bool upperTail = inputCDF > tailThreshold;
       if (upperTail) inputCDF = inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
       // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
       // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-      const NumericalScalar q = outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail)[0];
+      const Scalar q = outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail)[0];
       result[i] = q;
     }
   }
@@ -353,9 +354,9 @@ NumericalPoint MarginalTransformationEvaluation::operator () (const NumericalPoi
  * the needed gradient is [(dH/dp)(x,p)]^t
  *
  */
-Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) const
 {
-  const NumericalPoint parameters(getParameter());
+  const Point parameters(getParameter());
   const UnsignedInteger parametersDimension = parameters.getDimension();
   const UnsignedInteger inputDimension = getInputDimension();
   Matrix result(parametersDimension, inputDimension);
@@ -369,15 +370,15 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
        */
       for (UnsignedInteger j = 0; j < inputDimension; ++j)
       {
-        const NumericalPoint x(1, inP[j]);
+        const Point x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
-        const NumericalScalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
+        const Scalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
         if (denominator > 0.0)
         {
           try
           {
-            const NumericalPoint normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
+            const Point normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
             const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
@@ -399,16 +400,16 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
        */
       for (UnsignedInteger j = 0; j < inputDimension; ++j)
       {
-        const NumericalPoint x(1, inP[j]);
+        const Point x(1, inP[j]);
         const Distribution inputMarginal(inputDistributionCollection_[j]);
         const Distribution outputMarginal(outputDistributionCollection_[j]);
-        const NumericalPoint q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
-        const NumericalScalar denominator = outputMarginal.computePDF(q);
+        const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
+        const Scalar denominator = outputMarginal.computePDF(q);
         if (denominator > 0.0)
         {
           try
           {
-            const NumericalPoint normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
+            const Point normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
             const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
@@ -425,7 +426,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const NumericalPoint 
       return result;
     default:
       // Should never go there
-      throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parameterGradient(const NumericalPoint & inP) const";
+      throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parameterGradient(const Point & inP) const";
   }
 }
 
@@ -481,7 +482,7 @@ Collection<UnsignedInteger> MarginalTransformationEvaluation::getSimplifications
 }
 
 /* expressions accessor */
-Collection<NumericalMathFunction> MarginalTransformationEvaluation::getExpressions() const
+Collection<Function> MarginalTransformationEvaluation::getExpressions() const
 {
   return expressions_;
 }
@@ -525,7 +526,7 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void MarginalTransformationEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "inputDistributionCollection_", inputDistributionCollection_ );
   adv.saveAttribute( "outputDistributionCollection_", outputDistributionCollection_ );
   adv.saveAttribute( "direction_", direction_ );
@@ -534,7 +535,7 @@ void MarginalTransformationEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MarginalTransformationEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "inputDistributionCollection_", inputDistributionCollection_ );
   adv.loadAttribute( "outputDistributionCollection_", outputDistributionCollection_ );
   UnsignedInteger direction = FROMTO;

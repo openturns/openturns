@@ -86,7 +86,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> dim = 4
->>> model = ot.NumericalMathFunction(['x1', 'x2', 'x3', 'x4'], ['y1'],
+>>> model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'],
 ...     ['x1*x1+x2^3*x1+x3+x4'])
 >>> bounds = ot.Interval([-5.0] * dim, [5.0] * dim)
 >>> problem = ot.OptimizationProblem()
@@ -276,7 +276,7 @@ c : float
 
 Returns
 -------
-ei : :class:`~openturns.NumericalSample`
+ei : :class:`~openturns.Sample`
     The expected improvement optimal values."
 
 // ---------------------------------------------------------------------
@@ -286,7 +286,7 @@ ei : :class:`~openturns.NumericalSample`
 
 Parameters
 ----------
-noiseVariance : :class:`~openturns.NumericalMathFunction`
+noiseVariance : :class:`~openturns.Function`
     The noise variance :math:`\sigma^2_{\epsilon}(x)` used for the AEI
     criterion optimization only.
     Of same input dimension than the objective and 1-d output."
@@ -298,7 +298,7 @@ noiseVariance : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-noiseVariance : :class:`~openturns.NumericalMathFunction`
+noiseVariance : :class:`~openturns.Function`
     The noise variance :math:`\sigma^2_{\epsilon}(x)` used for the AEI
     criterion optimization only.
     Of same input dimension than the objective and 1-d output."

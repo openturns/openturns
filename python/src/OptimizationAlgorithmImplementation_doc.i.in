@@ -214,7 +214,7 @@ OT_OptimizationAlgorithm_getResult_doc
 
 Returns
 -------
-startingPoint : :class:`~openturns.NumericalPoint`
+startingPoint : :class:`~openturns.Point`
     Starting point."
 
 %enddef
@@ -358,7 +358,7 @@ OT_OptimizationAlgorithm_setResult_doc
 
 Parameters
 ----------
-startingPoint : :class:`~openturns.NumericalPoint`
+startingPoint : :class:`~openturns.Point`
     Starting point."
 
 %enddef

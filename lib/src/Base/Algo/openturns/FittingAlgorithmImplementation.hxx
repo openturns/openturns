@@ -22,7 +22,7 @@
 #define OPENTURNS_FITTINGALGORITHMIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
 #include "openturns/DesignProxy.hxx"
@@ -51,29 +51,29 @@ public:
   virtual String __repr__() const;
 
   /** Perform cross-validation */
-  virtual NumericalScalar run(const NumericalSample & x,
-                              const NumericalSample & y,
-                              const NumericalPoint & weight,
-                              const Basis & psi,
-                              const Indices & indices) const;
+  virtual Scalar run(const Sample & x,
+                     const Sample & y,
+                     const Point & weight,
+                     const Basis & psi,
+                     const Indices & indices) const;
 
-  virtual NumericalScalar run(const NumericalSample & x,
-                              const NumericalSample & y,
-                              const Basis & psi,
-                              const Indices & indices) const;
+  virtual Scalar run(const Sample & x,
+                     const Sample & y,
+                     const Basis & psi,
+                     const Indices & indices) const;
 
 #ifndef SWIG
-  virtual NumericalScalar run(const NumericalSample & y,
-                              const NumericalPoint & weight,
-                              const Indices & indices,
-                              const DesignProxy & proxy) const;
+  virtual Scalar run(const Sample & y,
+                     const Point & weight,
+                     const Indices & indices,
+                     const DesignProxy & proxy) const;
 
-  virtual NumericalScalar run(const NumericalSample & y,
-                              const Indices & indices,
-                              const DesignProxy & proxy) const;
+  virtual Scalar run(const Sample & y,
+                     const Indices & indices,
+                     const DesignProxy & proxy) const;
 
-  virtual NumericalScalar run(LeastSquaresMethod & method,
-                              const NumericalSample & y) const;
+  virtual Scalar run(LeastSquaresMethod & method,
+                     const Sample & y) const;
 
 #endif
 

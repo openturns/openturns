@@ -26,10 +26,10 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-NumericalScalar Normal2DCDF(const NumericalScalar x1,
-                            const NumericalScalar x2,
-                            const NumericalScalar rho,
-                            const Bool tail);
+Scalar Normal2DCDF(const Scalar x1,
+                   const Scalar x2,
+                   const Scalar rho,
+                   const Bool tail);
 
 END_NAMESPACE_OPENTURNS
 

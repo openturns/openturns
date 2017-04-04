@@ -35,10 +35,10 @@ int main(int argc, char *argv[])
     MarginalTransformationEvaluation::DistributionCollection coll1(0);
     coll1.add(Normal(1.0, 2.5));
     coll1.add(Gamma(1.5, 3.0));
-    NumericalPoint pointLow(0);
+    Point pointLow(0);
     pointLow.add(coll1[0].computeQuantile(0.25)[0]);
     pointLow.add(coll1[1].computeQuantile(0.25)[0]);
-    NumericalPoint pointHigh(0);
+    Point pointHigh(0);
     pointHigh.add(coll1[0].computeQuantile(0.75)[0]);
     pointHigh.add(coll1[1].computeQuantile(0.75)[0]);
     MarginalTransformationEvaluation::DistributionCollection coll2(0);
@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
       MarginalTransformationEvaluation evaluation(coll1, MarginalTransformationEvaluation::TO);
       MarginalTransformationGradient transformation(evaluation);
       fullprint << "transformation=" << transformation << std::endl;
-      NumericalPoint uLow(coll1.getSize(), 0.25);
-      NumericalPoint uHigh(coll1.getSize(), 0.75);
+      Point uLow(coll1.getSize(), 0.25);
+      Point uHigh(coll1.getSize(), 0.75);
       fullprint << "transformation.gradient(" << uLow << ")=" << transformation.gradient(uLow) << std::endl;
       fullprint << "finite difference gradient(" << uLow << ")=" << CenteredFiniteDifferenceGradient(1.0e-5, evaluation.clone()).gradient(uLow) << std::endl;
       fullprint << "transformation.gradient(" << uHigh << ")=" << transformation.gradient(uHigh) << std::endl;

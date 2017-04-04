@@ -11,55 +11,55 @@ Distribution class=Chi name=Chi dimension=1 nu=1.5
 Distribution Chi(nu = 1.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.66733]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[1.58636] last=class=NumericalPoint name=Unnamed dimension=1 values=[1.02264]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.04589]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.66733]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.58636] last=class=Point name=Unnamed dimension=1 values=[1.02264]
+mean=class=Point name=Unnamed dimension=1 values=[1.04589]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.399002]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.294304]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.294304]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[-0.294304]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.294304]
 log pdf=-0.529994
 pdf     =0.588608
 pdf (FD)=0.588608
 cdf=0.527937
 ccdf=0.472063
 survival=0.472063
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.182299]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.182299]
 Survival(inverse survival)=0.95
 characteristic function=(0.433496,0.694719)
 log characteristic function=(-0.199826,1.01293)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=1 values=[0.115577]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.115577]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=1 values=[-0.291714]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.291714]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[2.23164]
+pdf gradient     =class=Point name=Unnamed dimension=1 values=[0.115577]
+pdf gradient (FD)=class=Point name=Unnamed dimension=1 values=[0.115577]
+cdf gradient     =class=Point name=Unnamed dimension=1 values=[-0.291714]
+cdf gradient (FD)=class=Point name=Unnamed dimension=1 values=[-0.291714]
+quantile=class=Point name=Unnamed dimension=1 values=[2.23164]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.0147509] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.24137] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0147509] upper bound=class=Point name=Unnamed dimension=1 values=[2.24137] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Chi(nu = 1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Chi(nu = 1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Chi(nu = 1.5)) level=2.13833
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Chi(nu = 1.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Chi(nu = 1.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Chi(nu = 1.5)) level=2.13833
 beta=0.117852
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.114512] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.50516] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.114512] upper bound=class=Point name=Unnamed dimension=1 values=[2.50516] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[2.23164] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[2.23164] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.182299] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[7.89498] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.182299] upper bound=class=Point name=Unnamed dimension=1 values=[7.89498] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[1.04605]
+mean=class=Point name=Unnamed dimension=1 values=[1.04605]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.40578]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[nu : 1.5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.04605]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.5]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[2.61512]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[5.25]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[11.7681]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.04605]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.5]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[2.61512]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[5.25]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[11.7681]
 Standard representative=Chi(nu = 1.5)
 nu=1.5
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.637009]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.762585]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.42425]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.637009]
+skewness=class=Point name=Unnamed dimension=1 values=[0.762585]
+kurtosis=class=Point name=Unnamed dimension=1 values=[3.42425]

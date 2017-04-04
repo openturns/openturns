@@ -21,7 +21,7 @@
 #include "openturns/FORM.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -32,12 +32,12 @@ CLASSNAMEINIT(FORMResult);
 
 static const Factory<FORMResult> Factory_FORMResult;
 
-typedef PersistentCollection<NumericalPointWithDescription> PersistentSensitivity;
+typedef PersistentCollection<PointWithDescription> PersistentSensitivity;
 
 /*
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
-FORMResult::FORMResult(const NumericalPoint & standardSpaceDesignPoint,
+FORMResult::FORMResult(const Point & standardSpaceDesignPoint,
                        const Event & limitStateVariable,
                        const Bool isStandardPointOriginInFailureSpace):
   AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace),
@@ -71,9 +71,9 @@ FORMResult * FORMResult::clone() const
 void FORMResult::computeEventProbability() const
 {
   /* evaluate the event probability */
-  /* Be careful! computeCDF method takes an NumericalPoint as an input argument */
+  /* Be careful! computeCDF method takes an Point as an input argument */
   /* in the standard space all marginals of the standard distribution are identical */
-  eventProbability_ = getLimitStateVariable().getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getMarginal(0).computeCDF(NumericalPoint(1, -getHasoferReliabilityIndex()));
+  eventProbability_ = getLimitStateVariable().getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getMarginal(0).computeCDF(Point(1, -getHasoferReliabilityIndex()));
 
   if (getIsStandardPointOriginInFailureSpace())
   {
@@ -83,13 +83,13 @@ void FORMResult::computeEventProbability() const
 }
 
 /* EventProbability accessor */
-NumericalScalar FORMResult::getEventProbability() const
+Scalar FORMResult::getEventProbability() const
 {
   return eventProbability_;
 }
 
 /* EventProbability accessor */
-void FORMResult::setEventProbability(const NumericalScalar & eventProbability)
+void FORMResult::setEventProbability(const Scalar & eventProbability)
 {
   eventProbability_ = eventProbability;
 }
@@ -104,13 +104,13 @@ void  FORMResult::computeGeneralisedReliabilityIndex() const
 
 
 /* GeneralisedReliabilityIndex accessor */
-NumericalScalar FORMResult::getGeneralisedReliabilityIndex() const
+Scalar FORMResult::getGeneralisedReliabilityIndex() const
 {
   return generalisedReliabilityIndex_;
 }
 
 /* GeneralisedReliabilityIndex accessor */
-void FORMResult::setGeneralisedReliabilityIndex(const NumericalScalar & generalisedReliabilityIndex)
+void FORMResult::setGeneralisedReliabilityIndex(const Scalar & generalisedReliabilityIndex)
 {
   generalisedReliabilityIndex_ = generalisedReliabilityIndex;
 }
@@ -118,15 +118,15 @@ void FORMResult::setGeneralisedReliabilityIndex(const NumericalScalar & generali
 /* The function that actually evaluates the  event probability sensitivity with FORM approximation */
 void FORMResult::computeEventProbabilitySensitivity() const
 {
-  NumericalPoint correctedReliabilityIndex(1, (getIsStandardPointOriginInFailureSpace() ? getHasoferReliabilityIndex() : -getHasoferReliabilityIndex()));
+  Point correctedReliabilityIndex(1, (getIsStandardPointOriginInFailureSpace() ? getHasoferReliabilityIndex() : -getHasoferReliabilityIndex()));
   Distribution antecedent(getLimitStateVariable().getImplementation()->getAntecedent()->getDistribution());
   UnsignedInteger dimension = antecedent.getDimension();
 
-  /* Be carefull! computeCDF method takes an NumericalPoint as an input argument */
+  /* Be carefull! computeCDF method takes an Point as an input argument */
   /* in the standard space all marginals of the standard distribution are identical */
   /* evaluate one marginal at the reliability index : the marginal is symmetric with respect to zero */
   const Distribution standardMarginalDistribution(antecedent.getStandardDistribution().getMarginal(0));
-  NumericalScalar correctedReliabilityIndexDensity = standardMarginalDistribution.computePDF(correctedReliabilityIndex);
+  Scalar correctedReliabilityIndexDensity = standardMarginalDistribution.computePDF(correctedReliabilityIndex);
 
   if (! getIsStandardPointOriginInFailureSpace())
   {
@@ -139,13 +139,13 @@ void FORMResult::computeEventProbabilitySensitivity() const
   UnsignedInteger size = eventProbabilitySensitivity_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i) eventProbabilitySensitivity_[i] *= correctedReliabilityIndexDensity;
   /* sensitivity with respect to the parameters of the density generator of the standard distribution */
-  NumericalPointWithDescriptionCollection standardMarginalParametersCollection(standardMarginalDistribution.getParametersCollection());
+  PointWithDescriptionCollection standardMarginalParametersCollection(standardMarginalDistribution.getParametersCollection());
   UnsignedInteger parametersDimension = standardMarginalParametersCollection[0].getDimension();
   /* there 2 parameters generic to 1D elliptical distributions : mean and standard deviation */
   UnsignedInteger genericParametersNumber = 2;
   if (antecedent.getImplementation()->hasEllipticalCopula() && parametersDimension > genericParametersNumber)
   {
-    const NumericalPoint standardParametersGradient(standardMarginalDistribution.computeCDFGradient(correctedReliabilityIndex));
+    const Point standardParametersGradient(standardMarginalDistribution.computeCDFGradient(correctedReliabilityIndex));
     /* shift is the number of parameters of the correlation matrix (upper triangle) for elliptical copula*/
     const UnsignedInteger shift = dimension * (dimension - 1) / 2;
     for (UnsignedInteger index = genericParametersNumber; index < standardParametersGradient.getDimension(); ++index) eventProbabilitySensitivity_[dimension][index + shift - genericParametersNumber] = standardParametersGradient[index];
@@ -164,7 +164,7 @@ FORMResult::Sensitivity FORMResult::getEventProbabilitySensitivity() const
 
 
 /* HasoferReliabilityIndexSensitivity Graph */
-AnalyticalResult::GraphCollection FORMResult::drawEventProbabilitySensitivity(NumericalScalar width) const
+AnalyticalResult::GraphCollection FORMResult::drawEventProbabilitySensitivity(Scalar width) const
 {
   GraphCollection eventProbabilitySensitivityGraphCollection(0);
   // To ensure that the eventProbabilitySensitivity_ are up to date

@@ -45,12 +45,12 @@ ArcsineFactory * ArcsineFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ArcsineFactory::Implementation ArcsineFactory::build(const NumericalSample & sample) const
+ArcsineFactory::Implementation ArcsineFactory::build(const Sample & sample) const
 {
   return buildAsArcsine(sample).clone();
 }
 
-ArcsineFactory::Implementation ArcsineFactory::build(const NumericalPoint & parameters) const
+ArcsineFactory::Implementation ArcsineFactory::build(const Point & parameters) const
 {
   return buildAsArcsine(parameters).clone();
 }
@@ -60,18 +60,18 @@ ArcsineFactory::Implementation ArcsineFactory::build() const
   return buildAsArcsine().clone();
 }
 
-DistributionFactoryResult ArcsineFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult ArcsineFactory::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample, true);
 }
 
-Arcsine ArcsineFactory::buildAsArcsine(const NumericalSample & sample) const
+Arcsine ArcsineFactory::buildAsArcsine(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Arcsine distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Arcsine distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar mean = sample.computeMean()[0];
-  NumericalScalar standardDeviation = sample.computeStandardDeviationPerComponent()[0];
-  NumericalPoint parameters(2);
+  Scalar mean = sample.computeMean()[0];
+  Scalar standardDeviation = sample.computeStandardDeviationPerComponent()[0];
+  Point parameters(2);
   parameters[0] = mean;
   parameters[1] = standardDeviation;
   Arcsine result(buildAsArcsine(ArcsineMuSigma()(parameters)));
@@ -79,7 +79,7 @@ Arcsine ArcsineFactory::buildAsArcsine(const NumericalSample & sample) const
   return result;
 }
 
-Arcsine ArcsineFactory::buildAsArcsine(const NumericalPoint & parameters) const
+Arcsine ArcsineFactory::buildAsArcsine(const Point & parameters) const
 {
   try
   {

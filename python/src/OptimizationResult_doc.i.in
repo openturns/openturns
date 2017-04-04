@@ -42,7 +42,7 @@ absoluteError : float
 
 Returns
 -------
-absoluteErrorHistory : :class:`~openturns.NumericalSample`
+absoluteErrorHistory : :class:`~openturns.Sample`
     Value of the absolute error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -62,7 +62,7 @@ constraintError : float
 
 Returns
 -------
-constraintErrorHistory : :class:`~openturns.NumericalSample`
+constraintErrorHistory : :class:`~openturns.Sample`
     Value of the constrainte error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -102,7 +102,7 @@ relativeError : float
 
 Returns
 -------
-relativeErrorHistory : :class:`~openturns.NumericalSample`
+relativeErrorHistory : :class:`~openturns.Sample`
     Value of the relative error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -122,7 +122,7 @@ residualError : float
 
 Returns
 -------
-residualErrorHistory : :class:`~openturns.NumericalSample`
+residualErrorHistory : :class:`~openturns.Sample`
     Value of the residual error at each iteration of the solver."
 
 // ---------------------------------------------------------------------
@@ -132,7 +132,7 @@ residualErrorHistory : :class:`~openturns.NumericalSample`
 
 Parameters
 ----------
-optimalPoint : :class:`~openturns.NumericalPoint`
+optimalPoint : :class:`~openturns.Point`
     Optimal point"
 
 // ---------------------------------------------------------------------
@@ -142,7 +142,7 @@ optimalPoint : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-optimalPoint : :class:`~openturns.NumericalPoint`
+optimalPoint : :class:`~openturns.Point`
     Optimal point"
 
 // ---------------------------------------------------------------------
@@ -152,7 +152,7 @@ optimalPoint : :class:`~openturns.NumericalPoint`
 
 Parameters
 ----------
-multipliers : :class:`~openturns.NumericalPoint`
+multipliers : :class:`~openturns.Point`
     Lagrange multipliers.
 
 Notes
@@ -167,7 +167,7 @@ See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipl
 
 Returns
 -------
-multipliers : :class:`~openturns.NumericalPoint`
+multipliers : :class:`~openturns.Point`
     Lagrange multipliers.
 
 Notes
@@ -182,7 +182,7 @@ See :class:`~openturns.OptimizationAlgorithm` for the details on how the multipl
 
 Parameters
 ----------
-optimalValue : :class:`~openturns.NumericalPoint`
+optimalValue : :class:`~openturns.Point`
     Value at the optimal point"
 
 // ---------------------------------------------------------------------
@@ -192,7 +192,7 @@ optimalValue : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-optimalValue : :class:`~openturns.NumericalPoint`
+optimalValue : :class:`~openturns.Point`
     Value at the optimal point"
 
 // ---------------------------------------------------------------------
@@ -202,7 +202,7 @@ optimalValue : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     Input points used by the solver"
 
 // ---------------------------------------------------------------------
@@ -212,7 +212,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     Output points used by the solver"
 
 // ---------------------------------------------------------------------

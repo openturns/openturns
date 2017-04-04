@@ -59,18 +59,18 @@ public:
   /** Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
    * is an n-D interval
    */
-  NumericalPoint integrate(const NumericalMathFunction & function,
-                           const Interval & interval) const;
+  Point integrate(const Function & function,
+                  const Interval & interval) const;
 
 #ifndef SWIG
-  NumericalPoint integrate(const NumericalMathFunction & function,
-                           const Interval & interval,
-                           NumericalScalar & error) const;
+  Point integrate(const Function & function,
+                  const Interval & interval,
+                  Scalar & error) const;
 #endif
 
-  NumericalPoint integrate(const NumericalMathFunction & function,
-                           const Interval & interval,
-                           NumericalPoint & error) const;
+  Point integrate(const Function & function,
+                  const Interval & interval,
+                  Point & error) const;
 
   /** String converter */
   String __repr__() const;

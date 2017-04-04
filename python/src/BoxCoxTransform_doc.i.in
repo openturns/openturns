@@ -101,7 +101,7 @@ Apply it to a field:
 
 Returns
 -------
-myLambda : :class:`~openturns.NumericalPoint`
+myLambda : :class:`~openturns.Point`
     The :math:`\vect{\lambda}` parameter.
 
 "
@@ -111,7 +111,7 @@ myLambda : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-myLambda : :class:`~openturns.NumericalPoint`
+myLambda : :class:`~openturns.Point`
     The :math:`\vect{\Lambda}` parameter.
 
 "

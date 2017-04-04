@@ -34,13 +34,13 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(2);
 
     // Learning data
-    NumericalPoint levels(2);
+    Point levels(2);
     levels[0] = 8;
     levels[1] = 5;
     // Define the Box
     Box box(levels);
     // Get the input sample
-    NumericalSample inputSample( box.generate() );
+    Sample inputSample( box.generate() );
     // Scale each direction
     inputSample *= 10;
 
@@ -51,16 +51,16 @@ int main(int argc, char *argv[])
 
     Description formula(1);
     formula[0] = "cos(0.5*x) + sin(y)" ;
-    const NumericalMathFunction model(inputDescription, formula);
+    const SymbolicFunction model(inputDescription, formula);
 
     // Build the output sample
-    const NumericalSample  outputSample( model(inputSample) );
+    const Sample  outputSample( model(inputSample) );
 
     // 2) Definition of exponential model
-    NumericalPoint scale(2);
+    Point scale(2);
     scale[0] = 1.988;
     scale[1] = 0.924;
-    NumericalPoint amplitude(1, 3.153);
+    Point amplitude(1, 3.153);
     SquaredExponential covarianceModel(scale, amplitude);
 
     // 3) Basis definition
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     KrigingResult result(algo.getResult());
 
     // Get meta model
-    NumericalMathFunction metaModel(result.getMetaModel());
+    Function metaModel(result.getMetaModel());
 
     // Interpolation error
     assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5);
@@ -84,20 +84,20 @@ int main(int argc, char *argv[])
     CovarianceMatrix var(result.getConditionalCovariance(inputSample));
 
     // assert_almost_equal could not be applied to matrices
-    NumericalPoint covariancePoint(*var.getImplementation());
-    assert_almost_equal(covariancePoint, NumericalPoint(covariancePoint.getSize()), 1e-6, 1e-6);
+    Point covariancePoint(*var.getImplementation());
+    assert_almost_equal(covariancePoint, Point(covariancePoint.getSize()), 1e-6, 1e-6);
 
     // Random vector evaluation
-    NumericalSample unifRealization(Uniform(0.0, 10.0).getSample(2));
-    NumericalPoint validationPoint(unifRealization.getImplementation()->getData());
+    Sample unifRealization(Uniform(0.0, 10.0).getSample(2));
+    Point validationPoint(unifRealization.getImplementation()->getData());
     KrigingRandomVector rvector(result, validationPoint);
 
     // Realization of the random vector
-    NumericalPoint realization (rvector.getRealization());
+    Point realization (rvector.getRealization());
     std::cout << "Realization of the KRV=" << realization << std::endl;
 
     // Get a sample of size 10
-    NumericalSample realizations(rvector.getSample(10));
+    Sample realizations(rvector.getSample(10));
     std::cout << "Sample of realizations of the KRV=" << realizations << std::endl;
   }
 

@@ -37,13 +37,13 @@ int main(int argc, char *argv[])
   fullprint << "process = " << myProcess << std::endl;
 
   // Learning data
-  NumericalPoint levels(2);
+  Point levels(2);
   levels[0] = 8;
   levels[1] = 5;
   // Define the Box
   Box box(levels);
   // Get the input sample
-  NumericalSample inputSample( box.generate() );
+  Sample inputSample( box.generate() );
   // Scale each direction
   inputSample *= 10;
 
@@ -54,16 +54,16 @@ int main(int argc, char *argv[])
 
   Description formula(1);
   formula[0] = "cos(0.5*x) + sin(y)" ;
-  const NumericalMathFunction model(inputDescription, formula);
+  const SymbolicFunction model(inputDescription, formula);
 
   // Build the output sample
-  const NumericalSample  outputSample( model(inputSample) );
+  const Sample  outputSample( model(inputSample) );
 
   // 2) Definition of exponential model
-  NumericalPoint scale(2);
+  Point scale(2);
   scale[0] = 1.988;
   scale[1] = 0.924;
-  NumericalPoint amplitude(1, 3.153);
+  Point amplitude(1, 3.153);
   SquaredExponential covarianceModel(scale, amplitude);
 
   // 3) Basis definition
@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
   std::cerr << "result=" << result << std::endl;
   // Build a mesh
   // Start with vertices
-  NumericalSample vertices(0, 2);
-  NumericalPoint p(2);
+  Sample vertices(0, 2);
+  Point p(2);
 
   p[0] = 1.0;
   p[1] = 0.0;

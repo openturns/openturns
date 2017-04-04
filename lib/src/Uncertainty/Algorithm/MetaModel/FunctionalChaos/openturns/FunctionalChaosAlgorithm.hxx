@@ -24,8 +24,8 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/MetaModelAlgorithm.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/AdaptiveStrategy.hxx"
 #include "openturns/ProjectionStrategy.hxx"
@@ -50,45 +50,45 @@ public:
 
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+  FunctionalChaosAlgorithm(const Function & model,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalSample & outputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalPoint & weights,
-                           const NumericalSample & outputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Point & weights,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy,
                            const ProjectionStrategy & projectionStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalMathFunction & model,
+  FunctionalChaosAlgorithm(const Function & model,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalSample & outputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalSample & outputSample);
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Sample & outputSample);
 
   /** Constructor */
-  FunctionalChaosAlgorithm(const NumericalSample & inputSample,
-                           const NumericalPoint & weights,
-                           const NumericalSample & outputSample,
+  FunctionalChaosAlgorithm(const Sample & inputSample,
+                           const Point & weights,
+                           const Sample & outputSample,
                            const Distribution & distribution,
                            const AdaptiveStrategy & adaptiveStrategy);
 
@@ -99,8 +99,8 @@ public:
   virtual String __repr__() const;
 
   /** Maximum residual accessors */
-  void setMaximumResidual(NumericalScalar residual);
-  NumericalScalar getMaximumResidual() const;
+  void setMaximumResidual(Scalar residual);
+  Scalar getMaximumResidual() const;
 
   /** Projection strategy accessor */
   void setProjectionStrategy(const ProjectionStrategy & projectionStrategy);
@@ -115,8 +115,8 @@ public:
   FunctionalChaosResult getResult() const;
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -137,18 +137,18 @@ private:
   /** Marginal computation */
   void runMarginal(const UnsignedInteger marginalIndex,
                    Indices & indices,
-                   NumericalPoint & coefficients,
-                   NumericalScalar & residual,
-                   NumericalScalar & relativeError);
+                   Point & coefficients,
+                   Scalar & residual,
+                   Scalar & relativeError);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
-  NumericalMathFunction transformation_;
+  Function transformation_;
 
   /** The inverse isoprobabilistic transformation */
-  NumericalMathFunction inverseTransformation_;
+  Function inverseTransformation_;
 
   /** The composed model */
-  NumericalMathFunction composedModel_;
+  Function composedModel_;
 
   /** The adaptive strategy */
   AdaptiveStrategy adaptiveStrategy_;
@@ -157,7 +157,7 @@ private:
   ProjectionStrategy projectionStrategy_;
 
   /** Maximum residual */
-  NumericalScalar maximumResidual_;
+  Scalar maximumResidual_;
 
   /** Result of the projection */
   FunctionalChaosResult result_;

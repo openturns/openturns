@@ -22,7 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(StationaryCovarianceModelFactory);
 static const Factory<StationaryCovarianceModelFactory> Factory_StationaryCovarianceModelFactory;
 
-static const Factory<PersistentCollection<NumericalComplex> > Factory_PersistentCollection_NumericalComplex;
+static const Factory<PersistentCollection<Complex> > Factory_PersistentCollection_Complex;
 
 typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
 
@@ -80,21 +80,21 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
 
 /* Build a covariance model based on a spectral model and a frequency grid */
 UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel,
-														   const RegularGrid & frequencyGrid) const
+    const RegularGrid & frequencyGrid) const
 {
   // We get the dimension of the model
   const UnsignedInteger dimension = mySpectralModel.getDimension();
   // From the spectral model, we want to evaluate the autocovariance function
   const UnsignedInteger N = frequencyGrid.getN();
-  const NumericalScalar df = frequencyGrid.getStep();
-  const NumericalScalar maximalFrequency = frequencyGrid.getValue(N - 1) + 0.5 * df;
+  const Scalar df = frequencyGrid.getStep();
+  const Scalar maximalFrequency = frequencyGrid.getValue(N - 1) + 0.5 * df;
   // We use the integrale of the spectral density through the frequencies, i.e.
   // \int_{\Omega_c} S(f) exp(i2\pi f h) df  ==> the algorithm works on frequencies
   // The used algorithm imposes both positive and negative ones
   // Some transformations are needed
   const UnsignedInteger size = 2 * N;
   // Care!!! Check the expression of dt - The time grid should corresponds to the frequency grid
-  const NumericalScalar dt = 0.5 / maximalFrequency;
+  const Scalar dt = 0.5 / maximalFrequency;
 
   // As we need Fourier transformations, we need to have a structure which enables to stock elements
   // For d = dimension, we need dimension * 0.5 * (dimension + 1) transformations
@@ -105,16 +105,16 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
     UnsignedInteger columnIndex = 0;
     // Computation is done for the current frequency value
     // The frequency is computed thanks to the formula (2k +1 -size) *0.5 * df with k=0,.,..,size-1
-    const NumericalScalar currentFrequency = (2.0 * k + 1 - size) * 0.5 * df;
+    const Scalar currentFrequency = (2.0 * k + 1 - size) * 0.5 * df;
     const HermitianMatrix spectralDensity(mySpectralModel(currentFrequency));
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
-        const NumericalScalar theta = (size - 1.0) * k * M_PI / size;
-        const NumericalComplex alpha(cos(theta), -sin(theta));
-        const NumericalComplex spectralValue(spectralDensity(i, j));
-        const NumericalComplex phi_k(spectralValue * alpha);
+        const Scalar theta = (size - 1.0) * k * M_PI / size;
+        const Complex alpha(cos(theta), -sin(theta));
+        const Complex spectralValue(spectralDensity(i, j));
+        const Complex phi_k(spectralValue * alpha);
         matrix(k, columnIndex) = phi_k;
         columnIndex += 1;
       }
@@ -123,11 +123,11 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   // At this level, we get elements to launch the fft
   // We first compute a temporal factor delta(m) = df * N * exp(-\pi * i * (2m + 1 - N) * (N-1) / 2N)
   // The formula of this last one may be found in the UseCaseGuide
-  Collection<NumericalComplex> delta(size);
+  Collection<Complex> delta(size);
   for (UnsignedInteger m = 0; m < size; ++m)
   {
-    const NumericalScalar theta = (size - 1.0) / size * 0.5 * M_PI * (2.0 * m + 1.0 - size);
-    const NumericalComplex alpha(cos(theta), -1.0 * sin(theta));
+    const Scalar theta = (size - 1.0) / size * 0.5 * M_PI * (2.0 * m + 1.0 - size);
+    const Complex alpha(cos(theta), -1.0 * sin(theta));
     delta[m] = df * size * alpha;
   }
 
@@ -136,7 +136,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   for (UnsignedInteger columnIndex = 0; columnIndex < numberOfFFT; ++columnIndex)
   {
     // FFT applications
-    const Collection<NumericalComplex> marginal(fftAlgorithm.inverseTransform(*matrix.getImplementation(), columnIndex * size, size));
+    const Collection<Complex> marginal(fftAlgorithm.inverseTransform(*matrix.getImplementation(), columnIndex * size, size));
     // We save result in the same matrix
     for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
     {

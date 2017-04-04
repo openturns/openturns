@@ -46,11 +46,11 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis()
 }
 
 /* Standard constructor */
-SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const NumericalSample & inputSample,
-    const NumericalSample & outputSample,
+SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Sample & inputSample,
+    const Sample & outputSample,
     const IsoProbabilisticTransformation & transformation,
     const ComparisonOperator & comparisonOperator,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : PersistentObject(),
     inputSample_(inputSample),
     outputSample_(outputSample),
@@ -94,7 +94,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Event & event
   // Inspect the event to see if it is a composite random vector based event
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "Error: cannot perform a sensitivity analysis based on the given event. Check if it is based on a composite random vector.";
   // Get the input/output sample from the model
-  NumericalMathFunction model(event.getFunction());
+  Function model(event.getFunction());
   if (!model.isHistoryEnabled()) throw InvalidArgumentException(HERE) << "Error: cannot perform analysis if the history of the underlying model is disabled.";
   inputSample_  = model.getHistoryInput().getSample();
   // Check if the samples are not empty
@@ -117,10 +117,10 @@ SimulationSensitivityAnalysis * SimulationSensitivityAnalysis::clone() const
 }
 
 /* Mean point in event domain computation */
-NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const NumericalScalar threshold) const
+Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar threshold) const
 {
   const UnsignedInteger inputSize = inputSample_.getSize();
-  NumericalSample filteredSample(0, inputSample_.getDimension());
+  Sample filteredSample(0, inputSample_.getDimension());
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
     if (comparisonOperator_(outputSample_[i][0], threshold)) filteredSample.add(inputSample_[i]);
@@ -128,20 +128,20 @@ NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain(cons
   return filteredSample.computeMean();
 }
 
-NumericalPoint SimulationSensitivityAnalysis::computeMeanPointInEventDomain() const
+Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain() const
 {
   return computeMeanPointInEventDomain(threshold_);
 }
 
 /* Importance factors computation */
-NumericalPointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors(const NumericalScalar threshold) const
+PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors(const Scalar threshold) const
 {
-  NumericalPointWithDescription result(transformation_(computeMeanPointInEventDomain(threshold)).normalizeSquare());
+  PointWithDescription result(transformation_(computeMeanPointInEventDomain(threshold)).normalizeSquare());
   result.setDescription(inputSample_.getDescription());
   return result;
 }
 
-NumericalPointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors() const
+PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors() const
 {
   return computeImportanceFactors(threshold_);
 }
@@ -156,8 +156,8 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactors() const
 }
 
 Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool probabilityScale,
-    const NumericalScalar lower,
-    const NumericalScalar upper) const
+    const Scalar lower,
+    const Scalar upper) const
 {
   // Here we choose if we have to go forward or backward through the data
   // True if < or <=
@@ -197,7 +197,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // + In fact, each curve embeds its data, so the input sample is duplicated and the output data is copied d times
   // + In the case of ties in the output sample, the data stored in the curves are shorter than the initial data
   const UnsignedInteger inputDimension = inputSample_.getDimension();
-  NumericalSample mergedSample(size, inputDimension + 1);
+  Sample mergedSample(size, inputDimension + 1);
   // Use the loop to compute the number of points that compares favorably
   // to the internal threshold
   UnsignedInteger good = 0;
@@ -211,10 +211,10 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // Sort the merged sample according to its last component
   mergedSample = mergedSample.sortAccordingToAComponent(inputDimension);
   // Prepare the data for the curves
-  Collection<NumericalSample> dataCollection(inputDimension, NumericalSample(0, 2));
+  Collection<Sample> dataCollection(inputDimension, Sample(0, 2));
   // Now, we can go through the data and accumulate the importance factors. If we just call the computeImportanceFactors() method directly, the cost is O(size^2), which is too expensive for typical situations.
   // Aggregate the points in the event
-  NumericalPoint accumulator(inputDimension);
+  Point accumulator(inputDimension);
   // Here, we cannot use a simple loop as we have to deal with ties
   SignedInteger i = iStart;
   UnsignedInteger accumulated = 0;
@@ -222,12 +222,12 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   while (i != iStopDrawing)
   {
     SignedInteger iThreshold = i;
-    NumericalScalar currentThreshold = mergedSample[iThreshold][inputDimension];
+    Scalar currentThreshold = mergedSample[iThreshold][inputDimension];
     // First, search for a valid threshold, ie one that needs to accumulate more points than the ones already accumulated
     while (!comparisonOperator_(mergedSample[i][inputDimension], currentThreshold))
     {
       // Accumulate the current threshold candidate, as it will be accepted as soon as a valid threshold will be found
-      const NumericalPoint current(mergedSample[iThreshold]);
+      const Point current(mergedSample[iThreshold]);
       for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += current[j];
       ++accumulated;
       iThreshold += step;
@@ -246,7 +246,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
       while (comparisonOperator_(mergedSample[iTies][inputDimension], currentThreshold))
       {
         // Accumulate the current threshold
-        const NumericalPoint current(mergedSample[iTies]);
+        const Point current(mergedSample[iTies]);
         for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += current[j];
         ++accumulated;
         iTies += step;
@@ -262,21 +262,21 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     {
       // Now, augmente the data in the collection
       // Initialize with values associated with probabilityScale == false
-      NumericalScalar xValue = currentThreshold;
+      Scalar xValue = currentThreshold;
       // Change the values if probabilityScale == true
-      if (probabilityScale) xValue = NumericalScalar(accumulated) / size;
+      if (probabilityScale) xValue = Scalar(accumulated) / size;
       // Check if the point is in the exploration range
       if ((xValue >= lower) && (xValue <= upper))
       {
-        NumericalPoint importanceFactors;
+        Point importanceFactors;
         // Check if the importance factors are well-defined for the current threshold
         try
         {
           importanceFactors = transformation_(accumulator / accumulated).normalizeSquare();
-          const NumericalPoint ref(computeImportanceFactors(currentThreshold));
+          const Point ref(computeImportanceFactors(currentThreshold));
           for (UnsignedInteger j = 0; j < inputDimension; ++j)
           {
-            NumericalPoint point(2);
+            Point point(2);
             point[0] = xValue;
             point[1] = 100.0 * importanceFactors[j];
             dataCollection[j].add(point);
@@ -295,12 +295,12 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   } // while (i != iStopDrawing)
   // Initialize with values associated with probabilityScale == false
   String xLabel("threshold");
-  NumericalScalar internalX = threshold_;
+  Scalar internalX = threshold_;
   // Change the values if probabilityScale == true
   if (probabilityScale)
   {
     xLabel = "probability";
-    internalX = static_cast<NumericalScalar>(good) / size;
+    internalX = static_cast<Scalar>(good) / size;
   }
   Graph graph("Importance factors range", xLabel, "Importance (%)", true, "topright");
   const Description colors(Drawable::BuildDefaultPalette(inputDimension));
@@ -314,7 +314,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // Highlight the default threshold importance factors if stable enough
   if ((internalX >= lower) && (internalX <= upper) && (good >= sampleMargin) && (good < size - sampleMargin))
   {
-    NumericalSample data(2, 2);
+    Sample data(2, 2);
     data[0][0] = internalX;
     data[0][1] = 0.0;
     data[1][0] = internalX;
@@ -330,24 +330,24 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
 }
 
 /* Input sample accessors */
-NumericalSample SimulationSensitivityAnalysis::getInputSample() const
+Sample SimulationSensitivityAnalysis::getInputSample() const
 {
   return inputSample_;
 }
 
 /* Output sample accessors */
-NumericalSample SimulationSensitivityAnalysis::getOutputSample() const
+Sample SimulationSensitivityAnalysis::getOutputSample() const
 {
   return outputSample_;
 }
 
 /* Threshold accessors */
-NumericalScalar SimulationSensitivityAnalysis::getThreshold() const
+Scalar SimulationSensitivityAnalysis::getThreshold() const
 {
   return threshold_;
 }
 
-void SimulationSensitivityAnalysis::setThreshold(const NumericalScalar threshold)
+void SimulationSensitivityAnalysis::setThreshold(const Scalar threshold)
 {
   threshold_ = threshold;
 }

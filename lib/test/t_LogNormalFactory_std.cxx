@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   {
     LogNormal distribution(1.5, 2.5, -1.5);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     LogNormalFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

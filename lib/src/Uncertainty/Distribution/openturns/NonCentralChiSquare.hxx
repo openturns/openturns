@@ -41,8 +41,8 @@ public:
 
   /** Default constructor */
   /* The default values correspond to a classical ChiSquare distribution with 5 degrees of freedom */
-  NonCentralChiSquare(const NumericalScalar nu = 5.0,
-                      const NumericalScalar lambda = 0.0);
+  NonCentralChiSquare(const Scalar nu = 5.0,
+                      const Scalar lambda = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const NonCentralChiSquare & other) const;
@@ -62,56 +62,56 @@ public:
   virtual NonCentralChiSquare * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the distribution */
   using ContinuousDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
   /** Nu accessor */
-  void setNu(const NumericalScalar nu);
-  void setNuLambda(const NumericalScalar nu,
-                   const NumericalScalar lambda);
-  NumericalScalar getNu() const;
+  void setNu(const Scalar nu);
+  void setNuLambda(const Scalar nu,
+                   const Scalar lambda);
+  Scalar getNu() const;
 
   /** Lambda accessor */
-  void setLambda(const NumericalScalar lambda);
-  NumericalScalar getLambda() const;
+  void setLambda(const Scalar lambda);
+  Scalar getLambda() const;
 
   /** Maximum iterations accessor */
   void setMaximumIteration(const UnsignedInteger maximumIteration);
@@ -136,10 +136,10 @@ private:
   void computeCovariance() const;
 
   /** Number of degrees of freedom */
-  NumericalScalar nu_;
+  Scalar nu_;
 
   /** Non-centrality parameter */
-  NumericalScalar lambda_;
+  Scalar lambda_;
 
   /** The maximum iterations for the PDF and CDF computations */
   UnsignedInteger maximumIteration_;

@@ -16,15 +16,15 @@ class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
     def _exec(self, X):
         inputTG = X.getTimeGrid()
         inputValues = X.getValues()
-        f = ot.NumericalMathFunction(ot.PiecewiseLinearEvaluationImplementation(
+        f = ot.Function(ot.PiecewiseLinearEvaluation(
             [x[0] for x in inputTG.getVertices()], inputValues))
-        outputValues = ot.NumericalSample(0, 1)
+        outputValues = ot.Sample(0, 1)
         for t in self.outputGrid_.getVertices():
             kernel = ot.Normal(t[0], 0.05)
 
             def pdf(X):
                 return [kernel.computePDF(X)]
-            weight = ot.NumericalMathFunction(ot.PythonFunction(1, 1, pdf))
+            weight = ot.Function(ot.PythonFunction(1, 1, pdf))
             outputValues.add(self.algo_.integrate(
                 weight * f, kernel.getRange()))
         return ot.Field(self.outputGrid_, outputValues)

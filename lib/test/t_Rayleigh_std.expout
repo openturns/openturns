@@ -11,56 +11,56 @@ Distribution class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
 Distribution Rayleigh(sigma = 2.5, gamma = -0.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[1.90372]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.748252] last=class=NumericalPoint name=Unnamed dimension=1 values=[2.7717]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.61902]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.90372]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.748252] last=class=Point name=Unnamed dimension=1 values=[2.7717]
+mean=class=Point name=Unnamed dimension=1 values=[2.61902]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.72183]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.0855317]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.0855317]
+Point= class=Point name=Unnamed dimension=1 values=[1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.0855317]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.0855317]
 log pdf=-1.60712
 pdf     =0.200465
 pdf (FD)=0.200465
 cdf=0.16473
 ccdf=0.83527
 survival=0.83527
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[0.300729]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.300729]
 Survival(inverse survival)=0.95
 characteristic function=(-0.157515,0.242922)
 log characteristic function=(-1.23953,2.14606)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.131505,-0.0855317]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.131505,-0.0855317]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=2 values=[-0.120279,-0.200465]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.120279,-0.200465]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[5.61937]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.131505,-0.0855317]
+pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.131505,-0.0855317]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.120279,-0.200465]
+cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.120279,-0.200465]
+quantile=class=Point name=Unnamed dimension=1 values=[5.61937]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.223821] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5.75046] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.223821] upper bound=class=Point name=Unnamed dimension=1 values=[5.75046] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Rayleigh(sigma = 2.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Rayleigh(sigma = 2.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Rayleigh(sigma = 2.5, gamma = -0.5)) level=3.12539
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Rayleigh(sigma = 2.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Rayleigh(sigma = 2.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Rayleigh(sigma = 2.5, gamma = -0.5)) level=3.12539
 beta=0.0439198
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.062559] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[6.29051] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.062559] upper bound=class=Point name=Unnamed dimension=1 values=[6.29051] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[-0.5] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[5.61937] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[5.61937] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[0.300729] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[19.5737] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.300729] upper bound=class=Point name=Unnamed dimension=1 values=[19.5737] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[2.63329]
+mean=class=Point name=Unnamed dimension=1 values=[2.63329]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.68252]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[sigma : 2.5, gamma : -0.5]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[1.25331]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[2]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[3.75994]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[8]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[18.7997]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.25331]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[3.75994]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[8]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[18.7997]
 Standard representative=Rayleigh(sigma = 1, gamma = 0)
 gamma=-0.5
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[1.63784]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.631111]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[3.24509]
+standard deviation=class=Point name=Unnamed dimension=1 values=[1.63784]
+skewness=class=Point name=Unnamed dimension=1 values=[0.631111]
+kurtosis=class=Point name=Unnamed dimension=1 values=[3.24509]
 sigma=2.5

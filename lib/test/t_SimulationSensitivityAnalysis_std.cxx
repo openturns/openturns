@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   try
   {
     /* Uncertain parameters*/
-    Normal distribution(NumericalPoint(3, 1.0), NumericalPoint(3, 2.0), CorrelationMatrix(3));
+    Normal distribution(Point(3, 1.0), Point(3, 2.0), CorrelationMatrix(3));
     distribution.setName("Unnamed");
     /* Model */
     Description input(3);
@@ -42,20 +42,20 @@ int main(int argc, char *argv[])
     input[2] = "z";
     Description formulas(1);
     formulas[0] = "x-1.5*y+2*z";
-    NumericalMathFunction f(input, formulas);
+    SymbolicFunction f(input, formulas);
     /* Must activate the history mechanism if one want to perform sensitivity analysis */
     f.enableHistory();
     /* Sampling */
     UnsignedInteger size = 100;
-    NumericalSample inputSample(distribution.getSample(size));
-    NumericalSample outputSample(f(inputSample));
+    Sample inputSample(distribution.getSample(size));
+    Sample outputSample(f(inputSample));
     Collection<ComparisonOperator> comparisonOperators(4);
     comparisonOperators[0] = Less();
     comparisonOperators[1] = LessOrEqual();
     comparisonOperators[2] = Greater();
     comparisonOperators[3] = GreaterOrEqual();
     ResourceMap::SetAsUnsignedInteger("SimulationSensitivityAnalysis-DefaultSampleMargin", 10);
-    NumericalScalar threshold = 3.0;
+    Scalar threshold = 3.0;
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
       {

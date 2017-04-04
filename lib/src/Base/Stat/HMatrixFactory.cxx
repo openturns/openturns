@@ -21,7 +21,7 @@
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Log.hxx"
 
 #ifdef OPENTURNS_HAVE_HMAT
@@ -63,7 +63,7 @@ HMatrixFactory::IsAvailable()
 
 
 HMatrix
-HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
+HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters)
 {
 #ifndef OPENTURNS_HAVE_HMAT
   throw NotYetImplementedException(HERE) << "OpenTURNS has been built without HMat support";
@@ -85,7 +85,7 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
   settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
   settings.maxParallelLeaves = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxParallelLeaves");
 
-  settings.validationErrorThreshold = ResourceMap::GetAsNumericalScalar("HMatrix-ValidationError");
+  settings.validationErrorThreshold = ResourceMap::GetAsScalar("HMatrix-ValidationError");
   settings.validateCompression = settings.validationErrorThreshold > 0;
   settings.validationReRun = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationRerun");
   settings.validationDump = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationDump");
@@ -121,7 +121,7 @@ HMatrixFactory::build(const NumericalSample & sample, UnsignedInteger outputDime
   hmat_delete_clustering(algo);
   delete[] points;
 
-  NumericalScalar eta = parameters.getAdmissibilityFactor();
+  Scalar eta = parameters.getAdmissibilityFactor();
   hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
   hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
   hmat_delete_admissibility(admissibility);

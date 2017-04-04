@@ -22,12 +22,12 @@
 #define OPENTURNS_FUNCTIONALCHAOSRESULT_HXX
 
 #include "openturns/MetaModelResult.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/OrthogonalBasis.hxx"
 
@@ -49,8 +49,8 @@ class OT_API FunctionalChaosResult
 
 public:
 
-  typedef Collection<NumericalMathFunction>           NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function>           FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   // friend class Factory<FunctionalChaosResult>;
 
@@ -58,17 +58,17 @@ public:
   FunctionalChaosResult();
 
   /** Parameter constructor */
-  FunctionalChaosResult(const NumericalMathFunction & model,
+  FunctionalChaosResult(const Function & model,
                         const Distribution & distribution,
-                        const NumericalMathFunction & transformation,
-                        const NumericalMathFunction & inverseTransformation,
-                        const NumericalMathFunction & composedModel,
+                        const Function & transformation,
+                        const Function & inverseTransformation,
+                        const Function & composedModel,
                         const OrthogonalBasis & orthogonalBasis,
                         const Indices & I,
-                        const NumericalSample & alpha_k,
-                        const NumericalMathFunctionCollection & Psi_k,
-                        const NumericalPoint & residuals,
-                        const NumericalPoint & relativeErrors);
+                        const Sample & alpha_k,
+                        const FunctionCollection & Psi_k,
+                        const Point & residuals,
+                        const Point & relativeErrors);
 
   /** Virtual constructor */
   virtual FunctionalChaosResult * clone() const;
@@ -81,13 +81,13 @@ public:
   virtual Distribution getDistribution() const;
 
   /** IsoProbabilisticTransformation accessor */
-  virtual NumericalMathFunction getTransformation() const;
+  virtual Function getTransformation() const;
 
   /** InverseIsoProbabilisticTransformation accessor */
-  virtual NumericalMathFunction getInverseTransformation() const;
+  virtual Function getInverseTransformation() const;
 
   /** Composed model accessor */
-  virtual NumericalMathFunction getComposedModel() const;
+  virtual Function getComposedModel() const;
 
   /** Orthogonal basis accessor */
   virtual OrthogonalBasis getOrthogonalBasis() const;
@@ -96,13 +96,13 @@ public:
   virtual Indices getIndices() const;
 
   /** Coefficients accessor */
-  virtual NumericalSample getCoefficients() const;
+  virtual Sample getCoefficients() const;
 
   /** Reduced basis accessor */
-  virtual NumericalMathFunctionCollection getReducedBasis() const;
+  virtual FunctionCollection getReducedBasis() const;
 
   /** Composed meta model accessor */
-  virtual NumericalMathFunction getComposedMetaModel() const;
+  virtual Function getComposedMetaModel() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -118,13 +118,13 @@ private:
   Distribution distribution_;
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
-  NumericalMathFunction transformation_;
+  Function transformation_;
 
   /** The inverse isoprobabilistic transformation */
-  NumericalMathFunction inverseTransformation_;
+  Function inverseTransformation_;
 
   /** The composed model */
-  NumericalMathFunction composedModel_;
+  Function composedModel_;
 
   /** The orthogonal basis */
   OrthogonalBasis orthogonalBasis_;
@@ -133,13 +133,13 @@ private:
   Indices I_;
 
   /** The collection of Alpha_k coefficients */
-  NumericalSample alpha_k_;
+  Sample alpha_k_;
 
   /** The collection of vectors upon which we project the (composed) model */
-  NumericalMathFunctionPersistentCollection Psi_k_;
+  FunctionPersistentCollection Psi_k_;
 
   /** Composed meta model */
-  NumericalMathFunction composedMetaModel_;
+  Function composedMetaModel_;
 
 } ; /* class FunctionalChaosResult */
 

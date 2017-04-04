@@ -1,68 +1,68 @@
-Distribution class=Dirichlet name=Dirichlet dimension=1 theta=class=NumericalPoint name=Unnamed dimension=2 values=[1.25,1.5]
+Distribution class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,1.5]
 Distribution Dirichlet(theta = [1.25,1.5])
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[0.569088]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[0.14321] last=class=NumericalPoint name=Unnamed dimension=1 values=[0.243847]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.456339]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.569088]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.14321] last=class=Point name=Unnamed dimension=1 values=[0.243847]
+mean=class=Point name=Unnamed dimension=1 values=[0.456339]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.067112]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point=class=NumericalPoint name=Unnamed dimension=1 values=[0.5]
+Point=class=Point name=Unnamed dimension=1 values=[0.5]
 log pdf=0.17441
 pdf=1.1905
 cdf=0.56973
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.8867]
+quantile=class=Point name=Unnamed dimension=1 values=[0.8867]
 cdf(quantile)=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[0.454545]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[0.352089]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.108715]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[1.98398]
+mean=class=Point name=Unnamed dimension=1 values=[0.454545]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.352089]
+skewness=class=Point name=Unnamed dimension=1 values=[0.108715]
+kurtosis=class=Point name=Unnamed dimension=1 values=[1.98398]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0661157]
 parameters collection=[[theta : 1.25, sum theta : 1.5]]
-before set=class=Dirichlet name=Dirichlet dimension=1 theta=class=NumericalPoint name=Unnamed dimension=2 values=[1.25,1.5]
-after set= class=Dirichlet name=Dirichlet dimension=1 theta=class=NumericalPoint name=Unnamed dimension=2 values=[1.25,1.5]
-margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=NumericalPoint name=Unnamed dimension=2 values=[1.25,1.5]
+before set=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,1.5]
+after set= class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,1.5]
+margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,1.5]
 margin PDF=1.1905
 margin CDF=0.56973
-margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.88672]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.495988]
-Distribution class=Dirichlet name=Dirichlet dimension=2 theta=class=NumericalPoint name=Unnamed dimension=3 values=[1.25,1.5,1.75]
+margin quantile=class=Point name=Unnamed dimension=1 values=[0.88672]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.495988]
+Distribution class=Dirichlet name=Dirichlet dimension=2 theta=class=Point name=Unnamed dimension=3 values=[1.25,1.5,1.75]
 Distribution Dirichlet(theta = [1.25,1.5,1.75])
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=2 values=[0.135837,0.267152]
-oneSample first=class=NumericalPoint name=Unnamed dimension=2 values=[0.197265,0.207428] last=class=NumericalPoint name=Unnamed dimension=2 values=[0.354329,0.139825]
-mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.275613,0.333625]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.135837,0.267152]
+oneSample first=class=Point name=Unnamed dimension=2 values=[0.197265,0.207428] last=class=Point name=Unnamed dimension=2 values=[0.354329,0.139825]
+mean=class=Point name=Unnamed dimension=2 values=[0.275613,0.333625]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0358934,-0.0169336,-0.0169336,0.0408276]
-Point=class=NumericalPoint name=Unnamed dimension=2 values=[0.25,0.25]
+Point=class=Point name=Unnamed dimension=2 values=[0.25,0.25]
 log pdf=1.1976
 pdf=3.3122
 cdf=0.14355
-quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.7136,0.7674]
+quantile=class=Point name=Unnamed dimension=2 values=[0.7136,0.7674]
 cdf(quantile)=0.95
-mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.277778,0.333333]
-standard deviation=class=NumericalPoint name=Unnamed dimension=2 values=[0.384946,0.426401]
-skewness=class=NumericalPoint name=Unnamed dimension=2 values=[0.35525,0.240534]
-kurtosis=class=NumericalPoint name=Unnamed dimension=2 values=[2.86651,2.53846]
+mean=class=Point name=Unnamed dimension=2 values=[0.277778,0.333333]
+standard deviation=class=Point name=Unnamed dimension=2 values=[0.384946,0.426401]
+skewness=class=Point name=Unnamed dimension=2 values=[0.35525,0.240534]
+kurtosis=class=Point name=Unnamed dimension=2 values=[2.86651,2.53846]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0364759,-0.016835,-0.016835,0.040404]
 parameters collection=[[theta : 1.25, sum theta : 3.25],[theta : 1.5, sum theta : 3]]
-before set=class=Dirichlet name=Dirichlet dimension=2 theta=class=NumericalPoint name=Unnamed dimension=3 values=[1.25,1.5,1.75]
-after set= class=Dirichlet name=Dirichlet dimension=2 theta=class=NumericalPoint name=Unnamed dimension=3 values=[1.25,1.5,1.75]
-margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=NumericalPoint name=Unnamed dimension=2 values=[1.25,3.25]
+before set=class=Dirichlet name=Dirichlet dimension=2 theta=class=Point name=Unnamed dimension=3 values=[1.25,1.5,1.75]
+after set= class=Dirichlet name=Dirichlet dimension=2 theta=class=Point name=Unnamed dimension=3 values=[1.25,1.5,1.75]
+margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,3.25]
 margin PDF=0.88989
 margin CDF=0.85595
-margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.643596]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.116349]
-margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=NumericalPoint name=Unnamed dimension=2 values=[1.5,3]
+margin quantile=class=Point name=Unnamed dimension=1 values=[0.643596]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.116349]
+margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.5,3]
 margin PDF=1.1601
 margin CDF=0.78445
-margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.704013]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.683216]
+margin quantile=class=Point name=Unnamed dimension=1 values=[0.704013]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.683216]
 indices=[1,0]
-margins=class=Dirichlet name=Dirichlet dimension=2 theta=class=NumericalPoint name=Unnamed dimension=3 values=[1.5,1.25,1.75]
+margins=class=Dirichlet name=Dirichlet dimension=2 theta=class=Point name=Unnamed dimension=3 values=[1.5,1.25,1.75]
 margins PDF=0
 margins CDF=0.6404
-margins quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.767409,0.713647]
+margins quantile=class=Point name=Unnamed dimension=2 values=[0.767409,0.713647]
 margins CDF(quantile)=0.95
-margins realization=class=NumericalPoint name=Unnamed dimension=2 values=[0.210342,0.240573]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.210342,0.240573]

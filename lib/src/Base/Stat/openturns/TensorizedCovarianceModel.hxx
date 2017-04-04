@@ -49,19 +49,19 @@ public:
 
   /** Parameters constructor */
   TensorizedCovarianceModel(const CovarianceModelCollection & collection,
-                            const NumericalPoint & scale);
+                            const Point & scale);
 
   /** Virtual copy constructor */
   TensorizedCovarianceModel * clone() const;
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const NumericalPoint & s,
-                               const NumericalPoint & t) const;
+  CovarianceMatrix operator() (const Point & s,
+                               const Point & t) const;
 
   /** Gradient */
-  virtual Matrix partialGradient(const NumericalPoint & s,
-                                 const NumericalPoint & t) const;
+  virtual Matrix partialGradient(const Point & s,
+                                 const Point & t) const;
 
   /** Collection accessor */
   const CovarianceModelCollection & getCollection() const;
@@ -70,10 +70,10 @@ public:
   virtual Implementation getMarginal(const UnsignedInteger index) const;
 
   /** Scale accessor */
-  void setScale(const NumericalPoint & scale);
+  void setScale(const Point & scale);
 
   /** Amplitude accessor */
-  void setAmplitude(const NumericalPoint & amplitude);
+  void setAmplitude(const Point & amplitude);
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;
@@ -95,8 +95,8 @@ public:
 
 protected:
   /** Parameter accessor */
-  virtual void setFullParameter(const NumericalPoint & parameter);
-  virtual NumericalPoint getFullParameter() const;
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
   void setCollection(const CovarianceModelCollection & collection);

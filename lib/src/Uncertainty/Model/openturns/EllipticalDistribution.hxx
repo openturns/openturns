@@ -44,10 +44,10 @@ public:
   EllipticalDistribution();
 
   /** Parameter constructor */
-  EllipticalDistribution(const NumericalPoint & mean,
-                         const NumericalPoint & sigma,
+  EllipticalDistribution(const Point & mean,
+                         const Point & sigma,
                          const CorrelationMatrix & R,
-                         const NumericalScalar covarianceNormalizationFactor);
+                         const Scalar covarianceNormalizationFactor);
 
   /** Virtual copy constructor */
   virtual EllipticalDistribution * clone() const;
@@ -68,46 +68,46 @@ public:
 
   /** Get the DDF of the distribution */
   using ContinuousDistribution::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Compute the density generator of the elliptical distribution, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^{-1}(x-mu))                      */
-  virtual NumericalScalar computeDensityGenerator(const NumericalScalar betaSquare) const;
-  virtual NumericalScalar computeLogDensityGenerator(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
+  virtual Scalar computeLogDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
-  virtual NumericalScalar computeDensityGeneratorDerivative(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
 
   /** Compute the second derivative of the density generator */
-  virtual NumericalScalar computeDensityGeneratorSecondDerivative(const NumericalScalar betaSquare) const;
+  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
-  virtual NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  virtual Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Mean point accessor */
-  void setMean(const NumericalPoint & mean);
+  void setMean(const Point & mean);
 
   /** Sigma vector accessor */
-  void setSigma(const NumericalPoint & sigma);
+  void setSigma(const Point & sigma);
 
   /** Sigma vector accessor */
-  NumericalPoint getSigma() const;
+  Point getSigma() const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Correlation matrix accessor */
   void setCorrelation(const CorrelationMatrix & R);
@@ -124,10 +124,10 @@ protected:
 
 public:
   /** Normalize the given point u_i = (x_i - mu_i) / sigma_i */
-  NumericalPoint normalize(const NumericalPoint & x) const;
+  Point normalize(const Point & x) const;
 
   /** Denormalize the given point x_i = mu_i + sigma_i * x_i */
-  NumericalPoint denormalize(const NumericalPoint & u) const;
+  Point denormalize(const Point & u) const;
 
   /** Inverse correlation matrix accessor */
   SquareMatrix getInverseCorrelation() const;
@@ -149,13 +149,13 @@ public:
   Implementation getStandardDistribution() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
   /** Parameters value accessor */
-  virtual NumericalPoint getParameter() const;
-  virtual void setParameter(const NumericalPoint & parameters);
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameters);
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
@@ -169,7 +169,7 @@ public:
 protected:
 
   /** The sigma vector of the distribution */
-  mutable NumericalPoint sigma_;
+  mutable Point sigma_;
 
   /** The correlation matrix (Rij) of the distribution */
   mutable CorrelationMatrix R_;
@@ -187,18 +187,18 @@ protected:
   TriangularMatrix inverseCholesky_;
 
   /** The normalization factor of the distribution */
-  NumericalScalar normalizationFactor_;
+  Scalar normalizationFactor_;
 
   /** The scaling factor of the covariance matrix covariance = covarianceScalingFactor_ * shape_*/
-  NumericalScalar covarianceScalingFactor_;
+  Scalar covarianceScalingFactor_;
 
 private:
   // Class used to wrap the computeRadialCDF() method for interpolation purpose
-  class RadialCDFWrapper: public NumericalMathFunctionImplementation
+  class RadialCDFWrapper: public FunctionImplementation
   {
   public:
     RadialCDFWrapper(const EllipticalDistribution * p_distribution)
-      : NumericalMathFunctionImplementation()
+      : FunctionImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do
@@ -209,9 +209,9 @@ private:
       return new RadialCDFWrapper(*this);
     }
 
-    NumericalPoint operator() (const NumericalPoint & point) const
+    Point operator() (const Point & point) const
     {
-      return NumericalPoint(1, p_distribution_->computeRadialDistributionCDF(point[0]));
+      return Point(1, p_distribution_->computeRadialDistributionCDF(point[0]));
     }
 
     UnsignedInteger getInputDimension() const

@@ -22,9 +22,11 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,8 +49,8 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation()
 
 /* Default constructor */
 KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
-    const NumericalScalar threshold,
-    const NumericalPoint & eigenvalues,
+    const Scalar threshold,
+    const Point & eigenvalues,
     const Basis & modes,
     const ProcessSample & modesAsProcessSample,
     const Matrix & projection)
@@ -70,7 +72,7 @@ KarhunenLoeveResultImplementation * KarhunenLoeveResultImplementation::clone() c
 }
 
 /* Threshold accessor */
-NumericalScalar KarhunenLoeveResultImplementation::getThreshold() const
+Scalar KarhunenLoeveResultImplementation::getThreshold() const
 {
   return threshold_;
 }
@@ -82,7 +84,7 @@ CovarianceModel KarhunenLoeveResultImplementation::getCovarianceModel() const
 }
 
 /* Eigenvalues accessor */
-NumericalPoint KarhunenLoeveResultImplementation::getEigenValues() const
+Point KarhunenLoeveResultImplementation::getEigenValues() const
 {
   return eigenvalues_;
 }
@@ -101,16 +103,16 @@ ProcessSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
 /* Scaled modes accessors */
 Basis KarhunenLoeveResultImplementation::getScaledModes() const
 {
-  Collection<NumericalMathFunction> scaledModes(modes_.getSize());
+  Collection<Function> scaledModes(modes_.getSize());
   const UnsignedInteger dimension = modes_.getDimension();
-  const NumericalPoint zero(dimension);
+  const Point zero(dimension);
   const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
-    {
-      const NumericalMathFunction modeI(modes_.build(i));
-      LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
-      scaledModes[i] = ComposedFunction(scaling, modeI);
-    }
+  {
+    const Function modeI(modes_.build(i));
+    LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
+    scaledModes[i] = ComposedFunction(scaling, modeI);
+  }
   return scaledModes;
 }
 
@@ -129,29 +131,29 @@ Matrix KarhunenLoeveResultImplementation::getProjectionMatrix() const
 }
 
 /* Projection method */
-NumericalPoint KarhunenLoeveResultImplementation::project(const NumericalMathFunction & function) const
+Point KarhunenLoeveResultImplementation::project(const Function & function) const
 {
-  // Evaluate the function over the vertices of the mesh and cast it into a NumericalPoint
-  const NumericalPoint functionValues(function(modesAsProcessSample_.getMesh().getVertices()).getImplementation()->getData());
+  // Evaluate the function over the vertices of the mesh and cast it into a Point
+  const Point functionValues(function(modesAsProcessSample_.getMesh().getVertices()).getImplementation()->getData());
   return projection_ * functionValues;
 }
 
-NumericalPoint KarhunenLoeveResultImplementation::project(const Field & field) const
+Point KarhunenLoeveResultImplementation::project(const Field & field) const
 {
   if (field.getMesh() == modesAsProcessSample_.getMesh())
     return projection_ * field.getValues().getImplementation()->getData();
-  return project(NumericalMathFunction(field));
+  return project(Function(P1LagrangeEvaluation(field).clone()));
 }
 
 struct ProjectBasisPolicy
 {
   const Basis & basis_;
-  NumericalSample & output_;
+  Sample & output_;
   const KarhunenLoeveResultImplementation & result_;
 
   ProjectBasisPolicy( const Basis & basis,
-                    NumericalSample & output,
-                    const KarhunenLoeveResultImplementation & result)
+                      Sample & output,
+                      const KarhunenLoeveResultImplementation & result)
     : basis_(basis)
     , output_(output)
     , result_(result)
@@ -164,10 +166,10 @@ struct ProjectBasisPolicy
 
 }; /* end struct ProjectBasisPolicy */
 
-NumericalSample KarhunenLoeveResultImplementation::project(const Basis & basis) const
+Sample KarhunenLoeveResultImplementation::project(const Basis & basis) const
 {
   const UnsignedInteger size = basis.getSize();
-  NumericalSample result(size, projection_.getNbRows());
+  Sample result(size, projection_.getNbRows());
   const ProjectBasisPolicy policy( basis, result, *this );
   TBB::ParallelFor( 0, size, policy );
   return result;
@@ -176,12 +178,12 @@ NumericalSample KarhunenLoeveResultImplementation::project(const Basis & basis) 
 struct ProjectSamplePolicy
 {
   const ProcessSample & sample_;
-  NumericalSample & output_;
+  Sample & output_;
   const KarhunenLoeveResultImplementation & result_;
 
   ProjectSamplePolicy( const ProcessSample & sample,
-                    NumericalSample & output,
-                    const KarhunenLoeveResultImplementation & result)
+                       Sample & output,
+                       const KarhunenLoeveResultImplementation & result)
     : sample_(sample)
     , output_(output)
     , result_(result)
@@ -189,39 +191,39 @@ struct ProjectSamplePolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) 
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
       output_[i] = result_.project(sample_.getField(i));
   }
 
 }; /* end struct ProjectSamplePolicy */
 
-NumericalSample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
+Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  NumericalSample result(size, projection_.getNbRows());
+  Sample result(size, projection_.getNbRows());
   const ProjectSamplePolicy policy( sample, result, *this );
   TBB::ParallelFor( 0, size, policy );
-  return result;  
+  return result;
 }
 
 /* Lift method */
-NumericalMathFunction KarhunenLoeveResultImplementation::lift(const NumericalPoint & coefficients) const
+Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
-  NumericalPoint scaledCoefficients(dimension);
-  Collection<NumericalMathFunction> functions(dimension);
+  Point scaledCoefficients(dimension);
+  Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      scaledCoefficients[i] = std::sqrt(eigenvalues_[i]) * coefficients[i];
-      functions[i] = modes_.build(i);
-    }
-  return NumericalMathFunction(functions, scaledCoefficients);
+  {
+    scaledCoefficients[i] = std::sqrt(eigenvalues_[i]) * coefficients[i];
+    functions[i] = modes_.build(i);
+  }
+  return LinearCombinationFunction(functions, scaledCoefficients);
 }
 
-Field KarhunenLoeveResultImplementation::liftAsField(const NumericalPoint & coefficients) const
+Field KarhunenLoeveResultImplementation::liftAsField(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
-  NumericalSample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
+  Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
     values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
   return Field(modesAsProcessSample_.getMesh(), values);

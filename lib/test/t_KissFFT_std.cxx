@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {
@@ -39,16 +39,16 @@ int main(int argc, char *argv[])
     const UnsignedInteger size = 16;
 
     // collection for test
-    NumericalComplexCollection collection(size);
+    ComplexCollection collection(size);
 
     // Fill the data with artificial values
 
     // Create a complex gaussian sample
     for (UnsignedInteger index = 0; index < size; ++index)
     {
-      const NumericalScalar realPart = 0.1 * (1.0 + index) / size;
-      const NumericalScalar imagPart = 0.3 * (1.0 + index) / size;
-      collection[index] = NumericalComplex(realPart, imagPart);
+      const Scalar realPart = 0.1 * (1.0 + index) / size;
+      const Scalar imagPart = 0.3 * (1.0 + index) / size;
+      collection[index] = Complex(realPart, imagPart);
     }
 
     /* Instanciation of FFT class */
@@ -59,19 +59,19 @@ int main(int argc, char *argv[])
     fullprint << "collection = " << collection << std::endl;
 
     // FFT transform
-    const NumericalComplexCollection transformedCollection(myFFT.transform(collection));
+    const ComplexCollection transformedCollection(myFFT.transform(collection));
     fullprint << "FFT result = " << transformedCollection << std::endl;
 
     // Inverse transformation
-    const NumericalComplexCollection inverseTransformedCollection(myFFT.inverseTransform(transformedCollection));
+    const ComplexCollection inverseTransformedCollection(myFFT.inverseTransform(transformedCollection));
     fullprint << "FFT back=" << inverseTransformedCollection << std::endl;
 
-    const NumericalScalar threshold = 1e-14;
+    const Scalar threshold = 1e-14;
 
     // 2D case now
     const UnsignedInteger N = 8;
     Normal distribution(N);
-    NumericalSample sample(distribution.getSample(2 * N));
+    Sample sample(distribution.getSample(2 * N));
 
     // FFT transform
     const ComplexMatrix transformedSample(myFFT.transform2D(sample));

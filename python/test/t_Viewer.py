@@ -53,16 +53,16 @@ try:
     R = ot.CorrelationMatrix(dimension)
     R[0, 1] = 0.8
     distribution = ot.Normal(
-        ot.NumericalPoint(dimension, 3.0), ot.NumericalPoint(dimension, 2.0), R)
+        ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
     size = 100
     sample2D = distribution.getSample(size)
-    firstSample = ot.NumericalSample(size, 1)
-    secondSample = ot.NumericalSample(size, 1)
+    firstSample = ot.Sample(size, 1)
+    secondSample = ot.Sample(size, 1)
     for i in range(size):
-        firstSample[i] = ot.NumericalPoint(1, sample2D[i, 0])
-        secondSample[i] = ot.NumericalPoint(1, sample2D[i, 1])
+        firstSample[i] = ot.Point(1, sample2D[i, 0])
+        secondSample[i] = ot.Point(1, sample2D[i, 1])
     graph = ot.VisualTest.DrawClouds(
-        sample2D, ot.Normal(ot.NumericalPoint(dimension, 2.0), ot.NumericalPoint(dimension, 3.0), R).getSample(size // 2))
+        sample2D, ot.Normal(ot.Point(dimension, 2.0), ot.Point(dimension, 3.0), R).getSample(size // 2))
     # graph.draw('curve5.png')
     view = View(graph)
     # view.save('curve5.png')
@@ -73,12 +73,12 @@ try:
     distribution = ot.Normal(2)
     size = 30
     sample2D = distribution.getSample(size)
-    cloud = ot.Cloud(sample2D, "red", "fsquare", "Sample2D Cloud");
+    cloud = ot.Cloud(sample2D, "red", "fsquare", "Sample2D Cloud")
     graph.add(cloud)
 
     # Display extrema indices
-    x1 = [ x[0] for x in sample2D[:,0]]
-    x2 = [ x[0] for x in sample2D[:,1]]
+    x1 = [x[0] for x in sample2D[:, 0]]
+    x2 = [x[0] for x in sample2D[:, 1]]
     idx = [0] * 4
     idx[0] = x1.index(min(x1))
     idx[1] = x1.index(max(x1))
@@ -87,7 +87,7 @@ try:
 
     labels = ot.Description(sample2D.getSize())
     for i in range(4):
-      labels[idx[i]] = str(idx[i])
+        labels[idx[i]] = str(idx[i])
 
     position = ot.Description(sample2D.getSize(), "top")
     position[idx[0]] = "right"
@@ -113,7 +113,7 @@ try:
         if i > 0:
             expression += '+'
         expression += 'cos(' + str(i + 1) + '*' + inputVar[i] + ')'
-    model = ot.NumericalMathFunction(inputVar, ['y'], [expression])
+    model = ot.Function(inputVar, ['y'], [expression])
     outputSample = model(inputSample)
     graph = ot.VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, 'red', False)
@@ -140,8 +140,8 @@ try:
 
     # Pairs
     dim = 5
-    meanPoint = ot.NumericalPoint(dim, 0.0)
-    sigma = ot.NumericalPoint(dim, 1.0)
+    meanPoint = ot.Point(dim, 0.0)
+    sigma = ot.Point(dim, 1.0)
     R = ot.CorrelationMatrix(dim)
     for i in range(dim):
         meanPoint[i] = (i + 1) * dim
@@ -160,12 +160,13 @@ try:
 
     # Convergence graph curve
     aCollection = []
-    aCollection.append(ot.LogNormalFactory().build(ot.LogNormalMuSigma()([300.0, 30.0, 0.0])))
+    aCollection.append(ot.LogNormalFactory().build(
+        ot.LogNormalMuSigma()([300.0, 30.0, 0.0])))
     aCollection.append(ot.Normal(75e3, 5e3))
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)
-    LimitState = ot.NumericalMathFunction(
-        ('R', 'F'), ('G',), ('R-F/(_pi*100.0)',))
+    LimitState = ot.SymbolicFunction(
+        ('R', 'F'), ('R-F/(_pi*100.0)',))
     G = ot.RandomVector(LimitState, vect)
     myEvent = ot.Event(G, ot.Less(), 0.0)
     myAlgo = ot.MonteCarlo(myEvent)
@@ -181,8 +182,8 @@ try:
     # Polygon
     size = 50
     cursor = [0.] * 2
-    data1 = ot.NumericalSample(size, 2)  # polygon y = 2x for x in [-25]
-    data2 = ot.NumericalSample(size, 2)  # polygon y = x*x for x in [-11]
+    data1 = ot.Sample(size, 2)  # polygon y = 2x for x in [-25]
+    data2 = ot.Sample(size, 2)  # polygon y = x*x for x in [-11]
     for i in range(size):
         tmp = 7. * i / size + 2
         cursor[0] = tmp

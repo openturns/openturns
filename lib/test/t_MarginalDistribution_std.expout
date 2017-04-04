@@ -1,4 +1,4 @@
-Distribution class=MarginalDistribution name=MarginalDistribution dimension=3 distribution=class=Normal name=Normal dimension=5 mean=class=NumericalPoint name=Unnamed dimension=5 values=[0,0,0,0,0] sigma=class=NumericalPoint name=Unnamed dimension=5 values=[1,1,1,1,1] correlationMatrix=class=CorrelationMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1] indices=[2,0,1]
+Distribution class=MarginalDistribution name=MarginalDistribution dimension=3 distribution=class=Normal name=Normal dimension=5 mean=class=Point name=Unnamed dimension=5 values=[0,0,0,0,0] sigma=class=Point name=Unnamed dimension=5 values=[1,1,1,1,1] correlationMatrix=class=CorrelationMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1] indices=[2,0,1]
 Distribution MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
 [[ 1 0 0 0 0 ]
  [ 0 1 0 0 0 ]
@@ -7,37 +7,37 @@ Distribution MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = 
  [ 0 0 0 0 1 ]]), indices=[2,0,1])
 Elliptical = true
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=3 values=[-0.438266,0.608202,-1.26617]
-oneSample first=class=NumericalPoint name=Unnamed dimension=3 values=[1.43725,0.350042,-0.355007] last=class=NumericalPoint name=Unnamed dimension=3 values=[0.859992,-2.2281,0.884963]
-mean=class=NumericalPoint name=Unnamed dimension=3 values=[-0.000164216,0.00955544,0.000744822]
+oneRealization=class=Point name=Unnamed dimension=3 values=[-0.438266,0.608202,-1.26617]
+oneSample first=class=Point name=Unnamed dimension=3 values=[1.43725,0.350042,-0.355007] last=class=Point name=Unnamed dimension=3 values=[0.859992,-2.2281,0.884963]
+mean=class=Point name=Unnamed dimension=3 values=[-0.000164216,0.00955544,0.000744822]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.00735,0.0155386,-0.00400052,0.0155386,1.02164,-0.0214975,-0.00400052,-0.0214975,0.997907]
-Point= class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1]
-ddf     =class=NumericalPoint name=Unnamed dimension=3 values=[-8.56912e-29,-8.56912e-29,-8.56912e-29]
+Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
+ddf     =class=Point name=Unnamed dimension=3 values=[-8.56912e-29,-8.56912e-29,-8.56912e-29]
 log pdf=-64.6268
 pdf     =8.56912e-29
 cdf=0.595555
 ccdf=0.404445
 survival=3.99359e-31
-quantile=class=NumericalPoint name=Unnamed dimension=3 values=[2.1212,2.1212,2.1212]
+quantile=class=Point name=Unnamed dimension=3 values=[2.1212,2.1212,2.1212]
 cdf(quantile)=0.95
-quantile (tail)=class=NumericalPoint name=Unnamed dimension=3 values=[-0.336086,-0.336086,-0.336086]
+quantile (tail)=class=Point name=Unnamed dimension=3 values=[-0.336086,-0.336086,-0.336086]
 cdf (tail)=0.95
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=10 values=[8.56912e-29,8.56912e-29,8.56912e-29,6.55591e-28,6.55591e-28,0,0,0,4.92999e-27,4.92999e-27]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=10 values=[0,0,0,0,0,0,0,0,0,0]
-mean=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0]
-standard deviation=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1]
-skewness=class=NumericalPoint name=Unnamed dimension=3 values=[0,0,0]
-kurtosis=class=NumericalPoint name=Unnamed dimension=3 values=[3,3,3]
+pdf gradient     =class=Point name=Unnamed dimension=10 values=[8.56912e-29,8.56912e-29,8.56912e-29,6.55591e-28,6.55591e-28,0,0,0,4.92999e-27,4.92999e-27]
+cdf gradient     =class=Point name=Unnamed dimension=10 values=[0,0,0,0,0,0,0,0,0,0]
+mean=class=Point name=Unnamed dimension=3 values=[0,0,0]
+standard deviation=class=Point name=Unnamed dimension=3 values=[1,1,1]
+skewness=class=Point name=Unnamed dimension=3 values=[0,0,0]
+kurtosis=class=Point name=Unnamed dimension=3 values=[3,3,3]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 spearman=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 kendall=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=3 values=[1,1,1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=3 values=[-7.93531e-68,-7.90057e-68,-7.90057e-68]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=3 values=[3.65843e-53,3.65843e-53,3.65843e-53]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=3 values=[1.19003e-67,1.23586e-67,1.23586e-67]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=3 values=[1.09753e-52,1.09753e-52,1.09753e-52]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=3 values=[1.77784e-67,1.87415e-67,1.87415e-67]
+standard moment n=0, value=class=Point name=Unnamed dimension=3 values=[1,1,1]
+standard moment n=1, value=class=Point name=Unnamed dimension=3 values=[-7.93531e-68,-7.90057e-68,-7.90057e-68]
+standard moment n=2, value=class=Point name=Unnamed dimension=3 values=[3.65843e-53,3.65843e-53,3.65843e-53]
+standard moment n=3, value=class=Point name=Unnamed dimension=3 values=[1.19003e-67,1.23586e-67,1.23586e-67]
+standard moment n=4, value=class=Point name=Unnamed dimension=3 values=[1.09753e-52,1.09753e-52,1.09753e-52]
+standard moment n=5, value=class=Point name=Unnamed dimension=3 values=[1.77784e-67,1.87415e-67,1.87415e-67]
 Standard representative=MarginalDistribution(distribution=Normal(mu = [0,0,0,0,0], sigma = [1,1,1,1,1], R = 5x5
 [[ 1 0 0 0 0 ]
  [ 0 1 0 0 0 ]

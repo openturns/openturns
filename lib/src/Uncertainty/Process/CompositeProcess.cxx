@@ -114,7 +114,7 @@ FieldFunction CompositeProcess::getFunction() const
 Field CompositeProcess::getRealization() const
 {
   Field result(function_(p_antecedent_->getRealization()));
-  NumericalSample values(result.getValues());
+  Sample values(result.getValues());
   values.setDescription(getDescription());
   result.setValues(values);
   return result;
@@ -135,7 +135,7 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   return TimeSeries(futurTimeGrid, function_(p_antecedent_->getFuture(stepNumber)).getValues());
 }

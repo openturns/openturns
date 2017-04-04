@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NumericalMathFunction for database
+ *  @brief The test file of class Function for database
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -33,26 +33,26 @@ int main(int argc, char *argv[])
   {
 
     /* Database construction */
-    NumericalSample inputSample(0, 2);
-    inputSample.add(NumericalPoint(2, 1.0));
-    inputSample.add(NumericalPoint(2, 2.0));
+    Sample inputSample(0, 2);
+    inputSample.add(Point(2, 1.0));
+    inputSample.add(Point(2, 2.0));
     Description inputDescription(0);
     inputDescription.add("x0");
     inputDescription.add("x1");
     inputSample.setDescription(inputDescription);
-    NumericalSample outputSample(0, 1);
-    outputSample.add(NumericalPoint(1, 4.0));
-    outputSample.add(NumericalPoint(1, 5.0));
+    Sample outputSample(0, 1);
+    outputSample.add(Point(1, 4.0));
+    outputSample.add(Point(1, 5.0));
     Description outputDescription(0);
     outputDescription.add("y0");
     outputSample.setDescription(outputDescription);
-    NumericalMathFunction database(inputSample, outputSample);
+    DatabaseFunction database(inputSample, outputSample);
 
 
     fullprint << "database=" << database.__str__() << std::endl << std::endl;
 
     /* Does it work? */
-    NumericalPoint x(database.getInputDimension(), 1.8);
+    Point x(database.getInputDimension(), 1.8);
 
     fullprint << "x=" << x.__str__() << std::endl;
     fullprint << "database(x)=" << database(x).__str__() << std::endl;

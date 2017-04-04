@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/OrderStatisticsMarginalChecker.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
 #include "openturns/BlendedStep.hxx"
@@ -53,10 +53,10 @@ struct OrderStatisticsMarginalCheckerWrapper
     // Nothing to do
   }
 
-  NumericalPoint computeDelta(const NumericalPoint & point) const
+  Point computeDelta(const Point & point) const
   {
-    const NumericalScalar delta = distributionI_.computeCDF(point) - distributionIp1_.computeCDF(point);
-    return NumericalPoint(1, delta);
+    const Scalar delta = distributionI_.computeCDF(point) - distributionIp1_.computeCDF(point);
+    return Point(1, delta);
   }
 
   const Distribution & distributionI_;
@@ -66,32 +66,32 @@ struct OrderStatisticsMarginalCheckerWrapper
 void OrderStatisticsMarginalChecker::check() const
 {
   UnsignedInteger quantileIteration = ResourceMap::GetAsUnsignedInteger("OrderStatisticsMarginalChecker-QuantileIteration");
-  NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("OrderStatisticsMarginalChecker-OptimizationEpsilon");
+  Scalar epsilon = ResourceMap::GetAsScalar("OrderStatisticsMarginalChecker-OptimizationEpsilon");
   const UnsignedInteger size = collection_.getSize();
   // First test, check the ranges
-  NumericalScalar aIm1 = collection_[0].getRange().getLowerBound()[0];
-  NumericalScalar bIm1 = collection_[0].getRange().getUpperBound()[0];
+  Scalar aIm1 = collection_[0].getRange().getLowerBound()[0];
+  Scalar bIm1 = collection_[0].getRange().getUpperBound()[0];
   for (UnsignedInteger i = 1; i < size; ++i)
   {
     // check that a_{i-1} <= a_i
-    const NumericalScalar aI = collection_[i].getRange().getLowerBound()[0];
+    const Scalar aI = collection_[i].getRange().getLowerBound()[0];
     if (aIm1 > aI) throw InvalidArgumentException(HERE) << "margins are not compatible: the lower bound of margin " << i - 1 << " is greater than the lower bound of margin " << i;
     // check that b_{i-1} <= b_i
-    const NumericalScalar bI = collection_[i].getRange().getUpperBound()[0];
+    const Scalar bI = collection_[i].getRange().getUpperBound()[0];
     if (bIm1 > bI) throw InvalidArgumentException(HERE) << "margins are not compatible: the lower bound of margin " << i - 1 << " is greater than the lower bound of margin " << i;
     aIm1 = aI;
     bIm1 = bI;
   }
   // Second test, check the quantiles at regular levels. Store the values for further tests
-  NumericalSample quantiles(size, quantileIteration);
+  Sample quantiles(size, quantileIteration);
   for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
   {
-    const NumericalScalar prob = (k + 1.0) / (quantileIteration + 1.0);
-    NumericalScalar qIm1 = collection_[0].computeQuantile(prob)[0];
+    const Scalar prob = (k + 1.0) / (quantileIteration + 1.0);
+    Scalar qIm1 = collection_[0].computeQuantile(prob)[0];
     quantiles[0][k] = qIm1;
     for (UnsignedInteger i = 1; i < size; ++ i)
     {
-      const NumericalScalar qI = collection_[i].computeQuantile(prob)[0];
+      const Scalar qI = collection_[i].computeQuantile(prob)[0];
       if (qIm1 >= qI) throw InvalidArgumentException(HERE) << "margins are not compatible: the quantile=" << qIm1 << " of margin " << i - 1 << " is greater than the quantile=" << qI << " of margin " << i << " at level " << prob;
       quantiles[i][k] = qI;
       qIm1 = qI;
@@ -102,27 +102,27 @@ void OrderStatisticsMarginalChecker::check() const
   // Initilalyse Optimization problem
   OptimizationProblem problem;
 
-  const FiniteDifferenceStep step(BlendedStep(NumericalPoint(1, std::pow(SpecFunc::NumericalScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::NumericalScalarEpsilon)));
+  const FiniteDifferenceStep step(BlendedStep(Point(1, std::pow(SpecFunc::ScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::ScalarEpsilon)));
   for (UnsignedInteger i = 1; i < size; ++ i)
   {
     const OrderStatisticsMarginalCheckerWrapper wrapper(collection_[i - 1], collection_[i]);
-    NumericalMathFunction f(bindMethod<OrderStatisticsMarginalCheckerWrapper, NumericalPoint, NumericalPoint>(wrapper, &OrderStatisticsMarginalCheckerWrapper::computeDelta, 1, 1));
+    Function f(bindMethod<OrderStatisticsMarginalCheckerWrapper, Point, Point>(wrapper, &OrderStatisticsMarginalCheckerWrapper::computeDelta, 1, 1));
     f.setGradient(CenteredFiniteDifferenceGradient(step, f.getEvaluation()->clone()));
 
     for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
     {
-      const NumericalScalar xMin = quantiles[i - 1][k];
-      const NumericalScalar xMax = quantiles[i][k];
-      const NumericalScalar xMiddle = 0.5 * (xMin + xMax);
+      const Scalar xMin = quantiles[i - 1][k];
+      const Scalar xMax = quantiles[i][k];
+      const Scalar xMiddle = 0.5 * (xMin + xMax);
 
       // Define Optimization problem
       problem.setObjective(f);
       problem.setBounds(Interval(xMin, xMax));
-      solver_.setStartingPoint(NumericalPoint(1, xMiddle));
+      solver_.setStartingPoint(Point(1, xMiddle));
       solver_.setProblem(problem);
       solver_.run();
-      const NumericalPoint minimizer(solver_.getResult().getOptimalPoint());
-      const NumericalScalar minValue = solver_.getResult().getOptimalValue()[0];
+      const Point minimizer(solver_.getResult().getOptimalPoint());
+      const Scalar minValue = solver_.getResult().getOptimalValue()[0];
 
       LOGDEBUG(OSS() << "Optimisation on [" << xMin << ", " << xMax << "] gives " << solver_.getResult());
       if (minValue < epsilon) throw InvalidArgumentException(HERE) << "margins are not compatible: the CDF at x=" << minimizer[0] << " of margin " << i << " is not enough larger than the CDF of margin " << i + 1 << ". Gap is " << minValue << ".";
@@ -173,13 +173,13 @@ void OrderStatisticsMarginalChecker::setOptimizationAlgorithm(const Optimization
 OptimizationAlgorithm OrderStatisticsMarginalChecker::getOptimizationSolver() const
 {
   Log::Warn(OSS() << "OrderStatisticsMarginalChecker::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm(); 
+  return getOptimizationAlgorithm();
 }
 
 void OrderStatisticsMarginalChecker::setOptimizationSolver(const OptimizationAlgorithm & solver)
 {
   Log::Warn(OSS() << "OrderStatisticsMarginalChecker::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver); 
+  setOptimizationAlgorithm(solver);
 }
 
 

@@ -11,7 +11,7 @@ General mathematical functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathFunction
+    Function
     SymbolicFunction
     LinearFunction
     QuadraticFunction
@@ -29,6 +29,7 @@ Algebra of functions
     AggregatedFunction
     ComposedFunction
     DualLinearCombinationFunction
+    IndicatorFunction
     LinearCombinationFunction
     ParametricFunction
     ProductFunction
@@ -80,24 +81,24 @@ Evaluation functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathEvaluationImplementation
-    AggregatedNumericalMathEvaluationImplementation
+    EvaluationImplementation
+    AggregatedEvaluation
     SymbolicEvaluation
-    ComposedNumericalMathEvaluationImplementation
-    DatabaseNumericalMathEvaluationImplementation
-    DualLinearCombinationEvaluationImplementation
-    IndicatorNumericalMathEvaluationImplementation
-    LinearCombinationEvaluationImplementation
-    LinearNumericalMathEvaluationImplementation
+    ComposedEvaluation
+    DatabaseEvaluation
+    DualLinearCombinationEvaluation
+    IndicatorEvaluation
+    LinearCombinationEvaluation
+    LinearEvaluation
     MarginalTransformationEvaluation
-    NoNumericalMathEvaluationImplementation
-    ParametricEvaluationImplementation
-    PiecewiseHermiteEvaluationImplementation
-    PiecewiseLinearEvaluationImplementation
-    P1LagrangeEvaluationImplementation
-    ProductNumericalMathEvaluationImplementation
-    ProductPolynomialEvaluationImplementation
-    QuadraticNumericalMathEvaluationImplementation
+    NoEvaluation
+    ParametricEvaluation
+    PiecewiseHermiteEvaluation
+    PiecewiseLinearEvaluation
+    P1LagrangeEvaluation
+    ProductEvaluation
+    ProductPolynomialEvaluation
+    QuadraticEvaluation
 
 Gradient functions
 ==================
@@ -106,16 +107,16 @@ Gradient functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathGradientImplementation
+    GradientImplementation
     SymbolicGradient
-    ComposedNumericalMathGradientImplementation
-    ConstantNumericalMathGradientImplementation
-    DualLinearCombinationGradientImplementation
-    LinearCombinationGradientImplementation
-    LinearNumericalMathGradientImplementation
-    NoNumericalMathGradientImplementation
-    ParametricGradientImplementation
-    ProductNumericalMathGradientImplementation
+    ComposedGradient
+    ConstantGradient
+    DualLinearCombinationGradient
+    LinearCombinationGradient
+    LinearGradient
+    NoGradient
+    ParametricGradient
+    ProductGradient
 
 Hessian functions
 =================
@@ -124,15 +125,15 @@ Hessian functions
     :toctree: _generated/
     :template: class.rst_t
 
-    NumericalMathHessianImplementation
+    HessianImplementation
     SymbolicHessian
-    ComposedNumericalMathHessianImplementation
-    ConstantNumericalMathHessianImplementation
-    DualLinearCombinationHessianImplementation
-    LinearCombinationHessianImplementation
-    NoNumericalMathHessianImplementation
-    ParametricHessianImplementation
-    ProductNumericalMathHessianImplementation
+    ComposedHessian
+    ConstantHessian
+    DualLinearCombinationHessian
+    LinearCombinationHessian
+    NoHessian
+    ParametricHessian
+    ProductHessian
 
 Differential equation solvers
 =============================
@@ -158,19 +159,19 @@ Numerical constants
 
     .. autodata:: SpecFunc.ISQRT2PI
 
-    .. autodata:: SpecFunc.LogMaxNumericalScalar
+    .. autodata:: SpecFunc.LogMaxScalar
 
-    .. autodata:: SpecFunc.LogMinNumericalScalar
+    .. autodata:: SpecFunc.LogMinScalar
 
     .. autodata:: SpecFunc.LOGSQRT2PI
 
-    .. autodata:: SpecFunc.MaxNumericalScalar
+    .. autodata:: SpecFunc.MaxScalar
 
     .. autodata:: SpecFunc.MaximumIteration
 
-    .. autodata:: SpecFunc.MinNumericalScalar
+    .. autodata:: SpecFunc.MinScalar
 
-    .. autodata:: SpecFunc.NumericalScalarEpsilon
+    .. autodata:: SpecFunc.ScalarEpsilon
 
     .. autodata:: SpecFunc.PI2_3
 

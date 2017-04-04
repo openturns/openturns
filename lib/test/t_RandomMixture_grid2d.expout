@@ -1,14 +1,14 @@
-distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
+distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1,class=Uniform name=Uniform dimension=1 a=0 b=1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
 distribution = RandomMixture(
 Uniform(a = 0, b = 1) - 2 * Uniform(a = 0, b = 1) + Uniform(a = 0, b = 1)
 Uniform(a = 0, b = 1) + Uniform(a = 0, b = 1) - 3 * Uniform(a = 0, b = 1)
 )
-range = class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-2,-3] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]
-mean = class=NumericalPoint name=Unnamed dimension=2 values=[0,-0.5]
+range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-2,-3] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]
+mean = class=Point name=Unnamed dimension=2 values=[0,-0.5]
 cov = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.5,-0.333333,-0.333333,0.916667]
-sigma = class=NumericalPoint name=Unnamed dimension=2 values=[0.707107,0.957427]
-xMin = class=NumericalPoint name=Unnamed dimension=2 values=[-2.05061,-3.27654]
-xMax = class=NumericalPoint name=Unnamed dimension=2 values=[2.05061,2.27654]
+sigma = class=Point name=Unnamed dimension=2 values=[0.707107,0.957427]
+xMin = class=Point name=Unnamed dimension=2 values=[-2.05061,-3.27654]
+xMax = class=Point name=Unnamed dimension=2 values=[2.05061,2.27654]
 -1.98874;-3.19276;0
 -1.72357;-3.19276;0
 -1.45841;-3.19276;0.000146538
@@ -265,11 +265,11 @@ xMax = class=NumericalPoint name=Unnamed dimension=2 values=[2.05061,2.27654]
 1.45841;2.19276;0.000146538
 1.72357;2.19276;0
 1.98874;2.19276;0
-distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[2] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,2,1,1.4] constant=class=NumericalPoint name=Unnamed dimension=2 values=[0,0]
-range = class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[-98.5174,-64.3622] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[116.517,75.1622] finite lower bound=[1,1] finite upper bound=[1,1]
-mean = class=NumericalPoint name=Unnamed dimension=2 values=[9,5.4]
+distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,2,1,1.4] constant=class=Point name=Unnamed dimension=2 values=[0,0]
+range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-98.5174,-64.3622] upper bound=class=Point name=Unnamed dimension=2 values=[116.517,75.1622] finite lower bound=[1,1] finite upper bound=[1,1]
+mean = class=Point name=Unnamed dimension=2 values=[9,5.4]
 cov = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[160,94.4,94.4,67.36]
-sigma = class=NumericalPoint name=Unnamed dimension=2 values=[12.6491,8.20731]
+sigma = class=Point name=Unnamed dimension=2 values=[12.6491,8.20731]
 -26.5756;-17.6831;5.84896e-05
 -21.8322;-17.6831;6.77066e-05
 -17.0888;-17.6831;3.47926e-05

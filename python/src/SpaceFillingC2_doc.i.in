@@ -25,7 +25,7 @@ OT_SpaceFillingC2_doc
 
 Parameters
 ----------
-design : :class:`~openturns.NumericalSample` or 2d array like
+design : :class:`~openturns.Sample` or 2d array like
     The design
 
 Returns

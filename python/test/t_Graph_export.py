@@ -11,7 +11,7 @@ try:
     maxPoint = 101
     xMin = -2.0 * pi
     xMax = 2.0 * pi
-    data = NumericalSample(maxPoint, 2)
+    data = Sample(maxPoint, 2)
     for i in range(maxPoint):
         x = xMin + (xMax - xMin) * i / (maxPoint - 1.0)
         data[i, 0] = x

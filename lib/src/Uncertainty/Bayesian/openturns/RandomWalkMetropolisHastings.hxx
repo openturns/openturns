@@ -52,17 +52,17 @@ public:
   /** Constructor with parameters*/
   RandomWalkMetropolisHastings(const Distribution & prior,
                                const Distribution & conditional,
-                               const NumericalSample & observations,
-                               const NumericalPoint & initialState,
+                               const Sample & observations,
+                               const Point & initialState,
                                const DistributionCollection & proposal);
 
   /** Constructor with parameters*/
   RandomWalkMetropolisHastings(const Distribution & prior,
                                const Distribution & conditional,
-                               const NumericalMathFunction & model,
-                               const NumericalSample & parameters,
-                               const NumericalSample & observations,
-                               const NumericalPoint & initialState,
+                               const Function & model,
+                               const Sample & parameters,
+                               const Sample & observations,
+                               const Point & initialState,
                                const DistributionCollection & proposal);
 
   /** String converter */
@@ -74,7 +74,7 @@ public:
   virtual RandomWalkMetropolisHastings * clone() const;
 
   /** @copydoc Sampler::getRealization() const */
-  virtual NumericalPoint getRealization() const;
+  virtual Point getRealization() const;
 
   /** Calibration strategy accessor */
   void setCalibrationStrategy(const CalibrationStrategy & calibrationStrategy);
@@ -86,7 +86,7 @@ public:
   DistributionCollection getProposal() const;
 
   /** Acceptance rate accessor*/
-  NumericalPoint getAcceptanceRate() const;
+  Point getAcceptanceRate() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -107,7 +107,7 @@ private:
   /// number of samples accepted
   mutable Indices acceptedNumber_;
 
-  mutable NumericalScalar currentLogLikelihood_;
+  mutable Scalar currentLogLikelihood_;
 }; /* class RandomWalkMetropolisHastings */
 
 

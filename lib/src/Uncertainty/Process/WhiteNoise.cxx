@@ -23,7 +23,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -102,15 +103,15 @@ Bool WhiteNoise::isNormal() const
 /* Realization accessor */
 Field WhiteNoise::getRealization() const
 {
-  NumericalSample values(distribution_.getSample(mesh_.getVerticesNumber()));
+  Sample values(distribution_.getSample(mesh_.getVerticesNumber()));
   values.setDescription(getDescription());
   return Field(mesh_, values);
 }
 
 /* Continuous realization accessor */
-NumericalMathFunction WhiteNoise::getContinuousRealization() const
+Function WhiteNoise::getContinuousRealization() const
 {
-  return NumericalMathFunction(mesh_.getVertices(), distribution_.getSample(mesh_.getVerticesNumber()));
+  return DatabaseFunction(mesh_.getVertices(), distribution_.getSample(mesh_.getVerticesNumber()));
 }
 
 /* Compute the next steps of a random walk */
@@ -128,7 +129,7 @@ TimeSeries WhiteNoise::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   return TimeSeries(futurTimeGrid, distribution_.getSample(stepNumber));
 }

@@ -58,7 +58,7 @@ public:
 #endif
 
   /** Constructor for constant vector */
-  explicit RandomVector(const NumericalPoint & point);
+  explicit RandomVector(const Point & point);
 
   /** Constructor for distribution-based vector */
   explicit RandomVector(const Distribution & distribution);
@@ -68,7 +68,7 @@ public:
                const RandomVector & randomParameters);
 
   /** Constructor for composite vector */
-  RandomVector(const NumericalMathFunction & function,
+  RandomVector(const Function & function,
                const RandomVector & antecedent);
 
   /** Constructor for functional chaos vector */
@@ -92,10 +92,10 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Numerical sample accessor */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the random vector corresponding to the i-th marginal component */
   RandomVector getMarginal(const UnsignedInteger i) const;
@@ -104,7 +104,7 @@ public:
   RandomVector getMarginal(const Indices & indices) const;
 
   /** Mean accessor */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
@@ -112,8 +112,8 @@ public:
   /** This method allows to access the antecedent RandomVector in case of a composite RandomVector */
   Antecedent getAntecedent() const;
 
-  /** This method allows to access the NumericalMathFunction in case of a composite RandomVector */
-  NumericalMathFunction getFunction() const;
+  /** This method allows to access the Function in case of a composite RandomVector */
+  Function getFunction() const;
 
   /** This method allows to access the Distribution in case of a usual RandomVector */
   Distribution getDistribution() const;
@@ -122,13 +122,13 @@ public:
   ComparisonOperator getOperator() const;
 
   /** Threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
 protected:
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,
                const ComparisonOperator & op,
-               const NumericalScalar threshold);
+               const Scalar threshold);
 
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,

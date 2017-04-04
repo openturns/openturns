@@ -38,7 +38,7 @@ Staircase::Staircase()
 }
 
 /* Constructor with parameters */
-Staircase::Staircase(const NumericalSample & data,
+Staircase::Staircase(const Sample & data,
                      const String & legend)
   : DrawableImplementation(data, legend)
   , pattern_(ResourceMap::Get("Drawable-DefaultPattern"))
@@ -48,7 +48,7 @@ Staircase::Staircase(const NumericalSample & data,
 }
 
 /* Constructor with parameters */
-Staircase::Staircase(const NumericalSample & data,
+Staircase::Staircase(const Sample & data,
                      const String & color,
                      const String & lineStyle,
                      const UnsignedInteger lineWidth,
@@ -65,7 +65,7 @@ Staircase::Staircase(const NumericalSample & data,
 }
 
 /* Constructor with old parameters */
-Staircase::Staircase(const NumericalSample & data,
+Staircase::Staircase(const Sample & data,
                      const String & color,
                      const String & lineStyle,
                      const String & pattern,
@@ -129,7 +129,7 @@ void Staircase::setPattern(const String style)
 }
 
 /* Check validity of data */
-void Staircase::checkData(const NumericalSample & data) const
+void Staircase::checkData(const Sample & data) const
 {
   if (data.getDimension() != 2)
   {

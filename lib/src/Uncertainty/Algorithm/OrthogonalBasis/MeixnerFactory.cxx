@@ -44,13 +44,13 @@ MeixnerFactory::MeixnerFactory()
 
 
 /* Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the NegativeBinomial(r, p) distribution */
-MeixnerFactory::MeixnerFactory(const NumericalScalar r,
-                               const NumericalScalar p)
+MeixnerFactory::MeixnerFactory(const Scalar r,
+                               const Scalar p)
   : OrthogonalUniVariatePolynomialFactory( NegativeBinomial(r, p) ),
     r_(r),
     p_(p)
 {
-  if (r <= 0.0) throw InvalidArgumentException(HERE) << "Error: must have r>0 to build Meixner polynomials.";
+  if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: must have r>0 to build Meixner polynomials.";
   if ((p <= 0.0) || (p >= 1.0)) throw InvalidArgumentException(HERE) << "Error: p must be in [0, 1] to build Meixner polynomials.";
   initializeCache();
 }
@@ -69,13 +69,13 @@ MeixnerFactory::Coefficients MeixnerFactory::getRecurrenceCoefficients(const Uns
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar factor = sqrt(r_ * p_);
+    const Scalar factor = sqrt(r_ * p_);
     recurrenceCoefficients[0] = (p_ - 1.0) / factor;
     recurrenceCoefficients[1] = factor;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar denominator = sqrt(p_ * (n + 1) * (n + r_));
+  const Scalar denominator = sqrt(p_ * (n + 1) * (n + r_));
   recurrenceCoefficients[0] = (p_ - 1.0) / denominator;
   recurrenceCoefficients[1] = (p_ * (n + r_) + n) / denominator;
   recurrenceCoefficients[2] = -sqrt(p_ * n * (n + r_ - 1.0)) / denominator;
@@ -83,13 +83,13 @@ MeixnerFactory::Coefficients MeixnerFactory::getRecurrenceCoefficients(const Uns
 }
 
 /* R accessor */
-NumericalScalar MeixnerFactory::getR() const
+Scalar MeixnerFactory::getR() const
 {
   return r_;
 }
 
 /* P accessor */
-NumericalScalar MeixnerFactory::getP() const
+Scalar MeixnerFactory::getP() const
 {
   return p_;
 }

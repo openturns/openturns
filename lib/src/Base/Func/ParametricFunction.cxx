@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/ParametricFunction.hxx"
-#include "openturns/ParametricEvaluationImplementation.hxx"
-#include "openturns/ParametricGradientImplementation.hxx"
-#include "openturns/ParametricHessianImplementation.hxx"
+#include "openturns/ParametricEvaluation.hxx"
+#include "openturns/ParametricGradient.hxx"
+#include "openturns/ParametricHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,22 +29,22 @@ CLASSNAMEINIT(ParametricFunction);
 
 /* Default constructor */
 ParametricFunction::ParametricFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
-ParametricFunction::ParametricFunction (const NumericalMathFunction & function,
+ParametricFunction::ParametricFunction (const Function & function,
                                         const Indices & set,
-                                        const NumericalPoint & referencePoint,
+                                        const Point & referencePoint,
                                         const Bool parametersSet)
-  : NumericalMathFunction()
+  : Function()
 {
-  const Pointer<ParametricEvaluationImplementation> p_evaluation = new ParametricEvaluationImplementation(function, set, referencePoint, parametersSet);
+  const Pointer<ParametricEvaluation> p_evaluation = new ParametricEvaluation(function, set, referencePoint, parametersSet);
   setEvaluation(p_evaluation);
-  setGradient(new ParametricGradientImplementation(p_evaluation));
-  setHessian(new ParametricHessianImplementation(p_evaluation));
+  setGradient(new ParametricGradient(p_evaluation));
+  setHessian(new ParametricHessian(p_evaluation));
 }
 
 

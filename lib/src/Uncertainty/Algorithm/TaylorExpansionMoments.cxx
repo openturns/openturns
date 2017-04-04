@@ -21,9 +21,9 @@
 #include <iomanip>
 #include "openturns/TaylorExpansionMoments.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
@@ -99,7 +99,7 @@ RandomVector TaylorExpansionMoments::getLimitStateVariable() const
 }
 
 /* meanFirstOrder accessor */
-NumericalPoint TaylorExpansionMoments::getMeanFirstOrder() const
+Point TaylorExpansionMoments::getMeanFirstOrder() const
 {
   if(!isAlreadyComputedMeanFirstOrder_) computeMeanFirstOrder();
   return meanFirstOrder_;
@@ -107,7 +107,7 @@ NumericalPoint TaylorExpansionMoments::getMeanFirstOrder() const
 
 
 /* meanSecondOrder accessor */
-NumericalPoint TaylorExpansionMoments::getMeanSecondOrder() const
+Point TaylorExpansionMoments::getMeanSecondOrder() const
 {
   if(!isAlreadyComputedMeanSecondOrder_) computeMeanSecondOrder();
   return meanSecondOrder_;
@@ -121,14 +121,14 @@ CovarianceMatrix TaylorExpansionMoments::getCovariance() const
 }
 
 /* importance factors accessor */
-NumericalPointWithDescription TaylorExpansionMoments::getImportanceFactors() const
+PointWithDescription TaylorExpansionMoments::getImportanceFactors() const
 {
   if(!isAlreadyComputedImportanceFactors_) computeImportanceFactors();
   return importanceFactors_;
 }
 
 /* Value at mean accessor */
-NumericalPoint TaylorExpansionMoments::getValueAtMean() const
+Point TaylorExpansionMoments::getValueAtMean() const
 {
   return valueAtMean_;
 }
@@ -216,11 +216,11 @@ void TaylorExpansionMoments::computeImportanceFactors() const
   if (limitStateVariable_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The importance factors are computed only if the output random vector is scalar";
   computeCovariance();
   /* we compute here the importance factors */
-  /* in this scalar case, gradientAtMean is a NumericalPoint */
+  /* in this scalar case, gradientAtMean is a Point */
   const UnsignedInteger dimension = gradientAtMean_.getNbRows();
 
-  /* in this scalar case, importance factors is a NumericalPoint, defined as importanceFactors = gradient .* inputCovariance * gradient / outputCovariance, where .* means an element-wise multiplication between vectors */
-  importanceFactors_ = NumericalPointWithDescription(dimension, 0.0);
+  /* in this scalar case, importance factors is a Point, defined as importanceFactors = gradient .* inputCovariance * gradient / outputCovariance, where .* means an element-wise multiplication between vectors */
+  importanceFactors_ = PointWithDescription(dimension, 0.0);
   // This line looks strange, but it is here to ensure that the covariance has actually been computed
   getCovariance();
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -260,7 +260,7 @@ void TaylorExpansionMoments::computeMeanSecondOrder() const
   /* loop on k */
   for (UnsignedInteger k = 0; k < sheetDimension; ++k)
   {
-    NumericalScalar kSecondOrderContribution = 0.0;
+    Scalar kSecondOrderContribution = 0.0;
     /* loop on i */
     for (UnsignedInteger i = 0; i < rowDimension; ++i)
     {

@@ -27,6 +27,7 @@
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Full.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,24 +48,24 @@ MCMC::MCMC()
 /* Parameters constructor */
 MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
-            const NumericalSample & observations,
-            const NumericalPoint & initialState)
+            const Sample & observations,
+            const Point & initialState)
   : SamplerImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
   , history_(Full())
   , conditional_(conditional)
 
-  // when not provided, set the model to the identity
+    // when not provided, set the model to the identity
   , model_()
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultBurnIn"))
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
 {
   const SymbolicFunction fullFunction(Description::BuildDefault(initialState.getDimension(), "x"), Description::BuildDefault(initialState.getDimension(), "x"));
-  model_ = NumericalMathFunction(fullFunction, Indices(0), NumericalPoint(0));
+  model_ = ParametricFunction(fullFunction, Indices(0), Point(0));
   setPrior(prior);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
-  setParameters(NumericalSample(observations.getSize(), 0));
+  setParameters(Sample(observations.getSize(), 0));
   setObservations(observations);
   if (conditional.getParameterDimension() != model_.getOutputDimension()) throw InvalidDimensionException(HERE) << "The parameter dimension" << conditional.getParameterDimension() << " does not match the output dimension of the model (" << model_.getOutputDimension() << ").";
   if (initialState.getDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The initialState state dimension (" << initialState.getDimension() << ") does not match the prior dimension (" << prior.getDimension() << ").";
@@ -75,10 +76,10 @@ MCMC::MCMC( const Distribution & prior,
 /* Parameters constructor */
 MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
-            const NumericalMathFunction & model,
-            const NumericalSample & parameters,
-            const NumericalSample & observations,
-            const NumericalPoint & initialState)
+            const Function & model,
+            const Sample & parameters,
+            const Sample & observations,
+            const Point & initialState)
   : SamplerImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
@@ -124,21 +125,21 @@ UnsignedInteger MCMC::getDimension() const
 
 
 /* Compute the likelihood w.r.t. observartions */
-NumericalScalar MCMC::computeLogLikelihood(const NumericalPoint & xi) const
+Scalar MCMC::computeLogLikelihood(const Point & xi) const
 {
-  NumericalScalar value = prior_.computeLogPDF(xi);
-  if (value == SpecFunc::LogMinNumericalScalar) return SpecFunc::LogMinNumericalScalar;
+  Scalar value = prior_.computeLogPDF(xi);
+  if (value == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
 
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     // retrieve model data if available
-    const NumericalPoint zi(model_(xi, parameters_[i]));
+    const Point zi(model_(xi, parameters_[i]));
 
     Distribution pI(conditional_);
     pI.setParameter(zi);
-    NumericalScalar logPdf = pI.computeLogPDF(observations_[i]);
-    if (logPdf == SpecFunc::LogMinNumericalScalar) return SpecFunc::LogMinNumericalScalar;
+    Scalar logPdf = pI.computeLogPDF(observations_[i]);
+    if (logPdf == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
     value += logPdf;
   }
   return value;
@@ -163,33 +164,33 @@ Distribution MCMC::getConditional() const
 }
 
 
-NumericalMathFunction MCMC::getModel() const
+Function MCMC::getModel() const
 {
   return model_;
 }
 
 
-void MCMC::setObservations(const NumericalSample& observations)
+void MCMC::setObservations(const Sample& observations)
 {
   if (!(observations.getSize() > 0)) throw InvalidArgumentException(HERE) << "No observation provided.";
   observations_ = observations;
 }
 
 
-NumericalSample MCMC::getObservations() const
+Sample MCMC::getObservations() const
 {
   return observations_;
 }
 
 
-void MCMC::setParameters(const NumericalSample& parameters)
+void MCMC::setParameters(const Sample& parameters)
 {
   if (!(parameters.getSize() > 0)) throw InvalidArgumentException(HERE) << "No parameter provided.";
   parameters_ = parameters;
 }
 
 
-NumericalSample MCMC::getParameters() const
+Sample MCMC::getParameters() const
 {
   return parameters_;
 }

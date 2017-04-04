@@ -10,9 +10,9 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dim = 1
-    meanPoint = NumericalPoint(dim, 1.0)
+    meanPoint = Point(dim, 1.0)
     meanPoint[0] = 0.5
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
     sigma[0] = 2.0
     R = CorrelationMatrix(dim)
 
@@ -36,11 +36,11 @@ try:
     max1 = sample1.getMax()[0] + epsilon
     min2 = sample2.getMin()[0]
     max2 = sample2.getMax()[0] + epsilon
-    tmp = NumericalPoint(2)
+    tmp = Point(2)
     tmp[0] = (max1 - min1) / nBars
-    data1 = NumericalSample(nBars, tmp)
+    data1 = Sample(nBars, tmp)
     tmp[0] = (max2 - min2) / nBars
-    data2 = NumericalSample(nBars, tmp)
+    data2 = Sample(nBars, tmp)
 
     for i in range(size):
         index = int(floor((sample1[i, 0] - min1) / (max1 - min1) * nBars))

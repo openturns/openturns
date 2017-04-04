@@ -26,7 +26,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -49,19 +49,19 @@ TrapezoidalFactory * TrapezoidalFactory::clone() const
 }
 
 /* Compute the log-likelihood constraint */
-NumericalPoint TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const NumericalPoint & x) const
+Point TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const Point & x) const
 {
-  NumericalPoint result(3, 0.0);
+  Point result(3, 0.0);
   result[0] = x[1] - x[0] ;                                // x[0] <= x[1]
-  result[1] = x[2] - x[1] - SpecFunc::NumericalScalarEpsilon;  // x[1] <  x[2]
+  result[1] = x[2] - x[1] - SpecFunc::ScalarEpsilon;  // x[1] <  x[2]
   result[2] = x[3] - x[2] ;                                // x[2] <= x[3]
   return result;
 }
 
 /* Compute the log-likelihood constraint accessor */
-NumericalMathFunction TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
+Function TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
 {
-  return bindMethod <TrapezoidalFactory, NumericalPoint, NumericalPoint> (*this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
+  return bindMethod <TrapezoidalFactory, Point, Point> (*this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
 }
 
 /* Optimization solver accessor */
@@ -90,12 +90,12 @@ void TrapezoidalFactory::setOptimizationSolver(const OptimizationAlgorithm & sol
 
 /* Here is the interface that all derived class must implement */
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build(const NumericalSample & sample) const
+TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Sample & sample) const
 {
   return buildAsTrapezoidal(sample).clone();
 }
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build(const NumericalPoint & parameters) const
+TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Point & parameters) const
 {
   return buildAsTrapezoidal(parameters).clone();
 }
@@ -105,7 +105,7 @@ TrapezoidalFactory::Implementation TrapezoidalFactory::build() const
   return buildAsTrapezoidal().clone();
 }
 
-Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sample) const
+Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 {
 
   const UnsignedInteger size = sample.getSize();
@@ -116,14 +116,14 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   const UnsignedInteger dimension = build()->getParameterDimension();
 
   // starting point
-  NumericalPoint startingPoint(dimension);
-  const NumericalScalar min = sample.getMin()[0];
-  const NumericalScalar max = sample.getMax()[0];
+  Point startingPoint(dimension);
+  const Scalar min = sample.getMin()[0];
+  const Scalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
-  //  if (max <= min - std::sqrt(SpecFunc::NumericalScalarEpsilon))
+  //  if (max <= min - std::sqrt(SpecFunc::ScalarEpsilon))
   if (min == max)
   {
-    const NumericalScalar delta = std::max(std::abs(min), 10.0) * SpecFunc::NumericalScalarEpsilon;
+    const Scalar delta = std::max(std::abs(min), 10.0) * SpecFunc::ScalarEpsilon;
     Trapezoidal result(min - delta, min, max, max + delta);
     result.setDescription(sample.getDescription());
     return result;
@@ -137,8 +137,8 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
 
   // override starting point
   Cobyla solver;
-  solver.setRhoBeg(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoBeg"));
-  solver.setMaximumAbsoluteError(ResourceMap::GetAsNumericalScalar("TrapezoidalFactory-RhoEnd"));
+  solver.setRhoBeg(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg"));
+  solver.setMaximumAbsoluteError(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd"));
   solver.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   solver.setStartingPoint(startingPoint);
   factory.setOptimizationAlgorithm(solver);
@@ -151,7 +151,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalSample & sampl
   return result;
 }
 
-Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const NumericalPoint & parameters) const
+Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Point & parameters) const
 {
   try
   {

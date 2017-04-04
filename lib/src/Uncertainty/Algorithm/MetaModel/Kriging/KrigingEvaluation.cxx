@@ -33,7 +33,7 @@ static const Factory<PersistentCollection<Basis> > Factory_PersistentCollection_
 
 /* Constructor with parameters */
 KrigingEvaluation::KrigingEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
 {
   // Nothing to do
 }
@@ -41,11 +41,11 @@ KrigingEvaluation::KrigingEvaluation()
 
 /* Constructor with parameters */
 KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
-                                      const NumericalSample & inputSample,
+                                      const Sample & inputSample,
                                       const CovarianceModel & covarianceModel,
-                                      const NumericalPointCollection & beta,
-                                      const NumericalSample & gamma)
-  : NumericalMathEvaluationImplementation()
+                                      const PointCollection & beta,
+                                      const Sample & gamma)
+  : EvaluationImplementation()
   , basis_(basis)
   , inputSample_(inputSample)
   , covarianceModel_(covarianceModel)
@@ -64,7 +64,7 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getDimension();
   setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
-  setParameter(NumericalPoint(getInputDimension()));
+  setParameter(Point(getInputDimension()));
   setParameterDescription(Description(getInputDimension()));
 }
 
@@ -108,11 +108,11 @@ Bool KrigingEvaluation::isActualImplementation() const
 // Helper for the parallel version of the point-based evaluation operator
 struct KrigingEvaluationPointFunctor
 {
-  const NumericalPoint & input_;
+  const Point & input_;
   const KrigingEvaluation & evaluation_;
-  NumericalPoint accumulator_;
+  Point accumulator_;
 
-  KrigingEvaluationPointFunctor(const NumericalPoint & input,
+  KrigingEvaluationPointFunctor(const Point & input,
                                 const KrigingEvaluation & evaluation)
     : input_(input)
     , evaluation_(evaluation)
@@ -142,20 +142,20 @@ struct KrigingEvaluationPointFunctor
 }; // struct KrigingEvaluationPointFunctor
 
 /* Operator () */
-NumericalPoint KrigingEvaluation::operator()(const NumericalPoint & inP) const
+Point KrigingEvaluation::operator()(const Point & inP) const
 {
   const UnsignedInteger trainingSize = inputSample_.getSize();
   // Evaluate the kernel part in parallel
   KrigingEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, trainingSize, functor );
-  NumericalPoint value(functor.accumulator_);
+  Point value(functor.accumulator_);
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
   {
     // Get local basis -> basis_[i]
     const Basis localBasis(basis_[i]);
-    const NumericalPoint betaBasis(beta_[i]);
+    const Point betaBasis(beta_[i]);
     const UnsignedInteger basisSize = localBasis.getSize();
     for (UnsignedInteger j = 0; j < basisSize; ++j)
       value[i] += localBasis[j](inP)[0] * betaBasis[j];
@@ -167,13 +167,13 @@ NumericalPoint KrigingEvaluation::operator()(const NumericalPoint & inP) const
 // Helper for the parallel version of the sample-based evaluation operator
 struct KrigingEvaluationSampleFunctor
 {
-  const NumericalSample & input_;
-  NumericalSample & output_;
+  const Sample & input_;
+  Sample & output_;
   const KrigingEvaluation & evaluation_;
   UnsignedInteger trainingSize_;
 
-  KrigingEvaluationSampleFunctor(const NumericalSample & input,
-                                 NumericalSample & output,
+  KrigingEvaluationSampleFunctor(const Sample & input,
+                                 Sample & output,
                                  const KrigingEvaluation & evaluation)
     : input_(input)
     , output_(output)
@@ -201,31 +201,31 @@ struct KrigingEvaluationSampleFunctor
   } // operator()
 }; // struct KrigingEvaluationSampleFunctor
 
-NumericalSample KrigingEvaluation::operator()(const NumericalSample & inS) const
+Sample KrigingEvaluation::operator()(const Sample & inS) const
 {
   // Evaluation on the sample using parallel functors
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger dimension = getOutputDimension();
 
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   const KrigingEvaluationSampleFunctor functor( inS, result, *this );
   TBB::ParallelFor( 0, size , functor );
 
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
-  NumericalSample trend(size, 0);
+  Sample trend(size, 0);
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
   {
     // Get local basis -> basis_[i]
     const Basis localBasis(basis_[i]);
-    const NumericalPoint betaBasis(beta_[i]);
+    const Point betaBasis(beta_[i]);
     const UnsignedInteger basisSize = localBasis.getSize();
     // For the i-th Basis (marginal), take into account the trend
-    NumericalSample fi(size, 1);
+    Sample fi(size, 1);
 
     for (UnsignedInteger j = 0; j < basisSize; ++j)
     {
-      NumericalSample fj(localBasis[j](inS));
+      Sample fj(localBasis[j](inS));
       // scale ==> use of parallelism
       fj *= betaBasis[j];
       // Adding fj to fi
@@ -258,7 +258,7 @@ UnsignedInteger KrigingEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void KrigingEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("covarianceModel_", covarianceModel_);
@@ -269,7 +269,7 @@ void KrigingEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void KrigingEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("covarianceModel_", covarianceModel_);

@@ -54,7 +54,7 @@ public:
 private:
 
   /** Compute the block sample and the points that realized the event */
-  NumericalSample computeBlockSample();
+  Sample computeBlockSample();
 
 } ; /* class MonteCarlo */
 

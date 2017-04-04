@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KRIGINGGRADIENT_HXX
 #define OPENTURNS_KRIGINGGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
 
@@ -34,14 +34,14 @@ BEGIN_NAMESPACE_OPENTURNS
   * This class permits prediction on a gaussian process
   */
 class OT_API KrigingGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME
 
 public:
 
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -50,10 +50,10 @@ public:
 
   /** Constructor with parameters */
   KrigingGradient(const BasisCollection & basis,
-                  const NumericalSample & inputSample,
+                  const Sample & inputSample,
                   const CovarianceModel & correlationModel,
-                  const NumericalPointCollection & beta,
-                  const NumericalSample & gamma);
+                  const PointCollection & beta,
+                  const Sample & gamma);
 
   /** Virtual constructor */
   virtual KrigingGradient * clone() const;
@@ -69,8 +69,8 @@ public:
   virtual Bool isActualImplementation() const;
 
   /** Operator () */
-//   using NumericalMathGradientImplementation::gradient;
-  Matrix gradient(const NumericalPoint & inP) const;
+//   using GradientImplementation::gradient;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
@@ -89,14 +89,14 @@ protected:
   BasisPersistentCollection basis_;
 
   /// Training (input) sample
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /// Correlation model
   CovarianceModel covarianceModel_;
 
   /// Regression weights
-  NumericalPointPersistentCollection beta_;
-  NumericalSample gamma_;
+  PointPersistentCollection beta_;
+  Sample gamma_;
 
 };
 

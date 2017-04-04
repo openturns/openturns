@@ -21,10 +21,10 @@
 #include "openturns/WelchFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/HermitianMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Hamming.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(WelchFactory);
 static const Factory<WelchFactory> Factory_WelchFactory;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 typedef Collection<HermitianMatrix>  HermitianMatrixCollection;
 
 /* Default constructor */
@@ -48,7 +48,7 @@ WelchFactory::WelchFactory()
 
 WelchFactory::WelchFactory(const FilteringWindows & window,
                            const UnsignedInteger blockNumber,
-                           const NumericalScalar overlap)
+                           const Scalar overlap)
   : SpectralModelFactoryImplementation()
   , window_(window)
   , blockNumber_(0)
@@ -105,12 +105,12 @@ void WelchFactory::setBlockNumber(const UnsignedInteger blockNumber)
 }
 
 /* Overlap accessor */
-NumericalScalar WelchFactory::getOverlap() const
+Scalar WelchFactory::getOverlap() const
 {
   return overlap_;
 }
 
-void WelchFactory::setOverlap(const NumericalScalar overlap)
+void WelchFactory::setOverlap(const Scalar overlap)
 {
   if ((overlap < 0.0) || (overlap > 0.5)) throw InvalidArgumentException(HERE) << "Error: the overlap must be in [0, 0.5], here overlap=" << overlap;
   overlap_ = overlap;
@@ -132,26 +132,26 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
   const UnsignedInteger sampleSize = sample.getSize();
   const RegularGrid timeGrid(sample.getTimeGrid());
   const UnsignedInteger N = timeGrid.getN();
-  const NumericalScalar timeStep = timeGrid.getStep();
-  const NumericalScalar T = timeGrid.getEnd() - timeGrid.getStart();
+  const Scalar timeStep = timeGrid.getStep();
+  const Scalar T = timeGrid.getEnd() - timeGrid.getStart();
   // Preprocessing: the scaling factor, including the tappering window
-  NumericalComplexCollection alpha(N);
-  const NumericalScalar factor = timeStep / sqrt(sampleSize * T);
+  ComplexCollection alpha(N);
+  const Scalar factor = timeStep / sqrt(sampleSize * T);
   for (UnsignedInteger m = 0; m < N; ++m)
   {
     // The window argument is normalized on [0, 1]
-    const NumericalScalar xiM = static_cast<NumericalScalar>(m) / N;
+    const Scalar xiM = static_cast<Scalar>(m) / N;
     // Phase shift
-    const NumericalScalar theta = M_PI * (N - 1) * xiM;
-    alpha[m] = factor * window_(xiM) * NumericalComplex(cos(theta), sin(theta));
+    const Scalar theta = M_PI * (N - 1) * xiM;
+    alpha[m] = factor * window_(xiM) * Complex(cos(theta), sin(theta));
   }
   // The DSP estimate will be done over a regular frequency grid containing only
   // nonnegative frequency values. It is then extended as a stepwise function of
   // the frequency on positive and negative values using the hermitian symmetry
   // If N is even, kMax = N / 2, else kMax = (N + 1) / 2.
   UnsignedInteger kMax = N / 2;
-  const NumericalScalar frequencyStep = 1.0 / T;
-  NumericalScalar frequencyMin = 0.5 * frequencyStep;
+  const Scalar frequencyStep = 1.0 / T;
+  Scalar frequencyMin = 0.5 * frequencyStep;
   // Adjust kMax and frequencyMin if N is odd
   if (N % 2 == 1)
   {
@@ -171,10 +171,10 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
     for (UnsignedInteger p = 0; p < dimension; ++p)
     {
       // Loop over the time stamps
-      NumericalComplexCollection zP(N);
+      ComplexCollection zP(N);
       for (UnsignedInteger m = 0; m < N; ++m) zP[m] = alpha[m] * sample[l][m][p]; // The first component of the value of a time series at a given index is the time value
       // Perform the FFT direct transform of the tapered data
-      const NumericalComplexCollection zPHat(fftAlgorithm_.transform(zP));
+      const ComplexCollection zPHat(fftAlgorithm_.transform(zP));
       // Stores the result. Only the values associated with nonnegative frequency values are stored.
       for (UnsignedInteger k = 0; k < kMax; ++k) zHat(k, p) = zPHat[N - kMax + k];
     }

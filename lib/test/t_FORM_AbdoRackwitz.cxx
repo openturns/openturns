@@ -24,11 +24,11 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps = pow(0.1, 1.0 * digits);
+  Scalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -51,16 +51,16 @@ int main(int argc, char *argv[])
     input[1] = "F";
     input[2] = "L";
     input[3] = "I";
-    NumericalMathFunction myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
+    Function myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
-    NumericalPoint mean(dim, 0.0);
+    Point mean(dim, 0.0);
     mean[0] = 50.0; // E
     mean[1] =  1.0; // F
     mean[2] = 10.0; // L
     mean[3] =  5.0; // I
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     IdentityMatrix R(dim);
     Normal myDistribution(mean, sigma, R);
 
@@ -79,8 +79,8 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    NumericalMathFunction levelFunction(input, Description(1, "d"), Description(1, "x1+2*x2-3*x3+4*x4"));
-    NumericalPoint startingPoint(4, 1.0);
+    Function levelFunction(input, Description(1, "d"), Description(1, "x1+2*x2-3*x3+4*x4"));
+    Point startingPoint(4, 1.0);
     AbdoRackwitz myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setMaximumIterationNumber(100);
@@ -105,11 +105,11 @@ int main(int argc, char *argv[])
     UnsignedInteger digits = 5;
     fullprint << "event probability=" << result.getEventProbability() << std::endl;
     fullprint << "generalized reliability index=" << std::setprecision(digits) << result.getGeneralisedReliabilityIndex() << std::endl;
-    fullprint << "standard space design point=" << printNumericalPoint(result.getStandardSpaceDesignPoint(), digits) << std::endl;
-    fullprint << "physical space design point=" << printNumericalPoint(result.getPhysicalSpaceDesignPoint(), digits) << std::endl;
+    fullprint << "standard space design point=" << printPoint(result.getStandardSpaceDesignPoint(), digits) << std::endl;
+    fullprint << "physical space design point=" << printPoint(result.getPhysicalSpaceDesignPoint(), digits) << std::endl;
     fullprint << "is standard point origin in failure space? " << (result.getIsStandardPointOriginInFailureSpace() ? "true" : "false") << std::endl;
-    fullprint << "importance factors=" << printNumericalPoint(result.getImportanceFactors(), digits) << std::endl;
-    fullprint << "importance factors (classical)=" << printNumericalPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
+    fullprint << "importance factors=" << printPoint(result.getImportanceFactors(), digits) << std::endl;
+    fullprint << "importance factors (classical)=" << printPoint(result.getImportanceFactors(AnalyticalResult::CLASSICAL), digits) << std::endl;
     fullprint << "Hasofer reliability index=" << std::setprecision(digits) << result.getHasoferReliabilityIndex() << std::endl;
   }
   catch (TestFailed & ex)

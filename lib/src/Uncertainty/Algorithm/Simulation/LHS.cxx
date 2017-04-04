@@ -20,7 +20,7 @@
  */
 #include "openturns/LHS.hxx"
 #include "openturns/LHSExperiment.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -64,7 +64,7 @@ LHS * LHS::clone() const
 }
 
 /* Compute the block sample */
-NumericalSample LHS::computeBlockSample()
+Sample LHS::computeBlockSample()
 {
   // Size of a block
   const UnsignedInteger blockSize = getBlockSize();
@@ -73,20 +73,20 @@ NumericalSample LHS::computeBlockSample()
   // Compute the total sample base position
   UnsignedInteger basePosition = blockIndex_ * blockSize;
   // First, compute the input sub-sample based on the shuffling
-  NumericalSample inputSample(blockSize, NumericalPoint(dimension_));
+  Sample inputSample(blockSize, Point(dimension_));
   for(UnsignedInteger index = 0; index < blockSize; ++index)
   {
-    const NumericalPoint u(RandomGenerator::Generate(dimension_));
+    const Point u(RandomGenerator::Generate(dimension_));
     for(UnsignedInteger component = 0; component < dimension_; ++component)
     {
-      NumericalScalar xi = (shuffle_(component, basePosition) + u[component]) / totalSize;
+      Scalar xi = (shuffle_(component, basePosition) + u[component]) / totalSize;
       inputSample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
     // Update the base position
     ++basePosition;
   }
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   for (UnsignedInteger i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getOperator()(blockSample[i][0], event_.getThreshold());
   // Update the block index
   ++blockIndex_;

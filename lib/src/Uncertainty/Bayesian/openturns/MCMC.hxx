@@ -41,9 +41,9 @@ class OT_API MCMC
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
-  typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
+  typedef Collection<PointWithDescription> PointWithDescriptionCollection;
 
   /** Default constructor */
   MCMC();
@@ -51,22 +51,22 @@ public:
   /** Constructor with parameters*/
   MCMC(const Distribution & prior,
        const Distribution & conditional,
-       const NumericalSample & observations,
-       const NumericalPoint & initialState);
+       const Sample & observations,
+       const Point & initialState);
 
   /** Constructor with parameters*/
   MCMC(const Distribution & prior,
        const Distribution & conditional,
-       const NumericalMathFunction & model,
-       const NumericalSample & parameters,
-       const NumericalSample & observations,
-       const NumericalPoint & initialState);
+       const Function & model,
+       const Sample & parameters,
+       const Sample & observations,
+       const Point & initialState);
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Compute the likelihood w.r.t. observartions */
-  NumericalScalar computeLogLikelihood(const NumericalPoint & currentState) const;
+  Scalar computeLogLikelihood(const Point & currentState) const;
 
   /** Prior accessor */
   void setPrior(const Distribution & prior);
@@ -76,15 +76,15 @@ public:
   Distribution getConditional() const;
 
   /** Model accessor */
-  NumericalMathFunction getModel() const;
+  Function getModel() const;
 
   /** Obervations accessor */
-  void setObservations(const NumericalSample & observations);
-  NumericalSample getObservations() const;
+  void setObservations(const Sample & observations);
+  Sample getObservations() const;
 
   /** Parameters accessor */
-  void setParameters(const NumericalSample & parameters);
-  NumericalSample getParameters() const;
+  void setParameters(const Sample & parameters);
+  Sample getParameters() const;
 
   /// Burning accessor
   void setBurnIn(UnsignedInteger burnIn);
@@ -115,8 +115,8 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  NumericalPoint initialState_;
-  mutable NumericalPoint currentState_;
+  Point initialState_;
+  mutable Point currentState_;
   mutable HistoryStrategy history_;
   Indices nonRejectedComponents_; // components that are always accepted
 
@@ -124,9 +124,9 @@ private:
   Distribution prior_;
   Distribution conditional_;
 
-  mutable NumericalMathFunction model_;
-  NumericalSample parameters_;
-  NumericalSample observations_;
+  mutable Function model_;
+  Sample parameters_;
+  Sample observations_;
 
   UnsignedInteger burnIn_; // number of first samples discarded to reach stationary regime
   UnsignedInteger thinning_; // number of samples skipped at each generation

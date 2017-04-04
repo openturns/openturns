@@ -44,12 +44,12 @@ WeibullFactory * WeibullFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-WeibullFactory::Implementation WeibullFactory::build(const NumericalSample & sample) const
+WeibullFactory::Implementation WeibullFactory::build(const Sample & sample) const
 {
   return buildAsWeibull(sample).clone();
 }
 
-WeibullFactory::Implementation WeibullFactory::build(const NumericalPoint & parameters) const
+WeibullFactory::Implementation WeibullFactory::build(const Point & parameters) const
 {
   return buildAsWeibull(parameters).clone();
 }
@@ -59,37 +59,37 @@ WeibullFactory::Implementation WeibullFactory::build() const
   return buildAsWeibull().clone();
 }
 
-Weibull WeibullFactory::buildAsWeibull(const NumericalSample & sample) const
+Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
 {
-  const NumericalScalar size = sample.getSize();
+  const Scalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Weibull distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar xMin = sample.getMin()[0];
-  NumericalScalar gamma = xMin - std::abs(xMin) / (2.0 + size);
-  const NumericalScalar mean = sample.computeMean()[0];
-  const NumericalScalar sigma = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar xMin = sample.getMin()[0];
+  Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
+  const Scalar mean = sample.computeMean()[0];
+  const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
   if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution if data contains NaN or Inf";
   try
   {
-    NumericalPoint parameters(3);
+    Point parameters(3);
     parameters[0] = mean;
     parameters[1] = sigma;
     parameters[2] = gamma;
-    Weibull result(buildAsWeibull(WeibullMuSigma()(parameters)));  
+    Weibull result(buildAsWeibull(WeibullMuSigma()(parameters)));
     result.setDescription(sample.getDescription());
     return result;
   }
   // Here we are in the case of a (nearly) Dirac distribution
   catch (InvalidArgumentException)
   {
-    if (gamma == 0.0) gamma = SpecFunc::NumericalScalarEpsilon;
-    Weibull result(100.0 * std::abs(gamma) * SpecFunc::NumericalScalarEpsilon, 1.0, gamma);
+    if (gamma == 0.0) gamma = SpecFunc::ScalarEpsilon;
+    Weibull result(100.0 * std::abs(gamma) * SpecFunc::ScalarEpsilon, 1.0, gamma);
     result.setDescription(sample.getDescription());
     return result;
   }
 }
 
-Weibull WeibullFactory::buildAsWeibull(const NumericalPoint & parameters) const
+Weibull WeibullFactory::buildAsWeibull(const Point & parameters) const
 {
   try
   {

@@ -20,9 +20,9 @@
  */
 
 #include "openturns/LinearLeastSquares.hxx"
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
+#include "openturns/ConstantGradient.hxx"
+#include "openturns/ConstantHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,8 +32,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(LinearLeastSquares);
 
 /* Constructor with parameters */
-LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
-                                       const NumericalMathFunction & inputFunction)
+LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
+                                       const Function & inputFunction)
   : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(0, inputFunction.getOutputDimension()),
@@ -46,8 +46,8 @@ LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
 }
 
 /* Constructor with parameters */
-LinearLeastSquares::LinearLeastSquares(const NumericalSample & dataIn,
-                                       const NumericalSample & dataOut)
+LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
+                                       const Sample & dataOut)
   : PersistentObject(),
     dataIn_(dataIn),
     dataOut_(0, dataOut.getDimension()),
@@ -100,7 +100,7 @@ void LinearLeastSquares::run()
   {
     /* build the componentMatrix */
     /* get the current sample x */
-    const NumericalPoint currentSample(dataIn_[sampleIndex]);
+    const Point currentSample(dataIn_[sampleIndex]);
     UnsignedInteger rowIndex = 0;
     /* First the constant term */
     componentMatrix(sampleIndex, rowIndex) = 1.0;
@@ -133,28 +133,28 @@ void LinearLeastSquares::run()
       ++coefficientsIndex;
     } // linear term
   } // output components
-  const NumericalPoint center(inputDimension, 0.0);
+  const Point center(inputDimension, 0.0);
   /* Build the several implementations and set them into the response surface */
-  responseSurface_.setEvaluation(new LinearNumericalMathEvaluationImplementation(center, constant_, linear_));
-  responseSurface_.setGradient(new ConstantNumericalMathGradientImplementation(linear_));
-  responseSurface_.setHessian(new ConstantNumericalMathHessianImplementation(SymmetricTensor(center.getDimension(), constant_.getDimension())));
+  responseSurface_.setEvaluation(new LinearEvaluation(center, constant_, linear_));
+  responseSurface_.setGradient(new ConstantGradient(linear_));
+  responseSurface_.setHessian(new ConstantHessian(SymmetricTensor(center.getDimension(), constant_.getDimension())));
 }
 
 /* DataIn accessor */
-NumericalSample LinearLeastSquares::getDataIn() const
+Sample LinearLeastSquares::getDataIn() const
 {
   return dataIn_;
 }
 
 /* DataOut accessor */
-NumericalSample LinearLeastSquares::getDataOut() const
+Sample LinearLeastSquares::getDataOut() const
 {
   // If the response surface has been defined with an input function and the output data have not already been computed, compute them
   if (inputFunction_.getEvaluation()->isActualImplementation() && (dataOut_.getSize() == 0)) dataOut_ = inputFunction_(dataIn_);
   return dataOut_;
 }
 
-void LinearLeastSquares::setDataOut(const NumericalSample & dataOut)
+void LinearLeastSquares::setDataOut(const Sample & dataOut)
 {
   if (inputFunction_.getEvaluation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: cannot set the output data in a response surface defined with a function, here function=" << inputFunction_;
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();
@@ -162,7 +162,7 @@ void LinearLeastSquares::setDataOut(const NumericalSample & dataOut)
 }
 
 /* Constant accessor */
-NumericalPoint LinearLeastSquares::getConstant() const
+Point LinearLeastSquares::getConstant() const
 {
   return constant_;
 }
@@ -174,13 +174,13 @@ Matrix LinearLeastSquares::getLinear() const
 }
 
 /* Function accessor */
-NumericalMathFunction LinearLeastSquares::getInputFunction() const
+Function LinearLeastSquares::getInputFunction() const
 {
   return inputFunction_;
 }
 
 /* Response surface accessor */
-NumericalMathFunction LinearLeastSquares::getResponseSurface() const
+Function LinearLeastSquares::getResponseSurface() const
 {
   return responseSurface_;
 }

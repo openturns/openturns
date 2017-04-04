@@ -23,11 +23,11 @@
 
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Process.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/Basis.hxx"
@@ -48,8 +48,8 @@ class OT_API GeneralLinearModelResult
 public:
 
   // friend class Factory<GeneralLinearModelResult>;
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -57,28 +57,28 @@ public:
   GeneralLinearModelResult();
 
   /** Parameter constructor without any cholesky factor*/
-  GeneralLinearModelResult(const NumericalSample & inputData,
-                               const NumericalSample & outputData,
-                               const NumericalMathFunction & metaModel,
-                               const NumericalPoint & residuals,
-                               const NumericalPoint & relativeErrors,
-                               const BasisCollection & basis,
-                               const NumericalPointCollection & trendCoefficients,
-                               const CovarianceModel & covarianceModel,
-			       const NumericalScalar optimalLogLikelihood);
+  GeneralLinearModelResult(const Sample & inputData,
+                           const Sample & outputData,
+                           const Function & metaModel,
+                           const Point & residuals,
+                           const Point & relativeErrors,
+                           const BasisCollection & basis,
+                           const PointCollection & trendCoefficients,
+                           const CovarianceModel & covarianceModel,
+                           const Scalar optimalLogLikelihood);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
-  GeneralLinearModelResult(const NumericalSample & inputData,
-                               const NumericalSample & outputData,
-                               const NumericalMathFunction & metaModel,
-                               const NumericalPoint & residuals,
-                               const NumericalPoint & relativeErrors,
-                               const BasisCollection & basis,
-                               const NumericalPointCollection & trendCoefficients,
-                               const CovarianceModel & covarianceModel,
-			       const NumericalScalar optimalLogLikelihood,
-                               const TriangularMatrix & covarianceCholeskyFactor,
-                               const HMatrix & covarianceHMatrix);
+  GeneralLinearModelResult(const Sample & inputData,
+                           const Sample & outputData,
+                           const Function & metaModel,
+                           const Point & residuals,
+                           const Point & relativeErrors,
+                           const BasisCollection & basis,
+                           const PointCollection & trendCoefficients,
+                           const CovarianceModel & covarianceModel,
+                           const Scalar optimalLogLikelihood,
+                           const TriangularMatrix & covarianceCholeskyFactor,
+                           const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
   GeneralLinearModelResult * clone() const;
@@ -91,20 +91,20 @@ public:
   BasisCollection getBasisCollection() const;
 
   /** Trend coefficients accessor */
-  NumericalPointCollection getTrendCoefficients() const;
+  PointCollection getTrendCoefficients() const;
 
   /** Conditional covariance models accessor */
   CovarianceModel getCovarianceModel() const;
 
   /** Transformation accessor */
-  NumericalMathFunction getTransformation() const;
-  void setTransformation(const NumericalMathFunction & transformation);
+  Function getTransformation() const;
+  void setTransformation(const Function & transformation);
 
   /** process accessor */
   Process getNoise() const;
 
   /** Optimal likelihood accessor */
-  NumericalScalar getOptimalLogLikelihood() const;
+  Scalar getOptimalLogLikelihood() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -124,18 +124,18 @@ protected:
   HMatrix getHMatCholeskyFactor() const;
 
   // Return input sample transformed
-  NumericalSample getInputTransformedSample() const;
+  Sample getInputTransformedSample() const;
 
 private:
 
   /** inputData should be keeped*/
-  NumericalSample inputData_;
+  Sample inputData_;
 
   /** input transformed data: store data*/
-  NumericalSample inputTransformedData_;
+  Sample inputTransformedData_;
 
   /** inputTransformation ==> iso-probabilistic transformation */
-  NumericalMathFunction inputTransformation_;
+  Function inputTransformation_;
 
   /** Boolean transformation */
   Bool hasTransformation_;
@@ -144,13 +144,13 @@ private:
   BasisPersistentCollection basis_;
 
   /** The trend coefficients */
-  NumericalPointPersistentCollection beta_;
+  PointPersistentCollection beta_;
 
   /** The covariance model */
   CovarianceModel covarianceModel_;
 
   /** The optimal log-likelihood value */
-  NumericalScalar optimalLogLikelihood_;
+  Scalar optimalLogLikelihood_;
 
   /** Boolean for cholesky. */
   Bool hasCholeskyFactor_;

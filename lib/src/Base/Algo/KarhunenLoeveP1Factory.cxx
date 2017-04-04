@@ -24,8 +24,8 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SquareComplexMatrix.hxx"
-#include "openturns/NumericalSample.hxx"
-#include "openturns/P1LagrangeEvaluationImplementation.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -49,7 +49,7 @@ KarhunenLoeveP1Factory::KarhunenLoeveP1Factory()
 
 /* Constructor with parameters */
 KarhunenLoeveP1Factory::KarhunenLoeveP1Factory(const Mesh & mesh,
-    const NumericalScalar threshold)
+    const Scalar threshold)
   : PersistentObject()
   , mesh_(mesh)
   , threshold_(threshold)
@@ -57,7 +57,7 @@ KarhunenLoeveP1Factory::KarhunenLoeveP1Factory(const Mesh & mesh,
   Log::Warn(OSS() << "KarhunenLoeveP1Factory is deprecated");
   // Compute the gram of the mesh
   gram_ = mesh.computeP1Gram();
-  const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("KarhunenLoeveP1Factory-RegularizationFactor");
+  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Factory-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram_.getDimension(); ++i) gram_(i, i) += epsilon;
 }
@@ -74,12 +74,12 @@ KarhunenLoeveP1Factory * KarhunenLoeveP1Factory::clone() const
  * where C is a given covariance model, using P1 approximation
  */
 Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
-                                    NumericalPoint & selectedEV) const
+                                    Point & selectedEV) const
 {
   const ProcessSample resultAsProcessSample(buildAsProcessSample(covarianceModel, selectedEV));
   Basis result(0);
   for (UnsignedInteger i = 0; i < resultAsProcessSample.getSize(); ++i)
-    result.add(P1LagrangeEvaluationImplementation(resultAsProcessSample.getField(i)));
+    result.add(P1LagrangeEvaluation(resultAsProcessSample.getField(i)));
   return result;
 }
 
@@ -104,7 +104,7 @@ Basis KarhunenLoeveP1Factory::build(const CovarianceModel & covarianceModel,
    with I the dxd identity matrix
 */
 ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel & covarianceModel,
-    NumericalPoint & selectedEV) const
+    Point & selectedEV) const
 {
   const UnsignedInteger numVertices = mesh_.getVerticesNumber();
   // Extend the Gram matrix of the mesh
@@ -115,7 +115,7 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   {
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
-      const NumericalScalar gij = gram_(i, j);
+      const Scalar gij = gram_(i, j);
       for (UnsignedInteger k = 0; k < dimension; ++k)
         G(i * dimension + k, j * dimension + k) = gij;
     } // Loop over j
@@ -124,8 +124,8 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   CovarianceMatrix C(covarianceModel.discretize(mesh_));
   SquareMatrix M((C * G).getImplementation());
   SquareComplexMatrix eigenVectorsComplex;
-  SquareMatrix::NumericalComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
-  NumericalSample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+  Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectorsComplex(j, i).real();
@@ -133,23 +133,23 @@ ProcessSample KarhunenLoeveP1Factory::buildAsProcessSample(const CovarianceModel
   }
   eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
   SquareMatrix eigenVectors(augmentedDimension);
-  NumericalPoint eigenValues(augmentedDimension);
+  Point eigenValues(augmentedDimension);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
     eigenValues[i] = -eigenPairs[i][augmentedDimension];
   }
   LOGINFO(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
-  selectedEV = NumericalPoint(0);
+  selectedEV = Point(0);
   ProcessSample result(mesh_, 0, dimension);
   UnsignedInteger j = 0;
   while ((j < augmentedDimension) && (eigenValues[j] > threshold_ * std::abs(eigenValues[0])))
   {
     selectedEV.add(eigenValues[j]);
-    NumericalSample values(numVertices, dimension);
+    Sample values(numVertices, dimension);
     const Matrix a(eigenVectors.getColumn(j));
-    const NumericalScalar norm = std::sqrt((a.transpose() * (G * a))(0, 0));
-    const NumericalScalar factor = eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm;
+    const Scalar norm = std::sqrt((a.transpose() * (G * a))(0, 0));
+    const Scalar factor = eigenVectors(0, j) < 0.0 ? -1.0 / norm : 1.0 / norm;
     for (UnsignedInteger i = 0; i < numVertices; ++i)
       for (UnsignedInteger k = 0; k < dimension; ++k)
         values[i][k] = eigenVectors(i * dimension + k, j) * factor;

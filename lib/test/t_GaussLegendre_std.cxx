@@ -25,7 +25,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {
@@ -35,19 +35,19 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalMathFunction f("x", "sin(x)");
-    NumericalScalar a = -2.5;
-    NumericalScalar b = 4.5;
+    SymbolicFunction f("x", "sin(x)");
+    Scalar a = -2.5;
+    Scalar b = 4.5;
     // Default parameters
     GaussLegendre algo;
     fullprint << "Algo=" << algo << std::endl;
     // High-level interface
     algo = GaussLegendre(Indices(1, 20));
-    NumericalScalar value = algo.integrate(f, Interval(a, b))[0];
-    NumericalScalar ref = cos(a) - cos(b);
+    Scalar value = algo.integrate(f, Interval(a, b))[0];
+    Scalar ref = cos(a) - cos(b);
     fullprint << "value=" << value << ", ref=" << ref << std::endl;
     // Low-level interface
-    NumericalSample adaptedNodes;
+    Sample adaptedNodes;
     value = algo.integrateWithNodes(f, Interval(a, b), adaptedNodes)[0];
     fullprint << "value=" << value << ", ref=" << ref << ", adaptedNodes=" << adaptedNodes << std::endl;
   }

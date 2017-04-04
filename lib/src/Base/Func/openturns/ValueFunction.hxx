@@ -23,8 +23,8 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,24 +41,24 @@ class OT_API ValueFunction
   CLASSNAME;
 public:
 
-  typedef NumericalMathEvaluationImplementation::Implementation EvaluationImplementation;
+  typedef EvaluationImplementation::Implementation EvaluationPointer;
 
   /** Default constructor */
   explicit ValueFunction(const UnsignedInteger meshDimension = 1);
 
   /** Parameter constructor */
-  explicit ValueFunction(const NumericalMathFunction & function,
-                           const UnsignedInteger meshDimension = 1);
+  explicit ValueFunction(const Function & function,
+                         const UnsignedInteger meshDimension = 1);
 
 #ifndef SWIG
   /** Parameter constructor */
-  explicit ValueFunction(const EvaluationImplementation & p_evaluation,
-                           const UnsignedInteger meshDimension = 1);
+  explicit ValueFunction(const EvaluationPointer & p_evaluation,
+                         const UnsignedInteger meshDimension = 1);
 #endif
 
   /** Parameter constructor */
-  explicit ValueFunction(const NumericalMathEvaluationImplementation & evaluation,
-                           const UnsignedInteger meshDimension = 1);
+  explicit ValueFunction(const EvaluationImplementation & evaluation,
+                         const UnsignedInteger meshDimension = 1);
 
   /** Virtual constructor */
   virtual ValueFunction * clone() const;
@@ -81,7 +81,7 @@ public:
   Implementation getMarginal(const Indices & indices) const;
 
   /** Evaluation accessor */
-  EvaluationImplementation getEvaluation() const;
+  EvaluationPointer getEvaluation() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -92,7 +92,7 @@ public:
 protected:
 
   /** Pointer to the actual evaluation class */
-  EvaluationImplementation p_evaluation_;
+  EvaluationPointer p_evaluation_;
 
 }; /* class ValueFunction */
 

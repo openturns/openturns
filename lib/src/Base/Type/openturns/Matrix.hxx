@@ -45,15 +45,15 @@ class OT_API Matrix :
 
 #ifndef SWIG
   /** Declaration of friend operators */
-  friend Matrix operator * (const NumericalScalar s,
+  friend Matrix operator * (const Scalar s,
                             const Matrix & m);
 #endif
 
 
 public:
 
-  typedef Collection<NumericalScalar>       NumericalScalarCollection;
-  typedef Collection<NumericalComplex>      NumericalComplexCollection;
+  typedef Collection<Scalar>       ScalarCollection;
+  typedef Collection<Complex>      ComplexCollection;
 
   /** Default constructor */
   Matrix();
@@ -81,13 +81,13 @@ public:
   /** or the rest of the matrix is filled with zeros */
   Matrix(const UnsignedInteger rowDim,
          const UnsignedInteger colDim,
-         const NumericalScalarCollection & elementsValues);
+         const ScalarCollection & elementsValues);
 
   /** Constructor from symmetric matrix */
   Matrix(const SymmetricMatrix & symmetric);
 
   /** Set small elements to zero */
-  virtual Matrix clean(const NumericalScalar threshold) const;
+  virtual Matrix clean(const Scalar threshold) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -96,13 +96,13 @@ public:
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  NumericalScalar & operator () (const UnsignedInteger i,
-                                 const UnsignedInteger j);
+  Scalar & operator () (const UnsignedInteger i,
+                        const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the matrix (read only) */
   /** The element of the matrix is designated by its row number i and its column number j */
-  const NumericalScalar & operator () (const UnsignedInteger i,
-                                       const UnsignedInteger j) const;
+  const Scalar & operator () (const UnsignedInteger i,
+                              const UnsignedInteger j) const;
 #endif
 
   /** Get the dimensions of the matrix */
@@ -132,28 +132,28 @@ public:
   Matrix operator * (const SymmetricMatrix & m) const;
   Matrix operator * (const IdentityMatrix & m) const;
 
-  /** Multiplication with a NumericalPoint (must have consistent dimensions) */
-  NumericalPoint operator * (const NumericalPoint & pt) const;
+  /** Multiplication with a Point (must have consistent dimensions) */
+  Point operator * (const Point & pt) const;
 
-  /** Multiplication with a NumericalScalar */
-  Matrix operator * (const NumericalScalar s) const;
+  /** Multiplication with a Scalar */
+  Matrix operator * (const Scalar s) const;
 
-  /** Division by a NumericalScalar*/
-  Matrix operator / (const NumericalScalar s) const;
+  /** Division by a Scalar*/
+  Matrix operator / (const Scalar s) const;
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
-                                   const Bool keepIntact = true);
+  Point solveLinearSystem(const Point & b,
+                          const Bool keepIntact = true);
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);
 
   /** Compute singular values */
-  NumericalPoint computeSingularValues(const Bool keepIntact = true);
+  Point computeSingularValues(const Bool keepIntact = true);
 
-  NumericalPoint computeSVD(Matrix & u,
-                            Matrix & vT,
-                            const Bool fullSVD = false,
-                            const Bool keepIntact = true);
+  Point computeSVD(Matrix & u,
+                   Matrix & vT,
+                   const Bool fullSVD = false,
+                   const Bool keepIntact = true);
 
   /** Build the QR factorization of the matrix */
   virtual Matrix computeQR(Matrix & R,
@@ -171,14 +171,14 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalScalar * __baseaddress__ () const;
+  const Scalar * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
 }; /* class Matrix */
 
 /** Declaration of friend operators */
-inline Matrix operator * (const NumericalScalar s,
+inline Matrix operator * (const Scalar s,
                           const Matrix & m)
 {
   return m.operator * (s);

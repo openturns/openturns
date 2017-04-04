@@ -29,10 +29,10 @@ class TestHMatrixTensorRealAssemblyFunction : public HMatrixTensorRealAssemblyFu
 {
 private:
   const CovarianceModel & covarianceModel_;
-  const NumericalSample & vertices_;
+  const Sample & vertices_;
 
 public:
-  TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const NumericalSample & vertices)
+  TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
     : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
@@ -41,7 +41,7 @@ public:
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* result) const
   {
     CovarianceMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
-    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+    memcpy( &result->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
   }
 };
 
@@ -66,20 +66,20 @@ int main(int argc, char *argv[])
     indices.add(n);
     indices.add(n);
     const IntervalMesher intervalMesher(indices);
-    const NumericalPoint lowerBound(2, 0.0);
-    const NumericalPoint upperBound(2, 1.0);
+    const Point lowerBound(2, 0.0);
+    const Point upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
-    const NumericalSample vertices2D(mesh2D.getVertices());
-    NumericalSample vertices(vertices2D.getSize(), 3);
+    const Sample vertices2D(mesh2D.getVertices());
+    Sample vertices(vertices2D.getSize(), 3);
     for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
     {
       vertices[i][0] = vertices2D[i][0];
       vertices[i][1] = vertices2D[i][1];
     }
-    NumericalPoint xMin(vertices.getMin());
-    NumericalPoint xMax(vertices.getMax());
-    NumericalPoint scale(3, 0.1);
-    CovarianceModel covarianceModel(ExponentialModel(scale, NumericalPoint(3, 1.0)));
+    Point xMin(vertices.getMin());
+    Point xMax(vertices.getMax());
+    Point scale(3, 0.1);
+    CovarianceModel covarianceModel(ExponentialModel(scale, Point(3, 1.0)));
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 
     hmat.factorize("LU");
 
-    NumericalPoint rhs(covarianceModel.getDimension() * vertices.getSize());
+    Point rhs(covarianceModel.getDimension() * vertices.getSize());
     CovarianceMatrix local(covarianceModel.getDimension());
     for (UnsignedInteger i = 0; i < vertices.getSize(); ++i)
     {
@@ -98,10 +98,10 @@ int main(int argc, char *argv[])
         rhs[covarianceModel.getDimension() * i + dim] = local(dim, 0);
       }
     }
-    NumericalPoint rhsCopy(rhs);
-    NumericalScalar rhsCopyNorm = rhsCopy.norm();
+    Point rhsCopy(rhs);
+    Scalar rhsCopyNorm = rhsCopy.norm();
 
-    NumericalPoint result(hmat.solve(rhs));
+    Point result(hmat.solve(rhs));
 
     for (UnsignedInteger i = 0; i < vertices.getSize(); ++i)
     {
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
         }
       }
     }
-    NumericalScalar diffNorm = rhsCopy.norm();
-    NumericalScalar threshold = 1.e-4;
+    Scalar diffNorm = rhsCopy.norm();
+    Scalar threshold = 1.e-4;
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)

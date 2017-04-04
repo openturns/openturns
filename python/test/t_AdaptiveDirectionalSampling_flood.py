@@ -40,7 +40,7 @@ for k in [0.0, 2.0, 5.0, 8.][0:1]:
 
     print('--------------------')
     print('model flood S <', k, 'gamma=', end=' ')
-    print('f(', ot.NumericalPoint(x), ')=', fx)
+    print('f(', ot.Point(x), ')=', fx)
 
     event = ot.Event(composite, ot.Greater(), k)
     for n in [100, 1000, 5000][1:2]:

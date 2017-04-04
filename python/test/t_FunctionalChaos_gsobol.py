@@ -21,7 +21,7 @@ try:
     # Create the Sobol function
     # Reference analytical values
     meanTh = 1.0
-    a = NumericalPoint(dimension)
+    a = Point(dimension)
     inputVariables = Description(dimension)
     outputVariables = Description(1)
     outputVariables[0] = "y"
@@ -36,7 +36,7 @@ try:
             " * ((abs(4.0 * xi" + str(i) + " - 2.0) + " + \
             str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
     covTh = covTh - 1.0
-    model = NumericalMathFunction(inputVariables, outputVariables, formula)
+    model = Function(inputVariables, outputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * dimension)

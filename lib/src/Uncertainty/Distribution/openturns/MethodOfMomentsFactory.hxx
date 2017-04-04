@@ -54,10 +54,10 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Implementation build(const NumericalSample & sample) const;
+  virtual Implementation build(const Sample & sample) const;
 
   /** Build a distribution based on a set of parameters */
-  virtual NumericalPoint buildParameter(const NumericalSample & sample) const;
+  virtual Point buildParameter(const Sample & sample) const;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
@@ -71,8 +71,8 @@ public:
   OptimizationProblem getOptimizationProblem() const;
 
   /** Accessor to known parameter */
-  void setKnownParameter(const NumericalPoint & values, const Indices & positions);
-  NumericalPoint getKnownParameterValues() const;
+  void setKnownParameter(const Point & values, const Indices & positions);
+  Point getKnownParameterValues() const;
   Indices getKnownParameterIndices() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -88,9 +88,9 @@ protected:
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;
   OptimizationProblem problem_;
-  
+
   /* Known parameter */
-  NumericalPoint knownParameterValues_;
+  Point knownParameterValues_;
   Indices knownParameterIndices_;
 
 }; /* class MethodOfMomentsFactory */

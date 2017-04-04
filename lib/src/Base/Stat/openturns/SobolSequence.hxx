@@ -42,7 +42,7 @@ public:
   static const UnsignedInteger MaximumBase2Logarithm;
 
   // this value is 2^-MaximumBase2Logarithm, precomputed to speed up generation
-  static const NumericalScalar Epsilon;
+  static const Scalar Epsilon;
 
   // maximum number of columns in InitialBase array = 8
   static const UnsignedInteger MaximumInitialDegree;
@@ -66,7 +66,7 @@ public:
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  NumericalPoint generate() const;
+  Point generate() const;
 
   /** String converter */
   String __repr__() const;

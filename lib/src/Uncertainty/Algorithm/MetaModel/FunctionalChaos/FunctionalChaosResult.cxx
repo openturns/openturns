@@ -21,9 +21,10 @@
 #include "openturns/FunctionalChaosResult.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,18 +50,18 @@ FunctionalChaosResult::FunctionalChaosResult()
 
 
 /* Default constructor */
-FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model,
+FunctionalChaosResult::FunctionalChaosResult(const Function & model,
     const Distribution & distribution,
-    const NumericalMathFunction & transformation,
-    const NumericalMathFunction & inverseTransformation,
-    const NumericalMathFunction & composedModel,
+    const Function & transformation,
+    const Function & inverseTransformation,
+    const Function & composedModel,
     const OrthogonalBasis & orthogonalBasis,
     const Indices & I,
-    const NumericalSample & alpha_k,
-    const NumericalMathFunctionCollection & Psi_k,
-    const NumericalPoint & residuals,
-    const NumericalPoint & relativeErrors)
-  : MetaModelResult(model, NumericalMathFunction(), residuals, relativeErrors)
+    const Sample & alpha_k,
+    const FunctionCollection & Psi_k,
+    const Point & residuals,
+    const Point & relativeErrors)
+  : MetaModelResult(model, Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
@@ -72,7 +73,7 @@ FunctionalChaosResult::FunctionalChaosResult(const NumericalMathFunction & model
   , composedMetaModel_()
 {
   // The composed meta model will be a dual linear combination
-  composedMetaModel_ = NumericalMathFunction(Psi_k, alpha_k);
+  composedMetaModel_ = DualLinearCombinationFunction(Psi_k, alpha_k);
   if (transformation.getEvaluation()->getClassName() == "IdentityEvaluation")
     metaModel_ = composedMetaModel_;
   else
@@ -121,19 +122,19 @@ Distribution FunctionalChaosResult::getDistribution() const
 }
 
 /* IsoProbabilisticTransformation accessor */
-NumericalMathFunction FunctionalChaosResult::getTransformation() const
+Function FunctionalChaosResult::getTransformation() const
 {
   return transformation_;
 }
 
 /* InverseIsoProbabilisticTransformation accessor */
-NumericalMathFunction FunctionalChaosResult::getInverseTransformation() const
+Function FunctionalChaosResult::getInverseTransformation() const
 {
   return inverseTransformation_;
 }
 
 /* Composed model accessor */
-NumericalMathFunction FunctionalChaosResult::getComposedModel() const
+Function FunctionalChaosResult::getComposedModel() const
 {
   return composedModel_;
 }
@@ -151,19 +152,19 @@ Indices FunctionalChaosResult::getIndices() const
 }
 
 /* Coefficients accessor */
-NumericalSample FunctionalChaosResult::getCoefficients() const
+Sample FunctionalChaosResult::getCoefficients() const
 {
   return alpha_k_;
 }
 
 /* Reduced basis accessor */
-FunctionalChaosResult::NumericalMathFunctionCollection FunctionalChaosResult::getReducedBasis() const
+FunctionalChaosResult::FunctionCollection FunctionalChaosResult::getReducedBasis() const
 {
   return Psi_k_;
 }
 
 /* Composed meta model accessor */
-NumericalMathFunction FunctionalChaosResult::getComposedMetaModel() const
+Function FunctionalChaosResult::getComposedMetaModel() const
 {
   return composedMetaModel_;
 }

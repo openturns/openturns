@@ -24,7 +24,7 @@
 #include "openturns/RandomVectorImplementation.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -47,11 +47,11 @@ public:
   CompositeRandomVector();
 
   /** Standard constructor */
-  CompositeRandomVector(const NumericalMathFunction & function,
+  CompositeRandomVector(const Function & function,
                         const Antecedent & p_antecedent);
 
   /** Standard constructor */
-  CompositeRandomVector(const NumericalMathFunction & function,
+  CompositeRandomVector(const Function & function,
                         const RandomVector & antecedent);
 
 
@@ -73,13 +73,13 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Realization accessor */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Numerical sample accessor */
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Mean accessor */
-  NumericalPoint getMean() const;
+  Point getMean() const;
 
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
@@ -94,7 +94,7 @@ public:
   Antecedent getAntecedent() const;
 
   /** Function accessor */
-  NumericalMathFunction getFunction() const;
+  Function getFunction() const;
 
   /** Distribution accessor */
   Distribution getDistribution() const;
@@ -107,7 +107,7 @@ public:
 
 protected:
   /** The function the vector is the output */
-  NumericalMathFunction function_;
+  Function function_;
 
   /** The antecedent of the vector through the numerical math function */
   Antecedent p_antecedent_;

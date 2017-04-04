@@ -22,7 +22,7 @@
 #define OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIALFACTORY_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/OrthogonalUniVariatePolynomial.hxx"
 #include "openturns/Distribution.hxx"
@@ -70,11 +70,11 @@ public:
   Coefficients buildCoefficients(const UnsignedInteger degree) const;
 
   /** Roots of the polynomial of degree n as the eigenvalues of the associated matrix */
-  NumericalPoint getRoots(const UnsignedInteger n) const;
+  Point getRoots(const UnsignedInteger n) const;
 
   /** Nodes and weights of the polynomial of degree n as the eigenvalues of the associated matrix, to build quadrature rules */
-  NumericalPoint getNodesAndWeights(const UnsignedInteger n,
-                                    NumericalPoint & weights) const;
+  Point getNodesAndWeights(const UnsignedInteger n,
+                           Point & weights) const;
 
   /** Measure accessor */
   Distribution getMeasure() const;

@@ -72,9 +72,9 @@ String LeastSquaresMetaModelSelectionFactory::__repr__() const
 }
 
 /* Method to create new LeastSquaresMetaModelSelection objects */
-LeastSquaresMetaModelSelection * LeastSquaresMetaModelSelectionFactory::build(const NumericalSample & x,
-    const NumericalSample & y,
-    const NumericalPoint & weight,
+LeastSquaresMetaModelSelection * LeastSquaresMetaModelSelectionFactory::build(const Sample & x,
+    const Sample & y,
+    const Point & weight,
     const Basis & psi,
     const Indices & indices) const
 {

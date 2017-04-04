@@ -69,16 +69,16 @@ public:
   virtual MaximumEntropyOrderStatisticsCopula * clone() const;
 
   /** Get the kth approximation */
-  PiecewiseHermiteEvaluationImplementation getApproximation(const UnsignedInteger k = 0) const;
+  PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
   Implementation getMarginal(const Indices & indices) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
   /* Interface specific to MaximumEntropyOrderStatisticsCopula */
 

@@ -57,7 +57,7 @@ Field::Field(const Mesh & mesh,
 
 /* Constructor from a TimeGrid and a sample */
 Field::Field(const Mesh & mesh,
-             const NumericalSample & sample)
+             const Sample & sample)
   : TypedInterfaceObject<FieldImplementation>(new FieldImplementation(mesh, sample))
 {
   // Nothing to do
@@ -81,8 +81,8 @@ NSI_const_point Field::operator[](const UnsignedInteger index) const
   return getImplementation()->operator[](index);
 }
 
-NumericalScalar & Field::operator () (const UnsignedInteger i,
-                                      const UnsignedInteger j)
+Scalar & Field::operator () (const UnsignedInteger i,
+                             const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
@@ -93,8 +93,8 @@ NumericalScalar & Field::operator () (const UnsignedInteger i,
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
-const NumericalScalar & Field::operator () (const UnsignedInteger i,
-    const UnsignedInteger j) const
+const Scalar & Field::operator () (const UnsignedInteger i,
+                                   const UnsignedInteger j) const
 {
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(i, j);
@@ -117,8 +117,8 @@ NSI_const_point Field::at (const UnsignedInteger index) const
   return (*getImplementation())[index];
 }
 
-NumericalScalar & Field::at (const UnsignedInteger i,
-                             const UnsignedInteger j)
+Scalar & Field::at (const UnsignedInteger i,
+                    const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
@@ -126,8 +126,8 @@ NumericalScalar & Field::at (const UnsignedInteger i,
   return (*getImplementation())[i][j];
 }
 
-const NumericalScalar & Field::at (const UnsignedInteger i,
-                                   const UnsignedInteger j) const
+const Scalar & Field::at (const UnsignedInteger i,
+                          const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
@@ -135,25 +135,25 @@ const NumericalScalar & Field::at (const UnsignedInteger i,
 }
 
 /* Values accessor */
-NumericalPoint Field::getValueAtIndex(const UnsignedInteger index) const
+Point Field::getValueAtIndex(const UnsignedInteger index) const
 {
   return getImplementation()->getValueAtIndex(index);
 }
 
 void Field::setValueAtIndex(const UnsignedInteger index,
-                            const NumericalPoint & val)
+                            const Point & val)
 {
   copyOnWrite();
   getImplementation()->setValueAtIndex(index, val);
 }
 
-NumericalPoint Field::getValueAtNearestPosition(const NumericalPoint & position) const
+Point Field::getValueAtNearestPosition(const Point & position) const
 {
   return getImplementation()->getValueAtNearestPosition(position);
 }
 
-void Field::setValueAtNearestPosition(const NumericalPoint & position,
-                                      const NumericalPoint & val)
+void Field::setValueAtNearestPosition(const Point & position,
+                                      const Point & val)
 {
   copyOnWrite();
   getImplementation()->setValueAtNearestPosition(position, val);
@@ -219,17 +219,17 @@ UnsignedInteger Field::getDimension() const
 
 
 /* Return the values stored in the field as a sample */
-NumericalSample Field::getSample() const
+Sample Field::getSample() const
 {
   return getImplementation()->getSample();
 }
 
-NumericalSample Field::getValues() const
+Sample Field::getValues() const
 {
   return getImplementation()->getValues();
 }
 
-void Field::setValues(const NumericalSample & values)
+void Field::setValues(const Sample & values)
 {
   getImplementation()->setValues(values);
 }
@@ -254,13 +254,13 @@ Mesh Field::asDeformedMesh() const
 }
 
 /* Compute the spatial mean of the field */
-NumericalPoint Field::getSpatialMean() const
+Point Field::getSpatialMean() const
 {
   return getImplementation()->getSpatialMean();
 }
 
 /* Compute the temporal mean of the field */
-NumericalPoint Field::getTemporalMean() const
+Point Field::getTemporalMean() const
 {
   return getImplementation()->getTemporalMean();
 }

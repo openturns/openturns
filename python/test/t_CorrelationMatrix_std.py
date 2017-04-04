@@ -10,7 +10,7 @@ try:
     matrix1.setName("matrix1")
     print("matrix1 = ", repr(matrix1))
 
-    p = NumericalPoint((1., 3.))
+    p = Point((1., 3.))
     print("matrix1*", p, "=", matrix1 * p)
 
     s = 3.

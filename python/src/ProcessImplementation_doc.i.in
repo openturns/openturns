@@ -49,7 +49,7 @@ OT_Process_doc
 
 Returns
 -------
-realization : :class:`~openturns.NumericalMathFunction`
+realization : :class:`~openturns.Function`
     According to the process, the continuous realizations are built:
 
     - either using a dedicated functional model if it exists: e.g. a functional

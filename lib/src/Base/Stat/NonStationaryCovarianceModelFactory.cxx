@@ -21,10 +21,10 @@
 #include "openturns/NonStationaryCovarianceModelFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/CovarianceMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -83,7 +83,7 @@ struct ComputeCovariancePolicy
   Field mean_;
   UnsignedInteger dimension_;
   UnsignedInteger size_;
-  NumericalScalar alpha_;
+  Scalar alpha_;
 
   ComputeCovariancePolicy(const ProcessSample & input,
                           const Bool isCentered,
@@ -116,7 +116,7 @@ struct ComputeCovariancePolicy
       {
         for (UnsignedInteger l = 0; l <= k; ++l)
         {
-          NumericalScalar coef = 0.0;
+          Scalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
             coef += input_[sampleIndex][i][k] * input_[sampleIndex][j][l];
@@ -133,16 +133,16 @@ struct ComputeCovariancePolicy
     {
       const UnsignedInteger i = static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5);
       const UnsignedInteger j = index - (i * (i + 1)) / 2;
-      const NumericalPoint muI(mean_.getValueAtIndex(i));
-      const NumericalPoint muJ(mean_.getValueAtIndex(j));
+      const Point muI(mean_.getValueAtIndex(i));
+      const Point muJ(mean_.getValueAtIndex(j));
       CovarianceMatrix & matrix(output_[index]);
       for (UnsignedInteger k = 0; k < dimension_; ++k)
       {
-        const NumericalScalar muIK = muI[k];
+        const Scalar muIK = muI[k];
         for (UnsignedInteger l = 0; l <= k; ++l)
         {
-          const NumericalScalar muJL = muJ[l];
-          NumericalScalar coef = 0.0;
+          const Scalar muJL = muJ[l];
+          Scalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
             coef += (input_[sampleIndex][i][k] - muIK) * (input_[sampleIndex][j][l] - muJL);

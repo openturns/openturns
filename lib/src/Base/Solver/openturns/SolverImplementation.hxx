@@ -22,7 +22,7 @@
 #define OPENTURNS_SOLVERIMPLEMENTATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,9 +39,9 @@ class OT_API SolverImplementation :
 public:
 
   /** Parameter constructor */
-  explicit SolverImplementation(const NumericalScalar absoluteError = ResourceMap::GetAsNumericalScalar("Solver-DefaultAbsoluteError"),
-                                const NumericalScalar relativeError = ResourceMap::GetAsNumericalScalar("Solver-DefaultRelativeError"),
-                                const NumericalScalar residualError = ResourceMap::GetAsNumericalScalar("Solver-DefaultResidualError"),
+  explicit SolverImplementation(const Scalar absoluteError = ResourceMap::GetAsScalar("Solver-DefaultAbsoluteError"),
+                                const Scalar relativeError = ResourceMap::GetAsScalar("Solver-DefaultRelativeError"),
+                                const Scalar residualError = ResourceMap::GetAsScalar("Solver-DefaultResidualError"),
                                 const UnsignedInteger maximumFunctionEvaluation = ResourceMap::GetAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation"));
 
 
@@ -61,30 +61,30 @@ public:
   void load(Advocate & adv);
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
-                                const NumericalScalar value,
-                                const NumericalScalar infPoint,
-                                const NumericalScalar supPoint) const;
+  virtual Scalar solve(const Function & function,
+                       const Scalar value,
+                       const Scalar infPoint,
+                       const Scalar supPoint) const;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-  virtual NumericalScalar solve(const NumericalMathFunction & function,
-                                const NumericalScalar value,
-                                const NumericalScalar infPoint,
-                                const NumericalScalar supPoint,
-                                const NumericalScalar infValue,
-                                const NumericalScalar supValue) const;
+  virtual Scalar solve(const Function & function,
+                       const Scalar value,
+                       const Scalar infPoint,
+                       const Scalar supPoint,
+                       const Scalar infValue,
+                       const Scalar supValue) const;
 
   /** Absolute error accessor */
-  void setAbsoluteError(const NumericalScalar absoluteError);
-  NumericalScalar getAbsoluteError() const;
+  void setAbsoluteError(const Scalar absoluteError);
+  Scalar getAbsoluteError() const;
 
   /** Relative error accessor */
-  void setRelativeError(const NumericalScalar relativeError);
-  NumericalScalar getRelativeError() const;
+  void setRelativeError(const Scalar relativeError);
+  Scalar getRelativeError() const;
 
   /** Residual error accessor */
-  void setResidualError(const NumericalScalar residualError);
-  NumericalScalar getResidualError() const;
+  void setResidualError(const Scalar residualError);
+  Scalar getResidualError() const;
 
   /** Maximum function evaluation accessor */
   void setMaximumFunctionEvaluation(const UnsignedInteger maximumFunctionEvaluation);
@@ -101,9 +101,9 @@ protected:
   mutable UnsignedInteger usedFunctionEvaluation_;
 
 private:
-  NumericalScalar absoluteError_;
-  NumericalScalar relativeError_;
-  NumericalScalar residualError_;
+  Scalar absoluteError_;
+  Scalar relativeError_;
+  Scalar residualError_;
 
 }; /* Class SolverImplementation */
 

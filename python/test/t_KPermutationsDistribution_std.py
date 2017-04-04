@@ -28,7 +28,7 @@ try:
     print("mean=", oneSample.computeMean())
     print("covariance=", oneSample.computeCovariance())
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 4.0)
+    point = Point(distribution.getDimension(), 4.0)
     print("Point= ", point)
 
     # Show PDF and CDF of point

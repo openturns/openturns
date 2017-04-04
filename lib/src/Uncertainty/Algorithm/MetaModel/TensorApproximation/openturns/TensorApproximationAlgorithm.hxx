@@ -44,8 +44,8 @@ class OT_API TensorApproximationAlgorithm
 
 public:
   /** Constructor */
-  TensorApproximationAlgorithm(const NumericalSample & inputSample,
-                               const NumericalSample & outputSample,
+  TensorApproximationAlgorithm(const Sample & inputSample,
+                               const Sample & outputSample,
                                const Distribution & distribution,
                                const OrthogonalProductFunctionFactory & functionFactory,
                                const Indices & nk,
@@ -64,8 +64,8 @@ public:
   TensorApproximationResult getResult() const;
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -78,12 +78,12 @@ public:
   UnsignedInteger getMaximumAlternatingLeastSquaresIteration() const;
 
   /** Radius error accessor */
-  void setMaximumRadiusError(const NumericalScalar maximumRadiusError);
-  NumericalScalar getMaximumRadiusError() const;
+  void setMaximumRadiusError(const Scalar maximumRadiusError);
+  Scalar getMaximumRadiusError() const;
 
   /** Residual error accessor */
-  void setMaximumResidualError(const NumericalScalar maximumResidualError);
-  NumericalScalar getMaximumResidualError() const;
+  void setMaximumResidualError(const Scalar maximumResidualError);
+  Scalar getMaximumResidualError() const;
 
 protected:
 
@@ -96,52 +96,52 @@ private:
 
   /** Marginal computation */
   void runMarginal(const UnsignedInteger marginalIndex,
-                   NumericalScalar & marginalResidual,
-                   NumericalScalar & marginalRelativeError);
+                   Scalar & marginalResidual,
+                   Scalar & marginalRelativeError);
 
   /** Greedy rank-1 algorithm */
-  void greedyRankOne(const NumericalSample & x,
-                     const NumericalSample & y,
+  void greedyRankOne(const Sample & x,
+                     const Sample & y,
                      CanonicalTensorEvaluation & tensor,
-                     NumericalScalar & marginalResidual,
-                     NumericalScalar & marginalRelativeError);
+                     Scalar & marginalResidual,
+                     Scalar & marginalRelativeError);
 
   /** Alternating least-squares algorithm to estimate a rank-1 tensor */
-  void rankOne(const NumericalSample & x,
-               const NumericalSample & y,
+  void rankOne(const Sample & x,
+               const Sample & y,
                CanonicalTensorEvaluation & tensor,
                const UnsignedInteger k,
-               NumericalScalar & marginalResidual,
-               NumericalScalar & marginalRelativeError);
+               Scalar & marginalResidual,
+               Scalar & marginalRelativeError);
 
   /** Rank-M algorithm */
-  void rankM (const NumericalSample & x,
-              const NumericalSample & y,
+  void rankM (const Sample & x,
+              const Sample & y,
               CanonicalTensorEvaluation & tensor,
-              NumericalScalar & marginalResidual,
-              NumericalScalar & marginalRelativeError);
+              Scalar & marginalResidual,
+              Scalar & marginalRelativeError);
 
-  void rankMComponent (const NumericalSample & x,
-              const NumericalSample & y,
-              CanonicalTensorEvaluation & tensor,
-              const UnsignedInteger j);
+  void rankMComponent (const Sample & x,
+                       const Sample & y,
+                       CanonicalTensorEvaluation & tensor,
+                       const UnsignedInteger j);
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
-  NumericalMathFunction transformation_;
+  Function transformation_;
 
   /** The inverse isoprobabilistic transformation */
-  NumericalMathFunction inverseTransformation_;
+  Function inverseTransformation_;
 
   /** The composed model */
-  NumericalMathFunction composedModel_;
+  Function composedModel_;
 
   // samples
-  NumericalSample inputSample_;
-  NumericalSample outputSample_;
+  Sample inputSample_;
+  Sample outputSample_;
 
   UnsignedInteger maxRank_;
 
-  NumericalSample transformedInputSample_;
+  Sample transformedInputSample_;
 
   // tensorized basis
   OrthogonalProductFunctionFactory basisFactory_;
@@ -152,9 +152,9 @@ private:
   // maximum rank-1 iterations
   UnsignedInteger maximumAlternatingLeastSquaresIteration_;
   // error on the radius for rank-1
-  NumericalScalar maximumRadiusError_;
+  Scalar maximumRadiusError_;
   // error on the residual for rank-1
-  NumericalScalar maximumResidualError_;
+  Scalar maximumResidualError_;
 
   mutable Collection<DesignProxy> proxy_;
 

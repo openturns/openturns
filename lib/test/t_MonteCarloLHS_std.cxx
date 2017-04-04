@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   std::cout << "Bounds of uniform distributions=" << distribution.getRange() << std::endl;
 
   // Generate design without optimization
-  NumericalSample design(lhs.generate());
+  Sample design(lhs.generate());
   std::cout << "design=" << design << std::endl;
 
   // Define space fillings
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
             << std::endl;
 
   // --------------------------------------------------
-  //  ------------ MonteCarlo algorithm  ------------- 
+  //  ------------ MonteCarlo algorithm  -------------
   // --------------------------------------------------
 
   // RandomBruteForce MonteCarlo with N designs
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
   // print lhs
   std::cout << "optimal lhs=" << optimalMC_C2 << std::endl;
 
-  const NumericalSample design_C2(optimalMC_C2.generate());
+  const Sample design_C2(optimalMC_C2.generate());
   LHSResult result_C2(optimalMC_C2.getResult());
 
   std::cout << "Best design with MonteCarlo and C2 space filling=" << design_C2 << std::endl;
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
   // print lhs
   std::cout << "optimal lhs=" << optimalMC_PhiP << std::endl;
 
-  NumericalSample design_PhiP(optimalMC_PhiP.generate());
+  Sample design_PhiP(optimalMC_PhiP.generate());
   LHSResult result_PhiP(optimalMC_PhiP.getResult());
 
   std::cout << "Best design with MonteCarlo and PhiP space filling=" << design_PhiP << std::endl;
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
   // print lhs
   std::cout << "optimal lhs=" << optimalMC_MinDist << std::endl;
 
-  NumericalSample design_MinDist(optimalMC_MinDist.generate());
+  Sample design_MinDist(optimalMC_MinDist.generate());
   LHSResult result_MinDist(optimalMC_MinDist.getResult());
 
   std::cout << "Best design with MonteCarlo and MinDist space filling=" << design_MinDist << std::endl;

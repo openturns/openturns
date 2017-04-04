@@ -34,12 +34,12 @@ int main(int argc, char *argv[])
 
     // Generate the data for the curves to be drawn
     UnsignedInteger size = 50;
-    NumericalPoint cursor(2);
+    Point cursor(2);
 
-    NumericalSample data1(size, 2); //curve y = 2x for x in [-2;5]
-    NumericalSample data2(size, 2); //curve y = x*x for x in [-1;1]
+    Sample data1(size, 2); //curve y = 2x for x in [-2;5]
+    Sample data2(size, 2); //curve y = x*x for x in [-1;1]
 
-    NumericalScalar tmp;
+    Scalar tmp;
     for(UnsignedInteger i = 0; i < size; i++)
     {
       tmp = 7.*i / size + 2;

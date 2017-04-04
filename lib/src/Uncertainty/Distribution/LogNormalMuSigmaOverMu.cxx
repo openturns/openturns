@@ -38,14 +38,14 @@ LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu()
   // Nothing to do
 }
 
-LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu(const NumericalScalar mu, const NumericalScalar sigmaOverMu, const NumericalScalar gamma)
+LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu(const Scalar mu, const Scalar sigmaOverMu, const Scalar gamma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigmaOverMu_(sigmaOverMu)
   , gamma_(gamma)
 {
   if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
-  if (sigmaOverMu * mu <= 0.0) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
+  if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 }
 
@@ -65,12 +65,12 @@ Bool LogNormalMuSigmaOverMu::operator ==(const LogNormalMuSigmaOverMu & other) c
 /* Build a distribution based on a set of native parameters */
 Distribution LogNormalMuSigmaOverMu::getDistribution() const
 {
-  NumericalPoint newParameters(3);
+  Point newParameters(3);
   newParameters[0] = mu_;
   newParameters[1] = sigmaOverMu_;
   newParameters[2] = gamma_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
 
   return LogNormalFactory().build(nativeParameters);
 }
@@ -93,18 +93,18 @@ Matrix LogNormalMuSigmaOverMu::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint LogNormalMuSigmaOverMu::operator () (const NumericalPoint & inP) const
+Point LogNormalMuSigmaOverMu::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigmaOverMu = inP[1];
-  const NumericalScalar gamma = inP[2];
+  const Scalar mu = inP[0];
+  const Scalar sigmaOverMu = inP[1];
+  const Scalar gamma = inP[2];
 
   if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
-  if (sigmaOverMu * mu <= 0.0) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
+  if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
-  NumericalPoint muSigmaParametersValues(inP);
+  Point muSigmaParametersValues(inP);
   muSigmaParametersValues[1] *= mu;
   const LogNormalMuSigma muSigmaParameters(mu, sigmaOverMu * mu, gamma);
 
@@ -112,18 +112,18 @@ NumericalPoint LogNormalMuSigmaOverMu::operator () (const NumericalPoint & inP) 
 }
 
 
-NumericalPoint LogNormalMuSigmaOverMu::inverse(const NumericalPoint & inP) const
+Point LogNormalMuSigmaOverMu::inverse(const Point & inP) const
 {
   const LogNormalMuSigma muSigmaParameters;
-  NumericalPoint muSigmaOverMuParameters(muSigmaParameters.inverse(inP));
-  const NumericalScalar mu = muSigmaOverMuParameters[0];
+  Point muSigmaOverMuParameters(muSigmaParameters.inverse(inP));
+  const Scalar mu = muSigmaOverMuParameters[0];
   if (mu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu cannot be null in the parameter set (mu, sigmaOverMu)";
   muSigmaOverMuParameters[1] /= mu;
   return muSigmaOverMuParameters;
 }
 
 /* Parameters value and description accessor */
-void LogNormalMuSigmaOverMu::setValues(const NumericalPoint & inP)
+void LogNormalMuSigmaOverMu::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   mu_ = inP[0];
@@ -131,9 +131,9 @@ void LogNormalMuSigmaOverMu::setValues(const NumericalPoint & inP)
   gamma_ =  inP[2];
 }
 
-NumericalPoint LogNormalMuSigmaOverMu::getValues() const
+Point LogNormalMuSigmaOverMu::getValues() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = mu_;
   point[1] = sigmaOverMu_;
   point[2] = gamma_;

@@ -22,7 +22,7 @@
 #define OPENTURNS_CLASSIFIER_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ClassifierImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -52,17 +52,17 @@ public:
   Classifier(const Implementation & p_implementation);
 
   /** Constructor from sample */
-  Classifier(const NumericalSample & inS, const Indices & outC);
+  Classifier(const Sample & inS, const Indices & outC);
 
   /** Associate a point with a class */
-  UnsignedInteger classify(const NumericalPoint & inP) const;
-  Indices classify(const NumericalSample & inS) const;
+  UnsignedInteger classify(const Point & inP) const;
+  Indices classify(const Sample & inS) const;
 
   /** Grade a point as if it were associated to a class */
-  NumericalScalar grade(const NumericalPoint & inP,
-                        UnsignedInteger outC) const;
-  NumericalPoint grade(const NumericalSample & inS,
-                       const Indices & outC) const;
+  Scalar grade(const Point & inP,
+               UnsignedInteger outC) const;
+  Point grade(const Sample & inS,
+              const Indices & outC) const;
 
   /** Parallelization flag accessor */
   void setParallel(const Bool flag);

@@ -48,23 +48,23 @@ public:
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the survival function of the distribution */
   using DistributionImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
 protected:
   /** Interpolate the CDF for smooth continuous distributions */
-  Collection<PiecewiseHermiteEvaluationImplementation> interpolateCDF(const UnsignedInteger n);
+  Collection<PiecewiseHermiteEvaluation> interpolateCDF(const UnsignedInteger n);
 
 public:
   /** String converter */

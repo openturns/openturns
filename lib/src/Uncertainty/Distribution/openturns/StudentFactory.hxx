@@ -45,15 +45,15 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPoint & parameter) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Point & parameter) const;
   Implementation build() const;
 
   using DistributionFactoryImplementation::buildEstimator;
-  DistributionFactoryResult buildEstimator(const NumericalSample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
-  Student buildAsStudent(const NumericalSample & sample) const;
-  Student buildAsStudent(const NumericalPoint & parameter) const;
+  Student buildAsStudent(const Sample & sample) const;
+  Student buildAsStudent(const Point & parameter) const;
   Student buildAsStudent() const;
 
 }; /* class StudentFactory */

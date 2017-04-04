@@ -1,4 +1,4 @@
-class=PythonExperimentImplementation name=RandomExp
+class=PythonExperiment name=RandomExp
 0 : [ 0.629877  0.882805  ]
 1 : [ 0.135276  0.0325028 ]
 2 : [ 0.347057  0.969423  ]

@@ -32,20 +32,20 @@ int main(int argc, char *argv[])
   try
   {
 
-    NumericalPoint center(4, 0.0);
+    Point center(4, 0.0);
     center.setName("center");
     center[0] = 0.5;
     center[1] = 1.5;
     center[2] = 2.5;
     center[3] = 3.5;
-    NumericalPoint levels(3, 0.0);
+    Point levels(3, 0.0);
     levels.setName("levels");
     levels[0] = 4;
     levels[1] = 8;
     levels[2] = 16;
     Axial myPlane(center, levels);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalSample sample(myPlane.generate());
+    Sample sample(myPlane.generate());
     fullprint << "sample = " << sample << std::endl;
   }
   catch (TestFailed & ex)

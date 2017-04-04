@@ -31,13 +31,13 @@ static const Factory<LinearProfile> Factory_LinearProfile;
 
 
 /* Default constructor */
-LinearProfile::LinearProfile(const NumericalScalar T0, const UnsignedInteger iMax)
+LinearProfile::LinearProfile(const Scalar T0, const UnsignedInteger iMax)
   : TemperatureProfileImplementation(T0, iMax)
 {
   if (iMax_ == 0)
     iMaxInv_ = 1.0;
   else
-    iMaxInv_ = 1.0 / static_cast<NumericalScalar>(iMax_);
+    iMaxInv_ = 1.0 / static_cast<Scalar>(iMax_);
 }
 
 /* Virtual constructor method */
@@ -47,7 +47,7 @@ LinearProfile * LinearProfile::clone() const
 }
 
 /** Compute temperature T(i) */
-NumericalScalar LinearProfile::operator()(UnsignedInteger i) const
+Scalar LinearProfile::operator()(UnsignedInteger i) const
 {
   if (i >= iMax_) return 0.0;
 
@@ -78,7 +78,7 @@ void LinearProfile::load(Advocate & adv)
   if (iMax_ == 0)
     iMaxInv_ = 1.0;
   else
-    iMaxInv_ = 1.0 / static_cast<NumericalScalar>(iMax_);
+    iMaxInv_ = 1.0 / static_cast<Scalar>(iMax_);
 }
 
 

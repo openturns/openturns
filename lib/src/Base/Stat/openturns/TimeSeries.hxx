@@ -24,12 +24,12 @@
 #include <stdint.h> // for uint64_t
 #include <cmath>    // for nearbyint
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/FieldImplementation.hxx"
@@ -63,14 +63,14 @@ public:
 
   /** Constructor from a TimeGrid and a sample */
   TimeSeries(const RegularGrid & tg,
-             const NumericalSample & sample);
+             const Sample & sample);
 
   /** Constructor from a Field */
   TimeSeries(const Field & field);
 
 #ifndef SWIG
-  /** Constructor from a collection of NumericalPoint */
-  TimeSeries(const Collection<NumericalPoint> & coll);
+  /** Constructor from a collection of Point */
+  TimeSeries(const Collection<Point> & coll);
 #endif
 
   /** Virtual constructor */
@@ -88,10 +88,10 @@ public:
   Bool operator ==(const TimeSeries & other) const;
 
   /** Append an element to the collection */
-  TimeSeries & add(const NumericalPoint & point);
+  TimeSeries & add(const Point & point);
 
   /** Append a sample to the collection */
-  TimeSeries & add(const NumericalSample & sample);
+  TimeSeries & add(const Sample & sample);
 
   /** Append another time series to the collection. The time grids must match (one follows the other) */
   TimeSeries & add(const TimeSeries & continuer);
@@ -105,10 +105,10 @@ public:
 private:
 
   /** The start time of the time series */
-  NumericalScalar start_;
+  Scalar start_;
 
   /** The interval of the underlying regular time grid */
-  NumericalScalar timeStep_;
+  Scalar timeStep_;
 
   /** The number of timestamps of the underlying regular time grid */
   UnsignedInteger n_;

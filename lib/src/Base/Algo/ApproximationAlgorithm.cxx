@@ -43,17 +43,17 @@ ApproximationAlgorithm::ApproximationAlgorithm(const Implementation & p_implemen
 }
 
 /* Accessors */
-NumericalSample ApproximationAlgorithm::getX() const
+Sample ApproximationAlgorithm::getX() const
 {
   return getImplementation()->getX();
 }
 
-NumericalSample ApproximationAlgorithm::getY() const
+Sample ApproximationAlgorithm::getY() const
 {
   return getImplementation()->getY();
 }
 
-NumericalPoint ApproximationAlgorithm::getWeight() const
+Point ApproximationAlgorithm::getWeight() const
 {
   return getImplementation()->getWeight();
 }
@@ -98,18 +98,18 @@ void ApproximationAlgorithm::run(const DesignProxy & proxy)
 }
 
 /* Acccessor to the coefficients of the selected metamodel on the provided basis */
-NumericalPoint ApproximationAlgorithm::getCoefficients()
+Point ApproximationAlgorithm::getCoefficients()
 {
   return getImplementation()->getCoefficients();
 }
 
-NumericalScalar ApproximationAlgorithm::getResidual()
+Scalar ApproximationAlgorithm::getResidual()
 {
   return getImplementation()->getResidual();
 }
 
 /* Acccessor to the residual of the selected metamodel on the provided basis */
-NumericalScalar ApproximationAlgorithm::getRelativeError()
+Scalar ApproximationAlgorithm::getRelativeError()
 {
   return getImplementation()->getRelativeError();
 }

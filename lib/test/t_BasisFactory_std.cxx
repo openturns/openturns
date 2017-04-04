@@ -24,11 +24,11 @@
 using namespace OT;
 using namespace OT::Test;
 
-String printNumericalPoint(const NumericalPoint & point, const UnsignedInteger digits)
+String printPoint(const Point & point, const UnsignedInteger digits)
 {
   OSS oss;
   oss << "[";
-  NumericalScalar eps = pow(0.1, 1.0 * digits);
+  Scalar eps = pow(0.1, 1.0 * digits);
   for (UnsignedInteger i = 0; i < point.getDimension(); i++)
   {
     oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   {
     UnsignedInteger inputDimension = 2;
 
-    NumericalPoint x(inputDimension);
+    Point x(inputDimension);
     for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     {
       x[i] = 2. + i;
@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      NumericalMathFunction f(basis);
-      NumericalPoint y(f(x));
+      AggregatedFunction f(basis);
+      Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
     {
@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      NumericalMathFunction f(basis);
-      NumericalPoint y(f(x));
+      AggregatedFunction f(basis);
+      Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
     {
@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      NumericalMathFunction f(basis);
-      NumericalPoint y(f(x));
+      AggregatedFunction f(basis);
+      Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
   }

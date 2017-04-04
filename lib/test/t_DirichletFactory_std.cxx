@@ -32,14 +32,14 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalPoint theta(0);
+    Point theta(0);
     theta.add(0.2);
     theta.add(0.3);
     theta.add(0.4);
     theta.add(0.5);
     Dirichlet distribution(theta);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     DirichletFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

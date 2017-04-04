@@ -22,7 +22,7 @@
 #define OPENTURNS_PENALIZEDLEASTSQUARESALGORITHM_HXX
 
 #include "openturns/ApproximationAlgorithmImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,7 +39,7 @@ class OT_API PenalizedLeastSquaresAlgorithm
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
+  typedef Collection<Function> FunctionCollection;
 
   // friend class Factory<PenalizedLeastSquaresAlgorithm>;
 
@@ -47,29 +47,29 @@ public:
   PenalizedLeastSquaresAlgorithm(const Bool useNormal = true);
 
   /** Parameters constructor, simple least squares problem with default parameters, spherically penalized for general parameters */
-  PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                 const NumericalSample & y,
+  PenalizedLeastSquaresAlgorithm(const Sample & x,
+                                 const Sample & y,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const NumericalScalar penalizationFactor = 0.0,
+                                 const Scalar penalizationFactor = 0.0,
                                  const Bool useNormal = false);
 
   /** Parameters constructor, simple weighted least squares problem with default parameters, spherically penalized for general parameters */
-  PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                 const NumericalSample & y,
-                                 const NumericalPoint & weight,
+  PenalizedLeastSquaresAlgorithm(const Sample & x,
+                                 const Sample & y,
+                                 const Point & weight,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const NumericalScalar penalizationFactor = 0.0,
+                                 const Scalar penalizationFactor = 0.0,
                                  const Bool useNormal = false);
 
   /** Parameters constructor, general penalized weighted least squares problem */
-  PenalizedLeastSquaresAlgorithm(const NumericalSample & x,
-                                 const NumericalSample & y,
-                                 const NumericalPoint & weight,
+  PenalizedLeastSquaresAlgorithm(const Sample & x,
+                                 const Sample & y,
+                                 const Point & weight,
                                  const Basis & psi,
                                  const Indices & indices,
-                                 const NumericalScalar penalizationFactor,
+                                 const Scalar penalizationFactor,
                                  const CovarianceMatrix & penalizationMatrix,
                                  const Bool useNormal = false);
 
@@ -94,7 +94,7 @@ public:
 protected:
 
 private:
-  NumericalScalar penalizationFactor_;
+  Scalar penalizationFactor_;
   CovarianceMatrix penalizationMatrix_;
   Bool useNormal_;
 

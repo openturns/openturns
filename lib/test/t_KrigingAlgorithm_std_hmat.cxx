@@ -49,10 +49,10 @@ int main(int argc, char *argv[])
       foutput[0] = "f0";
       Description formulas(1);
       formulas[0] = "x0 * sin(x0)";
-      NumericalMathFunction model(input, foutput, formulas);
+      Function model(input, foutput, formulas);
 
-      NumericalSample X(sampleSize, dimension);
-      NumericalSample X2(sampleSize, dimension);
+      Sample X(sampleSize, dimension);
+      Sample X2(sampleSize, dimension);
       for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
       {
         X[i][0] = 3.0 + i;
@@ -62,11 +62,11 @@ int main(int argc, char *argv[])
       X[1][0] = 3.0;
       X2[0][0] = 2.0;
       X2[1][0] = 4.0;
-      NumericalSample Y(model(X));
-      NumericalSample Y2(model(X2));
+      Sample Y(model(X));
+      Sample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
-      SquaredExponential covarianceModel(NumericalPoint(1, 1e-05), NumericalPoint(1, 4.11749));
+      SquaredExponential covarianceModel(Point(1, 1e-05), Point(1, 4.11749));
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
 
       algo.run();
@@ -79,17 +79,17 @@ int main(int argc, char *argv[])
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
-      NumericalPoint residualRef(1, 5.57410e-06);
+      Point residualRef(1, 5.57410e-06);
       assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 1e-4);
 
-      NumericalPoint relativeErrorRef(1, 9.17605e-12);
+      Point relativeErrorRef(1, 9.17605e-12);
       assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
 
       // Evaluation of the covariance on the X dataset
       CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
 
       // Validation of the covariance ==> should be null on the learning set
-      assert_almost_equal(NumericalPoint(*covMatrix.getImplementation()), NumericalPoint(sampleSize * sampleSize), 8.95e-7, 8.95e-7);
+      assert_almost_equal(Point(*covMatrix.getImplementation()), Point(sampleSize * sampleSize), 8.95e-7, 8.95e-7);
 
     }
 
@@ -104,8 +104,8 @@ int main(int argc, char *argv[])
       foutput[0] = "f0";
       Description formulas(1);
       formulas[0] = "5.-x1-0.5*(x0-0.1)^2";
-      NumericalMathFunction model(input, foutput, formulas);
-      NumericalSample X(sampleSize, dimension);
+      Function model(input, foutput, formulas);
+      Sample X(sampleSize, dimension);
       X[0][0] = -4.61611719;
       X[0][1] = -6.00099547;
       X[1][0] = 4.10469096;
@@ -122,14 +122,14 @@ int main(int argc, char *argv[])
       X[6][1] = 6.74310541;
       X[7][0] = 5.21301203;
       X[7][1] = 4.26386883;
-      NumericalSample Y(model(X));
+      Sample Y(model(X));
 
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());
-      NumericalPoint scale(2);
+      Point scale(2);
       scale[0] = 1e-05;
       scale[1] = 18.9;
-      NumericalPoint amplitude(1,  8.05);
+      Point amplitude(1,  8.05);
       SquaredExponential covarianceModel(scale, amplitude);
 
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
@@ -143,27 +143,27 @@ int main(int argc, char *argv[])
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
-      NumericalPoint residualRef(1, 1.17e-07);
+      Point residualRef(1, 1.17e-07);
       assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 1e-5);
 
-      NumericalPoint relativeErrorRef(1, 1.48e-11);
+      Point relativeErrorRef(1, 1.48e-11);
       assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
 
       std::cout << "df(X0)=" << model.gradient(X[1]) << std::endl;
 
-      NumericalMathFunction metaModel(result.getMetaModel());
+      Function metaModel(result.getMetaModel());
       // Get the gradient computed by metamodel
       Matrix gradientKriging(metaModel.gradient(X[1]));
 
       // Set DF evaluation as gradient and validate
-      metaModel.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
+      metaModel.setGradient(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
 
       // Get the gradient computed by metamodel using FD
       Matrix gradientKrigingFD(metaModel.gradient(X[1]));
 
       // Validation of the gradient
       std::cout << "d^f(X0) & d^f(X0) FD similar ?" <<  std::endl;
-      assert_almost_equal(NumericalPoint(*gradientKriging.getImplementation()), NumericalPoint(*gradientKrigingFD.getImplementation()), 1e-3, 1e-3);
+      assert_almost_equal(Point(*gradientKriging.getImplementation()), Point(*gradientKrigingFD.getImplementation()), 1e-3, 1e-3);
       std::cout << "d^f(X0) & d^f(X0) FD are similar." <<  std::endl;
 
     }

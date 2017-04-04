@@ -20,8 +20,8 @@
  */
 #include "openturns/VertexValueFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
-#include "openturns/NoNumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,14 +32,14 @@ static const Factory<VertexValueFunction> Factory_VertexValueFunction;
 /* Default constructor */
 VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
-  , p_evaluation_(new NoNumericalMathEvaluationImplementation)
+  , p_evaluation_(new NoEvaluation)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-VertexValueFunction::VertexValueFunction(const NumericalMathFunction & function,
-                                   const UnsignedInteger meshDimension)
+VertexValueFunction::VertexValueFunction(const Function & function,
+    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(function.getEvaluation())
 {
@@ -53,8 +53,8 @@ VertexValueFunction::VertexValueFunction(const NumericalMathFunction & function,
 }
 
 /* Parameter constructor */
-VertexValueFunction::VertexValueFunction(const EvaluationImplementation & p_evaluation,
-                                   const UnsignedInteger meshDimension)
+VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
+    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(p_evaluation)
 {
@@ -68,8 +68,8 @@ VertexValueFunction::VertexValueFunction(const EvaluationImplementation & p_eval
 }
 
 /* Parameter constructor */
-VertexValueFunction::VertexValueFunction(const NumericalMathEvaluationImplementation & evaluation,
-                                   const UnsignedInteger meshDimension)
+VertexValueFunction::VertexValueFunction(const EvaluationImplementation & evaluation,
+    const UnsignedInteger meshDimension)
   : FieldFunctionImplementation(meshDimension)
   , p_evaluation_(evaluation.clone())
 {
@@ -139,7 +139,7 @@ void VertexValueFunction::save(Advocate & adv) const
 }
 
 /* Evaluation accessor */
-VertexValueFunction::EvaluationImplementation VertexValueFunction::getEvaluation() const
+VertexValueFunction::EvaluationPointer VertexValueFunction::getEvaluation() const
 {
   return p_evaluation_;
 }
@@ -147,7 +147,7 @@ VertexValueFunction::EvaluationImplementation VertexValueFunction::getEvaluation
 /* Method load() reloads the object from the StorageManager */
 void VertexValueFunction::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathEvaluationImplementation> evaluationValue;
+  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
   PersistentObject::load(adv);
   adv.loadAttribute( "evaluation_", evaluationValue );
   p_evaluation_ = evaluationValue.getImplementation();

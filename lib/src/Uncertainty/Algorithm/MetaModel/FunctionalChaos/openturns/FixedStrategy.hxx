@@ -51,9 +51,9 @@ public:
   void computeInitialBasis();
 
   /** Update the basis for the next iteration of approximation */
-  void updateBasis(const NumericalPoint & alpha_k,
-                   const NumericalScalar residual,
-                   const NumericalScalar relativeError);
+  void updateBasis(const Point & alpha_k,
+                   const Scalar residual,
+                   const Scalar relativeError);
 
   /** String converter */
   virtual String __repr__() const;

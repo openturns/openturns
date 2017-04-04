@@ -26,8 +26,8 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -57,13 +57,13 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1) */
-  virtual NumericalPoint generate() const;
+  virtual Point generate() const;
 
   /** Generate a sample of pseudo-random vectors of numbers uniformly distributed over [0, 1) */
-  virtual NumericalSample generate(const UnsignedInteger size) const;
+  virtual Sample generate(const UnsignedInteger size) const;
 
   /** Compute the star discrepancy of a sample uniformly distributed over [0, 1) */
-  static NumericalScalar ComputeStarDiscrepancy(const NumericalSample & sample);
+  static Scalar ComputeStarDiscrepancy(const Sample & sample);
 
   /** String converter */
   virtual String __repr__() const;
@@ -76,8 +76,8 @@ public:
 
 private:
   /** Compute the local discrepancy of a sample, given a multidimensionnal interval */
-  static NumericalScalar ComputeLocalDiscrepancy(const NumericalSample & sample,
-      const Interval & interval);
+  static Scalar ComputeLocalDiscrepancy(const Sample & sample,
+                                        const Interval & interval);
 
 protected:
   typedef Collection<Unsigned64BitsInteger>                           Unsigned64BitsIntegerCollection;

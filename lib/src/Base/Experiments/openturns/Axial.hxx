@@ -43,18 +43,18 @@ public:
   Axial();
 
   /** Constructor with parameters */
-  Axial(const NumericalPoint & center,
-        const NumericalPoint & levels);
+  Axial(const Point & center,
+        const Point & levels);
 
   /** Constructor with parameters */
   Axial(const UnsignedInteger dimension,
-        const NumericalPoint & levels);
+        const Point & levels);
 
   /** Virtual constructor */
   virtual Axial * clone() const;
 
   /** Experiment plane generation */
-  virtual NumericalSample generate() const;
+  virtual Sample generate() const;
 
   /** String converter */
   virtual String __repr__() const;

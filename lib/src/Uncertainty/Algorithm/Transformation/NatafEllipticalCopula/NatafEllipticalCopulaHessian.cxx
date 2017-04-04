@@ -35,7 +35,7 @@ static const Factory<NatafEllipticalCopulaHessian> Factory_NatafEllipticalCopula
 
 /* Default constructor */
 NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian()
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , standardDistribution_()
   , inverseCholesky_()
 {
@@ -45,7 +45,7 @@ NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian()
 /* Parameter constructor */
 NatafEllipticalCopulaHessian::NatafEllipticalCopulaHessian(const Distribution & standardDistribution,
     const TriangularMatrix & inverseCholesky)
-  : NumericalMathHessianImplementation()
+  : HessianImplementation()
   , standardDistribution_(standardDistribution)
   , inverseCholesky_(inverseCholesky)
 {
@@ -87,16 +87,16 @@ String NatafEllipticalCopulaHessian::__repr__() const
  *                    = 0 else
  * Thus, (D2T)ijk = Hkji = GjiQ''(xi) if k = j, else 0: each sheet of D2T is a diagonal matrix diag(GjiQ''(xi), i=1..n)
  */
-SymmetricTensor NatafEllipticalCopulaHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor NatafEllipticalCopulaHessian::hessian(const Point & inP) const
 {
   UnsignedInteger dimension = getInputDimension();
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalPoint q(standardMarginal.computeQuantile(inP[i]));
-    NumericalScalar factor = 1.0 / standardMarginal.computePDF(q);
-    NumericalScalar quantileSecondDerivative = -standardMarginal.computeDDF(q)[0] * factor * factor * factor;
+    Point q(standardMarginal.computeQuantile(inP[i]));
+    Scalar factor = 1.0 / standardMarginal.computePDF(q);
+    Scalar quantileSecondDerivative = -standardMarginal.computeDDF(q)[0] * factor * factor * factor;
     // inverseCholesky_ is lower triangular
     for (UnsignedInteger j = i; j < dimension; ++j) result(i, i, j) = inverseCholesky_(j, i) * quantileSecondDerivative;
   } // i
@@ -118,7 +118,7 @@ UnsignedInteger NatafEllipticalCopulaHessian::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafEllipticalCopulaHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "standardDistribution_", standardDistribution_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
 }
@@ -126,7 +126,7 @@ void NatafEllipticalCopulaHessian::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NatafEllipticalCopulaHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "standardDistribution_", standardDistribution_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
 }

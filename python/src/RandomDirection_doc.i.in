@@ -29,6 +29,6 @@ consider both opposite directions so built."
 
 Returns
 -------
-sample : :class:`~openturns.NumericalSample`
+sample : :class:`~openturns.Sample`
     The sample generated in two opposite random directions."
 

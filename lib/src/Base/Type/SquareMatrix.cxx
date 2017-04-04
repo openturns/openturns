@@ -65,7 +65,7 @@ SquareMatrix::SquareMatrix(const UnsignedInteger dim)
 /* do not match, either the collection is truncated */
 /* or the rest of the matrix is filled with zeros */
 SquareMatrix::SquareMatrix(const UnsignedInteger dim,
-                           const NumericalScalarCollection & elementsValues)
+                           const ScalarCollection & elementsValues)
   : Matrix(dim, dim, elementsValues)
 {
   // Nothing to do
@@ -141,20 +141,20 @@ SquareMatrix SquareMatrix::operator * (const IdentityMatrix & m) const
   return *this;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-NumericalPoint SquareMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+Point SquareMatrix::operator * (const Point & pt) const
 {
   return getImplementation()->genVectProd(pt) ;
 }
 
-/* Multiplication with a NumericalScalar */
-SquareMatrix SquareMatrix::operator * (const NumericalScalar s) const
+/* Multiplication with a Scalar */
+SquareMatrix SquareMatrix::operator * (const Scalar s) const
 {
   return Implementation((*getImplementation() * s ).clone());
 }
 
-/* Division by a NumericalScalar*/
-SquareMatrix SquareMatrix::operator / (const NumericalScalar s) const
+/* Division by a Scalar*/
+SquareMatrix SquareMatrix::operator / (const Scalar s) const
 {
   return Implementation((*getImplementation() / s ).clone());
 }
@@ -166,8 +166,8 @@ SquareMatrix SquareMatrix::power(const UnsignedInteger n) const
 }
 
 /* Resolution of a linear system */
-NumericalPoint SquareMatrix::solveLinearSystem(const NumericalPoint & b,
-    const Bool keepIntact)
+Point SquareMatrix::solveLinearSystem(const Point & b,
+                                      const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemSquare(b, keepIntact);
 }
@@ -179,30 +179,30 @@ Matrix SquareMatrix::solveLinearSystem(const Matrix & b,
 }
 
 /* Compute determinant */
-NumericalScalar SquareMatrix::computeLogAbsoluteDeterminant(NumericalScalar & sign,
+Scalar SquareMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
     const Bool keepIntact)
 {
   return getImplementation()->computeLogAbsoluteDeterminant(sign, keepIntact);
 }
 
-NumericalScalar SquareMatrix::computeDeterminant(const Bool keepIntact)
+Scalar SquareMatrix::computeDeterminant(const Bool keepIntact)
 {
   return getImplementation()->computeDeterminant(keepIntact);
 }
 
 /* Compute trace */
-NumericalScalar SquareMatrix::computeTrace() const
+Scalar SquareMatrix::computeTrace() const
 {
   return getImplementation()->computeTrace();
 }
 
 /* Compute eigenvalues */
-SquareMatrix::NumericalComplexCollection SquareMatrix::computeEigenValues(const Bool keepIntact)
+SquareMatrix::ComplexCollection SquareMatrix::computeEigenValues(const Bool keepIntact)
 {
   return getImplementation()->computeEigenValuesSquare(keepIntact);
 }
 
-SquareMatrix::NumericalComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
+SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
     const Bool keepIntact)
 {
   return getImplementation()->computeEVSquare(*(v.getImplementation()), keepIntact);

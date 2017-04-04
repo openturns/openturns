@@ -23,8 +23,8 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
@@ -47,20 +47,20 @@ class OT_API LinearModel :
 
 public:
 
-  typedef Collection<NumericalScalar>                    NumericalScalarCollection;
-  typedef PersistentCollection<NumericalScalar>          NumericalScalarPersistentCollection;
+  typedef Collection<Scalar>                    ScalarCollection;
+  typedef PersistentCollection<Scalar>          ScalarPersistentCollection;
 
 
   /** Default constructor is private */
   LinearModel();
 
   /** Standard constructor */
-  LinearModel(const NumericalPoint & vectorR,
+  LinearModel(const Point & vectorR,
               const Interval & intervals,
-              const NumericalScalarCollection & pValuesOfR);
+              const ScalarCollection & pValuesOfR);
 
-  /** Constructor from NumericalPoint */
-  LinearModel(const NumericalPoint & vectorR);
+  /** Constructor from Point */
+  LinearModel(const Point & vectorR);
 
   /** Virtual constructor */
   virtual LinearModel * clone() const;
@@ -71,16 +71,16 @@ public:
   String __str__(const String & offset = "") const;
 
   /** get vector, get intervals*/
-  NumericalPoint getRegression() const;
+  Point getRegression() const;
   Interval getConfidenceIntervals() const;
-  NumericalScalarCollection getPValues() const;
+  ScalarCollection getPValues() const;
 
   /** getPredicted : build an sample of predicted values */
-  NumericalSample getPredicted(const NumericalSample & predictor) const;
+  Sample getPredicted(const Sample & predictor) const;
 
   /** getResidual */
-  NumericalSample getResidual(const NumericalSample & predictor,
-                              const NumericalSample & measured) const;
+  Sample getResidual(const Sample & predictor,
+                     const Sample & measured) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -92,13 +92,13 @@ public:
 protected:
 
   /** The estimated vector */
-  NumericalPoint regression_;
+  Point regression_;
 
   /** The confidence intervals */
   Interval confidenceIntervals_;
 
   /** The p-Values  */
-  NumericalScalarPersistentCollection pValues_;
+  ScalarPersistentCollection pValues_;
 
 
 private:

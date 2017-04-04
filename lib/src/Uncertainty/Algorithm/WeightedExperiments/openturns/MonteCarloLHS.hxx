@@ -50,7 +50,7 @@ public:
   MonteCarloLHS * clone() const;
 
   /** Compute next design method **/
-  NumericalSample generateWithWeights(NumericalPoint & weights) const;
+  Sample generateWithWeights(Point & weights) const;
 
   /** String converter */
   String __repr__() const;
@@ -62,9 +62,9 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-   UnsignedInteger N_;
-   MonteCarloLHS() {};
-   friend class Factory<MonteCarloLHS>;
+  UnsignedInteger N_;
+  MonteCarloLHS() {};
+  friend class Factory<MonteCarloLHS>;
 }; /* class MonteCarloLHS */
 
 } /* namespace OT */

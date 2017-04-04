@@ -19,9 +19,9 @@
  *
  */
 #include "openturns/LinearTaylor.hxx"
-#include "openturns/LinearNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/LinearEvaluation.hxx"
+#include "openturns/ConstantGradient.hxx"
+#include "openturns/ConstantHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,8 +37,8 @@ LinearTaylor::LinearTaylor()
 }
 
 /* Constructor with parameters */
-LinearTaylor::LinearTaylor(const NumericalPoint & center,
-                           const NumericalMathFunction & inputFunction)
+LinearTaylor::LinearTaylor(const Point & center,
+                           const Function & inputFunction)
   : PersistentObject(),
     center_(center),
     inputFunction_(inputFunction)
@@ -73,20 +73,20 @@ void LinearTaylor::run()
   constant_ = inputFunction_(center_);
   linear_ = inputFunction_.gradient(center_);
   /* Build the several implementations and set it into the response surface */
-  responseSurface_.setEvaluation(new LinearNumericalMathEvaluationImplementation(center_, constant_, linear_));
-  responseSurface_.setGradient(new ConstantNumericalMathGradientImplementation(linear_));
-  responseSurface_.setHessian(new ConstantNumericalMathHessianImplementation(SymmetricTensor(center_.getDimension(), constant_.getDimension())));
+  responseSurface_.setEvaluation(new LinearEvaluation(center_, constant_, linear_));
+  responseSurface_.setGradient(new ConstantGradient(linear_));
+  responseSurface_.setHessian(new ConstantHessian(SymmetricTensor(center_.getDimension(), constant_.getDimension())));
   responseSurface_.setDescription(inputFunction_.getDescription());
 }
 
 /* Center accessor */
-NumericalPoint LinearTaylor::getCenter() const
+Point LinearTaylor::getCenter() const
 {
   return center_;
 }
 
 /* Constant accessor */
-NumericalPoint LinearTaylor::getConstant() const
+Point LinearTaylor::getConstant() const
 {
   return constant_;
 }
@@ -98,13 +98,13 @@ Matrix LinearTaylor::getLinear() const
 }
 
 /* Function accessor */
-NumericalMathFunction LinearTaylor::getInputFunction() const
+Function LinearTaylor::getInputFunction() const
 {
   return inputFunction_;
 }
 
 /* Response surface accessor */
-NumericalMathFunction LinearTaylor::getResponseSurface() const
+Function LinearTaylor::getResponseSurface() const
 {
   return responseSurface_;
 }

@@ -44,12 +44,12 @@ LogUniformFactory * LogUniformFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-LogUniformFactory::Implementation LogUniformFactory::build(const NumericalSample & sample) const
+LogUniformFactory::Implementation LogUniformFactory::build(const Sample & sample) const
 {
   return buildAsLogUniform(sample).clone();
 }
 
-LogUniformFactory::Implementation LogUniformFactory::build(const NumericalPoint & parameters) const
+LogUniformFactory::Implementation LogUniformFactory::build(const Point & parameters) const
 {
   return buildAsLogUniform(parameters).clone();
 }
@@ -59,30 +59,30 @@ LogUniformFactory::Implementation LogUniformFactory::build() const
   return buildAsLogUniform().clone();
 }
 
-LogUniform LogUniformFactory::buildAsLogUniform(const NumericalSample & sample) const
+LogUniform LogUniformFactory::buildAsLogUniform(const Sample & sample) const
 {
-  const NumericalScalar size = sample.getSize();
+  const Scalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogUniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const NumericalScalar xMin = sample.getMin()[0];
-  const NumericalScalar a = xMin - std::abs(xMin) / (2.0 + size);
-  if (a <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from a sample that contains non positive values.";
-  NumericalScalar aLog = std::log(a);
-  const NumericalScalar xMax = sample.getMax()[0];
-  const NumericalScalar b = xMax + std::abs(xMax) / (2.0 + size);
-  NumericalScalar bLog = std::log(b);
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar a = xMin - std::abs(xMin) / (2.0 + size);
+  if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution from a sample that contains non positive values.";
+  Scalar aLog = std::log(a);
+  const Scalar xMax = sample.getMax()[0];
+  const Scalar b = xMax + std::abs(xMax) / (2.0 + size);
+  Scalar bLog = std::log(b);
   if (!SpecFunc::IsNormal(aLog) || !SpecFunc::IsNormal(bLog)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    aLog *= 1.0 - SpecFunc::NumericalScalarEpsilon;
-    bLog *= 1.0 + SpecFunc::NumericalScalarEpsilon;
+    aLog *= 1.0 - SpecFunc::ScalarEpsilon;
+    bLog *= 1.0 + SpecFunc::ScalarEpsilon;
   }
   LogUniform result(aLog, bLog);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-LogUniform LogUniformFactory::buildAsLogUniform(const NumericalPoint & parameters) const
+LogUniform LogUniformFactory::buildAsLogUniform(const Point & parameters) const
 {
   try
   {

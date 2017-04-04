@@ -29,7 +29,7 @@ static const Factory<MarginalTransformationGradient> Factory_MarginalTransformat
 
 /* ParameterDefault constructor */
 MarginalTransformationGradient::MarginalTransformationGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_()
 {
   // Nothing to do
@@ -37,7 +37,7 @@ MarginalTransformationGradient::MarginalTransformationGradient()
 
 /* Parameter constructor */
 MarginalTransformationGradient::MarginalTransformationGradient(const MarginalTransformationEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -50,28 +50,28 @@ MarginalTransformationGradient * MarginalTransformationGradient::clone() const
 }
 
 /* Gradient */
-Matrix MarginalTransformationGradient::gradient(const NumericalPoint & inP) const
+Matrix MarginalTransformationGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   Matrix result(dimension, dimension);
   // (G^{-1} o F)' = F' . G^{-1}' o F = F' / (G' o G^{-1} o F)
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient()->getClassName() == "SymbolicGradient") result(i, i) = evaluation_.getExpressions()[i].gradient(NumericalPoint(1, inP[i]))(0, 0);
+    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient()->getClassName() == "SymbolicGradient") result(i, i) = evaluation_.getExpressions()[i].gradient(Point(1, inP[i]))(0, 0);
     else
     {
-      const NumericalScalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
+      const Scalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
       // Quick rejection step: if the input PDF is zero, the result will be zero, so continue only if the value is > 0
       if (inputPDF > 0.0)
       {
-        NumericalScalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
+        Scalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
         // For accuracy reason, check if we are in the upper tail of the distribution
         const Bool upperTail = inputCDF > 0.5;
         if (upperTail) inputCDF = evaluation_.inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-        const NumericalPoint  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
-        const NumericalScalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
+        const Point  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
+        const Scalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
         // The output PDF should never be zero here, be it can occure due to some strange rounding error
         if (outputPDF > 0.0) result(i, i) = inputPDF / outputPDF;
       } // PDF > 0
@@ -109,14 +109,14 @@ String MarginalTransformationGradient::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void MarginalTransformationGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MarginalTransformationGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

@@ -1,0 +1,1029 @@
+%define OT_Function_doc
+"Function base class.
+
+Available constructors:
+    Function(*inputs, outputs, formulas*)
+
+    Function(*inputs, formulas*)
+
+    Function(*inputString, formulaString, outputString = 'outputVariable'*)
+
+    Function(*f, g*)
+
+    Function(*functionCollection*)
+
+    Function(*functionCollection, scalarCoefficientColl*)
+
+    Function(*scalarFunctionCollection, vectorCoefficientColl*)
+
+    Function(*function, comparisonOperator, threshold*)
+
+    Function(*function, indices, referencePoint, parametersSet=True*)
+
+    Function(*inputSample, outputSample*)
+
+Parameters
+----------
+inputs : sequence of str
+    Ordered list of input variables names of the *Function*.
+outputs : sequence of str
+    Ordered list of output variables names of the *Function*.
+    If it is not specified, default names are created for the output variables.
+formulas : sequence of str
+    Ordered list of analytical formulas between the inputs and the outputs.
+    The *Function* is defined by *ouputs = formulas(inputs)*.
+inputString : str
+    Description of the *Function*'s input.
+outputString : str
+    Description of the *Function*'s output.
+formulaString : str
+    Analytical formula of the *Function*.
+    The *Function* is defined by
+    *ouputString = formulaString(inputString)*.
+
+    Available functions:
+
+    - sin
+    - cos
+    - tan
+    - asin
+    - acos
+    - atan
+    - sinh
+    - cosh
+    - tanh
+    - asinh
+    - acosh
+    - atanh
+    - log2
+    - log10
+    - log
+    - ln
+    - lngamma
+    - gamma
+    - exp
+    - erf
+    - erfc
+    - sqrt
+    - cbrt
+    - besselJ0
+    - besselJ1
+    - besselY0
+    - besselY1
+    - sign
+    - rint
+    - abs
+    - min
+    - max
+    - sum
+    - avg
+    - floor
+    - ceil
+    - trunc
+    - round
+
+    Available operators:
+
+    - = (assignment)
+    - && (logical and)
+    - || (logical or)
+    - <= (less or equal)
+    - >= (greater or equal)
+    - != (not equal)
+    - == (equal)
+    - > (greater than)
+    - < (less than)
+    - \+ (addition)
+    - \- (subtraction)
+    - \* (multiplication)
+    - / (division)
+    - ^ (raise x to the power of y)
+
+    Available constants:
+
+    - _e (Euler's constant)
+    - _pi (Pi)
+
+f,g : two :class:`~openturns.Function`
+    The *Function* is the composition function :math:`f\circ g`.
+functionCollection : list of :class:`~openturns.Function`
+    Collection of several *Function*.
+scalarCoefficientColl : sequence of float
+    Collection of scalar weights.
+scalarFunctionCollection : list of :class:`~openturns.Function`
+    Collection of several scalar *Function*.
+vectorCoefficientColl : 2-d sequence of float
+    Collection of vectorial weights.
+function : :class:`~openturns.Function`
+    Function from which another function is created.
+comparisonOperator : :class:`~openturns.ComparisonOperator`
+    Comparison operator.
+threshold : float
+    Threshold from which values are compared.
+indices : sequence of int
+    Indices of the set variables which are set to *referencePoint*'s values.
+parametersSet : bool
+    If *True* (default), the set variables are the ones referenced
+    in *indices*.
+    Otherwise, the set variables are the ones referenced in the complementary
+    vector of *indices*.
+referencePoint : sequence of float
+    Values of the set variables.
+    Must be of size of *indices* if *parametersSet* is *True* (default),
+    else its size should be the complementary size of *indices*.
+inputSample : 2-d sequence of float
+    Values of the inputs.
+outputSample : 2-d sequence of float
+    Values of the outputs.
+
+Examples
+--------
+Create a *Function* from a list of analytical formulas and
+descriptions of the inputs and the outputs :
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x0', 'x1'],
+...                         ['x0 + x1', 'x0 - x1'])
+>>> print(f([1, 2]))
+[3,-1]
+
+
+Create a *Function* from strings:
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction('x', '2.0*sqrt(x)')
+>>> print(f(([16],[4])))
+    [ y0 ]
+0 : [ 8  ]
+1 : [ 4  ]
+
+
+Create a *Function* from a Python function:
+
+>>> def a_function(X):
+...     return [X[0] + X[1]]
+>>> f = ot.PythonFunction(2, 1, a_function)
+>>> print(f(((10, 5),(6, 7))))
+    [ y0 ]
+0 : [ 15 ]
+1 : [ 13 ]
+
+
+See :class:`~openturns.PythonFunction` for further details.
+
+Create a *Function* from another *Function*:
+
+>>> f = ot.SymbolicFunction(ot.Description.BuildDefault(4, 'x'),
+...                         ['x0', 'x0 + x1', 'x0 + x2 + x3'])
+
+Then create another function by setting x1=4 and x3=10:
+
+>>> g = ot.ParametricFunction(f, [3, 1], [10.0, 4.0], True)
+>>> print(g.getInputDescription())
+[x0,x2]
+>>> print(g((1, 2)))
+[1,5,13]
+
+Or by setting x0=6 and x2=5:
+
+>>> g = ot.ParametricFunction(f, [3, 1], [6.0, 5.0], False)
+>>> print(g.getInputDescription())
+[x3,x1]
+>>> print(g((1, 2)))
+[6,8,12]
+
+
+Create a *Function* from another *Function*
+and by using a comparison operator:
+
+>>> analytical = ot.SymbolicFunction(['x0','x1'], ['x0 + x1'])
+>>> indicator = ot.IndicatorFunction(analytical, ot.Less(), 0.0)
+>>> print(indicator([2, 3]))
+[0]
+>>> print(indicator([2, -3]))
+[1]
+
+Create a *Function* from a collection of functions:
+
+>>> functions = list()
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                      ['x1^2 + x2', 'x1 + x2 + x3']))
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                      ['x1 + 2 * x2 + x3', 'x1 + x2 - x3']))
+>>> myFunction = ot.AggregatedFunction(functions)
+>>> print(myFunction([1.0, 2.0, 3.0]))
+[3,6,8,0]
+
+Create a *Function* which is the linear combination *linComb*
+of the functions defined in  *functionCollection* with scalar weights
+defined in *scalarCoefficientColl*:
+
+:math:`functionCollection  = (f_1, \hdots, f_N)`
+where :math:`\forall 1 \leq i \leq N, \,     f_i: \Rset^n \rightarrow \Rset^{p}`
+and :math:`scalarCoefficientColl = (c_1, \hdots, c_N) \in \Rset^N`
+then the linear combination is:
+
+.. math::
+
+    linComb: \left|\begin{array}{rcl}
+                  \Rset^n & \rightarrow & \Rset^{p} \\
+                  \vect{X} & \mapsto & \displaystyle \sum_i c_if_i (\vect{X})
+              \end{array}\right.
+
+>>> myFunction2 = ot.LinearCombinationFunction(functions, [2.0, 4.0])
+>>> print(myFunction2([1.0, 2.0, 3.0]))
+[38,12]
+
+
+Create a *Function* which is the linear combination
+*vectLinComb* of the scalar functions defined in
+*scalarFunctionCollection* with vectorial weights defined in
+*vectorCoefficientColl*:
+
+If :math:`scalarFunctionCollection = (f_1, \hdots, f_N)`
+where :math:`\forall 1 \leq i \leq N, \,    f_i: \Rset^n \rightarrow \Rset`
+and :math:`vectorCoefficientColl = (\vect{c}_1, \hdots, \vect{c}_N)`
+where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
+
+.. math::
+
+    vectLinComb: \left|\begin{array}{rcl}
+                     \Rset^n & \rightarrow & \Rset^{p} \\
+                     \vect{X} & \mapsto & \displaystyle \sum_i \vect{c}_if_i (\vect{X})
+                 \end{array}\right.
+
+>>> functions=list()
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                      ['x1 + 2 * x2 + x3']))
+>>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                                      ['x1^2 + x2']))
+>>> myFunction2 = ot.DualLinearCombinationFunction(functions, [[2., 4.], [3., 1.]])
+>>> print(myFunction2([1, 2, 3]))
+[25,35]
+
+
+Create a *Function* from values of the inputs and the outputs:
+
+>>> inputSample = [[1.0, 1.0], [2.0, 2.0]]
+>>> outputSample = [[4.0], [5.0]]
+>>> database = ot.DatabaseFunction(inputSample, outputSample)
+>>> x = [1.8]*database.getInputDimension()
+>>> print(database(x))
+[5]
+
+
+Create a *Function* which is the composition function
+:math:`f\circ g`:
+
+>>> g = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['x1 + x2','3 * x1 * x2'])
+>>> f = ot.SymbolicFunction(['x1', 'x2'], ['2 * x1 - x2'])
+>>> composed = ot.ComposedFunction(f, g)
+>>> print(composed([3, 4]))
+[-22]"
+%enddef
+%feature("docstring") OT::FunctionImplementation
+OT_Function_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_enableCache_doc
+"Enable the cache mechanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::enableCache
+OT_Function_enableCache_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_disableCache_doc
+"Disable the cache mechanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::disableCache
+OT_Function_disableCache_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_clearCache_doc
+"Empty the content of the cache."
+%enddef
+%feature("docstring") OT::FunctionImplementation::clearCache
+OT_Function_clearCache_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_isCacheEnabled_doc
+"Test whether the cache mechanism is enabled or not.
+
+Returns
+-------
+isCacheEnabled : bool
+    Flag telling whether the cache mechanism is enabled.
+    It is disabled by default."
+%enddef
+%feature("docstring") OT::FunctionImplementation::isCacheEnabled
+OT_Function_isCacheEnabled_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getCacheHits_doc
+"Accessor to the number of computations saved thanks to the cache mecanism.
+
+Returns
+-------
+cacheHits : int
+    Integer that counts the number of computations saved thanks to the cache
+    mecanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getCacheHits
+OT_Function_getCacheHits_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getCacheInput_doc
+"Accessor to all the input numerical points stored in the cache mecanism.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    All the input numerical points stored in the cache mecanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getCacheInput
+OT_Function_getCacheInput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getCacheOutput_doc
+"Accessor to all the output numerical points stored in the cache mecanism.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    All the output numerical points stored in the cache mecanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getCacheOutput
+OT_Function_getCacheOutput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_addCacheContent_doc
+"Add input numerical points and associated output to the cache.
+
+Parameters
+----------
+input_sample : 2-d sequence of float
+    Input numerical points to be added to the cache.
+output_sample : 2-d sequence of float
+    Output numerical points associated with the input_sample to be added to the
+    cache."
+%enddef
+%feature("docstring") OT::FunctionImplementation::addCacheContent
+OT_Function_addCacheContent_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_enableHistory_doc
+"Enable the history mechanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::enableHistory
+OT_Function_enableHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_disableHistory_doc
+"Disable the history mechanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::disableHistory
+OT_Function_disableHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_clearHistory_doc
+"Empty the content of the history."
+%enddef
+%feature("docstring") OT::FunctionImplementation::clearHistory
+OT_Function_clearHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_isHistoryEnabled_doc
+"Test whether the history mechanism is enabled or not.
+
+Returns
+-------
+isHistoryEnabled : bool
+    Flag telling whether the history mechanism is enabled.
+    It is disabled by default."
+%enddef
+%feature("docstring") OT::FunctionImplementation::isHistoryEnabled
+OT_Function_isHistoryEnabled_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getHistoryInput_doc
+"Accessor to the history of the input values.
+
+Returns
+-------
+input_history : :class:`~openturns.Sample`
+    All the input numerical points stored in the history mecanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getHistoryInput
+OT_Function_getHistoryInput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getHistoryOutput_doc
+"Accessor to the history of the output values.
+
+Returns
+-------
+output_history : :class:`~openturns.Sample`
+    All the output numerical points stored in the history mecanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getHistoryOutput
+OT_Function_getHistoryOutput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getInputPointHistory_doc
+"Accessor to the history of the input point values.
+
+Returns
+-------
+history : :class:`~openturns.Sample`
+    All the input points stored in the history mecanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getInputPointHistory
+OT_Function_getInputPointHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getInputParameterHistory_doc
+"Accessor to the history of the input parameter values.
+
+Returns
+-------
+history : :class:`~openturns.Sample`
+    All the input parameters stored in the history mecanism."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getInputParameterHistory
+OT_Function_getInputParameterHistory_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getCallsNumber_doc
+"Accessor to the number of times the function has been called.
+
+Returns
+-------
+calls_number : int
+    Integer that counts the number of times the function has been called
+    since its creation."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getCallsNumber
+OT_Function_getCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getEvaluationCallsNumber_doc
+"Accessor to the number of times the function has been called.
+
+Returns
+-------
+evaluation_calls_number : int
+    Integer that counts the number of times the function has been called
+    since its creation."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getEvaluationCallsNumber
+OT_Function_getEvaluationCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getGradientCallsNumber_doc
+"Accessor to the number of times the gradient of the function has been called.
+
+Returns
+-------
+gradient_calls_number : int
+    Integer that counts the number of times the gradient of the
+    Function has been called since its creation.
+    Note that if the gradient is implemented by a finite difference method,
+    the gradient calls number is equal to 0 and the different calls are
+    counted in the evaluation calls number."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getGradientCallsNumber
+OT_Function_getGradientCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getHessianCallsNumber_doc
+"Accessor to the number of times the hessian of the function has been called.
+
+Returns
+-------
+hessian_calls_number : int
+    Integer that counts the number of times the hessian of the
+    Function has been called since its creation.
+    Note that if the hessian is implemented by a finite difference method,
+    the hessian calls number is equal to 0 and the different calls are counted
+    in the evaluation calls number."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getHessianCallsNumber
+OT_Function_getHessianCallsNumber_doc
+
+// ---------------------------------------------------------------------
+%define OT_Function_getMarginal_doc
+"Accessor to marginal.
+
+Parameters
+----------
+indices : int or list of ints
+    Set of indices for which the marginal is extracted.
+
+Returns
+-------
+marginal : :class:`~openturns.Function`
+    Function corresponding to either :math:`f_i` or
+    :math:`(f_i)_{i \in indices}`, with :math:`f:\Rset^n \rightarrow \Rset^p`
+    and :math:`f=(f_0 , \dots, f_{p-1})`."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getMarginal
+OT_Function_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getImplementation_doc
+"Accessor to the evaluation, gradient and hessian functions.
+
+Returns
+-------
+function : :class:`~openturns.FunctionImplementation`
+    The evaluation, gradient and hessian function.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getImplementation())
+input  : [x1,x2]
+output : [y0]
+evaluation : 2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6
+gradient   :
+| d(y) / d(x1) = (1)+(4*x1)+((-4*((x2)*(sin(x1)))))
+| d(y) / d(x2) = (8)+((4*(cos(x1)))) 
+
+hessian    :
+|    d^2(y) / d(x1)^2 = (4)+((-4*((x2)*(cos(x1)))))
+| d^2(y) / d(x2)d(x1) = (-4*(sin(x1))) 
+|    d^2(y) / d(x2)^2 = 0"
+%enddef
+%feature("docstring") OT::FunctionImplementation::getImplementation
+OT_Function_getImplementation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getEvaluation_doc
+"Accessor to the evaluation function.
+
+Returns
+-------
+function : :class:`~openturns.EvaluationImplementation`
+    The evaluation function.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getEvaluation())
+[x1,x2]->[2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6]"
+%enddef
+%feature("docstring") OT::FunctionImplementation::getEvaluation
+OT_Function_getEvaluation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getGradient_doc
+"Accessor to the gradient function.
+
+Returns
+-------
+gradient : :class:`~openturns.GradientImplementation`
+    The gradient function."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getGradient
+OT_Function_getGradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getHessian_doc
+"Accessor to the hessian function.
+
+Returns
+-------
+hessian : :class:`~openturns.HessianImplementation`
+    The hessian function."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getHessian
+OT_Function_getHessian_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setEvaluation_doc
+"Accessor to the evaluation function.
+
+Parameters
+----------
+function : :class:`~openturns.EvaluationImplementation`
+    The evaluation function."
+%enddef
+%feature("docstring") OT::FunctionImplementation::setEvaluation
+OT_Function_setEvaluation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setGradient_doc
+"Accessor to the gradient function.
+
+Parameters
+----------
+gradient_function : :class:`~openturns.GradientImplementation`
+    The gradient function.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f.setGradient(ot.CenteredFiniteDifferenceGradient(
+...  ot.ResourceMap.GetAsScalar('CenteredFiniteDifferenceGradient-DefaultEpsilon'),
+...  f.getEvaluation()))"
+%enddef
+%feature("docstring") OT::FunctionImplementation::setGradient
+OT_Function_setGradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setHessian_doc
+"Accessor to the hessian function.
+
+Parameters
+----------
+hessian_function : :class:`~openturns.HessianImplementation`
+    The hessian function.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> f.setHessian(ot.CenteredFiniteDifferenceHessian(
+...  ot.ResourceMap.GetAsScalar('CenteredFiniteDifferenceHessian-DefaultEpsilon'),
+...  f.getEvaluation()))"
+%enddef
+%feature("docstring") OT::FunctionImplementation::setHessian
+OT_Function_setHessian_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_gradient_doc
+"Return the Jacobian transposed matrix of the function at a point.
+
+Parameters
+----------
+point : sequence of float
+    Point where the Jacobian transposed matrix is calculated.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    The Jacobian transposed matrix of the function at *point*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6','x1 + x2'])
+>>> print(f.gradient([3.14, 4]))
+[[ 13.5345   1       ]
+ [  4.00001  1       ]]"
+%enddef
+%feature("docstring") OT::FunctionImplementation::gradient
+OT_Function_gradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_hessian_doc
+"Return the hessian of the function at a point.
+
+Parameters
+----------
+point : sequence of float
+    Point where the hessian of the function is calculated.
+
+Returns
+-------
+hessian : :class:`~openturns.SymmetricTensor`
+    Hessian of the function at *point*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6','x1 + x2'])
+>>> print(f.hessian([3.14, 4]))
+sheet #0
+[[ 20          -0.00637061 ]
+ [ -0.00637061  0          ]]
+sheet #1
+[[  0           0          ]
+ [  0           0          ]]"
+%enddef
+%feature("docstring") OT::FunctionImplementation::hessian
+OT_Function_hessian_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getDescription_doc
+"Accessor to the description of the inputs and outputs.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the inputs and the outputs.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getDescription())
+[x1,x2,y0]"
+%enddef
+%feature("docstring") OT::FunctionImplementation::getDescription
+OT_Function_getDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setDescription_doc
+"Accessor to the description of the inputs and outputs.
+
+Parameters
+----------
+description : sequence of str
+    Description of the inputs and the outputs.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getDescription())
+[x1,x2,y0]
+>>> f.setDescription(['a','b','y'])
+>>> print(f.getDescription())
+[a,b,y]"
+%enddef
+%feature("docstring") OT::FunctionImplementation::setDescription
+OT_Function_setDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getInputDescription_doc
+"Accessor to the description of the inputs.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the inputs.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getInputDescription())
+[x1,x2]"
+%enddef
+%feature("docstring") OT::FunctionImplementation::getInputDescription
+OT_Function_getInputDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getOutputDescription_doc
+"Accessor to the description of the outputs.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Description of the outputs.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getOutputDescription())
+[y0]"
+%enddef
+%feature("docstring") OT::FunctionImplementation::getOutputDescription
+OT_Function_getOutputDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getInputDimension_doc
+"Accessor to the number of the inputs.
+
+Returns
+-------
+number_inputs : int
+    Number of inputs.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getInputDimension())
+2"
+%enddef
+%feature("docstring") OT::FunctionImplementation::getInputDimension
+OT_Function_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getOutputDimension_doc
+"Accessor to the number of the outputs.
+
+Returns
+-------
+number_outputs : int
+    Number of outputs.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x1', 'x2'],
+...                          ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
+>>> print(f.getOutputDimension())
+1"
+%enddef
+%feature("docstring") OT::FunctionImplementation::getOutputDimension
+OT_Function_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getParameterDimension_doc
+"Accessor to the dimension of the parameter.
+
+Returns
+-------
+parameterDimension : int
+    Dimension of the parameter."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getParameterDimension
+OT_Function_getParameterDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_draw_doc
+"Draw the output of function as a :class:`~openturns.Graph`.
+
+Available usages:
+    draw(*inputMarg, outputMarg, CP, xiMin, xiMax, ptNb*)
+
+    draw(*firstInputMarg, secondInputMarg, outputMarg, CP, xiMin_xjMin, xiMax_xjMax, ptNbs*)
+
+    draw(*xiMin, xiMax, ptNb*)
+
+    draw(*xiMin_xjMin, xiMax_xjMax, ptNbs*)
+
+Parameters
+----------
+outputMarg, inputMarg : int, :math:`outputMarg, inputMarg \geq 0`
+    *outputMarg* is the index of the marginal to draw as a function of the marginal
+    with index *inputMarg*.
+firstInputMarg, secondInputMarg : int, :math:`firstInputMarg, secondInputMarg \geq 0`
+    In the 2D case, the marginal *outputMarg* is drawn as a function of the
+    two marginals with indexes *firstInputMarg* and *secondInputMarg*.
+CP : sequence of float
+    Central point.
+xiMin, xiMax : float
+    Define the interval where the curve is plotted.
+xiMin_xjMin, xiMax_xjMax : sequence of float of dimension 2.
+    In the 2D case, define the intervals where the curves are plotted.
+ptNb : int :math:`ptNb > 0` or list of ints of dimension 2 :math:`ptNb_k > 0, k=1,2`
+    The number of points to draw the curves.
+
+Notes
+-----
+We note :math:`f: \Rset^n \rightarrow \Rset^p`
+where :math:`\vect{x} = (x_1, \dots, x_n)` and
+:math:`f(\vect{x}) = (f_1(\vect{x}), \dots,f_p(\vect{x}))`,
+with :math:`n\geq 1` and :math:`p\geq 1`.
+
+- In the first usage:
+
+Draws graph of the given 1D *outputMarg* marginal
+:math:`f_k: \Rset^n \rightarrow \Rset` as a function of the given 1D *inputMarg*
+marginal with respect to the variation of :math:`x_i` in the interval
+:math:`[x_i^{min}, x_i^{max}]`, when all the other components of
+:math:`\vect{x}` are fixed to the corresponding ones of the central point *CP*.
+Then OpenTURNS draws the graph:
+:math:`t\in [x_i^{min}, x_i^{max}] \mapsto f_k(CP_1, \dots, CP_{i-1}, t,  CP_{i+1} \dots, CP_n)`.
+
+- In the second usage:
+
+Draws the iso-curves of the given *outputMarg* marginal :math:`f_k` as a
+function of the given 2D *firstInputMarg* and *secondInputMarg* marginals
+with respect to the variation of :math:`(x_i, x_j)` in the interval
+:math:`[x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]`, when all the
+other components of :math:`\vect{x}` are fixed to the corresponding ones of the
+central point *CP*. Then OpenTURNS draws the graph:
+:math:`(t,u) \in [x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}] \mapsto f_k(CP_1, \dots, CP_{i-1}, t, CP_{i+1}, \dots, CP_{j-1}, u,  CP_{j+1} \dots, CP_n)`.
+
+- In the third usage:
+
+The same as the first usage but only for function :math:`f: \Rset \rightarrow \Rset`.
+
+- In the fourth usage:
+
+The same as the second usage but only for function :math:`f: \Rset^2 \rightarrow \Rset`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> f = ot.SymbolicFunction('x', 'sin(2*_pi*x)*exp(-x^2/2)')
+>>> graph = f.draw(-1.2, 1.2, 100)
+>>> View(graph).show()"
+%enddef
+%feature("docstring") OT::FunctionImplementation::draw
+OT_Function_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getParameter_doc
+"Accessor to the parameter values.
+
+Returns
+-------
+parameter : :class:`~openturns.Point`
+    The parameter values."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getParameter
+OT_Function_getParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setParameter_doc
+"Accessor to the parameter values.
+
+Parameters
+----------
+parameter : sequence of float
+    The parameter values."
+%enddef
+%feature("docstring") OT::FunctionImplementation::setParameter
+OT_Function_setParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_getParameterDescription_doc
+"Accessor to the parameter description.
+
+Returns
+-------
+parameter : :class:`~openturns.Description`
+    The parameter description."
+%enddef
+%feature("docstring") OT::FunctionImplementation::getParameterDescription
+OT_Function_getParameterDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setParameterDescription_doc
+"Accessor to the parameter description.
+
+Parameters
+----------
+parameter : :class:`~openturns.Description`
+    The parameter description."
+%enddef
+%feature("docstring") OT::FunctionImplementation::setParameterDescription
+OT_Function_setParameterDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_parameterGradient_doc
+"Accessor to the gradient against the parameter.
+
+Returns
+-------
+gradient : :class:`~openturns.Matrix`
+    The gradient."
+%enddef
+%feature("docstring") OT::FunctionImplementation::parameterGradient
+OT_Function_parameterGradient_doc

@@ -44,7 +44,7 @@ Examples
 
 Returns
 -------
-amplitude : :class:`~openturns.NumericalPoint`
+amplitude : :class:`~openturns.Point`
     The used amplitude parameter."
 %enddef
 %feature("docstring") OT::ExponentialCauchy::getAmplitude
@@ -57,7 +57,7 @@ OT_ExponentialCauchy_getAmplitude_doc
 
 Returns
 -------
-scale : :class:`~openturns.NumericalPoint`
+scale : :class:`~openturns.Point`
     The used scale parameter."
 %enddef
 %feature("docstring") OT::ExponentialCauchy::getScale

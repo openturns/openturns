@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
 
     /* Check standard methods of class RandomVector */
     fullprint << "vect dimension=" << vect.getDimension() << std::endl;
-    NumericalPoint p;
-    NumericalPoint r(vect.getRealization(p));
+    Point p;
+    Point r(vect.getRealization(p));
     fullprint << "vect realization=" << r << std::endl;
     fullprint << "parameters value=" << p << std::endl;
     distribution.setParameter(p);

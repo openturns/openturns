@@ -44,7 +44,7 @@ public:
   CharlierFactory();
 
   /** Parameter constructor: lambda is the order of the generalized Charlier polynomial, associated with the Poisson(lambda) distribution */
-  CharlierFactory(const NumericalScalar lambda);
+  CharlierFactory(const Scalar lambda);
 
   /** Virtual constructor */
   virtual CharlierFactory * clone() const;
@@ -54,7 +54,7 @@ public:
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** K accessor */
-  NumericalScalar getLambda() const;
+  Scalar getLambda() const;
 
   /** String converter */
   String __repr__() const;
@@ -67,7 +67,7 @@ public:
 
 private:
   /** Parameter of the Charlier polynomial */
-  NumericalScalar lambda_;
+  Scalar lambda_;
 
 } ; /* class CharlierFactory */
 

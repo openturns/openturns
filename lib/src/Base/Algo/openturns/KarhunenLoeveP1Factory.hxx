@@ -27,7 +27,7 @@
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/PersistentObject.hxx"
 
@@ -50,7 +50,7 @@ public:
 
   /** Default constructor without parameters */
   KarhunenLoeveP1Factory(const Mesh & mesh,
-                         const NumericalScalar threshold);
+                         const Scalar threshold);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveP1Factory * clone() const;
@@ -61,10 +61,10 @@ public:
    * where C is a given covariance model, using P1 approximation
    */
   Basis build(const CovarianceModel & covarianceModel,
-              NumericalPoint & eigenvalues) const;
+              Point & eigenvalues) const;
 
   ProcessSample buildAsProcessSample(const CovarianceModel & covarianceModel,
-                                     NumericalPoint & eigenvalues) const;
+                                     Point & eigenvalues) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -86,7 +86,7 @@ private:
   CovarianceMatrix gram_;
 
   /** Threshold for eigenvalues selection */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
 } ; /* class KarhunenLoeveP1Factory */
 

@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
     output[0] = "y";
     Description formulas(output.getSize());
     formulas[0] = "x-cos(x)";
-    NumericalMathFunction analytical(input, output, formulas);
+    Function analytical(input, output, formulas);
     Bisection myAlgo;
     fullprint << "myAlgo=" << myAlgo << std::endl;
-    NumericalScalar value = 0.0;
+    Scalar value = 0.0;
     fullprint << "Solve " << formulas[0] << "=" << value << " for " << input[0] << std::endl;
     OSS oss;
     oss.setPrecision(5);

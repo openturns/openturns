@@ -41,7 +41,7 @@ public:
 
   /** Parameters constructor */
   CholeskyMethod(const DesignProxy & proxy,
-                 const NumericalPoint & weight,
+                 const Point & weight,
                  const Indices & indices);
 
   /** Parameters constructor */
@@ -55,8 +55,8 @@ public:
   String __repr__() const;
 
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
-  NumericalPoint solve(const NumericalPoint & rhs);
-  NumericalPoint solveNormal(const NumericalPoint & rhs);
+  Point solve(const Point & rhs);
+  Point solveNormal(const Point & rhs);
 
   /** Update */
   void update(const Indices & addedIndices,
@@ -69,10 +69,10 @@ public:
   CovarianceMatrix getGramInverse() const;
   SymmetricMatrix getH() const;
 
-  NumericalPoint getGramInverseDiag() const;
-  NumericalPoint getHDiag() const;
+  Point getGramInverseDiag() const;
+  Point getHDiag() const;
 
-  NumericalScalar getGramInverseTrace() const;
+  Scalar getGramInverseTrace() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

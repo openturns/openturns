@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.9 release (in progress) == #release-1.9
+== 1.9rc1 release (2017-04-03) == #release-1.9rc1
 
 === Library ===
 
@@ -16,7 +16,8 @@
  * LHSResult
  * MultiStart
  * MethodOfMomentsFactory
- * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction, LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction
+ * SymbolicFunction, AggregatedFunction, ComposedFunction, DatabaseFunction, DualLinearCombinationFunction
+ * LinearCombinationFunction, LinearFunction, QuadraticFunction, ParametricFunction, IndicatorFunction
  * DistributionTransformation
  * GeneralizedExtremeValue
  * UniVariateFunctionFamily, UniVariateFunctionFactory, TensorizedUniVariateFunctionFactory
@@ -57,20 +58,31 @@
  * Deprecated GramSchmidtAlgorithm, ChebychevAlgorithm
  * Added getSobolAggregatedIndices() to FunctionalChaosRandomVector
  * Added computeWeight() to Mesh
+ * Deprecated NumericalMathFunction ctors
+ * Deprecated NumericalMathFunction for Function
+ * Deprecated NumericalSample for Sample
+ * Deprecated NumericalPoint[WithDescription] for Point[WithDescription]
+ * Deprecated ResourceMap::[SG]AsNumericalScalar for [SG]AsScalar
+ * Deprecated SpecFunc::*NumericalScalar*
+ * Deprecated NumericalScalar for Scalar
+ * Deprecated NumericalComplex for Complex
 
 === Python module ===
 
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #351 (FORM is it possible to hav a ".setMaximumNumberOfEvaluations")
  * #729 (KDTree & save)
  * #774 (Exact limits of a normal distribution with unknown mean and variance)
+ * #866 (Check the parameter estimate for the kriging model)
  * #869 (The ProductNumericalMathFunction class has no example)
  * #871 (GeneralizedExponential P parameter : int or float ?)
  * #872 (Cannot draw a Text drawable using R)
  * #874 (Compatibility between a distribution factory and an alternate parametrization not checked)
  * #875 (TruncatedNormalFactory randomly crashes)
  * #876 (Bad time grid in StationaryCovarianceModelFactory::build)
+ * #877 (centered whitenoise limitation)
  * #878 (Viewer does not take into account labels in Contour)
  * #879 (Incomplete arguments in FunctionalChaosRandomVector docstrings)
  * #882 (RandomMixture segfaults with Dirac)

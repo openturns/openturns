@@ -60,31 +60,31 @@ class OT_API HMatrix :
   void factorize(const String& method);
 
   /** Compute this <- alpha * this */
-  void scale(NumericalScalar alpha);
+  void scale(Scalar alpha);
 
   /** Compute y <- alpha op(this) * x + beta * y */
-  void gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const;
+  void gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const;
 
   /** Compute this <- alpha op(A) * p(B) + beta * this */
-  void gemm(char transA, char transB, NumericalScalar alpha, const HMatrix& a, const HMatrix& b, NumericalScalar beta);
+  void gemm(char transA, char transB, Scalar alpha, const HMatrix& a, const HMatrix& b, Scalar beta);
 
   /** Transpose matrix */
   void transpose();
 
   /** Get the Frobenius norm */
-  NumericalScalar norm() const;
+  Scalar norm() const;
 
   /** Get the diagonal */
-  NumericalPoint getDiagonal() const;
+  Point getDiagonal() const;
 
   /** Solve system op(A)*X = b */
-  NumericalPoint solve(const NumericalPoint& b, Bool trans = false) const;
+  Point solve(const Point& b, Bool trans = false) const;
 
   /** Solve system op(A)*X = m */
   Matrix solve(const Matrix& m, Bool trans = false) const;
 
   /** Solve system op(L)*X = b */
-  NumericalPoint solveLower(const NumericalPoint& b, Bool trans = false) const;
+  Point solveLower(const Point& b, Bool trans = false) const;
 
   /** Solve system op(L)*X = m */
   Matrix solveLower(const Matrix& m, Bool trans = false) const;

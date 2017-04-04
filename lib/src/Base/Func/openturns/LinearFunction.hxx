@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_LINEARFUNCTION_HXX
 #define OPENTURNS_LINEARFUNCTION_HXX
 
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * the function, the gradient or the hessian.
  */
 class OT_API LinearFunction
-  : public NumericalMathFunction
+  : public Function
 {
   CLASSNAME;
 public:
@@ -48,9 +48,9 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  LinearFunction(const NumericalPoint & center,
-                              const NumericalPoint & constant,
-                              const Matrix & linear);
+  LinearFunction(const Point & center,
+                 const Point & constant,
+                 const Matrix & linear);
 
 
   /** Comparison operator */

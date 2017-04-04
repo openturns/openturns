@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
     const UnsignedInteger size = 128;
     const UnsignedInteger dimension = 1;
     const RegularGrid timeGrid(0.0, 0.1, size);
-    const NumericalPoint amplitude(dimension, 1.0);
-    const NumericalPoint scale(dimension, 1.0);
+    const Point amplitude(dimension, 1.0);
+    const Point scale(dimension, 1.0);
     ExponentialCauchy model(scale, amplitude);
     SpectralGaussianProcess myProcess(model, timeGrid);
 
@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
     RegularGrid myTimeGrid(myCovarianceModel.getTimeGrid());
     for (UnsignedInteger i = 0 ; i < myTimeGrid.getN() ; ++i)
     {
-      const NumericalScalar t = myTimeGrid.getValue(i);
-      const NumericalScalar estimatedValue = myCovarianceModel(t)(0, 0);
-      const NumericalScalar modelValue = model.computeCovariance(t)(0, 0);
+      const Scalar t = myTimeGrid.getValue(i);
+      const Scalar estimatedValue = myCovarianceModel(t)(0, 0);
+      const Scalar modelValue = model.computeCovariance(t)(0, 0);
       fullprint << "Covariance C(" << t << ") : ";
       fullprint << " evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
     }

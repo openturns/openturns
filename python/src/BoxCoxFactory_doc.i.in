@@ -53,13 +53,13 @@ Parameters
 ----------
 myTimeSeries : :class:`~openturns.TimeSeries`
     One realization of a  process.
-mySample : :class:`~openturns.NumericalSample`
+mySample : :class:`~openturns.Sample`
     A set of *iid* values.
-shift : :class:`~openturns.NumericalPoint`
+shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive. If not precised, OpenTURNS uses the opposite of the min vector of the data if some data are negative.
 likelihoodGraph : :class:`~openturns.Graph`
     An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
-inputSample, outputSample : :class:`~openturns.NumericalSample` or 2d-array
+inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The input and output samples of a model evaluated apart.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
@@ -218,7 +218,7 @@ Estimate the Box Cox transformation from a field:
 Estimation of a generalized linear model:
 
 >>> inputSample = ot.Uniform(-1.0, 1.0).getSample(20)
->>> outputSample = ot.NumericalSample(inputSample)
+>>> outputSample = ot.Sample(inputSample)
 >>> # Evaluation of y = ax + b (a: scale, b: translate)
 >>> outputSample = outputSample * [3] + [3.1]
 >>> # inverse transfo + small noise

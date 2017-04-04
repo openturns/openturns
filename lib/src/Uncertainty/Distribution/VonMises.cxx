@@ -47,8 +47,8 @@ VonMises::VonMises()
 }
 
 /* Parameters constructor */
-VonMises::VonMises(const NumericalScalar mu,
-                   const NumericalScalar kappa)
+VonMises::VonMises(const Scalar mu,
+                   const Scalar kappa)
   : ContinuousDistribution()
   , mu_(0.0)
   , kappa_(0.0)
@@ -96,7 +96,7 @@ String VonMises::__str__(const String & offset) const
 }
 
 /* Mu accessor */
-void VonMises::setMu(const NumericalScalar mu)
+void VonMises::setMu(const Scalar mu)
 {
   if (mu != mu_)
   {
@@ -106,15 +106,15 @@ void VonMises::setMu(const NumericalScalar mu)
   }
 }
 
-NumericalScalar VonMises::getMu() const
+Scalar VonMises::getMu() const
 {
   return mu_;
 }
 
 /* Kappa accessor */
-void VonMises::setKappa(const NumericalScalar kappa)
+void VonMises::setKappa(const Scalar kappa)
 {
-  if (kappa <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected a positive kappa, got kappa=" << kappa;
+  if (!(kappa > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive kappa, got kappa=" << kappa;
   if (kappa != kappa_)
   {
     kappa_ = kappa;
@@ -124,18 +124,18 @@ void VonMises::setKappa(const NumericalScalar kappa)
   }
 }
 
-NumericalScalar VonMises::getKappa() const
+Scalar VonMises::getKappa() const
 {
   return kappa_;
 }
 
 /* Circular moments accessor */
-NumericalScalar VonMises::getCircularMean() const
+Scalar VonMises::getCircularMean() const
 {
   return mu_;
 }
 
-NumericalScalar VonMises::getCircularVariance() const
+Scalar VonMises::getCircularVariance() const
 {
   return 1.0 - std::exp(SpecFunc::DeltaLogBesselI10(kappa_));
 }
@@ -165,73 +165,73 @@ void VonMises::update()
  * Lucio Barabesi, "Generating Von Mises variates by the ratio-of-uniforms method",
  * Statistica Applicata Vol.7, n4, 1995.
  */
-NumericalPoint VonMises::getRealization() const
+Point VonMises::getRealization() const
 {
   for (;;)
   {
-    const NumericalScalar r1 = RandomGenerator::Generate();
-    const NumericalScalar r2 = RandomGenerator::Generate();
-    const NumericalScalar theta = ratioOfUniformsBound_ * (2.0 * r2 - 1.0) / r1;
+    const Scalar r1 = RandomGenerator::Generate();
+    const Scalar r2 = RandomGenerator::Generate();
+    const Scalar theta = ratioOfUniformsBound_ * (2.0 * r2 - 1.0) / r1;
     // Quick rejection
     if (std::abs(theta) > M_PI) continue;
     // Quick acceptance
     if (kappa_ * theta * theta  < 4.0 - 4.0 * r1)
     {
-      const NumericalScalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
-      return NumericalPoint(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
+      const Scalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
+      return Point(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
     }
     // Slow rejection
     if (kappa_ * std::cos(theta) < 2.0 * std::log(r1) + kappa_) continue;
     // Acceptance
-    const NumericalScalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
-    return NumericalPoint(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
+    const Scalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
+    return Point(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
   }
-  return NumericalPoint(1, 0.0);
+  return Point(1, 0.0);
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint VonMises::computeDDF(const NumericalPoint & point) const
+Point VonMises::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if (std::abs(x) > M_PI) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, -kappa_ * std::sin(x - mu_) * computePDF(point));
+  const Scalar x = point[0];
+  if (std::abs(x) > M_PI) return Point(1, 0.0);
+  return Point(1, -kappa_ * std::sin(x - mu_) * computePDF(point));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar VonMises::computePDF(const NumericalPoint & point) const
+Scalar VonMises::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (std::abs(x) > M_PI) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar VonMises::computeLogPDF(const NumericalPoint & point) const
+Scalar VonMises::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if (std::abs(x) > M_PI) return SpecFunc::LogMinNumericalScalar;
+  const Scalar x = point[0];
+  if (std::abs(x) > M_PI) return SpecFunc::LogMinScalar;
   return normalizationFactor_ + kappa_ * std::cos(x - mu_);
 }
 
 /* Parameters value accessor */
-NumericalPoint VonMises::getParameter() const
+Point VonMises::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = mu_;
   point[1] = kappa_;
   return point;
 }
 
-void VonMises::setParameter(const NumericalPoint & parameter)
+void VonMises::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = VonMises(parameter[0], parameter[1]);
   setWeight(w);
 }

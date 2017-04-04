@@ -50,7 +50,7 @@ public:
   /** Constructor from RandomVector */
   StandardEvent(const RandomVector & antecedent,
                 const ComparisonOperator & op,
-                const NumericalScalar threshold);
+                const Scalar threshold);
 
   /** Constructor from Event */
   StandardEvent(const Event & event);

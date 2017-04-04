@@ -22,12 +22,12 @@
 #define OPENTURNS_TENSORAPPROXIMATIONRESULT_HXX
 
 #include "openturns/MetaModelResult.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/OrthogonalBasis.hxx"
 #include "openturns/CanonicalTensorEvaluation.hxx"
@@ -49,20 +49,20 @@ class OT_API TensorApproximationResult
 
 public:
 
-  typedef Collection<NumericalMathFunction>           NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function>           FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor */
   TensorApproximationResult();
 
   /** Parameter constructor */
   TensorApproximationResult(const Distribution & distribution,
-                            const NumericalMathFunction & transformation,
-                            const NumericalMathFunction & inverseTransformation,
-                            const NumericalMathFunction & composedModel,
+                            const Function & transformation,
+                            const Function & inverseTransformation,
+                            const Function & composedModel,
                             const Collection<CanonicalTensorEvaluation> & tensorCollection,
-                            const NumericalPoint & residuals,
-                            const NumericalPoint & relativeErrors);
+                            const Point & residuals,
+                            const Point & relativeErrors);
 
   /** Virtual constructor */
   virtual TensorApproximationResult * clone() const;
@@ -75,16 +75,16 @@ public:
   virtual Distribution getDistribution() const;
 
   /** IsoProbabilisticTransformation accessor */
-  virtual NumericalMathFunction getTransformation() const;
+  virtual Function getTransformation() const;
 
   /** InverseIsoProbabilisticTransformation accessor */
-  virtual NumericalMathFunction getInverseTransformation() const;
+  virtual Function getInverseTransformation() const;
 
   /** Composed model accessor */
-  virtual NumericalMathFunction getComposedModel() const;
+  virtual Function getComposedModel() const;
 
   /** Composed meta model accessor */
-  virtual NumericalMathFunction getComposedMetaModel() const;
+  virtual Function getComposedMetaModel() const;
 
   CanonicalTensorEvaluation getTensor(const UnsignedInteger marginalIndex = 0) const;
 
@@ -102,18 +102,18 @@ private:
   Distribution distribution_;
 
   /** The isoprobabilistic transformation maps the distribution into the orthogonal measure */
-  NumericalMathFunction transformation_;
+  Function transformation_;
 
   /** The inverse isoprobabilistic transformation */
-  NumericalMathFunction inverseTransformation_;
+  Function inverseTransformation_;
 
   /** The composed model */
-  NumericalMathFunction composedModel_;
+  Function composedModel_;
 
   PersistentCollection<CanonicalTensorEvaluation> tensorCollection_;
 
   /** Composed meta model */
-  NumericalMathFunction composedMetaModel_;
+  Function composedMetaModel_;
 
 } ; /* class TensorApproximationResult */
 

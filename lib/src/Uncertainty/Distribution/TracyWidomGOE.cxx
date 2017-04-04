@@ -68,56 +68,56 @@ TracyWidomGOE * TracyWidomGOE::clone() const
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint TracyWidomGOE::computeDDF(const NumericalPoint & point) const
+Point TracyWidomGOE::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computeDDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computeDDF(const Point & point) const";
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar TracyWidomGOE::computePDF(const NumericalPoint & point) const
+Scalar TracyWidomGOE::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computePDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computePDF(const Point & point) const";
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar TracyWidomGOE::computeCDF(const NumericalPoint & point) const
+Scalar TracyWidomGOE::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computeCDF(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computeCDF(const Point & point) const";
 }
 
 /** Get the PDFGradient of the distribution */
-NumericalPoint TracyWidomGOE::computePDFGradient(const NumericalPoint & point) const
+Point TracyWidomGOE::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(0);
+  return Point(0);
 }
 
 /** Get the CDFGradient of the distribution */
-NumericalPoint TracyWidomGOE::computeCDFGradient(const NumericalPoint & point) const
+Point TracyWidomGOE::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(0);
+  return Point(0);
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar TracyWidomGOE::computeScalarQuantile(const NumericalScalar prob,
+Scalar TracyWidomGOE::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computeScalarQuantile(const NumericalScalar prob, const Bool tail) const";
+  throw NotYetImplementedException(HERE) << "In TracyWidomGOE::computeScalarQuantile(const Scalar prob, const Bool tail) const";
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar TracyWidomGOE::getRoughness() const
+Scalar TracyWidomGOE::getRoughness() const
 {
   throw NotYetImplementedException(HERE) << "In TracyWidomGOE::getRoughness() const";
 }
@@ -126,45 +126,45 @@ NumericalScalar TracyWidomGOE::getRoughness() const
 void TracyWidomGOE::computeMean() const
 {
   // RMT matlab toolbox computation
-  mean_ = NumericalPoint(1, -1.2065335745820);
+  mean_ = Point(1, -1.2065335745820);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint TracyWidomGOE::getStandardDeviation() const
+Point TracyWidomGOE::getStandardDeviation() const
 {
   // RMT matlab toolbox computation
-  return NumericalPoint(1, 1.607781034581);
+  return Point(1, 1.607781034581);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint TracyWidomGOE::getSkewness() const
+Point TracyWidomGOE::getSkewness() const
 {
   // RMT matlab toolbox computation
-  return NumericalPoint(1, 0.29346452408);
+  return Point(1, 0.29346452408);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint TracyWidomGOE::getKurtosis() const
+Point TracyWidomGOE::getKurtosis() const
 {
   // RMT matlab toolbox computation
-  return NumericalPoint(1, 0.1652429384);
+  return Point(1, 0.1652429384);
 }
 
 /* Compute the covariance of the distribution */
 void TracyWidomGOE::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar sigma = getStandardDeviation()[0];
+  const Scalar sigma = getStandardDeviation()[0];
   covariance_(0, 0) = sigma * sigma;
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Parameters value and description accessor */
-TracyWidomGOE::NumericalPointWithDescriptionCollection TracyWidomGOE::getParametersCollection() const
+TracyWidomGOE::PointWithDescriptionCollection TracyWidomGOE::getParametersCollection() const
 {
-  // No parameter, return a collection with an empty NumericalPointWithDescription
-  return NumericalPointWithDescriptionCollection(1, NumericalPointWithDescription(0));
+  // No parameter, return a collection with an empty PointWithDescription
+  return PointWithDescriptionCollection(1, PointWithDescription(0));
 }
 
 /* Method save() stores the object through the StorageManager */

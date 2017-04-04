@@ -37,7 +37,7 @@ class OT_API CovarianceMatrix
   CLASSNAME;
 
 public:
-  typedef Collection<NumericalScalar>       NumericalScalarCollection;
+  typedef Collection<Scalar>       ScalarCollection;
 
 
   /** Default constructor */
@@ -54,7 +54,7 @@ public:
 
   /** Constructor from external collection */
   CovarianceMatrix(const UnsignedInteger dim,
-                   const NumericalScalarCollection & elementsValues);
+                   const ScalarCollection & elementsValues);
 
   /** String converter */
   virtual String __repr__() const;
@@ -77,8 +77,8 @@ public:
   virtual TriangularMatrix computeCholesky(const Bool keepIntact = true);
 
   /** Resolution of a linear system */
-  NumericalPoint solveLinearSystem(const NumericalPoint & b,
-                                   const Bool keepIntact = true);
+  Point solveLinearSystem(const Point & b,
+                          const Bool keepIntact = true);
 
   Matrix solveLinearSystem(const Matrix & b,
                            const Bool keepIntact = true);

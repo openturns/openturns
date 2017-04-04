@@ -27,19 +27,19 @@ using namespace OT::Test;
 
 class TestHMatrixRealAssemblyFunction : public HMatrixRealAssemblyFunction
 {
-  const NumericalSample& vertices_;
-  const NumericalScalar scaling_;
+  const Sample& vertices_;
+  const Scalar scaling_;
 public:
-  TestHMatrixRealAssemblyFunction(const NumericalSample& vertices, NumericalScalar scaling)
+  TestHMatrixRealAssemblyFunction(const Sample& vertices, Scalar scaling)
     : vertices_(vertices)
     , scaling_(scaling)
   {}
-  inline NumericalScalar operator() (NumericalPoint pt1, NumericalPoint pt2) const
+  inline Scalar operator() (Point pt1, Point pt2) const
   {
-    NumericalPoint difference(pt1 - pt2);
+    Point difference(pt1 - pt2);
     return exp(-std::abs(difference.norm()) / scaling_);
   }
-  NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const
+  Scalar operator() (UnsignedInteger i, UnsignedInteger j) const
   {
     return operator()(vertices_[i], vertices_[j]);
   }
@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
     indices.add(n);
     indices.add(n);
     const IntervalMesher intervalMesher(indices);
-    const NumericalPoint lowerBound(2, 0.0);
-    const NumericalPoint upperBound(2, 1.0);
+    const Point lowerBound(2, 0.0);
+    const Point upperBound(2, 1.0);
     const Mesh mesh2D(intervalMesher.build(Interval(lowerBound, upperBound)));
-    const NumericalSample vertices2D(mesh2D.getVertices());
-    NumericalSample vertices(vertices2D.getSize(), 3);
+    const Sample vertices2D(mesh2D.getVertices());
+    Sample vertices(vertices2D.getSize(), 3);
     for (UnsignedInteger i = 0; i < vertices2D.getSize(); ++i)
     {
       vertices[i][0] = vertices2D[i][0];
@@ -82,18 +82,18 @@ int main(int argc, char *argv[])
     hmat.assemble(simpleAssembly, 'L');
 
     HMatrix hmatRef(hmat);
-    const NumericalScalar refNorm = hmatRef.norm();
+    const Scalar refNorm = hmatRef.norm();
 
     hmat.factorize("LLt");
 
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
-    NumericalScalar threshold = 1.e-10;
+    Scalar threshold = 1.e-10;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
 
-    const NumericalScalar normL(hmat.norm());
-    const NumericalScalar alpha(0.1);
+    const Scalar normL(hmat.norm());
+    const Scalar alpha(0.1);
     hmat.scale(alpha);
-    fullprint << "|| L || - 10.0 * || 0.1 * L || " << ((std::abs(normL - hmat.norm()/alpha) < threshold) ? " < " : " > ") << threshold << std::endl;
+    fullprint << "|| L || - 10.0 * || 0.1 * L || " << ((std::abs(normL - hmat.norm() / alpha) < threshold) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)
   {

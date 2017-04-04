@@ -8,7 +8,7 @@ Available constructors:
 
 Parameters
 ----------
-evalImpl : :class:`~openturns.NumericalMathEvaluationImplementation`
+evalImpl : :class:`~openturns.EvaluationImplementation`
     Implementation of the evaluation of a function.
 epsilon : float, sequence of float
     Finite difference steps for each dimension.
@@ -51,7 +51,7 @@ dimension : int
 
 Returns
 -------
-epsilon : :class:`~openturns.NumericalPoint`
+epsilon : :class:`~openturns.Point`
     Finite difference steps for each dimension."
 
 // ---------------------------------------------------------------------
@@ -61,7 +61,7 @@ epsilon : :class:`~openturns.NumericalPoint`
 
 Returns
 -------
-evalImpl : :class:`~openturns.NumericalMathFunctionEvaluationImplementation`
+evalImpl : :class:`~openturns.EvaluationImplementation`
     Implementation of the evaluation of a function."
 
 // ---------------------------------------------------------------------

@@ -14,7 +14,7 @@ prior : :class:`~openturns.Distribution`
 conditional : :class:`~openturns.Distribution`
     Required distribution to define the likelihood of the underlying Bayesian
     statistical model.
-model : :class:`~openturns.NumericalMathFunction`
+model : :class:`~openturns.Function`
     Function required to define the likelihood.
 observations : 2-d sequence of float
     Observations required to define the likelihood.
@@ -67,19 +67,19 @@ Examples
 ...      0.0803625289211318, 1.01898069723583, 0.661725805623086,
 ...      -1.57581204592385, -2.95308465670895, -8.8878164296758,
 ...      -13.0812290405651]
->>> y_obs = ot.NumericalSample(y, obsDim)
+>>> y_obs = ot.Sample(y, obsDim)
 >>> # Parameters
->>> p = ot.NumericalSample(obsSize, chainDim)
+>>> p = ot.Sample(obsSize, chainDim)
 >>> for i in range(obsSize):
 ...     for j in range(chainDim):
 ...         p[i, j] = (-2 + 5.0 * i / 9.0) ** j
 >>> # Model
->>> fullModel = ot.NumericalMathFunction(
-...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'], ['z', 'sigma'],
+>>> fullModel = ot.SymbolicFunction(
+...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'],
 ...          ['p1*x1+p2*x2+p3*x3', '1.0'])
 >>> parametersSet = range(chainDim)
 >>> parametersValue = [0.0] * len(parametersSet)
->>> model = ot.NumericalMathFunction(fullModel, parametersSet, parametersValue)
+>>> model = ot.ParametricFunction(fullModel, parametersSet, parametersValue)
 >>> # Calibration parameters
 >>> calibrationColl = [ot.CalibrationStrategy()]*chainDim
 >>> # Proposal distribution
@@ -117,7 +117,7 @@ Examples
 
 Returns
 -------
-acceptanceRate : :class:`~openturns.NumericalPoint` of dimension :math:`d`
+acceptanceRate : :class:`~openturns.Point` of dimension :math:`d`
     Sequence whose the :math:`j^{th}` component corresponds to the acceptance
     rate of the candidates :math:`\vect{c}^k` obtained from a state
     :math:`\vect{\theta}^k` by only changing its :math:`j^{th}` component, that

@@ -35,7 +35,7 @@ static const Factory<NatafEllipticalCopulaGradient> Factory_NatafEllipticalCopul
 
 /* Default constructor */
 NatafEllipticalCopulaGradient::NatafEllipticalCopulaGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , standardDistribution_()
   , inverseCholesky_()
 {
@@ -45,7 +45,7 @@ NatafEllipticalCopulaGradient::NatafEllipticalCopulaGradient()
 /* Parameter constructor */
 NatafEllipticalCopulaGradient::NatafEllipticalCopulaGradient(const Distribution & standardDistribution,
     const TriangularMatrix & inverseCholesky)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , standardDistribution_(standardDistribution)
   , inverseCholesky_(inverseCholesky)
 {
@@ -81,14 +81,14 @@ String NatafEllipticalCopulaGradient::__repr__() const
  *               = GijQ'(xj)
  * thus, (DT)ij = Jji = GjiQ'(xi)
  */
-Matrix NatafEllipticalCopulaGradient::gradient(const NumericalPoint & inP) const
+Matrix NatafEllipticalCopulaGradient::gradient(const Point & inP) const
 {
   UnsignedInteger dimension = getInputDimension();
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   Matrix result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalScalar quantileDerivative = 1.0 / standardMarginal.computePDF(standardMarginal.computeQuantile(inP[i]));
+    Scalar quantileDerivative = 1.0 / standardMarginal.computePDF(standardMarginal.computeQuantile(inP[i]));
     for (UnsignedInteger j = i; j < dimension; ++j) result(i, j) = inverseCholesky_(j, i) * quantileDerivative;
   }
   return result;
@@ -109,7 +109,7 @@ UnsignedInteger NatafEllipticalCopulaGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafEllipticalCopulaGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "standardDistribution_", standardDistribution_ );
   adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
 }
@@ -117,7 +117,7 @@ void NatafEllipticalCopulaGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NatafEllipticalCopulaGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute( "standardDistribution_", standardDistribution_ );
   adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
 }

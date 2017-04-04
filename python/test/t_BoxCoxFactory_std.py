@@ -18,7 +18,7 @@ try:
 
     # Composite process
     process = CompositeProcess(
-        ValueFunction(NumericalMathFunction("x", "x+2")), whiteNoise)
+        ValueFunction(SymbolicFunction("x", "x+2")), whiteNoise)
     # A realization of the process
     timeSeries = process.getRealization()
     sample = timeSeries.getSample()
@@ -33,7 +33,7 @@ try:
     print("myBoxCox (sample)     =", factory.build(sample))
 
     # Creation of the BoxCoxTransform using shift
-    shift = NumericalPoint(1, 1.0)
+    shift = Point(1, 1.0)
     myBoxCoxShift = factory.build(timeSeries, shift)
 
     print("myBoxCox with shift (time-series)=", myBoxCoxShift)

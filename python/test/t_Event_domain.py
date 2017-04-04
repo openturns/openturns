@@ -20,7 +20,7 @@ try:
     inVars = Description(dim)
     for i in range(dim):
         inVars[i] = "x" + str(i)
-    model = NumericalMathFunction(inVars, inVars)
+    model = SymbolicFunction(inVars, inVars)
     # The output vector
     Y = RandomVector(model, X)
     # The domain: [0, 1]^dim

@@ -1,0 +1,11 @@
+Is history enabled for f? false
+input history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
+output history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
+Is history enabled for f? true
+input history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 data=[[0],[1],[2],[3]]
+output history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 data=[[0],[1],[4],[9]]
+Is history enabled for f? true
+input history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
+output history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
+input history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=1 data=[[0],[1],[2],[3],[0],[1],[2],[3]]
+output history=class=HistoryStrategy implementation=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=1 data=[[0],[1],[4],[9],[0],[1],[4],[9]]

@@ -26,7 +26,7 @@ anotherSample covariance= [[ 0.0847362 0.0847362 0.0847362 ]
 point=  [0.2,0.2,0.2] pdf= 0.2 cdf= 0.2
 Quantile= [0.5,0.5,0.5]
 CDF(quantile)= 0.5
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=3 values=[0.05,0.05,0.05]
+InverseSurvival= class=Point name=Unnamed dimension=3 values=[0.05,0.05,0.05]
 Survival(inverseSurvival)=0.950000
 margin= IndependentCopula(dimension = 1)
 margin PDF= 1.0

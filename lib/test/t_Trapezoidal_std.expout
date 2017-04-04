@@ -11,59 +11,59 @@ Distribution class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=3 d=14 h
 Distribution Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)
 Elliptical = false
 Continuous = true
-oneRealization=class=NumericalPoint name=Unnamed dimension=1 values=[6.23752]
-oneSample first=class=NumericalPoint name=Unnamed dimension=1 values=[9.63201] last=class=NumericalPoint name=Unnamed dimension=1 values=[4.32244]
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[5.52363]
+oneRealization=class=Point name=Unnamed dimension=1 values=[6.23752]
+oneSample first=class=Point name=Unnamed dimension=1 values=[9.63201] last=class=Point name=Unnamed dimension=1 values=[4.32244]
+mean=class=Point name=Unnamed dimension=1 values=[5.52363]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.34744]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.526327]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[2.33181]
+skewness=class=Point name=Unnamed dimension=1 values=[0.526327]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.33181]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=NumericalPoint name=Unnamed dimension=1 values=[1.1]
-ddf     =class=NumericalPoint name=Unnamed dimension=1 values=[0.675676]
-ddf (FD)=class=NumericalPoint name=Unnamed dimension=1 values=[0.675676]
+Point= class=Point name=Unnamed dimension=1 values=[1.1]
+ddf     =class=Point name=Unnamed dimension=1 values=[0.675676]
+ddf (FD)=class=Point name=Unnamed dimension=1 values=[0.675676]
 log pdf=-2.69463
 pdf     =0.0675676
 pdf (FD)=0.0675676
 cdf=0.00337838
 ccdf=0.996622
 survival=0.996622
-Inverse survival=class=NumericalPoint name=Unnamed dimension=1 values=[1.47]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[1.47]
 Survival(inverse survival)=0.95
 characteristic function=(-0.115059,0.038602)
 log characteristic function=(-2.10898,2.8179)
-pdf gradient     =class=NumericalPoint name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
-log-pdf gradient     =class=NumericalPoint name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
-log-pdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
-cdf gradient     =class=NumericalPoint name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
-cdf gradient (FD)=class=NumericalPoint name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
-quantile=class=NumericalPoint name=Unnamed dimension=1 values=[11.1469]
+pdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
+pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.333272,-0.333272,-0.00456538,-0.00456538]
+log-pdf gradient     =class=Point name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
+log-pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-4.93243,-4.93243,-0.0675676,-0.0675676]
+cdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
+cdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.0504474,-0.0166636,-0.000228269,-0.000228269]
+quantile=class=Point name=Unnamed dimension=1 values=[11.1469]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.05141] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[11.1725] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.05141] upper bound=class=Point name=Unnamed dimension=1 values=[11.1725] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)) level=3.35999
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 3, d = 14)) level=3.35999
 beta=0.0347356
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.285] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[11.9826] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.285] upper bound=class=Point name=Unnamed dimension=1 values=[11.9826] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[11.1469] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[11.1469] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1.47] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.47] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-mean=class=NumericalPoint name=Unnamed dimension=1 values=[5.48108]
-standard deviation=class=NumericalPoint name=Unnamed dimension=1 values=[3.02371]
-skewness=class=NumericalPoint name=Unnamed dimension=1 values=[0.548305]
-kurtosis=class=NumericalPoint name=Unnamed dimension=1 values=[2.39403]
+mean=class=Point name=Unnamed dimension=1 values=[5.48108]
+standard deviation=class=Point name=Unnamed dimension=1 values=[3.02371]
+skewness=class=Point name=Unnamed dimension=1 values=[0.548305]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.39403]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.1428]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[a : 1, b : 1.2, c : 3, d : 14]]
-standard moment n=0, value=class=NumericalPoint name=Unnamed dimension=1 values=[1]
-standard moment n=1, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.310603]
-standard moment n=2, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.312872]
-standard moment n=3, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.176411]
-standard moment n=4, value=class=NumericalPoint name=Unnamed dimension=1 values=[0.1781]
-standard moment n=5, value=class=NumericalPoint name=Unnamed dimension=1 values=[-0.120255]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[-0.310603]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.312872]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[-0.176411]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.1781]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[-0.120255]
 Standard representative=Trapezoidal(a = -1, b = -0.969231, c = -0.692308, d = 1)
 roughness=0.101047

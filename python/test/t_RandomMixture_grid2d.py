@@ -26,7 +26,7 @@ try:
     sigma = dist_2D.getStandardDeviation()
     xMin = mean - 2.9 * sigma
     xMax = mean + 2.9 * sigma
-    grid = NumericalSample()
+    grid = Sample()
     print("distribution = ", repr(dist_2D))
     print("range = ", dist_2D.getRange())
     print("mean = ",  dist_2D.getMean())

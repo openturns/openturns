@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
 
   try
   {
-    Multinomial distribution(5, NumericalPoint(3, 0.25));
+    Multinomial distribution(5, Point(3, 0.25));
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     MultinomialFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

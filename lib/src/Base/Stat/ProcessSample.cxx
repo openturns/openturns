@@ -52,7 +52,7 @@ ProcessSample::ProcessSample(const UnsignedInteger size,
                              const Field & field)
   : PersistentObject()
   , mesh_(field.getMesh())
-  , data_(NumericalSampleCollection(size, field.getValues()))
+  , data_(SampleCollection(size, field.getValues()))
 {
   // Nothing to do
 }
@@ -62,7 +62,7 @@ ProcessSample::ProcessSample(const Mesh & mesh,
                              const UnsignedInteger dimension)
   : PersistentObject()
   , mesh_(mesh)
-  , data_(NumericalSampleCollection(size, NumericalSample(mesh.getVerticesNumber(), dimension)))
+  , data_(SampleCollection(size, Sample(mesh.getVerticesNumber(), dimension)))
 {
   // Nothing to do
 }
@@ -105,7 +105,7 @@ void ProcessSample::add(const Field & field)
   else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimenson or its mesh are incompatible.";
 }
 
-void ProcessSample::add(const NumericalSample & values)
+void ProcessSample::add(const Sample & values)
 {
   if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their size=" << values.getSize() << " does not match the number of vertices=" << mesh_.getVerticesNumber() << " of the mesh.";
   if ((getSize() > 0) && (data_[0].getDimension() != values.getDimension())) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their dimension=" << values.getDimension() << " does not match the process sample dimension=" << data_[0].getDimension();
@@ -128,13 +128,13 @@ void ProcessSample::setField(const Field & field,
   data_[index] = field.getValues();
 }
 
-NumericalSample & ProcessSample::operator[] (const UnsignedInteger index)
+Sample & ProcessSample::operator[] (const UnsignedInteger index)
 {
   if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
-const NumericalSample & ProcessSample::operator[] (const UnsignedInteger index) const
+const Sample & ProcessSample::operator[] (const UnsignedInteger index) const
 {
   if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
@@ -170,25 +170,25 @@ Field ProcessSample::computeMean() const
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
-  NumericalSample meanValues(data_[0]);
+  Sample meanValues(data_[0]);
   for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
-  meanValues *= NumericalPoint(getDimension(), 1.0 / size);
+  meanValues *= Point(getDimension(), 1.0 / size);
   return Field(mesh_, meanValues);
 }
 
 /* Compute the sample of spatial means of each field */
-NumericalSample ProcessSample::computeTemporalMean() const
+Sample ProcessSample::computeTemporalMean() const
 {
   if (!mesh_.isRegular() || (mesh_.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the temporal mean is defined only when the mesh is regular and of dimension 1.";
   return computeSpatialMean();
 }
 
 /* Compute the sample of spatial means of each field */
-NumericalSample ProcessSample::computeSpatialMean() const
+Sample ProcessSample::computeSpatialMean() const
 {
   const UnsignedInteger size = getSize();
   const UnsignedInteger dimension = getDimension();
-  NumericalSample result(size, dimension);
+  Sample result(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].computeMean();
   return result;
 }
@@ -196,7 +196,7 @@ NumericalSample ProcessSample::computeSpatialMean() const
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
-Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) const
+Field ProcessSample::computeQuantilePerComponent(const Scalar prob) const
 {
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
@@ -204,11 +204,11 @@ Field ProcessSample::computeQuantilePerComponent(const NumericalScalar prob) con
   // This initialization set the correct time grid into result
   const UnsignedInteger dimension = data_[0].getDimension();
   const UnsignedInteger length = data_[0].getSize();
-  NumericalSample result(length, dimension);
+  Sample result(length, dimension);
   // Loop over the location indices
   for (UnsignedInteger i = 0; i < length; ++i)
   {
-    NumericalSample dataI(size, dimension);
+    Sample dataI(size, dimension);
     for (UnsignedInteger j = 0; j < size; ++j)
       dataI[j] = data_[j][i];
     result[i] = dataI.computeQuantilePerComponent(prob);

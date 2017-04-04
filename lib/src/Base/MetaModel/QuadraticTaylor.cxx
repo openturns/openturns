@@ -35,8 +35,8 @@ QuadraticTaylor::QuadraticTaylor()
 }
 
 /* Constructor with parameters */
-QuadraticTaylor::QuadraticTaylor(const NumericalPoint & center,
-                                 const NumericalMathFunction & inputFunction)
+QuadraticTaylor::QuadraticTaylor(const Point & center,
+                                 const Function & inputFunction)
   : PersistentObject(),
     center_(center),
     inputFunction_(inputFunction)
@@ -78,13 +78,13 @@ void QuadraticTaylor::run()
 }
 
 /* Center accessor */
-NumericalPoint QuadraticTaylor::getCenter() const
+Point QuadraticTaylor::getCenter() const
 {
   return center_;
 }
 
 /* Constant accessor */
-NumericalPoint QuadraticTaylor::getConstant() const
+Point QuadraticTaylor::getConstant() const
 {
   return constant_;
 }
@@ -102,13 +102,13 @@ SymmetricTensor QuadraticTaylor::getQuadratic() const
 }
 
 /* Function accessor */
-NumericalMathFunction QuadraticTaylor::getInputFunction() const
+Function QuadraticTaylor::getInputFunction() const
 {
   return inputFunction_;
 }
 
 /* Response surface accessor */
-NumericalMathFunction QuadraticTaylor::getResponseSurface() const
+Function QuadraticTaylor::getResponseSurface() const
 {
   return responseSurface_;
 }

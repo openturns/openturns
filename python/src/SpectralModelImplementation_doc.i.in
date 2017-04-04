@@ -104,7 +104,7 @@ OT_SpectralModel_draw_doc
 
 Returns
 -------
-amplitude : :class:`~openturns.NumericalPoint`
+amplitude : :class:`~openturns.Point`
     The used amplitude parameter."
 %enddef
 %feature("docstring") OT::SpectralModelImplementation::getAmplitude
@@ -130,7 +130,7 @@ OT_SpectralModel_getDimension_doc
 
 Returns
 -------
-scale : :class:`~openturns.NumericalPoint`
+scale : :class:`~openturns.Point`
     The used scale parameter."
 %enddef
 %feature("docstring") OT::SpectralModelImplementation::getScale
@@ -170,7 +170,7 @@ OT_SpectralModel_get_spatial_dimension_doc
 
 Parameters
 ----------
-amplitude : :class:`~openturns.NumericalPoint`
+amplitude : :class:`~openturns.Point`
     The amplitude parameter to be used in the spectral density function."
 %enddef
 %feature("docstring") OT::SpectralModelImplementation::setAmplitude
@@ -184,7 +184,7 @@ OT_SpectralModel_setAmplitude_doc
 
 Parameters
 ----------
-scale : :class:`~openturns.NumericalPoint`
+scale : :class:`~openturns.Point`
     The scale parameter to be used in the spectral density function.
     It should be of size dimension."
 %enddef

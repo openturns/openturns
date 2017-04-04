@@ -41,7 +41,7 @@ Geometric::Geometric()
 }
 
 /* Parameters constructor */
-Geometric::Geometric(const NumericalScalar p)
+Geometric::Geometric(const Scalar p)
   : DiscreteDistribution()
   , p_(0.)
 {
@@ -92,126 +92,126 @@ Geometric * Geometric::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void Geometric::computeRange()
 {
-  const NumericalPoint lowerBound(1, 0.0);
-  const NumericalPoint upperBound(DistributionImplementation::computeUpperBound());
+  const Point lowerBound(1, 0.0);
+  const Point upperBound(DistributionImplementation::computeUpperBound());
   const Interval::BoolCollection finiteLowerBound(1, true);
   const Interval::BoolCollection finiteUpperBound(1, false);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Geometric::getRealization() const
+Point Geometric::getRealization() const
 {
-  return NumericalPoint(1, ceil(std::log(RandomGenerator::Generate()) / log1p(-p_)));
+  return Point(1, ceil(std::log(RandomGenerator::Generate()) / log1p(-p_)));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Geometric::computePDF(const NumericalPoint & point) const
+Scalar Geometric::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
   return p_ * std::pow(1.0 - p_, k - 1.0);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Geometric::computeCDF(const NumericalPoint & point) const
+Scalar Geometric::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < 1.0) return 0.0;
   return 1.0 - std::pow(1.0 - p_, floor(k));
 }
 
-NumericalScalar Geometric::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar Geometric::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
+  const Scalar k = point[0];
   if (k < 1.0) return 1.0;
   return std::pow(1.0 - p_, floor(k));
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Geometric::computePDFGradient(const NumericalPoint & point) const
+Point Geometric::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = point[0];
-  if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, (1.0 - k * p_) * std::pow(1.0 - p_, k - 2.0));
+  const Scalar k = point[0];
+  if ((k < 1.0 - supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return Point(1, 0.0);
+  return Point(1, (1.0 - k * p_) * std::pow(1.0 - p_, k - 2.0));
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Geometric::computeCDFGradient(const NumericalPoint & point) const
+Point Geometric::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar k = floor(point[0]);
-  if ( k < 1.0 ) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, k * std::pow(1 - p_, k - 1.0));
+  const Scalar k = floor(point[0]);
+  if ( k < 1.0 ) return Point(1, 0.0);
+  return Point(1, k * std::pow(1 - p_, k - 1.0));
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Geometric::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Scalar Geometric::computeScalarQuantile(const Scalar prob,
+                                        const Bool tail) const
 {
   if (tail) return ceil(std::log(prob) / log1p(-p_));
   return ceil(log1p(-prob) / log1p(-p_));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Geometric::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Geometric::computeCharacteristicFunction(const Scalar x) const
 {
-  const NumericalComplex value(p_ / (std::exp(NumericalComplex(0.0, -x)) - (1.0 - p_)));
+  const Complex value(p_ / (std::exp(Complex(0.0, -x)) - (1.0 - p_)));
   return value;
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-NumericalComplex Geometric::computeGeneratingFunction(const NumericalComplex & z) const
+Complex Geometric::computeGeneratingFunction(const Complex & z) const
 {
   return p_ * z / (1.0 - (1.0 - p_) * z);
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Geometric::getSupport(const Interval & interval) const
+Sample Geometric::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   const UnsignedInteger kMin = static_cast< UnsignedInteger > (std::max(ceil(interval.getLowerBound()[0]), 0.0));
   const UnsignedInteger kMax = static_cast< UnsignedInteger > (floor(interval.getUpperBound()[0]));
-  NumericalSample result(0, 1);
+  Sample result(0, 1);
   for (UnsignedInteger k = kMin; k <= kMax; ++k)
-    result.add(NumericalPoint(1, k));
+    result.add(Point(1, k));
   return result;
 }
 
 /* Compute the mean of the distribution */
 void Geometric::computeMean() const
 {
-  mean_ = NumericalPoint(1, 1 / p_);
+  mean_ = Point(1, 1 / p_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Geometric::getStandardDeviation() const
+Point Geometric::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(1.0 - p_) / p_);
+  return Point(1, std::sqrt(1.0 - p_) / p_);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Geometric::getSkewness() const
+Point Geometric::getSkewness() const
 {
-  return NumericalPoint(1, (2.0 - p_) / std::sqrt(1.0 - p_));
+  return Point(1, (2.0 - p_) / std::sqrt(1.0 - p_));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Geometric::getKurtosis() const
+Point Geometric::getKurtosis() const
 {
-  return NumericalPoint(1, 9.0 + p_ * p_ / (1.0 - p_));
+  return Point(1, 9.0 + p_ * p_ / (1.0 - p_));
 }
 
 /* Compute the covariance of the distribution */
@@ -223,15 +223,15 @@ void Geometric::computeCovariance() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Geometric::getParameter() const
+Point Geometric::getParameter() const
 {
-  return NumericalPoint(1, p_);
+  return Point(1, p_);
 }
 
-void Geometric::setParameter(const NumericalPoint & parameter)
+void Geometric::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Geometric(parameter[0]);
   setWeight(w);
 }
@@ -243,7 +243,7 @@ Description Geometric::getParameterDescription() const
 }
 
 /* P accessor */
-void Geometric::setP(const NumericalScalar p)
+void Geometric::setP(const Scalar p)
 {
   if ( (p <= 0.0) || (p > 1.0) ) throw InvalidArgumentException(HERE) << "Error: p must be in ]0, 1], here p=" << p;
   if (p != p_)
@@ -256,7 +256,7 @@ void Geometric::setP(const NumericalScalar p)
 }
 
 /* P accessor */
-NumericalScalar Geometric::getP() const
+Scalar Geometric::getP() const
 {
   return p_;
 }

@@ -65,13 +65,13 @@ int main(int argc, char *argv[])
       fullprint << "conditioning distribution=" << conditioningDistributionCollection[i].__str__() << std::endl;
       Distribution observationsDistribution(conditionedDistribution);
       observationsDistribution.setParameter(conditioningDistributionCollection[i].getMean());
-      NumericalSample observations(observationsDistribution.getSample(observationsSize));
+      Sample observations(observationsDistribution.getSample(observationsSize));
       PosteriorDistribution distribution(ConditionalDistribution(conditionedDistribution, conditioningDistributionCollection[i]), observations);
       UnsignedInteger dim = distribution.getDimension();
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
       fullprint << "range=" << distribution.getRange() << std::endl;
-      NumericalPoint mean(distribution.getMean());
+      Point mean(distribution.getMean());
       fullprint << "Mean " << mean << std::endl;
       fullprint << "Covariance " << distribution.getCovariance() << std::endl;
       // Is this distribution an elliptical distribution?
@@ -84,32 +84,32 @@ int main(int argc, char *argv[])
       fullprint << "Independent copula= " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
 
       // Test for realization of distribution
-      NumericalPoint oneRealization = distribution.getRealization();
+      Point oneRealization = distribution.getRealization();
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
       UnsignedInteger size = 10;
-      NumericalSample oneSample = distribution.getSample(size);
+      Sample oneSample = distribution.getSample(size);
       fullprint << "oneSample=" << oneSample << std::endl;
 
       // Test for sampling
 //       size = 10000;
-//       NumericalSample anotherSample = distribution.getSample(size);
+//       Sample anotherSample = distribution.getSample(size);
 //       fullprint << "anotherSample mean=" << anotherSample.computeMean() << std::endl;
 //       fullprint << "anotherSample covariance=" << anotherSample.computeCovariance() << std::endl;
 
       // Define a point
-      NumericalPoint zero(dim, 0.0);
+      Point zero(dim, 0.0);
 
       // Show PDF and CDF of zero point
-      NumericalScalar zeroPDF = distribution.computePDF(zero);
-      NumericalScalar zeroCDF = distribution.computeCDF(zero);
+      Scalar zeroPDF = distribution.computePDF(zero);
+      Scalar zeroCDF = distribution.computeCDF(zero);
       fullprint << "Zero point= " << zero
                 << " pdf=" << zeroPDF
                 << " cdf=" << zeroCDF
                 << std::endl;
       // Get 95% quantile
-      NumericalPoint quantile = distribution.computeQuantile(0.95);
+      Point quantile = distribution.computeQuantile(0.95);
       fullprint << "Quantile=" << quantile << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
       // Extract the marginals
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
       {
         Distribution margin(distribution.getMarginal(j));
         fullprint << "margin=" << margin << std::endl;
-        fullprint << "margin PDF=" << margin.computePDF(NumericalPoint(1)) << std::endl;
-        fullprint << "margin CDF=" << margin.computeCDF(NumericalPoint(1)) << std::endl;
+        fullprint << "margin PDF=" << margin.computePDF(Point(1)) << std::endl;
+        fullprint << "margin CDF=" << margin.computeCDF(Point(1)) << std::endl;
         fullprint << "margin quantile=" << margin.computeQuantile(0.95) << std::endl;
         fullprint << "margin realization=" << margin.getRealization() << std::endl;
       }

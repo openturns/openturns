@@ -52,13 +52,13 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** FourierSeries are evaluated as functors */
-  NumericalScalar operator() (const NumericalScalar x) const;
+  Scalar operator() (const Scalar x) const;
 
   /** FourierSeries gradient */
-  NumericalScalar gradient(const NumericalScalar x) const;
+  Scalar gradient(const Scalar x) const;
 
   /** FourierSeries hessian */
-  NumericalScalar hessian(const NumericalScalar x) const;
+  Scalar hessian(const Scalar x) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

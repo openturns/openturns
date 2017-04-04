@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
   try
   {
     UnsignedInteger dim = 3;
-    NumericalPoint mean(dim);
-    NumericalPoint sigma(dim);
+    Point mean(dim);
+    Point sigma(dim);
     CorrelationMatrix R(dim);
     for (UnsignedInteger i = 0; i < dim; i++)
     {
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     }
     Normal distribution(mean, sigma, R);
     UnsignedInteger size = 10000;
-    NumericalSample sample(distribution.getSample(size));
+    Sample sample(distribution.getSample(size));
     NormalFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));

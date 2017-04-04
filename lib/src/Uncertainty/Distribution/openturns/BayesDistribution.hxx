@@ -25,7 +25,7 @@
 #include "openturns/ContinuousDistribution.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +47,7 @@ public:
   /** Parameters constructor */
   BayesDistribution(const Distribution & conditionedDistribution,
                     const Distribution & conditioningDistribution,
-                    const NumericalMathFunction & linkFunction);
+                    const Function & linkFunction);
 
   /** Parameters constructor */
   BayesDistribution(const Distribution & conditionedDistribution,
@@ -69,11 +69,11 @@ public:
   virtual BayesDistribution * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Compute the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /* Interface specific to BayesDistribution */
 
@@ -86,8 +86,8 @@ public:
   Distribution getConditioningDistribution() const;
 
   /** Link function accessor */
-  void setLinkFunction(const NumericalMathFunction & linkFunction);
-  NumericalMathFunction getLinkFunction() const;
+  void setLinkFunction(const Function & linkFunction);
+  Function getLinkFunction() const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -109,7 +109,7 @@ protected:
   /** Method to set simultaneously the conditioning distribution, the conditioned distribution and the link function */
   void setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
       const Distribution & conditioningDistribution,
-      const NumericalMathFunction & linkFunction);
+      const Function & linkFunction);
 
   /** The conditioned distribution, i.e L(X|Theta) */
   Distribution conditionedDistribution_;
@@ -118,7 +118,7 @@ protected:
   Distribution conditioningDistribution_;
 
   /** Values of the Dirac marginals */
-  NumericalMathFunction linkFunction_;
+  Function linkFunction_;
 
 }; /* class BayesDistribution */
 

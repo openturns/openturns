@@ -3,9 +3,9 @@
 
 Parameters
 ----------
-values : :class:`~openturns.NumericalSample`
+values : :class:`~openturns.Sample`
     Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
-noises : :class:`~openturns.NumericalSample`
+noises : :class:`~openturns.Sample`
     Last :math:`q` values of the white noise defining the :math:`ARMA(p,q)` process of dimension :math:`d`.
 
 Examples
@@ -13,8 +13,8 @@ Examples
 Define a state of an :math:`ARMA(4,2)` process of dimension 1:
 
 >>> import openturns as ot
->>> myLastValues = ot.NumericalSample([[0.6], [0.7], [0.3], [0.2]])
->>> myLastNoiseValues = ot.NumericalSample([[1.2], [1.8]])
+>>> myLastValues = ot.Sample([[0.6], [0.7], [0.3], [0.2]])
+>>> myLastNoiseValues = ot.Sample([[1.2], [1.8]])
 >>> myARMAState = ot.ARMAState(myLastValues, myLastNoiseValues)
 "
 
@@ -35,7 +35,7 @@ dimension : int
 
 Returns
 -------
-values : :class:`~openturns.NumericalSample` of size :math:`p` and dimension :math:`d`
+values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
     Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
 "
 
@@ -46,7 +46,7 @@ values : :class:`~openturns.NumericalSample` of size :math:`p` and dimension :ma
 
 Parameters
 ----------
-values : :class:`~openturns.NumericalSample` of size :math:`p` and dimension :math:`d`
+values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
     Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
 "
 
@@ -57,7 +57,7 @@ values : :class:`~openturns.NumericalSample` of size :math:`p` and dimension :ma
 
 Returns
 -------
-noises : :class:`~openturns.NumericalSample` of size :math:`q` and dimension :math:`d`
+noises : :class:`~openturns.Sample` of size :math:`q` and dimension :math:`d`
     Last :math:`q` values of the white noise of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
 "
 // ---------------------------------------------------------------------
@@ -67,6 +67,6 @@ noises : :class:`~openturns.NumericalSample` of size :math:`q` and dimension :ma
 
 Parameters
 ----------
-noises : :class:`~openturns.NumericalSample` of size :math:`q` and dimension :math:`d`
+noises : :class:`~openturns.Sample` of size :math:`q` and dimension :math:`d`
     Last :math:`q` values of the white noise of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
 "

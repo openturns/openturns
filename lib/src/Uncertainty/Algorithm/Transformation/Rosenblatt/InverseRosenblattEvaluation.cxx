@@ -32,7 +32,7 @@ static const Factory<InverseRosenblattEvaluation> Factory_InverseRosenblattEvalu
 
 /* Default constructor */
 InverseRosenblattEvaluation::InverseRosenblattEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_()
 {
   // Nothing to do
@@ -40,7 +40,7 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation()
 
 /* Parameter constructor */
 InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & distribution)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_(distribution)
 {
   Description description(Description::BuildDefault(distribution.getDimension(), "X"));
@@ -55,12 +55,12 @@ InverseRosenblattEvaluation * InverseRosenblattEvaluation::clone() const
 }
 
 /* Evaluation */
-NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & inP) const
+Point InverseRosenblattEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
-  NumericalPoint result(dimension);
-  NumericalPoint y(0);
+  Point result(dimension);
+  Point y(0);
   // Apply conditional Quantile o Phi over the components
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -86,9 +86,9 @@ NumericalPoint InverseRosenblattEvaluation::operator () (const NumericalPoint & 
  *       = 0
  * => dQ/dp(y, p) = - dF/dp(Q(y, p), p) / f(Q(y, p), p)
  */
-Matrix InverseRosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix InverseRosenblattEvaluation::parameterGradient(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient(const Point & inP) const";
 }
 
 /* Accessor for input point dimension */
@@ -125,14 +125,14 @@ String InverseRosenblattEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void InverseRosenblattEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseRosenblattEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "distribution_", distribution_ );
 }
 

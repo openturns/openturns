@@ -62,7 +62,7 @@ String Hamming::__str__(const String & offset) const
 }
 
 /* Evaluation of Hamming filter */
-NumericalScalar Hamming::operator()(const NumericalScalar t) const
+Scalar Hamming::operator()(const Scalar t) const
 {
   if ((t < 0.0) || (t > 1.0))
     return 0.0;

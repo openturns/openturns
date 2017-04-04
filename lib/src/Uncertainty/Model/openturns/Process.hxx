@@ -90,7 +90,7 @@ public:
   Field getRealization() const;
 
   /** Continuous realization accessor */
-  NumericalMathFunction getContinuousRealization() const;
+  Function getContinuousRealization() const;
 
   /** TimeGrid accessor */
   RegularGrid getTimeGrid() const;

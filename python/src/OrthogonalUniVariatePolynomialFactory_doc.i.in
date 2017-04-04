@@ -45,7 +45,7 @@ k : int, :math:`0 \leq k`
 
 Returns
 -------
-coefficients : :class:`~openturns.NumericalPoint`
+coefficients : :class:`~openturns.Point`
     Coefficients of the requested orthogonal univariate polynomial.
 
 Examples
@@ -70,7 +70,7 @@ k : int, :math:`0 \leq k`
 
 Returns
 -------
-recurrence_coefficients : list of :class:`~openturns.NumericalPoint`
+recurrence_coefficients : list of :class:`~openturns.Point`
     All the tecurrence coefficients up to the requested order.
 
 Examples
@@ -129,9 +129,9 @@ k : int, :math:`0 < k`
 
 Returns
 -------
-nodes : :class:`~openturns.NumericalPoint`
+nodes : :class:`~openturns.Point`
     The nodes of the :math:`k`-th order quadrature scheme.
-weights : :class:`~openturns.NumericalPoint`
+weights : :class:`~openturns.Point`
     The weights of the :math:`k`-th order quadrature scheme.
 
 Examples
@@ -170,7 +170,7 @@ three consecutive polynomials as follows:
 
 Returns
 -------
-recurrence_coefficients : :class:`~openturns.NumericalPoint`
+recurrence_coefficients : :class:`~openturns.Point`
     The recurrence coefficients of the :math:`k`-th order orthogonal
     univariate polynomial.
 
@@ -198,7 +198,7 @@ k : int, :math:`k > 0`
 
 Returns
 -------
-roots : :class:`~openturns.NumericalPoint`
+roots : :class:`~openturns.Point`
     The roots of the :math:`k`-th order orthogonal univariate polynomial.
 
 Examples

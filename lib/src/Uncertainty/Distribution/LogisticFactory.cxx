@@ -44,12 +44,12 @@ LogisticFactory * LogisticFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-LogisticFactory::Implementation LogisticFactory::build(const NumericalSample & sample) const
+LogisticFactory::Implementation LogisticFactory::build(const Sample & sample) const
 {
   return buildAsLogistic(sample).clone();
 }
 
-LogisticFactory::Implementation LogisticFactory::build(const NumericalPoint & parameters) const
+LogisticFactory::Implementation LogisticFactory::build(const Point & parameters) const
 {
   return buildAsLogistic(parameters).clone();
 }
@@ -59,24 +59,24 @@ LogisticFactory::Implementation LogisticFactory::build() const
   return buildAsLogistic().clone();
 }
 
-DistributionFactoryResult LogisticFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult LogisticFactory::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample, true);
 }
 
-Logistic LogisticFactory::buildAsLogistic(const NumericalSample & sample) const
+Logistic LogisticFactory::buildAsLogistic(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Logistic distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Logistic distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar alpha = sample.computeMean()[0];
-  NumericalScalar beta = sample.computeStandardDeviationPerComponent()[0] * SpecFunc::SQRT3_PI;
-  if (beta <= 0.0) throw InvalidArgumentException(HERE) << "Error: can build a Logistic distribution only if beta > 0.0, here beta=" << beta;
+  Scalar alpha = sample.computeMean()[0];
+  Scalar beta = sample.computeStandardDeviationPerComponent()[0] * SpecFunc::SQRT3_PI;
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Logistic distribution only if beta > 0.0, here beta=" << beta;
   Logistic result(alpha, beta);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-Logistic LogisticFactory::buildAsLogistic(const NumericalPoint & parameters) const
+Logistic LogisticFactory::buildAsLogistic(const Point & parameters) const
 {
   try
   {

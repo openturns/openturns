@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/DatabaseNumericalMathEvaluationImplementation.hxx"
+#include "openturns/DatabaseEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -27,18 +27,18 @@ CLASSNAMEINIT(DatabaseFunction);
 
 /* Default constructor */
 DatabaseFunction::DatabaseFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
-DatabaseFunction::DatabaseFunction (const NumericalSample & inputSample,
-                                    const NumericalSample & outputSample,
+DatabaseFunction::DatabaseFunction (const Sample & inputSample,
+                                    const Sample & outputSample,
                                     const Bool enableCache)
-  : NumericalMathFunction()
+  : Function()
 {
-  setEvaluation(new DatabaseNumericalMathEvaluationImplementation(inputSample, outputSample, enableCache));
+  setEvaluation(new DatabaseEvaluation(inputSample, outputSample, enableCache));
 }
 
 

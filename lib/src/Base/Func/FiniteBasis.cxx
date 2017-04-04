@@ -39,7 +39,7 @@ FiniteBasis::FiniteBasis(const UnsignedInteger size)
 }
 
 
-FiniteBasis::FiniteBasis(const NumericalMathFunctionCollection & collection)
+FiniteBasis::FiniteBasis(const FunctionCollection & collection)
   : BasisImplementation()
   , collection_(collection)
 {
@@ -53,14 +53,14 @@ FiniteBasis * FiniteBasis::clone() const
   return new FiniteBasis(*this);
 }
 
-/* Build the NumericalMathFunction of the given index */
-NumericalMathFunction FiniteBasis::build(const UnsignedInteger index) const
+/* Build the Function of the given index */
+Function FiniteBasis::build(const UnsignedInteger index) const
 {
   if (index >= collection_.getSize()) throw InvalidArgumentException(HERE) << "Cannot build " << index << "-th term";
   return collection_[index];
 }
 
-NumericalMathFunction & FiniteBasis::operator[](const UnsignedInteger index)
+Function & FiniteBasis::operator[](const UnsignedInteger index)
 {
   return collection_[index];
 }
@@ -86,7 +86,7 @@ UnsignedInteger FiniteBasis::getSize() const
   return collection_.getSize();
 }
 
-void FiniteBasis::add(const NumericalMathFunction & elt)
+void FiniteBasis::add(const Function & elt)
 {
   collection_.add(elt);
 }

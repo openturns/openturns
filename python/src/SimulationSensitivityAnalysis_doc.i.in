@@ -12,7 +12,7 @@ Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
     Input sample and output sample of a model evaluated apart.
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     An isoprobabilistic transformation function.
 comparisonOp : :class:`~openturns.ComparisonOperator`
     A comparison operator.
@@ -42,7 +42,7 @@ The simulation sensitivity analysis is based on:
 
 Returns
 -------
-impFactors : :class:`~openturns.NumericalPoint`
+impFactors : :class:`~openturns.Point`
     The importance factors.
 
 Notes
@@ -79,7 +79,7 @@ Be careful: this notion is only valid for :class:`~openturns.MonteCarlo` or
 
 Returns
 -------
-mean : :class:`~openturns.NumericalPoint`
+mean : :class:`~openturns.Point`
     The mean point in the failure domain.
 
 Notes
@@ -141,7 +141,7 @@ operator : :class:`~openturns.ComparisonOperator`
 
 Returns
 -------
-inputSample : :class:`~openturns.NumericalSample`
+inputSample : :class:`~openturns.Sample`
     The input sample."
 
 // ---------------------------------------------------------------------
@@ -151,7 +151,7 @@ inputSample : :class:`~openturns.NumericalSample`
 
 Returns
 -------
-outputSample : :class:`~openturns.NumericalSample`
+outputSample : :class:`~openturns.Sample`
     The output sample."
 
 // ---------------------------------------------------------------------
@@ -171,7 +171,7 @@ s : float
 
 Returns
 -------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     The isoprobabilistic transformation function."
 
 // ---------------------------------------------------------------------

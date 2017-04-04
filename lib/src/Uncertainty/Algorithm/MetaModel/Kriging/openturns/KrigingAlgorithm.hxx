@@ -51,30 +51,30 @@ public:
   KrigingAlgorithm();
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalSample & outputSample,
+  KrigingAlgorithm (const Sample & inputSample,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const Basis & basis,
                     const Bool normalize = true);
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalMathFunction & inputTransformation,
-                    const NumericalSample & outputSample,
+  KrigingAlgorithm (const Sample & inputSample,
+                    const Function & inputTransformation,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const Basis & basis);
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalSample & outputSample,
+  KrigingAlgorithm (const Sample & inputSample,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const BasisCollection & basisCollection,
                     const Bool normalize = true);
 
   /** Constructor */
-  KrigingAlgorithm (const NumericalSample & inputSample,
-                    const NumericalMathFunction & inputTransformation,
-                    const NumericalSample & outputSample,
+  KrigingAlgorithm (const Sample & inputSample,
+                    const Function & inputTransformation,
+                    const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
                     const BasisCollection & basisCollection);
 
@@ -88,8 +88,8 @@ public:
   void run();
 
   /** Sample accessors */
-  NumericalSample getInputSample() const;
-  NumericalSample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** result accessor */
   KrigingResult getResult();
@@ -107,15 +107,15 @@ public:
   Interval getOptimizationBounds() const;
 
   /** Log-Likelihood function accessor */
-  NumericalMathFunction getReducedLogLikelihoodFunction();
+  Function getReducedLogLikelihoodFunction();
 
   /** Optimization flag accessor */
   Bool getOptimizeParameters() const;
   void setOptimizeParameters(const Bool optimizeParameters);
 
   /** Observation noise accessor */
-  void setNoise(const NumericalPoint & noise);
-  NumericalPoint getNoise() const;
+  void setNoise(const Point & noise);
+  Point getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -134,18 +134,18 @@ protected:
 private:
 
   // The input data
-  NumericalSample inputSample_;
+  Sample inputSample_;
   // The associated output data
-  NumericalSample outputSample_;
+  Sample outputSample_;
   Bool normalize_;
   // The covariance model parametric family
   CovarianceModel covarianceModel_;
   // Underlying algo used for the evaluation of parameters
   GeneralLinearModelAlgorithm glmAlgo_;
   // The coefficients of the current output deterministic trend
-  mutable NumericalPoint gamma_;
+  mutable Point gamma_;
   // Temporarly used to compute gamma
-  mutable NumericalPoint rho_;
+  mutable Point rho_;
 
   /** Result */
   KrigingResult result_;

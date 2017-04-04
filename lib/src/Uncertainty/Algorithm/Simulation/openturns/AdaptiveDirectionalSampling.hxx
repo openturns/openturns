@@ -4,19 +4,18 @@
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License.
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- *  This library is distributed in the hope that it will be useful
+ *  This library is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
  *
  *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #ifndef OPENTURNS_ADAPTATIVEDIRECTIONALSAMPLING_HXX
@@ -24,7 +23,7 @@
 
 #include "openturns/Simulation.hxx"
 #include "openturns/StorageManager.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/RootStrategy.hxx"
 #include "openturns/SamplingStrategy.hxx"
@@ -65,12 +64,12 @@ public:
   SamplingStrategy getSamplingStrategy() const;
 
   /** Gamma accessor */
-  void setGamma(const NumericalPoint & gamma);
-  NumericalPoint getGamma() const;
+  void setGamma(const Point & gamma);
+  Point getGamma() const;
 
   /** Quadrant orientation_ accessor */
-  void setQuadrantOrientation(const NumericalPoint & quadrantOrientation);
-  NumericalPoint getQuadrantOrientation() const;
+  void setQuadrantOrientation(const Point & quadrantOrientation);
+  Point getQuadrantOrientation() const;
 
   /** Use partial stratification */
   void setPartialStratification(Bool partialStratification);
@@ -81,14 +80,14 @@ public:
   UnsignedInteger getMaximumStratificationDimension() const;
 
   /** T statistic accessor */
-  NumericalPoint getTStatistic() const;
+  Point getTStatistic() const;
 
   /** Performs the actual computation. */
   virtual void run();
 
 private:
   /** Compute the block sample and the points that realized the event */
-  virtual NumericalSample computeBlockSample();
+  virtual Sample computeBlockSample();
 
   StandardEvent standardEvent_;
 
@@ -96,10 +95,10 @@ private:
   SamplingStrategy samplingStrategy_;
 
   // Repartition of points in learning/simulation steps
-  NumericalPoint gamma_;
+  Point gamma_;
 
   // Quadrant orientation
-  NumericalPoint quadrantOrientation_;
+  Point quadrantOrientation_;
 
   // Use partial stratification
   Bool partialStratification_;
@@ -108,7 +107,7 @@ private:
   UnsignedInteger maximumStratificationDimension_;
 
   // T statistic
-  NumericalPoint T_;
+  Point T_;
 
 }; /* class AdaptiveDirectionalSampling */
 

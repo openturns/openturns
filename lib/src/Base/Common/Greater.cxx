@@ -51,8 +51,8 @@ Greater * Greater::clone() const
 }
 
 /* Return true if comparison succeeds */
-Bool Greater::operator() (const NumericalScalar a,
-                          const NumericalScalar b) const
+Bool Greater::operator() (const Scalar a,
+                          const Scalar b) const
 {
   return (a > b);
 }

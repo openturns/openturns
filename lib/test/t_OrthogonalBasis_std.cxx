@@ -39,10 +39,10 @@ int main(int argc, char *argv[])
     OrthogonalProductPolynomialFactory basisFactory(polynomCollection);
     OrthogonalBasis basis(basisFactory);
     fullprint << "Basis=" << basis << std::endl;
-    NumericalPoint point(dim, 0.5);
+    Point point(dim, 0.5);
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
-      NumericalMathFunction f(basis.build(i));
+      Function f(basis.build(i));
       fullprint << "i=" << i << " f(point)=" << f(point) << std::endl;
     }
   }

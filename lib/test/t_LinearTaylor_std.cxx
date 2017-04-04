@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalScalar eps = 0.2;
+    Scalar eps = 0.2;
     /** Instance creation */
     Description input(2);
     input[0] = "x1";
@@ -44,20 +44,20 @@ int main(int argc, char *argv[])
     formula[0] = "x1*sin(x2)";
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
-    NumericalMathFunction myFunc(input, output, formula);
-    NumericalPoint center(myFunc.getInputDimension());
+    Function myFunc(input, output, formula);
+    Point center(myFunc.getInputDimension());
     for(UnsignedInteger i = 0; i < center.getDimension(); i++)
     {
       center[i] = 1.0 + i;
     }
     LinearTaylor myTaylor(center, myFunc);
     myTaylor.run();
-    NumericalMathFunction responseSurface(myTaylor.getResponseSurface());
+    Function responseSurface(myTaylor.getResponseSurface());
     fullprint << "myTaylor=" << myTaylor << std::endl;
     fullprint << "responseSurface=" << responseSurface << std::endl;
     fullprint << "myFunc(" << center << ")=" << myFunc(center) << std::endl;
     fullprint << "responseSurface(" << center << ")=" << responseSurface(center) << std::endl;
-    NumericalPoint in(center);
+    Point in(center);
     in[0] += eps;
     in[1] -= eps / 2;
     fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;

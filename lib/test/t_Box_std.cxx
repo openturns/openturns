@@ -31,13 +31,13 @@ int main(int argc, char *argv[])
 
   try
   {
-    NumericalPoint levels(2, 0.0);
+    Point levels(2, 0.0);
     levels.setName("levels");
     levels[0] = 4;
     levels[1] = 4;
     Box myPlane(levels);
     fullprint << "myPlane = " << myPlane << std::endl;
-    NumericalSample sample(myPlane.generate());
+    Sample sample(myPlane.generate());
     fullprint << "sample = " << sample << std::endl;
   }
   catch (TestFailed & ex)

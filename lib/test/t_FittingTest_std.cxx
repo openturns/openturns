@@ -86,11 +86,11 @@ int main(int argc, char *argv[])
   distributionCollection.add(poisson);
   discreteDistributionCollection.add(poisson);
 
-  NumericalSample x(3, 1);
+  Sample x(3, 1);
   x[0][0] = 1.0;
   x[1][0] = 2.0;
   x[2][0] = 3.0;
-  NumericalPoint p(3);
+  Point p(3);
   p[0] = 0.3;
   p[1] = 0.2;
   p[2] = 0.5;
@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
   UnsignedInteger continuousDistributionNumber = continuousDistributionCollection.getSize();
   UnsignedInteger discreteDistributionNumber = discreteDistributionCollection.getSize();
   UnsignedInteger distributionNumber = continuousDistributionNumber + discreteDistributionNumber;
-  Collection<NumericalSample> sampleCollection(distributionNumber);
-  Collection<NumericalSample> continuousSampleCollection(continuousDistributionNumber);
-  Collection<NumericalSample> discreteSampleCollection(discreteDistributionNumber);
+  Collection<Sample> sampleCollection(distributionNumber);
+  Collection<Sample> continuousSampleCollection(continuousDistributionNumber);
+  Collection<Sample> discreteSampleCollection(discreteDistributionNumber);
   for (UnsignedInteger i = 0; i < continuousDistributionNumber; i++)
   {
     continuousSampleCollection[i] = continuousDistributionCollection[i].getSample(size);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
   factoryCollection.add(UniformFactory());
   factoryCollection.add(BetaFactory());
   factoryCollection.add(NormalFactory());
-  NumericalSample aSample(Uniform(-1.5, 2.5).getSample(size));
+  Sample aSample(Uniform(-1.5, 2.5).getSample(size));
   TestResult bestResult;
   fullprint << "best model BIC=" << FittingTest::BestModelBIC(aSample, factoryCollection) << std::endl;
   fullprint << "best model Kolmogorov=" << FittingTest::BestModelKolmogorov(aSample, factoryCollection, bestResult) << std::endl;
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < distributionNumber; j++)
     {
-      const NumericalScalar value = FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0);
+      const Scalar value = FittingTest::BIC(sampleCollection[i], distributionCollection[j], 0);
       resultBIC(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < continuousDistributionNumber; j++)
     {
-      const NumericalScalar value = FittingTest::Kolmogorov(continuousSampleCollection[i], continuousDistributionCollection[j], 0.95, 0).getPValue();
+      const Scalar value = FittingTest::Kolmogorov(continuousSampleCollection[i], continuousDistributionCollection[j], 0.95, 0).getPValue();
       resultKolmogorov(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
   {
     for (UnsignedInteger j = 0; j < discreteDistributionNumber - 1; j++)
     {
-      const NumericalScalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.95, 0).getPValue();
+      const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.95, 0).getPValue();
       resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
     }
   }

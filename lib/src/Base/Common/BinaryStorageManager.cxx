@@ -107,7 +107,7 @@ void writeToFile<String>( int fd, const String & st )
 
 template <>
 inline
-void writeToFile<NumericalComplex>( int fd, const NumericalComplex & cpx )
+void writeToFile<Complex>( int fd, const Complex & cpx )
 {
   writeToFile( fd, cpx.real() );
   writeToFile( fd, cpx.imag() );
@@ -136,7 +136,7 @@ void readFromFile<String>( int fd, String & st )
 
 template <>
 inline
-void readFromFile<NumericalComplex>( int fd, NumericalComplex & cpx )
+void readFromFile<Complex>( int fd, Complex & cpx )
 {
   readFromFile( fd, cpx.real() );
   readFromFile( fd, cpx.imag() );
@@ -570,16 +570,16 @@ void fromStringConverter(const String & st, _Tp & value)
 
 //       template <>
 //       inline
-//       void fromNodeConverter<BIN_STMGR::numericalcomplex_tag,NumericalComplex>(XML::Node node,
-//                                                                  NumericalComplex & value)
+//       void fromNodeConverter<BIN_STMGR::numericalcomplex_tag,Complex>(XML::Node node,
+//                                                                  Complex & value)
 //       {
 //      XML::Node node_real = XML::FindElementByName( node, BIN_STMGR::real_tag::Get() );
 //      XML::Node node_imag = XML::FindElementByName( node, BIN_STMGR::imag_tag::Get() );
-//      NumericalScalar real = -1.0;
-//      NumericalScalar imag = -1.0;
+//      Scalar real = -1.0;
+//      Scalar imag = -1.0;
 //      fromStringConverter( getValueToConvert<BIN_STMGR::real_tag>( node_real ), real );
 //      fromStringConverter( getValueToConvert<BIN_STMGR::imag_tag>( node_imag ), imag );
-//      value = NumericalComplex( real,imag );
+//      value = Complex( real,imag );
 //       }
 
 
@@ -608,9 +608,9 @@ void AttributeWriter(Pointer<StorageManager::InternalObject> & p_obj,
 
 template <>
 inline
-void AttributeWriter<NumericalComplex>(Pointer<StorageManager::InternalObject> & p_obj,
+void AttributeWriter<Complex>(Pointer<StorageManager::InternalObject> & p_obj,
                                        const String & name,
-                                       NumericalComplex value)
+                                       Complex value)
 {
   assert(p_obj);
   //      XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
@@ -672,10 +672,10 @@ void AttributeReader(TAG tag,
 
 //       template <>
 //       inline
-//       void IndexedValueWriter<BIN_STMGR::numericalcomplex_tag,NumericalComplex>(BIN_STMGR::numericalcomplex_tag tag,
+//       void IndexedValueWriter<BIN_STMGR::numericalcomplex_tag,Complex>(BIN_STMGR::numericalcomplex_tag tag,
 //                                                                   Pointer<StorageManager::InternalObject> & p_obj,
 //                                                                   UnsignedInteger index,
-//                                                                   NumericalComplex value)
+//                                                                   Complex value)
 //       {
 //      assert(p_obj);
 //      XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);
@@ -865,13 +865,13 @@ void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
 
 
 
-/************ Type = NumericalScalar ************/
+/************ Type = Scalar ************/
 
 
 /* Add an attribute to an internal object */
 void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
                                         const String & name,
-                                        NumericalScalar value)
+                                        Scalar value)
 {
   writeToFile( filefd_, name );
   writeToFile( filefd_, value );
@@ -880,7 +880,7 @@ void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 /* Read an attribute */
 void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
     const String & name,
-    NumericalScalar & value)
+    Scalar & value)
 {
   off64_t pos = lseek64( filefd_, 0, SEEK_CUR );
   String token;
@@ -893,7 +893,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalScalar value)
+    Scalar value)
 {
   writeToFile( filefd_, value );
 }
@@ -901,7 +901,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalScalar & value)
+    Scalar & value)
 {
   readFromFile( filefd_, value );
 }
@@ -909,13 +909,13 @@ void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
 
 
 
-/************ Type = NumericalComplex ************/
+/************ Type = Complex ************/
 
 
 /* Add an attribute to an internal object */
 void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
                                         const String & name,
-                                        NumericalComplex value)
+                                        Complex value)
 {
   writeToFile( filefd_, name );
   writeToFile( filefd_, value );
@@ -924,7 +924,7 @@ void BinaryStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 /* Read an attribute */
 void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
     const String & name,
-    NumericalComplex & value)
+    Complex & value)
 {
   off64_t pos = lseek64( filefd_, 0, SEEK_CUR );
   String token;
@@ -937,7 +937,7 @@ void BinaryStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
 /* Add an indexed value to an internal object */
 void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalComplex value)
+    Complex value)
 {
   writeToFile( filefd_, value );
 }
@@ -945,7 +945,7 @@ void BinaryStorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 /* Read an indexed value */
 void BinaryStorageManager::readIndexedValue(Pointer<InternalObject> & p_obj,
     UnsignedInteger index,
-    NumericalComplex & value)
+    Complex & value)
 {
   readFromFile( filefd_, value );
 }

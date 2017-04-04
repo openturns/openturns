@@ -35,10 +35,10 @@ int main(int argc, char *argv[])
 
     // Instanciate one distribution object
     UnsignedInteger dim = 2;
-    NumericalPoint meanPoint(dim, 1.0);
+    Point meanPoint(dim, 1.0);
     meanPoint[0] = 0.5;
     meanPoint[1] = -0.5;
-    NumericalPoint sigma(dim, 1.0);
+    Point sigma(dim, 1.0);
     sigma[0] = 2.0;
     sigma[1] = 3.0;
     CorrelationMatrix R(dim);
@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
 
     // Test for sampling
     UnsignedInteger size = 200;
-    NumericalSample sample1(distribution1.getSample( size ));
-    NumericalSample sample2(distribution2.getSample( size ));
+    Sample sample1(distribution1.getSample( size ));
+    Sample sample2(distribution2.getSample( size ));
 
     // Create an empty graph
     Graph myGraph("Normal sample", "x1", "x2", true, "topright");

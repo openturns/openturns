@@ -14,12 +14,12 @@ try:
     matrix1[1, 1] = 12.0
     print("matrix1=" + repr(matrix1))
 
-    pt1 = NumericalPoint()
+    pt1 = Point()
     pt1.add(5.0)
     pt1.add(0.0)
     print("pt1=" + repr(pt1))
 
-    result1 = NumericalPoint()
+    result1 = Point()
     result1 = matrix1.solveLinearSystem(pt1)
     print("result1=" + repr(result1))
 
@@ -33,12 +33,12 @@ try:
     matrix2[1, 2] = 4.0
     print("matrix2=" + repr(matrix2))
 
-    pt2 = NumericalPoint()
+    pt2 = Point()
     pt2.add(5.0)
     pt2.add(0.0)
     print("pt2=" + repr(pt2))
 
-    result2 = NumericalPoint()
+    result2 = Point()
     result2 = matrix2.solveLinearSystem(pt2)
     print("result2=" + repr(result2))
 
@@ -53,13 +53,13 @@ try:
 
     print("matrix3=" + repr(matrix3))
 
-    pt3 = NumericalPoint()
+    pt3 = Point()
     pt3.add(5.0)
     pt3.add(0.0)
     pt3.add(1.0)
     print("pt3=" + repr(pt3))
 
-    result3 = NumericalPoint()
+    result3 = Point()
     result3 = matrix3.solveLinearSystem(pt3, True)
     print("result3=" + repr(result3))
 

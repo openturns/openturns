@@ -38,8 +38,8 @@ Factorial::Factorial()
 }
 
 /* Constructor with parameters */
-Factorial::Factorial(const NumericalPoint & center,
-                     const NumericalPoint & levels)
+Factorial::Factorial(const Point & center,
+                     const Point & levels)
   : StratifiedExperiment(center, levels)
 {
   // Nothing to do
@@ -47,8 +47,8 @@ Factorial::Factorial(const NumericalPoint & center,
 
 /* Constructor with parameters */
 Factorial::Factorial(const UnsignedInteger dimension,
-                     const NumericalPoint & levels)
-  : StratifiedExperiment(NumericalPoint(dimension, 0.0), levels)
+                     const Point & levels)
+  : StratifiedExperiment(Point(dimension, 0.0), levels)
 {
   // Nothing to do
 }
@@ -60,7 +60,7 @@ Factorial * Factorial::clone() const
 }
 
 /* Experiment plane generation */
-NumericalSample Factorial::generate() const
+Sample Factorial::generate() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = center_.getDimension();
@@ -70,13 +70,13 @@ NumericalSample Factorial::generate() const
   const UnsignedInteger levelNumber = levels_.getDimension();
   /* Size of the sample to be generated: 1 + number of levels x 2^dimension */
   const UnsignedInteger size = 1 + levelNumber * verticesNumber;
-  NumericalSample factorialPlane(size, center_);
+  Sample factorialPlane(size, center_);
   factorialPlane.setName("Factorial plane");
   UnsignedInteger index = 1;
   /* For each level of the factorial plane */
   for(UnsignedInteger levelIndex = 0; levelIndex < levelNumber; ++levelIndex)
   {
-    const NumericalScalar levelValue = levels_[levelIndex];
+    const Scalar levelValue = levels_[levelIndex];
     /* For each vertex of the current level */
     for(UnsignedInteger vertex = 0; vertex < verticesNumber; ++vertex)
     {

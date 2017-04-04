@@ -45,7 +45,7 @@ KrawtchoukFactory::KrawtchoukFactory()
 
 /* Parameter constructor: (n, p) is the order of the Krawtchouk polynomial, associated with the Binomial(n, p) distribution */
 KrawtchoukFactory::KrawtchoukFactory(const UnsignedInteger n,
-                                     const NumericalScalar p)
+                                     const Scalar p)
   : OrthogonalUniVariatePolynomialFactory(Binomial(n, p)),
     n_(n),
     p_(p)
@@ -69,14 +69,14 @@ KrawtchoukFactory::Coefficients KrawtchoukFactory::getRecurrenceCoefficients(con
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {
-    const NumericalScalar factor1 = sqrt(n_ * p_);
-    const NumericalScalar factor2 = 1.0 / sqrt(1.0 - p_);
+    const Scalar factor1 = sqrt(n_ * p_);
+    const Scalar factor2 = 1.0 / sqrt(1.0 - p_);
     recurrenceCoefficients[0] =  factor2 / factor1;
     recurrenceCoefficients[1] = -factor2 * factor1;
     // Conventional value of 0.0 for recurrenceCoefficients[2]
     return recurrenceCoefficients;
   }
-  const NumericalScalar factor = 1.0 / sqrt((n + 1) * (n_ - n) * p_ * (1.0 - p_));
+  const Scalar factor = 1.0 / sqrt((n + 1) * (n_ - n) * p_ * (1.0 - p_));
   recurrenceCoefficients[0] = factor;
   recurrenceCoefficients[1] = -(p_ * (n_ - n) + n * (1.0 - p_)) * factor;
   recurrenceCoefficients[2] = -sqrt((1.0 - 1.0 / (n + 1.0)) * (1.0 + 1.0 / (n_ - n)));
@@ -90,7 +90,7 @@ UnsignedInteger KrawtchoukFactory::getN() const
 }
 
 /* P accessor */
-NumericalScalar KrawtchoukFactory::getP() const
+Scalar KrawtchoukFactory::getP() const
 {
   return p_;
 }

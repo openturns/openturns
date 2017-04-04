@@ -41,7 +41,7 @@ try:
     print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
 
     # Define a point
-    point = NumericalPoint(dim, 0.2)
+    point = Point(dim, 0.2)
 
     # Show PDF and CDF of point
     pointPDF = copula.computePDF(point)
@@ -54,33 +54,38 @@ try:
     print("Quantile=", repr(quantile))
     print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(copula.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          copula.computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
-    interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(
+        0.95)
     print("Minimum volume interval=", interval)
-    print("threshold=", NumericalPoint(1, threshold))
+    print("threshold=", Point(1, threshold))
     levelSet, beta = copula.computeMinimumVolumeLevelSetWithThreshold(0.95)
     print("Minimum volume level set=", levelSet)
-    print("beta=", NumericalPoint(1, beta))
-    interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    print("beta=", Point(1, beta))
+    interval, beta = copula.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95)
     print("Bilateral confidence interval=", interval)
-    print("beta=", NumericalPoint(1, beta))
-    interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    print("beta=", Point(1, beta))
+    interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
-    interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    print("beta=", Point(1, beta))
+    interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
 
     # Extract the marginals
     for i in range(dim):
         margin = copula.getMarginal(i)
         print("margin=", repr(margin))
-        print("margin PDF=%.6f" % margin.computePDF(NumericalPoint(1, 0.25)))
-        print("margin CDF=%.6f" % margin.computeCDF(NumericalPoint(1, 0.25)))
+        print("margin PDF=%.6f" % margin.computePDF(Point(1, 0.25)))
+        print("margin CDF=%.6f" % margin.computeCDF(Point(1, 0.25)))
         print("margin quantile=", repr(margin.computeQuantile(0.95)))
         print("margin realization=", repr(margin.getRealization()))
 
@@ -91,9 +96,9 @@ try:
     print("indices=", repr(indices))
     margins = copula.getMarginal(indices)
     print("margins=", repr(margins))
-    print("margins PDF=%.6f" % margins.computePDF(NumericalPoint(2, 0.25)))
-    print("margins CDF=%.6f" % margins.computeCDF(NumericalPoint(2, 0.25)))
-    quantile = NumericalPoint(margins.computeQuantile(0.95))
+    print("margins PDF=%.6f" % margins.computePDF(Point(2, 0.25)))
+    print("margins CDF=%.6f" % margins.computeCDF(Point(2, 0.25)))
+    quantile = Point(margins.computeQuantile(0.95))
     print("margins quantile=", repr(quantile))
     print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
     print("margins realization=", repr(margins.getRealization()))
@@ -107,7 +112,7 @@ try:
     c_py = list()
     C_py = list()
     for i in range(len(thetas)):
-        x = NumericalPoint(points[i])
+        x = Point(points[i])
         copula = ClaytonCopula(thetas[i])
         print(copula)
         c_py.append(copula.computePDF(x))

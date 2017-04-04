@@ -55,7 +55,7 @@ for dim in [3, 5, 8][1:2]:
         for pft in [1e-4, 1e-6, 1e-8][1:2]:
 
             k = ot.Normal().computeQuantile(pft)[
-                0] * ot.NumericalPoint(linears[ih]).norm()
+                0] * ot.Point(linears[ih]).norm()
             event = ot.Event(composite, ot.Less(), k)
 
             print('--------------------')
@@ -64,11 +64,11 @@ for dim in [3, 5, 8][1:2]:
 
             for n in [100, 1000][1:]:
                 for gamma1 in [0.25, 0.5, 0.75][1:2]:
-                    #algo = ot.MonteCarlo(event)
+                    # algo = ot.MonteCarlo(event)
                     # algo.setMaximumOuterSampling(100*n)
                     # algo.setMaximumCoefficientOfVariation(-1.)
                     # algo.run()
-                    #result = algo.getResult()
+                    # result = algo.getResult()
                     # print result
                     algo = ot.AdaptiveDirectionalSampling(event)
                     algo.setMaximumOuterSampling(n)

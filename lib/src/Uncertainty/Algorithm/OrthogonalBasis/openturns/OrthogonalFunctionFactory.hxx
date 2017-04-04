@@ -22,7 +22,7 @@
 #define OPENTURNS_ORTHOGONALFUNCTIONFACTORY_HXX
 
 #include "openturns/FunctionalBasisImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/EnumerateFunction.hxx"
 
@@ -47,8 +47,8 @@ public:
   /** Parameter constructor */
   OrthogonalFunctionFactory(const Distribution & measure);
 
-  /** Build the NumericalMathFunction of the given index */
-  virtual NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  virtual Function build(const UnsignedInteger index) const;
 
 
   /** Return the measure upon which the basis is orthogonal */

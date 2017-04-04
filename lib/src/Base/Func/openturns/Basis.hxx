@@ -23,7 +23,7 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/BasisImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,40 +38,40 @@ class OT_API Basis
   CLASSNAME;
 
 public:
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor */
   Basis();
 
   /** Constructor from a collection */
-  Basis(const NumericalMathFunctionCollection & coll);
+  Basis(const FunctionCollection & coll);
 
   explicit Basis(const UnsignedInteger size);
 #ifndef SWIG
-  operator NumericalMathFunctionCollection() const;
+  operator FunctionCollection() const;
 #endif
   /** Constructor from implementation */
   Basis(const BasisImplementation & implementation);
 //   Basis(BasisImplementation * p_implementation);
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction build(const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function build(const UnsignedInteger index) const;
 
-  /** Build the NumericalMathFunction of the given index */
-  NumericalMathFunction operator[](const UnsignedInteger index) const;
+  /** Build the Function of the given index */
+  Function operator[](const UnsignedInteger index) const;
 
-  NumericalMathFunction  & operator[](const UnsignedInteger index);
+  Function  & operator[](const UnsignedInteger index);
 
   /** Accessor to the sub-basis */
-  NumericalMathFunctionCollection getSubBasis(const Indices & indices) const;
+  FunctionCollection getSubBasis(const Indices & indices) const;
 
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
   virtual UnsignedInteger getSize() const;
 
   /** add an element */
-  void add(const NumericalMathFunction & elt);
+  void add(const Function & elt);
 
   Bool isFunctional() const;
   Bool isOrthogonal() const;

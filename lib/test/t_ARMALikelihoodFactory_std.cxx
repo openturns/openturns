@@ -41,16 +41,16 @@ int main(int argc, char *argv[])
 
     // Make a realization of an ARMA model
     // Tmin , Tmax and N points for TimeGrid
-    const NumericalScalar dt = 1.0;
+    const Scalar dt = 1.0;
     const UnsignedInteger size = 400;
     RegularGrid timeGrid(0.0, dt, size);
 
     // Fixing the distributions for the WhiteNoise
-    const NumericalScalar sigma = 0.1;
+    const Scalar sigma = 0.1;
     CovarianceMatrix cov(dimension);
     cov(0, 0) = sigma;
     cov(1, 1) = 2.0 * sigma;
-    Normal whiteNoiseDistribution(NumericalPoint(dimension), cov);
+    Normal whiteNoiseDistribution(Point(dimension), cov);
 
     // Building a process from a White Noise
     WhiteNoise whiteNoise(whiteNoiseDistribution);

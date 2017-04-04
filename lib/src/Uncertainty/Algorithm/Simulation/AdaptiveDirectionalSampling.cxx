@@ -4,19 +4,18 @@
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License.
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- *  This library is distributed in the hope that it will be useful
+ *  This library is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
  *
  *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #include "openturns/AdaptiveDirectionalSampling.hxx"
@@ -32,7 +31,7 @@ CLASSNAMEINIT(AdaptiveDirectionalSampling);
 AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
   : Simulation()
   , partialStratification_(false)
-  , maximumStratificationDimension_(ResourceMap::GetAsNumericalScalar("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
+  , maximumStratificationDimension_(ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
 {
   // Nothing to do
 }
@@ -45,7 +44,7 @@ AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const Event & event,
   , standardEvent_(StandardEvent(event))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
-  , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultNumberOfSteps"), ResourceMap::GetAsNumericalScalar("AdaptiveDirectionalSampling-DefaultGamma"))
+  , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultGamma"))
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
 {
@@ -83,7 +82,7 @@ void AdaptiveDirectionalSampling::run()
   const UnsignedInteger L = gamma_.getDimension();
 
   // initial uniform allocation
-  NumericalPoint w(m, 1.0 / m);
+  Point w(m, 1.0 / m);
 
   // maximum directions budget
   const UnsignedInteger n0 = getMaximumOuterSampling();
@@ -95,14 +94,14 @@ void AdaptiveDirectionalSampling::run()
   // for each step
   for (UnsignedInteger l = 0; l < L; ++ l)
   {
-    const NumericalPoint w0(m, 1.0 / m);
+    const Point w0(m, 1.0 / m);
 
-    NumericalScalar probabilityEstimate = 0.0;
-    NumericalScalar w0SigmaSum = 0.0;
-    NumericalPoint sigma(m, 0.0);
+    Scalar probabilityEstimate = 0.0;
+    Scalar w0SigmaSum = 0.0;
+    Point sigma(m, 0.0);
 
-    NumericalSample T0(d, m);
-    NumericalSample T1(d, m);
+    Sample T0(d, m);
+    Sample T1(d, m);
 
     // for each subdivision
     for (UnsignedInteger i = 0; i < m; ++ i)
@@ -119,7 +118,7 @@ void AdaptiveDirectionalSampling::run()
       directionalSampling.setBlockSize (blockSize);
       directionalSampling.run();
       const SimulationResult result(directionalSampling.getResult());
-      const NumericalScalar pf = result.getProbabilityEstimate();
+      const Scalar pf = result.getProbabilityEstimate();
 
       if (pf > 0.0)
       {
@@ -140,7 +139,7 @@ void AdaptiveDirectionalSampling::run()
 
     } // for i
 
-    const NumericalScalar varianceEstimate = w0SigmaSum * w0SigmaSum / (gamma_[l] * n); // (33)
+    const Scalar varianceEstimate = w0SigmaSum * w0SigmaSum / (gamma_[l] * n); // (33)
 
     // update result
     setResult(SimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
@@ -153,7 +152,7 @@ void AdaptiveDirectionalSampling::run()
 
     if ((l == 0) && partialStratification_)
     {
-      T_ = NumericalPoint(dimension);
+      T_ = Point(dimension);
       for (UnsignedInteger k = 0; k < dimension; ++ k)
       {
         for (UnsignedInteger i = 0; i < m; ++ i)
@@ -190,7 +189,7 @@ void AdaptiveDirectionalSampling::run()
       const UnsignedInteger m2 = 1 << d2;
 
       // compute new weights using existing simulations
-      NumericalPoint w2(m2, 0.0);
+      Point w2(m2, 0.0);
       for (UnsignedInteger i2 = 0; i2 < m2; ++ i2)
       {
         for (UnsignedInteger i = 0; i < m; ++ i)
@@ -243,27 +242,27 @@ SamplingStrategy AdaptiveDirectionalSampling::getSamplingStrategy() const
   return samplingStrategy_;
 }
 
-void AdaptiveDirectionalSampling::setGamma(const NumericalPoint& gamma)
+void AdaptiveDirectionalSampling::setGamma(const Point& gamma)
 {
   const UnsignedInteger dimension = gamma.getDimension();
   if (dimension > 2) throw InvalidDimensionException(HERE) << "gamma dimension is " << dimension;
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    if (gamma[i] <= 0.0) throw InvalidArgumentException(HERE) << "gamma values should be positive";
+    if (!(gamma[i] > 0.0)) throw InvalidArgumentException(HERE) << "gamma values should be positive";
     sum += gamma[i];
   }
   if (std::abs(sum - 1.0) > 1e-6) throw InvalidArgumentException(HERE) << "gamma components do not sum to 1";
   gamma_ = gamma;
 }
 
-NumericalPoint AdaptiveDirectionalSampling::getGamma() const
+Point AdaptiveDirectionalSampling::getGamma() const
 {
   return gamma_;
 }
 
 
-void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::NumericalPoint& quadrantOrientation)
+void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::Point& quadrantOrientation)
 {
   const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent()->getDimension();
   if ((quadrantOrientation.getDimension() > 0) && (quadrantOrientation.getDimension() != dimension))
@@ -271,15 +270,15 @@ void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::NumericalPoin
   quadrantOrientation_ = quadrantOrientation;
 }
 
-OT::NumericalPoint AdaptiveDirectionalSampling::getQuadrantOrientation() const
+OT::Point AdaptiveDirectionalSampling::getQuadrantOrientation() const
 {
   return quadrantOrientation_;
 }
 
 
-NumericalSample AdaptiveDirectionalSampling::computeBlockSample()
+Sample AdaptiveDirectionalSampling::computeBlockSample()
 {
-  return NumericalSample();
+  return Sample();
 }
 
 /* String converter */
@@ -314,7 +313,7 @@ OT::UnsignedInteger AdaptiveDirectionalSampling::getMaximumStratificationDimensi
 }
 
 
-OT::NumericalPoint AdaptiveDirectionalSampling::getTStatistic() const
+OT::Point AdaptiveDirectionalSampling::getTStatistic() const
 {
   return T_;
 }

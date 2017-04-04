@@ -39,9 +39,9 @@ int main(int argc, char *argv[])
     const UnsignedInteger spatialDimension = 1;
 
     /* Amplitude values */
-    NumericalPoint amplitude(defaultDimension, 2.0);
+    Point amplitude(defaultDimension, 2.0);
     /* Scale values */
-    NumericalPoint scale(spatialDimension, 1.0);
+    Point scale(spatialDimension, 1.0);
 
 
     /* Default constructor */
@@ -52,12 +52,12 @@ int main(int argc, char *argv[])
     ExponentialModel myModel(scale, amplitude);
     fullprint << "myModel = " << myModel << std::endl;
 
-    const NumericalScalar timeValueOne = 1.0;
+    const Scalar timeValueOne = 1.0;
     fullprint << "covariance matrix at t = " << timeValueOne << " : " << myModel(timeValueOne) << std::endl;
     fullprint << "covariance matrix at t = " << -1.0 * timeValueOne << " : " << myModel(-1.0 * timeValueOne) << std::endl;
 
     /* Evaluation at time higher to check the decrease of the exponential values */
-    const NumericalScalar timeValueHigh = 4.0;
+    const Scalar timeValueHigh = 4.0;
     fullprint << "covariance matrix at t = "  << timeValueHigh << " : " << myModel(timeValueHigh) << std::endl;
 
     /* Discretize the process on a small time grid */

@@ -43,7 +43,7 @@ FrankCopula::FrankCopula()
 }
 
 /* Parameters constructor */
-FrankCopula::FrankCopula(const NumericalScalar theta)
+FrankCopula::FrankCopula(const Scalar theta)
   : ArchimedeanCopula()
   , theta_(theta)
 {
@@ -91,61 +91,61 @@ FrankCopula * FrankCopula::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint FrankCopula::getRealization() const
+Point FrankCopula::getRealization() const
 {
-  NumericalPoint realization(2);
+  Point realization(2);
   // We use the general algorithm based on conditional CDF inversion
-  const NumericalScalar u = RandomGenerator::Generate();
+  const Scalar u = RandomGenerator::Generate();
   realization[0] = u;
-  const NumericalScalar v = RandomGenerator::Generate();
+  const Scalar v = RandomGenerator::Generate();
   if (theta_ == 0.0)
   {
     realization[1] = v;
     return realization;
   }
-  const NumericalScalar factor = (v - 1.0) * std::exp(-theta_ * u);
+  const Scalar factor = (v - 1.0) * std::exp(-theta_ * u);
   realization[1] = 1.0 + std::log((factor - v) / (factor * std::exp(theta_) - v)) / theta_;
   return realization;
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint FrankCopula::computeDDF(const NumericalPoint & point) const
+Point FrankCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null DDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
-    return NumericalPoint(2, 0.0);
+    return Point(2, 0.0);
   }
   // Independent case
-  if (theta_ == 0.0) return NumericalPoint(2, 0.0);
+  if (theta_ == 0.0) return Point(2, 0.0);
   // Optimized version given by Maple 11, as there are a lot of exp's involved
-  const NumericalScalar theta2 = theta_ * theta_;
-  const NumericalScalar expMinusTheta = std::exp(-theta_);
-  const NumericalScalar expMinusThetaU = std::exp(-theta_ * u);
-  const NumericalScalar expMinusThetaV = std::exp(-theta_ * v);
-  const NumericalScalar product1 = expMinusThetaU * expMinusThetaV;
-  const NumericalScalar sum1 = expMinusTheta + product1 - expMinusThetaU - expMinusThetaV;
-  const NumericalScalar product2 = sum1 * sum1;
-  const NumericalScalar factor1 = -theta2 * expMinusThetaU * expMinusThetaV * (expMinusTheta - 1.0) / (sum1 * product2);
-  NumericalPoint result(2);
+  const Scalar theta2 = theta_ * theta_;
+  const Scalar expMinusTheta = std::exp(-theta_);
+  const Scalar expMinusThetaU = std::exp(-theta_ * u);
+  const Scalar expMinusThetaV = std::exp(-theta_ * v);
+  const Scalar product1 = expMinusThetaU * expMinusThetaV;
+  const Scalar sum1 = expMinusTheta + product1 - expMinusThetaU - expMinusThetaV;
+  const Scalar product2 = sum1 * sum1;
+  const Scalar factor1 = -theta2 * expMinusThetaU * expMinusThetaV * (expMinusTheta - 1.0) / (sum1 * product2);
+  Point result(2);
   result[0] = factor1 * (-expMinusTheta + product1 - expMinusThetaU + expMinusThetaV);
   result[1] = factor1 * (-expMinusTheta + product1 + expMinusThetaU - expMinusThetaV);
   return result;
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar FrankCopula::computePDF(const NumericalPoint & point) const
+Scalar FrankCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
@@ -154,21 +154,21 @@ NumericalScalar FrankCopula::computePDF(const NumericalPoint & point) const
   // Independent case
   if (theta_ == 0.0) return 1.0;
   // General case
-  const NumericalScalar expMinusTheta = std::exp(-theta_);
-  const NumericalScalar expMinusThetaU = std::exp(-theta_ * point[0]);
-  const NumericalScalar expMinusThetaV = std::exp(-theta_ * point[1]);
-  const NumericalScalar sum1 = expMinusTheta + expMinusThetaU * expMinusThetaV - expMinusThetaU - expMinusThetaV;
+  const Scalar expMinusTheta = std::exp(-theta_);
+  const Scalar expMinusThetaU = std::exp(-theta_ * point[0]);
+  const Scalar expMinusThetaV = std::exp(-theta_ * point[1]);
+  const Scalar sum1 = expMinusTheta + expMinusThetaU * expMinusThetaV - expMinusThetaU - expMinusThetaV;
   return -theta_ * expMinusThetaU * expMinusThetaV * expm1(-theta_) / (sum1 * sum1);
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar FrankCopula::computeCDF(const NumericalPoint & point) const
+Scalar FrankCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // If we are outside of the support, in the lower parts
   if ((u <= 0.0) || (v <= 0.0))
   {
@@ -193,9 +193,9 @@ NumericalScalar FrankCopula::computeCDF(const NumericalPoint & point) const
   // Independent case
   if (theta_ == 0.0) return u * v;
   // General case
-  const NumericalScalar expm1MinusTheta = expm1(-theta_);
-  const NumericalScalar expm1MinusThetaU = expm1(-theta_ * point[0]);
-  const NumericalScalar expm1MinusThetaV = expm1(-theta_ * point[1]);
+  const Scalar expm1MinusTheta = expm1(-theta_);
+  const Scalar expm1MinusThetaU = expm1(-theta_ * point[0]);
+  const Scalar expm1MinusThetaV = expm1(-theta_ * point[1]);
   return -log1p(expm1MinusThetaU * expm1MinusThetaV / expm1MinusTheta) / theta_;
 }
 
@@ -218,58 +218,58 @@ CorrelationMatrix FrankCopula::getKendallTau() const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint FrankCopula::computePDFGradient(const NumericalPoint & point) const
+Point FrankCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In FrankCopula::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In FrankCopula::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint FrankCopula::computeCDFGradient(const NumericalPoint & point) const
+Point FrankCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In FrankCopula::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In FrankCopula::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the quantile of the distribution */
-NumericalPoint FrankCopula::computeQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Point FrankCopula::computeQuantile(const Scalar prob,
+                                   const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   // Special case for boarding values
   if (prob == 0.0) return getRange().getLowerBound();
   if (prob == 1.0) return getRange().getUpperBound();
   // Independent case
-  if (theta_ == 0.0) return NumericalPoint(2, std::sqrt(prob));
+  if (theta_ == 0.0) return Point(2, std::sqrt(prob));
   // General case
-  const NumericalScalar thetaProb = theta_ * prob;
-  const NumericalScalar expTheta = std::exp(theta_);
-  const NumericalScalar expm1Theta = expm1(theta_);
-  const NumericalScalar sqrtRatio = std::sqrt(expm1(thetaProb) * expTheta / (expm1Theta * std::exp(thetaProb)));
-  return NumericalPoint(2, 1.0 - std::log(expTheta - sqrtRatio * expm1Theta) / theta_);
+  const Scalar thetaProb = theta_ * prob;
+  const Scalar expTheta = std::exp(theta_);
+  const Scalar expm1Theta = expm1(theta_);
+  const Scalar sqrtRatio = std::sqrt(expm1(thetaProb) * expTheta / (expm1Theta * std::exp(thetaProb)));
+  return Point(2, 1.0 - std::log(expTheta - sqrtRatio * expm1Theta) / theta_);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar FrankCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
+Scalar FrankCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
-  const NumericalScalar u = y[0];
-  const NumericalScalar v = x;
+  const Scalar u = y[0];
+  const Scalar v = x;
   // If we are in the support
-  const NumericalScalar alpha = std::exp(-theta_ * v);
-  const NumericalScalar beta = std::exp(-theta_ * u) * (alpha - 1.0);
+  const Scalar alpha = std::exp(-theta_ * v);
+  const Scalar beta = std::exp(-theta_ * u) * (alpha - 1.0);
   return -beta / (alpha - std::exp(-theta_) - beta);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar FrankCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+Scalar FrankCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -279,8 +279,8 @@ NumericalScalar FrankCopula::computeConditionalQuantile(const NumericalScalar q,
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
-  const NumericalScalar u = y[0];
-  const NumericalScalar factor = (q - 1.0) * std::exp(-theta_ * u);
+  const Scalar u = y[0];
+  const Scalar factor = (q - 1.0) * std::exp(-theta_ * u);
   return 1.0 + std::log((factor - q) / (factor * std::exp(theta_) - q)) / theta_;
 }
 
@@ -288,7 +288,7 @@ NumericalScalar FrankCopula::computeConditionalQuantile(const NumericalScalar q,
  * the function phi such that the CDF of the copula can
  * be written as CDF(t) = phi^{-1}(phi(u)+phi(v))
  */
-NumericalScalar FrankCopula::computeArchimedeanGenerator(const NumericalScalar t) const
+Scalar FrankCopula::computeArchimedeanGenerator(const Scalar t) const
 {
   // Independent case
   if (theta_ == 0.0) return -std::log(t);
@@ -297,7 +297,7 @@ NumericalScalar FrankCopula::computeArchimedeanGenerator(const NumericalScalar t
 }
 
 /* Compute the inverse of the archimedean generator */
-NumericalScalar FrankCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
+Scalar FrankCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
   // Independent case
   if (theta_ == 0.0) return std::exp(-t);
@@ -306,7 +306,7 @@ NumericalScalar FrankCopula::computeInverseArchimedeanGenerator(const NumericalS
 }
 
 /* Compute the derivative of the density generator */
-NumericalScalar FrankCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const
+Scalar FrankCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
 {
   // Independent case
   if (theta_ == 0.0) return -1.0 / t;
@@ -315,26 +315,26 @@ NumericalScalar FrankCopula::computeArchimedeanGeneratorDerivative(const Numeric
 }
 
 /* Compute the seconde derivative of the density generator */
-NumericalScalar FrankCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const
+Scalar FrankCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
 {
   // Independent case
   if (theta_ == 0.0) return 1.0 / (t * t);
   // General case
-  NumericalScalar thetaT = theta_ * t;
-  NumericalScalar ratio = theta_ / expm1(thetaT);
+  Scalar thetaT = theta_ * t;
+  Scalar ratio = theta_ / expm1(thetaT);
   return ratio * ratio * std::exp(thetaT);
 }
 
 /* Parameters value accessor */
-NumericalPoint FrankCopula::getParameter() const
+Point FrankCopula::getParameter() const
 {
-  return NumericalPoint(1, theta_);
+  return Point(1, theta_);
 }
 
-void FrankCopula::setParameter(const NumericalPoint & parameter)
+void FrankCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = FrankCopula(parameter[0]);
   setWeight(w);
 }
@@ -352,13 +352,13 @@ Bool FrankCopula::hasIndependentCopula() const
 }
 
 /* Theta accessor */
-void FrankCopula::setTheta(const NumericalScalar theta)
+void FrankCopula::setTheta(const Scalar theta)
 {
   theta_ = theta;
 }
 
 /* Theta accessor */
-NumericalScalar FrankCopula::getTheta() const
+Scalar FrankCopula::getTheta() const
 {
   return theta_;
 }

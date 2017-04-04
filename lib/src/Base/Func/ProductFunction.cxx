@@ -19,11 +19,11 @@
  *
  */
 #include "openturns/ProductFunction.hxx"
-#include "openturns/NoNumericalMathGradientImplementation.hxx"
-#include "openturns/NoNumericalMathHessianImplementation.hxx"
-#include "openturns/ProductNumericalMathEvaluationImplementation.hxx"
-#include "openturns/ProductNumericalMathGradientImplementation.hxx"
-#include "openturns/ProductNumericalMathHessianImplementation.hxx"
+#include "openturns/NoGradient.hxx"
+#include "openturns/NoHessian.hxx"
+#include "openturns/ProductEvaluation.hxx"
+#include "openturns/ProductGradient.hxx"
+#include "openturns/ProductHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,22 +34,22 @@ static const Factory<ProductFunction> Factory_ProductFunction;
 
 /* Composition constructor */
 ProductFunction::ProductFunction(const Implementation & p_left,
-    const Implementation & p_right)
-  : NumericalMathFunctionImplementation(new ProductNumericalMathEvaluationImplementation(p_left->getEvaluation(), p_right->getEvaluation()),
-                                        new NoNumericalMathGradientImplementation(),
-                                        new NoNumericalMathHessianImplementation()),
-  p_leftFunction_(p_left),
-  p_rightFunction_(p_right)
+                                 const Implementation & p_right)
+  : FunctionImplementation(new ProductEvaluation(p_left->getEvaluation(), p_right->getEvaluation()),
+                           new NoGradient(),
+                           new NoHessian()),
+    p_leftFunction_(p_left),
+    p_rightFunction_(p_right)
 {
   //  try{
-  GradientImplementation p_gradientImplementation(new ProductNumericalMathGradientImplementation(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
+  GradientPointer p_gradientImplementation(new ProductGradient(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
   setGradient(p_gradientImplementation);
   //  }
   //  catch(InvalidArgumentException &) {
   // Nothing to do
   //  }
   //  try{
-  HessianImplementation p_hessianImplementation(new ProductNumericalMathHessianImplementation(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
+  HessianPointer p_hessianImplementation(new ProductHessian(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
   setHessian(p_hessianImplementation);
   //  }
   //  catch(InvalidArgumentException & ex) {
@@ -102,13 +102,13 @@ String ProductFunction::__str__(const String & offset) const
  * dH/dp = [dF/dpf(x, pf) . G(x, pg), dG/dpg(x, pg) . F(x, pf)]
  * and the needed gradient is (dH/dp)^t
  */
-Matrix ProductFunction::parameterGradient(const NumericalPoint & inP) const
+Matrix ProductFunction::parameterGradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   // Values of the functions
-  NumericalScalar leftValue = p_leftFunction_->operator()(inP)[0];
-  NumericalScalar rightValue = p_rightFunction_->operator()(inP)[0];
+  Scalar leftValue = p_leftFunction_->operator()(inP)[0];
+  Scalar rightValue = p_rightFunction_->operator()(inP)[0];
   // Parameters gradient of the functions scaled by the value of there product term
   Matrix upper(p_leftFunction_->parameterGradient(inP) * leftValue);
   Matrix lower(p_rightFunction_->parameterGradient(inP) * rightValue);
@@ -135,7 +135,7 @@ Matrix ProductFunction::parameterGradient(const NumericalPoint & inP) const
 /* Method save() stores the object through the StorageManager */
 void ProductFunction::save(Advocate & adv) const
 {
-  NumericalMathFunctionImplementation::save(adv);
+  FunctionImplementation::save(adv);
   adv.saveAttribute( "leftFunction_", *p_leftFunction_ );
   adv.saveAttribute( "rightFunction_", *p_rightFunction_ );
 }
@@ -143,8 +143,8 @@ void ProductFunction::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProductFunction::load(Advocate & adv)
 {
-  TypedInterfaceObject<NumericalMathFunctionImplementation> functionValue;
-  NumericalMathFunctionImplementation::load(adv);
+  TypedInterfaceObject<FunctionImplementation> functionValue;
+  FunctionImplementation::load(adv);
   adv.loadAttribute( "leftFunction_", functionValue );
   p_leftFunction_ = functionValue.getImplementation();
   adv.loadAttribute( "rightFunction_", functionValue );

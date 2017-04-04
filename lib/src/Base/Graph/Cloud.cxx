@@ -28,7 +28,7 @@ CLASSNAMEINIT(Cloud);
 static const Factory<Cloud> Factory_Cloud;
 
 /* Default constructor */
-Cloud::Cloud(const NumericalSample & data,
+Cloud::Cloud(const Sample & data,
              const String & legend)
   : DrawableImplementation(data, legend)
 {
@@ -37,13 +37,13 @@ Cloud::Cloud(const NumericalSample & data,
 }
 
 /* Constructor from complex numbers */
-Cloud::Cloud(const NumericalComplexCollection & data,
+Cloud::Cloud(const ComplexCollection & data,
              const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
 {
-  // Convert the complex numbers into a NumericalSample
+  // Convert the complex numbers into a Sample
   const UnsignedInteger size = data.getSize();
-  NumericalSample sample(size, 2);
+  Sample sample(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     sample[i][0] = data[i].real();
@@ -54,15 +54,15 @@ Cloud::Cloud(const NumericalComplexCollection & data,
 }
 
 /* Contructor from 2 data sets */
-Cloud::Cloud(const NumericalSample & dataX,
-             const NumericalSample & dataY,
+Cloud::Cloud(const Sample & dataX,
+             const Sample & dataY,
              const String & legend):
-  DrawableImplementation(NumericalSample(0, 2), legend)
+  DrawableImplementation(Sample(0, 2), legend)
 {
   const UnsignedInteger size = dataX.getSize();
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Cloud based on two numerical samples with different size.";
   if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: cannot build a Cloud based on two numerical samples of dimension greater than 1.";
-  NumericalSample dataFull(size, 2);
+  Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i][0];
@@ -72,14 +72,14 @@ Cloud::Cloud(const NumericalSample & dataX,
   setData(dataFull);
 }
 
-Cloud::Cloud(const NumericalPoint & dataX,
-             const NumericalPoint & dataY,
+Cloud::Cloud(const Point & dataX,
+             const Point & dataY,
              const String & legend):
-  DrawableImplementation(NumericalSample(0, 2), legend)
+  DrawableImplementation(Sample(0, 2), legend)
 {
   const UnsignedInteger size = dataX.getDimension();
   if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Cloud based on two numerical points with different dimension.";
-  NumericalSample dataFull(size, 2);
+  Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i];
@@ -90,7 +90,7 @@ Cloud::Cloud(const NumericalPoint & dataX,
 }
 
 /* Constructor with parameters */
-Cloud::Cloud(const NumericalSample & data,
+Cloud::Cloud(const Sample & data,
              const String & color,
              const String & pointStyle,
              const String & legend)
@@ -139,7 +139,7 @@ Cloud * Cloud::clone() const
 }
 
 /* Check validity of data */
-void Cloud::checkData(const NumericalSample & data) const
+void Cloud::checkData(const Sample & data) const
 {
   if (data.getDimension() != 2)
     throw InvalidDimensionException(HERE) << "Expected sample of dimension 2: got " << data.getDimension();

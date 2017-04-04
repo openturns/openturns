@@ -8,7 +8,7 @@ The function is the composed function :math:`f\circ g`.
 
 Parameters
 ----------
-f,g : two :class:`~openturns.NumericalMathFunction`
+f,g : two :class:`~openturns.Function`
     The functions to compose.
 
 Examples

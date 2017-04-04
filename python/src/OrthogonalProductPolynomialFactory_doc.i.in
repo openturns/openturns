@@ -71,8 +71,8 @@ degrees : list of positiv int (:math:`k_1, \dots, k_n`)
 
 Returns
 -------
-nodes : :class:`~openturns.NumericalSample`
-weights : :class:`~openturns.NumericalPoint`
+nodes : :class:`~openturns.Sample`
+weights : :class:`~openturns.Point`
     Nodes and weights of the multivariate polynomial associated with the
     marginal degrees (:math:`k_1, \dots, k_n`) as the tensor product
     of the marginal orthogonal univariate polynomials, to build multivariate

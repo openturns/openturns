@@ -15,9 +15,9 @@ dimension = 1
 spatialDimension = 1
 
 # Amplitude values
-amplitude = NumericalPoint(dimension)
+amplitude = Point(dimension)
 # Scale values
-scale = NumericalPoint(dimension)
+scale = Point(dimension)
 # Spatial correlation
 spatialCorrelation = CorrelationMatrix(dimension)
 for index in range(dimension):
@@ -60,4 +60,3 @@ print(graph)
 # Test the drawing method as a nonstationary model, in the correlation range
 graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, True)
 print(graph)
-

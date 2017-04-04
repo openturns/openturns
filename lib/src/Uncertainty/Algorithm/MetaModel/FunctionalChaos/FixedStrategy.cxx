@@ -52,7 +52,7 @@ void FixedStrategy::computeInitialBasis()
 {
   if (Psi_k_p_.getSize() == 0)
   {
-    Psi_k_p_ = NumericalMathFunctionCollection(maximumDimension_);
+    Psi_k_p_ = FunctionCollection(maximumDimension_);
     for (UnsignedInteger i = 0; i < maximumDimension_; ++i)
     {
       LOGINFO(OSS() << "Build function " << i << " over " << maximumDimension_ - 1);
@@ -68,9 +68,9 @@ void FixedStrategy::computeInitialBasis()
 }
 
 /* Update the basis for the next iteration of approximation */
-void FixedStrategy::updateBasis(const NumericalPoint & alpha_k,
-                                const NumericalScalar residual,
-                                const NumericalScalar relativeError)
+void FixedStrategy::updateBasis(const Point & alpha_k,
+                                const Scalar residual,
+                                const Scalar relativeError)
 {
   // No change to the basis in the fixed strategy
   addedPsi_k_ranks_ = Indices(0);

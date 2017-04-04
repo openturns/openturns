@@ -22,8 +22,8 @@
 #define OPENTURNS_ANALYTICALRESULT_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/Graph.hxx"
@@ -44,14 +44,14 @@ class OT_API AnalyticalResult
 public:
 
   typedef Collection<Graph>                         GraphCollection;
-  typedef Collection<NumericalPoint>                NumericalPointCollection;
-  typedef Collection<NumericalPointWithDescription> NumericalPointWithDescriptionCollection;
-  typedef NumericalPointWithDescriptionCollection   Sensitivity;
+  typedef Collection<Point>                PointCollection;
+  typedef Collection<PointWithDescription> PointWithDescriptionCollection;
+  typedef PointWithDescriptionCollection   Sensitivity;
 
   typedef enum {ELLIPTICAL = 0, CLASSICAL, PHYSICAL} ImportanceFactorType;
 
   /** Standard constructor */
-  AnalyticalResult(const NumericalPoint & standardSpaceDesignPoint,
+  AnalyticalResult(const Point & standardSpaceDesignPoint,
                    const Event & limitStateVariable,
                    const Bool isStandardPointOriginInFailureSpace);
 
@@ -62,13 +62,13 @@ public:
   virtual AnalyticalResult * clone() const;
 
   /** StandardSpaceDesignPoint accessor */
-  NumericalPoint getStandardSpaceDesignPoint() const;
+  Point getStandardSpaceDesignPoint() const;
 
   /** PhysicalSpaceDesignPoint accessor */
-  void setStandardSpaceDesignPoint(const NumericalPoint & standardSpaceDesignPoint);
+  void setStandardSpaceDesignPoint(const Point & standardSpaceDesignPoint);
 
   /** PhysicalSpaceDesignPoint accessor */
-  NumericalPoint getPhysicalSpaceDesignPoint() const;
+  Point getPhysicalSpaceDesignPoint() const;
 
   /** LimitStateVariable accessor */
   Event getLimitStateVariable() const;
@@ -80,17 +80,17 @@ public:
   void setIsStandardPointOriginInFailureSpace(const Bool isStandardPointOriginInFailureSpace);
 
   /** Mean point conditioned to the standard event realization accessor */
-  NumericalPoint getMeanPointInStandardEventDomain() const;
-  void setMeanPointInStandardEventDomain(const NumericalPoint & meanPointInStandardEventDomain);
+  Point getMeanPointInStandardEventDomain() const;
+  void setMeanPointInStandardEventDomain(const Point & meanPointInStandardEventDomain);
 
   /** ImportanceFactors accessor */
-  NumericalPointWithDescription getImportanceFactors(const ImportanceFactorType type = ELLIPTICAL) const;
+  PointWithDescription getImportanceFactors(const ImportanceFactorType type = ELLIPTICAL) const;
 
   /** ImportanceFactors graph */
   Graph drawImportanceFactors(const ImportanceFactorType type = ELLIPTICAL) const;
 
   /**  HasoferReliabilityIndex accessor */
-  NumericalScalar getHasoferReliabilityIndex() const;
+  Scalar getHasoferReliabilityIndex() const;
 
   /**  HasoferReliabilityIndexSensitivity accessor */
   Sensitivity getHasoferReliabilityIndexSensitivity() const;
@@ -100,7 +100,7 @@ public:
   void setOptimizationResult(const OptimizationResult & optimizationResult);
 
   /** HasoferReliabilityIndexSensitivitygraph */
-  GraphCollection drawHasoferReliabilityIndexSensitivity(NumericalScalar width = ResourceMap::GetAsNumericalScalar( "AnalyticalResult-DefaultWidth" )) const;
+  GraphCollection drawHasoferReliabilityIndexSensitivity(Scalar width = ResourceMap::GetAsScalar( "AnalyticalResult-DefaultWidth" )) const;
 
   /** String converter */
   String __repr__() const;
@@ -116,7 +116,7 @@ protected:
 
   /** Sensitivitygraph */
   Graph drawSensitivity(const Sensitivity & sensitivity,
-                        const NumericalScalar width) const;
+                        const Scalar width) const;
 
 private:
 
@@ -142,26 +142,26 @@ private:
   void computeMeanPointInStandardEventDomain() const;
 
   /** PhysicalSpaceDesignPoint accessor */
-  void setPhysicalSpaceDesignPoint(const NumericalPoint & physicalSpaceDesignPoint);
+  void setPhysicalSpaceDesignPoint(const Point & physicalSpaceDesignPoint);
 
   /** HasoferReliabilityIndex accessor */
-  void setHasoferReliabilityIndex(const NumericalScalar & hasoferReliabilityIndex);
+  void setHasoferReliabilityIndex(const Scalar & hasoferReliabilityIndex);
 
-  /** Returns the position of the given (value, name) into the NumericalPoint or the dimension of the NumericalPoint if failed */
+  /** Returns the position of the given (value, name) into the Point or the dimension of the Point if failed */
   UnsignedInteger computePosition(const String & marginalName,
                                   const String & marginalParameterName,
                                   const Description & parameterSetNames) const;
 
-  NumericalPoint    standardSpaceDesignPoint_;
-  mutable NumericalPoint    physicalSpaceDesignPoint_;
+  Point    standardSpaceDesignPoint_;
+  mutable Point    physicalSpaceDesignPoint_;
   Event             limitStateVariable_;
   Bool isStandardPointOriginInFailureSpace_;
-  mutable NumericalScalar hasoferReliabilityIndex_;
-  mutable NumericalPointWithDescription importanceFactors_;
-  mutable NumericalPointWithDescription classicalImportanceFactors_;
-  mutable NumericalPointWithDescription physicalImportanceFactors_;
+  mutable Scalar hasoferReliabilityIndex_;
+  mutable PointWithDescription importanceFactors_;
+  mutable PointWithDescription classicalImportanceFactors_;
+  mutable PointWithDescription physicalImportanceFactors_;
   mutable Sensitivity hasoferReliabilityIndexSensitivity_;
-  mutable NumericalPoint meanPointInStandardEventDomain_;
+  mutable Point meanPointInStandardEventDomain_;
   mutable Bool isAlreadyComputedImportanceFactors_;
   mutable Bool isAlreadyComputedClassicalImportanceFactors_;
   mutable Bool isAlreadyComputedPhysicalImportanceFactors_;

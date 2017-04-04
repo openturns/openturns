@@ -18,7 +18,7 @@ characteristic function=(0.0679463313303-0.248507038511j)
 log characteristic function=(-1.35623659307-1.30390135592j)
 quantile= [3.39477]
 cdf(quantile)=0.950000
-InverseSurvival= class=NumericalPoint name=Unnamed dimension=1 values=[-2.27095]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.27095]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-2.90577, 3.94843]
 threshold= [0.95]

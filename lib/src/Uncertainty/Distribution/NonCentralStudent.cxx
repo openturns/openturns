@@ -25,7 +25,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
-#include "openturns/MethodBoundNumericalMathEvaluationImplementation.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,9 +35,9 @@ static const Factory<NonCentralStudent> Factory_NonCentralStudent;
 
 
 /* Default constructor */
-NonCentralStudent::NonCentralStudent(const NumericalScalar nu,
-                                     const NumericalScalar delta,
-                                     const NumericalScalar gamma)
+NonCentralStudent::NonCentralStudent(const Scalar nu,
+                                     const Scalar delta,
+                                     const Scalar gamma)
   : ContinuousDistribution()
   , nu_(0.0)
   , delta_(delta)
@@ -89,13 +89,13 @@ NonCentralStudent * NonCentralStudent::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint NonCentralStudent::getRealization() const
+Point NonCentralStudent::getRealization() const
 {
-  return NumericalPoint(1, gamma_ + DistFunc::rNonCentralStudent(nu_, delta_));
+  return Point(1, gamma_ + DistFunc::rNonCentralStudent(nu_, delta_));
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar NonCentralStudent::computePDF(const NumericalPoint & point) const
+Scalar NonCentralStudent::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -103,19 +103,19 @@ NumericalScalar NonCentralStudent::computePDF(const NumericalPoint & point) cons
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar NonCentralStudent::computeCDF(const NumericalPoint & point) const
+Scalar NonCentralStudent::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   return DistFunc::pNonCentralStudent(nu_, delta_, point[0] - gamma_, false);
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint NonCentralStudent::computePDFGradient(const NumericalPoint & point) const
+Point NonCentralStudent::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar eps = std::pow(pdfEpsilon_, 1.0 / 3.0);
-  NumericalPoint pdfGradient(3);
+  const Scalar eps = std::pow(pdfEpsilon_, 1.0 / 3.0);
+  Point pdfGradient(3);
   pdfGradient[0] = (DistFunc::dNonCentralStudent(nu_ + eps, delta_, point[0] - gamma_) - DistFunc::dNonCentralStudent(nu_ - eps, delta_, point[0] - gamma_)) / (2.0 * eps);
   pdfGradient[1] = (DistFunc::dNonCentralStudent(nu_, delta_ + eps, point[0] - gamma_) - DistFunc::dNonCentralStudent(nu_, delta_ - eps, point[0] - gamma_)) / (2.0 * eps);
   pdfGradient[2] = (DistFunc::dNonCentralStudent(nu_, delta_, point[0] - gamma_ - eps) - DistFunc::dNonCentralStudent(nu_, delta_, point[0] - gamma_ + eps)) / (2.0 * eps);
@@ -123,12 +123,12 @@ NumericalPoint NonCentralStudent::computePDFGradient(const NumericalPoint & poin
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint NonCentralStudent::computeCDFGradient(const NumericalPoint & point) const
+Point NonCentralStudent::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
-  NumericalPoint cdfGradient(3);
+  const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
+  Point cdfGradient(3);
   cdfGradient[0] = (DistFunc::pNonCentralStudent(nu_ + eps, delta_, point[0] - gamma_, false) - DistFunc::pNonCentralStudent(nu_ - eps, delta_, point[0] - gamma_, false)) / (2.0 * eps);
   cdfGradient[1] = (DistFunc::pNonCentralStudent(nu_, delta_ + eps, point[0] - gamma_, false) - DistFunc::pNonCentralStudent(nu_, delta_ - eps, point[0] - gamma_, false)) / (2.0 * eps);
   cdfGradient[2] = (DistFunc::pNonCentralStudent(nu_, delta_, point[0] - gamma_ - eps, false) - DistFunc::pNonCentralStudent(nu_, delta_, point[0] - gamma_ + eps, false)) / (2.0 * eps);
@@ -138,42 +138,42 @@ NumericalPoint NonCentralStudent::computeCDFGradient(const NumericalPoint & poin
 /* Compute the mean of the distribution */
 void NonCentralStudent::computeMean() const
 {
-  if (nu_ <= 1.0) throw NotDefinedException(HERE) << "Error: the mean is defined only for nu > 1 for a non central Student distribution";
-  mean_ = NumericalPoint(1, std::sqrt(0.5 * nu_) * std::exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
+  if (!(nu_ > 1.0)) throw NotDefinedException(HERE) << "Error: the mean is defined only for nu > 1 for a non central Student distribution";
+  mean_ = Point(1, std::sqrt(0.5 * nu_) * std::exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint NonCentralStudent::getStandardDeviation() const
+Point NonCentralStudent::getStandardDeviation() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "Error: the standard deviation is defined only for nu > 2 for a non central Student distribution";
-  return NumericalPoint(1, std::sqrt(getCovariance().operator()(0, 0)));
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "Error: the standard deviation is defined only for nu > 2 for a non central Student distribution";
+  return Point(1, std::sqrt(getCovariance().operator()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint NonCentralStudent::getSkewness() const
+Point NonCentralStudent::getSkewness() const
 {
-  NumericalScalar mup1 = getMean()[0] - gamma_;
-  NumericalScalar mu2 = getCovariance().operator()(0, 0);
-  return NumericalPoint(1, mup1 * (nu_ * (2.0 * nu_ - 3.0 + delta_ * delta_) / ((nu_ - 2.0) * (nu_ - 3.0)) - 2.0 * mu2) * std::pow(mu2, -1.5));
+  Scalar mup1 = getMean()[0] - gamma_;
+  Scalar mu2 = getCovariance().operator()(0, 0);
+  return Point(1, mup1 * (nu_ * (2.0 * nu_ - 3.0 + delta_ * delta_) / ((nu_ - 2.0) * (nu_ - 3.0)) - 2.0 * mu2) * std::pow(mu2, -1.5));
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint NonCentralStudent::getKurtosis() const
+Point NonCentralStudent::getKurtosis() const
 {
-  NumericalScalar mup1 = getMean()[0] - gamma_;
-  NumericalScalar mu2 = getCovariance().operator()(0, 0);
-  NumericalScalar delta2 = delta_ * delta_;
-  return NumericalPoint(1, (nu_ * nu_ * (3.0 + 6.0 * delta2 + delta2 * delta2) / ((nu_ - 2.0) * (nu_ - 4.0)) - mup1 * mup1 * (nu_ * ((nu_ + 1.0) * delta2 + 3.0 * (3.0 * nu_ - 5.0)) / ((nu_ - 2.0) * (nu_ - 3.0)) - 3.0 * mu2)) * std::pow(mu2, -2.0));
+  Scalar mup1 = getMean()[0] - gamma_;
+  Scalar mu2 = getCovariance().operator()(0, 0);
+  Scalar delta2 = delta_ * delta_;
+  return Point(1, (nu_ * nu_ * (3.0 + 6.0 * delta2 + delta2 * delta2) / ((nu_ - 2.0) * (nu_ - 4.0)) - mup1 * mup1 * (nu_ * ((nu_ + 1.0) * delta2 + 3.0 * (3.0 * nu_ - 5.0)) / ((nu_ - 2.0) * (nu_ - 3.0)) - 3.0 * mu2)) * std::pow(mu2, -2.0));
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint NonCentralStudent::getStandardMoment(const UnsignedInteger n) const
+Point NonCentralStudent::getStandardMoment(const UnsignedInteger n) const
 {
   if (n >= nu_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to the number of degrees of freedom";
-  UniVariatePolynomial p(NumericalPoint(1, 1.0));
+  UniVariatePolynomial p(Point(1, 1.0));
   for (UnsignedInteger k = 0; k < n; ++k) p = p.derivate() + p.incrementDegree(1);
-  return NumericalPoint(1, p(delta_) * std::exp(0.5 * n * std::log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
+  return Point(1, p(delta_) * std::exp(0.5 * n * std::log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -185,27 +185,27 @@ NonCentralStudent::Implementation NonCentralStudent::getStandardRepresentative()
 /* Compute the covariance of the distribution */
 void NonCentralStudent::computeCovariance() const
 {
-  if (nu_ <= 2.0) throw NotDefinedException(HERE) << "Error: the covariance is defined only for nu > 2 for a non central Student distribution";
+  if (!(nu_ > 2.0)) throw NotDefinedException(HERE) << "Error: the covariance is defined only for nu > 2 for a non central Student distribution";
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar mup1 = getMean()[0] - gamma_;
+  const Scalar mup1 = getMean()[0] - gamma_;
   covariance_(0, 0) =  nu_ / (nu_ - 2.0) * (1.0 + delta_ * delta_) - mup1 * mup1;
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Parameters value accessor */
-NumericalPoint NonCentralStudent::getParameter() const
+Point NonCentralStudent::getParameter() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = nu_;
   point[1] = delta_;
   point[2] = gamma_;
   return point;
 }
 
-void NonCentralStudent::setParameter(const NumericalPoint & parameter)
+void NonCentralStudent::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = NonCentralStudent(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
@@ -221,9 +221,9 @@ Description NonCentralStudent::getParameterDescription() const
 }
 
 /* Nu accessor */
-void NonCentralStudent::setNu(const NumericalScalar nu)
+void NonCentralStudent::setNu(const Scalar nu)
 {
-  if (nu <= 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be strictly positive";
   if (nu != nu_)
   {
     nu_ = nu;
@@ -234,14 +234,14 @@ void NonCentralStudent::setNu(const NumericalScalar nu)
 }
 
 /* Nu accessor */
-NumericalScalar NonCentralStudent::getNu() const
+Scalar NonCentralStudent::getNu() const
 {
   return nu_;
 }
 
 
 /* Delta accessor */
-void NonCentralStudent::setDelta(const NumericalScalar delta)
+void NonCentralStudent::setDelta(const Scalar delta)
 {
   if (delta != delta_)
   {
@@ -253,13 +253,13 @@ void NonCentralStudent::setDelta(const NumericalScalar delta)
 }
 
 /* Delta accessor */
-NumericalScalar NonCentralStudent::getDelta() const
+Scalar NonCentralStudent::getDelta() const
 {
   return delta_;
 }
 
 /* Gamma accessor */
-void NonCentralStudent::setGamma(const NumericalScalar gamma)
+void NonCentralStudent::setGamma(const Scalar gamma)
 {
   if (gamma != gamma_)
   {
@@ -271,7 +271,7 @@ void NonCentralStudent::setGamma(const NumericalScalar gamma)
 }
 
 /* Gamma accessor */
-NumericalScalar NonCentralStudent::getGamma() const
+Scalar NonCentralStudent::getGamma() const
 {
   return gamma_;
 }

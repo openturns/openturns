@@ -43,7 +43,7 @@ Examples
 >>> import openturns as ot
 >>> model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
 >>> bounds = ot.Interval([1.0]*4, [2.0]*4)
->>> problem = ot.OptimizationProblem(model, ot.NumericalMathFunction(), ot.NumericalMathFunction(), bounds)
+>>> problem = ot.OptimizationProblem(model, ot.Function(), ot.Function(), bounds)
 >>> algo = ot.TNC(problem)
 >>> algo.setStartingPoint([0.0] * 4)
 >>> algo.run()
@@ -56,7 +56,7 @@ Examples
 
 Returns
 -------
-scale : :class:`~openturns.NumericalPoint`
+scale : :class:`~openturns.Point`
     Scaling factors to apply to each variable
 
     if empty, the factors are min-max for interval bounded variables
@@ -84,7 +84,7 @@ scale : sequence of float
 
 Returns
 -------
-offset : :class:`~openturns.NumericalPoint`
+offset : :class:`~openturns.Point`
     Constant to substract to each variable
 
     if empty, the constant are (min-max)/2 for interval bounded

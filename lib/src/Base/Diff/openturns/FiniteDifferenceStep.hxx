@@ -37,7 +37,7 @@ public:
   FiniteDifferenceStep();
 
   /** Parameters constructor */
-  explicit FiniteDifferenceStep(const NumericalPoint & eps);
+  explicit FiniteDifferenceStep(const Point & eps);
 
   /** Constructor from implementation */
   FiniteDifferenceStep(const FiniteDifferenceStepImplementation & implementation);
@@ -50,11 +50,11 @@ public:
   String __repr__() const;
 
   /** Epsilon accessor */
-  void setEpsilon(const NumericalPoint & epsilon);
-  NumericalPoint getEpsilon() const;
+  void setEpsilon(const Point & epsilon);
+  Point getEpsilon() const;
 
   /** Compute step */
-  NumericalPoint operator()(const NumericalPoint & inP) const;
+  Point operator()(const Point & inP) const;
 
 };
 

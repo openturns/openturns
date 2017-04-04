@@ -17,7 +17,7 @@ try:
     # Fixing the distribution for the RandomWalk
     dist = Distribution(Uniform())
     print("dist = ", dist)
-    origin = NumericalPoint(dist.getDimension())
+    origin = Point(dist.getDimension())
 
     # Building a random walk
     process = RandomWalk(origin, dist)

@@ -31,15 +31,15 @@ static const Factory<StratifiedExperiment> Factory_StratifiedExperiment;
 /* Default constructor */
 StratifiedExperiment::StratifiedExperiment()
   : ExperimentImplementation()
-  , center_(NumericalPoint(0))
-  , levels_(NumericalPoint(0))
+  , center_(Point(0))
+  , levels_(Point(0))
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-StratifiedExperiment::StratifiedExperiment(const NumericalPoint & center,
-    const NumericalPoint & levels)
+StratifiedExperiment::StratifiedExperiment(const Point & center,
+    const Point & levels)
   : ExperimentImplementation()
   , center_(center)
   , levels_(levels)
@@ -59,25 +59,25 @@ String StratifiedExperiment::__repr__() const
 }
 
 /* Center accessor */
-void StratifiedExperiment::setCenter(const NumericalPoint & center)
+void StratifiedExperiment::setCenter(const Point & center)
 {
   center_ = center;
 }
 
 /* Center accessor */
-NumericalPoint StratifiedExperiment::getCenter() const
+Point StratifiedExperiment::getCenter() const
 {
   return center_;
 }
 
 /* Levels accessor */
-void StratifiedExperiment::setLevels(const NumericalPoint & levels)
+void StratifiedExperiment::setLevels(const Point & levels)
 {
   levels_ = levels;
 }
 
 /* Levels accessor */
-NumericalPoint StratifiedExperiment::getLevels() const
+Point StratifiedExperiment::getLevels() const
 {
   return levels_;
 }

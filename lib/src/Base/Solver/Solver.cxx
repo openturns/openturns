@@ -46,9 +46,9 @@ Solver::Solver():
 }
 
 /* Second parameter constructor */
-Solver::Solver(const NumericalScalar absoluteError,
-               const NumericalScalar relativeError,
-               const NumericalScalar residualError,
+Solver::Solver(const Scalar absoluteError,
+               const Scalar relativeError,
+               const Scalar residualError,
                const UnsignedInteger maximumFunctionEvaluation):
   TypedInterfaceObject<SolverImplementation>(new SolverImplementation(absoluteError, relativeError, residualError, maximumFunctionEvaluation))
 {
@@ -71,57 +71,57 @@ String Solver::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
-NumericalScalar Solver::solve(const NumericalMathFunction & function,
-                              const NumericalScalar value,
-                              const NumericalScalar infPoint,
-                              const NumericalScalar supPoint) const
+Scalar Solver::solve(const Function & function,
+                     const Scalar value,
+                     const Scalar infPoint,
+                     const Scalar supPoint) const
 {
   return getImplementation()->solve(function, value, infPoint, supPoint);
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-NumericalScalar Solver::solve(const NumericalMathFunction & function,
-                              const NumericalScalar value,
-                              const NumericalScalar infPoint,
-                              const NumericalScalar supPoint,
-                              const NumericalScalar infValue,
-                              const NumericalScalar supValue) const
+Scalar Solver::solve(const Function & function,
+                     const Scalar value,
+                     const Scalar infPoint,
+                     const Scalar supPoint,
+                     const Scalar infValue,
+                     const Scalar supValue) const
 {
   return getImplementation()->solve(function, value, infPoint, supPoint, infValue, supValue);
 }
 
 /* Absolute error accessor */
-void Solver::setAbsoluteError(const NumericalScalar absoluteError)
+void Solver::setAbsoluteError(const Scalar absoluteError)
 {
   copyOnWrite();
   getImplementation()->setAbsoluteError(absoluteError);
 }
 
-NumericalScalar Solver::getAbsoluteError() const
+Scalar Solver::getAbsoluteError() const
 {
   return getImplementation()->getAbsoluteError();
 }
 
 /* Relative error accessor */
-void Solver::setRelativeError(const NumericalScalar relativeError)
+void Solver::setRelativeError(const Scalar relativeError)
 {
   copyOnWrite();
   getImplementation()->setRelativeError(relativeError);
 }
 
-NumericalScalar Solver::getRelativeError() const
+Scalar Solver::getRelativeError() const
 {
   return getImplementation()->getRelativeError();
 }
 
 /* Residual error accessor */
-void Solver::setResidualError(const NumericalScalar residualError)
+void Solver::setResidualError(const Scalar residualError)
 {
   copyOnWrite();
   getImplementation()->setResidualError(residualError);
 }
 
-NumericalScalar Solver::getResidualError() const
+Scalar Solver::getResidualError() const
 {
   return getImplementation()->getResidualError();
 }

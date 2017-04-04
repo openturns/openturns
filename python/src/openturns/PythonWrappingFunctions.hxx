@@ -227,15 +227,15 @@ namePython<_PyFloat_>()
 }
 
 template <>
-struct traitsPythonType< NumericalScalar >
+struct traitsPythonType< Scalar >
 {
   typedef _PyFloat_ Type;
 };
 
 template <>
 inline
-NumericalScalar
-convert< _PyFloat_, NumericalScalar >(PyObject * pyObj)
+Scalar
+convert< _PyFloat_, Scalar >(PyObject * pyObj)
 {
   return PyFloat_AsDouble(pyObj);
 }
@@ -243,7 +243,7 @@ convert< _PyFloat_, NumericalScalar >(PyObject * pyObj)
 template <>
 inline
 PyObject *
-convert< NumericalScalar, _PyFloat_ >(NumericalScalar x)
+convert< Scalar, _PyFloat_ >(Scalar x)
 {
   return PyFloat_FromDouble(x);
 }
@@ -269,23 +269,23 @@ namePython<_PyComplex_>()
 }
 
 template <>
-struct traitsPythonType< NumericalComplex >
+struct traitsPythonType< Complex >
 {
   typedef _PyComplex_ Type;
 };
 
 template <>
 inline
-NumericalComplex
-convert< _PyComplex_, NumericalComplex >(PyObject * pyObj)
+Complex
+convert< _PyComplex_, Complex >(PyObject * pyObj)
 {
-  return NumericalComplex(PyComplex_RealAsDouble(pyObj), PyComplex_ImagAsDouble(pyObj));
+  return Complex(PyComplex_RealAsDouble(pyObj), PyComplex_ImagAsDouble(pyObj));
 }
 
 template <>
 inline
 PyObject *
-convert< NumericalComplex, _PyComplex_ >(NumericalComplex x)
+convert< Complex, _PyComplex_ >(Complex x)
 {
   return PyComplex_FromDoubles(x.real(), x.imag());
 }
@@ -580,30 +580,30 @@ buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
 
 
 template <>
-struct traitsPythonType< NumericalPoint >
+struct traitsPythonType< Point >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-NumericalPoint
-convert< _PySequence_, NumericalPoint >(PyObject * pyObj)
+Point
+convert< _PySequence_, Point >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalScalar> > ptr = buildCollectionFromPySequence<NumericalScalar>(pyObj);
-  return NumericalPoint( *ptr );
+  Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
+  return Point( *ptr );
 }
 
 template <>
 inline
 PyObject *
-convert< NumericalPoint, _PySequence_ >(NumericalPoint inP)
+convert< Point, _PySequence_ >(Point inP)
 {
   UnsignedInteger dimension = inP.getDimension();
   PyObject * point = PyTuple_New( dimension );
   for ( UnsignedInteger i = 0; i < dimension; ++ i )
   {
-    PyTuple_SetItem( point, i, convert< NumericalScalar, _PyFloat_ >( inP[i] ) );
+    PyTuple_SetItem( point, i, convert< Scalar, _PyFloat_ >( inP[i] ) );
   }
   return point;
 }
@@ -623,7 +623,7 @@ convert< Description, _PySequence_ >(Description inP)
 }
 
 template <>
-struct traitsPythonType< Collection < NumericalComplex> >
+struct traitsPythonType< Collection < Complex> >
 {
   typedef _PySequence_ Type;
 };
@@ -631,27 +631,27 @@ struct traitsPythonType< Collection < NumericalComplex> >
 
 template <>
 inline
-Collection<NumericalComplex>
-convert<_PySequence_, Collection<NumericalComplex> >(PyObject * pyObj)
+Collection<Complex>
+convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalComplex> > ptr = buildCollectionFromPySequence<NumericalComplex>(pyObj);
-  return Collection<NumericalComplex>( *ptr );
+  Pointer<Collection<Complex> > ptr = buildCollectionFromPySequence<Complex>(pyObj);
+  return Collection<Complex>( *ptr );
 }
 
 
 template <>
-struct traitsPythonType< NumericalSample >
+struct traitsPythonType< Sample >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-NumericalSample
-convert< _PySequence_, NumericalSample >(PyObject * pyObj)
+Sample
+convert< _PySequence_, Sample >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalPoint> > ptr = buildCollectionFromPySequence<NumericalPoint>(pyObj);
-  return NumericalSample( *ptr );
+  Pointer<Collection<Point> > ptr = buildCollectionFromPySequence<Point>(pyObj);
+  return Sample( *ptr );
 }
 
 template <>
@@ -718,18 +718,18 @@ convert<_PySequence_, Description>(PyObject * pyObj)
 
 
 template <>
-struct traitsPythonType< Collection< NumericalScalar > >
+struct traitsPythonType< Collection< Scalar > >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-Collection<NumericalScalar>
-convert< _PySequence_, Collection<NumericalScalar> >(PyObject * pyObj)
+Collection<Scalar>
+convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
 {
-  Pointer<Collection<NumericalScalar> > ptr = buildCollectionFromPySequence<NumericalScalar>(pyObj);
-  return Collection<NumericalScalar>( *ptr );
+  Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
+  return Collection<Scalar>( *ptr );
 }
 
 
@@ -773,7 +773,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
             {
               try
               {
-                p_implementation->operator()( i, j ) = checkAndConvert<_PyFloat_, NumericalScalar>(elt.get());
+                p_implementation->operator()( i, j ) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
               }
               catch (InvalidArgumentException &)
               {
@@ -802,7 +802,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
-    Pointer< Collection< NumericalScalar > > ptr = buildCollectionFromPySequence< NumericalScalar >( implObj.get() );
+    Pointer< Collection< Scalar > > ptr = buildCollectionFromPySequence< Scalar >( implObj.get() );
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     p_implementation = new MatrixImplementation( nbRows, nbColumns, *ptr );
@@ -810,8 +810,8 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
   else
   {
     // try to convert from a sequence of sequences
-    Pointer< Collection< NumericalPoint > > ptr = buildCollectionFromPySequence< NumericalPoint >(pyObj);
-    NumericalSample sample( *ptr );
+    Pointer< Collection< Point > > ptr = buildCollectionFromPySequence< Point >(pyObj);
+    Sample sample( *ptr );
     UnsignedInteger nbRows = sample.getSize();
     UnsignedInteger nbColumns = sample.getDimension();
     p_implementation = new MatrixImplementation( nbRows, nbColumns );
@@ -917,7 +917,7 @@ inline
 TensorImplementation*
 convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
 {
-  Pointer< Collection< NumericalSample > > ptr = buildCollectionFromPySequence< NumericalSample >(pyObj);
+  Pointer< Collection< Sample > > ptr = buildCollectionFromPySequence< Sample >(pyObj);
   UnsignedInteger nbRows = ptr->getSize();
   UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
   UnsignedInteger nbSheets = ptr->getSize() > 0 ? (*ptr)[0].getDimension() : 0;
@@ -993,7 +993,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
             {
               try
               {
-                p_implementation->operator()( i, j ) = checkAndConvert<_PyComplex_, NumericalComplex>(elt.get());
+                p_implementation->operator()( i, j ) = checkAndConvert<_PyComplex_, Complex>(elt.get());
               }
               catch (InvalidArgumentException &)
               {
@@ -1024,7 +1024,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
-    Pointer< Collection< NumericalComplex > > ptr = buildCollectionFromPySequence< NumericalComplex >( implObj.get() );
+    Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >( implObj.get() );
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns, *ptr );
@@ -1032,7 +1032,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
   }
 
   // else try to convert from a sequence of sequences
-  Pointer< Collection< Collection< NumericalComplex > > > ptr = buildCollectionFromPySequence< Collection< NumericalComplex > >(pyObj);
+  Pointer< Collection< Collection< Complex > > > ptr = buildCollectionFromPySequence< Collection< Complex > >(pyObj);
   UnsignedInteger nbRows = ptr->getSize();
   UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
   ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns );
@@ -1142,7 +1142,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
               {
                 try
                 {
-                  p_implementation->operator()( i, j, k ) = checkAndConvert<_PyComplex_, NumericalComplex>(elt.get());
+                  p_implementation->operator()( i, j, k ) = checkAndConvert<_PyComplex_, Complex>(elt.get());
                 }
                 catch (InvalidArgumentException &)
                 {
@@ -1173,7 +1173,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
     ScopedPyObjectPointer implObj(PyObject_CallMethod ( pyObj,
                                   const_cast<char *>( "getImplementation" ),
                                   const_cast<char *>( "()" ) ));
-    Pointer< Collection< NumericalComplex > > ptr = buildCollectionFromPySequence< NumericalComplex >( implObj.get() );
+    Pointer< Collection< Complex > > ptr = buildCollectionFromPySequence< Complex >( implObj.get() );
     UnsignedInteger nbColumns = checkAndConvert< _PyInt_, UnsignedInteger >( colunmsObj.get() );
     UnsignedInteger nbRows = checkAndConvert< _PyInt_, UnsignedInteger >( rowsObj.get() );
     UnsignedInteger nbSheets = checkAndConvert< _PyInt_, UnsignedInteger >( sheetsObj.get() );

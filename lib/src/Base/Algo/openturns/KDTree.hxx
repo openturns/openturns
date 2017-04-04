@@ -22,7 +22,7 @@
 #define OPENTURNS_KDTREE_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ public:
   KDTree();
 
   /** Parameter constructor */
-  explicit KDTree(const NumericalSample & sample);
+  explicit KDTree(const Sample & sample);
 
   /** Virtual constructor */
   virtual KDTree * clone() const;
@@ -58,25 +58,25 @@ public:
   virtual Bool isEmpty() const;
 
   /** Insert a point */
-  virtual void insert(const NumericalPoint & point);
+  virtual void insert(const Point & point);
 
   /** Get the indices of the k nearest neighbours of the given point */
-  virtual Indices getNearestNeighboursIndices(const NumericalPoint & x,
+  virtual Indices getNearestNeighboursIndices(const Point & x,
       const UnsignedInteger k,
       const bool sorted  = false) const;
 
   /** Get the k nearest neighbours of the given point */
-  virtual NumericalSample getNearestNeighbours(const NumericalPoint & x,
-      const UnsignedInteger k) const;
+  virtual Sample getNearestNeighbours(const Point & x,
+                                      const UnsignedInteger k) const;
 
   /** Get the index of the nearest neighbour of the given point */
-  virtual UnsignedInteger getNearestNeighbourIndex(const NumericalPoint & x) const;
+  virtual UnsignedInteger getNearestNeighbourIndex(const Point & x) const;
 
   /** Get the nearest neighbour of the given point */
-  virtual NumericalPoint getNearestNeighbour(const NumericalPoint & x) const;
+  virtual Point getNearestNeighbour(const Point & x) const;
 
   /** Points accessor */
-  NumericalSample getPoints() const;
+  Sample getPoints() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -129,15 +129,15 @@ protected:
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
-      const NumericalPoint & x,
-      NumericalScalar & bestSquaredDistance,
+      const Point & x,
+      Scalar & bestSquaredDistance,
       const UnsignedInteger activeDimension) const;
 
   /** Build the tree */
   void initialize();
 
   /** The data organized by the tree */
-  NumericalSample points_;
+  Sample points_;
 
   /** The root of the tree */
   KDNode::KDNodePointer p_root_;

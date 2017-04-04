@@ -37,14 +37,14 @@ BlendedStep::BlendedStep()
 }
 
 /* Parameters constructor */
-BlendedStep::BlendedStep(const NumericalPoint & epsilon, const NumericalScalar eta)
+BlendedStep::BlendedStep(const Point & epsilon, const Scalar eta)
   : FiniteDifferenceStepImplementation(epsilon)
 {
-  setEta( NumericalPoint( epsilon.getDimension(), eta ) );
+  setEta( Point( epsilon.getDimension(), eta ) );
 }
 
 /* Parameters constructor */
-BlendedStep::BlendedStep(const NumericalPoint & epsilon, const NumericalPoint & eta)
+BlendedStep::BlendedStep(const Point & epsilon, const Point & eta)
   : FiniteDifferenceStepImplementation(epsilon)
 {
   setEta( eta );
@@ -67,15 +67,15 @@ BlendedStep * BlendedStep::clone() const
 }
 
 /* Compute step */
-NumericalPoint BlendedStep::operator()(const NumericalPoint & inP) const
+Point BlendedStep::operator()(const Point & inP) const
 {
   const UnsignedInteger dimension = epsilon_.getDimension();
   if (dimension != inP.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension eps:" << dimension << " x:" << inP.getDimension();
-  NumericalPoint result( epsilon_ );
+  Point result( epsilon_ );
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     result[i] *= ( std::abs( inP[i] ) + eta_[i] );
-    if (result[i] < SpecFunc::MinNumericalScalar ) throw InvalidArgumentException(HERE) << "Nul step for component " << i << ": eps=" << epsilon_[i] << " x=" << inP[i];
+    if (result[i] < SpecFunc::MinScalar ) throw InvalidArgumentException(HERE) << "Nul step for component " << i << ": eps=" << epsilon_[i] << " x=" << inP[i];
   }
   return result;
 }
@@ -93,7 +93,7 @@ void BlendedStep::load(Advocate & adv)
 }
 
 /* Eta accessor */
-void BlendedStep::setEta(const NumericalPoint & eta)
+void BlendedStep::setEta(const Point & eta)
 {
   const UnsignedInteger dimension = epsilon_.getDimension();
   if (eta.getDimension() != epsilon_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension: eta dimension doesn't match epsilon dimension";
@@ -104,7 +104,7 @@ void BlendedStep::setEta(const NumericalPoint & eta)
   eta_ = eta;
 }
 
-NumericalPoint BlendedStep::getEta() const
+Point BlendedStep::getEta() const
 {
   return eta_;
 }

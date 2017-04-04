@@ -37,7 +37,7 @@ static const Factory<NatafEllipticalCopulaEvaluation> Factory_NatafEllipticalCop
 
 /* Default constructor */
 NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , standardDistribution_()
   , cholesky_()
 {
@@ -47,7 +47,7 @@ NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation()
 /* Parameter constructor */
 NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation(const Distribution & standardDistribution,
     const TriangularMatrix & cholesky)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , standardDistribution_(standardDistribution)
   , cholesky_(cholesky)
 {
@@ -89,10 +89,10 @@ String NatafEllipticalCopulaEvaluation::__str__(const String & offset) const
  * Yi(x) = Q(xi), where Q = F^{-1} and F is the CDF of the standard elliptical distribution
  * T(x) = G.Y(x), where G = L^{-1} and L is the Cholesky factor of R: L.L^t = R, L is lower triangular
  */
-NumericalPoint NatafEllipticalCopulaEvaluation::operator () (const NumericalPoint & inP) const
+Point NatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
-  NumericalPoint result(dimension);
+  Point result(dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // First, filter the commmon marginal distribution
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeQuantile(inP[i])[0];
@@ -109,7 +109,7 @@ NumericalPoint NatafEllipticalCopulaEvaluation::operator () (const NumericalPoin
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameters are not taken into account. */
 
-Matrix NatafEllipticalCopulaEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix NatafEllipticalCopulaEvaluation::parameterGradient(const Point & inP) const
 {
   return Matrix(0, getInputDimension());
 }
@@ -129,7 +129,7 @@ UnsignedInteger NatafEllipticalCopulaEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void NatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "standardDistribution_", standardDistribution_ );
   adv.saveAttribute( "cholesky_", cholesky_ );
 }
@@ -137,7 +137,7 @@ void NatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NatafEllipticalCopulaEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "standardDistribution_", standardDistribution_ );
   adv.loadAttribute( "cholesky_", cholesky_ );
 }

@@ -43,7 +43,7 @@ class OT_API GraphImplementation :
 
 public:
 
-  typedef NumericalPoint                 BoundingBox;
+  typedef Point                 BoundingBox;
   typedef Collection<Drawable>           DrawableCollection;
   typedef PersistentCollection<Drawable> DrawablePersistentCollection;
 
@@ -59,7 +59,7 @@ public:
                       const String & yTitle,
                       const Bool showAxes,
                       const String & legendPosition = "",
-                      const NumericalScalar legendFontSize = ResourceMap::GetAsNumericalScalar("Graph-DefaultLegendFontSize"),
+                      const Scalar legendFontSize = ResourceMap::GetAsScalar("Graph-DefaultLegendFontSize"),
                       const LogScale logScale = NONE);
 
   /** Virtual constructor */
@@ -140,8 +140,8 @@ public:
 
   /** The method that generates the graphic files */
   void draw(const String & file,
-            const NumericalScalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
-            const NumericalScalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
+            const Scalar width = ResourceMap::GetAsUnsignedInteger("Graph-DefaultWidth"),
+            const Scalar height = ResourceMap::GetAsUnsignedInteger("Graph-DefaultHeight"),
             SignedInteger format = ALL);
 
   /** Get the R command corresponding to the graph */
@@ -170,10 +170,10 @@ public:
   void setLegendPosition(const String & position);
 
   /** Get the legend font size */
-  NumericalScalar getLegendFontSize() const;
+  Scalar getLegendFontSize() const;
 
   /** Set the legend font size */
-  void setLegendFontSize(const NumericalScalar legendFontSize);
+  void setLegendFontSize(const Scalar legendFontSize);
 
   /** Check for legend position validity */
   static Bool IsValidLegendPosition(const String & position);
@@ -216,7 +216,7 @@ private:
   String legendPosition_;
 
   /** Legend font size */
-  NumericalScalar legendFontSize_;
+  Scalar legendFontSize_;
 
   /** x axis title */
   String xTitle_;

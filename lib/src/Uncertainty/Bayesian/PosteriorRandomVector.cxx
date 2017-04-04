@@ -67,13 +67,13 @@ UnsignedInteger PosteriorRandomVector::getDimension() const
 }
 
 
-NumericalPoint PosteriorRandomVector::getRealization() const
+Point PosteriorRandomVector::getRealization() const
 {
   return sampler_.getRealization();
 }
 
 
-NumericalSample PosteriorRandomVector::getSample(const UnsignedInteger size) const
+Sample PosteriorRandomVector::getSample(const UnsignedInteger size) const
 {
   return sampler_.getSample(size);
 }

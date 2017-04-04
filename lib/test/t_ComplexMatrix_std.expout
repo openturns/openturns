@@ -27,7 +27,7 @@ diff = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name
 test 11 : matrix multiplication method
 prod = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(12,18),(11,15),(11,15),(8,8)]
 test 12 : multiplication with a numerical point method
-pt = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+pt = class=Point name=Unnamed dimension=2 values=[1,2]
 ptResult = [(9,5),(8,3)]
 test 13 : multiplication and division by a complex methods
 scalprod1 = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,4),(7,-1),(10,10),(7,9)]
@@ -45,7 +45,7 @@ matrix7 is empty = true
 matrix8 is empty = true
 matrix0 is empty = true
 test 15 : multiplication with a numerical point method
-pt_test = class=NumericalPoint name=Unnamed dimension=2 values=[1,2]
+pt_test = class=Point name=Unnamed dimension=2 values=[1,2]
 A = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.5,0),(-0.866025,0),(0.866025,0),(0.5,0)]
 B = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0.5,0),(0.866025,0),(-0.866025,0),(0.5,0)]
 id = class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(1,0),(0,0),(0,0),(1,0)]

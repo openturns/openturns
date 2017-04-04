@@ -498,7 +498,7 @@ OT_Drawable_setDrawLabels_doc
 
 Returns
 -------
-firstCoord : :class:`~openturns.NumericalSample`
+firstCoord : :class:`~openturns.Sample`
     Values of the first coordinate."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getX
@@ -524,7 +524,7 @@ OT_Drawable_setX_doc
 
 Returns
 -------
-secondCoord : :class:`~openturns.NumericalSample`
+secondCoord : :class:`~openturns.Sample`
     Values of the second coordinate."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getY
@@ -550,7 +550,7 @@ OT_Drawable_setY_doc
 
 Returns
 -------
-data : :class:`~openturns.NumericalSample`
+data : :class:`~openturns.Sample`
     Data from which the Drawable is built."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getData
@@ -563,7 +563,7 @@ OT_Drawable_getData_doc
 
 Returns
 -------
-boundingBox : :class:`~openturns.NumericalPoint` of dimension 4
+boundingBox : :class:`~openturns.Point` of dimension 4
     Bounding box of the drawable element, which is a rectangle determined
     by its range along X and its range along Y.
     The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
@@ -578,7 +578,7 @@ OT_Drawable_getBoundingBox_doc
 
 Returns
 -------
-center : :class:`~openturns.NumericalPoint`
+center : :class:`~openturns.Point`
     Center of the :class:`~openturns.Pie` inside the bounding box."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getCenter
@@ -656,7 +656,7 @@ OT_Drawable_setOrigin_doc
 
 Returns
 -------
-levels : :class:`~openturns.NumericalPoint`
+levels : :class:`~openturns.Point`
     Different levels where the iso-curves of the :class:`~openturns.Contour`
     will be drawn."
 %enddef
@@ -848,7 +848,7 @@ value : float
 
 Returns
 -------
-RGBComponents : :class:`~openturns.NumericalPoint`
+RGBComponents : :class:`~openturns.Point`
     RGB (Red, Green and Blue) components of the color."
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertFromHSVIntoRGB

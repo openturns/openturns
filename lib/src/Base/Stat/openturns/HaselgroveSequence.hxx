@@ -40,7 +40,7 @@ public:
   explicit HaselgroveSequence(const UnsignedInteger dimension = 1);
 
   /** Constructor with parameters */
-  explicit HaselgroveSequence(const NumericalPoint & base);
+  explicit HaselgroveSequence(const Point & base);
 
   /** Virtual constructor */
   virtual HaselgroveSequence * clone() const;
@@ -50,7 +50,7 @@ public:
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  NumericalPoint generate() const;
+  Point generate() const;
 
   /** String converter */
   String __repr__() const;
@@ -59,7 +59,7 @@ public:
 private:
 
   /** Base for the generation of the sequence */
-  NumericalPoint base_;
+  Point base_;
 
   /** Current seed into the sequence */
   mutable Unsigned64BitsInteger seed_;

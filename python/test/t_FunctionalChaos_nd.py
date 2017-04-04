@@ -23,7 +23,7 @@ try:
     # Reference analytical values
     meanTh_Sobol = 1.0
     covTh_Sobol = 1.0
-    kappa = NumericalPoint(inputDimension)
+    kappa = Point(inputDimension)
     a = 7.0
     b = 0.1
     # Create the gSobol function
@@ -48,20 +48,20 @@ try:
     meanTh_Ishigami = a / 2.0
     covTh_Ishigami = b ** 2 * pi ** 8 / 18.0 + \
         (b * pi ** 4) / 5.0 + a ** 2 / 8.0 + 1.0 / 2.0
-    sob_1_Ishigami = NumericalPoint(3)
+    sob_1_Ishigami = Point(3)
     sob_1_Ishigami[0] = (
         b * pi ** 4 / 5.0 + b ** 2 * pi ** 8 / 50.0 + 1.0 / 2.0) / covTh_Ishigami
     sob_1_Ishigami[1] = (a ** 2 / 8.0) / covTh_Ishigami
     sob_1_Ishigami[2] = 0.0
-    sob_2_Ishigami = NumericalPoint(3)
+    sob_2_Ishigami = Point(3)
     sob_2_Ishigami[0] = 0.0
     sob_2_Ishigami[1] = (
         b ** 2 * pi ** 8 / 18.0 - b ** 2 * pi ** 8 / 50.0) / covTh_Ishigami
     sob_2_Ishigami[2] = 0.0
-    sob_3_Ishigami = NumericalPoint(1, 0.0)
+    sob_3_Ishigami = Point(1, 0.0)
     # Multidimensional reference values
     # Mean
-    meanTh = NumericalPoint(outputDimension)
+    meanTh = Point(outputDimension)
     meanTh[0] = meanTh_Sobol
     meanTh[1] = meanTh_Ishigami
     # Covariance
@@ -69,7 +69,7 @@ try:
     covTh[0, 0] = covTh_Sobol
     covTh[1, 1] = covTh_Ishigami
     # 1rst order Sobol
-    sob_1 = NumericalPoint(inputDimension * outputDimension)
+    sob_1 = Point(inputDimension * outputDimension)
     indices = Indices(1)
     indices[0] = 0
     sob_1[0] = sobol(indices, kappa) / covTh_Sobol
@@ -81,7 +81,7 @@ try:
     sob_1[4] = sob_1_Ishigami[1]
     sob_1[5] = sob_1_Ishigami[2]
     # 2nd order Sobol
-    sob_2 = NumericalPoint(inputDimension * outputDimension)
+    sob_2 = Point(inputDimension * outputDimension)
     indices = Indices(2)
     indices[0] = 0
     indices[1] = 1
@@ -95,7 +95,7 @@ try:
     sob_2[4] = sob_2_Ishigami[1]
     sob_2[5] = sob_2_Ishigami[2]
     # 3rd order Sobol
-    sob_3 = NumericalPoint(outputDimension)
+    sob_3 = Point(outputDimension)
     indices = Indices(3)
     indices[0] = 0
     indices[1] = 1
@@ -103,14 +103,14 @@ try:
     sob_3[0] = sobol(indices, kappa) / covTh_Sobol
     sob_3[1] = sob_3_Ishigami[0]
     # 1rst order Total Sobol
-    sob_T1 = NumericalPoint(inputDimension * outputDimension)
+    sob_T1 = Point(inputDimension * outputDimension)
     sob_T1[0] = sob_1[0] + sob_2[0] + sob_2[1] + sob_3[0]
     sob_T1[1] = sob_1[1] + sob_2[0] + sob_2[2] + sob_3[0]
     sob_T1[2] = sob_1[2] + sob_2[1] + sob_2[2] + sob_3[0]
     sob_T1[3] = sob_1[3] + sob_2[3] + sob_2[4] + sob_3[1]
     sob_T1[4] = sob_1[4] + sob_2[3] + sob_2[5] + sob_3[1]
     sob_T1[5] = sob_1[5] + sob_2[4] + sob_2[5] + sob_3[1]
-    sob_T2 = NumericalPoint(inputDimension * outputDimension)
+    sob_T2 = Point(inputDimension * outputDimension)
     sob_T2[0] = sob_2[0] + sob_3[0]
     sob_T2[1] = sob_2[1] + sob_3[0]
     sob_T2[2] = sob_2[2] + sob_3[0]
@@ -118,8 +118,8 @@ try:
     sob_T2[4] = sob_2[4] + sob_3[1]
     sob_T2[5] = sob_2[5] + sob_3[1]
     # 3rd order Total Sobol
-    sob_T3 = NumericalPoint(sob_3)
-    model = NumericalMathFunction(inputVariables, outputVariables, formula)
+    sob_T3 = Point(sob_3)
+    model = Function(inputVariables, outputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * inputDimension)

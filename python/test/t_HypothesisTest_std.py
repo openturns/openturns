@@ -12,24 +12,24 @@ try:
     for i in range(dim):
         for j in range(i):
             R[i, j] = (i + j + 1.0) / (2.0 * dim)
-    mean = NumericalPoint(dim, 2.0)
-    sigma = NumericalPoint(dim, 3.0)
+    mean = Point(dim, 2.0)
+    sigma = Point(dim, 3.0)
     distribution = Normal(mean, sigma, R)
 
     size = 100
     sample = distribution.getSample(size)
-    sampleX = NumericalSample(size, dim - 1)
-    sampleY = NumericalSample(size, 1)
+    sampleX = Sample(size, dim - 1)
+    sampleY = Sample(size, 1)
     for i in range(size):
-        sampleY[i] = NumericalPoint(1, sample[i, 0])
-        p = NumericalPoint(dim - 1)
+        sampleY[i] = Point(1, sample[i, 0])
+        p = Point(dim - 1)
         for j in range(dim - 1):
             p[j] = sample[i, j + 1]
         sampleX[i] = p
 
-    sampleZ = NumericalSample(size, 1)
+    sampleZ = Sample(size, 1)
     for i in range(size):
-        sampleZ[i] = NumericalPoint(1, sampleY[i, 0] * sampleY[i, 0])
+        sampleZ[i] = Point(1, sampleY[i, 0] * sampleY[i, 0])
 
     discreteSample1 = Poisson(0.1).getSample(size)
     discreteSample2 = Geometric(0.4).getSample(size)

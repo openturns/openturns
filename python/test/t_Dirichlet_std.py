@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     for dim in range(1, 2):
-        theta = NumericalPoint(dim + 1)
+        theta = Point(dim + 1)
         for i in range(dim + 1):
             theta[i] = (i + 1.0) / 4.0
         distribution = Dirichlet(theta)
@@ -53,7 +53,7 @@ try:
                 size *= 10
 
         # Define a point
-        point = NumericalPoint(
+        point = Point(
             distribution.getDimension(), 0.5 / distribution.getDimension())
         print("Point= ", repr(point))
 
@@ -68,26 +68,33 @@ try:
         print("quantile=", repr(quantile))
         print("cdf(quantile)= %.6f" % distribution.computeCDF(quantile))
         # Get 95% survival function
-        inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+        inverseSurvival = Point(
+            distribution.computeInverseSurvivalFunction(0.95))
         print("InverseSurvival=", repr(inverseSurvival))
-        print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+        print("Survival(inverseSurvival)=%.6f" %
+              distribution.computeSurvivalFunction(inverseSurvival))
 
         # Confidence regions
-        interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+            0.95)
         print("Minimum volume interval=", interval)
-        print("threshold=", NumericalPoint(1, threshold))
-        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+        print("threshold=", Point(1, threshold))
+        levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+            0.95)
         print("Minimum volume level set=", levelSet)
-        print("beta=", NumericalPoint(1, beta))
-        interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+        print("beta=", Point(1, beta))
+        interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+            0.95)
         print("Bilateral confidence interval=", interval)
-        print("beta=", NumericalPoint(1, beta))
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+        print("beta=", Point(1, beta))
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, False)
         print("Unilateral confidence interval (lower tail)=", interval)
-        print("beta=", NumericalPoint(1, beta))
-        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+        print("beta=", Point(1, beta))
+        interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, True)
         print("Unilateral confidence interval (upper tail)=", interval)
-        print("beta=", NumericalPoint(1, beta))
+        print("beta=", Point(1, beta))
 
         mean = distribution.getMean()
         print("mean=", repr(mean))
@@ -105,9 +112,9 @@ try:
             margin = distribution.getMarginal(i)
             print("margin=", margin)
             print("margin PDF= %.8g" %
-                  margin.computePDF(NumericalPoint(1, 0.5)))
+                  margin.computePDF(Point(1, 0.5)))
             print("margin CDF= %.8g" %
-                  margin.computeCDF(NumericalPoint(1, 0.5)))
+                  margin.computeCDF(Point(1, 0.5)))
             print("margin quantile=", repr(margin.computeQuantile(0.95)))
             print("margin realization=", repr(margin.getRealization()))
         if (dim >= 2):
@@ -118,9 +125,9 @@ try:
             print("indices=", indices)
             margins = distribution.getMarginal(indices)
             print("margins=", margins)
-            print("margins PDF=", margins.computePDF(NumericalPoint(2, 0.5)))
+            print("margins PDF=", margins.computePDF(Point(2, 0.5)))
             print("margins CDF= %.8g" %
-                  margins.computeCDF(NumericalPoint(2, 0.5)))
+                  margins.computeCDF(Point(2, 0.5)))
             quantile = margins.computeQuantile(0.95)
             print("margins quantile=", repr(quantile))
             print("margins CDF(quantile)= %.6f" % margins.computeCDF(quantile))

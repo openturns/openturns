@@ -42,27 +42,27 @@ try:
         size *= 10
 
     # Define a point
-    point = NumericalPoint(distribution.getDimension(), 1.0)
+    point = Point(distribution.getDimension(), 1.0)
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point
     eps = 1e-5
     PDF = distribution.computePDF(point)
     print("pdf     = %.12g" % PDF)
-    print("pdf (FD)= %.9f" % ((distribution.computeCDF(point + NumericalPoint(1, eps)) -
-                               distribution.computeCDF(point + NumericalPoint(1, -eps))) / (2.0 * eps), ))
+    print("pdf (FD)= %.9f" % ((distribution.computeCDF(point + Point(1, eps)) -
+                               distribution.computeCDF(point + Point(1, -eps))) / (2.0 * eps), ))
     CDF = distribution.computeCDF(point)
     print("cdf= %.12g" % CDF)
     # CF = distribution.computeCharacteristicFunction( point[0] )
     # print "characteristic function=", CF
-    PDFgrFD = NumericalPoint(2)
+    PDFgrFD = Point(2)
     PDFgrFD[0] = (Rice(distribution.getSigma() + eps, distribution.getNu()).computePDF(point) -
                   Rice(distribution.getSigma() - eps, distribution.getNu()).computePDF(point)) / (2.0 * eps)
 
     PDFgrFD[1] = (Rice(distribution.getSigma(), distribution.getNu() + eps).computePDF(point) -
                   Rice(distribution.getSigma(), distribution.getNu() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
-    CDFgrFD = NumericalPoint(2)
+    CDFgrFD = Point(2)
     CDFgrFD[0] = (Rice(distribution.getSigma() + eps, distribution.getNu()).computeCDF(point) -
                   Rice(distribution.getSigma() - eps, distribution.getNu()).computeCDF(point)) / (2.0 * eps)
 
@@ -73,26 +73,32 @@ try:
     print("quantile=", repr(quantile))
     print("cdf(quantile)= %.12g" % distribution.computeCDF(quantile))
     # Get 95% survival function
-    inverseSurvival = NumericalPoint(distribution.computeInverseSurvivalFunction(0.95))
+    inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" % distribution.computeSurvivalFunction(inverseSurvival))
+    print("Survival(inverseSurvival)=%.6f" %
+          distribution.computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
-    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+        0.95)
     print("Minimum volume interval=", interval)
-    print("threshold=", NumericalPoint(1, threshold))
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
+    print("threshold=", Point(1, threshold))
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+        0.95)
     print("Minimum volume level set=", levelSet)
-    print("beta=", NumericalPoint(1, beta))
-    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+    print("beta=", Point(1, beta))
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95)
     print("Bilateral confidence interval=", interval)
-    print("beta=", NumericalPoint(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+    print("beta=", Point(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, False)
     print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
-    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+    print("beta=", Point(1, beta))
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+        0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", NumericalPoint(1, beta))
+    print("beta=", Point(1, beta))
 
     mean = distribution.getMean()
     print("mean=", repr(mean))

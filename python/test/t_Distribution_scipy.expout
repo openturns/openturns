@@ -1,4 +1,4 @@
-distribution=class=PythonDistributionImplementation name=SciPyDistribution
+distribution=class=PythonDistribution name=SciPyDistribution
 realization=[0.37454]
 sample=0 : [ 0.950714 ]
 1 : [ 0.731994 ]

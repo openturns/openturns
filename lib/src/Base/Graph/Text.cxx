@@ -32,7 +32,7 @@ std::map<String, UnsignedInteger> Text::Position;
 Bool Text::IsTextFirstInitialization = true;
 
 /* Default constructor */
-Text::Text(const NumericalSample & data,
+Text::Text(const Sample & data,
            const Description & textAnnotations,
            const String & textPosition,
            const String & legend)
@@ -49,15 +49,15 @@ Text::Text(const NumericalSample & data,
 }
 
 /* Constructor from complex numbers */
-Text::Text(const NumericalComplexCollection & data,
+Text::Text(const ComplexCollection & data,
            const Description & textAnnotations,
            const String & textPosition,
            const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
 {
-  // Convert the complex numbers into a NumericalSample
+  // Convert the complex numbers into a Sample
   const UnsignedInteger size = data.getSize();
-  NumericalSample sample(size, 2);
+  Sample sample(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     sample[i][0] = data[i].real();
@@ -74,17 +74,17 @@ Text::Text(const NumericalComplexCollection & data,
 }
 
 /* Contructor from 2 data sets */
-Text::Text(const NumericalSample & dataX,
-           const NumericalSample & dataY,
+Text::Text(const Sample & dataX,
+           const Sample & dataY,
            const Description & textAnnotations,
            const String & textPosition,
            const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
 {
   const UnsignedInteger size = dataX.getSize();
   if (dataY.getSize() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Text based on two numerical samples with different size.";
   if ((dataX.getDimension() != 1) || (dataY.getDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: cannot build a Text based on two numerical samples of dimension greater than 1.";
-  NumericalSample dataFull(dataX);
+  Sample dataFull(dataX);
   dataFull.stack(dataY);
   // Check data validity
   setData(dataFull);
@@ -96,16 +96,16 @@ Text::Text(const NumericalSample & dataX,
   textPositions_ = Description(data_.getSize(), textPosition);
 }
 
-Text::Text(const NumericalPoint & dataX,
-           const NumericalPoint & dataY,
+Text::Text(const Point & dataX,
+           const Point & dataY,
            const Description & textAnnotations,
            const String & textPosition,
            const String & legend)
-  : DrawableImplementation(NumericalSample(0, 2), legend)
+  : DrawableImplementation(Sample(0, 2), legend)
 {
   const UnsignedInteger size = dataX.getDimension();
   if (dataY.getDimension() != size) throw InvalidDimensionException(HERE) << "Error: cannot build a Text based on two numerical points with different dimension.";
-  NumericalSample dataFull(size, 2);
+  Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull[i][0] = dataX[i];
@@ -205,7 +205,7 @@ Text * Text::clone() const
 }
 
 /* Check validity of data */
-void Text::checkData(const NumericalSample & data) const
+void Text::checkData(const Sample & data) const
 {
   if (data.getDimension() != 2)
   {

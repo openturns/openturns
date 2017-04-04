@@ -53,13 +53,13 @@ public:
    * @param b The right hand side of the expression
    * @return True if comparison succeeds
    */
-  Bool operator()(NumericalScalar a, NumericalScalar b) const;
+  Bool operator()(Scalar a, Scalar b) const;
 
   /** @copydoc operator()()
-   * This method is an alias for ComparisonOperator::operator()(const NumericalScalar a, const NumericalScalar b).
+   * This method is an alias for ComparisonOperator::operator()(const Scalar a, const Scalar b).
    */
-  Bool compare(const NumericalScalar a,
-               const NumericalScalar b) const;
+  Bool compare(const Scalar a,
+               const Scalar b) const;
 
 
 }; /* class ComparisonOperator */

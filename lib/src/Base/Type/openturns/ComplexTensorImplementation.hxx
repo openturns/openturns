@@ -22,7 +22,7 @@
 #define OPENTURNS_COMPLEXTENSORIMPLEMENTATION_HXX
 
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ComplexMatrix.hxx"
 #include "openturns/HermitianMatrix.hxx"
 
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ComplexTensorImplementation
-  : public PersistentCollection<NumericalComplex>
+  : public PersistentCollection<Complex>
 
 {
   CLASSNAME;
@@ -67,14 +67,14 @@ public:
   ComplexTensorImplementation(const UnsignedInteger rowDim,
                               const UnsignedInteger colDim,
                               const UnsignedInteger sheetDim,
-                              const Collection<NumericalComplex> & elementsValues);
+                              const Collection<Complex> & elementsValues);
 
 
   /** Virtual constructor */
   virtual ComplexTensorImplementation * clone() const;
 
   /** Set small elements to zero */
-  ComplexTensorImplementation clean(const NumericalScalar threshold) const;
+  ComplexTensorImplementation clean(const Scalar threshold) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -82,13 +82,13 @@ public:
 
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  NumericalComplex & operator () (const UnsignedInteger i,
+  Complex & operator () (const UnsignedInteger i,
                                   const UnsignedInteger j,
                                   const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
-  const NumericalComplex & operator () (const UnsignedInteger i,
+  const Complex & operator () (const UnsignedInteger i,
                                         const UnsignedInteger j,
                                         const UnsignedInteger k) const;
 
@@ -134,7 +134,7 @@ public:
 
   // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
   // INTENTIONALY NOT DOCUMENTED
-  const NumericalComplex * __baseaddress__ () const;
+  const Complex * __baseaddress__ () const;
   UnsignedInteger __elementsize__ () const;
   UnsignedInteger __stride__ (UnsignedInteger dim) const;
 
@@ -159,7 +159,7 @@ ComplexTensorImplementation::ComplexTensorImplementation(const UnsignedInteger r
     const UnsignedInteger sheetDim,
     InputIterator first,
     InputIterator last)
-  : PersistentCollection<NumericalComplex>(rowDim * colDim * sheetDim),
+  : PersistentCollection<Complex>(rowDim * colDim * sheetDim),
     nbRows_(rowDim),
     nbColumns_(colDim),
     nbSheets_(sheetDim)

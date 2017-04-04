@@ -63,7 +63,7 @@ kernel : :class:`~openturns.Distribution`
 
 Returns
 -------
-bandwidth : :class:`~openturns.NumericalPoint`
+bandwidth : :class:`~openturns.Point`
     Bandwith used in each direction."
 
 // ---------------------------------------------------------------------

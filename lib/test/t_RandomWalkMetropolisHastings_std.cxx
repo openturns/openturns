@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     UnsignedInteger size = 10;
     Normal realDist(31.0, 1.2);
 
-    NumericalSample data(realDist.getSample(size));
+    Sample data(realDist.getSample(size));
 
     // calibration parameters
     CalibrationStrategyCollection calibrationColl(2);
@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
     proposalColl.add(std_proposal);
 
     // prior distribution
-    NumericalScalar mu0 = 25.0;
+    Scalar mu0 = 25.0;
 
-    NumericalPoint sigma0s;
+    Point sigma0s;
     sigma0s.add(0.1);
     sigma0s.add(1.0);
     //sigma0s.add(2.0);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     for ( UnsignedInteger i = 0; i < sigma0s.getDimension(); ++ i )
     {
 
-      NumericalScalar sigma0 = sigma0s[i];
+      Scalar sigma0 = sigma0s[i];
       Normal mean_prior(mu0, sigma0);
       Dirac std_prior(2.0); // standard dev is known
       DistributionCollection priorColl;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
       Distribution prior = ComposedDistribution( priorColl );
 
       // choose the initial state within the prior
-      NumericalPoint initialState(prior.getRealization());
+      Point initialState(prior.getRealization());
 
       // conditional distribution
       Distribution conditional = Normal();
@@ -98,12 +98,12 @@ int main(int argc, char *argv[])
       sampler.setBurnIn(500);
       sampler.setCalibrationStrategyPerComponent(calibrationColl);
 
-      NumericalScalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
-      NumericalScalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));
+      Scalar sigmay = ConditionalDistribution(Normal(), prior).getStandardDeviation()[0];
+      Scalar w = size * pow(sigma0, 2.) / (size * pow(sigma0, 2.) + pow(sigmay, 2.0));
 
       std::cout << "prior variance=" << pow(sigma0, 2.) << std::endl;
 
-      NumericalPoint realization(sampler.getRealization());
+      Point realization(sampler.getRealization());
       std::cout << "  realization=" << realization << std::endl;
 
       std::cout << "  w=" << w << std::endl;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
       std::cout << "  expected posterior ~N(" << w*data.computeMean()[0] + (1. - w)*mu0 << ", " << sqrt(w * pow(sigmay, 2.0) / size) << ")" << std::endl;
 
       // try to generate a sample
-      NumericalSample sample(sampler.getSample(50));
+      Sample sample(sampler.getSample(50));
 
       std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviationPerComponent()[0] << ")" << std::endl;
 

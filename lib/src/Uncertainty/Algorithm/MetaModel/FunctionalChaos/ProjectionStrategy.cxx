@@ -78,43 +78,43 @@ WeightedExperiment ProjectionStrategy::getExperiment() const
 }
 
 /* Sample accessors */
-NumericalSample ProjectionStrategy::getInputSample() const
+Sample ProjectionStrategy::getInputSample() const
 {
   return getImplementation()->getInputSample();
 }
 
-NumericalSample ProjectionStrategy::getOutputSample() const
+Sample ProjectionStrategy::getOutputSample() const
 {
   return getImplementation()->getOutputSample();
 }
 
 /* Weights accessor */
-NumericalPoint ProjectionStrategy::getWeights() const
+Point ProjectionStrategy::getWeights() const
 {
   return getImplementation()->getWeights();
 }
 
 /* Residual accessor */
-NumericalScalar ProjectionStrategy::getResidual() const
+Scalar ProjectionStrategy::getResidual() const
 {
   return getImplementation()->getResidual();
 }
 
 /* Relative error accessor */
-NumericalScalar ProjectionStrategy::getRelativeError() const
+Scalar ProjectionStrategy::getRelativeError() const
 {
   return getImplementation()->getRelativeError();
 }
 
 /* Relative error accessor */
-NumericalPoint ProjectionStrategy::getCoefficients() const
+Point ProjectionStrategy::getCoefficients() const
 {
   return getImplementation()->getCoefficients();
 }
 
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-void ProjectionStrategy::computeCoefficients(const NumericalMathFunction & function,
+void ProjectionStrategy::computeCoefficients(const Function & function,
     const Basis & basis,
     const Indices & indices,
     const Indices & addedRanks,

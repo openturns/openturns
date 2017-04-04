@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_JANSENSENSITIVITYALGORITHM_HXX
 #define OPENTURNS_JANSENSENSITIVITYALGORITHM_HXX
 
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,19 +43,19 @@ public:
   JansenSensitivityAlgorithm();
 
   /** Constructor with parameters */
-  JansenSensitivityAlgorithm(const NumericalSample & inputDesign,
-                             const NumericalSample & outputDesign,
+  JansenSensitivityAlgorithm(const Sample & inputDesign,
+                             const Sample & outputDesign,
                              const UnsignedInteger size);
 
   /** Constructor with distribution / model parameters */
   JansenSensitivityAlgorithm(const Distribution & distribution,
                              const UnsignedInteger size,
-                             const NumericalMathFunction & model,
+                             const Function & model,
                              const Bool computeSecondOrder = true);
 
   /** Constructor with experiment / model parameters */
   JansenSensitivityAlgorithm(const WeightedExperiment & experiment,
-                             const NumericalMathFunction & model,
+                             const Function & model,
                              const Bool computeSecondOrder = true);
 
   /** Virtual constructor */
@@ -67,8 +67,8 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  NumericalSample computeIndices(const NumericalSample & sample,
-                                 NumericalSample & VTi) const;
+  Sample computeIndices(const Sample & sample,
+                        Sample & VTi) const;
 }; /* class JansenSensitivityAlgorithm */
 
 END_NAMESPACE_OPENTURNS

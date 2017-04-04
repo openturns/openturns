@@ -45,14 +45,14 @@ public:
 
   /** Default constructor */
   explicit KarhunenLoeveAlgorithmImplementation(const CovarianceModel & covariance,
-						const NumericalScalar threshold = 0.0);
+      const Scalar threshold = 0.0);
 
   /** Virtual constructor */
   virtual KarhunenLoeveAlgorithmImplementation * clone() const;
 
   /** Threshold accessors */
-  NumericalScalar getThreshold() const;
-  void setThreshold(const NumericalScalar threshold);
+  Scalar getThreshold() const;
+  void setThreshold(const Scalar threshold);
 
   /** Covariance model accessors */
   virtual CovarianceModel getCovarianceModel() const;
@@ -79,7 +79,7 @@ protected:
   CovarianceModel covariance_;
 
   /** Threshold */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
   /** Result */
   KarhunenLoeveResult result_;

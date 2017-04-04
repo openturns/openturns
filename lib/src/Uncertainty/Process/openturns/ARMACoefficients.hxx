@@ -22,7 +22,7 @@
 
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/SquareMatrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 
@@ -49,7 +49,7 @@ public:
   explicit ARMACoefficients(const UnsignedInteger & size = 0,
                             const UnsignedInteger & dimension = 1);
   explicit ARMACoefficients(const SquareMatrixCollection & collection);
-  explicit ARMACoefficients(const NumericalPoint & ScalarCoefficients);
+  explicit ARMACoefficients(const Point & ScalarCoefficients);
   explicit ARMACoefficients(const UniVariatePolynomial & polynomial);
 
   /** Virtual constructor */
@@ -67,7 +67,7 @@ public:
   using SquareMatrixCollection::add;
 #endif
   void add(const SquareMatrix & matrix);
-  void add(const NumericalScalar scalar);
+  void add(const Scalar scalar);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

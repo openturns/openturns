@@ -45,19 +45,19 @@ public:
 
   /** Parameters constructor */
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const NumericalScalar threshold = 0.0,
-			    const Bool centeredSample = false);
+                            const Scalar threshold = 0.0,
+                            const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const NumericalPoint & verticesWeights,
-			    const NumericalScalar threshold = 0.0,
-			    const Bool centeredSample = false);
+                            const Point & verticesWeights,
+                            const Scalar threshold = 0.0,
+                            const Bool centeredSample = false);
 
   KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
-			    const NumericalPoint & verticesWeights,
-			    const NumericalPoint & sampleWeights,
-			    const NumericalScalar threshold = 0.0,
-			    const Bool centeredSample = false);
+                            const Point & verticesWeights,
+                            const Point & sampleWeights,
+                            const Scalar threshold = 0.0,
+                            const Bool centeredSample = false);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveSVDAlgorithm * clone() const;
@@ -73,23 +73,23 @@ public:
   ProcessSample getSample() const;
 
   /** Vertices weights accessor */
-  NumericalPoint getVerticesWeights() const;
- private:
-  void setVerticesWeights(const NumericalPoint & verticesWeights);
- public:
-  
+  Point getVerticesWeights() const;
+private:
+  void setVerticesWeights(const Point & verticesWeights);
+public:
+
   /** Sample weights accessor */
-  NumericalPoint getSampleWeights() const;
- private:
-  void setSampleWeights(const NumericalPoint & sampleWeights);
- public:
-  
+  Point getSampleWeights() const;
+private:
+  void setSampleWeights(const Point & sampleWeights);
+public:
+
   /** Covariance model accessors */
   CovarianceModel getCovarianceModel() const;
- private:
+private:
   /** Hide the covariance model accessor as it has no meaning in the SVD context */
   void setCovarianceModel(const CovarianceModel & covariance);
- public:
+public:
 
   /** String converter */
   virtual String __repr__() const;
@@ -111,13 +111,13 @@ private:
   Bool centeredSample_;
 
   /** Potential vertices weights */
-  NumericalPoint verticesWeights_;
+  Point verticesWeights_;
 
   /** Flag to tell if the weights are uniform */
   Bool uniformVerticesWeights_;
 
   /** Potential sample weights */
-  NumericalPoint sampleWeights_;
+  Point sampleWeights_;
 
   /** Flag to tell if the sample weights are uniform */
   Bool uniformSampleWeights_;

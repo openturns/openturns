@@ -30,8 +30,8 @@
 #include "openturns/Basis.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Matrix.hxx"
@@ -49,8 +49,8 @@ class OT_API KarhunenLoeveQuadratureFactory
   CLASSNAME;
 
 public:
-  typedef Collection<NumericalMathFunction>           NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function>           FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor without parameters */
   KarhunenLoeveQuadratureFactory();
@@ -61,7 +61,7 @@ public:
                                  const Basis & basis,
                                  const UnsignedInteger basisSize,
                                  const Bool mustScale,
-                                 const NumericalScalar threshold);
+                                 const Scalar threshold);
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveQuadratureFactory * clone() const;
@@ -73,7 +73,7 @@ public:
    * of the integral
    */
   Basis build(const CovarianceModel & covarianceModel,
-              NumericalPoint & eigenvalues) const;
+              Point & eigenvalues) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -92,14 +92,14 @@ private:
   Domain domain_;
 
   /** Functions used for the representation */
-  NumericalMathFunctionPersistentCollection coll_;
+  FunctionPersistentCollection coll_;
 
   /** Threshold for eigenvalues selection */
-  NumericalScalar threshold_;
+  Scalar threshold_;
 
   /** Quadrature nodes and weights */
-  NumericalSample nodes_;
-  NumericalPoint weights_;
+  Sample nodes_;
+  Point weights_;
 
   /** Scaled design matrix */
   mutable Matrix theta_;

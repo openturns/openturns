@@ -26,13 +26,13 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-NumericalScalar Normal3DCDF(const NumericalScalar x1,
-                            const NumericalScalar x2,
-                            const NumericalScalar x3,
-                            const NumericalScalar rho12,
-                            const NumericalScalar rho13,
-                            const NumericalScalar rho23,
-                            const Bool tail);
+Scalar Normal3DCDF(const Scalar x1,
+                   const Scalar x2,
+                   const Scalar x3,
+                   const Scalar rho12,
+                   const Scalar rho13,
+                   const Scalar rho23,
+                   const Bool tail);
 
 END_NAMESPACE_OPENTURNS
 

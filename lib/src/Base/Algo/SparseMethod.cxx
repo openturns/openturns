@@ -44,8 +44,8 @@ SparseMethod::SparseMethod()
 
 /* Parameters constructor */
 SparseMethod::SparseMethod(const LeastSquaresMethod & method,
-                          const BasisSequenceFactory & basisSequenceFactory,
-                          const FittingAlgorithm & fittingAlgorithm)
+                           const BasisSequenceFactory & basisSequenceFactory,
+                           const FittingAlgorithm & fittingAlgorithm)
   : LeastSquaresMethodImplementation(DesignProxy(), method.getCurrentIndices())
   , method_(method)
   , basisSequenceFactory_(basisSequenceFactory)
@@ -78,30 +78,30 @@ void SparseMethod::update(const Indices & addedIndices,
 
 
 /* Solve least-squares problem */
-NumericalPoint SparseMethod::solve(const NumericalPoint & rhs)
+Point SparseMethod::solve(const Point & rhs)
 {
   // save state
   const Indices currentIndices(method_.getCurrentIndices());
 
   // for each sub-basis ...
-  NumericalScalar minimumError = SpecFunc::MaxNumericalScalar;
+  Scalar minimumError = SpecFunc::MaxScalar;
 
   Indices optimalBasisIndices;
   UnsignedInteger iterations = 0;
 
-  NumericalSample rhsSample(rhs.getSize(), 1);
+  Sample rhsSample(rhs.getSize(), 1);
   rhsSample.getImplementation()->setData(rhs.getCollection());
 
   basisSequenceFactory_.initialize();
   basisSequenceFactory_.updateBasis(method_, rhsSample);
 
   // for each sub-basis ...
-  const NumericalScalar alpha = std::max(1.0, ResourceMap::GetAsNumericalScalar("SparseMethod-MaximumErrorFactor"));
-  const NumericalScalar errorThreshold = std::max(0.0, ResourceMap::GetAsNumericalScalar("SparseMethod-ErrorThreshold"));
+  const Scalar alpha = std::max(1.0, ResourceMap::GetAsScalar("SparseMethod-MaximumErrorFactor"));
+  const Scalar errorThreshold = std::max(0.0, ResourceMap::GetAsScalar("SparseMethod-ErrorThreshold"));
   while ((basisSequenceFactory_.getImplementation()->addedPsi_k_ranks_.getSize() > 0) || (basisSequenceFactory_.getImplementation()->removedPsi_k_ranks_.getSize() > 0))
   {
     // retrieve the i-th basis of the sequence
-    const NumericalScalar error = fittingAlgorithm_.run(method_, rhsSample);
+    const Scalar error = fittingAlgorithm_.run(method_, rhsSample);
     LOGINFO(OSS() << "\nsubbasis=" << iterations << ", size=" << basisSequenceFactory_.getImplementation()->currentIndices_.getSize() << ", error=" << error << ", qSquare=" << 1.0 - error);
 
     if (error < minimumError)
@@ -131,13 +131,13 @@ NumericalPoint SparseMethod::solve(const NumericalPoint & rhs)
   // solve in the optimal basis
   method_.update(Indices(), optimalBasisIndices, Indices());
 
-  const NumericalPoint optimalBasisCoefficients(method_.solve(rhs));
+  const Point optimalBasisCoefficients(method_.solve(rhs));
 
   // restore state
   method_.update(Indices(), currentIndices, Indices());
 
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
-  NumericalPoint optimalCoefficients( currentIndices_.getSize() );
+  Point optimalCoefficients( currentIndices_.getSize() );
   for (UnsignedInteger i = 0; i < optimalBasisIndices.getSize(); ++ i)
   {
     for (UnsignedInteger j = 0; j < currentIndices_.getSize(); ++ j)
@@ -163,12 +163,12 @@ Indices SparseMethod::getInitialIndices() const
   return method_.getInitialIndices();
 }
 
-NumericalSample SparseMethod::getInputSample() const
+Sample SparseMethod::getInputSample() const
 {
   return method_.getInputSample();
 }
 
-NumericalPoint SparseMethod::getWeight() const
+Point SparseMethod::getWeight() const
 {
   return method_.getWeight();
 }

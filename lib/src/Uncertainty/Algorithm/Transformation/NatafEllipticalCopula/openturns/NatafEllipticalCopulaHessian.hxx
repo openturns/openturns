@@ -22,10 +22,10 @@
 #define OPENTURNS_NATAFELLIPTICALCOPULAHESSIAN_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalMathHessianImplementation.hxx"
+#include "openturns/HessianImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricTensor.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"
 
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 class OT_API NatafEllipticalCopulaHessian
-  : public NumericalMathHessianImplementation
+  : public HessianImplementation
 {
   CLASSNAME;
 public:
@@ -55,7 +55,7 @@ public:
   virtual NatafEllipticalCopulaHessian * clone() const;
 
   /** Hessian */
-  SymmetricTensor hessian(const NumericalPoint & inP) const;
+  SymmetricTensor hessian(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

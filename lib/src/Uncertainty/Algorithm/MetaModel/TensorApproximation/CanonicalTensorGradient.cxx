@@ -34,7 +34,7 @@ static const Factory<CanonicalTensorGradient> Factory_CanonicalTensorGradient;
 
 /* Default constructor */
 CanonicalTensorGradient::CanonicalTensorGradient()
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_()
 {
   // Nothing to do
@@ -42,7 +42,7 @@ CanonicalTensorGradient::CanonicalTensorGradient()
 
 /* Default constructor */
 CanonicalTensorGradient::CanonicalTensorGradient(const CanonicalTensorEvaluation & evaluation)
-  : NumericalMathGradientImplementation()
+  : GradientImplementation()
   , evaluation_(evaluation)
 {
   // Nothing to do
@@ -80,29 +80,29 @@ String CanonicalTensorGradient::__str__(const String & offset) const
 
 
 /* Gradient */
-Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
+Matrix CanonicalTensorGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a NumericalMathFunction with an argument of invalid dimension";
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   const UnsignedInteger outputDimension = getOutputDimension();
 
   ++ callsNumber_;
 
   const UnsignedInteger m = evaluation_.getRank();
-  NumericalPoint prodI(m, 1.0);
+  Point prodI(m, 1.0);
 
-  NumericalSample sumRI(m, inputDimension);
-  NumericalSample sumdRI(m, inputDimension);
+  Sample sumRI(m, inputDimension);
+  Sample sumdRI(m, inputDimension);
 
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
-    const NumericalPoint xj(1, inP[j]);
+    const Point xj(1, inP[j]);
     const Basis basisI(evaluation_.getBasis(j));
     const UnsignedInteger basisSize = evaluation_.getDegrees()[j];
 
     // compute phi_(i,j)(xj), phi_(i,j)'(xj)
-    NumericalPoint phiXj(basisSize);
-    NumericalPoint dphiXj(basisSize);
+    Point phiXj(basisSize);
+    Point dphiXj(basisSize);
     for (UnsignedInteger k = 0; k < basisSize; ++ k)
     {
       phiXj[k] = basisI[k](xj)[0];
@@ -111,9 +111,9 @@ Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
 
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      const NumericalPoint coeffI(evaluation_.getCoefficients(i, j));
-      NumericalScalar sumI = 0.0;
-      NumericalScalar sumdI = 0.0;
+      const Point coeffI(evaluation_.getCoefficients(i, j));
+      Scalar sumI = 0.0;
+      Scalar sumdI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)
       {
         if (coeffI[k] != 0.0)
@@ -131,7 +131,7 @@ Matrix CanonicalTensorGradient::gradient(const NumericalPoint & inP) const
   Matrix out(inputDimension, outputDimension);
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
-    NumericalScalar dj = 0.0;
+    Scalar dj = 0.0;
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
       dj += prodI[i] * (sumdRI[i][j] / sumRI[i][j]);
@@ -156,14 +156,14 @@ UnsignedInteger CanonicalTensorGradient::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void CanonicalTensorGradient::save(Advocate & adv) const
 {
-  NumericalMathGradientImplementation::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute("evaluation_", evaluation_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void CanonicalTensorGradient::load(Advocate & adv)
 {
-  NumericalMathGradientImplementation::load(adv);
+  GradientImplementation::load(adv);
   adv.loadAttribute("evaluation_", evaluation_);
   *this = CanonicalTensorGradient(evaluation_);
 }

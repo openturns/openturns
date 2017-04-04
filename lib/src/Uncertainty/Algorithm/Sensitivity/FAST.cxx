@@ -28,7 +28,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /* Constructor with model */
-FAST::FAST(const NumericalMathFunction & model,
+FAST::FAST(const Function & model,
            const Distribution & inputsDistribution,
            const UnsignedInteger samplingSize,
            const UnsignedInteger resamplingSize,
@@ -63,8 +63,8 @@ void FAST::run() const
   const UnsignedInteger nbOut = model_.getOutputDimension();
 
   // Allocate indices
-  firstOrderIndice_ = NumericalSample(nbOut, nbIn);
-  totalOrderIndice_ = NumericalSample(nbOut, nbIn);
+  firstOrderIndice_ = Sample(nbOut, nbIn);
+  totalOrderIndice_ = Sample(nbOut, nbIn);
 
   // this avoids to store huge input samples while allowing for multi-threading
   const UnsignedInteger maximumOuterSampling = static_cast<UnsignedInteger>(ceil(1.0 * samplingSize_ / blockSize_));
@@ -72,7 +72,7 @@ void FAST::run() const
   const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize_ : modulo;
 
   // S-space discretization
-  NumericalPoint s(samplingSize_);
+  Point s(samplingSize_);
   for (UnsignedInteger i = 1; i < samplingSize_; ++ i) s[i] = 2. * M_PI * i / samplingSize_;
 
   // Set of frequencies definition
@@ -84,7 +84,7 @@ void FAST::run() const
   w_i_0[0] = omega;
   if ( max_w_l >= nbIn - 1 )
   {
-    const NumericalScalar step = (max_w_l - 1.) / (nbIn - 2.);
+    const Scalar step = (max_w_l - 1.) / (nbIn - 2.);
     for (UnsignedInteger inp = 0; inp < nbIn - 1; ++ inp)
       w_i_0[inp + 1] = inp * step + 1;
     w_i_0[nbIn - 1] = max_w_l;
@@ -96,13 +96,13 @@ void FAST::run() const
   }
 
   // Initializations
-  NumericalSample D_i(nbOut, nbIn);
-  NumericalSample D_l(nbOut, nbIn);
+  Sample D_i(nbOut, nbIn);
+  Sample D_l(nbOut, nbIn);
 
   // For each input, compute first order and total order indices for each model's output
   for (UnsignedInteger inp = 0; inp < nbIn; ++ inp)
   {
-    NumericalPoint D(nbOut, 0.);
+    Point D(nbOut, 0.);
 
     // Frequencies assignment
     Indices w_i(w_i_0);
@@ -114,12 +114,12 @@ void FAST::run() const
     for (UnsignedInteger t = 0; t < resamplingSize_; ++ t)
     {
       // Random phase-shift
-      NumericalPoint phi_i(nbIn);
+      Point phi_i(nbIn);
       for (UnsignedInteger i = 0; i < nbIn; ++ i)
         phi_i[i] = 2. * M_PI * RandomGenerator::Generate();
 
-      NumericalPoint xi_s(nbIn);
-      NumericalSample output(0, nbOut);
+      Point xi_s(nbIn);
+      Sample output(0, nbOut);
 
       // for each block ...
       for (UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++ outerSampling)
@@ -127,14 +127,14 @@ void FAST::run() const
         // the last block can be smaller
         const UnsignedInteger effectiveBlockSize = outerSampling < (maximumOuterSampling - 1) ? blockSize_ : lastBlockSize;
 
-        NumericalSample inputBlock(effectiveBlockSize, nbIn);
+        Sample inputBlock(effectiveBlockSize, nbIn);
 
         for (UnsignedInteger blockIndex = 0; blockIndex < effectiveBlockSize; ++ blockIndex)
         {
           // Search-curve x_i(s)=g_i(w_i,s) definition
           for (UnsignedInteger i = 0; i < nbIn; ++ i)
           {
-            const NumericalScalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
+            const Scalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
             inputBlock[blockIndex][i] = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
           }
         }
@@ -145,8 +145,8 @@ void FAST::run() const
       for (UnsignedInteger out = 0; out < nbOut; ++ out)
       {
         // Fourier transformation
-        NumericalPoint y(output.getMarginal(out).getImplementation()->getData());
-        NumericalComplexCollection coefficients(fftAlgorithm_.transform(y));
+        Point y(output.getMarginal(out).getImplementation()->getData());
+        ComplexCollection coefficients(fftAlgorithm_.transform(y));
 
         // Total variance
         for (UnsignedInteger j = 0; j < (samplingSize_ - 1) / 2; ++ j)
@@ -172,7 +172,7 @@ void FAST::run() const
 }
 
 /* First order indices accessor */
-NumericalPoint FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
+Point FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (!alreadyComputedIndices_) run();
 
@@ -181,7 +181,7 @@ NumericalPoint FAST::getFirstOrderIndices(const UnsignedInteger marginalIndex) c
 }
 
 /* Total order indices accessor */
-NumericalPoint FAST::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
+Point FAST::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
   if (!alreadyComputedIndices_) run();
   if (marginalIndex >= totalOrderIndice_.getSize()) throw InvalidArgumentException(HERE) << "Output dimension is " << totalOrderIndice_.getSize();

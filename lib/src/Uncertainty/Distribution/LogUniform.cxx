@@ -45,8 +45,8 @@ LogUniform::LogUniform()
 }
 
 /* Parameters constructor */
-LogUniform::LogUniform(const NumericalScalar aLog,
-                       const NumericalScalar bLog)
+LogUniform::LogUniform(const Scalar aLog,
+                       const Scalar bLog)
   : ContinuousDistribution()
   , aLog_(aLog)
   , bLog_(bLog)
@@ -107,98 +107,98 @@ void LogUniform::computeRange()
 
 
 /* Get one realization of the distribution */
-NumericalPoint LogUniform::getRealization() const
+Point LogUniform::getRealization() const
 {
-  return NumericalPoint(1, std::exp(aLog_ + (bLog_ - aLog_) * RandomGenerator::Generate()));
+  return Point(1, std::exp(aLog_ + (bLog_ - aLog_) * RandomGenerator::Generate()));
 }
 
 
 /* Get the DDF of the distribution */
-NumericalPoint LogUniform::computeDDF(const NumericalPoint & point) const
+Point LogUniform::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if ((x < a_) || (x > b_)) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, -1.0 / (x * x * (bLog_ - aLog_)));
+  const Scalar x = point[0];
+  if ((x < a_) || (x > b_)) return Point(1, 0.0);
+  return Point(1, -1.0 / (x * x * (bLog_ - aLog_)));
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar LogUniform::computePDF(const NumericalPoint & point) const
+Scalar LogUniform::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return 0.0;
   return 1.0 / (x * (bLog_ - aLog_));
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar LogUniform::computeCDF(const NumericalPoint & point) const
+Scalar LogUniform::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_)  return 1.0;
   return (std::log(x) - aLog_) / (bLog_ - aLog_);
 }
 
-NumericalScalar LogUniform::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar LogUniform::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 1.0;
   if (x > b_)  return 0.0;
   return (bLog_ - std::log(x)) / (bLog_ - aLog_);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex LogUniform::computeCharacteristicFunction(const NumericalScalar x) const
+Complex LogUniform::computeCharacteristicFunction(const Scalar x) const
 {
-  NumericalComplex result;
-  if (std::abs(x) <= 1.0e-8 * (b_ - a_)) result = NumericalComplex((bLog_ - aLog_) / (bLog_ + aLog_), (b_ - a_) * x / (bLog_ - aLog_));
+  Complex result;
+  if (std::abs(x) <= 1.0e-8 * (b_ - a_)) result = Complex((bLog_ - aLog_) / (bLog_ + aLog_), (b_ - a_) * x / (bLog_ - aLog_));
   else
   {
-    result = (SpecFunc::Ei(NumericalComplex(0.0, x * b_)) - SpecFunc::Ei(NumericalComplex(0.0, x * a_))) / (bLog_ - aLog_);
+    result = (SpecFunc::Ei(Complex(0.0, x * b_)) - SpecFunc::Ei(Complex(0.0, x * a_))) / (bLog_ - aLog_);
   }
   return result;
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint LogUniform::computePDFGradient(const NumericalPoint & point) const
+Point LogUniform::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(2, 0.0);
-  const NumericalScalar x = point[0];
+  Point pdfGradient(2, 0.0);
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return pdfGradient;
-  const NumericalScalar value = computePDF(point) / (bLog_ - aLog_);
+  const Scalar value = computePDF(point) / (bLog_ - aLog_);
   pdfGradient[0] = value;
   pdfGradient[1] = -value;
   return pdfGradient;
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint LogUniform::computeCDFGradient(const NumericalPoint & point) const
+Point LogUniform::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(2, 0.0);
-  const NumericalScalar x = point[0];
+  Point cdfGradient(2, 0.0);
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return cdfGradient;
-  const NumericalScalar denominator = std::pow(bLog_ - aLog_, 2);
-  const NumericalScalar logX = std::log(x);
+  const Scalar denominator = std::pow(bLog_ - aLog_, 2);
+  const Scalar logX = std::log(x);
   cdfGradient[0] = (logX - bLog_) / denominator;
   cdfGradient[1] = (aLog_ - logX) / denominator;
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar LogUniform::computeScalarQuantile(const NumericalScalar prob,
+Scalar LogUniform::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   if (tail) return std::exp(bLog_ - prob * (bLog_ - aLog_));
@@ -208,84 +208,84 @@ NumericalScalar LogUniform::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the mean of the distribution */
 void LogUniform::computeMean() const
 {
-  mean_ = NumericalPoint(1, (b_ - a_) / (bLog_ - aLog_));
+  mean_ = Point(1, (b_ - a_) / (bLog_ - aLog_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint LogUniform::getStandardDeviation() const
+Point LogUniform::getStandardDeviation() const
 {
-  return NumericalPoint(1, std::sqrt(getCovariance()(0, 0)));
+  return Point(1, std::sqrt(getCovariance()(0, 0)));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint LogUniform::getSkewness() const
+Point LogUniform::getSkewness() const
 {
-  NumericalScalar t1 = std::sqrt(2.0);
-  NumericalScalar t2 = a_ * a_;
-  NumericalScalar t4 = b_ * b_;
-  NumericalScalar t6 = bLog_ * aLog_;
-  NumericalScalar t9 = bLog_ * bLog_;
-  NumericalScalar t14 = aLog_ * aLog_;
-  NumericalScalar t30 = a_ * b_;
-  NumericalScalar t39 = 12.0 * t2 + 12.0 * t4 - 4.0 * t4 * t6 + 2.0 * t4 * t9 - 9.0 * t4 * bLog_ + 2.0 * t4 * t14 + 9.0 * t4 *
-                        aLog_ - 9.0 * t2 * aLog_ + 2.0 * t2 * t9 + 2.0 * b_ * a_ * t9 + 9.0 * t2 * bLog_ - 4.0 * t2 * t6 - 4.0 * t30 * t6 + 2.0 * b_ * a_ *
-                        t14 - 24.0 * t30 + 2.0 * t2 * t14;
-  NumericalScalar t42 = std::sqrt(b_ - a_);
-  NumericalScalar t45 = -bLog_ + aLog_;
-  NumericalScalar t46 = t45 * t45;
-  NumericalScalar t54 = -2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_;
-  NumericalScalar t56 = std::sqrt(-t54 / t46);
-  NumericalScalar t63 = 1 / t45 / t54 / t56 / t42 * t39 * t1 / 3.0;
-  return NumericalPoint(1, t63);
+  Scalar t1 = std::sqrt(2.0);
+  Scalar t2 = a_ * a_;
+  Scalar t4 = b_ * b_;
+  Scalar t6 = bLog_ * aLog_;
+  Scalar t9 = bLog_ * bLog_;
+  Scalar t14 = aLog_ * aLog_;
+  Scalar t30 = a_ * b_;
+  Scalar t39 = 12.0 * t2 + 12.0 * t4 - 4.0 * t4 * t6 + 2.0 * t4 * t9 - 9.0 * t4 * bLog_ + 2.0 * t4 * t14 + 9.0 * t4 *
+               aLog_ - 9.0 * t2 * aLog_ + 2.0 * t2 * t9 + 2.0 * b_ * a_ * t9 + 9.0 * t2 * bLog_ - 4.0 * t2 * t6 - 4.0 * t30 * t6 + 2.0 * b_ * a_ *
+               t14 - 24.0 * t30 + 2.0 * t2 * t14;
+  Scalar t42 = std::sqrt(b_ - a_);
+  Scalar t45 = -bLog_ + aLog_;
+  Scalar t46 = t45 * t45;
+  Scalar t54 = -2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_;
+  Scalar t56 = std::sqrt(-t54 / t46);
+  Scalar t63 = 1 / t45 / t54 / t56 / t42 * t39 * t1 / 3.0;
+  return Point(1, t63);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint LogUniform::getKurtosis() const
+Point LogUniform::getKurtosis() const
 {
-  NumericalScalar t5 = a_ * a_;
-  NumericalScalar t7 = b_ * b_;
-  NumericalScalar t9 = bLog_ * aLog_;
-  NumericalScalar t12 = bLog_ * bLog_;
-  NumericalScalar t17 = aLog_ * aLog_;
-  NumericalScalar t33 = a_ * b_;
-  NumericalScalar t42 = 12.0 * t5 + 12.0 * t7 - 4.0 * t7 * t9 + 2.0 * t7 * t12 - 9.0 * t7 * bLog_ + 2.0 * t7 * t17 + 9.0 * t7 *
-                        aLog_ - 9.0 * t5 * aLog_ + 2.0 * t5 * t12 + 2.0 * b_ * a_ * t12 + 9.0 * t5 * bLog_ - 4.0 * t5 * t9 - 4.0 * t33 * t9 + 2.0 * b_ *
-                        a_ * t17 - 24.0 * t33 + 2.0 * t5 * t17;
-  NumericalScalar t50 = std::pow(-2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_, 2.0);
-  NumericalScalar t54 = 2.0 / 3.0 / t50 * t42 * (-bLog_ + aLog_) / (-b_ + a_);
-  return NumericalPoint(1, t54);
+  Scalar t5 = a_ * a_;
+  Scalar t7 = b_ * b_;
+  Scalar t9 = bLog_ * aLog_;
+  Scalar t12 = bLog_ * bLog_;
+  Scalar t17 = aLog_ * aLog_;
+  Scalar t33 = a_ * b_;
+  Scalar t42 = 12.0 * t5 + 12.0 * t7 - 4.0 * t7 * t9 + 2.0 * t7 * t12 - 9.0 * t7 * bLog_ + 2.0 * t7 * t17 + 9.0 * t7 *
+               aLog_ - 9.0 * t5 * aLog_ + 2.0 * t5 * t12 + 2.0 * b_ * a_ * t12 + 9.0 * t5 * bLog_ - 4.0 * t5 * t9 - 4.0 * t33 * t9 + 2.0 * b_ *
+               a_ * t17 - 24.0 * t33 + 2.0 * t5 * t17;
+  Scalar t50 = std::pow(-2.0 * a_ + aLog_ * b_ + 2.0 * b_ + aLog_ * a_ - bLog_ * b_ - bLog_ * a_, 2.0);
+  Scalar t54 = 2.0 / 3.0 / t50 * t42 * (-bLog_ + aLog_) / (-b_ + a_);
+  return Point(1, t54);
 }
 
 /* Compute the covariance of the distribution */
 void LogUniform::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar aLogbLog = bLog_ - aLog_;
+  const Scalar aLogbLog = bLog_ - aLog_;
   covariance_(0, 0) = 0.5 * (b_ - a_) * (b_ * (aLogbLog - 2.0) + a_ * (aLogbLog + 2.0)) / std::pow(aLogbLog, 2);
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint LogUniform::getStandardMoment(const UnsignedInteger n) const
+Point LogUniform::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n == 0) return NumericalPoint(1, 1.0);
-  return NumericalPoint(1, (std::pow(b_, static_cast<int>(n)) - std::pow(a_, static_cast<int>(n))) / (n * (bLog_ - aLog_)));
+  if (n == 0) return Point(1, 1.0);
+  return Point(1, (std::pow(b_, static_cast<int>(n)) - std::pow(a_, static_cast<int>(n))) / (n * (bLog_ - aLog_)));
 }
 
 /* Parameters value accessor */
-NumericalPoint LogUniform::getParameter() const
+Point LogUniform::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = aLog_;
   point[1] = bLog_;
   return point;
 }
 
-void LogUniform::setParameter(const NumericalPoint & parameter)
+void LogUniform::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = LogUniform(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -300,7 +300,7 @@ Description LogUniform::getParameterDescription() const
 }
 
 /* A accessor */
-void LogUniform::setALog(const NumericalScalar aLog)
+void LogUniform::setALog(const Scalar aLog)
 {
   if (aLog != aLog_)
   {
@@ -312,14 +312,14 @@ void LogUniform::setALog(const NumericalScalar aLog)
   }
 }
 
-NumericalScalar LogUniform::getALog() const
+Scalar LogUniform::getALog() const
 {
   return aLog_;
 }
 
 
 /* B accessor */
-void LogUniform::setBLog(const NumericalScalar bLog)
+void LogUniform::setBLog(const Scalar bLog)
 {
   if (bLog != bLog_)
   {
@@ -331,7 +331,7 @@ void LogUniform::setBLog(const NumericalScalar bLog)
   }
 }
 
-NumericalScalar LogUniform::getBLog() const
+Scalar LogUniform::getBLog() const
 {
   return bLog_;
 }

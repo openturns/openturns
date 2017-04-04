@@ -79,7 +79,7 @@ TimeSeries::TimeSeries(const RegularGrid & tg,
 
 /* Constructor from a TimeGrid and a sample */
 TimeSeries::TimeSeries(const RegularGrid & tg,
-                       const NumericalSample & sample)
+                       const Sample & sample)
   : FieldImplementation(tg, sample)
   , start_( tg.getStart() )
   , timeStep_( tg.getStep() )
@@ -137,22 +137,22 @@ String TimeSeries::__str__(const String & offset) const
 
 
 /* Appends an element to the collection */
-TimeSeries & TimeSeries::add(const NumericalPoint & point)
+TimeSeries & TimeSeries::add(const Point & point)
 {
-  return add(NumericalSample(1, point));
+  return add(Sample(1, point));
 }
 
 
 /* Appends a sample to the collection */
-TimeSeries & TimeSeries::add(const NumericalSample & sample)
+TimeSeries & TimeSeries::add(const Sample & sample)
 {
   if ((n_ > 0) && (sample.getDimension() != getDimension())) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
   if (sample.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension greater than 0";
   const UnsignedInteger size = sample.getSize();
   if (size == 0) return *this;
   // Update the vertices
-  NumericalSample vertices(mesh_.getVertices());
-  for (UnsignedInteger i = 0; i < size; ++i) vertices.add(NumericalPoint(1, start_ + timeStep_ * (n_ + i)));
+  Sample vertices(mesh_.getVertices());
+  for (UnsignedInteger i = 0; i < size; ++i) vertices.add(Point(1, start_ + timeStep_ * (n_ + i)));
   // Update the values
   values_.add(sample);
   // Update the simplices
@@ -176,7 +176,7 @@ TimeSeries & TimeSeries::add(const NumericalSample & sample)
 /* Append another time series to the collection. The time grids must match (one follows the other) */
 TimeSeries & TimeSeries::add(const TimeSeries & continuer)
 {
-  NumericalSample vertices(mesh_.getVertices());
+  Sample vertices(mesh_.getVertices());
   if ((timeStep_ != continuer.timeStep_) || (start_ + n_ * timeStep_ != continuer.start_)) LOGWARN(OSS() << "The continuer does not have a compatible time grid. Using the values only.");
   return add(continuer.getSample());
 }

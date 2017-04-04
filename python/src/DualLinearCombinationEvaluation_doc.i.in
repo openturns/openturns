@@ -1,0 +1,64 @@
+%feature("docstring") OT::DualLinearCombinationEvaluation
+"Dual linear combination evaluation implementation.
+
+Available constructors:
+
+    DualLinearCombinationEvaluation(*scalarFctColl, vectCoefColl*)
+    
+Parameters
+----------
+scalarFctColl : sequence of :class:`~openturns.Function`
+    A collection of functions :math:`(f_i)_{i = 1, \ldots, l}` of size :math:`l`,
+    such that :math:`\forall i \in \{1, \ldots, l\}`, 
+    :math:`f_i : \Rset^n \rightarrow \Rset`.
+vectCoefColl : 2-d sequence of float
+    Sample :math:`\cC = \{\vect{c}_1, \ldots, \vect{c}_l \}` of size :math:`l` and dimension :math:`p`.
+
+See also
+--------
+Function, AggregatedEvaluation, DatabaseEvaluation,
+LinearFunction
+
+Notes
+-----
+It returns a :class:`~openturns.Function` which is the function
+:math:`f: \Rset^n \rightarrow \Rset^p` defined as the linear combination of the functions :math:`f_i` with vector coefficients in :math:`\cC`:
+
+.. math::
+    \forall \vect{x} \in \Rset^n, f(\vect{x}) = \left\{ \sum_{i=1}^l f_i( \vect{x} ) c_i^{(j)} \right\}_{j = 1, \ldots, p}
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DualLinearCombinationEvaluation::getCoefficients
+"Accessor to the coefficients.
+
+Returns
+-------
+coef : :class:`~openturns.Sample`
+    The vectorial coefficients :math:`\cC = \{\vect{c}_1, \ldots, \vect{c}_l \}`
+    which define the linear combination of :math:`f`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DualLinearCombinationEvaluation::getFunctionsCollection
+"Accessor to the collection of functions.
+
+Returns
+-------
+fctColl : :class:`~openturns.FunctionCollection`
+    The collection of scalar functions :math:`(f_i)_{i = 1, \ldots, l}` which
+    defines the linear combination of :math:`f`."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients
+"Accessor to the coefficients and the collection of functions.
+
+Parameters
+----------
+scalarFctColl : sequence of :class:`~openturns.Function`
+    The collection of functions :math:`(f_i)_{i = 1, \ldots, l}`.
+vectCoefColl : 2-d sequence of float
+    The sample of coefficients :math:`\cC = \{\vect{c}_1, \ldots, \vect{c}_l \}`."

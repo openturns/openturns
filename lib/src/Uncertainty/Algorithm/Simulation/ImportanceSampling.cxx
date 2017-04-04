@@ -49,15 +49,15 @@ ImportanceSampling * ImportanceSampling::clone() const
 }
 
 /* Compute the block sample */
-NumericalSample ImportanceSampling::computeBlockSample()
+Sample ImportanceSampling::computeBlockSample()
 {
   const UnsignedInteger blockSize = getBlockSize();
   // First, compute a sample of the importance distribution
-  const NumericalSample inputSample(importanceDistribution_.getSample(blockSize));
+  const Sample inputSample(importanceDistribution_.getSample(blockSize));
   // Then, evaluate the function on this sample
-  NumericalSample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   // Then, modify in place this sample to take into account the change in the input distribution
-  // realizedEventSample = NumericalSample(blockSize_, inputSample.getDimension());
+  // realizedEventSample = Sample(blockSize_, inputSample.getDimension());
   for (UnsignedInteger i = 0; i < blockSize; i++)
   {
     const Bool isRealized = getEvent().getOperator()(blockSample[i][0], getEvent().getThreshold());
@@ -65,7 +65,7 @@ NumericalSample ImportanceSampling::computeBlockSample()
     {
       // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
       // Having access to p_initial is a long trip...
-      const NumericalScalar weight = getEvent().getImplementation()->getAntecedent()->getDistribution().computePDF(inputSample[i]) / importanceDistribution_.computePDF(inputSample[i]);
+      const Scalar weight = getEvent().getImplementation()->getAntecedent()->getDistribution().computePDF(inputSample[i]) / importanceDistribution_.computePDF(inputSample[i]);
       blockSample[i][0] = weight;
     }
     else blockSample[i][0] = 0.0;

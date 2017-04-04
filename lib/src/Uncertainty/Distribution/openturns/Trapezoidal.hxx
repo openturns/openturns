@@ -43,10 +43,10 @@ public:
   Trapezoidal();
 
   /** Parameters constructor */
-  Trapezoidal(const NumericalScalar a,
-              const NumericalScalar b,
-              const NumericalScalar c,
-              const NumericalScalar d);
+  Trapezoidal(const Scalar a,
+              const Scalar b,
+              const Scalar c,
+              const Scalar d);
 
   /** Comparison operator */
   Bool operator ==(const Trapezoidal & other) const;
@@ -64,56 +64,56 @@ public:
   virtual Trapezoidal * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
   using ContinuousDistribution::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the gradient of the PDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the gradient of the logPDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computeLogPDFGradient;
-  NumericalPoint computeLogPDFGradient(const NumericalPoint & point) const;
+  Point computeLogPDFGradient(const Point & point) const;
 
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  NumericalScalar getRoughness() const;
+  Scalar getRoughness() const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -124,23 +124,23 @@ public:
   /* Interface specific to Trapezoidal */
 
   /** A accessor */
-  void setA(const NumericalScalar a);
-  NumericalScalar getA() const;
+  void setA(const Scalar a);
+  Scalar getA() const;
 
   /** B accessor */
-  void setB(const NumericalScalar b);
-  NumericalScalar getB() const;
+  void setB(const Scalar b);
+  Scalar getB() const;
 
   /** C accessor */
-  void setC(const NumericalScalar c);
-  NumericalScalar getC() const;
+  void setC(const Scalar c);
+  Scalar getC() const;
 
   /** D accessor */
-  void setD(const NumericalScalar d);
-  NumericalScalar getD() const;
+  void setD(const Scalar d);
+  Scalar getD() const;
 
   /** Get the PDF singularities inside of the range - 1D only */
-  NumericalPoint getSingularities() const;
+  Point getSingularities() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -155,8 +155,8 @@ protected:
 private:
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the mean of the distribution */
   void computeMean() const;
@@ -171,14 +171,14 @@ private:
   void update();
 
   /** Sigma accessor */
-  NumericalScalar getSigma() const;
+  Scalar getSigma() const;
 
   /** The main parameter set of the distribution */
-  NumericalScalar a_;
-  NumericalScalar b_;
-  NumericalScalar c_;
-  NumericalScalar d_;
-  NumericalScalar h_;
+  Scalar a_;
+  Scalar b_;
+  Scalar c_;
+  Scalar d_;
+  Scalar h_;
 
 }; /* class Trapezoidal */
 

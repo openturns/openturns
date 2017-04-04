@@ -37,10 +37,10 @@ MetaModelResult::MetaModelResult()
 }
 
 /* Standard constructor */
-MetaModelResult::MetaModelResult(const NumericalMathFunction & model,
-                                 const NumericalMathFunction & metaModel,
-                                 const NumericalPoint & residuals,
-                                 const NumericalPoint & relativeErrors)
+MetaModelResult::MetaModelResult(const Function & model,
+                                 const Function & metaModel,
+                                 const Point & residuals,
+                                 const Point & relativeErrors)
   : PersistentObject()
   , model_(model)
   , metaModel_(metaModel)
@@ -57,45 +57,45 @@ MetaModelResult * MetaModelResult::clone() const
 }
 
 /* Model accessor */
-void MetaModelResult::setModel(const NumericalMathFunction & model)
+void MetaModelResult::setModel(const Function & model)
 {
   model_ = model;
 }
 
-NumericalMathFunction MetaModelResult::getModel() const
+Function MetaModelResult::getModel() const
 {
   return model_;
 }
 
 /* MetaModel accessor */
-void MetaModelResult::setMetaModel(const NumericalMathFunction & metaModel)
+void MetaModelResult::setMetaModel(const Function & metaModel)
 {
   metaModel_ = metaModel;
 }
 
-NumericalMathFunction MetaModelResult::getMetaModel() const
+Function MetaModelResult::getMetaModel() const
 {
   return metaModel_;
 }
 
 /* Marginal residuals accessor */
-void MetaModelResult::setResiduals(const NumericalPoint & residuals)
+void MetaModelResult::setResiduals(const Point & residuals)
 {
   residuals_ = residuals;
 }
 
-NumericalPoint MetaModelResult::getResiduals() const
+Point MetaModelResult::getResiduals() const
 {
   return residuals_;
 }
 
 /* Relative error accessor */
-void MetaModelResult::setRelativeErrors(const NumericalPoint & relativeErrors)
+void MetaModelResult::setRelativeErrors(const Point & relativeErrors)
 {
   relativeErrors_ = relativeErrors;
 }
 
-NumericalPoint MetaModelResult::getRelativeErrors() const
+Point MetaModelResult::getRelativeErrors() const
 {
   return relativeErrors_;
 }

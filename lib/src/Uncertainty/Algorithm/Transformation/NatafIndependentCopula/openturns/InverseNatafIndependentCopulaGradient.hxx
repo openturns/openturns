@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_INVERSENATAFINDEPENDENTCOPULAGRADIENT_HXX
 #define OPENTURNS_INVERSENATAFINDEPENDENTCOPULAGRADIENT_HXX
 
-#include "openturns/NumericalMathGradientImplementation.hxx"
+#include "openturns/GradientImplementation.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/StorageManager.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for independent distributions
  */
 class OT_API InverseNatafIndependentCopulaGradient
-  : public NumericalMathGradientImplementation
+  : public GradientImplementation
 {
   CLASSNAME;
 public:
@@ -51,7 +51,7 @@ public:
   virtual InverseNatafIndependentCopulaGradient * clone() const;
 
   /** Gradient */
-  Matrix gradient(const NumericalPoint & inP) const;
+  Matrix gradient(const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

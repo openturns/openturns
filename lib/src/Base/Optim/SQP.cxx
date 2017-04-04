@@ -39,27 +39,27 @@ static const Factory<SQP> Factory_SQP;
 /* Default constructor */
 SQP::SQP()
   : OptimizationAlgorithmImplementation()
-  , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
-  , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
-  , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
+  , tau_(ResourceMap::GetAsScalar("SQP-DefaultTau"))
+  , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
   initialize();
 }
 
 SQP::SQP(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
-  , tau_(ResourceMap::GetAsNumericalScalar("SQP-DefaultTau"))
-  , omega_(ResourceMap::GetAsNumericalScalar("SQP-DefaultOmega"))
-  , smooth_(ResourceMap::GetAsNumericalScalar("SQP-DefaultSmooth"))
+  , tau_(ResourceMap::GetAsScalar("SQP-DefaultTau"))
+  , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
+  , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
   initialize();
   checkProblem(problem);
 }
 
 SQP::SQP (const OptimizationProblem & problem,
-          const NumericalScalar tau,
-          const NumericalScalar omega,
-          const NumericalScalar smooth)
+          const Scalar tau,
+          const Scalar omega,
+          const Scalar smooth)
   : OptimizationAlgorithmImplementation(problem)
   , tau_(tau)
   , omega_(omega)
@@ -94,25 +94,25 @@ void SQP::initialize()
 }
 
 /* Line search for globalization of the algorithm */
-NumericalScalar SQP::computeLineSearch()
+Scalar SQP::computeLineSearch()
 {
   /* Local copy of the level function and the level value */
-  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
-  const NumericalScalar levelValue = getProblem().getLevelValue();
+  const Function levelFunction(getProblem().getLevelFunction());
+  const Scalar levelValue = getProblem().getLevelValue();
   /* Actualize sigma */
   currentSigma_ = std::max(currentSigma_ + 1.0, smooth_ * currentPoint_.norm() / currentGradient_.norm());
   /* Compute penalized scalar objective function at current point */
-  NumericalScalar currentTheta = 0.5 * currentPoint_.normSquare() + currentSigma_ * std::abs(currentLevelValue_ - levelValue);
+  Scalar currentTheta = 0.5 * currentPoint_.normSquare() + currentSigma_ * std::abs(currentLevelValue_ - levelValue);
   /* Min bound for step */
-  const NumericalScalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
+  const Scalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
   /* Minimum decrease for the penalized objective function */
-  const NumericalScalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
+  const Scalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
   /* Initialization of the line search */
   /* We start with step=1 */
-  NumericalScalar step = 1.0;
-  NumericalPoint currentStepPoint(currentPoint_.getDimension());
-  NumericalScalar currentStepLevelValue = -1.0;
-  NumericalScalar currentStepTheta = -1.0;
+  Scalar step = 1.0;
+  Point currentStepPoint(currentPoint_.getDimension());
+  Scalar currentStepLevelValue = -1.0;
+  Scalar currentStepTheta = -1.0;
 
   do
   {
@@ -145,14 +145,14 @@ void SQP::run()
   currentPoint_ = getStartingPoint();
   const UnsignedInteger dimension = currentPoint_.getDimension();
   currentSystemMatrix_ = SymmetricMatrix(dimension + 1);
-  currentSecondMember_ = NumericalPoint(dimension + 1);
-  currentDirection_ = NumericalPoint(dimension);
+  currentSecondMember_ = Point(dimension + 1);
+  currentDirection_ = Point(dimension);
 
 
   /* Get a local copy of the level function */
-  const NumericalMathFunction levelFunction(getProblem().getLevelFunction());
+  const Function levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
-  const NumericalScalar levelValue = getProblem().getLevelValue();
+  const Scalar levelValue = getProblem().getLevelValue();
 
   //Initialize the hessian
   currentHessian_ = levelFunction.hessian(currentPoint_).getSheet(0);
@@ -160,10 +160,10 @@ void SQP::run()
 
   Bool convergence = false;
   UnsignedInteger iterationNumber = 0;
-  NumericalScalar absoluteError = -1.0;
-  NumericalScalar constraintError = -1.0;
-  NumericalScalar relativeError = -1.0;
-  NumericalScalar residualError = -1.0;
+  Scalar absoluteError = -1.0;
+  Scalar constraintError = -1.0;
+  Scalar relativeError = -1.0;
+  Scalar residualError = -1.0;
 
   /* Compute the level function at the current point -> G */
   currentLevelValue_ = levelFunction(currentPoint_)[0];
@@ -171,7 +171,7 @@ void SQP::run()
   // reset result
   result_ = OptimizationResult();
   result_.setProblem(getProblem());
-  result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+  result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
   while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
   {
@@ -179,9 +179,9 @@ void SQP::run()
     ++iterationNumber;
 
     /* Compute the level function gradient at the current point -> Grad(G) */
-    currentGradient_ = levelFunction.gradient(currentPoint_) * NumericalPoint(1, 1.0);
+    currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
     /* Compute the current Lagrange multiplier */
-    const NumericalScalar normGradientSquared = currentGradient_.normSquare();
+    const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
 
     if (normGradientSquared == 0)
@@ -213,19 +213,19 @@ void SQP::run()
     currentSecondMember_[dimension] = -currentLevelValue_ + levelValue;
 
     //solve the linear system
-    const NumericalPoint solution(currentSystemMatrix_.solveLinearSystem(currentSecondMember_));
+    const Point solution(currentSystemMatrix_.solveLinearSystem(currentSecondMember_));
 
     std::copy(solution.begin(), solution.end() - 1, currentDirection_.begin());
 
     currentLambda_ = solution[dimension];
 
     /* Perform a line search in the given direction */
-    const NumericalScalar alpha = computeLineSearch();
+    const Scalar alpha = computeLineSearch();
 
     /* Check if convergence has been achieved */
     absoluteError = std::abs(alpha) * currentDirection_.norm();
     constraintError = std::abs(currentLevelValue_ - levelValue);
-    const NumericalScalar pointNorm = currentPoint_.norm();
+    const Scalar pointNorm = currentPoint_.norm();
 
     if (pointNorm > 0.0)
     {
@@ -243,8 +243,8 @@ void SQP::run()
 
     // update result
     result_.setIterationNumber(iterationNumber);
-    result_.store(currentPoint_, NumericalPoint(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
-    result_.setLagrangeMultipliers(NumericalPoint(1, currentLambda_));
+    result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+    result_.setLagrangeMultipliers(Point(1, currentLambda_));
 
     LOGINFO(getResult().__repr__());
 
@@ -256,7 +256,8 @@ void SQP::run()
     if (stopCallback_.first)
     {
       Bool stop = stopCallback_.first(stopCallback_.second);
-      if (stop) {
+      if (stop)
+      {
         convergence = true;
         LOGWARN(OSS() << "SQP was stopped by user");
       }
@@ -273,34 +274,34 @@ void SQP::run()
 } // run()
 
 /* Tau accessor */
-NumericalScalar SQP::getTau() const
+Scalar SQP::getTau() const
 {
   return tau_;
 }
 
-void SQP::setTau(const NumericalScalar tau)
+void SQP::setTau(const Scalar tau)
 {
   tau_ = tau;
 }
 
 /* Omega accessor */
-NumericalScalar SQP::getOmega() const
+Scalar SQP::getOmega() const
 {
   return omega_;
 }
 
-void SQP::setOmega(const NumericalScalar omega)
+void SQP::setOmega(const Scalar omega)
 {
   omega_ = omega;
 }
 
 /* Smooth accessor */
-NumericalScalar SQP::getSmooth() const
+Scalar SQP::getSmooth() const
 {
   return smooth_;
 }
 
-void SQP::setSmooth(const NumericalScalar smooth)
+void SQP::setSmooth(const Scalar smooth)
 {
   smooth_ = smooth;
 }

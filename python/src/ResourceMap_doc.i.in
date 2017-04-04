@@ -95,7 +95,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ResourceMap::SetAsNumericalScalar
+%feature("docstring") OT::ResourceMap::SetAsScalar
 "Access a floating-point parameter.
 
 Parameters
@@ -108,11 +108,11 @@ value : float
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.SetAsNumericalScalar('SQP-DefaultTau', 0.5)"
+>>> ot.ResourceMap.SetAsScalar('SQP-DefaultTau', 0.5)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ResourceMap::GetAsNumericalScalar
+%feature("docstring") OT::ResourceMap::GetAsScalar
 "Access a floating-point parameter.
 
 Parameters
@@ -128,7 +128,7 @@ value : float
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.GetAsNumericalScalar('SQP-DefaultTau')
+>>> ot.ResourceMap.GetAsScalar('SQP-DefaultTau')
 0.5"
 
 // ---------------------------------------------------------------------

@@ -44,12 +44,12 @@ GumbelFactory * GumbelFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GumbelFactory::Implementation GumbelFactory::build(const NumericalSample & sample) const
+GumbelFactory::Implementation GumbelFactory::build(const Sample & sample) const
 {
   return buildAsGumbel(sample).clone();
 }
 
-GumbelFactory::Implementation GumbelFactory::build(const NumericalPoint & parameters) const
+GumbelFactory::Implementation GumbelFactory::build(const Point & parameters) const
 {
   return buildAsGumbel(parameters).clone();
 }
@@ -59,18 +59,18 @@ GumbelFactory::Implementation GumbelFactory::build() const
   return buildAsGumbel().clone();
 }
 
-DistributionFactoryResult GumbelFactory::buildEstimator(const NumericalSample & sample) const
+DistributionFactoryResult GumbelFactory::buildEstimator(const Sample & sample) const
 {
   return buildBootStrapEstimator(sample, true);
 }
 
-Gumbel GumbelFactory::buildAsGumbel(const NumericalSample & sample) const
+Gumbel GumbelFactory::buildAsGumbel(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gumbel distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  NumericalScalar mu = sample.computeMean()[0];
-  NumericalScalar sigma = sample.computeStandardDeviationPerComponent()[0];
-  NumericalPoint parameters(2);
+  Scalar mu = sample.computeMean()[0];
+  Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
+  Point parameters(2);
   parameters[0] = mu;
   parameters[1] = sigma;
   Gumbel result(buildAsGumbel(GumbelMuSigma()(parameters)));
@@ -78,7 +78,7 @@ Gumbel GumbelFactory::buildAsGumbel(const NumericalSample & sample) const
   return result;
 }
 
-Gumbel GumbelFactory::buildAsGumbel(const NumericalPoint & parameters) const
+Gumbel GumbelFactory::buildAsGumbel(const Point & parameters) const
 {
   try
   {

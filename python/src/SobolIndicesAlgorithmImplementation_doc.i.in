@@ -175,7 +175,7 @@ computeSecondOrder : bool
 
 Returns
 -------
-inputDesign : :class:`~openturns.NumericalSample`
+inputDesign : :class:`~openturns.Sample`
     Full input design.
 
 Notes
@@ -215,7 +215,7 @@ i : int, optional
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     Sequence containing first order Sobol indices."
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getFirstOrderIndices
@@ -241,7 +241,7 @@ OT_SobolIndicesAlgorithm_getFirstOrderIndicesInterval_doc
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     Sequence containing merged first order Sobol indices."
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndices
@@ -254,7 +254,7 @@ OT_SobolIndicesAlgorithm_getAggregatedFirstOrderIndices_doc
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     Sequence containing merged total order Sobol indices."
 
 %enddef
@@ -291,7 +291,7 @@ i : int, optional
 
 Returns
 -------
-indices : :class:`~openturns.NumericalPoint`
+indices : :class:`~openturns.Point`
     Sequence containing total order Sobol indices."
 
 %enddef
@@ -407,7 +407,7 @@ OT_SobolIndicesAlgorithm_draw_doc
 
 Parameters
 ----------
-importanceFactors : :class:`~openturns.NumericalPointWithDescription`
+importanceFactors : :class:`~openturns.PointWithDescription`
     Sequence containing the importance factors with a description for each
     component. The descriptions are used to build labels for the created Pie.
     If they are not mentioned, default labels will be used.

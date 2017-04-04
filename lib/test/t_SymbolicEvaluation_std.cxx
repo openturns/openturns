@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     formulas[1] = "cos(x0-sin(x1 * x2))";
     SymbolicEvaluation evaluation(inputNames, outputNames, formulas);
     fullprint << "evaluation=" << evaluation << std::endl;
-    NumericalPoint point(3);
+    Point point(3);
     point[0] = -1.0;
     point[1] =  4.0;
     point[2] = -4.0;

@@ -58,14 +58,14 @@ SpaceFilling::SpaceFilling(SpaceFillingImplementation * p_implementation)
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFilling::evaluate(const NumericalSample & sample) const
+Scalar SpaceFilling::evaluate(const Sample & sample) const
 {
   return getImplementation()->evaluate(sample);
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFilling::perturbLHS(NumericalSample& oldDesign, OT::NumericalScalar oldCriterion,
-    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
+Scalar SpaceFilling::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
+                                UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   return getImplementation()->perturbLHS(oldDesign, oldCriterion, row1, row2, column);
 }

@@ -16,7 +16,7 @@ try:
     print(('distribution=%s' % str(distribution)))
     print(('realization=%s' % str(distribution.getRealization())))
     print(('sample=%s' % str(distribution.getSample(5))))
-    point = ot.NumericalPoint(1, 0.6)
+    point = ot.Point(1, 0.6)
     print(('pdf=%s' % str(distribution.computePDF(point))))
     print(('cdf=%s' % str(distribution.computeCDF(point))))
     print(('mean=%s' % str(distribution.getMean())))

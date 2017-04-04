@@ -15,16 +15,16 @@ try:
     print("Test using NLOpt")
     print("================")
     # Calibration of default optimizer
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         'GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound', 1.0e-5)
-    ot.ResourceMap.SetAsNumericalScalar(
+    ot.ResourceMap.SetAsScalar(
         'GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound', 100)
     # Data & estimation
     spatialDimension = 1
     X = ot.Normal().getSample(100)
     X = X.sortAccordingToAComponent(0)
     covarianceModel = ot.SquaredExponential([1.0], [1.0])
-    model = ot.NumericalMathFunction(["x"], ["x - 0.6 * cos(x/3)"])
+    model = ot.SymbolicFunction(["x"], ["x - 0.6 * cos(x/3)"])
     Y = model(X)
     basis = ot.QuadraticBasisFactory(spatialDimension).build()
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True)

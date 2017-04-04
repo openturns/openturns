@@ -21,8 +21,8 @@
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/IdentityEvaluation.hxx"
 #include "openturns/IdentityMatrix.hxx"
-#include "openturns/ConstantNumericalMathGradientImplementation.hxx"
-#include "openturns/ConstantNumericalMathHessianImplementation.hxx"
+#include "openturns/ConstantGradient.hxx"
+#include "openturns/ConstantHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -30,9 +30,9 @@ CLASSNAMEINIT(IdentityFunction);
 
 /* Default constructor */
 IdentityFunction::IdentityFunction(const UnsignedInteger dimension)
-  : NumericalMathFunction(new IdentityEvaluation(dimension),
-                          new ConstantNumericalMathGradientImplementation(IdentityMatrix(dimension)),
-                          new ConstantNumericalMathHessianImplementation(SymmetricTensor(dimension, dimension)))
+  : Function(new IdentityEvaluation(dimension),
+             new ConstantGradient(IdentityMatrix(dimension)),
+             new ConstantHessian(SymmetricTensor(dimension, dimension)))
 {
   // Nothing to do
 }

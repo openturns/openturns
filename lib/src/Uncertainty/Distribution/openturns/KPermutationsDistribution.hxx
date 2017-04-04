@@ -64,17 +64,17 @@ public:
   virtual KPermutationsDistribution * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
   using DiscreteDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
@@ -85,10 +85,10 @@ public:
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  NumericalSample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /* Interface specific to KPermutationsDistribution */
 
@@ -115,8 +115,8 @@ private:
   void computeRange();
 
   /** Quantile computation for dimension=1 */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the mean of the distribution */
   void computeMean() const;
@@ -131,7 +131,7 @@ private:
   UnsignedInteger n_;
 
   /** Log PDF value */
-  NumericalScalar logPDFValue_;
+  Scalar logPDFValue_;
 
 }; /* class KPermutationsDistribution */
 

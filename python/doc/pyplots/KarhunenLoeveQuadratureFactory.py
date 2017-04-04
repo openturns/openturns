@@ -12,14 +12,15 @@ threshold = 0.001
 factory = ot.KarhunenLoeveQuadratureFactory(
     domain, experiment, basis, basisSize, mustScale, threshold)
 model = ot.AbsoluteExponential([1.0])
-ev = ot.NumericalPoint()
+ev = ot.Point()
 functions = factory.build(model, ev)
 g = ot.Graph()
 g.setXTitle("$t$")
 g.setYTitle("$\sqrt{\lambda_n}\phi_n$")
 for i in range(functions.getSize()):
-    g.add((functions.build(i) * ot.LinearFunction([0.0] * domain.getDimension(),
-                                                  [sqrt(ev[i])], ot.Matrix(1, domain.getDimension()))).draw(-1.0, 1.0, 256))
+    g.add(
+        (functions.build(i) * ot.LinearFunction([0.0] * domain.getDimension(),
+         [sqrt(ev[i])], ot.Matrix(1, domain.getDimension()))).draw(-1.0, 1.0, 256))
 g.setColors(ot.Drawable.BuildDefaultPalette(functions.getSize()))
 
 fig = plt.figure(figsize=(6, 4))

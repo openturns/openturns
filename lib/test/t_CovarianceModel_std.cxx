@@ -35,8 +35,8 @@ static void test_model(const CovarianceModel & myModel)
   const UnsignedInteger spatialDimension = myModel.getSpatialDimension();
   const UnsignedInteger dimension = myModel.getDimension();
 
-  NumericalPoint x1(spatialDimension);
-  NumericalPoint x2(spatialDimension);
+  Point x1(spatialDimension);
+  Point x2(spatialDimension);
   for (UnsignedInteger j = 0; j < spatialDimension; ++ j)
   {
     x1[j] = 8.0 * (0.5 - j);
@@ -48,14 +48,14 @@ static void test_model(const CovarianceModel & myModel)
   Matrix grad(myModel.partialGradient(x1, x2));
   fullprint << "dCov =" << grad << std::endl;
 
-  NumericalScalar eps = 1e-3;
+  Scalar eps = 1e-3;
   if (dimension == 1)
   {
-    NumericalPoint gradfd(spatialDimension);
+    Point gradfd(spatialDimension);
     for (UnsignedInteger j = 0; j < spatialDimension; ++ j)
     {
-      NumericalPoint x1_g(x1);
-      NumericalPoint x1_d(x1);
+      Point x1_g(x1);
+      Point x1_d(x1);
       x1_g[j] += eps;
       x1_d[j] -= eps;
       gradfd[j] = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
@@ -69,16 +69,16 @@ static void test_model(const CovarianceModel & myModel)
     // Convert result into MatrixImplementation to symmetrize & get the collection
     MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
     covarianceX1X2Implementation.symmetrize();
-    const NumericalPoint centralValue(covarianceX1X2Implementation);
+    const Point centralValue(covarianceX1X2Implementation);
     // Loop over the shifted points
     for (UnsignedInteger i = 0; i < spatialDimension; ++i)
     {
-      NumericalPoint currentPoint(x1);
+      Point currentPoint(x1);
       currentPoint[i] += eps;
       CovarianceMatrix localCovariance = myModel(currentPoint, x2);
       MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
       localCovarianceImplementation.symmetrize();
-      const NumericalPoint currentValue(localCovarianceImplementation);
+      const Point currentValue(localCovarianceImplementation);
       for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
         gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
     }
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
       GeneralizedExponential myDefautModel;
       fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
-      GeneralizedExponential myModel(NumericalPoint(dimension, 10.0), 1.5);
+      GeneralizedExponential myModel(Point(dimension, 10.0), 1.5);
       test_model(myModel);
     }
     {
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
       AbsoluteExponential myDefautModel;
       fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
-      AbsoluteExponential myModel(NumericalPoint(dimension, 10.0));
+      AbsoluteExponential myModel(Point(dimension, 10.0));
       test_model(myModel);
     }
     {
@@ -131,26 +131,26 @@ int main(int argc, char *argv[])
       MaternModel myDefautModel;
       fullprint << "myDefautModel = " << myDefautModel << std::endl;
 
-      MaternModel myModel(NumericalPoint(dimension, 8.0), 2.0);
+      MaternModel myModel(Point(dimension, 8.0), 2.0);
       test_model(myModel);
     }
     {
       // Generate collection
       Collection<CovarianceModel> collection;
       // Collection ==> add covariance models
-      AbsoluteExponential myAbsoluteExponential(NumericalPoint(1, 3.0));
+      AbsoluteExponential myAbsoluteExponential(Point(1, 3.0));
       collection.add(myAbsoluteExponential);
-      SquaredExponential mySquaredExponential(NumericalPoint(1, 2.0));
+      SquaredExponential mySquaredExponential(Point(1, 2.0));
       collection.add(mySquaredExponential);
       // Build ProductCovarianceModel
       ProductCovarianceModel myModel(collection);
       fullprint << "myModel = " << myModel << std::endl;
       // Check that myModel(x) = myAbsoluteExponential * mySquaredExponential
-      NumericalPoint point(2);
+      Point point(2);
       point[0] = 0.50;
       point[1] = -6.0;
-      const NumericalPoint x(1, point[0]);
-      const NumericalPoint y(1, point[1]);
+      const Point x(1, point[0]);
+      const Point y(1, point[1]);
       fullprint << "Validation of myModel(x_1, x_2) - myAbsoluteExponential(x_1) * mySquaredExponential(x_2) = " << myModel(point) - myAbsoluteExponential(x) * mySquaredExponential(y)  << std::endl;
       // Gradient test in comparison with FD
       test_model(myModel);
@@ -163,17 +163,17 @@ int main(int argc, char *argv[])
       Collection<CovarianceModel> collection;
       // Collection ==> add covariance models
       // Add AbsoluteExponentialModel to the collection
-      AbsoluteExponential myAbsoluteExponential(NumericalPoint(spatialDimension, 3.0));
+      AbsoluteExponential myAbsoluteExponential(Point(spatialDimension, 3.0));
       collection.add(myAbsoluteExponential);
       // Add SquaredExponentialModel to the collection
-      SquaredExponential mySquaredExponential(NumericalPoint(spatialDimension, 2.0));
+      SquaredExponential mySquaredExponential(Point(spatialDimension, 2.0));
       collection.add(mySquaredExponential);
       // Add exponentialModel to the collection
-      NumericalPoint amplitude(2);
+      Point amplitude(2);
       amplitude[0] = 4.0;
       amplitude[1] = 2.0;
       // Define scale
-      NumericalPoint scale(2, 1.0);
+      Point scale(2, 1.0);
       // Define a spatial correlation
       CorrelationMatrix spatialCorrelation(spatialDimension);
       spatialCorrelation(1, 0) = 0.3;

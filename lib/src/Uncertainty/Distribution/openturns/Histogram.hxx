@@ -45,9 +45,9 @@ public:
   Histogram();
 
   /** Parameters constructor */
-  Histogram(const NumericalScalar first,
-            const NumericalPoint & width,
-            const NumericalPoint & height);
+  Histogram(const Scalar first,
+            const Point & width,
+            const Point & height);
 
   /** Comparison operator */
   Bool operator ==(const Histogram & other) const;
@@ -67,64 +67,64 @@ public:
   virtual Histogram * clone() const;
 
   /** Get one realization of the Histogram distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the DDF of the Histogram distribution */
   using ContinuousDistribution::computeDDF;
-  NumericalPoint computeDDF(const NumericalPoint & point) const;
+  Point computeDDF(const Point & point) const;
 
   /** Get the PDF of the Histogram distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the Histogram distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the Histogram distribution */
   using ContinuousDistribution::computePDFGradient;
-  NumericalPoint computePDFGradient(const NumericalPoint & point) const;
+  Point computePDFGradient(const Point & point) const;
 
   /** Get the CDFGradient of the Histogram distribution */
   using ContinuousDistribution::computeCDFGradient;
-  NumericalPoint computeCDFGradient(const NumericalPoint & point) const;
+  Point computeCDFGradient(const Point & point) const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;
 
   /** Parameters value and description accessor */
-  NumericalPoint getParameter() const;
-  void setParameter(const NumericalPoint & parameter);
+  Point getParameter() const;
+  void setParameter(const Point & parameter);
   Description getParameterDescription() const;
 
   /* Interface specific to Histogram */
 
   /** First point accessor */
-  void setFirst(const NumericalScalar first);
-  NumericalScalar getFirst() const;
+  void setFirst(const Scalar first);
+  Scalar getFirst() const;
 
   /** Data accessor */
-  void setData(const NumericalPoint & width,
-               const NumericalPoint & weight);
-  NumericalPoint getWidth() const;
-  NumericalPoint getHeight() const;
+  void setData(const Point & width,
+               const Point & weight);
+  Point getWidth() const;
+  Point getHeight() const;
 
   /** Get the PDF singularities inside of the range - 1D only */
-  NumericalPoint getSingularities() const;
+  Point getSingularities() const;
 
   /** Draw the PDF of the Histogram using a specific presentation */
   //        using ContinuousDistribution::drawPDF;
   virtual Graph drawPDF() const;
 
   /** Draw the PDF of the Histogram using a specific presentation */
-  virtual Graph drawPDF(const NumericalScalar xMin,
-                        const NumericalScalar xMax,
+  virtual Graph drawPDF(const Scalar xMin,
+                        const Scalar xMax,
                         const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
 
   /** Method save() stores the object through the StorageManager */
@@ -146,24 +146,24 @@ private:
   void computeCovariance() const;
 
   /** Get the quantile of the Histogram distribution */
-  NumericalScalar computeScalarQuantile(const NumericalScalar prob,
-                                        const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
   /** The first point of the collection */
-  NumericalScalar first_;
+  Scalar first_;
 
   /** The collection of widths/heights */
-  NumericalPoint width_;
-  NumericalPoint height_;
+  Point width_;
+  Point height_;
 
   /** The cumulated bin widths */
-  NumericalPoint cumulatedWidth_;
+  Point cumulatedWidth_;
 
   /** The cumulated bin surface */
-  NumericalPoint cumulatedSurface_;
+  Point cumulatedSurface_;
 
 }; /* class Histogram */
 

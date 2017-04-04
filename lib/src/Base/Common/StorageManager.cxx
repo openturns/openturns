@@ -158,14 +158,14 @@ void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String 
 #endif
 
 /* Add an attribute to an internal object */
-void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalScalar value)
+void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar value)
 {
   // Nothing to do
 }
 
 
 /* Add an attribute to an internal object */
-void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalComplex value)
+void StorageManager::addAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex value)
 {
   // Nothing to do
 }
@@ -215,13 +215,13 @@ void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedIn
 #endif
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value)
 {
   // Nothing to do
 }
 
 /* Add an indexed value to an internal object */
-void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex value)
+void StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex value)
 {
   // Nothing to do
 }
@@ -271,13 +271,13 @@ void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String
 #endif
 
 /* Read an attribute */
-void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalScalar & value)
+void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar & value)
 {
   // Nothing to do
 }
 
 /* Read an attribute */
-void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String & name, NumericalComplex & value)
+void StorageManager::readAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex & value)
 {
   // Nothing to do
 }
@@ -323,13 +323,13 @@ void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedI
 #endif
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalScalar & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar & value)
 {
   // Nothing to do
 }
 
 /* Read an indexed value */
-void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, NumericalComplex & value)
+void StorageManager::readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex & value)
 {
   // Nothing to do
 }

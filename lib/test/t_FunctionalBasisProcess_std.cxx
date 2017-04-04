@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
   try
   {
 
-    const NumericalScalar Tmin = 0.0;
-    const NumericalScalar deltaT = 0.1;
+    const Scalar Tmin = 0.0;
+    const Scalar deltaT = 0.1;
     const UnsignedInteger N = 11;
 
     /* Initialization of the RegularGrid timeGrid1*/
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     PlatformInfo::SetNumericalPrecision(20);
     for (UnsignedInteger i = 0; i < basisDimension; ++i)
     {
-      basis[i] = NumericalMathFunction("x", String(OSS() << "sin(" << i << "*x)"));
+      basis[i] = SymbolicFunction("x", String(OSS() << "sin(" << i << "*x)"));
       coefficients[i] = Normal(0.0, (1.0 + i));
     }
     PlatformInfo::SetNumericalPrecision(oldPrecision);

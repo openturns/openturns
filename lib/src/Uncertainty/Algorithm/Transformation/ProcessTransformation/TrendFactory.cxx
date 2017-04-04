@@ -21,7 +21,8 @@
 #include "openturns/TrendFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/DualLinearCombinationFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -82,12 +83,12 @@ TrendTransform TrendFactory::build(const Field & field,
 
   // Dimension and size of the time series
   const UnsignedInteger dimension = field.getDimension();
-  NumericalSample inputSample(field.getMesh().getVertices());
+  Sample inputSample(field.getMesh().getVertices());
 
   // We need a sample to get coefficients result
-  NumericalSample coefficients(N, dimension);
+  Sample coefficients(N, dimension);
 
-  Collection<NumericalMathFunction> coll(N);
+  Collection<Function> coll(N);
   Indices indices(N);
   indices.fill();
   for (UnsignedInteger k = 0; k < N ; ++k) coll[k] = basis[k];
@@ -95,13 +96,13 @@ TrendTransform TrendFactory::build(const Field & field,
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     // We look for best coefficients by marginal
-    const NumericalSample outputSample(field.getValues().getMarginal(d));
+    const Sample outputSample(field.getValues().getMarginal(d));
     LeastSquaresMetaModelSelection selectionAlgo(inputSample, outputSample, coll, indices, basisSequenceFactory_, fittingAlgorithm_);
     selectionAlgo.run();
-    NumericalPoint localCoefficients(selectionAlgo.getCoefficients());
+    Point localCoefficients(selectionAlgo.getCoefficients());
     for (UnsignedInteger k = 0; k < N ; ++k) coefficients[k][d] = localCoefficients[k];
   }
-  const NumericalMathFunction trendFunction(coll, coefficients);
+  const DualLinearCombinationFunction trendFunction(coll, coefficients);
 
   return TrendTransform(trendFunction);
 }

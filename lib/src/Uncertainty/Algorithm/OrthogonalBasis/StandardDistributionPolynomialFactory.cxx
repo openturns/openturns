@@ -114,16 +114,16 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   // HistogramPolynomial factory
   if (measureType == "Histogram")
   {
-    const NumericalPoint parameter(measure_.getParameter());
+    const Point parameter(measure_.getParameter());
     const UnsignedInteger size = (parameter.getSize() - 1) / 2;
-    const NumericalScalar first = parameter[0];
-    NumericalPoint width(size);
-    NumericalPoint height(size);
+    const Scalar first = parameter[0];
+    Point width(size);
+    Point height(size);
     for (UnsignedInteger i = 0; i < size; ++i)
-      {
-	width[i] = parameter[2 * i + 1];
-	height[i] = parameter[2 * i + 2];
-      }
+    {
+      width[i] = parameter[2 * i + 1];
+      height[i] = parameter[2 * i + 2];
+    }
 
     referenceFamily = HistogramPolynomialFactory(first, width, height);
     hasClassMatch = true;
@@ -137,69 +137,69 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   // Jacobi (or Chebychev as a special case) factory
   if (measureType == "Beta")
   {
-    const NumericalPoint parameter(measure_.getParameter());
-    const NumericalScalar alpha = parameter[1] - parameter[0] - 1.0;
-    const NumericalScalar beta = parameter[0] - 1.0;
+    const Point parameter(measure_.getParameter());
+    const Scalar alpha = parameter[1] - parameter[0] - 1.0;
+    const Scalar beta = parameter[0] - 1.0;
     // Here we set directly the specific family as the reference distribution
     // of the family has a different type (Arcsine) than the given distribution
     if (alpha == -0.5 && beta == -0.5 && parameter[2] == -1.0 && parameter[3] == 1.0)
-      {
-	specificFamily_ = ChebychevFactory();
-	hasSpecificFamily_ = true;
-	// To avoid distribution comparison at the end of the method
-	hasClassMatch = false;
-      }
+    {
+      specificFamily_ = ChebychevFactory();
+      hasSpecificFamily_ = true;
+      // To avoid distribution comparison at the end of the method
+      hasClassMatch = false;
+    }
     // Here we set directly the specific family as the reference distribution
     // of the family has a different type (Uniform) than the given distribution
     else if (alpha == 0.0 && beta == 0.0 && parameter[2] == -1.0 && parameter[3] == 1.0)
-      {
-	specificFamily_ = LegendreFactory();
-	hasSpecificFamily_ = true;
-	// To avoid distribution comparison at the end of the method
-	hasClassMatch = false;
-      }
+    {
+      specificFamily_ = LegendreFactory();
+      hasSpecificFamily_ = true;
+      // To avoid distribution comparison at the end of the method
+      hasClassMatch = false;
+    }
     else
-      {
-	referenceFamily = JacobiFactory(alpha, beta);
-	hasClassMatch = true;
-      }
+    {
+      referenceFamily = JacobiFactory(alpha, beta);
+      hasClassMatch = true;
+    }
   }
   // Laguerre factory
   if (measureType == "Gamma")
   {
-    const NumericalPoint parameter(measure_.getParameter());
+    const Point parameter(measure_.getParameter());
     referenceFamily = LaguerreFactory(parameter[0] - 1.0);
     hasClassMatch = true;
   }
   if (measureType == "Exponential")
   {
-    const NumericalPoint parameter(measure_.getParameter());
+    const Point parameter(measure_.getParameter());
     if (parameter[0] == 1.0)
-      {
-	specificFamily_ = LaguerreFactory(0.0);
-	hasSpecificFamily_ = true;
-	// To avoid distribution comparison at the end of the method
-	hasClassMatch = false;
-      }
+    {
+      specificFamily_ = LaguerreFactory(0.0);
+      hasSpecificFamily_ = true;
+      // To avoid distribution comparison at the end of the method
+      hasClassMatch = false;
+    }
   }
   // Charlier factory
   if (measureType == "Poisson")
   {
-    const NumericalPoint parameter(measure_.getParameter());
+    const Point parameter(measure_.getParameter());
     referenceFamily = CharlierFactory(parameter[0]);
     hasClassMatch = true;
   }
   // Krawtchouk factory
   if (measureType == "Binomial")
   {
-    const NumericalPoint parameter(measure_.getParameter());
+    const Point parameter(measure_.getParameter());
     referenceFamily = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
     hasClassMatch = true;
   }
   // Meixner factory
   if (measureType == "NegativeBinomial")
   {
-    const NumericalPoint parameter(measure_.getParameter());
+    const Point parameter(measure_.getParameter());
     referenceFamily = MeixnerFactory(parameter[0], parameter[1]);
     hasClassMatch = true;
   }

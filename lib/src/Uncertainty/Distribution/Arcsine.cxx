@@ -43,8 +43,8 @@ Arcsine::Arcsine()
 }
 
 /* Parameters constructor */
-Arcsine::Arcsine(const NumericalScalar a,
-                 const NumericalScalar b)
+Arcsine::Arcsine(const Scalar a,
+                 const Scalar b)
   : ContinuousDistribution()
   , a_(a)
   , b_(b)
@@ -101,83 +101,83 @@ void Arcsine::computeRange()
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Arcsine::getRealization() const
+Point Arcsine::getRealization() const
 {
-  return NumericalPoint(1, computeScalarQuantile(RandomGenerator::Generate()));
+  return Point(1, computeScalarQuantile(RandomGenerator::Generate()));
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint Arcsine::computeDDF(const NumericalPoint & point) const
+Point Arcsine::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  NumericalScalar ddf = 0.0;
+  const Scalar x = point[0];
+  Scalar ddf = 0.0;
   if ((a_ < x) && (x <= b_))
   {
     ddf = (x - 0.5 * (a_ + b_)) / (M_PI * (x - a_) * (b_ - x) * std::sqrt((x - a_) * (b_ - x)));
   }
-  return NumericalPoint(1, ddf);
+  return Point(1, ddf);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Arcsine::computePDF(const NumericalPoint & point) const
+Scalar Arcsine::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= a_) || (x >= b_)) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
-NumericalScalar Arcsine::computeLogPDF(const NumericalPoint & point) const
+Scalar Arcsine::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinNumericalScalar;
+  const Scalar x = point[0];
+  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinScalar;
   return -std::log(M_PI) - 0.5 * (std::log(b_ - x) + std::log(x - a_));
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar Arcsine::computeCDF(const NumericalPoint & point) const
+Scalar Arcsine::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_) return 1.0;
-  const NumericalScalar value = std::asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI;
+  const Scalar value = std::asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI;
   return 0.5 + value;
 }
 
-NumericalScalar Arcsine::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar Arcsine::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 1.0;
   if (x > b_) return 0.0;
-  const NumericalScalar value = std::asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI;
+  const Scalar value = std::asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI;
   return 0.5 - value;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Arcsine::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Arcsine::computeCharacteristicFunction(const Scalar x) const
 {
-  //  return std::exp(NumericalComplex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
-  return std::exp(NumericalComplex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
+  //  return std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(0.5, 1.0, (b_ - a_) * x);
+  return std::exp(Complex(0.0, a_ + 0.5 * (b_ - a_) * x)) * j0(0.5 * (b_ - a_) * x);
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Arcsine::computePDFGradient(const NumericalPoint & point) const
+Point Arcsine::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint pdfGradient(2);
-  NumericalPoint pdfGradient2(2);
-  const NumericalScalar x = point[0];
+  Point pdfGradient(2);
+  Point pdfGradient2(2);
+  const Scalar x = point[0];
 
   if ((a_ < x) && (x <= b_))
   {
@@ -190,13 +190,13 @@ NumericalPoint Arcsine::computePDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Arcsine::computeCDFGradient(const NumericalPoint & point) const
+Point Arcsine::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  NumericalPoint cdfGradient(2);
-  NumericalPoint cdfGradient2(2);
-  const NumericalScalar x = point[0];
+  Point cdfGradient(2);
+  Point cdfGradient2(2);
+  const Scalar x = point[0];
   if ((a_ < x) && (x <= b_))
   {
     cdfGradient[0] = (0.5 * (a_ + b_) - x) / (M_PI * 0.5 * (b_ - a_) * std::sqrt((b_ - x) * (x - a_)));
@@ -208,16 +208,16 @@ NumericalPoint Arcsine::computeCDFGradient(const NumericalPoint & point) const
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Arcsine::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Scalar Arcsine::computeScalarQuantile(const Scalar prob,
+                                      const Bool tail) const
 {
-  const NumericalScalar proba = tail ? 1.0 - prob : prob;
-  const NumericalScalar quantile = 0.5 * (b_ - a_) * std::sin(M_PI * (proba - 0.5)) + 0.5 * (a_ + b_);
+  const Scalar proba = tail ? 1.0 - prob : prob;
+  const Scalar quantile = 0.5 * (b_ - a_) * std::sin(M_PI * (proba - 0.5)) + 0.5 * (a_ + b_);
   return quantile;
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar Arcsine::getRoughness() const
+Scalar Arcsine::getRoughness() const
 {
   throw NotDefinedException(HERE) << "roughness of Arcsine distribution is not L2-integrable";
 }
@@ -225,38 +225,38 @@ NumericalScalar Arcsine::getRoughness() const
 /* Compute the mean of the distribution */
 void Arcsine::computeMean() const
 {
-  mean_ = NumericalPoint(1, 0.5 * (a_ + b_));
+  mean_ = Point(1, 0.5 * (a_ + b_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Arcsine::getStandardDeviation() const /*throw(NotDefinedException)*/
+Point Arcsine::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
-  return NumericalPoint(1, 0.5 * (b_ - a_) * M_SQRT1_2);
+  return Point(1, 0.5 * (b_ - a_) * M_SQRT1_2);
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Arcsine::getSkewness() const /*throw(NotDefinedException)*/
+Point Arcsine::getSkewness() const /*throw(NotDefinedException)*/
 {
-  return NumericalPoint(1, 0.0);
+  return Point(1, 0.0);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
+Point Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
 {
-  NumericalScalar standardDeviation4 = getStandardDeviation()[0];
+  Scalar standardDeviation4 = getStandardDeviation()[0];
   standardDeviation4 *= standardDeviation4;
   standardDeviation4 *= standardDeviation4;
-  NumericalScalar a4 = 0.5 * (b_ - a_) * 0.5 * (b_ - a_);
+  Scalar a4 = 0.5 * (b_ - a_) * 0.5 * (b_ - a_);
   a4 *= a4;
-  return NumericalPoint(1, (3.0 / 8.0) * a4 / standardDeviation4);
+  return Point(1, (3.0 / 8.0) * a4 / standardDeviation4);
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Arcsine::getStandardMoment(const UnsignedInteger n) const
+Point Arcsine::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n % 2 == 1) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, std::exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / std::sqrt(M_PI));
+  if (n % 2 == 1) return Point(1, 0.0);
+  return Point(1, std::exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / std::sqrt(M_PI));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -269,23 +269,23 @@ Arcsine::Implementation Arcsine::getStandardRepresentative() const
 void Arcsine::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar eta = getStandardDeviation()[0];
+  const Scalar eta = getStandardDeviation()[0];
   covariance_(0, 0) = eta * eta;
   isAlreadyComputedCovariance_ = true;
 }
 
-NumericalPoint Arcsine::getParameter() const
+Point Arcsine::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = a_;
   point[1] = b_;
   return point;
 }
 
-void Arcsine::setParameter(const NumericalPoint & parameter)
+void Arcsine::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Arcsine(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -305,7 +305,7 @@ Bool Arcsine::isElliptical() const
 }
 
 /* A accessor */
-void Arcsine::setA(const NumericalScalar a)
+void Arcsine::setA(const Scalar a)
 {
   if (a >= b_) throw InvalidArgumentException(HERE) << "in Arcsine : a must be smaller than b";
   if (a != a_)
@@ -317,14 +317,14 @@ void Arcsine::setA(const NumericalScalar a)
   }
 }
 
-NumericalScalar Arcsine::getA() const
+Scalar Arcsine::getA() const
 {
   return a_;
 }
 
 
 /* B accessor */
-void Arcsine::setB(const NumericalScalar b)
+void Arcsine::setB(const Scalar b)
 {
   if (a_ >= b) throw InvalidArgumentException(HERE) << "in Arcsine : a must be smaller than b";
   if (b != b_)
@@ -336,13 +336,13 @@ void Arcsine::setB(const NumericalScalar b)
   }
 }
 
-NumericalScalar Arcsine::getB() const
+Scalar Arcsine::getB() const
 {
   return b_;
 }
 
-void Arcsine::setAB(const NumericalScalar a,
-                    const NumericalScalar b)
+void Arcsine::setAB(const Scalar a,
+                    const Scalar b)
 {
   if (a >= b)
     throw InvalidArgumentException(HERE) << "in Arcsine : a must be smaller than b";

@@ -85,25 +85,25 @@ String UniVariatePolynomial::__str__(const String & variableName,
 
 
 /* UniVariatePolynomial are evaluated as functors */
-NumericalScalar UniVariatePolynomial::operator() (const NumericalScalar x) const
+Scalar UniVariatePolynomial::operator() (const Scalar x) const
 {
   return getImplementation()->operator()(x);
 }
 
-NumericalComplex UniVariatePolynomial::operator() (const NumericalComplex z) const
+Complex UniVariatePolynomial::operator() (const Complex z) const
 {
   return getImplementation()->operator()(z);
 }
 
 
 /* UniVariatePolynomialImplementation derivative */
-NumericalScalar UniVariatePolynomial::gradient(const NumericalScalar x) const
+Scalar UniVariatePolynomial::gradient(const Scalar x) const
 {
   return getImplementation()->gradient(x);
 }
 
 
-NumericalScalar UniVariatePolynomial::hessian(const NumericalScalar x) const
+Scalar UniVariatePolynomial::hessian(const Scalar x) const
 {
   return getImplementation()->hessian(x);
 }
@@ -115,8 +115,8 @@ UniVariatePolynomial UniVariatePolynomial::derivate() const
   return getImplementation()->derivate();
 }
 
-/* Multiply the polynomial P by a NumericalScalar */
-UniVariatePolynomial UniVariatePolynomial::operator* (const NumericalScalar scal) const
+/* Multiply the polynomial P by a Scalar */
+UniVariatePolynomial UniVariatePolynomial::operator* (const Scalar scal) const
 {
   return getImplementation()->operator*(scal);
 } // end method operator*
@@ -161,8 +161,8 @@ UniVariatePolynomial::Coefficients UniVariatePolynomial::getCoefficients() const
 
 
 /* Method to draw the graph of the polynomial between given bounds */
-Graph UniVariatePolynomial::draw(const NumericalScalar xMin,
-                                 const NumericalScalar xMax,
+Graph UniVariatePolynomial::draw(const Scalar xMin,
+                                 const Scalar xMax,
                                  const UnsignedInteger pointNumber) const
 {
   return getImplementation()->draw(xMin, xMax, pointNumber);
@@ -177,7 +177,7 @@ UnsignedInteger UniVariatePolynomial::getDegree() const
 
 
 /* Root of the polynomial */
-UniVariatePolynomial::NumericalComplexCollection UniVariatePolynomial::getRoots() const
+UniVariatePolynomial::ComplexCollection UniVariatePolynomial::getRoots() const
 {
   return getImplementation()->getRoots();
 }

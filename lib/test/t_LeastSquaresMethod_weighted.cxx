@@ -36,26 +36,26 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 10;
     const UnsignedInteger size = 20;
 
-    NumericalSample x(Normal(dimension).getSample(size));
-    Collection<NumericalMathFunction> coll;
+    Sample x(Normal(dimension).getSample(size));
+    Collection<Function> coll;
     const Description description(Description::BuildDefault(dimension, "x"));
     for(UnsignedInteger i = 0; i < dimension; ++i)
     {
-      coll.add(NumericalMathFunction(description, Description(1, OSS() << "x" << i)));
+      coll.add(SymbolicFunction(description, Description(1, OSS() << "x" << i)));
     }
     Basis psi(coll);
     Indices indices(dimension);
     indices.fill();
     DesignProxy proxy(x, psi);
-    NumericalPoint weights(size, 10.0);
+    Point weights(size, 10.0);
     fullprint << "Uniform weights" << std::endl << std::endl;
     {
       QRMethod qrMethod(proxy, weights, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "QR" << std::endl;
-      fullprint << "Solve=" << qrMethod.solve(NumericalPoint(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << qrMethod.solveNormal(NumericalPoint(dimension, 1.0)) << std::endl;
+      fullprint << "Solve=" << qrMethod.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << qrMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
       fullprint << "GramInverse=" << qrMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << qrMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << qrMethod.getGramInverseTrace() << std::endl;
@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
       svdMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "SVD" << std::endl;
-      fullprint << "Solve=" << svdMethod.solve(NumericalPoint(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << svdMethod.solveNormal(NumericalPoint(dimension, 1.0)) << std::endl;
+      fullprint << "Solve=" << svdMethod.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << svdMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
       fullprint << "GramInverse=" << svdMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << svdMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << svdMethod.getGramInverseTrace() << std::endl;
@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
       choleskyMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "Cholesky" << std::endl;
-      fullprint << "Solve=" << choleskyMethod.solve(NumericalPoint(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << choleskyMethod.solveNormal(NumericalPoint(dimension, 1.0)) << std::endl;
+      fullprint << "Solve=" << choleskyMethod.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << choleskyMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
       fullprint << "GramInverse=" << choleskyMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << choleskyMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << choleskyMethod.getGramInverseTrace() << std::endl;
@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
       qrMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "QR" << std::endl;
-      fullprint << "Solve=" << qrMethod.solve(NumericalPoint(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << qrMethod.solveNormal(NumericalPoint(dimension, 1.0)) << std::endl;
+      fullprint << "Solve=" << qrMethod.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << qrMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
       fullprint << "GramInverse=" << qrMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << qrMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << qrMethod.getGramInverseTrace() << std::endl;
@@ -105,8 +105,8 @@ int main(int argc, char *argv[])
       svdMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "SVD" << std::endl;
-      fullprint << "Solve=" << svdMethod.solve(NumericalPoint(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << svdMethod.solveNormal(NumericalPoint(dimension, 1.0)) << std::endl;
+      fullprint << "Solve=" << svdMethod.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << svdMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
       fullprint << "GramInverse=" << svdMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << svdMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << svdMethod.getGramInverseTrace() << std::endl;
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
       choleskyMethod.update(Indices(0), indices, Indices(0));
 
       fullprint << "Cholesky" << std::endl;
-      fullprint << "Solve=" << choleskyMethod.solve(NumericalPoint(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << choleskyMethod.solveNormal(NumericalPoint(dimension, 1.0)) << std::endl;
+      fullprint << "Solve=" << choleskyMethod.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << choleskyMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
       fullprint << "GramInverse=" << choleskyMethod.getGramInverse() << std::endl;
       fullprint << "HDiag=" << choleskyMethod.getHDiag() << std::endl;
       fullprint << "GramInverseTrace=" << choleskyMethod.getGramInverseTrace() << std::endl;

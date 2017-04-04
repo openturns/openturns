@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-typedef Collection<NumericalComplex> NumericalComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
     /* Check operator() methods */
     hermitianMatrix1(0, 0) = 1.0 ;
-    hermitianMatrix1(1, 0) = NumericalComplex(3.0, -1.0) ;
+    hermitianMatrix1(1, 0) = Complex(3.0, -1.0) ;
     hermitianMatrix1(1, 1) = 4.0 ;
 
     /* String converter */
@@ -111,10 +111,10 @@ int main(int argc, char *argv[])
     HermitianMatrix diff1 = hermitianMatrix1.operator - ( hermitianMatrix4 ) ;
     fullprint << "diff1 = " << diff1 << std::endl;
     SquareComplexMatrix mat(2);
-    mat(0, 0) = NumericalComplex(1.0, 2.0);
-    mat(0, 1) = NumericalComplex(3.0, 4.0);
-    mat(1, 0) = NumericalComplex(5.0, 6.0);
-    mat(1, 1) = NumericalComplex(7.0, 8.0);
+    mat(0, 0) = Complex(1.0, 2.0);
+    mat(0, 1) = Complex(3.0, 4.0);
+    mat(1, 0) = Complex(5.0, 6.0);
+    mat(1, 1) = Complex(7.0, 8.0);
     SquareComplexMatrix diff2 = hermitianMatrix1.operator - ( mat ) ;
     fullprint << "diff2 = " << diff2 << std::endl;
     SquareComplexMatrix diff3 = mat.operator - (hermitianMatrix1) ;
@@ -131,20 +131,20 @@ int main(int argc, char *argv[])
     fullprint << "test 9 : multiplication with a numerical point method" << std::endl;
 
     /* Create the numerical point */
-    NumericalPoint pt ;
+    Point pt ;
     pt.add(1.) ;
     pt.add(2.) ;
     fullprint << "pt = " << pt << std::endl;
 
     /* Check the product method */
-    NumericalComplexCollection ptResult = hermitianMatrix1.operator * ( pt )  ;
+    ComplexCollection ptResult = hermitianMatrix1.operator * ( pt )  ;
     fullprint << "ptResult = " << ptResult << std::endl;
 
     /** MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */
     fullprint << "test 10 : multiplication and division by a numerical scalar methods" << std::endl;
 
     /* Check the multiplication method */
-    NumericalComplex s(3.0, 2.0);
+    Complex s(3.0, 2.0);
     HermitianMatrix scalprod1 = hermitianMatrix1.operator * (s) ;
     HermitianMatrix scalprod2 = s * hermitianMatrix1 ;
     fullprint << "scalprod1 = " << scalprod1 << std::endl;

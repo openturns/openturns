@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
   matrix1(1, 1) = 12.0;
   fullprint << "matrix1=" << matrix1 << std::endl;
 
-  NumericalPoint pt1 ;
+  Point pt1 ;
   pt1.add(5.0) ;
   pt1.add(0.0) ;
   fullprint << "pt1=" << pt1 << std::endl;
 
-  NumericalPoint result1 ;
+  Point result1 ;
   result1 = matrix1.solveLinearSystem(pt1);
   fullprint << "result1=" << result1 << std::endl;
   // Second an n by p case, n < p
@@ -56,12 +56,12 @@ int main(int argc, char *argv[])
   matrix2(1, 2) =  4.0;
   fullprint << "matrix2=" << matrix2 << std::endl;
 
-  NumericalPoint pt2 ;
+  Point pt2 ;
   pt2.add(5.0);
   pt2.add(0.0);
   fullprint << "pt2=" << pt2 << std::endl;
 
-  NumericalPoint result2 ;
+  Point result2 ;
   result2 = matrix2.solveLinearSystem(pt2);
   fullprint << "result2=" << result2 << std::endl;
 
@@ -77,13 +77,13 @@ int main(int argc, char *argv[])
 
   fullprint << "matrix3=" << matrix3 << std::endl;
 
-  NumericalPoint pt3 ;
+  Point pt3 ;
   pt3.add(5.0) ;
   pt3.add(0.0) ;
   pt3.add(1.0) ;
   fullprint << "pt3=" << pt3 << std::endl;
 
-  NumericalPoint result3 ;
+  Point result3 ;
   result3 = matrix3.solveLinearSystem(pt3);
   fullprint << "result3=" << result3 << std::endl;
 

@@ -40,12 +40,12 @@ int main(int argc, char *argv[])
       R(i, j) = (i + j + 1.0) / (2.0 * dim);
     }
   }
-  NumericalPoint mean(dim, 2.0);
-  NumericalPoint sigma(dim, 3.0);
+  Point mean(dim, 2.0);
+  Point sigma(dim, 3.0);
   Normal distribution(mean, sigma, R);
-  NumericalSample sample(distribution.getSample(size));
-  NumericalSample sampleX(size, dim - 1);
-  NumericalSample sampleY(size, 1);
+  Sample sample(distribution.getSample(size));
+  Sample sampleX(size, dim - 1);
+  Sample sampleY(size, 1);
   for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleY[i][0] = sample[i][0];
@@ -63,13 +63,13 @@ int main(int argc, char *argv[])
 
   Indices selection2(1, 0);
 
-  NumericalSample sampleX0(size, 1);
+  Sample sampleX0(size, 1);
   for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleX0[i][0] = sampleX[i][0];
   }
 
-  NumericalSample sampleZ(size, 1);
+  Sample sampleZ(size, 1);
   for (UnsignedInteger i = 0; i < size; i++)
   {
     sampleZ[i][0] = sampleY[i][0] * sampleY[i][0];

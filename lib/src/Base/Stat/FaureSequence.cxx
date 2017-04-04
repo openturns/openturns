@@ -66,9 +66,9 @@ void FaureSequence::initialize(const UnsignedInteger dimension)
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
-NumericalPoint FaureSequence::generate() const
+Point FaureSequence::generate() const
 {
-  NumericalPoint realization(dimension_);
+  Point realization(dimension_);
   // First, compute the decomposition of seed_ in base modulus_
   Unsigned64BitsIntegerCollection aI(logSeed_);
   UnsignedInteger n = seed_;
@@ -78,8 +78,8 @@ NumericalPoint FaureSequence::generate() const
     n /= modulus_;
   }
   // Stores the first component of the point
-  NumericalScalar xI = 0.0;
-  NumericalScalar factor = modulusInverse_;
+  Scalar xI = 0.0;
+  Scalar factor = modulusInverse_;
   for (UnsignedInteger i = 0; i < logSeed_; ++i)
   {
     xI += aI[i] * factor;
@@ -99,7 +99,7 @@ NumericalPoint FaureSequence::generate() const
       aINew[j] = aINewJ;
     }
     // Compute the current component
-    NumericalScalar xJ = 0.0;
+    Scalar xJ = 0.0;
     factor = modulusInverse_;
     for (UnsignedInteger j = 0; j < logSeed_; ++j)
     {

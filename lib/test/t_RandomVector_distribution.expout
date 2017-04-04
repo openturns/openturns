@@ -1,7 +1,7 @@
-distribution = class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-vect=class=RandomVector implementation=class=UsualRandomVector distribution=class=Normal name=Normal dimension=1 mean=class=NumericalPoint name=Unnamed dimension=1 values=[1] sigma=class=NumericalPoint name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+distribution = class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+vect=class=RandomVector implementation=class=UsualRandomVector distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 vect dimension=1
-vect realization (first )=class=NumericalPoint name=Unnamed dimension=1 values=[1.6082]
-vect realization (second)=class=NumericalPoint name=Unnamed dimension=1 values=[-0.266173]
-vect realization (third )=class=NumericalPoint name=Unnamed dimension=1 values=[0.561734]
-vect sample =class=NumericalSample name=Normal implementation=class=NumericalSampleImplementation name=Normal size=5 dimension=1 description=[X0] data=[[2.20548],[-1.18139],[1.35004],[0.644993],[2.43725]]
+vect realization (first )=class=Point name=Unnamed dimension=1 values=[1.6082]
+vect realization (second)=class=Point name=Unnamed dimension=1 values=[-0.266173]
+vect realization (third )=class=Point name=Unnamed dimension=1 values=[0.561734]
+vect sample =class=Sample name=Normal implementation=class=SampleImplementation name=Normal size=5 dimension=1 description=[X0] data=[[2.20548],[-1.18139],[1.35004],[0.644993],[2.43725]]

@@ -45,29 +45,29 @@ public:
 
   /** Some typedefs to ease reading */
   typedef PersistentCollection<TriangularComplexMatrix>    TriangularComplexMatrixPersistentCollection;
-  typedef PersistentCollection<NumericalComplex>           PersistentNumericalComplexCollection;
-  typedef Collection<NumericalComplex>                     NumericalComplexCollection;
+  typedef PersistentCollection<Complex>           PersistentComplexCollection;
+  typedef Collection<Complex>                     ComplexCollection;
 
   /** Default constructor */
   SpectralGaussianProcess();
 
   /** Standard constructor  - The timeGrid imposes the frequencies values*/
   SpectralGaussianProcess(const SecondOrderModel & model,
-                        const RegularGrid & grid);
+                          const RegularGrid & grid);
 
   /** Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
   SpectralGaussianProcess(const SpectralModel & spectralModel,
-                        const RegularGrid & grid);
+                          const RegularGrid & grid);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralGaussianProcess(const SecondOrderModel & model,
-                        const NumericalScalar maximalFrequency,
-                        const UnsignedInteger nFrequency);
+                          const Scalar maximalFrequency,
+                          const UnsignedInteger nFrequency);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralGaussianProcess(const SpectralModel & spectralModel,
-                        const NumericalScalar maximalFrequency,
-                        const UnsignedInteger nFrequency);
+                          const Scalar maximalFrequency,
+                          const UnsignedInteger nFrequency);
 
   /** Virtual constructor */
   virtual SpectralGaussianProcess * clone() const;
@@ -85,13 +85,13 @@ public:
   RegularGrid getFrequencyGrid() const;
 
   /** Maximal frequency accessor */
-  NumericalScalar getMaximalFrequency() const;
+  Scalar getMaximalFrequency() const;
 
   /** Number of frequency steps accessor */
   UnsignedInteger getNFrequency() const;
 
   /** Frequency step accessor */
-  NumericalScalar getFrequencyStep() const;
+  Scalar getFrequencyStep() const;
 
   /** Spectral model accessor */
   SpectralModel getSpectralModel() const;
@@ -141,13 +141,13 @@ private:
   SpectralModel spectralModel_;
 
   /** Maximal frequency */
-  NumericalScalar maximalFrequency_;
+  Scalar maximalFrequency_;
 
   /** Number of frequencies on the positive axis */
   UnsignedInteger nFrequency_;
 
   /** Frequency step */
-  NumericalScalar frequencyStep_;
+  Scalar frequencyStep_;
 
   /** Cholesky factor  */
   mutable TriangularComplexMatrixPersistentCollection choleskyFactorsCache_;
@@ -156,7 +156,7 @@ private:
   mutable UnsignedInteger cacheSize_;
 
   /** alpha vector - scale factor */
-  PersistentNumericalComplexCollection alpha_;
+  PersistentComplexCollection alpha_;
 
   /** FFT Algorithm */
   FFT fftAlgorithm_;

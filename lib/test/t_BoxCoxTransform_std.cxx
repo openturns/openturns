@@ -41,16 +41,16 @@ int main(int argc, char *argv[])
 
     // get a realization
     const UnsignedInteger n = 101;
-    const NumericalScalar timeStart = 0.;
-    const NumericalScalar timeStep = 0.1;
-    NumericalSample mySample(myDistribution.getSample(n));
+    const Scalar timeStart = 0.;
+    const Scalar timeStep = 0.1;
+    Sample mySample(myDistribution.getSample(n));
     RegularGrid myTimeGrid(timeStart, timeStep, n);
 
     /* Create a TimeSeries */
     const TimeSeries myRealization(myTimeGrid, mySample);
 
     // Create the lambda parameter
-    NumericalPoint lambda(dimension);
+    Point lambda(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)
     {
       lambda[index] = (index + 2) * 0.1;

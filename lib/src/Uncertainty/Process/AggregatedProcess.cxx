@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/TensorizedCovarianceModel.hxx"
+#include "openturns/AggregatedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -73,20 +74,20 @@ String AggregatedProcess::__str__(const String & offset) const
 /* Realization accessor */
 Field AggregatedProcess::getRealization() const
 {
-  NumericalSample values(processCollection_[0].getRealization().getValues());
+  Sample values(processCollection_[0].getRealization().getValues());
   for (UnsignedInteger i = 1; i < processCollection_.getSize(); ++i)
     values.stack(processCollection_[i].getRealization().getValues());
   return Field(getMesh(), values);
 }
 
 /* Continuous realization accessor */
-NumericalMathFunction AggregatedProcess::getContinuousRealization() const
+Function AggregatedProcess::getContinuousRealization() const
 {
   const UnsignedInteger size = processCollection_.getSize();
-  Collection<NumericalMathFunction> continuousRealizations(size);
+  Collection<Function> continuousRealizations(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     continuousRealizations[i] = processCollection_[i].getContinuousRealization();
-  return NumericalMathFunction(continuousRealizations);
+  return AggregatedFunction(continuousRealizations);
 }
 
 /* Compute the next steps of a random walk */
@@ -104,9 +105,9 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const NumericalScalar timeStep = timeGrid.getStep();
+  const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  NumericalSample values(processCollection_[0].getFuture(stepNumber).getValues());
+  Sample values(processCollection_[0].getFuture(stepNumber).getValues());
   for (UnsignedInteger i = 1; i < processCollection_.getSize(); ++i) values.stack(processCollection_[i].getFuture(stepNumber).getValues());
 
   return TimeSeries(futurTimeGrid, values);

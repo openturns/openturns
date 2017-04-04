@@ -78,28 +78,28 @@ public:
   virtual MarginalDistribution * clone() const;
 
   /** Get one realization of the MarginalDistribution */
-  NumericalPoint getRealization() const;
-  NumericalSample getSample(const UnsignedInteger size) const;
+  Point getRealization() const;
+  Sample getSample(const UnsignedInteger size) const;
 
   /** Get the CDF of the MarginalDistribution */
   using DistributionImplementation::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the survival function of the MarginalDistribution */
   using DistributionImplementation::computeSurvivalFunction;
-  NumericalScalar computeSurvivalFunction(const NumericalPoint & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the probability content of an interval */
-  NumericalScalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the Spearman correlation of the distribution */
   CorrelationMatrix getSpearmanCorrelation() const;
@@ -155,11 +155,11 @@ private:
   void computeCovariance() const;
 
   /** Expand the given marginal point to the underlying distribution argument point */
-  NumericalPoint expandPoint(const NumericalPoint & point,
-                             const Bool upper = true) const;
+  Point expandPoint(const Point & point,
+                    const Bool upper = true) const;
 
   /** Reduce the given point to the marginal point */
-  NumericalPoint reducePoint(const NumericalPoint & point) const;
+  Point reducePoint(const Point & point) const;
 
   /** The distribution under the MarginalDistribution */
   Distribution distribution_;
@@ -168,10 +168,10 @@ private:
   Indices indices_;
 
   /** The lower bound of the underlying distribution */
-  NumericalPoint lowerBound_;
+  Point lowerBound_;
 
   /** The upper bound of the underlying distribution */
-  NumericalPoint upperBound_;
+  Point upperBound_;
 
 }; /* class MarginalDistribution */
 

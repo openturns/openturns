@@ -73,13 +73,13 @@ template<> inline String PersistentCollectionGetClassName<String>()
 {
   return String("PersistentCollection<String>");
 }
-template<> inline String PersistentCollectionGetClassName<NumericalScalar>()
+template<> inline String PersistentCollectionGetClassName<Scalar>()
 {
-  return String("PersistentCollection<NumericalScalar>");
+  return String("PersistentCollection<Scalar>");
 }
-template<> inline String PersistentCollectionGetClassName<NumericalComplex>()
+template<> inline String PersistentCollectionGetClassName<Complex>()
 {
-  return String("PersistentCollection<NumericalComplex>");
+  return String("PersistentCollection<Complex>");
 }
 template<> inline String PersistentCollectionGetClassName<SignedInteger>()
 {
@@ -104,7 +104,7 @@ template<> inline String PersistentCollectionGetClassName<Signed64BitsInteger>()
 template <class T>
 class PersistentCollection
   : public PersistentObject,
-  public Collection<T>
+    public Collection<T>
 {
 public:
   /** Class name accessor */

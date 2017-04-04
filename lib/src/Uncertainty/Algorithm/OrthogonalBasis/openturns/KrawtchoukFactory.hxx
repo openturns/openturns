@@ -45,7 +45,7 @@ public:
 
   /** Parameter constructor: (n, p) is the order of the Krawtchouk polynomial, associated with the Binomial(n, p) distribution */
   KrawtchoukFactory(const UnsignedInteger n,
-                    const NumericalScalar p);
+                    const Scalar p);
 
   /** Virtual constructor */
   virtual KrawtchoukFactory * clone() const;
@@ -58,7 +58,7 @@ public:
   UnsignedInteger getN() const;
 
   /** P accessor */
-  NumericalScalar getP() const;
+  Scalar getP() const;
 
   /** String converter */
   String __repr__() const;
@@ -73,7 +73,7 @@ private:
   /* First parameter of the Krawtchouk polynomial */
   UnsignedInteger n_;
   /* Second parameter of the Krawtchouk polynomial */
-  NumericalScalar p_;
+  Scalar p_;
 
 } ; /* class KrawtchoukFactory */
 

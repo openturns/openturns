@@ -2,23 +2,23 @@ Distribution  class=ZipfMandelbrot name=ZipfMandelbrot dimension=1 n=15 q=1.2 s=
 Distribution  ZipfMandelbrot(n = 15, q = 1.2, s = 2)
 Elliptical =  False
 Continuous =  False
-oneRealization= class=NumericalPoint name=Unnamed dimension=1 values=[1]
-getRange= class=Interval name=Unnamed dimension=1 lower bound=class=NumericalPoint name=Unnamed dimension=1 values=[1] upper bound=class=NumericalPoint name=Unnamed dimension=1 values=[15] finite lower bound=[1] finite upper bound=[1]
-oneSample first= class=NumericalPoint name=Unnamed dimension=1 values=[1]  last= class=NumericalPoint name=Unnamed dimension=1 values=[7]
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[3.256]
+oneRealization= class=Point name=Unnamed dimension=1 values=[1]
+getRange= class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[15] finite lower bound=[1] finite upper bound=[1]
+oneSample first= class=Point name=Unnamed dimension=1 values=[1]  last= class=Point name=Unnamed dimension=1 values=[7]
+mean= class=Point name=Unnamed dimension=1 values=[3.256]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[10.2227]
-Point=  class=NumericalPoint name=Unnamed dimension=1 values=[5]
+Point=  class=Point name=Unnamed dimension=1 values=[5]
 pdf     =0.050704
 pdf (FD)=0.050704
 cdf=0.826308
-quantile= class=NumericalPoint name=Unnamed dimension=1 values=[10]
+quantile= class=Point name=Unnamed dimension=1 values=[10]
 cdf(quantile)=0.950190
-mean= class=NumericalPoint name=Unnamed dimension=1 values=[3.22681]
-standard deviation= class=NumericalPoint name=Unnamed dimension=1 values=[3.10469]
-skewness= class=NumericalPoint name=Unnamed dimension=1 values=[1.81133]
-kurtosis= class=NumericalPoint name=Unnamed dimension=1 values=[5.84423]
+mean= class=Point name=Unnamed dimension=1 values=[3.22681]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.10469]
+skewness= class=Point name=Unnamed dimension=1 values=[1.81133]
+kurtosis= class=Point name=Unnamed dimension=1 values=[5.84423]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.63912]
-parameters= [class=NumericalPointWithDescription name=X0 dimension=3 description=[n,q,s] values=[15,1.2,2]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[n,q,s] values=[15,1.2,2]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [3.22681]
 standard moment n= 2  value= [20.0514]

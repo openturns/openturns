@@ -24,7 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Mixture.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,7 +53,7 @@ public:
 
   ConditionalDistribution(const Distribution & conditionedDistribution,
                           const Distribution & conditioningDistribution,
-                          const NumericalMathFunction & linkFunction);
+                          const Function & linkFunction);
 
   /** Comparison operator */
   Bool operator ==(const ConditionalDistribution & other) const;
@@ -72,14 +72,14 @@ public:
   virtual ConditionalDistribution * clone() const;
 
   /** Get one realization of the distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -95,8 +95,8 @@ public:
   Distribution getConditioningDistribution() const;
 
   /** Link function accessor */
-  void setLinkFunction(const NumericalMathFunction & linkFunction);
-  NumericalMathFunction getLinkFunction() const;
+  void setLinkFunction(const Function & linkFunction);
+  Function getLinkFunction() const;
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -119,11 +119,11 @@ private:
   /** set both parameters */
   void setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
       const Distribution & conditioningDistribution,
-      const NumericalMathFunction & linkFunction);
+      const Function & linkFunction);
 
   /** Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */
-  NumericalPoint computeExpectation(const NumericalMathFunction & f,
-                                    const NumericalPoint & thetaStar) const;
+  Point computeExpectation(const Function & f,
+                           const Point & thetaStar) const;
 
   /** The conditioned distribution, i.e L(X|Theta) */
   Distribution conditionedDistribution_;
@@ -132,7 +132,7 @@ private:
   Distribution conditioningDistribution_;
 
   /** The link function */
-  NumericalMathFunction linkFunction_;
+  Function linkFunction_;
 
   /** Discrete marginals indices */
   Indices discreteMarginalsIndices_;
@@ -144,22 +144,22 @@ private:
   Indices continuousMarginalsIndices_;
 
   /** Lower bounds of the continuous marginals */
-  NumericalPoint continuousLowerBounds_;
+  Point continuousLowerBounds_;
 
   /** Upper bounds of the continuous marginals */
-  NumericalPoint continuousUpperBounds_;
+  Point continuousUpperBounds_;
 
   /** Standard continuous integration nodes */
-  NumericalSample continuousNodes_;
+  Sample continuousNodes_;
 
   /** Standard continuous weights */
-  NumericalPoint continuousWeights_;
+  Point continuousWeights_;
 
   /** Discrete integration nodes */
-  NumericalSample discreteNodes_;
+  Sample discreteNodes_;
 
   /** Values of the Dirac marginals */
-  NumericalPoint diracValues_;
+  Point diracValues_;
 
 }; /* class ConditionalDistribution */
 

@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/SVDMethod.hxx"
@@ -50,35 +50,35 @@ String CorrectedLeaveOneOut::__repr__() const
 }
 
 /* Perform cross-validation */
-NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & x,
-    const NumericalSample & y,
-    const NumericalPoint & weight,
-    const Basis & basis,
-    const Indices & indices) const
+Scalar CorrectedLeaveOneOut::run(const Sample & x,
+                                 const Sample & y,
+                                 const Point & weight,
+                                 const Basis & basis,
+                                 const Indices & indices) const
 {
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);
 }
 
 
-NumericalScalar CorrectedLeaveOneOut::run(const NumericalSample & y,
-    const NumericalPoint & weight,
-    const Indices & indices,
-    const DesignProxy & proxy) const
+Scalar CorrectedLeaveOneOut::run(const Sample & y,
+                                 const Point & weight,
+                                 const Indices & indices,
+                                 const DesignProxy & proxy) const
 {
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
-                                          const NumericalSample & y) const
+Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
+                                 const Sample & y) const
 {
-  const NumericalSample x(method.getInputSample());
+  const Sample x(method.getInputSample());
 
   const UnsignedInteger sampleSize = y.getSize();
 
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  const NumericalScalar variance = y.computeVariance()[0];
-  if (variance <= 0.0) throw InvalidArgumentException(HERE) << "Null output sample variance.";
+  const Scalar variance = y.computeVariance()[0];
+  if (!(variance > 0.0)) throw InvalidArgumentException(HERE) << "Null output sample variance.";
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
   if (sampleSize < basisSize) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
@@ -91,28 +91,28 @@ NumericalScalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
 
-  // Use the equivalence between NumericalSampleImplementation::data_ and NumericalPoint
-  const NumericalPoint coefficients(method.solve(y.getImplementation()->getData()));
+  // Use the equivalence between SampleImplementation::data_ and Point
+  const Point coefficients(method.solve(y.getImplementation()->getData()));
 
   // Compute the empirical error
   LOGINFO("Compute the empirical error");
 
-  const NumericalPoint yHat(psiAk * coefficients);
+  const Point yHat(psiAk * coefficients);
 
-  const NumericalPoint h(method.getHDiag());
-  NumericalScalar empiricalError = 0.0;
+  const Point h(method.getHDiag());
+  Scalar empiricalError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
-    const NumericalScalar ns = (y[i][0] - yHat[i]) / (1.0 - h[i]);
+    const Scalar ns = (y[i][0] - yHat[i]) / (1.0 - h[i]);
     empiricalError += ns * ns / sampleSize;
   }
   LOGINFO(OSS() << "Empirical error=" << empiricalError);
 
   LOGINFO("Compute the correcting factor");
-  const NumericalScalar traceInverse = method.getGramInverseTrace();
+  const Scalar traceInverse = method.getGramInverseTrace();
 
-  const NumericalScalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
-  const NumericalScalar relativeError = correctingFactor * empiricalError / variance;
+  const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
+  const Scalar relativeError = correctingFactor * empiricalError / variance;
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }

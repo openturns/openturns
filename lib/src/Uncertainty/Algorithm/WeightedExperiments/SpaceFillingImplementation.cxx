@@ -46,19 +46,19 @@ SpaceFillingImplementation * SpaceFillingImplementation::clone() const
 }
 
 /** Evaluate criterion on a sample */
-NumericalScalar SpaceFillingImplementation::evaluate(const NumericalSample & sample) const
+Scalar SpaceFillingImplementation::evaluate(const Sample & sample) const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /** Compute criterion when performing an elementary perturbation */
-NumericalScalar SpaceFillingImplementation::perturbLHS(NumericalSample& oldDesign, NumericalScalar oldCriterion,
+Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar oldCriterion,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   // Default method uses O(N*N) computations
   // Swap coordinates
   std::swap(oldDesign[row1][column], oldDesign[row2][column]);
-  const NumericalScalar criterion = evaluate(oldDesign);
+  const Scalar criterion = evaluate(oldDesign);
   // Swap coordinates to restore original sample
   std::swap(oldDesign[row1][column], oldDesign[row2][column]);
   // Return criterion
@@ -66,11 +66,11 @@ NumericalScalar SpaceFillingImplementation::perturbLHS(NumericalSample& oldDesig
 }
 
 /** Rescale argument if it does not belong to the unit cube */
-NumericalSample SpaceFillingImplementation::normalize(const NumericalSample & sample) const
+Sample SpaceFillingImplementation::normalize(const Sample & sample) const
 {
   const UnsignedInteger dimension(sample.getDimension());
-  const NumericalPoint minPoint(sample.getMin());
-  const NumericalPoint maxPoint(sample.getMax());
+  const Point minPoint(sample.getMin());
+  const Point maxPoint(sample.getMax());
   Bool toNormalize(false);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
@@ -83,8 +83,8 @@ NumericalSample SpaceFillingImplementation::normalize(const NumericalSample & sa
   if (!toNormalize) return sample;
 
   LOGWARN(OSS() << "Sample must be normalized");
-  const NumericalPoint delta(maxPoint - minPoint);
-  NumericalSample result(sample - minPoint);
+  const Point delta(maxPoint - minPoint);
+  Sample result(sample - minPoint);
   return result / delta;
 }
 

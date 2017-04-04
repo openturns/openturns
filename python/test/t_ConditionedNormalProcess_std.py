@@ -22,7 +22,7 @@ try:
     inputSample *= 10
 
     # Define model
-    model = ot.NumericalMathFunction(
+    model = ot.Function(
         ['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
     outputSample = model(inputSample)
 

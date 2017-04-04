@@ -37,8 +37,8 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm()
 }
 
 /** Constructor with parameters */
-SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const NumericalSample & inputDesign,
-    const NumericalSample & outputDesign,
+SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Sample & inputDesign,
+    const Sample & outputDesign,
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
@@ -48,7 +48,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const NumericalSample
 /** Constructor with distribution / model parameters */
 SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Distribution & distribution,
     const UnsignedInteger size,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
@@ -57,7 +57,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Distribution & 
 
 /** Constructor with experiment / model parameters */
 SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const WeightedExperiment & experiment,
-    const NumericalMathFunction & model,
+    const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
@@ -65,29 +65,29 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const WeightedExperim
 }
 
 /** Internal method that compute Vi/VTi using a huge sample */
-NumericalSample SaltelliSensitivityAlgorithm::computeIndices(const NumericalSample & sample,
-    NumericalSample & VTi) const
+Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
+    Sample & VTi) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
-  NumericalSample varianceI(outputDimension, inputDimension);
-  VTi = NumericalSample(outputDimension, inputDimension);
+  Sample varianceI(outputDimension, inputDimension);
+  VTi = Sample(outputDimension, inputDimension);
 
   // Compute muA = mean(yA)
-  const NumericalSample yA(sample, 0, size);
-  const NumericalPoint muA(yA.computeMean());
+  const Sample yA(sample, 0, size);
+  const Point muA(yA.computeMean());
 
   // Compute cross mean term
-  const NumericalPoint crossSquareMean(computeSumDotSamples(sample, size_, 0, size_) / size_);
+  const Point crossSquareMean(computeSumDotSamples(sample, size_, 0, size_) / size_);
 
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // yE correspond to the block that start at index (p + 2) * size_
     // For first order indices, compute yE * yB
-    const NumericalPoint yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
+    const Point yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
     // For total order indices, compute yE * yA
-    const NumericalPoint yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
+    const Point yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {

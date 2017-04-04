@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
     {
       fullprint << "charlier(" << i << ")=" << charlier.build(i).__str__() << std::endl;
     }
-    NumericalPoint roots(charlier.getRoots(10));
+    Point roots(charlier.getRoots(10));
     fullprint << "charlier(10) roots=" << roots << std::endl;
-    NumericalPoint weights;
+    Point weights;
     roots = charlier.getNodesAndWeights(10, weights);
     fullprint << "charlier(10) roots=" << roots << " and weights=" << weights << std::endl;
   }

@@ -58,7 +58,7 @@ try:
     # check that analytical function are available
     print('6: analytical function (muParser)'.ljust(width), end=' ')
     try:
-        f = ot.NumericalMathFunction(['x1', 'x2'], ['y'], ['x1+x2'])
+        f = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
         print('OK')
     except:
         print('no')

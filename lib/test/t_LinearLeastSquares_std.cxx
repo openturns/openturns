@@ -34,17 +34,13 @@ int main(int argc, char *argv[])
     Description input(2);
     input[0] = "x1";
     input[1] = "x2";
-    Description output(3);
-    output[0] = "f1";
-    output[1] = "f2";
-    output[2] = "f3";
     Description formula(3);
     formula[0] = "x1*sin(x2)";
     formula[1] = "cos(x1+x2)";
     formula[2] = "(x2+1)*exp(x1-2*x2)";
-    NumericalMathFunction myFunc(input, output, formula);
-    NumericalSample data(9, myFunc.getInputDimension());
-    NumericalPoint point(myFunc.getInputDimension());
+    SymbolicFunction myFunc(input, formula);
+    Sample data(9, myFunc.getInputDimension());
+    Point point(myFunc.getInputDimension());
     point[0] = 0.5;
     point[1] = 0.5;
     data[0] = point;
@@ -75,21 +71,21 @@ int main(int argc, char *argv[])
     {
       LinearLeastSquares myLeastSquares(data, myFunc);
       myLeastSquares.run();
-      NumericalMathFunction responseSurface(myLeastSquares.getResponseSurface());
+      Function responseSurface(myLeastSquares.getResponseSurface());
       fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
       fullprint << "responseSurface=" << responseSurface << std::endl;
-      NumericalPoint in(myFunc.getInputDimension(), 0.1);
+      Point in(myFunc.getInputDimension(), 0.1);
       fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;
       fullprint << "responseSurface(" << in << ")=" << responseSurface(in) << std::endl;
     }
     {
-      NumericalSample dataOut(myFunc(data));
+      Sample dataOut(myFunc(data));
       LinearLeastSquares myLeastSquares(data, dataOut);
       myLeastSquares.run();
-      NumericalMathFunction responseSurface(myLeastSquares.getResponseSurface());
+      Function responseSurface(myLeastSquares.getResponseSurface());
       fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
       fullprint << "responseSurface=" << responseSurface << std::endl;
-      NumericalPoint in(myFunc.getInputDimension(), 0.1);
+      Point in(myFunc.getInputDimension(), 0.1);
       fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;
       fullprint << "responseSurface(" << in << ")=" << responseSurface(in) << std::endl;
     }

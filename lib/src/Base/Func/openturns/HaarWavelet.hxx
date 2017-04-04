@@ -52,13 +52,13 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** HaarWavelet are evaluated as functors */
-  NumericalScalar operator() (const NumericalScalar x) const;
+  Scalar operator() (const Scalar x) const;
 
   /** HaarWavelet gradient */
-  NumericalScalar gradient(const NumericalScalar x) const;
+  Scalar gradient(const Scalar x) const;
 
   /** HaarWavelet hessian */
-  NumericalScalar hessian(const NumericalScalar x) const;
+  Scalar hessian(const Scalar x) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -77,16 +77,16 @@ protected:
   Bool isScaling_;
 
   /* Left bound */
-  NumericalScalar a_;
+  Scalar a_;
 
   /* Middle bound */
-  NumericalScalar m_;
+  Scalar m_;
 
   /* Right bound */
-  NumericalScalar b_;
+  Scalar b_;
 
   /* Value */
-  NumericalScalar value_;
+  Scalar value_;
 
 } ; /* Class HaarWavelet */
 

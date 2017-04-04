@@ -80,7 +80,7 @@ q : float
 
 Returns
 -------
-w : :class:`~openturns.NumericalPoint`
+w : :class:`~openturns.Point`
     Weights of the indices in each dimension."
 
 // ---------------------------------------------------------------------

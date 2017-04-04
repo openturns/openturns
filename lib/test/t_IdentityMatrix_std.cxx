@@ -33,20 +33,20 @@ int main(int argc, char *argv[])
   matrix1.setName("matrix1");
   fullprint << "matrix1 = " << matrix1 << std::endl;
 
-  NumericalPoint pt ;
+  Point pt ;
   pt.add(5.) ;
   pt.add(0.) ;
   fullprint << "pt = " << pt << std::endl;
 
-  NumericalPoint result ;
+  Point result ;
   result = matrix1.solveLinearSystem(pt);
   fullprint << "result = " << result << std::endl;
 
-  NumericalScalar determinant ;
+  Scalar determinant ;
   determinant = matrix1.computeDeterminant();
   fullprint << "determinant = " << determinant << std::endl;
 
-  Collection<NumericalScalar> ev(2);
+  Collection<Scalar> ev(2);
   ev = matrix1.computeEigenValues().getCollection();
   fullprint << "ev = " << ev << std::endl;
 

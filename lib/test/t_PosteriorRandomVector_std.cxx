@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     UnsignedInteger size = 10;
     Normal realDist(31.0, 1.2);
 
-    NumericalSample data(realDist.getSample(size));
+    Sample data(realDist.getSample(size));
 
     // calibration parameters
     CalibrationStrategyCollection calibrationColl(2);
@@ -53,9 +53,9 @@ int main(int argc, char *argv[])
     proposalColl.add(std_proposal);
 
     // prior distribution
-    NumericalScalar mu0 = 25.;
+    Scalar mu0 = 25.;
 
-    NumericalScalar sigma0 = 0.1;
+    Scalar sigma0 = 0.1;
     Normal mean_prior(mu0, sigma0);
     Dirac std_prior(2.0); // standard dev is known
     DistributionCollection priorColl;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     Distribution prior = ComposedDistribution( priorColl );
 
     // choose the initial state within the prior
-    NumericalPoint initialState(prior.getRealization());
+    Point initialState(prior.getRealization());
 
     // conditional distribution
     Distribution conditional = Normal();
@@ -85,11 +85,11 @@ int main(int argc, char *argv[])
     std::cout << "dimension=" << dimension << std::endl;
 
     // get a realization
-    NumericalPoint realization(randomVector.getRealization());
+    Point realization(randomVector.getRealization());
     std::cout << "realization=" << realization << std::endl;
 
     // get a sample
-    NumericalSample sample(randomVector.getSample(10));
+    Sample sample(randomVector.getSample(10));
     std::cout << "sample=" << sample << std::endl;
 
 

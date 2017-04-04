@@ -48,7 +48,7 @@ public:
 
   /** Constructor from a Mesh and a sample */
   Field(const Mesh & mesh,
-        const NumericalSample & values);
+        const Sample & values);
 
   /** Constructor from implementation */
   Field(const FieldImplementation & implementation);
@@ -62,24 +62,24 @@ public:
   NSI_const_point operator[](const UnsignedInteger index) const;
   NSI_point at(const UnsignedInteger index);
   NSI_const_point at(const UnsignedInteger index) const;
-  NumericalScalar & operator() (const UnsignedInteger i,
-                                const UnsignedInteger j);
-  const NumericalScalar & operator() (const UnsignedInteger i,
-                                      const UnsignedInteger j) const;
-  NumericalScalar & at(const UnsignedInteger i,
+  Scalar & operator() (const UnsignedInteger i,
                        const UnsignedInteger j);
-  const NumericalScalar & at(const UnsignedInteger i,
+  const Scalar & operator() (const UnsignedInteger i,
                              const UnsignedInteger j) const;
+  Scalar & at(const UnsignedInteger i,
+              const UnsignedInteger j);
+  const Scalar & at(const UnsignedInteger i,
+                    const UnsignedInteger j) const;
 #endif
 
   /** Accessor to values */
-  NumericalPoint getValueAtIndex(const UnsignedInteger index) const;
+  Point getValueAtIndex(const UnsignedInteger index) const;
   void setValueAtIndex(const UnsignedInteger index,
-                       const NumericalPoint & val);
+                       const Point & val);
 
-  NumericalPoint getValueAtNearestPosition(const NumericalPoint & position) const;
-  void setValueAtNearestPosition(const NumericalPoint & position,
-                                 const NumericalPoint & val);
+  Point getValueAtNearestPosition(const Point & position) const;
+  void setValueAtNearestPosition(const Point & position,
+                                 const Point & val);
 
   /** Get the i-th marginal sample */
   Field getMarginal(const UnsignedInteger index) const;
@@ -116,18 +116,18 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Return the values stored in the field as a sample */
-  NumericalSample getSample() const;
-  NumericalSample getValues() const;
-  void setValues(const NumericalSample & values);
+  Sample getSample() const;
+  Sample getValues() const;
+  void setValues(const Sample & values);
 
   /** Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
   Mesh asDeformedMesh() const;
 
   /** Compute the spatial mean of the field */
-  NumericalPoint getSpatialMean() const;
+  Point getSpatialMean() const;
 
   /** Compute the temporal mean of the field */
-  NumericalPoint getTemporalMean() const;
+  Point getTemporalMean() const;
 
   /** Draw a marginal of the field */
   Graph drawMarginal(const UnsignedInteger index = 0,

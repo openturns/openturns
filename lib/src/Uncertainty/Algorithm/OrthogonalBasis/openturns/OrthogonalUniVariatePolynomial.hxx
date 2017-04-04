@@ -54,13 +54,13 @@ public:
   virtual OrthogonalUniVariatePolynomial * clone() const;
 
   /** OrthogonalUniVariatePolynomial are evaluated as functors */
-  NumericalScalar operator() (const NumericalScalar x) const;
+  Scalar operator() (const Scalar x) const;
 
   /** Recurrence coefficients accessor */
   CoefficientsCollection getRecurrenceCoefficients() const;
 
   /** Roots of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix */
-  NumericalComplexCollection getRoots() const;
+  ComplexCollection getRoots() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

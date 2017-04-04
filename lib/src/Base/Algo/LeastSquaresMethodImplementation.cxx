@@ -37,7 +37,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation()
 
 /* Parameters constructor */
 LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignProxy & proxy,
-    const NumericalPoint & weight,
+    const Point & weight,
     const Indices & indices)
   : PersistentObject()
   , proxy_(proxy)
@@ -72,12 +72,12 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
 }
 
 /* Weight accessor */
-void LeastSquaresMethodImplementation::setWeight(const NumericalPoint & weight)
+void LeastSquaresMethodImplementation::setWeight(const Point & weight)
 {
   const UnsignedInteger size = weight.getSize();
   // First, check for uniformity
-  const NumericalScalar w0 = weight[0];
-  if (w0 <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[0]=" << w0;
+  const Scalar w0 = weight[0];
+  if (!(w0 > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[0]=" << w0;
   hasUniformWeight_ = true;
   for (UnsignedInteger i = 1; i < size; ++i)
     if (weight[i] != w0)
@@ -87,21 +87,21 @@ void LeastSquaresMethodImplementation::setWeight(const NumericalPoint & weight)
     }
   if (hasUniformWeight_)
   {
-    weight_ = NumericalPoint(1, w0);
-    weightSqrt_ = NumericalPoint(1, std::sqrt(w0));
+    weight_ = Point(1, w0);
+    weightSqrt_ = Point(1, std::sqrt(w0));
     return;
   }
   // Second, check for positiveness and compute the square roots
   weight_ = weight;
-  weightSqrt_ = NumericalPoint(size);
+  weightSqrt_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (weight[i] <= 0.0) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[" << i << "]=" << weight[i];
+    if (!(weight[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive weights, here w[" << i << "]=" << weight[i];
     weightSqrt_[i] = std::sqrt(weight[i]);
   }
 }
 
-NumericalPoint LeastSquaresMethodImplementation::getWeight() const
+Point LeastSquaresMethodImplementation::getWeight() const
 {
   return weight_;
 }
@@ -112,12 +112,12 @@ LeastSquaresMethodImplementation * LeastSquaresMethodImplementation::clone() con
   return new LeastSquaresMethodImplementation(*this);
 }
 
-NumericalPoint LeastSquaresMethodImplementation::solve(const NumericalPoint & rhs)
+Point LeastSquaresMethodImplementation::solve(const Point & rhs)
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
 }
 
-NumericalPoint LeastSquaresMethodImplementation::solveNormal(const NumericalPoint & rhs)
+Point LeastSquaresMethodImplementation::solveNormal(const Point & rhs)
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormal";
 }
@@ -135,29 +135,29 @@ SymmetricMatrix LeastSquaresMethodImplementation::getH() const
 }
 
 
-NumericalPoint LeastSquaresMethodImplementation::getHDiag() const
+Point LeastSquaresMethodImplementation::getHDiag() const
 {
   const SymmetricMatrix H(getH());
   const UnsignedInteger dimension = H.getDimension();
-  NumericalPoint diag(dimension);
+  Point diag(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i) diag[i] = H(i, i);
 
   return diag;
 }
 
 
-NumericalPoint LeastSquaresMethodImplementation::getGramInverseDiag() const
+Point LeastSquaresMethodImplementation::getGramInverseDiag() const
 {
   const CovarianceMatrix G(getGramInverse());
   const UnsignedInteger dimension = G.getDimension();
-  NumericalPoint diag(dimension);
+  Point diag(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++ i) diag[i] = G(i, i);
 
   return diag;
 }
 
 
-NumericalScalar LeastSquaresMethodImplementation::getGramInverseTrace() const
+Scalar LeastSquaresMethodImplementation::getGramInverseTrace() const
 {
   // subclasses better override this
   return getGramInverse().getImplementation()->computeTrace();
@@ -190,7 +190,7 @@ Indices LeastSquaresMethodImplementation::getInitialIndices() const
   return initialIndices_;
 }
 
-NumericalSample LeastSquaresMethodImplementation::getInputSample() const
+Sample LeastSquaresMethodImplementation::getInputSample() const
 {
   return proxy_.getInputSample();
 }

@@ -1,0 +1,21 @@
+size of point1 = 2
+point1 = class=Point name=Unnamed dimension=2 values=[0,1]
+point1[0] = 0
+point1[1] = 1
+point2[0] = 10
+point2[1] = 11
+point3[0] = 0
+point3[1] = 1
+point4[0] = 10
+point4[1] = 11
+point5 = class=Point name=Unnamed dimension=2 values=[10,12]
+point6 = class=Point name=Unnamed dimension=2 values=[-10,-10]
+point7 = class=Point name=Unnamed dimension=2 values=[20,24]
+point8 = class=Point name=Unnamed dimension=2 values=[0,0]
+i = class=Point name=Unnamed dimension=2 values=[1,0]
+j = class=Point name=Unnamed dimension=2 values=[0,1]
+I = class=Point name=Unnamed dimension=2 values=[2,0]
+J = class=Point name=Unnamed dimension=2 values=[0,3]
+dotProduct = 0
+point9 class=Point name=Unnamed dimension=3 values=[0,-1,-2]
+point10 class=Point name=Unnamed dimension=3 values=[-2,-1,0]

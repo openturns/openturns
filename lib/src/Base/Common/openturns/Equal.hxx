@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @brief The class implements the equality comparison
  *
  * This class is derived from ComparisonOperatorImplementation. It performs the comparison
- * of two NumericalScalar and is mainly used in threshold exceedence algorithms.
+ * of two Scalar and is mainly used in threshold exceedence algorithms.
  */
 class OT_API Equal
   : public ComparisonOperatorImplementation
@@ -57,8 +57,8 @@ public:
    * @param b The right hand side of the expression
    * @return True if comparison succeeds
    */
-  virtual Bool operator() (const NumericalScalar a,
-                           const NumericalScalar b) const;
+  virtual Bool operator() (const Scalar a,
+                           const Scalar b) const;
 
   /* Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

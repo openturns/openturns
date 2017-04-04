@@ -22,6 +22,8 @@
 #include "openturns/Uniform.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SymbolicFunction.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,8 +43,8 @@ Uniform::Uniform()
 }
 
 /* Parameters constructor */
-Uniform::Uniform(const NumericalScalar a,
-                 const NumericalScalar b)
+Uniform::Uniform(const Scalar a,
+                 const Scalar b)
   : ContinuousDistribution()
   , a_(a)
   , b_(b)
@@ -99,142 +101,142 @@ void Uniform::computeRange()
 
 
 /* Get one realization of the distribution */
-NumericalPoint Uniform::getRealization() const
+Point Uniform::getRealization() const
 {
-  return NumericalPoint(1, a_ + (b_ - a_) * RandomGenerator::Generate());
+  return Point(1, a_ + (b_ - a_) * RandomGenerator::Generate());
 }
 
 /* Get a sample of the distribution */
-NumericalSample Uniform::getSample(const UnsignedInteger size) const
+Sample Uniform::getSample(const UnsignedInteger size) const
 {
-  NumericalSampleImplementation result(size, 1);
+  SampleImplementation result(size, 1);
   result.setData(RandomGenerator::Generate(size));
-  result *= NumericalPoint(1, b_ - a_);
-  result += NumericalPoint(1, a_);
+  result *= Point(1, b_ - a_);
+  result += Point(1, a_);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint Uniform::computeDDF(const NumericalPoint & point) const
+Point Uniform::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return NumericalPoint(1, 0.0);
+  return Point(1, 0.0);
 }
 
 
 /* Get the PDF of the distribution */
-NumericalScalar Uniform::computePDF(const NumericalPoint & point) const
+Scalar Uniform::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return 0.0;
   return 1.0 / (b_ - a_);
 }
 
 
 /* Get the CDF of the distribution */
-NumericalScalar Uniform::computeCDF(const NumericalPoint & point) const
+Scalar Uniform::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 0.0;
   if (x >= b_)  return 1.0;
   return (x - a_) / (b_ - a_);
 }
 
-NumericalScalar Uniform::computeComplementaryCDF(const NumericalPoint & point) const
+Scalar Uniform::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
+  const Scalar x = point[0];
   if (x <= a_) return 1.0;
   if (x > b_)  return 0.0;
   return (b_ - x) / (b_ - a_);
 }
 
 /* Get the product minimum volume interval containing a given probability of the distribution */
-Interval Uniform::computeMinimumVolumeIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval Uniform::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
 /* Get the product bilateral confidence interval containing a given probability of the distribution */
-Interval Uniform::computeBilateralConfidenceIntervalWithMarginalProbability(const NumericalScalar prob, NumericalScalar & marginalProb) const
+Interval Uniform::computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   marginalProb = prob;
-  const NumericalScalar m = 0.5 * (a_ + b_);
-  const NumericalScalar d = 0.5 * (b_ - a_);
+  const Scalar m = 0.5 * (a_ + b_);
+  const Scalar d = 0.5 * (b_ - a_);
   return Interval(m - prob * d, m + prob * d);
 }
 
 /* Get the minimum volume level set containing a given probability of the distribution */
-LevelSet Uniform::computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const
+LevelSet Uniform::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
-  const NumericalMathFunction function("x", String(OSS(true) << 2.0 / (b_ - a_) << " * abs(x - (" << 0.5 * (a_ + b_) << "))"));
+  const SymbolicFunction function("x", String(OSS(true) << 2.0 / (b_ - a_) << " * abs(x - (" << 0.5 * (a_ + b_) << "))"));
   threshold = prob;
   return LevelSet(function, threshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-NumericalComplex Uniform::computeCharacteristicFunction(const NumericalScalar x) const
+Complex Uniform::computeCharacteristicFunction(const Scalar x) const
 {
-  NumericalComplex result;
-  const NumericalScalar ax = a_ * x;
-  const NumericalScalar bx = b_ * x;
-  if (std::abs(ax) + std::abs(bx) <= 1.0e-5) result = NumericalComplex(1.0 - (ax * ax + ax * bx + bx * bx) / 6.0, 0.5 * (ax + bx));
+  Complex result;
+  const Scalar ax = a_ * x;
+  const Scalar bx = b_ * x;
+  if (std::abs(ax) + std::abs(bx) <= 1.0e-5) result = Complex(1.0 - (ax * ax + ax * bx + bx * bx) / 6.0, 0.5 * (ax + bx));
   else
   {
-    const NumericalScalar idenom = 1.0 / (bx - ax);
-    result = NumericalComplex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
+    const Scalar idenom = 1.0 / (bx - ax);
+    result = Complex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
   return result;
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint Uniform::computePDFGradient(const NumericalPoint & point) const
+Point Uniform::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  NumericalPoint pdfGradient(2, 0.0);
+  const Scalar x = point[0];
+  Point pdfGradient(2, 0.0);
   if ((x < a_) || (x > b_)) return pdfGradient;
-  const NumericalScalar iAB = 1.0 / (b_ - a_);
-  const NumericalScalar iAB2 = iAB * iAB;
+  const Scalar iAB = 1.0 / (b_ - a_);
+  const Scalar iAB2 = iAB * iAB;
   pdfGradient[0] = iAB2;
   pdfGradient[1] = -iAB2;
   return pdfGradient;
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint Uniform::computeCDFGradient(const NumericalPoint & point) const
+Point Uniform::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const NumericalScalar x = point[0];
-  NumericalPoint cdfGradient(2, 0.0);
+  const Scalar x = point[0];
+  Point cdfGradient(2, 0.0);
   if ((x < a_) || (x > b_)) return cdfGradient;
-  const NumericalScalar iAB = 1.0 / (b_ - a_);
-  const NumericalScalar iAB2 = iAB * iAB;
+  const Scalar iAB = 1.0 / (b_ - a_);
+  const Scalar iAB2 = iAB * iAB;
   cdfGradient[0] = (x - b_) * iAB2;
   cdfGradient[1] = (a_ - x) * iAB2;
   return cdfGradient;
 }
 
 /* Get the quantile of the distribution */
-NumericalScalar Uniform::computeScalarQuantile(const NumericalScalar prob,
-    const Bool tail) const
+Scalar Uniform::computeScalarQuantile(const Scalar prob,
+                                      const Bool tail) const
 {
   if (tail) return b_ - prob * (b_ - a_);
   return a_ + prob * (b_ - a_);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
-NumericalScalar Uniform::getRoughness() const
+Scalar Uniform::getRoughness() const
 {
   return 1.0 / (b_ - a_);
 }
@@ -242,43 +244,43 @@ NumericalScalar Uniform::getRoughness() const
 /* Compute the mean of the distribution */
 void Uniform::computeMean() const
 {
-  mean_ = NumericalPoint(1, 0.5 * (a_ + b_));
+  mean_ = Point(1, 0.5 * (a_ + b_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-NumericalPoint Uniform::getStandardDeviation() const
+Point Uniform::getStandardDeviation() const
 {
-  return NumericalPoint(1, (b_ - a_) / std::sqrt(12.0));
+  return Point(1, (b_ - a_) / std::sqrt(12.0));
 }
 
 /* Get the skewness of the distribution */
-NumericalPoint Uniform::getSkewness() const
+Point Uniform::getSkewness() const
 {
-  return NumericalPoint(1, 0.0);
+  return Point(1, 0.0);
 }
 
 /* Get the kurtosis of the distribution */
-NumericalPoint Uniform::getKurtosis() const
+Point Uniform::getKurtosis() const
 {
   // 1.8 = 9/5
-  return NumericalPoint(1, 1.8);
+  return Point(1, 1.8);
 }
 
 /* Compute the covariance of the distribution */
 void Uniform::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const NumericalScalar eta = b_ - a_;
+  const Scalar eta = b_ - a_;
   covariance_(0, 0) = eta * eta / 12.0;
   isAlreadyComputedCovariance_ = true;
 }
 
 /* Get the moments of the standardized distribution */
-NumericalPoint Uniform::getStandardMoment(const UnsignedInteger n) const
+Point Uniform::getStandardMoment(const UnsignedInteger n) const
 {
-  if (n % 2 == 1) return NumericalPoint(1, 0.0);
-  return NumericalPoint(1, 1.0 / (n + 1));
+  if (n % 2 == 1) return Point(1, 0.0);
+  return Point(1, 1.0 / (n + 1));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -288,18 +290,18 @@ Uniform::Implementation Uniform::getStandardRepresentative() const
 }
 
 /* Parameters value accessor */
-NumericalPoint Uniform::getParameter() const
+Point Uniform::getParameter() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = a_;
   point[1] = b_;
   return point;
 }
 
-void Uniform::setParameter(const NumericalPoint & parameter)
+void Uniform::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = Uniform(parameter[0], parameter[1]);
   setWeight(w);
 }
@@ -322,7 +324,7 @@ Bool Uniform::isElliptical() const
 
 
 /* A accessor */
-void Uniform::setA(const NumericalScalar a)
+void Uniform::setA(const Scalar a)
 {
   if (b_ <= a) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a << " b=" << b_;
   if (a != a_)
@@ -334,14 +336,14 @@ void Uniform::setA(const NumericalScalar a)
   }
 }
 
-NumericalScalar Uniform::getA() const
+Scalar Uniform::getA() const
 {
   return a_;
 }
 
 
 /* B accessor */
-void Uniform::setB(const NumericalScalar b)
+void Uniform::setB(const Scalar b)
 {
   if (b <= a_) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a_ << " b=" << b;
   if (b != b_)
@@ -353,7 +355,7 @@ void Uniform::setB(const NumericalScalar b)
   }
 }
 
-NumericalScalar Uniform::getB() const
+Scalar Uniform::getB() const
 {
   return b_;
 }

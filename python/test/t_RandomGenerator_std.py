@@ -33,7 +33,7 @@ try:
     size = 100000
     manyPoints = RandomGenerator.Generate(size)
     slice = 10
-    frequencies = NumericalPoint(slice, 0.0)
+    frequencies = Point(slice, 0.0)
     mean = 0.0
     for i in range(size):
         frequencies[int(slice * manyPoints[i])] = frequencies[
@@ -52,7 +52,7 @@ try:
     print("Another integer generation in [[0, ", slice - 1, "]]=",
           RandomGenerator.IntegerGenerate(slice))
     manyUnsignedInteger = RandomGenerator.IntegerGenerate(size, slice)
-    frequencies = NumericalPoint(slice, 0.0)
+    frequencies = Point(slice, 0.0)
     mean = 0.0
     for i in range(size):
         frequencies[manyUnsignedInteger[i]] = frequencies[

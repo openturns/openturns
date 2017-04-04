@@ -8,7 +8,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    f = NumericalMathFunction("x", "sin(x)")
+    f = SymbolicFunction(["x"], ["sin(x)"])
     a = -2.5
     b = 4.5
     # Default parameters
@@ -21,7 +21,8 @@ try:
     # Low-level interface
     algo = GaussLegendre([20])
     value, adaptedNodes = algo.integrateWithNodes(f, Interval(a, b))
-    print("value=%.6f" % value[0], ", ref=%.6f" % ref, ", adaptedNodes=", adaptedNodes)
+    print("value=%.6f" %
+          value[0], ", ref=%.6f" % ref, ", adaptedNodes=", adaptedNodes)
 
 except:
     import sys

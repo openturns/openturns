@@ -24,7 +24,7 @@
 #include <iostream>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/BasisSequence.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 
@@ -56,28 +56,28 @@ public:
   Bool getVerbose() const;
 
   /** Method to create new BasisSequence objects */
-  virtual BasisSequence build(const NumericalSample & x,
-                              const NumericalSample & y,
+  virtual BasisSequence build(const Sample & x,
+                              const Sample & y,
                               const Basis & psi,
                               const Indices & indices);
 
 #ifndef SWIG
 
-  virtual BasisSequence build(const NumericalSample & y,
+  virtual BasisSequence build(const Sample & y,
                               const Indices & indices,
                               const DesignProxy & proxy);
 
   virtual BasisSequence build(LeastSquaresMethod & method,
-                              const NumericalSample & y);
+                              const Sample & y);
 
   virtual void initialize();
   virtual void updateBasis(LeastSquaresMethod & method,
-                           const NumericalSample & y);
+                           const Sample & y);
 #endif
 
   /** Stopping criterion on the L1-norm of the coefficients accessor */
-  void setMaximumRelativeConvergence(const NumericalScalar coefficientsPaths);
-  NumericalScalar getMaximumRelativeConvergence() const;
+  void setMaximumRelativeConvergence(const Scalar coefficientsPaths);
+  Scalar getMaximumRelativeConvergence() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -94,7 +94,7 @@ protected:
   Bool verbose_;
 
   /** Stopping criterion on the L1-norm of the coefficients */
-  NumericalScalar maximumRelativeConvergence_;
+  Scalar maximumRelativeConvergence_;
 
   /** The collection of indices of the vectors in the partial basis with respect to the orthogonal basis */
   Indices currentIndices_;

@@ -28,7 +28,7 @@ try:
     formula = Description(outputFunction.getSize())
     formula[0] = "if( x2 <= x1,-0.5+sqrt(x1-x2),-0.5 )"
 
-    EtatLimite = NumericalMathFunction(inputFunction, outputFunction, formula)
+    EtatLimite = Function(inputFunction, outputFunction, formula)
 
     dim = EtatLimite.getInputDimension()
     print(dim)
@@ -37,11 +37,11 @@ try:
     # Modele probabiliste
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
     mean[0] = 15.0
     mean[1] = 5.0
 
-    sigma = NumericalPoint(dim, 0.0)
+    sigma = Point(dim, 0.0)
     sigma[0] = 2.5
     sigma[1] = 0.5
 
@@ -152,10 +152,10 @@ try:
 
     #
     # Importance Sampling avec Standard Event
-    meanSE = NumericalPoint(dim, 0.0)
+    meanSE = Point(dim, 0.0)
     for i in range(resultAR.getStandardSpaceDesignPoint().getDimension()):
         meanSE[i] = resultAR.getStandardSpaceDesignPoint()[i]
-    sigmaSE = NumericalPoint(dim, 1.0)
+    sigmaSE = Point(dim, 1.0)
     CorrSE = IdentityMatrix(dim)
     myImportanceSE = Normal(meanSE, sigmaSE, CorrSE)
 

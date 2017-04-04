@@ -22,8 +22,8 @@
 #define OPENTURNS_TAYLOREXPANSIONMOMENTS_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalPointWithDescription.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/CovarianceMatrix.hxx"
@@ -66,16 +66,16 @@ public:
   RandomVector getLimitStateVariable() const;
 
   /** meanFirstOrder accessor */
-  NumericalPoint getMeanFirstOrder() const;
+  Point getMeanFirstOrder() const;
 
   /** meanSecondOrder accessor */
-  NumericalPoint getMeanSecondOrder() const;
+  Point getMeanSecondOrder() const;
 
   /** covariance accessor */
   CovarianceMatrix getCovariance() const;
 
   /** Value at mean accessor */
-  NumericalPoint getValueAtMean() const;
+  Point getValueAtMean() const;
 
   /** Gradient at mean accessor */
   Matrix getGradientAtMean() const;
@@ -84,7 +84,7 @@ public:
   SymmetricTensor getHessianAtMean() const;
 
   /** importance factors accessor */
-  NumericalPointWithDescription getImportanceFactors() const;
+  PointWithDescription getImportanceFactors() const;
 
   /** ImportanceFactors graph */
   Graph drawImportanceFactors() const;
@@ -114,8 +114,8 @@ private:
   void computeImportanceFactors () const;
 
   RandomVector limitStateVariable_;
-  mutable NumericalPoint meanInputVector_;
-  mutable NumericalPoint valueAtMean_;
+  mutable Point meanInputVector_;
+  mutable Point valueAtMean_;
   mutable Matrix gradientAtMean_;
   mutable SymmetricTensor hessianAtMean_;
   mutable Bool isAlreadyComputedValue_;
@@ -126,10 +126,10 @@ private:
   mutable Bool isAlreadyComputedCovariance_;
   mutable Bool isAlreadyComputedImportanceFactors_;
   mutable CovarianceMatrix inputCovariance_;
-  mutable NumericalPoint meanFirstOrder_;
-  mutable NumericalPoint meanSecondOrder_;
+  mutable Point meanFirstOrder_;
+  mutable Point meanSecondOrder_;
   mutable CovarianceMatrix covariance_;
-  mutable NumericalPointWithDescription importanceFactors_;
+  mutable PointWithDescription importanceFactors_;
 
 } ; /* class TaylorExpansionMoments */
 

@@ -24,7 +24,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/SecondOrderModelImplementation.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,8 +48,8 @@ public:
   ExponentialCauchy();
 
   /** Standard constructor with scale and amplitude parameters parameters */
-  ExponentialCauchy(const NumericalPoint & scale,
-                    const NumericalPoint & amplitude);
+  ExponentialCauchy(const Point & scale,
+                    const Point & amplitude);
 
   /** Virtual copy constructor */
   virtual ExponentialCauchy * clone() const;
@@ -61,10 +61,10 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Amplitude accessor */
-  NumericalPoint getAmplitude() const;
+  Point getAmplitude() const;
 
   /** Scale accessor */
-  NumericalPoint getScale() const;
+  Point getScale() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

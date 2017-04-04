@@ -22,8 +22,8 @@
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-#include "openturns/EventRandomVectorImplementation.hxx"
-#include "openturns/EventDomainImplementation.hxx"
+#include "openturns/EventRandomVector.hxx"
+#include "openturns/EventDomain.hxx"
 #include "openturns/EventProcess.hxx"
 #include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -69,7 +69,7 @@ RandomVector::RandomVector(RandomVectorImplementation * p_implementation)
 }
 
 /* Constructor for constant vector */
-RandomVector::RandomVector(const NumericalPoint & point)
+RandomVector::RandomVector(const Point & point)
   : TypedInterfaceObject<RandomVectorImplementation>(new ConstantRandomVector(point))
 {
   // Nothing to do
@@ -91,7 +91,7 @@ RandomVector::RandomVector(const Distribution & distribution,
 }
 
 /* Constructor for composite vector */
-RandomVector::RandomVector(const NumericalMathFunction & function,
+RandomVector::RandomVector(const Function & function,
                            const RandomVector & antecedent)
   : TypedInterfaceObject<RandomVectorImplementation>(new CompositeRandomVector(function,
       antecedent.getImplementation()))
@@ -109,8 +109,8 @@ RandomVector::RandomVector(const FunctionalChaosResult & functionalChaosResult)
 /* Constructor from event RandomVector */
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const ComparisonOperator & op,
-                           const NumericalScalar threshold)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventRandomVectorImplementation(*antecedent.getImplementation(), op, threshold))
+                           const Scalar threshold)
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventRandomVector(*antecedent.getImplementation(), op, threshold))
 {
   // Nothing to do
 }
@@ -118,22 +118,22 @@ RandomVector::RandomVector(const RandomVector & antecedent,
 /* Constructor from domain event */
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const Domain & domain)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomainImplementation(*antecedent.getImplementation(), domain))
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomain(*antecedent.getImplementation(), domain))
 {
   // Nothing to do
 }
 
 RandomVector::RandomVector(const RandomVector & antecedent,
                            const Interval & interval)
-  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomainImplementation(*antecedent.getImplementation(), interval))
+  : TypedInterfaceObject<RandomVectorImplementation>(new EventDomain(*antecedent.getImplementation(), interval))
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
   UnsignedInteger dimension = interval.getDimension();
   UnsignedInteger inputDimension = antecedent.getFunction().getInputDimension();
   Interval::BoolCollection finiteLowerBound(interval.getFiniteLowerBound());
   Interval::BoolCollection finiteUpperBound(interval.getFiniteUpperBound());
-  NumericalPoint lowerBound(interval.getLowerBound());
-  NumericalPoint upperBound(interval.getUpperBound());
+  Point lowerBound(interval.getLowerBound());
+  Point upperBound(interval.getUpperBound());
   SymbolicFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
 
   // easy case: 1d interval
@@ -156,7 +156,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
     }
     if (!finiteLowerBound[0] && !finiteUpperBound[0])
     {
-      RandomVector newVector(NumericalMathFunction(testFunction), antecedent.getAntecedent());
+      RandomVector newVector(Function(testFunction), antecedent.getAntecedent());
       *this = RandomVector(newVector, Less(), 1.0);
     }
   }
@@ -175,7 +175,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
     // No constraint
     if (slacks.getSize() == 0)
     {
-      RandomVector newVector(NumericalMathFunction(testFunction), antecedent.getAntecedent());
+      RandomVector newVector(Function(testFunction), antecedent.getAntecedent());
       *this = RandomVector(newVector, Less(), 1.0);
     }
     else
@@ -257,19 +257,19 @@ UnsignedInteger RandomVector::getDimension() const
 }
 
 /* Realization accessor */
-NumericalPoint RandomVector::getRealization() const
+Point RandomVector::getRealization() const
 {
   return getImplementation()->getRealization();
 }
 
 /* Numerical sample accessor */
-NumericalSample RandomVector::getSample(UnsignedInteger size) const
+Sample RandomVector::getSample(UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
 }
 
 /* Mean accessor */
-NumericalPoint RandomVector::getMean() const
+Point RandomVector::getMean() const
 {
   return getImplementation()->getMean();
 }
@@ -298,8 +298,8 @@ RandomVector::Antecedent RandomVector::getAntecedent() const
   return getImplementation()->getAntecedent();
 }
 
-/* This method allows to access the NumericalMathFunction in case of a composite RandomVector */
-NumericalMathFunction RandomVector::getFunction() const
+/* This method allows to access the Function in case of a composite RandomVector */
+Function RandomVector::getFunction() const
 {
   return getImplementation()->getFunction();
 }
@@ -317,7 +317,7 @@ ComparisonOperator RandomVector::getOperator() const
 }
 
 /* Threshold accessor */
-NumericalScalar RandomVector::getThreshold() const
+Scalar RandomVector::getThreshold() const
 {
   return getImplementation()->getThreshold();
 }

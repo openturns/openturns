@@ -23,11 +23,11 @@
 
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/Basis.hxx"
@@ -48,8 +48,8 @@ class OT_API KrigingResult
 public:
 
   // friend class Factory<KrigingResult>;
-  typedef Collection<NumericalPoint> NumericalPointCollection;
-  typedef PersistentCollection<NumericalPoint> NumericalPointPersistentCollection;
+  typedef Collection<Point> PointCollection;
+  typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
 
@@ -57,26 +57,26 @@ public:
   KrigingResult();
 
   /** Parameter constructor without any cholesky factor*/
-  KrigingResult(const NumericalSample & inputSample,
-                const NumericalSample & outputSample,
-                const NumericalMathFunction & metaModel,
-                const NumericalPoint & residuals,
-                const NumericalPoint & relativeErrors,
+  KrigingResult(const Sample & inputSample,
+                const Sample & outputSample,
+                const Function & metaModel,
+                const Point & residuals,
+                const Point & relativeErrors,
                 const BasisCollection & basis,
-                const NumericalPointCollection & trendCoefficients,
+                const PointCollection & trendCoefficients,
                 const CovarianceModel & covarianceModel,
-                const NumericalSample & covarianceCoefficients);
+                const Sample & covarianceCoefficients);
 
   /** Parameter constructor with Cholesky factor (Lapack)*/
-  KrigingResult(const NumericalSample & inputSample,
-                const NumericalSample & outputSample,
-                const NumericalMathFunction & metaModel,
-                const NumericalPoint & residuals,
-                const NumericalPoint & relativeErrors,
+  KrigingResult(const Sample & inputSample,
+                const Sample & outputSample,
+                const Function & metaModel,
+                const Point & residuals,
+                const Point & relativeErrors,
                 const BasisCollection & basis,
-                const NumericalPointCollection & trendCoefficients,
+                const PointCollection & trendCoefficients,
                 const CovarianceModel & covarianceModel,
-                const NumericalSample & covarianceCoefficients,
+                const Sample & covarianceCoefficients,
                 const TriangularMatrix & covarianceCholeskyFactor,
                 const HMatrix & covarianceHMatrix);
 
@@ -88,42 +88,42 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Design accessors */
-  virtual NumericalSample getInputSample() const;
-  virtual NumericalSample getOutputSample() const;
+  virtual Sample getInputSample() const;
+  virtual Sample getOutputSample() const;
 
   /** Trend basis accessor */
   virtual BasisCollection getBasisCollection() const;
 
   /** Trend coefficients accessor */
-  virtual NumericalPointCollection getTrendCoefficients() const;
+  virtual PointCollection getTrendCoefficients() const;
 
   /** Conditional covariance models accessor */
   virtual CovarianceModel getCovarianceModel() const;
 
   /** Process coefficients accessor */
-  virtual NumericalSample getCovarianceCoefficients() const;
+  virtual Sample getCovarianceCoefficients() const;
 
   /** Transformation accessor */
-  virtual NumericalMathFunction getTransformation() const;
-  virtual void setTransformation(const NumericalMathFunction & transformation);
+  virtual Function getTransformation() const;
+  virtual void setTransformation(const Function & transformation);
 
   /** Compute mean of new points conditionnaly to observations */
-  virtual NumericalPoint getConditionalMean(const NumericalSample & xi) const;
+  virtual Point getConditionalMean(const Sample & xi) const;
 
   /** Compute mean of new points conditionnaly to observations */
-  virtual NumericalPoint getConditionalMean(const NumericalPoint & xi) const;
+  virtual Point getConditionalMean(const Point & xi) const;
 
   /** Compute covariance matrix conditionnaly to observations*/
-  virtual CovarianceMatrix getConditionalCovariance(const NumericalSample & xi) const ;
+  virtual CovarianceMatrix getConditionalCovariance(const Sample & xi) const ;
 
   /** Compute covariance matrix conditionnaly to observations*/
-  virtual CovarianceMatrix getConditionalCovariance(const NumericalPoint & xi) const;
+  virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
 
   /** Compute joint normal distribution conditionnaly to observations*/
-  virtual Normal operator()(const NumericalSample & xi) const;
+  virtual Normal operator()(const Sample & xi) const;
 
   /** Compute joint normal distribution conditionnaly to observations*/
-  virtual Normal operator()(const NumericalPoint & xi) const;
+  virtual Normal operator()(const Point & xi) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -135,7 +135,7 @@ public:
 protected:
 
   /** Compute cross matrix method ==> not necessary square matrix  */
-  Matrix getCrossMatrix(const NumericalSample & x) const;
+  Matrix getCrossMatrix(const Sample & x) const;
   void computeF() const;
 
 private:
@@ -144,15 +144,15 @@ private:
   friend struct KrigingResultCrossCovarianceFunctor;
 
   /** inputData should be keeped*/
-  NumericalSample inputSample_;
+  Sample inputSample_;
 
   /** input transformed data: store data*/
-  NumericalSample inputTransformedSample_;
+  Sample inputTransformedSample_;
 
-  NumericalSample outputSample_;
+  Sample outputSample_;
 
   /** inputTransformation ==> iso-probabilistic transformation */
-  NumericalMathFunction inputTransformation_;
+  Function inputTransformation_;
 
   /** Boolean transformation */
   Bool hasTransformation_;
@@ -161,13 +161,13 @@ private:
   BasisPersistentCollection basis_;
 
   /** The trend coefficients */
-  NumericalPointPersistentCollection trendCoefficients_;
+  PointPersistentCollection trendCoefficients_;
 
   /** The covariance model */
   CovarianceModel covarianceModel_;
 
   /** The covariance coefficients */
-  NumericalSample covarianceCoefficients_;
+  Sample covarianceCoefficients_;
 
   /** Boolean for cholesky. The factor is not mandatory (see KrigingAlgorithm) */
   Bool hasCholeskyFactor_;

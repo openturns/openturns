@@ -23,7 +23,7 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
-#include "openturns/NumericalMathFunction.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,9 +49,9 @@ public:
   /** Default constructor */
   explicit FieldFunction(const UnsignedInteger spatialDimension = 1);
 
-  /** Constructor from NumericalMathFunction */
-  explicit FieldFunction(const NumericalMathFunction & function,
-                             const UnsignedInteger spatialDimension = 1);
+  /** Constructor from Function */
+  explicit FieldFunction(const Function & function,
+                         const UnsignedInteger spatialDimension = 1);
 
   /** Constructor from FieldFunctionImplementation */
   FieldFunction(const FieldFunctionImplementation & implementation);
@@ -74,10 +74,10 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  NumericalPoint operator() (const NumericalScalar timeStamp,
-                             const NumericalPoint & inP) const;
-  NumericalPoint operator() (const NumericalPoint & location,
-                             const NumericalPoint & inP) const;
+  Point operator() (const Scalar timeStamp,
+                    const Point & inP) const;
+  Point operator() (const Point & location,
+                    const Point & inP) const;
   Field operator() (const Field & inFld) const;
   ProcessSample operator() (const ProcessSample & inPS) const;
 

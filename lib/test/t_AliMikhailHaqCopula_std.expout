@@ -1,29 +1,29 @@
 Copula class=AliMikhailHaqCopula name=a aliMikhailHaq copula dimension=2 theta=0.5
 Copula AliMikhailHaqCopula(theta = 0.5)
-Mean class=NumericalPoint name=Unnamed dimension=2 values=[0.5,0.5]
+Mean class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 Elliptical distribution= false
 Elliptical copula= false
 Independent copula= false
-oneRealization=class=NumericalPoint name=Unnamed dimension=2 values=[0.629877,0.895761]
-oneSample=class=NumericalSample name=a aliMikhailHaq copula implementation=class=NumericalSampleImplementation name=a aliMikhailHaq copula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0211783],[0.347057,0.964145],[0.92068,0.606772],[0.0632061,0.189429],[0.714382,0.449122],[0.373767,0.713037],[0.883503,0.393905],[0.92851,0.86981],[0.684575,0.852794],[0.359802,0.947852]]
-anotherSample mean=class=NumericalPoint name=Unnamed dimension=2 values=[0.502777,0.500292]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.629877,0.895761]
+oneSample=class=Sample name=a aliMikhailHaq copula implementation=class=SampleImplementation name=a aliMikhailHaq copula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0211783],[0.347057,0.964145],[0.92068,0.606772],[0.0632061,0.189429],[0.714382,0.449122],[0.373767,0.713037],[0.883503,0.393905],[0.92851,0.86981],[0.684575,0.852794],[0.359802,0.947852]]
+anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.502777,0.500292]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0166341,0.0166341,0.0832656]
-point= class=NumericalPoint name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=NumericalPoint name=Unnamed dimension=2 values=[-0.860562,-0.860562] ddf (FD)=class=NumericalPoint name=Unnamed dimension=2 values=[-0.860562,-0.860562] pdf=1.20853 cdf=0.0588235
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] pdf=1.20853 cdf=0.0588235
 Survival      =0.658824
 Survival (ref)=0.658824
-Inverse survival=class=NumericalPoint name=Unnamed dimension=2 values=[0.025625,0.025625]
+Inverse survival=class=Point name=Unnamed dimension=2 values=[0.025625,0.025625]
 Survival(inverse survival)=0.95
-Quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.689898,0.689898]
+Quantile=class=Point name=Unnamed dimension=2 values=[0.689898,0.689898]
 CDF(quantile)=0.5
-Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
+Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974642
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=NumericalMathFunction name=Unnamed implementation=class=NumericalMathFunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(AliMikhailHaqCopula(theta = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=NumericalPoint name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) level=0.339383
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(AliMikhailHaqCopula(theta = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) level=0.339383
 beta=0.71221
-Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974642
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0,0] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.974521,0.974521] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974521,0.974521] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974521
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=NumericalPoint name=Unnamed dimension=2 values=[0.025625,0.025625] upper bound=class=NumericalPoint name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.025625,0.025625] upper bound=class=Point name=Unnamed dimension=2 values=[1,1] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974375
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0160319,0.0160319,0.0833333]
 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.192383,0.192383,1]
@@ -32,17 +32,17 @@ kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplement
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
-margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.294088]
+margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.294088]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
-margin quantile=class=NumericalPoint name=Unnamed dimension=1 values=[0.95]
-margin realization=class=NumericalPoint name=Unnamed dimension=1 values=[0.47206]
+margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.47206]
 indices=[1,0]
 margins=class=AliMikhailHaqCopula name=a aliMikhailHaq copula dimension=2 theta=0.5
 margins PDF=1.13619
 margins CDF=0.0869565
-margins quantile=class=NumericalPoint name=Unnamed dimension=2 values=[0.974521,0.974521]
+margins quantile=class=Point name=Unnamed dimension=2 values=[0.974521,0.974521]
 margins CDF(quantile)=0.95
-margins realization=class=NumericalPoint name=Unnamed dimension=2 values=[0.196586,0.527995]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.196586,0.527995]

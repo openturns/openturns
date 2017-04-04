@@ -81,9 +81,9 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Weighte
 }
 
 /* Parameter constructor */
-ProjectionStrategyImplementation::ProjectionStrategyImplementation(const NumericalSample & inputSample,
-    const NumericalPoint & weights,
-    const NumericalSample & outputSample)
+ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample)
   : PersistentObject()
   , alpha_k_p_(0)
   , residual_p_(0.0)
@@ -143,7 +143,7 @@ void ProjectionStrategyImplementation::setMeasure(const Distribution & measure)
     measure_ = measure;
     // Set the measure as the distribution of the weighted experiment
     weightedExperiment_.setDistribution(measure);
-    inputSample_ = NumericalSample(0, 0);
+    inputSample_ = Sample(0, 0);
   }
 }
 
@@ -159,7 +159,7 @@ void ProjectionStrategyImplementation::setExperiment(const WeightedExperiment & 
   {
     weightedExperiment_ = weightedExperiment;
     weightedExperiment_.setDistribution(getMeasure());
-    inputSample_ = NumericalSample(0, 0);
+    inputSample_ = Sample(0, 0);
   }
 }
 
@@ -169,42 +169,42 @@ WeightedExperiment ProjectionStrategyImplementation::getExperiment() const
 }
 
 /* Sample accessors */
-NumericalSample ProjectionStrategyImplementation::getInputSample() const
+Sample ProjectionStrategyImplementation::getInputSample() const
 {
   return inputSample_;
 }
 
-NumericalSample ProjectionStrategyImplementation::getOutputSample() const
+Sample ProjectionStrategyImplementation::getOutputSample() const
 {
   return outputSample_;
 }
 
 /* Weights accessor */
-NumericalPoint ProjectionStrategyImplementation::getWeights() const
+Point ProjectionStrategyImplementation::getWeights() const
 {
   return weights_;
 }
 
 /* Residual accessor */
-NumericalScalar ProjectionStrategyImplementation::getResidual() const
+Scalar ProjectionStrategyImplementation::getResidual() const
 {
   return residual_p_;
 }
 
 /* Relative error accessor */
-NumericalScalar ProjectionStrategyImplementation::getRelativeError() const
+Scalar ProjectionStrategyImplementation::getRelativeError() const
 {
   return relativeError_p_;
 }
 
 /* Relative error accessor */
-NumericalPoint ProjectionStrategyImplementation::getCoefficients() const
+Point ProjectionStrategyImplementation::getCoefficients() const
 {
   return alpha_k_p_;
 }
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
-void ProjectionStrategyImplementation::computeCoefficients(const NumericalMathFunction & function,
+void ProjectionStrategyImplementation::computeCoefficients(const Function & function,
     const Basis & basis,
     const Indices & indices,
     const Indices & addedRanks,
@@ -212,7 +212,7 @@ void ProjectionStrategyImplementation::computeCoefficients(const NumericalMathFu
     const Indices & removedRanks,
     const UnsignedInteger marginalIndex)
 {
-  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const NumericalMathFunction & function, const Basis & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger marginalIndex)";
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const Function & function, const Basis & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger marginalIndex)";
 }
 
 

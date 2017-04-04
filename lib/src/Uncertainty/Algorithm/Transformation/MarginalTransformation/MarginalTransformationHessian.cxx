@@ -29,7 +29,7 @@ static const Factory<MarginalTransformationHessian> Factory_MarginalTransformati
 
 /* Default constructor */
 MarginalTransformationHessian::MarginalTransformationHessian():
-  NumericalMathHessianImplementation(),
+  HessianImplementation(),
   evaluation_()
 {
   // Nothing to do
@@ -37,7 +37,7 @@ MarginalTransformationHessian::MarginalTransformationHessian():
 
 /* Parameter constructor */
 MarginalTransformationHessian::MarginalTransformationHessian(const MarginalTransformationEvaluation & evaluation):
-  NumericalMathHessianImplementation(),
+  HessianImplementation(),
   evaluation_(evaluation)
 {
   // Nothing to do
@@ -50,32 +50,32 @@ MarginalTransformationHessian * MarginalTransformationHessian::clone() const
 }
 
 /* Hessian */
-SymmetricTensor MarginalTransformationHessian::hessian(const NumericalPoint & inP) const
+SymmetricTensor MarginalTransformationHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getHessian()->getClassName() == "SymbolicHessian") result(i, i, i) = evaluation_.getExpressions()[i].hessian(NumericalPoint(1, inP[i]))(0, 0, 0);
+    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getHessian()->getClassName() == "SymbolicHessian") result(i, i, i) = evaluation_.getExpressions()[i].hessian(Point(1, inP[i]))(0, 0, 0);
     else
     {
       // (`@`(-(`@`((D@@2)(G), 1/G))/(`@`(D(G), 1/G))^3, F))*D(F)^2+(`@`(1/(`@`(D(G), 1/G)), F))*(D@@2)(F)
-      const NumericalScalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
+      const Scalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);
       // Quick rejection step: if the input PDF is zero, the result will be zero, so continue only if the value is > 0
       if (inputPDF > 0.0)
       {
-        NumericalScalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
+        Scalar inputCDF = evaluation_.inputDistributionCollection_[i].computeCDF(inP[i]);
         // For accuracy reason, check if we are in the upper tail of the distribution
         const Bool upperTail = inputCDF > 0.5;
         if (upperTail) inputCDF = evaluation_.inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-        const NumericalPoint  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
-        const NumericalScalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
+        const Point  outputQuantile(evaluation_.outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail));
+        const Scalar outputPDF = evaluation_.outputDistributionCollection_[i].computePDF(outputQuantile);
         if (outputPDF > 0.0)
         {
-          const NumericalScalar inputDDF = evaluation_.inputDistributionCollection_[i].computeDDF(inP[i]);
-          const NumericalScalar outputDDF = evaluation_.outputDistributionCollection_[i].computeDDF(outputQuantile[0]);
+          const Scalar inputDDF = evaluation_.inputDistributionCollection_[i].computeDDF(inP[i]);
+          const Scalar outputDDF = evaluation_.outputDistributionCollection_[i].computeDDF(outputQuantile[0]);
           result(i, i, i) = (inputDDF - outputDDF * pow(inputPDF / outputPDF, 2)) / outputPDF;
         } // output PDF > 0
       } // input PDF > 0
@@ -113,14 +113,14 @@ String MarginalTransformationHessian::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void MarginalTransformationHessian::save(Advocate & adv) const
 {
-  NumericalMathHessianImplementation::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MarginalTransformationHessian::load(Advocate & adv)
 {
-  NumericalMathHessianImplementation::load(adv);
+  HessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
 }
 

@@ -24,8 +24,8 @@
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTprivate.hxx"
-#include "openturns/NumericalPoint.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
 
@@ -63,7 +63,7 @@ public:
   virtual ~HMatrixRealAssemblyFunction() {}
 
   // Compute matrix coefficient for degrees of freedom i and j
-  virtual NumericalScalar operator() (UnsignedInteger i, UnsignedInteger j) const = 0;
+  virtual Scalar operator() (UnsignedInteger i, UnsignedInteger j) const = 0;
 };
 
 class OT_API HMatrixTensorRealAssemblyFunction
@@ -72,7 +72,7 @@ public:
   virtual ~HMatrixTensorRealAssemblyFunction() {}
 
   HMatrixTensorRealAssemblyFunction(const UnsignedInteger outputDimension)
-  : dimension_(outputDimension) {}
+    : dimension_(outputDimension) {}
 
   UnsignedInteger getDimension() const
   {
@@ -139,31 +139,31 @@ public:
   void factorize(const String& method);
 
   /** Compute this <- alpha * this */
-  void scale(NumericalScalar alpha);
+  void scale(Scalar alpha);
 
   /** Compute y <- alpha op(this) * x + beta * y */
-  void gemv(char trans, NumericalScalar alpha, const NumericalPoint& x, NumericalScalar beta, NumericalPoint& y) const;
+  void gemv(char trans, Scalar alpha, const Point& x, Scalar beta, Point& y) const;
 
   /** Compute this <- alpha op(A) * p(B) + beta * this */
-  void gemm(char transA, char transB, NumericalScalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, NumericalScalar beta);
+  void gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta);
 
   /** Transpose matrix */
   void transpose();
 
   /** Get the Frobenius norm */
-  NumericalScalar norm() const;
+  Scalar norm() const;
 
   /** Get the diagonal */
-  NumericalPoint getDiagonal() const;
+  Point getDiagonal() const;
 
   /** Solve system op(A)*X = b */
-  NumericalPoint solve(const NumericalPoint& b, Bool trans) const;
+  Point solve(const Point& b, Bool trans) const;
 
   /** Solve system op(A)*X = m */
   Matrix solve(const Matrix& m, Bool trans) const;
 
   /** Solve system op(L)*X = b */
-  NumericalPoint solveLower(const NumericalPoint& b, Bool trans) const;
+  Point solveLower(const Point& b, Bool trans) const;
 
   /** Solve system op(L)*X = m */
   Matrix solveLower(const Matrix& m, Bool trans) const;
@@ -202,19 +202,19 @@ class CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 {
 private:
   const CovarianceModel covarianceModel_;
-  const NumericalSample vertices_;
+  const Sample vertices_;
   const UnsignedInteger covarianceDimension_;
   const double epsilon_;
 
 public:
-  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const NumericalSample & vertices, double epsilon)
+  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
     : HMatrixRealAssemblyFunction()
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
     , covarianceDimension_(covarianceModel.getDimension())
     , epsilon_(epsilon) {}
 
-  NumericalScalar operator()(UnsignedInteger i, UnsignedInteger j) const
+  Scalar operator()(UnsignedInteger i, UnsignedInteger j) const
   {
     const UnsignedInteger rowIndex = i / covarianceDimension_;
     const UnsignedInteger columnIndex = j / covarianceDimension_;
@@ -232,12 +232,12 @@ class CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 private:
   const CovarianceModel covarianceModel_;
-  const NumericalSample vertices_;
+  const Sample vertices_;
   const double epsilon_;
   CovarianceMatrix epsilonId_;
 
 public:
-  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const NumericalSample & vertices, double epsilon)
+  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
     : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
@@ -253,7 +253,7 @@ public:
     CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
     if (i == j && epsilon_ != 0.0)
       localResult = localResult + epsilonId_;
-    memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(NumericalScalar) );
+    memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
   }
 };
 

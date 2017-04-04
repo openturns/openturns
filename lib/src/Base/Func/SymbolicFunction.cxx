@@ -39,15 +39,15 @@ Description SymbolicFunction::ValidOperators_;
 
 /* Default constructor */
 SymbolicFunction::SymbolicFunction ()
-  : NumericalMathFunction()
+  : Function()
 {
 }
 
 
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
-                                        const String & formula)
-  : NumericalMathFunction()
+                                    const String & formula)
+  : Function()
 {
   *this = SymbolicFunction(Description(1, inputVariablesName), Description(1, formula));
 }
@@ -55,8 +55,8 @@ SymbolicFunction::SymbolicFunction (const String & inputVariablesName,
 
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
-                                        const Description & formulas)
-  : NumericalMathFunction()
+                                    const Description & formulas)
+  : Function()
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
   const Description outputVariablesNames(Description::BuildDefault(formulas.getSize(), "y"));
@@ -71,7 +71,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
   catch(...)
   {
     LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
-    const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
     setGradient(new CenteredFiniteDifferenceGradient(epsilon, getEvaluation()));
   }
   try
@@ -81,7 +81,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
   catch(...)
   {
     LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
-    const NumericalScalar epsilon = ResourceMap::GetAsNumericalScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else

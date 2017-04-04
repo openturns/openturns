@@ -37,10 +37,10 @@
  *
  * \section Base
  * The Base part of the library provides containers and algorithms of common usage, such
- * as multidimensional points (\link OT::NumericalPoint NumericalPoint\endlink),
+ * as multidimensional points (\link OT::Point Point\endlink),
  * aka vectors, samples
- * (\link OT::NumericalSample NumericalSample\endlink)
- * or functions (\link OT::NumericalMathFunction NumericalMathFunction\endlink).
+ * (\link OT::Sample Sample\endlink)
+ * or functions (\link OT::Function Function\endlink).
  * Every concept in OpenTURNS is multidimensional unless clearly expressed or documented.
  *
  * \section Uncertainty

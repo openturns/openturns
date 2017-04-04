@@ -30,7 +30,7 @@ static const Factory<TensorImplementation> Factory_TensorImplementation;
 
 /* Default constructor */
 TensorImplementation::TensorImplementation()
-  : PersistentCollection<NumericalScalar>()
+  : PersistentCollection<Scalar>()
   , nbRows_(0)
   , nbColumns_(0)
   , nbSheets_(0)
@@ -44,7 +44,7 @@ TensorImplementation::TensorImplementation()
 TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0)
+  : PersistentCollection<Scalar>(rowDim * colDim * sheetDim, 0.0)
   , nbRows_(rowDim)
   , nbColumns_(colDim)
   , nbSheets_(sheetDim)
@@ -56,8 +56,8 @@ TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
 TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim,
-    const Collection<NumericalScalar> & elementsValues)
-  : PersistentCollection<NumericalScalar>(rowDim * colDim * sheetDim, 0.0)
+    const Collection<Scalar> & elementsValues)
+  : PersistentCollection<Scalar>(rowDim * colDim * sheetDim, 0.0)
   , nbRows_(rowDim)
   , nbColumns_(colDim)
   , nbSheets_(sheetDim)
@@ -75,7 +75,7 @@ TensorImplementation * TensorImplementation::clone() const
 
 
 /* Set small elements to zero */
-TensorImplementation TensorImplementation::clean(const NumericalScalar threshold) const
+TensorImplementation TensorImplementation::clean(const Scalar threshold) const
 {
   // Nothing to do for nonpositive threshold
   if (threshold <= 0.0) return *this;
@@ -93,7 +93,7 @@ String TensorImplementation::__repr__() const
          << " rows=" << getNbRows()
          << " columns=" << getNbColumns()
          << " sheets=" << getNbSheets()
-         << " values=" << PersistentCollection<NumericalScalar>::__repr__();
+         << " values=" << PersistentCollection<Scalar>::__repr__();
 }
 
 String TensorImplementation::__str__(const String & offset) const
@@ -128,7 +128,7 @@ UnsignedInteger TensorImplementation::getNbSheets() const
 /* Operator () gives access to the elements of the TensorImplementation (to modify these elements) */
 /* The element of the TensorImplementation is designated by its row number i, its column number j and its sheet number k */
 /* the first element of the TensorImplementation is t(0,0,0) */
-NumericalScalar & TensorImplementation::operator() (const UnsignedInteger i,
+Scalar & TensorImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k)
 {
@@ -139,7 +139,7 @@ NumericalScalar & TensorImplementation::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the TensorImplementation (read only) */
 /* The element of the TensorImplementation is designated by its row number i, its column number j and its sheet number k */
-const NumericalScalar & TensorImplementation::operator() (const UnsignedInteger i,
+const Scalar & TensorImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j,
     const UnsignedInteger k)  const
 {
@@ -189,7 +189,7 @@ void TensorImplementation::setSheetSym(const UnsignedInteger k,
 /* Empty returns true if there is no element in the TensorImplementation */
 Bool TensorImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (nbSheets_ == 0) || (PersistentCollection<NumericalScalar>::isEmpty())) ;
+  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (nbSheets_ == 0) || (PersistentCollection<Scalar>::isEmpty())) ;
 }
 
 /* Check for symmetry */
@@ -221,8 +221,8 @@ Bool TensorImplementation::operator == (const TensorImplementation & rhs) const
 
   if (&lhs != &rhs)   // Not the same object
   {
-    const PersistentCollection<NumericalScalar> & refLhs = static_cast<const PersistentCollection<NumericalScalar> >(lhs);
-    const PersistentCollection<NumericalScalar> & refRhs = static_cast<const PersistentCollection<NumericalScalar> >(rhs);
+    const PersistentCollection<Scalar> & refLhs = static_cast<const PersistentCollection<Scalar> >(lhs);
+    const PersistentCollection<Scalar> & refRhs = static_cast<const PersistentCollection<Scalar> >(rhs);
 
     equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && lhs.nbSheets_ == rhs.nbSheets_ && refLhs == refRhs);
   }
@@ -233,7 +233,7 @@ Bool TensorImplementation::operator == (const TensorImplementation & rhs) const
 /* Method save() stores the object through the StorageManager */
 void TensorImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<NumericalScalar>::save(adv);
+  PersistentCollection<Scalar>::save(adv);
   adv.saveAttribute("nbRows_",    nbRows_);
   adv.saveAttribute("nbColumns_", nbColumns_);
   adv.saveAttribute("nbSheets_", nbSheets_);
@@ -242,7 +242,7 @@ void TensorImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void TensorImplementation::load(Advocate & adv)
 {
-  PersistentCollection<NumericalScalar>::load(adv);
+  PersistentCollection<Scalar>::load(adv);
 
   adv.loadAttribute("nbRows_",    nbRows_);
   adv.loadAttribute("nbColumns_", nbColumns_);
@@ -250,7 +250,7 @@ void TensorImplementation::load(Advocate & adv)
 }
 
 
-const NumericalScalar* TensorImplementation::__baseaddress__() const
+const Scalar* TensorImplementation::__baseaddress__() const
 {
   return &(*this)[0];
 }
@@ -258,7 +258,7 @@ const NumericalScalar* TensorImplementation::__baseaddress__() const
 
 UnsignedInteger TensorImplementation::__elementsize__() const
 {
-  return sizeof(NumericalScalar);
+  return sizeof(Scalar);
 }
 
 

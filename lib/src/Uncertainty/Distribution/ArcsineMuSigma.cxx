@@ -37,12 +37,12 @@ ArcsineMuSigma::ArcsineMuSigma()
   // Nothing to do
 }
 
-ArcsineMuSigma::ArcsineMuSigma(const NumericalScalar mu, const NumericalScalar sigma)
+ArcsineMuSigma::ArcsineMuSigma(const Scalar mu, const Scalar sigma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigma_(sigma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 }
 
 /* Virtual constructor */
@@ -61,11 +61,11 @@ Bool ArcsineMuSigma::operator ==(const ArcsineMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution ArcsineMuSigma::getDistribution() const
 {
-  NumericalPoint newParameters(2);
+  Point newParameters(2);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
 
   return ArcsineFactory().build(nativeParameters);
 }
@@ -74,10 +74,10 @@ Distribution ArcsineMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix ArcsineMuSigma::gradient() const
 {
-  const NumericalScalar dadmu = 1.0;
-  const NumericalScalar dadsigma = -sqrt(2.0);
-  const NumericalScalar dbdmu = 1.0;
-  const NumericalScalar dbdsigma = sqrt(2.0);
+  const Scalar dadmu = 1.0;
+  const Scalar dadsigma = -sqrt(2.0);
+  const Scalar dbdmu = 1.0;
+  const Scalar dbdsigma = sqrt(2.0);
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dadmu;
@@ -91,18 +91,18 @@ Matrix ArcsineMuSigma::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint ArcsineMuSigma::operator () (const NumericalPoint & inP) const
+Point ArcsineMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigma = inP[1];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
 
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
-  const NumericalScalar a = mu - sigma * sqrt(2.0);
-  const NumericalScalar b = mu + sigma * sqrt(2.0);
+  const Scalar a = mu - sigma * sqrt(2.0);
+  const Scalar b = mu + sigma * sqrt(2.0);
 
-  NumericalPoint nativeParameters(inP);
+  Point nativeParameters(inP);
   nativeParameters[0] = a;
   nativeParameters[1] = b;
 
@@ -110,18 +110,18 @@ NumericalPoint ArcsineMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint ArcsineMuSigma::inverse(const NumericalPoint & inP) const
+Point ArcsineMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const NumericalScalar a = inP[0];
-  const NumericalScalar b = inP[1];
+  const Scalar a = inP[0];
+  const Scalar b = inP[1];
 
   if (a >= b) throw InvalidArgumentException(HERE) << "a must be smaller than b";
 
-  const NumericalScalar mu = (a + b) / 2.0;
-  const NumericalScalar sigma = 0.5 * (b - a) * M_SQRT1_2;
+  const Scalar mu = (a + b) / 2.0;
+  const Scalar sigma = 0.5 * (b - a) * M_SQRT1_2;
 
-  NumericalPoint muSigmaParameters(inP);
+  Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;
   muSigmaParameters[1] = sigma;
 
@@ -130,16 +130,16 @@ NumericalPoint ArcsineMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-void ArcsineMuSigma::setValues(const NumericalPoint & inP)
+void ArcsineMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
   mu_ = inP[0];
   sigma_ = inP[1];
 }
 
-NumericalPoint ArcsineMuSigma::getValues() const
+Point ArcsineMuSigma::getValues() const
 {
-  NumericalPoint point(2);
+  Point point(2);
   point[0] = mu_;
   point[1] = sigma_;
   return point;

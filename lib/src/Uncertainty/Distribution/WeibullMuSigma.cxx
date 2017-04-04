@@ -39,13 +39,13 @@ WeibullMuSigma::WeibullMuSigma()
   // Nothing to do
 }
 
-WeibullMuSigma::WeibullMuSigma(const NumericalScalar mu, const NumericalScalar sigma, const NumericalScalar gamma)
+WeibullMuSigma::WeibullMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigma_(sigma)
   , gamma_(gamma)
 {
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 }
 
@@ -65,12 +65,12 @@ Bool WeibullMuSigma::operator ==(const WeibullMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution WeibullMuSigma::getDistribution() const
 {
-  NumericalPoint newParameters(3);
+  Point newParameters(3);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
   newParameters[2] = gamma_;
 
-  NumericalPoint nativeParameters(operator()(newParameters));
+  Point nativeParameters(operator()(newParameters));
 
   return WeibullFactory().build(nativeParameters);
 }
@@ -79,28 +79,28 @@ Distribution WeibullMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix WeibullMuSigma::gradient() const
 {
-  NumericalPoint newParameters(3);
+  Point newParameters(3);
   newParameters[0] = mu_;
   newParameters[1] = sigma_;
   newParameters[2] = gamma_;
 
   // Use finite difference technique
-  const NumericalScalar epsilon = 1e-5;
-  NumericalPoint pt = NumericalPoint(3);
+  const Scalar epsilon = 1e-5;
+  Point pt = Point(3);
 
   pt[0] = epsilon;
-  const NumericalScalar dalphadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const NumericalScalar dbetadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar dalphadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
+  const Scalar dbetadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
 
   pt[0] = 0.;
   pt[1] = epsilon;
-  const NumericalScalar dalphadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const NumericalScalar dbetadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar dalphadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
+  const Scalar dbetadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
 
   pt[1] = 0.;
   pt[2] = epsilon;
-  const NumericalScalar dalphadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const NumericalScalar dbetadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar dalphadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
+  const Scalar dbetadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(0, 0) = dalphadmu;
@@ -116,23 +116,23 @@ Matrix WeibullMuSigma::gradient() const
 
 
 /* Conversion operator */
-NumericalPoint WeibullMuSigma::operator () (const NumericalPoint & inP) const
+Point WeibullMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const NumericalScalar mu = inP[0];
-  const NumericalScalar sigma = inP[1];
-  const NumericalScalar gamma = inP[2];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
+  const Scalar gamma = inP[2];
 
-  if (sigma <= 0.0) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
-  NumericalScalar alpha = 0.;
-  NumericalScalar beta = 0.;
-  const NumericalScalar ratio = 1.0 + pow(sigma / (mu - gamma), 2.0);
-  NumericalScalar t = -1.0;
-  NumericalScalar betaMin = 1.0;
-  NumericalScalar betaMax = 1.0;
-  NumericalScalar step = 0.5;
+  Scalar alpha = 0.;
+  Scalar beta = 0.;
+  const Scalar ratio = 1.0 + pow(sigma / (mu - gamma), 2.0);
+  Scalar t = -1.0;
+  Scalar betaMin = 1.0;
+  Scalar betaMax = 1.0;
+  Scalar step = 0.5;
 
   // Bracketing interval
   // Case beta < 1, i.e. ratio > 2
@@ -166,7 +166,7 @@ NumericalPoint WeibullMuSigma::operator () (const NumericalPoint & inP) const
   {
     beta = 0.5 * (betaMin + betaMax);
     // Convergence
-    if (betaMax - betaMin <= ResourceMap::GetAsNumericalScalar("Distribution-DefaultQuantileEpsilon") * (1.0 + std::abs(betaMax + betaMin)))
+    if (betaMax - betaMin <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (1.0 + std::abs(betaMax + betaMin)))
     {
       alpha = (mu - gamma) / SpecFunc::Gamma(1.0 + 1.0 / beta);
       break;
@@ -177,7 +177,7 @@ NumericalPoint WeibullMuSigma::operator () (const NumericalPoint & inP) const
     else betaMin = beta;
   }
 
-  NumericalPoint nativeParameters(inP);
+  Point nativeParameters(inP);
   nativeParameters[0] = alpha;
   nativeParameters[1] = beta;
 
@@ -185,20 +185,20 @@ NumericalPoint WeibullMuSigma::operator () (const NumericalPoint & inP) const
 }
 
 
-NumericalPoint WeibullMuSigma::inverse(const NumericalPoint & inP) const
+Point WeibullMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const NumericalScalar alpha = inP[0];
-  const NumericalScalar beta = inP[1];
-  const NumericalScalar gamma = inP[2];
+  const Scalar alpha = inP[0];
+  const Scalar beta = inP[1];
+  const Scalar gamma = inP[2];
 
-  if (alpha <= 0.0) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (beta <= 0.0) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
 
-  const NumericalScalar mu = gamma + alpha * SpecFunc::Gamma(1.0 + 1.0 / beta);
-  const NumericalScalar sigma = alpha * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta), 2.0));
+  const Scalar mu = gamma + alpha * SpecFunc::Gamma(1.0 + 1.0 / beta);
+  const Scalar sigma = alpha * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta), 2.0));
 
-  NumericalPoint muSigmaParameters(inP);
+  Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;
   muSigmaParameters[1] = sigma;
 
@@ -207,7 +207,7 @@ NumericalPoint WeibullMuSigma::inverse(const NumericalPoint & inP) const
 
 
 /* Parameters value and description accessor */
-void WeibullMuSigma::setValues(const NumericalPoint & inP)
+void WeibullMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   mu_ = inP[0];
@@ -215,9 +215,9 @@ void WeibullMuSigma::setValues(const NumericalPoint & inP)
   gamma_ = inP[2];
 }
 
-NumericalPoint WeibullMuSigma::getValues() const
+Point WeibullMuSigma::getValues() const
 {
-  NumericalPoint point(3);
+  Point point(3);
   point[0] = mu_;
   point[1] = sigma_;
   point[2] = gamma_;

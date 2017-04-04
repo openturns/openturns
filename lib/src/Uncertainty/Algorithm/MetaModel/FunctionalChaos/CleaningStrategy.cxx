@@ -24,7 +24,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/ResourceMap.hxx"
 
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CleaningStrategy);
 
-typedef Collection<NumericalScalar> NumericalScalarCollection;
+typedef Collection<Scalar> ScalarCollection;
 
 static const Factory<CleaningStrategy> Factory_CleaningStrategy;
 
@@ -58,7 +58,7 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
   : AdaptiveStrategyImplementation(basis, maximumDimension)
   , currentVectorIndex_(0)
   , maximumSize_(ResourceMap::GetAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize" ))
-  , significanceFactor_(ResourceMap::GetAsNumericalScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
+  , significanceFactor_(ResourceMap::GetAsScalar( "CleaningStrategy-DefaultSignificanceFactor" ))
   , verbose_(verbose)
 {
   // Nothing to do
@@ -69,7 +69,7 @@ CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
 CleaningStrategy::CleaningStrategy(const OrthogonalBasis & basis,
                                    const UnsignedInteger maximumDimension,
                                    const UnsignedInteger maximumSize,
-                                   const NumericalScalar significanceFactor,
+                                   const Scalar significanceFactor,
                                    const Bool verbose)
   : AdaptiveStrategyImplementation(basis, maximumDimension)
   , currentVectorIndex_(0)
@@ -86,7 +86,7 @@ void CleaningStrategy::computeInitialBasis()
 {
   // Start with the first set of vectors
   const UnsignedInteger size = std::min(maximumSize_, maximumDimension_);
-  Psi_k_p_ = NumericalMathFunctionCollection(size);
+  Psi_k_p_ = FunctionCollection(size);
   I_p_ = Indices(size);
   I_p_.fill();
   for (UnsignedInteger i = 0; i < size; ++i) Psi_k_p_[i] = basis_.build(i);
@@ -98,13 +98,13 @@ void CleaningStrategy::computeInitialBasis()
 }
 
 /* Update the basis for the next iteration of approximation */
-void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
-                                   const NumericalScalar residual,
-                                   const NumericalScalar relativeError)
+void CleaningStrategy::updateBasis(const Point & alpha_k,
+                                   const Scalar residual,
+                                   const Scalar relativeError)
 {
   // The dimension will be adapted, so it is not const
   UnsignedInteger dimension = alpha_k.getSize();
-  NumericalScalarCollection coefficients(alpha_k.getCollection());
+  ScalarCollection coefficients(alpha_k.getCollection());
   if (verbose_)
   {
     LOGINFO(OSS() << "initial state:");
@@ -117,20 +117,20 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
   removedPsi_k_ranks_ = Indices(0);
   conservedPsi_k_ranks_ = Indices(I_p_.getSize());
   conservedPsi_k_ranks_.fill();
-  NumericalScalarCollection removedCoefficients(0);
+  ScalarCollection removedCoefficients(0);
 
   // We do the cleaning based on a variance criterion, so we must exclude the first coefficient from the cleaning as it is only related to the mean. As a result, there is nothing to do if we have just one coefficient.
   if (dimension > 1)
   {
     // We keep at most maximumSize_ elements, the ones that have the largest magnitude and have a magnitude larger or equal to maximumMagnitude * significanceFactor
     // First, find the extrem magnitudes.
-    NumericalScalar largest = std::abs(coefficients[1]);
-    NumericalScalar smallest = largest;
-    NumericalScalar secondSmallest = smallest;
+    Scalar largest = std::abs(coefficients[1]);
+    Scalar smallest = largest;
+    Scalar secondSmallest = smallest;
     UnsignedInteger rankSmallest = 1;
     for (UnsignedInteger i = 2; i < dimension; ++i)
     {
-      const NumericalScalar tmp = std::abs(coefficients[i]);
+      const Scalar tmp = std::abs(coefficients[i]);
       if (tmp > largest) largest = tmp;
       if (tmp < smallest)
       {
@@ -212,7 +212,7 @@ void CleaningStrategy::updateBasis(const NumericalPoint & alpha_k,
   // If we have not generated all the vectors, go to the next one
   if (currentVectorIndex_ < maximumDimension_)
   {
-    const NumericalMathFunction newVector(basis_.build(currentVectorIndex_));
+    const Function newVector(basis_.build(currentVectorIndex_));
     Psi_k_p_.add(newVector);
     I_p_.add(currentVectorIndex_);
     addedPsi_k_ranks_ = Indices(1, I_p_.getSize() - 1);
@@ -270,12 +270,12 @@ void CleaningStrategy::setMaximumSize(const UnsignedInteger maximumSize)
 }
 
 /* Significance factor */
-NumericalScalar CleaningStrategy::getSignificanceFactor() const
+Scalar CleaningStrategy::getSignificanceFactor() const
 {
   return significanceFactor_;
 }
 
-void CleaningStrategy::setSignificanceFactor(const NumericalScalar significanceFactor)
+void CleaningStrategy::setSignificanceFactor(const Scalar significanceFactor)
 {
   significanceFactor_ = significanceFactor;
 }

@@ -29,7 +29,7 @@ try:
     formulas = Description(outputFunction.getSize())
     formulas[0] = "3.0 - u1 * u2"
 
-    limitState = NumericalMathFunction(inputFunction, outputFunction, formulas)
+    limitState = Function(inputFunction, outputFunction, formulas)
 
     dim = limitState.getInputDimension()
 
@@ -37,14 +37,14 @@ try:
     # Probabilistic model
     #
 
-    mean = NumericalPoint(dim, 0.0)
+    mean = Point(dim, 0.0)
 
-    sigma = NumericalPoint(dim, 1.0)
+    sigma = Point(dim, 1.0)
 
     R = CorrelationMatrix(dim)
     myDistribution = Normal(mean, sigma, R)
 
-    start = NumericalPoint(dim, 1.0)
+    start = Point(dim, 1.0)
 
     #
     # Limit state

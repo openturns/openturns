@@ -22,7 +22,7 @@
 #define OPENTURNS_LINEARMODELFACTORY_HXX
 
 #include "openturns/LinearModel.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,15 +37,15 @@ class OT_API LinearModelFactory
 {
 public:
 
-  typedef PersistentCollection<NumericalScalar>    NumericalScalarPersistentCollection;
+  typedef PersistentCollection<Scalar>    ScalarPersistentCollection;
 
   /** Default constructor */
   LinearModelFactory();
 
   /** LinearModel creation */
-  LinearModel build(const NumericalSample & samplePred,
-                    const NumericalSample & sampleLab,
-                    const NumericalScalar levelValue = ResourceMap::GetAsNumericalScalar( "LinearModelFactory-DefaultLevelValue" )) const;
+  LinearModel build(const Sample & samplePred,
+                    const Sample & sampleLab,
+                    const Scalar levelValue = ResourceMap::GetAsScalar( "LinearModelFactory-DefaultLevelValue" )) const;
 
 }; /* class LinearModelFactory */
 

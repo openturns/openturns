@@ -24,7 +24,7 @@ coefficients : 2-d sequence of float
 
 Returns
 -------
-composedMetamodel : :class:`~openturns.NumericalMathFunction`
+composedMetamodel : :class:`~openturns.Function`
     :math:`\tilde{f} =  \sum_{k \in K} \vect{\alpha}_k \Psi_k`"
 
 // ---------------------------------------------------------------------
@@ -34,7 +34,7 @@ composedMetamodel : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-metamodel : :class:`~openturns.NumericalMathFunction`
+metamodel : :class:`~openturns.Function`
     :math:`\tilde{g} = \sum_{k \in K} \vect{\alpha}_k \Psi_k \circ T`."
 
 // ---------------------------------------------------------------------
@@ -44,7 +44,7 @@ metamodel : :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-composedModel : :class:`~openturns.NumericalMathFunction`
+composedModel : :class:`~openturns.Function`
     :math:`f = g\circ T^{-1}`."
 
 // ---------------------------------------------------------------------
@@ -74,7 +74,7 @@ indices : :class:`~openturns.Indices`
 
 Returns
 -------
-invTransf : :class:`~openturns.NumericalMathFunction`
+invTransf : :class:`~openturns.Function`
      :math:`T^{-1}` such that :math:`T(\vect{X}) = \vect{Z}`."
 
 // ---------------------------------------------------------------------
@@ -94,7 +94,7 @@ basis : :class:`~openturns.OrthogonalBasis`
 
 Returns
 -------
-basis : list of :class:`~openturns.NumericalMathFunction`
+basis : list of :class:`~openturns.Function`
     Collection of the *K* functions  :math:`(\Psi_k)_{k\in K}`  used in the 
     decomposition."
 
@@ -105,5 +105,5 @@ basis : list of :class:`~openturns.NumericalMathFunction`
 
 Returns
 -------
-transformation : :class:`~openturns.NumericalMathFunction`
+transformation : :class:`~openturns.Function`
     Transformation :math:`T` such that :math:`T(\vect{X}) = \vect{Z}`."

@@ -63,12 +63,12 @@ public:
   UnsignedInteger getMaximumOuterSampling() const;
 
   /** Maximum coefficient of variation accessor */
-  void setMaximumCoefficientOfVariation(const NumericalScalar maximumCoefficientOfVariation);
-  NumericalScalar getMaximumCoefficientOfVariation() const;
+  void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation);
+  Scalar getMaximumCoefficientOfVariation() const;
 
   /** Maximum standard deviation accessor */
-  void setMaximumStandardDeviation(const NumericalScalar maximumStandardDeviation);
-  NumericalScalar getMaximumStandardDeviation() const;
+  void setMaximumStandardDeviation(const Scalar maximumStandardDeviation);
+  Scalar getMaximumStandardDeviation() const;
 
   /** Block size accessor */
   void setBlockSize(const UnsignedInteger blockSize);
@@ -89,7 +89,7 @@ public:
   virtual void run();
 
   /** Draw the probability convergence at the given level */
-  Graph drawProbabilityConvergence(const NumericalScalar level = ResourceMap::GetAsNumericalScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -98,7 +98,7 @@ public:
   void load(Advocate & adv);
 
   /** Progress callback */
-  typedef void (*ProgressCallback)(NumericalScalar, void * data);
+  typedef void (*ProgressCallback)(Scalar, void * data);
   void setProgressCallback(ProgressCallback callBack, void * data = 0);
 
   /** Stop callback */
@@ -111,7 +111,7 @@ protected:
   void setResult(const SimulationResult & result);
 
   /** Compute the block sample and the points that realized the event */
-  virtual NumericalSample computeBlockSample();
+  virtual Sample computeBlockSample();
 
   /** For save/load mechanism*/
   Simulation(const Bool verbose = true,
@@ -141,10 +141,10 @@ private:
   UnsignedInteger maximumOuterSampling_;
 
   // Maximum coefficient of variation allowed for convergence
-  NumericalScalar maximumCoefficientOfVariation_;
+  Scalar maximumCoefficientOfVariation_;
 
   // Maximum standard deviation allowed for convergence
-  NumericalScalar maximumStandardDeviation_;
+  Scalar maximumStandardDeviation_;
 
   // Do we have to echo all the intermediate results?
   Bool verbose_;

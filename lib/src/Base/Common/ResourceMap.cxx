@@ -101,9 +101,14 @@ UnsignedInteger ResourceMap::GetAsUnsignedInteger(String key)
   return GetInstance().lock().getAsUnsignedInteger( key );
 }
 
-NumericalScalar ResourceMap::GetAsNumericalScalar(String key)
+Scalar ResourceMap::GetAsScalar(String key)
 {
-  return GetInstance().lock().getAsNumericalScalar( key );
+  return GetInstance().lock().getAsScalar( key );
+}
+
+Scalar ResourceMap::GetAsNumericalScalar(String key)
+{
+  return GetAsScalar(key);
 }
 
 /* Get the size of the map */
@@ -128,12 +133,15 @@ void ResourceMap::SetAsUnsignedInteger(String key, UnsignedInteger value)
   GetInstance().lock().setAsUnsignedInteger( key, value );
 }
 
-void ResourceMap::SetAsNumericalScalar(String key, NumericalScalar value)
+void ResourceMap::SetAsScalar(String key, Scalar value)
 {
-  GetInstance().lock().setAsNumericalScalar( key, value );
+  GetInstance().lock().setAsScalar( key, value );
 }
 
-
+void ResourceMap::SetAsNumericalScalar(String key, Scalar value)
+{
+  SetAsScalar(key, value);
+}
 
 /* Default constructor */
 ResourceMap::ResourceMap()
@@ -173,9 +181,9 @@ UnsignedInteger ResourceMap::getAsUnsignedInteger(String key) const
   return value;
 }
 
-NumericalScalar ResourceMap::getAsNumericalScalar(String key) const
+Scalar ResourceMap::getAsScalar(String key) const
 {
-  NumericalScalar value = -1.0;
+  Scalar value = -1.0;
   String st = get( key );
   std::istringstream iss( st );
   iss >> value;
@@ -204,7 +212,7 @@ void ResourceMap::setAsUnsignedInteger(String key, UnsignedInteger value)
   set( key, OSS() << value );
 }
 
-void ResourceMap::setAsNumericalScalar(String key, NumericalScalar value)
+void ResourceMap::setAsScalar(String key, Scalar value)
 {
   set( key, OSS() << value );
 }
@@ -297,7 +305,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SpecFunc parameters
   setAsUnsignedInteger( "SpecFunc-MaximumIteration", 1000 );
-  setAsNumericalScalar( "SpecFunc-Precision", 2.0e-16 );
+  setAsScalar( "SpecFunc-Precision", 2.0e-16 );
 
   // GramProxy parameters
   setAsUnsignedInteger( "DesignProxy-DefaultCacheSize", 16777216 );// 2^24=16777216=128 Mio
@@ -306,30 +314,30 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "KFold-DefaultK", 10 );
 
   // BlendedStep parameters //
-  setAsNumericalScalar( "BlendedStep-DefaultEta", 1.0 );
+  setAsScalar( "BlendedStep-DefaultEta", 1.0 );
 
   // CenteredFiniteDifferenceGradient parameters //
-  setAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-5 );
+  setAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-5 );
 
   // CenteredFiniteDifferenceHessian parameters //
-  setAsNumericalScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon", 1.0e-4 );
+  setAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon", 1.0e-4 );
 
   // NonCenteredFiniteDifferenceGradient parameters //
-  setAsNumericalScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-7 );
+  setAsScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-7 );
 
-  // PiecewiseHermiteEvaluationImplementation parameters //
-  setAsNumericalScalar( "PiecewiseHermiteEvaluation-EpsilonRegular", 1.0e-12 );
+  // PiecewiseHermiteEvaluation parameters //
+  setAsScalar( "PiecewiseHermiteEvaluation-EpsilonRegular", 1.0e-12 );
 
-  // PiecewiseLinearEvaluationImplementation parameters //
-  setAsNumericalScalar( "PiecewiseLinearEvaluation-EpsilonRegular", 1.0e-12 );
+  // PiecewiseLinearEvaluation parameters //
+  setAsScalar( "PiecewiseLinearEvaluation-EpsilonRegular", 1.0e-12 );
 
   // UniVariatePolynomialImplementation parameters //
   setAsUnsignedInteger( "UniVariatePolynomial-SmallDegree", 400 );
 
   // Pie parameters //
-  setAsNumericalScalar( "Pie-HorizontalMargin", 0.3 );
-  setAsNumericalScalar( "Pie-VerticalMargin", 0.1 );
-  setAsNumericalScalar( "Pie-LabelThreshold", 0.02 );
+  setAsScalar( "Pie-HorizontalMargin", 0.3 );
+  setAsScalar( "Pie-VerticalMargin", 0.1 );
+  setAsScalar( "Pie-LabelThreshold", 0.02 );
 
   // DrawableImplementation parameters //
   set( "Drawable-NoSpecifiedLabel", "" );
@@ -347,7 +355,7 @@ void ResourceMap::loadDefaultConfiguration()
   set( "Graph-NoSpecifiedLabel", "" );
   setAsUnsignedInteger( "Graph-DefaultWidth", 640 );
   setAsUnsignedInteger( "Graph-DefaultHeight", 480 );
-  setAsNumericalScalar( "Graph-DefaultLegendFontSize", 1.0 );
+  setAsScalar( "Graph-DefaultLegendFontSize", 1.0 );
 
   // Contour parameters //
   setAsUnsignedInteger( "Contour-DefaultLevelsNumber", 10 );
@@ -356,79 +364,79 @@ void ResourceMap::loadDefaultConfiguration()
   setAsBool( "IntervalMesher-UseDiamond", false );
 
   // SQP parameters //
-  setAsNumericalScalar( "SQP-DefaultTau", 0.5 );
-  setAsNumericalScalar( "SQP-DefaultOmega", 1.0e-4 );
-  setAsNumericalScalar( "SQP-DefaultSmooth", 1.2 );
+  setAsScalar( "SQP-DefaultTau", 0.5 );
+  setAsScalar( "SQP-DefaultOmega", 1.0e-4 );
+  setAsScalar( "SQP-DefaultSmooth", 1.2 );
 
   // TNC parameters //
   setAsUnsignedInteger( "TNC-DefaultMaxCGit", 50 );
-  setAsNumericalScalar( "TNC-DefaultEta", 0.25 );
-  setAsNumericalScalar( "TNC-DefaultStepmx", 10.0 );
-  setAsNumericalScalar( "TNC-DefaultAccuracy", 1.0e-4 );
-  setAsNumericalScalar( "TNC-DefaultFmin", 1.0 );
-  setAsNumericalScalar( "TNC-DefaultRescale", 1.3 );
+  setAsScalar( "TNC-DefaultEta", 0.25 );
+  setAsScalar( "TNC-DefaultStepmx", 10.0 );
+  setAsScalar( "TNC-DefaultAccuracy", 1.0e-4 );
+  setAsScalar( "TNC-DefaultFmin", 1.0 );
+  setAsScalar( "TNC-DefaultRescale", 1.3 );
 
   // AbdoRackwitz parameters //
-  setAsNumericalScalar( "AbdoRackwitz-DefaultTau", 0.5 );
-  setAsNumericalScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
-  setAsNumericalScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
+  setAsScalar( "AbdoRackwitz-DefaultTau", 0.5 );
+  setAsScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
+  setAsScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
 
   // OptimizationAlgorithm parameters //
-  setAsNumericalScalar( "OptimizationAlgorithm-DefaultLevelValue", 0.0 );
+  setAsScalar( "OptimizationAlgorithm-DefaultLevelValue", 0.0 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIteration", 100 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
-  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
-  setAsNumericalScalar( "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5 );
-  
+  setAsScalar( "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5 );
+  setAsScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );
+  setAsScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
+  setAsScalar( "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5 );
+
   // EfficientGlobalOptimization parameters //
   setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
   setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
   setAsUnsignedInteger( "EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
-  setAsNumericalScalar( "EfficientGlobalOptimization-DefaultImprovementFactor", 1.0);
-  setAsNumericalScalar( "EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
-  setAsNumericalScalar( "EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
+  setAsScalar( "EfficientGlobalOptimization-DefaultImprovementFactor", 1.0);
+  setAsScalar( "EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
+  setAsScalar( "EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
 
   // Cobyla parameters //
-  setAsNumericalScalar( "Cobyla-DefaultRhoBeg", 0.1 );
+  setAsScalar( "Cobyla-DefaultRhoBeg", 0.1 );
 
   // SolverImplementation parameters //
-  setAsNumericalScalar( "Solver-DefaultAbsoluteError",  1.0e-5 );
-  setAsNumericalScalar( "Solver-DefaultRelativeError",  1.0e-5 );
-  setAsNumericalScalar( "Solver-DefaultResidualError",  1.0e-8 );
+  setAsScalar( "Solver-DefaultAbsoluteError",  1.0e-5 );
+  setAsScalar( "Solver-DefaultRelativeError",  1.0e-5 );
+  setAsScalar( "Solver-DefaultResidualError",  1.0e-8 );
   setAsUnsignedInteger( "Solver-DefaultMaximumFunctionEvaluation", 100 );
 
   // GaussKronrod parameters //
   setAsUnsignedInteger( "GaussKronrod-MaximumSubIntervals", 100 );
-  setAsNumericalScalar( "GaussKronrod-MaximumError",  1.0e-12 );
+  setAsScalar( "GaussKronrod-MaximumError",  1.0e-12 );
 
   // GaussLegendre parameters //
   setAsUnsignedInteger( "GaussLegendre-DefaultMarginalIntegrationPointsNumber", 64);
 
   // IteratedQuadrature parameters //
   setAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 32 );
-  setAsNumericalScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
+  setAsScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
 
   // KarhunenLoeveQuadratureFactory parameters //
-  setAsNumericalScalar( "KarhunenLoeveQuadratureFactory-RegularizationFactor", 0.0);
+  setAsScalar( "KarhunenLoeveQuadratureFactory-RegularizationFactor", 0.0);
 
   // KarhunenLoeveP1Factory parameters //
-  setAsNumericalScalar( "KarhunenLoeveP1Factory-RegularizationFactor", 0.0);
+  setAsScalar( "KarhunenLoeveP1Factory-RegularizationFactor", 0.0);
 
   // KarhunenLoeveP1Algorithm parameters //
-  setAsNumericalScalar( "KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
+  setAsScalar( "KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
 
   // AdaptiveStieltjesAlgorithm parameters //
   setAsUnsignedInteger( "AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64 );
-  setAsNumericalScalar( "AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12 );
+  setAsScalar( "AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12 );
 
   // LinearModelFactory parameters //
-  setAsNumericalScalar( "LinearModelFactory-DefaultLevelValue", 0.95 );
+  setAsScalar( "LinearModelFactory-DefaultLevelValue", 0.95 );
 
   // LinearModelTest parameters //
-  setAsNumericalScalar( "LinearModelTest-DefaultLevel", 0.95 );
-  setAsNumericalScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5 );
+  setAsScalar( "LinearModelTest-DefaultLevel", 0.95 );
+  setAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5 );
   setAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize", 1000 );
   set( "LinearModelTest-DefaultDurbinWatsonHypothesis", "Equal" );
 
@@ -457,7 +465,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsBool( "MartinezSensitivityAlgorithm-UseAsymptoticInterval", false );
   setAsUnsignedInteger( "SobolIndicesAlgorithm-DefaultBlockSize", 1 );
   setAsUnsignedInteger( "SobolIndicesAlgorithm-DefaultBootstrapSize", 100 );
-  setAsNumericalScalar( "SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel", 0.95 );
+  setAsScalar( "SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel", 0.95 );
 
   // FAST parameters //
   setAsUnsignedInteger( "FAST-DefaultResamplingSize", 1 );
@@ -467,31 +475,31 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "RandomGenerator-InitialSeed", 0 );
 
   // CovarianceModelImplementation parameters //
-  setAsNumericalScalar( "CovarianceModel-DefaultNuggetFactor", 1e-12 );
-  setAsNumericalScalar( "SpectralModel-DefaultTMin", -5.0 );
-  setAsNumericalScalar( "SpectralModel-DefaultTMax",  5.0 );
+  setAsScalar( "CovarianceModel-DefaultNuggetFactor", 1e-12 );
+  setAsScalar( "SpectralModel-DefaultTMin", -5.0 );
+  setAsScalar( "SpectralModel-DefaultTMax",  5.0 );
   setAsUnsignedInteger( "SpectralModel-DefaultPointNumber",  129 );
 
   // SpectralModel parameters //
-  setAsNumericalScalar( "SpectralModel-DefaultMinimumFrequency", -5.0 );
-  setAsNumericalScalar( "SpectralModel-DefaultMaximumFrequency",  5.0 );
+  setAsScalar( "SpectralModel-DefaultMinimumFrequency", -5.0 );
+  setAsScalar( "SpectralModel-DefaultMaximumFrequency",  5.0 );
   setAsUnsignedInteger( "SpectralModel-DefaultFrequencyNumber",  129 );
 
   // FieldImplementation parameters //
   setAsUnsignedInteger( "Field-LevelNumber", 30 );
-  setAsNumericalScalar( "Field-ArrowRatio", 0.01 );
-  setAsNumericalScalar( "Field-ArrowScaling", 1.0 );
+  setAsScalar( "Field-ArrowRatio", 0.01 );
+  setAsScalar( "Field-ArrowScaling", 1.0 );
 
-  // NumericalSampleImplementation parameters
-  setAsUnsignedInteger( "NumericalSample-SmallKendallTau", 23 );
-  setAsUnsignedInteger("NumericalSample-PrintEllipsisThreshold", 1000);
-  setAsUnsignedInteger("NumericalSample-PrintEllipsisSize", 3);
+  // SampleImplementation parameters
+  setAsUnsignedInteger( "Sample-SmallKendallTau", 23 );
+  setAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
+  setAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
 
   // DomainImplementation parameters
-  setAsNumericalScalar( "Domain-SmallVolume",   1.0e-12 );
+  setAsScalar( "Domain-SmallVolume",   1.0e-12 );
 
   // Mesh parameters
-  setAsNumericalScalar( "Mesh-VertexEpsilon", 1.0e-12 );
+  setAsScalar( "Mesh-VertexEpsilon", 1.0e-12 );
   setAsUnsignedInteger( "Mesh-LargeSize", 5000 );
   setAsUnsignedInteger( "Mesh-UseKDTree", 1 );
 
@@ -505,16 +513,16 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "ComplexTensor-size-visible-in-str-from", 6 );
 
   // MatrixImplementation parameters //
-  setAsNumericalScalar( "Matrix-DefaultSmallPivot", 1.0e-7  );
-  setAsNumericalScalar( "Matrix-SymmetryThreshold", 1.0e-12 );
+  setAsScalar( "Matrix-DefaultSmallPivot", 1.0e-7  );
+  setAsScalar( "Matrix-SymmetryThreshold", 1.0e-12 );
 
   // BernsteinCopulaFactory parameters //
   setAsBool( "BernsteinCopulaFactory-Parallel", false );
 
   // BurrFactory parameters //
-  setAsNumericalScalar( "BurrFactory-AbsolutePrecision", 1.0e-12 );
-  setAsNumericalScalar( "BurrFactory-RelativePrecision", 1.0e-12 );
-  setAsNumericalScalar( "BurrFactory-ResidualPrecision", 1.0e-12 );
+  setAsScalar( "BurrFactory-AbsolutePrecision", 1.0e-12 );
+  setAsScalar( "BurrFactory-RelativePrecision", 1.0e-12 );
+  setAsScalar( "BurrFactory-ResidualPrecision", 1.0e-12 );
   setAsUnsignedInteger( "BurrFactory-MaximumIteration", 10 );
 
   // ConditionalDistribution parameters //
@@ -523,33 +531,33 @@ void ResourceMap::loadDefaultConfiguration()
 
   // CompositeDistribution parameters //
   setAsUnsignedInteger( "CompositeDistribution-StepNumber", 256 );
-  setAsNumericalScalar( "CompositeDistribution-SolverEpsilon", 1.0e-10 );
+  setAsScalar( "CompositeDistribution-SolverEpsilon", 1.0e-10 );
 
   // ComposedDistribution parameters //
   setAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
-  
+
   // DirichletFactory parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
   setAsUnsignedInteger( "Dirichlet-DefaultIntegrationSize", 50 );
 
   // DirichletFactory parameters //
-  setAsNumericalScalar( "DirichletFactory-ParametersEpsilon", 1.0e-12 );
+  setAsScalar( "DirichletFactory-ParametersEpsilon", 1.0e-12 );
   setAsUnsignedInteger( "DirichletFactory-MaximumIteration", 10 );
 
   // FisherSnedecorFactory parameters //
-  setAsNumericalScalar( "FisherSnedecorFactory-D1LowerBound", 1.0e-2 );
-  setAsNumericalScalar( "FisherSnedecorFactory-D2LowerBound", 1.0e-2 );
+  setAsScalar( "FisherSnedecorFactory-D1LowerBound", 1.0e-2 );
+  setAsScalar( "FisherSnedecorFactory-D2LowerBound", 1.0e-2 );
 
   // GeneralizedExtremeValue parameters //
-  setAsNumericalScalar( "GeneralizedExtremeValue-XiThreshold", 1.0e-6 );
+  setAsScalar( "GeneralizedExtremeValue-XiThreshold", 1.0e-6 );
 
   // GeneralizedParetoFactory parameters //
   setAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize", 20 );
   setAsUnsignedInteger( "GeneralizedParetoFactory-MaximumEvaluationNumber", 1000 );
-  setAsNumericalScalar( "GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10 );
-  setAsNumericalScalar( "GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10 );
-  setAsNumericalScalar( "GeneralizedParetoFactory-MaximumObjectiveError", 1.0e-10 );
-  setAsNumericalScalar( "GeneralizedParetoFactory-MaximumConstraintError", 1.0e-10 );
+  setAsScalar( "GeneralizedParetoFactory-MaximumAbsoluteError", 1.0e-10 );
+  setAsScalar( "GeneralizedParetoFactory-MaximumRelativeError", 1.0e-10 );
+  setAsScalar( "GeneralizedParetoFactory-MaximumObjectiveError", 1.0e-10 );
+  setAsScalar( "GeneralizedParetoFactory-MaximumConstraintError", 1.0e-10 );
 
   // InverseNormalFactory parameters //
   set( "InverseNormalFactory-Method", "MLE" );
@@ -562,45 +570,45 @@ void ResourceMap::loadDefaultConfiguration()
   // KernelSmoothing parameters //
   setAsUnsignedInteger( "KernelSmoothing-SmallSize", 250 );
   setAsUnsignedInteger( "KernelSmoothing-BinNumber", 1024 );
-  setAsNumericalScalar( "KernelSmoothing-CutOffPlugin", 5.0 );
-  setAsNumericalScalar( "KernelSmoothing-AbsolutePrecision", 0.0 );
-  setAsNumericalScalar( "KernelSmoothing-RelativePrecision", 1.0e-5 );
-  setAsNumericalScalar( "KernelSmoothing-ResidualPrecision", 1.0e-10 );
+  setAsScalar( "KernelSmoothing-CutOffPlugin", 5.0 );
+  setAsScalar( "KernelSmoothing-AbsolutePrecision", 0.0 );
+  setAsScalar( "KernelSmoothing-RelativePrecision", 1.0e-5 );
+  setAsScalar( "KernelSmoothing-ResidualPrecision", 1.0e-10 );
   setAsUnsignedInteger( "KernelSmoothing-MaximumIteration", 50 );
 
   // LogNormal parameters //
   setAsUnsignedInteger( "LogNormal-CharacteristicFunctionIntegrationNodes", 256 );
-  setAsNumericalScalar( "LogNormal-CharacteristicFunctionSmallSigmaThreshold", 0.2 );
+  setAsScalar( "LogNormal-CharacteristicFunctionSmallSigmaThreshold", 0.2 );
 
   // LogNormalFactory parameters //
   setAsUnsignedInteger( "LogNormalFactory-EstimationMethod", 0 );
-  setAsNumericalScalar( "LogNormalFactory-AbsolutePrecision", 1.0e-12 );
-  setAsNumericalScalar( "LogNormalFactory-RelativePrecision", 1.0e-12 );
-  setAsNumericalScalar( "LogNormalFactory-ResidualPrecision", 1.0e-12 );
+  setAsScalar( "LogNormalFactory-AbsolutePrecision", 1.0e-12 );
+  setAsScalar( "LogNormalFactory-RelativePrecision", 1.0e-12 );
+  setAsScalar( "LogNormalFactory-ResidualPrecision", 1.0e-12 );
   setAsUnsignedInteger( "LogNormalFactory-MaximumIteration", 50 );
 
   // Meixner parameters //
   setAsUnsignedInteger( "MeixnerDistribution-CDFIntegrationNodesNumber", 32 );
   setAsUnsignedInteger( "MeixnerDistribution-CDFDiscretization", 10000 );
-  setAsNumericalScalar( "MeixnerDistribution-MaximumAbsoluteError", 1.0e-12 );
-  setAsNumericalScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-12 );
-  setAsNumericalScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-12 );
-  setAsNumericalScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-12 );
+  setAsScalar( "MeixnerDistribution-MaximumAbsoluteError", 1.0e-12 );
+  setAsScalar( "MeixnerDistribution-MaximumRelativeError", 1.0e-12 );
+  setAsScalar( "MeixnerDistribution-MaximumConstraintError", 1.0e-12 );
+  setAsScalar( "MeixnerDistribution-MaximumObjectiveError", 1.0e-12 );
 
   // Mixture parameters //
-  setAsNumericalScalar( "Mixture-SmallWeight", 1.0e-12 );
+  setAsScalar( "Mixture-SmallWeight", 1.0e-12 );
   setAsUnsignedInteger( "Mixture-SmallSize", 50 );
   setAsUnsignedInteger( "Mixture-LargeSize", 20 );
   setAsUnsignedInteger( "Mixture-PDFCDFDiscretization", 1000 );
 
   // Multinomial parameters //
   setAsUnsignedInteger( "Multinomial-smallA", 10 );
-  setAsNumericalScalar( "Multinomial-eta", 1.0e-9 );
+  setAsScalar( "Multinomial-eta", 1.0e-9 );
 
   // NegativeBinomialFactory parameters //
-  setAsNumericalScalar( "NegativeBinomialFactory-AbsolutePrecision", 1.0e-12 );
-  setAsNumericalScalar( "NegativeBinomialFactory-RelativePrecision", 1.0e-12 );
-  setAsNumericalScalar( "NegativeBinomialFactory-ResidualPrecision", 1.0e-12 );
+  setAsScalar( "NegativeBinomialFactory-AbsolutePrecision", 1.0e-12 );
+  setAsScalar( "NegativeBinomialFactory-RelativePrecision", 1.0e-12 );
+  setAsScalar( "NegativeBinomialFactory-ResidualPrecision", 1.0e-12 );
   setAsUnsignedInteger( "NegativeBinomialFactory-MaximumIteration", 50 );
 
   // Normal parameters //
@@ -608,50 +616,50 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Normal-MinimumNumberOfPoints", 100000 );
   setAsUnsignedInteger( "Normal-SmallDimension", 6 );
   setAsUnsignedInteger( "Normal-MarginalIntegrationNodesNumber", 16 );
-  setAsNumericalScalar( "Normal-MaximumCDFEpsilon", 5.0e-6 );
-  setAsNumericalScalar( "Normal-MinimumCDFEpsilon", 5.0e-2 );
+  setAsScalar( "Normal-MaximumCDFEpsilon", 5.0e-6 );
+  setAsScalar( "Normal-MinimumCDFEpsilon", 5.0e-2 );
 
   // ProductDistribution parameters //
-  setAsNumericalScalar( "ProductDistribution-LargeCharacteristicFunctionArgument", 10.0 );
+  setAsScalar( "ProductDistribution-LargeCharacteristicFunctionArgument", 10.0 );
 
   // RiceFactory parameters //
-  setAsNumericalScalar( "RiceFactory-AbsolutePrecision", 1.0e-12 );
-  setAsNumericalScalar( "RiceFactory-RelativePrecision", 1.0e-12 );
-  setAsNumericalScalar( "RiceFactory-ResidualPrecision", 1.0e-12 );
+  setAsScalar( "RiceFactory-AbsolutePrecision", 1.0e-12 );
+  setAsScalar( "RiceFactory-RelativePrecision", 1.0e-12 );
+  setAsScalar( "RiceFactory-ResidualPrecision", 1.0e-12 );
   setAsUnsignedInteger( "RiceFactory-MaximumIteration", 10 );
 
   // TrapezoidalFactory parameters //
-  setAsNumericalScalar( "TrapezoidalFactory-RhoBeg", 0.1 );
-  setAsNumericalScalar( "TrapezoidalFactory-RhoEnd", 1.0e-5 );
+  setAsScalar( "TrapezoidalFactory-RhoBeg", 0.1 );
+  setAsScalar( "TrapezoidalFactory-RhoEnd", 1.0e-5 );
   setAsUnsignedInteger( "TrapezoidalFactory-MaximumIteration", 10000 );
 
   // TruncatedDistribution parameters //
-  setAsNumericalScalar( "TruncatedDistribution-DefaultThresholdRealization", 0.5 );
+  setAsScalar( "TruncatedDistribution-DefaultThresholdRealization", 0.5 );
 
   // TruncatedNormalFactory parameters //
-  setAsNumericalScalar( "TruncatedNormalFactory-SigmaLowerBound", 1.0e-4 );
+  setAsScalar( "TruncatedNormalFactory-SigmaLowerBound", 1.0e-4 );
 
   // MaximumLikelihoodFactory parameters //
   setAsUnsignedInteger( "MaximumLikelihoodFactory-MaximumEvaluationNumber", 1000 );
-  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10 );
-  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10 );
-  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumObjectiveError", 1.0e-10 );
-  setAsNumericalScalar( "MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10 );
+  setAsScalar( "MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10 );
+  setAsScalar( "MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10 );
+  setAsScalar( "MaximumLikelihoodFactory-MaximumObjectiveError", 1.0e-10 );
+  setAsScalar( "MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10 );
 
   // MethodOfMomentsFactory parameters //
   setAsUnsignedInteger( "MethodOfMomentsFactory-MaximumEvaluationNumber", 1000 );
-  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumAbsoluteError", 1.0e-10 );
-  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10 );
-  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10 );
-  setAsNumericalScalar( "MethodOfMomentsFactory-MaximumConstraintError", 1.0e-10 );
+  setAsScalar( "MethodOfMomentsFactory-MaximumAbsoluteError", 1.0e-10 );
+  setAsScalar( "MethodOfMomentsFactory-MaximumRelativeError", 1.0e-10 );
+  setAsScalar( "MethodOfMomentsFactory-MaximumObjectiveError", 1.0e-10 );
+  setAsScalar( "MethodOfMomentsFactory-MaximumConstraintError", 1.0e-10 );
 
   // Student parameters //
   setAsUnsignedInteger( "Student-MaximumNumberOfPoints", 10000000 );
   setAsUnsignedInteger( "Student-MinimumNumberOfPoints", 100000 );
   setAsUnsignedInteger( "Student-SmallDimension", 6 );
   setAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber", 16 );
-  setAsNumericalScalar( "Student-MaximumCDFEpsilon", 5.0e-6 );
-  setAsNumericalScalar( "Student-MinimumCDFEpsilon", 5.0e-2 );
+  setAsScalar( "Student-MaximumCDFEpsilon", 5.0e-6 );
+  setAsScalar( "Student-MinimumCDFEpsilon", 5.0e-2 );
 
   // NonCentralStudent parameters //
   setAsUnsignedInteger( "NonCentralStudent-CDFAlgo", 0 );
@@ -660,24 +668,24 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "UserDefined-SmallSize", 10000 );
 
   // AliMikhailHaqCopulaFactory parameters //
-  setAsNumericalScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14 );
+  setAsScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14 );
 
   // FrankCopulaFactory parameters //
-  setAsNumericalScalar( "FrankCopulaFactory-AbsolutePrecision", 1.0e-14 );
-  setAsNumericalScalar( "FrankCopulaFactory-RelativePrecision", 1.0e-14 );
-  setAsNumericalScalar( "FrankCopulaFactory-ResidualPrecision", 1.0e-14 );
+  setAsScalar( "FrankCopulaFactory-AbsolutePrecision", 1.0e-14 );
+  setAsScalar( "FrankCopulaFactory-RelativePrecision", 1.0e-14 );
+  setAsScalar( "FrankCopulaFactory-ResidualPrecision", 1.0e-14 );
   setAsUnsignedInteger( "FrankCopulaFactory-MaximumIteration", 100 );
 
   // RandomMixture parameters //
   setAsUnsignedInteger( "RandomMixture-DefaultBlockMin", 3 );
   setAsUnsignedInteger( "RandomMixture-DefaultBlockMax", 16 );
   setAsUnsignedInteger( "RandomMixture-DefaultMaxSize", 65536 );
-  setAsNumericalScalar( "RandomMixture-DefaultAlpha", 5.0 );
-  setAsNumericalScalar( "RandomMixture-DefaultBeta", 8.5 );
-  setAsNumericalScalar( "RandomMixture-DefaultPDFEpsilon", 1.0e-10 );
-  setAsNumericalScalar( "RandomMixture-DefaultCDFEpsilon", 1.0e-10 );
-  setAsNumericalScalar( "RandomMixture-GraphPDFEpsilon", 1.0e-5 );
-  setAsNumericalScalar( "RandomMixture-GraphCDFEpsilon", 1.0e-5 );
+  setAsScalar( "RandomMixture-DefaultAlpha", 5.0 );
+  setAsScalar( "RandomMixture-DefaultBeta", 8.5 );
+  setAsScalar( "RandomMixture-DefaultPDFEpsilon", 1.0e-10 );
+  setAsScalar( "RandomMixture-DefaultCDFEpsilon", 1.0e-10 );
+  setAsScalar( "RandomMixture-GraphPDFEpsilon", 1.0e-5 );
+  setAsScalar( "RandomMixture-GraphCDFEpsilon", 1.0e-5 );
   setAsUnsignedInteger( "RandomMixture-SmallSize", 100 );
   setAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize", 25 );
   setAsUnsignedInteger( "RandomMixture-MarginalIntegrationNodesNumber", 128 );
@@ -685,65 +693,65 @@ void ResourceMap::loadDefaultConfiguration()
 
   // NumericalMathEvaluation parameters //
   setAsUnsignedInteger( "NumericalMathEvaluation-DefaultPointNumber", 129 );
-  setAsNumericalScalar( "NumericalMathEvaluation-ParameterEpsilon", 1.0e-7 );
+  setAsScalar( "NumericalMathEvaluation-ParameterEpsilon", 1.0e-7 );
 
-  // DualLinearCombinationEvaluationImplementation //
-  setAsNumericalScalar( "DualLinearCombinationEvaluation-SmallCoefficient", 0.0);
+  // DualLinearCombinationEvaluation //
+  setAsScalar( "DualLinearCombinationEvaluation-SmallCoefficient", 0.0);
 
-  // LinearCombinationEvaluationImplementation //
-  setAsNumericalScalar( "LinearCombinationEvaluation-SmallCoefficient", 0.0);
+  // LinearCombinationEvaluation //
+  setAsScalar( "LinearCombinationEvaluation-SmallCoefficient", 0.0);
 
   // DistFunc parameters //
-  setAsNumericalScalar( "DistFunc-Precision", 1.0e-14 );
+  setAsScalar( "DistFunc-Precision", 1.0e-14 );
   setAsUnsignedInteger( "DistFunc-MaximumIteration", 5000 );
 
   // KFactor parameters //
-  setAsNumericalScalar( "KFactor-Precision", 1.0e-8 );
+  setAsScalar( "KFactor-Precision", 1.0e-8 );
   setAsUnsignedInteger( "KFactor-MaximumIteration", 32 );
   setAsUnsignedInteger( "KFactor-DefaultIntegrationNodesNumber", 256 );
 
   // RootStrategyImplementation parameters //
-  setAsNumericalScalar( "RootStrategy-DefaultMaximumDistance", 8.0 );
-  setAsNumericalScalar( "RootStrategy-DefaultStepSize", 1.0 );
+  setAsScalar( "RootStrategy-DefaultMaximumDistance", 8.0 );
+  setAsScalar( "RootStrategy-DefaultStepSize", 1.0 );
 
   // Simulation parameters //
   setAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling", 1000 );
-  setAsNumericalScalar( "Simulation-DefaultMaximumCoefficientOfVariation", 1.0e-1 );
-  setAsNumericalScalar( "Simulation-DefaultMaximumStandardDeviation", 0.0 );
+  setAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation", 1.0e-1 );
+  setAsScalar( "Simulation-DefaultMaximumStandardDeviation", 0.0 );
   setAsUnsignedInteger( "Simulation-DefaultBlockSize", 1 );
 
   // SimulationResultImplementation parameters //
-  setAsNumericalScalar( "SimulationResult-DefaultConfidenceLevel", 0.95 );
+  setAsScalar( "SimulationResult-DefaultConfidenceLevel", 0.95 );
 
   // SimulationSensitivityAnalysis parameters //
   setAsUnsignedInteger( "SimulationSensitivityAnalysis-DefaultSampleMargin", 400 );
 
   // SubsetSampling parameters //
   setAsUnsignedInteger( "SubsetSampling-DefaultMaximumOuterSampling", 10000 );
-  setAsNumericalScalar( "SubsetSampling-DefaultConditionalProbability", 0.1 );
-  setAsNumericalScalar( "SubsetSampling-DefaultProposalRange", 2.0 );
-  setAsNumericalScalar( "SubsetSampling-DefaultBetaMin", 2.0 );
+  setAsScalar( "SubsetSampling-DefaultConditionalProbability", 0.1 );
+  setAsScalar( "SubsetSampling-DefaultProposalRange", 2.0 );
+  setAsScalar( "SubsetSampling-DefaultBetaMin", 2.0 );
 
   // AdaptiveDirectionalSampling parameters //
   setAsUnsignedInteger( "AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension", 3 );
-  setAsNumericalScalar( "AdaptiveDirectionalSampling-DefaultGamma", 0.5 );
+  setAsScalar( "AdaptiveDirectionalSampling-DefaultGamma", 0.5 );
   setAsUnsignedInteger( "AdaptiveDirectionalSampling-DefaultNumberOfSteps", 2 );
 
   // AnalyticalResult parameters //
-  setAsNumericalScalar( "AnalyticalResult-DefaultWidth", 1.0 );
+  setAsScalar( "AnalyticalResult-DefaultWidth", 1.0 );
 
   // StrongMaximumTest parameters //
-  setAsNumericalScalar( "StrongMaximumTest-DefaultDeltaPrecision", 1.0e-7 );
-  setAsNumericalScalar( "StrongMaximumTest-Epsilon", 1.0e-10 );
+  setAsScalar( "StrongMaximumTest-DefaultDeltaPrecision", 1.0e-7 );
+  setAsScalar( "StrongMaximumTest-Epsilon", 1.0e-10 );
 
   // CleaningStrategy parameters //
   setAsUnsignedInteger( "CleaningStrategy-DefaultMaximumSize", 20 );
-  setAsNumericalScalar( "CleaningStrategy-DefaultSignificanceFactor", 1.0e-4 );
+  setAsScalar( "CleaningStrategy-DefaultSignificanceFactor", 1.0e-4 );
 
   // FunctionalChaosAlgorithm parameters //
-  setAsNumericalScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6 );
-  setAsNumericalScalar( "FunctionalChaosAlgorithm-QNorm", 0.5);
-  setAsNumericalScalar( "FunctionalChaosAlgorithm-PValueThreshold", 1.0e-3);
+  setAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6 );
+  setAsScalar( "FunctionalChaosAlgorithm-QNorm", 0.5);
+  setAsScalar( "FunctionalChaosAlgorithm-PValueThreshold", 1.0e-3);
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-SmallSampleSize", 1000);
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree", 10 );
@@ -755,30 +763,30 @@ void ResourceMap::loadDefaultConfiguration()
   setAsBool("GeneralLinearModelAlgorithm-OptimizeParameters", true);
   setAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", true);
   setAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", true);
-  setAsNumericalScalar( "GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
-  setAsNumericalScalar( "GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "GeneralLinearModelAlgorithm-MaximalScaling", 1.0e5 );
-  setAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
-  setAsNumericalScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
+  setAsScalar( "GeneralLinearModelAlgorithm-MeanEpsilon", 1.0e-12 );
+  setAsScalar( "GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13 );
+  setAsScalar( "GeneralLinearModelAlgorithm-MaximalScaling", 1.0e5 );
+  setAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
+  setAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
   set("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
 
   // KrigingAlgorithm parameters //
-  setAsNumericalScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "KrigingAlgorithm-MaximalScaling", 1.0e5 );
+  setAsScalar( "KrigingAlgorithm-StartingScaling", 1.0e-13 );
+  setAsScalar( "KrigingAlgorithm-MaximalScaling", 1.0e5 );
   set("KrigingAlgorithm-LinearAlgebra", "LAPACK");
 
   // SquaredExponential parameters //
-  setAsNumericalScalar( "SquaredExponential-DefaultTheta", 1.0 );
+  setAsScalar( "SquaredExponential-DefaultTheta", 1.0 );
 
   // AbsoluteExponential parameters //
-  setAsNumericalScalar( "AbsoluteExponential-DefaultTheta", 1.0 );
+  setAsScalar( "AbsoluteExponential-DefaultTheta", 1.0 );
 
   // GeneralizedExponential parameters //
-  setAsNumericalScalar( "GeneralizedExponential-DefaultTheta", 1.0 );
+  setAsScalar( "GeneralizedExponential-DefaultTheta", 1.0 );
 
   // MaternModel parameters //
-  setAsNumericalScalar( "MaternModel-DefaultNu", 1.5 );
-  setAsNumericalScalar( "MaternModel-DefaultTheta", 1.0 );
+  setAsScalar( "MaternModel-DefaultNu", 1.5 );
+  setAsScalar( "MaternModel-DefaultTheta", 1.0 );
 
   // WeightedExperimentImplementation parameters //
   setAsUnsignedInteger( "WeightedExperiment-DefaultSize", 100 );
@@ -787,21 +795,21 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree", 5 );
 
   // HyperbolicAnisotropicEnumerateFunction parameters //
-  setAsNumericalScalar( "HyperbolicAnisotropicEnumerateFunction-DefaultQ", 0.4 );
+  setAsScalar( "HyperbolicAnisotropicEnumerateFunction-DefaultQ", 0.4 );
 
   // MarginalTransformationEvaluation parameters //
-  setAsNumericalScalar( "MarginalTransformationEvaluation-DefaultTailThreshold", 0.99 );
+  setAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold", 0.99 );
   setAsUnsignedInteger( "MarginalTransformationEvaluation-Simplify", 1 );
-  setAsNumericalScalar( "MarginalTransformationEvaluation-ParametersEpsilon", 1.0e-14 );
+  setAsScalar( "MarginalTransformationEvaluation-ParametersEpsilon", 1.0e-14 );
 
   // DistributionImplementation parameters //
   setAsUnsignedInteger( "Distribution-DefaultPointNumber", 129 );
-  setAsNumericalScalar( "Distribution-DefaultQuantileEpsilon", 1.0e-12 );
-  setAsNumericalScalar( "Distribution-DefaultPDFEpsilon", 1.0e-14 );
-  setAsNumericalScalar( "Distribution-DefaultCDFEpsilon", 1.0e-14 );
+  setAsScalar( "Distribution-DefaultQuantileEpsilon", 1.0e-12 );
+  setAsScalar( "Distribution-DefaultPDFEpsilon", 1.0e-14 );
+  setAsScalar( "Distribution-DefaultCDFEpsilon", 1.0e-14 );
   setAsUnsignedInteger( "Distribution-DefaultQuantileIteration", 100 );
-  setAsNumericalScalar( "Distribution-QMin", 0.15 );
-  setAsNumericalScalar( "Distribution-QMax", 0.85 );
+  setAsScalar( "Distribution-QMin", 0.15 );
+  setAsScalar( "Distribution-QMax", 0.85 );
   setAsUnsignedInteger( "Distribution-DefaultIntegrationNodesNumber", 255 );
   setAsUnsignedInteger( "Distribution-DefaultLevelNumber", 10 );
   setAsUnsignedInteger( "Distribution-DefaultQuantileCacheSize", 128 );
@@ -816,57 +824,57 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber", 256 );
 
   // DiscreteDistribution parameters //
-  setAsNumericalScalar( "DiscreteDistribution-SupportEpsilon", 1.0e-14 );
+  setAsScalar( "DiscreteDistribution-SupportEpsilon", 1.0e-14 );
 
   // DistributionFactoryImplementation parameters //
   setAsUnsignedInteger( "DistributionFactory-DefaultBootstrapSize", 100 );
 
   // OrderStatisticsMarginalChecker //
   setAsUnsignedInteger( "OrderStatisticsMarginalChecker-QuantileIteration", 100 );
-  setAsNumericalScalar( "OrderStatisticsMarginalChecker-OptimizationEpsilon", 1.0e-7 );
+  setAsScalar( "OrderStatisticsMarginalChecker-OptimizationEpsilon", 1.0e-7 );
 
   // MaximumEntropyOrderStatisticsDistribution //
   setAsBool( "MaximumEntropyOrderStatisticsDistribution-UseApproximation", true );
   setAsBool( "MaximumEntropyOrderStatisticsDistribution-CheckMarginals", true );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization", 100 );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision", 2 );
-  setAsNumericalScalar( "MaximumEntropyOrderStatisticsDistribution-SupportShift", 1.0e-15 );
+  setAsScalar( "MaximumEntropyOrderStatisticsDistribution-SupportShift", 1.0e-15 );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration", 10);
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber", 16);
 
   // HMatrix parameters //
   set( "HMatrix-ClusteringAlgorithm", "median" );
-  setAsNumericalScalar( "HMatrix-AdmissibilityFactor", 2.0 );
+  setAsScalar( "HMatrix-AdmissibilityFactor", 2.0 );
   setAsUnsignedInteger( "HMatrix-CompressionMethod", 1 );
-  setAsNumericalScalar( "HMatrix-AssemblyEpsilon", 1.0e-4);
-  setAsNumericalScalar( "HMatrix-RecompressionEpsilon", 1.0e-4);
+  setAsScalar( "HMatrix-AssemblyEpsilon", 1.0e-4);
+  setAsScalar( "HMatrix-RecompressionEpsilon", 1.0e-4);
   setAsUnsignedInteger( "HMatrix-MaxLeafSize", 100);
   setAsUnsignedInteger( "HMatrix-MaxParallelLeaves", 5000);
-  setAsNumericalScalar( "HMatrix-ValidationError", 0.0);
+  setAsScalar( "HMatrix-ValidationError", 0.0);
   setAsUnsignedInteger( "HMatrix-ValidationRerun", 0);
   setAsUnsignedInteger( "HMatrix-ValidationDump", 0);
   setAsBool( "HMatrix-ForceSequential", false);
 
   // GaussianProcess parameters //
-  setAsNumericalScalar( "GaussianProcess-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "GaussianProcess-MaximalScaling", 1.0e5 );
+  setAsScalar( "GaussianProcess-StartingScaling", 1.0e-13 );
+  setAsScalar( "GaussianProcess-MaximalScaling", 1.0e5 );
   setAsUnsignedInteger( "GaussianProcess-GibbsMaximumIteration", 100 );
 
   // SpectralGaussianProcess parameters //
-  setAsNumericalScalar( "SpectralGaussianProcess-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "SpectralGaussianProcess-MaximalScaling", 1.0e5 );
+  setAsScalar( "SpectralGaussianProcess-StartingScaling", 1.0e-13 );
+  setAsScalar( "SpectralGaussianProcess-MaximalScaling", 1.0e5 );
   setAsUnsignedInteger( "SpectralGaussianProcess-CholeskyCacheSize", 16384 );
 
   // WhittleFactory parameters //
-  setAsNumericalScalar( "WhittleFactory-DefaultRhoBeg", 0.1 );
-  setAsNumericalScalar( "WhittleFactory-DefaultRhoEnd", 1.0e-10 );
-  setAsNumericalScalar( "WhittleFactory-DefaultMaxFun", 2000 );
-  setAsNumericalScalar( "WhittleFactory-DefaultStartingPointScale", 1.0 );
-  setAsNumericalScalar( "WhittleFactory-RootEpsilon", 1.0e-6);
+  setAsScalar( "WhittleFactory-DefaultRhoBeg", 0.1 );
+  setAsScalar( "WhittleFactory-DefaultRhoEnd", 1.0e-10 );
+  setAsScalar( "WhittleFactory-DefaultMaxFun", 2000 );
+  setAsScalar( "WhittleFactory-DefaultStartingPointScale", 1.0 );
+  setAsScalar( "WhittleFactory-RootEpsilon", 1.0e-6);
 
   // BoxCoxFactory parameters //
-  setAsNumericalScalar( "BoxCoxFactory-DefaultRhoBeg", 0.1 );
-  setAsNumericalScalar( "BoxCoxFactory-DefaultRhoEnd", 1.0e-10 );
+  setAsScalar( "BoxCoxFactory-DefaultRhoBeg", 0.1 );
+  setAsScalar( "BoxCoxFactory-DefaultRhoEnd", 1.0e-10 );
   setAsUnsignedInteger( "BoxCoxFactory-DefaultMaxFun", 2000 );
   setAsUnsignedInteger( "BoxCoxFactory-DefaultPointNumber", 201 );
 
@@ -874,10 +882,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "VisualTest-KendallPlot-MonteCarloSize", 100 );
 
   // CalibrationStrategyImplementation parameters //
-  setAsNumericalScalar( "CalibrationStrategy-DefaultLowerBound", 0.117 ); // = 0.5 * 0.234
-  setAsNumericalScalar( "CalibrationStrategy-DefaultUpperBound", 0.468 ); // = 2.0 * 0.234
-  setAsNumericalScalar( "CalibrationStrategy-DefaultShrinkFactor", 0.8 );
-  setAsNumericalScalar( "CalibrationStrategy-DefaultExpansionFactor", 1.2 );
+  setAsScalar( "CalibrationStrategy-DefaultLowerBound", 0.117 ); // = 0.5 * 0.234
+  setAsScalar( "CalibrationStrategy-DefaultUpperBound", 0.468 ); // = 2.0 * 0.234
+  setAsScalar( "CalibrationStrategy-DefaultShrinkFactor", 0.8 );
+  setAsScalar( "CalibrationStrategy-DefaultExpansionFactor", 1.2 );
   setAsUnsignedInteger( "CalibrationStrategy-DefaultCalibrationStep", 100 );
 
   // MCMC parameters //
@@ -885,28 +893,28 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger("MCMC-DefaultThinning", 1);
 
   // ARMA parameters //
-  setAsNumericalScalar( "ARMA-MeanEpsilon", 1.0e-14 );
+  setAsScalar( "ARMA-MeanEpsilon", 1.0e-14 );
 
   // ARMALikelihoodFactory parameters //
-  setAsNumericalScalar( "ARMALikelihoodFactory-StartingScaling", 1.0e-13 );
-  setAsNumericalScalar( "ARMALikelihoodFactory-MaximalScaling", 1.0e5 );
-  setAsNumericalScalar( "ARMALikelihoodFactory-DefaultRhoBeg", 0.01 );
-  setAsNumericalScalar( "ARMALikelihoodFactory-DefaultRhoEnd", 1.0e-10 );
+  setAsScalar( "ARMALikelihoodFactory-StartingScaling", 1.0e-13 );
+  setAsScalar( "ARMALikelihoodFactory-MaximalScaling", 1.0e5 );
+  setAsScalar( "ARMALikelihoodFactory-DefaultRhoBeg", 0.01 );
+  setAsScalar( "ARMALikelihoodFactory-DefaultRhoEnd", 1.0e-10 );
   setAsUnsignedInteger( "ARMALikelihoodFactory-DefaultMaxFun", 10000 );
-  setAsNumericalScalar( "ARMALikelihoodFactory-DefaultStartingPointScale", 1.0 );
-  setAsNumericalScalar( "ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
+  setAsScalar( "ARMALikelihoodFactory-DefaultStartingPointScale", 1.0 );
+  setAsScalar( "ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
 
   // FittingTest parameters //
   setAsUnsignedInteger( "FittingTest-ChiSquaredMinFrequency", 5 );
 
   // LeastSquaresMetaModelSelection parameters //
   set("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
-  setAsNumericalScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
-  setAsNumericalScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
+  setAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
+  setAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
 
   // SparseMethod parameters //
-  setAsNumericalScalar("SparseMethod-MaximumErrorFactor", 2.0);
-  setAsNumericalScalar("SparseMethod-ErrorThreshold", 1.0e-3);
+  setAsScalar("SparseMethod-MaximumErrorFactor", 2.0);
+  setAsScalar("SparseMethod-ErrorThreshold", 1.0e-3);
 
   // CholeskyMethod parameters //
   setAsUnsignedInteger("CholeskyMethod-LargeCase", 128);
@@ -918,8 +926,8 @@ void ResourceMap::loadDefaultConfiguration()
   set("TensorApproximationAlgorithm-Method", "GreedyRankOne");
   set("TensorApproximationAlgorithm-DecompositionMethod", "SVD");
   setAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration", 100);
-  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-5);
-  setAsNumericalScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
+  setAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-5);
+  setAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
 }
 
 /* String converter */

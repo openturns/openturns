@@ -1,2 +1,0 @@
-myGradient=class=ConstantNumericalMathGradientImplementation name=constantGradient constant=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=2 values=[1,2,5,7,9,3]
-constantGradient( class=NumericalPoint name=Unnamed dimension=3 values=[7,8,9] ) = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=2 values=[1,2,5,7,9,3]

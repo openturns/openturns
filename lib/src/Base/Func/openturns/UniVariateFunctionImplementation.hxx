@@ -52,17 +52,17 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** UniVariateFunctionImplementation are evaluated as functors */
-  virtual NumericalScalar operator() (const NumericalScalar x) const;
+  virtual Scalar operator() (const Scalar x) const;
 
   /** UniVariateFunctionImplementation gradient */
-  virtual NumericalScalar gradient(const NumericalScalar x) const;
+  virtual Scalar gradient(const Scalar x) const;
 
   /** UniVariateFunctionImplementation hessian */
-  virtual NumericalScalar hessian(const NumericalScalar x) const;
+  virtual Scalar hessian(const Scalar x) const;
 
   /** Method to draw the graph of the function between given bounds */
-  virtual Graph draw (const NumericalScalar xMin,
-                      const NumericalScalar xMax,
+  virtual Graph draw (const Scalar xMin,
+                      const Scalar xMax,
                       const UnsignedInteger pointNumber) const;
 
   /** Method save() stores the object through the StorageManager */

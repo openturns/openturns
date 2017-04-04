@@ -67,7 +67,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     cotire (${SWIG_MODULE_${MODULENAME}_REAL_NAME})
     add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity generate_swig_runtime generate_docstrings)
     add_dependencies (python_unity ${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity)
-    set_source_files_properties (PythonDistributionImplementation.cxx PythonFieldFunctionImplementation.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
+    set_source_files_properties (PythonDistribution.cxx PythonFieldFunction.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
   endif ()
 
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
@@ -118,8 +118,8 @@ ot_add_python_module(typ typ_module.i
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
-                      NumericalPoint.i NumericalPoint_doc.i.in
-                      NumericalPointWithDescription.i NumericalPointWithDescription_doc.i.in
+                      Point.i Point_doc.i.in
+                      PointWithDescription.i PointWithDescription_doc.i.in
                       DomainImplementation.i DomainImplementation_doc.i.in
                       Interval.i Interval_doc.i.in
                       Indices.i Indices_doc.i.in
@@ -141,7 +141,7 @@ ot_add_python_module(typ typ_module.i
                       CovarianceMatrix.i CovarianceMatrix_doc.i.in
                       CorrelationMatrix.i CorrelationMatrix_doc.i.in
                       IdentityMatrix.i IdentityMatrix_doc.i.in
-                      NumericalSample.i NumericalSample_doc.i.in
+                      Sample.i Sample_doc.i.in
                       FieldImplementation.i FieldImplementation_doc.i.in
                       Field.i Field_doc.i.in
                       ProcessSample.i ProcessSample_doc.i.in
@@ -245,34 +245,34 @@ ot_add_python_module(func func_module.i
                       LinearEnumerateFunction.i LinearEnumerateFunction_doc.i.in
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
                       SpecFunc.i SpecFunc_doc.i.in
-                      NumericalMathEvaluationImplementation.i NumericalMathEvaluationImplementation_doc.i.in
-                      NumericalMathGradientImplementation.i NumericalMathGradientImplementation_doc.i.in
-                      NumericalMathHessianImplementation.i NumericalMathHessianImplementation_doc.i.in
-                      NoNumericalMathEvaluationImplementation.i
-                      NoNumericalMathGradientImplementation.i
-                      NoNumericalMathHessianImplementation.i
-                      LinearNumericalMathEvaluationImplementation.i LinearNumericalMathEvaluationImplementation_doc.i.in
-                      LinearNumericalMathGradientImplementation.i LinearNumericalMathGradientImplementation_doc.i.in
-                      QuadraticNumericalMathEvaluationImplementation.i
-                      ConstantNumericalMathGradientImplementation.i
-                      ConstantNumericalMathHessianImplementation.i
-                      ComposedNumericalMathEvaluationImplementation.i
-                      ComposedNumericalMathGradientImplementation.i
-                      ComposedNumericalMathHessianImplementation.i
-                      DualLinearCombinationEvaluationImplementation.i DualLinearCombinationEvaluationImplementation_doc.i.in
-                      DualLinearCombinationGradientImplementation.i DualLinearCombinationGradientImplementation_doc.i.in
-                      DualLinearCombinationHessianImplementation.i DualLinearCombinationHessianImplementation_doc.i.in
+                      EvaluationImplementation.i EvaluationImplementation_doc.i.in
+                      GradientImplementation.i GradientImplementation_doc.i.in
+                      HessianImplementation.i HessianImplementation_doc.i.in
+                      NoEvaluation.i
+                      NoGradient.i
+                      NoHessian.i
+                      LinearEvaluation.i LinearEvaluation_doc.i.in
+                      LinearGradient.i LinearGradient_doc.i.in
+                      QuadraticEvaluation.i
+                      ConstantGradient.i
+                      ConstantHessian.i
+                      ComposedEvaluation.i
+                      ComposedGradient.i
+                      ComposedHessian.i
+                      DualLinearCombinationEvaluation.i DualLinearCombinationEvaluation_doc.i.in
+                      DualLinearCombinationGradient.i DualLinearCombinationGradient_doc.i.in
+                      DualLinearCombinationHessian.i DualLinearCombinationHessian_doc.i.in
                       LinearCombinationFunction.i LinearCombinationFunction_doc.i.in
-                      LinearCombinationEvaluationImplementation.i
-                      LinearCombinationGradientImplementation.i
-                      LinearCombinationHessianImplementation.i
+                      LinearCombinationEvaluation.i
+                      LinearCombinationGradient.i
+                      LinearCombinationHessian.i
                       ParametricFunction.i ParametricFunction_doc.i.in
-                      ProductNumericalMathEvaluationImplementation.i
-                      ProductNumericalMathGradientImplementation.i
-                      ProductNumericalMathHessianImplementation.i
-                      NumericalMathFunctionImplementation.i NumericalMathFunctionImplementation_doc.i.in
+                      ProductEvaluation.i
+                      ProductGradient.i
+                      ProductHessian.i
+                      FunctionImplementation.i FunctionImplementation_doc.i.in
                       ProductFunction.i ProductFunction_doc.i.in
-                      NumericalMathFunction.i NumericalMathFunction_doc.i.in
+                      Function.i Function_doc.i.in
                       TensorizedUniVariateFunctionFactory.i TensorizedUniVariateFunctionFactory_doc.i.in
                       UniVariateFunctionFactory.i UniVariateFunctionFactory_doc.i.in
                       MonomialFunctionFactory.i MonomialFunctionFactory_doc.i.in
@@ -284,26 +284,27 @@ ot_add_python_module(func func_module.i
                       BaseFuncCollection.i
                       FieldFunctionImplementation.i FieldFunctionImplementation_doc.i.in
                       FieldFunction.i FieldFunction_doc.i.in
+                      IndicatorFunction.i IndicatorFunction_doc.i.in
                       ValueFunction.i ValueFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
                       QuadraticFunction.i QuadraticFunction_doc.i.in
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
                       UniVariatePolynomial.i UniVariatePolynomial_doc.i.in
-                      AggregatedNumericalMathEvaluationImplementation.i AggregatedNumericalMathEvaluationImplementation_doc.i.in
+                      AggregatedEvaluation.i AggregatedEvaluation_doc.i.in
                       SymbolicEvaluation.i
                       SymbolicGradient.i
                       SymbolicHessian.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
-                      DatabaseNumericalMathEvaluationImplementation.i DatabaseNumericalMathEvaluationImplementation_doc.i.in
-                      IndicatorNumericalMathEvaluationImplementation.i
-                      PiecewiseLinearEvaluationImplementation.i
-                      PiecewiseHermiteEvaluationImplementation.i
-                      ProductPolynomialEvaluationImplementation.i ProductPolynomialEvaluationImplementation_doc.i.in
-                      ParametricEvaluationImplementation.i
-                      ParametricGradientImplementation.i
-                      ParametricHessianImplementation.i
-                      P1LagrangeEvaluationImplementation.i P1LagrangeEvaluationImplementation_doc.i.in
+                      DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
+                      IndicatorEvaluation.i
+                      PiecewiseLinearEvaluation.i
+                      PiecewiseHermiteEvaluation.i
+                      ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i.in
+                      ParametricEvaluation.i
+                      ParametricGradient.i
+                      ParametricHessian.i
+                      P1LagrangeEvaluation.i P1LagrangeEvaluation_doc.i.in
                       BasisImplementation.i BasisImplementation_doc.i.in
                       Basis.i Basis_doc.i.in
                       BasisSequenceImplementation.i BasisSequenceImplementation_doc.i.in
@@ -311,17 +312,17 @@ ot_add_python_module(func func_module.i
                       BasisSequenceFactoryImplementation.i BasisSequenceFactoryImplementation_doc.i.in
                       BasisSequenceFactory.i BasisSequenceFactory_doc.i.in
                       LARS.i LARS_doc.i.in
-                      BoxCoxEvaluationImplementation.i
+                      BoxCoxEvaluation.i
                       BoxCoxTransform.i BoxCoxTransform_doc.i.in
-                      InverseBoxCoxEvaluationImplementation.i
-                      PythonNumericalMathEvaluationImplementation.cxx
-                      PythonNumericalMathGradientImplementation.cxx
-                      PythonNumericalMathHessianImplementation.cxx
-                      PythonFieldFunctionImplementation.cxx
+                      InverseBoxCoxEvaluation.i
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
+                      PythonFieldFunction.cxx
                       InverseBoxCoxTransform.i InverseBoxCoxTransform_doc.i.in
-                      TrendEvaluationImplementation.i
+                      TrendEvaluation.i
                       TrendTransform.i TrendTransform_doc.i.in
-                      InverseTrendEvaluationImplementation.i
+                      InverseTrendEvaluation.i
                       InverseTrendTransform.i InverseTrendTransform_doc.i.in
                       FunctionalBasis.i
                       FunctionalBasisImplementation.i
@@ -398,9 +399,9 @@ ot_add_python_module(algo algo_module.i
                       KFold.i KFold_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in
-                      PythonNumericalMathEvaluationImplementation.cxx
-                      PythonNumericalMathGradientImplementation.cxx
-                      PythonNumericalMathHessianImplementation.cxx
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
                       KissFFT.i KissFFT_doc.i.in
                       IntegrationAlgorithmImplementation.i IntegrationAlgorithmImplementation_doc.i.in
                       IntegrationAlgorithm.i IntegrationAlgorithm_doc.i.in
@@ -432,7 +433,7 @@ ot_add_python_module(experiment experiment_module.i
                       Combinations.i Combinations_doc.i.in
                       KPermutations.i KPermutations_doc.i.in
                       Tuples.i Tuples_doc.i.in
-                      PythonExperimentImplementation.cxx
+                      PythonExperiment.cxx
                       BaseExperimentTemplateDefs.i
                    )
 
@@ -473,7 +474,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       ComposedDistribution.i ComposedDistribution_doc.i.in
                       ComposedCopula.i ComposedCopula_doc.i.in
                       CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i.in
-                      PythonDistributionImplementation.cxx
+                      PythonDistribution.cxx
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i
                    )
@@ -736,13 +737,13 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosAlgorithm.i FunctionalChaosAlgorithm_doc.i.in
                       KrigingAlgorithm.i KrigingAlgorithm_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
-                      PythonNumericalMathEvaluationImplementation.cxx
-                      PythonNumericalMathGradientImplementation.cxx
-                      PythonNumericalMathHessianImplementation.cxx
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
                       PythonRandomVectorImplementation.cxx
                       CompositeRandomVector.i
-                      EventRandomVectorImplementation.i
-                      EventDomainImplementation.i
+                      EventRandomVector.i
+                      EventDomain.i
                       EventProcess.i
                       Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in

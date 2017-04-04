@@ -18,11 +18,11 @@ namespace OT {
 
   OTMatrixAccessors()
 
-  TriangularMatrix __rmul__(NumericalScalar s) { return s * (*self); }
+  TriangularMatrix __rmul__(Scalar s) { return s * (*self); }
   Matrix __rmul__(const Matrix & m) { return m * (*self); }
 
 #if SWIG_VERSION < 0x030011
-  TriangularMatrix __truediv__(NumericalScalar s) { return (*self) / s; }
+  TriangularMatrix __truediv__(Scalar s) { return (*self) / s; }
 #endif
 
   } // TriangularMatrix

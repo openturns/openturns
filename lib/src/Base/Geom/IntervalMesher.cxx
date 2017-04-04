@@ -97,10 +97,10 @@ Mesh IntervalMesher::build(const Interval & interval,
   {
     // We must insure that the interval bounds will be within the vertices
     const UnsignedInteger n = diamond ? 2 * discretization_[0] - 1 : discretization_[0];
-    NumericalSample vertices(n + 1, 1);
+    Sample vertices(n + 1, 1);
     // First the vertices
-    const NumericalScalar a = interval.getLowerBound()[0];
-    const NumericalScalar b = interval.getUpperBound()[0];
+    const Scalar a = interval.getLowerBound()[0];
+    const Scalar b = interval.getUpperBound()[0];
     vertices[0][0] = a;
     vertices[n][0] = b;
     for (UnsignedInteger i = 1; i < n; ++i) vertices[i][0] = (i * b + (n - i) * a) / n;
@@ -120,8 +120,8 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
     // First the vertices
-    NumericalSample vertices(0, 2);
-    NumericalPoint point(2);
+    Sample vertices(0, 2);
+    Point point(2);
     for (UnsignedInteger j = 0; j <= n; ++j)
     {
       point[1] = ((n - j) * interval.getLowerBound()[1] + j * interval.getUpperBound()[1]) / n;
@@ -149,7 +149,7 @@ Mesh IntervalMesher::build(const Interval & interval,
         const UnsignedInteger d = cellIndex + 2 + m;
         if (diamond)
         {
-          const NumericalPoint center((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
+          const Point center((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
           const UnsignedInteger centerIndex = vertices.getSize();
           vertices.add(center);
           index[0] = a;
@@ -188,8 +188,8 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger n = discretization_[1];
     const UnsignedInteger p = discretization_[2];
     // First the vertices
-    NumericalSample vertices(0, 3);
-    NumericalPoint point(3);
+    Sample vertices(0, 3);
+    Point point(3);
     for (UnsignedInteger k = 0; k <= p; ++k)
     {
       point[2] = ((p - k) * interval.getLowerBound()[2] + k * interval.getUpperBound()[2]) / p;
@@ -244,11 +244,11 @@ Mesh IntervalMesher::build(const Interval & interval,
           if (diamond)
           {
             // Center is the center of the cube (shortcut I)
-            const NumericalPoint center((vertices[a] + vertices[b] + vertices[c] + vertices[d] + vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.125);
+            const Point center((vertices[a] + vertices[b] + vertices[c] + vertices[d] + vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.125);
             const UnsignedInteger centerIndex = vertices.getSize();
             vertices.add(center);
             // c* is the center of the current face
-            const NumericalPoint centerABDC((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
+            const Point centerABDC((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
             const UnsignedInteger centerABDCIndex = vertices.getSize();
             vertices.add(centerABDC);
             // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
@@ -267,7 +267,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             index[2] = c;
             simplices.add(index);
             // c* is the center of the current face
-            const NumericalPoint centerEFHG((vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.25);
+            const Point centerEFHG((vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.25);
             const UnsignedInteger centerEFHGIndex = vertices.getSize();
             vertices.add(centerEFHG);
             // EFHG->c*EFI/c*FHI/c*HGI/c*GEI
@@ -285,7 +285,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             index[2] = e;
             simplices.add(index);
             // c* is the center of the current face
-            const NumericalPoint centerACGE((vertices[a] + vertices[c] + vertices[e] + vertices[g]) * 0.25);
+            const Point centerACGE((vertices[a] + vertices[c] + vertices[e] + vertices[g]) * 0.25);
             const UnsignedInteger centerACGEIndex = vertices.getSize();
             vertices.add(centerACGE);
             // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
@@ -303,7 +303,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             index[2] = e;
             simplices.add(index);
             // c* is the center of the current face
-            const NumericalPoint centerBDHF((vertices[b] + vertices[d] + vertices[f] + vertices[h]) * 0.25);
+            const Point centerBDHF((vertices[b] + vertices[d] + vertices[f] + vertices[h]) * 0.25);
             const UnsignedInteger centerBDHFIndex = vertices.getSize();
             vertices.add(centerBDHF);
             // BDHF->c*BDI/c*DHI/c*HFI/c*FBI
@@ -321,7 +321,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             index[2] = b;
             simplices.add(index);
             // c* is the center of the current face
-            const NumericalPoint centerABFE((vertices[a] + vertices[b] + vertices[e] + vertices[f]) * 0.25);
+            const Point centerABFE((vertices[a] + vertices[b] + vertices[e] + vertices[f]) * 0.25);
             const UnsignedInteger centerABFEIndex = vertices.getSize();
             vertices.add(centerABFE);
             // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
@@ -339,7 +339,7 @@ Mesh IntervalMesher::build(const Interval & interval,
             index[2] = a;
             simplices.add(index);
             // c* is the center of the current face
-            const NumericalPoint centerCDHG((vertices[c] + vertices[d] + vertices[g] + vertices[h]) * 0.25);
+            const Point centerCDHG((vertices[c] + vertices[d] + vertices[g] + vertices[h]) * 0.25);
             const UnsignedInteger centerCDHGIndex = vertices.getSize();
             vertices.add(centerCDHG);
             // CDHG->c*DCI/c*HDI/c*GHI/c*CGI

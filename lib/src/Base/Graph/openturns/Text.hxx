@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DrawableImplementation.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Description.hxx"
 
@@ -43,30 +43,30 @@ class OT_API Text : public DrawableImplementation
   CLASSNAME;
 public:
 
-  typedef Collection<NumericalComplex>               NumericalComplexCollection;
+  typedef Collection<Complex>               ComplexCollection;
 
   /** Default constructor */
-  Text(const NumericalSample & data,
+  Text(const Sample & data,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");
 
   /** Constructor from complex numbers */
-  Text(const NumericalComplexCollection & data,
+  Text(const ComplexCollection & data,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Text(const NumericalSample & dataX,
-       const NumericalSample & dataY,
+  Text(const Sample & dataX,
+       const Sample & dataY,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");
 
   /** Contructor from 2 data sets */
-  Text(const NumericalPoint & dataX,
-       const NumericalPoint & dataY,
+  Text(const Point & dataX,
+       const Point & dataY,
        const Description & texts,
        const String & textPosition = "top",
        const String & legend = "");
@@ -98,7 +98,7 @@ public:
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const NumericalSample & data) const;
+  virtual void checkData(const Sample & data) const;
 
   /** Labels */
   Description textAnnotations_;

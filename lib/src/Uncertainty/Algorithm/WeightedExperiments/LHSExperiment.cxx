@@ -21,7 +21,7 @@
 #include "openturns/LHSExperiment.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -106,24 +106,24 @@ String LHSExperiment::__str__(const String & offset) const
 }
 
 /* Sample generation */
-NumericalSample LHSExperiment::generateWithWeights(NumericalPoint & weights) const
+Sample LHSExperiment::generateWithWeights(Point & weights) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   // To insure that the shuffle has been initialized
   (void) getShuffle();
-  NumericalSample sample(size_, dimension);
+  Sample sample(size_, dimension);
   sample.setDescription(distribution_.getDescription());
-  NumericalPoint u(dimension, 0.5);
+  Point u(dimension, 0.5);
   for(UnsignedInteger index = 0; index < size_; ++index)
   {
     if (randomShift_) u = RandomGenerator::Generate(dimension);
     for(UnsignedInteger component = 0; component < dimension; ++component)
     {
-      const NumericalScalar xi = (shuffle_(component, index) + u[component]) / size_;
+      const Scalar xi = (shuffle_(component, index) + u[component]) / size_;
       sample[index][component] = marginals_[component].computeQuantile(xi)[0];
     }
   }
-  weights = NumericalPoint(size_, 1.0 / size_);
+  weights = Point(size_, 1.0 / size_);
   return sample;
 }
 
@@ -146,7 +146,7 @@ Matrix LHSExperiment::ComputeShuffle(const UnsignedInteger dimension,
     for (UnsignedInteger component = 0; component < dimension; ++component)
     {
       const UnsignedInteger newPosition = index + u[component];
-      const NumericalScalar newValue = result(component, newPosition);
+      const Scalar newValue = result(component, newPosition);
       result(component, newPosition) = result(component, index);
       result(component, index) = newValue;
     }

@@ -46,24 +46,24 @@ Multinomial::Multinomial()
   , n_(0)
   , p_(0)
   , sumP_(0.0)
-  , smallA_(ResourceMap::GetAsNumericalScalar("Multinomial-smallA"))
-  , eta_(ResourceMap::GetAsNumericalScalar("Multinomial-eta"))
+  , smallA_(ResourceMap::GetAsScalar("Multinomial-smallA"))
+  , eta_(ResourceMap::GetAsScalar("Multinomial-eta"))
 {
   setName("Multinomial");
   // This method compute the range also
   setN(1);
-  setP( NumericalPoint(1, 0.5) );
+  setP( Point(1, 0.5) );
 }
 
 /* Parameters constructor */
 Multinomial::Multinomial(const UnsignedInteger n,
-                         const NumericalPoint & p)
+                         const Point & p)
   : DiscreteDistribution()
   , n_(0)
   , p_(0)
   , sumP_(0.0)
-  , smallA_(ResourceMap::GetAsNumericalScalar("Multinomial-smallA"))
-  , eta_(ResourceMap::GetAsNumericalScalar("Multinomial-eta"))
+  , smallA_(ResourceMap::GetAsScalar("Multinomial-smallA"))
+  , eta_(ResourceMap::GetAsScalar("Multinomial-eta"))
 {
   setName("Multinomial");
   // This method compute the range also
@@ -114,22 +114,22 @@ Multinomial * Multinomial::clone() const
 void Multinomial::computeRange()
 {
   const UnsignedInteger dimension = getDimension();
-  const NumericalPoint lowerBound(dimension, 0.0);
-  const NumericalPoint upperBound(dimension, n_);
+  const Point lowerBound(dimension, 0.0);
+  const Point upperBound(dimension, n_);
   const Interval::BoolCollection finiteLowerBound(dimension, true);
   const Interval::BoolCollection finiteUpperBound(dimension, true);
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
 /* Get one realization of the distribution */
-NumericalPoint Multinomial::getRealization() const
+Point Multinomial::getRealization() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPoint realization(dimension);
+  Point realization(dimension);
   /* We use an elementary algorithm based on the definition of the Multinomial distribution:
    * the i-th component is generated using a Binomial distribution */
   UnsignedInteger n = n_;
-  NumericalScalar sum = 1.0;
+  Scalar sum = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     /* The current component follow a binomial distribution with parameters p_[i] and N */
@@ -142,29 +142,29 @@ NumericalPoint Multinomial::getRealization() const
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
+Scalar Multinomial::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
   // First, check the validity of the input
-  NumericalScalar sumX = 0.0;
+  Scalar sumX = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar k = point[i];
+    const Scalar k = point[i];
     // Early exit if the given point is not in the support of the distribution
     if ((std::abs(k - round(k)) > supportEpsilon_) || (k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
     sumX += k;
   }
   if (sumX > n_ + supportEpsilon_) return 0.0;
   if ((sumP_ >= 1.0) && (sumX < n_ - supportEpsilon_)) return 0.0;
-  NumericalScalar logPDF = -1.0;
+  Scalar logPDF = -1.0;
   if (sumP_ < 1.0) logPDF = lgamma(n_ + 1.0) - lgamma(n_ - sumX + 1.0) + (n_ - sumX) * log1p(-sumP_);
   // In the case sumP_ >= 1.0, the PDF is positive only if sumX == n_
   else logPDF = lgamma(n_ + 1.0);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar k = point[i];
+    const Scalar k = point[i];
     // For p_[i] > 0, it is possible to obtain any value of k between 0 and n
     if (p_[i] > 0.0) logPDF += k * std::log(p_[i]) - lgamma(k + 1.0);
     // Else only k == 0 is allowed, with a zero contribution to the log PDF
@@ -174,11 +174,11 @@ NumericalScalar Multinomial::computePDF(const NumericalPoint & point) const
 }
 
 /* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
-NumericalComplex Multinomial::computeGlobalPhi(const NumericalComplex & z,
-    const NumericalPoint & x) const
+Complex Multinomial::computeGlobalPhi(const Complex & z,
+    const Point & x) const
 {
   // Initialize with the non truncated term
-  NumericalComplex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
+  Complex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
   const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -193,34 +193,34 @@ NumericalComplex Multinomial::computeGlobalPhi(const NumericalComplex & z,
 }
 
 /* Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
-NumericalComplex Multinomial::computeLocalPhi(const NumericalComplex & z,
-    const NumericalScalar lambda,
-    const NumericalScalar a) const
+Complex Multinomial::computeLocalPhi(const Complex & z,
+    const Scalar lambda,
+    const Scalar a) const
 {
   if (z == 0.0) return 1.0;
-  const NumericalComplex u(lambda * z);
+  const Complex u(lambda * z);
   const UnsignedInteger iMax = static_cast< UnsignedInteger > (floor(a));
   // Small value of a, evaluate the generating function as a polynomial
   if (a <= smallA_)
   {
-    NumericalComplex value(std::exp(-lambda));
-    NumericalComplex term(value);
+    Complex value(std::exp(-lambda));
+    Complex term(value);
     for (UnsignedInteger i = 1; i <= iMax; ++i)
     {
-      term *= u / NumericalComplex(i);
+      term *= u / Complex(i);
       value += term;
     }
     return value;
   } // smallA_
   // Large a
-  NumericalComplex value(std::exp(-lambda + u));
+  Complex value(std::exp(-lambda + u));
   UnsignedInteger i = iMax + 1;
-  NumericalComplex term(std::exp(-lambda + NumericalComplex(i) * std::log(u) - lgamma(i + 1.0)));
+  Complex term(std::exp(-lambda + Complex(i) * std::log(u) - lgamma(i + 1.0)));
   while (std::abs(term) > SpecFunc::Precision * std::abs(value))
   {
     value -= term;
     ++i;
-    term *= u / NumericalComplex(i);
+    term *= u / Complex(i);
   }
   return value - term;
 }
@@ -229,7 +229,7 @@ NumericalComplex Multinomial::computeLocalPhi(const NumericalComplex & z,
    Algorithm described in:
    R. Lebrun, "Efficient time/space algorithm to compute rectangular probabilities of multinomial, multivariate hypergeometric and multivariate Polya distributions", Statistics and Computing, submitted (2011).
 */
-NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
+Scalar Multinomial::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
@@ -237,7 +237,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   // Early exit for 1D case
   if (dimension == 1)
   {
-    const NumericalScalar k = point[0];
+    const Scalar k = point[0];
     if (k < -supportEpsilon_) return 0.0;
     if (k > n_ + supportEpsilon_) return 1.0;
     return DistFunc::pBeta(n_ - floor(k), floor(k) + 1, 1.0 - p_[0]);
@@ -245,7 +245,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   // First, check the bording cases
   Indices indices(0);
   Bool allZero = true;
-  NumericalScalar sumX = 0.0;
+  Scalar sumX = 0.0;
   // Trivial cases
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -260,7 +260,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   // If the atoms with non zero probability sum to N
   if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
   {
-    NumericalScalar value = lgamma(n_ + 1.0);
+    Scalar value = lgamma(n_ + 1.0);
     for (UnsignedInteger j = 0; j < dimension; ++j)
       value += point[j] * std::log(p_[j]) - lgamma(point[j] + 1.0);
     return std::exp(value);
@@ -272,8 +272,8 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
   if (size < dimension)
   {
     // reduce the dimension to the active indices
-    NumericalPoint pReduced(size);
-    NumericalPoint xReduced(size);
+    Point pReduced(size);
+    Point xReduced(size);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       pReduced[i] = p_[indices[i]];
@@ -282,19 +282,19 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
     return Multinomial(n_, pReduced).computeCDF(xReduced);
   }
   // Evaluation of P(W=n) using Poisson's formula
-  NumericalComplex phiK(computeGlobalPhi(r_, point));
-  const NumericalComplex zetaN(std::exp(NumericalComplex(0.0, M_PI / n_)));
-  NumericalComplex phiKp1(computeGlobalPhi(r_ * zetaN, point));
-  NumericalComplex delta(phiK - phiKp1);
-  NumericalScalar value = delta.real();
-  const NumericalScalar dv0 = std::abs(delta);
+  Complex phiK(computeGlobalPhi(r_, point));
+  const Complex zetaN(std::exp(Complex(0.0, M_PI / n_)));
+  Complex phiKp1(computeGlobalPhi(r_ * zetaN, point));
+  Complex delta(phiK - phiKp1);
+  Scalar value = delta.real();
+  const Scalar dv0 = std::abs(delta);
   if (dv0 == 0.0)
   {
     LOGWARN("Underflow in Multinomial::computeCDF");
     return 0.0;
   }
-  NumericalScalar sign = -1.0;
-  NumericalComplex t(zetaN);
+  Scalar sign = -1.0;
+  Complex t(zetaN);
   for (UnsignedInteger k = 1; k < n_; ++k)
   {
     phiK = phiKp1;
@@ -302,7 +302,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
     phiKp1 = computeGlobalPhi(r_ * t, point);
     delta = phiK - phiKp1;
     value += sign * delta.real();
-    const NumericalScalar dv = std::abs(delta);
+    const Scalar dv = std::abs(delta);
     if (dv < SpecFunc::Precision * dv0) break;
     sign = -sign;
   }
@@ -311,7 +311,7 @@ NumericalScalar Multinomial::computeCDF(const NumericalPoint & point) const
 }
 
 /* Compute the scalar quantile of the 1D multinomial distribution */
-NumericalScalar Multinomial::computeScalarQuantile(const NumericalScalar prob,
+Scalar Multinomial::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   return Binomial(n_, p_[0]).computeQuantile(prob, tail)[0];
@@ -320,8 +320,8 @@ NumericalScalar Multinomial::computeScalarQuantile(const NumericalScalar prob,
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
    For Multinomial distribution, the conditional distribution is Binomial
 */
-NumericalScalar Multinomial::computeConditionalPDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+Scalar Multinomial::computeConditionalPDF(const Scalar x,
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -330,11 +330,11 @@ NumericalScalar Multinomial::computeConditionalPDF(const NumericalScalar x,
   // General case
   // Check that y is a valid conditioning vector
   UnsignedIntegerCollection intY(conditioningDimension);
-  NumericalScalar sumY = 0.0;
-  NumericalScalar sumP = 0.0;
+  Scalar sumY = 0.0;
+  Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    const NumericalScalar yI = y[i];
+    const Scalar yI = y[i];
     const UnsignedInteger intYI = static_cast<UnsignedInteger>(round(yI));
     if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
@@ -346,8 +346,8 @@ NumericalScalar Multinomial::computeConditionalPDF(const NumericalScalar x,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Multinomial::computeConditionalCDF(const NumericalScalar x,
-    const NumericalPoint & y) const
+Scalar Multinomial::computeConditionalCDF(const Scalar x,
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -356,11 +356,11 @@ NumericalScalar Multinomial::computeConditionalCDF(const NumericalScalar x,
   // General case
   // Check that y is a valid conditioning vector
   UnsignedIntegerCollection intY(conditioningDimension);
-  NumericalScalar sumY = 0.0;
-  NumericalScalar sumP = 0.0;
+  Scalar sumY = 0.0;
+  Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    const NumericalScalar yI = y[i];
+    const Scalar yI = y[i];
     const UnsignedInteger intYI = static_cast<UnsignedInteger>(round(yI));
     if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
@@ -372,8 +372,8 @@ NumericalScalar Multinomial::computeConditionalCDF(const NumericalScalar x,
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar Multinomial::computeConditionalQuantile(const NumericalScalar q,
-    const NumericalPoint & y) const
+Scalar Multinomial::computeConditionalQuantile(const Scalar q,
+    const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -383,11 +383,11 @@ NumericalScalar Multinomial::computeConditionalQuantile(const NumericalScalar q,
   // General case
   // Check that y is a valid conditioning vector
   UnsignedIntegerCollection intY(conditioningDimension);
-  NumericalScalar sumY = 0.0;
-  NumericalScalar sumP = 0.0;
+  Scalar sumY = 0.0;
+  Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    const NumericalScalar yI = y[i];
+    const Scalar yI = y[i];
     const UnsignedInteger intYI = static_cast<UnsignedInteger>(round(yI));
     if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
@@ -418,7 +418,7 @@ Multinomial::Implementation Multinomial::getMarginal(const Indices & indices) co
   if (dimension == 1) return clone();
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
-  NumericalPoint marginalP(outputDimension);
+  Point marginalP(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
@@ -429,16 +429,16 @@ Multinomial::Implementation Multinomial::getMarginal(const Indices & indices) co
 } // getMarginal(Indices)
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Multinomial::getSupport(const Interval & interval) const
+Sample Multinomial::getSupport(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  NumericalSample support(0, dimension);
+  Sample support(0, dimension);
   // Quick return if the lower bound of the interval is already outside of the support
-  const NumericalPoint lowerBound(interval.getLowerBound());
-  const NumericalPoint upperBound(interval.getUpperBound());
-  NumericalScalar sumLower = 0.0;
-  NumericalScalar sumUpper = 0.0;
+  const Point lowerBound(interval.getLowerBound());
+  const Point upperBound(interval.getUpperBound());
+  Scalar sumLower = 0.0;
+  Scalar sumUpper = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     // One of the components of the upper bound is negative, so the intersection with the positive quadrant is empty
@@ -448,7 +448,7 @@ NumericalSample Multinomial::getSupport(const Interval & interval) const
   }
   if ((sumLower > n_) || (sumUpper < 0.0)) return support;
   // Here we know that all the components of the upper bound are positive or null
-  const NumericalSample fullSupport(getSupport());
+  const Sample fullSupport(getSupport());
   // Quick return if the interval contains all the support
   // It cannot be possible if the sum of the components of the upper bound is less than n_
   if ((sumUpper >= n_) && (sumLower <= 0.0))
@@ -465,7 +465,7 @@ NumericalSample Multinomial::getSupport(const Interval & interval) const
   const UnsignedInteger size = fullSupport.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const NumericalPoint point(fullSupport[i]);
+    const Point point(fullSupport[i]);
     const Bool isInside = interval.contains(point);
     if (isInside) support.add(point);
   }
@@ -473,16 +473,16 @@ NumericalSample Multinomial::getSupport(const Interval & interval) const
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-NumericalSample Multinomial::getSupport() const
+Sample Multinomial::getSupport() const
 {
   const UnsignedInteger dimension = getDimension();
   LinearEnumerateFunction enumerate(dimension);
   const UnsignedInteger size = enumerate.getStrataCumulatedCardinal(n_);
-  NumericalSample support(0, dimension);
+  Sample support(0, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Indices multi(enumerate(i));
-    support.add(Collection<NumericalScalar>(multi.begin(), multi.end()));
+    support.add(Collection<Scalar>(multi.begin(), multi.end()));
   }
   return support;
 }
@@ -502,7 +502,7 @@ void Multinomial::computeCovariance() const
   covariance_ = CovarianceMatrix(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar pI = p_[i];
+    const Scalar pI = p_[i];
     covariance_(i, i) = pI * (1.0 - pI) * n_;
     // Be careful! in these computations, n_ cannot be at the begining of the formula else -n_ will underflow the UnsignedInteger range!
     for (UnsignedInteger j = 0; j < i; ++j) covariance_(i, j) = -pI * p_[j] * n_;
@@ -511,13 +511,13 @@ void Multinomial::computeCovariance() const
 }
 
 /* Parameters value and description accessor */
-Multinomial::NumericalPointWithDescriptionCollection Multinomial::getParametersCollection() const
+Multinomial::PointWithDescriptionCollection Multinomial::getParametersCollection() const
 {
   const UnsignedInteger dimension = getDimension();
-  NumericalPointWithDescriptionCollection parameters((dimension == 1 ? 1 : dimension + 1));
+  PointWithDescriptionCollection parameters((dimension == 1 ? 1 : dimension + 1));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalPointWithDescription point(2);
+    PointWithDescription point(2);
     point[0] = n_;
     point[1] = p_[i];
     Description description(2);
@@ -531,7 +531,7 @@ Multinomial::NumericalPointWithDescriptionCollection Multinomial::getParametersC
   }
   if (dimension > 1)
   {
-    NumericalPointWithDescription point(dimension + 1);
+    PointWithDescription point(dimension + 1);
     Description description(dimension + 1);
     point[0] = n_;
     description[0] = "n";
@@ -556,16 +556,16 @@ Bool Multinomial::isElliptical() const
 }
 
 /* P accessor */
-void Multinomial::setP(const NumericalPoint & p)
+void Multinomial::setP(const Point & p)
 {
   // We check that the elements are all positive
   const UnsignedInteger dimension = p.getDimension();
   if (dimension == 0) throw InvalidArgumentException(HERE) << "P must have a positive dimension.";
-  NumericalScalar sum = 0.0;
+  Scalar sum = 0.0;
   for(UnsignedInteger i = 0; i < dimension; ++i)
   {
-    NumericalScalar pI = p[i];
-    if (pI < 0.0) throw InvalidArgumentException(HERE) << "P elements MUST be nonnegative";
+    Scalar pI = p[i];
+    if (!(pI >= 0.0)) throw InvalidArgumentException(HERE) << "P elements MUST be nonnegative";
     sum += pI;
   }
   if (sum > 1.0)
@@ -586,7 +586,7 @@ void Multinomial::setP(const NumericalPoint & p)
 }
 
 /* P accessor */
-NumericalPoint Multinomial::getP() const
+Point Multinomial::getP() const
 {
   return p_;
 }
@@ -614,23 +614,23 @@ UnsignedInteger Multinomial::getN() const
 }
 
 /* SmallA accessor */
-void Multinomial::setSmallA(const NumericalScalar smallA)
+void Multinomial::setSmallA(const Scalar smallA)
 {
   smallA_ = smallA;
 }
 
-NumericalScalar Multinomial::getSmallA() const
+Scalar Multinomial::getSmallA() const
 {
   return smallA_;
 }
 
 /* Eta accessor */
-void Multinomial::setEta(const NumericalScalar eta)
+void Multinomial::setEta(const Scalar eta)
 {
   eta_ = eta;
 }
 
-NumericalScalar Multinomial::getEta() const
+Scalar Multinomial::getEta() const
 {
   return eta_;
 }

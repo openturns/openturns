@@ -42,9 +42,9 @@ FittingAlgorithmImplementation * FittingAlgorithmImplementation::clone() const
 }
 
 /* Perform cross-validation */
-NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & x,
-    const NumericalSample & y,
-    const NumericalPoint & weight,
+Scalar FittingAlgorithmImplementation::run(const Sample & x,
+    const Sample & y,
+    const Point & weight,
     const Basis & basis,
     const Indices & indices) const
 {
@@ -52,8 +52,8 @@ NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & x,
   return run(y, weight, indices, proxy);
 }
 
-NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & x,
-    const NumericalSample & y,
+Scalar FittingAlgorithmImplementation::run(const Sample & x,
+    const Sample & y,
     const Basis & basis,
     const Indices & indices) const
 {
@@ -62,8 +62,8 @@ NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & x,
 }
 
 /* Perform cross-validation */
-NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & y,
-    const NumericalPoint & weight,
+Scalar FittingAlgorithmImplementation::run(const Sample & y,
+    const Point & weight,
     const Indices & indices,
     const DesignProxy & proxy) const
 {
@@ -71,7 +71,7 @@ NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & y,
   return run(method, y);
 }
 
-NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & y,
+Scalar FittingAlgorithmImplementation::run(const Sample & y,
     const Indices & indices,
     const DesignProxy & proxy) const
 {
@@ -79,7 +79,7 @@ NumericalScalar FittingAlgorithmImplementation::run(const NumericalSample & y,
   return run(method, y);
 }
 
-NumericalScalar FittingAlgorithmImplementation::run(LeastSquaresMethod & method, const NumericalSample & y) const
+Scalar FittingAlgorithmImplementation::run(LeastSquaresMethod & method, const Sample & y) const
 {
   throw NotYetImplementedException(HERE);
 }

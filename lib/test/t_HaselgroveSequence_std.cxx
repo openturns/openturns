@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence
-    NumericalSample haselgroveSample(sequence.generate(10));
+    Sample haselgroveSample(sequence.generate(10));
     fullprint << haselgroveSample << std::endl;
 
     // Create another Haselgrove' sequence of dimension 2 to estimate Pi in [0; 1)^2
@@ -46,14 +46,14 @@ int main(int argc, char *argv[])
     UnsignedInteger sampleSize = 1000;
     for(UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      NumericalPoint haselgrovePoint(sequence.generate());
+      Point haselgrovePoint(sequence.generate());
       fullprint << haselgrovePoint << std::endl;
       if(haselgrovePoint.norm() < 1.0)
         ++ pointInsideCircle;
     }
-    NumericalScalar probabilityEstimate = 1.0 * pointInsideCircle / sampleSize;
-    NumericalScalar probability = M_PI / 4.0;
-    NumericalScalar relativeError = std::abs(probability - probabilityEstimate) / probability;
+    Scalar probabilityEstimate = 1.0 * pointInsideCircle / sampleSize;
+    Scalar probability = M_PI / 4.0;
+    Scalar relativeError = std::abs(probability - probabilityEstimate) / probability;
     fullprint << "sample size=" << sampleSize << std::endl;
     fullprint << "relative error to Pi=" << relativeError << std::endl;
   }

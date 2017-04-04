@@ -142,8 +142,8 @@ Bool TriangularMatrix::isLowerTriangular() const
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
-NumericalScalar & TriangularMatrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j)
+Scalar & TriangularMatrix::operator() (const UnsignedInteger i,
+                                       const UnsignedInteger j)
 {
   if (isLowerTriangular() && (i < j))
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is lower. "
@@ -157,7 +157,7 @@ NumericalScalar & TriangularMatrix::operator() (const UnsignedInteger i,
 
 /* Operator () gives access to the elements of the matrix (read only) */
 /* The element of the matrix is designated by its row number i and its column number j */
-const NumericalScalar & TriangularMatrix::operator() (const UnsignedInteger i,
+const Scalar & TriangularMatrix::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
   return (*getImplementation())(i, j) ;
@@ -222,35 +222,35 @@ TriangularMatrix TriangularMatrix::operator * (const IdentityMatrix & m) const
   return (*this);
 }
 
-/* Multiplication with a NumericalScalarCollection (must have consistent dimensions) */
-TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalScalarCollection & pt) const
+/* Multiplication with a ScalarCollection (must have consistent dimensions) */
+TriangularMatrix::ScalarCollection TriangularMatrix::operator * (const ScalarCollection & pt) const
 {
   char uplo(isLowerTriangular() ? 'L' : 'U');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
-/* Multiplication with a NumericalPoint (must have consistent dimensions) */
-TriangularMatrix::NumericalScalarCollection TriangularMatrix::operator * (const NumericalPoint & pt) const
+/* Multiplication with a Point (must have consistent dimensions) */
+TriangularMatrix::ScalarCollection TriangularMatrix::operator * (const Point & pt) const
 {
   char uplo(isLowerTriangular() ? 'L' : 'U');
   return getImplementation()->triangularVectProd(pt, uplo) ;
 }
 
 /* Multiplication with a Numerical */
-TriangularMatrix TriangularMatrix::operator* (const NumericalScalar s) const
+TriangularMatrix TriangularMatrix::operator* (const Scalar s) const
 {
   return TriangularMatrix(*getImplementation() * s, isLowerTriangular_);
 }
 
 /* Division by a Numerical*/
-TriangularMatrix TriangularMatrix::operator / (const NumericalScalar s) const
+TriangularMatrix TriangularMatrix::operator / (const Scalar s) const
 {
   return TriangularMatrix(*getImplementation() / s, isLowerTriangular_);
 }
 
 
 /* Resolution of a linear system */
-NumericalPoint TriangularMatrix::solveLinearSystem (const NumericalPoint & b,
+Point TriangularMatrix::solveLinearSystem (const Point & b,
     const Bool keepIntact)
 {
   return getImplementation()->solveLinearSystemTri(b, keepIntact, isLowerTriangular_);

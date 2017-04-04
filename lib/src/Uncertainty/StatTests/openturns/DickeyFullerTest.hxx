@@ -50,28 +50,28 @@ public:
   virtual DickeyFullerTest * clone() const;
 
   /** Test H0: there is a unit root in a drift and linear trend model */
-  TestResult testUnitRootInDriftAndLinearTrendModel(const NumericalScalar level = 0.95);
+  TestResult testUnitRootInDriftAndLinearTrendModel(const Scalar level = 0.95);
 
   /** Test H0: there is a unit root in a drift model */
-  TestResult testUnitRootInDriftModel(const NumericalScalar level = 0.95);
+  TestResult testUnitRootInDriftModel(const Scalar level = 0.95);
 
   /** Test H0: there is a unit root in an AR1 model */
-  TestResult testUnitRootInAR1Model(const NumericalScalar level = 0.95);
+  TestResult testUnitRootInAR1Model(const Scalar level = 0.95);
 
   /** Strategy of tests */
-  TestResult runStrategy(const NumericalScalar level = 0.95);
+  TestResult runStrategy(const Scalar level = 0.95);
 
   /** Test H0: there is no linear trend in a drift and linear trend model knowing that there is a unit root */
-  TestResult testUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const NumericalScalar level = 0.95);
+  TestResult testUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const Scalar level = 0.95);
 
   /** Test H0: there is no linear trend in a drift and linear trend model knowing that there is no unit root */
-  TestResult testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const NumericalScalar level = 0.95);
+  TestResult testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const Scalar level = 0.95);
 
   /** Test H0: there is no drift in a drift model knowing that there is a unit root */
-  TestResult testUnitRootAndNoDriftInDriftModel(const NumericalScalar level = 0.95);
+  TestResult testUnitRootAndNoDriftInDriftModel(const Scalar level = 0.95);
 
   /** Test the nullity of drift coefficient with assumption that there is no unit root */
-  TestResult testNoUnitRootAndNoDriftInDriftModel(const NumericalScalar level = 0.95);
+  TestResult testNoUnitRootAndNoDriftInDriftModel(const Scalar level = 0.95);
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
@@ -86,13 +86,13 @@ public:
 protected:
 
   /** Test of general model ==> run a part of strategy */
-  TestResult runTrendModelTest(const NumericalScalar level = 0.95);
+  TestResult runTrendModelTest(const Scalar level = 0.95);
 
   /** Test of drift model ==> run a part of strategy */
-  TestResult runDriftModelStrategyTest(const NumericalScalar level = 0.95);
+  TestResult runDriftModelStrategyTest(const Scalar level = 0.95);
 
   /** Test of random walk model ==> run a part of strategy */
-  TestResult runRandomWalkModelStrategyTest(const NumericalScalar level = 0.95);
+  TestResult runRandomWalkModelStrategyTest(const Scalar level = 0.95);
 
   /** Estimate the coefficients of a model with drift and linear trend */
   void estimateDriftAndLinearTrendModel();
@@ -118,25 +118,25 @@ private:
   UnsignedInteger lastModel_;
 
   /** rho value and the variance associated to the estimator */
-  NumericalScalar rho_;
-  NumericalScalar sigmaRho_;
+  Scalar rho_;
+  Scalar sigmaRho_;
 
   /** drift value  associated to the estimator */
-  NumericalScalar drift_;
-  NumericalScalar sigmaDrift_;
+  Scalar drift_;
+  Scalar sigmaDrift_;
 
   /** trend value  associated to the estimator */
-  NumericalScalar trend_;
-  NumericalScalar sigmaTrend_;
+  Scalar trend_;
+  Scalar sigmaTrend_;
 
   /** Boolean - Are the characteristic for model without drift computed? */
   Bool isComputedNoConstantCharacteristics_;
 
   /** Sum of 1/T * y_{t}*y_{t-1}, t=1,,,N  */
-  NumericalScalar sum_yt_yt_minus_one_;
+  Scalar sum_yt_yt_minus_one_;
 
   /** Sum of 1/T * y_{t-1}*y_{t-1}, t=1,,,N  */
-  NumericalScalar sum_squared_yt_minus_one_;
+  Scalar sum_squared_yt_minus_one_;
 
   /** Perform the computation of the previous quantities */
   void computeNoConstantCharacteristics();
@@ -145,10 +145,10 @@ private:
   Bool isComputedDriftCharacteristics_;
 
   /** Sum of 1/T * y_{t-1}, t=1,,,N  */
-  NumericalScalar sum_yt_minus_one_;
+  Scalar sum_yt_minus_one_;
 
   /** Sum of 1/T * y_{t}, t=1,,,N  */
-  NumericalScalar sum_yt_;
+  Scalar sum_yt_;
 
   /** Perform the computation of the previous quantities */
   void computeDriftCharacteristics();
@@ -157,16 +157,16 @@ private:
   Bool isComputedTrendCharacteristics_;
 
   /** Sum of 1/T * y_{t-1}* t, t=1,,,N  */
-  NumericalScalar sum_t_yt_minus_one_;
+  Scalar sum_t_yt_minus_one_;
 
   /** Sum of 1/T * y_{t-1}* t, t=1,,,N  */
-  NumericalScalar sum_t_yt_;
+  Scalar sum_t_yt_;
 
   /** Sum of 1/T * t_i, t=1,,,N  */
-  NumericalScalar sum_ti_;
+  Scalar sum_ti_;
 
   /** Sum of 1/T * t_i * t_i, t=1,,,N  */
-  NumericalScalar sum_ti_ti_;
+  Scalar sum_ti_ti_;
 
   /** Perform the computation of the previous quantity */
   void computeTrendCharacteristics() ;

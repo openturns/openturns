@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
       RandomVector X(distribution);
       // The model: the identity function
       Description inVars(Description::BuildDefault(dim, "x"));
-      NumericalMathFunction model(inVars, inVars);
+      SymbolicFunction model(inVars, inVars);
       // The output vector
       RandomVector Y(model, X);
       // The domain: [0, 1]^dim

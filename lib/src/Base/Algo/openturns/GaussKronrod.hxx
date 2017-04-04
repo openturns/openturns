@@ -44,7 +44,7 @@ public:
 
   /** Parameter constructor */
   GaussKronrod(const UnsignedInteger maximumSubIntervals,
-               const NumericalScalar maximumError,
+               const Scalar maximumError,
                const GaussKronrodRule & rule);
 
   /** Virtual copy constructor */
@@ -55,39 +55,39 @@ public:
    */
   using IntegrationAlgorithmImplementation::integrate;
 #ifndef SWIG
-  virtual NumericalPoint integrate(const NumericalMathFunction & function,
-                                   const Interval & interval,
-                                   NumericalScalar & error) const;
+  virtual Point integrate(const Function & function,
+                          const Interval & interval,
+                          Scalar & error) const;
 
   // This method allows to get the estimated integration error as a scalar
-  virtual NumericalPoint integrate(const NumericalMathFunction & function,
-                                   const NumericalScalar a,
-                                   const NumericalScalar b,
-                                   NumericalScalar & error,
-                                   NumericalPoint & ai,
-                                   NumericalPoint & bi,
-                                   NumericalSample & fi,
-                                   NumericalPoint & ei) const;
+  virtual Point integrate(const Function & function,
+                          const Scalar a,
+                          const Scalar b,
+                          Scalar & error,
+                          Point & ai,
+                          Point & bi,
+                          Sample & fi,
+                          Point & ei) const;
 
 #endif
-  // This method allows to get the estimated integration error as a NumericalPoint,
+  // This method allows to get the estimated integration error as a Point,
   // needed by Python
-  virtual NumericalPoint integrate(const NumericalMathFunction & function,
-                                   const NumericalScalar a,
-                                   const NumericalScalar b,
-                                   NumericalPoint & error,
-                                   NumericalPoint & ai,
-                                   NumericalPoint & bi,
-                                   NumericalSample & fi,
-                                   NumericalPoint & ei) const;
+  virtual Point integrate(const Function & function,
+                          const Scalar a,
+                          const Scalar b,
+                          Point & error,
+                          Point & ai,
+                          Point & bi,
+                          Sample & fi,
+                          Point & ei) const;
 
   /** Maximum sub-intervals accessor */
   UnsignedInteger getMaximumSubIntervals() const;
   void setMaximumSubIntervals(const UnsignedInteger maximumSubIntervals);
 
   /** Maximum error accessor */
-  NumericalScalar getMaximumError() const;
-  void setMaximumError(const NumericalScalar maximumError);
+  Scalar getMaximumError() const;
+  void setMaximumError(const Scalar maximumError);
 
   /** Rule accessor */
   GaussKronrodRule getRule() const;
@@ -102,16 +102,16 @@ public:
 private:
 
   /** Compute the local GaussKronrod rule over [a, b] */
-  NumericalPoint computeRule(const NumericalMathFunction & function,
-                             const NumericalScalar a,
-                             const NumericalScalar b,
-                             NumericalScalar & localError) const;
+  Point computeRule(const Function & function,
+                    const Scalar a,
+                    const Scalar b,
+                    Scalar & localError) const;
 
   /* Maximum number of sub-intervals */
   UnsignedInteger maximumSubIntervals_;
 
   /* Maximum estimated error */
-  NumericalScalar maximumError_;
+  Scalar maximumError_;
 
   /* Local integration rule */
   GaussKronrodRule rule_;

@@ -38,9 +38,9 @@ class OT_API Bisection :
 public:
 
   /** Parameter constructor */
-  explicit Bisection(const NumericalScalar absoluteError = ResourceMap::GetAsNumericalScalar("Solver-DefaultAbsoluteError"),
-                     const NumericalScalar relativeError = ResourceMap::GetAsNumericalScalar("Solver-DefaultRelativeError"),
-                     const NumericalScalar residualError = ResourceMap::GetAsNumericalScalar("Solver-DefaultResidualError"),
+  explicit Bisection(const Scalar absoluteError = ResourceMap::GetAsScalar("Solver-DefaultAbsoluteError"),
+                     const Scalar relativeError = ResourceMap::GetAsScalar("Solver-DefaultRelativeError"),
+                     const Scalar residualError = ResourceMap::GetAsScalar("Solver-DefaultResidualError"),
                      const UnsignedInteger maximumFunctionEvaluation = ResourceMap::GetAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation"));
 
 
@@ -52,12 +52,12 @@ public:
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the bisection method */
   using SolverImplementation::solve;
-  NumericalScalar solve(const NumericalMathFunction & function,
-                        const NumericalScalar value,
-                        const NumericalScalar infPoint,
-                        const NumericalScalar supPoint,
-                        const NumericalScalar infValue,
-                        const NumericalScalar supValue) const;
+  Scalar solve(const Function & function,
+               const Scalar value,
+               const Scalar infPoint,
+               const Scalar supPoint,
+               const Scalar infValue,
+               const Scalar supValue) const;
 
 private:
 

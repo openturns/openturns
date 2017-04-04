@@ -43,12 +43,12 @@ KarhunenLoeveAlgorithm::KarhunenLoeveAlgorithm(const Implementation & p_implemen
 }
 
 /* Threshold accessors */
-NumericalScalar KarhunenLoeveAlgorithm::getThreshold() const
+Scalar KarhunenLoeveAlgorithm::getThreshold() const
 {
   return getImplementation()->getThreshold();
 }
 
-void KarhunenLoeveAlgorithm::setThreshold(const NumericalScalar threshold)
+void KarhunenLoeveAlgorithm::setThreshold(const Scalar threshold)
 {
   copyOnWrite();
   return getImplementation()->setThreshold(threshold);

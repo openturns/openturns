@@ -45,11 +45,11 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const NumericalSample & sample) const;
-  Implementation build(const NumericalPoint & parameters) const;
+  Implementation build(const Sample & sample) const;
+  Implementation build(const Point & parameters) const;
   Implementation build() const;
-  InverseNormal buildAsInverseNormal(const NumericalSample & sample) const;
-  InverseNormal buildAsInverseNormal(const NumericalPoint & parameters) const;
+  InverseNormal buildAsInverseNormal(const Sample & sample) const;
+  InverseNormal buildAsInverseNormal(const Point & parameters) const;
   InverseNormal buildAsInverseNormal() const;
 
 }; /* class InverseNormalFactory */

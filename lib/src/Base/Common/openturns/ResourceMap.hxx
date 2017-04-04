@@ -53,13 +53,19 @@ public:
   static String Get(String key);
   static Bool GetAsBool(String key);
   static UnsignedInteger GetAsUnsignedInteger(String key);
-  static NumericalScalar GetAsNumericalScalar(String key);
+  static Scalar GetAsScalar(String key);
+
+  /** @deprecated */
+  static Scalar GetAsNumericalScalar(String key);
 
   /** Set a value in the map */
   static void Set(String key, String value);
   static void SetAsBool(String key, Bool value);
   static void SetAsUnsignedInteger(String key, UnsignedInteger value);
-  static void SetAsNumericalScalar(String key, NumericalScalar value);
+  static void SetAsScalar(String key, Scalar value);
+
+  /** @deprecated */
+  static void SetAsNumericalScalar(String key, Scalar value);
 
   /** Get the size of the map */
   static UnsignedInteger GetSize();
@@ -98,7 +104,7 @@ protected:
    * @param key The name under which the value is stored in the ResourceMap
    * @return The value if the value is double castable, zero otherwise
    */
-  NumericalScalar getAsNumericalScalar(String key) const;
+  Scalar getAsScalar(String key) const;
 
   /** Method for retrieving information from the resource map
    * @return The number of constants defined in the ResourceMap
@@ -127,7 +133,7 @@ protected:
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as a double
    */
-  void setAsNumericalScalar(String key, NumericalScalar value);
+  void setAsScalar(String key, Scalar value);
 
   /** Update the ResourceMap with information from the configuration file */
   void readConfigurationFile(const FileName & configurationFile);

@@ -38,13 +38,13 @@ class OT_API LinearProfile
 
 public:
   /** Default constructor */
-  LinearProfile(const NumericalScalar T0=10.0, const UnsignedInteger iMax=2000);
+  LinearProfile(const Scalar T0 = 10.0, const UnsignedInteger iMax = 2000);
 
   /** Virtual constructor method */
   LinearProfile * clone() const;
 
   /** Compute temperature T(i) */
-  NumericalScalar operator()(UnsignedInteger i) const;
+  Scalar operator()(UnsignedInteger i) const;
 
   /** String converter */
   String __repr__() const;
@@ -56,7 +56,7 @@ public:
   void load(Advocate & adv);
 
 private:
-  mutable NumericalScalar iMaxInv_;
+  mutable Scalar iMaxInv_;
 
   friend class Factory<LinearProfile>;
 }; /* class LinearProfile */

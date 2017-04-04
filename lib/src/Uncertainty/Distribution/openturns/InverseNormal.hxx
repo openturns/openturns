@@ -41,8 +41,8 @@ public:
   InverseNormal();
 
   /** Parameters constructor */
-  InverseNormal(const NumericalScalar lambda,
-                const NumericalScalar mu);
+  InverseNormal(const Scalar lambda,
+                const Scalar mu);
 
 
   /** Comparison operator */
@@ -62,49 +62,49 @@ public:
   virtual InverseNormal * clone() const;
 
   /** Get one realization of the InverseNormal distribution */
-  NumericalPoint getRealization() const;
+  Point getRealization() const;
 
   /** Get the PDF of the InverseNormal distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
-  NumericalScalar computeLogPDF(const NumericalPoint & point) const;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the InverseNormal distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  LevelSet computeMinimumVolumeLevelSetWithThreshold(const NumericalScalar prob, NumericalScalar & threshold) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  NumericalComplex computeCharacteristicFunction(const NumericalScalar x) const;
-  NumericalComplex computeLogCharacteristicFunction(const NumericalScalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Get the raw moments of the standardized distribution */
-  NumericalPoint getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const;
 
   /* Interface specific to InverseNormal */
-  void setLambdaMu(const NumericalScalar lambda,
-                   const NumericalScalar mu);
+  void setLambdaMu(const Scalar lambda,
+                   const Scalar mu);
   /** lambda accessor */
-  NumericalScalar getLambda() const;
+  Scalar getLambda() const;
 
   /** mu accessor */
-  NumericalScalar getMu() const;
+  Scalar getMu() const;
 
   /** Parameters value accessors */
-  void setParameter(const NumericalPoint & parameter);
-  NumericalPoint getParameter() const;
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
 
   /** Parameters description accessor */
   Description getParameterDescription() const;
@@ -129,8 +129,8 @@ private:
   void computeCovariance() const;
 
   /** The main parameter set of the distribution */
-  NumericalScalar lambda_;
-  NumericalScalar mu_;
+  Scalar lambda_;
+  Scalar mu_;
 
 }; /* class InverseNormal */
 

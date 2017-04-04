@@ -92,7 +92,7 @@ value : float
 
 Returns
 -------
-values : :class:`~openturns.NumericalPoint`
+values : :class:`~openturns.Point`
     The collection of the time stamps."
 
 // ---------------------------------------------------------------------

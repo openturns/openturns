@@ -38,18 +38,18 @@ class OT_API FiniteBasis
 {
   CLASSNAME;
 public:
-  typedef Collection<NumericalMathFunction> NumericalMathFunctionCollection;
-  typedef PersistentCollection<NumericalMathFunction> NumericalMathFunctionPersistentCollection;
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor */
   explicit FiniteBasis(const UnsignedInteger size = 0);
 
   /** Collection constructor */
-  explicit FiniteBasis(const NumericalMathFunctionCollection & collection);
+  explicit FiniteBasis(const FunctionCollection & collection);
 
-  /** Build the NumericalMathFunction of the given index */
-  virtual NumericalMathFunction build(const UnsignedInteger index) const;
-  virtual NumericalMathFunction & operator[](const UnsignedInteger index);
+  /** Build the Function of the given index */
+  virtual Function build(const UnsignedInteger index) const;
+  virtual Function & operator[](const UnsignedInteger index);
 
   /** Virtual constructor */
   virtual FiniteBasis * clone() const;
@@ -62,7 +62,7 @@ public:
   virtual UnsignedInteger getDimension() const;
   virtual UnsignedInteger getSize() const;
 
-  virtual void add(const NumericalMathFunction & elt);
+  virtual void add(const Function & elt);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -74,7 +74,7 @@ public:
 protected:
 
 private:
-  NumericalMathFunctionPersistentCollection collection_;
+  FunctionPersistentCollection collection_;
 } ; /* class FiniteBasis */
 
 

@@ -57,8 +57,8 @@ KrigingAlgorithm::KrigingAlgorithm()
 
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis,
                                    const Bool normalize)
@@ -84,8 +84,8 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalSample & outputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection,
                                    const Bool normalize)
@@ -110,9 +110,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 }
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
-                                   const NumericalSample & outputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
+                                   const Function & inputTransformation,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const Basis & basis)
   : MetaModelAlgorithm()
@@ -135,9 +135,9 @@ KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
 }
 
 /* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const NumericalSample & inputSample,
-                                   const NumericalMathFunction & inputTransformation,
-                                   const NumericalSample & outputSample,
+KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
+                                   const Function & inputTransformation,
+                                   const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
                                    const BasisCollection & basisCollection)
   : MetaModelAlgorithm()
@@ -202,30 +202,30 @@ void KrigingAlgorithm::run()
   computeGamma();
   LOGINFO("Store the estimates");
   LOGINFO("Build the output meta-model");
-  NumericalMathFunction metaModel;
+  Function metaModel;
   // We use directly the collection of points
   const BasisCollection basis(glmResult.getBasisCollection());
-  const NumericalSample normalizedInputSample(glmResult.getInputTransformedSample());
+  const Sample normalizedInputSample(glmResult.getInputTransformedSample());
   const CovarianceModel conditionalCovarianceModel(glmResult.getCovarianceModel());
-  const Collection<NumericalPoint> trendCoefficients(glmResult.getTrendCoefficients());
+  const Collection<Point> trendCoefficients(glmResult.getTrendCoefficients());
   const UnsignedInteger outputDimension = outputSample_.getDimension();
-  NumericalSample covarianceCoefficients(inputSample_.getSize(), outputDimension);
+  Sample covarianceCoefficients(inputSample_.getSize(), outputDimension);
   covarianceCoefficients.getImplementation()->setData(gamma_);
   // Meta model definition
   metaModel.setEvaluation(new KrigingEvaluation(basis, normalizedInputSample, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
   metaModel.setGradient(new KrigingGradient(basis, normalizedInputSample, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
-  metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsNumericalScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
+  metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
   // First build the meta-model on the transformed data
   // Then add the transformation if needed
   if (normalize_) metaModel = ComposedFunction(metaModel, glmResult.getTransformation());
   // compute residual, relative error
-  const NumericalPoint outputVariance(outputSample_.computeVariance());
-  const NumericalSample mY(metaModel(inputSample_));
-  const NumericalPoint squaredResiduals((outputSample_ - mY).computeRawMoment(2));
+  const Point outputVariance(outputSample_.computeVariance());
+  const Sample mY(metaModel(inputSample_));
+  const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
 
   const UnsignedInteger size = inputSample_.getSize();
-  NumericalPoint residuals(outputDimension);
-  NumericalPoint relativeErrors(outputDimension);
+  Point residuals(outputDimension);
+  Point relativeErrors(outputDimension);
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
   {
     residuals[outputIndex] = sqrt(squaredResiduals[outputIndex] / size);
@@ -235,7 +235,7 @@ void KrigingAlgorithm::run()
   // If normalize, set input transformation
   if (normalize_)
   {
-    const NumericalMathFunction inputTransformation(glmResult.getTransformation());
+    const Function inputTransformation(glmResult.getTransformation());
     result_.setTransformation(inputTransformation);
   }
 }
@@ -248,13 +248,13 @@ String KrigingAlgorithm::__repr__() const
 }
 
 
-NumericalSample KrigingAlgorithm::getInputSample() const
+Sample KrigingAlgorithm::getInputSample() const
 {
   return inputSample_;
 }
 
 
-NumericalSample KrigingAlgorithm::getOutputSample() const
+Sample KrigingAlgorithm::getOutputSample() const
 {
   return outputSample_;
 }
@@ -301,7 +301,7 @@ Interval KrigingAlgorithm::getOptimizationBounds() const
 }
 
 /* Log-Likelihood function accessor */
-NumericalMathFunction KrigingAlgorithm::getReducedLogLikelihoodFunction()
+Function KrigingAlgorithm::getReducedLogLikelihoodFunction()
 {
   return glmAlgo_.getObjectiveFunction();
 }
@@ -318,12 +318,12 @@ void KrigingAlgorithm::setOptimizeParameters(const Bool optimizeParameters)
 }
 
 /* Observation noise accessor */
-void KrigingAlgorithm::setNoise(const NumericalPoint & noise)
+void KrigingAlgorithm::setNoise(const Point & noise)
 {
   glmAlgo_.setNoise(noise);
 }
 
-NumericalPoint KrigingAlgorithm::getNoise() const
+Point KrigingAlgorithm::getNoise() const
 {
   return glmAlgo_.getNoise();
 }

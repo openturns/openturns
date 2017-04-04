@@ -23,12 +23,12 @@
 
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/NumericalMathEvaluationImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
-class OT_API CanonicalTensorEvaluation : public NumericalMathEvaluationImplementation
+class OT_API CanonicalTensorEvaluation : public EvaluationImplementation
 {
   CLASSNAME;
 public:
@@ -44,8 +44,8 @@ public:
   /** Virtual constructor */
   virtual CanonicalTensorEvaluation * clone() const;
 
-    /** Evaluation operator */
-  virtual NumericalPoint operator() (const NumericalPoint & point) const;
+  /** Evaluation operator */
+  virtual Point operator() (const Point & point) const;
 
   /** Dimension accessor */
   virtual UnsignedInteger getInputDimension() const;
@@ -54,8 +54,8 @@ public:
   Indices getDegrees() const;
 
   /** Coefficients accessor for rank m along i-th component */
-  void setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const NumericalPoint & coefficients);
-  NumericalPoint getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const;
+  void setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const Point & coefficients);
+  Point getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const;
 
   /** Basis accessor along i-th component */
   Basis getBasis(const UnsignedInteger i) const;
@@ -80,7 +80,7 @@ protected:
   Indices degrees_;
 
   // subbasis coefficients
-  PersistentCollection<NumericalSample> coefficients_;
+  PersistentCollection<Sample> coefficients_;
 
   PersistentCollection<Basis> basis_;
 

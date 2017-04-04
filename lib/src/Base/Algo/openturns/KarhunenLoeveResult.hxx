@@ -50,13 +50,13 @@ public:
   KarhunenLoeveResult(const Implementation & p_implementation);
 
   /** Threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
   /** Covariance model accessor */
   CovarianceModel getCovarianceModel() const;
 
   /** Eigenvalues accessor */
-  NumericalPoint getEigenValues() const;
+  Point getEigenValues() const;
 
   /** Modes accessors */
   Basis getModes() const;
@@ -70,14 +70,14 @@ public:
   Matrix getProjectionMatrix() const;
 
   /** Projection method */
-  NumericalPoint project(const NumericalMathFunction & function) const;
-  NumericalPoint project(const Field & field) const;
-  NumericalSample project(const Basis & basis) const;
-  NumericalSample project(const ProcessSample & sample) const;
+  Point project(const Function & function) const;
+  Point project(const Field & field) const;
+  Sample project(const Basis & basis) const;
+  Sample project(const ProcessSample & sample) const;
 
   /** Lift method */
-  NumericalMathFunction lift(const NumericalPoint & coefficients) const;
-  Field liftAsField(const NumericalPoint & coefficients) const;
+  Function lift(const Point & coefficients) const;
+  Field liftAsField(const Point & coefficients) const;
 
   /** String converter */
   String __repr__() const;

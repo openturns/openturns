@@ -22,7 +22,7 @@
 #define OPENTURNS_TRENDFACTORY_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/FittingAlgorithm.hxx"

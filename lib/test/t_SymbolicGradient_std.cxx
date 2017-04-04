@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     SymbolicEvaluation evaluation(inputNames, outputNames, formulas);
     SymbolicGradient gradient(evaluation);
     fullprint << "gradient=" << gradient << std::endl;
-    NumericalPoint point(3);
+    Point point(3);
     point[0] = -1.0;
     point[0] =  4.0;
     point[1] = -4.0;

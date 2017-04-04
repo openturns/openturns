@@ -8,7 +8,7 @@ The built function stacks all the outputs from each function in the list.
 
 Parameters
 ----------
-functionCollection : sequence of :class:`~openturns.NumericalMathFunction`
+functionCollection : sequence of :class:`~openturns.Function`
     Functions to aggregate.
 
 Examples

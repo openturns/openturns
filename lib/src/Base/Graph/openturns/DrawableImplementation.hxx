@@ -25,7 +25,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,10 +46,10 @@ class OT_API DrawableImplementation :
 
 public:
 
-  typedef NumericalPoint BoundingBox;
+  typedef Point BoundingBox;
 
   /** Default Constructor with legend label */
-  explicit DrawableImplementation(const NumericalSample & data,
+  explicit DrawableImplementation(const Sample & data,
                                   const String & legend = "");
 
   /** String converter */
@@ -67,7 +67,7 @@ public:
   virtual void setLegend(const String & legend);
 
   /** Data accessor */
-  virtual NumericalSample getData() const;
+  virtual Sample getData() const;
 
   /** Line style accessor */
   virtual String getLineStyle() const;
@@ -96,12 +96,12 @@ public:
   virtual void setPattern(const String style);
 
   /** Accessor for center */
-  virtual NumericalPoint getCenter() const;
-  virtual void setCenter(const NumericalPoint & center);
+  virtual Point getCenter() const;
+  virtual void setCenter(const Point & center);
 
   /** Accessor for radius */
-  virtual NumericalScalar getRadius() const;
-  virtual void setRadius(const NumericalScalar radius);
+  virtual Scalar getRadius() const;
+  virtual void setRadius(const Scalar radius);
 
   /** Accessor for labels */
   virtual Description getLabels() const;
@@ -112,20 +112,20 @@ public:
   virtual void setPalette(const Description & palette);
 
   /** Accessor for origin */
-  virtual NumericalScalar getOrigin() const;
-  virtual void setOrigin(const NumericalScalar origin);
+  virtual Scalar getOrigin() const;
+  virtual void setOrigin(const Scalar origin);
 
   /** Accessor for first coordinate */
-  virtual NumericalSample getX() const;
-  virtual void setX(const NumericalSample & x);
+  virtual Sample getX() const;
+  virtual void setX(const Sample & x);
 
   /** Accessor for second coordinate */
-  virtual NumericalSample getY() const;
-  virtual void setY(const NumericalSample & y);
+  virtual Sample getY() const;
+  virtual void setY(const Sample & y);
 
   /** Accessor for levels */
-  virtual NumericalPoint getLevels() const;
-  virtual void setLevels(const NumericalPoint & levels);
+  virtual Point getLevels() const;
+  virtual void setLevels(const Point & levels);
 
   /** Accessor for drawLabels */
   virtual Bool getDrawLabels() const;
@@ -184,31 +184,31 @@ public:
                                 const UnsignedInteger alpha);
 
   /** Convert an RGB triplet to a valid hexadecimal code */
-  static String ConvertFromRGB(const NumericalScalar red,
-                               const NumericalScalar green,
-                               const NumericalScalar blue);
+  static String ConvertFromRGB(const Scalar red,
+                               const Scalar green,
+                               const Scalar blue);
 
   /** Convert an RGBA quadruplet to a valid hexadecimal code */
-  static String ConvertFromRGBA(const NumericalScalar red,
-                                const NumericalScalar green,
-                                const NumericalScalar blue,
-                                const NumericalScalar alpha);
+  static String ConvertFromRGBA(const Scalar red,
+                                const Scalar green,
+                                const Scalar blue,
+                                const Scalar alpha);
 
   /** Convert an HSV triplet into an RGB triplet */
-  static NumericalPoint ConvertFromHSVIntoRGB(const NumericalScalar hue,
-      const NumericalScalar saturation,
-      const NumericalScalar value);
+  static Point ConvertFromHSVIntoRGB(const Scalar hue,
+                                     const Scalar saturation,
+                                     const Scalar value);
 
   /** Convert an HSV triplet to a valid hexadecimal code */
-  static String ConvertFromHSV(const NumericalScalar hue,
-                               const NumericalScalar saturation,
-                               const NumericalScalar value);
+  static String ConvertFromHSV(const Scalar hue,
+                               const Scalar saturation,
+                               const Scalar value);
 
   /** Convert an HSVA quadruplet to a valid hexadecimal code */
-  static String ConvertFromHSVA(const NumericalScalar hue,
-                                const NumericalScalar saturation,
-                                const NumericalScalar value,
-                                const NumericalScalar alpha);
+  static String ConvertFromHSVA(const Scalar hue,
+                                const Scalar saturation,
+                                const Scalar value,
+                                const Scalar alpha);
 
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);
@@ -270,18 +270,18 @@ protected:
   static const UnsignedInteger BoundingBoxSize;
 
   /** Data accessor */
-  virtual void setData(const NumericalSample & data);
-  virtual void setData(const NumericalPoint & data);
+  virtual void setData(const Sample & data);
+  virtual void setData(const Point & data);
 
   /** Check data */
-  virtual void checkData(const NumericalSample & data) const;
-  virtual void checkData(const NumericalPoint & data) const;
+  virtual void checkData(const Sample & data) const;
+  virtual void checkData(const Point & data) const;
 
   /** The legend of the drawable, to be displayed in the legend of the graph */
   String legend_;
 
   /** The data to be plotted */
-  NumericalSample data_;
+  Sample data_;
 
   /** Color of the curve */
   String color_;

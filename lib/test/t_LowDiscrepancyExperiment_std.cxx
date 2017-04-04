@@ -32,13 +32,13 @@ int main(int argc, char *argv[])
   try
   {
     Normal distribution(4);
-    distribution.setMean(NumericalPoint(4, 5.0));
+    distribution.setMean(Point(4, 5.0));
     UnsignedInteger size = 10;
     LowDiscrepancyExperiment myPlane(HaltonSequence(), distribution, size);
     fullprint << "myPlane = " << myPlane << std::endl;
     // Test sampling with weights
-    NumericalPoint weights(0);
-    NumericalSample sample(myPlane.generateWithWeights(weights));
+    Point weights(0);
+    Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
 

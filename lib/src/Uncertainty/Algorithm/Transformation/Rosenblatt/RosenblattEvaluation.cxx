@@ -32,7 +32,7 @@ static const Factory<RosenblattEvaluation> Factory_RosenblattEvaluation;
 
 /* Default constructor */
 RosenblattEvaluation::RosenblattEvaluation()
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_()
 {
   // Nothing to do
@@ -40,7 +40,7 @@ RosenblattEvaluation::RosenblattEvaluation()
 
 /* Parameter constructor */
 RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , distribution_(distribution)
 {
   Description description(distribution.getDescription());
@@ -55,16 +55,16 @@ RosenblattEvaluation * RosenblattEvaluation::clone() const
 }
 
 /* Evaluation */
-NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) const
+Point RosenblattEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
-  NumericalPoint result(dimension);
-  NumericalPoint y(0);
+  Point result(dimension);
+  Point y(0);
   // Apply Phi^{-1} o conditional CDF over the components
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const NumericalScalar conditionalCDF = distribution_.computeConditionalCDF(inP[i], y);
+    const Scalar conditionalCDF = distribution_.computeConditionalCDF(inP[i], y);
     result[i] = DistFunc::qNormal(conditionalCDF);
     y.add(inP[i]);
   }
@@ -78,9 +78,9 @@ NumericalPoint RosenblattEvaluation::operator () (const NumericalPoint & inP) co
 }
 
 /* Gradient according to the marginal parameters. */
-Matrix RosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const
+Matrix RosenblattEvaluation::parameterGradient(const Point & inP) const
 {
-  throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parameterGradient(const NumericalPoint & inP) const";
+  throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parameterGradient(const Point & inP) const";
 }
 
 /* Accessor for input point dimension */
@@ -117,14 +117,14 @@ String RosenblattEvaluation::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void RosenblattEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RosenblattEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "distribution_", distribution_ );
 }
 

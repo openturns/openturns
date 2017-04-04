@@ -22,7 +22,7 @@ color : str
     Color of the points. If not specified, by default it is 'blue'.
 pointStyle : str
     Style of the points. If not specified, by default it is 'plus'.
-dataComplex : :class:`~openturns.NumericalComplexCollection`
+dataComplex : :class:`~openturns.ComplexCollection`
     Collection of complex points.
 
 Examples

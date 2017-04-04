@@ -7,7 +7,7 @@ Available constructors:
 Parameters
 ----------
 basis : :class:`~openturns.Basis`
-    A basis which is a collection of :class:`~openturns.NumericalMathFunction`.
+    A basis which is a collection of :class:`~openturns.Function`.
 classifier : :class:`~openturns.Classifier`
     A classifier
 

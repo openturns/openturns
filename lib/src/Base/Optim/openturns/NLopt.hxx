@@ -57,8 +57,8 @@ public:
   String getAlgorithmName() const;
 
   /** Initial derivative-free local-optimization algorithms step accessor */
-  void setInitialStep(const NumericalPoint & initialStep);
-  NumericalPoint getInitialStep() const;
+  void setInitialStep(const Point & initialStep);
+  Point getInitialStep() const;
 
   /** Local optimizer */
   void setLocalSolver(const NLopt & localSolver);
@@ -86,7 +86,7 @@ protected:
   String algoName_;
 
   /** Initial derivative-free local-optimization algorithms step */
-  NumericalPoint initialStep_;
+  Point initialStep_;
 
   /** Auxiliary solver */
   Pointer<NLopt> p_localSolver_;
@@ -111,8 +111,8 @@ private:
   static double ComputeEqualityConstraint(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
 
   /// temporary, used to track input/outputs
-  NumericalSample evaluationInputHistory_;
-  NumericalSample evaluationOutputHistory_;
+  Sample evaluationInputHistory_;
+  Sample evaluationOutputHistory_;
 
   // internal solver
   void * p_opt_;

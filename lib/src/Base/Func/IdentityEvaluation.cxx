@@ -30,7 +30,7 @@ static const Factory<IdentityEvaluation> Factory_IdentityEvaluation;
 
 /* Parameter constructor */
 IdentityEvaluation::IdentityEvaluation(const UnsignedInteger dimension)
-  : NumericalMathEvaluationImplementation()
+  : EvaluationImplementation()
   , dimension_(dimension)
 {
   /* Check if the dimension of the constant term is compatible with the linear term */
@@ -73,7 +73,7 @@ String IdentityEvaluation::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-NumericalPoint IdentityEvaluation::operator() (const NumericalPoint & inP) const
+Point IdentityEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   ++callsNumber_;
@@ -85,7 +85,7 @@ NumericalPoint IdentityEvaluation::operator() (const NumericalPoint & inP) const
   return inP;
 }
 /* Operator () */
-NumericalSample IdentityEvaluation::operator() (const NumericalSample & inS) const
+Sample IdentityEvaluation::operator() (const Sample & inS) const
 {
   if (inS.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   callsNumber_ += inS.getSize();
@@ -112,14 +112,14 @@ UnsignedInteger IdentityEvaluation::getOutputDimension() const
 /* Method save() stores the object through the StorageManager */
 void IdentityEvaluation::save(Advocate & adv) const
 {
-  NumericalMathEvaluationImplementation::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "dimension_", dimension_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void IdentityEvaluation::load(Advocate & adv)
 {
-  NumericalMathEvaluationImplementation::load(adv);
+  EvaluationImplementation::load(adv);
   adv.loadAttribute( "dimension_", dimension_ );
 }
 

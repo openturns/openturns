@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
 
     # We create a numerical point of dimension 1
-    point = NumericalPoint(4)
+    point = Point(4)
     ref_point = point
 
     point[0] = 101
@@ -19,7 +19,7 @@ try:
 
     print("point = ", repr(ref_point))
 
-    # We create a 'constant' RandomVector from the NumericalPoint
+    # We create a 'constant' RandomVector from the Point
     vect = RandomVector(point)
     print("vect=", vect)
 
@@ -29,7 +29,7 @@ try:
     print("vect sample =", repr(vect.getSample(5)))
 
     # We create a numerical math function
-    myFunction = NumericalMathFunction(
+    myFunction = Function(
         ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
 
     # We create a composite random vector

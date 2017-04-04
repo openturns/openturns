@@ -42,7 +42,7 @@ AliMikhailHaqCopula::AliMikhailHaqCopula()
 }
 
 /* Parameters constructor */
-AliMikhailHaqCopula::AliMikhailHaqCopula(const NumericalScalar theta)
+AliMikhailHaqCopula::AliMikhailHaqCopula(const Scalar theta)
   : ArchimedeanCopula()
   , theta_(0.0)
 {
@@ -92,75 +92,75 @@ AliMikhailHaqCopula * AliMikhailHaqCopula::clone() const
 }
 
 /* Get one realization of the distribution */
-NumericalPoint AliMikhailHaqCopula::getRealization() const
+Point AliMikhailHaqCopula::getRealization() const
 {
-  NumericalPoint realization(2);
+  Point realization(2);
   // We use the general algorithm based on conditional CDF inversion
-  const NumericalScalar u = RandomGenerator::Generate();
+  const Scalar u = RandomGenerator::Generate();
   realization[0] = u;
-  const NumericalScalar v = RandomGenerator::Generate();
-  const NumericalScalar theta2 = theta_ * theta_;
-  const NumericalScalar a = 1.0 - u;
-  const NumericalScalar b = -theta_ * (2.0 * a * v + 1.0) + 2.0 * theta2 * a * a * v + 1.0;
-  const NumericalScalar delta = 4.0 * v * (a - 1.0);
-  const NumericalScalar c = theta2 * (a * delta + 1.0) - theta_ * (delta + 2.0) + 1.0;
+  const Scalar v = RandomGenerator::Generate();
+  const Scalar theta2 = theta_ * theta_;
+  const Scalar a = 1.0 - u;
+  const Scalar b = -theta_ * (2.0 * a * v + 1.0) + 2.0 * theta2 * a * a * v + 1.0;
+  const Scalar delta = 4.0 * v * (a - 1.0);
+  const Scalar c = theta2 * (a * delta + 1.0) - theta_ * (delta + 2.0) + 1.0;
   realization[1] = 2.0 * v * std::pow(a * theta_ - 1.0, 2) / (b + std::sqrt(c));
   return realization;
 }
 
 /* Get the DDF of the distribution */
-NumericalPoint AliMikhailHaqCopula::computeDDF(const NumericalPoint & point) const
+Point AliMikhailHaqCopula::computeDDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null DDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
-    return NumericalPoint(2, 0.0);
+    return Point(2, 0.0);
   }
-  NumericalPoint result(2);
-  const NumericalScalar t1 = theta_ * theta_;
-  const NumericalScalar t2 = t1 * v;
-  const NumericalScalar t3 = theta_ * v;
-  const NumericalScalar t5 = theta_ * u;
-  const NumericalScalar t6 = t5 * v;
-  const NumericalScalar t7 = -1 + theta_ - t3 - t5 + t6;
-  const NumericalScalar t8 = t7 * t7;
-  const NumericalScalar t12 = t1 * u;
-  const NumericalScalar t16 = t8 * t8;
+  Point result(2);
+  const Scalar t1 = theta_ * theta_;
+  const Scalar t2 = t1 * v;
+  const Scalar t3 = theta_ * v;
+  const Scalar t5 = theta_ * u;
+  const Scalar t6 = t5 * v;
+  const Scalar t7 = -1 + theta_ - t3 - t5 + t6;
+  const Scalar t8 = t7 * t7;
+  const Scalar t12 = t1 * u;
+  const Scalar t16 = t8 * t8;
   result[0] = -(theta_ - t1 + t2 + t3) / t8 / t7 + 3 * (1 + t3 + t5 - t2 - t12 + t12 * v + t6 + t1 - 2 * theta_) / t16 * (-theta_ + t3);
   result[1] = -(theta_ - t1 + t12 + t5) / t8 / t7 + 3 * (1 + t3 + t5 - t12 - t1 * v + t12 * v + t6 + t1 - 2 * theta_) / t16 * (-theta_ + t5);
   return result;
 }
 
 /* Get the PDF of the distribution */
-NumericalScalar AliMikhailHaqCopula::computePDF(const NumericalPoint & point) const
+Scalar AliMikhailHaqCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
     return 0.0;
   }
-  const NumericalScalar prod = theta_ * (1.0 - u) * (1.0 - v);
+  const Scalar prod = theta_ * (1.0 - u) * (1.0 - v);
   return (1.0 + theta_ * ((1.0 + u) * (1.0 + v) - 3.0 + prod)) / std::pow(1.0 - prod, 3);
 }
 
 /* Get the CDF of the distribution */
-NumericalScalar AliMikhailHaqCopula::computeCDF(const NumericalPoint & point) const
+Scalar AliMikhailHaqCopula::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  const NumericalScalar u = point[0];
-  const NumericalScalar v = point[1];
+  const Scalar u = point[0];
+  const Scalar v = point[1];
   // If we are outside of the support, in the lower parts
   if ((u <= 0.0) || (v <= 0.0)) return 0.0;
   // If we are outside of the support, in the upper part
@@ -192,45 +192,45 @@ CorrelationMatrix AliMikhailHaqCopula::getKendallTau() const
 }
 
 /* Get the PDFGradient of the distribution */
-NumericalPoint AliMikhailHaqCopula::computePDFGradient(const NumericalPoint & point) const
+Point AliMikhailHaqCopula::computePDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computePDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computePDFGradient(const Point & point) const";
 }
 
 /* Get the CDFGradient of the distribution */
-NumericalPoint AliMikhailHaqCopula::computeCDFGradient(const NumericalPoint & point) const
+Point AliMikhailHaqCopula::computeCDFGradient(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computeCDFGradient(const NumericalPoint & point) const";
+  throw NotYetImplementedException(HERE) << "In AliMikhailHaqCopula::computeCDFGradient(const Point & point) const";
 }
 
 /* Get the quantile of the distribution */
-NumericalPoint AliMikhailHaqCopula::computeQuantile(const NumericalScalar prob,
+Point AliMikhailHaqCopula::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
-  return NumericalPoint(2, (prob * theta_ + std::sqrt(prob * (1.0 - theta_ + prob * theta_))) / (1.0 + prob * theta_));
+  return Point(2, (prob * theta_ + std::sqrt(prob * (1.0 - theta_ + prob * theta_))) / (1.0 + prob * theta_));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar AliMikhailHaqCopula::computeConditionalCDF(const NumericalScalar x, const NumericalPoint & y) const
+Scalar AliMikhailHaqCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
-  const NumericalScalar u = y[0];
-  const NumericalScalar v = x;
+  const Scalar u = y[0];
+  const Scalar v = x;
   // If we are in the support
   return v * (1.0 - theta_ * (1.0 - v)) / std::pow(1.0 - theta_ * (1.0 - u) * (1.0 - v), 2);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-NumericalScalar AliMikhailHaqCopula::computeConditionalQuantile(const NumericalScalar q, const NumericalPoint & y) const
+Scalar AliMikhailHaqCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -241,16 +241,16 @@ NumericalScalar AliMikhailHaqCopula::computeConditionalQuantile(const NumericalS
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   // Optimized code given by Maple 13
-  const NumericalScalar u = y[0];
-  const NumericalScalar qTheta = q * theta_;
-  const NumericalScalar theta2 = theta_ * theta_;
-  const NumericalScalar qTheta2 = q * theta2;
-  const NumericalScalar u2 = u * u;
-  const NumericalScalar qTheta2U2 = qTheta2 * u2;
-  const NumericalScalar qThetaU = qTheta * u;
-  const NumericalScalar tmp1 = 2.0 * qThetaU;
-  const NumericalScalar tmp2 = 4.0 * qTheta2 * u;
-  const NumericalScalar tmp3 = std::sqrt(1.0 + theta2 + 4.0 * qThetaU - tmp2 + 4.0 * qTheta2U2 - 2.0 * theta_);
+  const Scalar u = y[0];
+  const Scalar qTheta = q * theta_;
+  const Scalar theta2 = theta_ * theta_;
+  const Scalar qTheta2 = q * theta2;
+  const Scalar u2 = u * u;
+  const Scalar qTheta2U2 = qTheta2 * u2;
+  const Scalar qThetaU = qTheta * u;
+  const Scalar tmp1 = 2.0 * qThetaU;
+  const Scalar tmp2 = 4.0 * qTheta2 * u;
+  const Scalar tmp3 = std::sqrt(1.0 + theta2 + 4.0 * qThetaU - tmp2 + 4.0 * qTheta2U2 - 2.0 * theta_);
   return -0.5 * (theta_ + 2.0 * qTheta - 2.0 * qTheta2 - 2.0 * qTheta2U2 - tmp1 - 1.0 + tmp2 + tmp3) / (theta_ * (-1.0 + qTheta - tmp1 + qTheta * u2));
 }
 
@@ -258,42 +258,42 @@ NumericalScalar AliMikhailHaqCopula::computeConditionalQuantile(const NumericalS
  * the function phi such that the CDF of the copula can
  * be written as CDF(t) = phi^{-1}(phi(u)+phi(v))
  */
-NumericalScalar AliMikhailHaqCopula::computeArchimedeanGenerator(const NumericalScalar t) const
+Scalar AliMikhailHaqCopula::computeArchimedeanGenerator(const Scalar t) const
 {
   return log1p(-theta_ * (1.0 - t)) / t;
 }
 
 /* Compute the inverse of the archimedean generator */
-NumericalScalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const NumericalScalar t) const
+Scalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
-  const NumericalScalar y = t * (theta_ - 1.0) / theta_;
+  const Scalar y = t * (theta_ - 1.0) / theta_;
   return (y - SpecFunc::LambertW(-t * std::exp(y) / theta_)) / t;
 }
 
 /* Compute the derivative of the density generator */
-NumericalScalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const NumericalScalar t) const
+Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
 {
-  const NumericalScalar u = 1.0 - theta_ * (1.0 - t);
+  const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (theta_ / u - std::log(u) / t) / t;
 }
 
 /* Compute the seconde derivative of the density generator */
-NumericalScalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative(const NumericalScalar t) const
+Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
 {
-  const NumericalScalar u = 1.0 - theta_ * (1.0 - t);
+  const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (-theta_ * theta_ / (u * u) - 2.0 * theta_ / (t * u) + 2.0 * std::log(u) / (t * t)) / t;
 }
 
 /* Parameters value accessor */
-NumericalPoint AliMikhailHaqCopula::getParameter() const
+Point AliMikhailHaqCopula::getParameter() const
 {
-  return NumericalPoint(1, theta_);
+  return Point(1, theta_);
 }
 
-void AliMikhailHaqCopula::setParameter(const NumericalPoint & parameter)
+void AliMikhailHaqCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const NumericalScalar w = getWeight();
+  const Scalar w = getWeight();
   *this = AliMikhailHaqCopula(parameter[0]);
   setWeight(w);
 }
@@ -311,14 +311,14 @@ Bool AliMikhailHaqCopula::hasIndependentCopula() const
 }
 
 /* Theta accessor */
-void AliMikhailHaqCopula::setTheta(const NumericalScalar theta)
+void AliMikhailHaqCopula::setTheta(const Scalar theta)
 {
   if ((theta <= -1.0) || (theta >= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in (-1, 1), here theta=" << theta;
   theta_ = theta;
 }
 
 /* Theta accessor */
-NumericalScalar AliMikhailHaqCopula::getTheta() const
+Scalar AliMikhailHaqCopula::getTheta() const
 {
   return theta_;
 }

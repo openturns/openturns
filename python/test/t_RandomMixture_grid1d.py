@@ -11,7 +11,7 @@ ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
 try:
 
     # Defining RandomMixture
-    weights = NumericalPoint(0)
+    weights = Point(0)
     coll = DistributionCollection(0)
     coll.add(Gamma(0.5, 1.0))
     weights.add(1.0)
@@ -32,7 +32,7 @@ try:
     sigma = distribution.getStandardDeviation()
     xMin = mean - 3.9 * sigma
     xMax = mean + 3.9 * sigma
-    grid = NumericalSample()
+    grid = Sample()
     print("distribution = ", repr(distribution))
     print("range = ", distribution.getRange())
     print("mean = ",  distribution.getMean())

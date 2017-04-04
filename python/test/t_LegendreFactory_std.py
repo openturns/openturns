@@ -12,7 +12,7 @@ try:
         print("legendre(", i, ")=", legendre.build(i))
     roots = legendre.getRoots(10)
     print("legendre(10) roots=", repr(roots))
-    weights = NumericalPoint()
+    weights = Point()
     nodes, weights = legendre.getNodesAndWeights(10)
     print("legendre(10) nodes=", nodes, "and weights=", weights)
 except:

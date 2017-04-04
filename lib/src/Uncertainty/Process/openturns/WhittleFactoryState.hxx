@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/ARMA.hxx"
 #include "openturns/ARMACoefficients.hxx"
-#include "openturns/NumericalPoint.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/WhiteNoise.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,9 +46,9 @@ public:
 
   /** Default constructor */
   WhittleFactoryState(const UnsignedInteger p,
-                      const NumericalPoint & theta,
-                      const NumericalScalar sigma2,
-                      const NumericalPoint & informationCriteria,
+                      const Point & theta,
+                      const Scalar sigma2,
+                      const Point & informationCriteria,
                       const RegularGrid & timeGrid);
 
   /** Virtual constructor */
@@ -65,10 +65,10 @@ public:
   UnsignedInteger getQ() const;
 
   /** Theta accessor */
-  NumericalPoint getTheta() const;
+  Point getTheta() const;
 
   /** Sigma2 accessor */
-  NumericalScalar getSigma2() const;
+  Scalar getSigma2() const;
 
   /** AR coefficients accessor */
   ARMACoefficients getARCoefficients() const;
@@ -83,7 +83,7 @@ public:
   ARMA getARMA() const;
 
   /** Information criteria accessor */
-  NumericalPoint getInformationCriteria() const;
+  Point getInformationCriteria() const;
 
   /** Time grid accessor */
   RegularGrid getTimeGrid() const;
@@ -100,13 +100,13 @@ private :
   UnsignedInteger p_;
 
   /* The flat vector of coefficients of the ARMA process */
-  NumericalPoint theta_;
+  Point theta_;
 
   /* The variance of the white noise */
-  NumericalScalar sigma2_;
+  Scalar sigma2_;
 
   /* The information criteria of the fitting */
-  NumericalPoint informationCriteria_;
+  Point informationCriteria_;
 
   /* The time grid associated with the estimation */
   RegularGrid timeGrid_;

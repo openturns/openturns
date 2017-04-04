@@ -44,7 +44,7 @@ public:
 
   /** Parameters constructor */
   PosteriorDistribution(const ConditionalDistribution & conditionalDistribution,
-                        const NumericalSample & observations);
+                        const Sample & observations);
 
   /** Comparison operator */
   Bool operator ==(const PosteriorDistribution & other) const;
@@ -63,16 +63,16 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  NumericalScalar computePDF(const NumericalPoint & point) const;
+  Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  NumericalScalar computeCDF(const NumericalPoint & point) const;
+  Scalar computeCDF(const Point & point) const;
 
   /** Parameters value and description accessor */
-  NumericalPointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const;
   using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const NumericalPointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection);
 
 
   /* Interface specific to PosteriorDistribution */
@@ -82,20 +82,20 @@ public:
   ConditionalDistribution getConditionalDistribution() const;
 
   /** Observations accessor */
-  void setObservations(const NumericalSample & observations);
-  NumericalSample getObservations() const;
+  void setObservations(const Sample & observations);
+  Sample getObservations() const;
 
   /** Log normalization factor accessor */
-  NumericalScalar getLogNormalizationFactor() const;
+  Scalar getLogNormalizationFactor() const;
 
   /** Get the standard deviation of the distribution */
-  NumericalPoint getStandardDeviation() const;
+  Point getStandardDeviation() const;
 
   /** Get the skewness of the distribution */
-  NumericalPoint getSkewness() const;
+  Point getSkewness() const;
 
   /** Get the kurtosis of the distribution */
-  NumericalPoint getKurtosis() const;
+  Point getKurtosis() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -105,10 +105,10 @@ public:
 
 
   /** Compute the likelihood of the observations */
-  NumericalPoint computeLikelihood(const NumericalPoint & theta) const;
+  Point computeLikelihood(const Point & theta) const;
 
   /** Compute the log-likelihood of the observations */
-  NumericalPoint computeLogLikelihood(const NumericalPoint & theta) const;
+  Point computeLogLikelihood(const Point & theta) const;
 
 protected:
 
@@ -128,10 +128,10 @@ private:
   ConditionalDistribution conditionalDistribution_;
 
   /** The observations */
-  NumericalSample observations_;
+  Sample observations_;
 
   /** The Bayes normalization constant */
-  NumericalScalar logNormalizationFactor_;
+  Scalar logNormalizationFactor_;
 
 }; /* class PosteriorDistribution */
 

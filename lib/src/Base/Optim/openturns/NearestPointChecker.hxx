@@ -23,8 +23,8 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/NumericalMathFunction.hxx"
-#include "openturns/NumericalSample.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
@@ -47,20 +47,20 @@ public:
 
 
   /** Constructor with parameters */
-  NearestPointChecker(const NumericalMathFunction & levelFunction,
+  NearestPointChecker(const Function & levelFunction,
                       const ComparisonOperator & comparisonOperator,
-                      const NumericalScalar threshold,
-                      const NumericalSample & sample);
+                      const Scalar threshold,
+                      const Sample & sample);
 
 
   /** Virtual constructor */
   virtual NearestPointChecker * clone() const;
 
   /** levelFunction  accessor */
-  void setLevelFunction(const NumericalMathFunction & levelFunction);
+  void setLevelFunction(const Function & levelFunction);
 
   /** levelFunction accessor */
-  NumericalMathFunction getLevelFunction() const;
+  Function getLevelFunction() const;
 
   /** Result accessor */
   void setResult(const NearestPointCheckerResult & result );
@@ -75,16 +75,16 @@ public:
   ComparisonOperator getComparisonOperator() const;
 
   /** threshold accessor */
-  void setThreshold(const NumericalScalar threshold);
+  void setThreshold(const Scalar threshold);
 
   /** threshold accessor */
-  NumericalScalar getThreshold() const;
+  Scalar getThreshold() const;
 
   /** sample accessor */
-  void setSample(const NumericalSample & sample);
+  void setSample(const Sample & sample);
 
   /** sample accessor */
-  const NumericalSample & getSample() const;
+  const Sample & getSample() const;
 
   /** Performs the actual test */
   void  run();
@@ -94,11 +94,11 @@ public:
 
 private:
 
-  NumericalMathFunction levelFunction_;
+  Function levelFunction_;
   NearestPointCheckerResult result_;
   ComparisonOperator comparisonOperator_;
-  NumericalScalar threshold_;
-  NumericalSample sample_;
+  Scalar threshold_;
+  Sample sample_;
 } ; /* class NearestPointChecker */
 
 
