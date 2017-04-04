@@ -46,7 +46,6 @@
 #include "openturns/GaussKronrodRule.hxx"
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
-#include "openturns/KarhunenLoeveP1Factory.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"
 #include "openturns/LeastSquaresMethod.hxx"

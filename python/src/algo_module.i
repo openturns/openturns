@@ -62,7 +62,6 @@
 %include GaussLegendre.i
 %include IteratedQuadrature.i
 %include ExpertMixture.i
-%include KarhunenLoeveP1Factory.i
 %include KarhunenLoeveResultImplementation.i
 %include KarhunenLoeveResult.i
 %include KarhunenLoeveAlgorithmImplementation.i

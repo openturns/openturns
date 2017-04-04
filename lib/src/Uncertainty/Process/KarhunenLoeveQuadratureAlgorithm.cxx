@@ -224,7 +224,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Compute the Cholesky factor L of \theta^t\diag(w_i)^2\theta, ie LL^t=\theta^t\diag(w_i)^2\theta
   LOGINFO("Compute the Cholesky factor of the Gram matrix");
   CovarianceMatrix gram(scaledTheta.computeGram(true));
-  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureFactory-RegularizationFactor");
+  const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveQuadratureAlgorithm-RegularizationFactor");
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   TriangularMatrix cholesky(gram.computeCholesky(false));

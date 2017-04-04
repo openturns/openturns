@@ -14,6 +14,7 @@
  * Removed deprecated TemporalNormalProcess, SpectralNormalProcess classes
  * Removed deprecated GeneralizedLinearModelAlgorithm, GeneralizedLinearModelResult classes
  * Removed deprecated DynamicalFunction, SpatialFunction, TemporalFunction classes
+ * Removed deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory classes
 
 === Python module ===
 

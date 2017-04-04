@@ -144,11 +144,8 @@
   <IteratedQuadrature-MaximumSubIntervals         value="32"     />
   <IteratedQuadrature-MaximumError                value="1.0e-7" />
 
-  <!-- OT::KarhunenLoeveQuadratureFactory parameters -->
-  <KarhunenLoeveQuadratureFactory-RegularizationFactor value="0.0" />
-
-  <!-- OT::KarhunenLoeveP1Factory parameters -->
-  <KarhunenLoeveP1Factory-RegularizationFactor value="0.0" />
+  <!-- OT::KarhunenLoeveQuadratureAlgorithm parameters -->
+  <KarhunenLoeveQuadratureAlgorithm-RegularizationFactor value="0.0" />
 
   <!-- OT::KarhunenLoeveP1Algorithm parameters -->
   <KarhunenLoeveP1Algorithm-RegularizationFactor value="0.0" />

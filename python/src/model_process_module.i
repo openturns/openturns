@@ -44,7 +44,6 @@
 %include ARMALikelihoodFactory.i
 %include ARMAFactory.i
 %include ConditionedNormalProcess.i
-%include KarhunenLoeveQuadratureFactory.i
 %include KarhunenLoeveQuadratureAlgorithm.i
 
 /* At last we include template definitions */
