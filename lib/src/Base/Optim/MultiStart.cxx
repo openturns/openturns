@@ -132,19 +132,6 @@ OptimizationAlgorithm MultiStart::getOptimizationAlgorithm() const
 }
 
 
-void MultiStart::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "MultiStart::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-OptimizationAlgorithm MultiStart::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "MultiStart::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-
 void MultiStart::setStartingPoints(const Sample & startingPoints)
 {
   startingPoints_ = startingPoints;

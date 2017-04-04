@@ -230,19 +230,6 @@ void BoxCoxFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solve
   solver_ = solver;
 }
 
-OptimizationAlgorithm BoxCoxFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "BoxCoxFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void BoxCoxFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "BoxCoxFactory::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-
 
 /* Build the factory from data */
 BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries) const

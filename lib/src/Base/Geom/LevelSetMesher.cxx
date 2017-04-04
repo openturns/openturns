@@ -92,18 +92,6 @@ OptimizationAlgorithm LevelSetMesher::getOptimizationAlgorithm() const
 }
 
 
-void LevelSetMesher::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "LevelSetMesher::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-OptimizationAlgorithm LevelSetMesher::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "LevelSetMesher::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
 /* Discretization accessors */
 void LevelSetMesher::setDiscretization(const Indices & discretization)
 {

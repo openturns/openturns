@@ -950,19 +950,6 @@ void GeneralLinearModelAlgorithm::setOptimizationAlgorithm(const OptimizationAlg
   hasRun_ = false;
 }
 
-OptimizationAlgorithm GeneralLinearModelAlgorithm::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "GeneralLinearModelAlgorithm::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void GeneralLinearModelAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "GeneralLinearModelAlgorithm::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-
 
 void GeneralLinearModelAlgorithm::setInputTransformation(const Function & inputTransformation)
 {

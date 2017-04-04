@@ -157,10 +157,6 @@ private :
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
 
-  // @deprecated
-  OptimizationAlgorithm getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationAlgorithm & solver);
-
   /** Initialize default Cobyla solver parameter using the ResourceMap */
   void initializeCobylaSolverParameter();
 

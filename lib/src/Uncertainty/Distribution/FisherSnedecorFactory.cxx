@@ -116,18 +116,5 @@ void FisherSnedecorFactory::setOptimizationAlgorithm(const OptimizationAlgorithm
   solver_ = solver;
 }
 
-OptimizationAlgorithm FisherSnedecorFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "FisherSnedecorFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void FisherSnedecorFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "FisherSnedecorFactory::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-
 
 END_NAMESPACE_OPENTURNS

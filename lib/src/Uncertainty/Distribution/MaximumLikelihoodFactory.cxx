@@ -369,18 +369,6 @@ OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationAlgorithm() const
   return solver_;
 }
 
-void MaximumLikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
-{
-  Log::Warn(OSS() << "MaximumLikelihoodFactory::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-OptimizationAlgorithm MaximumLikelihoodFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "MaximumLikelihoodFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
 void MaximumLikelihoodFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {

@@ -158,17 +158,5 @@ void TruncatedNormalFactory::setOptimizationAlgorithm(const OptimizationAlgorith
   solver_ = solver;
 }
 
-void TruncatedNormalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "TruncatedNormalFactory::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-OptimizationAlgorithm TruncatedNormalFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "TruncatedNormalFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
 
 END_NAMESPACE_OPENTURNS

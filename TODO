@@ -1,5 +1,4 @@
 
-Remove [gs]etOptimizationSolver methods
 Remove deprecated NumericalMathFunction in 1.11
 Remove deprecated NumericalSample in 1.11
 Remove deprecated NumericalPoint[WithDescription] in 1.11

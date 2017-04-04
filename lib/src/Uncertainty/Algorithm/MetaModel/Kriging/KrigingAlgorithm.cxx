@@ -276,18 +276,6 @@ void KrigingAlgorithm::setOptimizationAlgorithm(const OptimizationAlgorithm & so
   glmAlgo_.setOptimizationAlgorithm(solver);
 }
 
-OptimizationAlgorithm KrigingAlgorithm::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "KrigingAlgorithm::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void KrigingAlgorithm::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "KrigingAlgorithm::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
 
 /* Accessor to optimization bounds */
 void KrigingAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)

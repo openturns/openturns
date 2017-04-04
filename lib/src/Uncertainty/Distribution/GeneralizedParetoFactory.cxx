@@ -230,26 +230,16 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
 }
 
 /* Optimization solver accessor */
+void GeneralizedParetoFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
+{
+  solver_ = solver;
+}
+
+
 OptimizationAlgorithm GeneralizedParetoFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void GeneralizedParetoFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "GeneralizedParetoFactory::setOptimizationSolver is deprecated");
-  solver_ = solver;
-}
-
-OptimizationAlgorithm GeneralizedParetoFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "GeneralizedParetoFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void GeneralizedParetoFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  setOptimizationAlgorithm(solver);
-}
 
 END_NAMESPACE_OPENTURNS

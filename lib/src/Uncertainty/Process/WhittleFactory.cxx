@@ -273,19 +273,6 @@ void WhittleFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solv
 }
 
 
-OptimizationAlgorithm WhittleFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "WhittleFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void WhittleFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "WhittleFactory::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-
 /* String converter */
 String WhittleFactory::__repr__() const
 {

@@ -63,10 +63,6 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
-  // @deprecated
-  void setOptimizationSolver(const OptimizationAlgorithm & solver);
-  OptimizationAlgorithm getOptimizationSolver() const;
-
   /** Accessor to optimization bounds */
   void setOptimizationBounds(const Interval & optimizationBounds);
   Interval getOptimizationBounds() const;
