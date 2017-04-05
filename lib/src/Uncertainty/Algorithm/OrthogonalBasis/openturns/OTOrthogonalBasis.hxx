@@ -23,8 +23,6 @@
 #define OPENTURNS_OTORTHOGONALBASIS_HXX
 
 #include "openturns/AdaptiveStieltjesAlgorithm.hxx"
-#include "openturns/ChebychevAlgorithm.hxx"
-#include "openturns/GramSchmidtAlgorithm.hxx"
 #include "openturns/OrthogonalUniVariatePolynomial.hxx"
 #include "openturns/CharlierFactory.hxx"
 #include "openturns/ChebychevFactory.hxx"

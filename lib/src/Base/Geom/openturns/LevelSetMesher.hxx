@@ -62,10 +62,6 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
-  // @deprecated
-  void setOptimizationSolver(const OptimizationAlgorithm & solver);
-  OptimizationAlgorithm getOptimizationSolver() const;
-
   /* Here is the interface that all derived class must implement */
   /** Build a mesh based on a domain */
   virtual Mesh build(const LevelSet & levelSet,

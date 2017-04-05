@@ -291,18 +291,6 @@ OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationAlgorithm() const
 }
 
 
-void MethodOfMomentsFactory::setOptimizationSolver(const OptimizationAlgorithm& solver)
-{
-  Log::Warn(OSS() << "MethodOfMomentsFactory::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "MethodOfMomentsFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
 void MethodOfMomentsFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {

@@ -433,19 +433,6 @@ void ARMALikelihoodFactory::setOptimizationAlgorithm(const OptimizationAlgorithm
   solver_ = solver;
 }
 
-OptimizationAlgorithm ARMALikelihoodFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "ARMALikelihoodFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void ARMALikelihoodFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "ARMALikelihoodFactory::getOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-
 // in-place Cholesky decomposition
 int modifiedCholeskyDecomposition(SquareMatrix &matrix,
                                   Scalar epsilon)

@@ -382,13 +382,6 @@ public:
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber")),
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
-  /** Static methods for documentation of analytical functions
-   * @deprecated
-   */
-  static Description GetValidConstants();
-  static Description GetValidFunctions();
-  static Description GetValidOperators();
-
 }; /* class Function */
 
 

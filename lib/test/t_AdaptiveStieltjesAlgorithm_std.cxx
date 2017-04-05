@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class GramSchmidtAlgorithm for standard methods
+ *  @brief The test file of class AdaptiveStieltjesAlgorithm for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *

@@ -418,11 +418,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 32 );
   setAsScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
 
-  // KarhunenLoeveQuadratureFactory parameters //
-  setAsScalar( "KarhunenLoeveQuadratureFactory-RegularizationFactor", 0.0);
-
-  // KarhunenLoeveP1Factory parameters //
-  setAsScalar( "KarhunenLoeveP1Factory-RegularizationFactor", 0.0);
+  // KarhunenLoeveQuadratureAlgorithm parameters //
+  setAsScalar( "KarhunenLoeveQuadratureAlgorithm-RegularizationFactor", 0.0);
 
   // KarhunenLoeveP1Algorithm parameters //
   setAsScalar( "KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);

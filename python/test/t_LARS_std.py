@@ -71,7 +71,7 @@ try:
         basis.add(productBasis.build(i))
 
     # run algorithm
-    factory = BasisSequenceFactory(LAR())
+    factory = BasisSequenceFactory(LARS())
     factory.setVerbose(True)
     print("factory = ", factory)
 
@@ -83,4 +83,4 @@ try:
 
 except:
     import sys
-    print("t_LAR.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_LARS.py", sys.exc_info()[0], sys.exc_info()[1])

@@ -410,7 +410,6 @@ ot_add_python_module(algo algo_module.i
                       GaussLegendre.i GaussLegendre_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
-		      KarhunenLoeveP1Factory.i KarhunenLoeveP1Factory_doc.i.in
 		      KarhunenLoeveResultImplementation.i KarhunenLoeveResultImplementation_doc.i.in
 		      KarhunenLoeveResult.i KarhunenLoeveResult_doc.i.in
 		      KarhunenLoeveAlgorithmImplementation.i KarhunenLoeveAlgorithmImplementation_doc.i.in
@@ -505,7 +504,6 @@ ot_add_python_module(model_process model_process_module.i
                       ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in  
                       ARMAFactory.i ARMAFactory_doc.i.in
 		      ConditionedNormalProcess.i ConditionedNormalProcess_doc.i.in
-		      KarhunenLoeveQuadratureFactory.i KarhunenLoeveQuadratureFactory_doc.i.in
 		      KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in                
                       UncertaintyProcessTemplateDefs.i
                    )
@@ -693,8 +691,6 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in 
                       OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i.in
                       AdaptiveStieltjesAlgorithm.i AdaptiveStieltjesAlgorithm_doc.i.in
-                      ChebychevAlgorithm.i ChebychevAlgorithm_doc.i.in
-                      GramSchmidtAlgorithm.i GramSchmidtAlgorithm_doc.i.in
                       StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i.in
                       OrthogonalFunctionFactory.i OrthogonalFunctionFactory_doc.i.in
                       OrthogonalProductPolynomialFactory.i OrthogonalProductPolynomialFactory_doc.i.in

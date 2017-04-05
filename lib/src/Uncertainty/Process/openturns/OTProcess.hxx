@@ -38,7 +38,6 @@
 #include "openturns/WhittleFactoryState.hxx"
 #include "openturns/ARMALikelihoodFactory.hxx"
 #include "openturns/ConditionedNormalProcess.hxx"
-#include "openturns/KarhunenLoeveQuadratureFactory.hxx"
 #include "openturns/KarhunenLoeveQuadratureAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSTOCHASTICPROCESS_HXX */

@@ -56,10 +56,6 @@ public:
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
 
-  // @deprecated
-  OptimizationAlgorithm getOptimizationSolver() const;
-  void setOptimizationSolver(const OptimizationAlgorithm & solver);
-
 protected:
 
   /** Optimization solver */

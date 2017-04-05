@@ -642,17 +642,5 @@ void MeixnerDistribution::setOptimizationAlgorithm(const OptimizationAlgorithm &
   solver_ = solver;
 }
 
-OptimizationAlgorithm MeixnerDistribution::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "MeixnerDistribution::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void MeixnerDistribution::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "MeixnerDistribution::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
 END_NAMESPACE_OPENTURNS
 

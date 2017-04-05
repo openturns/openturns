@@ -1,5 +1,33 @@
 = New Features =
 
+== 1.10 release (in progress) == #release-1.10
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated LAR class
+ * Remove deprecated Function::GetValidConstants|GetValidFunctions|GetValidOperators
+ * Removed deprecated TemporalNormalProcess, SpectralNormalProcess classes
+ * Removed deprecated GeneralizedLinearModelAlgorithm, GeneralizedLinearModelResult classes
+ * Removed deprecated DynamicalFunction, SpatialFunction, TemporalFunction classes
+ * Removed deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory classes
+ * Removed deprecated GramSchmidtAlgorithm, ChebychevAlgorithm classes
+ * Removed [gs]etOptimizationSolver methods
+ * Removed deprecated SpecFunc::*NumericalScalar*
+ * Removed deprecated NumericalScalar[Collection]
+ * Removed deprecated NumericalComplex[Collection]
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.9rc1 release (2017-04-03) == #release-1.9rc1
 
 === Library ===

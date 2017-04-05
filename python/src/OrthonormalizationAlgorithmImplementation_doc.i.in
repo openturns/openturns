@@ -11,15 +11,13 @@ Available constructors:
 Parameters
 ----------
 orthoAlgoImp : OrthonormalizationAlgorithmImplementation
-    An orthonormalization algorithm implementation which is the
-    :class:`~openturns.GramSchmidtAlgorithm` or
-    the :class:`~openturns.ChebychevAlgorithm`.
+    An orthonormalization algorithm implementation.
 measure : :class:`~openturns.Distribution`
     A distribution for which the orthonormal polynomial basis is built. 
 
 See also
 --------
-GramSchmidtAlgorithm, ChebychevAlgorithm
+AdaptiveStieltjesAlgorithm
 
 Notes
 -----

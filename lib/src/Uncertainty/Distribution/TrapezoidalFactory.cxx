@@ -75,19 +75,6 @@ void TrapezoidalFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & 
   solver_ = solver;
 }
 
-OptimizationAlgorithm TrapezoidalFactory::getOptimizationSolver() const
-{
-  Log::Warn(OSS() << "TrapezoidalFactory::getOptimizationSolver is deprecated");
-  return getOptimizationAlgorithm();
-}
-
-void TrapezoidalFactory::setOptimizationSolver(const OptimizationAlgorithm & solver)
-{
-  Log::Warn(OSS() << "TrapezoidalFactory::setOptimizationSolver is deprecated");
-  setOptimizationAlgorithm(solver);
-}
-
-
 /* Here is the interface that all derived class must implement */
 
 TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Sample & sample) const

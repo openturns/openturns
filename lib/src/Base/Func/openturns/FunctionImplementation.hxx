@@ -59,15 +59,6 @@ public:
 
 public:
 
-  /** Static methods for documentation of analytical functions
-   * @deprecated */
-  static Description GetValidConstants();
-  static Description GetValidFunctions();
-  static Description GetValidOperators();
-
-
-public:
-
   /** Default constructor */
   FunctionImplementation();
 

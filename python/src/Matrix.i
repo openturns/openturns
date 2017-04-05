@@ -23,10 +23,10 @@ OT::Matrix OT::Matrix::computeSVD(OT::Matrix & u, OT::Matrix & vT, const Bool fu
 %define OTMatrixGetAccessor(baseType, elementType, pythonElementType)
 PyObject * __getitem__(PyObject * args) const {
 
-  Py_ssize_t start1;
-  Py_ssize_t stop1;
-  Py_ssize_t step1;
-  Py_ssize_t slicelength1;
+  Py_ssize_t start1 = 0;
+  Py_ssize_t stop1 = 0;
+  Py_ssize_t step1 = 0;
+  Py_ssize_t slicelength1 = 0;
 
   // case #0: [slice] => Matrix
   if ( PySlice_Check( args ) )
@@ -50,12 +50,12 @@ PyObject * __getitem__(PyObject * args) const {
   OT::UnsignedInteger arg2 = 0;
   OT::UnsignedInteger arg3 = 0;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
+  Py_ssize_t start2 = 0;
+  Py_ssize_t stop2 = 0;
+  Py_ssize_t step2 = 0;
+  Py_ssize_t slicelength2 = 0;
 
-  Py_ssize_t start2;
-  Py_ssize_t stop2;
-  Py_ssize_t step2;
-  Py_ssize_t slicelength2;
+  if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
 
   // convert first list argument 
   if ( PySlice_Check( obj1 ) )
@@ -150,10 +150,10 @@ fail:
 %define OTMatrixSetAccessor(baseType, elementType, pythonElementType)
 PyObject * __setitem__(PyObject * args, PyObject * valObj) {
 
-  Py_ssize_t start1;
-  Py_ssize_t stop1;
-  Py_ssize_t step1;
-  Py_ssize_t slicelength1;
+  Py_ssize_t start1 = 0;
+  Py_ssize_t stop1 = 0;
+  Py_ssize_t step1 = 0;
+  Py_ssize_t slicelength1 = 0;
 
   // case #0: [slice] <= baseType
   if ( PySlice_Check( args ) )
@@ -183,12 +183,12 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   OT::UnsignedInteger arg2 = 0;
   OT::UnsignedInteger arg3 = 0;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
+  Py_ssize_t start2 = 0;
+  Py_ssize_t stop2 = 0;
+  Py_ssize_t step2 = 0;
+  Py_ssize_t slicelength2 = 0;
 
-  Py_ssize_t start2;
-  Py_ssize_t stop2;
-  Py_ssize_t step2;
-  Py_ssize_t slicelength2;
+  if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
 
   // convert first list argument 
   if ( PySlice_Check( obj1 ) )

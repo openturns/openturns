@@ -534,25 +534,6 @@ UnsignedInteger FunctionImplementation::getHessianCallsNumber() const
   return p_hessianImplementation_->getCallsNumber();
 }
 
-/* Static methods for documentation of analytical fonctions */
-Description FunctionImplementation::GetValidConstants()
-{
-  Log::Warn(OSS() << "Function:GetValidConstants is deprecated");
-  return SymbolicFunction::GetValidConstants();
-}
-
-Description FunctionImplementation::GetValidFunctions()
-{
-  Log::Warn(OSS() << "Function:GetValidFunctions is deprecated");
-  return SymbolicFunction::GetValidFunctions();
-}
-
-Description FunctionImplementation::GetValidOperators()
-{
-  Log::Warn(OSS() << "Function:GetValidOperators is deprecated");
-  return SymbolicFunction::GetValidOperators();
-}
-
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
                                    const UnsignedInteger outputMarginal,
