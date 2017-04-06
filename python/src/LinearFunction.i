@@ -11,8 +11,8 @@ namespace OT { %extend LinearFunction { LinearFunction(const LinearFunction & ot
 
 %pythoncode %{
 # deprecated
-class LinearFunction(LinearFunction):
+class LinearNumericalMathFunction(LinearFunction):
     def __init__(self, *args):
-        super(LinearFunction, self).__init__(*args)
-        openturns.common.Log.Warn('class LinearFunction is deprecated in favor of LinearFunction')
+        super(LinearNumericalMathFunction, self).__init__(*args)
+        openturns.common.Log.Warn('class LinearNumericalMathFunction is deprecated in favor of LinearFunction')
 %}
