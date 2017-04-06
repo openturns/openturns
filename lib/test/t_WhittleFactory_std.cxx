@@ -60,11 +60,11 @@ int main(int argc, char *argv[])
       // factory.setVerbose(true);
       fullprint << "factory=" << factory << std::endl;
       Point informationCriteria;
-      Process result(factory.build(timeSeries, informationCriteria));
+      Process result(factory.buildWithCriteria(timeSeries, informationCriteria));
       // Commented due to a bug in the cobyla algorithm
       //fullprint << "Estimated ARMA=" << result.__str__() << std::endl;
       //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;
-      Process result2(factory.build(sample, informationCriteria));
+      Process result2(factory.buildWithCriteria(sample, informationCriteria));
       // Commented due to a bug in the cobyla algorithm
       //fullprint << "Estimated ARMA=" << result2.__str__() << std::endl;
       //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;
@@ -79,12 +79,12 @@ int main(int argc, char *argv[])
     // factory.setVerbose(true);
     fullprint << "factory=" << factory << std::endl;
     Point informationCriteria;
-    Process result(factory.build(timeSeries, informationCriteria));
+    Process result(factory.buildWithCriteria(timeSeries, informationCriteria));
     // Commented due to a bug in the cobyla algorithm
     //fullprint << "Estimated ARMA=" << result.__str__() << std::endl;
     //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;
     //fullprint << "History=" << factory.getHistory().__str__()  << std::endl;
-    Process result2(factory.build(sample, informationCriteria));
+    Process result2(factory.buildWithCriteria(sample, informationCriteria));
     // Commented due to a bug in the cobyla algorithm
     //fullprint << "Estimated ARMA=" << result2.__str__() << std::endl;
     //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;

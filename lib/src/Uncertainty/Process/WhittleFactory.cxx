@@ -354,8 +354,8 @@ void WhittleFactory::setSpectralModelFactory(const WelchFactory & factory)
  *                       =\left|\frac{\beta(\exp(-i\lambda))}{\alpha(\exp(-i\lambda))}\right|^2
  * It can be noticed that dropping the term -\sum_{j=1}^m\log f(\lambda_j|\theta, \sigma^2) in the Whittle likelihood or the term
  */
-ARMA WhittleFactory::build(const TimeSeries & timeSeries,
-                           Point & informationCriteria) const
+ARMA WhittleFactory::buildWithCriteria(const TimeSeries & timeSeries,
+                                       Point & informationCriteria) const
 {
   if (timeSeries.getDimension() != 1)
     throw NotYetImplementedException(HERE) << "In WhittleFactory::build(const TimeSeries & timeSeries, Point & informationCriteria) const: currently implemented for 1 d case only";
@@ -369,12 +369,12 @@ ARMA WhittleFactory::build(const TimeSeries & timeSeries,
 ARMA WhittleFactory::build(const TimeSeries & timeSeries) const
 {
   Point informationCriteria;
-  return build(timeSeries, informationCriteria);
+  return buildWithCriteria(timeSeries, informationCriteria);
 }
 
 /* Build method */
-ARMA WhittleFactory::build(const ProcessSample & sample,
-                           Point & informationCriteria) const
+ARMA WhittleFactory::buildWithCriteria(const ProcessSample & sample,
+                                       Point & informationCriteria) const
 {
   if (sample.getDimension() != 1)
     throw NotYetImplementedException(HERE) << "In WhittleFactory::build(const ProcessSample & sample, Point & informationCriteria) const: currently implemented for 1 d case only";
@@ -387,7 +387,7 @@ ARMA WhittleFactory::build(const ProcessSample & sample,
 ARMA WhittleFactory::build(const ProcessSample & sample) const
 {
   Point informationCriteria;
-  return build(sample, informationCriteria);
+  return buildWithCriteria(sample, informationCriteria);
 }
 
 /* Do the likelihood maximization */

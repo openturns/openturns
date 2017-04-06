@@ -11,7 +11,7 @@ OT_ARMAFactory_doc
 %define OT_ARMAFactory_build_doc
 "Estimate the ARMA model from data.
 
-Available constructors:
+Available usages:
     build(*myTimeSeries*)
 
     build(*myProcessSample*)
@@ -27,7 +27,7 @@ Returns
 -------
 myARMA : :class:`~openturns.ARMA`
     The estimated spectral model.
- "
+"
 %enddef
 %feature("docstring") OT::ARMAFactoryImplementation::build
 OT_ARMAFactory_build_doc

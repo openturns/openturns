@@ -131,8 +131,7 @@ p = [1, 2, 4] and q = [4,5,6]:
 
 To get the quantified AICc, AIC and BIC criteria:
 
->>> myCriterion = ot.Point()
->>> myARMA_42 = myFactory_42.build(ot.TimeSeries(myTimeSeries), myCriterion)
+>>> myARMA_42, myCriterion = myFactory_42.buildWithCriteria(ot.TimeSeries(myTimeSeries))
 >>> AICc, AIC, BIC = myCriterion[0:3]"
 
 // ---------------------------------------------------------------------
@@ -141,16 +140,14 @@ To get the quantified AICc, AIC and BIC criteria:
 "Estimate the ARMA process.
 
 Available usages:
-    build(*myTimeSeries, criterion*)
+    build(*myTimeSeries*)
 
-    build(*myProcessSample, criterion*)
+    build(*myProcessSample*)
 
 Parameters
 ----------
 myTimeSeries : :class:`~openturns.TimeSeries`
     One realization of the  process.
-criterion : :class:`~openturns.Point` with the default implementation, optional
-    To get the evaluation of the AICc, AIC and BIC criteria
 myProcessSample : :class:`~openturns.ProcessSample`
     Several realizations of the  process.
 
@@ -165,6 +162,36 @@ The model selection is made using the spectral density built using the given dat
 
 The best ARMA process is selected according to the corrected AIC criterion.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WhittleFactory::buildWithCriteria
+"Estimate the ARMA process.
+
+Available usages:
+    buildWithCriteria(*myTimeSeries*)
+
+    buildWithCriteria(*myProcessSample*)
+
+Parameters
+----------
+myTimeSeries : :class:`~openturns.TimeSeries`
+    One realization of the  process.
+myProcessSample : :class:`~openturns.ProcessSample`
+    Several realizations of the  process.
+
+Returns
+-------
+myARMA : :class:`~openturns.ARMA`
+    The  process estimated with the Whittle estimator.
+criterion : :class:`~openturns.Point`
+    Result of the evaluation of the AICc, AIC and BIC criteria
+
+Notes
+-----
+The model selection is made using the spectral density built using the given data and theoretical spectral density of the ARMA process.
+
+The best ARMA process is selected according to the corrected AIC criterion."
 
 // ---------------------------------------------------------------------
 
