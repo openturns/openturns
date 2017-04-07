@@ -407,6 +407,7 @@ if (BUILD_PYTHON)
   find_python_module (numpy)
   find_python_module (scipy)
   find_python_module (matplotlib 1.1)
+  find_python_module (nbconvert)
 
   if (USE_SPHINX)
     find_program (SPHINX_EXECUTABLE NAMES sphinx-build DOC "Sphinx Documentation Builder (sphinx-doc.org)")
