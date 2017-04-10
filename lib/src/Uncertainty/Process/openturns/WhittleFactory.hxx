@@ -65,12 +65,12 @@ public:
   void setSpectralModelFactory(const WelchFactory & factory);
 
   /** Build method ==> estimating the coefficients */
-  ARMA build(const TimeSeries & timeSeries,
-             Point & informationCriteria) const;
-  ARMA build(const TimeSeries & timeSeries) const;
-  ARMA build(const ProcessSample & sample,
-             Point & informationCriteria) const;
-  ARMA build(const ProcessSample & sample) const;
+  virtual ARMA build(const TimeSeries & timeSeries) const;
+  ARMA buildWithCriteria(const TimeSeries & timeSeries,
+                         Point & informationCriteria) const;
+  virtual ARMA build(const ProcessSample & sample) const;
+  ARMA buildWithCriteria(const ProcessSample & sample,
+                         Point & informationCriteria) const;
 
   /** Verbosity accessor */
   Bool getVerbose() const;

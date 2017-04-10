@@ -4,3 +4,4 @@
 OT_ARMAFactory_doc
 %feature("docstring") OT::ARMAFactory::build
 OT_ARMAFactory_build_doc
+
