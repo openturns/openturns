@@ -195,7 +195,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Linear algebra                        | `LAPACK <http://www.netlib.org/lapack/>`_                 | 3.0               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
-| Linear algebra (optional)             | `HMat <https://github.com/jeromerobert/hmat-oss>`_        | 1.1               |
+| Linear algebra (optional)             | `HMat <https://github.com/jeromerobert/hmat-oss>`_        | 1.2               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Analytical parser (optional)          | `muParser <http://muparser.beltoforion.de/>`_             | 1.32              |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
