@@ -310,7 +310,11 @@ void HMatrixImplementation::factorize(const String& method)
 
   try
   {
-    static_cast<hmat_interface_t*>(hmatInterface_)->factorize(static_cast<hmat_matrix_t*>(hmat_), fact_method);
+    hmat_factorization_context_t context;
+    hmat_factorization_context_init(&context);
+    context.factorization = fact_method;
+    context.progress = NULL;
+    static_cast<hmat_interface_t*>(hmatInterface_)->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
   }
   catch (std::exception& ex)
   {
