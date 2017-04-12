@@ -335,3 +335,6 @@ pdf      =0.0123168
 pdf      =0.00770527
 pdf      =0.00160947
 pdf      =0
+Discrete distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Bernoulli name=Bernoulli dimension=1 p=0.2,class=Binomial name=Binomial dimension=1 n=4 p=0.1] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=2 values=[1,1] constant=class=Point name=Unnamed dimension=1 values=[8]
+range = class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[8] upper bound=class=Point name=Unnamed dimension=1 values=[13] finite lower bound=[1] finite upper bound=[1]
+support = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=1 data=[[8],[9],[10],[11],[12],[13]]

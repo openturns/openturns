@@ -112,6 +112,7 @@
  * #879 (Incomplete arguments in FunctionalChaosRandomVector docstrings)
  * #882 (RandomMixture segfaults with Dirac)
  * #883 (VisualTest.DrawHistogram should rely on Histogram.drawPDF)
+ * #886 (problem with getSupport)
  * #887 (Bogus PDF evaluation in RandomMixture with mix of continuous/discrete variables)
  * #888 (Bogus RandomMixture::getSample)
 
