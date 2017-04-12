@@ -224,9 +224,9 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   const UnsignedInteger dimension = constant.getSize();
   if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
   setDimension(dimension);
-  if (weights.getDimension() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
-  if (weights.getSize() != constant.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same row numbers as the distribution dimension";
-  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()).transpose();
+  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
+  if (weights.getDimension() != constant.getDimension()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same row numbers as the distribution dimension";
+  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
 }
 
@@ -256,8 +256,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
   constant_ = Point(dimension, 0.0);
   setDimension(dimension);
-  if (dimension != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
-  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()).transpose();
+  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
+  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
 }
 /* Compute the numerical range of the distribution given the parameters values */
@@ -536,7 +536,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
     constant_[0] = 0.0;
   }
 
-  if (dimension == 1) setWeights(Matrix(1, distributionCollection_.getSize() , weights.getImplementation()->getData()));
+  if (dimension == 1) setWeights(Matrix(1, distributionCollection_.getSize(), weights.getImplementation()->getData()));
 
   // We cannot use parallelism if we have more than one atom due to the characteristic function cache
   if (distributionCollection_.getSize() > 1) setParallel(false);
@@ -2694,13 +2694,56 @@ Sample RandomMixture::getSupport(const Interval & interval) const
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
   const UnsignedInteger size = distributionCollection_.getSize();
+  const UnsignedInteger dimension = getDimension();
   // The computation of the support is available only if there is one atom
   // otherwise the computePDF() and computeCDF() methods are not implemented anyway
-  if (size > 1) throw NotYetImplementedException(HERE) << "In RandomMixture::getSupport()";
-  Sample support(0, getDimension());
-  Sample localSupport((distributionCollection_[0].getSupport() * Point(*weights_.getImplementation())) + constant_);
-  for (UnsignedInteger j = 0; j < localSupport.getSize(); ++j)
-    if (interval.contains(localSupport[j])) support.add(localSupport[j]);
+  Sample support(0, dimension);
+  Sample supportCandidates;
+  if (dimension == 1)
+    supportCandidates = distributionCollection_[0].getSupport() * Point(*weights_.getColumn(0).getImplementation()) + constant_;
+  else
+  {
+    const Sample support0 = distributionCollection_[0].getSupport();
+    const Point scaling(*weights_.getColumn(0).getImplementation());
+    supportCandidates = Sample(support0.getSize(), dimension);
+    for (UnsignedInteger i = 0; i < support0.getSize(); ++i)
+      supportCandidates[i] = scaling * support0[i][0] + constant_;
+  } // dimension > 1
+  for (UnsignedInteger indexNext = 1; indexNext < size; ++indexNext)
+  {
+    Sample nextSupport;
+    if (dimension == 1)
+      nextSupport = distributionCollection_[indexNext].getSupport() * Point(*weights_.getColumn(indexNext).getImplementation());
+    else
+    {
+      const Sample support = distributionCollection_[indexNext].getSupport();
+      const Point scaling(*weights_.getColumn(indexNext).getImplementation());
+      nextSupport = Sample(support.getSize(), dimension);
+      for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+        nextSupport[i] = scaling * support[i][0] + constant_;
+    } // dimension > 1
+    const UnsignedInteger supportCandidatesSize = supportCandidates.getSize();
+    const UnsignedInteger nextSupportSize = nextSupport.getSize();
+    Sample newSupportCandidate(supportCandidatesSize * nextSupportSize, dimension);
+    UnsignedInteger k = 0;
+    for (UnsignedInteger indexCandidates = 0; indexCandidates < supportCandidatesSize; ++indexCandidates)
+    {
+      const Point xI(supportCandidates[indexCandidates]);
+      for (UnsignedInteger indexNext = 0; indexNext < nextSupportSize; ++indexNext)
+      {
+        const Point xJ(nextSupport[indexNext]);
+        newSupportCandidate[k] = xI + xJ;
+        ++k;
+      } // indexNext
+    } // indexCandidates
+    // Remove duplicates
+    supportCandidates = newSupportCandidate.sortUnique();
+  } // loop over the other atoms
+  for (UnsignedInteger i = 0; i < supportCandidates.getSize(); ++i)
+  {
+    const Point candidate(supportCandidates[i]);
+    if (interval.contains(candidate)) support.add(candidate);
+  }
   return support;
 }
 
