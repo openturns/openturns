@@ -2683,7 +2683,7 @@ Bool RandomMixture::isIntegral() const
     if (!distributionCollection_[i].isDiscrete()) return false;
     // Check if all the weights are integer
     for (UnsignedInteger j = 0; j < dimension; ++j)
-      if (weights_(i, j) != round(weights_(i, j))) return false;
+      if (weights_(j, i) != round(weights_(j, i))) return false;
   }
   return true;
 }
