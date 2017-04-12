@@ -744,8 +744,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
   const Point upperBound(range.getUpperBound());
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     if ((point[j] <= lowerBound[j]) || (point[j] >= upperBound[j])) return 0.0;
-  // Special case for 1D distributions with exactly 2 atoms
-  if ((dimension_ == 1) && (distributionCollection_.getSize() == 2))
+  // Special case for 1D distributions with exactly 2 continuous atoms
+  if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
     // Get the parameters of the random mixture
     const Scalar z0 = point[0] - constant_[0];
@@ -1727,8 +1727,8 @@ Scalar RandomMixture::computeCDF(const Point & point) const
   const Scalar upperBound = range.getUpperBound()[0];
   if (x <= lowerBound) return 0.0;
   if (x >= upperBound) return 1.0;
-  // Special case for 1D distributions with exactly 2 atoms
-  if ((dimension_ == 1) && (distributionCollection_.getSize() == 2))
+  // Special case for 1D distributions with exactly 2 continuous atoms
+  if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
     // Get the parameters of the random mixture
     const Scalar z0 = x - constant_[0];
