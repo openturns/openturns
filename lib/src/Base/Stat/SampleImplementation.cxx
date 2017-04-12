@@ -20,7 +20,6 @@
  */
 #include <sstream>
 #include <limits>        // std::numeric_limits
-#include <map>
 #include <cmath>
 #include <fstream>
 #include <iomanip>
