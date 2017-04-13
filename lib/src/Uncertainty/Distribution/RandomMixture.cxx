@@ -616,7 +616,7 @@ Point RandomMixture::getRealization() const
 Sample RandomMixture::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger atomSize = distributionCollection_.getSize();
-  MatrixImplementation sample(atomSize, size);
+  MatrixImplementation sample(size, atomSize);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < atomSize; ++i)
   {
@@ -625,14 +625,14 @@ Sample RandomMixture::getSample(const UnsignedInteger size) const
     index += size;
   }
   SampleImplementation result(size, getDimension());
-  result.setData(weights_.getImplementation()->genProd(sample).transpose());
+  result.setData(sample.genProd(*weights_.getImplementation(), false, true));
   return result + constant_;
 }
 
 Sample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
 {
   const UnsignedInteger atomSize = distributionCollection_.getSize();
-  MatrixImplementation sample(atomSize, size);
+  MatrixImplementation sample(size, atomSize);
   UnsignedInteger index = 0;
   const Point u(SobolSequence(1).generate(size).getImplementation()->getData());
   for (UnsignedInteger i = 0; i < atomSize; ++i)
@@ -642,7 +642,7 @@ Sample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
     index += size;
   }
   SampleImplementation result(size, getDimension());
-  result.setData(weights_.getImplementation()->genProd(sample).transpose());
+  result.setData(sample.genProd(*weights_.getImplementation(), false, true));
   return result + constant_;
 }
 
