@@ -544,8 +544,8 @@ Bool Mixture::isElliptical() const
 Bool Mixture::isContinuous() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isContinuous()) return false;
-  return true;
+  for (UnsignedInteger i = 0; i < size; ++i) if (distributionCollection_[i].isContinuous()) return true;
+  return false;
 }
 
 /* Check if the distribution is discrete */
