@@ -88,6 +88,13 @@ const Scalar SpecFunc::ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const Scalar SpecFunc::Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
+// @deprecated
+const Scalar SpecFunc::MinNumericalScalar    = MinScalar;
+const Scalar SpecFunc::LogMinNumericalScalar = LogMinScalar;
+const Scalar SpecFunc::MaxNumericalScalar    = MaxScalar;
+const Scalar SpecFunc::LogMaxNumericalScalar = LogMaxScalar;
+const Scalar SpecFunc::NumericalScalarEpsilon = ScalarEpsilon;
+
 // Some facilities for NaN and inf
 Bool SpecFunc::IsNaN(const Scalar value)
 {

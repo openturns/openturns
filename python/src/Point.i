@@ -125,4 +125,9 @@ class NumericalPoint(Point):
         super(NumericalPoint, self).__init__(*args)
         openturns.common.Log.Warn('class NumericalPoint is deprecated in favor of Point')
 
+class NumericalScalarCollection(ScalarCollection):
+    def __init__(self, *args):
+        super(NumericalScalarCollection, self).__init__(*args)
+        openturns.common.Log.Warn('class NumericalScalarCollection is deprecated in favor of ScalarCollection')
+
 %}

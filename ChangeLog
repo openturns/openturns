@@ -17,9 +17,6 @@
  * Removed deprecated KarhunenLoeveP1Factory, KarhunenLoeveQuadratureFactory classes
  * Removed deprecated GramSchmidtAlgorithm, ChebychevAlgorithm classes
  * Removed [gs]etOptimizationSolver methods
- * Removed deprecated SpecFunc::*NumericalScalar*
- * Removed deprecated NumericalScalar[Collection]
- * Removed deprecated NumericalComplex[Collection]
 
 === Python module ===
 
