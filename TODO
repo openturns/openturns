@@ -3,6 +3,6 @@ Remove deprecated NumericalMathFunction in 1.11
 Remove deprecated NumericalSample in 1.11
 Remove deprecated NumericalPoint[WithDescription] in 1.11
 Remove deprecated ResourceMap::[SG]AsNumericalScalar
-Remove deprecated SpecFunc::*NumericalScalar*
-Remove deprecated NumericalScalar[Collection]
-Remove deprecated NumericalComplex[Collection]
+Remove deprecated SpecFunc::*NumericalScalar* in 1.11
+Remove deprecated NumericalScalar[Collection] in 1.11
+Remove deprecated NumericalComplex[Collection] in 1.11
