@@ -85,9 +85,9 @@ Distribution RandomMixture(Exponential(lambda = 1, gamma = 0) + Exponential(lamb
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[3.00606]
-oneSample first=class=Point name=Unnamed dimension=1 values=[3.3933] last=class=Point name=Unnamed dimension=1 values=[1.81672]
+oneSample first=class=Point name=Unnamed dimension=1 values=[3.78213] last=class=Point name=Unnamed dimension=1 values=[3.21572]
 mean=class=Point name=Unnamed dimension=1 values=[2.99145]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.92518]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.95314]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]

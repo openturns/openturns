@@ -109,9 +109,9 @@ Distribution  RandomMixture(Exponential(lambda = 1, gamma = 0) + Exponential(lam
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.665902]
-oneSample first= [5.24685]  last= [5.44861]
+oneSample first= [1.42272]  last= [4.55734]
 mean= [2.9992]
-covariance= [[ 2.9295 ]]
+covariance= [[ 2.95619 ]]
 Point=  [0.5]
 ddf      = [0.227449]
 ddf (ref)= [0.227449]
