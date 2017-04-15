@@ -690,6 +690,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize", 25 );
   setAsUnsignedInteger( "RandomMixture-MarginalIntegrationNodesNumber", 128 );
   setAsUnsignedInteger( "RandomMixture-MaximumIntegrationNodesNumber", 1024 );
+  setAsUnsignedInteger( "RandomMixture-MaximumSupportSize", 2048 );
+  setAsBool( "RandomMixture-SimplifyAtoms", true );
 
   // NumericalMathEvaluation parameters //
   setAsUnsignedInteger( "NumericalMathEvaluation-DefaultPointNumber", 129 );

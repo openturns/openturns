@@ -417,6 +417,8 @@
   <RandomMixture-ProjectionDefaultSize value="25"      />
   <RandomMixture-MarginalIntegrationNodesNumber   value="128"    />
   <RandomMixture-MaximumIntegrationNodesNumber    value="1024"   />
+  <RandomMixture-MaximumSupportSize               value="2048"   />
+  <RandomMixture-SimplifyAtoms                    value="true"   />
 
   <!-- OT::NumericalMathEvaluation parameters -->
   <NumericalMathEvaluation-DefaultPointNumber value="129" />
