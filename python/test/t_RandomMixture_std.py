@@ -7,6 +7,9 @@ from math import sqrt, pi, exp
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
+# Deactivate the simplification mechanism as we want to test the Poisson formula
+# based algorithm here
+ResourceMap.SetAsUnsignedInteger("RandomMixture-SimplifyAtoms", False)
 
 try:
     # Create a collection of test-cases and the associated references
@@ -88,8 +91,8 @@ try:
         print("Survival(inverseSurvival)=%.6f" %
               distribution.computeSurvivalFunction(inverseSurvival))
 
-        # Confidence regions
-        if distribution.getDimension() <= 1 and testIndex <= 1:
+        # Confidence regions: too expansive for now...
+        if False:
             print("dimension=", distribution.getDimension(),
                   "test case=", testIndex)
             interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
