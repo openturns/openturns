@@ -1283,12 +1283,8 @@ Sample RandomMixture::computePDF(const Point & xMin,
   LOGWARN(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
 
   Sample result(size, 1);
-  if (isAnalytical_)
-  {
-    // compute analytically the pdf
-    for (UnsignedInteger j = 0; j < size; ++j) result[j][0] = computePDF(grid[j]);
-    return result;
-  }
+  // Special case when the distribution is analytical
+  if (isAnalytical_) return computePDF(grid);
   UnsignedInteger levelMax = 0;
   // Compute Gaussian sum pdf
   // First compute levelMax on mu, to speed up calls to computeEquivalentNormalPDFSum
@@ -2454,7 +2450,7 @@ void RandomMixture::computeMean() const
 {
   mean_ = constant_;
   const UnsignedInteger size = distributionCollection_.getSize();
-  Point mu(size, 0.0);
+  Point mu(size);
   for(UnsignedInteger i = 0; i < size; ++i)
     mu[i] = distributionCollection_[i].getMean()[0];
   mean_ += weights_ * mu;
