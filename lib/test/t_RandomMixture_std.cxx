@@ -338,6 +338,21 @@ int main(int argc, char *argv[])
     // After what it was impossible to draw the PDF or the CDF due to a lack of support computation
     Graph graphPDF(mixture2.drawPDF());
     Graph graphCDF(mixture2.drawCDF());
+
+    // Support of discrete distributions
+    Collection<Distribution> collectionDiscrete(0);
+    Point weightDiscrete(0);
+    collectionDiscrete.add(Bernoulli(0.2));
+    weightDiscrete.add(1.0);
+    collectionDiscrete.add(Dirac(8.0));
+    weightDiscrete.add(1.0);
+    collectionDiscrete.add(Binomial(4, 0.1));
+    weightDiscrete.add(1.0);
+    RandomMixture dist_discrete(collectionDiscrete, weightDiscrete);
+    fullprint << "Discrete distribution = " << dist_discrete << std::endl;
+    fullprint << "range = " << dist_discrete.getRange() << std::endl;
+    fullprint << "support = " << dist_discrete.getSupport() << std::endl;
+
   }
   catch (TestFailed & ex)
   {

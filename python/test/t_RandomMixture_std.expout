@@ -357,3 +357,10 @@ pdf      = 0.0123168
 pdf      = 0.00770527
 pdf      = 0.00160947
 pdf      = 0
+Discrete distribution =  RandomMixture(8 + Bernoulli(p = 0.2) + Binomial(n = 4, p = 0.1))
+support =  0 : [  8 ]
+1 : [  9 ]
+2 : [ 10 ]
+3 : [ 11 ]
+4 : [ 12 ]
+5 : [ 13 ]

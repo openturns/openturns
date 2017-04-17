@@ -2688,20 +2688,47 @@ Bool RandomMixture::isIntegral() const
   return true;
 }
 
+namespace {
+// Compute the support by looping over atoms.
+// Since the number of atoms is only known at runtime, it is not easy to implement
+// nested for-loops.  We use a recursive algorithm, by aggregating intermediate
+// results into 'accumulator' and final sample into 'supports'.
+void computeSupport(const UnsignedInteger start, const UnsignedInteger end,
+                    const Matrix & weights, const Point & constant, Collection<Sample> & localSupports,
+                    const Point & accumulator, Sample & supports)
+{
+  if (start == end)
+  {
+    supports.add(accumulator + constant);
+    return;
+  }
+  const Point currentWeight(*weights.getColumn(start).getImplementation());
+  Pointer<SampleImplementation> current = localSupports[start].getImplementation();
+  for (SampleImplementation::const_iterator cit = current->begin(); cit != current->end(); ++ cit)
+  {
+    const Scalar value = (*cit)[0];
+    const Point newAccumulator(accumulator + value * currentWeight);
+    computeSupport(start + 1, end, weights, constant, localSupports, newAccumulator, supports);
+  }
+}
+};
+
 /* Get the support of a discrete distribution that intersect a given interval */
 Sample RandomMixture::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
   const UnsignedInteger size = distributionCollection_.getSize();
-  // The computation of the support is available only if there is one atom
-  // otherwise the computePDF() and computeCDF() methods are not implemented anyway
-  if (size > 1) throw NotYetImplementedException(HERE) << "In RandomMixture::getSupport()";
-  Sample support(0, getDimension());
-  Sample localSupport((distributionCollection_[0].getSupport() * Point(*weights_.getImplementation())) + constant_);
-  for (UnsignedInteger j = 0; j < localSupport.getSize(); ++j)
-    if (interval.contains(localSupport[j])) support.add(localSupport[j]);
-  return support;
+  Collection<Sample> localSupports;
+  for (UnsignedInteger j = 0; j < size; ++j)
+    localSupports.add(distributionCollection_[j].getSupport());
+  const Point accumulator(dimension_);
+  Sample support(0, dimension_);
+  computeSupport(0, size, weights_, constant_, localSupports, accumulator, support);
+  Sample result(0, dimension_);
+  for (UnsignedInteger j = 0; j < support.getSize(); ++j)
+    if (interval.contains(support[j])) result.add(support[j]);
+  return result.sortUnique();
 }
 
 /* Method save() stores the object through the StorageManager */

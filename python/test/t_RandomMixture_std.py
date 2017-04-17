@@ -296,6 +296,12 @@ try:
     mixture = RandomMixture([Dirac()])
     graph = mixture.drawPDF()
     graph = mixture.drawCDF()
+
+    # For ticket 886
+    mixture = RandomMixture([Bernoulli(0.2), Dirac(8.0), Binomial(4, 0.1)])
+    print("Discrete distribution = ", mixture)
+    print("support = ", mixture.getSupport())
+
 except:
     import sys
     print("t_RandomMixture_std.py", sys.exc_info()[0], sys.exc_info()[1])
