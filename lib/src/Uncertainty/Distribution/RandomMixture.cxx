@@ -87,8 +87,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 {
   setName("RandomMixture");
   setDimension(1);
-  weights_ = Matrix(1, coll.getSize());
-  for (UnsignedInteger k = 0; k < coll.getSize(); ++k) weights_(0, k) = 1.0;
+  weights_ = Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0));
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the same dimension). We do this by calling
@@ -127,9 +126,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   // distributions of the collection have the same dimension). We do this by calling
   // the setDistributionCollection() method that do it for us.
   if (weights.getDimension() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weights collection must have the same size as the distribution collection";
-  const UnsignedInteger size = coll.getSize();
-  weights_ = Matrix(1, weights.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i) weights_(0, i) = weights[i];
+  weights_ = Matrix(1, coll.getSize(), weights);
   // This call set also the range.
   setDistributionCollection(coll);
 }
