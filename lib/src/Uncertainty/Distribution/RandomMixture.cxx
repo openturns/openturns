@@ -1044,7 +1044,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
     // compute analytically the pdf
     const Point u(point - constant_);
     const Point Qu(inverseWeights_ * u);
-    Scalar value = std::abs(detWeightsInverse_);
+    // Scaling factor is 1 for discrete PDF and inverse of the Jacobian for continuous PDF
+    Scalar value = (isDiscrete() ? 1.0 : std::abs(detWeightsInverse_));
     for (UnsignedInteger j = 0; j < dimension_; ++j) value *= distributionCollection_[j].computePDF(Qu[j]);
     return value;
   } // isAnalytical_
