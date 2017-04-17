@@ -509,7 +509,7 @@ void UserDefined::setData(const Sample & sample,
     cumulativeProbabilities_[i] = sum;
     hasUniformWeights_ = hasUniformWeights_ && (std::abs(p - firstProbability) < pdfEpsilon_);
   }
-  if (sum < pdfEpsilon_) throw InvalidArgumentException(HERE) << "Error: the sum of probabilities is zero.";
+  if (sum <= 0.0) throw InvalidArgumentException(HERE) << "Error: the sum of probabilities is zero.";
   // Normalize the probabilities
   for (UnsignedInteger i = 0; i < size; ++i)
   {
