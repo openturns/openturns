@@ -66,6 +66,7 @@
  * Deprecated SpecFunc::*NumericalScalar*
  * Deprecated NumericalScalar for Scalar
  * Deprecated NumericalComplex for Complex
+ * Deprecated DistributionImplementation::getGaussNodesAndWeights
 
 === Python module ===
 

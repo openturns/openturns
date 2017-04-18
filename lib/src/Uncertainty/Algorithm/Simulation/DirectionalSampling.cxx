@@ -25,6 +25,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/GaussLegendre.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -118,9 +119,10 @@ Scalar DirectionalSampling::computeMeanContribution(const ScalarCollection & roo
   // Here we know that the number of points is even. We can integrate the contributions.
   const UnsignedInteger segmentNumber = xK.getSize() / 2;
   // Quadrature rule
-  Point weights;
-  const Point nodes(inputDistribution_->getGaussNodesAndWeights(weights));
-  const UnsignedInteger nodesSize = nodes.getSize();
+  const UnsignedInteger integrationNodesNumber = ResourceMap::GetAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber");
+  const GaussLegendre integrator(Indices(1, integrationNodesNumber));
+  const Point nodes(integrator.getNodes().getImplementation()->getData() * 2.0 - Point(integrationNodesNumber, 1.0));
+  const Point weights(integrator.getWeights() * 2.0);
   Scalar value = 0.0;
   for (UnsignedInteger segmentIndex = 0; segmentIndex < segmentNumber; ++segmentIndex)
   {
@@ -131,7 +133,7 @@ Scalar DirectionalSampling::computeMeanContribution(const ScalarCollection & roo
     value += a * inputDistribution_->computeRadialDistributionCDF(a, true) - b * inputDistribution_->computeRadialDistributionCDF(b, true);
     // Compute the integral part
     Scalar sum = 0.0;
-    for (UnsignedInteger k = 0; k < nodesSize; ++k) sum += weights[k] * inputDistribution_->computeRadialDistributionCDF(a + (1.0 + nodes[k]) * halfLength, true);
+    for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k) sum += weights[k] * inputDistribution_->computeRadialDistributionCDF(a + (1.0 + nodes[k]) * halfLength, true);
     sum *= halfLength;
     // Accumulate the integral part
     value += sum;

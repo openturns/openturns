@@ -34,6 +34,7 @@
 #include "openturns/Less.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/GaussLegendre.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -233,15 +234,16 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
   Scalar scaling = hasoferReliabilityIndex_ * p_standardDistribution->computeRadialDistributionCDF(hasoferReliabilityIndex_, true);
   Scalar a = hasoferReliabilityIndex_;
   // Quadrature rule
-  Point weights;
-  const Point nodes(p_standardDistribution->getGaussNodesAndWeights(weights));
-  const UnsignedInteger nodesSize = nodes.getSize();
+  const UnsignedInteger integrationNodesNumber = ResourceMap::GetAsUnsignedInteger("AnalyticalResult-MeanPointIntegrationNodesNumber");
+  const GaussLegendre integrator(Indices(1, integrationNodesNumber));
+  const Point nodes(integrator.getNodes().getImplementation()->getData() * 2.0 - Point(integrationNodesNumber, 1.0));
+  const Point weights(integrator.getWeights() * 2.0);
   Scalar sum = 0.0;
   const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   do
   {
     // Integrate over a unit length segment [a, a+1]
-    for (UnsignedInteger k = 0; k < nodesSize; ++k) sum += weights[k] * p_standardDistribution->computeRadialDistributionCDF(a + 0.5 * (1.0 + nodes[k]), true);
+    for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k) sum += weights[k] * p_standardDistribution->computeRadialDistributionCDF(a + 0.5 * (1.0 + nodes[k]), true);
     sum *= 0.5;
     scaling += sum;
     a += 1.0;
