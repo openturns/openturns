@@ -3034,11 +3034,11 @@ Sample RandomMixture::getSupport(const Interval & interval) const
       nextSupport = distributionCollection_[indexNext].getSupport() * Point(*weights_.getColumn(indexNext).getImplementation());
     else
     {
-      const Sample support = distributionCollection_[indexNext].getSupport();
+      const Sample supportNext = distributionCollection_[indexNext].getSupport();
       const Point scaling(*weights_.getColumn(indexNext).getImplementation());
-      nextSupport = Sample(support.getSize(), dimension);
-      for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-        nextSupport[i] = scaling * support[i][0] + constant_;
+      nextSupport = Sample(supportNext.getSize(), dimension);
+      for (UnsignedInteger i = 0; i < supportNext.getSize(); ++i)
+        nextSupport[i] = scaling * supportNext[i][0] + constant_;
     } // dimension > 1
     const UnsignedInteger supportCandidatesSize = supportCandidates.getSize();
     const UnsignedInteger nextSupportSize = nextSupport.getSize();
@@ -3047,12 +3047,12 @@ Sample RandomMixture::getSupport(const Interval & interval) const
     for (UnsignedInteger indexCandidates = 0; indexCandidates < supportCandidatesSize; ++indexCandidates)
     {
       const Point xI(supportCandidates[indexCandidates]);
-      for (UnsignedInteger indexNext = 0; indexNext < nextSupportSize; ++indexNext)
+      for (UnsignedInteger indexNext2 = 0; indexNext2 < nextSupportSize; ++indexNext2)
       {
-        const Point xJ(nextSupport[indexNext]);
+        const Point xJ(nextSupport[indexNext2]);
         newSupportCandidate[k] = xI + xJ;
         ++k;
-      } // indexNext
+      } // indexNext2
     } // indexCandidates
     // Remove duplicates
     supportCandidates = newSupportCandidate.sortUnique();
