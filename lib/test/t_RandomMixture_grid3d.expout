@@ -4,7 +4,7 @@ Normal(mu = 0, sigma = 1) + 2 * Uniform(a = 2, b = 5) + 4 * Uniform(a = 2, b = 5
 3 * Normal(mu = 0, sigma = 1) + 4 * Uniform(a = 2, b = 5) + 5 * Uniform(a = 2, b = 5)
 6 * Normal(mu = 0, sigma = 1) - 0 * Uniform(a = 2, b = 5) + Uniform(a = 2, b = 5)
 )
-range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[4.34937,-4.95188,-43.9038] upper bound=class=Point name=Unnamed dimension=3 values=[37.6506,67.9519,50.9038] finite lower bound=[1,1,1] finite upper bound=[1,1,1]
+range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[4.34937,-4.95188,-43.9038] upper bound=class=Point name=Unnamed dimension=3 values=[37.6506,67.9519,50.9038] finite lower bound=[0,0,0] finite upper bound=[0,0,0]
 mean = class=Point name=Unnamed dimension=3 values=[21,31.5,3.5]
 cov = class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[16,24,9,24,39.75,21.75,9,21.75,36.75]
 sigma = class=Point name=Unnamed dimension=3 values=[4,6.30476,6.06218]

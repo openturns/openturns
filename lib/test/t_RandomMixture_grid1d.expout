@@ -1,6 +1,6 @@
 distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Gamma name=Gamma dimension=1 k=3 lambda=1 gamma=0] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
 distribution = RandomMixture(Gamma(k = 3, lambda = 1, gamma = 0))
-range = class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[17.7224] finite lower bound=[1] finite upper bound=[1]
+range = class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[38.9173] finite lower bound=[1] finite upper bound=[0]
 mean = class=Point name=Unnamed dimension=1 values=[3]
 cov = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
 sigma = class=Point name=Unnamed dimension=1 values=[1.73205]
