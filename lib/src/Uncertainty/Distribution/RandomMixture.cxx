@@ -227,8 +227,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   const UnsignedInteger dimension = constant.getSize();
   if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
   setDimension(dimension);
-  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
-  if (weights.getDimension() != constant.getDimension()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same row numbers as the distribution dimension";
+  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
+  if (weights.getDimension() != constant.getDimension()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same dimension as the distribution dimension";
   weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
 }
@@ -259,7 +259,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
   constant_ = Point(dimension, 0.0);
   setDimension(dimension);
-  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
+  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
   weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
 }
