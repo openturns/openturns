@@ -266,7 +266,7 @@ xMax = class=Point name=Unnamed dimension=2 values=[2.05061,2.27654]
 1.72357;2.19276;0
 1.98874;2.19276;0
 distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[4,2,1,1.4] constant=class=Point name=Unnamed dimension=2 values=[0,0]
-range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-98.5174,-64.3622] upper bound=class=Point name=Unnamed dimension=2 values=[116.517,75.1622] finite lower bound=[1,1] finite upper bound=[1,1]
+range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-113.41,-83.3473] upper bound=class=Point name=Unnamed dimension=2 values=[131.41,94.1473] finite lower bound=[0,0] finite upper bound=[0,0]
 mean = class=Point name=Unnamed dimension=2 values=[9,5.4]
 cov = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[160,94.4,94.4,67.36]
 sigma = class=Point name=Unnamed dimension=2 values=[12.6491,8.20731]

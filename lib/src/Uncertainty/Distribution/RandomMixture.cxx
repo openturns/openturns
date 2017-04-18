@@ -267,21 +267,27 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 void RandomMixture::computeRange()
 {
   const UnsignedInteger size = distributionCollection_.getSize();
+  // First, compute the *exact* range. It will be used to clip the asymptotic range if Poisson's formula is used (ie the collection has a size greater than the dimension)
   Interval::BoolCollection finiteLowerBound(getDimension());
   Interval::BoolCollection finiteUpperBound(getDimension());
   Point lowerBound(getDimension());
   Point upperBound(getDimension());
   for (UnsignedInteger j = 0; j < getDimension(); ++j)
-  {
-    Interval range(constant_[j], constant_[j]);
-    for (UnsignedInteger i = 0; i < size; ++i)
-      range += distributionCollection_[i].getRange() * weights_(j, i);
-    lowerBound[j] = range.getLowerBound()[0];
-    upperBound[j] = range.getUpperBound()[0];
-    finiteLowerBound[j] = range.getFiniteLowerBound()[0];
-    finiteUpperBound[j] = range.getFiniteUpperBound()[0];
-  }
-  Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
+    {
+      Interval range(constant_[j], constant_[j]);
+      for (UnsignedInteger i = 0; i < size; ++i)
+	range += distributionCollection_[i].getRange() * weights_(j, i);
+      lowerBound[j] = range.getLowerBound()[0];
+      upperBound[j] = range.getUpperBound()[0];
+      finiteLowerBound[j] = range.getFiniteLowerBound()[0];
+      finiteUpperBound[j] = range.getFiniteUpperBound()[0];
+    }
+  const Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
+  if (size <= getDimension())
+    {
+      setRange(range);
+      return;
+    } // Analytical case
   if (getDimension() == 1)
   {
     const Point m(1, getPositionIndicator());
