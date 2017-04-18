@@ -2895,19 +2895,3 @@ N : int
 %enddef
 %feature("docstring") OT::DistributionImplementation::getIntegrationNodesNumber
 OT_Distribution_getIntegrationNodesNumber_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Distribution_getGaussNodesAndWeights_doc
-"Accessor to the gauss integration points.
-
-Returns
--------
-nodes : :class:`~openturns.Point`
-    Gauss nodes
-weights : :class:`~openturns.Point`
-    Integration weights."
-%enddef
-%feature("docstring") OT::DistributionImplementation::getGaussNodesAndWeights
-OT_Distribution_getGaussNodesAndWeights_doc
-
