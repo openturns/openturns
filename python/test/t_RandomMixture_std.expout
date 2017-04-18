@@ -9,7 +9,7 @@ oneSample first= [0.455382]  last= [-0.838226]
 mean= [2.01098]
 covariance= [[ 2.67867 ]]
 Point=  [0.5]
-ddf      = [0.0625]
+ddf      =0.0625
 ddf (ref)= [0.0625]
 pdf      =0.156250
 pdf  (FD)=0.156250
@@ -49,7 +49,7 @@ oneSample first= [-7.73611]  last= [0.219605]
 mean= [-1.00692]
 covariance= [[ 9.14206 ]]
 Point=  [0.5]
-ddf      = [-0.0195594]
+ddf      =-0.019559
 ddf (ref)= [-0.0195592]
 pdf      =0.117355
 pdf  (FD)=0.117355
@@ -89,7 +89,7 @@ oneSample first= [1.80165]  last= [5.94924]
 mean= [3.00598]
 covariance= [[ 3.02995 ]]
 Point=  [0.5]
-ddf      = [0.227449]
+ddf      =0.22745
 ddf (ref)= [0.227449]
 pdf      =0.075816
 pdf  (FD)=0.075816
