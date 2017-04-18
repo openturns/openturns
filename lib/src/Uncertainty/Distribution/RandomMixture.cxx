@@ -1058,6 +1058,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
   const Point upperBound(range.getUpperBound());
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     if ((point[j] <= lowerBound[j]) || (point[j] >= upperBound[j])) return 0.0;
+  // Check for exotic situations not yet implemented by the class
+  if (!isContinuous() && distributionCollection_.getSize() > 1) throw NotYetImplementedException(HERE) << "Error: no algorithm is currently available for the non-continuous case with more than one atom.";
   // Special case for 1D distributions with exactly 2 continuous atoms
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
@@ -2037,6 +2039,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
   const Scalar upperBound = range.getUpperBound()[0];
   if (x <= lowerBound) return 0.0;
   if (x >= upperBound) return 1.0;
+  if (!isContinuous() && distributionCollection_.getSize() > 1) throw NotYetImplementedException(HERE) << "Error: no algorithm is currently available for the non-continuous case with more than one atom.";
   // Special case for 1D distributions with exactly 2 continuous atoms
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
