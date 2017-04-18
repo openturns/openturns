@@ -458,6 +458,9 @@
   <SubsetSampling-DefaultProposalRange value="2.0"          />
   <SubsetSampling-DefaultBetaMin value="2.0"                />
 
+  <!-- OT::DirectionalSampling parameters -->
+  <DirectionalSampling-MeanContributionIntegrationNodesNumber value="255" />
+
   <!-- OT::AdaptiveDirectionalSampling parameters -->
   <AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension value="3"   />
   <AdaptiveDirectionalSampling-DefaultGamma                          value="0.5" />
@@ -465,6 +468,7 @@
 
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth value="1.0" />
+  <AnalyticalResult-MeanPointIntegrationNodesNumber value="255" />
 
   <!-- OT::StrongMaximumTest parameters -->
   <StrongMaximumTest-DefaultDeltaPrecision     value="1.0e-7"  />

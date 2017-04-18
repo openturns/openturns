@@ -731,6 +731,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "SubsetSampling-DefaultProposalRange", 2.0 );
   setAsScalar( "SubsetSampling-DefaultBetaMin", 2.0 );
 
+  // DirectionalSampling parameters //
+  setAsUnsignedInteger( "DirectionalSampling-MeanContributionIntegrationNodesNumber", 255 );
+
   // AdaptiveDirectionalSampling parameters //
   setAsUnsignedInteger( "AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension", 3 );
   setAsScalar( "AdaptiveDirectionalSampling-DefaultGamma", 0.5 );
@@ -738,6 +741,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // AnalyticalResult parameters //
   setAsScalar( "AnalyticalResult-DefaultWidth", 1.0 );
+  setAsUnsignedInteger( "AnalyticalResult-MeanPointIntegrationNodesNumber", 255 );
 
   // StrongMaximumTest parameters //
   setAsScalar( "StrongMaximumTest-DefaultDeltaPrecision", 1.0e-7 );
