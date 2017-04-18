@@ -34,7 +34,13 @@
 #include "openturns/Triangular.hxx"
 #include "openturns/Trapezoidal.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/Exponential.hxx"
+#include "openturns/Gamma.hxx"
+#include "openturns/Mixture.hxx"
 #include "openturns/Dirac.hxx"
+#include "openturns/Bernoulli.hxx"
+#include "openturns/Binomial.hxx"
+#include "openturns/Poisson.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/FFT.hxx"
 #include "openturns/GaussKronrod.hxx"
@@ -81,8 +87,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 {
   setName("RandomMixture");
   setDimension(1);
-  weights_ = Matrix(1, coll.getSize());
-  for (UnsignedInteger k = 0; k < coll.getSize(); ++k) weights_(0, k) = 1.0;
+  weights_ = Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0));
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the same dimension). We do this by calling
@@ -121,9 +126,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   // distributions of the collection have the same dimension). We do this by calling
   // the setDistributionCollection() method that do it for us.
   if (weights.getDimension() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weights collection must have the same size as the distribution collection";
-  const UnsignedInteger size = coll.getSize();
-  weights_ = Matrix(1, weights.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i) weights_(0, i) = weights[i];
+  weights_ = Matrix(1, coll.getSize(), weights);
   // This call set also the range.
   setDistributionCollection(coll);
 }
@@ -224,9 +227,9 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   const UnsignedInteger dimension = constant.getSize();
   if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
   setDimension(dimension);
-  if (weights.getDimension() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
-  if (weights.getSize() != constant.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same row numbers as the distribution dimension";
-  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()).transpose();
+  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
+  if (weights.getDimension() != constant.getDimension()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same dimension as the distribution dimension";
+  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
 }
 
@@ -256,29 +259,35 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (dimension > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
   constant_ = Point(dimension, 0.0);
   setDimension(dimension);
-  if (dimension != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
-  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()).transpose();
+  if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
+  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
 }
 /* Compute the numerical range of the distribution given the parameters values */
 void RandomMixture::computeRange()
 {
   const UnsignedInteger size = distributionCollection_.getSize();
+  // First, compute the *exact* range. It will be used to clip the asymptotic range if Poisson's formula is used (ie the collection has a size greater than the dimension)
   Interval::BoolCollection finiteLowerBound(getDimension());
   Interval::BoolCollection finiteUpperBound(getDimension());
   Point lowerBound(getDimension());
   Point upperBound(getDimension());
   for (UnsignedInteger j = 0; j < getDimension(); ++j)
-  {
-    Interval range(constant_[j], constant_[j]);
-    for (UnsignedInteger i = 0; i < size; ++i)
-      range += distributionCollection_[i].getRange() * weights_(j, i);
-    lowerBound[j] = range.getLowerBound()[0];
-    upperBound[j] = range.getUpperBound()[0];
-    finiteLowerBound[j] = range.getFiniteLowerBound()[0];
-    finiteUpperBound[j] = range.getFiniteUpperBound()[0];
-  }
-  Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
+    {
+      Interval range(constant_[j], constant_[j]);
+      for (UnsignedInteger i = 0; i < size; ++i)
+	range += distributionCollection_[i].getRange() * weights_(j, i);
+      lowerBound[j] = range.getLowerBound()[0];
+      upperBound[j] = range.getUpperBound()[0];
+      finiteLowerBound[j] = range.getFiniteLowerBound()[0];
+      finiteUpperBound[j] = range.getFiniteUpperBound()[0];
+    }
+  const Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
+  if (size <= getDimension())
+    {
+      setRange(range);
+      return;
+    } // Analytical case
   if (getDimension() == 1)
   {
     const Point m(1, getPositionIndicator());
@@ -381,162 +390,472 @@ Matrix RandomMixture::getWeights() const
 /* Distribution collection accessor */
 void RandomMixture::setDistributionCollection(const DistributionCollection & coll)
 {
-  const UnsignedInteger size = coll.getSize();
+  // Size will be updated during the several treatments of the collection
+  UnsignedInteger size = coll.getSize();
   const UnsignedInteger dimension = getDimension();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a RandomMixture based on an empty distribution collection.";
-  Bool hasNormalAtom = false;
-  Scalar aggregatedMean = 0.0;
-  Scalar aggregatedVariance = 0.0;
-  Bool hasPendingUniform = false;
-  Uniform pendingUniform;
-  distributionCollection_ = DistributionCollection(0);
-  Sample weights(0, dimension);
-  for(UnsignedInteger i = 0; i < size; ++i)
+
+  // First, flatten all the RandomMixture atoms
+  DistributionCollection atomCandidates(0);
+  // The weights are stored as a collection of scalars, to be read by blocks of size dimension.
+  Sample weightCandidates(0, dimension);
+  LOGDEBUG("Flatten RandomMixture atoms in the current RandomMixture");
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (coll[i].getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a RandomMixture cannot be built from a collection of distributions of dimension not equal to 1";
-    // Knowledge-based optimization
-    if (dimension == 1)
+    const Distribution atom(coll[i]);
+    const Matrix w = weights_.getColumn(i);
+    // Skip atoms with null coefficient
+    if (w.computeGram()(0, 0) == 0.0) continue;
+    const String atomKind(atom.getImplementation()->getClassName());
+    if (atom.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a RandomMixture cannot be built from a collection of distributions of dimension not equal to 1, here distribution " << i << " has a dimension=" << atom.getDimension();
+    if (atomKind == "RandomMixture")
     {
-      if (coll[i].getImplementation()->getClassName() == "Uniform")
-      {
-        const Scalar w = weights_(0, i);
-        const Scalar low = coll[i].getRange().getLowerBound()[0];
-        const Scalar high = coll[i].getRange().getUpperBound()[0];
-        Scalar a0 = w * low;
-        Scalar b0 = w * high;
-        if (a0 > b0) std::swap(a0, b0);
-        // If there is already a uniform, merge it into a symmetrical trapezoidal distribution
-        if (hasPendingUniform)
-        {
-          const Scalar a1 = pendingUniform.getA();
-          const Scalar b1 = pendingUniform.getB();
-          const Scalar alpha = a1 + a0;
-          const Scalar delta = b1 + b0;
-          const Scalar halfWidth = 0.5 * std::abs((b1 - a1) - (b0 - a0));
-          const Scalar center = 0.5 * (alpha + delta);
-          if (halfWidth > 0.0) distributionCollection_.add(Trapezoidal(alpha, center - halfWidth, center + halfWidth, delta));
-          else distributionCollection_.add(Triangular(alpha, center, delta));
-          // Add weight
-          weights.add(Point(1, 1.0));
-          hasPendingUniform = false;
-        }
-        else
-        {
-          pendingUniform = Uniform(a0, b0);
-          hasPendingUniform = true;
-        }
-      } // atom is a Uniform
-      else if (coll[i].getImplementation()->getClassName() == "Normal")
-      {
-        hasNormalAtom = true;
-        const Scalar w = weights_(0, i);
-        aggregatedMean += w * coll[i].getMean()[0];
-        aggregatedVariance += w * w * coll[i].getCovariance()(0, 0);
-      } // atom is a Normal
-      else if (coll[i].getImplementation()->getClassName() == "Dirac")
-      {
-        const Scalar w = weights_(0, i);
-        constant_[0] += w * coll[i].getSupport()[0][0];
-      } // atom is a Dirac
-      else if (coll[i].getImplementation()->getClassName() == "RandomMixture")
-      {
-        const Scalar w = weights_(0, i);
-        const RandomMixture * mixture(static_cast< const RandomMixture * >(coll[i].getImplementation().get()));
-        // As the random mixture atom has already been built, all its Dirac components have been merged into its constant and all its
-        // Normal components have been merged into a single component in the last place, if any.
-        // First, merge the constant
-        constant_[0] += w * mixture->constant_[0];
-        // Second, merge the potential Normal component
-        UnsignedInteger atomSize = mixture->distributionCollection_.getSize();
-        const Matrix localWeights(mixture->getWeights() * w);
-        if (mixture->distributionCollection_[atomSize - 1].getImplementation()->getClassName() == "Normal")
-        {
-          hasNormalAtom = true;
-          aggregatedMean += w * mixture->distributionCollection_[atomSize - 1].getMean()[0];
-          aggregatedVariance += w * w * mixture->distributionCollection_[atomSize - 1].getCovariance()(0, 0);
-          --atomSize;
-        }
-        // Third, merge the remaining components
-        for (UnsignedInteger j = 0; j < atomSize; ++j)
-        {
-          const Distribution atom(mixture->distributionCollection_[j]);
-          if (atom.getImplementation()->getClassName() == "Uniform")
-          {
-            const Scalar wj = localWeights(0, j);
-            const Scalar low = coll[i].getRange().getLowerBound()[0];
-            const Scalar high = coll[i].getRange().getUpperBound()[0];
-            Scalar a0 = wj * low;
-            Scalar b0 = wj * high;
-            if (a0 > b0) std::swap(a0, b0);
-            // If there is already a uniform, merge it into a symmetrical trapezoidal distribution
-            if (hasPendingUniform)
-            {
-              const Scalar a1 = pendingUniform.getA();
-              const Scalar b1 = pendingUniform.getB();
-              const Scalar alpha = a1 + a0;
-              const Scalar delta = b1 + b0;
-              const Scalar halfWidth = 0.5 * std::abs((b1 - a1) - (b0 - a0));
-              const Scalar center = 0.5 * (alpha + delta);
-              if (halfWidth > 0.0) distributionCollection_.add(Trapezoidal(alpha, center - halfWidth, center + halfWidth, delta));
-              else distributionCollection_.add(Triangular(alpha, center, delta));
-              // Add weight
-              weights.add(Point(1, 1.0));
-              hasPendingUniform = false;
-            }
-            else
-            {
-              pendingUniform = Uniform(a0, b0);
-              hasPendingUniform = true;
-            }
-          } // atom is a Uniform
-          else
-          {
-            distributionCollection_.add(atom);
-            weights.add(Point(1, localWeights(0, j)));
-          }
-        }
-      } // atom is a RandomMixture
-      else
-      {
-        distributionCollection_.add(coll[i]);
-        weights.add(Point(1, weights_(0, i)));
-      } // not Uniform, Normal, Dirac, RandomMixture
-    }
+      // Here we know that the atom is 1D, so we merge a 1D RandomMixture
+      // Get the weight of the atom
+      // Cast the atom into a RandomMixture
+      const RandomMixture * mixture(static_cast< const RandomMixture * >(atom.getImplementation().get()));
+      // Aggregate the constant
+      constant_ += w * mixture->constant_;
+      // Aggregate the weights
+      const Matrix localWeights(w * mixture->weights_);
+      SampleImplementation localWeightsAsSample(localWeights.getNbColumns(), dimension);
+      localWeightsAsSample.setData(*localWeights.getImplementation());
+      weightCandidates.add(localWeightsAsSample);
+      // Aggregate the atoms
+      atomCandidates.add(mixture->getDistributionCollection());
+    } // atom is a RandomMixture
     else
     {
-      // In nD, there is currently no aggregation
-      // Weight matrix is unchanged
-      distributionCollection_.add(coll[i]);
-    } //multivariate case
-  }// i loopfor
-
-  // Set the aggregated normal as the last atom
-  if (hasNormalAtom)
+      weightCandidates.add(*w.getImplementation());
+      atomCandidates.add(atom);
+    } // atom is not a RandomMixture
+  } // Flatten the atoms of RandomMixture type
+  // Update the size
+  size = atomCandidates.getSize();
+  if (ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"))
   {
-    distributionCollection_.add(Normal(aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
-    constant_[0] = 0.0;
-    weights.add(Point(1, 1.0));
-  }
-  if (hasPendingUniform)
-  {
-    if (constant_[0] != 0.0)
+    // Second, split the atoms between the discrete ones, the continuous ones and the others
+    // The Dirac atoms are optimized during this step
+    DistributionCollection continuousAtoms(0);
+    Sample continuousWeights(0, dimension);
+    DistributionCollection discreteAtoms(0);
+    Sample discreteWeights(0, dimension);
+    DistributionCollection otherAtoms(0);
+    Sample otherWeights(0, dimension);
+    LOGDEBUG("Sort the atoms into continuous, discrete and others. Also merge Dirac atoms into the constant.");
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      pendingUniform = Uniform(pendingUniform.getA() + constant_[0], pendingUniform.getB() + constant_[0]);
-      constant_[0] = 0.0;
-    }
-    distributionCollection_.add(pendingUniform);
-    weights.add(Point(1, 1.0));
-  }
-
+      const Distribution atom(atomCandidates[i]);
+      if (atom.getImplementation()->getClassName() == "Dirac")
+      {
+        constant_ += Point(weightCandidates[i]) * atom.getParameter()[0];
+      }
+      else if (atom.isContinuous())
+      {
+        continuousAtoms.add(atom);
+        continuousWeights.add(weightCandidates[i]);
+      }
+      else if (atom.isDiscrete())
+      {
+        discreteAtoms.add(atom);
+        discreteWeights.add(weightCandidates[i]);
+      }
+      else
+      {
+        otherAtoms.add(atom);
+        otherWeights.add(weightCandidates[i]);
+      }
+    } // Split atoms and optimize Dirac
+    LOGDEBUG(OSS() << "Continuous atoms=" << continuousAtoms.__str__() << ", discrete atoms=" << discreteAtoms.__str__() << ", other atoms=" << otherAtoms.__str__());
+    // Third, merge the atoms as much as possible. Most of the optimizations assume a 1D RandomMixture.
+    //
+    // In the case of a nD RandomMixture with n>1:
+    //
+    // + The discrete atoms can be merged into a unique discrete nD UserDefined with a support of reasonable size
+    // + There is no continuous atom, or a unique continuous atom, or all the continuous atoms are Normal
+    // + There is no 'other' atom.
+    // Depending on the continuous atoms, one get:
+    // + A multivariate UserDefined if no continuous atom
+    // + A multivariate Mixture if a unique continuous atom or only continuous Normal atoms (merged into a unique multivariate Normal)
+    // -> all these special cases lead to an analytical expression of the RandomMixture
+    // -> these simplifications will be implemented in a second time
+    //
+    // In the case of a 1D mixture:
+    //
+    // Continuous optimizations:
+    // + The Uniform atoms can be merged two by two into a Trapezoidal or Triangular
+    // + The Exponential, ChiSquare and Gamma atoms can be merged into a Gamma atom if there scale parameters are all equal after standardization (so we must group these atoms by scale*weight parameter). The possible translation has to be accumulated into the constant.
+    // + The Normal atoms can be merged into a unique Normal
+    //
+    // Discrete optimizations:
+    // + The Bernoulli and Binomial atoms can be merged into a unique Binomial as soon as they share the same value for p and the same weight
+    // + The Poisson atoms can be merged into a unique Poisson as soon as they share the same weight
+    // + Poisson atoms with opposite weights could be merged into a Skellam atom but it is not clear if it is worth the effort...
+    // + The Discrete atoms can be grouped into Discrete atoms of larger support, if these merged atoms have a support of reasonable size.
+    //
+    // Mixed optimizations:
+    //
+    // + A continuous atom can be merged with a discrete atom to form a Mixture. This simplification can be done for each pair (continuous,discrete). It is not clear if some pairings are to prefer to others.
+    distributionCollection_ = DistributionCollection(0);
+    Sample weights(0, dimension);
+    if (dimension == 1)
+    {
+      // Optimization of continuous atoms
+      Bool hasNormalAtom = false;
+      Scalar aggregatedMean = 0.0;
+      Scalar aggregatedVariance = 0.0;
+      Bool hasPendingUniform = false;
+      Uniform pendingUniform;
+      // This map will store all the Exponential, ChiSquare and Gamma atoms
+      // For each value of lambda*weight it stores the cummulated k parameter
+      std::map<Scalar, Scalar> gammaMap;
+      for (UnsignedInteger i = 0; i < continuousAtoms.getSize(); ++i)
+      {
+        const Scalar w = continuousWeights(0, i);
+        const Distribution atom(continuousAtoms[i]);
+        const String atomKind(atom.getImplementation()->getClassName());
+        // Knowledge-based optimization
+        // First for 1D atoms
+        if (atomKind == "Uniform")
+        {
+          const Scalar low = atom.getRange().getLowerBound()[0];
+          const Scalar high = atom.getRange().getUpperBound()[0];
+          Scalar a0 = w * low;
+          Scalar b0 = w * high;
+          if (a0 > b0) std::swap(a0, b0);
+          // If there is already a Uniform atom, merge it into a symmetrical Trapezoidal
+          if (hasPendingUniform)
+          {
+            const Scalar a1 = pendingUniform.getA();
+            const Scalar b1 = pendingUniform.getB();
+            const Scalar alpha = a1 + a0;
+            const Scalar delta = b1 + b0;
+            const Scalar halfWidth = 0.5 * std::abs((b1 - a1) - (b0 - a0));
+            const Scalar center = 0.5 * (alpha + delta);
+            // A proper Trapezoidal
+            if (halfWidth > 0.0) distributionCollection_.add(Trapezoidal(alpha, center - halfWidth, center + halfWidth, delta));
+            // A degenerated Trapezoidal, ie a Triangular
+            else distributionCollection_.add(Triangular(alpha, center, delta));
+            // Add a unit weight as its initial weight has been merged into the parameters
+            weights.add(Point(1, 1.0));
+            hasPendingUniform = false;
+          } // hasPendingUniform
+          else
+          {
+            pendingUniform = Uniform(a0, b0);
+            hasPendingUniform = true;
+          } // !hasPendingUniform
+        } // atom is a Uniform
+        else if (atomKind == "Normal")
+        {
+          hasNormalAtom = true;
+          aggregatedMean += w * atom.getMean()[0];
+          aggregatedVariance += w * w * atom.getCovariance()(0, 0);
+        } // atom is a Normal
+        else if (atomKind == "Exponential")
+        {
+          const Point parameters(atom.getParameter());
+          const Scalar key = parameters[0] / w;
+          std::map<Scalar, Scalar>::iterator it(gammaMap.find(key));
+          // New Gamma
+          if (it == gammaMap.end()) gammaMap[key] = 1.0;
+          // Already known Gamma, update the shape parameter
+          else gammaMap[key] += 1.0;
+          // In any case update the constant
+          constant_ += Point(1, parameters[1]) * w;
+        } // atom is Exponential
+        else if (atomKind == "Gamma")
+        {
+          const Point parameters(atom.getParameter());
+          const Scalar key = parameters[1] / w;
+          std::map<Scalar, Scalar>::iterator it(gammaMap.find(key));
+          // New Gamma
+          if (it == gammaMap.end()) gammaMap[key] = parameters[0];
+          // Already known Gamma, update the shape parameter
+          else gammaMap[key] += parameters[0];
+          // In any case update the constant
+          constant_ += Point(1, parameters[2]) * w;
+        } // atom is Gamma
+        else if (atomKind == "ChiSquare")
+        {
+          const Point parameters(atom.getParameter());
+          const Scalar key = 0.5 / w;
+          std::map<Scalar, Scalar>::iterator it(gammaMap.find(key));
+          // New Gamma
+          if (it == gammaMap.end()) gammaMap[key] = 0.5 * parameters[0];
+          // Already known Gamma, update the shape parameter
+          else gammaMap[key] += 0.5 * parameters[0];
+        } // atom is ChiSquare
+        else
+        {
+          distributionCollection_.add(atom);
+          weights.add(Point(1, w));
+        } // no simplification known
+      } // Loop over continuous atoms
+      // Set the aggregated normal if any. Note that this atom absorbs the constant.
+      if (hasNormalAtom)
+      {
+        distributionCollection_.add(Normal(aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
+        constant_[0] = 0.0;
+        // Add a unit weight as its initial weight has been merged into the parameters
+        weights.add(Point(1, 1.0));
+      } // hasNormalAtom
+      // Set the pending Uniform if any. Note that this atom absorbs the constant if not yet absorbed.
+      if (hasPendingUniform)
+      {
+        if (constant_[0] != 0.0)
+        {
+          pendingUniform = Uniform(pendingUniform.getA() + constant_[0], pendingUniform.getB() + constant_[0]);
+          constant_[0] = 0.0;
+        }
+        distributionCollection_.add(pendingUniform);
+        // Add a unit weight as its initial weight has been merged into the parameters
+        weights.add(Point(1, 1.0));
+      } // hasPendingUniform
+      // Add the aggregated Gamma if any
+      while (!gammaMap.empty())
+      {
+        const Scalar lambda = gammaMap.begin()->first;
+        const Scalar k = gammaMap.begin()->second;
+        if (k == 1.0) distributionCollection_.add(Exponential(lambda));
+        else distributionCollection_.add(Gamma(k, lambda));
+        weights.add(Point(1, 1.0));
+        gammaMap.erase(gammaMap.begin());
+      } // while Gamma atoms to insert
+      // Remember the index of the first non-continuous atom in order to
+      const UnsignedInteger firstNonContinuousAtom = distributionCollection_.getSize();
+      LOGDEBUG(OSS() << "After simplification of continuous atoms, distributionCollection_=" << distributionCollection_.__str__());
+      // Optimization of discrete atoms
+      // This map will store all the Poisson atoms
+      // For each value of weight it stores the cummulated theta parameter
+      std::map<Scalar, Scalar> poissonMap;
+      // This map will store all the Bernoulli and Binomial atoms
+      // For each value of (p, weight) it stores the cummulated n parameter
+      std::map<Point, UnsignedInteger> binomialMap;
+      for (UnsignedInteger i = 0; i < discreteAtoms.getSize(); ++i)
+      {
+        const Scalar w = discreteWeights(0, i);
+        const Distribution atom(discreteAtoms[i]);
+        const String atomKind(atom.getImplementation()->getClassName());
+        if (atomKind == "Poisson")
+        {
+          const Point parameters(atom.getParameter());
+          const Scalar key = w;
+          std::map<Scalar, Scalar>::iterator it(poissonMap.find(key));
+          // New Poisson
+          if (it == poissonMap.end()) poissonMap[key] = parameters[0];
+          // Already known Poisson, update the count parameter
+          else poissonMap[key] += parameters[0];
+        } // atom is Bernoulli
+        else if (atomKind == "Bernoulli")
+        {
+          const Point parameters(atom.getParameter());
+          Point key(2);
+          key[0] = parameters[0];
+          key[1] = w;
+          std::map<Point, UnsignedInteger>::iterator it(binomialMap.find(key));
+          // New Binomial
+          if (it == binomialMap.end()) binomialMap[key] = 1;
+          // Already known Binomial, update the count parameter
+          else binomialMap[key] += 1;
+        } // atom is Bernoulli
+        else if (atomKind == "Binomial")
+        {
+          const Point parameters(atom.getParameter());
+          Point key(2);
+          key[0] = parameters[1];
+          key[1] = w;
+          std::map<Point, UnsignedInteger>::iterator it(binomialMap.find(key));
+          // New Binomial
+          if (it == binomialMap.end()) binomialMap[key] = static_cast<UnsignedInteger>(parameters[0]);
+          // Already known Binomial, update the count parameter
+          else binomialMap[key] += static_cast<UnsignedInteger>(parameters[0]);
+        } // atom is Binomial
+        else
+        {
+          distributionCollection_.add(atom);
+          weights.add(Point(1, w));
+        }
+      } // discreteAtoms
+      // Add the aggregated Poisson if any
+      while (!poissonMap.empty())
+      {
+        const Scalar w = poissonMap.begin()->first;
+        const Scalar theta = poissonMap.begin()->second;
+        distributionCollection_.add(Poisson(theta));
+        weights.add(Point(1, w));
+        poissonMap.erase(poissonMap.begin());
+      } // while Poisson atoms to insert
+      // Add the aggregated Binomial if any
+      while (!binomialMap.empty())
+      {
+        const Scalar p = binomialMap.begin()->first[0];
+        const Scalar w = binomialMap.begin()->first[1];
+        const UnsignedInteger n = binomialMap.begin()->second;
+        if (n == 1) distributionCollection_.add(Bernoulli(p));
+        else distributionCollection_.add(Binomial(n, p));
+        weights.add(Point(1, w));
+        binomialMap.erase(binomialMap.begin());
+      } // while Binomial atoms to insert
+      LOGDEBUG(OSS() << "After simplification of discrete atoms, distributionCollection_=" << distributionCollection_.__str__());
+      // Now merge the discrete atoms by groups of reasonably sized support
+      // if there is at least 2 discrete atoms
+      const UnsignedInteger maxSupportSize(ResourceMap::GetAsUnsignedInteger("RandomMixture-MaximumSupportSize"));
+      UnsignedInteger firstOtherAtom = distributionCollection_.getSize();
+      // No aggregation if maxSupportSize==0 or if only one discrete atom
+      if (firstOtherAtom > firstNonContinuousAtom + 1 && maxSupportSize > 0)
+      {
+	
+        UnsignedInteger indexAggregated = firstNonContinuousAtom;
+        UnsignedInteger firstDiscreteIndex = firstNonContinuousAtom;
+        Distribution firstDiscrete(distributionCollection_[firstDiscreteIndex]);
+        Sample aggregatedSupport(firstDiscrete.getSupport() * weights[firstDiscreteIndex]);
+        Point aggregatedProbabilities(firstDiscrete.getProbabilities());
+        UnsignedInteger aggregatedSupportSize = aggregatedSupport.getSize();
+        for (UnsignedInteger secondDiscreteIndex = firstNonContinuousAtom + 1; secondDiscreteIndex < firstOtherAtom; ++secondDiscreteIndex)
+        {
+          const Distribution secondDiscrete(distributionCollection_[secondDiscreteIndex]);
+          const Sample secondSupport(secondDiscrete.getSupport() * weights[secondDiscreteIndex]);
+          const Point secondProbabilities(secondDiscrete.getProbabilities());
+          const UnsignedInteger secondSupportSize = secondSupport.getSize();
+          const UnsignedInteger newAggregatedSupportSize = aggregatedSupportSize * secondSupportSize;
+          // If the next discrete may lead to a too large support, store the current aggregated discrete atom and go to the next group
+          if (newAggregatedSupportSize > maxSupportSize)
+          {
+            // If several discrete atoms have been merged store the aggregated
+            // atom at the place occuped by the first discrete atom
+            if (secondDiscreteIndex > firstDiscreteIndex + 1)
+            {
+              distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
+              weights[indexAggregated] = Point(1, 1.0);
+            }
+            else
+	      distributionCollection_[indexAggregated] = firstDiscrete;
+            ++indexAggregated;
+            firstDiscreteIndex = secondDiscreteIndex;
+            firstDiscrete = secondDiscrete;
+            aggregatedSupport = secondSupport;
+            aggregatedProbabilities = secondProbabilities;
+            aggregatedSupportSize = secondSupportSize;
+          } // If the aggregated discrete atom is large enough
+          else
+          {
+            Sample newAggregatedSupportAndProbabilities(newAggregatedSupportSize, 2);
+            UnsignedInteger k = 0;
+            for (UnsignedInteger firstIndex = 0; firstIndex < aggregatedSupportSize; ++firstIndex)
+            {
+              const Scalar xI = aggregatedSupport[firstIndex][0];
+              const Scalar pI = aggregatedProbabilities[firstIndex];
+              for (UnsignedInteger secondIndex = 0; secondIndex < secondSupportSize; ++secondIndex)
+              {
+                const Scalar xJ = secondSupport[secondIndex][0];
+                const Scalar pJ = secondProbabilities[secondIndex];
+                newAggregatedSupportAndProbabilities[k][0] = xI + xJ;
+                newAggregatedSupportAndProbabilities[k][1] = pI * pJ;
+                ++k;
+              } // secondIndex
+            } // firstIndex
+            // Merge the identical points in the support
+            // First, sort the new aggregated data according to the support points
+            newAggregatedSupportAndProbabilities = newAggregatedSupportAndProbabilities.sortAccordingToAComponent(0);
+            // Second, filter out the duplicates in the point space and aggregate the values in the probability space
+            aggregatedSupport = Sample(1, Point(1, newAggregatedSupportAndProbabilities[0][0]));
+            aggregatedProbabilities = Point(1, newAggregatedSupportAndProbabilities[0][1]);
+            k = 0;
+            for (UnsignedInteger index = 1; index < newAggregatedSupportSize; ++index)
+            {
+              // If the current point is equal to the last one aggregate the probabilities
+              if (newAggregatedSupportAndProbabilities[index][0] == aggregatedSupport[k][0])
+              {
+                aggregatedProbabilities[k] += newAggregatedSupportAndProbabilities[index][1];
+              } // current point equals to the previous one
+              else
+              {
+                ++k;
+                aggregatedSupport.add(Point(1, newAggregatedSupportAndProbabilities[index][0]));
+                aggregatedProbabilities.add(newAggregatedSupportAndProbabilities[index][1]);
+              } // current point is different from the previous one
+            } // Loop over the new aggregated support
+            aggregatedSupportSize = aggregatedSupport.getSize();
+          } // Merge the second atom into the aggregated atom
+        } // Loop over the discrete atoms
+        // If there is still something to merge
+	// It can be:
+	// + an aggregated atom with small support (detected because firstDiscreteIndex < firstOtherAtom - 1
+	// + a single atom (the second one, but now equals to the first one) (detected because firstDiscreteIndex == firstOtherAtom - 1)
+	if (firstDiscreteIndex == firstOtherAtom - 1)
+	  distributionCollection_[indexAggregated] = firstDiscrete;
+	else
+	  {
+	    distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
+	    weights[indexAggregated] = Point(1, 1.0);
+	  }
+	// To identify the first discrete atom to remove
+	++indexAggregated;
+        // Now remove the discrete atoms that have been merged from the list of distributions
+        distributionCollection_.erase(distributionCollection_.begin() + indexAggregated, distributionCollection_.end());
+        weights.erase(indexAggregated, weights.getSize());
+        firstOtherAtom = distributionCollection_.getSize();
+      } // If there are discrete atoms to merge
+	
+      // Then perform the continuous/discrete simplification using mixtures
+      // There must be continuous atoms and discrete ones
+      if (firstNonContinuousAtom > 0 && firstNonContinuousAtom != firstOtherAtom)
+      {
+        const SignedInteger firstContinuous = 0;
+        const SignedInteger firstDiscrete = firstNonContinuousAtom;
+        SignedInteger currentContinuous = firstNonContinuousAtom - 1;
+        SignedInteger currentDiscrete = firstOtherAtom - 1;
+        while (currentContinuous >= firstContinuous && currentDiscrete >= firstDiscrete)
+        {
+          const Distribution continuousAtom(distributionCollection_[currentContinuous]);
+          const NumericalScalar continuousWeight = weights[currentContinuous][0];
+          Distribution discreteAtom(distributionCollection_[currentDiscrete]);
+          NumericalScalar discreteWeight = weights[currentDiscrete][0];
+          const Sample support(discreteAtom.getSupport());
+          DistributionCollection mixtureAtoms;
+          for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+            mixtureAtoms.add(RandomMixture(DistributionCollection(1, continuousAtom), Point(1, continuousWeight), support[i][0] * discreteWeight));
+          const Point probabilities(discreteAtom.getProbabilities());
+          // Replace the current continuous atom by the Mixture
+          distributionCollection_[currentContinuous] = Mixture(mixtureAtoms, probabilities);
+          // Remove the current discrete atom
+          distributionCollection_.erase(distributionCollection_.begin() + currentDiscrete);
+          weights.erase(currentDiscrete);
+          --currentContinuous;
+          --currentDiscrete;
+        } // loop over (continuous, discrete) pairs
+      } // continuous and discrete atoms to merge?
+      // No simplification for other atoms
+      distributionCollection_.add(otherAtoms);
+      weights.add(otherWeights);
+    } // dimension == 1
+    else
+    {
+      distributionCollection_.add(continuousAtoms);
+      weights.add(continuousWeights);
+      distributionCollection_.add(discreteAtoms);
+      weights.add(discreteWeights);
+      distributionCollection_.add(otherAtoms);
+      weights.add(otherWeights);
+    } // dimension > 1
+    // Store the weights in a Matrix format
+    weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
+  } // simplify atoms=true
+  else
+  {
+    distributionCollection_ = atomCandidates;
+    // Store the weights in a Matrix format
+    weights_ = Matrix(weightCandidates.getDimension(), weightCandidates.getSize(), weightCandidates.getImplementation()->getData());
+  } // simplify atoms=false
   // Special case: distributionCollection_ is empty because all the atoms were Dirac distributions, so they have all been merged into the constant. As we need at least one atom for the algorithms to work we convert the constant back into a unique Dirac distribution. This case can occur only in dimension 1
   if (distributionCollection_.getSize() == 0)
   {
     distributionCollection_.add(Dirac(constant_));
-    weights.add(Point(1, 1.0));
+    weights_ = Matrix(1, 1);
+    weights_(0, 0) = 1.0;
     constant_[0] = 0.0;
   }
-
-  if (dimension == 1) setWeights(Matrix(1, distributionCollection_.getSize() , weights.getImplementation()->getData()));
 
   // We cannot use parallelism if we have more than one atom due to the characteristic function cache
   if (distributionCollection_.getSize() > 1) setParallel(false);
@@ -731,7 +1050,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
     // compute analytically the pdf
     const Point u(point - constant_);
     const Point Qu(inverseWeights_ * u);
-    Scalar value = std::abs(detWeightsInverse_);
+    // Scaling factor is 1 for discrete PDF and inverse of the Jacobian for continuous PDF
+    Scalar value = (isDiscrete() ? 1.0 : std::abs(detWeightsInverse_));
     for (UnsignedInteger j = 0; j < dimension_; ++j) value *= distributionCollection_[j].computePDF(Qu[j]);
     return value;
   } // isAnalytical_
@@ -744,6 +1064,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
   const Point upperBound(range.getUpperBound());
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     if ((point[j] <= lowerBound[j]) || (point[j] >= upperBound[j])) return 0.0;
+  // Check for exotic situations not yet implemented by the class
+  if (!isContinuous() && distributionCollection_.getSize() > 1) throw NotYetImplementedException(HERE) << "Error: no algorithm is currently available for the non-continuous case with more than one atom.";
   // Special case for 1D distributions with exactly 2 continuous atoms
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
@@ -969,12 +1291,8 @@ Sample RandomMixture::computePDF(const Point & xMin,
   LOGWARN(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
 
   Sample result(size, 1);
-  if (isAnalytical_)
-  {
-    // compute analytically the pdf
-    for (UnsignedInteger j = 0; j < size; ++j) result[j][0] = computePDF(grid[j]);
-    return result;
-  }
+  // Special case when the distribution is analytical
+  if (isAnalytical_) return computePDF(grid);
   UnsignedInteger levelMax = 0;
   // Compute Gaussian sum pdf
   // First compute levelMax on mu, to speed up calls to computeEquivalentNormalPDFSum
@@ -1727,6 +2045,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
   const Scalar upperBound = range.getUpperBound()[0];
   if (x <= lowerBound) return 0.0;
   if (x >= upperBound) return 1.0;
+  if (!isContinuous() && distributionCollection_.getSize() > 1) throw NotYetImplementedException(HERE) << "Error: no algorithm is currently available for the non-continuous case with more than one atom.";
   // Special case for 1D distributions with exactly 2 continuous atoms
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
@@ -2048,7 +2367,6 @@ Complex RandomMixture::computeLogCharacteristicFunction(const Point & x) const
 /* Compute a value of the characteristic function on a prescribed discretization. As the value associated with index == 0 is known, it is not stored so for index > 0, the corresponding value is at position index-1 */
 Complex RandomMixture::computeDeltaCharacteristicFunction(const UnsignedInteger index) const
 {
-  LOGDEBUG(OSS() << "In RandomMixture::computeDeltaCharacteristicFunction, index=" << index << ", h=" << referenceBandwidth_.__str__());
   if (index == 0) return 0.0;
   // The cached values are computed and stored in an ascending order without hole: this function is always called on a sequence starting from 0 to n-1
   // Usual case first: the index is within the already computed values
@@ -2141,7 +2459,7 @@ void RandomMixture::computeMean() const
 {
   mean_ = constant_;
   const UnsignedInteger size = distributionCollection_.getSize();
-  Point mu(size, 0.0);
+  Point mu(size);
   for(UnsignedInteger i = 0; i < size; ++i)
     mu[i] = distributionCollection_[i].getMean()[0];
   mean_ += weights_ * mu;
@@ -2694,13 +3012,56 @@ Sample RandomMixture::getSupport(const Interval & interval) const
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: the support is defined only for discrete distributions.";
   const UnsignedInteger size = distributionCollection_.getSize();
+  const UnsignedInteger dimension = getDimension();
   // The computation of the support is available only if there is one atom
   // otherwise the computePDF() and computeCDF() methods are not implemented anyway
-  if (size > 1) throw NotYetImplementedException(HERE) << "In RandomMixture::getSupport()";
-  Sample support(0, getDimension());
-  Sample localSupport((distributionCollection_[0].getSupport() * Point(*weights_.getImplementation())) + constant_);
-  for (UnsignedInteger j = 0; j < localSupport.getSize(); ++j)
-    if (interval.contains(localSupport[j])) support.add(localSupport[j]);
+  Sample support(0, dimension);
+  Sample supportCandidates;
+  if (dimension == 1)
+    supportCandidates = distributionCollection_[0].getSupport() * Point(*weights_.getColumn(0).getImplementation()) + constant_;
+  else
+  {
+    const Sample support0 = distributionCollection_[0].getSupport();
+    const Point scaling(*weights_.getColumn(0).getImplementation());
+    supportCandidates = Sample(support0.getSize(), dimension);
+    for (UnsignedInteger i = 0; i < support0.getSize(); ++i)
+      supportCandidates[i] = scaling * support0[i][0] + constant_;
+  } // dimension > 1
+  for (UnsignedInteger indexNext = 1; indexNext < size; ++indexNext)
+  {
+    Sample nextSupport;
+    if (dimension == 1)
+      nextSupport = distributionCollection_[indexNext].getSupport() * Point(*weights_.getColumn(indexNext).getImplementation());
+    else
+    {
+      const Sample support = distributionCollection_[indexNext].getSupport();
+      const Point scaling(*weights_.getColumn(indexNext).getImplementation());
+      nextSupport = Sample(support.getSize(), dimension);
+      for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+        nextSupport[i] = scaling * support[i][0] + constant_;
+    } // dimension > 1
+    const UnsignedInteger supportCandidatesSize = supportCandidates.getSize();
+    const UnsignedInteger nextSupportSize = nextSupport.getSize();
+    Sample newSupportCandidate(supportCandidatesSize * nextSupportSize, dimension);
+    UnsignedInteger k = 0;
+    for (UnsignedInteger indexCandidates = 0; indexCandidates < supportCandidatesSize; ++indexCandidates)
+    {
+      const Point xI(supportCandidates[indexCandidates]);
+      for (UnsignedInteger indexNext = 0; indexNext < nextSupportSize; ++indexNext)
+      {
+        const Point xJ(nextSupport[indexNext]);
+        newSupportCandidate[k] = xI + xJ;
+        ++k;
+      } // indexNext
+    } // indexCandidates
+    // Remove duplicates
+    supportCandidates = newSupportCandidate.sortUnique();
+  } // loop over the other atoms
+  for (UnsignedInteger i = 0; i < supportCandidates.getSize(); ++i)
+  {
+    const Point candidate(supportCandidates[i]);
+    if (interval.contains(candidate)) support.add(candidate);
+  }
   return support;
 }
 

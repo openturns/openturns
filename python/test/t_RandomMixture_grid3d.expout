@@ -1,7 +1,7 @@
 distribution= class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Uniform name=Uniform dimension=1 a=2 b=5,class=Uniform name=Uniform dimension=1 a=2 b=5] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,3,6,2,4,0,4,5,1] constant=class=Point name=Unnamed dimension=3 values=[0,0,0]
-range =  [4.34937, 37.6506]
-[-4.95188, 67.9519]
-[-43.9038, 50.9038]
+range =  ]-inf (4.34937), (37.6506) +inf[
+]-inf (-4.95188), (67.9519) +inf[
+]-inf (-43.9038), (50.9038) +inf[
 mean =  [21,31.5,3.5]
 cov =  [[ 16    24     9    ]
  [ 24    39.75 21.75 ]

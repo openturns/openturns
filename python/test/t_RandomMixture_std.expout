@@ -1,40 +1,28 @@
 testCases= [[class=Uniform name=Uniform dimension=1 a=-1 b=3,class=Uniform name=Uniform dimension=1 a=-1 b=3], [class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-2] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]], [class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0,class=Exponential name=Exponential dimension=1 lambda=1 gamma=0]]
 references= [Triangular(a = -2, m = 2, b = 6),Normal(mu = -1, sigma = 3),Gamma(k = 3, lambda = 1, gamma = 0)]
-Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=-2 m=2 b=6] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
-Distribution  RandomMixture(Triangular(a = -2, m = 2, b = 6))
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Uniform name=Uniform dimension=1 a=-1 b=3,class=Uniform name=Uniform dimension=1 a=-1 b=3] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=2 values=[1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
+Distribution  RandomMixture(Uniform(a = -1, b = 3) + Uniform(a = -1, b = 3))
 Elliptical =  True
 Continuous =  True
-oneRealization= [2.5585]
-oneSample first= [4.06345]  last= [1.68661]
-mean= [2.01813]
-covariance= [[ 2.72012 ]]
+oneRealization= [4.05073]
+oneSample first= [0.455382]  last= [-0.838226]
+mean= [2.01098]
+covariance= [[ 2.67867 ]]
 Point=  [0.5]
 ddf      = [0.0625]
 ddf (ref)= [0.0625]
 pdf      =0.156250
 pdf  (FD)=0.156250
 pdf (ref)=0.156250
-cdf      =0.195312
+cdf      =0.195313
 cdf (ref)=0.195312
 characteristic function=0.382574 + 0.595823i
 log characteristic function=-0.345207 + 1.000000i
 quantile      = [4.73509]
 quantile (ref)= [4.73509]
 cdf(quantile)=0.950000
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[4.73509]
-Survival(inverseSurvival)=0.050000
-dimension= 1 test case= 0
-Minimum volume interval= [-1.10557, -1.10557]
-threshold= [0.95]
-Minimum volume level set= {x | f(x) <= 2.88416} with f=
-MinimumVolumeLevelSetEvaluation(RandomMixture(Triangular(a = -2, m = 2, b = 6)))
-beta= [0.0559016]
-Bilateral confidence interval= [-1.10557, -1.10557]
-beta= [0.95]
-Unilateral confidence interval (lower tail)= [-2, 4.73509]
-beta= [0.95]
-Unilateral confidence interval (upper tail)= [4.73509, 6]
-beta= [0.95]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.735089]
+Survival(inverseSurvival)=0.950000
 mean      = [2]
 mean (ref)= [2]
 standard deviation      = [1.63299]
@@ -45,23 +33,23 @@ kurtosis      = [2.4]
 kurtosis (ref)= [2.4]
 covariance      = [[ 2.66667 ]]
 covariance (ref)= [[ 2.66667 ]]
-parameters= [[Triangular_a : -2, Triangular_m : 2, Triangular_b : 6]]
-Standard representative= RandomMixture(Triangular(a = -2, m = 2, b = 6))
+parameters= [[Uniform_a : -1, Uniform_b : 3, Uniform_a : -1, Uniform_b : 3]]
+Standard representative= RandomMixture(Uniform(a = -1, b = 3) + Uniform(a = -1, b = 3))
 blockMin= 5
 blockMax= 20
 maxSize= 4000000
 alpha= 5.0
 beta= 8.5
-Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-1] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
-Distribution  RandomMixture(Normal(mu = -1, sigma = 3))
+Distribution  class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-2] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=3 values=[1,1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
+Distribution  RandomMixture(Normal(mu = 0, sigma = 1) + Normal(mu = 1, sigma = 2) + Normal(mu = -2, sigma = 2))
 Elliptical =  True
 Continuous =  True
-oneRealization= [-3.87153]
-oneSample first= [-4.03363]  last= [0.331499]
-mean= [-1.0314]
-covariance= [[ 8.91043 ]]
+oneRealization= [2.57239]
+oneSample first= [-7.73611]  last= [0.219605]
+mean= [-1.00692]
+covariance= [[ 9.14206 ]]
 Point=  [0.5]
-ddf      = [-0.0195592]
+ddf      = [-0.0195594]
 ddf (ref)= [-0.0195592]
 pdf      =0.117355
 pdf  (FD)=0.117355
@@ -73,20 +61,8 @@ log characteristic function=-1.125000 + -0.500000i
 quantile      = [3.93456]
 quantile (ref)= [3.93456]
 cdf(quantile)=0.950000
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[3.93456]
-Survival(inverseSurvival)=0.050000
-dimension= 1 test case= 1
-Minimum volume interval= [-6.87989, -6.87989]
-threshold= [0.95]
-Minimum volume level set= {x | f(x) <= 3.93828} with f=
-MinimumVolumeLevelSetEvaluation(RandomMixture(Normal(mu = -1, sigma = 3)))
-beta= [0.0194816]
-Bilateral confidence interval= [-6.87989, -6.87989]
-beta= [0.95]
-Unilateral confidence interval (lower tail)= [-23.9519, 3.93456]
-beta= [0.95]
-Unilateral confidence interval (upper tail)= [3.93456, 21.9519]
-beta= [0.95]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-5.93456]
+Survival(inverseSurvival)=0.950000
 mean      = [-1]
 mean (ref)= [-1]
 standard deviation      = [3]
@@ -97,8 +73,8 @@ kurtosis      = [3]
 kurtosis (ref)= [3]
 covariance      = [[ 9 ]]
 covariance (ref)= [[ 9 ]]
-parameters= [[Normal_mean_0 : -1, Normal_standard_deviation_0 : 3]]
-Standard representative= RandomMixture(Normal(mu = -1, sigma = 3))
+parameters= [[Normal_mean_0 : 0, Normal_standard_deviation_0 : 1, Normal_mean_0 : 1, Normal_standard_deviation_0 : 2, Normal_mean_0 : -2, Normal_standard_deviation_0 : 2]]
+Standard representative= RandomMixture(Normal(mu = 0, sigma = 1) + Normal(mu = 1, sigma = 2) + Normal(mu = -2, sigma = 2))
 blockMin= 5
 blockMax= 20
 maxSize= 4000000
@@ -108,10 +84,10 @@ Distribution  class=RandomMixture name=RandomMixture distribution collection=[cl
 Distribution  RandomMixture(Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
 Elliptical =  False
 Continuous =  True
-oneRealization= [0.665902]
-oneSample first= [1.42272]  last= [4.55734]
-mean= [2.9992]
-covariance= [[ 2.95619 ]]
+oneRealization= [2.3902]
+oneSample first= [1.80165]  last= [5.94924]
+mean= [3.00598]
+covariance= [[ 3.02995 ]]
 Point=  [0.5]
 ddf      = [0.227449]
 ddf (ref)= [0.227449]
@@ -144,20 +120,20 @@ blockMax= 20
 maxSize= 4000000
 alpha= 5.0
 beta= 8.5
-distribution= class=RandomMixture name=RandomMixture distribution collection=[class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Triangular name=Triangular dimension=1 a=2 m=6 b=10,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Gamma name=Gamma dimension=1 k=3 lambda=4 gamma=-2,class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[5.25] sigma=class=Point name=Unnamed dimension=1 values=[13.4629] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=6 values=[1,1.5,-2.5,-3.75,2.5,1] constant=class=Point name=Unnamed dimension=1 values=[0]
-distribution= RandomMixture(Triangular(a = 2, m = 6, b = 10) + 1.5 * Exponential(lambda = 2, gamma = -3) - 2.5 * Triangular(a = 2, m = 6, b = 10) - 3.75 * Exponential(lambda = 2, gamma = -3) + 2.5 * Gamma(k = 3, lambda = 4, gamma = -2) + Normal(mu = 5.25, sigma = 13.4629))
-pdf( -44.290678 )=0.000311
-pdf( -34.726083 )=0.001834
-pdf( -25.161488 )=0.006936
-pdf( -15.596893 )=0.016849
-pdf( -6.032298 )=0.026283
-pdf( 3.532298 )=0.026313
-pdf( 13.096893 )=0.016889
-pdf( 22.661488 )=0.006940
-pdf( 32.226083 )=0.001821
-pdf( 41.790678 )=0.000305
-projections= [Normal(mu = -1.24816, sigma = 24.1247),Gamma(k = 9.52102, lambda = 0.127903, gamma = -75.6876),Triangular(a = -75.6876, m = -1.15189, b = 73.095),Uniform(a = -75.6876, b = 73.095),Exponential(lambda = 0.0134337, gamma = -75.6876)]
-norms= [0.122161,0.139869,0.185637,0.291551,0.444576]
+distribution= class=RandomMixture name=RandomMixture distribution collection=[class=Dirac name=Dirac dimension=1 point=class=Point name=Unnamed dimension=1 values=[0.5],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Uniform name=Uniform dimension=1 a=-2 b=2,class=Uniform name=Uniform dimension=1 a=2 b=4,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Dirac name=Dirac dimension=1 point=class=Point name=Unnamed dimension=1 values=[0.5],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Uniform name=Uniform dimension=1 a=-2 b=2,class=Uniform name=Uniform dimension=1 a=2 b=4,class=Exponential name=Exponential dimension=1 lambda=2 gamma=-3,class=Gamma name=Gamma dimension=1 k=3 lambda=4 gamma=-2] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=13 values=[1,2,-3,-1,2,1.5,-2.5,-5,7.5,2.5,-5,-3.75,2.5] constant=class=Point name=Unnamed dimension=1 values=[0]
+distribution= RandomMixture(Dirac(point = [0.5]) + 2 * Normal(mu = 1, sigma = 2) - 3 * Normal(mu = 2, sigma = 1) - Uniform(a = -2, b = 2) + 2 * Uniform(a = 2, b = 4) + 1.5 * Exponential(lambda = 2, gamma = -3) - 2.5 * Dirac(point = [0.5]) - 5 * Normal(mu = 1, sigma = 2) + 7.5 * Normal(mu = 2, sigma = 1) + 2.5 * Uniform(a = -2, b = 2) - 5 * Uniform(a = 2, b = 4) - 3.75 * Exponential(lambda = 2, gamma = -3) + 2.5 * Gamma(k = 3, lambda = 4, gamma = -2))
+pdf( -45.042123 )=0.000266
+pdf( -35.310540 )=0.001666
+pdf( -25.578957 )=0.006605
+pdf( -15.847374 )=0.016556
+pdf( -6.115791 )=0.026232
+pdf( 3.615791 )=0.026262
+pdf( 13.347374 )=0.016595
+pdf( 23.078957 )=0.006608
+pdf( 32.810540 )=0.001654
+pdf( 42.542123 )=0.000260
+projections= [Normal(mu = -1.24816, sigma = 24.4357),Gamma(k = 9.60684, lambda = 0.126843, gamma = -76.9864),Triangular(a = -76.9864, m = -1.1519, b = 74.3938),Uniform(a = -76.9864, b = 74.3938),Exponential(lambda = 0.0132034, gamma = -76.9864)]
+norms= [0.125151,0.142711,0.189006,0.294413,0.44751]
 distribution =  RandomMixture(
 Normal(mu = 0, sigma = 1) - 2 * Normal(mu = 0, sigma = 1) + Normal(mu = 0, sigma = 1)
 Normal(mu = 0, sigma = 1) + Normal(mu = 0, sigma = 1) - 3 * Normal(mu = 0, sigma = 1)
