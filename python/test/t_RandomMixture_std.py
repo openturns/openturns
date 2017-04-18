@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 ResourceMap.SetAsUnsignedInteger("RandomMixture-DefaultMaxSize", 4000000)
 # Deactivate the simplification mechanism as we want to test the Poisson formula
 # based algorithm here
-ResourceMap.SetAsUnsignedInteger("RandomMixture-SimplifyAtoms", False)
+ResourceMap.SetAsBool("RandomMixture-SimplifyAtoms", False)
 
 try:
     # Create a collection of test-cases and the associated references
@@ -64,8 +64,8 @@ try:
 
         # Show PDF and CDF of point
         eps = 1e-5
-        DDF = distribution.computeDDF(point)
-        print("ddf      =", DDF)
+        DDF = distribution.computeDDF(point)[0]
+        print("ddf      =%.5g" % DDF)
         print("ddf (ref)=", distributionReference.computeDDF(point))
         PDF = distribution.computePDF(point)
         print("pdf      =%.6f" % PDF)
