@@ -73,7 +73,6 @@ cmake-configure-%:
             -DLIB_VERSION=0.9.0 \
             -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.7 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
-            -DLINK_PYTHON_LIBRARY:BOOL=OFF \
             -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
             -DPYTHON_INCLUDE_DIR:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
             -DPYTHON_INCLUDE_DIR2:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
