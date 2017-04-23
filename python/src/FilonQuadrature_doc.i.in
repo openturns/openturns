@@ -1,0 +1,161 @@
+%feature("docstring") OT::FilonQuadrature
+"Tensorized integration algorithm of Gauss-Legendre.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    The discretization used by the algorithm. The integration algorithm will
+    be regularly discretized by :math:`2n+1` points.
+omega : float
+    The default pulsation in the oscillating kernel. Default value is 1.0.
+kind : int, :math:`kind\geq 0`
+    The type of oscillating kernel defining the integral, see notes. Default
+    value is 0.
+
+Notes
+-----
+The Filon algorithm enables to approximate the definite integral:
+
+.. math::
+
+    \int_a^b f(t)w(\omega t)\di{t}
+
+
+with :math:`f: \Rset \mapsto \Rset^p`, :math:`a, b\in\Rset`,
+:math:`\omega\in\Rset` and:
+    
+.. math ::
+
+    w(\omega t)=\left\{
+    \begin{array}{ll}
+      \cos(\omega t) & \mathrm{if}\: kind=0 \\
+      \sin(\omega t) & \mathrm{if}\: kind=1 \\
+      \exp(i \omega t) & \mathrm{if}\: kind\geq 2
+    \end{array}
+    \right.
+
+This algorithm is based on a regular partition of the interval :math:`[a,b]`, the
+function :math:`f` being approximated by a quadratic function on three consecutive
+points. This algorithm provides an approximation of order :math:`\cO(1/\omega^2)`
+when :math:`\omega\rightarrow\infty`. When :math:`w(\omega t)=\exp(i \omega t)`,
+the result is returned as a :class:`~openturns.Point` of dimension 2, the first
+component being the real part of the result and the second component the
+imaginary part.
+    
+Examples
+--------
+Create a Filon algorithm:
+
+>>> import openturns as ot
+>>> algo = ot.FilonQuadrature(100)
+>>> algo = ot.FilonQuadrature(100, 10.0)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FilonQuadrature::integrate
+"Evaluation of the integral of :math:`f w` on an interval.
+
+Available usages:
+    integrate(*f, interval*)
+
+    integrate(*f, interval, omega*)
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset \mapsto \Rset^p`
+    The integrand function.
+omega : float
+    The pulsation in the weight function. This value superseeds the value given
+    in the constructor.
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset` 
+    The integration domain. 
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral. Its dimension is :math:`p` if
+    :math:`kind\in\{0,1\}`, otherwise it is :math:`2p` whith the :math:`p` first
+    components corresponding to the real part of the integral and the remaining
+    ones to the imaginary part.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import math
+>>> f = ot.SymbolicFunction(['t'], ['log(1+t)'])
+>>> a = 0.5
+>>> b = a + 8.0 * math.pi
+>>> n = 100
+>>> omega = 1000.0
+>>> kind = 0
+>>> algoF = ot.FilonQuadrature(n, omega, kind)
+>>> value = algoF.integrate(f, ot.Interval(a, b))
+>>> print(value[0])
+-0.00134...
+>>> kind = 1
+>>> algoF = ot.FilonQuadrature(n, omega, kind)
+>>> value = algoF.integrate(f, ot.Interval(a, b))
+>>> print(value[0])
+0.00254...
+>>> kind = 2
+>>> algoF = ot.FilonQuadrature(n, omega, kind)
+>>> value = algoF.integrate(f, ot.Interval(a, b))
+>>> print(value[0])
+-0.00134...
+>>> print(value[1])
+0.00254...
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FilonQuadrature::getN
+"Accessor to the discretization of the algorithm.
+
+Returns
+-------
+n : integer
+    The discretization used by the algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FilonQuadrature::setN
+"Accessor to the discretization of the algorithm.
+
+Parameters
+----------
+n : integer, :math:`n>0`
+    The discretization used by the algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FilonQuadrature::getOmega
+"Accessor to the default pulsation.
+
+Returns
+-------
+omega : float
+    The pulsation used in the *integrate* method if not explicitely given."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FilonQuadrature::setOmega
+"Accessor to the default pulsation.
+
+Parameters
+----------
+omega : float
+    The pulsation used in the *integrate* method if not explicitely given."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FilonQuadrature::getKind
+"Accessor to the kind of oscillating weight defining the integral.
+
+Returns
+-------
+kind : int
+    The oscillating weight function defining the integral, see the notes."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FilonQuadrature::setKind
+"Accessor to the kind of oscillating weight defining the integral.
+
+Parameters
+----------
+kind : int
+    The oscillating weight function defining the integral, see the notes."
+

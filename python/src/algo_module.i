@@ -69,6 +69,7 @@
 %include KissFFT.i
 %include IntegrationAlgorithmImplementation.i
 %include IntegrationAlgorithm.i
+%include FilonQuadrature.i
 %include GaussKronrodRule.i
 %include GaussKronrod.i
 %include GaussLegendre.i

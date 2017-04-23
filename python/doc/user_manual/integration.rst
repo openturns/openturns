@@ -9,6 +9,7 @@ Integration
     :template: class.rst_t
 
     IntegrationAlgorithm
+    FilonQuadrature
 
 .. autosummary::
     :toctree: _generated/

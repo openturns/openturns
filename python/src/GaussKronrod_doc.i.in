@@ -23,7 +23,7 @@ with :math:`f: \Rset \mapsto \Rset^p`, using both approximations : Gauss and Kro
 
 .. math::
 
-    \int_{-1}^1 f(t)\d{t} \simeq  \omega_0f(0) + \sum_{k=1}^n \omega_k (f(\xi_k)+f(-\xi_k))
+    \int_{-1}^1 f(t)\di{t} \simeq  \omega_0f(0) + \sum_{k=1}^n \omega_k (f(\xi_k)+f(-\xi_k))
 
 and:
 

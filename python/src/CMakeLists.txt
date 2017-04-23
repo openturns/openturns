@@ -442,6 +442,7 @@ ot_add_python_module(algo algo_module.i
                       KissFFT.i KissFFT_doc.i.in
                       IntegrationAlgorithmImplementation.i IntegrationAlgorithmImplementation_doc.i.in
                       IntegrationAlgorithm.i IntegrationAlgorithm_doc.i.in
+                      FilonQuadrature.i FilonQuadrature_doc.i.in
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in
                       GaussKronrod.i GaussKronrod_doc.i.in
                       GaussLegendre.i GaussLegendre_doc.i.in
