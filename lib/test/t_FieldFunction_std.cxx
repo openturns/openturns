@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
     /* Get the input and output description */
     fullprint << "myFunc input description=" << myFunc.getInputDescription() << std::endl;
     fullprint << "myFunc output description=" << myFunc.getOutputDescription() << std::endl;
-    /* Get the input and output dimension, based on description */
+    /* Get the spatial, input and output dimension */
+    fullprint << "myFunc spatial dimension=" << myFunc.getSpatialDimension() << std::endl;
     fullprint << "myFunc input dimension=" << myFunc.getInputDimension() << std::endl;
     fullprint << "myFunc output dimension=" << myFunc.getOutputDimension() << std::endl;
     /* Get the number of calls */

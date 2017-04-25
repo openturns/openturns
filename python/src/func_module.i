@@ -70,6 +70,15 @@
 %include DualLinearCombinationFunction.i
 %include FieldFunctionImplementation.i
 %include FieldFunction.i
+%include FieldToPointFunctionImplementation.i
+%include FieldToPointFunction.i
+%include PointToFieldFunctionImplementation.i
+%include PointToFieldFunction.i
+%include FieldToFieldConnection.i
+%include FieldToPointConnection.i
+%include PointToFieldConnection.i
+%include PointToPointEvaluation.i
+%include PointToPointConnection.i
 %include IndicatorFunction.i
 %include ValueFunction.i
 %include VertexValueFunction.i

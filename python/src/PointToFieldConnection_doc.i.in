@@ -1,0 +1,200 @@
+%define OT_FieldToPointFunction_doc
+"Field function.
+
+Available constructors:
+    FieldToPointFunction(*meshDimension=1*)
+
+    FieldToPointFunction(*function, meshDimension=1*)
+
+Parameters
+----------
+function : :class:`~openturns.Function`
+    Function :math:`g: \Rset^d \mapsto \Rset^q` used to define a
+    :class:`~openturns.ValueFunction` object.
+meshDimension : int, :math:`n \geq 0`
+    Dimension of the mesh :math:`\cM`.
+
+Notes
+-----
+Field functions are functions being able to act on fields.
+Two particular field functions are defined:
+the :class:`spatial function <openturns.ValueFunction>` and
+the :class:`temporal function <openturns.VertexValueFunction>`.
+
+
+A field function
+:math:`f_{dyn}:\cD \times \Rset^d \mapsto \cD' \times \Rset^q`
+where :math:`\cD \in \Rset^n` and :math:`\cD' \in \Rset^p` is defined by:
+
+.. math::
+
+    f_{dyn}(\vect{t}, \vect{x}) = (t'(\vect{t}), v'(\vect{t}, \vect{x}))
+
+with :math:`t': \cD \mapsto \cD'` and
+:math:`v': \cD \times \Rset^d \mapsto \Rset^q`.
+
+A field function :math:`f_{dyn}` transforms a multivariate stochastic
+process:
+
+.. math::
+
+    X: \Omega \times \cD \mapsto \Rset^d
+
+where :math:`\cD \in \Rset^n` is discretized according to the mesh :math:`\cM`
+into the multivariate stochastic process:
+
+.. math::
+
+    Y=f_{dyn}(X)
+
+such that:
+
+.. math::
+
+    Y: \Omega \times \cD' \mapsto \Rset^q
+
+where the mesh :math:`\cD' \in \Rset^p`  is discretized according to the
+:math:`\cM'`.
+
+A field function :math:`f_{dyn}` also acts on fields and produces fields of
+possibly different dimension (:math:`q\neq d`) and mesh (:math:`\cD \neq \cD'`
+or :math:`\cM \neq \cM'`).
+
+OpenTURNS only proposes field functions where :math:`\cD'=\cD` and
+:math:`\cM'=\cM` which means that :math:`t'=Id` through the *spatial function*
+and the *temporal function*. It follows that the process :math:`Y` shares the
+same mesh with :math:`X`, only its values have changed."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation
+OT_FieldToPointFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getCallsNumber_doc
+"Get the number of calls of a FieldToPointFunction.
+
+Returns
+-------
+callsNumber : int
+    Counts the number of times the FieldToPointFunction has been called since its
+    creation."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getCallsNumber
+OT_FieldToPointFunction_getCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getInputDescription_doc
+"Get the description of the inputs.
+
+Returns
+-------
+inputDescription : :class:`~openturns.Description`
+    Describes the inputs of the function."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getInputDescription
+OT_FieldToPointFunction_getInputDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getInputDimension_doc
+"Get the dimension of the input.
+
+Returns
+-------
+d : int
+    Input dimension :math:`d` of the function."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getInputDimension
+OT_FieldToPointFunction_getInputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getMarginal_doc
+"Get the marginal(s) at given indice(s).
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d`
+    Indice(s) of the marginal(s) needed. :math:`d` is the dimension of the
+    FieldToPointFunction.
+
+Returns
+-------
+fieldToPointFunction : :class:`~openturns.FieldToPointFunction`
+    FieldToPointFunction restricted to the concerned marginal(s) at the indice(s)
+    :math:`i` of the field function :math:`f_{dyn}`."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getMarginal
+OT_FieldToPointFunction_getMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getOutputMesh_doc
+"Get the mesh associated to the output process.
+
+Returns
+-------
+outputMesh : :class:`~openturns.Mesh`
+    The mesh of the output process."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getOutputMesh
+OT_FieldToPointFunction_getOutputMesh_doc
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getSpatialDimension_doc
+"Get the dimension of the mesh.
+
+Returns
+-------
+spatialDimension : int, :math:`n \geq 0`
+    Dimension of the mesh :math:`\cM`."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getSpatialDimension
+OT_FieldToPointFunction_getSpatialDimension_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getOutputDescription_doc
+"Get the description of the outputs.
+
+Returns
+-------
+outputDescription : :class:`~openturns.Description`
+    Describes the outputs of the function."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getOutputDescription
+OT_FieldToPointFunction_getOutputDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldToPointFunction_getOutputDimension_doc
+"Get the dimension of the output.
+
+Returns
+-------
+q : int
+    Output dimension :math:`q` of the function."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::getOutputDimension
+OT_FieldToPointFunction_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionImplementation::setInputDescription
+"Set the description of the inputs.
+
+Parameters
+----------
+inputDescription : sequence of str
+    Describes the inputs of the function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToPointFunctionImplementation::setOutputDescription
+"Set the description of the outputs.
+
+Parameters
+----------
+outputDescription : sequence of str
+    Describes the outputs of the function."

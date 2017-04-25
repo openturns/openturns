@@ -40,7 +40,7 @@ ValueFunction::ValueFunction(const UnsignedInteger meshDimension)
 /* Parameter constructor */
 ValueFunction::ValueFunction(const Function & function,
                              const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension, function.getInputDimension(), function.getOutputDimension())
   , p_evaluation_(function.getEvaluation())
 {
   // Set the descriptions
@@ -51,7 +51,7 @@ ValueFunction::ValueFunction(const Function & function,
 /* Parameter constructor */
 ValueFunction::ValueFunction(const EvaluationPointer & p_evaluation,
                              const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension, p_evaluation->getInputDimension(), p_evaluation->getOutputDimension())
   , p_evaluation_(p_evaluation)
 {
   // Set the descriptions
@@ -62,7 +62,7 @@ ValueFunction::ValueFunction(const EvaluationPointer & p_evaluation,
 /* Parameter constructor */
 ValueFunction::ValueFunction(const EvaluationImplementation & evaluation,
                              const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension(), evaluation.getOutputDimension())
   , p_evaluation_(evaluation.clone())
 {
   // Set the descriptions

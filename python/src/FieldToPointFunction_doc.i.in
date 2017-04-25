@@ -1,0 +1,18 @@
+// FieldToPointFunction docstrings are defined in FieldToPointFunctionImplementation_doc.i.in
+
+%feature("docstring") OT::FieldToPointFunction
+OT_FieldToPointFunction_doc
+%feature("docstring") OT::FieldToPointFunction::getCallsNumber
+OT_FieldToPointFunction_getCallsNumber_doc
+%feature("docstring") OT::FieldToPointFunction::getInputDescription
+OT_FieldToPointFunction_getInputDescription_doc
+%feature("docstring") OT::FieldToPointFunction::getInputDimension
+OT_FieldToPointFunction_getInputDimension_doc
+%feature("docstring") OT::FieldToPointFunction::getMarginal
+OT_FieldToPointFunction_getMarginal_doc
+%feature("docstring") OT::FieldToPointFunction::getSpatialDimension
+OT_FieldToPointFunction_getSpatialDimension_doc
+%feature("docstring") OT::FieldToPointFunction::getOutputDescription
+OT_FieldToPointFunction_getOutputDescription_doc
+%feature("docstring") OT::FieldToPointFunction::getOutputDimension
+OT_FieldToPointFunction_getOutputDimension_doc

@@ -158,6 +158,18 @@ class OpenTURNSPythonFieldFunction(object):
     def _exec(self, X):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X and Y are Fields objects')
 
+    def _exec_sample(self, X):
+        if len(X) == 0:
+            return ProcessSample(Mesh(), 0, self.getOutputDimension())
+        res = ProcessSample(1, self._exec(X[0]))
+        for i in range(1, len(X)):
+            res.add(self._exec(X[i]))
+        return res
+
+    def _exec_point_on_exec_sample(self, X):
+        """Implement exec from exec_sample."""
+        return self._exec_sample([X])[0]
+
 class PythonFieldFunction(FieldFunction):
     """
     Override FieldFunction from Python.

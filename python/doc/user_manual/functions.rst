@@ -33,9 +33,13 @@ Algebra of functions
     LinearCombinationFunction
     ParametricFunction
     ProductFunction
-
-Field functions
-===============
+    FieldToFieldConnection
+    FieldToPointConnection
+    PointToFieldConnection
+    PointToPointConnection
+    
+Field and mixed functions
+=========================
 
 .. autosummary::
     :toctree: _generated/

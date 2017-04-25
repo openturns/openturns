@@ -519,6 +519,11 @@ FunctionImplementation::Implementation FunctionImplementation::getMarginal(const
 /* Number of calls to the evaluation */
 UnsignedInteger FunctionImplementation::getEvaluationCallsNumber() const
 {
+  return getCallsNumber();
+}
+
+UnsignedInteger FunctionImplementation::getCallsNumber() const
+{
   return p_evaluationImplementation_->getCallsNumber();
 }
 

@@ -40,7 +40,7 @@ VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Function & function,
     const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension, function.getInputDimension() - meshDimension, function.getOutputDimension())
   , p_evaluation_(function.getEvaluation())
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -55,7 +55,7 @@ VertexValueFunction::VertexValueFunction(const Function & function,
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
     const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension, p_evaluation->getInputDimension() - meshDimension, p_evaluation->getOutputDimension())
   , p_evaluation_(p_evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -70,7 +70,7 @@ VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const EvaluationImplementation & evaluation,
     const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
+  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension() - meshDimension, evaluation.getOutputDimension())
   , p_evaluation_(evaluation.clone())
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension

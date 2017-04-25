@@ -252,6 +252,7 @@ public:
   virtual Implementation getMarginal(const Indices & indices) const;
 
   /** Number of calls to the evaluation */
+  virtual UnsignedInteger getCallsNumber() const;
   virtual UnsignedInteger getEvaluationCallsNumber() const;
 
   /** Number of calls to the gradient */

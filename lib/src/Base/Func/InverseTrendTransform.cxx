@@ -40,32 +40,23 @@ InverseTrendTransform::InverseTrendTransform()
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const Function & function)
-  : VertexValueFunction(function.getInputDimension())
+  : VertexValueFunction(function, function.getInputDimension())
 {
-  p_evaluation_ = function.getEvaluation() ;
-  // Set the descriptions
-  setInputDescription(p_evaluation_->getOutputDescription());
-  setOutputDescription(p_evaluation_->getOutputDescription());
+  // Nothing to do
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const EvaluationPointer & p_evaluation)
-  : VertexValueFunction(p_evaluation->getInputDimension())
+  : VertexValueFunction(p_evaluation, p_evaluation->getInputDimension())
 {
-  p_evaluation_ = p_evaluation;
-  // Set the descriptions
-  setInputDescription(p_evaluation_->getOutputDescription());
-  setOutputDescription(p_evaluation_->getOutputDescription());
+  // Nothing to do
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & evaluation)
-  : VertexValueFunction(evaluation.getInputDimension())
+  : VertexValueFunction(evaluation, evaluation.getInputDimension())
 {
-  p_evaluation_ = evaluation.clone();
-  // Set the descriptions
-  setInputDescription(p_evaluation_->getOutputDescription());
-  setOutputDescription(p_evaluation_->getOutputDescription());
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -100,11 +91,8 @@ Field InverseTrendTransform::operator() (const Field & inFld) const
 {
   if (inFld.getSpatialDimension() != p_evaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with mesh dimension=" << p_evaluation_->getInputDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
   if (inFld.getDimension() != p_evaluation_->getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with dimension=" << p_evaluation_->getOutputDimension() << ", got dimension=" << inFld.getDimension();
-  Sample outputSample((*p_evaluation_)(inFld.getMesh().getVertices()));
-  // finally as the function adds a trend, result
-  for (UnsignedInteger k = 0; k < outputSample.getSize(); ++k) outputSample[k] = inFld.getValueAtIndex(k) - outputSample[k];
   ++callsNumber_;
-  return Field(inFld.getMesh(), outputSample);
+  return Field(inFld.getMesh(), inFld.getValues() - (*p_evaluation_)(inFld.getMesh().getVertices()));
 }
 
 /* Inverse accessor */

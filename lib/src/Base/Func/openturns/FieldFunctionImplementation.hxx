@@ -49,6 +49,11 @@ public:
   /** Default constructor */
   explicit FieldFunctionImplementation(const UnsignedInteger spatialDimension = 1);
 
+  /** Parameter constructor */
+  FieldFunctionImplementation(const UnsignedInteger spatialDimension,
+			      const UnsignedInteger inputDimension,
+			      const UnsignedInteger outputDimension);
+  
   /** Virtual constructor */
   virtual FieldFunctionImplementation * clone() const;
 
@@ -105,6 +110,12 @@ public:
 protected:
   /** Expected dimension of the mesh underlying the field arguments */
   UnsignedInteger spatialDimension_;
+
+  /** Expected dimension of the values of the field arguments */
+  UnsignedInteger inputDimension_;
+
+  /** Expected dimension of the values of the field produced */
+  UnsignedInteger outputDimension_;
 
   /** Description of the input variables */
   Description inputDescription_;

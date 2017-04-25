@@ -1,0 +1,16 @@
+myFunc=class=PointToPointEvaluation name=Unnamed isFunctionComposition=true leftFunction=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[sin(x)] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[sin(x)] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[sin(x)] rightFunction=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[cos(x)] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[cos(x)] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x] outputVariablesNames=[y0] formulas=[cos(x)] fieldToPoint=class=FieldToPointFunction name=Unnamed implementation=class=FieldToPointFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0 pointToField=class=PointToFieldFunction name=Unnamed implementation=class=PointToFieldFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0
+myFunc input description=[x]
+myFunc output description=[y0]
+myFunc input dimension=1
+myFunc output dimension=1
+point=class=Point name=Unnamed dimension=1 values=[1]
+myFunc(point)=class=Point name=Unnamed dimension=1 values=[0.514395]
+called 1 times
+myFunc=class=PointToPointEvaluation name=Unnamed isFunctionComposition=false leftFunction=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoEvaluation name=Unnamed gradientImplementation=class=NoGradient name=Unnamed hessianImplementation=class=NoHessian name=Unnamed rightFunction=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoEvaluation name=Unnamed gradientImplementation=class=NoGradient name=Unnamed hessianImplementation=class=NoHessian name=Unnamed fieldToPoint=class=FieldToPointFunction name=Unnamed implementation=class=KarhunenLoeveProjection name=Unnamed input description=[v0] output description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] number of calls=0 pointToField=class=PointToFieldFunction name=Unnamed implementation=class=KarhunenLoeveLifting name=Unnamed input description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] output description=[v0] number of calls=0
+myFunc input description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9]
+myFunc output description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9]
+myFunc input dimension=10
+myFunc output dimension=10
+point=class=Point name=Unnamed dimension=10 values=[1,1,1,1,1,1,1,1,1,1]
+myFunc(point)=class=Point name=Unnamed dimension=10 values=[1,1,1,1,1,1,1,1,1,1]
+called 1 times
