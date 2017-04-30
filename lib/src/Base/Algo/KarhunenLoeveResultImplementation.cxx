@@ -141,8 +141,13 @@ Point KarhunenLoeveResultImplementation::project(const Function & function) cons
 Point KarhunenLoeveResultImplementation::project(const Field & field) const
 {
   if (field.getMesh() == modesAsProcessSample_.getMesh())
-    return projection_ * field.getValues().getImplementation()->getData();
+    return project(field.getValues());
   return project(Function(P1LagrangeEvaluation(field).clone()));
+}
+
+Point KarhunenLoeveResultImplementation::project(const Sample & sample) const
+{
+  return projection_ * sample.getImplementation()->getData();
 }
 
 struct ProjectBasisPolicy
@@ -180,6 +185,7 @@ struct ProjectSamplePolicy
   const ProcessSample & sample_;
   Sample & output_;
   const KarhunenLoeveResultImplementation & result_;
+  Bool sameMesh_;
 
   ProjectSamplePolicy( const ProcessSample & sample,
                        Sample & output,
@@ -187,12 +193,18 @@ struct ProjectSamplePolicy
     : sample_(sample)
     , output_(output)
     , result_(result)
+    , sameMesh_(sample.getMesh() == result.getModesAsProcessSample().getMesh())
+
   {}
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
-      output_[i] = result_.project(sample_.getField(i));
+    if (sameMesh_)
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
+	output_[i] = result_.project(sample_.getField(i));
+    else
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
+	output_[i] = result_.project(sample_[i]);
   }
 
 }; /* end struct ProjectSamplePolicy */

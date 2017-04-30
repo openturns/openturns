@@ -211,6 +211,8 @@ function : :class:`~openturns.Function`
     A function.
 field :  :class:`~openturns.Field`
     A field.
+sample :  :class:`~openturns.Sample`
+    A sample.
 basis :  :class:`~openturns.Basis`
     A collection f functions.
 fieldSample :  :class:`~openturns.ProcessSample`
@@ -227,12 +229,14 @@ sample : :class:`~openturns.Sample`
 
 Notes
 -----
-The *project* method calculates the projection :eq:`projection` on a function  or a field where only the first :math:`K` elements of the sequences are calculated.
+The *project* method calculates the projection :eq:`projection` on a function, a field or a sample where only the first :math:`K` elements of the sequences are calculated.
 :math:`K` is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`.
 
 Lets note :math:`\cM_{KL}` the mesh coming from the :class:`~openturns.KarhunenLoeveResult` (ie the one contained in the *modesAsSample* :class:`~openturns.ProcessSample`).
 
 If the given field is defined on :math:`\cM_{KL}`, the associated values  are directly used for the projection. Otherwise, a :class:`~openturns.P1LagrangeEvaluation`  function is built using this field and then used to interpolate the values of the field on :math:`\cM_{KL}`.
+
+If evaluated from a sample, the *project* method acts like on a filed having this sampe as values and the same mesh as the *modesAsSample*.
 
 If evaluated from a function, the *project* method evaluates the function on :math:`\cM_{KL}` and uses :eq:`projectionMatrix`. "
 %enddef
