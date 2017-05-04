@@ -152,8 +152,8 @@ pdf(14)=0.000138571
 pdf(15)=3.10776e-05
 pdf(16)=6.16681e-06
 pdf(17)=1.09834e-06
-projections=[Normal(mu = 4.24818, sigma = 4.37758),Gamma(k = 9.27664, lambda = 0.695762, gamma = -9.08487),Triangular(a = -9.08487, m = 3.92974, b = 17.8997),Uniform(a = -9.08487, b = 17.8997),Exponential(lambda = 0.0750016, gamma = -9.08487)]
-norms=class=Point name=Unnamed dimension=5 values=[0.122372,0.13956,0.186643,0.296697,0.44332]
+projections=[Normal(mu = 4.24818, sigma = 4.37758),Gamma(k = 9.27664, lambda = 0.695762, gamma = -9.08487),Triangular(a = -9.72415, m = 4.24455, b = 18.2241),Uniform(a = -9.08487, b = 17.8997),Exponential(lambda = 0.0750016, gamma = -9.08487)]
+norms=class=Point name=Unnamed dimension=5 values=[0.122372,0.13956,0.192465,0.296697,0.44332]
 distribution = class=RandomMixture name=RandomMixture distribution collection=[class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1],class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,1,-2,1,1,-3] constant=class=Point name=Unnamed dimension=2 values=[0,0]
 range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-20.8207,-28.1913] upper bound=class=Point name=Unnamed dimension=2 values=[20.8207,28.1913] finite lower bound=[1,1] finite upper bound=[1,1]
 mean = class=Point name=Unnamed dimension=2 values=[0,0]
