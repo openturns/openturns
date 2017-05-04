@@ -177,6 +177,11 @@ public:
   virtual void setActiveParameter(const Indices & active);
   virtual Indices getActiveParameter() const;
 
+  /* setter for the full parameter */
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
+
   /** String converter */
   virtual String __repr__() const;
 
@@ -202,9 +207,6 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
 
   // set the covariance structure
   void updateSpatialCovariance();
