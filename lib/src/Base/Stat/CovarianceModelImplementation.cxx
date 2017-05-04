@@ -508,7 +508,7 @@ void CovarianceModelImplementation::setAmplitude(const Point & amplitude)
 {
   if (amplitude.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << dimension_;
   for (UnsignedInteger index = 0; index < dimension_; ++index)
-    if (amplitude[index] <= 0)
+    if (!(amplitude[index] > 0.0))
       throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude is non positive" ;
   amplitude_ = amplitude;
   updateSpatialCovariance();
@@ -524,7 +524,7 @@ void CovarianceModelImplementation::setScale(const Point & scale)
 {
   if (scale.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the given scale has a dimension=" << scale.getDimension() << " different from the input dimension=" << spatialDimension_;
   for (UnsignedInteger index = 0; index < spatialDimension_; ++index)
-    if (scale[index] <= 0)
+    if (!(scale[index] > 0.0))
       throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the component " << index << " of scale is non positive" ;
   scale_ = scale;
 }

@@ -553,9 +553,9 @@ OT_CovarianceModel_set_nugget_factor_doc
 %define OT_CovarianceModel_setParameter_doc
 "Set the parameters of the covariance function.
 
-Returns
--------
-parameters : :class:`~openturns.PointWithDescription`
+Parameters
+----------
+parameters : :class:`~openturns.Point`
     List of the scale parameter :math:`\vect{\theta} \in \Rset^n` and the
     amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance
     function.
