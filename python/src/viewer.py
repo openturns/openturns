@@ -425,10 +425,10 @@ class View(object):
                             y_max = y.getMax()[0]
                             y_margin = 0.1 * (y_max - y_min)
                             plot_kwargs['linestyle'] = 'None'
-                            self._ax[1 + i * dim + j].plot(x, y, **plot_kwargs)
-                            self._ax[1 + i * dim + j].set_xlim(
-                                x_min - x_margin, x_max + x_margin)
+                            self._ax[1 + i * dim + j].plot(y, x, **plot_kwargs)
                             self._ax[1 + i * dim + j].set_ylim(
+                                x_min - x_margin, x_max + x_margin)
+                            self._ax[1 + i * dim + j].set_xlim(
                                 y_min - y_margin, y_max + y_margin)
                         else:
                             text_kwargs['transform'] = self._ax[
