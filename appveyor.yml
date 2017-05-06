@@ -10,19 +10,19 @@ install:
   - appveyor-retry appveyor DownloadFile http://sourceforge.net/projects/openblas/files/v0.2.15/mingw32_dll.zip
   - 7z x mingw32_dll.zip -oC:\Libraries > nil
 
-  - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.11/swigwin-3.0.11.zip
-  - 7z x swigwin-3.0.11.zip -oC:\Libraries > nul
+  - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
+  - 7z x swigwin-3.0.12.zip -oC:\Libraries > nul
 
 build_script:
   - mkdir build && cd build
   - cmake -G"%VS_GEN%" \
-      -DCMAKE_INSTALL_PREFIX=%cd%\install \
-      -DBOOST_ROOT="C:\Libraries\boost_1_62_0" \
+      -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install \
+      -DBOOST_ROOT="C:/Libraries/boost_1_63_0" \
       -DLAPACKE_FOUND=ON \
-      -DOPENTURNS_LIBRARIES="C:\Libraries\OpenBLAS-v0.2.15-Win32\lib\libopenblas.dll.a" \
+      -DOPENTURNS_LIBRARIES="C:/Libraries/OpenBLAS-v0.2.15-Win32/lib/libopenblas.dll.a" \
       -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
       -DUSE_HMAT=OFF \
-      -DSWIG_EXECUTABLE="C:\Libraries\swigwin-3.0.11\swig.exe" \
+      -DSWIG_EXECUTABLE="C:/Libraries/swigwin-3.0.12/swig.exe" \
       ..
   - cmake --build . --config Release --target install
   - set PYTHONPATH=%cd%\install\Lib\site-packages
