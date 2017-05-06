@@ -67,16 +67,13 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , outputSample_(outputSample)
   , normalize_(normalize)
   , covarianceModel_()
-  , glmAlgo_()
+  , glmAlgo_(inputSample, outputSample, covarianceModel, basis, normalize, true)
   , gamma_(0)
   , rho_(0)
   , result_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
-  // for the interpolation part
-  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis, normalize, true);
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
   else glmAlgo_.setMethod(0);
@@ -94,16 +91,13 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , outputSample_(outputSample)
   , normalize_(normalize)
   , covarianceModel_(covarianceModel)
-  , glmAlgo_()
+  , glmAlgo_(inputSample, outputSample, covarianceModel, basisCollection, normalize, true)
   , gamma_(0)
   , rho_(0)
   , result_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
-  // for the interpolation part
-  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basisCollection, normalize, true);
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
   else glmAlgo_.setMethod(0);
@@ -120,15 +114,13 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , outputSample_(outputSample)
   , normalize_(true)
   , covarianceModel_(covarianceModel)
+  , glmAlgo_(inputSample, inputTransformation, outputSample, covarianceModel, basis, true)
   , gamma_(0)
   , rho_(0)
   , result_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
-  // for the interpolation part
-  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basis, true);
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
   else glmAlgo_.setMethod(0);
@@ -145,16 +137,13 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , outputSample_(outputSample)
   , normalize_(true)
   , covarianceModel_(covarianceModel)
-  , glmAlgo_()
+  , glmAlgo_(inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, true)
   , gamma_(0)
   , rho_(0)
   , result_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
 {
-  // Here we must force the GLMAlgo to keep the Cholesky factor as it is mandatory
-  // for the interpolation part
-  glmAlgo_ = GeneralLinearModelAlgorithm(inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, true);
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
   if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
   else glmAlgo_.setMethod(0);
