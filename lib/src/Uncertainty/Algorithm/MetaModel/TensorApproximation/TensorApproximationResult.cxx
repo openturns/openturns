@@ -23,7 +23,6 @@
 #include "openturns/OSS.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/CanonicalTensorGradient.hxx"
 
@@ -72,6 +71,7 @@ TensorApproximationResult::TensorApproximationResult(
     Function tensorFunction;
     tensorFunction.setEvaluation(tensorCollection_[outputIndex].clone());
     tensorFunction.setGradient(CanonicalTensorGradient(tensorCollection_[outputIndex]));
+    tensorFunction.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), tensorFunction.getEvaluation()));
     marginals.add(tensorFunction);
   }
   composedMetaModel_ = Function(marginals);
