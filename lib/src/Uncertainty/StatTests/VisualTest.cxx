@@ -41,10 +41,20 @@ VisualTest::VisualTest()
 }
 
 /* Draw the empirical CDF of the Sample when its dimension is 1 */
+Graph VisualTest::DrawEmpiricalCDF(const Sample & sample)
+{
+  if (sample.getDimension() != 1)
+    throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
+  return UserDefined(sample).drawCDF();
+}
+
+/* Draw the empirical CDF of the Sample when its dimension is 1 */
 Graph VisualTest::DrawEmpiricalCDF(const Sample & sample,
                                    const Scalar xMin,
                                    const Scalar xMax)
 {
+  if (sample.getDimension() != 1)
+    throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
   return UserDefined(sample).drawCDF(xMin, xMax);
 }
 

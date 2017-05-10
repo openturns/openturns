@@ -302,6 +302,23 @@ Indices CovarianceModel::getActiveParameter() const
   return getImplementation()->getActiveParameter();
 }
 
+
+/* setter for the full parameter */
+void CovarianceModel::setFullParameter(const Point & parameter)
+{
+  getImplementation()->setFullParameter(parameter);
+}
+
+Point CovarianceModel::getFullParameter() const
+{
+  return getImplementation()->getFullParameter();
+}
+
+Description CovarianceModel::getFullParameterDescription() const
+{
+  return getImplementation()->getFullParameterDescription();
+}
+
 /* Is it a stationary covariance model ? */
 Bool CovarianceModel::isStationary() const
 {

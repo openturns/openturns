@@ -268,6 +268,7 @@ Draw an histogram:
 "Draw an empirical CDF.
 
 Available usages:
+    VisualTest.DrawEmpiricalCDF(*sample*)
     VisualTest.DrawEmpiricalCDF(*sample, Xmin, Xmax*)
 
 Parameters
@@ -296,12 +297,10 @@ Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(1).getSample(100)
->>> Xmin = sample.getMin()[0]
->>> Xmax = sample.getMax()[0]
 
 Draw an empirical CDF:
 
->>> empiricalCDF = ot.VisualTest.DrawEmpiricalCDF(sample, Xmin - 1.0, Xmax + 1.0)
+>>> empiricalCDF = ot.VisualTest.DrawEmpiricalCDF(sample)
 >>> View(empiricalCDF).show()"
 
 // ---------------------------------------------------------------------

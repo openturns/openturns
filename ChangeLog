@@ -24,6 +24,7 @@
 
 === Bug fixes ===
  * #890 (Cannot build triangular distribution)
+ * #891 (Viewer issue with Pairs drawables)
 
 
 == 1.9 release (2017-04-18) == #release-1.9

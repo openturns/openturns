@@ -153,6 +153,12 @@ public:
   void setActiveParameter(const Indices & active);
   Indices getActiveParameter() const;
 
+
+  /* setter for the full parameter */
+  virtual void setFullParameter(const Point & parameter);
+  virtual Point getFullParameter() const;
+  virtual Description getFullParameterDescription() const;
+
   /** Is it a stationary model ? */
   virtual Bool isStationary() const;
 

@@ -40,6 +40,8 @@ public:
 
 
   /** Draw the empirical CDF of the Sample when its dimension is 1 */
+  static Graph DrawEmpiricalCDF(const Sample & sample);
+
   static Graph DrawEmpiricalCDF(const Sample & sample,
                                 const Scalar xMin,
                                 const Scalar xMax);

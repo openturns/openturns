@@ -1327,6 +1327,7 @@ SampleImplementation SampleImplementation::sortUnique() const
     }
   }
   if (last + 1 < size_) sampleUnique.erase(last + 1, size_);
+  if (!p_description_.isNull()) sampleUnique.setDescription(getDescription());
   return sampleUnique;
 }
 
