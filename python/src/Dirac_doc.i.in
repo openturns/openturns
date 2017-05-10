@@ -1,6 +1,8 @@
 %feature("docstring") OT::Dirac
 "Dirac distribution.
 
+A possible usage is the modelling of deterministic parameters.
+
 Available constructors:
     Dirac(*x=0.*)
 
@@ -28,10 +30,6 @@ Its first moments are:
         \Expect{\vect{X}} & = & \vect{x} \\
         \Var{X_i} & = & 0, \quad i = 1, \ldots, n
     \end{eqnarray*}
-
-Notes
------
-This is intended to be used for modelling deterministic parameters.
 
 Examples
 --------
