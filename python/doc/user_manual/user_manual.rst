@@ -13,6 +13,7 @@ This is the user manual for the Python bindings to the OpenTURNS library.
     manual.
 
 .. toctree::
+    :maxdepth: 2
 
     base_objects
     combinatorial_generators
