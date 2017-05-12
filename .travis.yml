@@ -66,6 +66,7 @@ install:
 # keep an eye on swig
   - git clone https://github.com/swig/swig.git
   - pushd swig
+  - git checkout 67edda3b
   - ./autogen.sh
   - ./configure --prefix=$HOME/.local
   - make -j2
