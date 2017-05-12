@@ -873,7 +873,7 @@ install (FILES ${EXTRA_PYTHON_FILES}
 
 install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
-if (SPHINX_FOUND AND NUMPYDOC_FOUND AND NBSPHINX_FOUND AND IPYTHON_FOUND AND MUPARSER_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND)
+if (SPHINX_FOUND AND NUMPYDOC_FOUND AND MUPARSER_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND)
 
   # create a build site-package from which sphinx can import
   set (OPENTURNS_PYTHON_BUILD_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/site-packages)
@@ -919,7 +919,7 @@ if (SPHINX_FOUND AND NUMPYDOC_FOUND AND NBSPHINX_FOUND AND IPYTHON_FOUND AND MUP
     ${SPHINX_SOURCE_DIR}/*.txt
     ${SPHINX_SOURCE_DIR}/*.in
     ${SPHINX_SOURCE_DIR}/*.ipynb
- )
+  )
 
   # copy sphinx sources
   set (sphinx_clones)
@@ -936,6 +936,15 @@ if (SPHINX_FOUND AND NUMPYDOC_FOUND AND NBSPHINX_FOUND AND IPYTHON_FOUND AND MUP
       list (APPEND sphinx_clones ${sphinx_clone})
     endif ()
   endforeach ()
+
+  # write a fake *.ipynb.rst to avoid sphinx warnings
+  if (NOT NBSPHINX_FOUND)
+    file (GLOB_RECURSE ipynb_sources ${SPHINX_SOURCE_DIR}/*.ipynb)
+    foreach (file ${ipynb_sources})
+      file (RELATIVE_PATH rel_file ${SPHINX_SOURCE_DIR} ${file})
+      file (WRITE ${SPHINX_BINARY_DIR}/${rel_file}.rst ".. _${rel_file}:\n\ntitle\n-----\n\ntext\n")
+    endforeach ()
+  endif ()
 
   set (SPHINX_FLAGS "-W" CACHE STRING "sphinx flags")
   string (REPLACE " " ";" SPHINX_FLAGS ${SPHINX_FLAGS})
