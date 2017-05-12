@@ -3,7 +3,7 @@ dependencies:
     - sudo apt-get update
     - sudo apt-get install -y cmake gfortran bison flex libmuparser-dev liblapack-dev libxml2-dev libboost-math-dev libtbb-dev libnlopt-dev r-base-core
     - sudo apt-get install -y python-dev python-scipy python-matplotlib texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra pandoc
-    - pip install matplotlib numpydoc git+https://github.com/sphinx-doc/sphinx.git nbsphinx jupyter_client ipython --user
+    - pip install matplotlib sphinx numpydoc nbsphinx jupyter_client ipython==5.3 --user
     - sudo rm -r /opt/circleci/.pyenv
     # keep an eye on swig
     - git clone https://github.com/swig/swig.git
