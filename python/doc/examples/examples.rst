@@ -12,7 +12,7 @@ This is the examples section.
 
         probabilistic_modeling/probabilistic_modeling.rst
         statistical_estimation/statistical_estimation.rst
-        uncertainty_quantification/uncertainty_quantification.rst
+        uncertainty_propagation/uncertainty_propagation.rst
         meta_modeling/meta_modeling.rst
         functional_modeling/functional_modeling.rst
         numerical_methods/numerical_methods.rst
