@@ -30,7 +30,7 @@ try:
     # Create a KarhunenLoeveResult
     mesh = IntervalMesher([9]).build(Interval(-1.0, 1.0))
     cov1D = AbsoluteExponential([1.0])
-    algo = KarhunenLoeveP1Algorithm(mesh, cov1D, 0.0)
+    algo = KarhunenLoeveP1Algorithm(mesh, cov1D, 1.0e-2)
     algo.run()
     result = algo.getResult()
     # Create a PointToFieldFunction

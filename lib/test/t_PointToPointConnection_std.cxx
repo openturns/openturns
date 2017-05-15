@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
       // Create a KarhunenLoeveResult
       Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));
       AbsoluteExponential cov1D(Point(1, 1.0));
-      KarhunenLoeveP1Algorithm algo(mesh, cov1D, 0.0);
+      KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1.0e-2);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
       // Create a PointToFieldFunction
