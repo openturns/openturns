@@ -3,7 +3,9 @@
 
 Notes
 -----
-Perform the generation of optimal LHS designs."
+Perform the generation of optimal LHS designs.
+
+See a complementary bibiliographic reference: [McKay1979]_"
 
 %enddef
 %feature("docstring") OT::OptimalLHSExperiment
