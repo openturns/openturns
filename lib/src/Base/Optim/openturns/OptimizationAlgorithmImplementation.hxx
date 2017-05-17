@@ -117,12 +117,12 @@ public:
   void setVerbose(const Bool verbose);
 
   /** Progress callback */
-  typedef void (*ProgressCallback)(Scalar, void * data);
-  virtual void setProgressCallback(ProgressCallback callBack, void * data = 0);
+  typedef void (*ProgressCallback)(Scalar, void * state);
+  virtual void setProgressCallback(ProgressCallback callBack, void * state = 0);
 
   /** Stop callback */
-  typedef Bool (*StopCallback)(void * data);
-  virtual void setStopCallback(StopCallback callBack, void * data = 0);
+  typedef Bool (*StopCallback)(void * state);
+  virtual void setStopCallback(StopCallback callBack, void * state = 0);
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */

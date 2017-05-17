@@ -346,15 +346,15 @@ void Simulation::load(Advocate & adv)
 }
 
 
-void Simulation::setProgressCallback(ProgressCallback callBack, void * data)
+void Simulation::setProgressCallback(ProgressCallback callBack, void * state)
 {
-  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, data);
+  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, state);
 }
 
 
-void Simulation::setStopCallback(StopCallback callBack, void * data)
+void Simulation::setStopCallback(StopCallback callBack, void * state)
 {
-  stopCallback_ = std::pair<StopCallback, void *>(callBack, data);
+  stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
 

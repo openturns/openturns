@@ -314,15 +314,15 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
 }
 
 
-void OptimizationAlgorithmImplementation::setProgressCallback(ProgressCallback callBack, void * data)
+void OptimizationAlgorithmImplementation::setProgressCallback(ProgressCallback callBack, void * state)
 {
-  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, data);
+  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, state);
 }
 
 
-void OptimizationAlgorithmImplementation::setStopCallback(StopCallback callBack, void * data)
+void OptimizationAlgorithmImplementation::setStopCallback(StopCallback callBack, void * state)
 {
-  stopCallback_ = std::pair<StopCallback, void *>(callBack, data);
+  stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
 
