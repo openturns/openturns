@@ -10,6 +10,32 @@ ot.TESTPREAMBLE()
 try:
     fileName = 'myStudy.xml'
 
+    # Create a Study Object by name
+    myStudy = ot.Study(fileName)
+    point = ot.Point(2, 1.0)
+    myStudy.add("point", point)
+    myStudy.save()
+    myStudy2 = ot.Study(fileName)
+    myStudy2.load()
+    point2 = ot.Point()
+    myStudy2.fillObject("point", point2)
+    # cleanup
+    os.remove(fileName)
+
+    # Create a Study Object with compression
+    myStudy = ot.Study()
+    compressionLevel = 5
+    myStudy.setStorageManager(ot.XMLStorageManager(fileName, compressionLevel))
+    point = ot.Point(2, 1.0)
+    myStudy.add("point", point)
+    myStudy.save()
+    myStudy2 = ot.Study(fileName)
+    myStudy2.load()
+    point2 = ot.Point()
+    myStudy2.fillObject("point", point2)
+    # cleanup
+    os.remove(fileName)
+
     # Create a Study Object
     myStudy = ot.Study()
     myStudy.setStorageManager(ot.XMLStorageManager(fileName))

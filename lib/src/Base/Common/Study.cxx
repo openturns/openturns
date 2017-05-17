@@ -22,6 +22,9 @@
 #include "openturns/InterfaceObject.hxx"
 #include "openturns/Study.hxx"
 #include "openturns/StorageManager.hxx"
+#if defined OPENTURNS_HAVE_LIBXML2
+#include "openturns/XMLStorageManager.hxx"
+#endif
 #include "openturns/Exception.hxx"
 #include "openturns/Catalog.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -41,6 +44,25 @@ Study::Study()
     p_storageManager_(new StorageManager)
 {
   p_storageManager_->setStudy(this);
+}
+
+/*
+ * Parameter constructor
+ */
+Study::Study(const FileName & fileName)
+  : map_(),
+    labelMap_(),
+#if defined OPENTURNS_HAVE_LIBXML2
+    p_storageManager_(new XMLStorageManager(fileName))
+#else
+    p_storageManager_(new StorageManager)
+#endif /* OPENTURNS_HAVE_LIBXML2 */
+{
+#if defined OPENTURNS_HAVE_LIBXML2
+  p_storageManager_->setStudy(this);
+#else
+  throw NotYetImplementedException(HERE) << "Error: no XML support for Study";
+#endif /* OPENTURNS_HAVE_LIBXML2 */
 }
 
 /* String converter */

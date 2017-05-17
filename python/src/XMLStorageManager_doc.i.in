@@ -4,10 +4,16 @@
 Available constructors:
     XMLStorageManager(*filename*)
 
+    XMLStorageManager(*filename, compressionLevel*)
+
 Parameters
 ----------
 fileName : str
     Name of the file containing the study.
+compressionLevel : int
+    Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
+    The compression is done only if the XML lib has been compiled with zlib support.
+    The default value is given by 'XMLStorageManager-DefaultCompressionLevel' in :class:`~openturns.ResourceMap`.
 
 Notes
 -----
@@ -24,6 +30,8 @@ Examples
 >>> # Create a study:
 >>> myStudy = ot.Study()
 >>> myStudy.setStorageManager(ot.XMLStorageManager('myStudy.xml'))
+>>> myStudy2 = ot.Study()
+>>> myStudy2.setStorageManager(ot.XMLStorageManager('myStudy2.xml.gz', 5))
 >>> # Add an object in the study:
 >>> simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
 >>> myStudy.add('simulationResult', simulationResult)

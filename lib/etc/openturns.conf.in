@@ -26,7 +26,10 @@
   <Os-create-process                   value="0"            />
   <Os-RemoveFiles                      value="1"            />
   
-    <!-- OT::Collection parameters -->
+  <!-- OT::XMLStorageManager parameters -->
+  <XMLStorageManager-DefaultCompressionLevel       value="0" />
+
+  <!-- OT::Collection parameters -->
   <Collection-size-visible-in-str-from value="10"            />
     
   <!-- OT::SpecFunc parameters -->

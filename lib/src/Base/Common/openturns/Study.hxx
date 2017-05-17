@@ -67,6 +67,11 @@ public:
    */
   Study();
 
+  /**
+   * Parameter constructor
+   */
+  Study(const String & fileName);
+
   /** @copydoc Object::__repr__() const */
   virtual String __repr__() const;
 
