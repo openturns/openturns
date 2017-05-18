@@ -5,3 +5,4 @@ Numerical methods
 
     optimization_constraints.ipynb
     estimate_integral_iterated_quadrature.ipynb
+    control_termination.ipynb

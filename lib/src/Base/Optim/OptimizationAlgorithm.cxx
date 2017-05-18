@@ -191,15 +191,15 @@ void OptimizationAlgorithm::run()
   getImplementation()->run();
 }
 
-void OptimizationAlgorithm::setProgressCallback(ProgressCallback callBack, void * data)
+void OptimizationAlgorithm::setProgressCallback(ProgressCallback callBack, void * state)
 {
-  getImplementation()->setProgressCallback(callBack, data);
+  getImplementation()->setProgressCallback(callBack, state);
 }
 
 
-void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * data)
+void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 {
-  getImplementation()->setStopCallback(callBack, data);
+  getImplementation()->setStopCallback(callBack, state);
 }
 
 

@@ -98,12 +98,12 @@ public:
   void load(Advocate & adv);
 
   /** Progress callback */
-  typedef void (*ProgressCallback)(Scalar, void * data);
-  void setProgressCallback(ProgressCallback callBack, void * data = 0);
+  typedef void (*ProgressCallback)(Scalar, void * state);
+  void setProgressCallback(ProgressCallback callBack, void * state = 0);
 
   /** Stop callback */
-  typedef Bool (*StopCallback)(void * data);
-  void setStopCallback(StopCallback callBack, void * data = 0);
+  typedef Bool (*StopCallback)(void * state);
+  void setStopCallback(StopCallback callBack, void * state = 0);
 
 protected:
 
