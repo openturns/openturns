@@ -6,7 +6,7 @@ Notes
 -----
 This method is concerned with analyzing the influence the random vector
 :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
-:math:`Y^k` which is being studied for uncertainty.
+:math:`Y^k` which is being studied for uncertainty (see also [Sobol1993]_).
 
 Here we attempt to evaluate the part of variance of :math:`Y^k` due to the different components :math:`X^i`.
 
@@ -118,7 +118,7 @@ The formulas for the evaluation of the indices are given in each class documenta
   - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
   - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method
 
-For multivariate outputs, aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:
+For multivariate outputs (see [Gamboa2013]_), aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:
 
 
 .. math::

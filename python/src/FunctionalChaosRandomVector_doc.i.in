@@ -36,7 +36,7 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 
 Parameters
 ----------
-i : int or list of ints, :math:`0 \leq i < d - 1`
+i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated Sobol indices. :math:`d`
     is the dimension of the input variables.
 out_marginal : int
@@ -55,7 +55,7 @@ s : float
 
 Parameters
 ----------
-i : int or list of ints, :math:`0 \leq i < d - 1`
+i : int or sequence of int, :math:`0 \leq i < d - 1`
     Indice(s) of the variable(s) we want the associated total Sobol indices.
     :math:`d` is the dimension of the input variables.
 out_marginal : int
@@ -69,16 +69,16 @@ s : float
     
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FunctionalChaosRandomVector::getSobolTotalIndex
-"Get the aggregated Sobol indices.
+%feature("docstring") OT::FunctionalChaosRandomVector::getSobolGroupedIndex
+"Get the grouped Sobol indices.
 
 Parameters
 ----------
-i : int or list of ints, :math:`0 \leq i < d - 1`
-    Indice(s) of the variable(s) we want the associated aggregated Sobol indices.
+i : int or sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated grouped Sobol indices.
     :math:`d` is the dimension of the input variables.
 
 Returns
 -------
 s : float
-    The aggregated Sobol indice."
+    The grouped Sobol indice."
