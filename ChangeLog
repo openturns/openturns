@@ -35,6 +35,7 @@
  * Integrate otlhs module
  * New function API
  * Canonical format low-rank tensor approximation
+ * EGO global optimization algorithm
 
 ==== New classes ====
  * SpaceFillingPhiP, SpaceFillingMinDist, SpaceFillingC2
@@ -54,6 +55,7 @@
  * SparseMethod
  * CanonicalTensorEvaluation|Gradient, TensorApproximationAlgorithm|Result
  * GaussLegendre
+ * EfficientGlobalOptimization
 
 ==== API changes ====
  * Removed deprecated SLSQP, LBFGS and NelderMead classes
