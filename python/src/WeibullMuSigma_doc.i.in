@@ -20,8 +20,8 @@ The native parameters :math:`\alpha` and :math:`\beta` are searched such as:
 .. math::
 
     \alpha &= \frac{\mu - \gamma}{\Gamma(1+\frac{1}{\beta})} \\
-    \sigma^2 &= \alpha^2 \Gamma\left(1 + \frac{2}{\beta}\right) -
-                   \Gamma^2 \left(1 + \frac{1}{\beta}\right)
+    \sigma^2 &= \alpha^2 \left( \Gamma ( 1 + \frac{2}{\beta} ) -
+                   \Gamma^2 (1 + \frac{1}{\beta} ) \right)
 
 See also
 --------
