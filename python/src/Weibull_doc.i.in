@@ -32,8 +32,8 @@ Its first moments are:
     \begin{eqnarray*}
         \Expect{X} & = & \alpha \,\Gamma\left(1 + \frac{1}{\beta}\right)
                        + \gamma \\
-        \Var{X} & = & \alpha^2 \Gamma\left(1 + \frac{2}{\beta}\right) -
-                     \Gamma^2 \left(1 + \frac{1}{\beta}\right)
+        \Var{X} & = & \alpha^2 \left( \Gamma ( 1 + \frac{2}{\beta} ) -
+                     \Gamma^2 ( 1 + \frac{1}{\beta} ) \right)
     \end{eqnarray*}
 
 where :math:`\Gamma` denotes Euler's Gamma function
