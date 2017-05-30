@@ -302,6 +302,7 @@ ot_add_python_module(func func_module.i
 		      KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i.in
                       IndicatorFunction.i IndicatorFunction_doc.i.in
                       ValueFunction.i ValueFunction_doc.i.in
+                      VertexFunction.i VertexFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
                       QuadraticFunction.i QuadraticFunction_doc.i.in

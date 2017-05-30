@@ -1,4 +1,4 @@
-myTemporalFunc=class=VertexValueFunction evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2]
+myTemporalFunc=class=VertexValueFunction evaluation=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[t,x,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2]
 myTemporalFunc input description=[x]
 myTemporalFunc output description=[y0]
 myTemporalFunc input dimension=1

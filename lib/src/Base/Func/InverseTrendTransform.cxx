@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/InverseTrendTransform.hxx"
+#include "openturns/InverseTrendEvaluation.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EvaluationImplementation.hxx"
@@ -40,21 +41,21 @@ InverseTrendTransform::InverseTrendTransform()
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const Function & function)
-  : VertexValueFunction(function, function.getInputDimension())
+  : VertexValueFunction(InverseTrendEvaluation(function), function.getInputDimension())
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const EvaluationPointer & p_evaluation)
-  : VertexValueFunction(p_evaluation, p_evaluation->getInputDimension())
+  : VertexValueFunction(InverseTrendEvaluation(Function(p_evaluation)), p_evaluation->getInputDimension())
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & evaluation)
-  : VertexValueFunction(evaluation, evaluation.getInputDimension())
+  : VertexValueFunction(InverseTrendEvaluation(Function(evaluation)), evaluation.getInputDimension())
 {
   // Nothing to do
 }
@@ -75,8 +76,8 @@ Bool InverseTrendTransform::operator ==(const InverseTrendTransform & other) con
 String InverseTrendTransform::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << InverseTrendTransform::GetClassName()
-      << " evaluation=" << p_evaluation_->__repr__();
+  oss << "class=" << TrendTransform::GetClassName()
+      << " inherited from " << VertexValueFunction::__repr__();
   return oss;
 }
 
@@ -89,14 +90,11 @@ String InverseTrendTransform::__str__(const String & offset) const
 /* Operator () */
 Field InverseTrendTransform::operator() (const Field & inFld) const
 {
-  if (inFld.getSpatialDimension() != p_evaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with mesh dimension=" << p_evaluation_->getInputDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
-  if (inFld.getDimension() != p_evaluation_->getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with dimension=" << p_evaluation_->getOutputDimension() << ", got dimension=" << inFld.getDimension();
-  ++callsNumber_;
-  return Field(inFld.getMesh(), inFld.getValues() - (*p_evaluation_)(inFld.getMesh().getVertices()));
+  return TrendTransform(getTrendFunction());
 }
 
-/* Inverse accessor */
-TrendTransform InverseTrendTransform::getInverse() const
+/* Underlying trend function accessor */
+Function InverseTrendTransform::getTrendFunction() const
 {
   return TrendTransform(p_evaluation_);
 }

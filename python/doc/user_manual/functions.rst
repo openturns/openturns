@@ -46,9 +46,15 @@ Field and mixed functions
     :template: class.rst_t
 
     FieldFunction
+    FieldToPointFunction
+    PointToFieldFunction
     PythonFieldFunction
     ValueFunction
+    VertexFunction
     VertexValueFunction
+    OpenTURNSPythonFieldFunction
+    OpenTURNSPythonFieldToPointFunction
+    OpenTURNSPythonPointToFieldFunction
 
 Collection of functions
 =======================

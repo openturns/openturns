@@ -22,8 +22,6 @@
 #include "openturns/TrendEvaluation.hxx"
 #include "openturns/InverseTrendTransform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -48,7 +46,7 @@ TrendTransform::TrendTransform(const Function & function)
 
 /* Parameter constructor */
 TrendTransform::TrendTransform(const EvaluationPointer & p_evaluation)
-  : VertexValueFunction(TrendEvaluation(*p_evaluation), p_evaluation->getInputDimension())
+  : VertexValueFunction(TrendEvaluation(Function(p_evaluation)), p_evaluation->getInputDimension())
 {
   // Nothing to do
 }
@@ -69,7 +67,8 @@ TrendTransform * TrendTransform::clone() const
 /* Comparison operator */
 Bool TrendTransform::operator ==(const TrendTransform & other) const
 {
-  return (getEvaluation() == other.getEvaluation());
+  if (this == &other) return true;
+  return VertexValueFunction::operator==(other);
 }
 
 /* String converter */
@@ -77,27 +76,24 @@ String TrendTransform::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << TrendTransform::GetClassName()
-      << " evaluation=" << p_evaluation_->__repr__();
+      << " inherited from " << VertexValueFunction::__repr__();
   return oss;
 }
 
 /* String converter */
 String TrendTransform::__str__(const String & offset) const
 {
-  return OSS(false) << p_evaluation_->__str__(offset);
-}
-
-/* Operator () */
-Field TrendTransform::operator() (const Field & inFld) const
-{
-  if (inFld.getSpatialDimension() != p_evaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with mesh dimension=" << p_evaluation_->getInputDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
-  if (inFld.getDimension() != p_evaluation_->getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with dimension=" << p_evaluation_->getOutputDimension() << ", got dimension=" << inFld.getDimension();
-  ++callsNumber_;
-  return Field(inFld.getMesh(), inFld.getValues() + (*p_evaluation_)(inFld.getMesh().getVertices()));
+  return VertexValueFunction::__str__(offset);
 }
 
 /* Inverse accessor */
 InverseTrendTransform TrendTransform::getInverse() const
+{
+  return InverseTrendTransform(getTrendFunction());
+}
+
+/* Underlying trend function accessor */
+Function TrendTransform::getTrendFunction() const
 {
   return InverseTrendTransform(p_evaluation_);
 }

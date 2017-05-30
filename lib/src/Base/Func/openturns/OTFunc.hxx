@@ -103,6 +103,7 @@
 #include "openturns/QuadraticEvaluation.hxx"
 #include "openturns/ValueFunction.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/VertexFunction.hxx"
 #include "openturns/VertexValueFunction.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/UniVariatePolynomialImplementation.hxx"

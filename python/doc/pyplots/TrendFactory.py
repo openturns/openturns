@@ -32,8 +32,8 @@ myTrendFactory = ot.TrendFactory(myBasisSequenceFactory, myFittingAlgorithm)
 myTrendTransform = myTrendFactory.build(myYField, myBasis)
 
 
-graph = myTrendTransform.getEvaluation().draw(0.0, 10)
-graph.add(fTrend.draw(0.0, 10))
+graph = myTrendTransform.getTrendFunction().draw(0.0, 10.0)
+graph.add(fTrend.draw(0.0, 10.0))
 graph.add(ot.Cloud(myYField.getMesh().getVertices(), myYField.getValues()))
 graph.setColors(['red', 'blue', 'black'])
 graph.setLegends(['estimated trend', 'real trend', 'sample'])

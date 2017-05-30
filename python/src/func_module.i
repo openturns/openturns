@@ -81,6 +81,7 @@
 %include PointToPointConnection.i
 %include IndicatorFunction.i
 %include ValueFunction.i
+%include VertexFunction.i
 %include VertexValueFunction.i
 %include DualLinearCombinationEvaluation.i
 %include DualLinearCombinationGradient.i

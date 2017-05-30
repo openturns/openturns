@@ -43,8 +43,6 @@ class OT_API InverseTrendTransform
   CLASSNAME;
 public:
 
-  typedef EvaluationImplementation::Implementation EvaluationPointer;
-
   /** Default constructor */
   InverseTrendTransform();
 
@@ -69,11 +67,6 @@ public:
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
-
-  /** Operator () */
-  using VertexValueFunction::operator();
-  Field operator() (const Field & inTS) const;
-
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

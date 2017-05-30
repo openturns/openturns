@@ -18,57 +18,67 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_TRENDTRANSOFORM_HXX
-#define OPENTURNS_TRENDTRANSOFORM_HXX
+#ifndef OPENTURNS_VERTEXFUNCTION_HXX
+#define OPENTURNS_VERTEXFUNCTION_HXX
 
-#include "openturns/VertexValueFunction.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/FieldFunctionImplementation.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class TrendTransform
+ * @class VertexFunction
  *
  * The class that simulates a dynamical function based on a
  * numerical math function that acts only on the temporal part
  * of a time series.
  */
-
-class InverseTrendTransform;
-
-class OT_API TrendTransform
-  : public VertexValueFunction
+class OT_API VertexFunction
+  : public FieldFunctionImplementation
 {
   CLASSNAME;
 public:
 
+  typedef EvaluationImplementation::Implementation EvaluationPointer;
+
   /** Default constructor */
-  TrendTransform();
+  VertexFunction();
 
   /** Parameter constructor */
-  explicit TrendTransform(const Function & function);
+  explicit VertexFunction(const Function & function);
+
+#ifndef SWIG
+  /** Parameter constructor */
+  explicit VertexFunction(const EvaluationPointer & p_evaluation);
+#endif
 
   /** Parameter constructor */
-  TrendTransform(const EvaluationPointer & p_evaluation);
-
-  /** Parameter constructor */
-  TrendTransform(const EvaluationImplementation & evaluation);
+  explicit VertexFunction(const EvaluationImplementation & evaluation);
 
   /** Virtual constructor */
-  virtual TrendTransform * clone() const;
+  virtual VertexFunction * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const TrendTransform & other) const;
+  Bool operator ==(const VertexFunction & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  virtual String __repr__() const;
+  virtual String __str__(const String & offset = "") const;
 
-  /** Inverse accessor */
-  InverseTrendTransform getInverse() const;
+  /** Operator () */
+  using FieldFunctionImplementation::operator();
+  Field operator() (const Field & inFld) const;
 
-  /** Underlying trend function accessor */
-  Function getTrendFunction() const;
+  /** Get the i-th marginal function */
+  Implementation getMarginal(const UnsignedInteger i) const;
+
+  /** Get the function corresponding to indices components */
+  Implementation getMarginal(const Indices & indices) const;
+
+  /** Function accessor */
+  Function getFunction() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -76,9 +86,14 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-}; /* class TrendTransform */
+protected:
+
+  /** The underlying function */
+  Function function_;
+
+}; /* class VertexFunction */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_TRENDTRANSOFORM_HXX */
+#endif /* OPENTURNS_VERTEXFUNCTION_HXX */
