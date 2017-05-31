@@ -100,6 +100,11 @@ void XMLDoc::save( const FileName & fileName ) const
   xmlSaveFormatFileEnc(fileName.c_str(), doc_, "UTF-8", 1);
 }
 
+void XMLDoc::setCompressionLevel( const UnsignedInteger compressionLevel )
+{
+  xmlSetDocCompressMode(doc_, std::min(compressionLevel, 9UL));
+}
+
 String XMLDoc::__repr__() const
 {
   xmlSaveCtxt * xctx;

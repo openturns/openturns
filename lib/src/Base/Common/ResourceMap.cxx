@@ -300,6 +300,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Os-create-process", 0 );
   setAsUnsignedInteger( "Os-RemoveFiles", 1 );
 
+  // XMLStorageManager parameters
+  setAsUnsignedInteger( "XMLStorageManager-DefaultCompressionLevel", 0 );
+
   // Collection parameters
   setAsUnsignedInteger( "Collection-size-visible-in-str-from", 10 );
 

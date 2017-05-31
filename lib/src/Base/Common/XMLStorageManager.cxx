@@ -152,11 +152,13 @@ CLASSNAMEINIT(XMLStorageManager);
 const VersionList XMLStorageManager::SupportedVersions;
 
 /* Default constructor */
-XMLStorageManager::XMLStorageManager(const FileName & filename)
+XMLStorageManager::XMLStorageManager(const FileName & filename,
+				     const UnsignedInteger compressionLevel)
   : StorageManager(1),
     fileName_(filename),
     p_state_(new XMLStorageManagerState),
-    p_document_()
+    p_document_(),
+    compressionLevel_(std::min(compressionLevel, 9UL))
 {
   // Nothing to do
 }
@@ -214,6 +216,7 @@ void XMLStorageManager::initialize(const SaveAction caller)
   oss << getStudyVersion();
   p_document_.reset(new XMLDoc);
   assert(p_document_);
+  p_document_->setCompressionLevel(compressionLevel_);
   assert(p_state_);
   p_state_->root_ = XML::NewNode( XML_STMGR::root_tag::Get() );
   XML::SetAttribute(p_state_->root_, XML_STMGR::version_attribute::Get(), oss);
@@ -224,6 +227,7 @@ void XMLStorageManager::initialize(const SaveAction caller)
 void XMLStorageManager::initialize(const LoadAction caller)
 {
   p_document_.reset(new XMLDoc( fileName_ ));
+  p_document_->setCompressionLevel(compressionLevel_);
 }
 
 /* Do some administrative tasks after saving/reloading */

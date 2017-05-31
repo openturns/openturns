@@ -59,6 +59,37 @@ int main(int argc, char *argv[])
   try
   {
 
+    // Create a Study Object by giving its name
+    {
+      Study study(fileName);
+      Point point(2, 1.0);
+      study.add("point", point);
+      study.save();
+      Study study2(fileName);
+      study2.load();
+      Point point2;
+      study2.fillObject("point", point2);
+      
+      // cleanup
+      Os::Remove(fileName);
+    }
+
+    // Create a Study Object by giving its storage manager with a nonzero compression level
+    {
+      Study study;
+      study.setStorageManager(XMLStorageManager(fileName, 5));
+      Point point(2, 1.0);
+      study.add("point", point);
+      study.save();
+      Study study2(fileName);
+      study2.load();
+      Point point2;
+      study2.fillObject("point", point2);
+      
+      // cleanup
+      Os::Remove(fileName);
+    }
+
     // Create a Study Object
     Study study;
     study.setStorageManager(XMLStorageManager(fileName));

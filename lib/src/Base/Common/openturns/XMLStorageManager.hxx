@@ -26,6 +26,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/StorageManager.hxx"
+#include "openturns/ResourceMap.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -84,7 +85,8 @@ public:
    * Constructor for a XML StorageManager that reads/writes
    * to a XML file
    */
-  explicit XMLStorageManager(const FileName & filename);
+  explicit XMLStorageManager(const FileName & filename,
+			     const UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel"));
 
   /**
    * Virtual constructor
@@ -251,7 +253,9 @@ private:
   /** Methods to read DOM elements */
   XMLReadObject readDOMElement();
 
-
+  /** The compression level for the XML export */
+  UnsignedInteger compressionLevel_;
+  
 }; /* class XMLStorageManager */
 
 END_NAMESPACE_OPENTURNS

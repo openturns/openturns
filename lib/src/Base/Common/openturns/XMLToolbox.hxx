@@ -59,6 +59,7 @@ public:
   operator xmlDocPtr() const;
 
   void save( const FileName & fileName ) const;
+  void setCompressionLevel(const UnsignedInteger compressionLevel);
   String __repr__() const;
 
   Bool hasDTD() const;
