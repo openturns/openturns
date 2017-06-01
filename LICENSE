@@ -1,0 +1,10 @@
+The OpenTURNS library and all its derivatives are distributed under the LGPL license, see COPYING and COPYING.LESSER.
+
+This library depends on different third-party codes, some of which being distributed under the GPL license. These dependencies are either mandatory or optional, but in all cases they are used with the explicit permission of their respective authors. All the details are in their respective COPYING files, and here is the list of the impacted dependencies:
++ the optional hmat library
++ the mandatory poissoninv set of functions for the efficient computation of the
+  Poisson quantile function.
++ the mandatory KolmogorovSmirnovDist set of functions for the efficient computation
+  of the exact Kolmogorov-Smirnov distribution.
+
+If you use OpenTURNS as a dependency of your own project, you are not contaminated by the GPL license of these codes as long as you use only their OpenTURNS interfaces and not their native interfaces.

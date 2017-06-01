@@ -22,7 +22,7 @@ Up-to-date information can be found at http://www.openturns.org
 License
 =======
 OpenTURNS is distributed under the Lesser General Public License.
-Please see the COPYING* files for details of the license of each components.
+Please see the LICENSE and the COPYING* files for details of the license of each components.
 
 Release Notes
 =============
