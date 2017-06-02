@@ -86,9 +86,6 @@ from .stattests import *
 from .bayesian import *
 from .uncertainty import *
 
-from .coupling_tools import *
-
-
 def Show(graph):
     """
     Display a graph pop-up.
