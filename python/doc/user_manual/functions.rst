@@ -253,6 +253,8 @@ as Python functions.
 External code coupling
 ======================
 
+These methods are dedicated to coupling external codes by means of text files.
+
 .. autosummary::
     :toctree: _generated/
     :template: function.rst_t
@@ -262,6 +264,7 @@ External code coupling
     coupling_tools.get_value
     coupling_tools.get_line_col
     coupling_tools.get_regex
+    coupling_tools.get
 
 1-D functions
 =============

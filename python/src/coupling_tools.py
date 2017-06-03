@@ -56,20 +56,27 @@ def check_param(obj, obj_type):
 
 def replace(infile, outfile, tokens, values, formats=None, encoding=default_encoding):
     """
-    Replace tokens in a file.
+    Replace values in a file using delimiters.
 
     Parameters
     ----------
-    infile : str, template file that will be parsed
-    outfile : str, file that will received the template parsed.
-        If equal to "None" or to "infile", the result file will be moved to infile.
-    tokens : list, regexes that will be replaced
-    values : list, values (can be string, float, ...) that will replace
+    infile : str
+        Name of template file that will be parsed.
+    outfile : str
+        Name of file that will received the template parsed.
+        If equal to *None* or to *infile*, the file will be replaced in-place.
+    tokens : list of str
+        Regexes that will be replaced.
+        When dealing with overlapping tokens, longest tokens should go first.
+    values : list
+        Values (can be string, float, ...) that will replace
         the tokens. The list must have the same size as tokens.
-    formats : list, optional, a list of formats for printing the values in the
-        parsed files at tokens locations
+    formats : list of str, optional
+        A list of formats for printing the values in the parsed files at
+        tokens locations
         see https://docs.python.org/2/library/string.html#formatspec
-    encoding : str, optional, file encoding
+    encoding : str, optional
+        File encoding
         see http://docs.python.org/2/library/codecs.html#codec-base-classes
 
     Raises
@@ -81,35 +88,17 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
     Examples
     --------
-    template.in = 'E=@E_VAR F=-PF-')
-
-    >>> # replace(infile="template.in",
-    >>> #    outfile="prgm_data.in",
-    >>> #    tokens=["@E_VAR", ".PF."],
-    >>> #    values=[1.4, "5"])
-    >>> # prgm_data.in = 'E=1.4 F=5'
-
-    be careful with overlapping tokens !!
-    template.in = 'E=@E EE=@EE')
-
-    >>> # replace(infile="template.in",
-    >>> #    outfile="prgm_data.in",
-    >>> #    tokens=["@E", "@EE"],
-    >>> #    values=[1, 2])
-
-    It raises exception!! -> @EE token not found!
-    (this is due to the first pass with token "@E" that modify
-    prgm_data.in like this : 'E=1 EE=1E')
-
-    deals with overlapping tokens : put longest tokens first
-    template.in = 'E=@E EE=@EE')
-
-    >>> # replace(infile="template.in",
-    >>> #    outfile="prgm_data.in",
-    >>> #    tokens=["@EE", "@E"],
-    >>> #    values=[2, 1])
-    >>> # prgm_data.in = 'E=1 EE=2')
-    """
+    >>> import openturns.coupling_tools as otct
+    >>> # write a template file
+    >>> with open('prgm.dat.in', 'w') as f:
+    ...     count = f.write('E=@E_VAR F=-PF-')
+    >>> # replace tokens from template
+    >>> otct.replace('prgm.dat.in', 'prgm.dat',
+    ...     tokens=["@E_VAR", '-PF-'], values=[1.4, '5'])
+    >>> # display file
+    >>> with open('prgm.dat', 'r') as f:
+    ...     print(f.read())
+    E=1.4 F=5"""
     if len(tokens) != len(values):
         raise AssertionError("Error: tokens size is != values size!")
     check_param(tokens, list)
@@ -165,32 +154,38 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
             check_exit_code=True, get_stdout=False, get_stderr=False,
             timeout=None):
     """
-    Launch an external processus in a clean way.
+    Launch an external process.
 
     Parameters
     ----------
-    cmd : str, representing the command.
-        e.g.: "ls -l /home"
-    workdir : str, current directory of the executed command
-    is_shell : bool, if set to True, the command is started in a shell (bash).
-        default: False.
-    shell_exe : str, path to the shell. e.g. /bin/zsh.
-        default: None -> /bin/bash.
-    hide_win : str, hide cmd.exe popup on windows
-    check_exit_code : bool, if set to True: raise a RuntimeError exception if return
-        code of process != 0
-    get_stdout : bool, whether standard output of the command is returned
-    get_stderr : bool, whether standard error of the command is returned
-    timeout : int, child process timeout (Python >= 3.3 only)
+    cmd : str
+        Command line to execute, e.g.: "echo 42"
+    workdir : str
+        Current directory of the executed command.
+    is_shell : bool, default=False
+        If set to True, the command is started in a shell (bash).
+    shell_exe : str, default=False
+        path to the shell. e.g. /bin/zsh.
+    hide_win : str, default=True
+        Hide cmd.exe popup on windows platform.
+    check_exit_code : bool, default=True
+        If set to True: raise a RuntimeError exception if return code
+        of process != 0
+    get_stdout : bool, default=False
+        Whether the standard output of the command is returned
+    get_stderr : bool, default=False
+        Whether the standard error of the command is returned
+    timeout : int
+        Child process timeout (Python >= 3.3 only)
 
     Returns
     -------
-    ret :  int
-        the exit code of the command
+    ret : int
+        The exit code of the command
     stdout_data : str
-        the stdout data if get_stdout parameter is set
+        The stdout data if get_stdout parameter is set
     stderr_data : str
-        the stderr data if get_stderr parameter is set
+        The stderr data if get_stderr parameter is set
 
     Raises
     ------
@@ -199,9 +194,12 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
 
     Examples
     --------
-    >>> # ret, stdout = execute('/bin/ls /bin/kill', get_stdout=True).
-    >>> ## => ret = 0, stdout = '/bin/kill'
-    """
+    >>> import openturns.coupling_tools as otct
+    >>> ret, stdout = otct.execute('echo 42', get_stdout=True, is_shell=True)
+    >>> ret
+    0
+    >>> int(stdout)
+    42"""
     # split cmd if not in a shell before passing it to os.execvp()
     process_args = cmd if is_shell else shlex.split(cmd)
 
@@ -247,20 +245,24 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
 
 def get_regex(filename, patterns, encoding=default_encoding):
     """
-    Get results from a file using regex.
+    Get values from a file using regex.
 
     Parameters
     ----------
-    filename : str, the file to parse
-    patterns : list, patterns that will permit to get the values
+    filename : str
+        The name of the file to parse
+    patterns : list of str
+        Regex patterns that will permit to get the values
         see https://docs.python.org/2/library/re.html for available patterns
         The value to be searched must be surrounded by parenthesis.
-    encoding : str, file encoding
+    encoding : str
+        File encoding
         see http://docs.python.org/2/library/codecs.html#codec-base-classes
 
     Returns
     -------
-    results : list, values corresponding to each pattern
+    results : list of float
+        Each value corresponds to each pattern.
         If nothing has been found, the corresponding value is set to None.
 
     Raises
@@ -272,10 +274,13 @@ def get_regex(filename, patterns, encoding=default_encoding):
 
     Examples
     --------
-    >>> ## simple (results.out = '@E=-9.5E8')
-    >>> #Y = get_regex(filename='results.out',patterns=['@E=(\R)'])
-    >>> ## Y = [-9.5E8]
-    """
+    >>> import openturns.coupling_tools as otct
+    >>> # write an output file
+    >>> with open('results.out', 'w') as f:
+    ...     count = f.write('@E=-9.5E3')
+    >>> # parse file with regex
+    >>> otct.get_regex('results.out', patterns=['@E=(\R)'])
+    [-9500.0]"""
     if not isinstance(patterns, list) or len(patterns) == 0:
         raise AssertionError("error: patterns parameter badly set!")
 
@@ -314,6 +319,11 @@ def get_regex(filename, patterns, encoding=default_encoding):
 def get_real_from_line(line):
     """
     Try to get a real value from the beginning of a text line.
+
+    Parameters
+    ----------
+    line : str
+        Line to parse
 
     Returns
     -------
@@ -379,26 +389,41 @@ def read_line(handle, seek=0, encoding=default_encoding):
 
 def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_encoding):
     """
-    Get a token at specific coordinates.
+    Get a value at specific line/columns coordinates.
 
     Parameters
     ----------
-    skip_line : int, number of lines skipped
+    filename : str
+        The name of the file that will be parsed
+    skip_line : int, default=0
+        Number of lines skipped
         If skip_line < 0: count lines backward from the end of the file.
         Be careful: a last empty line is taken into account too!
         Default: 0: no line skipped
-    skip_col : int, number of columns skipped from the beginning or end of the line.
+    skip_col : int, default=0
+        Number of columns skipped from the beginning or end of the line.
         If skip_col < 0: count col backward from the end of the line.
         Default: 0: no column skipped
-    seek : int, if > 0, consider the file starts at pos seek.
+    seek : int, default=0
+        if > 0, consider the file starts at pos seek.
         if < 0, consider the file ends at pos -seek (and NOT (end-(-seek))!).
         Default: 0: consider the whole file.
-    encoding : str, file encoding
+    encoding : str
+        File encoding
         see http://docs.python.org/2/library/codecs.html#codec-base-classes
 
     Returns
     -------
-    result : float, value to retrieve
+    result : float
+        Value to retrieve
+
+    Examples
+    --------
+    >>> import openturns.coupling_tools as otct
+    >>> with open('results.out', 'w') as f:
+    ...     count = f.write('1.1 1.2 1.3 1.4')
+    >>> otct.get_line_col(filename='results.out', skip_col=2)
+    1.3
     """
     check_param(filename, str)
     check_param(skip_line, int)
@@ -475,41 +500,48 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
 
 def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encoding=default_encoding):
     """
-    Get one result from a file using token and/or various offsets.
+    Get a value from a file using a delimiter and/or offsets.
 
     This function is optimized to be rather fast and takes low memory on human
     readable file.
 
     Parameters
     ----------
-    filename : str, the file that will be parsed
-    token : str, a regex that will be searched.
+    filename : str
+        The name of the file that will be parsed
+    token : str
+        A regex that will be searched.
         The value right after the token is returned.
         Default: None (no token searched)
-    skip_token : int, the number of tokens that will be skipped before getting
+    skip_token : int
+        The number of tokens that will be skipped before getting
         the value. If set to != 0, the corresponding token parameter must
         not be equal to None.
         If skip_tokens < 0: count tokens backward from the end of the file.
         Default: 0: no token skipped
-    skip_line : int, number of lines skipped from the token found.
+    skip_line : int
+        Number of lines skipped from the token found.
         If corresponding token equal None, skip from the beginning of the file.
         If corresponding token != None, skip from the token.
         If skip_line < 0: count lines backward from the token or from the end
         of the file. Be careful: a last empty line is taken into account too.
         Default: 0: no line skipped
-    skip_col : int, number of columns skipped from the token found.
+    skip_col : int
+        Number of columns skipped from the token found.
         If corresponding token = None, skip words from the beginning
         of the line.
         If corresponding token != None, skip words from the token.
         If skip_col < 0: count col backward from the end of the line or from
         the token.
         Default: 0: no column skipped
-    encoding : str, file encoding
+    encoding : str
+        File encoding
         see http://docs.python.org/2/library/codecs.html#codec-base-classes
 
     Returns
     -------
     value : float
+        Value found
 
     Raises
     ------
@@ -520,42 +552,27 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
 
     Examples
     --------
-    simple token (results.out = ' @Y1=2.6, Y2=  -6.6E56')
+    using a single token
 
-    >>> # Y = coupling_tools.get_value(filename='results.out',
-    >>> #                        token='@Y1=',
-    >>> #                        )
-    >>> # Y = 2.6
+    >>> import openturns.coupling_tools as otct
+    >>> with open('results.out', 'w') as f:
+    ...     count = f.write('Y1=2.0, Y2=-6.6E56')
+    >>> otct.get_value('results.out', token='Y1=')
+    2.0
 
-    using token ans skip_tokens (results.out =
-    '@Y1=5.9 @Y1=2.6 # temperature 2')
+    using token and skip_tokens
 
-    >>> # Y = coupling_tools.get_value(filename='results.out',
-    >>> #                        token='@Y1=',
-    >>> #                        skip_token=1,
-    >>> #                        )
-    >>> # Y = 2.6
+    >>> with open('results.out', 'w') as f:
+    ...     count = f.write('Y1=2.6 Y1=6.0 # temperature 2')
+    >>> otct.get_value('results.out', token='Y1=', skip_token=1)
+    6.0
 
-    using column & line (results.out = ' 2.6 3.5 6.8  9.0
-    3.6 7.5 6.9  9.8  ')
-    >>> # Y = coupling_tools.get_value(filename='results.out',
-    >>> #                        skip_line=1,
-    >>> #                        skip_col=-2,
-    >>> #                        )
-    >>> # Y = 6.9
+    using column & line
 
-    mix it (results.out = ' 2.6  Y1=3.5 Y1=6.8 9.0
-    temperatures:
-    88.8 99.9 # ')
-
-    >>> # Y = coupling_tools.get_value(filename='results.out',
-    >>> #                        token='Y1=',
-    >>> #                        skip_token=1,
-    >>> #                        skip_line=0,
-    >>> #                        skip_col=1,
-    >>> #                        )
-    >>> # Y = 9.0
-    """
+    >>> with open('results.out', 'w') as f:
+    ...     count = f.write('1.1 1.2 1.3 1.4')
+    >>> otct.get_value(filename='results.out', skip_col=2)
+    1.3"""
     if debug:
         sys.stderr.write("get_value(token=" + str(token) +
                          ', skip_token=' + str(skip_token) +
@@ -651,28 +668,34 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
 
 def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None, encoding=default_encoding):
     """
-    Get results from a file using token and/or various offsets.
+    Get several values from a file using delimiters and/or offsets.
 
-    Parameters
-    ----------
-    filename : str, the file that will be parsed
-
+    This is equivalent to get_value
     Each following parameters must be a list. The first element of each list
     will be used to get the first value, the 2nd ...
     If the parameter is set to None, the list is set to the default value of
     get_value(), i.e skip_lines=None => [0, 0, ...].
 
-    tokens:
-    skip_tokens:
-    skip_lines:
-    skip_cols:
-    see get_value() function
-
-    encoding: file encoding, see http://docs.python.org/2/library/codecs.html#codec-base-classes
+    Parameters
+    ----------
+    filename : str
+        The name of the file that will be parsed
+    tokens : list of str
+        see get_value
+    skip_tokens : list of int
+        see get_value
+    skip_lines : list of int
+        see get_value()
+    skip_cols : list of int
+        see get_value()
+    encoding : str
+        File encoding, see
+        http://docs.python.org/2/library/codecs.html#codec-base-classes
 
     Returns
     -------
-    result : list, of real values.
+    result : list of float
+        Values parsed
 
     Raises
     ------
@@ -683,25 +706,14 @@ def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None
 
     Examples
     --------
-    simple token (results.out = ' @Y1=2.6, Y2=  -6.6E56')
+    using tokens
 
-    >>> # Y = coupling_tools.get(filename='results.out',
-    >>> #                  tokens=['@Y1=', 'Y2='],
-    >>> #                  )
-    >>> # Y = [2.6, -6.6E56]
+    >>> import openturns.coupling_tools as otct
+    >>> with open('results.out', 'w') as f:
+    ...     count = f.write('Y1=2.0, Y2=-6.6E2')
+    >>> otct.get(filename='results.out', tokens=['Y1=', 'Y2='])
+    [2.0, -660.0]"""
 
-    mix (results.out = ' 2.6  Y1=3.5 Y1=6.8 9.0
-    temperatures:
-    88.8 99.9 # ')
-
-    >>> # Y = coupling_tools.get(filename='results.out',
-    >>> #                  tokens=['Y1=', None],
-    >>> #                  skip_tokens=[1, 0],
-    >>> #                  skip_lines=[0, 2],
-    >>> #                  skip_cols=[1, 1],
-    >>> #                  )
-    >>> # Y = [9.0, 99.9]
-    """
     # test parameters and determine the number of value to return
     nb_values = None
     if tokens is not None:
