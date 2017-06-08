@@ -2977,8 +2977,8 @@ Bool RandomMixture::isContinuous() const
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
-    if (distributionCollection_[i].isContinuous()) return true;
-  return false;
+    if (!distributionCollection_[i].isContinuous()) return false;
+  return true;
 }
 
 /* Check if the distribution is discrete */
