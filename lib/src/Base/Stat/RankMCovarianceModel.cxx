@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ConstantBasisFactory.hxx"
+#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -97,13 +98,19 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
 
   MatrixImplementation result(dimension_, dimension_);
   const UnsignedInteger size = functions_.getSize();
+  int dim = static_cast<int>(dimension_);
+  Scalar plusOne = 1.0;
+  int increment = 1;
   // If the variance are uncorrelated
   if (covariance_.getDimension() == 0)
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const MatrixImplementation phiS(dimension_, 1, functions_[i](s));
-      const MatrixImplementation phiT(1, dimension_, functions_[i](t) * variance_[i]);
-      result += phiS.genProd(phiT);
+      const Point phiS(functions_[i](s));
+      const Point phiT(functions_[i](t) * variance_[i]);
+      dger_(&dim, &dim, &plusOne,
+            const_cast<double*>(&phiS[0]), &increment,
+            const_cast<double*>(&phiT[0]), &increment,
+            &result[0], &dim);
     }
   else
   {
