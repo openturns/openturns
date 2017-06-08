@@ -90,23 +90,6 @@ Scalar CovarianceModel::computeStandardRepresentative(const Point & s,
   return getImplementation()->computeStandardRepresentative(s, t);
 }
 
-Scalar CovarianceModel::computeStandardRepresentative(const Scalar & s,
-    const Scalar & t) const
-{
-  return getImplementation()->computeStandardRepresentative(s, t);
-}
-
-Scalar CovarianceModel::computeStandardRepresentative(const Point & tau) const
-{
-  return getImplementation()->computeStandardRepresentative(tau);
-}
-
-
-Scalar CovarianceModel::computeStandardRepresentative(const Scalar & tau) const
-{
-  return getImplementation()->computeStandardRepresentative(tau);
-}
-
 Scalar CovarianceModel::computeAsScalar (const Point & s,
     const Point & t) const
 {
@@ -121,11 +104,6 @@ CovarianceMatrix CovarianceModel::operator() (const Scalar tau) const
 CovarianceMatrix CovarianceModel::operator() (const Point & tau) const
 {
   return getImplementation()->operator() (tau);
-}
-
-Scalar CovarianceModel::computeAsScalar (const Point & tau) const
-{
-  return getImplementation()->computeAsScalar(tau);
 }
 
 /* Gradient */

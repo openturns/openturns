@@ -168,34 +168,11 @@ Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point 
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Point & s, const Point & t) const";
 }
 
-Scalar CovarianceModelImplementation::computeStandardRepresentative(const Scalar & s,
-    const Scalar & t) const
-{
-  return computeStandardRepresentative(Point(1, s), Point(1, t));
-}
-
-Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point & tau) const
-{
-  return computeStandardRepresentative(Point(dimension_), tau);
-}
-
-Scalar CovarianceModelImplementation::computeStandardRepresentative(const Scalar & tau) const
-{
-  return computeStandardRepresentative(Point(1, tau));
-}
-
-
 Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
     const Point & t) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
   return spatialCovariance_(0, 0) * computeStandardRepresentative(s, t);
-}
-
-Scalar CovarianceModelImplementation::computeAsScalar(const Scalar s,
-    const Scalar t) const
-{
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar s, const Scalar t) const";
 }
 
 /* Computation of the covariance function */
@@ -207,17 +184,6 @@ CovarianceMatrix CovarianceModelImplementation::operator() (const Scalar tau) co
 CovarianceMatrix CovarianceModelImplementation::operator() (const Point & tau) const
 {
   return operator() (Point(tau.getDimension()), tau);
-}
-
-Scalar CovarianceModelImplementation::computeAsScalar (const Point & tau) const
-{
-  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
-  return (*this)(tau)(0, 0);
-}
-
-Scalar CovarianceModelImplementation::computeAsScalar(const Scalar tau) const
-{
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar tau) const";
 }
 
 /* Gradient */
