@@ -189,7 +189,7 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
     const Point & t) const
 {
   if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
-  return (*this)(s, t)(0, 0);
+  return spatialCovariance_(0, 0) * computeStandardRepresentative(s, t);
 }
 
 Scalar CovarianceModelImplementation::computeAsScalar(const Scalar s,

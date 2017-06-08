@@ -87,12 +87,14 @@ CovarianceMatrix StationaryCovarianceModel::operator() (const Point & tau) const
 Scalar StationaryCovarianceModel::computeAsScalar(const Point & s,
     const Point & t) const
 {
-  return computeAsScalar(t - s);
+  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
+  return spatialCovariance_(0, 0) * computeStandardRepresentative(t - s);
 }
 
 Scalar StationaryCovarianceModel::computeAsScalar(const Point & tau) const
 {
-  return (*this)(tau)(0, 0);
+  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
+  return spatialCovariance_(0, 0) * computeStandardRepresentative(tau);
 }
 
 Scalar StationaryCovarianceModel::computeStandardRepresentative(const Point & s,
