@@ -104,12 +104,6 @@ CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
   return cov;
 }
 
-/* Is it a stationary model ? */
-Bool SphericalModel::isStationary() const
-{
-  return true;
-}
-
 void SphericalModel::setFullParameter(const Point & parameter)
 {
   CovarianceModelImplementation::setFullParameter(parameter);

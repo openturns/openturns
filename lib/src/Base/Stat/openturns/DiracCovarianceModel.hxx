@@ -83,9 +83,6 @@ public:
   void setAmplitude(const Point & amplitude);
   void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
-  /** Is it a stationary covariance model ? */
-  Bool isStationary() const;
-
   /** String converter */
   String __repr__() const;
 

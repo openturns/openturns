@@ -67,9 +67,6 @@ public:
   using StationaryCovarianceModel::discretize;
   CovarianceMatrix discretize(const RegularGrid & regularGrid) const;
 
-  /** Is it a stationary model ? */
-  Bool isStationary() const;
-
   /** String converter */
   String __repr__() const;
 

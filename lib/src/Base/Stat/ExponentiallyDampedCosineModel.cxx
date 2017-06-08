@@ -108,12 +108,6 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
   return cov;
 }
 
-/* Is it a stationary model ? */
-Bool ExponentiallyDampedCosineModel::isStationary() const
-{
-  return true;
-}
-
 /* String converter */
 String ExponentiallyDampedCosineModel::__repr__() const
 {
