@@ -4,6 +4,8 @@ Probabilistic modelling
 
 .. currentmodule:: openturns
 
+.. _parametric_distributions:
+
 Parametric distributions
 ========================
 
@@ -148,6 +150,7 @@ Combining and transforming distributions
     :template: classWithPlot.rst_t
     Mixture
 
+.. _copulas:
 
 Copulas
 =======
