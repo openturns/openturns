@@ -112,12 +112,12 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i
   return covarianceCollection_[index];
 }
 
-CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
+CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices) const
 {
-  const UnsignedInteger verticesNumber = mesh.getVerticesNumber();
-  CovarianceMatrix covariance(verticesNumber * dimension_);
+  const UnsignedInteger size = vertices.getSize();
+  CovarianceMatrix covariance(size * dimension_);
   // It is better to check vertices as the simplices don't play a role in the discretization
-  if (p_mesh_->getVertices() == mesh.getVertices())
+  if (vertices == p_mesh_->getVertices())
   {
     // Here we know that the given mesh is exactly the one defining the covariance model
     for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
@@ -130,18 +130,18 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Mesh & mesh) const
     }
     return covariance;
   }
-  // Here we have to project the given mesh on the underlying mesh
+  // Here we have to project the given vertices on the underlying mesh
   // We try to call the getNearestVertexIndex() method a minimum number
   // of time as it is the most costly part of the discretization
-  Indices nearestIndex(verticesNumber);
-  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+  Indices nearestIndex(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    nearestIndex[i] = p_mesh_->getNearestVertexIndex(mesh.getVertex(i));
-    LOGINFO(OSS() << "The vertex " << i << " over " << verticesNumber - 1 << " in the given mesh corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << mesh.getVertex(i).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
+    nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
+    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
   }
   // Now, we use a set of loops similar to the default algorithm
   // Fill-in the matrix by blocks
-  for (UnsignedInteger rowIndex = 0; rowIndex < verticesNumber; ++rowIndex)
+  for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
   {
     const UnsignedInteger rowBase = rowIndex * dimension_;
     // Only the lower part has to be filled-in
@@ -195,6 +195,14 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
   }
   for (UnsignedInteger i = 0; i < size; ++i) result[i][0] = operator()(nearestIndex[p], nearestIndex[i])(0, 0);
   return result;
+}
+
+TriangularMatrix UserDefinedCovarianceModel::discretizeAndFactorize(const Sample & vertices) const
+{
+  // We suppose that covariance matrix is symmetric positive definite
+  CovarianceMatrix covariance = discretize(vertices);
+  TriangularMatrix choleskyFactor = covariance.computeCholesky();
+  return choleskyFactor;
 }
 
 /* Mesh accessor */

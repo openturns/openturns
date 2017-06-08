@@ -36,7 +36,7 @@ static const Factory<ExponentialModel> Factory_ExponentialModel;
 ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension)
   : StationaryCovarianceModel(spatialDimension)
 {
-  // Nothing to do
+  definesComputeStandardRepresentative_ = true;
 }
 
 /** Standard constructor with scale and amplitude parameters parameters */
@@ -44,7 +44,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
                                    const Point & amplitude)
   : StationaryCovarianceModel(scale, amplitude)
 {
-  // Nothing to do
+  definesComputeStandardRepresentative_ = true;
 }
 
 /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
@@ -53,7 +53,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
                                    const CorrelationMatrix & spatialCorrelation)
   : StationaryCovarianceModel(scale, amplitude, spatialCorrelation)
 {
-  // Nothing to do
+  definesComputeStandardRepresentative_ = true;
 }
 
 /** Standard constructor with scale and spatial covariance parameters parameters */
@@ -61,7 +61,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
                                    const CovarianceMatrix & spatialCovariance)
   : StationaryCovarianceModel(scale, spatialCovariance)
 {
-  // Nothing to do
+  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */

@@ -215,6 +215,12 @@ protected:
   /** Covariance matrix of the spatial dependence structure */
   mutable CovarianceMatrix spatialCovariance_;
 
+  /** Cholesky factor of covariance matrix of the spatial dependence structure */
+  mutable TriangularMatrix spatialCovarianceCholeskyFactor_;
+
+  /** Flag to tell if computeStandardRepresentative() method is defined */
+  Bool definesComputeStandardRepresentative_;
+
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;
 

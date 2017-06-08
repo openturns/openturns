@@ -48,6 +48,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , dimension_(1)
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
+  , spatialCovarianceCholeskyFactor_(0)
+  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(spatialDimension_ + dimension_)
@@ -66,6 +68,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , dimension_(amplitude.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
+  , spatialCovarianceCholeskyFactor_(0)
+  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
@@ -87,6 +91,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , dimension_(amplitude.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
+  , spatialCovarianceCholeskyFactor_(0)
+  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
@@ -109,6 +115,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , dimension_(spatialCovariance.getDimension())
   , spatialCorrelation_(0)
   , spatialCovariance_(0)
+  , spatialCovarianceCholeskyFactor_(0)
+  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
@@ -282,17 +290,83 @@ struct CovarianceModelDiscretizePolicy
 
 }; /* end struct CovarianceModelDiscretizePolicy */
 
+struct CovarianceModelDiscretizeKroneckerPolicy
+{
+  const Sample & input_;
+  CovarianceMatrix & output_;
+  const CovarianceModelImplementation & model_;
+
+  CovarianceModelDiscretizeKroneckerPolicy(const Sample & input,
+                                           CovarianceMatrix & output,
+                                           const CovarianceModelImplementation & model)
+    : input_(input)
+    , output_(output)
+    , model_(model)
+  {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
+      const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
+      output_(iLocal, jLocal) = model_.computeStandardRepresentative(input_[iLocal], input_[jLocal]);
+    }
+  }
+  static void genericKroneckerProduct(const SquareMatrix & leftMatrix, const SquareMatrix & rightMatrix, SquareMatrix & productMatrix)
+  {
+    const MatrixImplementation & left(*leftMatrix.getImplementation());
+    const MatrixImplementation & right(*rightMatrix.getImplementation());
+    MatrixImplementation & product(*productMatrix.getImplementation());
+    const UnsignedInteger dimension = right.getDimension();
+    for(UnsignedInteger i = 0; i < left.getDimension(); ++i) {
+      for(UnsignedInteger j = 0; j <= i; ++j) {
+        const Scalar left_ij = left(i,j);
+        for(UnsignedInteger k = 0; k < dimension; ++k) {
+          for(UnsignedInteger l = 0; l < dimension; ++l) {
+            product(i*dimension+k, j*dimension+l) = left_ij * right(k,l);
+          }
+        }
+      }
+    }
+  }
+  CovarianceMatrix kroneckerProduct(const CovarianceMatrix & spatialCovariance) const
+  {
+    CovarianceMatrix covarianceMatrix(input_.getSize() * spatialCovariance.getDimension());
+    genericKroneckerProduct(output_, spatialCovariance, covarianceMatrix);
+    return covarianceMatrix;
+  }
+  TriangularMatrix kroneckerProductCholeskyFactor(const TriangularMatrix & spatialCovarianceCholeskyFactor) const
+  {
+    TriangularMatrix rhoCholeskyFactor(output_.computeCholesky());
+    TriangularMatrix outputMatrix(rhoCholeskyFactor.getDimension() * spatialCovarianceCholeskyFactor.getDimension(), true);
+    genericKroneckerProduct(rhoCholeskyFactor, spatialCovarianceCholeskyFactor, outputMatrix);
+    return outputMatrix;
+  }
+
+}; /* end struct CovarianceModelDiscretizeKroneckerPolicy */
 
 CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertices) const
 {
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
   const UnsignedInteger size = vertices.getSize();
-  const UnsignedInteger fullSize = size * dimension_;
-  CovarianceMatrix covarianceMatrix(fullSize);
-  const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
-  // The loop is over the lower block-triangular part
-  TBB::ParallelFor( 0, size * (size + 1) / 2, policy );
-  return covarianceMatrix;
+  if (definesComputeStandardRepresentative_) {
+    CovarianceMatrix rhoMatrix(size);
+    const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
+    // The loop is over the lower block-triangular part
+    TBB::ParallelFor( 0, size * (size + 1) / 2, policy );
+    rhoMatrix.checkSymmetry();
+    spatialCovariance_.checkSymmetry();
+    // Compute the Kronecker product of rhoMatrix by spatialCovariance_
+    return policy.kroneckerProduct(spatialCovariance_);;
+  } else {
+    const UnsignedInteger fullSize = size * dimension_;
+    CovarianceMatrix covarianceMatrix(fullSize);
+    const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
+    // The loop is over the lower block-triangular part
+    TBB::ParallelFor( 0, size * (size + 1) / 2, policy );
+    return covarianceMatrix;
+  }
 }
 
 CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) const
@@ -314,11 +388,22 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Mes
 TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sample & vertices) const
 {
   // We suppose that covariance matrix is symmetric positive definite
-  // We do not catch InternalException
-  // Incremeant nugget factor to make matrix positive definite
-  CovarianceMatrix covariance = discretize(vertices);
-  TriangularMatrix choleskyFactor = covariance.computeCholesky();
-  return choleskyFactor;
+  if (definesComputeStandardRepresentative_) {
+    const UnsignedInteger size = vertices.getSize();
+    CovarianceMatrix rhoMatrix(size);
+    const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
+    // The loop is over the lower block-triangular part
+    TBB::ParallelFor( 0, size * (size + 1) / 2, policy );
+    // Compute the Cholesky factor of spatialCovariance_
+    if (spatialCovarianceCholeskyFactor_.getDimension() == 0)
+      spatialCovarianceCholeskyFactor_ = spatialCovariance_.computeCholesky();
+    // Compute the Kronecker product of rhoCholeskyFactor by spatialCovarianceCholeskyFactor_
+    return policy.kroneckerProductCholeskyFactor(spatialCovarianceCholeskyFactor_);
+  } else {
+    CovarianceMatrix covariance = discretize(vertices);
+    TriangularMatrix choleskyFactor = covariance.computeCholesky();
+    return choleskyFactor;
+  }
 }
 
 
@@ -521,6 +606,7 @@ void CovarianceModelImplementation::updateSpatialCovariance()
         spatialCovariance_(i, j) = spatialCorrelation_(i , j) * amplitude_[i] * amplitude_[j];
     }
   }
+  spatialCovarianceCholeskyFactor_.getImplementation().reset(new MatrixImplementation);
 }
 
 /* Nugget factor accessor */
@@ -792,6 +878,7 @@ void CovarianceModelImplementation::save(Advocate & adv) const
   adv.saveAttribute("amplitude_", amplitude_);
   adv.saveAttribute("dimension_", dimension_);
   adv.saveAttribute("spatialCorrelation_", spatialCorrelation_);
+  adv.saveAttribute("definesComputeStandardRepresentative_", definesComputeStandardRepresentative_);
   adv.saveAttribute("isDiagonal_", isDiagonal_);
   adv.saveAttribute("nuggetFactor_", nuggetFactor_);
   adv.saveAttribute("activeParameter_", activeParameter_);
@@ -806,6 +893,7 @@ void CovarianceModelImplementation::load(Advocate & adv)
   adv.loadAttribute("amplitude_", amplitude_);
   adv.loadAttribute("dimension_", dimension_);
   adv.loadAttribute("spatialCorrelation_", spatialCorrelation_);
+  adv.loadAttribute("definesComputeStandardRepresentative_", definesComputeStandardRepresentative_);
   adv.loadAttribute("isDiagonal_", isDiagonal_);
   adv.loadAttribute("nuggetFactor_", nuggetFactor_);
   adv.loadAttribute("activeParameter_", activeParameter_);

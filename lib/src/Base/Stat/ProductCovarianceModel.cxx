@@ -38,6 +38,7 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger spatialDime
   : CovarianceModelImplementation(spatialDimension)
   , collection_(spatialDimension, AbsoluteExponential(1))
 {
+  definesComputeStandardRepresentative_ = true;
   // Update the default values for the amplitude
   setAmplitude(Point(spatialDimension, collection_[0].getAmplitude()[0]));
 
@@ -49,6 +50,7 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger spatialDime
 ProductCovarianceModel::ProductCovarianceModel(const CovarianceModelCollection & collection)
   : CovarianceModelImplementation()
 {
+  definesComputeStandardRepresentative_ = true;
   setCollection(collection);
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
