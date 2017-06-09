@@ -35,7 +35,7 @@ static const Factory<UserDefinedStationaryCovarianceModel> Factory_UserDefinedSt
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
-  , p_mesh_(Mesh().clone())
+  , mesh_()
 {
   spatialDimension_ = 1;
   dimension_ = 0;
@@ -43,16 +43,16 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
 
 // Classical constructor
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
-UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const Mesh & mesh,
+UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
     const CovarianceMatrixCollection & covarianceFunction)
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
+  , mesh_(mesh)
 {
   const UnsignedInteger size = mesh.getVerticesNumber();
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
                                          << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();
-  p_mesh_ = mesh.clone();
   spatialDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
@@ -79,22 +79,26 @@ CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & 
   if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values with nonnegative first component
-  if (p_mesh_->getVerticesNumber() == 1) return covarianceCollection_[0];
+  if (mesh_.getN() == 1) return covarianceCollection_[0];
 
-  if (tau[0] < 0.0) return covarianceCollection_[p_mesh_->getNearestVertexIndex(tau * (-1.0))];
-  return covarianceCollection_[p_mesh_->getNearestVertexIndex(tau)];
+  if (tau[0] < 0.0) return covarianceCollection_[mesh_.getNearestVertexIndex(tau * (-1.0))];
+  return covarianceCollection_[mesh_.getNearestVertexIndex(tau)];
 }
 
-/* Time grid/mesh accessor */
-Mesh UserDefinedStationaryCovarianceModel::getMesh() const
+CovarianceMatrix UserDefinedStationaryCovarianceModel::discretize(const Mesh & mesh) const
 {
-  return *p_mesh_;
+  return discretize(RegularGrid(mesh));
+}
+
+CovarianceMatrix UserDefinedStationaryCovarianceModel::discretize(const Sample & vertices) const
+{
+  return discretize(Mesh(vertices));
 }
 
 /* Mesh accessor */
 RegularGrid UserDefinedStationaryCovarianceModel::getTimeGrid() const
 {
-  return RegularGrid(*p_mesh_);
+  return mesh_;
 }
 
 /* String converter */
@@ -102,7 +106,7 @@ String UserDefinedStationaryCovarianceModel::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << UserDefinedStationaryCovarianceModel::GetClassName()
-      << " mesh=" << p_mesh_->__repr__()
+      << " mesh=" << mesh_.__repr__()
       << " covarianceCollection=" << covarianceCollection_;
   return oss;
 }
@@ -117,18 +121,16 @@ String UserDefinedStationaryCovarianceModel::__str__(const String & offset) cons
 void UserDefinedStationaryCovarianceModel::save(Advocate & adv) const
 {
   StationaryCovarianceModel::save(adv);
-  adv.saveAttribute( "mesh_", *p_mesh_);
   adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
+  adv.saveAttribute( "mesh_", mesh_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void UserDefinedStationaryCovarianceModel::load(Advocate & adv)
 {
   StationaryCovarianceModel::load(adv);
-  TypedInterfaceObject<Mesh> mesh;
-  adv.loadAttribute( "mesh_", mesh);
-  p_mesh_ = mesh.getImplementation();
   adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
+  adv.loadAttribute( "mesh_", mesh_);
 }
 
 END_NAMESPACE_OPENTURNS

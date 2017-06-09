@@ -3,8 +3,8 @@
 
 Parameters
 ----------
-mesh : :class:`~openturns.Mesh`
-    A mesh that contains `N` vertices.
+mesh : :class:`~openturns.RegularGrid`
+    Time grid of size :math:`N` associated with the process.
 sample : :class:`~openturns.CovarianceMatrixCollection`
     A collection of *N* covariance matrices.
 
@@ -61,21 +61,11 @@ Compute the covariance function at the vertex tau:
 "
 
 // ---------------------------------------------------------------------
-%feature("docstring") OT::UserDefinedStationaryCovarianceModel::getMesh
-"Accessor to the mesh.
-
-Returns
--------
-mesh : :class:`~openturns.Mesh`
-    The mesh associated to the collection of covariance matrices.
-"
-
-// ---------------------------------------------------------------------
 %feature("docstring") OT::UserDefinedStationaryCovarianceModel::getTimeGrid
 "Accessor to the time grid.
 
 Returns
 -------
 mesh : :class:`~openturns.RegularGrid`
-    The time grid associated to the collection of covariance matrices when the mesh can be interpreted as a reglar time grid.
+    The time grid associated to the collection of covariance matrices.
 "

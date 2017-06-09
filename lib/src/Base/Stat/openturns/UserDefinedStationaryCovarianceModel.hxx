@@ -47,7 +47,7 @@ public:
   UserDefinedStationaryCovarianceModel();
 
   /** Standard onstructor */
-  UserDefinedStationaryCovarianceModel(const Mesh & mesh,
+  UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
                                        const CovarianceMatrixCollection & covarianceCollection);
 
   /** Virtual copy constructor */
@@ -58,8 +58,12 @@ public:
   CovarianceMatrix operator() (const Point & tau) const;
 
   /** Time grid/mesh accessor */
-  Mesh getMesh() const;
   RegularGrid getTimeGrid() const;
+
+  /** Discretize the covariance function on a given TimeGrid */
+  using StationaryCovarianceModel::discretize;
+  CovarianceMatrix discretize(const Mesh & mesh) const;
+  CovarianceMatrix discretize(const Sample & vertices) const;
 
   /** String converter */
   String __repr__() const;
@@ -79,7 +83,7 @@ private:
   CovarianceMatrixPersistentCollection covarianceCollection_;
 
   /** Mesh of evaluation */
-  Pointer<Mesh> p_mesh_;
+  RegularGrid mesh_;
 
 } ; /* class UserDefinedStationaryCovarianceModel */
 
