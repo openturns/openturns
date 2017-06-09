@@ -117,14 +117,15 @@ CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeG
   CovarianceMatrix covarianceMatrix(fullSize);
 
   // Fill-in the matrix by blocks
-  for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
+  for (UnsignedInteger diagonalOffset = 0; diagonalOffset < size; ++diagonalOffset)
   {
+    const CovarianceMatrix localCovarianceMatrix(operator()( diagonalOffset * timeStep) );
     // Only the lower part has to be filled-in
-    const UnsignedInteger rowBase = rowIndex * dimension_;
-    for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
+    for (UnsignedInteger rowIndex = diagonalOffset; rowIndex < size; ++rowIndex)
     {
+      const UnsignedInteger rowBase = rowIndex * dimension_;
+      const UnsignedInteger columnIndex = rowIndex - diagonalOffset;
       const UnsignedInteger columnBase = columnIndex * dimension_;
-      const CovarianceMatrix localCovarianceMatrix(operator()( rowIndex * timeStep,  columnIndex * timeStep) );
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
       // not copied on a symmetric position
