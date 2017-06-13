@@ -23,6 +23,8 @@ log characteristic function=(-0.345207,1)
 quantile      =class=Point name=Unnamed dimension=1 values=[4.73509]
 quantile (ref)=class=Point name=Unnamed dimension=1 values=[4.73509]
 cdf(quantile)=0.95
+quantile comp.=class=Point name=Unnamed dimension=1 values=[-0.735089]
+cdfComp(quantileComp)=0.95
 mean      =class=Point name=Unnamed dimension=1 values=[2]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[2]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[1.63299]
@@ -63,6 +65,8 @@ log characteristic function=(-1.125,-0.5)
 quantile      =class=Point name=Unnamed dimension=1 values=[3.93456]
 quantile (ref)=class=Point name=Unnamed dimension=1 values=[3.93456]
 cdf(quantile)=0.95
+quantile comp.=class=Point name=Unnamed dimension=1 values=[-5.93456]
+cdfComp(quantileComp)=0.95
 mean      =class=Point name=Unnamed dimension=1 values=[-1]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[-1]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[3]
@@ -103,6 +107,8 @@ log characteristic function=(-0.334715,1.39094)
 quantile      =class=Point name=Unnamed dimension=1 values=[6.29579]
 quantile (ref)=class=Point name=Unnamed dimension=1 values=[6.29579]
 cdf(quantile)=0.95
+quantile comp.=class=Point name=Unnamed dimension=1 values=[0.817691]
+cdfComp(quantileComp)=0.95
 mean      =class=Point name=Unnamed dimension=1 values=[3]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[3]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[1.73205]
@@ -335,3 +341,7 @@ pdf      =0.0123168
 pdf      =0.00770527
 pdf      =0.00160947
 pdf      =0
+case 1, q=0.384146
+case 1, q comp=0.000393214
+case 2, q=-0.000393214
+case 2, q comp=-0.384146
