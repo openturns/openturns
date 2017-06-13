@@ -165,7 +165,7 @@ void EfficientGlobalOptimization::run()
     }
   }
   UnsignedInteger iterationNumber = 0;
-  Bool convergence = false;
+  Bool exitLoop = false;
 
   // select the best feasible point
   Point optimizer;
@@ -227,7 +227,7 @@ void EfficientGlobalOptimization::run()
   OptimizationResult result;
   result.setProblem(getProblem());
 
-  while ((!convergence) && (iterationNumber < getMaximumIterationNumber()))
+  while ((!exitLoop) && (iterationNumber < getMaximumIterationNumber()))
   {
     // use the provided kriging result at first iteration
     KrigingResult metaModelResult(krigingResult_);
@@ -335,7 +335,7 @@ void EfficientGlobalOptimization::run()
     result.store(newPoint, newValue, absoluteError, relativeError, residualError, constraintError);
 
     // general convergence criteria
-    convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+    exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // minimum distance stopping criterion
     if (!hasNoise)
@@ -358,14 +358,14 @@ void EfficientGlobalOptimization::run()
       {
         const Bool minDistStop = scale[j] < minimumDistance[j] / correlationLengthFactor_;
         if (minDistStop) LOGINFO(OSS() << "Stopped algorithm over the minimum distance criterion");
-        convergence = convergence || minDistStop;
+        exitLoop = exitLoop || minDistStop;
       }
     }
 
     // improvement stopping criterion
     const Bool improvementStop = (improvementValue[0] < improvementFactor_ * std::abs(optimalValue));
     if (improvementStop) LOGINFO(OSS() << "Stopped algorithm over the improvement criterion");
-    convergence = convergence || improvementStop;
+    exitLoop = exitLoop || improvementStop;
 
     // add new point to design
     inputSample.add(newPoint);
@@ -379,6 +379,21 @@ void EfficientGlobalOptimization::run()
     }
 
     ++ iterationNumber;
+
+    // callbacks
+    if (progressCallback_.first)
+    {
+      progressCallback_.first((100.0 * iterationNumber) / getMaximumIterationNumber(), progressCallback_.second);
+    }
+    if (stopCallback_.first)
+    {
+      Bool stop = stopCallback_.first(stopCallback_.second);
+      if (stop)
+      {
+        exitLoop = true;
+        LOGWARN(OSS() << "EGO was stopped by user");
+      }
+    }
   }
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
