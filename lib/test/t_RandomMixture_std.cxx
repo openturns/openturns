@@ -112,6 +112,9 @@ int main(int argc, char *argv[])
       fullprint << "quantile      =" << quantile << std::endl;
       fullprint << "quantile (ref)=" << distributionReference.computeQuantile(0.95) << std::endl;
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+      Point quantileComp = distribution.computeQuantile( 0.95, true );
+      fullprint << "quantile comp.=" << quantileComp << std::endl;
+      fullprint << "cdfComp(quantileComp)=" << distribution.computeComplementaryCDF(quantileComp) << std::endl;
       Point mean = distribution.getMean();
       fullprint << "mean      =" << mean << std::endl;
       fullprint << "mean (ref)=" << distributionReference.getMean() << std::endl;
@@ -338,6 +341,17 @@ int main(int argc, char *argv[])
     // After what it was impossible to draw the PDF or the CDF due to a lack of support computation
     Graph graphPDF(mixture2.drawPDF());
     Graph graphCDF(mixture2.drawCDF());
+    // Test computeQuantile for the specific case of an analytical 1D mixture
+    RandomMixture case1(Collection<Distribution>(1, ChiSquare()), Point(1, 0.1));
+    Scalar q = case1.computeQuantile(0.95)[0];
+    fullprint << "case 1, q=" << q << std::endl;
+    q = case1.computeQuantile(0.95, true)[0];
+    fullprint << "case 1, q comp=" << q << std::endl;
+    RandomMixture case2(Collection<Distribution>(1, ChiSquare()), Point(1, -0.1));
+    q = case2.computeQuantile(0.95)[0];
+    fullprint << "case 2, q=" << q << std::endl;
+    q = case2.computeQuantile(0.95, true)[0];
+    fullprint << "case 2, q comp=" << q << std::endl;
   }
   catch (TestFailed & ex)
   {

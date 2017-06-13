@@ -84,6 +84,9 @@ try:
         print("quantile      =", quantile)
         print("quantile (ref)=", distributionReference.computeQuantile(0.95))
         print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+        quantileComp = distribution.computeQuantile(0.95, True)
+        print("quantile comp.=", quantileComp)
+        print("cdfComp(quantileComp)=%.6f" % distribution.computeComplementaryCDF(quantileComp))
         # Get 95% survival function
         inverseSurvival = Point(
             distribution.computeInverseSurvivalFunction(0.95))
@@ -299,6 +302,18 @@ try:
     mixture = RandomMixture([Dirac()])
     graph = mixture.drawPDF()
     graph = mixture.drawCDF()
+    
+    # Test computeQuantile for the specific case of an analytical 1D mixture
+    case1 = 0.1 * ChiSquare()
+    q = case1.computeQuantile(0.95)[0]
+    print("case 1, q=%.6f" % q)
+    q = case1.computeQuantile(0.95, True)[0]
+    print("case 1, q comp=%.6f" % q)
+    case2 = -0.1 * ChiSquare()
+    q = case2.computeQuantile(0.95)[0]
+    print("case 2, q=%.6f" % q)
+    q = case2.computeQuantile(0.95, True)[0]
+    print("case 2, q comp=%.6f" % q)
 except:
     import sys
     print("t_RandomMixture_std.py", sys.exc_info()[0], sys.exc_info()[1])
