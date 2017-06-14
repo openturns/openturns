@@ -617,9 +617,9 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
       {
         const Scalar lambda = gammaMap.begin()->first;
         const Scalar k = gammaMap.begin()->second;
-        if (k == 1.0) distributionCollection_.add(Exponential(lambda));
-        else distributionCollection_.add(Gamma(k, lambda));
-        weights.add(Point(1, 1.0));
+	if (k == 1.0) distributionCollection_.add(Exponential(std::abs(lambda)));
+	else distributionCollection_.add(Gamma(k, std::abs(lambda)));
+        weights.add(Point(1, lambda > 0.0 ? 1.0 : -1.0));
         gammaMap.erase(gammaMap.begin());
       } // while Gamma atoms to insert
       // Remember the index of the first non-continuous atom in order to
@@ -2289,7 +2289,13 @@ Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
   if (isAnalytical_)
   {
     const Scalar alpha = weights_(0, 0);
-    return distributionCollection_[0].computeQuantile((alpha > 0.0) ? (prob) : (1.0 - prob))[0] * alpha + constant_[0];
+    // tail && alpha > 0: 1-p
+    // tail && alpha <= 0: p
+    // !tail && alpha > 0: p
+    // !tail && alpha <= 0: 1-p
+    // ->1-p iff tail != (alpha <= 0) (xor)
+    const Scalar q = distributionCollection_[0].computeQuantile(prob, tail != (alpha <= 0.0))[0];
+    return q * alpha + constant_[0];
   }
   // General case
   return DistributionImplementation::computeScalarQuantile(prob, tail);
