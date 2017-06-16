@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of LHS class
+ *  @brief The test file of MonteCarlo class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
     input[1] = "F";
     input[2] = "L";
     input[3] = "I";
-    SymbolicFunction myFunction(input, Description(1, "-F*L^3/(3*E*I)"));
-
+    Function myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
+    myFunction.enableHistory();
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
     Point mean(dim, 0.0);
@@ -62,18 +62,23 @@ int main(int argc, char *argv[])
     Event myEvent(output, Less(), -3.0);
 
     /* We create a Monte Carlo algorithm */
-    RandomizedLHS myAlgo(myEvent);
-    myAlgo.setMaximumOuterSampling(250);
-    myAlgo.setBlockSize(4);
-    myAlgo.setMaximumCoefficientOfVariation(0.1);
+    MonteCarloExperiment experiment;
+    ProbabilitySimulation myAlgo(myEvent, experiment);
+    myAlgo.setMaximumOuterSampling(500);
+    myAlgo.setBlockSize(10);
+    myAlgo.setMaximumCoefficientOfVariation(0.05);
 
-    fullprint << "RandomizedLHS=" << myAlgo << std::endl;
+    fullprint << "MonteCarlo=" << myAlgo << std::endl;
 
     /* Perform the simulation */
     myAlgo.run();
 
-    /* Stream out the result */
-    fullprint << "RandomizedLHS result=" << myAlgo.getResult() << std::endl;
+    SimulationResult result(myAlgo.getResult());
+    fullprint << "MonteCarlo result=" << result << std::endl;
+
+    /* Compute sensitivity informations */
+    fullprint << "mean point in event domain=" << result.getMeanPointInEventDomain() << std::endl;
+    fullprint << "importance factors=" << result.getImportanceFactors() << std::endl;
 
   }
   catch (TestFailed & ex)

@@ -12,16 +12,12 @@ Simulations methods
     :template: class.rst_t
 
     Simulation
+    ProbabilitySimulation
     DirectionalSampling
-    ImportanceSampling
     LHS
-    MonteCarlo
     PostAnalyticalSimulation
     PostAnalyticalControlledImportanceSampling
     PostAnalyticalImportanceSampling
-    QuasiMonteCarlo
-    RandomizedLHS
-    RandomizedQuasiMonteCarlo
     SubsetSampling
     AdaptiveDirectionalSampling
 
@@ -86,5 +82,4 @@ Simulation result
     :template: class.rst_t
 
     SimulationResult
-    QuasiMonteCarloResult
     SubsetSamplingResult

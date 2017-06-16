@@ -41,12 +41,10 @@
 %include SimulationResultImplementation.i
 %include SimulationResult.i
 %include Simulation.i
+%include ProbabilitySimulation.i
 %include PostAnalyticalSimulation.i
 %include Wilks.i
-%include MonteCarlo.i
 %include LHS.i
-%include RandomizedLHS.i
-%include ImportanceSampling.i
 %include PostAnalyticalControlledImportanceSampling.i
 %include PostAnalyticalImportanceSampling.i
 %include RootStrategyImplementation.i
@@ -59,9 +57,6 @@
 %include MediumSafe.i
 %include RiskyAndFast.i
 %include SafeAndSlow.i
-%include QuasiMonteCarlo.i
-%include RandomizedQuasiMonteCarlo.i
-%include QuasiMonteCarloResult.i
 %include SimulationSensitivityAnalysis.i
 %include SubsetSamplingResult.i
 %include SubsetSampling.i

@@ -7,6 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * ProbabilitySimulation
 
 ==== API changes ====
  * Removed deprecated LAR class
@@ -19,6 +20,7 @@
  * Removed [gs]etOptimizationSolver methods
  * Removed CovarianceModel::compute{AsScalar,StandardRepresentative} overloads
  * Deprecated PosteriorRandomVector
+ * Deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
 
 === Python module ===
 

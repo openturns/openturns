@@ -100,6 +100,17 @@ Scalar EventRandomVector::getThreshold() const
   return threshold_;
 }
 
+
+Domain EventRandomVector::getDomain() const
+{
+  Interval result(threshold_, threshold_);
+  if (operator_(1.0, 2.0))
+    result.setFiniteLowerBound(Interval::BoolCollection(1, false));
+  else
+    result.setFiniteUpperBound(Interval::BoolCollection(1, false));
+  return result;
+}
+
 /* Realization accessor */
 Point EventRandomVector::getRealization() const
 {

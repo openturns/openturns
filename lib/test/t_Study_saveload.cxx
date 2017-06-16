@@ -854,23 +854,12 @@ int main(int argc, char *argv[])
     study.add("mixtureClassifier", mixtureClassifier);
 
     // Create a MonteCarlo
-    MonteCarlo monteCarlo(event);
+    MonteCarloExperiment experiment;
+    ProbabilitySimulation monteCarlo(event, experiment);
     monteCarlo.setMaximumOuterSampling(250);
     monteCarlo.setBlockSize(4);
     monteCarlo.setMaximumCoefficientOfVariation(0.1);
-    study.add("monteCarlo", monteCarlo);
-
-    // Create a QuasiMonteCarlo
-    QuasiMonteCarlo quasiMonteCarlo(event);
-    study.add("quasiMonteCarlo", quasiMonteCarlo);
-
-    // Create a RandomizedLHS
-    RandomizedLHS randomizedLHS(event);
-    study.add("randomizedLHS", randomizedLHS);
-
-    // Create a RandomizedLHS
-    RandomizedQuasiMonteCarlo randomizedQuasiMonteCarlo(event);
-    study.add("randomizedQuasiMonteCarlo", randomizedQuasiMonteCarlo);
+    study.add("probabilitySimulation", monteCarlo);
 
     // Create a RandomWalk
     RandomWalk randomWalk;
@@ -1069,11 +1058,8 @@ int main(int argc, char *argv[])
     compare<Weibull>(weibull, study2 );
 
     // Simulation
-    compare<MonteCarlo>(monteCarlo, study2 );
+    compare<ProbabilitySimulation>(monteCarlo, study2 );
     compare<LHS>(lhs, study2, "lhs");
-    compare<QuasiMonteCarlo>(quasiMonteCarlo, study2 );
-    compare<RandomizedLHS>(randomizedLHS, study2 );
-    compare<RandomizedQuasiMonteCarlo>(randomizedQuasiMonteCarlo, study2 );
     compare<SimulationResult >( simulationResult, study2 );
 
     // Analytical

@@ -76,6 +76,11 @@ void FixedExperiment::setDistribution(const Distribution & distribution)
   // The distribution of a FixedExperiment cannot be changed
 }
 
+Bool FixedExperiment::hasUniformWeights() const
+{
+  return weights_ == Point(sample_.getSize(), 1.0 / sample_.getSize());
+}
+
 /* Sample generation */
 Sample FixedExperiment::generateWithWeights(Point & weights) const
 {

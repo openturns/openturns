@@ -66,6 +66,9 @@ public:
   virtual void setSize(const UnsignedInteger size);
   virtual UnsignedInteger getSize() const;
 
+  /** Uniform weights ? */
+  virtual Bool hasUniformWeights() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */

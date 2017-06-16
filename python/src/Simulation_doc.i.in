@@ -32,25 +32,18 @@ which enables the definition of the event
 describes the indicator function equal to 1 if
 :math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
 
-A Simulation object can be created only through its derived classes:
+The Simulation object provides a generic simulation service for non-composite
+events, and its derived classes provide dedicated algorithms:
+
+- :class:`~openturns.ProbabilitySimulation`
 
 - :class:`~openturns.DirectionalSampling`
 
-- :class:`~openturns.ImportanceSampling`,
-
 - :class:`~openturns.LHS`,
-
-- :class:`~openturns.MonteCarlo`,
-
-- :class:`~openturns.QuasiMonteCarlo`,
 
 - :class:`~openturns.PostAnalyticalControlledImportanceSampling`,
 
 - :class:`~openturns.PostAnalyticalImportanceSampling`,
-
-- :class:`~openturns.RandomizedLHS`,
-
-- :class:`~openturns.RandomizedQuasiMonteCarlo`.
 
 See also
 --------

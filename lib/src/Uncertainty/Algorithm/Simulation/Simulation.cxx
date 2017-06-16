@@ -263,7 +263,7 @@ void Simulation::run()
 /* Compute the block sample and the points that realized the event */
 Sample Simulation::computeBlockSample()
 {
-  throw NotYetImplementedException(HERE) << "In Simulation::computeBlockSample()";
+  return event_.getSample(blockSize_);
 }
 
 /* Convergence strategy accessor */
@@ -328,7 +328,6 @@ void Simulation::save(Advocate & adv) const
   adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
   adv.saveAttribute("verbose_", verbose_);
-
 }
 
 /* Method load() reloads the object from the StorageManager */

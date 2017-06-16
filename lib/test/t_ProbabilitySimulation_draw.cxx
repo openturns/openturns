@@ -62,7 +62,8 @@ int main(int argc, char *argv[])
     Event myEvent(output, Less(), -3.0);
 
     /* We create a Monte Carlo algorithm */
-    MonteCarlo myAlgo(myEvent);
+    MonteCarloExperiment experiment;
+    ProbabilitySimulation myAlgo(myEvent, experiment);
     myAlgo.setMaximumOuterSampling(500);
     myAlgo.setBlockSize(10);
     myAlgo.setMaximumCoefficientOfVariation(0.05);

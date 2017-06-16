@@ -71,7 +71,7 @@ public:
   Scalar getMaximumStandardDeviation() const;
 
   /** Block size accessor */
-  void setBlockSize(const UnsignedInteger blockSize);
+  virtual void setBlockSize(const UnsignedInteger blockSize);
   UnsignedInteger getBlockSize() const;
 
   /** Verbosity accessor */

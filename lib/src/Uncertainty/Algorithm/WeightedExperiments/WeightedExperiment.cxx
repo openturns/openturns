@@ -89,4 +89,9 @@ Sample WeightedExperiment::generateWithWeights(Point & weights) const
   return getImplementation()->generateWithWeights(weights);
 }
 
+Bool WeightedExperiment::hasUniformWeights() const
+{
+  return getImplementation()->hasUniformWeights();
+}
+
 END_NAMESPACE_OPENTURNS

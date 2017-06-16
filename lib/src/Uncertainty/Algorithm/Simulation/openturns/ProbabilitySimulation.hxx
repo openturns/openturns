@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief RandomizedLHS is an implementation of the randomized Latin Hypercube Sampling method
+ *  @brief ProbabilitySimulation is a generic view of simulation methods for computing
+ * probabilities and related quantities by sampling and estimation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,40 +19,39 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_RANDOMIZEDLHS_HXX
-#define OPENTURNS_RANDOMIZEDLHS_HXX
+#ifndef OPENTURNS_PROBABILITYSIMULATION_HXX
+#define OPENTURNS_PROBABILITYSIMULATION_HXX
 
 #include "openturns/Simulation.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/Distribution.hxx"
-#include "openturns/Matrix.hxx"
+#include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 /**
- * @class RandomizedLHS
+ * @class ProbabilitySimulation
  */
 
-class OT_API RandomizedLHS: public Simulation
+class OT_API ProbabilitySimulation : public Simulation
 {
 
   CLASSNAME;
 public:
-
-  typedef Collection<Distribution>           Marginals;
-  typedef PersistentCollection<Distribution> PersistentMarginals;
-
   /** Default constructor */
-  RandomizedLHS();
+  ProbabilitySimulation(const Bool verbose = true,
+                        const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
-  explicit RandomizedLHS(const Event & event);
+  ProbabilitySimulation(const Event & event,
+                        const WeightedExperiment & experiment,
+                        const Bool verbose = true,
+                        const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
-  virtual RandomizedLHS * clone() const;
+  virtual ProbabilitySimulation * clone() const;
+
+  /** Experiment accessor */
+  WeightedExperiment getExperiment() const;
+  void setExperiment(const WeightedExperiment & experiment);
 
   /** String converter */
   String __repr__() const;
@@ -62,24 +62,23 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  /** Block size accessor */
+  virtual void setBlockSize(const UnsignedInteger blockSize);
+
 protected:
 
-  /** Compute the block sample */
-  Sample computeBlockSample();
+  /** Compute the block sample and the points that realized the event */
+  virtual Sample computeBlockSample();
 
-  /** Second antecedent dimension */
-  UnsignedInteger dimension_;
+  // The experiment type
+  WeightedExperiment experiment_;
 
-  /** Cells shuffle */
-  Matrix shuffle_;
-
-  /** Marginal distributions */
-  PersistentMarginals marginals_;
 
 private:
 
-} ; /* class RANDOMIZEDLHS */
+} ; /* class ProbabilitySimulation */
+
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_RANDOMIZEDLHS_HXX */
+#endif /* OPENTURNS_SIMULATION_HXX */

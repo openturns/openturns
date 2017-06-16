@@ -72,6 +72,9 @@ public:
 
   /* Here is the interface that all derived class may implement */
 
+  /** Domain accessor */
+  Domain getDomain() const;
+
   /** Realization accessor */
   virtual Point getRealization() const;
 

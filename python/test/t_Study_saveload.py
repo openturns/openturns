@@ -97,8 +97,7 @@ try:
     myStudy.add('simulationResult', simulationResult)
 
     cNameList = [
-        'MonteCarlo', 'LHS', 'QuasiMonteCarlo', 'RandomizedQuasiMonteCarlo',
-                 'DirectionalSampling', 'RandomizedLHS', 'SimulationSensitivityAnalysis']
+        'LHS', 'DirectionalSampling', 'SimulationSensitivityAnalysis', 'ProbabilitySimulation']
     for cName in cNameList:
         otClass = getattr(ot, cName)
         instance = otClass()

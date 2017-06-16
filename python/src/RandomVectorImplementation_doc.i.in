@@ -355,3 +355,16 @@ Examples
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getRealization
 OT_RandomVector_getRealization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_getDomain_doc
+"Accessor to the domain of the Event.
+
+Returns
+-------
+domain : :class:`~openturns.Domain`
+    Describes the domain of an event."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getDomain
+OT_RandomVector_getDomain_doc

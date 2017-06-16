@@ -322,4 +322,10 @@ Scalar RandomVector::getThreshold() const
   return getImplementation()->getThreshold();
 }
 
+/* Domain accessor */
+Domain RandomVector::getDomain() const
+{
+  return getImplementation()->getDomain();
+}
+
 END_NAMESPACE_OPENTURNS

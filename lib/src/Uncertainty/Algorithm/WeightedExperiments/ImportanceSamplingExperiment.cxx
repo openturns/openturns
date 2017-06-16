@@ -37,6 +37,14 @@ ImportanceSamplingExperiment::ImportanceSamplingExperiment():
 }
 
 /* Constructor with parameters */
+ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & importanceDistribution)
+: WeightedExperimentImplementation(),
+  importanceDistribution_(importanceDistribution)
+{
+  // Take the default distribution as the importance distribution
+}
+
+/* Constructor with parameters */
 ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & importanceDistribution,
     const UnsignedInteger size):
   WeightedExperimentImplementation(size),
@@ -78,6 +86,11 @@ String ImportanceSamplingExperiment::__repr__() const
       << " importance distribution=" << importanceDistribution_
       << " size=" << size_;
   return oss;
+}
+
+Bool ImportanceSamplingExperiment::hasUniformWeights() const
+{
+  return false;
 }
 
 /* Sample generation with weights */

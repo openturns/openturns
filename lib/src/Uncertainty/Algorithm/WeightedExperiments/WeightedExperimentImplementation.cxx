@@ -102,6 +102,11 @@ UnsignedInteger WeightedExperimentImplementation::getSize() const
   return size_;
 }
 
+Bool WeightedExperimentImplementation::hasUniformWeights() const
+{
+  return true;
+}
+
 /* Sample generation */
 Sample WeightedExperimentImplementation::generate() const
 {

@@ -789,12 +789,10 @@ ot_add_python_module(simulation simulation_module.i
                       SimulationResultImplementation.i SimulationResultImplementation_doc.i.in
                       SimulationResult.i SimulationResult_doc.i.in
                       Simulation.i Simulation_doc.i.in
+                      ProbabilitySimulation.i ProbabilitySimulation_doc.i.in
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i.in
                       Wilks.i Wilks_doc.i.in
-                      MonteCarlo.i MonteCarlo_doc.i.in
                       LHS.i LHS_doc.i.in
-                      RandomizedLHS.i RandomizedLHS_doc.i.in
-                      ImportanceSampling.i ImportanceSampling_doc.i.in
                       PostAnalyticalControlledImportanceSampling.i PostAnalyticalControlledImportanceSampling_doc.i.in
                       PostAnalyticalImportanceSampling.i PostAnalyticalImportanceSampling_doc.i.in
                       RootStrategyImplementation.i RootStrategyImplementation_doc.i.in
@@ -807,9 +805,6 @@ ot_add_python_module(simulation simulation_module.i
                       MediumSafe.i MediumSafe_doc.i.in
                       RiskyAndFast.i RiskyAndFast_doc.i.in
                       SafeAndSlow.i SafeAndSlow_doc.i.in
-                      QuasiMonteCarlo.i QuasiMonteCarlo_doc.i.in
-                      RandomizedQuasiMonteCarlo.i RandomizedQuasiMonteCarlo_doc.i.in
-                      QuasiMonteCarloResult.i QuasiMonteCarloResult_doc.i.in
                       SubsetSamplingResult.i SubsetSamplingResult_doc.i.in
                       SubsetSampling.i SubsetSampling_doc.i.in
                       AdaptiveDirectionalSampling.i AdaptiveDirectionalSampling_doc.i.in

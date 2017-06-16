@@ -1,0 +1,229 @@
+%feature("docstring") OT::ProbabilitySimulation
+"Sequential sampling methods.
+
+Available constructor:
+    ProbabilitySimulation(*event, experiment, verbose=True, convergenceStrategy=ot.Compact()*)
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    The event we are computing the probability of, must be composite.
+experiment : :class:`~openturns.WeightedExperiment`
+    Sequential experiment
+verbose : bool, optional
+    If *True*, make the computation verbose.
+convergenceStrategy : :class:`~openturns.HistoryStrategy`, optional
+    Storage strategy used to store the values of the probability estimator and
+    its variance during the simulation algorithm.
+
+Notes
+-----
+Using the probability distribution of a random vector :math:`\vect{X}`, we seek
+to evaluate the following probability:
+
+.. math::
+
+    P_f = \Prob{g\left( \vect{X},\vect{d} \right) \leq 0}
+
+Here, :math:`\vect{X}` is a random vector, :math:`\vect{d}` a deterministic
+vector, :math:`g(\vect{X},\vect{d})` the function known as *limit state function*
+which enables the definition of the event 
+
+.. math::
+
+    \cD_f = \{\vect{X} \in \Rset^n \, | \, g(\vect{X},\vect{d}) \le 0\} 
+
+If we have the set :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}` of
+:math:`N` independent samples of the random vector :math:`\vect{X}`, we can
+estimate :math:`\widehat{P}_f` as follows:
+
+.. math::
+
+    \widehat{P}_{f,MC} = \frac{1}{N}
+                         \sum_{i=1}^N \mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }
+
+where :math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
+describes the indicator function equal to 1 if
+:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise;
+the idea here is in fact to estimate the required probability by the proportion
+of cases, among the :math:`N` samples of :math:`\vect{X}`, for which the event
+:math:`\cD_f` occurs.
+
+By the law of large numbers, we know that this estimation converges to the
+required value :math:`P_f` as the sample size :math:`N` tends to infinity.
+
+The Central Limit Theorem allows to build an asymptotic confidence interval
+using the normal limit distribution as follows:
+
+.. math::
+
+    \lim_{N\rightarrow\infty}\Prob{P_f\in[\widehat{P}_{f,\inf},\widehat{P}_{f,\sup}]}=\alpha
+
+with :math:`\widehat{P}_{f,\inf}=\widehat{P}_f - q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}}`,
+:math:`\widehat{P}_{f,\sup}=\widehat{P}_f + q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}}`
+and :math:`q_\alpha` is the :math:`(1+\alpha)/2`-quantile of the standard
+normal distribution.
+
+
+A ProbabilitySimulation object makes sense with the following sequential experiments:
+
+- :class:`~openturns.MonteCarloExperiment`
+
+- :class:`~openturns.ImportanceSamplingExperiment`
+
+- :class:`~openturns.LowDiscrepancyExperiment`
+
+- :class:`~openturns.LHSExperiment` (for the non randomized version see :class:`~openturns.LHS`)
+
+The estimator built by Monte Carlo method is:
+
+.. math::
+
+    \widehat{P}_{f,MC} = \frac{1}{N}
+                         \sum_{i=1}^N \mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }
+
+where :math:`\mathbf{1}_{ \left\{ g(\vect{x}_i,\vect{d}) \leq 0 \right\} }`
+describes the indicator function equal to 1 if
+:math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise;
+the idea here is in fact to estimate the required probability by the proportion
+of cases, among the :math:`N` samples of :math:`\vect{X}`, for which the event
+:math:`\cD_f` occurs.
+
+By the law of large numbers, we know that this estimation converges to the
+required value :math:`P_f` as the sample size :math:`N` tends to infinity.
+
+The Central Limit Theorem allows to build an asymptotic confidence interval
+using the normal limit distribution as follows:
+
+.. math::
+
+    \lim_{N\rightarrow\infty}\Prob{P_f\in[\widehat{P}_{f,\inf},\widehat{P}_{f,\sup}]}=\alpha
+
+with :math:`\widehat{P}_{f,\inf}=\widehat{P}_f - q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}}`,
+:math:`\widehat{P}_{f,\sup}=\widehat{P}_f + q_{\alpha}\sqrt{\frac{\widehat{P}_f(1-\widehat{P}_f)}{N}}`
+and :math:`q_\alpha` is the :math:`(1+\alpha)/2`-quantile of the standard
+normal distribution.
+
+The estimator built by Importance Sampling method is:
+
+.. math::
+
+    \widehat{P}_{f,IS} = \frac{1}{N}
+                         \sum_{i=1}^N \mathbf{1}_{\{g(\vect{Y}_{\:i}),\vect{d}) \leq 0 \}}
+                                      \frac{f_{\uX}(\vect{Y}_{\:i})}
+                                           {f_{\vect{Y}}(\vect{Y}_{\:i})}
+
+
+where:
+
+- :math:`N` is the total number of computations,
+
+- the random vectors :math:`\{\vect{Y}_i, i=1\hdots N\}` are independent,
+  identically distributed and following the probability density function
+  :math:`f_{\uY}`.
+
+
+See also
+--------
+Simulation
+
+Examples
+--------
+Estimate a probability by Monte Carlo
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myFunction = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> # We create a 'usual' RandomVector from the Distribution
+>>> vect = ot.RandomVector(myDistribution)
+>>> # We create a composite random vector
+>>> output = ot.RandomVector(myFunction, vect)
+>>> # We create an Event from this RandomVector
+>>> myEvent = ot.Event(output, ot.Less(), -3.0)
+>>> # We create a Monte Carlo algorithm
+>>> experiment = ot.MonteCarloExperiment()
+>>> myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+>>> myAlgo.setMaximumOuterSampling(150)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.140000
+
+Estimate a probability by Importance Sampling
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> myImportance = ot.Normal([49.969, 1.84194, 10.4454, 4.66776], [1.0]*4, ot.IdentityMatrix(4))
+>>> experiment = ot.ImportanceSamplingExperiment(myImportance)
+>>> myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+>>> myAlgo.setMaximumOuterSampling(150)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.153314
+
+Estimate a probability by Quasi Monte Carlo
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LowDiscrepancyExperiment()
+>>> myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+>>> myAlgo.setMaximumOuterSampling(150)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.141667
+
+Estimate a probability by Randomized Quasi Monte Carlo
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LowDiscrepancyExperiment()
+>>> experiment.setRandomize(True)
+>>> myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+>>> myAlgo.setMaximumOuterSampling(150)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.145000
+
+Estimate a probability by Randomized LHS
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> experiment = ot.LHSExperiment()
+>>> experiment.setAlwaysShuffle(True)
+>>> myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+>>> myAlgo.setMaximumOuterSampling(150)
+>>> myAlgo.setBlockSize(4)
+>>> myAlgo.setMaximumCoefficientOfVariation(0.1)
+>>> # Perform the simulation
+>>> myAlgo.run()
+>>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+Probability estimate=0.140000"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProbabilitySimulation::setExperiment
+"Accessor to the experiment.
+
+Parameters
+----------
+experiment : :class:`~openturns.WeightedExperiment`
+    The experiment that is sampled at each iteration."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ProbabilitySimulation::getExperiment
+"Accessor to the experiment.
+
+Returns
+-------
+experiment : :class:`~openturns.WeightedExperiment`
+    The experiment that is sampled at each iteration."
