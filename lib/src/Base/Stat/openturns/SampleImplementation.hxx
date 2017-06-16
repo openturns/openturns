@@ -570,6 +570,17 @@ public:
     return NSI_const_point(this, index);
   }
 
+  inline Scalar & operator () (const UnsignedInteger i,
+                               const UnsignedInteger j)
+  {
+    return data_[j + i * dimension_];
+  }
+  inline const Scalar & operator () (const UnsignedInteger i,
+                                     const UnsignedInteger j) const
+  {
+    return data_[j + i * dimension_];
+  }
+
   void swap_points(const UnsignedInteger a, const UnsignedInteger b);
   void swap_range_points(const UnsignedInteger fa, const UnsignedInteger ta, const UnsignedInteger fb);
 #endif

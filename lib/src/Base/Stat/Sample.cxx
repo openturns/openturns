@@ -165,7 +165,7 @@ Scalar & Sample::operator () (const UnsignedInteger i,
   return this->at(i, j);
 #else
   copyOnWrite();
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
@@ -175,7 +175,7 @@ const Scalar & Sample::operator () (const UnsignedInteger i,
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(i, j);
 #else
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
