@@ -10,6 +10,8 @@ try:
     configDirectoryList = ot.Path.GetConfigDirectoryList()
     for i in range(len(configDirectoryList)):
         print('configDirectoryList[', i, ']=', configDirectoryList[i])
+    # Check that openturns.conf had been installed at the expected location
+    ot.Path_FindFileByNameInDirectoryList("openturns.conf", ot.Path_GetConfigDirectoryList())
     list = ot.DirectoryList(2)
     directory1 = ot.Path.CreateTemporaryDirectory('testDirectory1')
     print('Directory 1=', directory1)
