@@ -158,7 +158,7 @@ void SQP::run()
   currentHessian_ = levelFunction.hessian(currentPoint_).getSheet(0);
 
 
-  Bool convergence = false;
+  Bool exitLoop = false;
   UnsignedInteger iterationNumber = 0;
   Scalar absoluteError = -1.0;
   Scalar constraintError = -1.0;
@@ -173,7 +173,7 @@ void SQP::run()
   result_.setProblem(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-  while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
+  while ( (!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) )
   {
     /* Go to next iteration */
     ++iterationNumber;
@@ -239,7 +239,7 @@ void SQP::run()
 
     residualError = (currentPoint_ + currentLambda_ * currentGradient_).norm();
 
-    convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+    exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
     result_.setIterationNumber(iterationNumber);
@@ -258,7 +258,7 @@ void SQP::run()
       Bool stop = stopCallback_.first(stopCallback_.second);
       if (stop)
       {
-        convergence = true;
+        exitLoop = true;
         LOGWARN(OSS() << "SQP was stopped by user");
       }
     }
@@ -266,7 +266,7 @@ void SQP::run()
 
   /* Check if we converged */
 
-  if (!convergence)
+  if (!exitLoop)
   {
     LOGWARN(OSS() << "Warning! The SQP algorithm failed to converge after " << getMaximumIterationNumber() << " iterations");
   }
