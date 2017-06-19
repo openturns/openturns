@@ -77,6 +77,10 @@ public:
   Bool getRestart() const;
   void setRestart(const Bool restart);
 
+  /** Randomization flag accessor */
+  Bool getRandomize() const;
+  void setRandomize(const Bool randomize);
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
@@ -93,6 +97,9 @@ private:
 
   // Initialization flag
   Bool restart_;
+
+  // Randomization flag
+  Bool randomize_;
 
 }; /* class LowDiscrepancyExperiment */
 
