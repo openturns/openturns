@@ -1,14 +1,11 @@
 language: cpp
+dist: trusty
+sudo: false
 
 addons:
   apt:
-    sources:
-    - ubuntu-toolchain-r-test
     packages:
     - cmake
-    - gcc-4.8
-    - g++-4.8
-    - gfortran-4.8
     - bison
     - flex
     - libmuparser-dev
@@ -23,11 +20,6 @@ addons:
     - texlive-latex-recommended
     - texlive-fonts-recommended
     - texlive-latex-extra
-    - libkpathsea-dev
-    - libpotrace-dev
-    - python-lxml
-    - xmlto
-    - asciidoc
 
 matrix:
   include:
@@ -45,23 +37,11 @@ before_install:
     fi
 
 install:
-  - if test "$TRAVIS_OS_NAME" = "linux"; then
-      export CXX="g++-4.8" CC="gcc-4.8";
-    fi
-# dvisvgm
-  - if test "$TRAVIS_OS_NAME" = "linux"; then
-       git clone https://github.com/mgieseki/dvisvgm.git &&
-       pushd dvisvgm &&
-       ./autogen.sh &&
-       ./configure --prefix=$HOME/.local &&
-       make -j 2 && make install &&
-       export PATH=$PATH:$HOME/.local/bin &&
-       popd;
-   fi
+# use system python
+  - export PATH=/usr/bin:$PATH
 # sphinx >=1.2 is looking better
   - if test "$TRAVIS_OS_NAME" = "linux"; then
-      pip install six docutils numpydoc --user &&
-      pip install git+https://github.com/sphinx-doc/sphinx.git --user;
+      pip install numpydoc sphinx matplotlib --user;
     fi
 # keep an eye on swig
   - git clone https://github.com/swig/swig.git
@@ -91,8 +71,7 @@ install:
   - git clone https://github.com/stevengj/nlopt.git
   - pushd nlopt
   - cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_PYTHON=OFF -DBUILD_OCTAVE=OFF -DBUILD_GUILE=OFF -DCMAKE_MACOSX_RPATH=ON .
-  - make -j2
-  - make install
+  - make install -j2
   - popd
 
 # use tbb from sources for osx (not brew)
@@ -122,7 +101,7 @@ script:
               -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so
               -DNLOPT_INCLUDE_DIR=~/.local/include
               . &&
-        make install -j4;
+        make install -j2;
     fi
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         cmake -DCMAKE_INSTALL_PREFIX=~/.local
