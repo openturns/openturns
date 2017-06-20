@@ -116,6 +116,7 @@ script:
   - if test "$TRAVIS_OS_NAME" = "linux"; then
         cmake -DCMAKE_INSTALL_PREFIX=~/.local
               -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
+              -DUSE_SPHINX=OFF
               -DSWIG_EXECUTABLE=~/.local/bin/swig
               -DHMAT_DIR=~/.local/lib/cmake/hmat
               -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so
