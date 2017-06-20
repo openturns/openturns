@@ -111,7 +111,11 @@ FileName Path::GetInstallationDirectory()
   }
   if (!dirExists)
   {
-    directory = String(INSTALL_PATH);
+    // NOTE: When installing with conda, INSTALL_PATH is substituted during
+    // package installation.  On OSX, String(INSTALL_PATH) creates a
+    // string with new content but original size; thus we use a C string
+    // to update string length
+    directory = String(INSTALL_PATH).c_str();
   }
   return directory;
 }
@@ -218,7 +222,8 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   }
   if (!dirExists)
   {
-    directory = String(SYSCONFIG_PATH) + PrefixConfigSubdirectory_;
+    // See in NOTE above why we use c_str() here
+    directory = String() + String(SYSCONFIG_PATH).c_str() + PrefixConfigSubdirectory_;
   }
   directoryList.push_back(directory);
 
