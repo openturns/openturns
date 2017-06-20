@@ -137,7 +137,7 @@ void AbdoRackwitz::run()
   const Scalar levelValue = getProblem().getLevelValue();
   /* Current point -> u */
   currentPoint_ = getStartingPoint();
-  Bool convergence = false;
+  Bool exitLoop = false;
   UnsignedInteger iterationNumber = 0;
   Scalar absoluteError = -1.0;
   Scalar constraintError = -1.0;
@@ -152,7 +152,7 @@ void AbdoRackwitz::run()
   result_.setProblem(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-  while ( (!convergence) && (iterationNumber <= getMaximumIterationNumber()) )
+  while ( (!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) )
   {
     /* Go to next iteration */
     ++iterationNumber;
@@ -189,7 +189,7 @@ void AbdoRackwitz::run()
       relativeError = -1.0;
     }
     residualError = (currentPoint_ + currentLambda_ * currentGradient_).norm();
-    convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+    exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
     result_.setIterationNumber(iterationNumber);
@@ -208,14 +208,14 @@ void AbdoRackwitz::run()
       Bool stop = stopCallback_.first(stopCallback_.second);
       if (stop)
       {
-        convergence = true;
+        exitLoop = true;
         LOGWARN(OSS() << "AbdoRackwitz was stopped by user");
       }
     }
   }
 
   /* Check if we converged */
-  if (!convergence)
+  if (!exitLoop)
   {
     LOGWARN(OSS() << "Warning! The AbdoRackwitz algorithm failed to converge after " << getMaximumIterationNumber() << " iterations");
   }
