@@ -168,12 +168,6 @@ CovarianceMatrix RankMCovarianceModel::discretize(const Sample & vertices) const
   return (covariance_.getImplementation()->symProd(basisDiscretization, 'R')).genProd(basisDiscretization, false, true);
 }
 
-/* Is it a stationary model ? */
-Bool RankMCovarianceModel::isStationary() const
-{
-  return false;
-}
-
 /* Covariance accessor */
 CovarianceMatrix RankMCovarianceModel::getCovariance() const
 {

@@ -69,21 +69,12 @@ public:
   virtual Scalar computeStandardRepresentative(const Point & s,
       const Point & t) const;
 
-  virtual Scalar computeStandardRepresentative(const Scalar & s,
-      const Scalar & t) const;
-
-  virtual Scalar computeStandardRepresentative(const Point & tau) const;
-
-  virtual Scalar computeStandardRepresentative(const Scalar & tau) const;
-
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
 
   virtual CovarianceMatrix operator() (const Scalar tau) const;
 
   virtual CovarianceMatrix operator() (const Point & tau) const;
-
-  virtual Scalar computeAsScalar (const Point & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,

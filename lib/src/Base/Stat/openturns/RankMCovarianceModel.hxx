@@ -69,9 +69,6 @@ public:
   Basis getBasis() const;
   Basis::FunctionCollection getFunctions() const;
 
-  /** Is it a stationary covariance model ? */
-  virtual Bool isStationary() const;
-
   /** Specific discretization method */
   using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const Sample & vertices) const;

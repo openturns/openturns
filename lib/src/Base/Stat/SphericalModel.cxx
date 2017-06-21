@@ -39,6 +39,7 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
   , radius_(1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  definesComputeStandardRepresentative_ = true;
 }
 
 /* Constructor with parameters */
@@ -49,6 +50,7 @@ SphericalModel::SphericalModel(const Point & scale,
   , radius_(-1.0)
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  definesComputeStandardRepresentative_ = true;
   setRadius(radius);
 }
 
@@ -102,12 +104,6 @@ CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
   }
 
   return cov;
-}
-
-/* Is it a stationary model ? */
-Bool SphericalModel::isStationary() const
-{
-  return true;
 }
 
 void SphericalModel::setFullParameter(const Point & parameter)

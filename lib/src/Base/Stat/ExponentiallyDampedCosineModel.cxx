@@ -38,6 +38,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
   : StationaryCovarianceModel(spatialDimension)
   , frequency_(1.0)
 {
+  definesComputeStandardRepresentative_ = true;
 }
 
 /** Standard constructor with amplitude and scale parameters */
@@ -49,6 +50,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & sca
 {
   if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
   setFrequency(frequency);
+  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -106,12 +108,6 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
   }
 
   return cov;
-}
-
-/* Is it a stationary model ? */
-Bool ExponentiallyDampedCosineModel::isStationary() const
-{
-  return true;
 }
 
 /* String converter */

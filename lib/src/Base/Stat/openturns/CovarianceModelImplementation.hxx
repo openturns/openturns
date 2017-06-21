@@ -82,26 +82,12 @@ public:
   virtual Scalar computeStandardRepresentative(const Point & s,
       const Point & t) const;
 
-  virtual Scalar computeStandardRepresentative(const Scalar & s,
-      const Scalar & t) const;
-
-  virtual Scalar computeStandardRepresentative(const Point & tau) const;
-
-  virtual Scalar computeStandardRepresentative(const Scalar & tau) const;
-
   // Special case for 1D model
-  virtual Scalar computeAsScalar (const Scalar s,
-                                  const Scalar t) const;
-
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
 
   virtual CovarianceMatrix operator() (const Scalar tau) const;
   virtual CovarianceMatrix operator() (const Point & tau) const;
-
-  // Special case for 1D model
-  virtual Scalar computeAsScalar (const Scalar tau) const;
-  virtual Scalar computeAsScalar (const Point & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,
@@ -228,6 +214,12 @@ protected:
 
   /** Covariance matrix of the spatial dependence structure */
   mutable CovarianceMatrix spatialCovariance_;
+
+  /** Cholesky factor of covariance matrix of the spatial dependence structure */
+  mutable TriangularMatrix spatialCovarianceCholeskyFactor_;
+
+  /** Flag to tell if computeStandardRepresentative() method is defined */
+  Bool definesComputeStandardRepresentative_;
 
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;

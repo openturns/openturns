@@ -358,12 +358,6 @@ void DiracCovarianceModel::setSpatialCorrelation(const CorrelationMatrix & corre
   computeCovariance();
 }
 
-/* Is it a stationary model ? */
-Bool DiracCovarianceModel::isStationary() const
-{
-  return true;
-}
-
 /* String converter */
 String DiracCovarianceModel::__repr__() const
 {

@@ -35,6 +35,7 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
   , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(Point(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
+  definesComputeStandardRepresentative_ = true;
   // Compute the normalization factor
   logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
 }
@@ -46,6 +47,7 @@ MaternModel::MaternModel(const Point & scale,
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
+  definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
 
@@ -60,6 +62,7 @@ MaternModel::MaternModel(const Point & scale,
   if (getDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getDimension() << ")";
+  definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
 
