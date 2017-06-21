@@ -17,6 +17,7 @@ Probabilistic modeling
     mixture_distribution.ipynb
     random_mixture_distribution.ipynb
     distribution_transformation.ipynb
+    composite_distribution.ipynb
     maximum_distribution.ipynb
     order_statistics_distribution.ipynb
     conditional_distribution.ipynb
@@ -32,4 +33,3 @@ Probabilistic modeling
     trend_transform.ipynb
     box_cox_transform.ipynb
     aggregated_process.ipynb
-    
