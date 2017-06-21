@@ -281,7 +281,7 @@ void NegativeBinomial::computeRange()
 Scalar NegativeBinomial::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, prob=" << prob << ", tail=" << (tail ? "true" : "false"));
+  LOGDEBUG(OSS() << "in NegativeBinomial::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
   if (prob <= 0.0) return (tail ? getRange().getUpperBound()[0] : 0.0);
   if (prob >= 1.0) return (tail ? 0.0 : getRange().getUpperBound()[0]);
   // Initialization by the Cornish-Fisher expansion

@@ -168,7 +168,7 @@ String OptimizationAlgorithmImplementation::__repr__() const
       << " maximumRelativeError=" << maximumRelativeError_
       << " maximumResidualError=" << maximumResidualError_
       << " maximumConstraintError=" << maximumConstraintError_
-      << " verbose=" << (verbose_ ? "true" : "false");
+      << " verbose=" << verbose_;
   return oss;
 }
 

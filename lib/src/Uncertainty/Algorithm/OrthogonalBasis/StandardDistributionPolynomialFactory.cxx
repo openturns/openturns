@@ -215,7 +215,7 @@ String StandardDistributionPolynomialFactory::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " hasSpecificFamily=" << std::boolalpha << hasSpecificFamily_;
+      << " hasSpecificFamily=" << hasSpecificFamily_;
   if (hasSpecificFamily_) oss << " specificFamily=" << specificFamily_;
   else oss << " orthonormalization algorithm=" << orthonormalizationAlgorithm_;
   return oss;
