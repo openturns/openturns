@@ -119,6 +119,25 @@ String LowDiscrepancyExperiment::__str__(const String & offset) const
   return oss;
 }
 
+/* Method save() stores the object through the StorageManager */
+void LowDiscrepancyExperiment::save(Advocate & adv) const
+{
+  WeightedExperimentImplementation::save(adv);
+  adv.saveAttribute("sequence_", sequence_);
+  adv.saveAttribute("restart_", restart_);
+  adv.saveAttribute("randomize_", randomize_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void LowDiscrepancyExperiment::load(Advocate & adv)
+{
+  WeightedExperimentImplementation::load(adv);
+  adv.loadAttribute("sequence_", sequence_);
+  adv.loadAttribute("restart_", restart_);
+  adv.loadAttribute("randomize_", randomize_);
+  setDistribution(distribution_);// set marginals_
+}
+
 /* Distribution accessor */
 void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution)
 {

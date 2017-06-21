@@ -81,6 +81,12 @@ public:
   Bool getRandomize() const;
   void setRandomize(const Bool randomize);
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
@@ -90,7 +96,7 @@ protected:
 
 private:
   // Marginal distributions
-  DistributionCollection marginals_;
+  mutable DistributionCollection marginals_;
 
   // Low discrepancy sequence
   LowDiscrepancySequence sequence_;
