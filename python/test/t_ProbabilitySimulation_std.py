@@ -120,11 +120,10 @@ event4 = ot.Event(Xprocess, domain2D)
 all_events = [event1, event2, event3, event4]
 for i, event in enumerate(all_events):
     print(description[i])
-    try:
+    if event.isComposite():
         experiment = ot.MonteCarloExperiment()
         myAlgo = ot.ProbabilitySimulation(event, experiment)
-    except:
-        # event4 is not composite
+    else:
         myAlgo = ot.Simulation(event)
     myAlgo.setMaximumOuterSampling(250)
     myAlgo.setBlockSize(4)

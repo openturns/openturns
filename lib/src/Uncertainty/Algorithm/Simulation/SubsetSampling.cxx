@@ -64,6 +64,7 @@ SubsetSampling::SubsetSampling(const Event & event,
   , numberOfSteps_(0)
   , seedNumber_(0)
 {
+  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// overide simulation default outersampling
   UnsignedInteger outputDimension = event.getFunction().getOutputDimension();
   if (outputDimension > 1)

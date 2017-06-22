@@ -61,8 +61,7 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   const UnsignedInteger blockSize = getBlockSize();
   const Point standardSpaceDesignPoint(analyticalResult_.getStandardSpaceDesignPoint());
   const Bool originFailure = analyticalResult_.getIsStandardPointOriginInFailureSpace();
-  // Get the threshold and the reliability index
-  const Scalar threshold = event_.getThreshold();
+  // Get the reliability index
   const Scalar reliabilityIndex = analyticalResult_.getHasoferReliabilityIndex();
   const Scalar betaSquare = reliabilityIndex * reliabilityIndex;
   // Initialize the probability with the control probability
@@ -81,7 +80,7 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
     // If the origin is not in the failure domain, the control is made using the linear event dot(u,u*) > beta^2,
     // else it is made using the linear event dot(u,u*) < beta^2.
     failureControl = (failureControl && !originFailure) || (!failureControl && originFailure);
-    const Bool failureEvent = event_.getOperator()(blockSample[i][0], threshold);
+    const Bool failureEvent = getEvent().getDomain().contains(blockSample[i]);
     blockSample[i][0] = probability;
     const Scalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
     if (factor != 0.0) blockSample[i][0] = blockSample[i][0] + factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
