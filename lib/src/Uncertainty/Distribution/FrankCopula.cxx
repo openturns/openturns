@@ -239,7 +239,7 @@ Point FrankCopula::computeCDFGradient(const Point & point) const
 Point FrankCopula::computeQuantile(const Scalar prob,
                                    const Bool tail) const
 {
-  if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  if (!((prob >= 0.0) && (prob <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   const Scalar q = tail ? 1.0 - prob : prob;
   // Special case for boarding values
   if (q == 0.0) return getRange().getLowerBound();
