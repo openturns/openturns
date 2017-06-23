@@ -12,6 +12,7 @@ Probabilistic modeling
     create_copula.ipynb
     composed_distribution.ipynb
     extract_copula.ipynb
+    distribution_manipulation.ipynb
     composed_copula.ipynb
     ordinal_sum_copula.ipynb
     mixture_distribution.ipynb
