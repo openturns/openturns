@@ -514,10 +514,10 @@ Point ComposedDistribution::computeCDFGradient(const Point & point) const
 Point ComposedDistribution::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (!(prob < 0.0 || prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  if (!((prob >= 0.0) && (prob <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1) return distributionCollection_[0].computeQuantile(prob, tail);
-  Point quantile(copula_.computeQuantile(prob));
+  Point quantile(copula_.computeQuantile(prob, tail));
   for (UnsignedInteger i = 0; i < getDimension(); ++i) quantile[i] = distributionCollection_[i].computeQuantile(quantile[i])[0];
   return quantile;
 }

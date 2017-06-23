@@ -124,11 +124,12 @@ Scalar MinCopula::computeSurvivalFunction(const Point & point) const
 Point MinCopula::computeQuantile(const Scalar prob,
                                  const Bool tail) const
 {
-  if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  if (!((prob >= 0.0) && (prob <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  const Scalar q = tail ? 1.0 - prob : prob;
   // Special case for boarding values
-  if (prob == 0.0) return getRange().getLowerBound();
-  if (prob == 1.0) return getRange().getUpperBound();
-  return Point(getDimension(), prob);
+  if (q == 0.0) return getRange().getLowerBound();
+  if (q == 1.0) return getRange().getUpperBound();
+  return Point(getDimension(), q);
 }
 
 /* Compute the covariance of the distribution */
