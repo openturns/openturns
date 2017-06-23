@@ -3044,17 +3044,20 @@ Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const
 /* Get the i-th marginal distribution */
 DistributionImplementation::Implementation DistributionImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if ((dimension_ == 1) && (i == 0)) return clone();
-  if (isCopula() && (i < dimension_)) return new Uniform(0.0, 1.0);
+  if (!(i < dimension_)) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension";
+  if (dimension_ == 1) return clone();
+  if (isCopula()) return new Uniform(0.0, 1.0);
   return MarginalDistribution(*this, i).clone();
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 DistributionImplementation::Implementation DistributionImplementation::getMarginal(const Indices & indices) const
 {
-  if ((dimension_ == 1) && (indices[0] == 0)) return clone();
-  if ((dimension_ == 2) && (indices.getSize() == 1) && (indices[0] < dimension_)) return new Uniform(0.0, 1.0);
-  if ((dimension_ == 2) && (indices.getSize() == 2) && (indices[0] == 0) && (indices[1] == 1)) return clone();
+  if (!indices.check(dimension_)) throw InvalidArgumentException(HERE) << "Marginal indices cannot exceed dimension";
+  Indices full(dimension_);
+  full.fill();
+  if (indices == full) return clone();
+  if (isCopula() && (indices.getSize() == 1)) return new Uniform(0.0, 1.0);
   return MarginalDistribution(*this, indices).clone();
 }
 
