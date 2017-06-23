@@ -99,6 +99,10 @@ try:
     print("Quantile=", repr(quantile))
     print("CDF(quantile)=%.6f" % distribution.computeCDF(quantile))
 
+    # Get 5% quantile
+    quantile = Point(distribution.computeQuantile(0.95, True))
+    print("Quantile=", repr(quantile))
+
     # Get 95% survival function
     inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))

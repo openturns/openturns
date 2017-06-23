@@ -240,13 +240,14 @@ Point FrankCopula::computeQuantile(const Scalar prob,
                                    const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+  const Scalar q = tail ? 1.0 - prob : prob;
   // Special case for boarding values
-  if (prob == 0.0) return getRange().getLowerBound();
-  if (prob == 1.0) return getRange().getUpperBound();
+  if (q == 0.0) return getRange().getLowerBound();
+  if (q == 1.0) return getRange().getUpperBound();
   // Independent case
-  if (theta_ == 0.0) return Point(2, std::sqrt(prob));
+  if (theta_ == 0.0) return Point(2, std::sqrt(q));
   // General case
-  const Scalar thetaProb = theta_ * prob;
+  const Scalar thetaProb = theta_ * q;
   const Scalar expTheta = std::exp(theta_);
   const Scalar expm1Theta = expm1(theta_);
   const Scalar sqrtRatio = std::sqrt(expm1(thetaProb) * expTheta / (expm1Theta * std::exp(thetaProb)));
