@@ -2139,6 +2139,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
     throw FileOpenException(HERE) << "Could not open file " << filename;
   csvFile.imbue(std::locale("C"));
   csvFile.precision(16);
+  csvFile << std::scientific;
   // Export the description
   if (!p_description_.isNull())
   {
@@ -2152,24 +2153,24 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
       if (isBlank) csvFile << separator << "\"NoDescription\"";
       else csvFile << separator << "\"" << description[i] << "\"";
     }
-    csvFile << std::endl;
+    csvFile << "\n";
   }
-
   // Write the data
+  UnsignedInteger index = 0;
   for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    String separator;
-    for(UnsignedInteger j = 0; j < dimension_; ++j, separator = csvSeparator)
     {
-      csvFile << separator << std::scientific << operator[](i)[j];
-    }
-    csvFile << std::endl;
-  }
-
+      csvFile << data_[index];
+      ++index;
+      for(UnsignedInteger j = 1; j < dimension_; ++j)
+	{
+	  csvFile << csvSeparator << data_[index];
+	  ++index;
+	} // j
+      csvFile << "\n";
+    } // i
   // Close the file
   csvFile.close();
 }
-
 
 
 /* Method save() stores the object through the StorageManager */
