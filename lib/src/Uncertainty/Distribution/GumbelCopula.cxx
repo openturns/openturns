@@ -250,9 +250,10 @@ Point GumbelCopula::computeQuantile(const Scalar prob,
                                     const Bool tail) const
 {
   if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
-  if (prob == 0.0) return getRange().getLowerBound();
-  if (prob == 1.0) return getRange().getUpperBound();
-  return Point(2, std::exp(-std::exp(std::log(-std::log(prob)) - M_LN2 / theta_)));
+  const Scalar q = tail ? 1.0 - prob : prob;
+  if (q == 0.0) return getRange().getLowerBound();
+  if (q == 1.0) return getRange().getUpperBound();
+  return Point(2, std::exp(-std::exp(std::log(-std::log(q)) - M_LN2 / theta_)));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

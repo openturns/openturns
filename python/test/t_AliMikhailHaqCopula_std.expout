@@ -12,6 +12,7 @@ anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=clas
 Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.208528  cdf=0.058824
 Quantile= class=Point name=Unnamed dimension=2 values=[0.689898,0.689898]
 CDF(quantile)=0.500000
+Quantile= class=Point name=Unnamed dimension=2 values=[0.182457,0.182457]
 InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.025625,0.025625]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [0.0126791, 0.987321]

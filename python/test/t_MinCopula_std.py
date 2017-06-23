@@ -51,6 +51,11 @@ try:
     quantile = copula.computeQuantile(0.5)
     print("Quantile=", quantile)
     print("CDF(quantile)=", copula.computeCDF(quantile))
+
+    # Get 5% quantile
+    quantile = copula.computeQuantile(0.95, True)
+    print("Quantile=", quantile)
+
     # Get 95% survival function
     inverseSurvival = Point(copula.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
