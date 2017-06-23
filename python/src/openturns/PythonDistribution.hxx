@@ -147,6 +147,7 @@ public:
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Implementation getMarginal(const UnsignedInteger i) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
