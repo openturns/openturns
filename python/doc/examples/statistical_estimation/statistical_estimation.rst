@@ -19,6 +19,7 @@ Statistical estimation
     kolmogorov_test.ipynb
     chi2_test.ipynb
     qqplot_graph.ipynb
+    regression_test.ipynb
     henry_line_graph.ipynb
     estimate_copula.ipynb
     estimate_non_parametric_copula.ipynb
