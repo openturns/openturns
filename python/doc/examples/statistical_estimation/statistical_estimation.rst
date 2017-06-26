@@ -21,6 +21,7 @@ Statistical estimation
     qqplot_graph.ipynb
     regression_test.ipynb
     henry_line_graph.ipynb
+    andersondarling_test.ipynb
     estimate_copula.ipynb
     estimate_non_parametric_copula.ipynb
     estimate_arma.ipynb
