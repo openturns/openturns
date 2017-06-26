@@ -806,6 +806,16 @@ public:
 
 
 private:
+  // Parse a string into a vector of scalars and tell if there was an error
+  static Bool ParseStringAsValues(const String & line,
+				  const char theSeparator,
+				  Point & data);
+  
+  // Parse a string into a vector of strings and tell if there was an error
+  static Bool ParseStringAsDescription(const String & line,
+				       const char theSeparator,
+				       Description & data);
+
   void translate(const Point & translation);
   void scale(const Point & scaling);
   void scale(const SquareMatrix & scaling);

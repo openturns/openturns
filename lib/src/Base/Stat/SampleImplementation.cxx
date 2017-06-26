@@ -313,17 +313,9 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   csvlex_destroy(scanner);
 
   std::fclose(theFile);
-
   // Check the description
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
-  {
-    const UnsignedInteger dimension = impl.getDimension();
-    Description defaultDescription(dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      defaultDescription[i] = String(OSS() << "data_" << i);
-    impl.setDescription(defaultDescription);
-  }
-
+    impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
   if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
 
 #else
@@ -332,10 +324,83 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   return impl;
 }
 
-/* Factory of SampleImplementation from TXT file */
+/* Factory of SampleImplementation from TXT file
+ * The file is supposed to be formated this way:
+ * + an optional description of each column in the first row
+ * + an arbitrary number of rows containing the same number of values
+ * + the values can have an arbitrary number of spaces before or after them, with
+ *   a potentially non-space separator between the values
+ */
+Bool SampleImplementation::ParseStringAsValues(const String & line,
+    const char separator,
+    Point & data)
+{
+  const Bool isBlankSeparator = separator == ' ';
+  char * begin = const_cast<char *>(line.c_str());
+  char * end = begin;
+  data = Point(0);
+  while (!(*end == '\0'))
+  {
+    const Scalar value = strtod(begin, &end);
+    // Check if there was a problem
+    if (begin == end)
+    {
+      data = Point(0);
+      return false;
+    }
+    data.add(value);
+    // Early exit to avoid going past the end of the line
+    // when dealing with a non-blank separator
+    if (*end == '\0') return true;
+    if (!isBlankSeparator)
+    {
+      if (*end != separator)
+      {
+        data = Point(0);
+        return false;
+      }
+      // To skip the separator
+      ++end;
+    }
+    begin = end;
+  }
+  return true;
+}
+
+Bool SampleImplementation::ParseStringAsDescription(const String & line,
+    const char separator,
+    Description & description)
+{
+  description = Description(0);
+  // Here the speed is not critical at all
+  String workingLine(line);
+  if (!(separator == ' '))
+    std::replace(workingLine.begin(), workingLine.end(), separator, ' ');
+  // Store every fields of the current line in a vector
+  std::stringstream strstr(workingLine);
+  std::vector<std::string> words;
+  std::copy(std::istream_iterator<std::string>(strstr),
+            std::istream_iterator<std::string>(), back_inserter(words));
+  // Check and store the fields in a Point
+  for(UnsignedInteger i = 0; i < words.size(); i++)
+  {
+    String word(words[i]);
+    // trim double quote delimiters
+    if ((word.size() >= 2) && (word[0] == '\"') && (word[word.size() - 1] == '\"'))
+    {
+      word = word.substr(1, word.size() - 2);
+    }
+    description.add(word);
+  } // for i
+  return true;
+}
+
 SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fileName,
     const String & separator)
 {
+  if (separator.size() != 1) throw InvalidArgumentException(HERE) << "Expected a separator with one character, got separator=" << separator;
+  const char theSeparator = separator[0];
+
   SampleImplementation impl(0, 0);
 
   std::ifstream theFile(fileName.c_str());
@@ -347,113 +412,78 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
                                       << "'. Reason: " << std::strerror(errno);
   }
 
+  // Manage the locale such that the decimal point IS a point ('.')
+  const char * initialLocale = setlocale(LC_NUMERIC, NULL);
+  setlocale(LC_NUMERIC, "C");
+  // Extract the first row
   String line;
-  Bool isDescription = false;
-  Description description;
-  Scalar f = -1.0;
-  UnsignedInteger numLine = 1;
-
-  // While there are lines to read
-  while (std::getline(theFile, line))
+  // If the first line is empty return a 0x0 sample
+  if (!std::getline(theFile, line))
   {
-    if (line.size() != 0)
+    LOGWARN("Warning: No data from the file has been stored.");
+    setlocale(LC_NUMERIC, initialLocale);
+    return impl;
+  }
+  Point data;
+  Description description(0);
+  // Check if the first row cannot be parsed as a point
+  if (!ParseStringAsValues(line, theSeparator, data))
+  {
+    // Check if it does not contain a description
+    if (!ParseStringAsDescription(line, theSeparator, description))
     {
-      Point dataRow(0);
-      // Change the separator if it is not a space
-      if (separator != " ")
-      {
-        std::replace(line.begin(), line.end(), separator.c_str()[0], ' ');
-      }
-      // Store every fields of the current line in a vector
-      std::stringstream strstr(line);
-      std::vector<std::string> words;
-      std::copy(std::istream_iterator<std::string>(strstr),
-                std::istream_iterator<std::string>(), back_inserter(words));
-
-      // Check and store the fields in a Point
-      for(UnsignedInteger i = 0; i < words.size(); i++)
-      {
-        std::istringstream iss(words[i]);
-        if ( iss >> ( f ) && iss.eof() )
-        {
-          if (numLine == 1 && isDescription)
-          {
-            LOGWARN(OSS() << "Warning: the given description is not valid. A default description will be used. ");
-            isDescription = false;
-            break;
-          }
-          else
-          {
-            iss >> f;
-            dataRow.add(f);
-          }
-          if (i == 0) ++numLine;
-        }
-        else
-        {
-          if (numLine == 1)
-          {
-            String word(words[i]);
-            // trim double quote delimiters
-            if ((word.size() >= 2) && (word[0] == '\"') && (word[word.size() - 1] == '\"'))
-            {
-              word = word.substr(1, word.size() - 2);
-            }
-            description.add(word);
-            if (!isDescription && i == 0) isDescription = true;
-            if (i == words.size() - 1) ++numLine;
-          }
-          else
-          {
-            if (i != 0) --numLine;
-            break;
-          }
-        }
-      }
-      // Check and store the data in a SampleImplementation
-      if (dataRow.getDimension() != 0 && dataRow.getDimension() == words.size())
-      {
-        if ((numLine == 2 && !isDescription) || (numLine == 3 && isDescription))
-        {
-          impl = SampleImplementation(0, words.size());
-        }
-        if (impl.getDimension() == dataRow.getDimension())
-        {
-          impl.add(dataRow);
-        }
-        else
-        {
-          LOGWARN(OSS() << "Warning: the given line ( " << line << " ) is not compatible with the previous row. It will be ignored.");
-        }
-
-      }
-      else if (dataRow.getDimension() != 0 && dataRow.getDimension() != words.size())
-      {
-        LOGWARN(OSS() << "Warning: the given line ( " << line << " ) is not valid. It will be ignored.");
-      }
+      setlocale(LC_NUMERIC, initialLocale);
+      // Then it is an error
+      throw InvalidArgumentException(HERE) << "";
+    }
+    else
+    {
+      // The dimension is given by the description
+      impl.dimension_ = description.getSize();
+      impl.setDescription(description);
     }
   }
-
-  theFile.close();
-
-  // Check the description
-  if (isDescription && description.getSize() == impl.getDimension())
+  else
   {
-    impl.setDescription(description);
+    // The dimension is given by the first row of values
+    impl.dimension_ = data.getDimension();
+    impl.data_.add(data);
+    ++impl.size_;
   }
+  // Now, read all the other rows. If they don't contain a point
+  // or if the number of values is not equal to the dimension the
+  // row is ignored
+  UnsignedInteger index = 1;
+  while (std::getline(theFile, line))
+  {
+    if (ParseStringAsValues(line, theSeparator, data))
+    {
+      if (data.getDimension() == impl.dimension_)
+      {
+        impl.data_.add(data);
+        ++impl.size_;
+      }
+      else
+      {
+        LOGWARN(OSS() << "The line number " << index << " has a dimension=" << data.getDimension() << ", expected dimension=" << impl.dimension_);
+        LOGDEBUG(OSS() << "line=" << line);
+      }
+    }
+    else
+    {
+      LOGWARN(OSS() << "The line number " << index << " does not contain a point");
+      LOGDEBUG(OSS() << "line=" << line);
+    }
+    ++index;
+  } // while (std::getLine(theFile, line))
+  // Check the description
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
   {
-    const UnsignedInteger dimension = impl.getDimension();
-    Description defaultDescription(dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      defaultDescription[i] = String(OSS() << "data_" << i);
-    impl.setDescription(defaultDescription);
+    impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
   }
-
   if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
-
+  setlocale(LC_NUMERIC, initialLocale);
   impl.setName(fileName);
-
   return impl;
 }
 
@@ -808,7 +838,7 @@ String SampleImplementation::__str__(const String & offset) const
   // Print the column title
   if (printDescription)
   {
-    oss << offset << String( iwidth , ' ' ) << "   [ ";
+    oss << offset << String( iwidth, ' ' ) << "   [ ";
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
@@ -2139,6 +2169,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
     throw FileOpenException(HERE) << "Could not open file " << filename;
   csvFile.imbue(std::locale("C"));
   csvFile.precision(16);
+  csvFile << std::scientific;
   // Export the description
   if (!p_description_.isNull())
   {
@@ -2156,16 +2187,18 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
   }
 
   // Write the data
+  UnsignedInteger index = 0;
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
-    String separator;
-    for(UnsignedInteger j = 0; j < dimension_; ++j, separator = csvSeparator)
+    csvFile << data_[index];
+    ++index;
+    for(UnsignedInteger j = 1; j < dimension_; ++j)
     {
-      csvFile << separator << std::scientific << operator[](i)[j];
-    }
-    csvFile << std::endl;
-  }
-
+      csvFile << csvSeparator << data_[index];
+      ++index;
+    } // j
+    csvFile << "\n";
+  } // i
   // Close the file
   csvFile.close();
 }
