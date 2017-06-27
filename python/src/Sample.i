@@ -421,6 +421,11 @@ Sample __truediv__(const Point & v) { return (*self) / v; }
 Sample __truediv__(const SquareMatrix & m) { return (*self) / m; }
 #endif
 
+Sample __rmul__(Scalar s)
+{
+  return s * (*self);
+}
+
 } // %extend
 } // namespace OT
 

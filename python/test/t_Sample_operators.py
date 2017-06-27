@@ -44,6 +44,7 @@ t = ot.Point(2, 5.0)
 print('sample5 =', sample5)
 
 print('sample*2:', sample5 * 2.)
+print('2*sample:', 2.0 * sample5)
 print('sample/2:', sample5 / 2.)
 
 print('sample*v:', sample5 * v)
