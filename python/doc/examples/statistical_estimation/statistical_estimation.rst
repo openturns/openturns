@@ -27,3 +27,4 @@ Statistical estimation
     kendallplot_test.ipynb
     visualize_copula_validation.ipynb
     estimate_arma.ipynb
+    linearmodel.ipynb
