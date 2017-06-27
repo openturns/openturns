@@ -24,4 +24,5 @@ Statistical estimation
     andersondarling_test.ipynb
     estimate_copula.ipynb
     estimate_non_parametric_copula.ipynb
+    visualize_copula_validation.ipynb
     estimate_arma.ipynb
