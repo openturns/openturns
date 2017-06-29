@@ -493,10 +493,12 @@ String SampleImplementation::streamToRFormat() const
   oss.setPrecision(16);
   oss << "matrix(c(";
   String separator("");
+  UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
     {
-      const Scalar value = operator[](i)[j];
+      const Scalar value = data_[index];
+      ++index;
       const Bool isNaN = value != value;
       oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
