@@ -1,0 +1,18 @@
+projection= class=KarhunenLoeveProjection name=Unnamed input description=[v0] output description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] number of calls=0
+projection input description= [v0]
+projection output description= [xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9]#10
+projection spatial dimension= 1
+projection input dimension= 1
+projection output dimension= 10
+field= 0 : [ -1           1.19752    ]
+1 : [ -0.777778   -0.115609   ]
+2 : [ -0.555556    0.0950639  ]
+3 : [ -0.333333    0.0128352  ]
+4 : [ -0.111111    0.0605245  ]
+5 : [  0.111111    0.00265967 ]
+6 : [  0.333333    0.0563444  ]
+7 : [  0.555556   -0.0116735  ]
+8 : [  0.777778    0.0548699  ]
+9 : [  1          -0.0247796  ]
+point= [0.0932294,0.160971,0.257988,0.371718,0.499584,0.641678,0.79533,0.948199,1.07082,1.1121]#10
+called  1  times

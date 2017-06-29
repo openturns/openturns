@@ -2,9 +2,9 @@
 "Computation of Karhunen-Loeve decomposition using Quadrature approximation.
 
 Available constructors:
-    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, experiment, basis, basisSize, mustScale, threshold*)
+    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, experiment, basis, basisSize, mustScale, s*)
 
-    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, marginalDegree, threshold*)
+    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, marginalDegree, s*)
 
 Parameters
 ----------
@@ -16,15 +16,14 @@ experiment : :class:`~openturns.WeightedExperiment`
     The points and weights used in the quadrature approximation.
 basis : :class:`~openturns.Basis`
     The basis in wich the eigenfunctions are projected.
-basisSize : integer
+basisSize : int
     The number of elements of the basis considered.
-marginalDegree : integer
+marginalDegree : int
     The maximum degree to take into account in the tensorized Legendre basis.
 mustScale : boolean
     Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not.
-threshold : float
-    The minimal relative amplitude of the eigenvalues to consider in
-    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
+s : float, :math:`\geq0`
+    The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
 
 Notes
 -----
@@ -54,7 +53,7 @@ The normalisation constraint :math:`\|\vect{\varphi}_k\|^2_{L^2(\cD, \Rset^d)}=1
       \Tr{\vect{\Phi}} \,\Tr{\mat{\Theta}} \,\mat{W}\, \mat{\Theta} \,\vect{\Phi}=\mat{I}
 
 
-The  **Galerkin** approach leads to the following generalized eigen value problem:
+The  **Galerkin** approach leads to the following generalized eigenvalue problem:
 
 .. math::
     :label: EqFinQuadGalerkin
@@ -63,7 +62,7 @@ The  **Galerkin** approach leads to the following generalized eigen value proble
 
 where :math:`\Tr{\mat{\Theta}}\, \mat{W} \,\mat{C} \, \mat{W}\, \mat{\Theta}` and :math:`\Tr{\mat{\Theta}}\, \mat{W}\, \mat{\Theta}\in \cM_{Pd,Pd}(\Rset)`.
 
-The  **collocation** approach leads to the following generalized eigen value problem:
+The  **collocation** approach leads to the following generalized eigenvalue problem:
 
 .. math::
     :label: EqFinQuadCollocation
@@ -83,7 +82,7 @@ Discretize the domain :math:`\cD` and create a covariance model:
 
 >>> import openturns as ot
 >>> domain = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
->>> threshold = 0.01
+>>> s = 0.01
 >>> model = ot.AbsoluteExponential([1.0]*2)
 
 Give the basis used to decompose the eigenfunctions: 
@@ -93,31 +92,26 @@ here, the 10 first Legendre polynomials family:
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
 >>> basisSize = 10
 
-Create the weighted experiment of the quadrature approximation: 
-
-here, a Monte Carlo experiment from the measure orthogonal wrt the Legendre polynomials family:
+Create the weighted experiment of the quadrature approximation: here, a Monte Carlo experiment from the measure orthogonal wrt the Legendre polynomials family:
 
 >>> experiment = ot.MonteCarloExperiment(basis.getMeasure(), 1000)
 
 Create the Karhunen-Loeve Quadrature algorithm:
 
->>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, model, experiment, basis, basisSize, True, threshold)"
+>>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, model, experiment, basis, basisSize, True, s)
+
+Run it!
+
+>>> algorithm.run()
+>>> result = algorithm.getResult()"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::run
 "Computation of the eigenvalues and eigenfunctions values at the quadrature points.
 
-Examples
---------
->>> import openturns as ot
->>> domain = ot.Interval([-1.0]*2, [1.0]*2)
->>> threshold = 0.01
->>> model = ot.AbsoluteExponential([1.0]*2)
->>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
->>> experiment = ot.MonteCarloExperiment(basis.getMeasure(), 1000)
->>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, model, experiment, basis, 10, True, threshold)
->>> algorithm.run()
->>> result = algorithm.getResult()"
+Notes
+-----
+Runs the algorithm and creates the result structure :class:`~openturns.KarhunenLoeveResult`."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getDomain
@@ -127,3 +121,41 @@ Returns
 -------
 domain : :class:`~openturns.Domain`
 The domain  :math:`\cD_N` that discretizes the domin :math:`\cD`."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getBasis
+"Accessor to the functional basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The basis in wich the eigenfunctions are projected."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getBasisSize
+"Accessor to the number of elements in the functional basis.
+
+Returns
+-------
+basisSize : int
+    The number of elements of the functional basis considered.
+    The basis in wich the eigenfunctions are projected."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getExperiment
+"Accessor to the points and weights of the quadrature approximation.
+
+Returns
+-------
+experiment : :class:`~openturns.WeightedExperiment`
+    The points and weights used in the quadrature approximation."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KarhunenLoeveQuadratureAlgorithm::getMustScale
+"Accessor to scale option.
+
+Returns
+-------
+mustScale : boolean
+    Flag to tell if the bounding box of the weighted experiment and the domain have to be maped or not."
+

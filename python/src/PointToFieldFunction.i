@@ -91,32 +91,48 @@ class OpenTURNSPythonPointToFieldFunction(object):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
-    s : positive integer
-        the spatial dimension
+    inputDim : positive int
+        Dimension of the input field values d
+    outputDim : positive int
+        Dimension of the output vector d'
+    spatialDim : positive integer
+        Dimension of the input domain n
 
     Notes
     -----
     You have to overload the function:
         _exec(X): single evaluation, X is a :class:`~openturns.Field`,
         returns a :class:`~openturns.Field`
+
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> class FUNC(ot.OpenTURNSPythonPointToFieldFunction):
+    ...     def __init__(self):
+    ...         super(FUNC, self).__init__(2, 2)
+    ...         self.setInputDescription(['R', 'S'])
+    ...         self.setOutputDescription(['T', 'U'])
+    ...         self.mesh_ = ot.RegularGrid(0.0, 0.1, 11) 
+    ...     def _exec(self, X):
+    ...         size = self.mesh_.getVerticesNumber()
+    ...         values = [ot.Point(X)*i for i in range(size)]
+    ...         Y = ot.Field(self.mesh_, values)
+    ...         return Y
+    >>> F = FUNC()
     """
     def __init__(self, n=0, p=0, s=0):
         try:
             self.__n = int(n)
         except:
-            raise TypeError('n argument is not an integer.')
+            raise TypeError('inputDim argument is not an integer.')
         try:
             self.__p = int(p)
         except:
-            raise TypeError('p argument is not an integer.')
+            raise TypeError('outputDim argument is not an integer.')
         try:
             self.__s = int(s)
         except:
-            raise TypeError('s argument is not an integer.')
+            raise TypeError('spatialDim argument is not an integer.')
         self.__descIn = list(map(lambda i: 'x' + str(i), range(n)))
         self.__descOut = list(map(lambda i: 'y' + str(i), range(p)))
 
@@ -152,7 +168,18 @@ class OpenTURNSPythonPointToFieldFunction(object):
         return self.__str__()
 
     def __call__(self, X):
-        Y = self._exec(X)
+        Y = None
+        try:
+            pt = openturns.typ.Point(X)
+        except:
+            try:
+                sp = openturns.typ.Sample(X)
+            except:
+                raise TypeError('Expect a Point or a Sample as argument')
+            else:
+                Y = self._exec_sample(sp)
+        else:
+            Y = self._exec(pt)
         return Y
 
     def _exec(self, X):
@@ -176,20 +203,34 @@ class PythonPointToFieldFunction(PointToFieldFunction):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
-    s : positive int
-        the spatial dimension
+    inputDim : positive int
+        Dimension of the input field values d
+    outputDim : positive int
+        Dimension of the output vector d'
+    spatialDim : positive integer
+        Dimension of the input domain n
     func : a callable python object
         called on a :class:`~openturns.Field` object.
         Returns a :class:`~openturns.Field`.
         Default is None.
 
-    Notes
-    -----
-    func 
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> def  myPyFunc(X):
+    ...     mesh = ot.RegularGrid(0.0, 0.1, 11)
+    ...     size = 11
+    ...     values = [ot.Point(X)*i for i in range(size)]
+    ...     Y = ot.Field(mesh, values)
+    ...     return Y
+    >>> inputDim = 2
+    >>> outputDim = 2
+    >>> spatialDim = 1
+    >>> myFunc = ot.PythonPointToFieldFunction(inputDim, outputDim, spatialDim, myPyFunc)
+
+    Evaluation on a vector:
+
+    >>> Yfield = myFunc([1.1, 2.2])
     """
     def __new__(self, n, p, s, func=None):
         if func == None:

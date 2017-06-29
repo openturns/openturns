@@ -83,7 +83,7 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 
 %pythoncode %{
 # We have to make sure the submodule is loaded with absolute path
-import openturns.typ
+import openturns.func
 
 class OpenTURNSPythonFieldFunction(object):
     """
@@ -91,32 +91,51 @@ class OpenTURNSPythonFieldFunction(object):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
-    s : positive integer
-        the spatial dimension
+    spatialDim : int, :math:`\geq 1`
+    Dimension :math:`n` of the domain :math:`\cD`
+inputDim : int, :math:`\geq 1`
+    Dimension :math:`d` of the values of the input field
+outputDim : int, :math:`\geq 1`
+    Dimension :math:`d'` of the values of the output field 
 
     Notes
     -----
     You have to overload the function:
         _exec(X): single evaluation, X is a :class:`~openturns.Field`,
         returns a :class:`~openturns.Field`
+
+    Examples
+    --------
+    >>> import openturns as ot
+    
+    >>> class FUNC(ot.OpenTURNSPythonFieldFunction):
+    ...     def __init__(self):
+    ...         # first argument:
+    ...         super(FUNC, self).__init__(2, 2, 1)
+    ...         self.setInputDescription(['R', 'S'])
+    ...         self.setOutputDescription(['T', 'U'])
+    ...     def _exec(self, X):
+    ...         Y = ot.Field(X.getMesh(), X.getValues() * ([2.0]*X.getValues().getDimension()))
+    ...         return Y
+    >>> F = FUNC()
+
+    Create the associated FieldFunction: 
+
+    >>> myFunc = ot.FieldFunction(F)
     """
     def __init__(self, n=0, p=0, s=0):
         try:
             self.__n = int(n)
         except:
-            raise TypeError('n argument is not an integer.')
+            raise TypeError('inputDim argument is not an integer.')
         try:
             self.__p = int(p)
         except:
-            raise TypeError('p argument is not an integer.')
+            raise TypeError('outputDim argument is not an integer.')
         try:
             self.__s = int(s)
         except:
-            raise TypeError('s argument is not an integer.')
+            raise TypeError('spatialDim argument is not an integer.')
         self.__descIn = list(map(lambda i: 'x' + str(i), range(n)))
         self.__descOut = list(map(lambda i: 'y' + str(i), range(p)))
 
@@ -152,7 +171,18 @@ class OpenTURNSPythonFieldFunction(object):
         return self.__str__()
 
     def __call__(self, X):
-        Y = self._exec(X)
+        Y = None
+        try:
+            fld = Field(X)
+        except:
+            try:
+                ps = ProcessSample(X)
+            except:
+                raise TypeError('Expect a Field or a ProcessSample as argument')
+            else:
+                Y = self._exec_sample(ps)
+        else:
+            Y = self._exec(fld)
         return Y
 
     def _exec(self, X):
@@ -176,20 +206,30 @@ class PythonFieldFunction(FieldFunction):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
-    s : positive int
-        the spatial dimension
+    inputDim : int, :math:`\geq 1`
+        Dimension :math:`d` of the values of the input field
+    outputDim : int, :math:`\geq 1`
+        Dimension :math:`d'` of the values of the output field 
+    spatialDim : int, :math:`\geq 1`
+        Dimension :math:`n` of the domain :math:`\cD`
     func : a callable python object
         called on a :class:`~openturns.Field` object.
         Returns a :class:`~openturns.Field`.
         Default is None.
 
-    Notes
-    -----
-    func 
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> def myPyFunc(X):
+    ...     mesh = X.getMesh()
+    ...     values = X.getValues() * ([2.0]*X.getValues().getDimension())
+    ...     values.setDescription(ot.Description.BuildDefault(values.getDimension(), 'Y'))
+    ...     Y = ot.Field(mesh, values)
+    ...     return Y
+    >>> inputDim = 2
+    >>> outputDim = 2
+    >>> spatialDim = 1
+    >>> myFunc = ot.PythonFieldFunction(inputDim, outputDim, spatialDim, myPyFunc)
     """
     def __new__(self, n, p, s, func=None):
         if func == None:

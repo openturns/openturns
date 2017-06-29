@@ -5,10 +5,27 @@
 === Library ===
 
 ==== Major changes ====
+ * It is now possible to define numerical model acting on either Point or Field to produce either Point or Field. The Python binding has been extended to allow the user to define such functions based on either a Python function or a Python class. All the possible compositions have been implemented.
 
 ==== New classes ====
  * ProbabilitySimulation
  * SobolIndicesExperiment
+ * VertexFunction
+ * FieldToPointFunction
+ * FieldToPointFunctionImplementation
+ * PythonFieldToPointFunction
+ * OpenTURNSPythonFieldToPointFunction
+ * PointToFieldFunction
+ * PointToFieldFunctionImplementation
+ * PythonPointToFieldFunction
+ * OpenTURNSPythonPointToFieldFunction
+ * KarhunenLoeveLifting
+ * KarhunenLoeveProjection
+ * PointToPointEvaluation
+ * PointToPointConnection
+ * PointToFieldConnection
+ * FieldToFieldConnection
+ * FieldToPointConnection
 
 ==== API changes ====
  * Removed deprecated LAR class

@@ -83,10 +83,10 @@ class OpenTURNSPythonFunction(object):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
+    inputDim : positive int
+        Dimension of the input vector
+    outputDim : positive int
+        Dimension of the output vector
 
     Notes
     -----
@@ -103,16 +103,33 @@ class OpenTURNSPythonFunction(object):
 
         _hessian(X): hessian, X is a sequence of float,
         returns a 3-d sequence of float
+
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> class FUNC(OpenTURNSPythonFunction):
+    ...     def __init__(self):
+    ...         super(FUNC, self).__init__(2, 1)
+    ...         self.setInputDescription(['R', 'S'])
+    ...         self.setOutputDescription(['T'])
+    ...     def _exec(self, X):
+    ...         Y = [X[0] + X[1]]
+    ...         return Y
+    >>> F = FUNC()
+
+    Create the associated Function:
+
+    >>> myFunc = Function(F)
     """
     def __init__(self, n=0, p=0):
         try:
             self.__n = int(n)
         except:
-            raise TypeError('n argument is not an integer.')
+            raise TypeError('inputDim argument is not an integer.')
         try:
             self.__p = int(p)
         except:
-            raise TypeError('p argument is not an integer.')
+            raise TypeError('outputDim argument is not an integer.')
         self.__descIn = list(map(lambda i: 'x' + str(i), range(n)))
         self.__descOut = list(map(lambda i: 'y' + str(i), range(p)))
 
@@ -212,10 +229,10 @@ class PythonFunction(Function):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
+    inputDim : positive int
+        Dimension of the input vector
+    outputDim : positive int
+        Dimension of the output vector
     func : a callable python object
         called on a single point.
         Default is None.

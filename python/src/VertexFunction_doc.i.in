@@ -1,39 +1,46 @@
 %feature("docstring") OT::VertexFunction
-"Temporal function.
+"Function mapping a field to a field.
 
     VertexFunction(*h*)
 
 Parameters
 ----------
 h : :class:`~openturns.Function`
-    Function :math:`h: \Rset^n \mapsto \Rset^d`.
+    Function  :math:`h: \Rset^n \rightarrow \Rset^{d'}`.
 
 Notes
 -----
-A vertex function
-:math:`f_{temp}: \cD \times \Rset^d \mapsto \cD \times \Rset^q`, with
-:math:`\cD \in \Rset^n`, is a particular
-:class:`field function <openturns.FieldFunction>` that lets invariant
-the mesh of a field and defined by a function
-:math:`h : \Rset^n \times \Rset^d \mapsto \Rset^q` such that:
+Vertex functions act on fields to produce fields such that:
 
 .. math::
 
-  f_{temp}(\vect{t}, \vect{x})=(\vect{t}, h(\vect{t},\vect{x}))
+    f: \left| \begin{array}{rcl}
+               \cM_N \times (\Rset^d)^N & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
+                F & \mapsto & F'
+              \end{array} \right.
 
-Let's note that the input dimension of :math:`f_{temp}` still design the
-dimension of :math:`\vect{x}`: :math:`d`. Its output dimension is equal to
-:math:`q`.
+with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{t}_i, \vect{v}'_i)_{1 \leq i \leq N}` and :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}`.
 
+A vertex function keeps the mesh unchanged: the input mesh is equal to the output mesh.
+
+The  field :math:`F'` is defined by the function :math:`h: \Rset^n \rightarrow \Rset^{d'}`:
+
+.. math::
+
+    \forall \vect{t}_i \in \cM_N, \quad   \vect{v}'_i = h(\vect{t}_i)
+ 
+
+When :math:`h` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.VertexFunction` from a  :class:`~openturns.Study`.
+  
 See also
 --------
-ValueFunction
+FieldFunction, ValueFunction, VertexValueFunction
 
 Examples
 --------
 >>> import openturns as ot
 
-Create a function :math:`h : \Rset^n \times \Rset^d \mapsto \Rset^q` such as:
+Create a function :math:`h : \Rset \rightarrow \Rset` such that:
 
 .. math::
 
@@ -75,13 +82,12 @@ Convert :math:`h` into a vertex function:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::VertexFunction::getFunction
-"Get the function :math:`h` defining the vertex function.
+"Get the function :math:`h`.
 
 Returns
 -------
 h : :class:`~openturns.Function`
-    The function defining the vertex function
-    :math:`h: \Rset^n \mapsto \Rset^d`.
+    Function :math:`h: \Rset^n \rightarrow \Rset^{d'}`.
 
 Examples
 --------
@@ -91,3 +97,32 @@ Examples
 >>> myVertexFunction = ot.VertexFunction(h)
 >>> print(myVertexFunction.getFunction())
 [t]->[t^2]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VertexFunction::getMarginal
+"Get the marginal(s) at given indice(s).
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d'`
+    Indice(s) of the marginal(s) to be extracted.
+
+Returns
+-------
+function : :class:`~openturns.VertexFunction`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VertexFunction::getOutputMesh
+"Get the mesh associated to the output domain.
+
+Returns
+-------
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh which is equal to the input one: :math:`\cM_{N}`."
+
+
+

@@ -1,46 +1,51 @@
 %feature("docstring") OT::VertexValueFunction
-"Temporal function.
+"Function mapping a field to a field.
 
 Available constructors:
-    VertexValueFunction(*meshDimension=1*)
+    VertexValueFunction(*spatialDim=1*)
 
-    VertexValueFunction(*h, meshDimension=1*)
+    VertexValueFunction(*h, spatialDim=1*)
 
 Parameters
 ----------
-h : :class:`~openturns.Function`
-    Function :math:`h: \Rset^n \times \Rset^d \mapsto \Rset^q`.
-meshDimension : int, :math:`n \geq 0`
-    Dimension of the vertices of the mesh :math:`\cM`. This data is required
-    for tests on the compatibility of dimension when a composite process is
-    created using the temporal function.
+l : :class:`~openturns.Function`
+    Function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
+spatialDim : int, :math:`\geq 1`
+    Dimension :math:`n` of the domain :math:`\cD`
 
 Notes
 -----
-A temporal function
-:math:`f_{temp}: \cD \times \Rset^d \mapsto \cD \times \Rset^q`, with
-:math:`\cD \in \Rset^n`, is a particular
-:class:`field function <openturns.FieldFunction>` that lets invariant
-the mesh of a field and defined by a function
-:math:`h : \Rset^n \times \Rset^d \mapsto \Rset^q` such that:
+Vertex value functions act on fields to produce fields such that:
 
 .. math::
 
-  f_{temp}(\vect{t}, \vect{x})=(\vect{t}, h(\vect{t},\vect{x}))
+    f: \left| \begin{array}{rcl}
+               \cM_N \times (\Rset^d)^N & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
+                F & \mapsto & F'
+              \end{array} \right.
 
-Let's note that the input dimension of :math:`f_{temp}` still design the
-dimension of :math:`\vect{x}`: :math:`d`. Its output dimension is equal to
-:math:`q`.
+with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{t}_i, \vect{v}'_i)_{1 \leq i \leq N}` and :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}`.
+
+A vertex value function keeps the mesh unchanged: the input mesh is equal to the output mesh.
+
+The  field :math:`F'` is defined by the function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`:
+
+.. math::
+
+    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = \ell(\vect{t}_i, \vect{v}_i)
+ 
+When :math:`\ell` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.VertexValueFunction` from a  :class:`~openturns.Study`.
+
 
 See also
 --------
-ValueFunction
+FieldFunction, ValueFunction, VertexValueFunction
 
 Examples
 --------
 >>> import openturns as ot
 
-Create a function :math:`h : \Rset^n \times \Rset^d \mapsto \Rset^q` such as:
+Create a function :math:`\ell : \Rset \times \Rset \rightarrow \Rset` such as:
 
 .. math::
 
@@ -51,8 +56,7 @@ Create a function :math:`h : \Rset^n \times \Rset^d \mapsto \Rset^q` such as:
 
 >>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 
-Convert :math:`h` into a temporal function with :math:`n` the dimension of the
-mesh of the field on which :math:`h` will be applied:
+Convert :math:`h` into a vertex value function with :math:`n=1`:
 
 >>> n = 1
 >>> myVertexValueFunction = ot.VertexValueFunction(h, n)
@@ -82,14 +86,13 @@ mesh of the field on which :math:`h` will be applied:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::VertexValueFunction::getEvaluation
-"Get the evaluation function of :math:`h`.
+%feature("docstring") OT::VertexValueFunction::getFunction
+"Get the function of :math:`\ell`.
 
 Returns
 -------
-h : :class:`~openturns.EvaluationImplementation`
-    Evaluation function of
-    :math:`h: \Rset^n \times \Rset^d \mapsto \Rset^q`.
+l : :class:`~openturns.Function`
+   Function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
 
 Examples
 --------
@@ -97,5 +100,37 @@ Examples
 >>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 >>> n = 1
 >>> myVertexValueFunction = ot.ValueFunction(h, n)
->>> print(myVertexValueFunction.getEvaluation())
+>>> print(myVertexValueFunction.getFunction())
 [t,x]->[x + t^2]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VertexValueFunction::getMarginal
+"Get the marginal(s) at given indice(s).
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d'`
+    Indice(s) of the marginal(s) to be extracted.
+
+Returns
+-------
+function : :class:`~openturns.VertexValueFunction`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VertexValueFunction::getOutputMesh
+"Get the mesh associated to the output domain.
+
+Returns
+-------
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh which is equal to the input one: :math:`\cM_{N}`."
+
+
+
+
+

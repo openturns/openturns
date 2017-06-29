@@ -91,18 +91,32 @@ class OpenTURNSPythonFieldToPointFunction(object):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
-    s : positive integer
-        the spatial dimension
+    inputDim : positive int
+        Dimension of the input field values d
+    outputDim : positive int
+        Dimension of the output vector d'
+    spatialDim : positive integer
+        Dimension of the input domain n
 
     Notes
     -----
     You have to overload the function:
         _exec(X): single evaluation, X is a :class:`~openturns.Field`,
         returns a :class:`~openturns.Field`
+
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
+    ...    def __init__(self):
+    ...         # first argument:
+    ...         super(FUNC, self).__init__(2, 2, 1)
+    ...         self.setInputDescription(['R', 'S'])
+    ...         self.setOutputDescription(['T', 'U'])
+    ...    def _exec(self, X):
+    ...         Y = X.getValues().computeMean()
+    ...         return Y
+    >>> F = FUNC()
     """
     def __init__(self, n=0, p=0, s=0):
         try:
@@ -152,7 +166,18 @@ class OpenTURNSPythonFieldToPointFunction(object):
         return self.__str__()
 
     def __call__(self, X):
-        Y = self._exec(X)
+        Y = None
+        try:
+            fld = openturns.func.Field(X)
+        except:
+            try:
+                ps = openturns.func.ProcessSample(X)
+            except:
+                raise TypeError('Expect a Field or a ProcessSample as argument')
+            else:
+                Y = self._exec_sample(ps)
+        else:
+            Y = self._exec(fld)
         return Y
 
     def _exec(self, X):
@@ -174,20 +199,27 @@ class PythonFieldToPointFunction(FieldToPointFunction):
 
     Parameters
     ----------
-    n : positive int
-        the input dimension
-    p : positive int
-        the output dimension
-    s : positive int
-        the spatial dimension
+    inputDim : positive int
+        Dimension of the input field values d
+    outputDim : positive int
+        Dimension of the output vector d'
+    spatialDim : positive integer
+        Dimension of the input domain n
     func : a callable python object
         called on a :class:`~openturns.Field` object.
         Returns a :class:`~openturns.Field`.
         Default is None.
 
-    Notes
-    -----
-    func 
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> def myPyFunc(X):
+    ...     Y = X.getValues().computeMean()
+    ...     return Y
+    >>> inputDim = 2
+    >>> outputDim = 2
+    >>> spatialDim = 1
+    >>> myFunc = ot.PythonFieldToPointFunction(inputDim,outputDim,spatialDim,myPyFunc)
     """
     def __new__(self, n, p, s, func=None):
         if func == None:

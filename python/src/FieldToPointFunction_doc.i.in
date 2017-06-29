@@ -16,3 +16,7 @@ OT_FieldToPointFunction_getSpatialDimension_doc
 OT_FieldToPointFunction_getOutputDescription_doc
 %feature("docstring") OT::FieldToPointFunction::getOutputDimension
 OT_FieldToPointFunction_getOutputDimension_doc
+%feature("docstring") OT::FieldToPointFunction::setInputDescription
+OT_FieldToPointFunction_setInputDescription_doc
+%feature("docstring") OT::FieldToPointFunction::setOutputDescription
+OT_FieldToPointFunction_setOutputDescription_doc

@@ -2,11 +2,11 @@
 "Computation of Karhunen-Loeve decomposition using SVD approximation.
 
 Available constructors:
-    KarhunenLoeveSVDAlgorithm(*sample, threshold, centeredFlag*)
+    KarhunenLoeveSVDAlgorithm(*sample, s, centeredFlag*)
 
-    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, threshold, centeredFlag*)
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, s, centeredFlag*)
 
-    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, sampleWeights, threshold, centeredFlag*)
+    KarhunenLoeveSVDAlgorithm(*sample, verticesWeights, sampleWeights, s, centeredFlag*)
 
 Parameters
 ----------
@@ -16,9 +16,8 @@ verticesWeights : sequence of float
     The weights associated to the vertices of the mesh defining the sample.
 sampleWeights : sequence of float
     The weights associated to the fields of the sample.
-threshold : float
-    The minimal relative amplitude of the eigenvalues to consider in
-    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
+s : float, :math:`\geq0`
+    The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
 centeredFlag : logical
     Flag to tell if the sample is drawn according to a centered
     process or if it has to be centered using the empirical mean. The
@@ -62,9 +61,9 @@ where  we have :math:`\mat{U} \in \mathcal{M}_{dL,\tilde{K}}(\Rset)`, :math:`\ma
     - :math:`\Tr{\mat{U}}\mat{U} = \mat{I}_{\tilde{K}}` ,
     - :math:`\mat{\Sigma} = diag(\sigma_1, \dots, \sigma_{\tilde{K}})`.
 
-Then the columns of :math:`\mat{U}` are the eigen vectors of :math:`\mat{Y}\Tr{\mat{Y}}` associated to the eigen values :math:`\sigma_k^2`.
+Then the columns of :math:`\mat{U}` are the eigenvectors of :math:`\mat{Y}\Tr{\mat{Y}}` associated to the eigenvalues :math:`\sigma_k^2`.
 
-We deduce the modes and eigen values of the Fredholm problem for :math:`k \leq \tilde{K}`:
+We deduce the modes and eigenvalues of the Fredholm problem for :math:`k \leq \tilde{K}`:
 
 .. math::
 
@@ -88,26 +87,25 @@ Create a Karhunen-Loeve SVD algorithm:
 
 >>> import openturns as ot
 >>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
->>> threshold = 0.01
+>>> s = 0.01
 >>> model = ot.AbsoluteExponential([1.0]*2)
 >>> sample = ot.GaussianProcess(model, mesh).getSample(8)
->>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, threshold)"
+>>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, s)
+
+Run it!
+
+>>> algorithm.run()
+>>> result = algorithm.getResult()"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KarhunenLoeveSVDAlgorithm::run
-"Computation of the eigenvalues and eigen functions values at nodes.
+"Computation of the eigenvalues and eigenfunctions values at nodes.
 
-Examples
---------
->>> import openturns as ot
->>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
->>> threshold = 0.01
->>> model = ot.AbsoluteExponential([1.0]*2)
->>> sample = ot.GaussianProcess(model, mesh).getSample(8)
->>> algorithm = ot.KarhunenLoeveSVDAlgorithm(sample, threshold)
->>> algorithm.run()
->>> result = algorithm.getResult()"
+Notes
+-----
+Runs the algorithm and creates the result structure :class:`~openturns.KarhunenLoeveResult`.
+"
 
 // ---------------------------------------------------------------------
 
@@ -120,14 +118,34 @@ sample : :class:`~openturns.ProcessSample`
     The process sample containing the observations of the process.
 "
 
+
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getWeights
-"Accessor to the weights.
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getSampleWeights
+"Accessor to the weights of the sample.
 
 Returns
 -------
 weights : :class:`~openturns.Point`
-    The points defining the quadrature rule supported by the mesh of
-    the sample.
+    The weights associated to the fields of the sample.
+
+Notes
+-----
+The fields might not have the same weight, for example if they come from importance sampling.
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveSVDAlgorithm::getVerticesWeights
+"Accessor to the weights of the vertices.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The weights associated to the vertices of the mesh defining the sample field.
+
+Notes
+-----
+The vertices might not have the same weight, for example if the mesh is not regular.
 "

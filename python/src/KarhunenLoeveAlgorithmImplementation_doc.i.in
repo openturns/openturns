@@ -1,15 +1,13 @@
 %define OT_KarhunenLoeveAlgorithm_doc
 "Base class for Karhunen Loeve algorithms.
 
-Available constructors:
-    KarhunenLoeveAlgorithm(*covModel, s*)
-
 Parameters
 ----------
 covModel : :class:`~openturns.CovarianceModel`
     The covariance model.
-s : float, positive
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+s : float, :math:`\geq0`
+    The minimal relative amplitude of the eigenvalues to consider in
+    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
 
 Notes
 -----
@@ -36,7 +34,13 @@ The Mercer theorem shows that the covariance function  :math:`C` writes:
     \mat{C}(\vect{s},\vect{t}) = \sum_{k=1}^{+\infty} \lambda_k \vect{\varphi}_k(\vect{s}) \Tr{\vect{\varphi}}_k(\vect{t}) \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
 
-OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that :math:`\lambda_k \geq s \lambda_1`.
+OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that: 
+
+.. math::
+    :label: thresholdK
+
+    K = \max \{k \in \Nset \, | \, \lambda_k < s \sum_{i=1}^{k-1} \}
+
 
 To solve :eq:`fredholm`, we use the functional basis :math:`(\theta_p)_{1 \leq p \leq P}` of :math:`L^2(\cD, \Rset)` with :math:`P` elements defined on :math:`\cD`. We search the solutions of type:
 
@@ -99,16 +103,16 @@ OT_KarhunenLoeveAlgorithm_doc
 // ---------------------------------------------------------------------
 
 %define OT_KarhunenLoeveAlgorithm_getThreshold_doc
-"Accessor to the limit ratio on eigenvalues.
+"Accessor to the threshold used to select the most significant eigenmodes.
 
 Returns
 -------
 s : float, positive
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+    The threshold :math:`s`. 
 
 Notes
 -----
-OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  at the highest index :math:`K` such that :math:`\lambda_K \geq s \lambda_1`."
+OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  at the index :math:`K` defined in :eq:`thresholdK`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::getThreshold
 OT_KarhunenLoeveAlgorithm_getThreshold_doc
@@ -133,12 +137,8 @@ OT_KarhunenLoeveAlgorithm_getCovarianceModel_doc
 
 Parameters
 ----------
-s : float, positive
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
-
-Notes
------
-OpenTURNS truncates  the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` at the highest index :math:`K` such that :math:`\lambda_K \geq s \lambda_1`."
+s : float, :math:`\geq 0`
+    The threshold :math:`s` defined in :eq:`thresholdK`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::setThreshold
 OT_KarhunenLoeveAlgorithm_setThreshold_doc

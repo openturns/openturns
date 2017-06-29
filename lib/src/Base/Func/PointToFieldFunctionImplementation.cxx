@@ -154,13 +154,13 @@ ProcessSample PointToFieldFunctionImplementation::operator() (const Sample & inS
 /* Accessor for input point dimension */
 UnsignedInteger PointToFieldFunctionImplementation::getInputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::getInputDimension()";
+  return inputDimension_;
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger PointToFieldFunctionImplementation::getOutputDimension() const
 {
-  throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::getOutputDimension()";
+  return outputDimension_;
 }
 
 /* Number of calls to the dynamical function */

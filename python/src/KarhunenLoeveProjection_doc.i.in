@@ -1,200 +1,32 @@
-%define OT_KarhunenLoeveProjection_doc
-"Field function.
-
-Available constructors:
-    KarhunenLoeveProjection(*meshDimension=1*)
-
-    KarhunenLoeveProjection(*function, meshDimension=1*)
+%feature("docstring")  OT::KarhunenLoeveProjection
+"Function dedicated to the projection of fields on a Karhunen Loeve basis.
 
 Parameters
 ----------
-function : :class:`~openturns.Function`
-    Function :math:`g: \Rset^d \mapsto \Rset^q` used to define a
-    :class:`~openturns.ValueFunction` object.
-meshDimension : int, :math:`n \geq 0`
-    Dimension of the mesh :math:`\cM`.
+KLResult : :class:`~openturns.KarhunenLoeveResult`
+    The result structure created by a :class:`~openturns.KarhunenLoeveAlgorithm`
 
 Notes
 -----
-Field functions are functions being able to act on fields.
-Two particular field functions are defined:
-the :class:`spatial function <openturns.ValueFunction>` and
-the :class:`temporal function <openturns.VertexValueFunction>`.
+The class :class:`~openturns.KarhunenLoeveProjection` is a specific function  :class:`~openturns.FieldToPointFunction` dedicated to the projection of fields on a Karhunen Loeve basis.
 
+See the documentation of :class:`~openturns.KarhunenLoeveResult` to get information on the projection function.
 
-A field function
-:math:`f_{dyn}:\cD \times \Rset^d \mapsto \cD' \times \Rset^q`
-where :math:`\cD \in \Rset^n` and :math:`\cD' \in \Rset^p` is defined by:
-
-.. math::
-
-    f_{dyn}(\vect{t}, \vect{x}) = (t'(\vect{t}), v'(\vect{t}, \vect{x}))
-
-with :math:`t': \cD \mapsto \cD'` and
-:math:`v': \cD \times \Rset^d \mapsto \Rset^q`.
-
-A field function :math:`f_{dyn}` transforms a multivariate stochastic
-process:
-
-.. math::
-
-    X: \Omega \times \cD \mapsto \Rset^d
-
-where :math:`\cD \in \Rset^n` is discretized according to the mesh :math:`\cM`
-into the multivariate stochastic process:
-
-.. math::
-
-    Y=f_{dyn}(X)
-
-such that:
-
-.. math::
-
-    Y: \Omega \times \cD' \mapsto \Rset^q
-
-where the mesh :math:`\cD' \in \Rset^p`  is discretized according to the
-:math:`\cM'`.
-
-A field function :math:`f_{dyn}` also acts on fields and produces fields of
-possibly different dimension (:math:`q\neq d`) and mesh (:math:`\cD \neq \cD'`
-or :math:`\cM \neq \cM'`).
-
-OpenTURNS only proposes field functions where :math:`\cD'=\cD` and
-:math:`\cM'=\cM` which means that :math:`t'=Id` through the *spatial function*
-and the *temporal function*. It follows that the process :math:`Y` shares the
-same mesh with :math:`X`, only its values have changed."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation
-OT_KarhunenLoeveProjection_doc
+The function acts on :class:`~openturns.Fields` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with a spatial dimension equal to :math:`n`."
 
 // ---------------------------------------------------------------------
 
-%define OT_KarhunenLoeveProjection_getCallsNumber_doc
-"Get the number of calls of a KarhunenLoeveProjection.
-
-Returns
--------
-callsNumber : int
-    Counts the number of times the KarhunenLoeveProjection has been called since its
-    creation."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getCallsNumber
-OT_KarhunenLoeveProjection_getCallsNumber_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_KarhunenLoeveProjection_getInputDescription_doc
-"Get the description of the inputs.
-
-Returns
--------
-inputDescription : :class:`~openturns.Description`
-    Describes the inputs of the function."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getInputDescription
-OT_KarhunenLoeveProjection_getInputDescription_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_KarhunenLoeveProjection_getInputDimension_doc
-"Get the dimension of the input.
-
-Returns
--------
-d : int
-    Input dimension :math:`d` of the function."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getInputDimension
-OT_KarhunenLoeveProjection_getInputDimension_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_KarhunenLoeveProjection_getMarginal_doc
+%feature("docstring") OT::KarhunenLoeveProjection::getMarginal
 "Get the marginal(s) at given indice(s).
 
 Parameters
 ----------
 i : int or list of ints, :math:`0 \leq i < d`
-    Indice(s) of the marginal(s) needed. :math:`d` is the dimension of the
-    KarhunenLoeveProjection.
+    Indice(s) of the marginal(s) to be extracted.
+    output vector.
 
 Returns
 -------
-fieldToPointFunction : :class:`~openturns.KarhunenLoeveProjection`
-    KarhunenLoeveProjection restricted to the concerned marginal(s) at the indice(s)
-    :math:`i` of the field function :math:`f_{dyn}`."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getMarginal
-OT_KarhunenLoeveProjection_getMarginal_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_KarhunenLoeveProjection_getOutputMesh_doc
-"Get the mesh associated to the output process.
-
-Returns
--------
-outputMesh : :class:`~openturns.Mesh`
-    The mesh of the output process."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getOutputMesh
-OT_KarhunenLoeveProjection_getOutputMesh_doc
-// ---------------------------------------------------------------------
-
-%define OT_KarhunenLoeveProjection_getSpatialDimension_doc
-"Get the dimension of the mesh.
-
-Returns
--------
-spatialDimension : int, :math:`n \geq 0`
-    Dimension of the mesh :math:`\cM`."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getSpatialDimension
-OT_KarhunenLoeveProjection_getSpatialDimension_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_KarhunenLoeveProjection_getOutputDescription_doc
-"Get the description of the outputs.
-
-Returns
--------
-outputDescription : :class:`~openturns.Description`
-    Describes the outputs of the function."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getOutputDescription
-OT_KarhunenLoeveProjection_getOutputDescription_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_KarhunenLoeveProjection_getOutputDimension_doc
-"Get the dimension of the output.
-
-Returns
--------
-q : int
-    Output dimension :math:`q` of the function."
-%enddef
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::getOutputDimension
-OT_KarhunenLoeveProjection_getOutputDimension_doc
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::setInputDescription
-"Set the description of the inputs.
-
-Parameters
-----------
-inputDescription : sequence of str
-    Describes the inputs of the function."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KarhunenLoeveProjectionImplementation::setOutputDescription
-"Set the description of the outputs.
-
-Parameters
-----------
-outputDescription : sequence of str
-    Describes the outputs of the function."
+function : :class:`~openturns.KarhunenLoeveProjection`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`."

@@ -61,6 +61,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
+  using PointToFieldFunctionImplementation::operator();
   virtual Field operator() (const Point & inP) const;
 
   /** Accessor for input point dimension */

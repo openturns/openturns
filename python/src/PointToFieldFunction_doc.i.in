@@ -16,3 +16,7 @@ OT_PointToFieldFunction_getOutputMesh_doc
 OT_PointToFieldFunction_getOutputDescription_doc
 %feature("docstring") OT::PointToFieldFunction::getOutputDimension
 OT_PointToFieldFunction_getOutputDimension_doc
+%feature("docstring") OT::PointToFieldFunction::setInputDescription
+OT_PointToFieldFunction_setInputDescription_doc
+%feature("docstring") OT::PointToFieldFunction::setOutputDescription
+OT_PointToFieldFunction_setOutputDescription_doc

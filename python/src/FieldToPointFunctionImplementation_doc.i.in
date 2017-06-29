@@ -1,69 +1,83 @@
 %define OT_FieldToPointFunction_doc
-"Field function.
+"Function mapping a field into a point.
 
 Available constructors:
-    FieldToPointFunction(*meshDimension=1*)
+    FieldToPointFunction(*spatialDim=0*)
 
-    FieldToPointFunction(*function, meshDimension=1*)
+    FieldToPointFunction(*spatialDim, inputDim, outputDim*)
+
+    FieldToPointFunction(*OTpythonFunc*)
 
 Parameters
 ----------
-function : :class:`~openturns.Function`
-    Function :math:`g: \Rset^d \mapsto \Rset^q` used to define a
-    :class:`~openturns.ValueFunction` object.
-meshDimension : int, :math:`n \geq 0`
-    Dimension of the mesh :math:`\cM`.
+spatialDim : int, :math:`\geq 1`
+    Dimension :math:`n` of the domain :math:`\cD`
+inputDim : int, :math:`\geq 1`
+    Dimension :math:`d` of the input field values
+outputDim : int, :math:`\geq 1`
+    Dimension :math:`d'` of the output vector 
+OTpythonFunc : :class:`~openturns.OpenTURNSPythonFieldToPointFunction`
+    The implementation of the function.
 
 Notes
 -----
-Field functions are functions being able to act on fields.
-Two particular field functions are defined:
-the :class:`spatial function <openturns.ValueFunction>` and
-the :class:`temporal function <openturns.VertexValueFunction>`.
-
-
-A field function
-:math:`f_{dyn}:\cD \times \Rset^d \mapsto \cD' \times \Rset^q`
-where :math:`\cD \in \Rset^n` and :math:`\cD' \in \Rset^p` is defined by:
+Field to point functions  act on fields to produce points:
 
 .. math::
 
-    f_{dyn}(\vect{t}, \vect{x}) = (t'(\vect{t}), v'(\vect{t}, \vect{x}))
+    f: \left| \begin{array}{rcl}
+                \cM_N \times (\Rset^d)^N & \rightarrow &\Rset^{d'} \\
+                F & \mapsto & \vect{v}'
+              \end{array} \right.
 
-with :math:`t': \cD \mapsto \cD'` and
-:math:`v': \cD \times \Rset^d \mapsto \Rset^q`.
+with  :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^n`.
 
-A field function :math:`f_{dyn}` transforms a multivariate stochastic
-process:
+A field is represented by a collection :math:`(\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}` of elements of :math:`\cM_N \times (\Rset^d)^N` where :math:`\vect{t}_i` is a vertex of :math:`\cM_N` and :math:`\vect{v}_i` the associated value in :math:`\Rset^d`.
 
-.. math::
+The two first constructors build an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.FieldToPointFunction` from a  :class:`~openturns.Study`.
 
-    X: \Omega \times \cD \mapsto \Rset^d
+See also
+--------
+PythonFieldToPointFunction, OpenTURNSPythonFieldToPointFunction, PointToFieldFunction 
 
-where :math:`\cD \in \Rset^n` is discretized according to the mesh :math:`\cM`
-into the multivariate stochastic process:
+Examples
+--------
+>>> import openturns as ot
 
-.. math::
+Use the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` to create a function that acts on fields of spatial dimension :math:`n=1` and input dimension :math:`d=2`  and returns their spatial mean vector of dimension :math:`d'=2`.
 
-    Y=f_{dyn}(X)
+Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows to define a persistent state between the evaluations of the function.
 
-such that:
+>>> class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
+...     def __init__(self):
+...         # first argument:
+...         super(FUNC, self).__init__(2, 2, 1)
+...         self.setInputDescription(['R', 'S'])
+...         self.setOutputDescription(['T', 'U'])  
+...     def _exec(self, X):
+...         Y = X.getValues().computeMean()
+...         return Y
+>>> F = FUNC()
 
-.. math::
+Create the associated FieldToPointFunction: 
 
-    Y: \Omega \times \cD' \mapsto \Rset^q
+>>> myFunc = ot.FieldToPointFunction(F)
 
-where the mesh :math:`\cD' \in \Rset^p`  is discretized according to the
-:math:`\cM'`.
+It is also possible to create a FieldToPointFunction from a python function as follows:
 
-A field function :math:`f_{dyn}` also acts on fields and produces fields of
-possibly different dimension (:math:`q\neq d`) and mesh (:math:`\cD \neq \cD'`
-or :math:`\cM \neq \cM'`).
+>>> def myPyFunc(X):
+...     Y = X.getValues().computeMean()
+...     return Y
+>>> inputDim = 2
+>>> outputDim = 2
+>>> spatialDim = 1
+>>> myFunc = ot.PythonFieldToPointFunction(inputDim,outputDim,spatialDim,myPyFunc)
 
-OpenTURNS only proposes field functions where :math:`\cD'=\cD` and
-:math:`\cM'=\cM` which means that :math:`t'=Id` through the *spatial function*
-and the *temporal function*. It follows that the process :math:`Y` shares the
-same mesh with :math:`X`, only its values have changed."
+Evaluate the function on a field:
+
+>>> myField = ot.Field(ot.RegularGrid(0.0, 0.1, 11), ot.Normal(2).getSample(11))
+>>> Y = myFunc(myField)
+"
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation
 OT_FieldToPointFunction_doc
@@ -71,12 +85,12 @@ OT_FieldToPointFunction_doc
 // ---------------------------------------------------------------------
 
 %define OT_FieldToPointFunction_getCallsNumber_doc
-"Get the number of calls of a FieldToPointFunction.
+"Get the number of calls of the function.
 
 Returns
 -------
 callsNumber : int
-    Counts the number of times the FieldToPointFunction has been called since its
+    Counts the number of times the function has been called since its
     creation."
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation::getCallsNumber
@@ -85,12 +99,12 @@ OT_FieldToPointFunction_getCallsNumber_doc
 // ---------------------------------------------------------------------
 
 %define OT_FieldToPointFunction_getInputDescription_doc
-"Get the description of the inputs.
+"Get the description of the input field values.
 
 Returns
 -------
 inputDescription : :class:`~openturns.Description`
-    Describes the inputs of the function."
+    Description of the input field values."
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation::getInputDescription
 OT_FieldToPointFunction_getInputDescription_doc
@@ -98,12 +112,12 @@ OT_FieldToPointFunction_getInputDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_FieldToPointFunction_getInputDimension_doc
-"Get the dimension of the input.
+"Get the dimension of the input field values.
 
 Returns
 -------
 d : int
-    Input dimension :math:`d` of the function."
+    Dimension :math:`d` of the input field values."
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation::getInputDimension
 OT_FieldToPointFunction_getInputDimension_doc
@@ -116,39 +130,26 @@ OT_FieldToPointFunction_getInputDimension_doc
 Parameters
 ----------
 i : int or list of ints, :math:`0 \leq i < d`
-    Indice(s) of the marginal(s) needed. :math:`d` is the dimension of the
-    FieldToPointFunction.
+    Indice(s) of the marginal(s) to be extracted.
 
 Returns
 -------
-fieldToPointFunction : :class:`~openturns.FieldToPointFunction`
-    FieldToPointFunction restricted to the concerned marginal(s) at the indice(s)
-    :math:`i` of the field function :math:`f_{dyn}`."
+function : :class:`~openturns.FieldToPointFunction`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`."
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation::getMarginal
 OT_FieldToPointFunction_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_FieldToPointFunction_getOutputMesh_doc
-"Get the mesh associated to the output process.
-
-Returns
--------
-outputMesh : :class:`~openturns.Mesh`
-    The mesh of the output process."
-%enddef
-%feature("docstring") OT::FieldToPointFunctionImplementation::getOutputMesh
-OT_FieldToPointFunction_getOutputMesh_doc
-// ---------------------------------------------------------------------
-
 %define OT_FieldToPointFunction_getSpatialDimension_doc
-"Get the dimension of the mesh.
+"Get the dimension of the input domain.
 
 Returns
 -------
-spatialDimension : int, :math:`n \geq 0`
-    Dimension of the mesh :math:`\cM`."
+spatialDim : int,
+    Dimension :math:`n` of the input domain :math:`\cD`."
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation::getSpatialDimension
 OT_FieldToPointFunction_getSpatialDimension_doc
@@ -156,12 +157,12 @@ OT_FieldToPointFunction_getSpatialDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_FieldToPointFunction_getOutputDescription_doc
-"Get the description of the outputs.
+"Get the description of the output vector.
 
 Returns
 -------
 outputDescription : :class:`~openturns.Description`
-    Describes the outputs of the function."
+    Description of the output vector."
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation::getOutputDescription
 OT_FieldToPointFunction_getOutputDescription_doc
@@ -169,32 +170,37 @@ OT_FieldToPointFunction_getOutputDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_FieldToPointFunction_getOutputDimension_doc
-"Get the dimension of the output.
+"Get the dimension of the output vector.
 
 Returns
 -------
-q : int
-    Output dimension :math:`q` of the function."
+d' : int
+    Dimension :math:`d'` of the output vector."
 %enddef
 %feature("docstring") OT::FieldToPointFunctionImplementation::getOutputDimension
 OT_FieldToPointFunction_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FieldToPointFunctionImplementation::setInputDescription
-"Set the description of the inputs.
+%define OT_FieldToPointFunction_setInputDescription_doc
+"Set the description of the input field values.
 
 Parameters
 ----------
 inputDescription : sequence of str
-    Describes the inputs of the function."
+    Description of the input field values."
+%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::setInputDescription
+OT_FieldToPointFunction_setInputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FieldToPointFunctionImplementation::setOutputDescription
-"Set the description of the outputs.
+%define OT_FieldToPointFunction_setOutputDescription_doc
+"Set the description of the output vector.
 
 Parameters
 ----------
 outputDescription : sequence of str
-    Describes the outputs of the function."
+    Description of the output vector."%enddef
+%feature("docstring") OT::FieldToPointFunctionImplementation::setOutputDescription
+OT_FieldToPointFunction_setOutputDescription_doc

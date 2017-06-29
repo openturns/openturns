@@ -33,6 +33,7 @@ Algebra of functions
     LinearCombinationFunction
     ParametricFunction
     ProductFunction
+    PointToPointEvaluation
     FieldToFieldConnection
     FieldToPointConnection
     PointToFieldConnection
@@ -52,6 +53,9 @@ Field and mixed functions
     ValueFunction
     VertexFunction
     VertexValueFunction
+    PythonFieldFunction
+    PythonFieldToPointFunction
+    PythonPointToFieldFunction
     OpenTURNSPythonFieldFunction
     OpenTURNSPythonFieldToPointFunction
     OpenTURNSPythonPointToFieldFunction

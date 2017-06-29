@@ -1,4 +1,4 @@
-myFunc=class=FieldToPointFunction name=Unnamed implementation=class=FieldToPointFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0
+myFunc=class=PointToFieldFunction name=Unnamed implementation=class=PointToFieldFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0
 myFunc input description=[]
 myFunc output description=[]
 myFunc input dimension=0

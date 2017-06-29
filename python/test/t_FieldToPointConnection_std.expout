@@ -1,0 +1,37 @@
+myFunc= (FieldToPointFunction :
+  class=KarhunenLoeveProjection name=Unnamed input description=[v0] output description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] number of calls=0)o(FieldFunction :
+  [x]->[x])
+myFunc input description= [x]
+myFunc output description= [xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9]#10
+myFunc input dimension= 1
+myFunc output dimension= 10
+field= 0 : [ -1           1.19752    ]
+1 : [ -0.777778   -0.115609   ]
+2 : [ -0.555556    0.0950639  ]
+3 : [ -0.333333    0.0128352  ]
+4 : [ -0.111111    0.0605245  ]
+5 : [  0.111111    0.00265967 ]
+6 : [  0.333333    0.0563444  ]
+7 : [  0.555556   -0.0116735  ]
+8 : [  0.777778    0.0548699  ]
+9 : [  1          -0.0247796  ]
+myFunc(field)= [0.0932294,0.160971,0.257988,0.371718,0.499584,0.641678,0.79533,0.948199,1.07082,1.1121]#10
+called  1  times
+myFunc= ([x0,x1,x2,x3,x4,x5,x6,x7,x8,x9]#10->[x0,x1,x2,x3,x4,x5,x6,x7,x8,x9]#10)o(FieldToPointFunction :
+  class=KarhunenLoeveProjection name=Unnamed input description=[v0] output description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] number of calls=0)
+myFunc input description= [v0]
+myFunc output description= [y0,y1,y2,y3,y4,y5,y6,y7,y8,y9]#10
+myFunc input dimension= 1
+myFunc output dimension= 10
+field= 0 : [ -1           1.19752    ]
+1 : [ -0.777778   -0.115609   ]
+2 : [ -0.555556    0.0950639  ]
+3 : [ -0.333333    0.0128352  ]
+4 : [ -0.111111    0.0605245  ]
+5 : [  0.111111    0.00265967 ]
+6 : [  0.333333    0.0563444  ]
+7 : [  0.555556   -0.0116735  ]
+8 : [  0.777778    0.0548699  ]
+9 : [  1          -0.0247796  ]
+myFunc(field)= [0.0932294,0.160971,0.257988,0.371718,0.499584,0.641678,0.79533,0.948199,1.07082,1.1121]#10
+called  1  times
