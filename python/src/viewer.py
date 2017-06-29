@@ -223,6 +223,8 @@ class View(object):
         has_labels = False
         self._ax[0].grid(b=graph.getGrid())
         for drawable in drawables:
+            drawableKind = drawable.getImplementation().getClassName()
+
             # reset working dictionaries by excplicitely creating copies
             plot_kwargs = dict(plot_kwargs_default)
             bar_kwargs = dict(bar_kwargs_default)
@@ -241,8 +243,9 @@ class View(object):
                 bar_kwargs['color'] = drawable.getColorCode()
             if ('color' not in step_kwargs_default) and ('c' not in step_kwargs_default):
                 step_kwargs['color'] = drawable.getColorCode()
-            if ('color' not in text_kwargs_default) and ('c' not in text_kwargs_default):
-                text_kwargs['color'] = drawable.getColorCode()
+            if drawableKind != 'Pairs':
+                if ('color' not in text_kwargs_default) and ('c' not in text_kwargs_default):
+                    text_kwargs['color'] = drawable.getColorCode()
 
             # set marker
             pointStyleDict = {'square': 's', 'circle': 'o', 'triangleup': '2', 'plus': '+', 'times': '+', 'diamond': '+', 'triangledown':
@@ -284,7 +287,6 @@ class View(object):
                 y = data.getMarginal(1)
 
             # add label, title
-            drawableKind = drawable.getImplementation().getClassName()
             if drawableKind != 'Pie':
                 self._ax[0].set_xlabel(self.ToUnicode(graph.getXTitle()))
                 self._ax[0].set_ylabel(self.ToUnicode(graph.getYTitle()))
