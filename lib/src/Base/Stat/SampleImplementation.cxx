@@ -462,17 +462,25 @@ String SampleImplementation::storeToTemporaryFile() const
 {
   const String dataFileName(Path::BuildTemporaryFileName("RData.txt.XXXXXX"));
   std::ofstream dataFile(dataFileName.c_str());
+  dataFile << std::setprecision(16);
   // Fill-in the data file
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    String separator = "";
-    for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
+    Scalar value = data_[index];
+    ++index;
+    Bool isNaN = value != value;
+    if (isNaN) dataFile << '\"' << value << '\"';
+    else dataFile << value;
+    for (UnsignedInteger j = 1; j < dimension_; ++j)
     {
-      const Scalar value = operator[](i)[j];
-      const Bool isNaN = value != value;
-      dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+      value = data_[index];
+      ++index;
+      isNaN = value != value;
+      if (isNaN) dataFile << ' ' << '\"' << value << '\"';
+      else dataFile << ' ' << value;
     }
-    dataFile << std::endl;
+    dataFile << "\n";
   }
   dataFile.close();
   return dataFileName;
