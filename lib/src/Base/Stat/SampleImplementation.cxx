@@ -349,11 +349,12 @@ Bool SampleImplementation::ParseStringAsValues(const String & line,
       return false;
     }
     data.add(value);
-    // Early exit to avoid going past the end of the line
-    // when dealing with a non-blank separator
-    if (*end == '\0') return true;
     if (!isBlankSeparator)
     {
+      // Early exit to avoid going past the end of the line
+      // when dealing with a non-blank separator
+      while(*end == ' ') ++end;
+      if (*end == '\0') return true;
       if (*end != separator)
       {
         data = Point(0);
