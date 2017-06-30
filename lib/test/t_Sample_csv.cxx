@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
   {
     // Creation temp file with sample
     std::ofstream aTempFile;
+    Sample aSample;
 
     // 1st sample
     aTempFile.open("sample.csv", std::ofstream::out);
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
     aTempFile.close();
 
     // Tests of ImportFromCSVFile
-    Sample aSample = Sample::ImportFromCSVFile("sample.csv", ";");
+    aSample = Sample::ImportFromCSVFile("sample.csv", ";");
     aSample.setName("a good sample");
     fullprint << "aSample=" << aSample << std::endl;
     // Tests of ImportFromTextFile
@@ -122,6 +123,21 @@ int main(int argc, char *argv[])
     sameSample = Sample::ImportFromCSVFile("sample.csv");
     if (aSample != sameSample) throw TestFailed("Exported sample differs from imported sample");
     Os::Remove("sample.csv");
+
+    // 6th sample
+    aTempFile.open("sample.csv", std::ofstream::out);
+    aTempFile << "\"X1\";\"X2!()#{}%&<=>^$+-*./:\\|`?\";\"X3[unit]\"\n";
+    aTempFile << "5.6;-6.7;7.8\n";
+    aTempFile << "-0.1;3.2;7.5 \n";
+    aTempFile.close();
+
+    aSample = Sample::ImportFromCSVFile("sample.csv", ";");
+    aSample.setName("a sample with special chars");
+    fullprint << "aSample with special chars (see log)=" << aSample << std::endl;
+
+    aSample = Sample::ImportFromTextFile("sample.csv", ";");
+    aSample.setName("a sample with special chars");
+    fullprint << "aSample with special chars (see log)=" << aSample << std::endl;
 
     try
     {
