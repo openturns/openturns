@@ -49,7 +49,7 @@ space     [ \t]
 
 %%
 
-{real}      { std::istringstream iss(yytext); iss.imbue(std::locale("C")); iss >> yylval_param->real; return(REAL); }
+{real} { yylval_param->real = atof(yytext); return(REAL); }
 
 {string}    { yylval_param->st = yytext; return(STRING); }
 

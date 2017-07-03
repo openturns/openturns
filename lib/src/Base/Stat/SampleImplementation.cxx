@@ -462,17 +462,25 @@ String SampleImplementation::storeToTemporaryFile() const
 {
   const String dataFileName(Path::BuildTemporaryFileName("RData.txt.XXXXXX"));
   std::ofstream dataFile(dataFileName.c_str());
+  dataFile << std::setprecision(16);
   // Fill-in the data file
+  UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    String separator = "";
-    for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
+    Scalar value = data_[index];
+    ++index;
+    Bool isNaN = value != value;
+    if (isNaN) dataFile << '\"' << value << '\"';
+    else dataFile << value;
+    for (UnsignedInteger j = 1; j < dimension_; ++j)
     {
-      const Scalar value = operator[](i)[j];
-      const Bool isNaN = value != value;
-      dataFile << separator << std::setprecision(16) << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
+      value = data_[index];
+      ++index;
+      isNaN = value != value;
+      if (isNaN) dataFile << ' ' << '\"' << value << '\"';
+      else dataFile << ' ' << value;
     }
-    dataFile << std::endl;
+    dataFile << "\n";
   }
   dataFile.close();
   return dataFileName;
@@ -485,10 +493,12 @@ String SampleImplementation::streamToRFormat() const
   oss.setPrecision(16);
   oss << "matrix(c(";
   String separator("");
+  UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     for (UnsignedInteger i = 0; i < size_; ++i, separator = ",")
     {
-      const Scalar value = operator[](i)[j];
+      const Scalar value = data_[index];
+      ++index;
       const Bool isNaN = value != value;
       oss << separator << (isNaN ? "\"" : "") << value << (isNaN ? "\"" : "");
     }
@@ -2139,6 +2149,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
     throw FileOpenException(HERE) << "Could not open file " << filename;
   csvFile.imbue(std::locale("C"));
   csvFile.precision(16);
+  csvFile << std::scientific;
   // Export the description
   if (!p_description_.isNull())
   {
@@ -2152,24 +2163,24 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
       if (isBlank) csvFile << separator << "\"NoDescription\"";
       else csvFile << separator << "\"" << description[i] << "\"";
     }
-    csvFile << std::endl;
+    csvFile << "\n";
   }
-
   // Write the data
+  UnsignedInteger index = 0;
   for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    String separator;
-    for(UnsignedInteger j = 0; j < dimension_; ++j, separator = csvSeparator)
     {
-      csvFile << separator << std::scientific << operator[](i)[j];
-    }
-    csvFile << std::endl;
-  }
-
+      csvFile << data_[index];
+      ++index;
+      for(UnsignedInteger j = 1; j < dimension_; ++j)
+	{
+	  csvFile << csvSeparator << data_[index];
+	  ++index;
+	} // j
+      csvFile << "\n";
+    } // i
   // Close the file
   csvFile.close();
 }
-
 
 
 /* Method save() stores the object through the StorageManager */
