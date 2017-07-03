@@ -60,18 +60,43 @@ def Sample__repr_html_(self):
     """Get HTML representation."""
     html = '<TABLE>'
     desc = self.getDescription()
+    printEllipsisThreshold = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisThreshold")
+    printEllipsisSize = openturns.common.ResourceMap.GetAsUnsignedInteger("Sample-PrintEllipsisSize")
+    sampleSize = self.getSize()
+    sampleDimension = self.getDimension()
+    ellipsis = sampleSize * sampleDimension > printEllipsisThreshold
     if not desc.isBlank():
-        html += '<TR>'
-        html += '<TD></TD>'
-        for j in range(self.getDimension()):
-            html += '<TH>' + desc[j] + '</TH>'
-        html += '</TR>'
-    for i in range(self.getSize()):
-        html += '<TR>'
-        html += '<TH>' + str(i) + '</TH>'
-        for j in range(self.getDimension()):
-            html += '<TD>' + str(self[i, j]) + '</TD>'
-        html += '</TR>'
+        if ellipsis and sampleDimension > 2 * printEllipsisSize:
+            html += '<TR><TH></TH><TH>'
+            html += '</TH><TH>'.join(desc[0:printEllipsisSize])
+            html += '</TH><TH COLSPAN="%d">...</TH><TH>' % (sampleDimension - 2 * printEllipsisSize)
+            html += '</TH><TH>'.join(desc[-printEllipsisSize:])
+            html += '</TH></TR>\n'
+        else:
+            html += '<TR><TD></TD><TH>' + '</TH><TH>'.join(desc) + '</TH></TR>\n'
+    for i in range(sampleSize):
+        if ellipsis and sampleSize > 2 * printEllipsisSize:
+            if i == printEllipsisSize:
+                html += '<TR><TD COLSPAN="%d">...</TD></TR>\n' % (sampleDimension + 1)
+                continue
+            else:
+                if i > printEllipsisSize and i < sampleSize - printEllipsisSize:
+                    continue
+        # Write row
+        data_row = list(map(str, self[i]))
+        if ellipsis and sampleDimension > 2 * printEllipsisSize:
+            html += '<TR><TD>' + str(i)
+            if sampleDimension > 0:
+                html += '</TD><TD>'
+            html += '</TD><TD>'.join(data_row[0:printEllipsisSize])
+            html += '<TD COLSPAN="%d">...</TD><TD>' % (sampleDimension - 2 * printEllipsisSize)
+            html += '</TD><TD>'.join(data_row[-printEllipsisSize:])
+            html += '</TD></TR>\n'
+        else:
+            html += '<TR><TD>' + str(i)
+            if sampleDimension > 0:
+                html += '</TD><TD>' + '</TD><TD>'.join(data_row)
+            html += '</TD></TR>\n'
     html += '</TABLE>'
     return html
 
