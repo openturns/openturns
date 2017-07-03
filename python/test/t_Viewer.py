@@ -8,7 +8,6 @@ try:
     # use non-interactive backend
     import matplotlib
     matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
 
     from openturns.viewer import View
     import openturns as ot
@@ -46,7 +45,7 @@ try:
     # graph.draw('curve4.png')
     view = View(graph)
     # view.save('curve4.png')
-    plt.show(block=True)
+    view.ShowAll(block=True)
 
     # Clouds tests
     dimension = (2)
@@ -66,7 +65,7 @@ try:
     # graph.draw('curve5.png')
     view = View(graph)
     # view.save('curve5.png')
-    View.ShowAll()
+    view.show()
 
     # Text
     graph = ot.Graph('Annotated cloud', 'x', 'y', True, '')
@@ -128,7 +127,7 @@ try:
     # graph.draw('curve7.png')
     view = View(graph)
     # view.save('curve7.png')
-    view.show()
+    view.ShowAll(block=True)
 
     # Pie
     graph = ot.SobolIndicesAlgorithmImplementation.DrawImportanceFactors(
@@ -136,7 +135,7 @@ try:
     # graph.draw('curve8.png')
     view = View(graph)
     # view.save('curve8.png')
-    plt.show(block=True)
+    view.show()
 
     # Pairs
     dim = 5
@@ -156,7 +155,7 @@ try:
     # graph.draw('curve9.png')
     view = View(graph)
     # view.save('curve9.png')
-    View.ShowAll()
+    view.show()
 
     # Convergence graph curve
     aCollection = []
@@ -203,7 +202,7 @@ try:
     # graph.draw('curve11.png')
     view = View(graph)
     # view.save('curve11.png')
-    view.show()
+    view.ShowAll(block=True)
 
     # PolygonArray
     generator = ot.Normal(2)
@@ -219,7 +218,7 @@ try:
     # graph.draw('curve12.png')
     view = View(graph)
     # view.save('curve12.png')
-    View.ShowAll()
+    view.ShowAll(block=True)
 
 except:
     traceback.print_exc()

@@ -141,15 +141,15 @@ class View(object):
                     if display is None or not re.search(':\d', display):
                         raise RuntimeError('Invalid DISPLAY variable')
 
-        if not isinstance(graph, ot.Graph) and not isinstance(graph, ot.GraphImplementation):
-            if not isinstance(graph, ot.Drawable) and not isinstance(graph, ot.DrawableImplementation):
-                raise TypeError(
-                    '-- The given object cannot be converted into a Graph nor Drawable.')
-            else:
+        if not (isinstance(graph, ot.Graph) or isinstance(graph, ot.GraphImplementation)):
+            if isinstance(graph, ot.Drawable) or isinstance(graph, ot.DrawableImplementation):
                 # convert Drawable => Graph
                 drawable = graph
                 graph = ot.Graph()
                 graph.add(drawable)
+            else:
+                raise TypeError(
+                    'The given object cannot be converted into a Graph nor Drawable.')
 
         drawables = graph.getDrawables()
         n_drawables = len(drawables)
@@ -175,7 +175,7 @@ class View(object):
         # set image size in pixels
         if pixelsize is not None:
             if len(pixelsize) != 2:
-                raise ValueError('-- pixelsize must be a 2-tuple.')
+                raise ValueError('pixelsize must be a 2-tuple.')
             figure_kwargs.setdefault('dpi', 100)
             dpi = figure_kwargs['dpi']
             border = 10  # guess
@@ -223,6 +223,8 @@ class View(object):
         has_labels = False
         self._ax[0].grid(b=graph.getGrid())
         for drawable in drawables:
+            drawableKind = drawable.getImplementation().getClassName()
+
             # reset working dictionaries by excplicitely creating copies
             plot_kwargs = dict(plot_kwargs_default)
             bar_kwargs = dict(bar_kwargs_default)
@@ -241,8 +243,9 @@ class View(object):
                 bar_kwargs['color'] = drawable.getColorCode()
             if ('color' not in step_kwargs_default) and ('c' not in step_kwargs_default):
                 step_kwargs['color'] = drawable.getColorCode()
-            if ('color' not in text_kwargs_default) and ('c' not in text_kwargs_default):
-                text_kwargs['color'] = drawable.getColorCode()
+            if drawableKind != 'Pairs':
+                if ('color' not in text_kwargs_default) and ('c' not in text_kwargs_default):
+                    text_kwargs['color'] = drawable.getColorCode()
 
             # set marker
             pointStyleDict = {'square': 's', 'circle': 'o', 'triangleup': '2', 'plus': '+', 'times': '+', 'diamond': '+', 'triangledown':
@@ -284,7 +287,6 @@ class View(object):
                 y = data.getMarginal(1)
 
             # add label, title
-            drawableKind = drawable.getImplementation().getClassName()
             if drawableKind != 'Pie':
                 self._ax[0].set_xlabel(self.ToUnicode(graph.getXTitle()))
                 self._ax[0].set_ylabel(self.ToUnicode(graph.getYTitle()))
@@ -386,9 +388,9 @@ class View(object):
                         fmt[l] = s
                     clabel_kwargs.setdefault('fmt', fmt)
                     plt.clabel(contourset, **clabel_kwargs)
-                for i in range(drawable.getLabels().getSize()):
+                for i in range(len(drawable.getLabels())):
                     contourset.collections[i].set_label(
-                        drawable.getLabels()[i])
+                        '_nolegend_' if i > 0 else drawable.getLegend())
 
             elif drawableKind == 'Staircase':
                 self._ax[0].step(x, y, **step_kwargs)

@@ -2207,5 +2207,11 @@ void SampleImplementation::load(Advocate & adv)
   if (description.getSize() != 0) setDescription(description);
 }
 
+/* Product by a scalar */
+SampleImplementation operator *(const Scalar scalar,
+                                const SampleImplementation & rhs)
+{
+  return rhs.operator*(scalar);
+}
 
 END_NAMESPACE_OPENTURNS

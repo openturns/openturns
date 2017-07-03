@@ -827,7 +827,7 @@ private:
 
 /* Comparison function */
 OT_API Bool operator ==(const SampleImplementation & lhs, const SampleImplementation & rhs);
-
+OT_API SampleImplementation operator *(const Scalar, const SampleImplementation & rhs);
 
 END_NAMESPACE_OPENTURNS
 

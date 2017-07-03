@@ -344,6 +344,11 @@ public:
 
 }; /* class Sample */
 
+#ifndef SWIG
+/** Product operator */
+OT_API Sample operator * (const Scalar scalar,
+                          const Sample & sample);
+#endif
 
 END_NAMESPACE_OPENTURNS
 

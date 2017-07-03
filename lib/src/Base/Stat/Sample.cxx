@@ -771,5 +771,12 @@ void Sample::setImplementationAsPersistentObject(const ImplementationAsPersisten
   getImplementation().assign(obj);
 }
 
+/* Product operator */
+Sample operator *(const Scalar scalar,
+                  const Sample & sample)
+{
+  return sample.getImplementation()->operator*(scalar);
+}
+
 
 END_NAMESPACE_OPENTURNS
