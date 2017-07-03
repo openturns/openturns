@@ -761,18 +761,14 @@ public:
   /**
    * Translate realizations in-place
    */
-  SampleImplementation & operator += (const Scalar translation);
   SampleImplementation & operator += (const Point & translation);
   SampleImplementation & operator += (const SampleImplementation & translation);
-  SampleImplementation & operator -= (const Scalar translation);
   SampleImplementation & operator -= (const Point & translation);
   SampleImplementation & operator -= (const SampleImplementation & translation);
 
   /** Translate realizations */
-  SampleImplementation operator + (const Scalar translation) const;
   SampleImplementation operator + (const Point & translation) const;
   SampleImplementation operator + (const SampleImplementation & translation) const;
-  SampleImplementation operator - (const Scalar translation) const;
   SampleImplementation operator - (const Point & translation) const;
   SampleImplementation operator - (const SampleImplementation & translation) const;
 

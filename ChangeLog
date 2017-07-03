@@ -18,6 +18,7 @@
  * Removed deprecated GramSchmidtAlgorithm, ChebychevAlgorithm classes
  * Removed [gs]etOptimizationSolver methods
  * Removed CovarianceModel::compute{AsScalar,StandardRepresentative} overloads
+ * Removed Sample Scalar translation operators
 
 === Python module ===
 

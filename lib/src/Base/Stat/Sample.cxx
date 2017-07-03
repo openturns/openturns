@@ -552,13 +552,6 @@ UnsignedInteger Sample::find(const Point & point) const
 /*
  * Translate realizations in-place
  */
-Sample & Sample::operator += (const Scalar translation)
-{
-  copyOnWrite();
-  if (translation != 0.0) getImplementation()->operator +=(Point(getDimension(), translation));
-  return *this;
-}
-
 Sample & Sample::operator += (const Point & translation)
 {
   copyOnWrite();
@@ -570,13 +563,6 @@ Sample & Sample::operator += (const Sample & translation)
 {
   copyOnWrite();
   getImplementation()->operator +=(*translation.getImplementation());
-  return *this;
-}
-
-Sample & Sample::operator -= (const Scalar translation)
-{
-  copyOnWrite();
-  if (translation != 0.0) getImplementation()->operator -=(Point(getDimension(), translation));
   return *this;
 }
 
@@ -594,12 +580,6 @@ Sample & Sample::operator -= (const Sample & translation)
   return *this;
 }
 
-Sample Sample::operator + (const Scalar translation) const
-{
-  const Sample sample(getImplementation()->operator + (translation));
-  return sample;
-}
-
 Sample Sample::operator + (const Point & translation) const
 {
   const Sample sample(getImplementation()->operator + (translation));
@@ -609,12 +589,6 @@ Sample Sample::operator + (const Point & translation) const
 Sample Sample::operator + (const Sample & translation) const
 {
   const Sample sample(getImplementation()->operator + (*translation.getImplementation()));
-  return sample;
-}
-
-Sample Sample::operator - (const Scalar translation) const
-{
-  const Sample sample(getImplementation()->operator - (translation));
   return sample;
 }
 

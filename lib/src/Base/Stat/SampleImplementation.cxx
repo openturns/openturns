@@ -1830,12 +1830,6 @@ void SampleImplementation::translate(const Point & translation)
   TBB::ParallelFor( 0, size_, functor );
 }
 
-SampleImplementation & SampleImplementation::operator += (const Scalar translation)
-{
-  translate(Point(dimension_, translation));
-  return *this;
-}
-
 SampleImplementation & SampleImplementation::operator += (const Point & translation)
 {
   translate(translation);
@@ -1883,11 +1877,6 @@ SampleImplementation & SampleImplementation::operator += (const SampleImplementa
   return *this;
 }
 
-SampleImplementation & SampleImplementation::operator -= (const Scalar translation)
-{
-  return operator +=(-translation);
-}
-
 SampleImplementation & SampleImplementation::operator -= (const Point & translation)
 {
   return operator +=(translation * (-1.0));
@@ -1900,11 +1889,6 @@ SampleImplementation & SampleImplementation::operator -= (const SampleImplementa
   const NegativeTranslationSamplePolicy policy( translation, *this );
   TBB::ParallelFor( 0, size_, policy );
   return *this;
-}
-
-SampleImplementation SampleImplementation::operator + (const Scalar translation) const
-{
-  return operator+(Point(dimension_, translation));
 }
 
 SampleImplementation SampleImplementation::operator + (const Point & translation) const
@@ -1921,11 +1905,6 @@ SampleImplementation SampleImplementation::operator + (const SampleImplementatio
   sample += translation;
   sample.setName("");
   return sample;
-}
-
-SampleImplementation SampleImplementation::operator - (const Scalar translation) const
-{
-  return operator-(Point(dimension_, translation));
 }
 
 SampleImplementation SampleImplementation::operator - (const Point & translation) const

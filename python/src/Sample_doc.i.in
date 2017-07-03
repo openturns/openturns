@@ -79,10 +79,6 @@ experiments
 0 : [ 0 0 ]
 1 : [ 2 2 ]
 2 : [ 4 4 ]
->>> print(sample - sample[0, 0])
-0 : [ 0 1 ]
-1 : [ 2 3 ]
-2 : [ 4 5 ]
 
 **Scaling:** right multiplication or division of a (compatible) square matrix
 with the points in the sample (this can be used e.g. for rotating all the
