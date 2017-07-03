@@ -40,6 +40,10 @@
 #include "kendall.h"
 #include "openturns/IdentityMatrix.hxx"
 
+#include <locale.h>
+#ifdef OPENTURNS_HAVE_XLOCALE_H
+#include <xlocale.h>
+#endif
 #if defined(OPENTURNS_HAVE_BISON) && defined(OPENTURNS_HAVE_FLEX)
 #include "openturns/csv_parser_state.hxx"
 #include "csv_parser.hh"
@@ -308,11 +312,32 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   CSVParserState state;
   state.theFileName = fileName;
 
+#ifdef OPENTURNS_HAVE_USELOCALE
+  locale_t new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
+  locale_t old_locale = uselocale(new_locale);
+#else
+#ifdef WIN32
+  _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
+#endif
+  const char * initialLocale = setlocale(LC_NUMERIC, NULL);
+  setlocale(LC_NUMERIC, "C");
+#endif
+
   csvlex_init(&scanner);
   csvparse(state, scanner, theFile, impl, impl.dimension_, csvSeparator.c_str());
   csvlex_destroy(scanner);
 
+#ifdef OPENTURNS_HAVE_USELOCALE
+  uselocale(old_locale);
+  freelocale(new_locale);
+#else
+#ifdef WIN32
+  _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
+#endif
+  setlocale(LC_NUMERIC, initialLocale);
+#endif
   std::fclose(theFile);
+
   // Check the description
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
     impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
@@ -414,15 +439,31 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   }
 
   // Manage the locale such that the decimal point IS a point ('.')
+#ifdef OPENTURNS_HAVE_USELOCALE
+  locale_t new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
+  locale_t old_locale = uselocale(new_locale);
+#else
+#ifdef WIN32
+  _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
+#endif
   const char * initialLocale = setlocale(LC_NUMERIC, NULL);
   setlocale(LC_NUMERIC, "C");
+#endif
   // Extract the first row
   String line;
   // If the first line is empty return a 0x0 sample
   if (!std::getline(theFile, line))
   {
     LOGWARN("Warning: No data from the file has been stored.");
+#ifdef OPENTURNS_HAVE_USELOCALE
+    uselocale(old_locale);
+    freelocale(new_locale);
+#else
+#ifdef WIN32
+    _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
+#endif
     setlocale(LC_NUMERIC, initialLocale);
+#endif
     return impl;
   }
   Point data;
@@ -433,7 +474,15 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
     // Check if it does not contain a description
     if (!ParseStringAsDescription(line, theSeparator, description))
     {
+#ifdef OPENTURNS_HAVE_USELOCALE
+      uselocale(old_locale);
+      freelocale(new_locale);
+#else
+#ifdef WIN32
+      _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
+#endif
       setlocale(LC_NUMERIC, initialLocale);
+#endif
       // Then it is an error
       throw InvalidArgumentException(HERE) << "";
     }
@@ -483,7 +532,15 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
     impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
   }
   if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
+#ifdef OPENTURNS_HAVE_USELOCALE
+  uselocale(old_locale);
+  freelocale(new_locale);
+#else
+#ifdef WIN32
+  _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
+#endif
   setlocale(LC_NUMERIC, initialLocale);
+#endif
   impl.setName(fileName);
   return impl;
 }

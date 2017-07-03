@@ -293,6 +293,14 @@ check_include_file (sys/time.h    OPENTURNS_HAVE_SYS_TIME_H   )
 check_include_file (sys/types.h   OPENTURNS_HAVE_SYS_TYPES_H  )
 check_include_file (sys/un.h      OPENTURNS_HAVE_SYS_UN_H     )
 check_include_file (unistd.h      OPENTURNS_HAVE_UNISTD_H     )
+check_include_file (xlocale.h     OPENTURNS_HAVE_XLOCALE_H    )
+
+include (CheckSymbolExists)
+if(OPENTURNS_HAVE_XLOCALE_H)
+check_symbol_exists(uselocale "locale.h;xlocale.h"  OPENTURNS_HAVE_USELOCALE )
+else()
+check_symbol_exists(uselocale "locale.h"  OPENTURNS_HAVE_USELOCALE )
+endif()
 
 # Some useful macros to ease CMakeLists.txt file writing
 set (SOURCEFILES "" CACHE INTERNAL "List of source files to compile")
