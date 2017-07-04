@@ -8,7 +8,9 @@ export R_LIBS=$PWD
 cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build \
       -DSWIG_EXECUTABLE=~/.local/bin/swig \
-      -DHMAT_DIR=~/.local/lib/cmake/hmat .
+      -DHMAT_DIR=~/.local/lib/cmake/hmat \
+      -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j2" \
+      .
 make install -j2
 #make tests -j2
 ctest -R pyinstallcheck --output-on-failure --timeout 100 -j2
