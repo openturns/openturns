@@ -39,6 +39,6 @@ Examples
 >>> myCenteredReductedGrid = ot.Composite(2, levels)
 >>> mySample = myCenteredReductedGrid.generate()
 >>> # Translate the grid
->>> mySample+=4
+>>> mySample += [4.0]*2
 >>> # Scale each direction
->>> mySample*=2"
+>>> mySample *= 2.0"
