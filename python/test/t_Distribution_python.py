@@ -2,15 +2,22 @@
 
 from __future__ import print_function
 import openturns as ot
-from math import cos, sin, sqrt
-
+import math as m
 
 class UniformNdPy(ot.PythonDistribution):
 
     def __init__(self, a=[0.0], b=[1.0]):
         super(UniformNdPy, self).__init__(len(a))
+        if len(a) != len(b):
+            raise ValueError('Invalid bounds')
+        for i in range(len(a)):
+            if a[i] > b[i]:
+                raise ValueError('Invalid bounds')
         self.a = a
         self.b = b
+        self.factor = 1.0
+        for i in range(len(a)):
+            self.factor *= (b[i] - a[i])
 
     def getRange(self):
         return ot.Interval(self.a, self.b, [True] * len(self.a), [True] * len(self.a))
@@ -29,13 +36,23 @@ class UniformNdPy(ot.PythonDistribution):
         return X
 
     def computeCDF(self, X):
-        return (X[0] - self.a[0]) / (self.b[0] - self.a[0])
+        prod = 1.0
+        for i in range(len(self.a)):
+            if X[i] < self.a[i]:
+                return 0.0
+            prod *= (min(self.b[i], X[i]) - self.a[i])
+        return prod / self.factor
 
     def computePDF(self, X):
-        return 1. / (self.b[0] - self.a[0])
+        for i in range(len(self.a)):
+            if X[i] < self.a[i]:
+                return 0.0
+            if X[i] > self.b[i]:
+                return 0.0
+        return 1.0 / self.factor
 
     def getRoughness(self):
-        return 42.
+        return 42.0
 
     def getMean(self):
         mu = []
@@ -46,7 +63,7 @@ class UniformNdPy(ot.PythonDistribution):
     def getStandardDeviation(self):
         stdev = []
         for i in range(len(self.a)):
-            stdev.append((self.b[i] - self.a[i]) / sqrt(12.))
+            stdev.append((self.b[i] - self.a[i]) / m.sqrt(12.))
         return stdev
 
     def getSkewness(self):
@@ -71,7 +88,7 @@ class UniformNdPy(ot.PythonDistribution):
             raise ValueError('dim>1')
         ax = self.a[0] * x
         bx = self.b[0] * x
-        return (sin(bx) - sin(ax) + 1j * (cos(ax) - cos(bx))) / (bx - ax)
+        return (m.sin(bx) - m.sin(ax) + 1j * (m.cos(ax) - m.cos(bx))) / (bx - ax)
 
     def isElliptical(self):
         return (len(self.a) == 1) and (self.a[0] == -self.b[0])
@@ -90,11 +107,15 @@ class UniformNdPy(ot.PythonDistribution):
         for i in indices:
             subA.append(self.a[i])
             subB.append(self.b[i])
-        return ot.Distribution(UniformNdPy(subA, subB))
+        py_dist = UniformNdPy(subA, subB)
+        return ot.Distribution(py_dist)
 
     def computeQuantile(self, prob, tail=False):
-        q = [42.] * len(self.a)
-        return q
+        q = 1.0 - prob if tail else prob
+        quantile = self.a
+        for i in range(len(self.a)):
+            quantile[i] += q * (self.b[i] - self.a[i])
+        return quantile
 
 for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
 
@@ -126,7 +147,7 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
 
     # CDF
     cdf = myDist.computeCDF(point)
-    print('cdf=', cdf)
+    print('cdf= %.12g' % cdf)
 
     # roughness
     roughness = myDist.getRoughness()
@@ -175,7 +196,7 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
     print('range=', range_)
 
     # marginal
-    marginal = myDist.getMarginal([0])
+    marginal = myDist.getMarginal(0)
     print('marginal=', marginal)
 
     # quantile
@@ -191,3 +212,5 @@ try:
     print(ot.ComposedDistribution([ot.Normal(), ot.Normal()], myDist))
 except:
     print("The construction failed on purpose as", myDist, "is not a copula")
+
+

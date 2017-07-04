@@ -436,7 +436,7 @@ Scalar PythonDistribution::computeScalarQuantile(const Scalar prob,
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar PythonDistribution::getRoughness() const
 {
-  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMean")))
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getRoughness")))
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
                                      const_cast<char *>( "getRoughness" ),
@@ -780,6 +780,13 @@ PythonDistribution::Implementation PythonDistribution::getMarginal(const Indices
     return DistributionImplementation::getMarginal(indices);
   }
 }
+
+
+PythonDistribution::Implementation PythonDistribution::getMarginal(const UnsignedInteger i) const
+{
+  return getMarginal(Indices(1, i));
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void PythonDistribution::save(Advocate & adv) const

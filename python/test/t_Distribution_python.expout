@@ -22,7 +22,7 @@ isElliptical= False
 isCopula= True
 range= [0, 1]
 marginal= class=PythonDistribution name=UniformNdPy
-quantile= [42]
+quantile= [0.5]
 pyDist= PythonDistribution -> #2
 myDist= class=PythonDistribution name=UniformNdPy description=[X0,X1]
 dimension= 2
@@ -33,7 +33,7 @@ sample= 0 : [ 0.0632061 0.292757  ]
 3 : [ 0.883503  0.294994  ]
 4 : [ 0.92851   0.820811  ]
 pdf= 1.0
-cdf= 0.2
+cdf= 0.04
 roughness= 42.0
 mean= [0.5,0.5]
 standard deviation= [0.288675,0.288675]
@@ -47,7 +47,7 @@ isCopula= True
 range= [0, 1]
 [0, 1]
 marginal= class=PythonDistribution name=UniformNdPy
-quantile= [42,42]
+quantile= [0.5,0.5]
 ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), class=PythonDistribution name=UniformNdPy)
 try with another Python distribution
 The construction failed on purpose as class=PythonDistribution name=UniformNdPy is not a copula
