@@ -16,6 +16,7 @@ Statistical estimation
     estimate_sobol.ipynb
     estimate_pcc.ipynb
     estimate_normal.ipynb
+    maximumlikelihood_estimator.ipynb
     estimate_non_parametric_distribution.ipynb
     kolmogorov_test.ipynb
     chi2_test.ipynb
