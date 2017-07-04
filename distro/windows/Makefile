@@ -105,12 +105,12 @@ ot-config: ot-check-compiler
 	touch ot-config
 
 ot-compile: ot-config
-	cd $(OT_BUILD) && make OT_unity -j$(JOBS)
-	cd $(OT_BUILD) && make python_unity -j$(JOBS_PYTHON)
+	cd $(OT_BUILD) && make OT -j$(JOBS)
+	cd $(OT_BUILD) && make -j$(JOBS_PYTHON)
 	touch ot-compile
 
 ot-install: ot-compile
-	cd $(OT_BUILD) && make install/fast -j$(JOBS)
+	cd $(OT_BUILD) && make install -j$(JOBS)
 ifeq ($(DEBUG_OT),n)
 	$(TARGET)-strip --strip-unneeded $(OT_PREFIX)/bin/*.dll
 	$(TARGET)-strip -g $(OT_PREFIX)/lib/*.a
@@ -136,7 +136,7 @@ endif
 	touch ot-install
 
 ot-test: ot-install
-	cd $(OT_BUILD) && make all_unity -j$(JOBS)
+	cd $(OT_BUILD) && make tests -j$(JOBS)
 ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/lib/test
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test
