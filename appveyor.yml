@@ -23,6 +23,7 @@ build_script:
       -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
       -DUSE_HMAT=OFF \
       -DSWIG_EXECUTABLE="C:/Libraries/swigwin-3.0.12/swig.exe" \
+      -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4" \
       ..
   - cmake --build . --config Release --target install
   - set PYTHONPATH=%cd%\install\Lib\site-packages
