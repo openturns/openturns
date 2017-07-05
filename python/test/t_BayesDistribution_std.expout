@@ -1,0 +1,114 @@
+distribution= BayesDistribution(X, Y with X|Theta~ComposedDistribution(Theta), Theta=f(Y), f=[x0,x1,x2,x3]->[x0,x1,x2,x3], Y~ComposedDistribution(Dirac(point = [1]), Dirac(point = [2]), Bernoulli(p = 0.7), Uniform(a = 3, b = 4), IndependentCopula(dimension = 4)))
+Parameters  [[]]
+Mean  [1.5,2.1,0,0,0,3.5]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [1.13528,1.0937,1,2,1,3.88281]
+oneSample=     [ X0      X1      X2      X3      X4      X5      ]
+0 : [ 1.92068 2.49374 1       2       1       3.96942 ]
+1 : [ 1.71438 1.87896 1       2       1       3.29276 ]
+2 : [ 1.8835  1.80748 1       2       1       3.73727 ]
+3 : [ 1.68457 3.16374 1       2       0       3.82081 ]
+4 : [ 1.58862 1.53788 1       2       1       3.95475 ]
+5 : [ 1.21044 2.02765 1       2       1       3.66073 ]
+6 : [ 1.98184 3.21605 1       2       1       3.41892 ]
+7 : [ 1.25986 2.2968  1       2       0       3.47295 ]
+8 : [ 1.11108 1.85243 1       2       1       3.46852 ]
+9 : [ 1.97898 2.729   1       2       1       3.67509 ]
+anotherSample mean= [1.50538,2.09375,1,2,0.6987,3.49902]
+anotherSample covariance= 6x6
+[[  0.0847776   -0.000929088  0            0           -0.000346374 -0.000463599 ]
+ [ -0.000929088  0.74965      0            0            0.103639     0.0408806   ]
+ [  0            0            0            0            0            0           ]
+ [  0            0            0            0            0            0           ]
+ [ -0.000346374  0.103639     0            0            0.210539    -0.000331623 ]
+ [ -0.000463599  0.0408806    0            0           -0.000331623  0.0831444   ]]
+Zero point=  [0,0,0,0,0,0]  pdf= 0.0  cdf= 0.0
+Quantile= [2,3.99998,1,2,1,4]
+CDF(quantile)= 0
+Unilateral confidence interval (lower tail)= [-1, 2]
+[-1, 3.99998]
+[1, 1]
+[2, 2]
+[0, 1]
+[3, 4]
+beta= [1]
+conditioning distribution= ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  BayesDistribution(X, Y with X|Theta~Normal(Theta), Theta=f(Y), f=[x0,x1]->[x0,x1], Y~ComposedDistribution(Uniform(a = 0, b = 1), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+Parameters  [[]]
+Mean  [0.5,0.5,1.5]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [-0.21251,0.787581,1.16226]
+oneSample=     [ X0         X1         X2         ]
+0 : [  1.04021    0.0253066  1.9045    ]
+1 : [ -0.768799   0.379318   1.69321   ]
+2 : [ -0.0327311  0.0771556  1.7912    ]
+3 : [  1.95381    0.228679   1.21982   ]
+4 : [  1.43698    0.499407   1.51429   ]
+5 : [  1.31895    0.810549   1.34006   ]
+6 : [  2.05226    0.717072   1.02534   ]
+7 : [ -1.44045    0.208382   1.72998   ]
+8 : [  2.03224    0.735502   1.30206   ]
+9 : [  0.258808   0.722714   1.38558   ]
+anotherSample mean= [0.503649,0.501477,1.49665]
+anotherSample covariance= [[  2.41134      0.0725898   -7.92716e-05 ]
+ [  0.0725898    0.0825784   -0.000451664 ]
+ [ -7.92716e-05 -0.000451664  0.0820411   ]]
+Zero point=  [0,0,0]  pdf=0.000000  cdf=0.000000
+Quantile= [3.87457,0.982796,1.9828]
+CDF(quantile)= 0.95
+conditioning distribution= ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  BayesDistribution(X, Y with X|Theta~Normal(Theta), Theta=f(Y), f=[x0,x1]->[x0,x1], Y~ComposedDistribution(Binomial(n = 3, p = 0.5), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+Parameters  [[]]
+Mean  [1.5,0,1.5]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [2.22062,3,1.08596]
+oneSample=     [ X0        X1        X2        ]
+0 : [  0.106685  1         1.41545  ]
+1 : [  1.52532   2         1.13524  ]
+2 : [  3.2931    2         1.80218  ]
+3 : [  4.70326   1         1.99454  ]
+4 : [  2.99546   2         1.31633  ]
+5 : [  5.81408   3         1.82956  ]
+6 : [  2.47839   1         1.80608  ]
+7 : [  3.09905   1         1.65955  ]
+8 : [  4.94457   2         1.67705  ]
+9 : [ -0.310612  0         1.01391  ]
+anotherSample mean= [1.49593,1.5032,1.49845]
+anotherSample covariance= [[ 3.16541    0.79056    0.00719943 ]
+ [ 0.79056    0.744664   0.00279033 ]
+ [ 0.00719943 0.00279033 0.0822741  ]]
+Zero point=  [0,0,0]  pdf=0.000000  cdf=0.000000
+Quantile= [18.3011,3,2]
+CDF(quantile)= 1
+conditioning distribution= ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2))
+Distribution  BayesDistribution(X, Y with X|Theta~Normal(Theta), Theta=f(Y), f=[x0,x1]->[x0,x1], Y~ComposedDistribution(Dirac(point = [0.5]), Uniform(a = 1, b = 2), IndependentCopula(dimension = 2)))
+Parameters  [[]]
+Mean  [0.5,0,1.5]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= [-0.917771,0.5,1.8338]
+oneSample=     [ X0        X1        X2        ]
+0 : [  2.27217   0.5       1.56372  ]
+1 : [ -0.858827  0.5       1.19618  ]
+2 : [ -0.344631  0.5       1.5915   ]
+3 : [  0.480758  0.5       1.47099  ]
+4 : [  3.19028   0.5       1.24465  ]
+5 : [  0.813164  0.5       1.20453  ]
+6 : [  1.29442   0.5       1.64129  ]
+7 : [ -1.95841   0.5       1.98108  ]
+8 : [ -1.39477   0.5       1.61667  ]
+9 : [  0.861998  0.5       1.09095  ]
+anotherSample mean= [0.528452,0.5,1.49658]
+anotherSample covariance= [[  2.34096      0           -0.000588506 ]
+ [  0            0            0           ]
+ [ -0.000588506  0            0.083911    ]]
+Zero point=  [0,0,0]  pdf=0.000000  cdf=0.000000
+Quantile= [15.8011,0.5,2]
+CDF(quantile)= 0
