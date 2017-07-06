@@ -528,7 +528,6 @@ ot_check_test (TrendFactory_std)
 ot_check_test (CalibrationStrategy_std)
 ot_check_test (RandomWalkMetropolisHastings_std)
 ot_check_test (RandomWalkMetropolisHastings_regression)
-ot_check_test (PosteriorRandomVector_std)
 
 # Classification
 ot_check_test (MixtureClassifier_std)

@@ -475,7 +475,6 @@ endif ()
 ot_pyinstallcheck_test (CalibrationStrategy_std)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_std)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_regression IGNOREOUT)
-ot_pyinstallcheck_test (PosteriorRandomVector_std)
 
 ## Classification
 ot_pyinstallcheck_test (MixtureClassifier_std)

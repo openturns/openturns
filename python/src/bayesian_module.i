@@ -31,11 +31,8 @@
 /* Uncertainty/Bayesian */
 %include CalibrationStrategyImplementation.i
 %include CalibrationStrategy.i
-%include SamplerImplementation.i
-%include Sampler.i
 %include MCMC.i
 %include RandomWalkMetropolisHastings.i
-%include PosteriorRandomVector.i
 
 /* At last we include template definitions */
 %include UncertaintyBayesianTemplateDefs.i

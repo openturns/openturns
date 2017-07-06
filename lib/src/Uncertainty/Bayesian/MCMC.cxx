@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief MCMC updates the chain
+ *  @brief MCMC base class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -37,9 +37,10 @@ static const Factory<MCMC> Factory_MCMC;
 
 /* Default constructor */
 MCMC::MCMC()
-  : SamplerImplementation()
+  : RandomVectorImplementation()
   , burnIn_(0)
   , thinning_(0)
+  , verbose_(false)
 {
   // Nothing to do
 }
@@ -50,7 +51,7 @@ MCMC::MCMC( const Distribution & prior,
             const Distribution & conditional,
             const Sample & observations,
             const Point & initialState)
-  : SamplerImplementation()
+  : RandomVectorImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
   , history_(Full())
@@ -60,6 +61,7 @@ MCMC::MCMC( const Distribution & prior,
   , model_()
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultBurnIn"))
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
+  , verbose_(false)
 {
   const SymbolicFunction fullFunction(Description::BuildDefault(initialState.getDimension(), "x"), Description::BuildDefault(initialState.getDimension(), "x"));
   model_ = ParametricFunction(fullFunction, Indices(0), Point(0));
@@ -80,7 +82,7 @@ MCMC::MCMC( const Distribution & prior,
             const Sample & parameters,
             const Sample & observations,
             const Point & initialState)
-  : SamplerImplementation()
+  : RandomVectorImplementation()
   , initialState_(initialState)
   , currentState_(initialState)
   , history_(Full())
@@ -88,6 +90,7 @@ MCMC::MCMC( const Distribution & prior,
   , model_(model)
   , burnIn_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultBurnIn"))
   , thinning_(ResourceMap::GetAsUnsignedInteger("MCMC-DefaultThinning"))
+  , verbose_(false)
 {
   setPrior(prior);
   if (model.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
@@ -149,6 +152,7 @@ void MCMC::setPrior(const Distribution& prior)
 {
   //  if (!prior.isContinuous()) throw InvalidArgumentException(HERE) << "The prior should be continuous.";
   prior_ = prior;
+  setDescription(prior.getDescription());
 }
 
 
@@ -247,10 +251,21 @@ Indices MCMC::getNonRejectedComponents() const
 }
 
 
+void MCMC::setVerbose(const Bool verbose)
+{
+  verbose_ = verbose;
+}
+
+
+Bool MCMC::getVerbose() const
+{
+  return verbose_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void MCMC::save(Advocate & adv) const
 {
-  SamplerImplementation::save(adv);
+  RandomVectorImplementation::save(adv);
   adv.saveAttribute("initialState_", initialState_);
   adv.saveAttribute("currentState_", currentState_);
   adv.saveAttribute("prior_", prior_);
@@ -261,12 +276,13 @@ void MCMC::save(Advocate & adv) const
   adv.saveAttribute("burnIn_", burnIn_);
   adv.saveAttribute("thinning_", thinning_);
   adv.saveAttribute("nonRejectedComponents_", nonRejectedComponents_);
+  adv.saveAttribute("verbose_", verbose_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MCMC::load(Advocate & adv)
 {
-  SamplerImplementation::load(adv);
+  RandomVectorImplementation::load(adv);
   adv.loadAttribute("initialState_", initialState_);
   adv.loadAttribute("currentState_", currentState_);
   adv.loadAttribute("prior_", prior_);
@@ -277,6 +293,7 @@ void MCMC::load(Advocate & adv)
   adv.loadAttribute("burnIn_", burnIn_);
   adv.loadAttribute("thinning_", thinning_);
   adv.loadAttribute("nonRejectedComponents_", nonRejectedComponents_);
+  adv.loadAttribute("verbose_", verbose_);
 }
 
 

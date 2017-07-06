@@ -294,3 +294,22 @@ nonRejectedComponents : sequence of int
     uncertainty, as opposed to the epistemic uncertainty corresponding to the
     tuned variables."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MCMC::getVerbose
+"Tell whether the verbose mode is activated or not.
+
+Returns
+-------
+isVerbose : bool
+    The verbose mode is activated if it is *True*, desactivated otherwise."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MCMC::setVerbose
+"Set the verbose mode.
+
+Parameters
+----------
+isVerbose : bool
+    The verbose mode is activated if it is *True*, desactivated otherwise."

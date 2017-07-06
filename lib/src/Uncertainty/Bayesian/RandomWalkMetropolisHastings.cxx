@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief RandomWalkMetropolisHastings updates the chain
+ *  @brief Metropolis-Hastings algorithm
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
