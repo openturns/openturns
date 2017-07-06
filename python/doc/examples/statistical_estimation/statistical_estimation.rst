@@ -30,3 +30,4 @@ Statistical estimation
     visualize_copula_validation.ipynb
     estimate_arma.ipynb
     linearmodel.ipynb
+    bayesian_calibration.ipynb
