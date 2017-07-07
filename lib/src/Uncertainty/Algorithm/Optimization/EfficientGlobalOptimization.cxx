@@ -62,6 +62,7 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
   , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
 {
   checkProblem(problem);
+  if (krigingResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Metamodel must be 1-d";
 }
 
 
@@ -146,23 +147,23 @@ void EfficientGlobalOptimization::run()
   const UnsignedInteger dimension = problem.getDimension();
   const Function model(problem.getObjective());
   Sample inputSample(krigingResult_.getInputSample());
-  Sample outputSample(model(inputSample));
+  Sample outputSample(krigingResult_.getOutputSample());
   UnsignedInteger size = inputSample.getSize();
   Point noise(size);
   const Bool hasNoise = model.getOutputDimension() == 2;
   if (hasNoise)
   {
-    // use noise model to optimize AEI else fallback to objective 2nd marginal
-    if (noiseModel_.getOutputDimension() != 1)
-      noiseModel_ = model.getMarginal(1);
-
-    Sample noiseSample(outputSample.getMarginal(1));
-    outputSample = outputSample.getMarginal(0);
+    // always use 2nd marginal to evaluate noise at initial design and new points
+    Sample noiseSample(model.getMarginal(1)(inputSample));
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       noise[i] = noiseSample[i][0];
       if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
     }
+
+    // use noise model for criterion optimization if provided, else fallback to objective 2nd marginal
+    if (noiseModel_.getOutputDimension() != 1)
+      noiseModel_ = model.getMarginal(1);
   }
   UnsignedInteger iterationNumber = 0;
   Bool exitLoop = false;
