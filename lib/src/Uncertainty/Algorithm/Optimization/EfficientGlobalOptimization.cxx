@@ -86,7 +86,7 @@ public:
 
   Point operator()(const Point & x) const
   {
-    const Scalar mx = metaModelResult_.getMetaModel()(x)[0];
+    const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
     const Scalar fmMk = optimalValue_ - mx;
     const Scalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
     const Scalar sk = sqrt(sk2);
@@ -247,20 +247,18 @@ void EfficientGlobalOptimization::run()
     Scalar optimalValueSubstitute = optimalValue;
     if (hasNoise)
     {
-      // compute mk(x_min) with x_min = argmin_xi ui
-      // with ui = mk(xi) + c * sk(xi)
-      Scalar optimalU = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+      // with noisy objective we dont have access to the real current optimal value
+      // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
+      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+      const Point mx(metaModelResult.getConditionalMean(inputSample));
+      const CovarianceMatrix sk2(metaModelResult.getConditionalCovariance(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
-        const Point x(inputSample[i]);
-        const Scalar mx = krigingResult_.getMetaModel()(x)[0];
-        const Scalar sk2 = krigingResult_.getConditionalCovariance(x)(0, 0);
-        const Scalar u = mx + aeiTradeoff_ * sqrt(sk2);
-        if ((problem.isMinimization() && (u < optimalU))
-            || (!problem.isMinimization() && (u > optimalU)))
+        const Scalar u = mx[i] + aeiTradeoff_ * sqrt(sk2(i, i));
+        if ((problem.isMinimization() && (u < optimalValueSubstitute))
+            || (!problem.isMinimization() && (u > optimalValueSubstitute)))
         {
-          optimalValueSubstitute = mx;
-          optimalU = u;
+          optimalValueSubstitute = u;
         }
       }
     }
