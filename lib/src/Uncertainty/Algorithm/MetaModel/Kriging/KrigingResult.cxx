@@ -49,6 +49,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
+  , outputSample_(outputSample)
   , inputTransformation_()
   , hasTransformation_(false)
   , basis_(basis)
@@ -83,6 +84,7 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
+  , outputSample_(outputSample)
   , inputTransformation_()
   , hasTransformation_(false)
   , basis_(basis)
@@ -472,6 +474,7 @@ void KrigingResult::save(Advocate & adv) const
   MetaModelResult::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
   adv.saveAttribute( "inputTransformedSample_", inputTransformedSample_ );
+  adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "inputTransformation_", inputTransformation_ );
   adv.saveAttribute( "hasTransformation_", hasTransformation_ );
   adv.saveAttribute( "basis_", basis_ );
@@ -492,6 +495,7 @@ void KrigingResult::load(Advocate & adv)
   MetaModelResult::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "inputTransformedSample_", inputTransformedSample_ );
+  adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "inputTransformation_", inputTransformation_ );
   adv.loadAttribute( "hasTransformation_", hasTransformation_ );
   adv.loadAttribute( "basis_", basis_ );
