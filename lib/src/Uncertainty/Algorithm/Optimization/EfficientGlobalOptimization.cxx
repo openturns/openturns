@@ -205,7 +205,7 @@ void EfficientGlobalOptimization::run()
     }
   }
 
-  // compute minimum distance
+  // compute minimum distance between design points to assess the correlation lengths of the metamodel
   Point minimumDistance(dimension, SpecFunc::MaxScalar);
   if (!hasNoise)
   {
@@ -265,6 +265,7 @@ void EfficientGlobalOptimization::run()
 
     Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_));
 
+    // use multi-start to optimize the improvement criterion when using the default solver
     if (useDefaultSolver_ && problem.hasBounds())
     {
       // Sample uniformly into the bounds
@@ -293,7 +294,7 @@ void EfficientGlobalOptimization::run()
       setOptimizationAlgorithm(MultiStart(solver_, startingPoints));
     }
 
-    // build problem
+    // build improvement criterion optimization problem
     OptimizationProblem maximizeImprovement;
     maximizeImprovement.setObjective(improvementObjective);
     maximizeImprovement.setMinimization(false);
@@ -314,6 +315,7 @@ void EfficientGlobalOptimization::run()
 
     LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << "iteration=" << iterationNumber + 1);
 
+    // is the new point better ?
     if ((problem.isMinimization() && (newValue[0] < optimalValue))
         || (!problem.isMinimization() && (newValue[0] > optimalValue)))
     {
@@ -336,7 +338,7 @@ void EfficientGlobalOptimization::run()
     // general convergence criteria
     exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
-    // minimum distance stopping criterion
+    // update minimum distance stopping criterion
     if (!hasNoise)
     {
       // update minimum distance according to the new point
@@ -352,6 +354,8 @@ void EfficientGlobalOptimization::run()
         }
       }
 
+      // when a correlation length becomes smaller than the minimal distance between design point for a single component
+      // that means the model tends to be noisy, and the original EGO formulation is not adapted anymore
       const Point scale(metaModelResult.getCovarianceModel().getScale());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {

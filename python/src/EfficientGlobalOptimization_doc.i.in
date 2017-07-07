@@ -228,6 +228,10 @@ a : float
 %feature("docstring") OT::EfficientGlobalOptimization::setCorrelationLengthFactor
 "Correlation length stopping criterion factor accessor.
 
+When a correlation length becomes smaller than the minimal distance between
+design point for a single component that means the model tends to be noisy,
+and the EGO formulation is not adapted anymore.
+
 Parameters
 ----------
 b : float
@@ -239,6 +243,10 @@ b : float
 
 %feature("docstring") OT::EfficientGlobalOptimization::getCorrelationLengthFactor
 "Correlation length stopping criterion factor accessor.
+
+When a correlation length becomes smaller than the minimal distance between
+design point for a single component that means the model tends to be noisy,
+and the EGO formulation is not adapted anymore.
 
 Returns
 -------
