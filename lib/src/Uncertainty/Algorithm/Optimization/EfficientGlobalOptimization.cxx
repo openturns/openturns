@@ -251,10 +251,11 @@ void EfficientGlobalOptimization::run()
       // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
       optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
       const Point mx(metaModelResult.getConditionalMean(inputSample));
-      const CovarianceMatrix sk2(metaModelResult.getConditionalCovariance(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
-        const Scalar u = mx[i] + aeiTradeoff_ * sqrt(sk2(i, i));
+        const Point x(inputSample[i]);
+        const Scalar sk2 = metaModelResult.getConditionalCovariance(x)(0, 0);
+        const Scalar u = mx[i] + aeiTradeoff_ * sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalValueSubstitute))
             || (!problem.isMinimization() && (u > optimalValueSubstitute)))
         {
