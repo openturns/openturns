@@ -49,7 +49,7 @@ algo.setNoiseModel(ot.SymbolicFunction(
 algo.setMaximumIterationNumber(20)
 algo.setImprovementFactor(
     0.05)  # stop whe improvement is < a% the current optimum
-algo.setAIETradeoff(0.66744898)
+algo.setAEITradeoff(0.66744898)
 algo.run()
 result = algo.getResult()
 # print('1st pass result=', result)

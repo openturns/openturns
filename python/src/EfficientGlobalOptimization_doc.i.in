@@ -257,7 +257,7 @@ b : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EfficientGlobalOptimization::setAIETradeoff
+%feature("docstring") OT::EfficientGlobalOptimization::setAEITradeoff
 "AEI tradeoff constant accessor.
 
 Parameters
@@ -268,7 +268,7 @@ c : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EfficientGlobalOptimization::getAIETradeoff
+%feature("docstring") OT::EfficientGlobalOptimization::getAEITradeoff
 "AEI tradeoff constant accessor.
 
 Returns

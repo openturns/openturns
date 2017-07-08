@@ -81,8 +81,8 @@ public:
   Scalar getCorrelationLengthFactor() const;
 
   /** AEI tradeoff constant accessor */
-  void setAIETradeoff(const Scalar c);
-  Scalar getAIETradeoff() const;
+  void setAEITradeoff(const Scalar c);
+  Scalar getAEITradeoff() const;
 
   /** Improvement noise function accessor */
   void setNoiseModel(const Function & noiseModel);

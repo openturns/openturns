@@ -503,12 +503,12 @@ Scalar EfficientGlobalOptimization::getCorrelationLengthFactor() const
 
 
 /* AEI tradeoff constant accessor */
-void EfficientGlobalOptimization::setAIETradeoff(const Scalar aeiTradeoff)
+void EfficientGlobalOptimization::setAEITradeoff(const Scalar aeiTradeoff)
 {
   aeiTradeoff_ = aeiTradeoff;
 }
 
-Scalar EfficientGlobalOptimization::getAIETradeoff() const
+Scalar EfficientGlobalOptimization::getAEITradeoff() const
 {
   return aeiTradeoff_;
 }

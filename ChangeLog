@@ -22,6 +22,7 @@
  * Deprecated PosteriorRandomVector
  * Deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
  * Made MatrixImplementation::isPositiveDefinite const and removed its argument
+ * Renamed EfficientGlobalOptimization::setAIETradeoff to setAEITradeoff
 
 === Python module ===
 
