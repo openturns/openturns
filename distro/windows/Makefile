@@ -98,6 +98,7 @@ ot-config: ot-check-compiler
 	  -DPYTHON_EXECUTABLE=$(PYTHON_EXECUTABLE) \
 	  -DR_EXECUTABLE=$(R_PATH)/bin/R.exe \
 	  -DCMAKE_INSTALL_PREFIX=$(OT_PREFIX) \
+	  -DSITE_PACKAGE=Lib/site-packages \
 	  -DUSE_TBB=OFF \
 	  -DUSE_SPHINX=OFF \
 	  -DCMAKE_CROSSCOMPILING_EMULATOR=$(WINE) \
