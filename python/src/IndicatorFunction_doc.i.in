@@ -3,6 +3,10 @@
 
 This function compares the output of another function against a threshold.
 
+.. math::
+
+    l = 1_{\{f > s\}}
+
 Parameters
 ----------
 function : :class:`~openturns.Function`
