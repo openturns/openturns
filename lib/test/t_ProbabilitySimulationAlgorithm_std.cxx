@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of ProbabilitySimulation class
+ *  @brief The test file of ProbabilitySimulationAlgorithm class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
       RandomGenerator::SetSeed(0);
 
       /* We create a Monte Carlo algorithm */
-      ProbabilitySimulation myAlgo(myEvent, experiments[i]);
+      ProbabilitySimulationAlgorithm myAlgo(myEvent, experiments[i]);
       myAlgo.setMaximumOuterSampling(250);
       myAlgo.setBlockSize(4);
       myAlgo.setMaximumCoefficientOfVariation(0.1);
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
       fullprint << "Confidence length at level 80%=" << myAlgo.getResult().getConfidenceLength(0.8) << std::endl;
 
       /* Use the standard deviation as a stoping rule */
-      myAlgo = ProbabilitySimulation(myEvent, experiments[i]);
+      myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiments[i]);
       myAlgo.setMaximumOuterSampling(250);
       myAlgo.setBlockSize(4);
       myAlgo.setMaximumCoefficientOfVariation(0.0);

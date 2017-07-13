@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ProbabilitySimulation is a generic view of simulation methods for computing
+ *  @brief ProbabilitySimulationAlgorithm is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
@@ -19,8 +19,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_PROBABILITYSIMULATION_HXX
-#define OPENTURNS_PROBABILITYSIMULATION_HXX
+#ifndef OPENTURNS_PROBABILITYSIMULATIONALGORITHM_HXX
+#define OPENTURNS_PROBABILITYSIMULATIONALGORITHM_HXX
 
 #include "openturns/Simulation.hxx"
 #include "openturns/WeightedExperiment.hxx"
@@ -28,26 +28,26 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ProbabilitySimulation
+ * @class ProbabilitySimulationAlgorithm
  */
 
-class OT_API ProbabilitySimulation : public Simulation
+class OT_API ProbabilitySimulationAlgorithm : public Simulation
 {
 
   CLASSNAME;
 public:
   /** Default constructor */
-  ProbabilitySimulation(const Bool verbose = true,
+  ProbabilitySimulationAlgorithm(const Bool verbose = true,
                         const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
-  ProbabilitySimulation(const Event & event,
+  ProbabilitySimulationAlgorithm(const Event & event,
                         const WeightedExperiment & experiment,
                         const Bool verbose = true,
                         const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
-  virtual ProbabilitySimulation * clone() const;
+  virtual ProbabilitySimulationAlgorithm * clone() const;
 
   /** Experiment accessor */
   WeightedExperiment getExperiment() const;
@@ -76,7 +76,7 @@ protected:
 
 private:
 
-} ; /* class ProbabilitySimulation */
+} ; /* class ProbabilitySimulationAlgorithm */
 
 
 END_NAMESPACE_OPENTURNS

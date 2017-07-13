@@ -65,7 +65,7 @@ for experiment in experiments:
 
     ot.RandomGenerator.SetSeed(0)
 
-    myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+    myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
     myAlgo.setMaximumOuterSampling(250)
     myAlgo.setBlockSize(4)
     myAlgo.setMaximumCoefficientOfVariation(0.1)
@@ -80,7 +80,7 @@ for experiment in experiments:
 
     # Use the standard deviation as a stoping rule
     experiment = ot.MonteCarloExperiment()
-    myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+    myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
     myAlgo.setMaximumOuterSampling(250)
     myAlgo.setBlockSize(4)
     myAlgo.setMaximumCoefficientOfVariation(0.0)
@@ -122,7 +122,7 @@ for i, event in enumerate(all_events):
     print(description[i])
     if event.isComposite():
         experiment = ot.MonteCarloExperiment()
-        myAlgo = ot.ProbabilitySimulation(event, experiment)
+        myAlgo = ot.ProbabilitySimulationAlgorithm(event, experiment)
     else:
         myAlgo = ot.Simulation(event)
     myAlgo.setMaximumOuterSampling(250)

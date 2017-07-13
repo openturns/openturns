@@ -35,7 +35,7 @@ describes the indicator function equal to 1 if
 The Simulation object provides a generic simulation service for non-composite
 events, and its derived classes provide dedicated algorithms:
 
-- :class:`~openturns.ProbabilitySimulation`
+- :class:`~openturns.ProbabilitySimulationAlgorithm`
 
 - :class:`~openturns.DirectionalSampling`
 

@@ -39,7 +39,7 @@ try:
 
     # We create a Monte Carlo algorithm
     experiment = MonteCarloExperiment()
-    myAlgo = ProbabilitySimulation(myEvent, experiment)
+    myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiment)
     myAlgo.setMaximumOuterSampling(500)
     myAlgo.setBlockSize(10)
     myAlgo.setMaximumCoefficientOfVariation(0.05)

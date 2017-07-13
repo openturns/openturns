@@ -64,7 +64,7 @@ int main(int argc, char **argv)
   {
     /* We create a monte carlo algorithm */
     MonteCarloExperiment experiment;
-    ProbabilitySimulation myAlgo(myEvent, experiment);
+    ProbabilitySimulationAlgorithm myAlgo(myEvent, experiment);
     myAlgo.setMaximumOuterSampling(100 * n);
     myAlgo.setBlockSize(1);
 

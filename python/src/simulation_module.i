@@ -41,7 +41,7 @@
 %include SimulationResultImplementation.i
 %include SimulationResult.i
 %include Simulation.i
-%include ProbabilitySimulation.i
+%include ProbabilitySimulationAlgorithm.i
 %include PostAnalyticalSimulation.i
 %include Wilks.i
 %include LHS.i

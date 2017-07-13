@@ -169,7 +169,7 @@ try:
     G = ot.RandomVector(LimitState, vect)
     myEvent = ot.Event(G, ot.Less(), 0.0)
     experiment = ot.MonteCarloExperiment()
-    myAlgo = ot.ProbabilitySimulation(myEvent, experiment)
+    myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
     myAlgo.setMaximumCoefficientOfVariation(0.05)
     myAlgo.setMaximumOuterSampling(int(1e5))
     myAlgo.run()

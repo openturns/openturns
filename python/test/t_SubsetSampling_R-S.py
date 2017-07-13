@@ -39,7 +39,7 @@ bs = 1
 
 # Monte Carlo
 experiment = ot.MonteCarloExperiment()
-myMC = ot.ProbabilitySimulation(myEvent, experiment)
+myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myMC.setMaximumOuterSampling(int(1e6) // bs)
 myMC.setBlockSize(bs)
 myMC.setMaximumCoefficientOfVariation(-1.0)

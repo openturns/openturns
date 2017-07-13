@@ -855,7 +855,7 @@ int main(int argc, char *argv[])
 
     // Create a MonteCarlo
     MonteCarloExperiment experiment;
-    ProbabilitySimulation monteCarlo(event, experiment);
+    ProbabilitySimulationAlgorithm monteCarlo(event, experiment);
     monteCarlo.setMaximumOuterSampling(250);
     monteCarlo.setBlockSize(4);
     monteCarlo.setMaximumCoefficientOfVariation(0.1);
@@ -1058,7 +1058,7 @@ int main(int argc, char *argv[])
     compare<Weibull>(weibull, study2 );
 
     // Simulation
-    compare<ProbabilitySimulation>(monteCarlo, study2 );
+    compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );
     compare<LHS>(lhs, study2, "lhs");
     compare<SimulationResult >( simulationResult, study2 );
 

@@ -108,7 +108,7 @@ try:
     #
     # Monte Carlo
     CoV_MC = 0.1
-    myMC = ProbabilitySimulation(myEvent, MonteCarloExperiment())
+    myMC = ProbabilitySimulationAlgorithm(myEvent, MonteCarloExperiment())
     myMC.setMaximumOuterSampling(1000000)
     myMC.setBlockSize(1)
     myMC.setMaximumCoefficientOfVariation(CoV_MC)

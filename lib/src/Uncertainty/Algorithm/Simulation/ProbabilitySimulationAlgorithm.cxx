@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ProbabilitySimulation is a generic view of simulation methods for computing
+ *  @brief ProbabilitySimulationAlgorithm is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
@@ -20,7 +20,7 @@
  *
  */
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/ProbabilitySimulation.hxx"
+#include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
@@ -29,26 +29,26 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /*
- * @class ProbabilitySimulation
+ * @class ProbabilitySimulationAlgorithm
  */
 
-CLASSNAMEINIT(ProbabilitySimulation);
+CLASSNAMEINIT(ProbabilitySimulationAlgorithm);
 
-static const Factory<ProbabilitySimulation> Factory_ProbabilitySimulation;
+static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulationAlgorithm;
 
 
 /* Constructor with parameters */
-ProbabilitySimulation::ProbabilitySimulation(const Event & event,
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
                                              const WeightedExperiment & experiment,
                                              const Bool verbose,
                                              const HistoryStrategy & convergenceStrategy)
   : Simulation(event, verbose, convergenceStrategy)
 {
-  if (!getEvent().isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulation requires a composite event";
+  if (!getEvent().isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
   setExperiment(experiment);
 }
 
-ProbabilitySimulation::ProbabilitySimulation(const Bool verbose,
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbose,
                                              const HistoryStrategy & convergenceStrategy)
   : Simulation(verbose, convergenceStrategy)
 {
@@ -56,13 +56,13 @@ ProbabilitySimulation::ProbabilitySimulation(const Bool verbose,
 }
 
 /* Virtual constructor */
-ProbabilitySimulation * ProbabilitySimulation::clone() const
+ProbabilitySimulationAlgorithm * ProbabilitySimulationAlgorithm::clone() const
 {
-  return new ProbabilitySimulation(*this);
+  return new ProbabilitySimulationAlgorithm(*this);
 }
 
 
-void ProbabilitySimulation::setExperiment(const WeightedExperiment & experiment)
+void ProbabilitySimulationAlgorithm::setExperiment(const WeightedExperiment & experiment)
 {
   experiment_ = experiment;
   experiment_.setSize(blockSize_);
@@ -70,24 +70,24 @@ void ProbabilitySimulation::setExperiment(const WeightedExperiment & experiment)
 }
 
 
-WeightedExperiment ProbabilitySimulation::getExperiment() const
+WeightedExperiment ProbabilitySimulationAlgorithm::getExperiment() const
 {
   return experiment_;
 }
 
 
 /* String converter */
-String ProbabilitySimulation::__repr__() const
+String ProbabilitySimulationAlgorithm::__repr__() const
 {
   OSS oss;
-  oss << "class=" << ProbabilitySimulation::GetClassName()
+  oss << "class=" << ProbabilitySimulationAlgorithm::GetClassName()
       << " experiment=" << experiment_
       << " derived from " << Simulation::__repr__();
   return oss;
 }
 
 /* Compute the block sample and the points that realized the event */
-Sample ProbabilitySimulation::computeBlockSample()
+Sample ProbabilitySimulationAlgorithm::computeBlockSample()
 {
   Point weights;
   const Sample inputSample(experiment_.generateWithWeights(weights));
@@ -102,20 +102,20 @@ Sample ProbabilitySimulation::computeBlockSample()
 
 
 /* Method save() stores the object through the StorageManager */
-void ProbabilitySimulation::save(Advocate & adv) const
+void ProbabilitySimulationAlgorithm::save(Advocate & adv) const
 {
   Simulation::save(adv);
   adv.saveAttribute("experiment_", experiment_);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ProbabilitySimulation::load(Advocate & adv)
+void ProbabilitySimulationAlgorithm::load(Advocate & adv)
 {
   Simulation::load(adv);
   adv.loadAttribute("experiment_", experiment_);
 }
 
-void ProbabilitySimulation::setBlockSize(const UnsignedInteger blockSize)
+void ProbabilitySimulationAlgorithm::setBlockSize(const UnsignedInteger blockSize)
 {
   Simulation::setBlockSize(blockSize);
   experiment_.setSize(blockSize);
