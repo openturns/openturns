@@ -9,3 +9,4 @@ Functional modeling
     composed_function.ipynb
     linear_combination_function.ipynb
     aggregated_function.ipynb
+    parametric_function.ipynb
