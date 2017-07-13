@@ -117,11 +117,9 @@ script:
               -DPYTHON_INCLUDE_DIR=/usr/include/python2.7
               -DPYTHON_LIBRARY=/usr/lib/libpython2.7.dylib
               -DUSE_COTIRE=ON
-              -DCOTIRE_TESTS=OFF
               -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4"
               . &&
-        make python_unity -j4 &&
-        make install/fast;
+        make install -j4;
     fi
   - ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100
 

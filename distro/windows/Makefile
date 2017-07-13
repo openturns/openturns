@@ -57,6 +57,7 @@ CHECK_OT=y
 JOBS=$(shell getconf _NPROCESSORS_ONLN)
 JOBS_PYTHON=$(JOBS)
 JOBS_TEST=$(JOBS)
+JOBS_COTIRE=$(JOBS)
 export PATH := $(MINGW_PREFIX)/bin:$(PATH)
 
 DEBUG_OT=n
@@ -97,20 +98,21 @@ ot-config: ot-check-compiler
 	  -DPYTHON_EXECUTABLE=$(PYTHON_EXECUTABLE) \
 	  -DR_EXECUTABLE=$(R_PATH)/bin/R.exe \
 	  -DCMAKE_INSTALL_PREFIX=$(OT_PREFIX) \
+	  -DSITE_PACKAGE=Lib/site-packages \
 	  -DUSE_TBB=OFF \
 	  -DUSE_SPHINX=OFF \
 	  -DCMAKE_CROSSCOMPILING_EMULATOR=$(WINE) \
-	  -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j$(JOBS)" \
+	  -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j$(JOBS_COTIRE)" \
 	  $(OT_SRC)
 	touch ot-config
 
 ot-compile: ot-config
-	cd $(OT_BUILD) && make OT_unity -j$(JOBS)
-	cd $(OT_BUILD) && make python_unity -j$(JOBS_PYTHON)
+	cd $(OT_BUILD) && make OT -j$(JOBS)
+	cd $(OT_BUILD) && make -j$(JOBS_PYTHON)
 	touch ot-compile
 
 ot-install: ot-compile
-	cd $(OT_BUILD) && make install/fast -j$(JOBS)
+	cd $(OT_BUILD) && make install -j$(JOBS)
 ifeq ($(DEBUG_OT),n)
 	$(TARGET)-strip --strip-unneeded $(OT_PREFIX)/bin/*.dll
 	$(TARGET)-strip -g $(OT_PREFIX)/lib/*.a
@@ -118,7 +120,7 @@ ifeq ($(DEBUG_OT),n)
 endif
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgcc_s_*-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libquadmath-0.dll $(OT_PREFIX)/bin
-	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgfortran-3.dll $(OT_PREFIX)/bin
+	cp $(MINGW_PREFIX)/$(TARGET)/bin/libgfortran-*.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libstdc++-6.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libwinpthread-1.dll $(OT_PREFIX)/bin
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/libblas.dll $(OT_PREFIX)/bin
@@ -136,7 +138,7 @@ endif
 	touch ot-install
 
 ot-test: ot-install
-	cd $(OT_BUILD) && make all_unity -j$(JOBS)
+	cd $(OT_BUILD) && make tests -j$(JOBS)
 ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/lib/test
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test

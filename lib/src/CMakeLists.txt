@@ -31,7 +31,7 @@ foreach (built_source ${BUILT_SOURCEFILES})
 endforeach (built_source)
 include_directories (${INTERNAL_INCLUDE_DIRS})
 link_directories (${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES})
-add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES})
+ot_add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES})
 set_target_properties (OT PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 if (BUILD_SHARED_LIBS)
@@ -83,10 +83,3 @@ if (UNIX AND BUILD_SHARED_LIBS)
   execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/libOT-gdb.py ${CMAKE_CURRENT_BINARY_DIR}/${OT_GDB_PY})
   install (FILES libOT-gdb.py DESTINATION ${OPENTURNS_DATA_PATH}/gdb/auto-load/${LIBRARY_PATH} RENAME ${OT_GDB_PY})
 endif ()
-
-
-if (USE_COTIRE)
-  set (COTIRE_UNITY_SOURCE_EXCLUDE_EXTENSIONS "c;cc")
-  cotire (OT)
-endif ()
-
