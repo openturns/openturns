@@ -212,7 +212,6 @@ Random vectors
 
     :template: class.rst_t
     ConstantRandomVector
-    PosteriorRandomVector
     UsualRandomVector
 
 Samplers
@@ -222,7 +221,6 @@ Samplers
     :toctree: _generated/
     :template: class.rst_t
 
-    Sampler
     MCMC
     RandomWalkMetropolisHastings
     CalibrationStrategy

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief MCMC updates the chain
+ *  @brief MCMC base class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -22,7 +22,7 @@
 #define OPENTURNS_MCMC_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/SamplerImplementation.hxx"
+#include "openturns/RandomVectorImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Distribution.hxx"
 
@@ -31,13 +31,12 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class MCMC
  *
- * @brief The class implements the concept of comparison operator defined in Sampler.
+ * @brief MCMC base class
  *
  * This class is abstract so it can not be instanciated. It must be derived.
- * @see Sampler
  */
 class OT_API MCMC
-  : public SamplerImplementation
+  : public RandomVectorImplementation
 {
   CLASSNAME;
 public:
@@ -61,6 +60,9 @@ public:
        const Sample & parameters,
        const Sample & observations,
        const Point & initialState);
+
+  /** Virtual constructor */
+  virtual MCMC * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -102,11 +104,12 @@ public:
   void setNonRejectedComponents(const Indices & nonRejectedComponents);
   Indices getNonRejectedComponents() const;
 
-  /** Virtual constructor */
-  virtual MCMC * clone() const;
-
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
+
+  /** Verbosity accessor */
+  void setVerbose(const Bool verbose);
+  Bool getVerbose() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -131,6 +134,7 @@ private:
   UnsignedInteger burnIn_; // number of first samples discarded to reach stationary regime
   UnsignedInteger thinning_; // number of samples skipped at each generation
 
+  Bool verbose_;
 }; /* class MCMC */
 
 

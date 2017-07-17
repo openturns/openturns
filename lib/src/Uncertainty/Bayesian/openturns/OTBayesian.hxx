@@ -24,10 +24,7 @@
 
 #include "openturns/CalibrationStrategy.hxx"
 #include "openturns/CalibrationStrategyImplementation.hxx"
-#include "openturns/Sampler.hxx"
-#include "openturns/SamplerImplementation.hxx"
 #include "openturns/MCMC.hxx"
 #include "openturns/RandomWalkMetropolisHastings.hxx"
-#include "openturns/PosteriorRandomVector.hxx"
 
 #endif /* OPENTURNS_OTBAYESIAN_HXX */

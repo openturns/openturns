@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief RandomWalkMetropolisHastings updates the chain
+ *  @brief Metropolis-Hastings algorithm
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -32,9 +32,8 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class RandomWalkMetropolisHastings
  *
- * @brief The class implements the concept of comparison operator defined in Sampler.
+ * @brief Metropolis-Hastings algorithm.
  *
- * @see Sampler
  */
 class OT_API RandomWalkMetropolisHastings
   : public MCMC
@@ -73,7 +72,7 @@ public:
   /** Virtual constructor */
   virtual RandomWalkMetropolisHastings * clone() const;
 
-  /** @copydoc Sampler::getRealization() const */
+  /** Get a realization */
   virtual Point getRealization() const;
 
   /** Calibration strategy accessor */

@@ -630,11 +630,8 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
 ot_add_python_module(bayesian bayesian_module.i
                       CalibrationStrategyImplementation.i CalibrationStrategyImplementation_doc.i.in
                       CalibrationStrategy.i CalibrationStrategy_doc.i.in
-                      SamplerImplementation.i SamplerImplementation_doc.i.in
-                      Sampler.i Sampler_doc.i.in
                       MCMC.i MCMC_doc.i.in
                       RandomWalkMetropolisHastings.i RandomWalkMetropolisHastings_doc.i.in
-                      PosteriorRandomVector.i PosteriorRandomVector_doc.i.in
                       ConditionalRandomVector.i ConditionalRandomVector_doc.i.in
                       UncertaintyBayesianTemplateDefs.i
                     )
