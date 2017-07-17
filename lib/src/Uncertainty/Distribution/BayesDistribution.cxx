@@ -247,8 +247,8 @@ BayesDistribution::Implementation BayesDistribution::getMarginal(const Indices &
   Indices conditioningIndices(0);
   const UnsignedInteger size = indices.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
-    if (i >= conditionedDimension)
-      conditioningIndices.add(i - conditionedDimension);
+    if (indices[i] >= conditionedDimension)
+      conditioningIndices.add(indices[i] - conditionedDimension);
   if (conditioningIndices.getSize() == size) return conditioningDistribution_.getImplementation()->getMarginal(conditioningIndices);
   throw NotYetImplementedException(HERE) << "In BayesDistribution::getMarginal(const Indices & indices) const";
 } // getMarginal(Indices)
