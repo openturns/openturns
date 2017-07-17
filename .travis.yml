@@ -75,17 +75,15 @@ install:
   - popd
 
 # use tbb from sources for osx (not brew)
-  - if test "$TRAVIS_OS_NAME" = "osx"; then
-       git clone https://github.com/01org/tbb.git &&
-       pushd tbb &&
-       git checkout 2017_U5 &&
-       make -j4 cfg=release stdlib=libc++ &&
-       install -d $HOME/.local/lib &&
-       install -d $HOME/.local/include &&
-       cp `find . -name "*lib*" | grep tbb | grep release` $HOME/.local/lib &&
-       cp -r ./include/tbb $HOME/.local/include &&
-       popd;
-   fi
+  - git clone https://github.com/01org/tbb.git
+  - pushd tbb
+  - git checkout 2017_U5
+  - make -j4 cfg=release stdlib=libc++
+  - install -d $HOME/.local/lib
+  - install -d $HOME/.local/include
+  - cp `find . -name "*lib*" | grep tbb | grep release` $HOME/.local/lib
+  - cp -r ./include/tbb $HOME/.local/include
+  - popd
 
 before_script:
   - R CMD INSTALL --library=$PWD utils/rot_1.4.6.tar.gz
