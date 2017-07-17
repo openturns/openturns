@@ -1,8 +1,29 @@
 %feature("docstring") OT::ExpertMixture
-"Expert mixture defining a piece wise function according to a classifier.
+"Expert mixture defining a piecewise function according to a classifier.
 
-Available constructors:
-    ExpertMixture(*basis, classifier*)
+This implements an expert mixture which is a piecewise function :math:`f`
+defined by the collection of functions :math:`(f_i)_{i=1, \ldots, N}` given in
+*basis* and according to a *classifier*:
+
+.. math::
+
+    f(\vect{x}) &= f_1(\vect{x}) \hspace{1em} \forall \vect{z} \in \text{Class} 1 \\
+                &= f_k(\vect{x}) \hspace{1em} \forall \vect{z} \in \text{Class} k \\
+                &= f_N(\vect{x}) \hspace{1em} \forall \vect{z} \in \text{Class} N
+
+where the :math:`N` classes are defined by the classifier.
+
+In supervised mode the classifier partitions the input and output space at once:
+
+.. math::
+
+    \vect{z} = (\vect{x}, f(\vect{x}))
+
+whereas in non-supervised mode only the input space is partitioned:
+
+.. math::
+
+    \vect{z} = \vect{x}
 
 Parameters
 ----------
@@ -10,39 +31,38 @@ basis : :class:`~openturns.Basis`
     A basis which is a collection of :class:`~openturns.Function`.
 classifier : :class:`~openturns.Classifier`
     A classifier
-supervised : bool, default=True
-    In supervised mode, the classifer partitions the database
-    of :math:`(x_i, f(x_i))`, else it has the dimension of *x*.
+supervised : bool (default=True)
+    In supervised mode, the classifier partitions the space
+    of :math:`(\vect(x), f(\vect(x)))` whereas in non-supervised mode the
+    classifier only partitions the input space.
 
-See also
+Examples
 --------
-Classifier, MixtureClassifier
+>>> import openturns as ot
+>>> R = ot.CorrelationMatrix(2)
+>>> R[0, 1] = -0.99
+>>> d1 = ot.Normal([-1.0, 1.0], [1.0, 1.0], R)
+>>> R[0, 1] = 0.99
+>>> d2 = ot.Normal([1.0, 1.0], [1.0, 1.0], R)
+>>> distribution = ot.Mixture([d1, d2], [1.0]*2)
+>>> classifier = ot.MixtureClassifier(distribution)
+>>> f1 = ot.SymbolicFunction(['x'], ['-x'])
+>>> f2 = ot.SymbolicFunction(['x'], ['x'])
+>>> experts = ot.Basis([f1, f2])
+>>> evaluation = ot.ExpertMixture(experts, classifier)
+>>> moe = ot.Function(evaluation)
+>>> print(moe([-0.3]))
+[0.3]
+>>> print(moe([0.1]))
+[0.1]
 
 Notes
 -----
-This implements an expert mixture which is a piece wise function :math:`f` 
-defined by the collection of functions :math:`(f_i)_{i=1, \ldots, N}` given in
-*basis* and according to the classifier *classifier*:
+The number of experts must match the number of classes of the classifier.
 
-.. math::
-
-    f(\vect{x}) &= f_1(\vect{x}) \hspace{1em} \forall \vect{x} \in \text{Classe} 1 \\
-                &= f_k(\vect{x}) \hspace{1em} \forall \vect{x} \in \text{Classe} k \\
-                &= f_N(\vect{x}) \hspace{1em} \forall \vect{x} \in \text{Classe} N
-
-where the :math:`N` classes are defined by the classifier.
-
-Usage:
-
-- ExpertMixture(*input*)
- 
-where *input* is a sequence of float or a 2-d sequence of float. It represents a
-point or a set of points to evaluate using the expert mixture.
-
-The input vector *input* is assigned to a particular class according to the
-rules defined by *classifier* and the associated marginal function :math:`f_i`
-is used to evaluate :math:`f(input)`.
-"
+See also
+--------
+Classifier, MixtureClassifier"
 
 // ---------------------------------------------------------------------
 
