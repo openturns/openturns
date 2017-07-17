@@ -26,28 +26,15 @@ OT_Classifier_doc
 %define OT_Classifier_classify_doc
 "Classify points according to the classifier.
 
-**Available usages**:
-
-    classify(*inputPoint*)
-
-    classify(*inputSample*)
-
 Parameters
 ----------
-inputPoint : sequence of float
-    A point to classify.
-inputSample : 2-d a sequence of float
-    A set of point to classify.
+input : sequence of float or 2-d a sequence of float
+    A point or set of points to classify.
 
-Notes
------
-The rules to assign a point to a class are specific to each *classifierImp*.
-
-In the first usage, it returns an integer which corresponds to the class where
-*inputPoint* has been assigned.
-
-In the second usage, it returns an :class:`~openturns.Indices` that collects the
-class of each point of *inputSample*."
+Returns
+-------
+cls : int or :class:`~openturns.Indices`
+    The class index of the input points, or indices of the classes of each points."
 %enddef
 %feature("docstring") OT::ClassifierImplementation::classify
 OT_Classifier_classify_doc
@@ -57,34 +44,17 @@ OT_Classifier_classify_doc
 %define OT_Classifier_grade_doc
 "Grade points according to the classifier.
 
-**Available usages**:
-
-    grade(*inputPoint, k*)
-
-    grade(*inputSample, classList*)
-
 Parameters
 ----------
-inputPoint : sequence of float
-    A point to grade.
-inputSample : 2-d a sequence of float
-    A set of point to grade.
-k : integer
-    The class number.
-classList : sequence of integer
-    The list of class number.
+inputPoint : sequence of float or 2-d a sequence of float
+    A point or set of points to grade.
+k : int or sequence of int
+    The class index, or class indices.
 
-Notes
------
-The rules to grade a point with respect to a class are specific to each
-*classifierImp*.
-
-In the first usage, it returns a real that grades *inputPoint* with respect to
-the class *k*. The greatest, the best.
-
-In the second usage, it returns an :class:`~openturns.Indices` that collects the
-grades of the :math:`i^{th}` point of *inputSample* with respect to the
-:math:`i^{th}` class of *classList*."
+Returns
+-------
+grade : float or :class:`~openturns.Point`
+    Grade or list of grades of each input point with respect to each class index"
 %enddef
 %feature("docstring") OT::ClassifierImplementation::grade
 OT_Classifier_grade_doc
@@ -96,7 +66,7 @@ OT_Classifier_grade_doc
 
 Returns
 -------
-dim : integer
+dim : int
     The dimension of the classifier."
 %enddef
 %feature("docstring") OT::ClassifierImplementation::getDimension
