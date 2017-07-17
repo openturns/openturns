@@ -418,6 +418,7 @@ Mixture::Implementation Mixture::getMarginal(const UnsignedInteger i) const
   }
   Mixture marginal(collection);
   marginal.isCopula_ = isCopula_;
+  marginal.setDescription(Description(1, getDescription()[i]));
   return marginal.clone();
 }
 
@@ -435,8 +436,17 @@ Mixture::Implementation Mixture::getMarginal(const Indices & indices) const
     collection.add(distributionCollection_[index].getMarginal(indices));
     collection[index].setWeight(distributionCollection_[index].getWeight());
   }
+  const UnsignedInteger outputDimension = indices.getSize();
+  Description description(getDescription());
+  Description marginalDescription(outputDimension);
+  for (UnsignedInteger i = 0; i < outputDimension; ++i)
+  {
+    const UnsignedInteger index_i = indices[i];
+    marginalDescription[i] = description[index_i];
+  }
   Mixture marginal(collection);
   marginal.isCopula_ = isCopula_;
+  marginal.setDescription(marginalDescription);
   return marginal.clone();
 }
 

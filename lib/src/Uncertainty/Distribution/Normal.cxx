@@ -550,7 +550,9 @@ Normal::Implementation Normal::getMarginal(const UnsignedInteger i) const
   CorrelationMatrix R(1);
   Point sigma(1, sigma_[i]);
   Point mean(1, mean_[i]);
-  return new Normal(mean, sigma, R);
+  Normal marginal(mean, sigma, R);
+  marginal.setDescription(Description(1, getDescription()[i]));
+  return marginal.clone();
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -565,6 +567,8 @@ Normal::Implementation Normal::getMarginal(const Indices & indices) const
   CorrelationMatrix R(outputDimension);
   Point sigma(outputDimension);
   Point mean(outputDimension);
+  Description description(getDescription());
+  Description marginalDescription(outputDimension);
   // Extract the correlation matrix, the marginal standard deviations and means
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
@@ -575,8 +579,11 @@ Normal::Implementation Normal::getMarginal(const Indices & indices) const
     {
       R(i, j) = R_(index_i, indices[j]);
     }
+    marginalDescription[i] = description[index_i];
   }
-  return new Normal(mean, sigma, R);
+  Normal marginal(mean, sigma, R);
+  marginal.setDescription(marginalDescription);
+  return marginal.clone();
 } // getMarginal(Indices)
 
 /* Get the skewness of the distribution */

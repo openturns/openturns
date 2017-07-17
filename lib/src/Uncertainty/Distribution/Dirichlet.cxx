@@ -440,7 +440,9 @@ Dirichlet::Implementation Dirichlet::getMarginal(const UnsignedInteger i) const
   Point thetaMarginal(2);
   thetaMarginal[0] = theta_[i];
   thetaMarginal[1] = sumTheta_ - theta_[i];
-  return new Dirichlet(thetaMarginal);
+  Dirichlet marginal(thetaMarginal);
+  marginal.setDescription(Description(1, getDescription()[i]));
+  return marginal.clone();
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -450,13 +452,17 @@ Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   if (dimension == 1) return clone();
   const UnsignedInteger outputDimension = indices.getSize();
+  Description description(getDescription());
+  Description marginalDescription(outputDimension);
   Point thetaMarginal(outputDimension + 1);
   Scalar sumMarginal = 0.0;
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
-    const Scalar thetaI = theta_[indices[i]];
+    const UnsignedInteger index_i = indices[i];
+    const Scalar thetaI = theta_[index_i];
     sumMarginal += thetaI;
     thetaMarginal[i] = thetaI;
+    marginalDescription[i] = description[index_i];
   }
   thetaMarginal[outputDimension] = sumTheta_ - sumMarginal;
   Dirichlet marginal(thetaMarginal);
@@ -474,6 +480,7 @@ Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
     marginal.integrationWeights_ = marginalIntegrationWeights_;
     marginal.isInitializedCDF_ = true;
   }
+  marginal.setDescription(marginalDescription);
   return marginal.clone();
 } // getMarginal(Indices)
 
