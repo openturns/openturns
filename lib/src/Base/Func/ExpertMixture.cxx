@@ -34,6 +34,7 @@ ExpertMixture::ExpertMixture()
   : EvaluationImplementation()
   , experts_()
   , classifier_()
+  , supervised_(true)
 {
   // Nothing to do
 }
@@ -41,15 +42,26 @@ ExpertMixture::ExpertMixture()
 
 /* Constructor */
 ExpertMixture::ExpertMixture(const Basis & experts,
-                             const Classifier & classifier)
+                             const Classifier & classifier,
+                             const Bool supervised)
   : EvaluationImplementation()
   , experts_(experts)
   , classifier_(classifier)
+  , supervised_(supervised)
 {
   // Check if there is at least one expert
   if (experts.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an ExpertMixture with no expert!";
   // Check that the experts and the classifier are compatible
-  if (classifier.getDimension() != (experts[0].getInputDimension() + experts[0].getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the classifier dimension must be equal to the sum of the experts input and output dimensions, here the classifier dimension=" << classifier.getDimension() << " and the experts input dimension=" << experts[0].getInputDimension() << " and output dimension=" << experts[0].getOutputDimension();
+  if (supervised_)
+  {
+    if (classifier.getDimension() != (experts[0].getInputDimension() + experts[0].getOutputDimension()))
+      throw InvalidArgumentException(HERE) << "Error: the classifier dimension must be equal to the sum of the experts input and output dimensions, here the classifier dimension=" << classifier.getDimension() << " and the experts input dimension=" << experts[0].getInputDimension() << " and output dimension=" << experts[0].getOutputDimension();
+  }
+  else
+  {
+    if (classifier.getDimension() != experts[0].getInputDimension())
+      throw InvalidArgumentException(HERE) << "Error: the classifier dimension must be equal to the experts input dimension, here the classifier dimension=" << classifier.getDimension() << " and the experts input dimension=" << experts[0].getInputDimension();
+  }
   setDescription(experts[0].getDescription());
 }
 
@@ -114,17 +126,19 @@ Point ExpertMixture::operator() (const Point & inP) const
   const UnsignedInteger outputDimension = getOutputDimension();
   const UnsignedInteger size = experts_.getSize();
   UnsignedInteger bestClass = 0;
-  // Build the point (x, f(x)) for the first class and grade it according to the classifier
+  // Build the point z for the first class and grade it according to the classifier
   Point mixedPoint(inP);
   Point bestValue(experts_[0](inP));
-  mixedPoint.add(bestValue);
+  if (supervised_)// z=(x, f(x))
+    mixedPoint.add(bestValue);
   Scalar bestGrade = classifier_.grade(mixedPoint, bestClass);
   LOGDEBUG(OSS() << "Class index=" << 0 << ", grade=" << bestGrade << ", value=" << bestValue);
   for (UnsignedInteger classIndex = 1; classIndex < size; ++classIndex)
   {
-    // Build the point (x, f(x)) for each other class and grade it according to the classifier
+    // Build the point z for each other class and grade it according to the classifier
     const Point localValue(experts_[classIndex](inP));
-    for (UnsignedInteger i = 0; i < outputDimension; ++i) mixedPoint[inputDimension + i] = localValue[i];
+    if (supervised_)// z=(x, f(x))
+      std::copy(localValue.begin(), localValue.end(), mixedPoint.begin() + inputDimension);
     const Scalar grade = classifier_.grade(mixedPoint, classIndex);
     LOGDEBUG(OSS() << "Class index=" << classIndex << ", grade=" << grade << ", value=" << localValue);
     // The best class will give the output value
@@ -150,12 +164,13 @@ Sample ExpertMixture::operator() (const Sample & inS) const
   Point bestGrades(size, -SpecFunc::MaxScalar);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++classIndex)
   {
-    // Build the point (x, f(x)) for each other class and grade it according to the classifier
+    // Build the point z for each other class and grade it according to the classifier
     Sample mixedSample(inS);
     // Here is the evaluation of the expert over a sample, benefiting from possible
     // parallelism/vectorization
     const Sample localValues(experts_[classIndex](inS));
-    mixedSample.stack(localValues);
+    if (supervised_)// z=(x, f(x))
+      mixedSample.stack(localValues);
     const Point grades = classifier_.grade(mixedSample, Indices(size, classIndex));
     for (UnsignedInteger i = 0; i < size; ++i)
       if (grades[i] > bestGrades[i])
@@ -186,6 +201,7 @@ void ExpertMixture::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute( "experts_", experts_ );
   adv.saveAttribute( "classifier_", classifier_ );
+  adv.saveAttribute( "supervised_", supervised_ );
 }
 
 
@@ -195,6 +211,7 @@ void ExpertMixture::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "experts_", experts_ );
   adv.loadAttribute( "classifier_", classifier_ );
+  adv.loadAttribute( "supervised_", supervised_ );
 }
 
 END_NAMESPACE_OPENTURNS

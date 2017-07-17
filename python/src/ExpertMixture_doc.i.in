@@ -10,6 +10,9 @@ basis : :class:`~openturns.Basis`
     A basis which is a collection of :class:`~openturns.Function`.
 classifier : :class:`~openturns.Classifier`
     A classifier
+supervised : bool, default=True
+    In supervised mode, the classifer partitions the database
+    of :math:`(x_i, f(x_i))`, else it has the dimension of *x*.
 
 See also
 --------

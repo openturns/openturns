@@ -47,7 +47,8 @@ public:
 
   /** Constructor */
   ExpertMixture(const Basis & experts,
-                const Classifier & classifier);
+                const Classifier & classifier,
+                const Bool supervised = true);
 
   /** Virtual constructor */
   virtual ExpertMixture * clone() const;
@@ -91,6 +92,9 @@ private:
 
   /** The classifier */
   Classifier classifier_;
+
+  /** Supervised mode */
+  Bool supervised_;
 
 } ; /* class ExpertMixture */
 
