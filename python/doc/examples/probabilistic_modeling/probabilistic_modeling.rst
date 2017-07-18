@@ -12,6 +12,7 @@ Probabilistic modeling
     create_copula.ipynb
     composed_distribution.ipynb
     extract_copula.ipynb
+    random_vector_manipulation.ipynb
     distribution_manipulation.ipynb
     python_randomvector.ipynb
     python_distribution.ipynb
