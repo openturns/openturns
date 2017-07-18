@@ -23,6 +23,20 @@ OT_Classifier_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Classifier_getNumberOfClasses_doc
+"Accessor to the number of classes.
+
+Returns
+-------
+n_classes : int
+    The number of classes"
+%enddef
+%feature("docstring") OT::ClassifierImplementation::getNumberOfClasses
+OT_Classifier_getNumberOfClasses_doc
+
+
+// ---------------------------------------------------------------------
+
 %define OT_Classifier_classify_doc
 "Classify points according to the classifier.
 

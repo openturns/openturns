@@ -60,6 +60,11 @@ UnsignedInteger Classifier::classify(const Point & inP) const
   return getImplementation()->classify(inP);
 }
 
+UnsignedInteger Classifier::getNumberOfClasses() const
+{
+  return getImplementation()->getNumberOfClasses();
+}
+
 /* Classify a sample */
 Indices Classifier::classify(const Sample & inS) const
 {

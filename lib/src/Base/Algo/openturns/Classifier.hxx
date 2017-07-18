@@ -54,6 +54,8 @@ public:
   /** Constructor from sample */
   Classifier(const Sample & inS, const Indices & outC);
 
+  UnsignedInteger getNumberOfClasses() const;
+
   /** Associate a point with a class */
   UnsignedInteger classify(const Point & inP) const;
   Indices classify(const Sample & inS) const;

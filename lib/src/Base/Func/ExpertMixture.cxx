@@ -62,6 +62,8 @@ ExpertMixture::ExpertMixture(const Basis & experts,
     if (classifier.getDimension() != experts[0].getInputDimension())
       throw InvalidArgumentException(HERE) << "Error: the classifier dimension must be equal to the experts input dimension, here the classifier dimension=" << classifier.getDimension() << " and the experts input dimension=" << experts[0].getInputDimension();
   }
+  if (classifier.getNumberOfClasses() != experts.getSize())
+    throw InvalidArgumentException(HERE) << "The number of experts (" << experts.getSize() << ") must match the number of classes (" << classifier.getNumberOfClasses() << ")";
   setDescription(experts[0].getDescription());
 }
 
