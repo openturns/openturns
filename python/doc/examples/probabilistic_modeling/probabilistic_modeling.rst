@@ -21,6 +21,7 @@ Probabilistic modeling
     random_mixture_distribution.ipynb
     distribution_transformation.ipynb
     composite_distribution.ipynb
+    composite_random_vector.ipynb
     maximum_distribution.ipynb
     order_statistics_distribution.ipynb
     conditional_distribution.ipynb
