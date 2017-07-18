@@ -20,6 +20,7 @@ Probabilistic modeling
     ordinal_sum_copula.ipynb
     mixture_distribution.ipynb
     random_mixture_distribution.ipynb
+    random_mixture_distribution_discrete.ipynb
     distribution_transformation.ipynb
     composite_distribution.ipynb
     composite_random_vector.ipynb
