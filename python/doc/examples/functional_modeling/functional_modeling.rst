@@ -5,6 +5,7 @@ Functional modeling
 
     symbolic_function.ipynb
     python_function.ipynb
+    function_manipulation.ipynb
     quadratic_function.ipynb
     composed_function.ipynb
     linear_combination_function.ipynb
