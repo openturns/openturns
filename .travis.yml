@@ -32,7 +32,8 @@ before_install:
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         brew update &&
         brew tap homebrew/science &&
-        brew install swig muparser R openblas &&
+        brew cleanup &&
+        brew install swig muparser openblas R &&
         export HOMEBREW_PREFIX=`brew --prefix`;
     fi
 
