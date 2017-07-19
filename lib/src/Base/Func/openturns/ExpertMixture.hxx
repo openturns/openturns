@@ -86,6 +86,10 @@ public:
   virtual void load(Advocate & adv);
 
 private:
+  Point evaluateSupervised(const Point & inP) const;
+  Sample evaluateSupervised(const Sample & inP) const;
+  Point evaluateNonSupervised(const Point & inP) const;
+  Sample evaluateNonSupervised(const Sample & inP) const;
 
   /** The local experts */
   Basis experts_;
