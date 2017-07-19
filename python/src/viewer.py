@@ -197,12 +197,6 @@ class View(object):
         if (graph.getLogScale() == ot.GraphImplementation.LOGY) or (graph.getLogScale() == ot.GraphImplementation.LOGXY):
             axes_kwargs.setdefault('yscale', 'log')
 
-        # set bounding box
-        axes_kwargs.setdefault(
-            'xlim', [graph.getBoundingBox()[0], graph.getBoundingBox()[1]])
-        axes_kwargs.setdefault(
-            'ylim', [graph.getBoundingBox()[2], graph.getBoundingBox()[3]])
-
         # set figure
         if figure is None:
             if len(axes) == 0:
@@ -337,6 +331,13 @@ class View(object):
                 if ('edgecolor' not in polygon_kwargs_default) and ('ec' not in polygon_kwargs_default):
                     polygon_kwargs['edgecolor'] = drawable.ConvertFromName(
                         drawable.getEdgeColor())
+
+                # bounding box defaults to [0,1] here
+                if not 'xlim' in axes_kwargs:
+                    self._ax[0].set_xlim(graph.getBoundingBox()[0], graph.getBoundingBox()[1])
+                if not 'ylim' in axes_kwargs:
+                    self._ax[0].set_ylim(graph.getBoundingBox()[2], graph.getBoundingBox()[3])
+
                 self._ax[0].add_patch(
                     matplotlib.patches.Polygon(data, **polygon_kwargs))
 
@@ -356,6 +357,13 @@ class View(object):
 
                 if 'edgecolors' not in polygon_kwargs_default:
                     polygoncollection_kwargs['edgecolors'] = colorsRGBA
+
+                # bounding box defaults to [0,1] here
+                if not 'xlim' in axes_kwargs:
+                    self._ax[0].set_xlim(graph.getBoundingBox()[0], graph.getBoundingBox()[1])
+                if not 'ylim' in axes_kwargs:
+                    self._ax[0].set_ylim(graph.getBoundingBox()[2], graph.getBoundingBox()[3])
+
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(np.array(data).reshape((polygonsNumber, verticesNumber, 2)), **polygoncollection_kwargs))
 
