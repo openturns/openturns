@@ -33,14 +33,14 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
   : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
 {
-  // Nothing to do
+  definesComputeStandardRepresentative_ = true;
 }
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const Point & scale)
   : StationaryCovarianceModel(scale, Point(1, 1.0))
 {
-  // Nothing to do
+  definesComputeStandardRepresentative_ = true;
 }
 
 /** Parameters constructor */
@@ -51,6 +51,7 @@ AbsoluteExponential::AbsoluteExponential(const Point & scale,
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
+  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
