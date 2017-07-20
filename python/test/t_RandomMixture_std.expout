@@ -138,8 +138,8 @@ pdf( 13.347374 )=0.016595
 pdf( 23.078957 )=0.006608
 pdf( 32.810540 )=0.001654
 pdf( 42.542123 )=0.000260
-projections= [Normal(mu = -1.24816, sigma = 24.4357),Gamma(k = 9.60684, lambda = 0.126843, gamma = -76.9864),Triangular(a = -79.6433, m = -1.2445, b = 77.1434),Uniform(a = -76.9864, b = 74.3938),Exponential(lambda = 0.0132034, gamma = -76.9864)]
-norms= [0.125151,0.142711,0.195666,0.294413,0.44751]
+projections= [Normal(mu = -1.24816, sigma = 24.4357),Gamma(k = 9.60684, lambda = 0.126843, gamma = -76.9864),Triangular(a = -79.6433, m = -1.2445, b = 77.1434),Uniform(a = -79.6433, b = 77.1434),Exponential(lambda = 0.0132034, gamma = -76.9864)]
+norms= [0.125151,0.142711,0.195666,0.299986,0.44751]
 distribution =  RandomMixture(
 Normal(mu = 0, sigma = 1) - 2 * Normal(mu = 0, sigma = 1) + Normal(mu = 0, sigma = 1)
 Normal(mu = 0, sigma = 1) + Normal(mu = 0, sigma = 1) - 3 * Normal(mu = 0, sigma = 1)

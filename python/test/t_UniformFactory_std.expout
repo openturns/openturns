@@ -1,9 +1,9 @@
 distribution= class=Uniform name=Uniform dimension=1 a=1 b=2.5
-Estimated distribution= class=Uniform name=Uniform dimension=1 a=1.00014 b=2.50009
+Estimated distribution= class=Uniform name=Uniform dimension=1 a=1.00009 b=2.49999
 Default distribution= Uniform(a = -1, b = 1)
 Distribution from parameters= Uniform(a = 1, b = 2.5)
 Uniform          = Uniform(a = 1, b = 2.5)
-Estimated uniform= Uniform(a = 1.00014, b = 2.50009)
+Estimated uniform= Uniform(a = 1.00009, b = 2.49999)
 Default uniform= Uniform(a = -1, b = 1)
 Uniform from parameters= Uniform(a = 1, b = 2.5)
 Estimated distribution= class=Uniform name=Uniform dimension=1 a=-2.22045e-15 b=2.22045e-15
