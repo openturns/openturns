@@ -58,6 +58,11 @@ ClassifierImplementation * ClassifierImplementation::clone() const
 }
 
 
+UnsignedInteger ClassifierImplementation::getNumberOfClasses() const
+{
+  throw NotYetImplementedException(HERE) << "In ClassifierImplementation::getNumberOfClasses() const";
+}
+
 /* Classify a sample */
 UnsignedInteger ClassifierImplementation::classify(const Point & inP) const
 {

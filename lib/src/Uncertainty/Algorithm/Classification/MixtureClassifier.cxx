@@ -57,6 +57,12 @@ String MixtureClassifier::__repr__() const
          << " mixture=" << mixture_;
 }
 
+UnsignedInteger MixtureClassifier::getNumberOfClasses() const
+{
+  return mixture_.getDistributionCollection().getSize();
+}
+
+
 /* Associate a set of points to a class */
 UnsignedInteger MixtureClassifier::classify(const Point& inP) const
 {

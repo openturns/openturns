@@ -2,6 +2,8 @@
 
 %feature("docstring") OT::Classifier
 OT_Classifier_doc
+%feature("docstring") OT::Classifier::getNumberOfClasses
+OT_Classifier_getNumberOfClasses_doc
 %feature("docstring") OT::Classifier::classify
 OT_Classifier_classify_doc
 %feature("docstring") OT::Classifier::grade

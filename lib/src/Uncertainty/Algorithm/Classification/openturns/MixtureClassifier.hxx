@@ -49,6 +49,8 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
+  virtual UnsignedInteger getNumberOfClasses() const;
+
   /** Associate a point to a class */
   using ClassifierImplementation::classify;
   virtual UnsignedInteger classify(const Point & inP) const;

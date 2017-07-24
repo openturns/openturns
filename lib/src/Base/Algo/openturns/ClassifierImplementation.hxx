@@ -47,6 +47,8 @@ public:
   /** Virtual constructor */
   virtual ClassifierImplementation * clone() const;
 
+  virtual UnsignedInteger getNumberOfClasses() const;
+
   /** Associate a point with a class */
   virtual UnsignedInteger classify(const Point & inP) const;
   virtual Indices classify(const Sample & inS) const;

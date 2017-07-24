@@ -47,7 +47,8 @@ public:
 
   /** Constructor */
   ExpertMixture(const Basis & experts,
-                const Classifier & classifier);
+                const Classifier & classifier,
+                const Bool supervised = true);
 
   /** Virtual constructor */
   virtual ExpertMixture * clone() const;
@@ -85,12 +86,19 @@ public:
   virtual void load(Advocate & adv);
 
 private:
+  Point evaluateSupervised(const Point & inP) const;
+  Sample evaluateSupervised(const Sample & inP) const;
+  Point evaluateNonSupervised(const Point & inP) const;
+  Sample evaluateNonSupervised(const Sample & inP) const;
 
   /** The local experts */
   Basis experts_;
 
   /** The classifier */
   Classifier classifier_;
+
+  /** Supervised mode */
+  Bool supervised_;
 
 } ; /* class ExpertMixture */
 
