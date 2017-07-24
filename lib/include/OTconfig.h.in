@@ -124,6 +124,12 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine OPENTURNS_HAVE_UNISTD_H
 
+/* Define to 1 if you have the uselocale function is available. */
+#cmakedefine OPENTURNS_HAVE_USELOCALE
+
+/* Define to 1 if you have the <xlocale.h> header file. */
+#cmakedefine OPENTURNS_HAVE_XLOCALE_H
+
 /* Define to 1 if the system has the type `_Bool'. */
 #cmakedefine HAVE__BOOL
 

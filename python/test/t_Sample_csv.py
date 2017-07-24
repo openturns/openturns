@@ -80,12 +80,18 @@ try:
     aSample.setName("a sample with missing entries")
     print("aSample with missing entries (see log)=", repr(aSample))
 
+    # 6th sample
     f = open('sample.csv', 'w')
     f.write(
         '"X1";"X2!()#{}%&<=>^$+-*./:\\|`?";"X3[unit]"\n5.6;-6.7;7.8\n-0.1;3.2;7.5 \n')
     f.close()
     aSample = Sample.ImportFromCSVFile('sample.csv', ';')
-    print('aSample with special chars=', repr(aSample))
+    aSample.setName("a sample with special chars")
+    print('aSample with special chars (see log)=', repr(aSample))
+
+    aSample = Sample.ImportFromTextFile("sample.csv", ";")
+    aSample.setName("a sample with special chars")
+    print("aSample with special chars (see log)=", repr(aSample))
 
     os.remove('sample.csv')
 
