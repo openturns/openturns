@@ -1,7 +1,7 @@
 %feature("docstring") OT::LinearCombinationFunction
 "Linear combination of functions.
 
-Allows to create a function which is the linear combination of functions 
+Allows to create a function which is the linear combination of functions
 with scalar weights.
 
 :math:`functionCollection  = (f_1, \hdots, f_N)`
@@ -11,13 +11,10 @@ then the linear combination is:
 
 .. math::
 
-    linComb: \left|\begin{array}{rcl}
+    linComb  \left|\begin{array}{rcl}
                   \Rset^n & \rightarrow & \Rset^{p} \\
-                  \vect{X} & \mapsto & \displaystyle \sum_i c_if_i (\vect{X})
+                  \vect{X} & \mapsto & \displaystyle \sum_{i=1}^N c_i f_i (\vect{X})
               \end{array}\right.
-
-Available constructor:
-    LinearCombinationFunction(*functionCollection, scalarCoefficientColl*)
 
 Parameters
 ----------
@@ -29,12 +26,12 @@ scalarCoefficientColl : sequence of float
 Examples
 --------
 >>> import openturns as ot
->>> functions = list()
->>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
-...                                      ['x1^2 + x2', 'x1 + x2 + x3']))
->>> functions.append(ot.SymbolicFunction(['x1', 'x2', 'x3'],
-...                                      ['x1 + 2 * x2 + x3', 'x1 + x2 - x3']))
+>>> f1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1^2 + x2', 'x1 + x2 + x3'])
+>>> f2 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
+...                          ['x1 + 2 * x2 + x3', 'x1 + x2 - x3'])
+>>> functions = [f1, f2]
 >>> coefficients = [2.0, 4.0]
->>> myFunction2 = ot.LinearCombinationFunction(functions, coefficients)
->>> print(myFunction2([1.0, 2.0, 3.0]))
+>>> linComb = ot.LinearCombinationFunction(functions, coefficients)
+>>> print(linComb([1.0, 2.0, 3.0]))
 [38,12]"
