@@ -71,7 +71,7 @@ public:
   CovarianceMatrix operator * (const IdentityMatrix & m) const;
 
   /** Check if the matrix is SPD */
-  virtual Bool isPositiveDefinite(const Bool keepIntact = true);
+  virtual Bool isPositiveDefinite() const;
 
   /** Build the Cholesky factorization of the matrix */
   virtual TriangularMatrix computeCholesky(const Bool keepIntact = true);

@@ -1240,19 +1240,15 @@ Point MatrixImplementation::computeSVD(MatrixImplementation & u,
 
 
 /* Check if the matrix is SPD */
-Bool MatrixImplementation::isPositiveDefinite(const Bool keepIntact)
+Bool MatrixImplementation::isPositiveDefinite() const
 {
   int info;
   int n(nbRows_);
   if (n == 0) throw InvalidDimensionException(HERE) << "Cannot check the definite positiveness of an empty matrix";
   char uplo('L');
   int luplo(1);
-  if (keepIntact)
-  {
-    MatrixImplementation A(*this);
-    dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
-  }
-  else dpotrf_(&uplo, &n, &(*this)[0], &n, &info, &luplo);
+  MatrixImplementation A(*this);
+  dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
   return (info == 0) ;
 }
 

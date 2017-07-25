@@ -101,7 +101,7 @@ Normal::Normal(const Point & mean,
   setName("Normal");
   UnsignedInteger dimension = mean.getDimension();
   if (C.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mean vector and the covariance matrix have incompatible dimensions";
-  if (!const_cast<CovarianceMatrix*>(&C)->isPositiveDefinite()) throw InvalidArgumentException(HERE) << "Error: the covariance matrix is not positive definite";
+  if (!C.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "Error: the covariance matrix is not positive definite";
   Point sigma(dimension);
   CorrelationMatrix R(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)

@@ -82,12 +82,6 @@ cholesky_factor : :class:`~openturns.SquareMatrix`
 A matrix :math:`\mat{M}` is positive definite if :math:`\Tr{\vect{z}} \mat{M} \vect{z}`
 is positive for every compatible non-zero column vector :math:`\vect{z}`.
 
-Parameters
-----------
-keep_intact : bool, optional
-    A flag telling whether the present matrix can be overwritten or not.
-    Default is *True* and leaves the present matrix unchanged.
-
 Notes
 -----
 This uses LAPACK's `DPOTRF <http://www.netlib.org/lapack/lapack-3.1.1/html/dpotrf.f.html>`_.

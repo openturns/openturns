@@ -92,9 +92,9 @@ CovarianceMatrix CovarianceMatrix::operator * (const IdentityMatrix & m) const
 }
 
 /* Check if the matrix is SPD */
-Bool CovarianceMatrix::isPositiveDefinite(const Bool keepIntact)
+Bool CovarianceMatrix::isPositiveDefinite() const
 {
-  return getImplementation()->isPositiveDefinite(keepIntact);
+  return getImplementation()->isPositiveDefinite();
 }
 
 /* Build the Cholesky factorization of the matrix */

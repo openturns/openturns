@@ -21,6 +21,7 @@
  * Removed CovarianceModel::compute{AsScalar,StandardRepresentative} overloads
  * Deprecated PosteriorRandomVector
  * Deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
+ * Made MatrixImplementation::isPositiveDefinite const and removed its argument
 
 === Python module ===
 

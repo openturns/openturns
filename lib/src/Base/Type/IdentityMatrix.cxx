@@ -160,7 +160,7 @@ Point IdentityMatrix::computeSVD(Matrix & u,
 }
 
 /* Check if the matrix is SPD */
-Bool IdentityMatrix::isPositiveDefinite(const Bool keepIntact)
+Bool IdentityMatrix::isPositiveDefinite() const
 {
   return true;
 }
