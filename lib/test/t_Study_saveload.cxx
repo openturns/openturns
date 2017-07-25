@@ -859,7 +859,7 @@ int main(int argc, char *argv[])
     monteCarlo.setMaximumOuterSampling(250);
     monteCarlo.setBlockSize(4);
     monteCarlo.setMaximumCoefficientOfVariation(0.1);
-    study.add("probabilitySimulation", monteCarlo);
+    study.add("probabilitySimulationAlgorithm", monteCarlo);
 
     // Create a RandomWalk
     RandomWalk randomWalk;
