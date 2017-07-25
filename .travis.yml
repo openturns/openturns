@@ -32,7 +32,7 @@ before_install:
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         brew update &&
         brew tap homebrew/science &&
-        brew install swig muparser R openblas &&
+        brew install swig muparser R openblas bison flex &&
         export HOMEBREW_PREFIX=`brew --prefix`;
     fi
 
@@ -113,6 +113,9 @@ script:
               -DNLOPT_LIBRARY=~/.local/lib/libnlopt.dylib
               -DNLOPT_INCLUDE_DIR=~/.local/include
               -DUSE_SPHINX=OFF
+              -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison
+              -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex
+              -DFLEX_INCLUDE_DIR=/usr/local/opt/flex/include
               -DPYTHON_EXECUTABLE=/usr/bin/python
               -DPYTHON_INCLUDE_DIR=/usr/include/python2.7
               -DPYTHON_LIBRARY=/usr/lib/libpython2.7.dylib
