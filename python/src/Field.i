@@ -23,17 +23,16 @@ Point __getitem__ (SignedInteger index) const
   if (index < 0) {
     index += self->getSize();
   }
-  return self->getValueAtIndex(index);
+  return self->at(index);
 }
 
 void __setitem__ (SignedInteger index,
                   const Point & val)
 {
-  self->copyOnWrite();
   if (index < 0) {
     index += self->getSize();
   }
-  self->setValueAtIndex(index, val);
+  self->at(index) = val;
 }
 
 UnsignedInteger __len__() const

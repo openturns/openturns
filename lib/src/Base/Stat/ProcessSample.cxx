@@ -116,27 +116,27 @@ void ProcessSample::add(const Sample & values)
 /* Operators accessors */
 Field ProcessSample::getField(const UnsignedInteger index) const
 {
-  if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return Field(mesh_, data_[index]);
 }
 
 void ProcessSample::setField(const Field & field,
                              const UnsignedInteger index)
 {
-  if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   if (field.getDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getDimension();
   data_[index] = field.getValues();
 }
 
 Sample & ProcessSample::operator[] (const UnsignedInteger index)
 {
-  if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
 const Sample & ProcessSample::operator[] (const UnsignedInteger index) const
 {
-  if (index >= data_.getSize()) throw InvalidArgumentException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
