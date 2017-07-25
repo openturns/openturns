@@ -95,6 +95,9 @@ try:
 
     os.remove('sample.csv')
 
+    # Print stream to R format
+    print ("Stream to R format = ",  aSample.getImplementation().streamToRFormat())
+
 except:
     import sys
     print("t_Sample_csv.py", sys.exc_info()[0], sys.exc_info()[1])

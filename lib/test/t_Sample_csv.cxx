@@ -149,6 +149,9 @@ int main(int argc, char *argv[])
       // Nothing to do
     }
 
+    // Print stream to R format
+    fullprint << "Stream to R format = " << aSample.getImplementation()->streamToRFormat() << std::endl;
+
   }
   catch (TestFailed & ex)
   {
