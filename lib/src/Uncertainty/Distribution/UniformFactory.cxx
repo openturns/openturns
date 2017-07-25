@@ -62,13 +62,14 @@ Uniform UniformFactory::buildAsUniform(const Sample & sample) const
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Uniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
-  const Scalar a = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar xMax = sample.getMax()[0];
-  const Scalar b = xMax + std::abs(xMax) / (2.0 + size);
+  Scalar delta = xMax - xMin;
+  const Scalar a = xMin - delta / (size + 2);
+  const Scalar b = xMax + delta / (size + 2);
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Uniform distribution if data contains NaN or Inf";
   if (xMin == xMax)
   {
-    const Scalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
+    delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
     Uniform result(xMin - delta, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;

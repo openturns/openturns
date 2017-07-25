@@ -23,6 +23,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * Changed bounds evaluation in UniformFactory, BetaFactory
 
 === Bug fixes ===
  * #890 (Cannot build triangular distribution)
