@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     input[2] = "L";
     input[3] = "I";
     Function myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
-
+    myFunction.enableHistory();
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
     Point mean(dim, 0.0);
@@ -62,7 +62,8 @@ int main(int argc, char *argv[])
     Event myEvent(output, Less(), -3.0);
 
     /* We create a Monte Carlo algorithm */
-    MonteCarlo myAlgo(myEvent);
+    MonteCarloExperiment experiment;
+    ProbabilitySimulationAlgorithm myAlgo(myEvent, experiment);
     myAlgo.setMaximumOuterSampling(500);
     myAlgo.setBlockSize(10);
     myAlgo.setMaximumCoefficientOfVariation(0.05);
@@ -72,12 +73,13 @@ int main(int argc, char *argv[])
     /* Perform the simulation */
     myAlgo.run();
 
-    /* Stream out the result */
     SimulationResult result(myAlgo.getResult());
     fullprint << "MonteCarlo result=" << result << std::endl;
-    /* Draw the convergence graph */
-    Graph convergenceGraph(myAlgo.drawProbabilityConvergence());
-    convergenceGraph.draw("convergenceMonteCarlo.png");
+
+    /* Compute sensitivity informations */
+    fullprint << "mean point in event domain=" << result.getMeanPointInEventDomain() << std::endl;
+    fullprint << "importance factors=" << result.getImportanceFactors() << std::endl;
+
   }
   catch (TestFailed & ex)
   {

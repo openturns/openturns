@@ -103,6 +103,11 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
   isAlreadyComputedNodesAndWeights_ = false;
 }
 
+Bool GaussProductExperiment::hasUniformWeights() const
+{
+  return false;
+}
+
 /* Sample generation */
 Sample GaussProductExperiment::generateWithWeights(Point & weights) const
 {

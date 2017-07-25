@@ -45,7 +45,8 @@ for k in [0.0, 2.0, 5.0, 8.][0:1]:
     event = ot.Event(composite, ot.Greater(), k)
     for n in [100, 1000, 5000][1:2]:
         for gamma1 in [0.25, 0.5, 0.75][1:2]:
-            algo = ot.MonteCarlo(event)
+            experiment = ot.MonteCarloExperiment()
+            algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
             algo.setMaximumOuterSampling(100 * n)
             # algo.setMaximumCoefficientOfVariation(-1.)
             algo.run()

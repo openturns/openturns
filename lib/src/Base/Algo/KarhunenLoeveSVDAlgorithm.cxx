@@ -330,7 +330,7 @@ String KarhunenLoeveSVDAlgorithm::__repr__() const
   OSS oss(true);
   oss << "class=" << KarhunenLoeveSVDAlgorithm::GetClassName()
       << ", sample=" << sample_
-      << ", centered=" << std::boolalpha << centeredSample_
+      << ", centered=" << centeredSample_
       << ", weights=" << verticesWeights_;
   return oss;
 }
@@ -341,7 +341,7 @@ String KarhunenLoeveSVDAlgorithm::__str__(const String & offset) const
   OSS oss(false);
   oss << "class=" << KarhunenLoeveSVDAlgorithm::GetClassName()
       << ", sample=" << sample_
-      << ", centered=" << std::boolalpha << centeredSample_
+      << ", centered=" << centeredSample_
       << ", weights=" << verticesWeights_;
   return oss;
 }

@@ -43,6 +43,9 @@ public:
   ImportanceSamplingExperiment();
 
   /** Parameters constructor */
+  explicit ImportanceSamplingExperiment(const Distribution & importanceDistribution);
+
+  /** Parameters constructor */
   ImportanceSamplingExperiment(const Distribution & importanceDistribution,
                                const UnsignedInteger size);
 
@@ -61,6 +64,9 @@ public:
   virtual String __repr__() const;
 
   /* Here is the interface that all derived class must implement */
+
+  /** Uniform weights ? */
+  virtual Bool hasUniformWeights() const;
 
   /** Sample generation */
   Sample generateWithWeights(Point & weights) const;

@@ -130,3 +130,25 @@ restart : bool
     else it is changed only if the new distribution has a dimension
     different from the current one.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LowDiscrepancyExperiment::getRandomize
+"Return the value of the *randomize* flag.
+
+Returns
+-------
+randomize : bool
+    The value of the *randomize* flag."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LowDiscrepancyExperiment::setRandomize
+"Set the value of the *randomize* flag.
+
+Parameters
+----------
+randomize : bool
+    Use a cyclic scrambling of the low discrepancy sequence.
+    Default is false.
+"

@@ -62,8 +62,9 @@ int main(int argc, char **argv)
   const UnsignedInteger n = 1000;
 
   {
-    /* We create a Directional Sampling algorithm */
-    MonteCarlo myAlgo(myEvent);
+    /* We create a monte carlo algorithm */
+    MonteCarloExperiment experiment;
+    ProbabilitySimulationAlgorithm myAlgo(myEvent, experiment);
     myAlgo.setMaximumOuterSampling(100 * n);
     myAlgo.setBlockSize(1);
 

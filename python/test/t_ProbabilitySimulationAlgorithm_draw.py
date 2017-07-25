@@ -10,7 +10,7 @@ try:
 
     # We create a numerical math function
     myFunction = Function(
-        ('E', 'F', 'L', 'I'), ('d',), ('-F*L^3/(3.*E*I)',))
+        ('E', 'F', 'L', 'I'), ('y',), ('-F*L^3/(3.*E*I)',))
 
     dim = myFunction.getInputDimension()
 
@@ -38,19 +38,24 @@ try:
     myEvent = Event(output, Less(), -3.0)
 
     # We create a Monte Carlo algorithm
-    myAlgo = RandomizedQuasiMonteCarlo(myEvent)
-    myAlgo.setMaximumOuterSampling(250)
-    myAlgo.setBlockSize(4)
+    experiment = MonteCarloExperiment()
+    myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiment)
+    myAlgo.setMaximumOuterSampling(500)
+    myAlgo.setBlockSize(10)
+    myAlgo.setMaximumCoefficientOfVariation(0.05)
 
-    print("RandomizedQuasiMonteCarlo=", myAlgo)
+    print("MonteCarlo=", myAlgo)
 
     # Perform the simulation
     myAlgo.run()
 
     # Stream out the result
-    print("RandomizedQuasiMonteCarlo result=", myAlgo.getResult())
+    print("MonteCarlo result=", myAlgo.getResult())
+
+    # Draw the convergence graph
+    convergenceGraph = myAlgo.drawProbabilityConvergence()
+    convergenceGraph.draw("convergenceMonteCarlo.png")
 
 except:
     import sys
-    print("t_RandomizedQuasiMonteCarlo_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])
+    print("t_MonteCarlo_draw.py", sys.exc_info()[0], sys.exc_info()[1])

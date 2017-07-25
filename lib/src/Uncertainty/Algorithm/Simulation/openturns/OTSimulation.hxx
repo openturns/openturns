@@ -32,16 +32,10 @@
 #include "openturns/SamplingStrategyImplementation.hxx"
 #include "openturns/RandomDirection.hxx"
 #include "openturns/OrthogonalDirection.hxx"
-#include "openturns/ImportanceSampling.hxx"
 #include "openturns/LHS.hxx"
-#include "openturns/RandomizedLHS.hxx"
-#include "openturns/MonteCarlo.hxx"
 #include "openturns/PostAnalyticalControlledImportanceSampling.hxx"
 #include "openturns/PostAnalyticalImportanceSampling.hxx"
 #include "openturns/PostAnalyticalSimulation.hxx"
-#include "openturns/QuasiMonteCarlo.hxx"
-#include "openturns/RandomizedQuasiMonteCarlo.hxx"
-#include "openturns/QuasiMonteCarloResult.hxx"
 #include "openturns/Simulation.hxx"
 #include "openturns/SimulationResult.hxx"
 #include "openturns/SimulationResultImplementation.hxx"
@@ -51,5 +45,6 @@
 #include "openturns/SubsetSampling.hxx"
 #include "openturns/QuadrantSampling.hxx"
 #include "openturns/AdaptiveDirectionalSampling.hxx"
+#include "openturns/ProbabilitySimulationAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

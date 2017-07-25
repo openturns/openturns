@@ -124,6 +124,9 @@ public:
   /** Threshold accessor */
   Scalar getThreshold() const;
 
+  /** Domain */
+  Domain getDomain() const;
+
 protected:
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,

@@ -66,6 +66,9 @@ public:
   virtual void setSize(const UnsignedInteger size);
   virtual UnsignedInteger getSize() const;
 
+  /** Uniform weights ? */
+  virtual Bool hasUniformWeights() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
@@ -73,6 +76,12 @@ public:
 
   /** Sample generation with weights*/
   virtual Sample generateWithWeights(Point & weights) const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
 
 protected:
 

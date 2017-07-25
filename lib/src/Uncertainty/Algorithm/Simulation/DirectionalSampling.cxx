@@ -49,13 +49,12 @@ DirectionalSampling::DirectionalSampling()
 /* Constructor with parameters */
 DirectionalSampling::DirectionalSampling(const Event & event)
   : Simulation(event)
-  , standardEvent_(StandardEvent(event))
-  , standardFunction_(standardEvent_.getImplementation()->getFunction())
-  , inputDistribution_(standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation())
-  , rootStrategy_()
-  , samplingStrategy_(inputDistribution_->getDimension())
 {
-  // Nothing to do
+  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  standardEvent_ = StandardEvent(event);
+  standardFunction_ = standardEvent_.getImplementation()->getFunction();
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation();
+  samplingStrategy_ = SamplingStrategy(inputDistribution_->getDimension());
 }
 
 /* Constructor with parameters */
@@ -63,11 +62,12 @@ DirectionalSampling::DirectionalSampling(const Event & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
   : Simulation(event)
-  , standardEvent_(StandardEvent(event))
-  , standardFunction_(standardEvent_.getImplementation()->getFunction())
-  , inputDistribution_(standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation())
   , rootStrategy_(rootStrategy)
 {
+  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  standardEvent_ = StandardEvent(event);
+  standardFunction_ = standardEvent_.getImplementation()->getFunction();
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation();
   setSamplingStrategy(samplingStrategy);
 }
 
@@ -97,7 +97,7 @@ Scalar DirectionalSampling::computeContribution(const ScalarCollection & roots)
   // Is the origin in the failure space?
   // Here, we know that the getOriginValue() method will not throw an exception, as we already called the solve() method
   // of the root strategy, which in turn initialized the computation of the origin value.
-  if (standardEvent_.getOperator().operator()(rootStrategy_.getOriginValue(), standardEvent_.getThreshold())) estimate = 1.0 - estimate;
+  if (standardEvent_.getDomain().contains(Point(1, rootStrategy_.getOriginValue()))) estimate = 1.0 - estimate;
   return estimate;
 }
 
@@ -111,7 +111,7 @@ Scalar DirectionalSampling::computeMeanContribution(const ScalarCollection & roo
   // Is the origin in the failure space?
   // Here, we know that the getOriginValue() method will not throw an exception, as we already called the solve() method
   // of the root strategy, which in turn initialized the computation of the origin value.
-  if (standardEvent_.getOperator().operator()(rootStrategy_.getOriginValue(), standardEvent_.getThreshold())) xK.add(0.0);
+  if (standardEvent_.getDomain().contains(Point(1, rootStrategy_.getOriginValue()))) xK.add(0.0);
   const UnsignedInteger size = roots.getSize();
   for (UnsignedInteger indexRoot = 0; indexRoot < size; ++indexRoot) xK.add(roots[indexRoot]);
   // If the number of points is odd, add a point at infinity

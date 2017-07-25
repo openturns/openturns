@@ -63,6 +63,9 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
+  /** Uniform weights ? */
+  virtual Bool hasUniformWeights() const;
+
   /** Sample generation */
   Sample generateWithWeights(Point & weights) const;
 

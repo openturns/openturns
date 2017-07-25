@@ -60,6 +60,9 @@ public:
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution);
 
+  /** Uniform weights ? */
+  virtual Bool hasUniformWeights() const;
+
   /** Sample generation */
   Sample generateWithWeights(Point & weights) const;
 

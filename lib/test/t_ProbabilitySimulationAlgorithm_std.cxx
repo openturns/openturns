@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of MonteCarlo class
+ *  @brief The test file of ProbabilitySimulationAlgorithm class
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
+  
 
   try
   {
@@ -71,38 +71,62 @@ int main(int argc, char *argv[])
     /* We create an Event from this RandomVector */
     Event myEvent(output, Less(), -3.0);
 
-    /* We create a Monte Carlo algorithm */
-    MonteCarlo myAlgo(myEvent);
-    myAlgo.setMaximumOuterSampling(250);
-    myAlgo.setBlockSize(4);
-    myAlgo.setMaximumCoefficientOfVariation(0.1);
-    myAlgo.setProgressCallback(&progress);
-    myAlgo.setStopCallback(&stop);
+    Collection<WeightedExperiment> experiments(1, MonteCarloExperiment());
+    // qmc
+    experiments.add(LowDiscrepancyExperiment());
+    // importance sampling
+    mean[0] = 4.99689645939288809018e+01;
+    mean[1] = 1.84194175946153282375e+00;
+    mean[2] = 1.04454036676956398821e+01;
+    mean[3] = 4.66776215562709406726e+00;
+    Normal myImportance(mean, sigma, R);
+    experiments.add(ImportanceSamplingExperiment(myImportance));
+    // randomized qmc
+    LowDiscrepancyExperiment lde;
+    lde.setRandomize(true);
+    experiments.add(lde);
+    // randomized lhs
+    LHSExperiment lhse;
+    lhse.setAlwaysShuffle(true);
+    experiments.add(lhse);
 
-    fullprint << "MonteCarlo=" << myAlgo << std::endl;
+    for (UnsignedInteger i = 0; i < experiments.getSize(); ++ i)
+    {
+      RandomGenerator::SetSeed(0);
 
-    /* Perform the simulation */
-    myAlgo.run();
+      /* We create a Monte Carlo algorithm */
+      ProbabilitySimulationAlgorithm myAlgo(myEvent, experiments[i]);
+      myAlgo.setMaximumOuterSampling(250);
+      myAlgo.setBlockSize(4);
+      myAlgo.setMaximumCoefficientOfVariation(0.1);
+      myAlgo.setProgressCallback(&progress);
+      myAlgo.setStopCallback(&stop);
 
-    /* Stream out the result */
-    fullprint << "MonteCarlo result=" << myAlgo.getResult() << std::endl;
-    fullprint << "Confidence length at level 99%=" << myAlgo.getResult().getConfidenceLength(0.99) << std::endl;
-    fullprint << "Confidence length at level 80%=" << myAlgo.getResult().getConfidenceLength(0.8) << std::endl;
+      fullprint << "algo=" << myAlgo << std::endl;
 
-    /* Use the standard deviation as a stoping rule */
-    myAlgo = MonteCarlo(myEvent);
-    myAlgo.setMaximumOuterSampling(250);
-    myAlgo.setBlockSize(4);
-    myAlgo.setMaximumCoefficientOfVariation(0.0);
-    myAlgo.setMaximumStandardDeviation(0.1);
+      /* Perform the simulation */
+      myAlgo.run();
 
-    fullprint << "MonteCarlo=" << myAlgo << std::endl;
+      /* Stream out the result */
+      fullprint << "algo result=" << myAlgo.getResult() << std::endl;
+      fullprint << "Confidence length at level 99%=" << myAlgo.getResult().getConfidenceLength(0.99) << std::endl;
+      fullprint << "Confidence length at level 80%=" << myAlgo.getResult().getConfidenceLength(0.8) << std::endl;
 
-    /* Perform the simulation */
-    myAlgo.run();
+      /* Use the standard deviation as a stoping rule */
+      myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiments[i]);
+      myAlgo.setMaximumOuterSampling(250);
+      myAlgo.setBlockSize(4);
+      myAlgo.setMaximumCoefficientOfVariation(0.0);
+      myAlgo.setMaximumStandardDeviation(0.1);
 
-    /* Stream out the result */
-    fullprint << "MonteCarlo result=" << myAlgo.getResult() << std::endl;
+      fullprint << "algo=" << myAlgo << std::endl;
+
+      /* Perform the simulation */
+      myAlgo.run();
+
+      /* Stream out the result */
+      fullprint << "algo result=" << myAlgo.getResult() << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

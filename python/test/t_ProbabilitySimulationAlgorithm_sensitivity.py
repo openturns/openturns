@@ -10,8 +10,8 @@ try:
 
     # We create a numerical math function
     myFunction = Function(
-        ('E', 'F', 'L', 'I'), ('d',), ('-F*L^3/(3.*E*I)',))
-
+        ('E', 'F', 'L', 'I'), ('y',), ('-F*L^3/(3.*E*I)',))
+    myFunction.enableHistory()
     dim = myFunction.getInputDimension()
 
     # We create a normal distribution point of dimension 1
@@ -35,27 +35,28 @@ try:
     output = RandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector
-    myEvent = Event(output, Less(), -3)
+    myEvent = Event(output, Less(), -3.0)
 
-    # We create an importance sampling Carlo algorithm */
-    mean[0] = 4.99689645939288809018e+01
-    mean[1] = 1.84194175946153282375e+00
-    mean[2] = 1.04454036676956398821e+01
-    mean[3] = 4.66776215562709406726e+00
-    myImportance = Normal(mean, sigma, R)
-    myAlgo = ImportanceSampling(myEvent, myImportance)
-    myAlgo.setMaximumOuterSampling(250)
-    myAlgo.setBlockSize(4)
-    myAlgo.setMaximumCoefficientOfVariation(0.1)
+    # We create a Monte Carlo algorithm
+    experiment = MonteCarloExperiment()
+    myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiment)
+    myAlgo.setMaximumOuterSampling(500)
+    myAlgo.setBlockSize(10)
+    myAlgo.setMaximumCoefficientOfVariation(0.05)
 
-    print("ImportanceSampling=", myAlgo)
+    print("MonteCarlo=", myAlgo)
 
     # Perform the simulation
     myAlgo.run()
 
     # Stream out the result
-    print("ImportanceSampling result=", myAlgo.getResult())
+    result = myAlgo.getResult()
+    print("MonteCarlo result=", result)
+
+    # Compute sensitivity informations
+    print("mean point in event domain=", result.getMeanPointInEventDomain())
+    print("importance factors=", result.getImportanceFactors())
 
 except:
     import sys
-    print("t_ImportanceSampling_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_MonteCarlo_sensitivity.py", sys.exc_info()[0], sys.exc_info()[1])

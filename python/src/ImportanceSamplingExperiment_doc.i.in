@@ -2,6 +2,8 @@
 "Importance Sampling experiment.
 
 Available constructors:
+    ImportanceSamplingExperiment(*distribution*)
+
     ImportanceSamplingExperiment(*distribution, size*)
 
     ImportanceSamplingExperiment(*distribution, importanceDistribution, size*)

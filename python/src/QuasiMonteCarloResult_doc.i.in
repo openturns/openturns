@@ -1,7 +1,0 @@
-%feature("docstring") OT::QuasiMonteCarloResult
-"Quasi Monte Carlo simulation result.
-
-Notes
------
-Structure created by the method run() of a :class:`~openturns.Simulation`,
-and obtained thanks to the method getResult()."

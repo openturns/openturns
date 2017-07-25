@@ -69,6 +69,9 @@ public:
   /** Sample generation with weights*/
   virtual Sample generateWithWeights(Point & weights) const;
 
+  /** Uniform weights ? */
+  virtual Bool hasUniformWeights() const;
+
 } ; /* class WeightedExperiment */
 
 END_NAMESPACE_OPENTURNS
