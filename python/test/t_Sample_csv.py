@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from openturns import *
+from openturns.testing import *
 from os import getenv
 
 TESTPREAMBLE()
@@ -94,6 +95,16 @@ try:
     print("aSample with special chars (see log)=", repr(aSample))
 
     os.remove('sample.csv')
+
+    # Print stream to R format
+    print ("Stream to R format = ",  aSample.getImplementation().streamToRFormat())
+
+    # Store to a temporary file and compute difference with current aSample
+    tmpFilename = aSample.getImplementation().storeToTemporaryFile()
+    tmpSample = Sample.ImportFromTextFile(tmpFilename)
+    #// Difference with aSample
+    assert_almost_equal(tmpSample, aSample, 1e-15, 1e-15);
+    os.remove(tmpFilename)
 
 except:
     import sys
