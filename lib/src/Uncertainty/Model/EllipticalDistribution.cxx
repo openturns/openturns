@@ -481,7 +481,7 @@ void EllipticalDistribution::setCorrelation(const CorrelationMatrix & R)
         << "). Unable to construct elliptical distribution object.";
 
   // We check that the given correlation matrix is definite positive
-  if ( !const_cast<CorrelationMatrix*>(&R)->isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
+  if ( !R.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
   R_ = R;
   update();
   isAlreadyComputedCovariance_ = false;

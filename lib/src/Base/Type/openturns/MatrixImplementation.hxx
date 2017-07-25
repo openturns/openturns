@@ -239,7 +239,7 @@ public:
   virtual Bool isSymmetric() const;
 
   /** Check if the matrix is SPD */
-  virtual Bool isPositiveDefinite(const Bool keepIntact = true);
+  virtual Bool isPositiveDefinite() const;
 
   /** Check if the matrix values belong to (-1;1) */
   virtual Bool hasUnitRange() const;

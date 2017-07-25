@@ -454,7 +454,7 @@ Normal KrigingResult::operator()(const Sample & xi) const
   // Check the covariance matrix. Indeed, if point is very similar to one of the learning points, covariance is null
   // Even if this check is done in Normal::Normal, we perform debugging
   LOGINFO("In KrigingResult::operator() : evaluationg the Normal distribution");
-  if (!const_cast<CovarianceMatrix*>(&covarianceMatrix)->isPositiveDefinite()) throw InvalidArgumentException(HERE) << "In KrigingResult::operator(), the covariance matrix is not positive definite. The given points could be very close to the learning set. Could not build the Normal distribution";
+  if (!covarianceMatrix.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "In KrigingResult::operator(), the covariance matrix is not positive definite. The given points could be very close to the learning set. Could not build the Normal distribution";
   // Finally return the distribution
   return Normal(mean, covarianceMatrix);
 }

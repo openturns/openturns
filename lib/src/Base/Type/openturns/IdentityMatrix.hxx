@@ -92,7 +92,7 @@ public:
                   const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
-  virtual Bool isPositiveDefinite(const Bool keepIntact = true);
+  virtual Bool isPositiveDefinite() const;
 
   /** Build the Cholesky factorization of the matrix */
   TriangularMatrix computeCholesky(const Bool keepIntact = true);

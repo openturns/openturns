@@ -100,9 +100,7 @@ PenalizedLeastSquaresAlgorithm::PenalizedLeastSquaresAlgorithm(const Sample & x,
   const UnsignedInteger basisSize = indices.getSize();
   // Check if the penalization matrix has the proper dimension
   if (penalizationMatrix_.getDimension() != basisSize) throw InvalidArgumentException(HERE) << "Error: the given penalization matrix has an improper dimension.";
-  // Must const_cast here because the isPositiveDefinite() method is not const in
-  // the general case, but no modification will occur here.
-  if (!const_cast<CovarianceMatrix*>(&penalizationMatrix)->isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the given penalization matrix is not strictly definite positive.";
+  if (!penalizationMatrix_.isPositiveDefinite()) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the given penalization matrix is not strictly definite positive.";
 }
 
 void PenalizedLeastSquaresAlgorithm::run()
