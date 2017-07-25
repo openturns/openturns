@@ -526,9 +526,7 @@ class View(object):
 
     @staticmethod
     def ShowAll(**kwargs):
-        """
-        Display all graphs.
-        """
+        """Display all graphs."""
         plt.show(**kwargs)
 
     def save(self, fname, **kwargs):
@@ -575,9 +573,10 @@ def ToSVGString(graph):
     graph : object
         A Graph or Drawable object.
 
-    Returns a SVG representation as string
+    Returns
+    -------
+    str: a SVG representation as string
     """
-
     # save interactive mode state
     ision = plt.isinteractive()
     plt.ioff()
@@ -636,7 +635,6 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
     >>> # Plot the design
     >>> fig = PlotDesign(design, bounds, 10, 10)
     """
-
     # check that arguments are dictionnaries
     assert(isinstance(axes_kwargs, dict))
     assert(isinstance(plot_kwargs, dict))

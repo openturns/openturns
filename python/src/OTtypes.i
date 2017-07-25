@@ -44,5 +44,5 @@
 %ignore *::save(StorageManager & mgr) const;
 
 %define OTAutodoc(PythonClass)
-%feature("autodoc", "Proxy of C++ OT::" #PythonClass) OT::PythonClass;
+%feature("autodoc", "Proxy of C++ OT::" #PythonClass ".") OT::PythonClass;
 %enddef
