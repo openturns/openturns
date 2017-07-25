@@ -1,5 +1,5 @@
 %feature("docstring") OT::MartinezSensitivityAlgorithm
-"Sensitivity analysis using Martinez method
+"Sensitivity analysis using Martinez method.
 
 Available constructors:
     MartinezSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)

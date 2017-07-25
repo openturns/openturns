@@ -199,7 +199,8 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     >>> ret
     0
     >>> int(stdout)
-    42"""
+    42
+    """
     # split cmd if not in a shell before passing it to os.execvp()
     process_args = cmd if is_shell else shlex.split(cmd)
 
@@ -280,7 +281,8 @@ def get_regex(filename, patterns, encoding=default_encoding):
     ...     count = f.write('@E=-9.5E3')
     >>> # parse file with regex
     >>> otct.get_regex('results.out', patterns=['@E=(\R)'])
-    [-9500.0]"""
+    [-9500.0]
+    """
     if not isinstance(patterns, list) or len(patterns) == 0:
         raise AssertionError("error: patterns parameter badly set!")
 
@@ -572,7 +574,8 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('1.1 1.2 1.3 1.4')
     >>> otct.get_value(filename='results.out', skip_col=2)
-    1.3"""
+    1.3
+    """
     if debug:
         sys.stderr.write("get_value(token=" + str(token) +
                          ', skip_token=' + str(skip_token) +
@@ -712,8 +715,8 @@ def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('Y1=2.0, Y2=-6.6E2')
     >>> otct.get(filename='results.out', tokens=['Y1=', 'Y2='])
-    [2.0, -660.0]"""
-
+    [2.0, -660.0]
+    """
     # test parameters and determine the number of value to return
     nb_values = None
     if tokens is not None:

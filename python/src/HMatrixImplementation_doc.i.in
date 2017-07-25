@@ -1,5 +1,7 @@
 %define OT_HMatrix_doc
-"Hierarchical matrices (or HMatrix) are a compressed representation of dense
+"Hierarchical matrices.
+
+Hierarchical matrices (or HMatrix) are a compressed representation of dense
 matrices.  In many applications, matrix coefficients represent an interaction
 between two degrees of freedom; when these interactions are smooth, it is
 possible to approximate sub-blocks by a local low-rank approximation B =~ UV^T
