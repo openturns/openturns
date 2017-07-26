@@ -107,18 +107,27 @@ namespace OT {
 %extend Sample {
 
 Point __getitem__(SignedInteger index) const {
+  OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
     index += self->getSize();
+  }
+  if (index < 0) {
+    throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   return self->at(index);
 }
 
 void __setitem__ (SignedInteger index,
                   const Point & val) {
-  self->copyOnWrite();
+  OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
     index += self->getSize();
   }
+  if (index < 0) {
+    throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
+  }
+  // CopyOnWrite only if index is ok
+  self->copyOnWrite();
   self->at(index) = val;
 }
 

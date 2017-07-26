@@ -23,8 +23,12 @@ namespace OT{
 
 const Point __getitem__ (SignedInteger index) const
 {
+  OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
     index += self->getSize();
+  }
+  if (index < 0) {
+    throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   return self->at(index);
 }
@@ -32,8 +36,12 @@ const Point __getitem__ (SignedInteger index) const
 void __setitem__ (SignedInteger index,
                   const Point & val)
 {
+  OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
     index += self->getSize();
+  }
+  if (index < 0) {
+    throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   self->at(index) = val;
 }
