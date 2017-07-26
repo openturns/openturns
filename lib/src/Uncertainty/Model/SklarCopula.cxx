@@ -61,6 +61,8 @@ SklarCopula::SklarCopula(const Distribution & distribution)
   , marginalCollection_(distribution.getDimension())
 {
   setName( "SklarCopula" );
+  // Manage parallelism
+  setParallel(distribution.getImplementation()->isParallel());
   // We set the dimension of the SklarCopula distribution
   const UnsignedInteger dimension = distribution.getDimension();
   setDimension( dimension );
@@ -155,12 +157,12 @@ Scalar SklarCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   // Early exit for the independent case
-  if (distribution_.hasIndependentCopula()) return IndependentCopula(dimension).computePDF(point);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar ui = point[i];
-    if ((ui <= 0.0) || ui > 1.0) return 0.0;
+    if ((ui <= 0.0) || ui >= 1.0) return 0.0;
   }
+  if (distribution_.hasIndependentCopula()) return 1.0;
   Point x(dimension);
   Scalar factor = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)

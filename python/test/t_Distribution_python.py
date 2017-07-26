@@ -213,4 +213,9 @@ try:
 except:
     print("The construction failed on purpose as", myDist, "is not a copula")
 
+# Extract the copula
+myDist = ot.Distribution(UniformNdPy([0.0] * 2, [2.0] * 2))
+copula = myDist.getCopula()
 
+# Test computePDF over a sample (ticket #899)
+res = copula.computePDF([[0.5]*2]*10)

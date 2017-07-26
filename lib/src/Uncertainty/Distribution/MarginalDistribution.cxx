@@ -49,6 +49,7 @@ MarginalDistribution::MarginalDistribution(const Distribution & distribution,
   , indices_()
 {
   setName("MarginalDistribution");
+  setParallel(distribution.getImplementation()->isParallel());
   setDistributionAndIndices(distribution, Indices(1, index));
 }
 
@@ -60,6 +61,7 @@ MarginalDistribution::MarginalDistribution(const Distribution & distribution,
   , indices_()
 {
   setName("MarginalDistribution");
+  setParallel(distribution.getImplementation()->isParallel());
   setDistributionAndIndices(distribution, indices);
 }
 
