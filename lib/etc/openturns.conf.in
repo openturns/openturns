@@ -220,6 +220,7 @@
   <Sample-SmallKendallTau value="23" />
   <Sample-PrintEllipsisThreshold value="1000" />
   <Sample-PrintEllipsisSize value="3" />
+  <Sample-CommentMarkers value="#" />
 
   <!-- OT::DomainImplementation parameters -->
   <Domain-SmallVolume   value="1.0e-12" />
