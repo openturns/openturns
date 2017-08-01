@@ -40,6 +40,8 @@ void __setitem__ (SignedInteger index,
   if (index < 0) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
+  // CopyOnWrite only if index is ok
+  self->copyOnWrite();
   self->at(index) = val;
 }
 
