@@ -168,6 +168,7 @@ void HessianImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", callsNumber_ );
+  adv.saveAttribute( "parameter_", parameter_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -175,6 +176,7 @@ void HessianImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "callsNumber_", callsNumber_ );
+  adv.loadAttribute( "parameter_", parameter_ );
 }
 
 
