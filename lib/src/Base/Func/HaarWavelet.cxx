@@ -43,14 +43,19 @@ HaarWavelet::HaarWavelet(const UnsignedInteger j,
   , b_(1.0)
   , value_(1.0)
 {
-  // Nothing to do
-  if (!isScaling)
+  initialize();
+}
+
+
+void HaarWavelet::initialize()
+{
+  if (!isScaling_)
   {
-    const Scalar denominator = 1 << j;
+    const Scalar denominator = 1 << j_;
     value_ = std::sqrt(denominator);
-    a_ = k / denominator;
-    m_ = (k + 0.5) / denominator;
-    b_ = (k + 1.0) / denominator;
+    a_ = k_ / denominator;
+    m_ = (k_ + 0.5) / denominator;
+    b_ = (k_ + 1.0) / denominator;
   }
 }
 
@@ -124,7 +129,7 @@ void HaarWavelet::load(Advocate & adv)
   adv.loadAttribute("j_", j_);
   adv.loadAttribute("k_", k_);
   adv.loadAttribute("isScaling_", isScaling_);
-  *this = HaarWavelet(j_, k_, isScaling_);
+  initialize();
 }
 
 

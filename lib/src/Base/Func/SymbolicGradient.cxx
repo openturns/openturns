@@ -247,7 +247,6 @@ void SymbolicGradient::load(Advocate & adv)
 {
   GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
-  *this = SymbolicGradient(evaluation_);
 }
 
 END_NAMESPACE_OPENTURNS
