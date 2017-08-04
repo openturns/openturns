@@ -20,8 +20,12 @@ Field(const Field & other)
 
 Point __getitem__ (SignedInteger index) const
 {
+  OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
     index += self->getSize();
+  }
+  if (index < 0) {
+    throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   return self->at(index);
 }
@@ -29,9 +33,15 @@ Point __getitem__ (SignedInteger index) const
 void __setitem__ (SignedInteger index,
                   const Point & val)
 {
+  OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
     index += self->getSize();
   }
+  if (index < 0) {
+    throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
+  }
+  // CopyOnWrite only if index is ok
+  self->copyOnWrite();
   self->at(index) = val;
 }
 
