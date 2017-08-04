@@ -158,6 +158,8 @@ Notes
 The file may or may not contain a header line (columns spanned with strings
 delimited with quotes). If it does contain such a header line, it will be
 used for setting the sample description using :py:meth:`setDescription`.
+It can also contain some comments, if a line starts with one of the
+characters contained in `Sample-CommentsMarker` from the :class:`~openturns.ResourceMap`.
 
 See Also
 --------

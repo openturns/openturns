@@ -367,6 +367,7 @@ Bool SampleImplementation::ParseStringAsValues(const String & line,
   while (!(*end == '\0'))
   {
     const Scalar value = strtod(begin, &end);
+
     // Check if there was a problem
     if (begin == end)
     {
@@ -374,11 +375,14 @@ Bool SampleImplementation::ParseStringAsValues(const String & line,
       return false;
     }
     data.add(value);
+
+    // eat blanks
+    while(*end == ' ') ++end;
+
     if (!isBlankSeparator)
     {
       // Early exit to avoid going past the end of the line
       // when dealing with a non-blank separator
-      while(*end == ' ') ++end;
       if (*end == '\0') return true;
       if (*end != separator)
       {
@@ -386,7 +390,7 @@ Bool SampleImplementation::ParseStringAsValues(const String & line,
         return false;
       }
       // To skip the separator
-      ++end;
+      ++ end;
     }
     begin = end;
   }
@@ -421,12 +425,33 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
   return true;
 }
 
+
+Bool SampleImplementation::ParseComment(const String & line, const String & markers)
+{
+  Bool result = false;
+  if (line.size() > 0)
+  {
+    const char firstChar = line[0];
+    for (UnsignedInteger i = 0; i < markers.size(); ++ i)
+    {
+      if (firstChar == markers[i])
+      {
+        result = true;
+        break;
+      }
+    }
+  }
+  return result;
+}
+
+
 SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fileName,
     const String & separator)
 {
   if (separator.size() != 1) throw InvalidArgumentException(HERE) << "Expected a separator with one character, got separator=" << separator;
   const char theSeparator = separator[0];
 
+  const String commentMarkers(ResourceMap::Get("Sample-CommentMarkers"));
   SampleImplementation impl(0, 0);
 
   std::ifstream theFile(fileName.c_str());
@@ -449,82 +474,75 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   const char * initialLocale = setlocale(LC_NUMERIC, NULL);
   setlocale(LC_NUMERIC, "C");
 #endif
-  // Extract the first row
+
+  UnsignedInteger index = 1;
+
+  // Go to the first line containing data
   String line;
-  // If the first line is empty return a 0x0 sample
-  if (!std::getline(theFile, line))
-  {
-    LOGWARN("Warning: No data from the file has been stored.");
-#ifdef OPENTURNS_HAVE_USELOCALE
-    uselocale(old_locale);
-    freelocale(new_locale);
-#else
-#ifdef WIN32
-    _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
-#endif
-    setlocale(LC_NUMERIC, initialLocale);
-#endif
-    return impl;
-  }
   Point data;
   Description description(0);
-  // Check if the first row cannot be parsed as a point
-  if (!ParseStringAsValues(line, theSeparator, data))
+  while (!impl.dimension_ && std::getline(theFile, line))
   {
-    // Check if it does not contain a description
-    if (!ParseStringAsDescription(line, theSeparator, description))
+    if (line.empty())
     {
-#ifdef OPENTURNS_HAVE_USELOCALE
-      uselocale(old_locale);
-      freelocale(new_locale);
-#else
-#ifdef WIN32
-      _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
-#endif
-      setlocale(LC_NUMERIC, initialLocale);
-#endif
-      // Then it is an error
-      throw InvalidArgumentException(HERE) << "";
+      LOGWARN(OSS() << "The line number " << index << " is empty");
+      LOGDEBUG(OSS() << "line=" << line);
     }
-    else
+    else if (ParseComment(line, commentMarkers))
+    {
+      LOGWARN(OSS() << "The line number " << index << " contains a comment");
+      LOGDEBUG(OSS() << "line=" << line);
+    }
+    else if (ParseStringAsValues(line, theSeparator, data))
+    {
+      // The dimension is given by the first row of values
+      impl.dimension_ = data.getDimension();
+      impl.data_.add(data);
+      ++ impl.size_;
+      LOGDEBUG(OSS() << "The line number " << index << " contains data");
+    }
+    else if (ParseStringAsDescription(line, theSeparator, description))
     {
       // The dimension is given by the description
       impl.dimension_ = description.getSize();
       impl.setDescription(description);
+      LOGDEBUG(OSS() << "The line number " << index << " contains a description");
     }
+    ++ index;
   }
-  else
-  {
-    // The dimension is given by the first row of values
-    impl.dimension_ = data.getDimension();
-    impl.data_.add(data);
-    ++impl.size_;
-  }
+
   // Now, read all the other rows. If they don't contain a point
   // or if the number of values is not equal to the dimension the
   // row is ignored
-  UnsignedInteger index = 1;
   while (std::getline(theFile, line))
   {
-    if (ParseStringAsValues(line, theSeparator, data))
+    if (ParseComment(line, commentMarkers))
     {
-      if (data.getDimension() == impl.dimension_)
-      {
-        impl.data_.add(data);
-        ++impl.size_;
-      }
-      else
-      {
-        LOGWARN(OSS() << "The line number " << index << " has a dimension=" << data.getDimension() << ", expected dimension=" << impl.dimension_);
-        LOGDEBUG(OSS() << "line=" << line);
-      }
+      LOGWARN(OSS() << "The line number " << index << " contains a comment");
+      LOGDEBUG(OSS() << "line=" << line);
     }
     else
     {
-      LOGWARN(OSS() << "The line number " << index << " does not contain a point");
-      LOGDEBUG(OSS() << "line=" << line);
+      if (ParseStringAsValues(line, theSeparator, data))
+      {
+        if (data.getDimension() == impl.dimension_)
+        {
+          impl.data_.add(data);
+          ++impl.size_;
+        }
+        else
+        {
+          LOGWARN(OSS() << "The line number " << index << " has a dimension=" << data.getDimension() << ", expected dimension=" << impl.dimension_);
+          LOGDEBUG(OSS() << "line=" << line);
+        }
+      }
+      else
+      {
+        LOGWARN(OSS() << "The line number " << index << " does not contain a point");
+        LOGDEBUG(OSS() << "line=" << line);
+      }
     }
-    ++index;
+    ++ index;
   } // while (std::getLine(theFile, line))
   // Check the description
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))

@@ -494,6 +494,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Sample-SmallKendallTau", 23 );
   setAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
   setAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
+  set("Sample-CommentMarkers", "#");
 
   // DomainImplementation parameters
   setAsScalar( "Domain-SmallVolume",   1.0e-12 );
