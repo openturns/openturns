@@ -8,4 +8,5 @@ This part gives an overview of the content of the statistical toolbox that may b
 .. toctree::
     :maxdepth: 1
 
+    kernel_smoothing
     kolmogorov_test
