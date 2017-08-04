@@ -294,7 +294,6 @@ void SymbolicHessian::load(Advocate & adv)
 {
   HessianImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
-  *this = SymbolicHessian(evaluation_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -532,7 +532,7 @@
 
   <!-- OT::MarginalTransformationEvaluation parameters -->
   <MarginalTransformationEvaluation-DefaultTailThreshold value="0.99"  />
-  <MarginalTransformationEvaluation-Simplify             value="1"     />
+  <MarginalTransformationEvaluation-Simplify             value="true"  />
   <MarginalTransformationEvaluation-ParametersEpsilon    value="1.0e-14" />
 
   <!-- OT::DistributionImplementation parameters -->

@@ -805,7 +805,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MarginalTransformationEvaluation parameters //
   setAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold", 0.99 );
-  setAsUnsignedInteger( "MarginalTransformationEvaluation-Simplify", 1 );
+  setAsBool( "MarginalTransformationEvaluation-Simplify", true );
   setAsScalar( "MarginalTransformationEvaluation-ParametersEpsilon", 1.0e-14 );
 
   // DistributionImplementation parameters //
