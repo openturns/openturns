@@ -8,6 +8,7 @@ addons:
     - cmake
     - bison
     - flex
+    - swig
     - libmuparser-dev
     - liblapack-dev
     - libxml2-dev
@@ -17,14 +18,11 @@ addons:
     - python-dev
     - python-scipy
     - python-matplotlib
-    - texlive-latex-recommended
-    - texlive-fonts-recommended
-    - texlive-latex-extra
 
 matrix:
   include:
     - os: linux
-      compiler: gcc
+      compiler: clang
     - os: osx
       compiler: clang
 
@@ -39,18 +37,6 @@ before_install:
 install:
 # use system python
   - export PATH=/usr/bin:$PATH
-# sphinx >=1.2 is looking better
-  - if test "$TRAVIS_OS_NAME" = "linux"; then
-      pip install numpydoc sphinx matplotlib --user;
-    fi
-# keep an eye on swig
-  - git clone https://github.com/swig/swig.git
-  - pushd swig
-  - ./autogen.sh
-  - ./configure --prefix=$HOME/.local
-  - make -j2
-  - make install
-  - popd
 # use latest hmat-oss
   - git clone https://github.com/jeromerobert/hmat-oss.git
   - pushd hmat-oss
@@ -65,13 +51,13 @@ install:
               -DLAPACK_LIBRARIES=$HOMEBREW_PREFIX/opt/openblas/lib/libopenblas.dylib
               -DCBLAS_INCLUDE_DIRS=$HOMEBREW_PREFIX/opt/openblas/include . ;
     fi
-  - make install -j2
+  - make install -j4
   - popd
 # use latest nlopt
   - git clone https://github.com/stevengj/nlopt.git
   - pushd nlopt
   - cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_PYTHON=OFF -DBUILD_OCTAVE=OFF -DBUILD_GUILE=OFF -DCMAKE_MACOSX_RPATH=ON .
-  - make install -j2
+  - make install -j4
   - popd
 
 # use tbb from sources for osx (not brew)
@@ -94,20 +80,18 @@ before_script:
 script:
   - if test "$TRAVIS_OS_NAME" = "linux"; then
         cmake -DCMAKE_INSTALL_PREFIX=~/.local
-              -DSPHINX_EXECUTABLE=~/.local/bin/sphinx-build
               -DUSE_SPHINX=OFF
-              -DSWIG_EXECUTABLE=~/.local/bin/swig
               -DHMAT_DIR=~/.local/lib/cmake/hmat
               -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so
               -DNLOPT_INCLUDE_DIR=~/.local/include
               -DUSE_COTIRE=ON
               -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j2"
               . &&
-        make install -j2;
+        make install -j2 &&
+        make -j4 check;
     fi
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         cmake -DCMAKE_INSTALL_PREFIX=~/.local
-              -DSWIG_EXECUTABLE=~/.local/bin/swig
               -DCMAKE_MACOSX_RPATH=ON
               -DHMAT_DIR=~/.local/lib/cmake/hmat
               -DLAPACKE_FOUND=ON
