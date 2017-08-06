@@ -85,6 +85,9 @@ public:
 protected:
 
 private:
+  // initialize parser
+  void initialize();
+
   friend class SymbolicGradient;
   friend class SymbolicHessian;
 

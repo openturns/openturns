@@ -48,11 +48,16 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
     throw InvalidDimensionException(HERE) << "The number of outputVariablesNames (" << outputVariablesNames.getSize()
                                           << ") does not match the number of formulas (" << formulas.getSize() << ")";
 
-  parser_.setVariablesFormulas(inputVariablesNames, formulas);
-  setInputDescription(inputVariablesNames_);
-  setOutputDescription(outputVariablesNames_);
+  initialize();
 } // SymbolicEvaluation
 
+
+void SymbolicEvaluation::initialize()
+{
+  parser_.setVariablesFormulas(inputVariablesNames_, formulas_);
+  setInputDescription(inputVariablesNames_);
+  setOutputDescription(outputVariablesNames_);
+}
 
 /* Virtual constructor */
 SymbolicEvaluation * SymbolicEvaluation::clone() const
@@ -181,7 +186,7 @@ void SymbolicEvaluation::load(Advocate & adv)
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "outputVariablesNames_", outputVariablesNames_ );
   adv.loadAttribute( "formulas_", formulas_ );
-  *this = SymbolicEvaluation(inputVariablesNames_, outputVariablesNames_, formulas_);
+  initialize();
 }
 
 END_NAMESPACE_OPENTURNS

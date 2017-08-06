@@ -67,6 +67,8 @@ public:
   void load(Advocate & adv);
 
 protected:
+  void initialize();
+
   /* Wavelet order */
   UnsignedInteger j_;
 

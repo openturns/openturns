@@ -60,7 +60,7 @@ public:
   /** Parameter constructor */
   MarginalTransformationEvaluation(const DistributionCollection & inputDistributionCollection,
                                    const DistributionCollection & outputDistributionCollection,
-                                   const Bool simplify = (0 != ResourceMap::GetAsUnsignedInteger("MarginalTransformationEvaluation-Simplify")));
+                                   const Bool simplify = ResourceMap::GetAsBool("MarginalTransformationEvaluation-Simplify"));
 
   /** Virtual constructor */
   virtual MarginalTransformationEvaluation * clone() const;
@@ -110,6 +110,8 @@ protected:
 
 
 private:
+  void initialize(const Bool simplify);
+
   // Make the gradient and the hessian friend classes of the evaluation in order to share the input and output distribution collections
   friend class MarginalTransformationGradient;
   friend class MarginalTransformationHessian;
@@ -124,10 +126,10 @@ private:
   UnsignedInteger direction_;
 
   // Flag to tell if simpler expressions are available
-  Collection<UnsignedInteger> simplifications_;
+  mutable Indices simplifications_;
 
   // Collection of simpler expressions
-  Collection<Function> expressions_;
+  mutable Collection<Function> expressions_;
 }; /* MarginalTransformationEvaluation */
 
 

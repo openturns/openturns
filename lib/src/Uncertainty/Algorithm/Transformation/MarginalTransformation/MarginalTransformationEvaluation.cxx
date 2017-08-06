@@ -50,11 +50,19 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   EvaluationImplementation(),
   inputDistributionCollection_(inputDistributionCollection),
   outputDistributionCollection_(outputDistributionCollection),
-  direction_(FROMTO),
-  simplifications_(inputDistributionCollection.getSize(), 0),
-  expressions_(inputDistributionCollection.getSize())
+  direction_(FROMTO)
 {
-  const UnsignedInteger size = inputDistributionCollection.getSize();
+  initialize(simplify);
+}
+
+
+void MarginalTransformationEvaluation::initialize(const Bool simplify)
+{
+  const UnsignedInteger size = inputDistributionCollection_.getSize();
+
+  simplifications_ = Indices(size, 0);
+  expressions_.resize(size);
+
   // Check that the collections of input and output distributions have the same size
   if (outputDistributionCollection_.getSize() != size) throw InvalidArgumentException(HERE) << "Error: a MarginalTransformationEvaluation cannot be built using collections of input and output distributions of different size";
   // First, check that the distributions are all 1D
@@ -72,8 +80,8 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
     // Third, look for possible simplifications
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Distribution inputDistribution(inputDistributionCollection[i]);
-      const Distribution outputDistribution(outputDistributionCollection[i]);
+      const Distribution inputDistribution(inputDistributionCollection_[i]);
+      const Distribution outputDistribution(outputDistributionCollection_[i]);
       const String xName(getInputDescription()[i]);
       const String yName(getOutputDescription()[i]);
       const String inputClass(inputDistribution.getImplementation()->getClassName());
@@ -540,8 +548,9 @@ void MarginalTransformationEvaluation::load(Advocate & adv)
   adv.loadAttribute( "outputDistributionCollection_", outputDistributionCollection_ );
   UnsignedInteger direction = FROMTO;
   adv.loadAttribute( "direction_", direction );
-  *this = MarginalTransformationEvaluation(inputDistributionCollection_, outputDistributionCollection_);
   setDirection(static_cast<TranformationDirection>(direction));
+  const Bool simplify = ResourceMap::GetAsBool("MarginalTransformationEvaluation-Simplify");
+  initialize(simplify);
 }
 
 END_NAMESPACE_OPENTURNS
