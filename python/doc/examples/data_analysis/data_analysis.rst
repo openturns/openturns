@@ -20,6 +20,7 @@ Data analysis
     kolmogorov_test.ipynb
     chi2_test.ipynb
     qqplot_graph.ipynb
+    smirnov_test.ipynb
     regression_test.ipynb
     henry_line_graph.ipynb
     andersondarling_test.ipynb
