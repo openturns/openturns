@@ -1,5 +1,5 @@
-Uncertainty quantification
-==========================
+Reliability, sensitivity
+========================
 
 .. toctree::
 
@@ -13,3 +13,4 @@ Uncertainty quantification
     gauss_product_experiment.ipynb
     low_discrepancy_sequence.ipynb
     estimate_moments_taylor.ipynb
+    estimate_sobol.ipynb

@@ -1,5 +1,5 @@
-Statistical estimation
-======================
+Data analysis
+=============
 
 .. toctree::
 
@@ -13,7 +13,6 @@ Statistical estimation
     visualize_histogram.ipynb
     estimate_moments.ipynb
     estimate_spearman.ipynb
-    estimate_sobol.ipynb
     estimate_pcc.ipynb
     estimate_normal.ipynb
     maximumlikelihood_estimator.ipynb

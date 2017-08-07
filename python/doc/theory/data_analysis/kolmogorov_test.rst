@@ -112,7 +112,7 @@ This method is also referred to in the literature as Kolmogorov's Test.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/statistical_estimation/kolmogorov_test.ipynb`
+    - See :ref:`examples/data_analysis/kolmogorov_test.ipynb`
 
 .. topic:: References:
 
