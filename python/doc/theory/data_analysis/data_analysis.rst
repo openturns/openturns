@@ -9,5 +9,6 @@ This part gives an overview of the content of the statistical toolbox that may b
     :maxdepth: 1
 
     empirical_cdf
+    qqplot_graph
     kernel_smoothing
     kolmogorov_test
