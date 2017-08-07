@@ -15,15 +15,11 @@ The current section is dedicated to probabilistic methods and concepts.
 .. 
 .. Parametric models
 .. -----------------
-.. - :ref:`Usual distributions <parametric_distributions>`
 .. - :ref:`Copulas - a mathematical tool for multi-dimensional distirbutions <copulas>`
 .. - Random mixture - affine combination of independent univariate distributions :class:`~openturns.RandomMixture`
 
 
-.. Methods description
-.. ===================
-.. 
-.. .. toctree::
-..     :maxdepth: 1
-.. 
-..    xxxxxxxxxxxx
+.. toctree::
+    :maxdepth: 1
+
+    parametric_models
