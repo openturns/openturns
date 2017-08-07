@@ -10,5 +10,6 @@ This part gives an overview of the content of the statistical toolbox that may b
 
     empirical_cdf
     qqplot_graph
+    smirnov_test
     kernel_smoothing
     kolmogorov_test
