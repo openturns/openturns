@@ -98,7 +98,7 @@ The method is also referred to as Direct sampling, Crude Monte Carlo method, Cla
 
 .. topic:: API:
 
-    - See :class:`~openturns.MonteCarlo` simulation algorithm
+    - See :class:`~openturns.ProbabilitySimulationAlgorithm`
 
 .. topic:: Examples:
 
