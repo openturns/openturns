@@ -9,11 +9,12 @@ This part gives an overview of the content of the statistical toolbox that may b
     :maxdepth: 1
 
     empirical_cdf
+    kernel_smoothing
     qqplot_graph
     smirnov_test
     maximum_likelihood
     bayesian_calibration
     metropolis_hastings
     parametric_estimation
-    kernel_smoothing
+    graphical_fitting_test
     kolmogorov_test
