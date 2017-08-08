@@ -38,7 +38,7 @@ CanonicalTensorGradient::CanonicalTensorGradient()
   , evaluation_()
 {
   // Nothing to do
-} // CanonicalTensorGradient
+}
 
 /* Default constructor */
 CanonicalTensorGradient::CanonicalTensorGradient(const CanonicalTensorEvaluation & evaluation)
@@ -46,7 +46,7 @@ CanonicalTensorGradient::CanonicalTensorGradient(const CanonicalTensorEvaluation
   , evaluation_(evaluation)
 {
   // Nothing to do
-} // CanonicalTensorGradient
+}
 
 
 /* Virtual constructor */
@@ -165,7 +165,6 @@ void CanonicalTensorGradient::load(Advocate & adv)
 {
   GradientImplementation::load(adv);
   adv.loadAttribute("evaluation_", evaluation_);
-  *this = CanonicalTensorGradient(evaluation_);
 }
 
 END_NAMESPACE_OPENTURNS
