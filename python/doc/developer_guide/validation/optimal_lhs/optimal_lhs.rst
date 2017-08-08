@@ -15,7 +15,7 @@ Both algorithms are to be validated.
 
 Preliminary validations
 -----------------------
-For specific designs, criteria values (:math:`C_2`, mindist and :math:`\phi_{p}`) obtained with otlhs module are compared with values computed by the DiceDesign R package.
+For specific designs, criteria values (:math:`C_2`, mindist and :math:`\phi_{p}`) obtained with openturns module are compared with values computed by the DiceDesign R package.
 Those scripts are located in the *validation* folder of this module.  Comparisons are very good, absolute error is less than :math:`10^{-13}`
 
 As mentionned previously, :math:`C_2` criterion can be computed efficiently when a small perturbation is performed on design.
@@ -102,7 +102,7 @@ but it the larger case, it is expected that this number is way too small, so res
 Simulated annealing results
 ```````````````````````````
 
-Using the :class:`otlhs.SimulatedAnnealingLHS` class, tests are implemented and results are summuarized here:
+Using the :class:`~openturns.SimulatedAnnealingLHS` class, tests are implemented and results are summuarized here:
 These are compared to those produced by DiceDesign R package in terms of criteria and CPU time:
 
 ======== =========================== =============== ============== =============== ==============

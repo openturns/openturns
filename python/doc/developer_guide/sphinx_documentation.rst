@@ -88,20 +88,20 @@ Docstrings & inheritance
 Good news! Docstrings are inherited so that we only need to document the
 methods of the parent objects (until we want to make them more specific).
 
-Implementation patterns
-~~~~~~~~~~~~~~~~~~~~~~~
+Bridge pattern
+~~~~~~~~~~~~~~
 
-The OpenTURNS library counts an important number of parent objects with an
-:class:`Implementation` pattern. For instance, the :class:`~openturns.Distribution`
-object which is the base class for all probability distributions in OpenTURNS
-has a :class:`~openturns.DistributionImplementation` pattern (that we don't
-need to expose). And the trick is that the base object does not inherit from
-its :class:`Implementation` pattern but the children do, so we need to
+An important number of objects use the :ref:`bridge pattern <bridge_pattern>`.
+For instance, the :class:`~openturns.Distribution`
+object which is the interface class for all probability distributions
+has an implementation class **DistributionImplementation** (that we don't
+need to expose). And the trick is that the interface class does not inherit from
+its implementation object but the children do, so we need to
 document them both.
 
 In order to avoid docstrings duplicates though we decided to document the
-:class:`Implementation` pattern with defined blocks. Since we load the
-:class:`Implementation` patterns first, we can then refer to the same defined
+implementation class with defined blocks. Since we load the
+implementation first, we can then refer to the same defined
 blocks for documenting the object itself.
 
 For instance the main docstring of the :class:`~openturns.Distribution`
