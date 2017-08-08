@@ -1,3 +1,5 @@
+.. _maximum_likelihood:
+
 Maximum Likelihood Principle
 ----------------------------
 

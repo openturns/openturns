@@ -12,5 +12,6 @@ This part gives an overview of the content of the statistical toolbox that may b
     qqplot_graph
     smirnov_test
     maximum_likelihood
+    bayesian_calibration
     kernel_smoothing
     kolmogorov_test
