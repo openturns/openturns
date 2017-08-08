@@ -4,9 +4,17 @@
 Available constructor:
     HistogramFactory()
 
+Notes
+-----
+The bandwidth is the AMISE-optimal one: 
+
+.. math::
+
+    h = \displaystyle \frac{(24\sqrt{\pi})^{1/3} \sigma_n}{n^{1/3}}
+
+where :math:`\sigma_n^2` is the non biaised variance of the data.
+The range is :math:`[min(data), max(data)]`
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, Histogram"

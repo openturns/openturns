@@ -4,9 +4,15 @@
 Available constructor:
     ChiFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \Hat{\nu}_n=\bar{x^2}_n
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, Chi"

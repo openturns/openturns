@@ -6,7 +6,7 @@ Available constructors:
 
 See also
 --------
-DistributionFactory
+DistributionFactory, LogNormal
 
 Notes
 -----

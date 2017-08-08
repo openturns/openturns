@@ -6,11 +6,9 @@ Available constructor:
 
 Notes
 -----
-The estimation is done by maximizing the likelihood of the sample, using the algorithm described in [Minka2012]_.
+The estimation is done by maximizing the likelihood of the sample,
+using the algorithm described in [Minka2012]_.
 
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, Dirichlet"

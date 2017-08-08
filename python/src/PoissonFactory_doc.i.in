@@ -4,6 +4,15 @@
 Available constructor:
     PoissonFactory()
 
+We use the following estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\lambda}_n = \bar{x}_n
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Poisson"

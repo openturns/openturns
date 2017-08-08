@@ -4,9 +4,23 @@
 Available constructor:
     GeneralizedParetoFactory()
 
+Notes
+-----
+
+We implement three parametric estimation methods: the
+classical moments method, the exponential regression method and the
+probability weighted moments method, according to the reference [Matthys2003]_.
+The default strategy is to use the probability
+weighted moments method when the sample size is smaller than the
+threshold defined in the RessourceMap object
+*GeneralizedParetoFactory-SmallSize*. In case of failure, it
+uses the exponential regression method. If the sample size is to high,
+it uses the exponential regression method. The classical moments
+method is proposed but not used by default.
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, GeneralizedPareto"
 
 // ---------------------------------------------------------------------
 

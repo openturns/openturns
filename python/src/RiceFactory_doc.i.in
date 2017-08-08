@@ -4,6 +4,8 @@
 Available constructor:
     RiceFactory()
 
+The parameters are estimated by method of moments, according to [Koay2006]_.
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Rice"

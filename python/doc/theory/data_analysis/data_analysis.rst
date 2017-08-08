@@ -14,5 +14,6 @@ This part gives an overview of the content of the statistical toolbox that may b
     maximum_likelihood
     bayesian_calibration
     metropolis_hastings
+    parametric_estimation
     kernel_smoothing
     kolmogorov_test

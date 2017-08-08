@@ -4,7 +4,14 @@
 Available constructor:
     AliMikhailHaqCopulaFactory()
 
+We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
+
+The parameter :math:`\Hat{\theta}_n` is solution of
+
+.. math::
+
+    \displaystyle \Hat{\tau}_n = \displaystyle \frac{3\theta-2}{3\theta} - \frac{2(1-\theta)^2\ln(1-\theta)}{3\theta^2}
+
 See also
 --------
-ClaytonCopulaFactory, FarlieGumbelMorgensternCopulaFactory, FrankCopulaFactory,
-GumbelCopulaFactory, NormalCopulaFactory"
+DistributionFactory, AliMikhailHaqCopula"

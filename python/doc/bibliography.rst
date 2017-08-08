@@ -41,6 +41,9 @@ Bibliography
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
     `pdf <http://doc.openturns.org/papers/knight1966.pdf>`__
+.. [Koay2006] Koay C.G., Basser P.J.,
+    *Analytically exact correction scheme for signal extraction from noisy magnitude MR signals*,
+    Journal of magnetics Resonance 179, 317-322, 2006.
 .. [Koehler1996] J.R. Koehler and A.B. Owen. *Computer experiments. In S. Ghosh
     and C.R. Rao, editors, Design and analysis of experiments,
     volume 13 of Handbook of statistics.* Elsevier, 1996.
@@ -56,9 +59,13 @@ Bibliography
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
     `pdf <http://doc.openturns.org/papers/lebrun2009c.pdf>`__
-.. [Martinez2011] Martinez, J-M., *Analyse de sensibilite globale par
-    decomposition de la variance*, Presentation in the meeting of GdR Ondes and
-    GdR MASCOT-NUM, January, 13th, 2011, Institut Henri Poincare, Paris, France
+.. [Martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,
+    Presentation in the meeting of GdR Ondes and GdR MASCOT-NUM,
+    January, 13th, 2011, Institut Henri Poincare, Paris, France
+.. [Matthys2003] G. Matthys & J. Beirlant,
+    *Estimating the extreme value index and high quantiles with exponential regression models*,
+    Statistica Sinica, 13, 850-880, 2003.
+    `pdf <http://doc.openturns.org/papers/matthys2003.pdf>`__
 .. [McKay1979] McKay M, Beckman R and Conover W (1979). *A comparison of three
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.

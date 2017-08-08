@@ -4,6 +4,16 @@
 Available constructor:
     NormalFactory()
 
+The parameters are estimated by method of moments.
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\vect{\mu}}_n^{\strut} = \bar{\vect{x}}_n\\
+      \displaystyle\Hat{\mathrm{Cov}}_n = \frac{1}{n-1}\sum_{i=1}^n\left(\vect{X}_i-\Hat{\vect{\mu}}_n\right)\left(\vect{X}_i-\Hat{\vect{\mu}}_n\right)^t
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Normal"

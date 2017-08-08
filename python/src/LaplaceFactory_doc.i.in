@@ -4,9 +4,19 @@
 Available constructor:
     LaplaceFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\mu}_n = x_{1/2}\\
+      \displaystyle\Hat{\lambda}_n = \frac{1}{n}\sum_{i=1}^n|x_i-\Hat{\mu}_n|
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Laplace"
 
 
 

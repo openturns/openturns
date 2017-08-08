@@ -4,9 +4,10 @@
 Available constructor:
     DiracFactory()
 
+Notes
+-----
+Can only estimate the parameter from a sample that contains the same point.
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, Dirac"
