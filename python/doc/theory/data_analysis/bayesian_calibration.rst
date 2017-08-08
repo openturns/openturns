@@ -137,7 +137,7 @@ Except in very simple cases, :eq:`postdistribution` has, in general,
 no closed form. Thus, it must be approximated, either using numerical
 integration when the parameter space dimension :math:`d_\theta` is low,
 or more generally through stochastic sampling techniques known as
-Monte-Carlo Markov-Chain (MCMC) methods. See ???.
+Monte-Carlo Markov-Chain (MCMC) methods. See :ref:`metropolis_hastings`.
 
 .. topic:: API:
 

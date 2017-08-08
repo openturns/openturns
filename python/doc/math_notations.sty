@@ -114,7 +114,9 @@
 \newcommand{\Var}[1]{{\rm Var}\left[ #1 \right]}
 \newcommand{\Cov}[1]{{\rm Cov}\left[ #1 \right]}
 \newcommand{\Expect}[1]{{\mathbb E}\left[ #1 \right]}
-\newcommand{\Prob}[1]{{\mathbb P}\left[ #1 \right]}
+\newcommand{\Econd}[2]{{\mathbb E}_{#1}\left[ #2 \right]}
+\newcommand{\Prob}[1]{{\mathbb P}\left( #1 \right)}
+\newcommand{\ProbCond}[2]{{\mathbb P}_{#1}\left( #2 \right)}
 \newcommand{\pdf}{f_{\un{X}}(\un{x})}
 \newcommand{\ech}{\left\{ x_1, \, \dots\,, x_N  \right\}}
 \newcommand{\matcov} {\mathbf C}
@@ -123,6 +125,7 @@
 \newcommand{\supp}[1] {{\rm supp}\left(#1\right)}
 \newcommand{\di}[1] {{\,\mathrm{d}#1}}
 \newcommand{\norm}[1] {\left\|#1\right\|}
+\newcommand{\tendto}[2]{\xrightarrow[#1\rightarrow#2]{}}
 
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\argmax}{argmax}

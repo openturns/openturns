@@ -13,5 +13,6 @@ This part gives an overview of the content of the statistical toolbox that may b
     smirnov_test
     maximum_likelihood
     bayesian_calibration
+    metropolis_hastings
     kernel_smoothing
     kolmogorov_test
