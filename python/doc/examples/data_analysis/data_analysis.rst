@@ -21,6 +21,7 @@ Data analysis
     chi2_test.ipynb
     fitted_distribution_ranking.ipynb
     qqplot_graph.ipynb
+    independence_test.ipynb
     smirnov_test.ipynb
     regression_test.ipynb
     henry_line_graph.ipynb
