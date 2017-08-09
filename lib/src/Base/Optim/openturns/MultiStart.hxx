@@ -41,6 +41,9 @@ public:
   typedef OT::Collection<OT::OptimizationResult>           OptimizationResultCollection;
   typedef OT::PersistentCollection<OT::OptimizationResult> OptimizationResultPersistentCollection;
 
+  /** Default constructor */
+  MultiStart();
+
   /** Constructor with parameters */
   MultiStart(const OptimizationAlgorithm & solver,
              const Sample & startingPoints);
@@ -73,10 +76,6 @@ public:
   void load(Advocate & adv);
 
 protected:
-  /** Default constructor */
-  MultiStart();
-
-  friend class Factory<MultiStart>;
 
   /** Check whether this problem can be solved by this solver. */
   void checkProblem(const OptimizationProblem & problem) const;
