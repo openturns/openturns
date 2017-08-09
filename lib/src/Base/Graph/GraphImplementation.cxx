@@ -710,6 +710,11 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "xTitle_", xTitle_ );
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
+  adv.saveAttribute( "logScale_", static_cast<UnsignedInteger>(logScale_) );
+  adv.saveAttribute( "showGrid_", showGrid_ );
+  adv.saveAttribute( "gridColor_", gridColor_ );
+  adv.saveAttribute( "automaticBoundingBox_", automaticBoundingBox_ );
+  adv.saveAttribute( "boundingBox_", boundingBox_ );
   adv.saveAttribute( "drawablesCollection_", drawablesCollection_ );
 }
 
@@ -723,6 +728,13 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "xTitle_", xTitle_ );
   adv.loadAttribute( "yTitle_", yTitle_ );
   adv.loadAttribute( "showAxes_", showAxes_ );
+  UnsignedInteger logScale = 0;
+  adv.loadAttribute( "logScale_", logScale );
+  logScale_ = static_cast<LogScale>(logScale);
+  adv.loadAttribute( "showGrid_", showGrid_ );
+  adv.loadAttribute( "gridColor_", gridColor_ );
+  adv.loadAttribute( "automaticBoundingBox_", automaticBoundingBox_ );
+  adv.loadAttribute( "boundingBox_", boundingBox_ );
   adv.loadAttribute( "drawablesCollection_", drawablesCollection_ );
 }
 
