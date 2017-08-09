@@ -17,4 +17,5 @@ This part gives an overview of the content of the statistical toolbox that may b
     metropolis_hastings
     parametric_estimation
     graphical_fitting_test
+    chi2_test
     kolmogorov_test
