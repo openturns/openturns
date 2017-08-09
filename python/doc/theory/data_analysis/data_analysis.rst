@@ -25,3 +25,4 @@ This part gives an overview of the content of the statistical toolbox that may b
     pcc
     pearson_test
     spearman_coefficient
+    spearman_test
