@@ -23,6 +23,7 @@ Data analysis
     smirnov_test.ipynb
     regression_test.ipynb
     henry_line_graph.ipynb
+    cramer_vonmises_test.ipynb
     andersondarling_test.ipynb
     estimate_copula.ipynb
     estimate_non_parametric_copula.ipynb
