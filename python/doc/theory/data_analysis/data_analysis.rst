@@ -23,3 +23,4 @@ This part gives an overview of the content of the statistical toolbox that may b
     anderson_darling_test
     bic
     pcc
+    spearman_coefficient
