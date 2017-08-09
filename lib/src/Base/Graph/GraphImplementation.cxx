@@ -165,13 +165,6 @@ void GraphImplementation::add(const GraphImplementation & graphImplementation)
 {
   // Add the drawables
   add(graphImplementation.getDrawables());
-  // Update the bounding box
-  const BoundingBox otherBoundingBox(graphImplementation.getBoundingBox());
-  boundingBox_[0] = std::min(boundingBox_[0], otherBoundingBox[0]);
-  boundingBox_[1] = std::max(boundingBox_[1], otherBoundingBox[1]);
-  boundingBox_[2] = std::min(boundingBox_[2], otherBoundingBox[2]);
-  boundingBox_[3] = std::max(boundingBox_[3], otherBoundingBox[3]);
-  automaticBoundingBox_ = false;
 }
 
 /* Drawables accessor */
