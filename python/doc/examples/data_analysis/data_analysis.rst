@@ -19,6 +19,7 @@ Data analysis
     estimate_non_parametric_distribution.ipynb
     kolmogorov_test.ipynb
     chi2_test.ipynb
+    fitted_distribution_ranking.ipynb
     qqplot_graph.ipynb
     smirnov_test.ipynb
     regression_test.ipynb
