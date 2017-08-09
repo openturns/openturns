@@ -1,3 +1,4 @@
+.. _kolmogorov_smirnov_test:
 
 Kolmogorov-Smirnov fitting test
 -------------------------------
