@@ -6,18 +6,27 @@ Bibliography
 .. [Au2001] Au, S. K. *Estimation of small failure probabilities in high 
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://doc.openturns.org/papers/au2001.pdf>`__
+.. [Bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
+    Concepts and Methods*, John Wiley and Sons, New York, 1997.
 .. [Blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
     uncertainty propagation and sensitivity analysis.*, PhD thesis.
     Blaise Pascal University-Clermont II, France, 2009.
     `pdf <http://doc.openturns.org/papers/blatman2009.pdf>`__
+.. [Burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
+    Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
+    2002.
 .. [Caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
     `pdf <http://doc.openturns.org/papers/caniou2012.pdf>`__
+.. [Dagostino1986] D'Agostino, R.B. and Stephens, M.A. *Goodness-of-Fit Techniques*,
+    Marcel Dekker, Inc., New York, 1986.
 .. [Damblin2013] G. Damblin, M. Couplet and B. Iooss. *Numerical studies
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
     `pdf <http://doc.openturns.org/papers/damblin2013.pdf>`__
+.. [Dixon1983] Dixon, W.J., Massey, F.J, *Introduction to statistical analysis*
+    4th ed., McGraw-Hill, 1983
 .. [Fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [Gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
@@ -85,6 +94,8 @@ Bibliography
 .. [Nataf1962] Nataf, A. *Determination des distributions dont les marges sont
     donnees.* C. R. Acad. Sci. Paris, 1962, 225, 42-43.
     `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__
+.. [NISThandbook] NIST/SEMATECH e-Handbook of Statistical Methods,
+    http://www.itl.nist.gov/div898/handbook/
 .. [NLopt] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
 .. [Pronzato2012] Pronzato L and Muller W (2012).
@@ -105,6 +116,8 @@ Bibliography
 .. [Saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
     `pdf <http://doc.openturns.org/papers/saltelli2002.pdf>`__
+.. [Saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
+    Statistique*, Technip
 .. [Simard2011] Simard, R. & L'Ecuyer, P. *Computing the Two-Sided Kolmogorov-
     Smirnov Distribution.* Journal of Statistical Software, 2011, 39(11), 1-18.
     `pdf <http://doc.openturns.org/papers/simard2011.pdf>`__
@@ -121,3 +134,5 @@ Bibliography
     SIAM Journal on Scientific Computing, Society for Industrial and Applied
     Mathematics, 2004, 26 (2), 395-410.
     `pdf <https://hal.archives-ouvertes.fr/hal-00686211/document>`__
+.. [Sprent2001] Sprent, P., and Smeeton, N.C. *Applied Nonparametric
+    Statistical Methods*, Third edition, Chapman & Hall, 2001.

@@ -114,6 +114,5 @@ distribution function.
 
 .. topic:: References:
 
-    - Saporta G. (1990). "Probabilités, Analyse de données et Statistique", Technip
-    - Dixon W.J. \& Massey F.J. (1983) "Introduction to statistical analysis (4th ed.)", McGraw-Hill
-
+    - [Saporta1990]_
+    - [Dixon1983]_

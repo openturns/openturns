@@ -72,11 +72,10 @@ desired by the user. Note that the higher
 
 .. topic:: References:
 
-    - Saporta, G. (1990). *Probabilités, Analyse de données et Statistique*, Technip
-    - Dixon, W.J. \& Massey, F.J. (1983) *Introduction to statistical analysis (4th ed.)*, McGraw-Hill
-    - NIST/SEMATECH e-Handbook of Statistical Methods, http://www.itl.nist.gov/div898/handbook/
-    - D'Agostino, R.B. and Stephens, M.A. (1986). *Goodness-of-Fit Techniques*, Marcel Dekker, Inc., New York.
-    - Bhattacharyya, G.K., and R.A. Johnson, (1997). *Statistical Concepts and Methods*, John Wiley and Sons, New York.
-    - Sprent, P., and Smeeton, N.C. (2001). *Applied Nonparametric Statistical Methods -- Third edition*, Chapman \& Hall
-    - Burnham, K.P., and Anderson, D.R (2002). *Model Selection and Multimodel Inference: A Practical Information Theoretic Approach*, Springer
-
+    - [Saporta1990]_
+    - [Dixon1983]_
+    - [NISThandbook]_
+    - [Dagostino1986]_
+    - [Sprent2001]_
+    - [Bhattacharyya1997]_
+    - [Burnham2002]_
