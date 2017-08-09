@@ -1,15 +1,13 @@
-.. _cramer_vonmises_test:
-
-Cramer-Von Mises goodness-of-fit test
+Anderson-Darling goodness-of-fit test
 -------------------------------------
 
 This method deals with the modelling of a probability distribution of a
 random vector :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It
 seeks to verify the compatibility between a sample of data
 :math:`\left\{ \vect{x}_1,\vect{x}_2,\ldots,\vect{x}_N \right\}` and a
-candidate probability distribution previous chosen. The Cramer-von-Mises
+candidate probability distribution previous chosen. The Anderson-Darling
 Goodness-of-Fit test allows to answer this
-question in the one dimensional case :math:`n_X=1`, and with a
+question in the one dimensional case :math:`n_X =1`, and with a
 continuous distribution. The current version is limited to the case of
 the Normal distribution.
 
@@ -17,16 +15,15 @@ Let us limit the case to :math:`n_X = 1`. Thus we denote
 :math:`\vect{X} = X^1 = X`. This goodness-of-fit test is based on the
 distance between the cumulative distribution function
 :math:`\widehat{F}_N` of the sample
-:math:`\left\{ x_1,x_2,\ldots,x_N \right\}` (see ) and that of the
-candidate distribution, denoted :math:`F`. This distance is no longer
-the maximum deviation as in the :ref:`Kolmogorov-Smirnov test <kolmogorov_smirnov_test>`
-but the distance squared and integrated
-over the entire variation domain of the distribution:
+:math:`\left\{ x_1,x_2,\ldots,x_N \right\}` and that of the
+candidate distribution, denoted :math:`F`. This distance is a quadratic
+type, as in the :ref:`Cramer-Von Mises test <cramer_vonmises_test>`,
+but gives more weight to deviations of extreme values:
 
 .. math::
 
    \begin{aligned}
-       D = \int^{\infty}_{-\infty} \left[F\left(x\right) - \widehat{F}_N\left(x\right)\right]^2 \, dF
+       D = \int^{\infty}_{-\infty} \frac{\displaystyle \left[F\left(x\right) - \widehat{F}_N\left(x\right)\right]^2 }{\displaystyle F(x) \left( 1-F(x) \right) } \, dF(x)
      \end{aligned}
 
 With a sample :math:`\left\{ x_1,x_2,\ldots,x_N \right\}`, the distance
@@ -35,8 +32,11 @@ is estimated by:
 .. math::
 
    \begin{aligned}
-       \widehat{D}_N = \frac{1}{12 N} + \sum_{i=1}^{N}\left[\frac{2i-1}{2N} - F\left(x_i\right)\right]^2
+       \widehat{D}_N = -N-\sum^{N}_{i=1} \frac{2i-1}{N} \left[\ln F(x_{(i)})+\ln\left(1-F(x_{(N+1-i)})\right)\right]
      \end{aligned}
+
+where :math:`\left\{x_{(1)}, \ldots, x_{(N)}\right\}` describes the
+sample placed in increasing order.
 
 The probability distribution of the distance :math:`\widehat{D}_N` is
 asymptotically known (i.e. as the size of the sample tends to infinity).
@@ -51,10 +51,10 @@ threshold / critical value :math:`d_\alpha` such that:
    is considered acceptable.
 
 Note that :math:`d_\alpha` depends on the candidate distribution
-:math:`F` being tested; it is currently is limited to
+:math:`F` being tested; the current version is limited to
 the case of the Normal distribution.
 
-An important notion is the so-called :math:`p`-value of the test. This
+An important notion is the so-called “:math:`p`-value” of the test. This
 quantity is equal to the limit error probability
 :math:`\alpha_\textrm{lim}` under which the candidate distribution is
 rejected. Thus, the candidate distribution will be accepted if and only
@@ -62,13 +62,14 @@ if :math:`\alpha_\textrm{lim}` is greater than the value :math:`\alpha`
 desired by the user. Note that the higher
 :math:`\alpha_\textrm{lim} - \alpha`, the more robust the decision.
 
+
 .. topic:: API:
 
-    - See :py:func:`~openturns.NormalityTest_CramerVonMisesNormal`
+    - See :py:func:`~openturns.NormalityTest_AndersonDarlingNormal`
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/cramer_vonmises_test.ipynb`
+    - See :ref:`examples/data_analysis/andersondarling_test.ipynb`
 
 .. topic:: References:
 
@@ -79,4 +80,3 @@ desired by the user. Note that the higher
     - Bhattacharyya, G.K., and R.A. Johnson, (1997). *Statistical Concepts and Methods*, John Wiley and Sons, New York.
     - Sprent, P., and Smeeton, N.C. (2001). *Applied Nonparametric Statistical Methods -- Third edition*, Chapman \& Hall
     - Burnham, K.P., and Anderson, D.R (2002). *Model Selection and Multimodel Inference: A Practical Information Theoretic Approach*, Springer
-

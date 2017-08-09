@@ -20,3 +20,4 @@ This part gives an overview of the content of the statistical toolbox that may b
     chi2_test
     kolmogorov_test
     cramer_vonmises_test
+    anderson_darling_test
