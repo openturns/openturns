@@ -964,6 +964,21 @@ String DrawableImplementation::ConvertFromHSVA(const Scalar hue,
 }
 
 /* Default constructor */
+DrawableImplementation::DrawableImplementation()
+  : PersistentObject()
+  , legend_("")
+  , data_()
+  , color_(ResourceMap::Get("Drawable-DefaultColor"))
+  , fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle"))
+  , lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle"))
+  , pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle"))
+  , lineWidth_(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultLineWidth"))
+  , dataFileName_("")
+{
+  // Nothing to do
+}
+
+/* Default constructor */
 DrawableImplementation::DrawableImplementation(const Sample & data,
     const String & legend)
   : PersistentObject(),
