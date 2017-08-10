@@ -3,6 +3,9 @@
 ============
 Bibliography
 ============
+.. [Aas2004] Aas K., *Modelling the dependence structure of financial assets: a survey of four copulas*,
+    Norwegian Computing Center report nr. SAMBA/22/04, December 2004.
+    `pdf <http://doc.openturns.org/papers/aas2004.pdf>`__
 .. [Au2001] Au, S. K. *Estimation of small failure probabilities in high 
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://doc.openturns.org/papers/au2001.pdf>`__
@@ -25,13 +28,21 @@ Bibliography
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
     `pdf <http://doc.openturns.org/papers/damblin2013.pdf>`__
+.. [Devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
+    Springer-Verlag, New York, 1986
+    `pdf <http://doc.openturns.org/papers/devroye1986.pdf>`__
 .. [Dixon1983] Dixon, W.J., Massey, F.J, *Introduction to statistical analysis*
     4th ed., McGraw-Hill, 1983
+.. [Doornik2005] Doornik, J.A. *An Improved Ziggurat Method to Generate Normal Random Samples*,
+    mimeo, Nuffield College, University of Oxford, 2005.
+    `pdf <http://doc.openturns.org/papers/doornik2005.pdf>`__
 .. [Fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [Gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013
     `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
+.. [Hormann1992] Hormann W., *The generation of Binomial Random Variates*
+    `pdf <http://doc.openturns.org/papers/hormann1992.pdf>`__
 .. [Jansen1999] Jansen, M.J.W. *Analysis of variance designs for model output*,
     Computer Physics Communication, 1999, 117, 35-43.
     `pdf <http://doc.openturns.org/papers/jansen1999.pdf>`__
@@ -68,6 +79,8 @@ Bibliography
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
     `pdf <http://doc.openturns.org/papers/lebrun2009c.pdf>`__
+.. [Marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
+    Journal of Statistical Computational and Simulation, vol 46, pp101 - 110,1993.
 .. [Martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,
     Presentation in the meeting of GdR Ondes and GdR MASCOT-NUM,
     January, 13th, 2011, Institut Henri Poincare, Paris, France
@@ -136,3 +149,7 @@ Bibliography
     `pdf <https://hal.archives-ouvertes.fr/hal-00686211/document>`__
 .. [Sprent2001] Sprent, P., and Smeeton, N.C. *Applied Nonparametric
     Statistical Methods*, Third edition, Chapman & Hall, 2001.
+.. [Stadlober1990] Stadlober E., *The ratio of uniforms approach for generating
+    discrete random variates*. Journal of Computational and Applied Mathematics,
+    vol. 31, no. 1, pp. 181-189, 1990.
+    `pdf <http://doc.openturns.org/papers/stadlober1990.pdf>`__

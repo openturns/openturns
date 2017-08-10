@@ -7,4 +7,5 @@ Numerical methods
     :maxdepth: 1
 
     uniform_random_generator
+    distribution_realization
     optimal_lhs
