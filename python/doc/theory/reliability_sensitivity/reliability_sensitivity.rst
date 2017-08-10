@@ -12,5 +12,6 @@ and probability of exceeding a threshold / failure probability.
 .. toctree::
     :maxdepth: 1
 
+    low_discrepancy_sequence
     monte_carlo_simulation
     sensitivity_sobol

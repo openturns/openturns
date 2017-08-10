@@ -65,6 +65,8 @@ Deterministic weighted experiments
     GaussProductExperiment
     LowDiscrepancyExperiment
 
+.. _low_discrepancy_sequence_api:
+
 Low Discrepancy Sequences
 =========================
 
