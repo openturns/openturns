@@ -7,7 +7,6 @@ Numerical methods
     combinatorial_generator.ipynb
     optimization_constraints.ipynb
     deterministic_design.ipynb
-    low_discrepancy_sequence.ipynb
     probabilistic_design.ipynb
     mixed_design.ipynb
     minmax_design.ipynb
