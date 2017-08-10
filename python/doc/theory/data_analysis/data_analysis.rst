@@ -27,3 +27,4 @@ This part gives an overview of the content of the statistical toolbox that may b
     spearman_coefficient
     spearman_test
     chi2_independence_test
+    linear_regression

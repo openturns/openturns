@@ -32,5 +32,5 @@ Data analysis
     kendallplot_test.ipynb
     visualize_copula_validation.ipynb
     estimate_arma.ipynb
-    linearmodel.ipynb
+    linear_regression.ipynb
     bayesian_calibration.ipynb
