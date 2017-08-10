@@ -17,7 +17,7 @@ This part gives an overview of the content of the statistical toolbox that may b
     metropolis_hastings
     parametric_estimation
     graphical_fitting_test
-    chi2_test
+    chi2_fitting_test
     kolmogorov_test
     cramer_vonmises_test
     anderson_darling_test
@@ -26,3 +26,4 @@ This part gives an overview of the content of the statistical toolbox that may b
     pearson_test
     spearman_coefficient
     spearman_test
+    chi2_independence_test

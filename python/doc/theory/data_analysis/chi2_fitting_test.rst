@@ -1,3 +1,5 @@
+.. _chi2_fitting_test:
+
 Chi-squared goodness of fit test
 --------------------------------
 
@@ -63,7 +65,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/chi2_test.ipynb`
+    - See :ref:`examples/data_analysis/chi2_fitting_test.ipynb`
 
 .. topic:: References:
 

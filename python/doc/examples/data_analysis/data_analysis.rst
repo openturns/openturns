@@ -18,7 +18,7 @@ Data analysis
     maximumlikelihood_estimator.ipynb
     estimate_non_parametric_distribution.ipynb
     kolmogorov_test.ipynb
-    chi2_test.ipynb
+    chi2_fitting_test.ipynb
     fitted_distribution_ranking.ipynb
     qqplot_graph.ipynb
     independence_test.ipynb
