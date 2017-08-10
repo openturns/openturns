@@ -1,9 +1,8 @@
 %feature("docstring") OT::RandomGenerator
 "Uniform random generator.
 
-The random generator of uniform(0,1) sample of OpenTURNS is based on the DSFTM
-(Double precision SIMD oriented Fast Mersenne Twister) algorithm described in
-the Reference Guide."
+The random generator of uniform(0,1) samples is based on the DSFTM
+(Double precision SIMD oriented Fast Mersenne Twister) algorithm."
 
 // ---------------------------------------------------------------------
 
