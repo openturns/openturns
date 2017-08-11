@@ -14,3 +14,4 @@ Reliability, sensitivity
     low_discrepancy_sequence.ipynb
     estimate_moments_taylor.ipynb
     estimate_sobol.ipynb
+    sensitivity_ancova.ipynb
