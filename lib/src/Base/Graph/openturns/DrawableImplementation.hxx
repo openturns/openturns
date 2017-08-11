@@ -48,7 +48,10 @@ public:
 
   typedef Point BoundingBox;
 
-  /** Default Constructor with legend label */
+  /** Default constructor */
+  DrawableImplementation();
+
+  /** Default constructor with legend label */
   explicit DrawableImplementation(const Sample & data,
                                   const String & legend = "");
 
@@ -220,19 +223,6 @@ public:
   void load(Advocate & adv);
 
 protected:
-  DrawableImplementation()
-    : PersistentObject(),
-      legend_(""),
-      data_(),
-      color_(ResourceMap::Get("Drawable-DefaultColor")),
-      fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle")),
-      lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle")),
-      pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle")),
-      lineWidth_(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultLineWidth")),
-      dataFileName_("")
-  {};
-  friend class Factory<DrawableImplementation>;
-
   static Bool IsFirstInitialization;
 
   /** Check validity of color */

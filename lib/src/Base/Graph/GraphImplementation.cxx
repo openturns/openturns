@@ -165,13 +165,6 @@ void GraphImplementation::add(const GraphImplementation & graphImplementation)
 {
   // Add the drawables
   add(graphImplementation.getDrawables());
-  // Update the bounding box
-  const BoundingBox otherBoundingBox(graphImplementation.getBoundingBox());
-  boundingBox_[0] = std::min(boundingBox_[0], otherBoundingBox[0]);
-  boundingBox_[1] = std::max(boundingBox_[1], otherBoundingBox[1]);
-  boundingBox_[2] = std::min(boundingBox_[2], otherBoundingBox[2]);
-  boundingBox_[3] = std::max(boundingBox_[3], otherBoundingBox[3]);
-  automaticBoundingBox_ = false;
 }
 
 /* Drawables accessor */
@@ -717,6 +710,11 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "xTitle_", xTitle_ );
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
+  adv.saveAttribute( "logScale_", static_cast<UnsignedInteger>(logScale_) );
+  adv.saveAttribute( "showGrid_", showGrid_ );
+  adv.saveAttribute( "gridColor_", gridColor_ );
+  adv.saveAttribute( "automaticBoundingBox_", automaticBoundingBox_ );
+  adv.saveAttribute( "boundingBox_", boundingBox_ );
   adv.saveAttribute( "drawablesCollection_", drawablesCollection_ );
 }
 
@@ -730,6 +728,13 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "xTitle_", xTitle_ );
   adv.loadAttribute( "yTitle_", yTitle_ );
   adv.loadAttribute( "showAxes_", showAxes_ );
+  UnsignedInteger logScale = 0;
+  adv.loadAttribute( "logScale_", logScale );
+  logScale_ = static_cast<LogScale>(logScale);
+  adv.loadAttribute( "showGrid_", showGrid_ );
+  adv.loadAttribute( "gridColor_", gridColor_ );
+  adv.loadAttribute( "automaticBoundingBox_", automaticBoundingBox_ );
+  adv.loadAttribute( "boundingBox_", boundingBox_ );
   adv.loadAttribute( "drawablesCollection_", drawablesCollection_ );
 }
 

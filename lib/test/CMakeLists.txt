@@ -30,7 +30,7 @@ if (MINGW)
   set (ADAPT_CHECK_TESTS_EXPONENT "PRINTF_EXPONENT_DIGITS=2")
 
   if (CMAKE_SIZEOF_VOID_P EQUAL 4)
-    add_library (CRT_fp8 STATIC CRT_fp8.c)
+    add_library (CRT_fp8 STATIC EXCLUDE_FROM_ALL CRT_fp8.c)
   endif ()
 endif ()
 

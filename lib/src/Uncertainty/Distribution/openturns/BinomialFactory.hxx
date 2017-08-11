@@ -52,7 +52,7 @@ public:
   Binomial buildAsBinomial(const Point & parameters) const;
   Binomial buildAsBinomial() const;
 
-  //      private:
+private:
   // Compute the log-likelihood of a sample
   static Scalar ComputeLogLikelihood(const UnsignedInteger n,
                                      const Scalar p,
