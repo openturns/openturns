@@ -15,3 +15,4 @@ Reliability, sensitivity
     estimate_moments_taylor.ipynb
     estimate_sobol.ipynb
     sensitivity_ancova.ipynb
+    sensitivity_fast.ipynb
