@@ -62,6 +62,7 @@ EfficientGlobalOptimization::EfficientGlobalOptimization(const OptimizationProbl
   , aeiTradeoff_(ResourceMap::GetAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff"))
 {
   checkProblem(problem);
+  if (krigingResult_.getMetaModel().getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Metamodel must be 1-d";
 }
 
 
@@ -85,7 +86,7 @@ public:
 
   Point operator()(const Point & x) const
   {
-    const Scalar mx = metaModelResult_.getMetaModel()(x)[0];
+    const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
     const Scalar fmMk = optimalValue_ - mx;
     const Scalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
     const Scalar sk = sqrt(sk2);
@@ -146,23 +147,23 @@ void EfficientGlobalOptimization::run()
   const UnsignedInteger dimension = problem.getDimension();
   const Function model(problem.getObjective());
   Sample inputSample(krigingResult_.getInputSample());
-  Sample outputSample(model(inputSample));
+  Sample outputSample(krigingResult_.getOutputSample());
   UnsignedInteger size = inputSample.getSize();
   Point noise(size);
   const Bool hasNoise = model.getOutputDimension() == 2;
   if (hasNoise)
   {
-    // use noise model to optimize AEI else fallback to objective 2nd marginal
-    if (noiseModel_.getOutputDimension() != 1)
-      noiseModel_ = model.getMarginal(1);
-
-    Sample noiseSample(outputSample.getMarginal(1));
-    outputSample = outputSample.getMarginal(0);
+    // always use 2nd marginal to evaluate noise at initial design and new points
+    Sample noiseSample(model.getMarginal(1)(inputSample));
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       noise[i] = noiseSample[i][0];
       if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
     }
+
+    // use noise model for criterion optimization if provided, else fallback to objective 2nd marginal
+    if (noiseModel_.getOutputDimension() != 1)
+      noiseModel_ = model.getMarginal(1);
   }
   UnsignedInteger iterationNumber = 0;
   Bool exitLoop = false;
@@ -204,7 +205,7 @@ void EfficientGlobalOptimization::run()
     }
   }
 
-  // compute minimum distance
+  // compute minimum distance between design points to assess the correlation lengths of the metamodel
   Point minimumDistance(dimension, SpecFunc::MaxScalar);
   if (!hasNoise)
   {
@@ -246,26 +247,26 @@ void EfficientGlobalOptimization::run()
     Scalar optimalValueSubstitute = optimalValue;
     if (hasNoise)
     {
-      // compute mk(x_min) with x_min = argmin_xi ui
-      // with ui = mk(xi) + c * sk(xi)
-      Scalar optimalU = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+      // with noisy objective we dont have access to the real current optimal value
+      // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
+      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+      const Point mx(metaModelResult.getConditionalMean(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
         const Point x(inputSample[i]);
-        const Scalar mx = krigingResult_.getMetaModel()(x)[0];
-        const Scalar sk2 = krigingResult_.getConditionalCovariance(x)(0, 0);
-        const Scalar u = mx + aeiTradeoff_ * sqrt(sk2);
-        if ((problem.isMinimization() && (u < optimalU))
-            || (!problem.isMinimization() && (u > optimalU)))
+        const Scalar sk2 = metaModelResult.getConditionalCovariance(x)(0, 0);
+        const Scalar u = mx[i] + aeiTradeoff_ * sqrt(sk2);
+        if ((problem.isMinimization() && (u < optimalValueSubstitute))
+            || (!problem.isMinimization() && (u > optimalValueSubstitute)))
         {
-          optimalValueSubstitute = mx;
-          optimalU = u;
+          optimalValueSubstitute = u;
         }
       }
     }
 
     Function improvementObjective(new ExpectedImprovementEvaluation(optimalValueSubstitute, metaModelResult, noiseModel_));
 
+    // use multi-start to optimize the improvement criterion when using the default solver
     if (useDefaultSolver_ && problem.hasBounds())
     {
       // Sample uniformly into the bounds
@@ -294,7 +295,7 @@ void EfficientGlobalOptimization::run()
       setOptimizationAlgorithm(MultiStart(solver_, startingPoints));
     }
 
-    // build problem
+    // build improvement criterion optimization problem
     OptimizationProblem maximizeImprovement;
     maximizeImprovement.setObjective(improvementObjective);
     maximizeImprovement.setMinimization(false);
@@ -315,6 +316,7 @@ void EfficientGlobalOptimization::run()
 
     LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << "iteration=" << iterationNumber + 1);
 
+    // is the new point better ?
     if ((problem.isMinimization() && (newValue[0] < optimalValue))
         || (!problem.isMinimization() && (newValue[0] > optimalValue)))
     {
@@ -337,7 +339,7 @@ void EfficientGlobalOptimization::run()
     // general convergence criteria
     exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
-    // minimum distance stopping criterion
+    // update minimum distance stopping criterion
     if (!hasNoise)
     {
       // update minimum distance according to the new point
@@ -353,6 +355,8 @@ void EfficientGlobalOptimization::run()
         }
       }
 
+      // when a correlation length becomes smaller than the minimal distance between design point for a single component
+      // that means the model tends to be noisy, and the original EGO formulation is not adapted anymore
       const Point scale(metaModelResult.getCovarianceModel().getScale());
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
@@ -500,12 +504,12 @@ Scalar EfficientGlobalOptimization::getCorrelationLengthFactor() const
 
 
 /* AEI tradeoff constant accessor */
-void EfficientGlobalOptimization::setAIETradeoff(const Scalar aeiTradeoff)
+void EfficientGlobalOptimization::setAEITradeoff(const Scalar aeiTradeoff)
 {
   aeiTradeoff_ = aeiTradeoff;
 }
 
-Scalar EfficientGlobalOptimization::getAIETradeoff() const
+Scalar EfficientGlobalOptimization::getAEITradeoff() const
 {
   return aeiTradeoff_;
 }
