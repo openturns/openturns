@@ -468,7 +468,7 @@ Smirnov's test is a tool that may be used to compare two samples
 necessarily equal). The goal is to determine whether these two samples come from
 the same probability distribution or not. If this is the case, the two samples
 should be aggregated in order to increase the robustness of further statistical
-analyses.
+analysis.
 
 Examples
 --------
