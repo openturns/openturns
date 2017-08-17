@@ -31,6 +31,11 @@ CLASSNAMEINIT(FunctionalChaosRandomVector);
 static const Factory<FunctionalChaosRandomVector> Factory_FunctionalChaosRandomVector;
 
 /* Default constructor */
+FunctionalChaosRandomVector::FunctionalChaosRandomVector()
+  : CompositeRandomVector()
+{}
+
+/* Default constructor */
 FunctionalChaosRandomVector::FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult)
   : CompositeRandomVector(functionalChaosResult.getComposedMetaModel(), UsualRandomVector(functionalChaosResult.getOrthogonalBasis().getMeasure()))
   , covariance_(0)

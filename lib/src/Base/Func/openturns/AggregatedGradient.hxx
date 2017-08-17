@@ -40,14 +40,11 @@ class OT_API AggregatedGradient
   CLASSNAME;
 public:
 
-
-  // friend class Factory<AggregatedGradient>;
-
   /** Default constructor */
   AggregatedGradient();
 
   /** Parameters constructor */
-  AggregatedGradient(const AggregatedEvaluation & evaluation);
+  explicit AggregatedGradient(const AggregatedEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual AggregatedGradient * clone() const;

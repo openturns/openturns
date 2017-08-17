@@ -40,14 +40,11 @@ class OT_API DualLinearCombinationGradient
   CLASSNAME;
 public:
 
-
-  // friend class Factory<DualLinearCombinationGradient>;
-
   /** Default constructor */
   DualLinearCombinationGradient();
 
   /** Parameters constructor */
-  DualLinearCombinationGradient(const DualLinearCombinationEvaluation & evaluation);
+  explicit DualLinearCombinationGradient(const DualLinearCombinationEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual DualLinearCombinationGradient * clone() const;

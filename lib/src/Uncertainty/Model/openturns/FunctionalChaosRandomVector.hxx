@@ -38,10 +38,11 @@ class OT_API FunctionalChaosRandomVector
 
 public:
 
-  /** Some typedefs to ease reading */
+  /** Default constructor */
+  FunctionalChaosRandomVector();  
 
   /** Default constructor */
-  FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult);
+  explicit FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult);
 
   /** Virtual constructor */
   virtual FunctionalChaosRandomVector * clone() const;
@@ -83,13 +84,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-protected:
-
-  friend class Factory<FunctionalChaosRandomVector>;
-
-  /** Default constructor */
-  FunctionalChaosRandomVector() : CompositeRandomVector() {};
 
 private:
   /** Compute the covariance */

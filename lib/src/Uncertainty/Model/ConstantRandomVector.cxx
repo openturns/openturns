@@ -30,6 +30,12 @@ CLASSNAMEINIT(ConstantRandomVector);
 static const Factory<ConstantRandomVector> Factory_ConstantRandomVector;
 
 /* Default constructor */
+ConstantRandomVector::ConstantRandomVector()
+  : RandomVectorImplementation()
+{}
+
+
+/* Default constructor */
 ConstantRandomVector::ConstantRandomVector(const PointWithDescription & point)
   : RandomVectorImplementation()
   , point_(point)

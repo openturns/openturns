@@ -38,7 +38,7 @@ class OT_API LinearProfile
 
 public:
   /** Default constructor */
-  LinearProfile(const Scalar T0 = 10.0, const UnsignedInteger iMax = 2000);
+  explicit LinearProfile(const Scalar T0 = 10.0, const UnsignedInteger iMax = 2000);
 
   /** Virtual constructor method */
   LinearProfile * clone() const;
@@ -58,7 +58,6 @@ public:
 private:
   mutable Scalar iMaxInv_;
 
-  friend class Factory<LinearProfile>;
 }; /* class LinearProfile */
 
 } /* namespace OT */

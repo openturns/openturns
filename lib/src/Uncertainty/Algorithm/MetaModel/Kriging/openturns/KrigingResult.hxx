@@ -47,7 +47,6 @@ class OT_API KrigingResult
 
 public:
 
-  // friend class Factory<KrigingResult>;
   typedef Collection<Point> PointCollection;
   typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;

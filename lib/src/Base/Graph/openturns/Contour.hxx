@@ -41,6 +41,8 @@ class OT_API Contour : public DrawableImplementation
   CLASSNAME;
 
 public:
+  /** Default constructor */
+  Contour();
 
   /** Default constructor */
   Contour(const UnsignedInteger dimX,
@@ -118,9 +120,6 @@ protected:
   virtual void checkData(const Sample & data) const;
 
 private:
-
-  Contour() {};
-  friend class Factory<Contour>;
 
   /** Sample of first coordinate */
   Sample x_;

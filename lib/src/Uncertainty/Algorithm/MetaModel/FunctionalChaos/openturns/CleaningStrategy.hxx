@@ -39,6 +39,8 @@ class OT_API CleaningStrategy
   CLASSNAME;
 public:
 
+  /** Default constructor */
+  CleaningStrategy();
 
   /** Constructor from an orthogonal basis */
   CleaningStrategy(const OrthogonalBasis & basis,
@@ -86,14 +88,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
-
-
-protected:
-
-  friend class Factory<CleaningStrategy>;
-
-  /** Default constructor */
-  CleaningStrategy();
 
 private:
   // Index of the next vector to be generated

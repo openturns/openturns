@@ -34,6 +34,12 @@ CLASSNAMEINIT(MonteCarloLHS);
 static const Factory<MonteCarloLHS> Factory_MonteCarloLHS;
 
 /* Default constructor */
+MonteCarloLHS::MonteCarloLHS()
+  : OptimalLHSExperiment()
+{
+}
+
+/* Default constructor */
 MonteCarloLHS::MonteCarloLHS(const LHSExperiment & lhs, const UnsignedInteger N, const SpaceFilling & spaceFilling)
   : OptimalLHSExperiment(lhs, spaceFilling),
     N_(N)

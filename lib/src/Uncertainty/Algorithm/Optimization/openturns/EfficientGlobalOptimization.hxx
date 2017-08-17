@@ -99,8 +99,6 @@ public:
 
 protected:
 
-  friend class Factory<EfficientGlobalOptimization>;
-
   /** Check whether this problem can be solved by this solver. */
   void checkProblem(const OptimizationProblem & problem) const;
 

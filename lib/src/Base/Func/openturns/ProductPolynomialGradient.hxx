@@ -47,7 +47,7 @@ public:
   typedef PersistentCollection<UniVariatePolynomial> PolynomialPersistentCollection;
 
   /** Constructor */
-  ProductPolynomialGradient(const PolynomialCollection & coll);
+  explicit ProductPolynomialGradient(const PolynomialCollection & coll);
 
   /** Virtual constructor */
   virtual ProductPolynomialGradient * clone() const;

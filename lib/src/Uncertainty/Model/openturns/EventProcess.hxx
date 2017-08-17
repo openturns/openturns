@@ -47,7 +47,6 @@ public:
 
 
   /** Default constructor */
-
   EventProcess();
 
   /** Constructor from RandomVector */
@@ -80,8 +79,6 @@ public:
 
 
 private:
-
-  friend class Factory<EventProcess>;
 
   /** The process of the eventProcess */
   Process process_;

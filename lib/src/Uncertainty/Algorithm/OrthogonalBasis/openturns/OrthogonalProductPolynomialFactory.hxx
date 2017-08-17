@@ -47,13 +47,11 @@ public:
   typedef Collection<OrthogonalUniVariatePolynomialFamily>           PolynomialFamilyCollection;
   typedef PersistentCollection<OrthogonalUniVariatePolynomialFamily> PolynomialFamilyPersistentCollection;
 
-  friend class Factory<OrthogonalProductPolynomialFactory>;
-
   /** Default constructor */
   OrthogonalProductPolynomialFactory();
 
   /** Constructor */
-  OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll);
+  explicit OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll);
 
   /** Constructor */
   OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll,

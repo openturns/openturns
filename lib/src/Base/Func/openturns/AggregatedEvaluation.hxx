@@ -43,13 +43,11 @@ public:
   typedef Collection<Function>                              FunctionCollection;
   typedef PersistentCollection<Function>                    FunctionPersistentCollection;
 
-  // friend class Factory<AggregatedEvaluation>;
-
   /** Default constructor */
   AggregatedEvaluation();
 
   /** Parameter constructor */
-  AggregatedEvaluation(const FunctionCollection & functionsCollection);
+  explicit AggregatedEvaluation(const FunctionCollection & functionsCollection);
 
   /** Virtual constructor */
   virtual AggregatedEvaluation * clone() const;

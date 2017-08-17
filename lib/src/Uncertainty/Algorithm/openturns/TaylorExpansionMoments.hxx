@@ -95,10 +95,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
-
-  friend class Factory<TaylorExpansionMoments>;
-
 private:
 
   /** the function that computes the first order evaluation of the mean vector  */

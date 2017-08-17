@@ -56,8 +56,6 @@ public:
 
   typedef Collection<Function> FunctionCollection;
 
-  // friend class Factory<ProjectionStrategyImplementation>;
-
   /** Default constructor */
   ProjectionStrategyImplementation();
 

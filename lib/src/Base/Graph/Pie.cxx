@@ -33,6 +33,12 @@ CLASSNAMEINIT(Pie);
 static const Factory<Pie> Factory_Pie;
 
 /* Default constructor */
+Pie::Pie()
+  : DrawableImplementation()
+  , radius_(1.0)
+{}
+
+/* Default constructor */
 Pie::Pie(const Point & data)
   : DrawableImplementation()
   , palette_(0)

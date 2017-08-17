@@ -31,6 +31,11 @@ CLASSNAMEINIT(ConditionalRandomVector);
 static const Factory<ConditionalRandomVector> Factory_ConditionalRandomVector;
 
 /* Default constructor */
+ConditionalRandomVector::ConditionalRandomVector()
+  : RandomVectorImplementation()
+{}
+
+/* Default constructor */
 ConditionalRandomVector::ConditionalRandomVector(const Distribution & distribution,
     const RandomVector & randomParameters)
   : RandomVectorImplementation(),

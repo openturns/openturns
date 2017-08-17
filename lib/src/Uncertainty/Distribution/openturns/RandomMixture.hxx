@@ -52,15 +52,17 @@ public:
   typedef PersistentCollection<Complex> ComplexPersistentCollection;
   typedef Collection<DistributionFactory>        DistributionFactoryCollection;
 
+  /** Default constructor */
+  RandomMixture();
 
   /** Parameter constructor - 1D */
   explicit RandomMixture(const DistributionCollection & coll,
                          const Scalar constant = 0.0);
 
   /** Parameter constructor - 1D */
-  explicit RandomMixture(const DistributionCollection & coll,
-                         const Point & weights,
-                         const Scalar constant = 0.0);
+  RandomMixture(const DistributionCollection & coll,
+                const Point & weights,
+                const Scalar constant = 0.0);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
@@ -340,10 +342,6 @@ private:
 protected:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
-
-  /** Default constructor for save/load mechanism */
-  RandomMixture() {};
-  friend class Factory<RandomMixture>;
 
   /** Get the mean of a randomMixture */
   void computeMean() const;

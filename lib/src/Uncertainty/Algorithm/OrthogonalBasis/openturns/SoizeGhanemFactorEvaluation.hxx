@@ -45,8 +45,6 @@ public:
   typedef Collection<Distribution>           DistributionCollection;
   typedef PersistentCollection<Distribution> DistributionPersistentCollection;
 
-  friend class Factory<SoizeGhanemFactorEvaluation>;
-
   /** Default constructor */
   SoizeGhanemFactorEvaluation();
 

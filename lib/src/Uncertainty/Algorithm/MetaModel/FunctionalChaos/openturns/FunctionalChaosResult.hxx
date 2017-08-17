@@ -52,8 +52,6 @@ public:
   typedef Collection<Function>           FunctionCollection;
   typedef PersistentCollection<Function> FunctionPersistentCollection;
 
-  // friend class Factory<FunctionalChaosResult>;
-
   /** Default constructor */
   FunctionalChaosResult();
 

@@ -46,6 +46,9 @@ public:
   typedef Collection<Complex>               ComplexCollection;
 
   /** Default constructor */
+  Text();
+
+  /** Default constructor */
   Text(const Sample & data,
        const Description & texts,
        const String & textPosition = "top",
@@ -107,9 +110,6 @@ protected:
   Description textPositions_;
 
 private:
-
-  Text() {};
-  friend class Factory<Text>;
 
   /** A map matching text position with R codes */
   static std::map<String, UnsignedInteger> Position;
