@@ -34,3 +34,4 @@ Data analysis
     estimate_arma.ipynb
     linear_regression.ipynb
     bayesian_calibration.ipynb
+    quantile_estimation_wilks.ipynb
