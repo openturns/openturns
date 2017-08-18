@@ -151,8 +151,8 @@ public:
   void clean();
 
   /** Margin accessor */
-  void setHorizontalMargin(const Scalar xMargin);
-  void setVerticalMargin(const Scalar yMargin);
+  void setXMargin(const Scalar xMargin);
+  void setYMargin(const Scalar yMargin);
 
   /** Get the bounding box of the whole plot */
   BoundingBox getBoundingBox() const;

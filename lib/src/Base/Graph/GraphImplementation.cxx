@@ -574,14 +574,14 @@ void GraphImplementation::clean()
 }
 
 /* Margin accessor */
-void GraphImplementation::setHorizontalMargin(const Scalar xMargin)
+void GraphImplementation::setXMargin(const Scalar xMargin)
 {
   if (!(xMargin >= 0.0) || !(xMargin <= 1.0))
     throw InvalidArgumentException(HERE) << "Horizontal margin must be in [0, 1].";
   xMargin_ = xMargin;
 }
 
-void GraphImplementation::setVerticalMargin(const Scalar yMargin)
+void GraphImplementation::setYMargin(const Scalar yMargin)
 {
   if (!(yMargin >= 0.0) || !(yMargin <= 1.0))
     throw InvalidArgumentException(HERE) << "Vertical margin must be in [0, 1].";

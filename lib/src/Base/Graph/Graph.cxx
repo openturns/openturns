@@ -260,14 +260,14 @@ void Graph::clean()
 }
 
 /* Margin accessor */
-void Graph::setHorizontalMargin(const Scalar xMargin)
+void Graph::setXMargin(const Scalar xMargin)
 {
-  getImplementation()->setHorizontalMargin(xMargin);
+  getImplementation()->setXMargin(xMargin);
 }
 
-void Graph::setVerticalMargin(const Scalar yMargin)
+void Graph::setYMargin(const Scalar yMargin)
 {
-  getImplementation()->setVerticalMargin(yMargin);
+  getImplementation()->setYMargin(yMargin);
 }
 
 /* Get the bounding box of the whole plot */

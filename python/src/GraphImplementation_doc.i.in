@@ -581,7 +581,7 @@ OT_Graph_getPDF_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Graph_setHorizontalMargin_doc
+%define OT_Graph_setXMargin_doc
 "Accessor to the horizontal margin size.
 
 Parameters
@@ -590,12 +590,12 @@ xMargin : float
     Horizontal margin ratio.
     Defaults to *Graph-DefaultHorizontalMargin* map value."
 %enddef
-%feature("docstring") OT::GraphImplementation::setHorizontalMargin
-OT_Graph_setHorizontalMargin_doc
+%feature("docstring") OT::GraphImplementation::setXMargin
+OT_Graph_setXMargin_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Graph_setVerticalMargin_doc
+%define OT_Graph_setYMargin_doc
 "Accessor to the vertical margin size.
 
 Parameters
@@ -604,8 +604,8 @@ yMargin : float
     Vertical margin ratio.
     Defaults to *Graph-DefaultVerticalMargin* map value."
 %enddef
-%feature("docstring") OT::GraphImplementation::setVerticalMargin
-OT_Graph_setVerticalMargin_doc
+%feature("docstring") OT::GraphImplementation::setYMargin
+OT_Graph_setYMargin_doc
 
 // ---------------------------------------------------------------------
 

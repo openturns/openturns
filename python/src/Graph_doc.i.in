@@ -76,10 +76,10 @@ OT_Graph_getPostscript_doc
 OT_Graph_getVectorial_doc
 %feature("docstring") OT::Graph::getPDF
 OT_Graph_getPDF_doc
-%feature("docstring") OT::Graph::setHorizontalMargin
-OT_Graph_setHorizontalMargin_doc
-%feature("docstring") OT::Graph::setVerticalMargin
-OT_Graph_setVerticalMargin_doc
+%feature("docstring") OT::Graph::setXMargin
+OT_Graph_setXMargin_doc
+%feature("docstring") OT::Graph::setYMargin
+OT_Graph_setYMargin_doc
 %feature("docstring") OT::Graph::getBoundingBox
 OT_Graph_getBoundingBox_doc
 %feature("docstring") OT::Graph::setBoundingBox
