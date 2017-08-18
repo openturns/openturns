@@ -74,6 +74,8 @@ GraphImplementation::GraphImplementation(const String & title)
   , logScale_(NONE)
   , showGrid_(false)
   , gridColor_("gray")
+  , xMargin_(ResourceMap::GetAsScalar("Graph-DefaultHorizontalMargin"))
+  , yMargin_(ResourceMap::GetAsScalar("Graph-DefaultVerticalMargin"))
   , automaticBoundingBox_(true)
   , boundingBox_(4)
   , drawablesCollection_(0)
@@ -102,6 +104,8 @@ GraphImplementation::GraphImplementation(const String & title,
   , logScale_(logScale)
   , showGrid_(true)
   , gridColor_("gray")
+  , xMargin_(ResourceMap::GetAsScalar("Graph-DefaultHorizontalMargin"))
+  , yMargin_(ResourceMap::GetAsScalar("Graph-DefaultVerticalMargin"))
   , automaticBoundingBox_(true)
   , boundingBox_(4)
   , drawablesCollection_(0)
@@ -569,6 +573,21 @@ void GraphImplementation::clean()
   }
 }
 
+/* Margin accessor */
+void GraphImplementation::setHorizontalMargin(const Scalar xMargin)
+{
+  if (!(xMargin >= 0.0) || !(xMargin <= 1.0))
+    throw InvalidArgumentException(HERE) << "Horizontal margin must be in [0, 1].";
+  xMargin_ = xMargin;
+}
+
+void GraphImplementation::setVerticalMargin(const Scalar yMargin)
+{
+  if (!(yMargin >= 0.0) || !(yMargin <= 1.0))
+    throw InvalidArgumentException(HERE) << "Vertical margin must be in [0, 1].";
+  yMargin_ = yMargin;
+}
+
 /* Get the bounding box of the whole plot */
 GraphImplementation::BoundingBox GraphImplementation::getBoundingBox() const
 {
@@ -635,22 +654,17 @@ void GraphImplementation::computeBoundingBox() const
 
   BoundingBox min(boxes.getMin());
   BoundingBox max(boxes.getMax());
-  boundingBox_[0] = min[0];
-  boundingBox_[1] = max[1];
-  boundingBox_[2] = min[2];
-  boundingBox_[3] = max[3];
-  // All the bounding boxes are degenerated to a point, we default to a 1x1 box centered at this point
-  if ((boundingBox_[0] == boundingBox_[1]) || (boundingBox_[2] == boundingBox_[3]))
-  {
-    LOGINFO("Warning: the overall bounding box is degenerated to a point. Switch to a 1x1 box centered at this point");
-    boundingBox_[0] -= 0.5;
-    boundingBox_[1] += 0.5;
-    boundingBox_[2] -= 0.5;
-    boundingBox_[3] += 0.5;
-    return;
-  }
 
-  return;
+  const Scalar deltaX = max[1] - min[0];
+  const Scalar deltaY = max[3] - min[2];
+
+  const Scalar marginWidth = deltaX > 0.0 ? xMargin_ * deltaX : 0.5;
+  const Scalar marginHeight = deltaY > 0.0 ? yMargin_ * deltaY : 0.5;
+
+  boundingBox_[0] = min[0] - marginWidth;
+  boundingBox_[1] = max[1] + marginWidth;
+  boundingBox_[2] = min[2] - marginHeight;
+  boundingBox_[3] = max[3] + marginHeight;
 }
 
 /* Get the legend position */
@@ -713,6 +727,8 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "logScale_", static_cast<UnsignedInteger>(logScale_) );
   adv.saveAttribute( "showGrid_", showGrid_ );
   adv.saveAttribute( "gridColor_", gridColor_ );
+  adv.saveAttribute( "xMargin_", xMargin_ );
+  adv.saveAttribute( "yMargin_", yMargin_ );
   adv.saveAttribute( "automaticBoundingBox_", automaticBoundingBox_ );
   adv.saveAttribute( "boundingBox_", boundingBox_ );
   adv.saveAttribute( "drawablesCollection_", drawablesCollection_ );
@@ -733,6 +749,8 @@ void GraphImplementation::load(Advocate & adv)
   logScale_ = static_cast<LogScale>(logScale);
   adv.loadAttribute( "showGrid_", showGrid_ );
   adv.loadAttribute( "gridColor_", gridColor_ );
+  adv.loadAttribute( "xMargin_", xMargin_ );
+  adv.loadAttribute( "yMargin_", yMargin_ );
   adv.loadAttribute( "automaticBoundingBox_", automaticBoundingBox_ );
   adv.loadAttribute( "boundingBox_", boundingBox_ );
   adv.loadAttribute( "drawablesCollection_", drawablesCollection_ );

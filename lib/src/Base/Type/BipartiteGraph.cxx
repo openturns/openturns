@@ -80,6 +80,8 @@ Graph BipartiteGraph::draw() const
     cloud.setPointStyle("fcircle");
     graph.add(cloud);
   }
+  graph.setHorizontalMargin(0.0);
+  graph.setVerticalMargin(0.0);
   Point bb(graph.getBoundingBox());
   bb[0] -= 0.5;
   bb[1] += 0.5;

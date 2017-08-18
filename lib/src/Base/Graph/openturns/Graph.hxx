@@ -153,6 +153,10 @@ public:
   /** Clean temporary files */
   void clean();
 
+  /** Margin accessor */
+  void setHorizontalMargin(const Scalar xMargin);
+  void setVerticalMargin(const Scalar yMargin);
+
   /** Get the bounding box of the whole plot */
   BoundingBox getBoundingBox() const;
 

@@ -259,6 +259,17 @@ void Graph::clean()
   getImplementation()->clean();
 }
 
+/* Margin accessor */
+void Graph::setHorizontalMargin(const Scalar xMargin)
+{
+  getImplementation()->setHorizontalMargin(xMargin);
+}
+
+void Graph::setVerticalMargin(const Scalar yMargin)
+{
+  getImplementation()->setVerticalMargin(yMargin);
+}
+
 /* Get the bounding box of the whole plot */
 Graph::BoundingBox Graph::getBoundingBox() const
 {

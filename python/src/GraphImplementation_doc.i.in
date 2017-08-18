@@ -581,6 +581,34 @@ OT_Graph_getPDF_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Graph_setHorizontalMargin_doc
+"Accessor to the horizontal margin size.
+
+Parameters
+----------
+xMargin : float
+    Horizontal margin ratio.
+    Defaults to *Graph-DefaultHorizontalMargin* map value."
+%enddef
+%feature("docstring") OT::GraphImplementation::setHorizontalMargin
+OT_Graph_setHorizontalMargin_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setVerticalMargin_doc
+"Accessor to the vertical margin size.
+
+Parameters
+----------
+yMargin : float
+    Vertical margin ratio.
+    Defaults to *Graph-DefaultVerticalMargin* map value."
+%enddef
+%feature("docstring") OT::GraphImplementation::setVerticalMargin
+OT_Graph_setVerticalMargin_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Graph_getBoundingBox_doc
 "Accessor to the bounding box of the whole plot.
 
@@ -589,6 +617,7 @@ Returns
 boundingBox : :class:`~openturns.Point` of dimension 4
     Bounding box of the drawable element, which is a rectangle determined
     by its range along X and its range along Y.
+    This methods adds x/y margins according to the margin attributes.
     The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
 %enddef
 %feature("docstring") OT::GraphImplementation::getBoundingBox

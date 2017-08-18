@@ -3192,6 +3192,7 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   point[1] = 0.0;
   data.add(point);
   graphPDF.add(Curve(data, "red", "solid", 2, title));
+  graphPDF.setVerticalMargin(0.0);
   Point boundingBox(graphPDF.getBoundingBox());
   const Scalar yMin = boundingBox[2];
   const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
@@ -3222,6 +3223,7 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "PDF", true, "topright");
   graphPDF.add(curvePDF);
+  graphPDF.setVerticalMargin(0.0);
   Point boundingBox(graphPDF.getBoundingBox());
   const Scalar yMin = boundingBox[2];
   const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
@@ -3405,6 +3407,7 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   point[1] = 0.0;
   data.add(point);
   graphLogPDF.add(Curve(data, "red", "solid", 2, title));
+  graphLogPDF.setVerticalMargin(0.0);
   Point boundingBox(graphLogPDF.getBoundingBox());
   const Scalar yMin = boundingBox[2];
   const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
@@ -3435,6 +3438,7 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "log PDF", true, "topright");
   graphPDF.add(curvePDF);
+  graphPDF.setVerticalMargin(0.0);
   Point boundingBox(graphPDF.getBoundingBox());
   const Scalar yMin = boundingBox[2];
   const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
@@ -3626,6 +3630,7 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
     data[size + 1][1] = computeCDF(xMax);
   }
   graphCDF.add(Staircase(data, "red", "solid", 2, "s", title));
+  graphCDF.setVerticalMargin(0.0);
   Point boundingBox(graphCDF.getBoundingBox());
   const Scalar yMin = boundingBox[2];
   const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
@@ -3655,6 +3660,7 @@ Graph DistributionImplementation::drawCDF(const Scalar xMin,
   const String xName(getDescription()[0]);
   Graph graphCDF(title, xName, "CDF", true, "topleft");
   graphCDF.add(curveCDF);
+  graphCDF.setVerticalMargin(0.0);
   Point boundingBox(graphCDF.getBoundingBox());
   const Scalar yMin = boundingBox[2];
   const Scalar yMax = dataY.computeQuantilePerComponent(0.99)[0];
@@ -3831,6 +3837,7 @@ Graph DistributionImplementation::drawQuantile1D(const Scalar qMin,
   const String xName(getDescription()[0]);
   Graph graphQuantile(title, "p", xName, true, "topleft");
   graphQuantile.add(curveQuantile);
+  graphQuantile.setVerticalMargin(0.0);
   Point boundingBox(graphQuantile.getBoundingBox());
   const Scalar yMin = boundingBox[2];
   const Scalar yMax = dataY.computeQuantilePerComponent(0.99)[0];
@@ -3857,11 +3864,6 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   Graph graphQuantile(title, xName, yName, true, "topleft");
   graphQuantile.add(drawCDF(data.getMin(), data.getMax()).getDrawable(0));
   graphQuantile.add(curveQuantile);
-  Point bb(graphQuantile.getBoundingBox());
-  const Scalar delta = bb[3] - bb[2];
-  bb[3] += 0.05 * delta;
-  bb[2] -= 0.05 * delta;
-  graphQuantile.setBoundingBox(bb);
   Description legends(2);
   legends[0] = "iso-CDF";
   legends[1] = "quantile";

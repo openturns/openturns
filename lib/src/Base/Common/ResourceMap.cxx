@@ -359,6 +359,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Graph-DefaultWidth", 640 );
   setAsUnsignedInteger( "Graph-DefaultHeight", 480 );
   setAsScalar( "Graph-DefaultLegendFontSize", 1.0 );
+  setAsScalar( "Graph-DefaultHorizontalMargin", 0.05 );
+  setAsScalar( "Graph-DefaultVerticalMargin", 0.05 );
 
   // Contour parameters //
   setAsUnsignedInteger( "Contour-DefaultLevelsNumber", 10 );

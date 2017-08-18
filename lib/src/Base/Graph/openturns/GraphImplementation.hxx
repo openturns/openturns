@@ -150,6 +150,10 @@ public:
   /** Clean temporary files */
   void clean();
 
+  /** Margin accessor */
+  void setHorizontalMargin(const Scalar xMargin);
+  void setVerticalMargin(const Scalar yMargin);
+
   /** Get the bounding box of the whole plot */
   BoundingBox getBoundingBox() const;
 
@@ -235,6 +239,10 @@ private:
 
   /** Grid color */
   String gridColor_;
+
+  /** Margins (ratio) */
+  Scalar xMargin_;
+  Scalar yMargin_;
 
   /** Is the bounding box automatically computed. */
   Bool automaticBoundingBox_;

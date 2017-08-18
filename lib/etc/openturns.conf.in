@@ -85,6 +85,8 @@
   <Graph-DefaultWidth          value="640" />
   <Graph-DefaultHeight         value="480" />
   <Graph-DefaultLegendFontSize value="1.0" />
+  <Graph-DefaultHorizontalMargin value="0.05" />
+  <Graph-DefaultVerticalMargin   value="0.05" />
 
   <!-- OT::Contour parameters -->
   <Contour-DefaultLevelsNumber value="10" />

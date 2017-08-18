@@ -484,12 +484,6 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   if (centralPoint.getDimension() > 1) title = String(OSS(false) << title << " around " << centralPoint);
   Graph graph(title, xName, yName, true, "", 1.0, scale);
   graph.add(Curve(inputData.getMarginal(inputMarginal), outputData.getMarginal(outputMarginal)));
-  // Add a slight vertical margin
-  GraphImplementation::BoundingBox bb(graph.getBoundingBox());
-  const Scalar height = bb[3] - bb[2];
-  bb[2] -= 0.05 * height;
-  bb[3] += 0.05 * height;
-  graph.setBoundingBox(bb);
   return graph;
 }
 
