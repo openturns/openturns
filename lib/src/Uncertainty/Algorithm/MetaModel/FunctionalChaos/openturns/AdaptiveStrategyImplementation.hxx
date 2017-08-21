@@ -53,6 +53,7 @@ class OT_API AdaptiveStrategyImplementation
 public:
 
   typedef Collection<Function> FunctionCollection;
+  
   /** Default constructor */
   AdaptiveStrategyImplementation();
 
@@ -92,8 +93,6 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-
-  friend class Factory<AdaptiveStrategyImplementation>;
 
   /** The orthogonal basis */
   OrthogonalBasis basis_;

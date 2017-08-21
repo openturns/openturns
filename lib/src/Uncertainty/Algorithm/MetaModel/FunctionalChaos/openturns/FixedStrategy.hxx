@@ -39,6 +39,8 @@ class OT_API FixedStrategy
   CLASSNAME;
 public:
 
+  /** Default constructor */
+  FixedStrategy();
 
   /** Constructor from an orthogonal basis */
   FixedStrategy(const OrthogonalBasis & basis,
@@ -64,13 +66,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-
-protected:
-
-  friend class Factory<FixedStrategy>;
-
-  /** Default constructor */
-  FixedStrategy();
 
 private:
 

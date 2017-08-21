@@ -43,12 +43,9 @@ public:
   typedef Collection<Function>                              FunctionCollection;
   typedef PersistentCollection<Function>                    FunctionPersistentCollection;
 
-  // friend class Factory<LinearCombinationEvaluation>;
-
   /** Default constructor */
   LinearCombinationEvaluation();
 
-public:
   /** Parameter constructor */
   LinearCombinationEvaluation(const FunctionCollection & functionsCollection,
                               const Point & coefficients);

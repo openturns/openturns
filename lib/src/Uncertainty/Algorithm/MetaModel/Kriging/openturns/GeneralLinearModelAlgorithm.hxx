@@ -154,8 +154,6 @@ protected:
 
   // Initialize default optimization solver
   void initializeDefaultOptimizationAlgorithm();
-  friend class Factory<GeneralLinearModelAlgorithm>;
-
 
   friend class KrigingAlgorithm;
   Point getRho() const;

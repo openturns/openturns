@@ -41,10 +41,8 @@ public:
 
   typedef Collection<Function> FunctionCollection;
 
-  // friend class Factory<PenalizedLeastSquaresAlgorithm>;
-
   /** Default constructor */
-  PenalizedLeastSquaresAlgorithm(const Bool useNormal = true);
+  explicit PenalizedLeastSquaresAlgorithm(const Bool useNormal = true);
 
   /** Parameters constructor, simple least squares problem with default parameters, spherically penalized for general parameters */
   PenalizedLeastSquaresAlgorithm(const Sample & x,

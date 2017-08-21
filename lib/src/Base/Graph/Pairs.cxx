@@ -35,6 +35,12 @@ CLASSNAMEINIT(Pairs);
 static const Factory<Pairs> Factory_Pairs;
 
 /* Default constructor */
+Pairs::Pairs()
+  : DrawableImplementation()
+{}
+
+
+/* Default constructor */
 Pairs::Pairs(const Sample & data,
              const String & title)
   : DrawableImplementation(data)

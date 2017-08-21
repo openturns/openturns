@@ -39,6 +39,8 @@ class OT_API SequentialStrategy
   CLASSNAME;
 public:
 
+  /** Default constructor */
+  SequentialStrategy();
 
   /** Constructor from an orthogonal basis */
   SequentialStrategy(const OrthogonalBasis & basis,
@@ -64,14 +66,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
-
-
-protected:
-
-  friend class Factory<SequentialStrategy>;
-
-  /** Default constructor */
-  SequentialStrategy();
 
 private:
   // Index of the next vector to be generated

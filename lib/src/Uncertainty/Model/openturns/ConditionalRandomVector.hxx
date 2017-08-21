@@ -44,6 +44,8 @@ class OT_API ConditionalRandomVector
 
 public:
 
+  /** Default constructor */
+  ConditionalRandomVector();
 
   /** Default constructor */
   ConditionalRandomVector(const Distribution & distribution,
@@ -77,13 +79,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-protected:
-
-  friend class Factory<ConditionalRandomVector>;
-
-  /** Default constructor */
-  ConditionalRandomVector() : RandomVectorImplementation() {};
 
 private:
 

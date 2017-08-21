@@ -36,6 +36,11 @@ CLASSNAMEINIT(SimulatedAnnealingLHS);
 static const Factory<SimulatedAnnealingLHS> Factory_SimulatedAnnealingLHS;
 
 
+/** Default constructor */
+SimulatedAnnealingLHS::SimulatedAnnealingLHS()
+  : OptimalLHSExperiment()
+{}
+
 /** Geometric temperature profil */
 SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const TemperatureProfile & profile,
     const SpaceFilling & spaceFilling)

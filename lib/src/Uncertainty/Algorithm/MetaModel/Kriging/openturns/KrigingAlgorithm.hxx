@@ -125,8 +125,6 @@ protected:
   /** The method helps to compute the gamma point */
   void computeGamma();
 
-  friend class Factory<KrigingAlgorithm>;
-
 private:
 
   // The input data

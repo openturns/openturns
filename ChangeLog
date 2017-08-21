@@ -34,6 +34,7 @@
  * #891 (Viewer issue with Pairs drawables)
  * #896 (Python iteration in ProcessSample leads to capacity overflow)
  * #897 (Bug in Graph::draw with small data)
+ * #898 (Could not save/load some persistent classes)
 
 == 1.9 release (2017-04-18) == #release-1.9
 

@@ -47,7 +47,8 @@ class OT_API FunctionalChaosAlgorithm
   CLASSNAME;
 
 public:
-
+  /** Default constructor */
+  FunctionalChaosAlgorithm();
 
   /** Constructor */
   FunctionalChaosAlgorithm(const Function & model,
@@ -124,13 +125,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-
-protected:
-
-  friend class Factory<FunctionalChaosAlgorithm>;
-
-  /** Default constructor */
-  FunctionalChaosAlgorithm();
 
 private:
 

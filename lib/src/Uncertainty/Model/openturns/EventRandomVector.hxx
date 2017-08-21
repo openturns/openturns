@@ -87,12 +87,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-protected:
-
-
 private:
-
-  friend class Factory<EventRandomVector>;
 
   /** The comparison operator of the eventRandomVectorImplementation */
   ComparisonOperator operator_;

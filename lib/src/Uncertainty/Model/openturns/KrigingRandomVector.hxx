@@ -38,8 +38,10 @@ class OT_API KrigingRandomVector
   CLASSNAME;
 
 public:
+  /** Default constructor */
+  KrigingRandomVector();
 
-  /** Default constructors */
+  /** Parameter constructors */
   KrigingRandomVector(const KrigingResult & krigingResult,
                       const Point & point);
 
@@ -68,13 +70,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-protected:
-
-  friend class Factory<KrigingRandomVector>;
-
-  /** Default constructor */
-  KrigingRandomVector() : UsualRandomVector() {};
 
 private:
   /** The kriging result tht allows to build the random vector */

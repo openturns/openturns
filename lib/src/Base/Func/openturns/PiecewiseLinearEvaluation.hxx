@@ -40,9 +40,6 @@ class OT_API PiecewiseLinearEvaluation
 {
   CLASSNAME;
 public:
-
-  // friend class Factory<PiecewiseLinearEvaluation>;
-
   /** Default constructor */
   PiecewiseLinearEvaluation();
 

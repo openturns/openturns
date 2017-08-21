@@ -29,6 +29,12 @@ CLASSNAMEINIT(KrigingRandomVector);
 
 static const Factory<KrigingRandomVector> Factory_KrigingRandomVector;
 
+
+/* Default constructor */
+KrigingRandomVector::KrigingRandomVector()
+  : UsualRandomVector()
+{}
+
 /* Default constructor */
 KrigingRandomVector::KrigingRandomVector(const KrigingResult & krigingResult,
     const Point & point)

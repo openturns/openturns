@@ -33,6 +33,12 @@ CLASSNAMEINIT(Contour);
 static const Factory<Contour> Factory_Contour;
 
 /* Default constructor */
+Contour::Contour()
+  : DrawableImplementation()
+  , drawLabels_(true)
+{}
+
+/* Default constructor */
 Contour::Contour(const UnsignedInteger dimX,
                  const UnsignedInteger dimY,
                  const Sample & data,

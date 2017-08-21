@@ -40,6 +40,8 @@ class OT_API LeastSquaresMetaModelSelection
   CLASSNAME;
 
 public:
+  /** Default constructor */
+  LeastSquaresMetaModelSelection();
 
   /** Default constructor */
   LeastSquaresMetaModelSelection(const Sample & x,
@@ -83,10 +85,6 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  friend class Factory<LeastSquaresMetaModelSelection>;
-
-  /** Default constructor */
-  LeastSquaresMetaModelSelection();
 
   /** Algorithm that builds the BasisSequence */
   BasisSequenceFactory basisSequenceFactory_;

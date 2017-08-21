@@ -64,6 +64,12 @@ CLASSNAMEINIT(RandomMixture);
 static const Factory<RandomMixture> Factory_RandomMixture;
 
 /* Default constructor */
+RandomMixture::RandomMixture()
+  : DistributionImplementation()
+{}
+
+
+/* Default constructor */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const Scalar constant)
   : DistributionImplementation()

@@ -42,13 +42,14 @@ class OT_API ConstantRandomVector
   CLASSNAME;
 
 public:
-
   /** Default constructor */
-  ConstantRandomVector(const PointWithDescription & point);
+  ConstantRandomVector();
 
   /** Parameter constructor */
-  ConstantRandomVector(const Point & point);
+  explicit ConstantRandomVector(const PointWithDescription & point);
 
+  /** Parameter constructor */
+  explicit ConstantRandomVector(const Point & point);
 
   /** Virtual constructor */
   virtual ConstantRandomVector * clone() const;
@@ -90,13 +91,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-protected:
-
-  friend class Factory<ConstantRandomVector>;
-
-  /** Default constructor */
-  ConstantRandomVector() : RandomVectorImplementation() {};
 
 private:
 

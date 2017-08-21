@@ -40,9 +40,6 @@ class OT_API PiecewiseHermiteEvaluation
 {
   CLASSNAME;
 public:
-
-  // friend class Factory<PiecewiseHermiteEvaluation>;
-
   /** Default constructor */
   PiecewiseHermiteEvaluation();
 

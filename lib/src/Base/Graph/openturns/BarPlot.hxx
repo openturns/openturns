@@ -41,6 +41,8 @@ class OT_API BarPlot : public DrawableImplementation
   CLASSNAME;
 
 public:
+  /** Default constructor */
+  BarPlot();
 
   /** Default constructor */
   BarPlot(const Sample & data,
@@ -92,9 +94,6 @@ protected:
   virtual void checkData(const Sample & data) const;
 
 private:
-
-  BarPlot() {};
-  friend class Factory<BarPlot>;
 
   /** Origin of the BarPlot */
   Scalar origin_;

@@ -43,6 +43,9 @@ public:
   typedef Collection<Complex>               ComplexCollection;
 
   /** Default constructor */
+  Cloud();
+
+  /** Default constructor */
   explicit Cloud(const Sample & data,
                  const String & legend = "");
 
@@ -85,11 +88,6 @@ public:
 protected:
   /** Check for data validity */
   virtual void checkData(const Sample & data) const;
-
-private:
-
-  Cloud() {};
-  friend class Factory<Cloud>;
 
 }; /* class Cloud */
 

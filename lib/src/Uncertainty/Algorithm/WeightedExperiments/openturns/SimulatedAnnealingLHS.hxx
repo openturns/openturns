@@ -44,6 +44,8 @@ public:
 
   typedef Collection<LHSResult> LHSResultCollection;
 
+  SimulatedAnnealingLHS(); 
+
   /** SimulatedAnnealingLHS */
   explicit SimulatedAnnealingLHS (const LHSExperiment & lhs,
                                   const TemperatureProfile & profile = GeometricProfile(),
@@ -70,10 +72,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
-
-protected:
-  SimulatedAnnealingLHS() {};
-  friend class Factory<SimulatedAnnealingLHS>;
 
 private:
   TemperatureProfile profile_;

@@ -41,7 +41,8 @@ class OT_API Pairs : public DrawableImplementation
   CLASSNAME;
 
 public:
-
+  /** Default constructor */
+  Pairs();
 
   /** Default constructor */
   explicit Pairs(const Sample & data,
@@ -91,9 +92,6 @@ protected:
   virtual void checkData(const Sample & data) const;
 
 private:
-
-  Pairs() {};
-  friend class Factory<Pairs>;
 
   /** Labels of the level sets. If none is given, it defaults to the level values. */
   Description labels_;

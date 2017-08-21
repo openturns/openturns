@@ -39,10 +39,6 @@ class OT_API AggregatedHessian
 {
   CLASSNAME;
 public:
-
-
-  // friend class Factory<AggregatedHessian>;
-
   /** Default constructor */
   AggregatedHessian();
 

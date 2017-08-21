@@ -43,18 +43,16 @@ public:
 
   typedef Pointer<ApproximationAlgorithmImplementationFactory>  ApproximationAlgorithmImplementationFactoryImplementation;
 
-  // friend class Factory<LeastSquaresStrategy>;
-
   /** Default constructor */
-  LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+  explicit LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
-  LeastSquaresStrategy(const Distribution & measure,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+  explicit LeastSquaresStrategy(const Distribution & measure,
+                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
-  LeastSquaresStrategy(const WeightedExperiment & weightedExperiment,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+  explicit LeastSquaresStrategy(const WeightedExperiment & weightedExperiment,
+                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Distribution & measure,

@@ -27,6 +27,12 @@ CLASSNAMEINIT(Cloud);
 
 static const Factory<Cloud> Factory_Cloud;
 
+
+/* Default constructor */
+Cloud::Cloud()
+  : DrawableImplementation()
+{}
+
 /* Default constructor */
 Cloud::Cloud(const Sample & data,
              const String & legend)

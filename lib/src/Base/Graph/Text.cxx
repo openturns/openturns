@@ -31,6 +31,12 @@ static const Factory<Text> Factory_Text;
 std::map<String, UnsignedInteger> Text::Position;
 Bool Text::IsTextFirstInitialization = true;
 
+
+/* Default constructor */
+Text::Text()
+ : DrawableImplementation()
+{}
+
 /* Default constructor */
 Text::Text(const Sample & data,
            const Description & textAnnotations,

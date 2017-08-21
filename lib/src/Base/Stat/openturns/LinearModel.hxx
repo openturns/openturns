@@ -101,10 +101,6 @@ protected:
   ScalarPersistentCollection pValues_;
 
 
-private:
-
-  friend class Factory<LinearModel>;
-
 }; /* class LinearModel */
 
 

@@ -39,15 +39,11 @@ class OT_API LinearCombinationGradient
 {
   CLASSNAME;
 public:
-
-
-  // friend class Factory<LinearCombinationGradient>;
-
   /** Default constructor */
   LinearCombinationGradient();
 
   /** Parameters constructor */
-  LinearCombinationGradient(const LinearCombinationEvaluation & evaluation);
+  explicit LinearCombinationGradient(const LinearCombinationEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual LinearCombinationGradient * clone() const;

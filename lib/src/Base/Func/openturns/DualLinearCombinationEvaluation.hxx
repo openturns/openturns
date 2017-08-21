@@ -46,12 +46,9 @@ public:
   typedef Collection<Function>                              FunctionCollection;
   typedef PersistentCollection<Function>                    FunctionPersistentCollection;
 
-  // friend class Factory<DualLinearCombinationEvaluation>;
-
   /** Default constructor */
   DualLinearCombinationEvaluation();
 
-public:
   /** Parameter constructor */
   DualLinearCombinationEvaluation(const FunctionCollection & functionsCollection,
                                   const Sample & coefficients);

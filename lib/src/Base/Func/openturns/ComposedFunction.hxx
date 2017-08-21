@@ -39,8 +39,6 @@ class OT_API ComposedFunction
   CLASSNAME;
 public:
 
-  /* Some typedefs for easy reading */
-
   /** Default constructor */
   ComposedFunction();
 
@@ -71,11 +69,6 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-protected:
-
-  //ComposedFunction() {};
-  //friend class Factory<ComposedFunction>;
 
 private:
 

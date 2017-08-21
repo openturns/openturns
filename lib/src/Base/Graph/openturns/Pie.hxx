@@ -39,6 +39,8 @@ class OT_API Pie : public DrawableImplementation
   CLASSNAME;
 
 public:
+  /** Default constructor */
+  Pie();
 
   /** Default constructor */
   explicit Pie(const Point & data);
@@ -102,9 +104,6 @@ protected:
   virtual void checkData(const Point & data) const;
 
 private:
-
-  Pie() {};
-  friend class Factory<Pie>;
 
   /** Collection of Strings representing the color palettes */
   Description palette_;

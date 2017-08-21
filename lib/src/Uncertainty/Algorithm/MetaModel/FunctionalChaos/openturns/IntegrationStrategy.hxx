@@ -40,8 +40,6 @@ class OT_API IntegrationStrategy
 public:
 
 
-  // friend class Factory<IntegrationStrategy>;
-
   /** Default constructor */
   IntegrationStrategy();
 

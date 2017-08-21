@@ -158,8 +158,6 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
-  friend class Factory<KernelMixture>;
-
   /** Get the mean of a kernelMixture */
   void computeMean() const;
 

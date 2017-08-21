@@ -39,15 +39,11 @@ class OT_API DualLinearCombinationHessian
 {
   CLASSNAME;
 public:
-
-
-  // friend class Factory<DualLinearCombinationHessian>;
-
   /** Default constructor */
   DualLinearCombinationHessian();
 
   /** Parameters constructor */
-  DualLinearCombinationHessian(const DualLinearCombinationEvaluation & evaluation);
+  explicit DualLinearCombinationHessian(const DualLinearCombinationEvaluation & evaluation);
 
   /** Virtual constructor */
   virtual DualLinearCombinationHessian * clone() const;

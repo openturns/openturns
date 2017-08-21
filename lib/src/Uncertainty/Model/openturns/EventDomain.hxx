@@ -78,12 +78,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-protected:
-
-
 private:
-
-  friend class Factory<EventDomain>;
 
   /** The domain of the eventDomainImplementation */
   Domain domain_;

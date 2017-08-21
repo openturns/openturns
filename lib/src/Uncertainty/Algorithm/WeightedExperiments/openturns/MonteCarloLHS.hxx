@@ -42,6 +42,8 @@ class OT_API MonteCarloLHS
   CLASSNAME;
 
 public:
+  /** Default constructor */
+  MonteCarloLHS();
 
   /** Default constructor */
   MonteCarloLHS(const LHSExperiment & lhs, const UnsignedInteger N, const SpaceFilling & spaceFilling = SpaceFillingMinDist());
@@ -63,8 +65,6 @@ public:
 
 private:
   UnsignedInteger N_;
-  MonteCarloLHS() {};
-  friend class Factory<MonteCarloLHS>;
 }; /* class MonteCarloLHS */
 
 } /* namespace OT */

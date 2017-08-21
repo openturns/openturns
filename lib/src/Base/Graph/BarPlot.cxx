@@ -30,6 +30,12 @@ CLASSNAMEINIT(BarPlot);
 static const Factory<BarPlot> Factory_BarPlot;
 
 /* Default constructor */
+BarPlot::BarPlot()
+  : DrawableImplementation()
+  , origin_(0.0)
+{}
+
+/* Default constructor */
 BarPlot::BarPlot(const Sample & data,
                  const Scalar origin,
                  const String & legend)

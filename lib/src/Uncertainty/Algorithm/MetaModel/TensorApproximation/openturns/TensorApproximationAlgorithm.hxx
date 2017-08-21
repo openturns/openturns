@@ -43,6 +43,9 @@ class OT_API TensorApproximationAlgorithm
   CLASSNAME;
 
 public:
+  /** Default constructor */
+  TensorApproximationAlgorithm();
+ 
   /** Constructor */
   TensorApproximationAlgorithm(const Sample & inputSample,
                                const Sample & outputSample,
@@ -84,13 +87,6 @@ public:
   /** Residual error accessor */
   void setMaximumResidualError(const Scalar maximumResidualError);
   Scalar getMaximumResidualError() const;
-
-protected:
-
-  friend class Factory<TensorApproximationAlgorithm>;
-
-  /** Default constructor */
-  TensorApproximationAlgorithm();
 
 private:
 

@@ -47,7 +47,6 @@ class OT_API GeneralLinearModelResult
 
 public:
 
-  // friend class Factory<GeneralLinearModelResult>;
   typedef Collection<Point> PointCollection;
   typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
