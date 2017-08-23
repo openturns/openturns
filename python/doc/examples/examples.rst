@@ -29,5 +29,5 @@ This is the examples section.
 
         axial_stressed_beam.ipynb
         optimal_lhs/optimal_lhs
-        ego
+        ego.ipynb
 
