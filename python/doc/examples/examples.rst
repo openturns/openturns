@@ -28,6 +28,6 @@ This is the examples section.
         :maxdepth: 1
 
         axial_stressed_beam.ipynb
-        optimal_lhs/optimal_lhs
+        optimal_lhs.ipynb
         ego.ipynb
 
