@@ -87,7 +87,9 @@ protected:
 
 private:
 
-  void initialize();
+  // Private methods to set internal parameters
+  void computeLogNormalizationFactor();
+  void computeSqrt2nuOverTheta();
 
   // The shape parameter
   Scalar nu_;
