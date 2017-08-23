@@ -35,6 +35,7 @@
  * #896 (Python iteration in ProcessSample leads to capacity overflow)
  * #897 (Bug in Graph::draw with small data)
  * #898 (Could not save/load some persistent classes)
+ * #905 (Bogus MaternModel::setParameter)
 
 == 1.9 release (2017-04-18) == #release-1.9
 
