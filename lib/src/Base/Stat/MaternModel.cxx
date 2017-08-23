@@ -37,7 +37,9 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
 {
   definesComputeStandardRepresentative_ = true;
   // Compute the normalization factor
-  logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
+  computeLogNormalizationFactor();
+    // Compute usefull scaling factor
+  computeSqrt2nuOverTheta();
 }
 
 /** Parameters constructor */
@@ -64,6 +66,18 @@ MaternModel::MaternModel(const Point & scale,
                                          << " Here, (got dimension=" << getDimension() << ")";
   definesComputeStandardRepresentative_ = true;
   setNu(nu);
+}
+
+void MaternModel::computeLogNormalizationFactor()
+{
+  // Compute the normalization factor
+  logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
+}
+
+void MaternModel::computeSqrt2nuOverTheta()
+{
+  // Compute usefull scaling factor
+  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
 }
 
 /* Virtual constructor */
@@ -123,12 +137,33 @@ void MaternModel::setScale(const Point & scale)
   // First set scale
   StationaryCovarianceModel::setScale(scale);
   // Update scaling factor
-  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+  computeSqrt2nuOverTheta();
 }
 
 void MaternModel::setFullParameter(const Point & parameter)
 {
+  /*
+    Care! To make the method not bogus, the size of paramter argument
+    should be :
+     - Size of scale : spatialDimension_
+     - Size of amplitude : here 1
+     - Nu parameter : 1
+    CovarianceModelImplementation::setFullParameter checks that size is
+    equal to spatialDimension_ + dimension_
+  As we set the Nu parameter it is not coherant.
+  We should check that totalSize = generic totalSize + 1
+  */
+  // Check the size
+  const UnsignedInteger totalSize = spatialDimension_ + dimension_  + 1;
+  if (parameter.getSize() < totalSize)
+    throw InvalidArgumentException(HERE) << "In MaternModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
+                                         << " whereas expected size = " << totalSize ;
+  // First set the generic parameter using CovarianceModelImplementation::setFullParameter
   CovarianceModelImplementation::setFullParameter(parameter);
+  // We recompute the internal parameter (see ticket 905)
+  computeSqrt2nuOverTheta();
+  // We set the Nu parameter
+  // If Nu is the same as the model's one, nothing will be done
   setNu(parameter[parameter.getSize() - 1]);
 }
 
@@ -186,9 +221,9 @@ void MaternModel::setNu(const Scalar nu)
   {
     nu_ = nu;
     // Compute the normalization factor
-    logNormalizationFactor_ = (1.0 - nu_) * std::log(2.0) - SpecFunc::LogGamma(nu_);
+    computeLogNormalizationFactor();
     // Compute usefull scaling factor
-    for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+    computeSqrt2nuOverTheta();
   }
 }
 
