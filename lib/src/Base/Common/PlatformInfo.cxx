@@ -62,7 +62,7 @@ String PlatformInfo::GetInstallationDirectory()
 
 String PlatformInfo::GetConfigureCommandLine()
 {
-  return ConfigureArgs;
+  return "";
 }
 
 UnsignedInteger PlatformInfo::GetNumericalPrecision()

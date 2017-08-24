@@ -23,7 +23,6 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/installed-OTconfig.h.in
                 @ONLY
               )
 
-set (ot_configure_args)
 if (NOT ot_configure_date)
   if (UNIX)
     execute_process (COMMAND date "+%a, %d %b %Y %H:%M:%S %z"
