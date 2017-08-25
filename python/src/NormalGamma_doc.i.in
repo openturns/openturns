@@ -32,7 +32,7 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_{(X,Y)}(x,y) = \dfrac{\Gamma(\alpha)}{\beta^\alpha}\sqrt{\dfrac{2\pi}{\kappa}}y^{\alpha-1/2}\exp\left(-\dfrac{y}{2}\left[\kappa(x-\mu)^2+2\beta\right]\right)
+    f_{(X,Y)}(x,y) = \dfrac{\beta^\alpha}{\Gamma(\alpha)}\sqrt{\dfrac{\kappa}{2\pi}}y^{\alpha-1/2}\exp\left(-\dfrac{y}{2}\left[\kappa(x-\mu)^2+2\beta\right]\right)
 
 Examples
 --------

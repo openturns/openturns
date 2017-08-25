@@ -53,6 +53,23 @@ protected:
   Bool equals(const DistributionImplementation & other) const;
 public:
 
+  /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
+  using ContinuousDistribution::computePDF;
+  Scalar computePDF(const Point & point) const;
+  using ContinuousDistribution::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const;
+
+  /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
+  using ContinuousDistribution::computeCDF;
+  Scalar computeCDF(const Point & point) const;
+
+  /** Compute the survival function */
+  using ContinuousDistribution::computeSurvivalFunction;
+  Scalar computeSurvivalFunction(const Point & point) const;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const;
+
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
@@ -80,6 +97,19 @@ public:
   void setBeta(const Scalar beta);
   Scalar getBeta() const;
 
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
+  /** Get the skewness of the distribution */
+  Point getSkewness() const;
+
+  /** Get the kurtosis of the distribution */
+  Point getKurtosis() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -105,6 +135,15 @@ private:
   /** Compute the numerical range of the distribution */
   void computeRange();
 
+  /** Compute the log-normalization factor of the PDF */
+  void computeLogNormalization();
+
+  /** Compute the mean of the distribution */
+  void computeMean() const;
+
+  /** Compute the covariance of the distribution */
+  void computeCovariance() const;
+
   /** The prior mean */
   Scalar mu_;
 
@@ -117,6 +156,8 @@ private:
   /** The prior rate */
   Scalar beta_;
 
+  /** Log-normalization factor of the PDF */
+  Scalar logNormalization_;
 }; /* class NormalGamma */
 
 
