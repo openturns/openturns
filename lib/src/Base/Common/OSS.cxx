@@ -37,6 +37,9 @@ std::string OSS::str() const
 
 void OSS::clear()
 {
+  // To clear the content
+  oss_.str("");
+  // To clear the flags
   oss_.clear();
 }
 
