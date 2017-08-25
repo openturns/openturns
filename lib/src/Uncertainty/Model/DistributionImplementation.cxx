@@ -814,6 +814,7 @@ Sample DistributionImplementation::computeSurvivalFunction(const Sample & inSamp
 /* Compute the probability content of an interval */
 Scalar DistributionImplementation::computeProbability(const Interval & interval) const
 {
+  std::cerr << "In DistributionImplementation::computeProbability, interval=" << interval << std::endl;
   if (interval.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
   // Empty interval, quick check. More checks will be done in the refined algorithms
   if (interval.isNumericallyEmpty()) return 0.0;
@@ -858,6 +859,7 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
 /* Get the probability content of an interval, continuous case */
 Scalar DistributionImplementation::computeProbabilityContinuous(const Interval & interval) const
 {
+  std::cerr << "In DistributionImplementation::computeProbabilityContinuous, interval=" << interval << std::endl;
   const Interval reducedInterval(interval.intersect(getRange()));
   if (reducedInterval.isNumericallyEmpty()) return 0.0;
   if (reducedInterval == getRange()) return 1.0;
@@ -895,12 +897,18 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
   {
     if (hasIndependentCopula())
     {
+      std::cerr << "Independent copula" << std::endl;
       const Point lower(interval.getLowerBound());
       const Point upper(interval.getLowerBound());
       probability = 1.0;
       for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i)->computeProbability(Interval(lower[i], upper[i]));
     }
-    else probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+    else
+      {
+	std::cerr << "General case" << std::endl;
+	probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+	std::cerr << "probability=" << probability << std::endl;
+      }
   } // dimension > 1
   return std::min(1.0, std::max(0.0, probability));
 }
