@@ -462,8 +462,8 @@ if (BUILD_PYTHON)
   endif ()
 
   if (PYTHONINTERP_FOUND)
-    if (DEFINED SITE_PACKAGE)
-      set (OPENTURNS_PYTHON_MODULE_PATH ${SITE_PACKAGE})
+    if (DEFINED PYTHON_SITE_PACKAGES)
+      set (OPENTURNS_PYTHON_MODULE_PATH ${PYTHON_SITE_PACKAGES})
 
     else ()
       execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
