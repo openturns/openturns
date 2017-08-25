@@ -24,7 +24,6 @@
 /** The command line arguments of the configure script */
 BEGIN_NAMESPACE_OPENTURNS
 
-static const char ConfigureArgs[]         = "@ot_configure_args@";
 static const char ConfigureDate[]         = "@ot_configure_date@";
 static const char Revision[]              = "@ot_revision@";
 static const char InstallationDirectory[] = "@prefix@";

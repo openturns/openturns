@@ -23,11 +23,6 @@ case $0 in
   *-build) installed=no ;;
 esac
 
-abs_top_srcdir=@CMAKE_SOURCE_DIR@
-top_srcdir=@CMAKE_SOURCE_DIR@
-srcdir=@CMAKE_CURRENT_SOURCE_DIR@
-top_builddir=@CMAKE_BINARY_DIR@
-
 version=@PACKAGE_VERSION@
 bugreport=@PACKAGE_BUGREPORT@
 package=@CPACK_PACKAGE_NAME@
