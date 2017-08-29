@@ -5,22 +5,6 @@ ot_add_current_dir_to_include_dirs ()
 ot_install_header_file (OT.hxx)
 ot_add_source_file (openturns_library_ok.c)
 
-foreach (include_dir ${OPENTURNS_INCLUDE_DIRS})
-  set (EXTRA_CPPFLAGS "${EXTRA_CPPFLAGS} -I${include_dir}")
-endforeach ()
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/openturns-config-build.in
-                 ${CMAKE_CURRENT_BINARY_DIR}/openturns-config-build
-                 @ONLY
-              )
-set (prefix "${CMAKE_INSTALL_PREFIX}")
-set (exec_prefix "${CMAKE_INSTALL_PREFIX}")
-set (libdir "${INSTALL_PATH}/lib${LIB_SUFFIX}")
-set (PACKAGE "${CPACK_PACKAGE_NAME}")
-install (PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/openturns-config-build
-          DESTINATION ${INSTALL_PATH}/bin
-          RENAME openturns-config
-       )
-
 # Recurse in subdirectories
 add_subdirectory (Base)
 add_subdirectory (Uncertainty)
