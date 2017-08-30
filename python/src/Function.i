@@ -191,8 +191,16 @@ def _exec_sample_multiprocessing(func, n_cpus):
         The parallelized funtion.
     """
     def _exec_sample(X):
-        from multiprocessing import Pool
-        p = Pool(processes=n_cpus)
+        try:
+            from multiprocessing import Pool
+            p = Pool(processes=n_cpus)
+        except:
+            # multiprocessing is not working on this platform,
+            # fallback to sequential computations.
+            res = list()
+            for point in X:
+                res.append(self._exec(point))
+            return res
         rs = p.map_async(func, X)
         p.close()
         return rs.get()
