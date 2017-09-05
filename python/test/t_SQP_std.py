@@ -3,7 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
-ot.PlatformInfo.SetNumericalPrecision(4)
+ot.PlatformInfo.SetNumericalPrecision(3)
 
 # linear
 levelFunction = ot.Function(

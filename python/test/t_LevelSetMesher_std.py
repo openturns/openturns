@@ -18,7 +18,7 @@ try:
         "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7)
     ot.ResourceMap.SetAsScalar(
         "OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7)
-    ot.PlatformInfo.SetNumericalPrecision(3)
+    ot.PlatformInfo.SetNumericalPrecision(2)
 
     # The 1D mesher
     mesher1D = ot.LevelSetMesher([7])
