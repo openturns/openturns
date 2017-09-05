@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-7 );
     ResourceMap::SetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-7 );
-    PlatformInfo::SetNumericalPrecision(3);
+    PlatformInfo::SetNumericalPrecision(2);
 
     // The 1D mesher
     LevelSetMesher mesher1D(Indices(1, 7));
