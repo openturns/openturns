@@ -715,22 +715,25 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
         axes[0].set_ylim(y_min, y_max)
         return figure
 
+    # General case
+    # Graph of type Pairs + horizontal/vertical lines
+    # to illustrate the cells
     for i in range(dim):
+        # y axis
+        y = data.getMarginal(i)
+        y_min = bounds.getLowerBound()[i]
+        y_max = bounds.getUpperBound()[i]
+        dy = y_max - y_min
         for j in range(dim):
             if len(axes) <= dim * dim:
                 axes.append(
                     figure.add_subplot(dim, dim, 1 + i * dim + j, **axes_kwargs))
             if i != j:
-                x = data.getMarginal(i)
-                y = data.getMarginal(j)
                 # x axis
-                x_min = bounds.getLowerBound()[i]
-                x_max = bounds.getUpperBound()[i]
+                x = data.getMarginal(j)
+                x_min = bounds.getLowerBound()[j]
+                x_max = bounds.getUpperBound()[j]
                 dx = x_max - x_min
-                # y axis
-                y_min = bounds.getLowerBound()[j]
-                y_max = bounds.getUpperBound()[j]
-                dy = y_max - y_min
                 # Draw horizontal lines
                 dydiv = float(Ny)
                 for k in range(Ny):
