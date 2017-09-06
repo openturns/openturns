@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ConditionedGaussianProcess
  *
- * The implementation of a Normal process, conditioned by observations & kriging
+ * The implementation of a Gaussian process, conditioned by observations & kriging
  */
 class OT_API ConditionedGaussianProcess
   : public GaussianProcess
@@ -57,7 +57,7 @@ public:
   /** Realization accessor */
   Field getRealization() const;
 
-  /** Is the underlying a Normal process ? */
+  /** Is the underlying a Gaussian process ? */
   Bool isNormal() const;
 
   /** Is the underlying a stationary process ? */

@@ -13,7 +13,7 @@ myInterval = ot.Interval(lowerBound, upperBound)
 myMesh = myMesher.build(myInterval)
 
 
-# Define a scalar temporal normal process on the mesh
+# Define a scalar temporal Gaussian process on the mesh
 # this process is stationary
 # myXproc R^2 --> R
 amplitude = [1.0]

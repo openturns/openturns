@@ -41,6 +41,7 @@
  * #905 (Bogus MaternModel::setParameter)
  * #906 (t_LevelSetMesher_std fails on most non-Intel based chips)
  * #907 (Notation)
+ * #908 (Documentation: change titles)
 
 == 1.9 release (2017-04-18) == #release-1.9
 

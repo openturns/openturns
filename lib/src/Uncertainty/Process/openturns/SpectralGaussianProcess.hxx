@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class SpectralGaussianProcess
  *
- * The implementation of the Normal process class
+ * The implementation of the Gaussian process class
  * in spectral domain
  */
 class OT_API SpectralGaussianProcess

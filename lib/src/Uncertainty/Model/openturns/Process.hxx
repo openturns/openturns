@@ -67,7 +67,7 @@ public:
   void setDescription(const Description & description);
   Description getDescription() const;
 
-  /** Is the underlying a normal process ? */
+  /** Is the underlying a Gaussian process ? */
   Bool isNormal() const;
 
   /** Is the underlying a stationary process ? */

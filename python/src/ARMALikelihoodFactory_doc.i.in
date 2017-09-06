@@ -1,5 +1,5 @@
 %feature("docstring") OT::ARMALikelihoodFactory
-"Maximum likelihood estimator of a multivariate ARMA normal process.
+"Maximum likelihood estimator of a multivariate ARMA Gaussian process.
 
 Available constructors:
     ARMALikelihoodFactory()

@@ -27,7 +27,7 @@ basisCollection : collection of :class:`~openturns.Basis`
 
     An empty collection means that no trend is estimated.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance model of the normal process. See notes for the details.
+    Covariance model of the Gaussian process. See notes for the details.
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
@@ -41,7 +41,7 @@ Notes
 -----
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all :math:`k`, with :math:`\cM:\Rset^n \mapsto \Rset^d` a given function.
 
-The objective is to build a metamodel :math:`\tilde{\cM}`, using a **generalized linear model**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the restriction of a normal process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The normal process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The objective is to build a metamodel :math:`\tilde{\cM}`, using a **generalized linear model**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the restriction of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
 .. math::
 
@@ -61,7 +61,7 @@ where:
 
 with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{n_\ell} \beta_j^\ell \varphi_j^\ell(\vect{x})` and :math:`\varphi_j^\ell: \Rset^n \rightarrow \Rset` the trend functions.
 
-:math:`\vect{W}` is a normal process of dimension :math:`d` with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
+:math:`\vect{W}` is a Gaussian process of dimension :math:`d` with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
 
 We note:
 

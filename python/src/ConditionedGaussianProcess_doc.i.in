@@ -1,5 +1,5 @@
 %feature("docstring") OT::ConditionedGaussianProcess
-"Conditioned normal process.
+"Conditioned Gaussian process.
 
     ConditionedGaussianProcess(*krigingResult, mesh*)
 

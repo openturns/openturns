@@ -87,8 +87,8 @@ Link Temporal - Spectral information
     SecondOrderModel
     ExponentialCauchy
 
-Normal process
-==============
+Gaussian process
+================
 
 .. autosummary::
     :toctree: _generated/

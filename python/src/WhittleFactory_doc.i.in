@@ -1,5 +1,5 @@
 %feature("docstring") OT::WhittleFactory
-"Whittle estimator of a scalar ARMA normal process.
+"Whittle estimator of a scalar ARMA Gaussian process.
 
 Available constructors:
     WhittleFactory()

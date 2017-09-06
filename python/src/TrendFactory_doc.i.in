@@ -58,7 +58,7 @@ myTrendTransform : :class:`~openturns.TrendTransform`
 
 Examples
 --------
-Define a scalar temporal normal process on a mesh of dimension 1:
+Define a scalar temporal Gaussian process on a mesh of dimension 1:
 
 >>> import openturns as ot
 >>> myGrid = ot.RegularGrid(0.0, 1.0, 100)

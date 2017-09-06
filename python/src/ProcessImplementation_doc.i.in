@@ -316,7 +316,7 @@ where :math:`\Tr{\vect{X}}_{I_k} = (\Tr{X}_{\vect{t}_1}, \hdots, \Tr{X}_{\vect{t
   \end{array}
   \right)
 
-A normal process is entirely defined by its mean function :math:`m` and its
+A Gaussian process is entirely defined by its mean function :math:`m` and its
 covariance function :math:`C` (or correlation function :math:`R`)."
 %enddef
 %feature("docstring") OT::ProcessImplementation::isNormal
