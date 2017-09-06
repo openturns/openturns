@@ -1,7 +1,7 @@
-%feature("docstring") OT::ConditionedNormalProcess
+%feature("docstring") OT::ConditionedGaussianProcess
 "Conditioned normal process.
 
-    ConditionedNormalProcess(*krigingResult, mesh*)
+    ConditionedGaussianProcess(*krigingResult, mesh*)
 
 
 Parameters
@@ -13,7 +13,7 @@ mesh : :class:`~openturns.Mesh`
 
 Notes
 -----
-ConditionedNormalProcess helps to create Gaussian random fields,
+ConditionedGaussianProcess helps to create Gaussian random fields,
 :math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`, with covariance function :math:`\cC: \cD \times \cD \mapsto \cM_{d \times d}(\Rset)` ( :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)` in the stationary case), conditionaly to some observations.
 
       Let :math:`X(\omega,x=x_1)=y_1,\cdots,X(\omega,x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.KrigingAlgorithm`:
@@ -28,7 +28,7 @@ with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a generalized linear model, :m
 
     \mathbb{E}[Z(\vect{x}), Z(\vect{\tilde{x}})] = \sigma^2 \cC^{stat}_{\theta}(\vect{x} - \vect{\tilde{x}})
 
-The ConditionedNormalProcess generates realizations of the conditioned process. It focuses first on the :class:`~openturns.KrigingAlgorithm` to build such prior. Results are stored in a :class:`~openturns.KrigingResult` structure, which is given as input argument of the class. This last one, combined with the mesh argument, define both the prior  :math:`Y(\cM)` and the covariance evaluation on the mesh vertices :math:`\cC^{stat}_{\theta}(\cM)` conditionnaly to the previous observations. It follows that the realizations are randomly generated from the Gaussian distribution :math:`\cN ( Y(\cM), \cC^{stat}_{\theta}(\cM) )`.
+The ConditionedGaussianProcess generates realizations of the conditioned process. It focuses first on the :class:`~openturns.KrigingAlgorithm` to build such prior. Results are stored in a :class:`~openturns.KrigingResult` structure, which is given as input argument of the class. This last one, combined with the mesh argument, define both the prior  :math:`Y(\cM)` and the covariance evaluation on the mesh vertices :math:`\cC^{stat}_{\theta}(\cM)` conditionnaly to the previous observations. It follows that the realizations are randomly generated from the Gaussian distribution :math:`\cN ( Y(\cM), \cC^{stat}_{\theta}(\cM) )`.
 
 In practice, we do not store the Gaussian distribution as we need only the random realization method. For that purpose, we use the Cholesky method : we compute the Cholesky factor :math:`\cL_{\theta}(\cM)` of the covariance matrix :math:`\cC^{stat}_{\theta}(\cM)` such as :math:`\cC^{stat}_{\theta}(\cM) = \cL_{\theta}(\cM) \Tr{\cL_{\theta}(\cM)}`.
 It follows that the random realizations are obtained as following : :math:`realization = Y(\cM) + \cL_{\theta}(\cM) W` with :math:`W` a centered & reduced random Gaussian realization.
@@ -59,10 +59,10 @@ Examples
 >>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0], [1.0, 1.0], [1.5, 0.5]]
 >>> simplices = ot.IndicesCollection([[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]])
 >>> mesh2D = ot.Mesh(vertices, simplices)
->>> process = ot.ConditionedNormalProcess(result, mesh2D)"
+>>> process = ot.ConditionedGaussianProcess(result, mesh2D)"
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ConditionedNormalProcess::getRealization
+%feature("docstring") OT::ConditionedGaussianProcess::getRealization
 "Return a realization of the process.
 
 Returns
@@ -96,7 +96,7 @@ Examples
 >>> vertices = [[1.0, 0.0], [2.0, 0.0], [2.0, 1.0],[1.0, 1.0], [1.5, 0.5]]
 >>> simplices = ot.IndicesCollection([[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]])
 >>> mesh2D = ot.Mesh(vertices, simplices)
->>> process = ot.ConditionedNormalProcess(result, mesh2D)
+>>> process = ot.ConditionedGaussianProcess(result, mesh2D)
 >>> # Get a realization of the process
 >>> realization = process.getRealization()
 "

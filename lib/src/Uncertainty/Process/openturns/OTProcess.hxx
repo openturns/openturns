@@ -37,7 +37,7 @@
 #include "openturns/WhittleFactory.hxx"
 #include "openturns/WhittleFactoryState.hxx"
 #include "openturns/ARMALikelihoodFactory.hxx"
-#include "openturns/ConditionedNormalProcess.hxx"
+#include "openturns/ConditionedGaussianProcess.hxx"
 #include "openturns/KarhunenLoeveQuadratureAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSTOCHASTICPROCESS_HXX */

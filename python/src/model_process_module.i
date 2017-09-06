@@ -23,7 +23,7 @@
 %import model_copula_module.i
 %import randomvector_module.i
 %import weightedexperiment_module.i
-/* imports for ConditionedNormalProcess */
+/* imports for ConditionedGaussianProcess */
 %import MetaModelResult.i
 %import KrigingResult.i
 
@@ -43,7 +43,7 @@
 %include WhittleFactory.i
 %include ARMALikelihoodFactory.i
 %include ARMAFactory.i
-%include ConditionedNormalProcess.i
+%include ConditionedGaussianProcess.i
 %include KarhunenLoeveQuadratureAlgorithm.i
 
 /* At last we include template definitions */

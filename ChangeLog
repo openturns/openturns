@@ -24,6 +24,7 @@
  * Made MatrixImplementation::isPositiveDefinite const and removed its argument
  * Renamed EfficientGlobalOptimization::setAIETradeoff to setAEITradeoff
  * Deprecated PlatformInfo::GetConfigureCommandLine.
+ * Renamed ConditionedNormalProcess to ConditionedGaussianProcess
 
 === Python module ===
 
@@ -39,6 +40,7 @@
  * #899 (PythonDistribution copula crash when parallelism is active)
  * #905 (Bogus MaternModel::setParameter)
  * #906 (t_LevelSetMesher_std fails on most non-Intel based chips)
+ * #907 (Notation)
 
 == 1.9 release (2017-04-18) == #release-1.9
 

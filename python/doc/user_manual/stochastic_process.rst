@@ -98,7 +98,7 @@ Normal process
     GaussianProcess
 
     :template: class.rst_t
-    ConditionedNormalProcess
+    ConditionedGaussianProcess
 
 Functional basis process
 ========================

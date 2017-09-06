@@ -9,3 +9,4 @@ Remove deprecated NumericalComplex[Collection] in 1.11
 Remove deprecated PosteriorRandomVector in 1.11
 Remove deprecated PlatformInfo[GetConfigureCommandLine] in 1.11
 Remove deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS aliases in 1.12
+Remove deprecated ConditionedNormalProcess alias in 1.11

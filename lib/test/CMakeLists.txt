@@ -495,7 +495,7 @@ ot_check_test (SpectralGaussianProcess_std)
 ot_check_test (GaussianProcess_std)
 ot_check_test (WhiteNoise_std)
 ot_check_test (WhittleFactory_std)
-ot_check_test (ConditionedNormalProcess_std)
+ot_check_test (ConditionedGaussianProcess_std)
 ot_check_test (ARMALikelihoodFactory_std)
 ot_check_test (KarhunenLoeveQuadratureAlgorithm_std)
 
