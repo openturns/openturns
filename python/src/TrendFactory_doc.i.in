@@ -10,7 +10,7 @@ basisSequenceFactory : :class:`~openturns.BasisSequenceFactory`
     The  regression strategy that provides the estimation of the  coefficients associated to the best model among the  basis functions.
 
     Default is the *least angle regression* (LAR)  method for the choice of sparse models: :class:`~openturns.LAR`.
-fittingAlgorithm :  :class:`~openturns.BasisSequenceFactory`
+fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
     The fitting algorithm that estimates the empirical error on each sub-basis.
 
     Default is the *leave one out* strategy: :class:`~openturns.CorrectedLeaveOneOut`.
