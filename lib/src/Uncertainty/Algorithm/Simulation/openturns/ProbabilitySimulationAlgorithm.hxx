@@ -42,6 +42,11 @@ public:
 
   /** Constructor with parameters */
   ProbabilitySimulationAlgorithm(const Event & event,
+                        const Bool verbose = true,
+                        const HistoryStrategy & convergenceStrategy = Compact());
+
+  /** Constructor with parameters */
+  ProbabilitySimulationAlgorithm(const Event & event,
                         const WeightedExperiment & experiment,
                         const Bool verbose = true,
                         const HistoryStrategy & convergenceStrategy = Compact());
@@ -69,11 +74,11 @@ protected:
 
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();
+  Sample computeBlockSampleComposite();
 
   // The experiment type
   WeightedExperiment experiment_;
-
-
+  Bool isExperimentProvided_;
 private:
 
 } ; /* class ProbabilitySimulationAlgorithm */

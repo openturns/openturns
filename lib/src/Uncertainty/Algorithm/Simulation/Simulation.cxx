@@ -263,7 +263,7 @@ void Simulation::run()
 /* Compute the block sample and the points that realized the event */
 Sample Simulation::computeBlockSample()
 {
-  return event_.getSample(blockSize_);
+  throw NotYetImplementedException(HERE) << "In Simulation::computeBlockSample()";
 }
 
 /* Convergence strategy accessor */

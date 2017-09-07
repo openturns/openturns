@@ -124,7 +124,7 @@ for i, event in enumerate(all_events):
         experiment = ot.MonteCarloExperiment()
         myAlgo = ot.ProbabilitySimulationAlgorithm(event, experiment)
     else:
-        myAlgo = ot.Simulation(event)
+        myAlgo = ot.ProbabilitySimulationAlgorithm(event)
     myAlgo.setMaximumOuterSampling(250)
     myAlgo.setBlockSize(4)
     myAlgo.setMaximumCoefficientOfVariation(0.1)
