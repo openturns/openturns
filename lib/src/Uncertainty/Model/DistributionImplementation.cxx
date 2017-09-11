@@ -3192,13 +3192,6 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   point[1] = 0.0;
   data.add(point);
   graphPDF.add(Curve(data, "red", "solid", 2, title));
-  graphPDF.setYMargin(0.0);
-  Point boundingBox(graphPDF.getBoundingBox());
-  const Scalar yMin = boundingBox[2];
-  const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
-  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
-  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
-  graphPDF.setBoundingBox(boundingBox);
   return graphPDF;
 }
 
@@ -3223,13 +3216,6 @@ Graph DistributionImplementation::drawPDF(const Scalar xMin,
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "PDF", true, "topright");
   graphPDF.add(curvePDF);
-  graphPDF.setYMargin(0.0);
-  Point boundingBox(graphPDF.getBoundingBox());
-  const Scalar yMin = boundingBox[2];
-  const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
-  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
-  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
-  graphPDF.setBoundingBox(boundingBox);
   return graphPDF;
 }
 
@@ -3407,13 +3393,6 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   point[1] = 0.0;
   data.add(point);
   graphLogPDF.add(Curve(data, "red", "solid", 2, title));
-  graphLogPDF.setYMargin(0.0);
-  Point boundingBox(graphLogPDF.getBoundingBox());
-  const Scalar yMin = boundingBox[2];
-  const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
-  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
-  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
-  graphLogPDF.setBoundingBox(boundingBox);
   return graphLogPDF;
 }
 
@@ -3438,13 +3417,6 @@ Graph DistributionImplementation::drawLogPDF(const Scalar xMin,
   const String xName(getDescription()[0]);
   Graph graphPDF(title, xName, "log PDF", true, "topright");
   graphPDF.add(curvePDF);
-  graphPDF.setYMargin(0.0);
-  Point boundingBox(graphPDF.getBoundingBox());
-  const Scalar yMin = boundingBox[2];
-  const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
-  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
-  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
-  graphPDF.setBoundingBox(boundingBox);
   return graphPDF;
 }
 
@@ -3630,13 +3602,6 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
     data[size + 1][1] = computeCDF(xMax);
   }
   graphCDF.add(Staircase(data, "red", "solid", 2, "s", title));
-  graphCDF.setYMargin(0.0);
-  Point boundingBox(graphCDF.getBoundingBox());
-  const Scalar yMin = boundingBox[2];
-  const Scalar yMax = gridY.computeQuantilePerComponent(0.99)[0];
-  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
-  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
-  graphCDF.setBoundingBox(boundingBox);
   return graphCDF;
 }
 
@@ -3660,13 +3625,6 @@ Graph DistributionImplementation::drawCDF(const Scalar xMin,
   const String xName(getDescription()[0]);
   Graph graphCDF(title, xName, "CDF", true, "topleft");
   graphCDF.add(curveCDF);
-  graphCDF.setYMargin(0.0);
-  Point boundingBox(graphCDF.getBoundingBox());
-  const Scalar yMin = boundingBox[2];
-  const Scalar yMax = dataY.computeQuantilePerComponent(0.99)[0];
-  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
-  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
-  graphCDF.setBoundingBox(boundingBox);
   return graphCDF;
 }
 
@@ -3837,13 +3795,6 @@ Graph DistributionImplementation::drawQuantile1D(const Scalar qMin,
   const String xName(getDescription()[0]);
   Graph graphQuantile(title, "p", xName, true, "topleft");
   graphQuantile.add(curveQuantile);
-  graphQuantile.setYMargin(0.0);
-  Point boundingBox(graphQuantile.getBoundingBox());
-  const Scalar yMin = boundingBox[2];
-  const Scalar yMax = dataY.computeQuantilePerComponent(0.99)[0];
-  boundingBox[2] = yMin - 0.1 * (yMax - yMin);
-  boundingBox[3] = yMax + 0.1 * (yMax - yMin);
-  graphQuantile.setBoundingBox(boundingBox);
   return graphQuantile;
 }
 
