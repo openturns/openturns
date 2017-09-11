@@ -25,10 +25,4 @@ outputSample = model(inputSample)
 cobweb = ot.VisualTest_DrawCobWeb(
     inputSample, outputSample, 2.5, 3.0, 'red', False)
 
-bb = cobweb.getBoundingBox()
-# define the increasing factor of the bounding box
-factor = 1.1
-bb[1] = factor * bb[1]
-cobweb.setBoundingBox(bb)
-
-View(cobweb, figure_kwargs={'figsize': (10, 4)})
+View(cobweb, figure_kwargs={'figsize': (10, 6)}, legend_kwargs={'loc': 'lower right'})

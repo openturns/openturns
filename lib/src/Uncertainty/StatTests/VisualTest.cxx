@@ -389,13 +389,6 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
     bar.setLineWidth(3);
     cobWeb.add(bar);
   }
-  Point minPoint(2);
-  minPoint[0] = 0.0;
-  minPoint[1] = 0.0;
-  Point maxPoint(2);
-  maxPoint[0] = 1.1 * inputDimension;
-  maxPoint[1] = size;
-  cobWeb.setBoundingBox(Interval(minPoint, maxPoint));
   cobWeb.setGrid(false);
   return cobWeb;
 }
