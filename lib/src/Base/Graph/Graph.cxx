@@ -271,16 +271,9 @@ void Graph::setYMargin(const Scalar yMargin)
 }
 
 /* Get the bounding box of the whole plot */
-Graph::BoundingBox Graph::getBoundingBox() const
+Interval Graph::getBoundingBox() const
 {
   return getImplementation()->getBoundingBox();
-}
-
-/* Set the bounding box of the whole plot */
-void Graph::setBoundingBox(const BoundingBox & boundingBox)
-{
-  copyOnWrite();
-  getImplementation()->setBoundingBox(boundingBox);
 }
 
 void Graph::setBoundingBox(const Interval & boundingBox)

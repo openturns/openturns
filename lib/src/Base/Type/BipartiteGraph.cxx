@@ -80,14 +80,8 @@ Graph BipartiteGraph::draw() const
     cloud.setPointStyle("fcircle");
     graph.add(cloud);
   }
-  graph.setXMargin(0.0);
-  graph.setYMargin(0.0);
-  Point bb(graph.getBoundingBox());
-  bb[0] -= 0.5;
-  bb[1] += 0.5;
-  bb[2] -= 0.5;
-  bb[3] += 0.5;
-  graph.setBoundingBox(bb);
+  const Interval bb(graph.getBoundingBox());
+  graph.setBoundingBox(Interval(bb.getLowerBound() - Point(2, 0.5), bb.getUpperBound() + Point(2, 0.5)));
   return graph;
 }
 

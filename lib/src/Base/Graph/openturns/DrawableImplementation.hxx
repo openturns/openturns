@@ -26,6 +26,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,8 +46,6 @@ class OT_API DrawableImplementation :
   friend class GraphImplementation;
 
 public:
-
-  typedef Point BoundingBox;
 
   /** Default constructor */
   DrawableImplementation();
@@ -143,7 +142,7 @@ public:
   virtual void setTextPositions(const Description & textPositions);
 
   /** Bounding box accessor */
-  virtual BoundingBox getBoundingBox() const;
+  virtual Interval getBoundingBox() const;
 
   /** R command generating method, for plotting through R */
   virtual String draw() const;
@@ -255,9 +254,6 @@ protected:
 
   /** Valid fill styles */
   static Description ValidFillStyles;
-
-  /** Bounding box size */
-  static const UnsignedInteger BoundingBoxSize;
 
   /** Data accessor */
   virtual void setData(const Sample & data);

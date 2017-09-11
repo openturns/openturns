@@ -140,14 +140,15 @@ void Pie::setPalette(const Description & palette)
 }
 
 /* Accessor for boundingbox */
-Pie::BoundingBox Pie::getBoundingBox() const
+Interval Pie::getBoundingBox() const
 {
-  BoundingBox boundingBox(BoundingBoxSize);
-  boundingBox[0] = center_[0] - (1.0 + ResourceMap::GetAsScalar("Pie-HorizontalMargin")) * radius_;
-  boundingBox[1] = center_[0] + (1.0 + ResourceMap::GetAsScalar("Pie-HorizontalMargin")) * radius_;
-  boundingBox[2] = center_[1] - (1.0 + ResourceMap::GetAsScalar("Pie-VerticalMargin")) * radius_;
-  boundingBox[3] = center_[1] + (1.0 + ResourceMap::GetAsScalar("Pie-VerticalMargin")) * radius_;
-  return boundingBox;
+  Point lowerBound(center_);
+  lowerBound[0] -= (1.0 + ResourceMap::GetAsScalar("Pie-HorizontalMargin")) * radius_;
+  lowerBound[1] -= (1.0 + ResourceMap::GetAsScalar("Pie-VerticalMargin")) * radius_;
+  Point upperBound(center_);
+  upperBound[0] += (1.0 + ResourceMap::GetAsScalar("Pie-HorizontalMargin")) * radius_;
+  upperBound[1] += (1.0 + ResourceMap::GetAsScalar("Pie-VerticalMargin")) * radius_;
+  return Interval(lowerBound, upperBound);
 }
 
 /* Draw method */

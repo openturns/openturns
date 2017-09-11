@@ -107,21 +107,22 @@ void BarPlot::setOrigin(const Scalar origin)
 }
 
 /* Accessor for boundingbox */
-BarPlot::BoundingBox BarPlot::getBoundingBox() const
+Interval BarPlot::getBoundingBox() const
 {
-  BoundingBox boundingBox(BoundingBoxSize);
-  const Point max(data_.getMax());
   const Point min(data_.getMin());
-  boundingBox[0] = origin_;
-  boundingBox[1] = origin_;
+  const Point max(data_.getMax());
   const UnsignedInteger size = data_.getSize();
+  Point lowerBound(2);
+  lowerBound[0] = origin_;
+  lowerBound[1] = std::min(0.0, min[1]);
+  Point upperBound(2);
+  upperBound[0] = origin_;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    boundingBox[1] += data_[i][0];
+    upperBound[0] += data_[i][0];
   }
-  boundingBox[2] = std::min(0.0, min[1]);
-  boundingBox[3] = std::max(0.0, max[1]);
-  return boundingBox;
+  upperBound[1] = std::max(0.0, max[1]);
+  return Interval(lowerBound, upperBound);
 }
 
 /* Draw method */

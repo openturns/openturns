@@ -432,12 +432,14 @@ String GraphImplementation::makeRHeaderCommand() const
 String GraphImplementation::makeRCoreCommand() const
 {
   // get the general bounding box
-  BoundingBox boundingBox(getBoundingBox());
+  const Interval boundingBox(getBoundingBox());
+  const Point lowerBound(boundingBox.getLowerBound());
+  const Point upperBound(boundingBox.getUpperBound());
 
   //load the R code attached to the general plot
   OSS graphCommand;
-  graphCommand << "plot(c(" << boundingBox[0] << "," << boundingBox[1] << "),"
-               << "c(" << boundingBox[2] << "," << boundingBox[3] << "),"
+  graphCommand << "plot(c(" << lowerBound[0] << "," << upperBound[0] << "),"
+               << "c(" << lowerBound[1] << "," << upperBound[1] << "),"
                << "type=\"n\",main=\"" << title_ << "\",";
   if (showAxes_)
   {
@@ -589,31 +591,17 @@ void GraphImplementation::setYMargin(const Scalar yMargin)
 }
 
 /* Get the bounding box of the whole plot */
-GraphImplementation::BoundingBox GraphImplementation::getBoundingBox() const
+Interval GraphImplementation::getBoundingBox() const
 {
   if (automaticBoundingBox_) computeBoundingBox();
   return boundingBox_;
 }
 
 /* Set the bounding box of the whole plot */
-void GraphImplementation::setBoundingBox(const BoundingBox & boundingBox)
-{
-  if (boundingBox.getDimension() != 4) throw InvalidArgumentException(HERE) << "Error: the given bounding box must have a dimension equal to 4, here boundingBox=" << boundingBox;
-  boundingBox_ = boundingBox;
-  automaticBoundingBox_ = false;
-}
-
 void GraphImplementation::setBoundingBox(const Interval & boundingBox)
 {
   if (boundingBox.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given bounding box must have a dimension equal to 2";
-  if (!boundingBox.getFiniteLowerBound()[0])  throw InvalidArgumentException(HERE) << "Error: the lower bound of the first component must be finite";
-  if (!boundingBox.getFiniteLowerBound()[1])  throw InvalidArgumentException(HERE) << "Error: the lower bound of the second component must be finite";
-  if (!boundingBox.getFiniteUpperBound()[0])  throw InvalidArgumentException(HERE) << "Error: the upper bound of the first component must be finite";
-  if (!boundingBox.getFiniteUpperBound()[1])  throw InvalidArgumentException(HERE) << "Error: the upper bound of the second component must be finite";
-  boundingBox_[0] = boundingBox.getLowerBound()[0];
-  boundingBox_[1] = boundingBox.getUpperBound()[0];
-  boundingBox_[2] = boundingBox.getLowerBound()[1];
-  boundingBox_[3] = boundingBox.getUpperBound()[1];
+  boundingBox_ = boundingBox;
   automaticBoundingBox_ = false;
 }
 
@@ -631,40 +619,40 @@ void GraphImplementation::setAutomaticBoundingBox(const Bool automaticBoundingBo
 /* Compute the best bounding box to enclose all the drawables */
 void GraphImplementation::computeBoundingBox() const
 {
-  UnsignedInteger size = drawablesCollection_.getSize();
-  boundingBox_ = BoundingBox(4);
+  const UnsignedInteger size = drawablesCollection_.getSize();
+
   // First exceptional case: no drawable, we default to default bounding box
   if (size == 0)
   {
     LOGINFO("Warning: cannot compute the bounding box of a graph with no drawable, switch to [0,1]x[0,1] default bounding box");
-    boundingBox_[0] = 0.0;
-    boundingBox_[1] = 1.0;
-    boundingBox_[2] = 0.0;
-    boundingBox_[3] = 1.0;
+    boundingBox_ = Interval(2);
     return;
   }
-  Sample boxes(size, 4);
+
+  Sample minBoxes(0, 2);
+  Sample maxBoxes(0, 2);
 
   // first, get each Drawable's bounding box and drawing command
-  for(UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     if (drawablesCollection_[i].getData().getSize() != 0)
-      boxes[i] = drawablesCollection_[i].getBoundingBox();
+    {
+      const Interval boundingBox(drawablesCollection_[i].getBoundingBox());
+      minBoxes.add(boundingBox.getLowerBound());
+      maxBoxes.add(boundingBox.getUpperBound());
+    }
   }
 
-  BoundingBox min(boxes.getMin());
-  BoundingBox max(boxes.getMax());
+  const Point min(minBoxes.getMin());
+  const Point max(maxBoxes.getMax());
 
-  const Scalar deltaX = max[1] - min[0];
-  const Scalar deltaY = max[3] - min[2];
+  const Point delta(max - min);
 
-  const Scalar marginWidth = deltaX > 0.0 ? xMargin_ * deltaX : 0.5;
-  const Scalar marginHeight = deltaY > 0.0 ? yMargin_ * deltaY : 0.5;
+  Point margin(2);
+  margin[0] = delta[0] > 0.0 ? xMargin_ * delta[0] : 0.5;
+  margin[1] = delta[1] > 0.0 ? yMargin_ * delta[1] : 0.5;
 
-  boundingBox_[0] = min[0] - marginWidth;
-  boundingBox_[1] = max[1] + marginWidth;
-  boundingBox_[2] = min[2] - marginHeight;
-  boundingBox_[3] = max[3] + marginHeight;
+  boundingBox_ = Interval(min - margin, max + margin);
 }
 
 /* Get the legend position */

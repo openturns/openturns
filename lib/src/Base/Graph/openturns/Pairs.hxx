@@ -68,6 +68,8 @@ public:
   String getTitle() const;
   void setTitle(const String & title);
 
+  /** Accessor for boundingbox */
+  Interval getBoundingBox() const;
 
   /** Draw method */
   String draw() const;

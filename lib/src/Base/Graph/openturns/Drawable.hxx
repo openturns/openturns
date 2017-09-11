@@ -51,7 +51,7 @@ public:
   /* Here is the interface */
 
   /** Accessor for bounding box of the drawable */
-  Point getBoundingBox() const;
+  Interval getBoundingBox() const;
 
   /** Legend accessor */
   virtual String getLegend() const;

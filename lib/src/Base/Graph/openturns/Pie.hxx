@@ -76,7 +76,7 @@ public:
   void setPalette(const Description & palette);
 
   /** Accessor for boundingbox */
-  BoundingBox getBoundingBox() const;
+  Interval getBoundingBox() const;
 
   /** Draw method */
   String draw() const;

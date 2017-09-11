@@ -160,14 +160,15 @@ void Contour::setDrawLabels(const Bool & drawLabels)
 }
 
 /* Accessor for boundingbox */
-Contour::BoundingBox Contour::getBoundingBox() const
+Interval Contour::getBoundingBox() const
 {
-  BoundingBox boundingBox(BoundingBoxSize);
-  boundingBox[0] = x_.getMin()[0];
-  boundingBox[1] = x_.getMax()[0];
-  boundingBox[2] = y_.getMin()[0];
-  boundingBox[3] = y_.getMax()[0];
-  return boundingBox;
+  Point lowerBound(2);
+  lowerBound[0] = x_.getMin()[0];
+  lowerBound[1] = y_.getMin()[0];
+  Point upperBound(2);
+  upperBound[0] = x_.getMax()[0];
+  upperBound[1] = y_.getMax()[0];
+  return Interval(lowerBound, upperBound);
 }
 
 /* Clean all the temporary data created by draw() method */

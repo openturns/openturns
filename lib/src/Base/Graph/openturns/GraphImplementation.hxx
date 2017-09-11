@@ -24,7 +24,6 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Drawable.hxx"
-#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,7 +42,6 @@ class OT_API GraphImplementation :
 
 public:
 
-  typedef Point                 BoundingBox;
   typedef Collection<Drawable>           DrawableCollection;
   typedef PersistentCollection<Drawable> DrawablePersistentCollection;
 
@@ -155,10 +153,7 @@ public:
   void setYMargin(const Scalar yMargin);
 
   /** Get the bounding box of the whole plot */
-  BoundingBox getBoundingBox() const;
-
-  /** Set the bounding box of the whole plot */
-  void setBoundingBox(const BoundingBox & boundingBox);
+  Interval getBoundingBox() const;
 
   /** Set the bounding box of the whole plot */
   void setBoundingBox(const Interval & boundingBox);
@@ -248,13 +243,7 @@ private:
   Bool automaticBoundingBox_;
 
   /** Current bounding box */
-  /* The format is:
-   * bb[0] = xmin
-   * bb[1] = xmax
-   * bb[2] = ymin
-   * bb[3] = ymax
-   */
-  mutable BoundingBox boundingBox_;
+  mutable Interval boundingBox_;
 
   /** The drawables to be plotted */
   DrawablePersistentCollection drawablesCollection_;

@@ -614,11 +614,10 @@ OT_Graph_setYMargin_doc
 
 Returns
 -------
-boundingBox : :class:`~openturns.Point` of dimension 4
+boundingBox : :class:`~openturns.Interval` of dimension 2
     Bounding box of the drawable element, which is a rectangle determined
     by its range along X and its range along Y.
-    This methods adds x/y margins according to the margin attributes.
-    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+    This methods adds x/y margins according to the margin attributes."
 %enddef
 %feature("docstring") OT::GraphImplementation::getBoundingBox
 OT_Graph_getBoundingBox_doc
@@ -630,10 +629,9 @@ OT_Graph_getBoundingBox_doc
 
 Parameters
 ----------
-boundingBox : sequence of float of dimension 4
+boundingBox : :class:`~openturns.Interval` of dimension 2
     Bounding box of the drawable element, which is a rectangle determined
-    by its range along X and its range along Y.
-    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+    by its range along X and its range along Y."
 %enddef
 %feature("docstring") OT::GraphImplementation::setBoundingBox
 OT_Graph_setBoundingBox_doc
@@ -656,8 +654,7 @@ Returns
 autoBoundingBox : bool
     Indicates if the bounding box is automatically created or not.
     The bounding box of the drawable element is a rectangle determined
-    by its range along X and its range along Y.
-    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+    by its range along X and its range along Y."
 %enddef
 %feature("docstring") OT::GraphImplementation::getAutomaticBoundingBox
 OT_Graph_getAutomaticBoundingBox_doc
@@ -672,8 +669,7 @@ Parameters
 autoBoundingBox : bool
     Indicates if the bounding box is automatically created or not.
     The bounding box of the drawable element is a rectangle determined
-    by its range along X and its range along Y.
-    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+    by its range along X and its range along Y."
 %enddef
 %feature("docstring") OT::GraphImplementation::setAutomaticBoundingBox
 OT_Graph_setAutomaticBoundingBox_doc

@@ -162,6 +162,13 @@ void Pairs::buildDefaultLabels()
   for (UnsignedInteger i = 0; i < number; ++i) labels_[i] = OSS() << "V" << i + 1;
 }
 
+/* Accessor for boundingbox */
+Interval Pairs::getBoundingBox() const
+{
+  // data can be of any dimension
+  return Interval(2);
+}
+
 /* Method save() stores the object through the StorageManager */
 void Pairs::save(Advocate & adv) const
 {

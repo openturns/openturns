@@ -44,7 +44,6 @@ class OT_API Graph :
 public:
 
   typedef Collection<Graph>                             GraphCollection;
-  typedef GraphImplementation::BoundingBox              BoundingBox;
   typedef GraphImplementation::DrawableCollection       DrawableCollection;
   typedef GraphImplementation::Format                   Format;
   typedef GraphImplementation::LogScale                 LogScale;
@@ -158,10 +157,9 @@ public:
   void setYMargin(const Scalar yMargin);
 
   /** Get the bounding box of the whole plot */
-  BoundingBox getBoundingBox() const;
+  Interval getBoundingBox() const;
 
   /** Set the bounding box of the whole plot */
-  void setBoundingBox(const BoundingBox & boundingBox);
   void setBoundingBox(const Interval & boundingBox);
 
   /** Automatic bounding box accessor */
