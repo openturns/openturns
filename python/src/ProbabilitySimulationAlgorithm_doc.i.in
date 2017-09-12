@@ -1,8 +1,10 @@
 %feature("docstring") OT::ProbabilitySimulationAlgorithm
-"Sequential sampling methods.
+"Iterative sampling methods.
 
 Available constructor:
     ProbabilitySimulationAlgorithm(*event, experiment, verbose=True, convergenceStrategy=ot.Compact()*)
+
+    ProbabilitySimulationAlgorithm(*event, verbose=True, convergenceStrategy=ot.Compact()*)
 
 Parameters
 ----------
