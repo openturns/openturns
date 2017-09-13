@@ -168,4 +168,15 @@ size : positive int
 %feature("docstring") OT::WeightedExperimentImplementation::setSize
 OT_WeightedExperiment_setSize_doc
 
+// ---------------------------------------------------------------------
 
+%define OT_WeightedExperiment_hasUniformWeights_doc
+"Ask whether the experiment has uniform weights.
+
+Returns
+-------
+hasUniformWeights : bool
+    Whether the experiment has uniform weights."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::hasUniformWeights
+OT_WeightedExperiment_hasUniformWeights_doc
