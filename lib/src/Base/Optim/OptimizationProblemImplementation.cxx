@@ -105,9 +105,12 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
     // clear constraints, bounds
-    LOGWARN(OSS() << "Clearing constraints and bounds");
-    equalityConstraint_ = Function();
-    inequalityConstraint_ = Function();
+    if (equalityConstraint_.getEvaluation()->isActualImplementation() || inequalityConstraint_.getEvaluation()->isActualImplementation())
+    {
+      LOGWARN(OSS() << "Clearing constraints and bounds");
+      equalityConstraint_ = Function();
+      inequalityConstraint_ = Function();
+    }
     bounds_ = Interval(0);
   }
   clearLevelFunction();
@@ -230,8 +233,11 @@ void OptimizationProblemImplementation::setNearestPointConstraints()
 
 void OptimizationProblemImplementation::clearLevelFunction()
 {
-  LOGWARN(OSS() << "Clearing level function");
-  levelFunction_ = Function();
+  if (levelFunction_.getEvaluation()->isActualImplementation())
+  {
+    LOGWARN(OSS() << "Clearing level function");
+    levelFunction_ = Function();
+  }
   levelValue_ = 0.0;
 }
 
