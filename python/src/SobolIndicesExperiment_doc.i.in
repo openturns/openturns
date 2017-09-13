@@ -1,0 +1,52 @@
+%feature("docstring") OT::SobolIndicesExperiment
+"Experiment to computeSobol' indices.
+
+Available constructors:
+    SobolIndicesExperiment(*distribution, size, computeSecondOrder=True*)
+
+    SobolIndicesExperiment(*experiment, computeSecondOrder=True*)
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` with an independent copula used to generate the
+    set of input data.
+size : positive int
+    Size :math:`N` of each of the two independent initial samples.
+    For the total size of the experiment see notes below.
+experiment : :class:`~openturns.WeightedExperiment`
+    Design of experiment
+computeSecondOrder : bool, defaults to True
+    Whether to add points to compute second order indices
+
+Notes
+-----
+Sensitivity algorithms rely on the definition of specific designs.
+The method generates design for the Saltelli method.
+Such designs could be used for Jansen, Martinez and MauntzKucherenko methods.
+This precomputes such input designs using distribution or experiment by
+generating two independent samples and mixing columns of these ones to define
+the huge sample (design).
+If computeSecondOrder is disabled, result design is of size :math:`N*(p+2)`
+where p is the input dimension.
+If computeSecondOrder is enabled, design's size is :math:`N*(2p+2)`, see
+[Saltelli2002]_.
+Model's answer could be evaluated outside the platform.
+
+
+See also
+--------
+SobolIndicesAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> formula = ['sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+' + \
+...    '0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
+>>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
+...                                         ot.IndependentCopula(3))
+>>> size = 10
+>>> experiment = ot.SobolIndicesExperiment(distribution, size, True)
+>>> sample = experiment.generate()"

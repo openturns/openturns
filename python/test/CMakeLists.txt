@@ -571,6 +571,7 @@ ot_pyinstallcheck_test (TensorApproximationAlgorithm_std)
 ot_pyinstallcheck_test (ANCOVA_std)
 ot_pyinstallcheck_test (FAST_std)
 ot_pyinstallcheck_test (SobolIndicesAlgorithm_std)
+ot_pyinstallcheck_test (SobolIndicesExperiment_std)
 
 ## Simulation
 ot_pyinstallcheck_test (Wilks_std)

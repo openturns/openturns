@@ -30,6 +30,7 @@ ot_add_source_file (MauntzKucherenkoSensitivityAlgorithm.cxx)
 ot_add_source_file (SaltelliSensitivityAlgorithm.cxx)
 ot_add_source_file (SobolIndicesAlgorithm.cxx)
 ot_add_source_file (SobolIndicesAlgorithmImplementation.cxx)
+ot_add_source_file (SobolIndicesExperiment.cxx)
 
 ot_install_header_file (OTSensitivity.hxx)
 ot_install_header_file (ANCOVA.hxx)
@@ -40,4 +41,5 @@ ot_install_header_file (MauntzKucherenkoSensitivityAlgorithm.hxx)
 ot_install_header_file (SaltelliSensitivityAlgorithm.hxx)
 ot_install_header_file (SobolIndicesAlgorithm.hxx)
 ot_install_header_file (SobolIndicesAlgorithmImplementation.hxx)
+ot_install_header_file (SobolIndicesExperiment.hxx)
 

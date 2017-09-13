@@ -27,6 +27,7 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Pie.hxx"
+#include "openturns/SobolIndicesExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -175,66 +176,17 @@ Sample SobolIndicesAlgorithmImplementation::Generate(const Distribution & distri
     const UnsignedInteger size,
     const Bool computeSecondOrder)
 {
-  if (!distribution.hasIndependentCopula())
-    throw InvalidDimensionException(HERE) << "In SensistivityAlgorithmImplementation::Generate, distribution should have independent copula";
-  const Sample inputSample1(distribution.getSample(size));
-  const Sample inputSample2(distribution.getSample(size));
-  UnsignedInteger dimension = inputSample1.getDimension();
-
-  Sample design(inputSample1);
-  design.add(inputSample2);
-  // Compute designs of type Saltelli/Martinez for 1st order
-  for (UnsignedInteger p = 0; p < dimension; ++p)
-  {
-    Sample x(inputSample1);
-    for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample2[k][p];
-    design.add(x);
-  }
-  if (computeSecondOrder)
-  {
-    for (UnsignedInteger p = 0; p < dimension; ++p)
-    {
-      Sample x(inputSample2);
-      for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample1[k][p];
-      design.add(x);
-    }
-  }
-  // Return collection
-  return design;
+  Log::Warn(OSS() << "SobolIndicesAlgorithm::Generate is deprecated: use SobolIndicesExperiment");
+  SobolIndicesExperiment sobolExperiment(distribution, size, computeSecondOrder);
+  return sobolExperiment.generate();
 }
 
 Sample SobolIndicesAlgorithmImplementation::Generate(const WeightedExperiment & experiment,
     const Bool computeSecondOrder)
 {
-  if (!experiment.getDistribution().hasIndependentCopula())
-    throw InvalidDimensionException(HERE) << "In SensistivityAlgorithmImplementation::Generate, weighted's distribution should have independent copula";
-  const UnsignedInteger size = experiment.getSize();
-  // WeightedExperiment::generate is not const, so we should copy experiment
-  WeightedExperiment weightedExperiment(experiment);
-  const Sample inputSample1(weightedExperiment.generate());
-  const Sample inputSample2(weightedExperiment.generate());
-  UnsignedInteger dimension = inputSample1.getDimension();
-
-  Sample design(inputSample1);
-  design.add(inputSample2);
-  // Compute designs of type Saltelli/Martinez for 1st order
-  for (UnsignedInteger p = 0; p < dimension; ++p)
-  {
-    Sample x(inputSample1);
-    for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample2[k][p];
-    design.add(x);
-  }
-  if (computeSecondOrder)
-  {
-    for (UnsignedInteger p = 0; p < dimension; ++p)
-    {
-      Sample x(inputSample2);
-      for (UnsignedInteger k = 0; k < size; ++k) x[k][p] = inputSample1[k][p];
-      design.add(x);
-    }
-  }
-  // Return collection
-  return design;
+  Log::Warn(OSS() << "SobolIndicesAlgorithm::Generate is deprecated: use SobolIndicesExperiment");
+  SobolIndicesExperiment sobolExperiment(experiment, computeSecondOrder);
+  return sobolExperiment.generate();
 }
 
 /* First order indices accessor */

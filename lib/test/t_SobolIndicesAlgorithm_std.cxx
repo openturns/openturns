@@ -59,7 +59,8 @@ int main(int argc, char *argv[])
     const UnsignedInteger nr_bootstrap = 100;
     const Scalar confidence_level = 0.95;
 
-    const Sample inputDesign(SobolIndicesAlgorithmImplementation::Generate(maDistribution, size, true));
+    const SobolIndicesExperiment sobolExperiment(maDistribution, size, true);
+    const Sample inputDesign(sobolExperiment.generate());
     const Sample outputDesign(model(inputDesign));
 
     {

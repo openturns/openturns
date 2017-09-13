@@ -8,6 +8,7 @@
 
 ==== New classes ====
  * ProbabilitySimulation
+ * SobolIndicesExperiment
 
 ==== API changes ====
  * Removed deprecated LAR class
@@ -26,6 +27,7 @@
  * Deprecated PlatformInfo::GetConfigureCommandLine.
  * Renamed ConditionedNormalProcess to ConditionedGaussianProcess
  * Deprecated Field::getSample in favor of getValues
+ * Deprecated SobolIndicesAlgorithm::Generate in favor of SobolIndicesExperiment.
 
 === Python module ===
 

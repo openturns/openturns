@@ -151,60 +151,6 @@ OT_SobolIndicesAlgorithm_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_Generate_doc
-"Generate the input design of experiment.
-
-Usage:
-
-  SobolIndicesAlgorithmImplementation.Generate(*distribution, N, computeSecondOrder*)
-
-  SobolIndicesAlgorithmImplementation.Generate(*experiment, computeSecondOrder*)
-
-Parameters
-----------
-distribution : :class:`~openturns.Distribution`
-    Input probabilistic model.
-    Should have independent copula
-experiment : :class:`~openturns.WeightedExperiment`
-    Experiment for the generation of two independent samples.
-N : int
-    Size of samples to generate
-computeSecondOrder : bool
-    If True, design that will be generated contains elements for the evaluation
-    of second order indices.
-
-Returns
--------
-inputDesign : :class:`~openturns.Sample`
-    Full input design.
-
-Notes
------
-Sensitivity algorithms rely on the definition of specific designs. The method generates design for the Saltelli method. Such designs could be used for both the Jansen, Martinez and MauntzKucherenko methods.
-This precomputes such input designs using distribution or experiment by generating two independent samples and mixing columns of these ones to define the huge sample (design).
-If computeSecondOrder is disabled, result design is of size :math:`N*(p+2)` where p is the input dimension.
-If computeSecondOrder is enabled, design's size is :math:`N*(2p+2)`.
-
-Model's answer could be evaluated outside the platform.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> formula = ['sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+' + \
-...    '0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
->>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
->>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
-...                                         ot.IndependentCopula(3))
->>> size = 100
->>> design = ot.SobolIndicesAlgorithmImplementation.Generate(distribution, size, True)
-"
-%enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::Generate
-OT_SobolIndicesAlgorithm_Generate_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_SobolIndicesAlgorithm_getFirstOrderIndices_doc
 "Get first order Sobol indices.
 
