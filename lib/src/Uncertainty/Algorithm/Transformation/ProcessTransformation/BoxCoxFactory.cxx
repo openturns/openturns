@@ -234,20 +234,20 @@ void BoxCoxFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solve
 /* Build the factory from data */
 BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries) const
 {
-  return build(timeSeries.getSample());
+  return build(timeSeries.getValues());
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
                                      const Point & shift) const
 {
-  return build(timeSeries.getSample(), shift);
+  return build(timeSeries.getValues(), shift);
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Field & timeSeries,
                                      const Point & shift,
                                      Graph & graph) const
 {
-  return build(timeSeries.getSample(), shift, graph);
+  return build(timeSeries.getValues(), shift, graph);
 }
 
 BoxCoxTransform BoxCoxFactory::build(const Sample & sample) const
