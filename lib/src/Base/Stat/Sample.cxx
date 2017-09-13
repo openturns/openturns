@@ -139,7 +139,7 @@ Bool Sample::operator !=(const Sample & other) const
 NSI_point Sample::operator [] (const UnsignedInteger index)
 {
 #ifdef DEBUG_BOUNDCHECKING
-  copyOnWrite();
+  // No copyOnWrite() as the at() method already does it
   return this->at(index);
 #else
   copyOnWrite();
@@ -161,7 +161,7 @@ Scalar & Sample::operator () (const UnsignedInteger i,
                               const UnsignedInteger j)
 {
 #ifdef DEBUG_BOUNDCHECKING
-  // No copyOnWrite() as the at() method already do it
+  // No copyOnWrite() as the at() method already does it
   return this->at(i, j);
 #else
   copyOnWrite();
