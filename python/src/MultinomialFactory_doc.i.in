@@ -4,9 +4,20 @@
 Available constructor:
     MultinomialFactory()
 
+Maximum likelihood estimators are used in the n-d case,
+else in 1-d we use the following equations:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      data : (\vect{x}^1, \hdots,\vect{x}^n)\\
+      N = max_{i,k} \, x_i^k\\
+      p_i = \frac{1}{nN} \sum_{k=1}^{n} x_i^k
+    \end{eqnarray*}
+
+The resolution is done using Brents method.
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, Multinomial"

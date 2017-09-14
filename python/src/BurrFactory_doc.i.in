@@ -4,9 +4,24 @@
 Available constructor:
     BurrFactory()
 
+:math:`\Hat{c}_n` is the solution of the non linear equation
+
+.. math::
+
+    \displaystyle 1+\frac{c}{n}\left[ SR - \frac{n}{\sum_{i=1}^n \log(1+x_i^c)}SSR\right] = 0
+
+where :math:`\displaystyle SR = \displaystyle \sum_{i=1}^n \frac{ \log(x_i)}{1+x_i^c}`
+and :math:`\displaystyle SSR = \displaystyle \sum_{i=1}^n \frac{ x_i^c\log(x_i)}{1+x_i^c}`
+
+Then
+
+.. math::
+
+    \Hat{k}_n =  \frac{n}{\sum_{i=1}^n \log(1+x_i^c)}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Burr"
 
 
 

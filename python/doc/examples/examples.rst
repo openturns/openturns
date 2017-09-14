@@ -14,10 +14,10 @@ This is the examples section.
     .. toctree::
         :maxdepth: 1
 
+        data_analysis/data_analysis.rst
         probabilistic_modeling/probabilistic_modeling.rst
-        statistical_estimation/statistical_estimation.rst
-        uncertainty_propagation/uncertainty_propagation.rst
         meta_modeling/meta_modeling.rst
+        reliability_sensitivity/reliability_sensitivity.rst
         functional_modeling/functional_modeling.rst
         numerical_methods/numerical_methods.rst
 
@@ -28,6 +28,7 @@ This is the examples section.
         :maxdepth: 1
 
         axial_stressed_beam.ipynb
-        optimal_lhs/optimal_lhs
-        ego
+        flood_model.ipynb
+        optimal_lhs.ipynb
+        ego.ipynb
 

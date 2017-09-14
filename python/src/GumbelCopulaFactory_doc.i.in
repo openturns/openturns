@@ -4,9 +4,17 @@
 Available constructor:
     GumbelCopulaFactory()
 
+We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
+
+We use the following estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \Hat{\theta}_n=\frac{1^{\strut}}{1 - \Hat{\tau}_{n_{\strut}}}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, GumbelCopula"

@@ -17,6 +17,8 @@ The parameters are estimated using the following moments estimators:
       \displaystyle\Hat{\alpha} =   (\Hat{\sigma}_n^2(\cos\Hat{\beta}_n+1) )^{1/3}
     \end{align}
 
+where :math:`\gamma_2` is defined if :math:`\Hat{\gamma_2}_n \geq 2\Hat{\gamma_1}_n +3`.
+
 See also
 --------
 DistributionFactory, MeixnerDistribution"

@@ -4,15 +4,18 @@
 Available constructor:
     BetaFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{a}_n=(1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
+      \displaystyle\Hat{b}_n=(1+\mathrm{sign}(x_{(n,n)})/(2+n))x_{(n,n)}\\
+      \displaystyle\Hat{t}_n=\frac{(\Hat{b}_n-\bar{x}_n)(\bar{x}_n-\Hat{a}_n)}{(\sigma_n^X)^2-1}\\
+      \displaystyle\Hat{r}_n=\frac{t(\bar{x}_n-\Hat{a}_n)}{\Hat{b}_n-\Hat{a}_n}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
-
-
-// ---------------------------------------------------------------------
-%define OT_BetaFactory_buildEstimator_doc
-"texte en plus dans la classe BetaFactory pour la methodebuildEstimator "
-%enddef
-
-%feature("docstring") OT::BetaFactory::buildEstimator
-OT_BetaFactory_buildEstimator_doc
+DistributionFactory, Beta"

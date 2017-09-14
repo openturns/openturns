@@ -4,9 +4,12 @@
 Available constructor:
     ClaytonCopulaFactory()
 
+We use the following estimator:
+
+.. math::
+
+    \displaystyle\Hat{\theta}_n=\frac{2\Hat{\tau}_n^{\strut}}{1_{\strut} - \Hat{\tau}_n}
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, ClaytonCopula"

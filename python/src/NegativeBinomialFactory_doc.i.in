@@ -4,9 +4,18 @@
 Available constructor:
     NegativeBinomialFactory()
 
+We use the following estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      data : (\vect{x}^1, \hdots,\vect{x}^n)\\
+      \displaystyle  \hat{p}_n = \frac{\bar{x}_n}{\hat{r}_n+\bar{x}_n} \\
+      \displaystyle  \hat{r}_n\mbox{ solution of } n\left(\log\left(\frac{\hat{r}_n}{\hat{r}_n+\bar{x}_n}\right)-\psi(\hat{r}_n)\right)+\sum_{i=1}^n\psi(x^i+\hat{r}_n)=0\\
+      \mbox{The resolution is done using Brent's method.}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, NegativeBinomial"

@@ -15,7 +15,9 @@ The theoretical documentation. This contains an in-depth description of all algo
 .. toctree::
     :maxdepth: 2
 
-    uncertainty_quantification/uncertainty_quantification
-    uncertainty_propagation/uncertainty_propagation
-    sensitivity_analysis/sensitivity_analysis
-    response_surface/response_surface
+    data_analysis/data_analysis.rst
+    probabilistic_modeling/probabilistic_modeling.rst
+    meta_modeling/meta_modeling.rst
+    reliability_sensitivity/reliability_sensitivity.rst
+    functional_modeling/functional_modeling.rst
+    numerical_methods/numerical_methods.rst

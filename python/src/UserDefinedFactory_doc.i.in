@@ -4,9 +4,8 @@
 Available constructor:
     UserDefinedFactory()
 
+It is estimated from an Uniform distribution over the sample.
+
 See also
 --------
 DistributionFactory, UserDefined"
-
-
-

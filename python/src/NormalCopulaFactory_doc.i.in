@@ -4,9 +4,14 @@
 Available constructor:
     NormalCopulaFactory()
 
+We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
+
+The correlation matrix :math:`\mat{R}` is estimated by:
+
+.. math::
+
+    R_{ij} = sin(\frac{\pi}{2}\Hat{\tau}_{n,ij})_{\strut}
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, NormalCopula"

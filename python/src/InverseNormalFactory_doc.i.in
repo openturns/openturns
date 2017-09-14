@@ -4,9 +4,19 @@
 Available constructor:
     InverseNormalFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\mu}_n =  \bar{x}_n\\
+      \displaystyle\Hat{\lambda}_n = \left(  \frac{1}{n} \sum_{i=1}^n \frac{1}{x_i} - \frac{1}{\bar{x}_n} \right)^{-1}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, InverseNormal"
 
 
 

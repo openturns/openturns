@@ -308,6 +308,8 @@ standard design diagrams applied to the specific case of , which can
 help them better apprehend the tool’s specificities and the design and
 implementation choices that were made.
 
+.. _bridge_pattern:
+
 Bridge pattern
 ~~~~~~~~~~~~~~
 

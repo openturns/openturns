@@ -10,8 +10,8 @@ The parameters are estimated by method of moments:
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{a} = \Hat{\mu}_x - \Hat{\sigma}_x \sqrt{2}\\
-      \displaystyle\Hat{b} = \Hat{\mu}_x + \Hat{\sigma}_x \sqrt{2}
+      \displaystyle \Hat{a} = \Hat{\mu}_x - \Hat{\sigma}_x \sqrt{2}\\
+      \displaystyle \Hat{b} = \Hat{\mu}_x + \Hat{\sigma}_x \sqrt{2}
     \end{eqnarray*}
 
 See also

@@ -4,6 +4,15 @@
 Available constructor:
     BernoulliFactory()
 
+We use the following estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{p}_n = \bar{x}_n
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Bernoulli"

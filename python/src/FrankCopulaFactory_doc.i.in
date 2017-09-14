@@ -4,9 +4,20 @@
 Available constructor:
     FrankCopulaFactory()
 
+The paramters are estimated using the follwing equations:
+
+:math:`\Hat{\theta}_n` is solution of
+
+.. math::
+
+    \displaystyle \Hat{\tau}_n = 1-4\left( \frac{1-D(\Hat{\theta}_n, 1)^{\strut}}{\theta} \right)
+
+where :math:`D` is the Debye function defined as
+
+.. math::
+
+    \displaystyle D(x, n)=\frac{n}{x^n}\int_0^x \frac{t^n}{e^t-1_{\strut}} dt
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, FrankCopula"

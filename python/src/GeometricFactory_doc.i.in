@@ -4,9 +4,15 @@
 Available constructor:
     GeometricFactory()
 
+We use the following estimator:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{p}_n = \frac{1}{\bar{x}_n}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
-
-
-
+DistributionFactory, Geometric"

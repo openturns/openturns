@@ -4,6 +4,16 @@
 Available constructor:
     RayleighFactory()
 
+The parameters are estimated by method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\gamma}_n = (1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
+      \displaystyle\Hat{\sigma}_n=\sqrt{\frac{2}{n}\sum_{i=1}^n(x_i-\Hat{\gamma}_n)^2}
+    \end{eqnarray*}
+
 See also
 --------
-DistributionFactory"
+DistributionFactory, Rayleigh"

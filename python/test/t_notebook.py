@@ -6,6 +6,7 @@ import fnmatch
 import sys
 import glob
 import traceback
+import time
 
 import nbformat
 import nbconvert
@@ -13,11 +14,16 @@ import nbconvert
 current_path = os.path.dirname(os.path.realpath(__file__))
 ipynb_path = current_path + '/../doc/examples'
 print('ipynb_path=', ipynb_path)
-ipynbs = []
-for root, dirnames, filenames in os.walk(ipynb_path):
-    for filename in fnmatch.filter(filenames, '*.ipynb'):
-        ipynb = os.path.join(root, filename)
-        if not 'ipynb_checkpoints' in ipynb:  # exclude automatic backups
+
+if len(sys.argv) > 1:
+    ipynbs = sys.argv[1:]
+else:
+    ipynbs = []
+    for root, dirnames, filenames in os.walk(ipynb_path):
+        for filename in fnmatch.filter(filenames, '*.ipynb'):
+            ipynb = os.path.join(root, filename)
+            if 'ipynb_checkpoints' in ipynb:  # exclude automatic backups
+                continue
             ipynbs.append(ipynb)
 
 n_fail = 0
@@ -34,8 +40,10 @@ for ipynb in ipynbs:
     b_name = os.path.basename(ipynb)
     print('--', b_name)
     try:
+        t0 = time.time()
         exec(source.encode())
-        print('--', b_name, 'OK')
+        elapsed = time.time() - t0
+        print('--', b_name, 'OK T=', round(elapsed, 2), 's')
     except:
         n_fail += 1
         print('--', b_name, '***Failed')
