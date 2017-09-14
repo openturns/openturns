@@ -1765,7 +1765,16 @@ OT_Distribution_getDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getDispersionIndicator_doc
-"**(ditch me?)**"
+"Dispersion indicator accessor.
+
+Defines a generic metric of the dispersion. When the standard deviation is not
+defined it falls back to the interquartile.
+Only available for 1-d distributions.
+
+Returns
+-------
+dispersion : float
+    Standard deviation or interquartile."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getDispersionIndicator
 OT_Distribution_getDispersionIndicator_doc
@@ -2128,7 +2137,16 @@ OT_Distribution_getPearsonCorrelation_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getPositionIndicator_doc
-"**(ditch me?)**"
+"Position indicator accessor.
+
+Defines a generic metric of the position. When the mean is not defined it falls
+back to the median.
+Available only for 1-d distributions.
+
+Returns
+-------
+position : float
+    Mean or median of the distribution."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getPositionIndicator
 OT_Distribution_getPositionIndicator_doc
