@@ -563,10 +563,8 @@ OT_Drawable_getData_doc
 
 Returns
 -------
-boundingBox : :class:`~openturns.Point` of dimension 4
-    Bounding box of the drawable element, which is a rectangle determined
-    by its range along X and its range along Y.
-    The *boundingBox* is :math:`(x_{min}, x_{max}, y_{min}, y_{max})`."
+boundingBox : :class:`~openturns.Interval` of dimension 2
+    Bounding box of the drawable element"
 %enddef
 %feature("docstring") OT::DrawableImplementation::getBoundingBox
 OT_Drawable_getBoundingBox_doc

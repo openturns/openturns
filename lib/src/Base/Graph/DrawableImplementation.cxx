@@ -38,8 +38,6 @@ static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 
 /* default graphic paramaters */
 
-const UnsignedInteger DrawableImplementation::BoundingBoxSize  = 4;
-
 Bool DrawableImplementation::IsFirstInitialization          = true;
 
 /* A map  matching keys with R codes for point symbols */
@@ -1201,16 +1199,11 @@ void DrawableImplementation::setData(const Point & data)
 }
 
 /* Bounding box accessor */
-DrawableImplementation::BoundingBox DrawableImplementation::getBoundingBox() const
+Interval DrawableImplementation::getBoundingBox() const
 {
-  BoundingBox boundingBox(BoundingBoxSize);
-  const Point min(data_.getMin());
-  const Point max(data_.getMax());
-  boundingBox[0] = min[0];
-  boundingBox[1] = max[0];
-  boundingBox[2] = min[1];
-  boundingBox[3] = max[1];
-  return boundingBox;
+  Point min(data_.getMin());
+  Point max(data_.getMax());
+  return Interval(min, max);
 }
 
 /* Accessor for color */

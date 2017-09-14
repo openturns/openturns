@@ -259,17 +259,21 @@ void Graph::clean()
   getImplementation()->clean();
 }
 
-/* Get the bounding box of the whole plot */
-Graph::BoundingBox Graph::getBoundingBox() const
+/* Margin accessor */
+void Graph::setXMargin(const Scalar xMargin)
 {
-  return getImplementation()->getBoundingBox();
+  getImplementation()->setXMargin(xMargin);
 }
 
-/* Set the bounding box of the whole plot */
-void Graph::setBoundingBox(const BoundingBox & boundingBox)
+void Graph::setYMargin(const Scalar yMargin)
 {
-  copyOnWrite();
-  getImplementation()->setBoundingBox(boundingBox);
+  getImplementation()->setYMargin(yMargin);
+}
+
+/* Get the bounding box of the whole plot */
+Interval Graph::getBoundingBox() const
+{
+  return getImplementation()->getBoundingBox();
 }
 
 void Graph::setBoundingBox(const Interval & boundingBox)

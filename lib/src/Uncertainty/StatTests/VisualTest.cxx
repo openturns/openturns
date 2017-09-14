@@ -119,15 +119,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   graphQQplot.add(bisectrice);
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
-  // Adapt the margins
-  Point boundingBox(graphQQplot.getBoundingBox());
-  Scalar width = boundingBox[1] - boundingBox[0];
-  Scalar height = boundingBox[3] - boundingBox[2];
-  boundingBox[0] -= 0.1 * width;
-  boundingBox[1] += 0.1 * width;
-  boundingBox[2] -= 0.1 * height;
-  boundingBox[3] += 0.1 * height;
-  graphQQplot.setBoundingBox(boundingBox);
   return graphQQplot;
 }
 
@@ -164,15 +155,6 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   graphQQplot.add(bisectrice);
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
-  // Adapt the margins
-  Point boundingBox(graphQQplot.getBoundingBox());
-  Scalar width = boundingBox[1] - boundingBox[0];
-  Scalar height = boundingBox[3] - boundingBox[2];
-  boundingBox[0] -= 0.1 * width;
-  boundingBox[1] += 0.1 * width;
-  boundingBox[2] -= 0.1 * height;
-  boundingBox[3] += 0.1 * height;
-  graphQQplot.setBoundingBox(boundingBox);
   return graphQQplot;
 }
 
@@ -407,13 +389,6 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
     bar.setLineWidth(3);
     cobWeb.add(bar);
   }
-  Point minPoint(2);
-  minPoint[0] = 0.0;
-  minPoint[1] = 0.0;
-  Point maxPoint(2);
-  maxPoint[0] = 1.1 * inputDimension;
-  maxPoint[1] = size;
-  cobWeb.setBoundingBox(Interval(minPoint, maxPoint));
   cobWeb.setGrid(false);
   return cobWeb;
 }

@@ -52,7 +52,7 @@ String Drawable::__repr__() const
 /* Here is the interface */
 
 /* Accessor for bounding box of the drawable */
-Point Drawable::getBoundingBox() const
+Interval Drawable::getBoundingBox() const
 {
   return getImplementation()->getBoundingBox();
 }

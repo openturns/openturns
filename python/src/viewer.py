@@ -198,10 +198,11 @@ class View(object):
             axes_kwargs.setdefault('yscale', 'log')
 
         # set bounding box
+        bb = graph.getBoundingBox()
         axes_kwargs.setdefault(
-            'xlim', [graph.getBoundingBox()[0], graph.getBoundingBox()[1]])
+            'xlim', [bb.getLowerBound()[0], bb.getUpperBound()[0]])
         axes_kwargs.setdefault(
-            'ylim', [graph.getBoundingBox()[2], graph.getBoundingBox()[3]])
+            'ylim', [bb.getLowerBound()[1], bb.getUpperBound()[1]])
 
         # set figure
         if figure is None:

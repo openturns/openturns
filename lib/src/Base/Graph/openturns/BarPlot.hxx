@@ -74,7 +74,7 @@ public:
   void setOrigin(const Scalar origin);
 
   /** Accessor for boundingbox */
-  BoundingBox getBoundingBox() const;
+  Interval getBoundingBox() const;
 
   /** Draw method */
   String draw() const;

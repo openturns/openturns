@@ -572,9 +572,6 @@ Graph Histogram::drawPDF(const Scalar xMin,
   Curve curve(dataFull, "red", "solid", 2, "");
   curve.setLegend(title);
   graphPDF.add(curve);
-  Point bb(graphPDF.getBoundingBox());
-  bb[3] *= 1.1;
-  graphPDF.setBoundingBox(bb);
   return graphPDF;
 }
 

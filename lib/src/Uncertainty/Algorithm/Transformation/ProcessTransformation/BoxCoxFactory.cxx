@@ -320,9 +320,6 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
     cloud.setPointStyle("circle");
     cloud.setLegend(String(OSS() << "lambda=" << lambda[d]));
     graph.add(cloud);
-    Point bb(graph.getBoundingBox());
-    bb[3] += 0.1 * (bb[3] - bb[2]);
-    graph.setBoundingBox(bb);
   }
   // return result ==> Box Cox transform
   return BoxCoxTransform(lambda, shift);

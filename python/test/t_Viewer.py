@@ -219,8 +219,11 @@ try:
     # graph.draw('curve12.png')
     view = View(graph)
     # view.save('curve12.png')
-    view.ShowAll(block=True)
 
+    # BipartiteGraph.draw
+    graph = ot.BipartiteGraph([[0, 1, 2], [0, 1, 2]]).draw()
+    view = View(graph)
+    view.ShowAll(block=True)
 except:
     traceback.print_exc()
     os._exit(1)

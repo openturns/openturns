@@ -620,9 +620,10 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
   Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
   graph.add(totalOrderIndicesGraph);
   // Set bounding box
-  Point boundingBox(4, -0.1);
-  boundingBox[1] = aggregatedFO.getDimension() + 1;
-  boundingBox[3] = 1.1 ;
+  Point lowerBound(2, -0.1);
+  Point upperBound(2);
+  upperBound[0] = aggregatedFO.getDimension() + 1;
+  upperBound[1] = 1.1 ;
   if (bootstrapSize_ > 0 && confidenceLevel_ > 0.0)
   {
     // Add plot of intervals
@@ -647,7 +648,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
       graph.add(Curve(data, "blue", "solid", 2, ""));
     }
   }
-  graph.setBoundingBox(boundingBox);
+  graph.setBoundingBox(Interval(lowerBound, upperBound));
   graph.setLegendPosition("topright");
   return graph;
 }
@@ -678,10 +679,11 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
   Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
   graph.add(totalOrderIndicesGraph);
   // Set bounding box
-  Point boundingBox(4, -0.1);
-  boundingBox[1] = foIndices.getDimension() + 1;
-  boundingBox[3] = 1.1 ;
-  graph.setBoundingBox(boundingBox);
+  Point lowerBound(2, -0.1);
+  Point upperBound(2);
+  upperBound[0] = foIndices.getDimension() + 1;
+  upperBound[1] = 1.1 ;
+  graph.setBoundingBox(Interval(lowerBound, upperBound));
   graph.setLegendPosition("topright");
   return graph;
 }

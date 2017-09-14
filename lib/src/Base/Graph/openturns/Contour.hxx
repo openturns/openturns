@@ -91,7 +91,7 @@ public:
   void setDrawLabels(const Bool & drawLabels);
 
   /** Accessor for boundingbox */
-  BoundingBox getBoundingBox() const;
+  Interval getBoundingBox() const;
 
   /** Draw method */
   String draw() const;
