@@ -46,6 +46,7 @@
  * #909 (Wrong argument type in the API doc)
  * #910 (Graph of a d-dimensionnal distribution)
  * #911 (In the Field class, the getSample and getValues methods are duplicate)
+ * #912 (Wrong description of Histogram constructor parameters)
 
 == 1.9 release (2017-04-18) == #release-1.9
 
