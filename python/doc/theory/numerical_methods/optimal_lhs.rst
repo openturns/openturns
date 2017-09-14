@@ -67,12 +67,12 @@ hereafter.
 Monte Carlo
 ~~~~~~~~~~~
 This problem can be approximated by a Monte Carlo algorithm: a fixed number of designs are generated, and the optimal one is kept.
-This algorithm is trivial and available in :class:`~otlhs.MonteCarloLHS`.
+This algorithm is trivial and available in :class:`~openturns.MonteCarloLHS`.
 One of the major drawbacks of Monte Carlo sampling is the CPU time consumption, because the number of generated designs must be high.
 
 Simulated Annealing
 ~~~~~~~~~~~~~~~~~~~
-An alternate solution is to use an adapted simulated annealing method, available in :class:`~otlhs.SimulatedAnnealingLHS`, which we will now describe.
+An alternate solution is to use an adapted simulated annealing method, available in :class:`~openturns.SimulatedAnnealingLHS`, which we will now describe.
 Starting from an LHS design, a new design is obtained by permuting one random coordinate of two randomly chosen elements; by construction, this design is also an LHS design.
 If the new design is better than the previous one, it is kept.
 If it is worse, it may anyway be kept with some probability, which depends on how these designs compare, but also on a temperature profile T which decreases over time.
