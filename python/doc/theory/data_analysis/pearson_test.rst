@@ -54,7 +54,6 @@ only if :math:`\alpha_\textrm{lim}` is greater than the value
     f = ot.SymbolicFunction(['x'], ['15*x+1'])
     y = f(x) + ot.Normal(0.0, 20.0).getSample(N)
     graph = f.draw(0.0, 8.0)
-    graph.setAutomaticBoundingBox(True)
     graph.setTitle('Non significant Pearson coefficient')
     graph.setXTitle('u')
     graph.setYTitle('v')

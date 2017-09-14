@@ -55,7 +55,6 @@ only if :math:`\alpha_\textrm{lim}` is greater than the value
     f = ot.SymbolicFunction(['x'], ['80-0.4*(x-2)^3'])
     y = f(x) + ot.Normal(0.0, 20.0).getSample(N)
     graph = f.draw(2.0, 8.0)
-    graph.setAutomaticBoundingBox(True)
     graph.setTitle('Non significant Spearman coefficient')
     graph.setXTitle('u')
     graph.setYTitle('v')
@@ -63,7 +62,6 @@ only if :math:`\alpha_\textrm{lim}` is greater than the value
     cloud.setPointStyle('circle')
     cloud.setColor('orange')
     graph.add(cloud)
-    graph.setBoundingBox([0,10,0,120])
     View(graph)
 
 
