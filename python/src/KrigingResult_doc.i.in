@@ -23,7 +23,7 @@ basis : collection of :class:`~openturns.Basis`
 trendCoefficients : collection of :class:`~openturns.Point`
    The trend coeffient vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance function of the normal process.
+    Covariance function of the Gaussian process.
 covarianceCoefficients : 2-d sequence of float
     The :math:`\vect{\gamma}` defined in :eq:`gammaEq`.
 covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
@@ -127,7 +127,7 @@ trendCoef : collection of :class:`~openturns.Point`
 Returns
 -------
 covModel : :class:`~openturns.CovarianceModel`
-    The covariance model of the Normal process *W* with its optimized parameters.
+    The covariance model of the Gaussian process *W* with its optimized parameters.
 "
 
 // ---------------------------------------------------------------------

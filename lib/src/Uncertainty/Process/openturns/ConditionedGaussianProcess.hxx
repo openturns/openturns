@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A class which implements the ConditionedNormalProcess
+ *  @brief A class which implements the ConditionedGaussianProcess
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_CONDITIONEDNORMALPROCESS_HXX
-#define OPENTURNS_CONDITIONEDNORMALPROCESS_HXX
+#ifndef OPENTURNS_CONDITIONEDGAUSSIANPROCESS_HXX
+#define OPENTURNS_CONDITIONEDGAUSSIANPROCESS_HXX
 
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/KrigingResult.hxx"
@@ -27,11 +27,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ConditionedNormalProcess
+ * @class ConditionedGaussianProcess
  *
- * The implementation of a Normal process, conditioned by observations & kriging
+ * The implementation of a Gaussian process, conditioned by observations & kriging
  */
-class OT_API ConditionedNormalProcess
+class OT_API ConditionedGaussianProcess
   : public GaussianProcess
 {
   CLASSNAME;
@@ -39,14 +39,14 @@ class OT_API ConditionedNormalProcess
 public:
 
   /** Default constructor */
-  ConditionedNormalProcess();
+  ConditionedGaussianProcess();
 
   /** Standard constructor  */
-  ConditionedNormalProcess(const KrigingResult & result,
+  ConditionedGaussianProcess(const KrigingResult & result,
                            const Mesh & mesh);
 
   /** Virtual constructor */
-  virtual ConditionedNormalProcess * clone() const;
+  virtual ConditionedGaussianProcess * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -57,7 +57,7 @@ public:
   /** Realization accessor */
   Field getRealization() const;
 
-  /** Is the underlying a Normal process ? */
+  /** Is the underlying a Gaussian process ? */
   Bool isNormal() const;
 
   /** Is the underlying a stationary process ? */
@@ -92,8 +92,8 @@ private:
   /** Trend part - conditionned by the mesh points */
   Sample trendEvaluationMesh_;
 
-}; /* class ConditionedNormalProcess */
+}; /* class ConditionedGaussianProcess */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_CONDITIONEDNORMALPROCESS_HXX */
+#endif /* OPENTURNS_CONDITIONEDGAUSSIANPROCESS_HXX */

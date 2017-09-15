@@ -32,12 +32,12 @@ the stationary case: :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)`. A
 process is *normal*, if all its finite dimensional joint distributions are
 normal (See the method :meth:`~openturns.Process.isNormal` for a detailed definition).
 
-The gaussian processes may have a trend: in that case, the normal
+The gaussian processes may have a trend: in that case, the Gaussian 
 process is the sum of the trend function
-:math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean normal process.
+:math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean Gaussian process.
 
 If the zero-mean process is stationary, in order to manipulate the same
-normal process through both the temporal and spectral views, it is necessary to
+Gaussian process through both the temporal and spectral views, it is necessary to
 create a second order model *secondOrderModel* that insures the coherence
 between the covariance function :math:`C^{stat}` and the spectral density
 function :math:`S: \Rset \mapsto \cH^+(d)`. :math:`\cH^+(d) \in \cM_d(\Cset)`

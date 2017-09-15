@@ -1,5 +1,5 @@
 %feature("docstring") OT::SpectralGaussianProcess
-"Spectral normal process.
+"Spectral Gaussian process.
 
 Available constructors:
     SpectralGaussianProcess(*secondOrderModel, timeGrid*)
@@ -72,25 +72,25 @@ Create a *SpectralGaussianProcess* from a second order model and a time grid:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SpectralGaussianProcess::getFFTAlgorithm
-"Get the FFT algorithm used to generate realizations of the spectral normal process.
+"Get the FFT algorithm used to generate realizations of the spectral Gaussian process.
 
 Returns
 -------
 fftAlgo : :class:`~openturns.FFT`
-    FFT algorithm used to generate realizations of the spectral normal process.
+    FFT algorithm used to generate realizations of the spectral Gaussian process.
     By default, it is the :class:`~openturns.KissFFT` algorithm.
 "
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SpectralGaussianProcess::setFFTAlgorithm
-"Set the FFT algorithm used to generate realizations of the spectral normal process.
+"Set the FFT algorithm used to generate realizations of the spectral Gaussian process.
 
 Parameters
 ----------
 fftAlgo : :class:`~openturns.FFT`
     FFT algorithm that will be used to generate realizations of the spectral
-    normal process. OpenTURNS provides the :class:`~openturns.KissFFT`
+    Gaussian process. OpenTURNS provides the :class:`~openturns.KissFFT`
     algorithm. More efficient implementations are provided by the
     *openturns-fftw* module.
 "

@@ -169,7 +169,7 @@ String ARMA::__str__(const String & offset) const
   return oss;
 }
 
-/* Is the underlying a Normal process ? */
+/* Is the underlying a Gaussian process ? */
 Bool ARMA::isNormal() const
 {
   // The easy case: the distribution is an interface to

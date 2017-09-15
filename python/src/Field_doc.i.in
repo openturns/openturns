@@ -16,8 +16,6 @@ OT_Field_getDescription_doc
 OT_Field_getDimension_doc
 %feature("docstring") OT::Field::getMesh
 OT_Field_getMesh_doc
-%feature("docstring") OT::Field::getSample
-OT_Field_getSample_doc
 %feature("docstring") OT::Field::getSize
 OT_Field_getSize_doc
 %feature("docstring") OT::Field::getSpatialDimension

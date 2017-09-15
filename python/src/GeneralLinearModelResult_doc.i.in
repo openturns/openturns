@@ -23,7 +23,7 @@ basis : collection of :class:`~openturns.Basis`
 trendCoefficients : collection of :class:`~openturns.Point`
    The trend coefficients vectors :math:`(\vect{\alpha}^1, \dots, \vect{\alpha}^p)`.
 covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance function of the normal process with its optimized parameters.
+    Covariance function of the Gaussian process with its optimized parameters.
 covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
     The Cholesky factor :math:`\mat{L}` of :math:`\mat{C}`.
 covarianceHMatrix :  :class:`~openturns.HMatrix`
@@ -114,7 +114,7 @@ trendCoef : collection of :class:`~openturns.Point`
 Returns
 -------
 covModel : :class:`~openturns.CovarianceModel`
-    The covariance model of the Normal process *W*.
+    The covariance model of the Gaussian process *W*.
 "
 
 // ---------------------------------------------------------------------
@@ -168,12 +168,12 @@ transformation : :class:`~openturns.Function`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralLinearModelResult::getNoise
-"Accessor to the normal process.
+"Accessor to the Gaussian process.
 
 Returns
 -------
 process : :class:`~openturns.Process`
-    Returns the normal process :math:`W` with the optimized parameters.
+    Returns the Gaussian process :math:`W` with the optimized parameters.
 "
 
 // ---------------------------------------------------------------------

@@ -343,6 +343,7 @@ Point FieldImplementation::getTemporalMean() const
 /* Return the values stored in the field as a sample */
 Sample FieldImplementation::getSample() const
 {
+  Log::Warn(OSS() << "Field::getSample is deprecated in favor of getValues");
   return values_;
 }
 

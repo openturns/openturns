@@ -306,7 +306,7 @@ ot_pyinstallcheck_test (CompositeProcess_std)
 ot_pyinstallcheck_test (ARMALikelihoodFactory_std)
 ot_pyinstallcheck_test (FunctionalBasisProcess_std)
 ot_pyinstallcheck_test (WhittleFactory_std)
-ot_pyinstallcheck_test (ConditionedNormalProcess_std)
+ot_pyinstallcheck_test (ConditionedGaussianProcess_std)
 ot_pyinstallcheck_test (KarhunenLoeveQuadratureAlgorithm_std)
 
 ## Transformation

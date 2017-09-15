@@ -1,5 +1,5 @@
 %feature("docstring") OT::ARMALikelihoodFactory
-"Maximum likelihood estimator of a multivariate ARMA normal process.
+"Maximum likelihood estimator of a multivariate ARMA Gaussian process.
 
 Available constructors:
     ARMALikelihoodFactory()
@@ -184,14 +184,4 @@ initMACoeff : :class:`~openturns.ARMACoefficients`
     The initial AR coefficients used for the optimization algorithm.
 initCovMatr : :class:`~openturns.CovarianceMatrix`
     The initial covariance matrix of the white noise used for the optimization algorithm.
-"
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::ARMALikelihoodFactory::getInvertible
-"Accessor to the initial AR coefficients.
-
-Returns
--------
-invertible : bool
-    The initial AR coefficients used for the optimization algorithm.
 "

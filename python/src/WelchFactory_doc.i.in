@@ -42,8 +42,8 @@ Create a time series from a stationary second order process:
 >>> import openturns as ot
 >>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 2**8)
 >>> model = ot.ExponentialCauchy([5.0], [3.0])
->>> myNormalProcess = ot.SpectralGaussianProcess(model, myTimeGrid)
->>> myTimeSeries = myNormalProcess.getRealization()
+>>> gp = ot.SpectralGaussianProcess(model, myTimeGrid)
+>>> myTimeSeries = gp.getRealization()
 
 Estimate the spectral model with WelchFactory:
 

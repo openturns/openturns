@@ -230,6 +230,32 @@ OT_Process_getSpatialDimension_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Process_getCovarianceModel_doc
+"Accessor to the covariance model.
+
+Returns
+-------
+cov_model : :class:`~openturns.CovarianceModel`
+    Covariance model, if any."
+%enddef
+%feature("docstring") OT::ProcessImplementation::getCovarianceModel
+OT_Process_getCovarianceModel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Process_getTrend_doc
+"Accessor to the trend.
+
+Returns
+-------
+trend : :class:`~openturns.TrendTransform`
+    Trend, if any."
+%enddef
+%feature("docstring") OT::ProcessImplementation::getTrend
+OT_Process_getTrend_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Process_getTimeGrid_doc
 "Get the time grid of observation of the process.
 
@@ -316,7 +342,7 @@ where :math:`\Tr{\vect{X}}_{I_k} = (\Tr{X}_{\vect{t}_1}, \hdots, \Tr{X}_{\vect{t
   \end{array}
   \right)
 
-A normal process is entirely defined by its mean function :math:`m` and its
+A Gaussian process is entirely defined by its mean function :math:`m` and its
 covariance function :math:`C` (or correlation function :math:`R`)."
 %enddef
 %feature("docstring") OT::ProcessImplementation::isNormal

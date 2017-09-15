@@ -85,10 +85,10 @@ ts5.add(ns1)
 print('ts5=', ts5)
 
 # We retrieve the values of the time series as a sample
-ns2 = ts5.getSample()
+ns2 = ts5.getValues()
 print('ns2=', ns2)
 
 # We build a time series from a time grid and a sample
-ns3 = ts4.getSample()
+ns3 = ts4.getValues()
 ts6 = ot.TimeSeries(tg2, ns3)
 print('ts6=', ts6)

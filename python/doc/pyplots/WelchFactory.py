@@ -15,11 +15,11 @@ myTimeGrid = ot.RegularGrid(tMin, timeStep, size)
 amplitude = [5]
 scale = [3]
 model = ot.ExponentialCauchy(scale, amplitude)
-myNormalProcess = ot.SpectralGaussianProcess(model, myTimeGrid)
+gp = ot.SpectralGaussianProcess(model, myTimeGrid)
 
 # Get a time series or a sample of time series
-# myTimeSeries = myNormalProcess.getRealization()
-mySample = myNormalProcess.getSample(1000)
+# myTimeSeries = gp.getRealization()
+mySample = gp.getSample(1000)
 
 mySegmentNumber = 10
 myOverlapSize = 0.3

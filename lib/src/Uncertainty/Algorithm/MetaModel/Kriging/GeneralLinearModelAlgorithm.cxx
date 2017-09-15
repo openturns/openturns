@@ -679,7 +679,7 @@ void GeneralLinearModelAlgorithm::run()
   hasRun_ = true;
 }
 
-// Maximize the log-likelihood of the Normal process model wrt the observations
+// Maximize the log-likelihood of the Gaussian process model wrt the observations
 // If the covariance model has no active parameter, no numerical optimization
 // is done. There are two cases:
 // + no parameter has to be optimized, in which case a single call to

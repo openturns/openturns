@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class GaussianProcess
  *
- * The implementation of the Normal process class
+ * The implementation of the Gaussian process class
  */
 class OT_API GaussianProcess
   : public ProcessImplementation

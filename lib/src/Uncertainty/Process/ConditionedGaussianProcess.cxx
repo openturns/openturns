@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief A class which implements the ConditionedNormalProcess process
+ *  @brief A class which implements the ConditionedGaussianProcess process
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/ConditionedNormalProcess.hxx"
+#include "openturns/ConditionedGaussianProcess.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
@@ -29,11 +29,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConditionedNormalProcess);
+CLASSNAMEINIT(ConditionedGaussianProcess);
 
-static const Factory<ConditionedNormalProcess> Factory_ConditionedNormalProcess;
+static const Factory<ConditionedGaussianProcess> Factory_ConditionedGaussianProcess;
 
-ConditionedNormalProcess::ConditionedNormalProcess()
+ConditionedGaussianProcess::ConditionedGaussianProcess()
   : GaussianProcess()
   , krigingResult_()
   , trendEvaluationMesh_()
@@ -41,7 +41,7 @@ ConditionedNormalProcess::ConditionedNormalProcess()
   // Nothing to do
 }
 
-ConditionedNormalProcess::ConditionedNormalProcess(const KrigingResult & result,
+ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & result,
     const Mesh & mesh)
   : GaussianProcess()
   , krigingResult_(result)
@@ -52,7 +52,7 @@ ConditionedNormalProcess::ConditionedNormalProcess(const KrigingResult & result,
   // Set the mesh & dimension
   setDimension(covarianceModel_.getDimension());
   if (covarianceModel_.getSpatialDimension() != mesh.getDimension())
-    throw InvalidArgumentException(HERE) << "In ConditionedNormalProcess::ConditionedNormalProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
+    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
   setMesh(mesh);
   // Initialize
   initialize();
@@ -60,16 +60,16 @@ ConditionedNormalProcess::ConditionedNormalProcess(const KrigingResult & result,
 
 
 /* Virtual constructor */
-ConditionedNormalProcess * ConditionedNormalProcess::clone() const
+ConditionedGaussianProcess * ConditionedGaussianProcess::clone() const
 {
-  return new ConditionedNormalProcess(*this);
+  return new ConditionedGaussianProcess(*this);
 }
 
 /* String converter */
-String ConditionedNormalProcess::__repr__() const
+String ConditionedGaussianProcess::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << ConditionedNormalProcess::GetClassName()
+  oss << "class=" << ConditionedGaussianProcess::GetClassName()
       << ", mesh=" << mesh_
       << ", trend=" << trend_
       << ", covariance=" << covarianceModel_
@@ -77,10 +77,10 @@ String ConditionedNormalProcess::__repr__() const
   return oss;
 }
 
-String ConditionedNormalProcess::__str__(const String & offset) const
+String ConditionedGaussianProcess::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "ConditionedNormalProcess("
+  oss << "ConditionedGaussianProcess("
       << "mesh=" << mesh_.__str__(offset)
       << ", trend=" << trend_.__str__(offset)
       << ", covariance=" << covarianceModel_.__str__(offset)
@@ -89,7 +89,7 @@ String ConditionedNormalProcess::__str__(const String & offset) const
   return oss;
 }
 
-void ConditionedNormalProcess::initialize()
+void ConditionedGaussianProcess::initialize()
 {
   if (isInitialized_) return;
   // Build the covariance factor
@@ -115,11 +115,11 @@ void ConditionedNormalProcess::initialize()
 }
 
 /* Mesh accessor */
-void ConditionedNormalProcess::setMesh(const Mesh & mesh)
+void ConditionedGaussianProcess::setMesh(const Mesh & mesh)
 {
   // Checking dimension coherancy between kriging result & mesh
   if (mesh.getDimension() != krigingResult_.getMetaModel().getInputDimension())
-    throw InvalidArgumentException(HERE) << "In ConditionedNormalProcess::ConditionedNormalProcess, incompatible dimension between mesh & kriging. Here, mesh dimension = " << mesh.getDimension()
+    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, incompatible dimension between mesh & kriging. Here, mesh dimension = " << mesh.getDimension()
                                          << " and kriging input dimension = " <<  krigingResult_.getMetaModel().getInputDimension();
   // Set the mesh
   isInitialized_ = false;
@@ -129,20 +129,20 @@ void ConditionedNormalProcess::setMesh(const Mesh & mesh)
 }
 
 /* TimeGrid accessor */
-void ConditionedNormalProcess::setTimeGrid(const RegularGrid & timeGrid)
+void ConditionedGaussianProcess::setTimeGrid(const RegularGrid & timeGrid)
 {
   setMesh(timeGrid);
 }
 
 /** Set sampling method accessor */
-void ConditionedNormalProcess::setSamplingMethod(const UnsignedInteger samplingMethod)
+void ConditionedGaussianProcess::setSamplingMethod(const UnsignedInteger samplingMethod)
 {
   // Nothing to do
   LOGWARN(OSS(false) << "Only the cholesky factor method is implemented. The method has no effect here");
 }
 
 /* Realization generator */
-Field ConditionedNormalProcess::getRealization() const
+Field ConditionedGaussianProcess::getRealization() const
 {
   // 1) L.X product with L: cholesky factor, X the gaussian vector
   // Constantes values
@@ -166,20 +166,20 @@ Field ConditionedNormalProcess::getRealization() const
 }
 
 /* Is the underlying a gaussian process ? */
-Bool ConditionedNormalProcess::isNormal() const
+Bool ConditionedGaussianProcess::isNormal() const
 {
   return true;
 }
 
 /* Is the underlying a stationary process ? */
-Bool ConditionedNormalProcess::isStationary() const
+Bool ConditionedGaussianProcess::isStationary() const
 {
   // False since the conditioned variance is null at conditioning points
   return false;
 }
 
 /* Method save() stores the object through the StorageManager */
-void ConditionedNormalProcess::save(Advocate & adv) const
+void ConditionedGaussianProcess::save(Advocate & adv) const
 {
   GaussianProcess::save(adv);
   adv.saveAttribute("krigingResult_", krigingResult_);
@@ -187,7 +187,7 @@ void ConditionedNormalProcess::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ConditionedNormalProcess::load(Advocate & adv)
+void ConditionedGaussianProcess::load(Advocate & adv)
 {
   GaussianProcess::load(adv);
   adv.loadAttribute("krigingResult_", krigingResult_);

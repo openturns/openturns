@@ -62,7 +62,7 @@ public:
   /** Is the underlying stationary ? */
   Bool isStationary() const;
 
-  /** Is the underlying a Normal process ? */
+  /** Is the underlying a Gaussian process ? */
   Bool isNormal() const;
 
   /** Realization accessor */

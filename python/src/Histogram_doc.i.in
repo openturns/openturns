@@ -11,7 +11,7 @@ first : float
 width : positive sequence of float
     :math:`\ell_i` is the width of the class :math:`i`.
 height : positive sequence of float
-    :math:`h_i` is the frequency of the class :math:`i`.
+    :math:`h_i` is the number of occurrences of the class :math:`i`.
 
 Notes
 -----

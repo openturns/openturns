@@ -795,16 +795,10 @@ i : int, :math:`1 \leq i \leq n`
     The index of the margin of interest.
 x_min : float
     The starting value that is used for meshing the x-axis.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : int
     The number of points that is used for meshing the x-axis.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
-    :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -1228,16 +1222,10 @@ i : int, :math:`1 \leq i \leq n`
     The index of the margin of interest.
 x_min : float
     The starting value that is used for meshing the x-axis.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : int
     The number of points that is used for meshing the x-axis.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
-    :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -1271,16 +1259,10 @@ i : int, :math:`1 \leq i \leq n`
     The index of the margin of interest.
 x_min : float
     The starting value that is used for meshing the x-axis.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : int
     The number of points that is used for meshing the x-axis.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
-    :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -1316,16 +1298,10 @@ j : int, :math:`1 \leq i \neq j \leq n`
     The index of the second margin of interest.
 x_min : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
-    :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -1362,16 +1338,10 @@ j : int, :math:`1 \leq i \neq j \leq n`
     The index of the second margin of interest.
 x_min : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
-    :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -1408,16 +1378,10 @@ j : int, :math:`1 \leq i \neq j \leq n`
     The index of the second margin of interest.
 x_min : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
 x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
-    Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
-    :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -1801,7 +1765,16 @@ OT_Distribution_getDimension_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getDispersionIndicator_doc
-"**(ditch me?)**"
+"Dispersion indicator accessor.
+
+Defines a generic metric of the dispersion. When the standard deviation is not
+defined it falls back to the interquartile.
+Only available for 1-d distributions.
+
+Returns
+-------
+dispersion : float
+    Standard deviation or interquartile."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getDispersionIndicator
 OT_Distribution_getDispersionIndicator_doc
@@ -2164,7 +2137,16 @@ OT_Distribution_getPearsonCorrelation_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getPositionIndicator_doc
-"**(ditch me?)**"
+"Position indicator accessor.
+
+Defines a generic metric of the position. When the mean is not defined it falls
+back to the median.
+Available only for 1-d distributions.
+
+Returns
+-------
+position : float
+    Mean or median of the distribution."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getPositionIndicator
 OT_Distribution_getPositionIndicator_doc

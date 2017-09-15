@@ -56,7 +56,7 @@ fTrend = ot.SymbolicFunction(['t1', 't2'], ['1+2*t1', '1+3*t2'])
 
 
 #
-# Create a normal process of dimension 2
+# Create a Gaussian process of dimension 2
 # which mesh is of box of dimension 2
 
 myIndices = ot.Indices([80, 40])
@@ -66,7 +66,7 @@ upperBound = [2., 1.]
 myInterval = ot.Interval(lowerBound, upperBound)
 myMesh = myMesher.build(myInterval)
 
-# Define a bidimensional temporal normal process on the mesh
+# Define a bidimensional temporal Gaussian process on the mesh
 # with independent components
 amplitude = [1.0, 1.0]
 scale = [0.2, 0.3]

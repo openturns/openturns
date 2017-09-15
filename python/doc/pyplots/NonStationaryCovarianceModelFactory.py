@@ -57,7 +57,7 @@ for k in range(N):
 myCovarianceModel = ot.UserDefinedCovarianceModel(
     myMesh, myCovarianceCollection)
 
-# Create the non stationary Normal process with
+# Create the non stationary Gaussian process with
 # that covariance model
 myProcess = ot.GaussianProcess(myCovarianceModel, myMesh)
 

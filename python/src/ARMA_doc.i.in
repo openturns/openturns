@@ -132,7 +132,7 @@ A :class:`~openturns.TimeSeries`
 
 - If :math:`N_{real} > 1`:
 
-A :class:`~openturnsProcessSample`
+A :class:`~openturns.ProcessSample`
     :math:`N_{real}`  possible futures of the ARMA process, from the current state over the next :math:`N_{it}` time stamps.
 
 Note that the time grid of each future begins at the last time stamp of the time grid associated to the time series which is extended."

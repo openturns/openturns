@@ -87,8 +87,8 @@ Link Temporal - Spectral information
     SecondOrderModel
     ExponentialCauchy
 
-Normal process
-==============
+Gaussian process
+================
 
 .. autosummary::
     :toctree: _generated/
@@ -98,7 +98,7 @@ Normal process
     GaussianProcess
 
     :template: class.rst_t
-    ConditionedNormalProcess
+    ConditionedGaussianProcess
 
 Functional basis process
 ========================

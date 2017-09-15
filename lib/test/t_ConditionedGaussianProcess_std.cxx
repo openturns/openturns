@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class ConditionedNormalProcess for standard methods
+ *  @brief The test file of class ConditionedGaussianProcess for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   PlatformInfo::SetNumericalPrecision(3);
 
   // Process with empty constructor
-  ConditionedNormalProcess myProcess;
+  ConditionedGaussianProcess myProcess;
   fullprint << "process = " << myProcess << std::endl;
 
   // Learning data
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
 
   // Conditioned process
-  ConditionedNormalProcess process(result, mesh2D);
+  ConditionedGaussianProcess process(result, mesh2D);
   std::cerr << "process (conditioned)=" << process << std::endl;
   // Get a realization of the process
   Field realization( process.getRealization() );

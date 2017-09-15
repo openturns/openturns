@@ -44,7 +44,7 @@ try:
     simplicies = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 4]]
 
     mesh2D = ot.Mesh(vertices, simplicies)
-    process = ot.ConditionedNormalProcess(result, mesh2D)
+    process = ot.ConditionedGaussianProcess(result, mesh2D)
 
     # Get a realization of the process
     realization = process.getRealization()
@@ -57,5 +57,5 @@ try:
 
 except:
     import sys
-    print("t_ConditionedNormalProcess_std.py",
+    print("t_ConditionedGaussianProcess_std.py",
           sys.exc_info()[0], sys.exc_info()[1])

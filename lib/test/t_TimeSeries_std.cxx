@@ -128,11 +128,11 @@ int main(int argc, char *argv[])
     fullprint << "ts5=" << ts5 << std::endl;
 
     // We retrieve the values of the time series as a sample
-    Sample ns2 = ts5.getSample();
+    Sample ns2 = ts5.getValues();
     fullprint << "ns2=" << ns2 << std::endl;
 
     // We build a time series from a time grid and a sample
-    Sample ns3 = ts4.getSample();
+    Sample ns3 = ts4.getValues();
     TimeSeries ts6( tg2, ns3 );
     fullprint << "ts6=" << ts6 << std::endl;
 

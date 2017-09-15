@@ -36,3 +36,7 @@ OT_Process_isComposite_doc
 OT_Process_isNormal_doc
 %feature("docstring") OT::Process::isStationary
 OT_Process_isStationary_doc
+%feature("docstring") OT::Process::getCovarianceModel
+OT_Process_getCovarianceModel_doc
+%feature("docstring") OT::Process::getTrend
+OT_Process_getTrend_doc

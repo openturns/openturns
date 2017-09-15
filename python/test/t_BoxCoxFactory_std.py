@@ -21,7 +21,7 @@ try:
         ValueFunction(SymbolicFunction("x", "x+2")), whiteNoise)
     # A realization of the process
     timeSeries = process.getRealization()
-    sample = timeSeries.getSample()
+    sample = timeSeries.getValues()
 
     # Now we build the factory
     factory = BoxCoxFactory()

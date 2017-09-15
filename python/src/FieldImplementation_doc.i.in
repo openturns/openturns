@@ -170,20 +170,6 @@ mesh : :class:`~openturns.Mesh`
 OT_Field_getMesh_doc
 
 // ---------------------------------------------------------------------
-%define OT_Field_getSample_doc
-"Get the values of the field.
-
-Returns
--------
-values : :class:`~openturns.Sample`
-    Values associated to the mesh. The size of the sample is the number of
-    vertices of the mesh and the dimension is the dimension of the values
-    (:math:`d`)."
-%enddef
-%feature("docstring") OT::FieldImplementation::getSample
-OT_Field_getSample_doc
-
-// ---------------------------------------------------------------------
 %define OT_Field_getSize_doc
 "Get the number of values inside the field.
 

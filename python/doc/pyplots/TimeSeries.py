@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 
-# Create a bivariate normal process
+# Create a bivariate Gaussian process
 myTG = ot.RegularGrid(0.0, 0.01, 100)
 myCov = ot.ExponentialModel([3.0], [1.2])
 myProcess = ot.GaussianProcess(myCov, myTG)
