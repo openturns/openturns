@@ -5,7 +5,6 @@
 %feature("docstring") OT::ARMAFactoryImplementation
 OT_ARMAFactory_doc
 
-
 // ---------------------------------------------------------------------
 
 %define OT_ARMAFactory_build_doc
@@ -31,3 +30,63 @@ myARMA : :class:`~openturns.ARMA`
 %enddef
 %feature("docstring") OT::ARMAFactoryImplementation::build
 OT_ARMAFactory_build_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAFactoryImplementation::setInvertible
+"Accessor to the invertible constraint.
+
+Parameters
+----------
+invertible : bool
+    The initial AR coefficients used for the optimization algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAFactoryImplementation::getInvertible
+"Accessor to the invertible constraint.
+
+Returns
+-------
+invertible : bool
+    The initial AR coefficients used for the optimization algorithm."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAFactoryImplementation::getCurrentP
+"Accessor to the current P order.
+
+Returns
+-------
+p : int
+    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`d`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAFactoryImplementation::getCurrentQ
+"Accessor to the current Q order.
+
+Returns
+-------
+q : int
+    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`d`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAFactoryImplementation::getP
+"Accessor to the P orders.
+
+Returns
+-------
+indP : :class:`~openturns.Indices`
+    All the :math:`p` orders that will be investigated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ARMAFactoryImplementation::getQ
+"Accessor to the Q orders.
+
+Returns
+-------
+indQ : :class:`~openturns.Indices`
+    All the :math:`p` orders that will be investigated."
