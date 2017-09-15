@@ -36,7 +36,7 @@ dimension : int
 Returns
 -------
 values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
-    Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
+    Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`.
 "
 
 // ---------------------------------------------------------------------
@@ -62,11 +62,13 @@ noises : :class:`~openturns.Sample` of size :math:`q` and dimension :math:`d`
 "
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ARMAState::setEpsilon
+%feature("docstring") OT::ARMAState::setXEpsilon
 "Accessor to the last values of the noise defining the ARMA process.
 
 Parameters
 ----------
+values : :class:`~openturns.Sample` of size :math:`p` and dimension :math:`d`
+    Last :math:`p` values of the :math:`ARMA(p,q)` process of dimension :math:`d`.
 noises : :class:`~openturns.Sample` of size :math:`q` and dimension :math:`d`
     Last :math:`q` values of the white noise of the :math:`ARMA(p,q)` process of dimension :math:`d`. 
 "
