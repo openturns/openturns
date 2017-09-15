@@ -396,6 +396,10 @@ if(POLICY CMP0042)
   # Set MACOSX_RPATH to ON
   cmake_policy(SET CMP0042 NEW)
 endif()
+if (POLICY CMP0068)
+  # RPATH settings on macOS do not affect install_name
+  cmake_policy (SET CMP0068 NEW)
+endif ()
 
 set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
 set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=openturns)
