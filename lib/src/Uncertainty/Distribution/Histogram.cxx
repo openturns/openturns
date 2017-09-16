@@ -62,6 +62,33 @@ Histogram::Histogram(const Scalar first,
   setDimension(1);
 }
 
+/* Parameters constructor */
+Histogram::Histogram(const Point & ticks,
+                     const Point & frequencies)
+  : ContinuousDistribution()
+  , first_(0.0)
+  , width_(0)
+  , height_(0)
+  , cumulatedWidth_(0)
+{
+  setName("Histogram");
+  const UnsignedInteger size = ticks.getDimension();
+  // This call set also the range.
+  if (size <= 1) throw InvalidArgumentException(HERE) << "Error: expected at least two ticks, got only " << size;
+  if (frequencies.getSize() != size - 1) throw InvalidArgumentException(HERE) << "Error: expected frequencies of size=" << size - 1 << ", got size=" << frequencies.getSize();
+  first_ = ticks[0];
+  Point height(size - 1);
+  Point width(size - 1);
+  for (UnsignedInteger i = 0; i < size - 1; ++i)
+    {
+      const Scalar w = ticks[i + 1] - ticks[i];
+      width[i] = w;
+      height[i] = frequencies[i] / w;
+    }
+  setData(width, height);
+  setDimension(1);
+}
+
 /* Comparison operator */
 Bool Histogram::operator ==(const Histogram & other) const
 {

@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    // Instanciate one distribution object
+    Scalar x0 = -1.5;
     UnsignedInteger collectionSize = 4;
     Point l(collectionSize);
     l[0] = 1.0;
@@ -44,7 +44,26 @@ int main(int argc, char *argv[])
     h[1] = 1.5;
     h[2] = 3.5;
     h[3] = 2.5;
-    Histogram distribution(-1.5, l, h);
+    Point ticks(collectionSize + 1);
+    ticks[0] = x0;
+    ticks[1] = ticks[0] + l[0];
+    ticks[2] = ticks[1] + l[1];
+    ticks[3] = ticks[2] + l[2];
+    ticks[4] = ticks[3] + l[3];
+    Point frequencies(collectionSize);
+    frequencies[0] = h[0] * l[0];
+    frequencies[1] = h[1] * l[1];
+    frequencies[2] = h[2] * l[2];
+    frequencies[3] = h[3] * l[3];
+    // Instanciate one distribution object using ticks/frequencies
+    {
+      Histogram distribution(ticks, frequencies);
+      fullprint << "ticks=" << ticks << " frequencies=" << frequencies << std::endl;
+      
+      fullprint << "Distribution " << distribution << std::endl;
+      std::cout << "Distribution " << distribution << std::endl;
+    }
+    Histogram distribution(x0, l, h);
     fullprint << "l=" << l << " h=" << h << std::endl;
 
     fullprint << "Distribution " << distribution << std::endl;

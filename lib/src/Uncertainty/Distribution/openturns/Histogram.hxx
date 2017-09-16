@@ -49,6 +49,10 @@ public:
             const Point & width,
             const Point & height);
 
+  /** Parameters constructor */
+  Histogram(const Point & ticks,
+            const Point & frequencies);
+
   /** Comparison operator */
   Bool operator ==(const Histogram & other) const;
 protected:
