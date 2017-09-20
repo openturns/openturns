@@ -334,8 +334,9 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     cumulatedVariance += eigenValues[K];
     ++K;
   }
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   // Reduce and rescale the eigenvectors
-  MatrixImplementation transposedProjection(nodesNumber, K);
+  MatrixImplementation transposedProjection(nodesNumber * dimension, K);
   Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
