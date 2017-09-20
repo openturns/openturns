@@ -65,14 +65,17 @@ int main(int argc, char *argv[])
       KarhunenLoeveResult result(algo2.getResult());
       Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
-      fullprint << "KL modes=" << KLModes << std::endl;
+      // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
+      // fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       Sample coefficients(result.project(sample));
-      fullprint << "KL coefficients=" << coefficients << std::endl;
+      // fullprint << "KL coefficients=" << coefficients << std::endl;
       Basis KLFunctions(result.getModes());
-      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
-      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
-      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
+      // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+      Function lifted(result.lift(coefficients[0]));
+      // fullprint << "KL lift=" << lifted.__str__() << std::endl;
+      Field liftedAsField(result.liftAsField(coefficients[0]));
+      // fullprint << "KL lift as field=" << liftedAsField << std::endl;
     }
   }
   catch (TestFailed & ex)
