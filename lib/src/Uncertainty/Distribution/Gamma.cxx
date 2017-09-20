@@ -224,6 +224,7 @@ Scalar Gamma::computePDF(const Point & point) const
   return std::exp(computeLogPDF(point));
 }
 
+/* Get the log PDF of the distribution */
 Scalar Gamma::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();

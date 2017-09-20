@@ -194,9 +194,7 @@ Sample MarginalDistribution::getSample(const UnsignedInteger size) const
 /* Get the CDF of the MarginalDistribution */
 Scalar MarginalDistribution::computeCDF(const Point & point) const
 {
-  const Point x(expandPoint(point));
-  const Scalar cdf = distribution_.computeCDF(x);
-  return cdf;
+  return distribution_.computeCDF(expandPoint(point));
 }
 
 Scalar MarginalDistribution::computeSurvivalFunction(const Point & point) const
