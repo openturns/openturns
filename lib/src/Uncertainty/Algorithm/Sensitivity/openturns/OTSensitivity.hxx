@@ -30,5 +30,6 @@
 #include "openturns/MauntzKucherenkoSensitivityAlgorithm.hxx"
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
 #include "openturns/JansenSensitivityAlgorithm.hxx"
+#include "openturns/SobolIndicesExperiment.hxx"
 
 #endif /* OPENTURNS_OTSENSITIVITY_HXX */

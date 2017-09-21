@@ -58,7 +58,7 @@ Examples
 ...                                         ot.IndependentCopula(3))
 >>> # Define designs to pre-compute
 >>> size = 100
->>> inputDesign = ot.SobolIndicesAlgorithmImplementation.Generate(distribution, size, True)
+>>> inputDesign = ot.SobolIndicesExperiment(distribution, size, True).generate()
 >>> outputDesign = model(inputDesign)
 >>> # sensitivity analysis algorithm
 >>> sensitivityAnalysis = ot.JansenSensitivityAlgorithm(inputDesign, outputDesign, size)

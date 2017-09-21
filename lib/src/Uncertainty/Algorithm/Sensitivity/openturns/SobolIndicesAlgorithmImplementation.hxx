@@ -106,10 +106,12 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
+  /** @deprecated */
   static Sample Generate(const Distribution & distribution,
                          const UnsignedInteger size,
                          const Bool computeSecondOrder = true);
 
+  /** @deprecated */
   static Sample Generate(const WeightedExperiment & experiment,
                          const Bool computeSecondOrder = true);
 

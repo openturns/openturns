@@ -59,6 +59,7 @@
 %include SaltelliSensitivityAlgorithm.i
 %include JansenSensitivityAlgorithm.i
 %include MauntzKucherenkoSensitivityAlgorithm.i
+%include SobolIndicesExperiment.i
 
  /* Uncertainty/Algorithm/Transformation */
 %import transformation_module.i

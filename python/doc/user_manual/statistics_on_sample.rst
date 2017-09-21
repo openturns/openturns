@@ -143,6 +143,7 @@ Sensitivity Analysis
     SaltelliSensitivityAlgorithm
     JansenSensitivityAlgorithm
     MauntzKucherenkoSensitivityAlgorithm
+    SobolIndicesExperiment
 
 Statistical tests
 =================
