@@ -66,12 +66,6 @@ InverseTrendTransform * InverseTrendTransform::clone() const
   return new InverseTrendTransform(*this);
 }
 
-/* Comparison operator */
-Bool InverseTrendTransform::operator ==(const InverseTrendTransform & other) const
-{
-  return (getEvaluation() == other.getEvaluation());
-}
-
 /* String converter */
 String InverseTrendTransform::__repr__() const
 {
@@ -81,14 +75,8 @@ String InverseTrendTransform::__repr__() const
   return oss;
 }
 
-/* String converter */
-String InverseTrendTransform::__str__(const String & offset) const
-{
-  return OSS(false) << p_evaluation_->__str__(offset);
-}
-
-/* Operator () */
-Field InverseTrendTransform::operator() (const Field & inFld) const
+/* Inverse accessor */
+TrendTransform InverseTrendTransform::getInverse() const
 {
   return TrendTransform(getTrendFunction());
 }
@@ -96,7 +84,9 @@ Field InverseTrendTransform::operator() (const Field & inFld) const
 /* Underlying trend function accessor */
 Function InverseTrendTransform::getTrendFunction() const
 {
-  return TrendTransform(p_evaluation_);
+  const InverseTrendEvaluation * p_evaluation = dynamic_cast<const InverseTrendEvaluation*>(getFunction().getEvaluation().get());
+  if (p_evaluation) return p_evaluation->getFunction();
+  throw InternalException(HERE) << "Error: cannot extract the evaluation of the internal function as an InverseTrendEvaluation";
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -95,7 +95,9 @@ InverseTrendTransform TrendTransform::getInverse() const
 /* Underlying trend function accessor */
 Function TrendTransform::getTrendFunction() const
 {
-  return InverseTrendTransform(p_evaluation_);
+  const TrendEvaluation * p_evaluation = dynamic_cast<const TrendEvaluation*>(getFunction().getEvaluation().get());
+  if (p_evaluation) return p_evaluation->getFunction();
+  throw InternalException(HERE) << "Error: cannot extract the evaluation of the internal function as a TrendEvaluation";
 }
 
 /* Method save() stores the object through the StorageManager */

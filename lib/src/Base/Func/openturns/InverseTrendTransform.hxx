@@ -61,12 +61,11 @@ public:
   /** Inverse accessor */
   TrendTransform getInverse() const;
 
-  /** Comparison operator */
-  Bool operator ==(const InverseTrendTransform & other) const;
+  /** Underlying trend function accessor */
+  Function getTrendFunction() const;
 
   /** String converter */
   String __repr__() const;
-  String __str__(const String & offset = "") const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

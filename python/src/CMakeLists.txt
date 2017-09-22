@@ -66,15 +66,6 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   endif ()
 
   set_target_properties (${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES NO_SONAME ON)
-
-  if (USE_COTIRE)
-    set_target_properties(${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES COTIRE_ENABLE_PRECOMPILED_HEADER FALSE)
-    cotire (${SWIG_MODULE_${MODULENAME}_REAL_NAME})
-    add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity generate_swig_runtime generate_docstrings)
-    add_dependencies (python_unity ${SWIG_MODULE_${MODULENAME}_REAL_NAME}_unity)
-    set_source_files_properties (PythonDistribution.cxx PythonFieldFunction.cxx PythonFieldToPointFunction.cxx PythonPointToFieldFunction.cxx PROPERTIES COTIRE_EXCLUDED TRUE)
-  endif ()
-
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
 endmacro (ot_add_python_module)
 
