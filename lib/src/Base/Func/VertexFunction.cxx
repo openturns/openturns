@@ -119,7 +119,7 @@ VertexFunction::Implementation VertexFunction::getMarginal(const Indices & indic
 /* Method save() stores the object through the StorageManager */
 void VertexFunction::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  FieldFunctionImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
 }
 
@@ -132,7 +132,7 @@ Function VertexFunction::getFunction() const
 /* Method load() reloads the object from the StorageManager */
 void VertexFunction::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  FieldFunctionImplementation::load(adv);
   adv.loadAttribute( "function_", function_ );
 }
 

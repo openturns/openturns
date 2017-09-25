@@ -140,14 +140,14 @@ Function VertexValueFunction::getFunction() const
 /* Method save() stores the object through the StorageManager */
 void VertexValueFunction::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  FieldFunctionImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void VertexValueFunction::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  FieldFunctionImplementation::load(adv);
   adv.loadAttribute( "function_", function_ );
 }
 

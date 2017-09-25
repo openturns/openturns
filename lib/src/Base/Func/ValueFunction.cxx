@@ -122,7 +122,7 @@ ValueFunction::Implementation ValueFunction::getMarginal(const Indices & indices
 /* Method save() stores the object through the StorageManager */
 void ValueFunction::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  FieldFunctionImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
 }
 
@@ -135,7 +135,7 @@ Function ValueFunction::getFunction() const
 /* Method load() reloads the object from the StorageManager */
 void ValueFunction::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  FieldFunctionImplementation::load(adv);
   adv.loadAttribute( "function_", function_ );
 }
 
