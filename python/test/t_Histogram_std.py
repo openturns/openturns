@@ -8,10 +8,18 @@ RandomGenerator.SetSeed(0)
 
 try:
     # Instanciate one distribution object
-    print("begin histo comp test")
+    first = -1.5
     l = [1.0, 0.7, 1.2, 0.9]
     h = [0.5, 1.5, 3.5, 2.5]
-    distribution = Histogram(-1.5, l, h)
+    t = [first]
+    f = list()
+    for i in range(len(l)):
+        t.append(t[i]+l[i])
+        f.append(h[i] * l[i])
+    distribution = Histogram(t, f)
+    print("Distribution ", repr(distribution))
+    print("Distribution ", distribution)
+    distribution = Histogram(first, l, h)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
