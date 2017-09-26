@@ -264,8 +264,8 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   Point absoluteCoefficients(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // Must cast the NSI_const_point into a Point to use the norm() method.
-    absoluteCoefficients[i] = Point(coefficients[i]).norm();
+    // Must cast the NSI_const_point into a Point to use the normInf() method.
+    absoluteCoefficients[i] = Point(coefficients[i]).normInf();
     if (absoluteCoefficients[i] > maximumAbsoluteCoefficient) maximumAbsoluteCoefficient = absoluteCoefficients[i];
   }
   if (maximumAbsoluteCoefficient == 0.0) throw InvalidArgumentException(HERE) << "Error: all the coefficients are zero.";
@@ -275,7 +275,14 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
   {
     if (absoluteCoefficients[i] > epsilon)
     {
-      coefficients_.add(coefficients[i]);
+      Point currentCoefficient(coefficients[i]);
+      for (UnsignedInteger j = 0; j < currentCoefficient.getDimension(); ++j)
+	if (std::abs(currentCoefficient[j]) <= epsilon)
+	  {
+	    currentCoefficient[j] = 0.0;
+	    LOGWARN(OSS() << "set the component " << j << " of contributor " << i << "=" << currentCoefficient[j] << " to zero as it is too small");
+	  }
+      coefficients_.add(currentCoefficient);
       functionsCollection_.add(functionsCollection[i]);
     }
     else LOGWARN(OSS() << "removed the contributor " << i << "=" << functionsCollection[i] << " from the linear combination as its coefficient is too small.");
