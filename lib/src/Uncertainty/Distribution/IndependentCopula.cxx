@@ -318,6 +318,17 @@ Bool IndependentCopula::hasIndependentCopula() const
   return true;
 }
 
+/* Parameters value and description accessor */
+Point IndependentCopula::getParameter() const
+{
+  return Point();
+}
+
+Description IndependentCopula::getParameterDescription() const
+{
+  return Description();
+}
+
 /* Method save() stores the object through the StorageManager */
 void IndependentCopula::save(Advocate & adv) const
 {

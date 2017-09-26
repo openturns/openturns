@@ -2032,7 +2032,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
   // P(Y < y) = P(X < (y - beta) / alpha) = CDF_X((y - beta) / alpha)
   // for alpha < 0.0:
   // P(Y < y) = P(X > (y - beta) / alpha) = 1.0 - CDF_X((y - beta) / alpha)
-  if (isAnalytical_)
+  if (isAnalytical_ && (dimension_ == 1))
   {
     const Scalar alpha = weights_(0, 0);
     if (alpha > 0.0) return distributionCollection_[0].computeCDF((x - constant_[0]) / alpha);
@@ -2451,13 +2451,26 @@ void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points
 /* Get the PDF gradient of the distribution */
 Point RandomMixture::computePDFGradient(const Point & point) const
 {
+  if (isAnalytical_ && (dimension_ == 1))
+  {
+    const Scalar alpha = weights_(0, 0);
+    Scalar factor = (isDiscrete() ? 1.0 : 1.0 / std::abs(alpha));
+    return distributionCollection_[0].computePDFGradient((point - constant_) / alpha) * factor;
+  } // isAnalytical_
   return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Get the CDF gradient of the distribution */
 Point RandomMixture::computeCDFGradient(const Point & point) const
 {
-  return DistributionImplementation::computeCDFGradient(point);
+  if (isAnalytical_ && (dimension_ == 1))
+  {
+    const Scalar alpha = weights_(0, 0);
+    if (alpha > 0.0) return distributionCollection_[0].computeCDFGradient((point - constant_) / alpha);
+    // If alpha < 0.0, compute the complementary CDF
+    return distributionCollection_[0].computeCDFGradient((point - constant_) / alpha) * (-1.0);
+  } // isAnalytical_
+  return DistributionImplementation::computePDFGradient(point);
 }
 
 /* Compute the mean of the RandomMixture */
@@ -2556,10 +2569,10 @@ Point RandomMixture::getKurtosis() const
   return kurtosis;
 }
 
-/** Parameters value and description accessor */
+/* Parameters value and description accessor */
 RandomMixture::PointWithDescriptionCollection RandomMixture::getParametersCollection() const
 {
-  // TODO: Take into account Weights!
+  // Assume that the weights are not part of the parameters
   const UnsignedInteger size = distributionCollection_.getSize();
   PointWithDescriptionCollection parameters(1);
   Description parametersDescription;
@@ -2581,6 +2594,45 @@ RandomMixture::PointWithDescriptionCollection RandomMixture::getParametersCollec
   parameters[0].setName(getName());
   return parameters;
 } // getParametersCollection
+
+/* Parameters value and description accessor */
+Point RandomMixture::getParameter() const
+{
+  // Assume that the weights are not part of the parameters
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Point parameter;
+  // Form a big Point from the parameters of each atom
+  for (UnsignedInteger i = 0; i < size; ++i)
+    parameter.add(distributionCollection_[i].getParameter());
+  return parameter;
+} // getParameter
+
+void RandomMixture::setParameter(const Point & parameter)
+{
+  if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
+  const Scalar w = getWeight();
+  *this = RandomMixture(distributionCollection_ , weights_, constant_);
+  setWeight(w);
+} // setParameter
+
+/* Parameters value and description accessor */
+Description RandomMixture::getParameterDescription() const
+{
+  // Assume that the weights are not part of the parameters
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Description parameterDescription;
+  // Form a big Point from the parameters of each atom
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const String prefix(distributionCollection_[i].getName());
+    const Description atomParameterDescription(distributionCollection_[i].getParameterDescription());
+    const UnsignedInteger atomParameterSize = atomParameterDescription.getSize();
+    // Add the current atom parameters
+    for (UnsignedInteger j = 0; j < atomParameterSize; ++j)
+      parameterDescription.add(OSS() << prefix << "_" << atomParameterDescription[j]);
+  }
+  return parameterDescription;
+} // getParameterDescription
 
 /* Get a positon indicator for a 1D distribution */
 Scalar RandomMixture::getPositionIndicator() const

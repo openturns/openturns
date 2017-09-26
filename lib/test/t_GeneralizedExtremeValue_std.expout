@@ -28,9 +28,9 @@ ccdf=0.848592
 survival=0.848592
 Inverse survival=class=Point name=Unnamed dimension=1 values=[0.211041]
 Survival(inverse survival)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=0 values=[]
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[0.102525,0.0113265,0.108952]
 pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.108952,-0.0428497,0.0749046]
-cdf gradient     =class=Point name=Unnamed dimension=0 values=[]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[0.19055,-0.027242,0.173227]
 cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.173227,0.115485,-0.0559084]
 quantile=class=Point name=Unnamed dimension=1 values=[5.59515]
 cdf(quantile)=0.95

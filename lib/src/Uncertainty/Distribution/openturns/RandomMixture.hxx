@@ -219,6 +219,13 @@ public:
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
 
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /** Weights distribution accessor */
 protected:
   void setWeights(const Matrix & weights);
