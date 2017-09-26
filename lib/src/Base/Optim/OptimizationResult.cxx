@@ -353,7 +353,7 @@ Graph OptimizationResult::drawErrorHistory() const
     constraintErrorCurve.setColor("magenta");
     result.add( constraintErrorCurve );
   }
-
+  result.setYMargin(0.0);// tighten the Y axis
   return result;
 }
 
