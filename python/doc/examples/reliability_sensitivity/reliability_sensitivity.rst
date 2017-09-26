@@ -3,6 +3,7 @@ Reliability, sensitivity
 
 .. toctree::
 
+    event_manipulation.ipynb
     estimate_probability_monte_carlo.ipynb
     estimate_probability_lhs.ipynb
     estimate_probability_importance_sampling.ipynb
