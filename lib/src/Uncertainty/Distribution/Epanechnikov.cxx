@@ -198,6 +198,17 @@ Bool Epanechnikov::isElliptical() const
   return true;
 }
 
+/* Parameters value and description accessor */
+Point Epanechnikov::getParameter() const
+{
+  return Point();
+}
+
+Description Epanechnikov::getParameterDescription() const
+{
+  return Description();
+}
+
 /* Method save() stores the object through the StorageManager */
 void Epanechnikov::save(Advocate & adv) const
 {

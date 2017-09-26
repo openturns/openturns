@@ -138,6 +138,10 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 
+  /** Parameters value and description accessor */
+  Point getParameter() const;
+  Description getParameterDescription() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
