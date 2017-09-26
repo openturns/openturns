@@ -95,6 +95,13 @@ public:
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Implementation getMarginal(const Indices & indices) const;
 
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -106,6 +113,12 @@ protected:
   /** Compute the numerical range of the distribution */
   void computeRange();
 
+  /** Compute the mean of the distribution */
+  void computeMean() const;
+
+  /** compute the covariance of the distribution */
+  void computeCovariance() const;
+  
   /** Method to set simultaneously the conditioning distribution, the conditioned distribution and the link function */
   void setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
       const Distribution & conditioningDistribution,
