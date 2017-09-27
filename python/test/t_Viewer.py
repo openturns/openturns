@@ -223,7 +223,35 @@ try:
     # BipartiteGraph.draw
     graph = ot.BipartiteGraph([[0, 1, 2], [0, 1, 2]]).draw()
     view = View(graph)
+
+    # FORM reliability index marginal parameter sensitivity
+    f = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+    dim = f.getInputDimension()
+    mean = [50.0, 1.0, 10.0, 5.0]
+    sigma = ot.Point(dim, 1.0)
+    R = ot.IdentityMatrix(dim)
+    distribution = ot.Normal(mean, sigma, R)
+    vect = ot.RandomVector(distribution)
+    output = ot.RandomVector(f, vect)
+    event = ot.Event(output, ot.Less(), -3.0)
+    solver = ot.Cobyla()
+    solver.setMaximumIterationNumber(400)
+    solver.setMaximumAbsoluteError(1.0e-10)
+    solver.setMaximumRelativeError(1.0e-10)
+    solver.setMaximumResidualError(1.0e-10)
+    solver.setMaximumConstraintError(1.0e-10)
+    algo = ot.FORM(solver, event, mean)
+    algo.run()
+    result = algo.getResult()
+    marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
+    view = View(marginalSensitivity)
+
+    # Optimization error history
+    opt_result = result.getOptimizationResult()
+    graph = opt_result.drawErrorHistory()
+    view = View(graph)
     view.ShowAll(block=True)
+
 except:
     traceback.print_exc()
     os._exit(1)
