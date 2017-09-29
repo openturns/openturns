@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
+ot.TESTPREAMBLE()
 # ot.Log.Show(ot.Log.ALL)
 
 dim = 2

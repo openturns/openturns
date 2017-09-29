@@ -2,17 +2,14 @@
 
 set (ADAPT_CHECK_TESTS_EXPONENT)
 set (REPLACE_EOL " | cat ")
-if (MINGW)
+if (WIN32)
   # replace dos eols
   set (REPLACE_EOL " | tr -d '\\\\015' ")
-  # By default, Mingw-g++ puts 3 digits to real exponent whereas g++ puts 2.
-  set (ADAPT_CHECK_TESTS_EXPONENT "PRINTF_EXPONENT_DIGITS=2")
 endif ()
 
 
 set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
                                  "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}"
-                                 ${ADAPT_CHECK_TESTS_EXPONENT}
    )
 
 # This macro compiles on the fly and run the corresponding post-installation test
@@ -259,9 +256,9 @@ ot_pyinstallcheck_test (TNC_std)
 ot_pyinstallcheck_test (NearestPointChecker_std)
 if (NLOPT_FOUND)
   ot_pyinstallcheck_test (NLopt_std)
+  ot_pyinstallcheck_test (EfficientGlobalOptimization_std)
 endif ()
 ot_pyinstallcheck_test (MultiStart_std)
-ot_pyinstallcheck_test (EfficientGlobalOptimization_std)
 
 ## Solver
 ot_pyinstallcheck_test (Brent_std)

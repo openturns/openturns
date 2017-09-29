@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
+ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
 
 # linear

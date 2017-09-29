@@ -3,6 +3,8 @@
 from __future__ import print_function
 import openturns as ot
 
+ot.TESTPREAMBLE()
+
 # create a function
 dim = 4
 function = ot.Function(

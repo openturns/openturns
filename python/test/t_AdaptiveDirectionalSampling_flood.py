@@ -4,6 +4,8 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+ot.TESTPREAMBLE()
+
 dim = 4
 
 

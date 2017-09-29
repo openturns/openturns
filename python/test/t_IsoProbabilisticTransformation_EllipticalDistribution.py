@@ -5,7 +5,7 @@ from openturns import *
 from math import *
 
 TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+PlatformInfo.SetNumericalPrecision(5)
 
 
 def cleanSymmetricTensor(inSymmetricTensor):

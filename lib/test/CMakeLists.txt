@@ -23,20 +23,16 @@ set (NEW_PATH "${INSTALL_DESTDIR}${EXAMPLE_PATH}${PATH_SEP}$ENV{PATH}")
 
 set (ADAPT_CHECK_TESTS_EXPONENT)
 set (REPLACE_EOL " | cat ")
-if (MINGW)
+if (WIN32)
   # replace dos eols
   set (REPLACE_EOL " | tr -d '\\\\015' ")
-  # By default, Mingw-g++ puts 3 digits to real exponent whereas g++ puts 2.
-  set (ADAPT_CHECK_TESTS_EXPONENT "PRINTF_EXPONENT_DIGITS=2")
 
-  if (CMAKE_SIZEOF_VOID_P EQUAL 4)
+  if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 4)
     add_library (CRT_fp8 STATIC EXCLUDE_FROM_ALL CRT_fp8.c)
   endif ()
 endif ()
 
-set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${CMAKE_BINARY_DIR}/lib/etc"
-                        ${ADAPT_CHECK_TESTS_EXPONENT} 
-   )
+set (CHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${CMAKE_BINARY_DIR}/lib/etc")
 
 # This macro compiles on the fly and run the corresponding pre-installation test
 # It can have two optional arguments PRE and POST followed by some shell command to be run

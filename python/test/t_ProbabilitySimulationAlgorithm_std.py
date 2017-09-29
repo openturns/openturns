@@ -4,6 +4,7 @@ from __future__ import print_function
 import sys
 import openturns as ot
 
+ot.TESTPREAMBLE()
 
 def progress(percent):
     sys.stderr.write('-- progress=' + str(percent) + '%\n')
