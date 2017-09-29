@@ -3076,12 +3076,9 @@ DistributionImplementation::IsoProbabilisticTransformation DistributionImplement
   // Special case for dimension 1
   if (dimension_ == 1)
   {
-    DistributionCollection collection(1);
-    collection[0] = *this;
+    DistributionCollection collection(1, *this);
     // Get the marginal transformation evaluation implementation
-    MarginalTransformationEvaluation evaluation(collection, DistributionCollection(1, Normal()));
-    // We have to correct the direction because the output collection corresponds to the standard space, so there is no parameter to take into account.
-    evaluation.setDirection(MarginalTransformationEvaluation::FROM);
+    MarginalTransformationEvaluation evaluation(collection, MarginalTransformationEvaluation::FROM, Normal());
     const EvaluationPointer p_evaluation(evaluation.clone());
     // Get the marginal transformation gradient implementation
     const GradientPointer p_gradient = new MarginalTransformationGradient(evaluation);
@@ -3107,12 +3104,9 @@ DistributionImplementation::InverseIsoProbabilisticTransformation DistributionIm
   // Special case for dimension 1
   if (dimension_ == 1)
   {
-    DistributionCollection collection(1);
-    collection[0] = *this;
+    DistributionCollection collection(1, *this);
     // Get the marginal transformation evaluation implementation
-    MarginalTransformationEvaluation evaluation(DistributionCollection(1, Normal()), collection);
-    // We have to correct the direction because the input collection corresponds to the standard space, so there is no parameter to take into account.
-    evaluation.setDirection(MarginalTransformationEvaluation::TO);
+    MarginalTransformationEvaluation evaluation(collection, MarginalTransformationEvaluation::TO, Normal());
     const EvaluationPointer p_evaluation(evaluation.clone());
     // Get the marginal transformation gradient implementation
     const GradientPointer p_gradient = new MarginalTransformationGradient(evaluation);

@@ -783,9 +783,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
   if (hasIndependentCopula())
   {
     // Get the evaluation implementations
-    MarginalTransformationEvaluation evaluation(distributionCollection_, DistributionCollection(dimension, Normal()));
-    // We have to correct the direction because the output collection corresponds to the standard space, so there is no parameter to take into account for these distributions
-    evaluation.setDirection(MarginalTransformationEvaluation::FROM);
+    MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::FROM, Normal());
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
     marginalTransformation.setParameter(parameters);
     marginalTransformation.setParameterDescription(description);
@@ -811,9 +809,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
     const Distribution standardDistribution(getStandardDistribution());
     // Get the evaluation implementations
     const Distribution standardMarginal(standardDistribution.getMarginal(0));
-    MarginalTransformationEvaluation evaluation(distributionCollection_, DistributionCollection(dimension, standardMarginal));
-    // We have to correct the direction because the output collection corresponds to the standard space, so there is no parameter to take into account for these distributions
-    evaluation.setDirection(MarginalTransformationEvaluation::FROM);
+    MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::FROM, standardMarginal);
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), MarginalTransformationGradient(evaluation).clone(), MarginalTransformationHessian(evaluation).clone());
     marginalTransformation.setParameter(parameters);
     marginalTransformation.setParameterDescription(description);
@@ -826,7 +822,7 @@ ComposedDistribution::IsoProbabilisticTransformation ComposedDistribution::getIs
   // Get the IsoProbabilisticTransformation from the copula
   const IsoProbabilisticTransformation copulaIsoprobabilisticTransformation(copula_.getIsoProbabilisticTransformation());
   // Get the right function implementations
-  const MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::FROM);
+  const MarginalTransformationEvaluation evaluation(distributionCollection_);
   IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
   marginalTransformation.setParameter(parameters);
   marginalTransformation.setParameterDescription(description);
@@ -859,9 +855,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
   if (hasIndependentCopula())
   {
     // Get the evaluation implementations
-    MarginalTransformationEvaluation evaluation(DistributionCollection(dimension, Normal()), distributionCollection_);
-    // We have to correct the direction because the input collection corresponds to the standard space, so there is no parameter to take into account for these distributions
-    evaluation.setDirection(MarginalTransformationEvaluation::TO);
+    MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO, Normal());
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
     marginalTransformation.setParameter(parameters);
     marginalTransformation.setParameterDescription(description);
@@ -887,9 +881,7 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
     const Distribution standardDistribution(getStandardDistribution());
     // Get the evaluation implementations
     const Distribution standardMarginal(standardDistribution.getMarginal(0));
-    MarginalTransformationEvaluation evaluation(DistributionCollection(dimension, standardMarginal), distributionCollection_);
-    // We have to correct the direction because the output collection corresponds to the standard space, so there is no parameter to take into account for these distributions
-    evaluation.setDirection(MarginalTransformationEvaluation::TO);
+    MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO, standardMarginal);
     InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
     marginalTransformation.setParameter(parameters);
     marginalTransformation.setParameterDescription(description);

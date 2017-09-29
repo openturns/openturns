@@ -4,7 +4,7 @@
 Available constructors:
     MarginalTransformationEvaluation(*distCol*)
 
-    MarginalTransformationEvaluation(*distCol, direction*)
+    MarginalTransformationEvaluation(*distCol, direction, standardMarginal*)
 
     MarginalTransformationEvaluation(*distCol, outputDistCol*)
 
@@ -18,6 +18,9 @@ direction : integer
     *MarginalTransformationEvaluation.FROM* (associated to the integer 0) or 
     *MarginalTransformationEvaluation.TO* (associated to the integer 1).
     Default is 0.
+standardMarginal : :class:`~openturns.Distribution`
+    Target distribution marginal
+    Default is Uniform(0, 1)
 outputDistCol : :class:`~openturns.DistributionCollection`
     A collection of distributions.
 
@@ -70,16 +73,6 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MarginalTransformationEvaluation::getDirection
-"Accessor to the direction.
-
-Returns
--------
-direction : integer
-    The direction of the transformation."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MarginalTransformationEvaluation::getExpressions
 "Accessor to the numerical math function.
 
@@ -116,13 +109,23 @@ outputDistCol : :class:`~openturns.DistributionCollection`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MarginalTransformationEvaluation::setDirection
-"Accessor to the direction.
+%feature("docstring") OT::MarginalTransformationEvaluation::setParameterSide
+"Accessor to the parameter side flag.
 
 Parameters
 ----------
-direction : integer
-    The direction of the transformation."
+param_side : int
+    The location of the parameters."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MarginalTransformationEvaluation::getParameterSide
+"Accessor to the parameter side flag.
+
+Returns
+-------
+param_side : int
+    The location of the parameters."
 
 // ---------------------------------------------------------------------
 
