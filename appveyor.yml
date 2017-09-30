@@ -13,6 +13,44 @@ install:
   - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
   - 7z x swigwin-3.0.12.zip -oC:\Libraries > nul
 
+  - git clone https://bitbucket.org/dbarbier/ot-superbuild.git
+
+  - appveyor-retry appveyor DownloadFile http://xmlsoft.org/sources/libxml2-sources-2.9.5.tar.gz
+  - 7z x libxml2-sources-2.9.5.tar.gz > nul
+  - 7z x libxml2-sources-2.9.5.tar -oC:\Libraries > nul
+  - copy ot-superbuild\libxml2.cmake\CMakeLists.txt C:\Libraries\libxml2-2.9.5
+  - pushd C:\Libraries\libxml2-2.9.5
+  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\libxml2 -DBUILD_SHARED_LIBS=OFF .
+  - cmake --build . --config Release --target install
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+  - appveyor-retry appveyor DownloadFile https://github.com/beltoforion/muparser/archive/v2.2.5.zip
+  - 7z x v2.2.5.zip -oC:\Libraries > nul
+  - copy ot-superbuild\muParser.cmake\CMakeLists.txt C:\Libraries\muparser-2.2.5
+  - pushd C:\Libraries\muparser-2.2.5
+  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=%CD:\=/% -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+  - cmake --build . --config Release --target install
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+  - git clone https://github.com/stevengj/nlopt.git
+  - pushd nlopt
+  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\nlopt -DBUILD_SHARED_LIBS=OFF .
+  - cmake --build . --config Release --target install
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+  - git clone https://github.com/wjakob/tbb.git
+  - pushd tbb
+  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\tbb -DTBB_BUILD_TESTS=OFF -DTBB_BUILD_STATIC=OFF .
+  - cmake --build . --config Release --target install
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+  - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/gnuwin32/files/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
+  - 7z x diffutils-2.8.7-1-bin.zip -oC:\Libraries > nul
+  - set PATH=C:\Libraries\bin;%PATH%
+
+  # for sh, tr, cat ...
+  - set PATH=C:\msys64\usr\bin;%PATH%
+
 build_script:
   - mkdir build && cd build
   - cmake -G"%VS_GEN%" \
@@ -22,14 +60,20 @@ build_script:
       -DOPENTURNS_LIBRARIES="C:/Libraries/OpenBLAS-v0.2.15-Win32/lib/libopenblas.dll.a" \
       -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
       -DUSE_HMAT=OFF \
+      -DUSE_BISON=OFF \
       -DSWIG_EXECUTABLE="C:/Libraries/swigwin-3.0.12/swig.exe" \
       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4" \
+      -DMUPARSER_LIBRARY=C:/Libraries/muparser-2.2.5/lib/muparser.lib -DMUPARSER_INCLUDE_DIR=C:/Libraries/muparser-2.2.5/include \
+      -DTBB_LIBRARY=C:/Libraries/tbb/lib/tbb.lib -DTBB_INCLUDE_DIR=C:/Libraries/tbb/include \
+      -DNLOPT_LIBRARY=C:/Libraries/nlopt/lib/nlopt.lib -DNLOPT_INCLUDE_DIR=C:/Libraries/nlopt/include \
+      -DLIBXML2_LIBRARIES=C:/Libraries/libxml2/lib/libxml2.lib -DLIBXML2_INCLUDE_DIR=C:/Libraries/libxml2/include \
       ..
   - cmake --build . --config Release --target install
   - set PYTHONPATH=%cd%\install\Lib\site-packages
-  - copy %cd%\install\bin\OT.dll %cd%\install\Lib\site-packages\openturns
-  - copy C:\Libraries\OpenBLAS-v0.2.15-Win32\bin\libopenblas.dll %cd%\install\Lib\site-packages\openturns
-  - copy C:\Libraries\mingw32_dll\libgcc_s_sjlj-1.dll %cd%\install\Lib\site-packages\openturns
-  - copy C:\Libraries\mingw32_dll\libgfortran-3.dll %cd%\install\Lib\site-packages\openturns
-  - copy C:\Libraries\mingw32_dll\libquadmath-0.dll %cd%\install\Lib\site-packages\openturns
-  - python ..\python\test\t_Description_std.py
+  - copy install\bin\OT.dll install\Lib\site-packages\openturns
+  - copy C:\Libraries\mingw32_dll\libgcc_s_sjlj-1.dll install\Lib\site-packages\openturns
+  - copy C:\Libraries\mingw32_dll\libgfortran-3.dll install\Lib\site-packages\openturns
+  - copy C:\Libraries\mingw32_dll\libquadmath-0.dll install\Lib\site-packages\openturns
+  - copy C:\Libraries\OpenBLAS-v0.2.15-Win32\bin\libopenblas.dll install\Lib\site-packages\openturns
+  - copy C:\Libraries\tbb\bin\tbb.dll install\Lib\site-packages\openturns
+  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox"

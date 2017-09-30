@@ -3,6 +3,7 @@
 from __future__ import print_function
 from openturns import *
 
+TESTPREAMBLE()
 
 dim = 10
 R = CorrelationMatrix(dim)

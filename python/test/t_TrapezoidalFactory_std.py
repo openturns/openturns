@@ -3,7 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
-ot.RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 distribution = ot.Trapezoidal(1.0, 2.3, 4.5, 5.0)
 size = 10000

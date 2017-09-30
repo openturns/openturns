@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
+ot.TESTPREAMBLE()
 
 def test_model(myModel, test_grad=True, x1=None, x2=None):
 

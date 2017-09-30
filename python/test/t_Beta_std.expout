@@ -48,11 +48,3 @@ standard moment n= 3  value= [-0.0857143]
 standard moment n= 4  value= [0.0857143]
 standard moment n= 5  value= [-0.047619]
 Standard representative= Beta(r = 2, t = 5, a = -1, b = 1)
-InvalidArgumentException : The first shape parameter must be a real value, here r=inf
-InvalidArgumentException : The first shape parameter must be a real value, here r=nan
-InvalidArgumentException : The second shape parameter must be a real value, here t=inf
-InvalidArgumentException : The second shape parameter must be a real value, here t=nan
-InvalidArgumentException : The lower bound must be a real value, here a=inf
-InvalidArgumentException : The lower bound must be a real value, here a=nan
-InvalidArgumentException : The upper bound must be a real value, here b=inf
-InvalidArgumentException : The upper bound must be a real value, here b=nan

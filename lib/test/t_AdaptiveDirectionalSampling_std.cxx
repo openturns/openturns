@@ -26,6 +26,7 @@ using namespace OT::Test;
 
 int main(int argc, char **argv)
 {
+  TESTPREAMBLE;
 //   Log::Show(Log::ALL);
 
   OStream fullprint(std::cout);

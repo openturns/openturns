@@ -3,6 +3,8 @@
 from __future__ import print_function
 import openturns as ot
 
+ot.TESTPREAMBLE()
+
 try:
     mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
     # 1D mesh, 1D covariance, uniform weight, automatic centering, more samples

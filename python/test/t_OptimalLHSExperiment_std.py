@@ -3,6 +3,8 @@
 from __future__ import print_function
 import openturns as ot
 
+ot.TESTPREAMBLE()
+
 # Defining parameters
 dimension = 3
 size = 100

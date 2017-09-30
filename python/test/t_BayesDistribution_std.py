@@ -3,6 +3,7 @@
 from __future__ import print_function
 from openturns import *
 
+TESTPREAMBLE()
 
 # Multivariate case
 coll2 = DistributionCollection(0)

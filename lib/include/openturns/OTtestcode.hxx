@@ -29,15 +29,12 @@
 #include <cstdlib>        // for exit codes
 #include <cstring>        // for strcmp
 
-#ifdef _MSC_VER
-# include <cstdio>         // for _set_output_format
-#endif
-
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/OStream.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/PlatformInfo.hxx"
 
-#define TESTPREAMBLE { OT::Test::parseOptions(argc, argv); }
+#define TESTPREAMBLE { OT::Test::parseOptions(argc, argv); OT::PlatformInfo::SetTwoDigitExponent(); }
 
 BEGIN_NAMESPACE_OPENTURNS
 
