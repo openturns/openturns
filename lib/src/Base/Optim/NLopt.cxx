@@ -527,5 +527,14 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
 }
 
 
+Bool NLopt::IsAvailable()
+{
+#ifdef OPENTURNS_HAVE_NLOPT
+  return true;
+#else
+  return false;
+#endif
+}
+
 END_NAMESPACE_OPENTURNS
 
