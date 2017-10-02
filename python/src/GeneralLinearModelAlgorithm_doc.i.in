@@ -161,7 +161,8 @@ showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, an
    
 which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
     
-The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationAlgorithm* method. User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to `NELDER-MEAD` or `LBFGS` respectively for Nelder-Mead and LBFGS-B solvers.
+The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationAlgorithm* method.
+User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt` solver names.
 
 It is also possible to proceed as follows:
 

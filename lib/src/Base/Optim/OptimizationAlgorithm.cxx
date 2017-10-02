@@ -20,6 +20,8 @@
  */
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/NLopt.hxx"
+#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -200,6 +202,32 @@ void OptimizationAlgorithm::setProgressCallback(ProgressCallback callBack, void 
 void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 {
   getImplementation()->setStopCallback(callBack, state);
+}
+
+
+OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
+{
+  OptimizationAlgorithm solver;
+  if (solverName == "Cobyla")
+  {
+    solver = Cobyla();
+  }
+  else if (solverName == "TNC")
+  {
+    solver = TNC();
+  }
+  else
+  {
+    try
+    {
+      solver = NLopt(solverName);
+    }
+    catch (InvalidArgumentException &)
+    {
+      throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
+    }
+  }
+  return solver;
 }
 
 

@@ -102,6 +102,9 @@ public:
   typedef Bool (*StopCallback)(void * state);
   void setStopCallback(StopCallback callBack, void * state = 0);
 
+  /** Build an instance from its name */
+  static OptimizationAlgorithm Build(const String & solverName);
+
   /** String converter */
   virtual String __repr__() const;
 

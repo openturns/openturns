@@ -491,15 +491,13 @@ void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 
 void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
-  const String solverName(ResourceMap::Get("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
-  if (solverName == "TNC")
-    solver_ = TNC();
-  else if (solverName == "NELDER-MEAD")
-    solver_ = NLopt("LN_NELDERMEAD");
+  String solverName(ResourceMap::Get("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
+  // for backward compatibility
+  if (solverName == "NELDER-MEAD")
+    solverName = "LN_NELDERMEAD";
   else if (solverName == "LBFGS")
-    solver_ = NLopt("LD_LBFGS");
-  else
-    throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
+    solverName = "LD_LBFGS";
+  solver_ = OptimizationAlgorithm::Build(solverName);
 }
 
 /* Virtual constructor */
