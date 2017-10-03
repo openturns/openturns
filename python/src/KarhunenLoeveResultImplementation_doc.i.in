@@ -12,8 +12,8 @@ implementation : :class:`~openturns.KarhunenLoeveResultImplementation`
     A specific implementation.
 covModel : :class:`~openturns.CovarianceModel`
     The covariance model.
-s : float, positive
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
+s : float, :math:`\geq0`
+    The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
 lambda : :class:`~openturns.Point`
     The first eigenvalues of the Fredholm problem.
 modes : :class:`~openturns.Basis`
@@ -47,7 +47,21 @@ Then we define the linear projection function :math:`\pi_{ \vect{\lambda}, \vect
 
 where :math:`\cS^{\Nset}  = \left \{ (\zeta_k)_{k \geq 1} \in  \Rset^{\Nset} \, | \, \sum_{k=1}^{\infty}\lambda_k \zeta_k^2 < +\infty \right \}`. 
 
-The integral of :eq:`projection` can be discretized according to the chosen Karhunen Loeve algorithm: on the vertices of the domain :math:`\cD_N` in the case of a :math:`P_1` algorithm, on the weighted experiment in the case of the quadrature method.  Then function :math:`f` can be reduced to its values on that discretization domain. Besides, we can restrict the sequences  :math:`(\vect{\lambda}, \vect{\varphi})` to the :math:`K` terms associated to the highest eigenvalues. Thus, following these discretizations, the function :math:`\pi_{\vect{\lambda}, \vect{\varphi}}` has a matrical representation.
+According to the Karhunen Loeve algorithm, the integral of :eq:`projection` is replaced by a specific weighted and finite sum. Thus, the linear relation :eq:`projection` becomes a relation between fields which allows the following matrix representation: 
+
+.. math::
+    :label: projectionMatrix
+
+    \left|
+      \begin{array}{ccl}
+         \cM_N \times (\Rset^d)^N & \rightarrow & \Rset^K \\
+         F & \mapsto & (\xi_1, \dots, \xi_K) = MF
+      \end{array}
+    \right.
+
+ 
+where :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}` is a :class:`~openturns.Field` and :math:`M`  the *projection matrix*.
+
 
 The inverse of :math:`\pi_{\vect{\lambda}, \vect{\varphi}}` is the lift function defined by:
 
@@ -70,8 +84,8 @@ Examples
 >>> mesh = ot.IntervalMesher([N - 1]).build(ot.Interval(-1, 1))
 >>> covariance_X = ot.AbsoluteExponential([1])
 >>> process_X = ot.GaussianProcess(covariance_X, mesh)
->>> threshold = 0.001
->>> algo_X = ot.KarhunenLoeveP1Algorithm(mesh, covariance_X, threshold)
+>>> s = 0.001
+>>> algo_X = ot.KarhunenLoeveP1Algorithm(mesh, covariance_X, s)
 >>> algo_X.run()
 >>> result_X = algo_X.getResult()"
 %enddef
@@ -85,12 +99,8 @@ OT_KarhunenLoeveResult_doc
 
 Returns
 -------
-s : float, positive
-    The minimal relative amplitude of the eigenvalues to consider in the decomposition wrt the maximum eigenvalue.
-
-Notes
------
-OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  at the highest index :math:`K` such that :math:`\lambda_K \geq s \lambda_1`."
+s : float, :math:`\geq 0`
+    The threshold :math:`s` used to select the most significant eigenmodes, defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::getThreshold
 OT_KarhunenLoeveResult_getThreshold_doc
@@ -111,7 +121,7 @@ OT_KarhunenLoeveResult_getCovarianceModel_doc
 // ---------------------------------------------------------------------
 
 %define OT_KarhunenLoeveResult_getEigenValues_doc
-"Accessor to the eigen values of the Karhunen Loeve decomposition.
+"Accessor to the eigenvalues of the Karhunen Loeve decomposition.
 
 Returns
 -------
@@ -120,7 +130,7 @@ eigenVal : :class:`~openturns.Point`
 
 Notes
 -----
-OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  at the highest index :math:`K` such that :math:`\lambda_K \geq s \lambda_1` where :math:`s` is the threshold fixed by the User."
+OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  to the most significant terms, selected by the threshold defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::getEigenValues
 OT_KarhunenLoeveResult_getEigenValues_doc
@@ -162,7 +172,7 @@ The modes :math:`(\vect{\varphi}_k)_{1 \leq k \leq K}` are evaluated on the
 vertices of the mesh defining the process sample. The values of the i-th field
 are the values of the i-th mode on these vertices.
 
-The mesh corresponds to the discretization points of the integral in
+The mesh corresponds to the discretization points used to discretize the integral 
  :eq:`projection`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::getScaledModesAsProcessSample
@@ -176,7 +186,7 @@ OT_KarhunenLoeveResult_getScaledModesAsProcessSample_doc
 Returns
 -------
 projection : :class:`~openturns.Matrix`
-    The projection matrix associated to the discretized version of :eq:`projection`."
+    The  matrix :math:`M` defined in :eq:`projectionMatrix`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::getProjectionMatrix
 OT_KarhunenLoeveResult_getProjectionMatrix_doc
@@ -184,12 +194,16 @@ OT_KarhunenLoeveResult_getProjectionMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_KarhunenLoeveResult_project_doc
-"Project a function or a field on the eigen modes basis.
+"Project a function or a field on the eigenmodes basis.
 
 Available constructors:
     project(*function*)
 
     project(*field*)
+
+    project(*basis*)
+
+    project(*fieldSample*)
 
 Parameters
 ----------
@@ -197,12 +211,30 @@ function : :class:`~openturns.Function`
     A function.
 field :  :class:`~openturns.Field`
     A field.
+basis :  :class:`~openturns.Basis`
+    A collection f functions.
+fieldSample :  :class:`~openturns.ProcessSample`
+    A collection f fields.
+
+
+Returns
+-------
+point : :class:`~openturns.Point`
+    The vector :math:`(\alpha_1, \dots, \alpha_K)` of the components of the function or the field in the eigenmodes basis
+sample : :class:`~openturns.Sample`
+    The collection of the vectors :math:`(\alpha_1, \dots, \alpha_K)` of the components of the collection of functions or fields in the eigenmodes basis
+
 
 Notes
 -----
-The *project* method calculates the projection :eq:`projection` on a field or a
-function where only the first :math:`K` elements of the sequence are calculated.
-:math:`K` is determined by the :math:`s` parameter fixed by the User."
+The *project* method calculates the projection :eq:`projection` on a function  or a field where only the first :math:`K` elements of the sequences are calculated.
+:math:`K` is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`.
+
+Lets note :math:`\cM_{KL}` the mesh coming from the :class:`~openturns.KarhunenLoeveResult` (ie the one contained in the *modesAsSample* :class:`~openturns.ProcessSample`).
+
+If the given field is defined on :math:`\cM_{KL}`, the associated values  are directly used for the projection. Otherwise, a :class:`~openturns.P1LagrangeEvaluation`  function is built using this field and then used to interpolate the values of the field on :math:`\cM_{KL}`.
+
+If evaluated from a function, the *project* method evaluates the function on :math:`\cM_{KL}` and uses :eq:`projectionMatrix`. "
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::project
 OT_KarhunenLoeveResult_project_doc
@@ -220,7 +252,7 @@ modes : :class:`~openturns.Basis`
 Notes
 -----
 The basis is truncated to :math:`(\vect{\varphi}_k)_{1 \leq k \leq K}` where
-:math:`K` is fixed by the User through the :math:`s` parameter."
+:math:`K`  is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::getModes
 OT_KarhunenLoeveResult_getModes_doc
@@ -238,7 +270,7 @@ modes : :class:`~openturns.Basis`
 Notes
 -----
 The basis is truncated to :math:`(\sqrt{\lambda_k}\vect{\varphi}_k)_{1 \leq k \leq K}`
-where :math:`K` is fixed by the User through the :math:`s` parameter."
+where :math:`K` is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::getScaledModes
 OT_KarhunenLoeveResult_getScaledModes_doc
@@ -260,7 +292,7 @@ modes : :class:`~openturns.Function`
 
 Notes
 -----
-The sum defining :math:`f` is truncated to the first :math:`K` terms, where :math:`K` is fixed by the User through the :math:`s` parameter."
+The sum defining :math:`f` is truncated to the first :math:`K` terms, where :math:`K`  is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::lift
 OT_KarhunenLoeveResult_lift_doc
@@ -282,7 +314,7 @@ modes : :class:`~openturns.Field`
 
 Notes
 -----
-The sum defining :math:`f` is truncated to the first :math:`K` terms, where :math:`K` is fixed by the User through the :math:`s` parameter."
+The sum defining :math:`f` is truncated to the first :math:`K` terms, where :math:`K` is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::liftAsField
 OT_KarhunenLoeveResult_liftAsField_doc

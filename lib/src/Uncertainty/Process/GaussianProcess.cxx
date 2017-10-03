@@ -46,7 +46,7 @@ GaussianProcess::GaussianProcess()
   , hasStationaryTrend_(true)
   , checkedStationaryTrend_(true)
   , trend_()
-  , stationaryTrendValue_(0)
+  , stationaryTrendValue_(0.0)
   , samplingMethod_(0)
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
@@ -115,7 +115,8 @@ GaussianProcess::GaussianProcess(const SecondOrderModel & model,
   , stationaryTrendValue_(model.getDimension())
   , samplingMethod_(0)
 {
-  setMesh(mesh);
+  // We use the upper class accessor to prevent the reinitialization of the flags
+  ProcessImplementation::setMesh(mesh);
   setDimension(model.getDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
@@ -139,7 +140,8 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
   , stationaryTrendValue_(covarianceModel.getDimension())
   , samplingMethod_(0)
 {
-  setMesh(mesh);
+  // We use the upper class accessor to prevent the reinitialization of the flags
+  ProcessImplementation::setMesh(mesh);
   setDimension(covarianceModel.getDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getSpatialDimension(), "x"), Description(getDimension(), "0.0")));
@@ -411,10 +413,12 @@ void GaussianProcess::checkStationaryTrend() const
   checkedStationaryTrend_ = true;
   const UnsignedInteger n = mesh_.getVerticesNumber();
   if (n == 0) return;
-  stationaryTrendValue_ = (*trend_.getEvaluation())(mesh_.getVertices()[0]);
+  const Function trendFunction(trend_.getTrendFunction());
+  if (trendFunction.getInputDimension() == 0) return;
+  stationaryTrendValue_ = trendFunction(mesh_.getVertices()[0]);
   for (UnsignedInteger i = 1; i < n; ++i)
   {
-    if ((*trend_.getEvaluation())(mesh_.getVertices()[i]) != stationaryTrendValue_)
+    if (!(trendFunction(mesh_.getVertices()[i]) == stationaryTrendValue_))
     {
       hasStationaryTrend_ = false;
       return;

@@ -1,8 +1,8 @@
-myTemporalFunc=class=VertexValueFunction evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2]
-myTemporalFunc input description=[x]
-myTemporalFunc output description=[y0]
-myTemporalFunc input dimension=1
-myTemporalFunc output dimension=1
+myVertexValueFunc=class=VertexValueFunction evaluation=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[t,x,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t,x] outputVariablesNames=[y0] formulas=[x + t^2]
+myVertexValueFunc input description=[x]
+myVertexValueFunc output description=[y0]
+myVertexValueFunc input dimension=1
+myVertexValueFunc output dimension=1
 input time series=class=TimeSeries name=Unnamed derived from=class=FieldImplementation name=Unnamed mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=1 description=[t] data=[[0],[0.2],[0.4],[0.6],[0.8],[1]] simplices=[[0,1],[1,2],[2,3],[3,4],[4,5]] values=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=1 data=[[0],[1],[2],[3],[4],[5]] start=0 timeStep=0.2 n=6
 output time series=class=Field name=Unnamed description=[t,y0] implementation=class=FieldImplementation name=Unnamed mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=1 description=[t] data=[[0],[0.2],[0.4],[0.6],[0.8],[1]] simplices=[[0,1],[1,2],[2,3],[3,4],[4,5]] values=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=1 description=[y0] data=[[0],[1.04],[2.16],[3.36],[4.64],[6]]
 called 1 times

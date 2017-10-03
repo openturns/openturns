@@ -40,7 +40,7 @@ public:
   TrendEvaluation();
 
   /** Parameter constructor */
-  TrendEvaluation(const Function & function);
+  explicit TrendEvaluation(const Function & function);
 
   /** Virtual constructor */
   virtual TrendEvaluation * clone() const;

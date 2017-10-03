@@ -368,6 +368,9 @@ void ResourceMap::loadDefaultConfiguration()
   // IntervalMesher parameters //
   setAsBool( "IntervalMesher-UseDiamond", false );
 
+  // PointToPointEvaluation parameters //
+  setAsUnsignedInteger("PointToPointEvaluation-BlockSize", 256);
+  
   // SQP parameters //
   setAsScalar( "SQP-DefaultTau", 0.5 );
   setAsScalar( "SQP-DefaultOmega", 1.0e-4 );

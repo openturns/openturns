@@ -94,6 +94,9 @@
   <!-- OT::IntervalMesher parameters -->
   <IntervalMesher-UseDiamond value="false" />
 
+  <!-- OT::PointToPointEvaluation parameters -->
+  <PointToPointEvaluation-BlockSize value="256" />
+
   <!-- OT::SQP parameters -->
   <SQP-DefaultTau    value="0.5"    />
   <SQP-DefaultOmega  value="1.0e-4" />

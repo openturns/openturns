@@ -38,15 +38,15 @@ int main(int argc, char *argv[])
     inputVars.add("x");
     Description formula(1, "x + t^2");
     SymbolicFunction myFunc(inputVars, formula);
-    VertexValueFunction myTemporalFunc(myFunc);
+    VertexValueFunction myVertexValueFunc(myFunc);
 
-    fullprint << "myTemporalFunc=" << myTemporalFunc << std::endl;
+    fullprint << "myVertexValueFunc=" << myVertexValueFunc << std::endl;
     /* Get the input and output description */
-    fullprint << "myTemporalFunc input description=" << myTemporalFunc.getInputDescription() << std::endl;
-    fullprint << "myTemporalFunc output description=" << myTemporalFunc.getOutputDescription() << std::endl;
+    fullprint << "myVertexValueFunc input description=" << myVertexValueFunc.getInputDescription() << std::endl;
+    fullprint << "myVertexValueFunc output description=" << myVertexValueFunc.getOutputDescription() << std::endl;
     /* Get the input and output dimension, based on description */
-    fullprint << "myTemporalFunc input dimension=" << myTemporalFunc.getInputDimension() << std::endl;
-    fullprint << "myTemporalFunc output dimension=" << myTemporalFunc.getOutputDimension() << std::endl;
+    fullprint << "myVertexValueFunc input dimension=" << myVertexValueFunc.getInputDimension() << std::endl;
+    fullprint << "myVertexValueFunc output dimension=" << myVertexValueFunc.getOutputDimension() << std::endl;
     /* Create a TimeSeries */
     RegularGrid tg(0.0, 0.2, 6);
     Sample data(tg.getN(), myFunc.getInputDimension() - 1);
@@ -55,9 +55,9 @@ int main(int argc, char *argv[])
         data(i, j) = i * data.getDimension() + j;
     TimeSeries ts(tg, data);
     fullprint << "input time series=" << ts << std::endl;
-    fullprint << "output time series=" << myTemporalFunc(ts) << std::endl;
+    fullprint << "output time series=" << myVertexValueFunc(ts) << std::endl;
     /* Get the number of calls */
-    fullprint << "called " << myTemporalFunc.getCallsNumber() << " times" << std::endl;
+    fullprint << "called " << myVertexValueFunc.getCallsNumber() << " times" << std::endl;
   }
   catch (TestFailed & ex)
   {

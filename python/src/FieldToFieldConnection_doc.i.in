@@ -1,0 +1,65 @@
+%feature("docstring") OT::FieldToFieldConnection
+"Composition function :math:`f \circ g` where :math:`g` acts on fields and :math:`f` produces fields.
+
+Available constructors:
+   FieldToPointConnection(*f_FieldFunction, g_FieldFunction*)
+
+   FieldToPointConnection(*f_PointToField, g_FieldToPoint*)
+
+Parameters
+----------
+f_FieldFunction, g_FieldFunction : :class:`~openturns.FieldFunction`
+    Function that acts on fields and produces fields
+g_FieldToPoint : :class:`~openturns.FieldToPointFunction`
+    Function that acts on fields and produces points
+f_PointToField :  :class:`~openturns.PointToFieldFunction`
+    Function that acts on points and produces points
+
+Notes
+-----
+This class is a particular case  of the general class :class:`~openturns.FieldFunction`. Thus it doesn't implement the  gradient nor the hessian."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToFieldConnection::getLeftFieldFunction
+"Accessor to the function :math:`f` of class :class:`~openturns.FieldFunction`.
+
+Returns
+-------
+f : :class:`~openturns.FieldFunction`
+    The function :math:`f` that acts on fields to produce fields."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToFieldConnection::getRightFieldFunction
+"Accessor to the function :math:`g` of class :class:`~openturns.FieldFunction`.
+
+Returns
+-------
+g : :class:`~openturns.FieldFunction`
+    The function :math:`g` that acts on fields to produce fields."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToFieldConnection::getPointToFieldFunction
+"Accessor to the function :math:`f` of class :class:`~openturns.PointToFieldFunction`.
+
+Returns
+-------
+f : :class:`~openturns.PointToFieldFunction`
+    The function :math:`f` that acts on points to produce fields."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FieldToFieldConnection::getFieldToPointFunction
+"Accessor to the function  :math:`g` of class :class:`~openturns.FieldToPointFunction`.
+
+Returns
+-------
+g : :class:`~openturns.FieldToPointFunction`
+    The function :math:`g` that acts on fields to produce points."
+
+
+
+
+

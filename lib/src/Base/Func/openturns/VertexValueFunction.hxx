@@ -80,8 +80,8 @@ public:
   /** Get the function corresponding to indices components */
   Implementation getMarginal(const Indices & indices) const;
 
-  /** Evaluation accessor */
-  EvaluationPointer getEvaluation() const;
+  /** Function accessor */
+  Function getFunction() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -91,8 +91,8 @@ public:
 
 protected:
 
-  /** Pointer to the actual evaluation class */
-  EvaluationPointer p_evaluation_;
+  /** The underlying function */
+  Function function_;
 
 }; /* class VertexValueFunction */
 

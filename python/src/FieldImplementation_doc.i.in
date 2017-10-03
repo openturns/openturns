@@ -19,10 +19,16 @@ values : 2-d sequence of float of dimension :math:`d`
 
 Notes
 -----
-A class:`~openturns.Field` contains a mesh and the values associated to each
-vertice of the mesh. In the context of a stochastic process :math:`X`, a
-:class:`~openturns.Field` contains the mesh and a realization of :math:`X`
-discretized on this mesh.
+A field :math:`F` is an association between vertices and values: 
+
+.. math::
+
+    F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}
+
+where the :math:`(\vect{t}_i)_{1 \leq i \leq N}` are the vertices of a mesh of the domain :math:`\cD` and :math:`(\vect{v}_i)_{1 \leq i \leq N}` are the associated values.
+
+Mathematically speaking, :math:`F` is an element :math:`\cM_N \times (\Rset^d)^N` where :math:`N` is the number of vertices of the mesh :math:`\cM_N` of the domain :math:`\cD \subset \Rset^n`.
+
 
 Examples
 --------
@@ -53,7 +59,7 @@ Returns
 deformedMesh : :class:`~openturns.Mesh`
     The initial mesh is deformed as follows: each vertex of the mesh is
     replaced by the sum of the vertex and the value of the field at this
-    vertex. Only works when :math:`d=n`: the spatial dimension :math:`n`: is
+    vertex. Only works when the spatial dimension :math:`n`: is
     equal to the dimension of the field :math:`d`."
 %enddef
 %feature("docstring") OT::FieldImplementation::asDeformedMesh
@@ -135,12 +141,12 @@ OT_Field_exportToVTKFile_doc
 // ---------------------------------------------------------------------
 
 %define OT_Field_getDescription_doc
-"Get the description of the vertices and the values of the field.
+"Get the description of the field values.
 
 Returns
 -------
 description : :class:`~openturns.Description`
-    Description of the vertices and the values of the field."
+    Description of the vertices and values of the field, size :math:`n+d`."
 %enddef
 %feature("docstring") OT::FieldImplementation::getDescription
 OT_Field_getDescription_doc
@@ -152,7 +158,7 @@ OT_Field_getDescription_doc
 Returns
 -------
 d : int
-    Dimension of the values: :math:`d`."
+    Dimension of the field values: :math:`d`."
 %enddef
 %feature("docstring") OT::FieldImplementation::getDimension
 OT_Field_getDimension_doc
@@ -170,14 +176,27 @@ mesh : :class:`~openturns.Mesh`
 OT_Field_getMesh_doc
 
 // ---------------------------------------------------------------------
+%define OT_Field_getSample_doc
+"Get the values of the field.
+
+Returns
+-------
+values : :class:`~openturns.Sample`
+    Values associated to the mesh. The size of the sample is the number of
+    vertices of the mesh and the dimension is the dimension of the values
+    (:math:`d`)."
+%enddef
+%feature("docstring") OT::FieldImplementation::getSample
+OT_Field_getSample_doc
+
+// ---------------------------------------------------------------------
 %define OT_Field_getSize_doc
 "Get the number of values inside the field.
 
 Returns
 -------
 size : int
-    Number of values inside the field, which corresponds to the number of
-    vertices of the mesh."
+    Number :math:`N` of vertices in the mesh."
 %enddef
 %feature("docstring") OT::FieldImplementation::getSize
 OT_Field_getSize_doc
@@ -210,10 +229,10 @@ The spatial mean of the field is defined by:
 
 .. math::
 
-   \displaystyle \frac{1}{V} \sum_{S_i \in \cM} \left( \frac{1}{n+1}\sum_{k=0}^{n} \vect{x}_{i_k}\right) |S_i|
+   \displaystyle \frac{1}{V} \sum_{S_i \in \cM} \left( \frac{1}{n+1}\sum_{k=0}^{n} \vect{v}_{i_k}\right) |S_i|
 
 where :math:`S_i` is the simplex of index :math:`i` of the mesh, :math:`|S_i|`
-its volume and :math:`(\vect{x}_{i_0}, \dots, \vect{x}_{i_n})` the values of
+its volume and :math:`(\vect{v}_{i_0}, \dots, \vect{v}_{i_n})` the values of
 the field associated to the  vertices of :math:`S_i`, and
 :math:`\displaystyle V=\sum_{S_i \in \cD} |S_i|`."
 %enddef
@@ -236,7 +255,7 @@ If we note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values in
 
 .. math::
 
-   \displaystyle  \frac{1}{N} \sum_{i=0}^{N-1} \vect{x}_i
+   \displaystyle  \frac{1}{N} \sum_{i=0}^{N-1} \vect{v}_i
 
 Only makes sense in the case of a regular grid."
 %enddef
@@ -310,12 +329,12 @@ OT_Field_getValues_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_setDescription_doc
-"Set the description of the field..
+"Set the description of the vertices and values of the field.
 
 Parameters
 ----------
 myDescription : :class:`~openturns.Description`
-    Description of the field. Must be of size :math:`n+d` and give the
+    Description of the field values. Must be of size :math:`n+d` and give the
     description of the vertices and the values."
 %enddef
 %feature("docstring") OT::FieldImplementation::setDescription

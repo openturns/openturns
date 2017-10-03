@@ -68,6 +68,8 @@
 %include KarhunenLoeveAlgorithm.i
 %include KarhunenLoeveP1Algorithm.i
 %include KarhunenLoeveSVDAlgorithm.i
+%include KarhunenLoeveProjection.i
+%include KarhunenLoeveLifting.i
 
 /* At last we include template definitions */
 %include BaseAlgoTemplateDefs.i

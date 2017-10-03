@@ -1,0 +1,32 @@
+%feature("docstring")  OT::KarhunenLoeveProjection
+"Function dedicated to the projection of fields on a Karhunen Loeve basis.
+
+Parameters
+----------
+KLResult : :class:`~openturns.KarhunenLoeveResult`
+    The result structure created by a :class:`~openturns.KarhunenLoeveAlgorithm`
+
+Notes
+-----
+The class :class:`~openturns.KarhunenLoeveProjection` is a specific function  :class:`~openturns.FieldToPointFunction` dedicated to the projection of fields on a Karhunen Loeve basis.
+
+See the documentation of :class:`~openturns.KarhunenLoeveResult` to get information on the projection function.
+
+The function acts on :class:`~openturns.Fields` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with a spatial dimension equal to :math:`n`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveProjection::getMarginal
+"Get the marginal(s) at given indice(s).
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d`
+    Indice(s) of the marginal(s) to be extracted.
+    output vector.
+
+Returns
+-------
+function : :class:`~openturns.KarhunenLoeveProjection`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`."

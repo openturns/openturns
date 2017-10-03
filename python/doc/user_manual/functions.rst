@@ -33,18 +33,32 @@ Algebra of functions
     LinearCombinationFunction
     ParametricFunction
     ProductFunction
-
-Field functions
-===============
+    PointToPointEvaluation
+    FieldToFieldConnection
+    FieldToPointConnection
+    PointToFieldConnection
+    PointToPointConnection
+    
+Field and mixed functions
+=========================
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
     FieldFunction
+    FieldToPointFunction
+    PointToFieldFunction
     PythonFieldFunction
     ValueFunction
+    VertexFunction
     VertexValueFunction
+    PythonFieldFunction
+    PythonFieldToPointFunction
+    PythonPointToFieldFunction
+    OpenTURNSPythonFieldFunction
+    OpenTURNSPythonFieldToPointFunction
+    OpenTURNSPythonPointToFieldFunction
 
 Collection of functions
 =======================

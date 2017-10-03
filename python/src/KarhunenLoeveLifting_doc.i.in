@@ -1,0 +1,42 @@
+%feature("docstring") OT::KarhunenLoeveLifting
+"Function dedicated to the lift of Karhunen Loeve coefficients into a field.
+
+Parameters
+----------
+KLResult : :class:`~openturns.KarhunenLoeveResult`
+    The result structure created by a :class:`~openturns.KarhunenLoeveAlgorithm`
+
+Notes
+-----
+The class :class:`~openturns.KarhunenLoeveLifting` is a specific function  :class:`~openturns.PointToFieldFunction` dedicated to the lift of Karhunen Loeve coefficients into a field.
+
+See the documentation of :class:`~openturns.KarhunenLoeveResult` to get information on the lift function.
+
+The function acts on a vector of coefficients (:class:`~openturns.Point`) to create a field associated to the Karhunen Loeve mesh (:class:`~openturns.Mesh`)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveLifting::getMarginal
+"Get the marginal(s) at given indice(s).
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d`
+    Indice(s) of the marginal(s) to be extracted.
+    output vector.
+
+Returns
+-------
+function : :class:`~openturns.KarhunenLoeveLifting`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveLifting::getOutputMesh
+"Get the output mesh.
+
+Returns
+-------
+outputMesh : :class:`~openturns.Mesh`
+    The mesh :math:`\cM_{N'}` of the output field."

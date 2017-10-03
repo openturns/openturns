@@ -1,5 +1,5 @@
 myInverseTrendFunc= [t]->[sin(t),cos(t)]
-myInverseTrendFunc input description= [y0,y1]
+myInverseTrendFunc input description= [x0,x1]
 myInverseTrendFunc input dimension= 2
 myInverseTrendFunc output description= [y0,y1]
 myInverseTrendFunc output dimension= 2

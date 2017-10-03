@@ -1,10 +1,18 @@
 %define OT_Function_doc
 "Function base class.
 
+
+Notes
+-----
+A function acts on points to produce points: :math:`f: \Rset^d \rightarrow \Rset^{d'}`.
+
+A function enables to evaluate its gradient and its hessian when mathematically defined.
+
+
 Examples
 --------
 Create a *Function* from a list of analytical formulas and
-descriptions of the inputs and the outputs :
+descriptions of the input vector and the output vector :
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x0', 'x1'],
@@ -32,6 +40,24 @@ Create a *Function* from a Python function:
     [ y0 ]
 0 : [ 15 ]
 1 : [ 13 ]
+
+
+See :class:`~openturns.PythonFunction` for further details.
+
+Create a *Function* from a Python class:
+
+>>> class FUNC(OpenTURNSPythonFunction):
+...     def __init__(self):
+...         super(FUNC, self).__init__(2, 1)
+...         self.setInputDescription(['R', 'S'])
+...         self.setOutputDescription(['T'])
+...     def _exec(self, X):
+...         Y = [X[0] + X[1]]
+...         return Y
+>>> F = FUNC()
+>>> myFunc = Function(F)
+>>> print(myFunc((1.0, 2.0)))
+[3]
 
 
 See :class:`~openturns.PythonFunction` for further details.
@@ -656,12 +682,12 @@ OT_Function_setDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getInputDescription_doc
-"Accessor to the description of the inputs.
+"Accessor to the description of the input vector.
 
 Returns
 -------
 description : :class:`~openturns.Description`
-    Description of the inputs.
+    Description of the input vector.
 
 Examples
 --------
@@ -677,12 +703,12 @@ OT_Function_getInputDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getOutputDescription_doc
-"Accessor to the description of the outputs.
+"Accessor to the description of the output vector.
 
 Returns
 -------
 description : :class:`~openturns.Description`
-    Description of the outputs.
+    Description of the output vector.
 
 Examples
 --------
@@ -698,12 +724,12 @@ OT_Function_getOutputDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getInputDimension_doc
-"Accessor to the number of the inputs.
+"Accessor to the dimension of the input vector.
 
 Returns
 -------
-number_inputs : int
-    Number of inputs.
+inputDim : int
+    Dimension of the input vector :math:`d`.
 
 Examples
 --------
@@ -724,7 +750,7 @@ OT_Function_getInputDimension_doc
 Returns
 -------
 number_outputs : int
-    Number of outputs.
+    Dimension of the output vector :math:`d'`.
 
 Examples
 --------

@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/InverseTrendTransform.hxx"
+#include "openturns/InverseTrendEvaluation.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EvaluationImplementation.hxx"
@@ -40,32 +41,23 @@ InverseTrendTransform::InverseTrendTransform()
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const Function & function)
-  : VertexValueFunction(function.getInputDimension())
+  : VertexValueFunction(InverseTrendEvaluation(function), function.getInputDimension())
 {
-  p_evaluation_ = function.getEvaluation() ;
-  // Set the descriptions
-  setInputDescription(p_evaluation_->getOutputDescription());
-  setOutputDescription(p_evaluation_->getOutputDescription());
+  // Nothing to do
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const EvaluationPointer & p_evaluation)
-  : VertexValueFunction(p_evaluation->getInputDimension())
+  : VertexValueFunction(InverseTrendEvaluation(Function(p_evaluation)), p_evaluation->getInputDimension())
 {
-  p_evaluation_ = p_evaluation;
-  // Set the descriptions
-  setInputDescription(p_evaluation_->getOutputDescription());
-  setOutputDescription(p_evaluation_->getOutputDescription());
+  // Nothing to do
 }
 
 /* Parameter constructor */
 InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & evaluation)
-  : VertexValueFunction(evaluation.getInputDimension())
+  : VertexValueFunction(InverseTrendEvaluation(Function(evaluation)), evaluation.getInputDimension())
 {
-  p_evaluation_ = evaluation.clone();
-  // Set the descriptions
-  setInputDescription(p_evaluation_->getOutputDescription());
-  setOutputDescription(p_evaluation_->getOutputDescription());
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -74,43 +66,27 @@ InverseTrendTransform * InverseTrendTransform::clone() const
   return new InverseTrendTransform(*this);
 }
 
-/* Comparison operator */
-Bool InverseTrendTransform::operator ==(const InverseTrendTransform & other) const
-{
-  return (getEvaluation() == other.getEvaluation());
-}
-
 /* String converter */
 String InverseTrendTransform::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << InverseTrendTransform::GetClassName()
-      << " evaluation=" << p_evaluation_->__repr__();
+  oss << "class=" << TrendTransform::GetClassName()
+      << " inherited from " << VertexValueFunction::__repr__();
   return oss;
-}
-
-/* String converter */
-String InverseTrendTransform::__str__(const String & offset) const
-{
-  return OSS(false) << p_evaluation_->__str__(offset);
-}
-
-/* Operator () */
-Field InverseTrendTransform::operator() (const Field & inFld) const
-{
-  if (inFld.getSpatialDimension() != p_evaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with mesh dimension=" << p_evaluation_->getInputDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
-  if (inFld.getDimension() != p_evaluation_->getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a Field with dimension=" << p_evaluation_->getOutputDimension() << ", got dimension=" << inFld.getDimension();
-  Sample outputSample((*p_evaluation_)(inFld.getMesh().getVertices()));
-  // finally as the function adds a trend, result
-  for (UnsignedInteger k = 0; k < outputSample.getSize(); ++k) outputSample[k] = inFld.getValueAtIndex(k) - outputSample[k];
-  ++callsNumber_;
-  return Field(inFld.getMesh(), outputSample);
 }
 
 /* Inverse accessor */
 TrendTransform InverseTrendTransform::getInverse() const
 {
-  return TrendTransform(p_evaluation_);
+  return TrendTransform(getTrendFunction());
+}
+
+/* Underlying trend function accessor */
+Function InverseTrendTransform::getTrendFunction() const
+{
+  const InverseTrendEvaluation * p_evaluation = dynamic_cast<const InverseTrendEvaluation*>(getFunction().getEvaluation().get());
+  if (p_evaluation) return p_evaluation->getFunction();
+  throw InternalException(HERE) << "Error: cannot extract the evaluation of the internal function as an InverseTrendEvaluation";
 }
 
 /* Method save() stores the object through the StorageManager */

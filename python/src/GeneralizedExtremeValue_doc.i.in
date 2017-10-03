@@ -7,7 +7,7 @@ Available constructors:
 Parameters
 ----------
 mu : float
-    Location parameter :math:`\sigma`.
+    Location parameter :math:`\mu`.
 sigma : float, :math:`\sigma > 0`
     Scale parameter :math:`\sigma`.
 xi : float

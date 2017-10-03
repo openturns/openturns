@@ -1,0 +1,63 @@
+%feature("docstring") OT::PointToPointEvaluation
+"Evaluation of the composition :math:`f \circ g` where :math:`g` acts on points and :math:`f` produces points.
+
+Available constructors:
+   PointToPointEvaluation(*f_Function, g_Function*)
+
+   PointToPointEvaluation(*f_FieldToPoint, g_PointToField*)
+
+Parameters
+----------
+f_Function, g_Function :  :class:`~openturns.Function`
+    A function that acts on points and produces points
+f_FieldToPoint : :class:`~openturns.FieldToPointFunction`
+    A function that acts on fields and produces points
+g_PointToField : :class:`~openturns.PointToFieldFunction`
+    A function that acts on points and produces fields
+
+Notes
+-----
+This class only implements the evaluation operator and does not propose any implementation for the gradient nor the hessian of the composition."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToPointEvaluation::getLeftFunction
+"Accessor to the left function :math:`f`.
+
+Returns
+-------
+f : :class:`~openturns.Function`
+    The function :math:`f` acting on points to produce points.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToPointEvaluation::getRightFunction
+"Accessor to the left function :math:`g`.
+
+Returns
+-------
+g : :class:`~openturns.Function`
+    The function :math:`g` acting on points to produce points.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToPointEvaluation::getPointToFieldFunction
+"Accessor to the left function :math:`g`.
+
+Returns
+-------
+g : :class:`~openturns.PointToFieldFunction`
+    The function :math:`g` acting on points to produce fields."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToPointEvaluation::getFieldToPointFunction
+"Accessor to the left function :math:`f`.
+
+Returns
+-------
+f : :class:`~openturns.FieldToPointFunction`
+    The function :math:`f` acting on fields to produce points.
+"

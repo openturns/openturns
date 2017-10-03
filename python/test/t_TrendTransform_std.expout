@@ -1,5 +1,5 @@
 myTrendFunc= [t]->[sin(t),cos(t)]
-myTrendFunc input description= [y0,y1]
+myTrendFunc input description= [x0,x1]
 myTrendFunc input dimension= 2
 myTrendFunc output description= [y0,y1]
 myTrendFunc output dimension= 2

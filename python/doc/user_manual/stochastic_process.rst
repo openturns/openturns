@@ -199,3 +199,5 @@ Karhunen Loeve decomposition
 
     :template: class.rst_t
     KarhunenLoeveResult
+    KarhunenLoeveProjection
+    KarhunenLoeveLifting

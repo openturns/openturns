@@ -49,6 +49,11 @@ public:
   /** Default constructor */
   explicit FieldFunction(const UnsignedInteger spatialDimension = 1);
 
+  /** Parameter constructor */
+  explicit FieldFunction(const UnsignedInteger spatialDimension,
+			 const UnsignedInteger inputDimension,
+			 const UnsignedInteger outputDimension);
+
   /** Constructor from Function */
   explicit FieldFunction(const Function & function,
                          const UnsignedInteger spatialDimension = 1);

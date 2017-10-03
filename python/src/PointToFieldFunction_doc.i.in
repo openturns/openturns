@@ -1,0 +1,22 @@
+// PointToFieldFunction docstrings are defined in PointToFieldFunctionImplementation_doc.i.in
+
+%feature("docstring") OT::PointToFieldFunction
+OT_PointToFieldFunction_doc
+%feature("docstring") OT::PointToFieldFunction::getCallsNumber
+OT_PointToFieldFunction_getCallsNumber_doc
+%feature("docstring") OT::PointToFieldFunction::getInputDescription
+OT_PointToFieldFunction_getInputDescription_doc
+%feature("docstring") OT::PointToFieldFunction::getInputDimension
+OT_PointToFieldFunction_getInputDimension_doc
+%feature("docstring") OT::PointToFieldFunction::getMarginal
+OT_PointToFieldFunction_getMarginal_doc
+%feature("docstring") OT::PointToFieldFunction::getOutputMesh
+OT_PointToFieldFunction_getOutputMesh_doc
+%feature("docstring") OT::PointToFieldFunction::getOutputDescription
+OT_PointToFieldFunction_getOutputDescription_doc
+%feature("docstring") OT::PointToFieldFunction::getOutputDimension
+OT_PointToFieldFunction_getOutputDimension_doc
+%feature("docstring") OT::PointToFieldFunction::setInputDescription
+OT_PointToFieldFunction_setInputDescription_doc
+%feature("docstring") OT::PointToFieldFunction::setOutputDescription
+OT_PointToFieldFunction_setOutputDescription_doc

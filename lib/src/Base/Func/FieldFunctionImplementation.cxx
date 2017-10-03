@@ -33,8 +33,25 @@ static const Factory<FieldFunctionImplementation> Factory_FieldFunctionImplement
 FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger spatialDimension)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
+  , inputDimension_(0)
+  , outputDimension_(0)
   , inputDescription_()
   , outputDescription_()
+  , callsNumber_(0)
+{
+  // Nothing to do
+}
+
+/* Default constructor */
+FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger spatialDimension,
+							 const UnsignedInteger inputDimension,
+							 const UnsignedInteger outputDimension)
+  : PersistentObject()
+  , spatialDimension_(spatialDimension)
+  , inputDimension_(inputDimension)
+  , outputDimension_(outputDimension)
+  , inputDescription_(Description::BuildDefault(inputDimension, "x"))
+  , outputDescription_(Description::BuildDefault(outputDimension, "y"))
   , callsNumber_(0)
 {
   // Nothing to do
@@ -157,13 +174,13 @@ UnsignedInteger FieldFunctionImplementation::getSpatialDimension() const
 /* Accessor for input point dimension */
 UnsignedInteger FieldFunctionImplementation::getInputDimension() const
 {
-  return inputDescription_.getSize();
+  return inputDimension_;
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger FieldFunctionImplementation::getOutputDimension() const
 {
-  return outputDescription_.getSize();
+  return outputDimension_;
 }
 
 /* Number of calls to the dynamical function */
@@ -177,6 +194,8 @@ void FieldFunctionImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "spatialDimension_", spatialDimension_ );
+  adv.saveAttribute( "inputDimension_", inputDimension_ );
+  adv.saveAttribute( "outputDimension_", outputDimension_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "callsNumber_", callsNumber_ );
@@ -187,6 +206,8 @@ void FieldFunctionImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "spatialDimension_", spatialDimension_ );
+  adv.loadAttribute( "inputDimension_", inputDimension_ );
+  adv.loadAttribute( "outputDimension_", outputDimension_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   adv.loadAttribute( "callsNumber_", callsNumber_ );

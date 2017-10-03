@@ -7,14 +7,12 @@ mesh : :class:`~openturns.Mesh`
     The mesh :math:`\cD_N` that discretizes the domain :math:`\cD`.
 covariance : :class:`~openturns.CovarianceModel`
     The covariance function to decompose.
-threshold : float
-    The minimal relative amplitude of the eigenvalues to consider in
-    the decomposition wrt the sum of the preceeding eigenvalues. The default value is 0.
+s : float, :math:`\geq0`
+    The threshold used to select the most significant eigenmodes, defined in  :class:`~openturns.KarhunenLoeveAlgorithm`.
 
 Notes
 -----
 The Karhunen-Loeve :math:`P_1` algorithm solves the Fredholm problem  associated to the covariance function :math:`C`: see :class:`~openturns.KarhunenLoeveAlgorithm` to get the notations.
-
 
 The Karhunen-Loeve :math:`P_1` approximation uses the :math:`P_1` functional basis :math:`(\theta_p)_{1 \leq p \leq N}` where  :math:`\theta_p: \cD_N \mapsto \Rset` are the basis functions of the :math:`P_1` finite element space associated to :math:`\cD_N`, which vertices are :math:`(\vect{s}_i)_{1 \leq i \leq N}`.
 
@@ -40,24 +38,23 @@ Create a Karhunen-Loeve P1 algorithm:
 
 >>> import openturns as ot
 >>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
->>> threshold = 0.01
+>>> s = 0.01
 >>> model = ot.AbsoluteExponential([1.0]*2)
->>> algorithm = ot.KarhunenLoeveP1Algorithm(mesh, model, threshold)"
+>>> algorithm = ot.KarhunenLoeveP1Algorithm(mesh, model, s)
+
+Run it!
+
+>>> algorithm.run()
+>>> result = algorithm.getResult()"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KarhunenLoeveP1Algorithm::run
-"Computation of the eigenvalues and eigen functions values at nodes.
+"Computation of the eigenvalues and eigenfunctions values at nodes.
 
-Examples
---------
->>> import openturns as ot
->>> mesh = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
->>> threshold = 0.01
->>> model = ot.AbsoluteExponential([1.0]*2)
->>> algorithm = ot.KarhunenLoeveP1Algorithm(mesh, model, threshold)
->>> algorithm.run()
->>> result = algorithm.getResult()"
+Notes
+-----
+Runs the algorithm and creates the result structure :class:`~openturns.KarhunenLoeveResult`."
 
 // ---------------------------------------------------------------------
 

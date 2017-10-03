@@ -61,6 +61,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
+  using FieldFunctionImplementation::operator();
   virtual Field operator() (const Field & inF) const;
 
   /** Accessor for mesh dimension */

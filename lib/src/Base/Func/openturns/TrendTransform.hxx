@@ -42,8 +42,6 @@ class OT_API TrendTransform
   CLASSNAME;
 public:
 
-  typedef EvaluationImplementation::Implementation EvaluationPointer;
-
   /** Default constructor */
   TrendTransform();
 
@@ -66,12 +64,11 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
-  /** Operator () */
-  using VertexValueFunction::operator();
-  Field operator() (const Field & inFld) const;
-
   /** Inverse accessor */
   InverseTrendTransform getInverse() const;
+
+  /** Underlying trend function accessor */
+  Function getTrendFunction() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

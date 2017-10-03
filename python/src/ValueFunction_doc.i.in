@@ -1,46 +1,51 @@
 %feature("docstring") OT::ValueFunction
-"Spatial function.
+"Function mapping a field to a field.
 
 Available constructors:
-    ValueFunction(*meshDimension=1*)
+    ValueFunction(*spatialDim=1*)
 
-    ValueFunction(*g, meshDimension=1*)
+    ValueFunction(*g, spatialDim=1*)
 
 Parameters
 ----------
 g : :class:`~openturns.Function`
-    Function :math:`g: \Rset^d \mapsto \Rset^q`.
-meshDimension : int, :math:`n \geq 0`
-    Dimension of the vertices of the mesh :math:`\cM`. This data is required
-    for tests on the compatibility of dimension when a composite process is
-    created using the spatial function.
+    Function :math:`g: \Rset^d \rightarrow \Rset^{d'}`.
+spatialDim : int, :math:`\geq 1`
+    Dimension :math:`n` of the domain :math:`\cD`. 
 
 Notes
 -----
-A spatial function
-:math:`f_{spat}: \cD \times \Rset^d \mapsto \cD \times \Rset^q`, with
-:math:`\cD \in \Rset^n`, is a particular
-:class:`field function <openturns.FieldFunction>` that lets invariant
-the mesh of a field and defined by a function
-:math:`g : \Rset^d  \mapsto \Rset^q` such that:
+Value functions act on fields to produce fields such that:
 
 .. math::
 
-    f_{spat}(\vect{t}, \vect{x})=(\vect{t}, g(\vect{x}))
+    f: \left| \begin{array}{rcl}
+               \cM_N \times (\Rset^d)^N & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
+                F & \mapsto & F'
+              \end{array} \right.
 
-Let's note that the input dimension of :math:`f_{spat}` still designs the
-dimension of :math:`\vect{x}`: :math:`d`. Its output dimension is equal to
-:math:`q`.
+with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{t}_i, \vect{v}'_i)_{1 \leq i \leq N}` and :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}`.
+
+A value function keeps the mesh unchanged: the input mesh is equal to the output mesh.
+
+The  field :math:`F'` is defined by the function :math:`g: \Rset^d \rightarrow \Rset^{d'}`:
+
+.. math::
+
+    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{v}_i)
+ 
+
+The first constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.ValueFunction` from a  :class:`~openturns.Study`.
 
 See also
 --------
-VertexValueFunction
+FieldFunction, VertexFunction, VertexValueFunction, OpenTURNSPythonFunction, PythonFunction
 
 Examples
 --------
 >>> import openturns as ot
 
-Create a function :math:`g : \Rset^d \mapsto \Rset^q` such as:
+Create the function :math:`g : \Rset \rightarrow \Rset` defined by:
 
 .. math::
 
@@ -49,9 +54,9 @@ Create a function :math:`g : \Rset^d \mapsto \Rset^q` such as:
                 x & \mapsto & x^2
             \end{array}\right.
 
->>> g = ot.SymbolicFunction(['x'], ['x^2'])
+>>> g = ot.SymbolicFunction('x', 'x^2')
 
-Convert :math:`g` into a spatial function with :math:`n` the dimension of the
+Convert :math:`g` into a value function with :math:`n=1` the dimension of the
 mesh of the field on which :math:`g` will be applied:
 
 >>> n = 1
@@ -82,20 +87,46 @@ mesh of the field on which :math:`g` will be applied:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ValueFunction::getEvaluation
-"Get the evaluation function of :math:`g`.
+%feature("docstring") OT::ValueFunction::getFunction
+"Get the function :math:`g`.
 
 Returns
 -------
-g : :class:`~openturns.EvaluationImplementation`
-    Evaluation function of :math:`g: \Rset^d \mapsto \Rset^q`.
+g : :class:`~openturns.Function`
+    Function :math:`g: \Rset^d \rightarrow \Rset^{d'}`.
 
 Examples
 --------
 >>> import openturns as ot
->>> g = ot.SymbolicFunction(['x'], ['x^2'])
+>>> g = ot.SymbolicFunction('x', 'x^2')
 >>> n = 1
 >>> myValueFunction = ot.ValueFunction(g, n)
->>> print(myValueFunction.getEvaluation())
+>>> print(myValueFunction.getFunction())
 [x]->[x^2]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ValueFunction::getMarginal
+"Get the marginal(s) at given indice(s).
+
+Parameters
+----------
+i : int or list of ints, :math:`0 \leq i < d'`
+    Indice(s) of the marginal(s) to be extracted.
+
+Returns
+-------
+function : :class:`~openturns.ValueFunction`
+    The initial function restricted to the concerned marginal(s) at the indice(s)
+    :math:`i`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ValueFunction::getOutputMesh
+"Get the mesh associated to the output domain.
+
+Returns
+-------
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh which is equal to the input one: :math:`\cM_{N}`."
 

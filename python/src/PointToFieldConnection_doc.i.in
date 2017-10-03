@@ -1,0 +1,55 @@
+%feature("docstring") OT::PointToFieldConnection
+"Composition function :math:`f \circ g` where :math:`g` acts on points and :math:`f` produces fields.
+
+Available constructors:
+   PointToFieldConnection(*f_FieldFunction, g_PointToField*)
+
+   PointToFieldConnection(*f_PointToField, g_Function*)
+
+Parameters
+----------
+f_FieldFunction : :class:`~openturns.FieldFunction`
+    Function that acts on fields and produces fields
+f_PointToField, g_PointToField : :class:`~openturns.PointToFieldFunction`
+    Function that acts on points and produces fields
+g_Function :  :class:`~openturns.Function`
+    Function that acts on points and produces points
+
+Notes
+-----
+This class is a particular case  of the general class :class:`~openturns.PointToFieldFunction`. Thus it doesn't implement the  gradient nor the hessian."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToFieldConnection::getFunction
+"Accessor to the function :math:`g` of class :class:`~openturns.Function`.
+
+Returns
+-------
+g : :class:`~openturns.Function`
+    The function :math:`g` that acts on points to produce points."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToFieldConnection::getFieldFunction
+"Accessor to the function :math:`f` of class :class:`~openturns.FieldFunction`.
+
+Returns
+-------
+f : :class:`~openturns.FieldFunction`
+    The function :math:`f` that acts on fields to produce fields."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToFieldConnection::getPointToFieldFunction
+"Accessor to the function  of class :class:`~openturns.PointToFieldFunction`.
+
+Returns
+-------
+func : :class:`~openturns.PointToFieldFunction`
+    The function :math:`f` or :math:`g` that acts on points to produce fields."
+
+
+
+
+
