@@ -384,19 +384,12 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Scalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
           if (denominator > 0.0)
           {
-            try
+            const Point normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
+            const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
+            for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
-              const Point normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
-              const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
-              for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
-              {
-                result(rowIndex, j) = normalizedCDFGradient[i];
-                ++rowIndex;
-              }
-            }
-            catch (NotYetImplementedException &)
-            {
-              LOGWARN(OSS() << "Cannot compute the gradient according to the parameters of the " << j << "th marginal distribution");
+              result(rowIndex, j) = normalizedCDFGradient[i];
+              ++ rowIndex;
             }
           }
         } // FROM
@@ -415,19 +408,12 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Scalar denominator = outputMarginal.computePDF(q);
           if (denominator > 0.0)
           {
-            try
+            const Point normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
+            const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
+            for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
-              const Point normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
-              const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
-              for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
-              {
-                result(rowIndex, j) = normalizedCDFGradient[i];
-                ++rowIndex;
-              }
-            }
-            catch (NotYetImplementedException &)
-            {
-              LOGWARN(OSS() << "Cannot compute the gradient according to the parameters of the " << j << "th marginal distribution");
+              result(rowIndex, j) = normalizedCDFGradient[i];
+              ++ rowIndex;
             }
           }
         } // TO
