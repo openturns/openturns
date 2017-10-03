@@ -9,6 +9,7 @@ Reliability, sensitivity
     estimate_probability_importance_sampling.ipynb
     estimate_probability_randomized_qmc.ipynb
     estimate_probability_form.ipynb
+    strong_maximum_test.ipynb
     composite_experiment.ipynb
     monte_carlo_experiment.ipynb
     gauss_product_experiment.ipynb
