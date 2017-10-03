@@ -72,12 +72,9 @@ try:
 
     # check that nlopt library was found
     print('8: optimization (NLopt)'.ljust(width), end=' ')
-    try:
-        problem = ot.OptimizationProblem()
-        algo = ot.NLopt('LD_SLSQP')
-        algo.setProblem(problem)
+    if ot.NLopt.IsAvailable():
         print('OK')
-    except:
+    else:
         print('no')
 
     # check that TBB library was found

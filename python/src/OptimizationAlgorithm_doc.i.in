@@ -50,3 +50,15 @@ OT_OptimizationAlgorithm_getVerbose_doc
 OT_OptimizationAlgorithm_setProgressCallback_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStopCallback
 OT_OptimizationAlgorithm_setStopCallback_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationAlgorithm::Build
+"Instanciate an optimization algorithm from its name.
+
+Parameters
+----------
+name : str
+    Name of the algorithm.
+    Use `TNC`, `Cobyla` or one of the :class:`~openturns.NLopt` solver names."
+
