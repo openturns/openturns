@@ -56,8 +56,7 @@ build_script:
   - cmake -G"%VS_GEN%" \
       -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install \
       -DBOOST_ROOT="C:/Libraries/boost_1_63_0" \
-      -DLAPACKE_FOUND=ON \
-      -DOPENTURNS_LIBRARIES="C:/Libraries/OpenBLAS-v0.2.15-Win32/lib/libopenblas.dll.a" \
+      -DLAPACK_LIBRARIES="C:/Libraries/OpenBLAS-v0.2.15-Win32/lib/libopenblas.dll.a" \
       -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
       -DUSE_HMAT=OFF \
       -DUSE_BISON=OFF \
