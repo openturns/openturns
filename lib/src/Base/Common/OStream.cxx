@@ -62,11 +62,13 @@ OStream & operator << (OStream & OS, long val)
 }
 
 
-OStream & operator << (OStream & OS, long long val)
+#ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+OStream & operator << (OStream & OS, int64_t val)
 {
   OS.getStream() << val;
   return OS;
 }
+#endif
 
 
 OStream & operator << (OStream & OS, short val)
@@ -90,11 +92,13 @@ OStream & operator << (OStream & OS, unsigned long val)
 }
 
 
-OStream & operator << (OStream & OS, unsigned long long val)
+#ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+OStream & operator << (OStream & OS, uint64_t val)
 {
   OS.getStream() << val;
   return OS;
 }
+#endif
 
 
 OStream & operator << (OStream & OS, unsigned short val)
