@@ -95,8 +95,7 @@ script:
         cmake -DCMAKE_INSTALL_PREFIX=~/.local
               -DCMAKE_MACOSX_RPATH=ON
               -DHMAT_DIR=~/.local/lib/cmake/hmat
-              -DLAPACKE_FOUND=ON
-              -DOPENTURNS_LIBRARIES="-framework Accelerate"
+              -DLAPACK_LIBRARIES="-framework Accelerate"
               -DNLOPT_LIBRARY=~/.local/lib/libnlopt.dylib
               -DNLOPT_INCLUDE_DIR=~/.local/include
               -DUSE_SPHINX=OFF

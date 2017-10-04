@@ -142,7 +142,7 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
 endif()
 
 
-if (NOT LAPACKE_FOUND)
+if (NOT DEFINED LAPACK_LIBRARIES)
   # workaround for cmake issue #0009976
   if (CMAKE_VERSION VERSION_LESS 2.8.4)
     enable_language (Fortran)
@@ -150,9 +150,9 @@ if (NOT LAPACKE_FOUND)
   find_package (LAPACK REQUIRED)
   if (LAPACK_FOUND)
     set (OPENTURNS_HAVE_LAPACK TRUE)
-    list (APPEND OPENTURNS_LIBRARIES ${LAPACK_LIBRARIES})
   endif ()
 endif ()
+list (APPEND OPENTURNS_LIBRARIES ${LAPACK_LIBRARIES})
 
 
 if (USE_BISON)
