@@ -58,6 +58,7 @@
  * #897 (Bug in Graph::draw with small data)
  * #898 (Could not save/load some persistent classes)
  * #899 (PythonDistribution copula crash when parallelism is active)
+ * #902 (NormalGamma constructor builds wrong link function)
  * #905 (Bogus MaternModel::setParameter)
  * #906 (t_LevelSetMesher_std fails on most non-Intel based chips)
  * #907 (Notation)

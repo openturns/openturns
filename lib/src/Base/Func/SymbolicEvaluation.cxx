@@ -69,7 +69,8 @@ SymbolicEvaluation * SymbolicEvaluation::clone() const
 /* Comparison operator */
 Bool SymbolicEvaluation::operator ==(const SymbolicEvaluation & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return inputVariablesNames_ == other.inputVariablesNames_ && outputVariablesNames_ == other.outputVariablesNames_ && formulas_ == other.formulas_;
 }
 
 /* String converter */

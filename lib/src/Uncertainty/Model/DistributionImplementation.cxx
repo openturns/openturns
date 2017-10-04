@@ -900,7 +900,10 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
       probability = 1.0;
       for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i)->computeProbability(Interval(lower[i], upper[i]));
     }
-    else probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+    else
+      {
+	probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+      }
   } // dimension > 1
   return std::min(1.0, std::max(0.0, probability));
 }
@@ -1498,8 +1501,6 @@ Sample DistributionImplementation::computeQuantile(const Point & prob,
 /* Get the PDF gradient of the distribution */
 Point DistributionImplementation::computePDFGradient(const Point & point) const
 {
-  if (dimension_ > 1) throw NotYetImplementedException(HERE) << "DistributionImplementation::computePDFGradient(const Point & point) const";
-  // As we are in 1D, we know that the collection contains exactly one point
   const Point initialParameters(getParameter());
   const UnsignedInteger parametersDimension = initialParameters.getDimension();
   Point PDFGradient(parametersDimension);
@@ -1561,8 +1562,6 @@ Point DistributionImplementation::computePDFGradient(const Point & point) const
 /* ComputePDFGradient On a Sample */
 Sample DistributionImplementation::computePDFGradient(const Sample & inSample) const
 {
-  if (dimension_ > 1) throw NotYetImplementedException(HERE) << "DistributionImplementation::computePDFGradient(const Point & point) const";
-  // As we are in 1D, we know that the collection contains exactly one point
   const Point initialParameters(getParameter());
   const UnsignedInteger parametersDimension = initialParameters.getDimension();
   const UnsignedInteger size = inSample.getSize();
@@ -1712,8 +1711,6 @@ Sample DistributionImplementation::computeCDFGradient(const Sample & inSample) c
 /* Get the CDF gradient of the distribution */
 Point DistributionImplementation::computeCDFGradient(const Point & point) const
 {
-  if (dimension_ > 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCDFGradient(const Point & point) const";
-  // As we are in 1D, we know that the collection contains exactly one point
   const Point initialParameters(getParameter());
   const UnsignedInteger parametersDimension = initialParameters.getDimension();
   Point CDFGradient(parametersDimension);
@@ -2563,9 +2560,9 @@ void DistributionImplementation::computeCovarianceContinuous() const
     // Here we use the following expression of the covariance \Sigma_{i,j}:
     // \Sigma_{i,j}=\int_{\R^2}(x_i-\mu_i)(x_j-\mu_j)p_{i,j}(x_i,x_j)dx_idx_j
     // Do we use the adaptive quadrature algorithm?
-    const Bool useAdaptiveAlorithm = ResourceMap::GetAsBool("Distribution-UseCovarianceAdaptiveAlgorithm");
+    const Bool useAdaptiveAlgorithm = ResourceMap::GetAsBool("Distribution-UseCovarianceAdaptiveAlgorithm");
     IntegrationAlgorithm integrator;
-    if (useAdaptiveAlorithm) integrator = IteratedQuadrature(GaussKronrod());
+    if (useAdaptiveAlgorithm) integrator = IteratedQuadrature(GaussKronrod());
     else integrator = GaussLegendre(Indices(2, static_cast<UnsignedInteger>(std::ceil(std::sqrt(1.0 * integrationNodesNumber_)))));
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
     // We loop over the coefficients in the outer loop because the most expensive task is to get the 2D marginal distributions
@@ -2650,10 +2647,14 @@ void DistributionImplementation::computeCovarianceGeneral() const
   mean_ = getMean();
   // Get the standard deviation
   const Point standardDeviation(getStandardDeviation());
-  for(UnsignedInteger component = 0; component < dimension_; ++component) covariance_(component, component) = standardDeviation[component] * standardDeviation[component];
+  for(UnsignedInteger component = 0; component < dimension_; ++component)
+    covariance_(component, component) = standardDeviation[component] * standardDeviation[component];
   // Off-diagonal terms if the copula is not the independent copula
   if (!hasIndependentCopula())
   {
+    Collection<Implementation> marginals(dimension_);
+    for(UnsignedInteger component = 0; component < dimension_; ++component)
+      marginals[component] = getMarginal(component);
     const Scalar delta = 2.0;
     Indices indices(2);
     const int N(8 * 2 * 2 * 2 * 2 * 2);
@@ -2661,18 +2662,18 @@ void DistributionImplementation::computeCovarianceGeneral() const
     for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
     {
       indices[0] = rowIndex;
-      const Implementation marginalI(getMarginal(rowIndex));
-      const Scalar mi = marginalI->computeQuantile(0.5)[0];
-      const Scalar di = marginalI->computeQuantile(0.75)[0] - marginalI->computeQuantile(0.25)[0];
+      const Scalar mi = marginals[rowIndex]->computeQuantile(0.5)[0];
+      const Scalar di = marginals[rowIndex]->computeQuantile(0.75)[0] - marginals[rowIndex]->computeQuantile(0.25)[0];
+      // We compute the upper triangle in order to avoid indices swap in marginal
+      // extraction
       for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
       {
-        indices[1] = columnIndex;
-        const Implementation marginalDistribution(getMarginal(indices));
+	indices[1] = columnIndex;
+	const Implementation marginalDistribution(getMarginal(indices));
         if (!marginalDistribution->hasIndependentCopula())
         {
-          const Implementation marginalJ(getMarginal(columnIndex));
-          const Scalar mj = marginalJ->computeQuantile(0.5)[0];
-          const Scalar dj = marginalJ->computeQuantile(0.75)[0] - marginalJ->computeQuantile(0.25)[0];
+          const Scalar mj = marginals[columnIndex]->computeQuantile(0.5)[0];
+          const Scalar dj = marginals[columnIndex]->computeQuantile(0.75)[0] - marginals[columnIndex]->computeQuantile(0.25)[0];
           Point xij(2);
           xij[0] = mi;
           xij[1] = mj;
@@ -2689,7 +2690,7 @@ void DistributionImplementation::computeCovarianceGeneral() const
             const Scalar iTwoCoshSinhHi = 1.0 / (expSinhHi + iexpSinhHi);
             const Scalar xip = mi + expSinhHi * iTwoCoshSinhHi * di * delta;
             const Scalar wi = (expHi + iexpHi) * iTwoCoshSinhHi * iTwoCoshSinhHi;
-            const Scalar cdfip = marginalI->computeCDF(xip);
+            const Scalar cdfip = marginals[rowIndex]->computeCDF(xip);
             for(int columnNodeIndex = -N; columnNodeIndex < N + 1; ++columnNodeIndex)
             {
               const Scalar hj = h * columnNodeIndex;
@@ -2701,7 +2702,7 @@ void DistributionImplementation::computeCovarianceGeneral() const
               const Scalar iTwoCoshSinhHj = 1.0 / (expSinhHj + iexpSinhHj);
               const Scalar xjp = mj + expSinhHj * iTwoCoshSinhHj * dj * delta;
               const Scalar wj = (expHj + iexpHj) * iTwoCoshSinhHj * iTwoCoshSinhHj;
-              const Scalar cdfjp = marginalJ->computeCDF(xjp);
+              const Scalar cdfjp = marginals[columnIndex]->computeCDF(xjp);
               Point inpp(2);
               inpp[0] = xip;
               inpp[1] = xjp;
@@ -2709,10 +2710,10 @@ void DistributionImplementation::computeCovarianceGeneral() const
             } // loop over J integration nodes
           } // loop over I integration nodes
           covariance_(rowIndex, columnIndex) = covarianceIJ;
-        }
+        } // if !hasIndependentCopula
       } // loop over column indices
     } // loop over row indices
-  } // if !hasIndependentCopula
+  } 
   isAlreadyComputedCovariance_ = true;
 } // computeCovarianceGeneral
 
@@ -3865,7 +3866,7 @@ void DistributionImplementation::setParametersCollection(const PointCollection &
 /* Parameters value accessor */
 Point DistributionImplementation::getParameter() const
 {
-  return Point();
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::getParameter()";
 }
 
 void DistributionImplementation::setParameter(const Point & parameters)
@@ -3876,7 +3877,7 @@ void DistributionImplementation::setParameter(const Point & parameters)
 /* Parameters description accessor */
 Description DistributionImplementation::getParameterDescription() const
 {
-  return Description();
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::getParameterDescription()";
 }
 
 

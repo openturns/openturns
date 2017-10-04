@@ -41,6 +41,7 @@ Description SymbolicFunction::ValidOperators_;
 SymbolicFunction::SymbolicFunction ()
   : Function()
 {
+  // Nothing to do
 }
 
 
@@ -87,12 +88,6 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
 #else
   throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser";
 #endif
-}
-
-/* Comparison operator */
-Bool SymbolicFunction::operator ==(const SymbolicFunction & other) const
-{
-  return true;
 }
 
 /* String converter */

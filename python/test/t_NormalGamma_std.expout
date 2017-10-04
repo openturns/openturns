@@ -1,0 +1,55 @@
+Distribution  class=NormalGamma name=NormalGamma mu=1 kappa=2 alpha=3 beta=4
+Distribution  NormalGamma(mu=1, kappa=2, alpha=3, beta=4)
+Elliptical =  False
+Continuous =  True
+oneRealization= [0.52143,0.947065]
+oneSample first= [-0.149655,1.80011]  last= [1.22109,0.934319]
+mean= [0.988408,0.752078]
+covariance= [[ 0.979077  0.0089155 ]
+ [ 0.0089155 0.191922  ]]
+Point=  [1.5, 1.5]
+ddf     = [-0.127136,-0.218956]
+log pdf=-2.467966
+pdf=0.084757
+cdf=0.198227
+ccdf=0.801773
+survival=0.010593
+Inverse survival= [-0.941338,0.160511]
+Survival(inverse survival)=0.950000
+pdf gradient     = [0.127136,0.00529732,0.0736518,-0.0635678]
+pdf gradient (FD)= [0.127136,0.00529732,0.0736518,-0.0635678]
+cdf gradient     = [-0.349393,0.0436741,0.0135182,-0.00130662]
+cdf gradient (FD)= [-0.349393,0.0436741,0.0135182,-0.00130662]
+quantile= [4.59228,2.55849]
+cdf(quantile)=0.997715
+Minimum volume interval= [-1.80326, 3.80326]
+[0.0390431, 2.00954]
+threshold=0.986085
+Minimum volume level set= {x | f(x) <= 3.73137} with f=
+MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4))
+beta=0.023960
+Bilateral confidence interval= [-1.77733, 3.77733]
+[0.0966867, 2.20341]
+beta=0.985531
+Unilateral confidence interval (lower tail)= [-368.978, 4.59228]
+[0, 2.55849]
+beta=0.997715
+Unilateral confidence interval (upper tail)= [-0.941338, 370.978]
+[0.160511, 9.72932]
+beta=0.972528
+mean= [1,0.75]
+standard deviation= [1,0.433013]
+skewness= [0,1.1547]
+kurtosis= [6,5]
+covariance= [[ 1      0      ]
+ [ 0      0.1875 ]]
+correlation= [[ 1 0 ]
+ [ 0 1 ]]
+parameters= [[mu : 1, kappa : 2, alpha : 3, beta : 4]]
+standard moment n= 0 , value= [1,1]
+standard moment n= 1 , value= [1,0.75]
+standard moment n= 2 , value= [2,0.75]
+standard moment n= 3 , value= [4,0.9375]
+standard moment n= 4 , value= [13,1.40625]
+standard moment n= 5 , value= [41,2.46094]
+Standard representative= NormalGamma(mu=1, kappa=2, alpha=3, beta=4)

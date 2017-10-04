@@ -1,0 +1,57 @@
+Testing class NormalGamma
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=NormalGamma name=NormalGamma mu=1 kappa=2 alpha=3 beta=4
+streamObject(const T & anObject)
+class=NormalGamma name=NormalGamma mu=1 kappa=2 alpha=3 beta=4
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=NormalGamma name=NormalGamma mu=1 kappa=2 alpha=3 beta=4
+Distribution NormalGamma(mu=1, kappa=2, alpha=3, beta=4)
+Elliptical = false
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.52143,0.947065]
+oneSample first=class=Point name=Unnamed dimension=2 values=[-0.149655,1.80011] last=class=Point name=Unnamed dimension=2 values=[1.22109,0.934319]
+mean=class=Point name=Unnamed dimension=2 values=[0.988408,0.752078]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.979077,0.0089155,0.0089155,0.191922]
+Point= class=Point name=Unnamed dimension=2 values=[1.5,1.5]
+ddf     =class=Point name=Unnamed dimension=2 values=[-0.127136,-0.218956]
+ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.127136,-0.218956]
+log pdf=-2.46797
+pdf     =0.0847571
+pdf (FD)=0.0847571cdf=0.198227
+ccdf=0.801773
+survival=0.0105935
+Inverse survival=class=Point name=Unnamed dimension=2 values=[-0.941338,0.160511]
+Survival(inverse survival)=0.95
+pdf gradient     =class=Point name=Unnamed dimension=4 values=[0.127136,0.00529732,0.0736518,-0.0635678]
+pdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[0.127136,0.00529732,0.0736518,-0.0635678]
+cdf gradient     =class=Point name=Unnamed dimension=4 values=[-0.349393,0.0436741,0.0135182,-0.00130662]
+cdf gradient (FD)=class=Point name=Unnamed dimension=4 values=[-0.349393,0.0436741,0.0135182,-0.00130662]
+quantile=class=Point name=Unnamed dimension=2 values=[4.59228,2.55849]
+cdf(quantile)=0.997715
+Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.80326,0.0390431] upper bound=class=Point name=Unnamed dimension=2 values=[3.80326,2.00954] finite lower bound=[1,1] finite upper bound=[1,1]
+threshold=0.986085
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) gradientImplementation=MinimumVolumeLevelSetGradient(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) level=3.73137
+beta=0.0239601
+Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.77733,0.0966867] upper bound=class=Point name=Unnamed dimension=2 values=[3.77733,2.20341] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.985531
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-368.978,0] upper bound=class=Point name=Unnamed dimension=2 values=[4.59228,2.55849] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.997715
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-0.941338,0.160511] upper bound=class=Point name=Unnamed dimension=2 values=[370.978,9.72932] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.972528
+mean=class=Point name=Unnamed dimension=2 values=[1,0.75]
+standard deviation=class=Point name=Unnamed dimension=2 values=[1,0.433013]
+skewness=class=Point name=Unnamed dimension=2 values=[0,1.1547]
+kurtosis=class=Point name=Unnamed dimension=2 values=[6,5]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,0.1875]
+correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
+parameters=[[mu : 1, kappa : 2, alpha : 3, beta : 4]]
+standard moment n=0, value=class=Point name=Unnamed dimension=2 values=[1,1]
+standard moment n=1, value=class=Point name=Unnamed dimension=2 values=[1,0.75]
+standard moment n=2, value=class=Point name=Unnamed dimension=2 values=[2,0.75]
+standard moment n=3, value=class=Point name=Unnamed dimension=2 values=[4,0.9375]
+standard moment n=4, value=class=Point name=Unnamed dimension=2 values=[13,1.40625]
+standard moment n=5, value=class=Point name=Unnamed dimension=2 values=[41,2.46094]
+Standard representative=NormalGamma(mu=1, kappa=2, alpha=3, beta=4)
