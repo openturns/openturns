@@ -279,21 +279,21 @@ void RandomMixture::computeRange()
   Point lowerBound(getDimension());
   Point upperBound(getDimension());
   for (UnsignedInteger j = 0; j < getDimension(); ++j)
-    {
-      Interval range(constant_[j], constant_[j]);
-      for (UnsignedInteger i = 0; i < size; ++i)
-	range += distributionCollection_[i].getRange() * weights_(j, i);
-      lowerBound[j] = range.getLowerBound()[0];
-      upperBound[j] = range.getUpperBound()[0];
-      finiteLowerBound[j] = range.getFiniteLowerBound()[0];
-      finiteUpperBound[j] = range.getFiniteUpperBound()[0];
-    }
+  {
+    Interval range(constant_[j], constant_[j]);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      range += distributionCollection_[i].getRange() * weights_(j, i);
+    lowerBound[j] = range.getLowerBound()[0];
+    upperBound[j] = range.getUpperBound()[0];
+    finiteLowerBound[j] = range.getFiniteLowerBound()[0];
+    finiteUpperBound[j] = range.getFiniteUpperBound()[0];
+  }
   const Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
   if (size <= getDimension())
-    {
-      setRange(range);
-      return;
-    } // Analytical case
+  {
+    setRange(range);
+    return;
+  } // Analytical case
   if (getDimension() == 1)
   {
     const Point m(1, getPositionIndicator());
@@ -623,8 +623,8 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
       {
         const Scalar lambda = gammaMap.begin()->first;
         const Scalar k = gammaMap.begin()->second;
-	if (k == 1.0) distributionCollection_.add(Exponential(std::abs(lambda)));
-	else distributionCollection_.add(Gamma(k, std::abs(lambda)));
+        if (k == 1.0) distributionCollection_.add(Exponential(std::abs(lambda)));
+        else distributionCollection_.add(Gamma(k, std::abs(lambda)));
         weights.add(Point(1, lambda > 0.0 ? 1.0 : -1.0));
         gammaMap.erase(gammaMap.begin());
       } // while Gamma atoms to insert
@@ -711,7 +711,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
       // No aggregation if maxSupportSize==0 or if only one discrete atom
       if (firstOtherAtom > firstNonContinuousAtom + 1 && maxSupportSize > 0)
       {
-	
+
         UnsignedInteger indexAggregated = firstNonContinuousAtom;
         UnsignedInteger firstDiscreteIndex = firstNonContinuousAtom;
         Distribution firstDiscrete(distributionCollection_[firstDiscreteIndex]);
@@ -736,7 +736,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
               weights[indexAggregated] = Point(1, 1.0);
             }
             else
-	      distributionCollection_[indexAggregated] = firstDiscrete;
+              distributionCollection_[indexAggregated] = firstDiscrete;
             ++indexAggregated;
             firstDiscreteIndex = secondDiscreteIndex;
             firstDiscrete = secondDiscrete;
@@ -786,24 +786,24 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
           } // Merge the second atom into the aggregated atom
         } // Loop over the discrete atoms
         // If there is still something to merge
-	// It can be:
-	// + an aggregated atom with small support (detected because firstDiscreteIndex < firstOtherAtom - 1
-	// + a single atom (the second one, but now equals to the first one) (detected because firstDiscreteIndex == firstOtherAtom - 1)
-	if (firstDiscreteIndex == firstOtherAtom - 1)
-	  distributionCollection_[indexAggregated] = firstDiscrete;
-	else
-	  {
-	    distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
-	    weights[indexAggregated] = Point(1, 1.0);
-	  }
-	// To identify the first discrete atom to remove
-	++indexAggregated;
+        // It can be:
+        // + an aggregated atom with small support (detected because firstDiscreteIndex < firstOtherAtom - 1
+        // + a single atom (the second one, but now equals to the first one) (detected because firstDiscreteIndex == firstOtherAtom - 1)
+        if (firstDiscreteIndex == firstOtherAtom - 1)
+          distributionCollection_[indexAggregated] = firstDiscrete;
+        else
+        {
+          distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
+          weights[indexAggregated] = Point(1, 1.0);
+        }
+        // To identify the first discrete atom to remove
+        ++indexAggregated;
         // Now remove the discrete atoms that have been merged from the list of distributions
         distributionCollection_.erase(distributionCollection_.begin() + indexAggregated, distributionCollection_.end());
         weights.erase(indexAggregated, weights.getSize());
         firstOtherAtom = distributionCollection_.getSize();
       } // If there are discrete atoms to merge
-	
+
       // Then perform the continuous/discrete simplification using mixtures
       // There must be continuous atoms and discrete ones
       if (firstNonContinuousAtom > 0 && firstNonContinuousAtom != firstOtherAtom)
@@ -994,29 +994,28 @@ struct RandomMixture2AtomsWrapper
     // Nothing to do
   }
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-  // F(z) = P(Z < z) = P(alpha1 X1 + alpha2 X2 < z - alpha0)
   Point convolutionPDFKernel(const Point & point) const
   {
     const Scalar t = point[0];
-    const Scalar res = atom1_.computePDF(t) * atom2_.computePDF((z0_ - alpha1_ * t) / alpha2_);
-    return Point(1, res);
+    const Scalar pdf = atom1_.computePDF(t);
+    if (pdf == 0.0) return Point(1, 0.0);
+    return Point(1, pdf * atom2_.computePDF((z0_ - alpha1_ * t) / alpha2_));
   }
 
   Point convolutionCDFKernel(const Point & point) const
   {
     const Scalar t = point[0];
-    const Scalar pdf1 = atom1_.computePDF(t);
-    const Scalar s = (z0_ - alpha1_ * t) / alpha2_;
-    const Scalar cdf2 = atom2_.computeCDF(s);
-    const Scalar res = pdf1 * cdf2;
-    return Point(1, res);
+    const Scalar pdf = atom1_.computePDF(t);
+    if (pdf == 0.0) return Point(1, 0.0);
+    return Point(1, pdf * atom2_.computeCDF((z0_ - alpha1_ * t) / alpha2_));
   }
 
-  Point convolutionCCDFKernel(const Point & point) const
+  Point convolutionComplementaryCDFKernel(const Point & point) const
   {
     const Scalar t = point[0];
-    const Scalar res = atom1_.computePDF(t) * atom2_.computeComplementaryCDF((z0_ - alpha1_ * t) / alpha2_);
-    return Point(1, res);
+    const Scalar pdf = atom1_.computePDF(t);
+    if (pdf == 0.0) return Point(1, 0.0);
+    return Point(1, pdf * atom2_.computeComplementaryCDF((z0_ - alpha1_ * t) / alpha2_));
   }
 
   const Scalar alpha1_;
@@ -2055,62 +2054,97 @@ Scalar RandomMixture::computeCDF(const Point & point) const
   // Special case for 1D distributions with exactly 2 continuous atoms
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
+    // Z = alpha0 + alpha1 X1 + alpha2 X2
+    // F(z) = P(Z < z) = P(alpha1 X1 + alpha2 X2 < z0) with z0 = z - alpha0
+    // If alpha2>0:
+    // F(z) = \int_R F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
+    // Else:
+    // F(z) = \int_R Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
     // Get the parameters of the random mixture
     const Scalar z0 = x - constant_[0];
     const Scalar alpha1 = weights_(0, 0);
     const Scalar alpha2 = weights_(0, 1);
+    const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
+    GaussKronrod algo;
     // Get the bounds of the atoms
     const Scalar a = distributionCollection_[0].getRange().getLowerBound()[0];
     const Scalar b = distributionCollection_[0].getRange().getUpperBound()[0];
     const Scalar c = distributionCollection_[1].getRange().getLowerBound()[0];
     const Scalar d = distributionCollection_[1].getRange().getUpperBound()[0];
-    // Compute the bounds of the convolution
-    Scalar lower = -1.0;
-    Scalar upper = -1.0;
-    Scalar uc = (z0 - alpha2 * c) / alpha1;
-    Scalar ud = (z0 - alpha2 * d) / alpha1;
-    const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
-    GaussKronrod algo;
-    if (alpha2 > 0)
+    // If alpha2 > 0
+    if (alpha2 > 0.0)
     {
+      // F(z) = \int_R F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
       const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCDFKernel, 1, 1));
-      if (alpha1 > 0)
+      // bounds:
+      // x1 >= a otherwise p_X1 == 0
+      // x1 <= b otherwise p_X1 == 0
+      // (z0 - alpha1 x1) / alpha2 >= c otherwise F_X2 == 0
+      // (z0 - alpha1 x1) / alpha2 <= d otherwise F_X2 == 1
+      if (alpha1 > 0.0)
       {
-        lower = std::max(a, ud);
-        upper = std::min(b, uc);
-        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
-        if (ud > a) cdf += distributionCollection_[0].computeCDF(ud);
+        // (z0 - alpha1 x1) / alpha2 >= c <=> x1 <= (z0 - alpha2 * c) / alpha1 = beta
+        // (z0 - alpha1 x1) / alpha2 <= d <=> x1 >= (z0 - alpha2 * d) / alpha1 = alpha
+        const Scalar alpha = (z0 - alpha2 * d) / alpha1;
+        const Scalar beta  = (z0 - alpha2 * c) / alpha1;
+        const Scalar lower = std::max(a, alpha);
+        const Scalar upper = std::min(b, beta);
+        Scalar cdf = 0.0;
+        if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+        // Take into account a possible missing tail:
+        // \int_a^alpha F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
+        if (lower > a) cdf += distributionCollection_[0].computeCDF(alpha);
         return cdf;
-      } // alpha1 > 0
-      else
-      {
-        lower = std::max(a, uc);
-        upper = std::min(b, ud);
-        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
-        if (uc > a) cdf += distributionCollection_[0].computeCDF(uc);
-        return cdf;
-      } // alpha1 < 0
+      }
+      // Here alpha1 < 0
+      // (z0 - alpha1 x1) / alpha2 >= c <=> x1 >= (z0 - alpha2 * c) / alpha1 = alpha
+      // (z0 - alpha1 x1) / alpha2 <= d <=> x1 <= (z0 - alpha2 * d) / alpha1 = beta
+      const Scalar alpha = (z0 - alpha2 * c) / alpha1;
+      const Scalar beta  = (z0 - alpha2 * d) / alpha1;
+      const Scalar lower = std::max(a, alpha);
+      const Scalar upper = std::min(b, beta);
+      Scalar cdf = 0.0;
+      if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+      // Take into account a possible missing tail:
+      // \int_beta^b F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
+      if (upper < b) cdf += distributionCollection_[0].computeComplementaryCDF(beta);
+      return cdf;
     } // alpha2 > 0
-    else
+    // F(z) = \int_R Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
+    const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionComplementaryCDFKernel, 1, 1));
+    // bounds:
+    // x1 >= a otherwise p_X1 == 0
+    // x1 <= b otherwise p_X1 == 0
+    // (z0 - alpha1 x1) / alpha2 >= c otherwise Fbar_X2 == 1
+    // (z0 - alpha1 x1) / alpha2 <= d otherwise Fbar_X2 == 0
+    if (alpha1 > 0.0)
     {
-      const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCCDFKernel, 1, 1));
-      if (alpha1 > 0)
-      {
-        lower = std::max(a, uc);
-        upper = std::min(b, ud);
-        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
-        if (uc > a) cdf += distributionCollection_[0].computeCDF(uc);
-        return cdf;
-      } // alpha1 > 0
-      else
-      {
-        lower = std::max(a, ud);
-        upper = std::min(b, uc);
-        Scalar cdf = algo.integrate(convolutionKernel, Interval(lower, upper), cdfEpsilon_)[0];
-        if (ud > a) cdf += distributionCollection_[0].computeCDF(ud);
-        return cdf;
-      } // alpha1 < 0
-    } // alpha2 < 0
+      // (z0 - alpha1 x1) / alpha2 >= c <=> x1 >= (z0 - alpha2 * c) / alpha1 = alpha
+      // (z0 - alpha1 x1) / alpha2 <= d <=> x1 <= (z0 - alpha2 * d) / alpha1 = beta
+      const Scalar alpha = (z0 - alpha2 * c) / alpha1;
+      const Scalar beta  = (z0 - alpha2 * d) / alpha1;
+      const Scalar lower = std::max(a, alpha);
+      const Scalar upper = std::min(b, beta);
+      Scalar cdf = 0.0;
+      if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+      // Take into account a possible missing tail:
+      // \int_beta^b Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
+      if (lower > a) cdf += distributionCollection_[0].computeCDF(alpha);
+      return cdf;
+    }
+    // Here alpha1 < 0
+    // (z0 - alpha1 x1) / alpha2 >= c <=> x1 <= (z0 - alpha2 * c) / alpha1 = beta
+    // (z0 - alpha1 x1) / alpha2 <= d <=> x1 >= (z0 - alpha2 * d) / alpha1 = alpha
+    const Scalar alpha = (z0 - alpha2 * d) / alpha1;
+    const Scalar beta  = (z0 - alpha2 * c) / alpha1;
+    const Scalar lower = std::max(a, alpha);
+    const Scalar upper = std::min(b, beta);
+    Scalar cdf = 0.0;
+    if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+    // Take into account a possible missing tail:
+    // \int_a^alpha Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
+    if (upper < b) cdf += distributionCollection_[0].computeComplementaryCDF(beta);
+    return cdf;
   } // dimension_ == 1 && size == 2
 
   // Here we call computeProbability with a ]-inf, x] interval
@@ -2617,7 +2651,7 @@ void RandomMixture::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
   const Scalar w = getWeight();
-  *this = RandomMixture(distributionCollection_ , weights_, constant_);
+  *this = RandomMixture(distributionCollection_, weights_, constant_);
   setWeight(w);
 } // setParameter
 
