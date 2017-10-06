@@ -31,6 +31,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,14 +49,15 @@ public:
   typedef Collection<Distribution>              DistributionCollection;
   typedef PersistentCollection<Distribution>    DistributionPersistentCollection;
 
-  enum TranformationDirection { FROM, TO, FROMTO };
+  enum TranformationDirection { FROM, TO };
 
   /** Default constructor */
   MarginalTransformationEvaluation();
 
   /** Parameter constructor */
   explicit MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
-      const UnsignedInteger direction = FROM);
+                                            const UnsignedInteger direction = FROM,
+                                            const Distribution & standardMarginal = Uniform(0.0, 1.0));
 
   /** Parameter constructor */
   MarginalTransformationEvaluation(const DistributionCollection & inputDistributionCollection,
@@ -72,15 +74,19 @@ public:
   /** Gradient according to the marginal parameters */
   Matrix parameterGradient(const Point & inP) const;
 
+  /** Parameters value accessor */
+  virtual void setParameter(const Point & parameter);
+  virtual Point getParameter() const;
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
+  virtual void setParameterDescription(const Description & description);
+
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
 
   /** Accessor for output point dimension */
   UnsignedInteger getOutputDimension() const;
-
-  /** Direction accessor */
-  void setDirection(const TranformationDirection direction);
-  UnsignedInteger getDirection() const;
 
   /** Input distribution collection accessor */
   void setInputDistributionCollection(const DistributionCollection & inputDistributionCollection);
@@ -108,7 +114,6 @@ public:
 
 protected:
 
-
 private:
   void initialize(const Bool simplify);
 
@@ -122,8 +127,10 @@ private:
   // Marginal distributions of the output
   DistributionPersistentCollection outputDistributionCollection_;
 
-  // Direction of the transformation
-  UnsignedInteger direction_;
+  // Parameter location flag
+  enum ParameterSide { NONE, LEFT, RIGHT, BOTH };
+
+  UnsignedInteger parameterSide_;
 
   // Flag to tell if simpler expressions are available
   mutable Indices simplifications_;

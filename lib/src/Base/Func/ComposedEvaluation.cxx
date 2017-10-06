@@ -126,18 +126,11 @@ void ComposedEvaluation::setParameter(const Point & parameter)
   const UnsignedInteger rightDimension = rightParameter.getDimension();
   Point leftParameter(p_leftFunction_->getParameter());
   const UnsignedInteger leftDimension = leftParameter.getDimension();
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < rightDimension; ++ i)
-  {
-    rightParameter[i] = parameter[index];
-    ++ index;
-  }
+  if (parameter.getDimension() != rightDimension + leftDimension)
+    throw InvalidArgumentException(HERE) << "Required parameter of dimension " << rightDimension + leftDimension << " provided " << parameter.getDimension();
+  std::copy(parameter.begin(), parameter.begin() + rightDimension, rightParameter.begin());
   p_rightFunction_->setParameter(rightParameter);
-  for (UnsignedInteger i = 0; i < leftDimension; ++ i)
-  {
-    leftParameter[i] = parameter[index];
-    ++ index;
-  }
+  std::copy(parameter.begin() + rightDimension, parameter.begin() + rightDimension + leftDimension, leftParameter.begin());
   p_leftFunction_->setParameter(leftParameter);
 }
 
@@ -155,18 +148,11 @@ void ComposedEvaluation::setParameterDescription(const Description & description
   const UnsignedInteger rightDimension = rightDescription.getSize();
   Description leftDescription(p_leftFunction_->getParameterDescription());
   const UnsignedInteger leftDimension = leftDescription.getSize();
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < rightDimension; ++ i)
-  {
-    rightDescription[i] = description[index];
-    ++ index;
-  }
+  if (description.getSize() != rightDimension + leftDimension)
+    throw InvalidArgumentException(HERE) << "Required parameter description of dimension " << rightDimension + leftDimension << " provided " << description.getSize();
+  std::copy(description.begin(), description.begin() + rightDimension, rightDescription.begin());
   p_rightFunction_->setParameterDescription(rightDescription);
-  for (UnsignedInteger i = 0; i < leftDimension; ++ i)
-  {
-    leftDescription[i] = description[index];
-    ++ index;
-  }
+  std::copy(description.begin() + rightDimension, description.begin() + rightDimension + leftDimension, leftDescription.begin());
   p_leftFunction_->setParameterDescription(leftDescription);
 }
 

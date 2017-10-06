@@ -92,6 +92,7 @@ try:
 
             # Examine the results
             result = FunctionalChaosResult(algo.getResult())
+            pGrad = result.getMetaModel().parameterGradient(distribution.getMean())
             print("###################################")
             print(algo.getAdaptiveStrategy())
             print(algo.getProjectionStrategy())
