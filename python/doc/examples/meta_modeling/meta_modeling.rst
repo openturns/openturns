@@ -9,3 +9,4 @@ Meta modeling
     expert_mixture.ipynb
     general_linear_model.ipynb
     kriging.ipynb
+    fieldfunction_metamodel.ipynb
