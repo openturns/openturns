@@ -151,3 +151,18 @@ graph = result.drawPDF()
 result = ot.LogNormal() * ot.LogUniform()
 print('logn*logu:', result)
 graph = result.drawPDF()
+
+# For ticket #917
+result = ot.Weibull() + ot.Exponential()
+print('Weibull+Exponential:', result)
+print('result.CDF(1.0)=%.6f' % result.computeCDF(1.0))
+result = -1.0 * ot.Weibull() + ot.Exponential()
+print('-Weibull+Exponential:', result)
+print('result.CDF(1.0)=%.6f' % result.computeCDF(1.0))
+result = ot.Weibull() - ot.Exponential()
+print('Weibull-Exponential:', result)
+print('result.CDF(1.0)=%.6f' % result.computeCDF(1.0))
+result = -1.0 * ot.Weibull() - ot.Exponential()
+print('-Weibull-Exponential:', result)
+print('result.CDF(-1.0)=%.6f' % result.computeCDF(-1.0))
+

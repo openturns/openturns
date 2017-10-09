@@ -68,6 +68,7 @@
  * #911 (In the Field class, the getSample and getValues methods are duplicate)
  * #912 (Wrong description of Histogram constructor parameters)
  * #914 (KarhunenLoeveQuadratureAlgorithm crashes for covariance models of dimension>1)
+ * #917 (Bug in RandomMixture::computeCDF())
 
 == 1.9 release (2017-04-18) == #release-1.9
 
