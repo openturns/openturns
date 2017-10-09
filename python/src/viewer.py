@@ -365,6 +365,9 @@ class View(object):
                 self._ax[0].pie(x, **pie_kwargs)
 
             elif drawableKind == 'Contour':
+                if len(drawable.getLevels()) < 2:
+                    warnings.warn('-- Ignoring contour with too few levels.')
+                    break
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
                 Z = np.reshape(drawable.getData(), (
                     drawable.getX().getSize(), drawable.getY().getSize()))
