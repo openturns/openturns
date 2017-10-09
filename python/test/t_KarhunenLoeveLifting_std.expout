@@ -1,0 +1,17 @@
+lifting= class=KarhunenLoeveLifting name=Unnamed input description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] output description=[v0] number of calls=0
+lifting input description= [xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9]#10
+lifting output description= [v0]
+lifting input dimension= 10
+lifting output dimension= 1
+point= [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+field= 0 : [ -1         2.80432  ]
+1 : [ -0.777778  1.38443  ]
+2 : [ -0.555556  1.02942  ]
+3 : [ -0.333333  0.785919 ]
+4 : [ -0.111111  0.682571 ]
+5 : [  0.111111  0.526437 ]
+6 : [  0.333333  0.488724 ]
+7 : [  0.555556  0.354234 ]
+8 : [  0.777778  0.350677 ]
+9 : [  1         0.221463 ]
+called  1  times
