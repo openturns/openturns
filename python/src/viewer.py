@@ -386,7 +386,7 @@ class View(object):
                         fmt[l] = s
                     clabel_kwargs.setdefault('fmt', fmt)
                     plt.clabel(contourset, **clabel_kwargs)
-                for i in range(drawable.getLabels().getSize()):
+                for i in range(len(contourset.levels)):
                     contourset.collections[i].set_label(
                         drawable.getLabels()[i])
 
