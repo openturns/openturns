@@ -126,3 +126,4 @@ void DistributionParametersImplementation::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+
