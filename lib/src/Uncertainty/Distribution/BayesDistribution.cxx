@@ -396,7 +396,7 @@ private:
   const Point mu_;
 }; // KernelCovariance
 
-}; // namespace BayesDistributionFunctions
+} // namespace BayesDistributionFunctions
 
 /* Compute the covariance of the distribution */
 void BayesDistribution::computeCovariance() const

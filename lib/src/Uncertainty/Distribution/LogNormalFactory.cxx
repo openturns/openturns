@@ -256,7 +256,7 @@ LogNormalFactory::Implementation LogNormalFactory::build(const Point & parameter
 LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample) const
 {
   return buildAsLogNormal(sample, ResourceMap::GetAsUnsignedInteger("LogNormalFactory-EstimationMethod"));
-};
+}
 
 LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
     const UnsignedInteger method) const

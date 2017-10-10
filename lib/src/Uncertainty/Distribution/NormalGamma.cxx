@@ -262,7 +262,7 @@ private:
   UnsignedInteger flag_;
 }; // KernelProbability
 
-}; // namespace NormalGammaFunctions
+} // namespace NormalGammaFunctions
 
 /* Get the CDF of the distribution */
 Scalar NormalGamma::computeCDF(const Point & point) const
