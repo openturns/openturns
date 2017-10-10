@@ -15,7 +15,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.9
+Version:        1.10rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -142,7 +142,6 @@ rm -rf %{buildroot}
 %{_includedir}/%{name}/swig/
 %{_libdir}/*.so
 %{_libdir}/cmake/
-%{_bindir}/%{name}-*
 
 %files examples
 %defattr(-,root,root,-)
@@ -157,6 +156,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}/
 
 %changelog
+* Mon Oct 11 2017 Julien Schueller <schueller at phimeca dot com> 1.10-1
+- New upstream release
+
 * Mon Apr 3 2017 Julien Schueller <schueller at phimeca dot com> 1.9-1
 - New upstream release
 
