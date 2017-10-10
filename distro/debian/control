@@ -2,13 +2,14 @@ Source: openturns
 Section: science
 Priority: extra
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
-Uploaders: Christophe Prud'homme <prudhomm@debian.org>, Denis Barbier <barbier@debian.org>
-Build-Depends: debhelper (>= 8), quilt, gfortran, bison, flex, cmake, bc,
+Uploaders: Denis Barbier <barbier@debian.org>
+Build-Depends: debhelper (>= 10), dh-python, quilt, gfortran, g++ (>= 4:7),
+ bison, flex, cmake, bc,
  libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev,
  libboost-math-dev, libhmat-oss-dev, libnlopt-dev,
  libtbb-dev [i386 amd64 ia64],
  r-base-core, python-dev, python3-dev, swig (>= 2.0.9)
-Standards-Version: 3.9.6
+Standards-Version: 4.1.0
 Homepage: http://www.openturns.org/
 Vcs-Browser: https://anonscm.debian.org/git/debian-science/packages/openturns.git
 Vcs-Git: https://anonscm.debian.org/git/debian-science/packages/openturns.git
@@ -133,26 +134,6 @@ Description: Python3 front-end of OpenTURNS (aka TUI)
  .
  This package provides a textual user interface with Python3 that gives
  access to all the functionalities provided by the OpenTURNS library.
-
-Package: python-openturns-dev
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, libopenturns-dev
-Description: Python front-end of OpenTURNS (transitional package)
- OpenTURNS is a powerful and generic tool to treat and quantify
- uncertainties in numerical simulations in design, optimization and
- control. It allows both sensitivity and reliability analysis studies:
-  * defining the outputs of interest and decision criterion;
-  * quantify and model the source of uncertainties;
-  * propagate uncertainties and/or analyse sensitivity and
-  * rank the sources of uncertainty
- .
- OpenTURNS is a large project with more than 300 C++ classes which
- uses well known and supported software such as R for the statistical
- methods and BLAS/LAPACK for the linear algebra.
- .
- This is a transitional package, python-openturns-dev has been
- merged into libopenturns-dev.
 
 Package: r-other-rot
 Section: gnu-r

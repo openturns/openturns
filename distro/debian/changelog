@@ -1,3 +1,20 @@
+openturns (1.9-2) experimental; urgency=medium
+
+  * debian/control: Remove Christophe from Uploaders.
+    Closes: #835009
+  * debian/rules: Fix test failure on *-i386.
+    Closes: #871505
+    Report by Matthias Klose and patch by Steve Langasek, thanks.
+  * debian/control: Build-Depends on g++ (>= 4:7)
+    Closes: #871298
+    Report and patch by James Cowgill, thanks.
+  * debian/control: Bump Standards-Version to 4.1.0, no changes needed.
+  * debian/control: Build-Depends on dh-python.
+  * debian/control: Remove python-openturns-dev package.
+  * debian/control debian/compat: Bump debhelper compat level to 10.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 22 Aug 2017 21:50:32 +0200
+
 openturns (1.9-1) experimental; urgency=low
 
   [ Julien Schueller ]

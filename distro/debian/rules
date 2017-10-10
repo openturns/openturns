@@ -28,7 +28,8 @@ ifeq ($(shell dpkg --print-architecture),armhf)
     fflags := $(subst -O2,-O1,$(fflags))
 endif
 ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), i386 kfreebsd-i386 hurd-i386))
-    cflags += -O0
+    cflags += -O0 -ffloat-store
+    cxxflags += -ffloat-store
 endif
 ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), i386 amd64 ia64))
     with_tbb := -DUSE_TBB:BOOL=ON
@@ -69,9 +70,9 @@ cmake-configure-%:
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.9 \
-            -DLIB_VERSION=0.9.0 \
-            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.7 \
+            -DLIB_SOVERSION=0.10 \
+            -DLIB_VERSION=0.10.0 \
+            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.9 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DLINK_PYTHON_LIBRARY:BOOL=OFF \
             -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
