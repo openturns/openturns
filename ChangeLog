@@ -1,11 +1,15 @@
 = New Features =
 
-== 1.10 release (in progress) == #release-1.10
+== 1.10rc1 release (2017-10-11) == #release-1.10rc1
 
 === Library ===
 
 ==== Major changes ====
- * It is now possible to define numerical model acting on either Point or Field to produce either Point or Field. The Python binding has been extended to allow the user to define such functions based on either a Python function or a Python class. All the possible compositions have been implemented.
+ * It is now possible to define numerical model acting on either Point or Field
+   to produce either Point or Field.
+   The Python binding has been extended to allow the user to define such
+   functions based on either a Python function or a Python class.
+   All the possible compositions have been implemented.
 
 ==== New classes ====
  * ProbabilitySimulation
