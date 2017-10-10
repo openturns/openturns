@@ -415,6 +415,11 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "IteratedQuadrature-MaximumSubIntervals", 32 );
   setAsScalar( "IteratedQuadrature-MaximumError",    1.0e-7 );
 
+  // Fehlberg parameters //
+  setAsScalar("Fehlberg-LocalPrecision", 1.0e-10);
+  setAsScalar("Fehlberg-InitialStep", 1.0e-7);
+  setAsUnsignedInteger("Fehlberg-DefaultOrder", 4);
+  
   // KarhunenLoeveQuadratureAlgorithm parameters //
   setAsScalar( "KarhunenLoeveQuadratureAlgorithm-RegularizationFactor", 0.0);
 

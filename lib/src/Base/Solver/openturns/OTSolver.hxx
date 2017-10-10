@@ -30,5 +30,6 @@
 #include "openturns/ODESolver.hxx"
 #include "openturns/ODESolverImplementation.hxx"
 #include "openturns/RungeKutta.hxx"
+#include "openturns/Fehlberg.hxx"
 
 #endif /* OPENTURNS_OTSOLVER_HXX */

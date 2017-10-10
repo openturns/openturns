@@ -59,6 +59,7 @@ Sample RungeKutta::solve(const Point & initialState,
                          const Point & timeGrid) const
 {
   if (initialState.getDimension() != transitionFunction_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the initial state has a dimension=" << initialState.getDimension() << ", expected dimension=" << transitionFunction_.getInputDimension();
+  if (!timeGrid.isMonotonic()) throw InvalidArgumentException(HERE) << "Error: expected a monotonic time grid.";
   // Quick return if the time grid is empty
   const UnsignedInteger steps = timeGrid.getSize();
   Sample result(steps, transitionFunction_.getOutputDimension());

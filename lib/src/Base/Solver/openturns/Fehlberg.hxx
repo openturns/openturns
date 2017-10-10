@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class implements the fourth order fixed-step Runge-Kutta ODE integrator
+ *  @brief This class implements the adaptive Fehlberg method of order p/p+1
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,38 +18,41 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_RUNGEKUTTA_HXX
-#define OPENTURNS_RUNGEKUTTA_HXX
+#ifndef OPENTURNS_FEHLBERG_HXX
+#define OPENTURNS_FEHLBERG_HXX
 
 #include "openturns/ODESolverImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class RungeKutta
+ * @class Fehlberg
  *
- * Fourth order fixed-step Runge-Kutta ODE integrator
+ * Adaptive Fehlberg method of order p/p+1
  */
-class OT_API RungeKutta
+class OT_API Fehlberg
   : public ODESolverImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  RungeKutta();
+  Fehlberg();
 
   /** Parameter constructor */
-  explicit RungeKutta(const FieldFunction & transitionFunction);
+  explicit Fehlberg(const FieldFunction & transitionFunction,
+		    const Scalar localPrecision = ResourceMap::GetAsScalar("Fehlberg-LocalPrecision"),
+		    const UnsignedInteger order = ResourceMap::GetAsScalar("Fehlberg-DefaultOrder"));
 
   /** Virtual constructor */
-  virtual RungeKutta * clone() const;
+  virtual Fehlberg * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Solve the ODE */
   using ODESolverImplementation::solve;
+  
   Sample solve(const Point & initialState,
                const Point & timeGrid) const;
 
@@ -60,14 +63,32 @@ public:
   void load(Advocate & adv);
 
 private:
-  /** Perform one step of the RungeKutta method */
+  /** Perform one step of the Fehlberg method */
   Point computeStep(const Scalar t,
                     const Point & state,
-                    const Scalar h) const;
+		    Point & gradient,
+                    Scalar & h) const;
 
-}; /* class RungeKutta */
+  /* Local absolute error target */
+  Scalar localPrecision_;
+
+  /* Integration order p/p+1 */
+  UnsignedInteger order_;
+
+  /* Alpha coefficients */
+  Point alpha_;
+
+  /* Beta coefficients */
+  Point beta_;
+
+  /* C coefficients */
+  Point c_;
+
+  /* Chat coefficients */
+  Point cHat_;
+}; /* class Fehlberg */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_RUNGEKUTTA_HXX */
+#endif /* OPENTURNS_FEHLBERG_HXX */

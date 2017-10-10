@@ -227,6 +227,7 @@ ot_check_test (Bisection_std)
 ot_check_test (Brent_std)
 ot_check_test (Secant_std)
 ot_check_test (RungeKutta_std)
+ot_check_test (Fehlberg_std)
 
 # Stat
 ot_check_test (Sample_std)
