@@ -83,14 +83,14 @@ public:
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
   Complex & operator () (const UnsignedInteger i,
-                                  const UnsignedInteger j,
-                                  const UnsignedInteger k);
+                         const UnsignedInteger j,
+                         const UnsignedInteger k);
 
   /** Operator () gives access to the elements of the tensor (read only) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
   const Complex & operator () (const UnsignedInteger i,
-                                        const UnsignedInteger j,
-                                        const UnsignedInteger k) const;
+                               const UnsignedInteger j,
+                               const UnsignedInteger k) const;
 
   /** getSheet returns the sheet specified by its sheet number k */
   ComplexMatrix getSheet(const UnsignedInteger k) const;

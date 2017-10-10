@@ -44,7 +44,7 @@ public:
 
   typedef Collection<LHSResult> LHSResultCollection;
 
-  SimulatedAnnealingLHS(); 
+  SimulatedAnnealingLHS();
 
   /** SimulatedAnnealingLHS */
   explicit SimulatedAnnealingLHS (const LHSExperiment & lhs,

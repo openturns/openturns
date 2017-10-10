@@ -37,7 +37,7 @@ CLASSNAMEINIT(ProbabilitySimulationAlgorithm)
 static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulationAlgorithm;
 
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbose,
-                                             const HistoryStrategy & convergenceStrategy)
+    const HistoryStrategy & convergenceStrategy)
   : Simulation(verbose, convergenceStrategy)
   , isExperimentProvided_(false)
 {
@@ -46,8 +46,8 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbos
 
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
-                                             const Bool verbose,
-                                             const HistoryStrategy & convergenceStrategy)
+    const Bool verbose,
+    const HistoryStrategy & convergenceStrategy)
   : Simulation(event, verbose, convergenceStrategy)
   , isExperimentProvided_(false)
 {
@@ -56,9 +56,9 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & eve
 
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
-                                             const WeightedExperiment & experiment,
-                                             const Bool verbose,
-                                             const HistoryStrategy & convergenceStrategy)
+    const WeightedExperiment & experiment,
+    const Bool verbose,
+    const HistoryStrategy & convergenceStrategy)
   : Simulation(event, verbose, convergenceStrategy)
   , isExperimentProvided_(true)
 {

@@ -138,7 +138,7 @@ public:
   /** Compute eigenvalues */
   ComplexCollection computeEigenValues(const Bool keepIntact = true);
   ComplexCollection computeEV(SquareComplexMatrix & v,
-                                       const Bool keepIntact = true);
+                              const Bool keepIntact = true);
 
   /** Check if it is diagonal */
   Bool isDiagonal() const;

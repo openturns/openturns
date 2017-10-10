@@ -45,7 +45,7 @@ class OT_API TensorApproximationAlgorithm
 public:
   /** Default constructor */
   TensorApproximationAlgorithm();
- 
+
   /** Constructor */
   TensorApproximationAlgorithm(const Sample & inputSample,
                                const Sample & outputSample,

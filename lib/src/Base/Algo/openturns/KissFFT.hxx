@@ -52,16 +52,16 @@ public:
 
   /** FFT transformation  with application on a block-part of the collection */
   ComplexCollection transform(const ComplexCollection & collection,
-                                       const UnsignedInteger first,
-                                       const UnsignedInteger size) const;
+                              const UnsignedInteger first,
+                              const UnsignedInteger size) const;
 
   /** FFT inverse transformation */
   ComplexCollection inverseTransform(const ComplexCollection & collection) const;
 
   /** FFT inverse transformation with application on a block-part of the collection */
   ComplexCollection inverseTransform(const ComplexCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger size) const;
+                                     const UnsignedInteger first,
+                                     const UnsignedInteger size) const;
 
   /** FFT 2D transformation on complex */
   ComplexMatrix transform2D(const ComplexMatrix & complexMatrix) const;

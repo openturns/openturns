@@ -901,9 +901,9 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
       for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i)->computeProbability(Interval(lower[i], upper[i]));
     }
     else
-      {
-	probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
-      }
+    {
+      probability = IteratedQuadrature().integrate(pdfWrapper, reducedInterval)[0];
+    }
   } // dimension > 1
   return std::min(1.0, std::max(0.0, probability));
 }
@@ -2668,8 +2668,8 @@ void DistributionImplementation::computeCovarianceGeneral() const
       // extraction
       for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
       {
-	indices[1] = columnIndex;
-	const Implementation marginalDistribution(getMarginal(indices));
+        indices[1] = columnIndex;
+        const Implementation marginalDistribution(getMarginal(indices));
         if (!marginalDistribution->hasIndependentCopula())
         {
           const Scalar mj = marginals[columnIndex]->computeQuantile(0.5)[0];
@@ -2713,7 +2713,7 @@ void DistributionImplementation::computeCovarianceGeneral() const
         } // if !hasIndependentCopula
       } // loop over column indices
     } // loop over row indices
-  } 
+  }
   isAlreadyComputedCovariance_ = true;
 } // computeCovarianceGeneral
 

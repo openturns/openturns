@@ -19,7 +19,7 @@ try:
     # Get the input and output dimension
     print("lifting input dimension=", lifting.getInputDimension())
     print("lifting output dimension=", lifting.getOutputDimension())
-    point = [1.0]*lifting.getInputDimension()
+    point = [1.0] * lifting.getInputDimension()
     field = lifting(point)
     print("point=", point)
     print("field=", field)

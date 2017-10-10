@@ -6,6 +6,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
+
 def progress(percent):
     sys.stderr.write('-- progress=' + str(percent) + '%\n')
 
@@ -97,7 +98,7 @@ for experiment in experiments:
     # Stream out the result
     print('algo result=', myAlgo.getResult())
 
-print('-'*32)
+print('-' * 32)
 ot.RandomGenerator.SetSeed(0)
 description = ot.Description()
 description.add('composite vector/comparison event')
@@ -116,7 +117,8 @@ interval = ot.Interval(0.5, 1.5)
 event3 = ot.Event(Yvector, interval)
 description.add('process/domain event')
 Xprocess = ot.WhiteNoise(distribution, ot.RegularGrid(0.0, 0.1, 10))
-domain2D = ot.LevelSet(ot.SymbolicFunction(['x0', 'x1'], ['(x0-1)^2+x1^2']), 1.0)
+domain2D = ot.LevelSet(
+    ot.SymbolicFunction(['x0', 'x1'], ['(x0-1)^2+x1^2']), 1.0)
 event4 = ot.Event(Xprocess, domain2D)
 all_events = [event1, event2, event3, event4]
 for i, event in enumerate(all_events):

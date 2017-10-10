@@ -92,23 +92,24 @@ try:
     print("kendall=", kendall)
 
     # Build a distribution with no specific implementation of getMarginal()
-    atom = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3)
+    atom = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 3)
     graph = ot.BipartiteGraph([[0, 1, 2], [0, 1, 2]])
-    distribution = ot.CumulativeDistributionNetwork([atom]*2, graph)
+    distribution = ot.CumulativeDistributionNetwork([atom] * 2, graph)
 
     # Extract its marginal using the generic implementation
-    marginal = distribution.getMarginal([0,1])
+    marginal = distribution.getMarginal([0, 1])
 
     # Build by hands the exact marginal
-    atom_ref = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
+    atom_ref = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)] * 2)
     graph_ref = ot.BipartiteGraph([[0, 1], [0, 1]])
-    ref = ot.CumulativeDistributionNetwork([atom_ref]*2, graph_ref)
+    ref = ot.CumulativeDistributionNetwork([atom_ref] * 2, graph_ref)
 
     # test getMarginal generic implementation
     print(ref)
-    print(distribution.getMarginal([0,1]))
+    print(distribution.getMarginal([0, 1]))
     X = atom_ref.getSample(10000)
-    error = (ref.computeCDF(X) - distribution.getMarginal([0,1]).computeCDF(X)).computeStandardDeviationPerComponent()
+    error = (ref.computeCDF(X) - distribution.getMarginal(
+        [0, 1]).computeCDF(X)).computeStandardDeviationPerComponent()
     ott.assert_almost_equal(error[0], 0.0)
 
     # test getMarginal with full indices

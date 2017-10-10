@@ -208,11 +208,14 @@ try:
     print("input dimension=", transformation.getInputDimension())
     print("output dimension=", transformation.getOutputDimension())
 
-    T1 = MarginalTransformationEvaluation([Exponential(2.0)], [Exponential(1.0)])
+    T1 = MarginalTransformationEvaluation(
+        [Exponential(2.0)], [Exponential(1.0)])
     print("T1=", T1)
-    T2 = MarginalTransformationEvaluation([Exponential(1.0)], [Exponential(2.0)])
+    T2 = MarginalTransformationEvaluation(
+        [Exponential(1.0)], [Exponential(2.0)])
     print("T2=", T2)
-    T3 = MarginalTransformationEvaluation([Exponential(3.0, 4.0)], [Exponential(3.0, 5.0)])
+    T3 = MarginalTransformationEvaluation(
+        [Exponential(3.0, 4.0)], [Exponential(3.0, 5.0)])
     print("T3=", T3)
 except:
     import sys

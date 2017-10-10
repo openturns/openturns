@@ -297,8 +297,8 @@ struct CovarianceModelDiscretizeKroneckerPolicy
   const CovarianceModelImplementation & model_;
 
   CovarianceModelDiscretizeKroneckerPolicy(const Sample & input,
-                                           CovarianceMatrix & output,
-                                           const CovarianceModelImplementation & model)
+      CovarianceMatrix & output,
+      const CovarianceModelImplementation & model)
     : input_(input)
     , output_(output)
     , model_(model)
@@ -319,12 +319,16 @@ struct CovarianceModelDiscretizeKroneckerPolicy
     const MatrixImplementation & right(*rightMatrix.getImplementation());
     MatrixImplementation & product(*productMatrix.getImplementation());
     const UnsignedInteger dimension = right.getDimension();
-    for(UnsignedInteger i = 0; i < left.getDimension(); ++i) {
-      for(UnsignedInteger j = 0; j <= i; ++j) {
-        const Scalar left_ij = left(i,j);
-        for(UnsignedInteger k = 0; k < dimension; ++k) {
-          for(UnsignedInteger l = 0; l < dimension; ++l) {
-            product(i*dimension+k, j*dimension+l) = left_ij * right(k,l);
+    for(UnsignedInteger i = 0; i < left.getDimension(); ++i)
+    {
+      for(UnsignedInteger j = 0; j <= i; ++j)
+      {
+        const Scalar left_ij = left(i, j);
+        for(UnsignedInteger k = 0; k < dimension; ++k)
+        {
+          for(UnsignedInteger l = 0; l < dimension; ++l)
+          {
+            product(i * dimension + k, j * dimension + l) = left_ij * right(k, l);
           }
         }
       }
@@ -350,7 +354,8 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
 {
   if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
   const UnsignedInteger size = vertices.getSize();
-  if (definesComputeStandardRepresentative_) {
+  if (definesComputeStandardRepresentative_)
+  {
     CovarianceMatrix rhoMatrix(size);
     const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
     // The loop is over the lower block-triangular part
@@ -359,7 +364,9 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     spatialCovariance_.checkSymmetry();
     // Compute the Kronecker product of rhoMatrix by spatialCovariance_
     return policy.kroneckerProduct(spatialCovariance_);;
-  } else {
+  }
+  else
+  {
     const UnsignedInteger fullSize = size * dimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
     const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
@@ -388,7 +395,8 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Mes
 TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sample & vertices) const
 {
   // We suppose that covariance matrix is symmetric positive definite
-  if (definesComputeStandardRepresentative_) {
+  if (definesComputeStandardRepresentative_)
+  {
     const UnsignedInteger size = vertices.getSize();
     CovarianceMatrix rhoMatrix(size);
     const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
@@ -399,7 +407,9 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
       spatialCovarianceCholeskyFactor_ = spatialCovariance_.computeCholesky();
     // Compute the Kronecker product of rhoCholeskyFactor by spatialCovarianceCholeskyFactor_
     return policy.kroneckerProductCholeskyFactor(spatialCovarianceCholeskyFactor_);
-  } else {
+  }
+  else
+  {
     CovarianceMatrix covariance = discretize(vertices);
     TriangularMatrix choleskyFactor = covariance.computeCholesky();
     return choleskyFactor;

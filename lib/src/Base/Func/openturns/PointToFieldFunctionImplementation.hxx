@@ -47,7 +47,7 @@ public:
 
   /** Parameter constructor */
   PointToFieldFunctionImplementation(const UnsignedInteger inputDimension,
-				     const UnsignedInteger outputDimension);
+                                     const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
   virtual PointToFieldFunctionImplementation * clone() const;

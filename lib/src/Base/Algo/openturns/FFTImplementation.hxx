@@ -57,28 +57,28 @@ public:
 
   /** FFT transformation on real - The transformation is applied on a part of the collection*/
   virtual ComplexCollection transform(const ScalarCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger size) const;
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger size) const;
 
   /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
   virtual ComplexCollection transform(const ScalarCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger step,
-      const UnsignedInteger last) const;
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger step,
+                                      const UnsignedInteger last) const;
 
   /** FFT transformation on complex */
   virtual ComplexCollection transform(const ComplexCollection & collection) const;
 
   /** FFT transformation on complex - For some FFT implementation, the transformation is applied on a part of the collection */
   virtual ComplexCollection transform(const ComplexCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger size) const;
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger size) const;
 
   /** FFT transformation on complex - For some FFT implementation, the need is to transform a regular sequence of the collection (between first and last, by step = step)*/
   virtual ComplexCollection transform(const ComplexCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger step,
-      const UnsignedInteger last) const;
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger step,
+                                      const UnsignedInteger last) const;
 
   /** FFT inverse transformation */
   virtual ComplexCollection inverseTransform(const ScalarCollection & collection) const;

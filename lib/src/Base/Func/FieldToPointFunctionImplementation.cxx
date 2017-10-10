@@ -44,8 +44,8 @@ FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const Uns
 
 /* Parameter constructor */
 FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension,
-								       const UnsignedInteger inputDimension,
-								       const UnsignedInteger outputDimension)
+    const UnsignedInteger inputDimension,
+    const UnsignedInteger outputDimension)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
   , inputDimension_(inputDimension)

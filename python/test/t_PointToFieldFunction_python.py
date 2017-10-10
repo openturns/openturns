@@ -14,10 +14,10 @@ class FUNC(OpenTURNSPythonPointToFieldFunction):
         self.setInputDescription(['R', 'S'])
         self.setOutputDescription(['T', 'U'])
         self.mesh_ = RegularGrid(0.0, 0.1, 11)
-        
+
     def _exec(self, X):
         size = self.mesh_.getVerticesNumber()
-        values = [Point(X)*i for i in range(size)]
+        values = [Point(X) * i for i in range(size)]
         Y = Field(self.mesh_, values)
         return Y
 
@@ -58,4 +58,3 @@ print((repr(outSample)))
 
 outSample = myFunc(((100.0, 100.0), (101.0, 101.0), (102.0, 102.0)))
 print((repr(outSample)))
-

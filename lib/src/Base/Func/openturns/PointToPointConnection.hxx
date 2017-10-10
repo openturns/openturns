@@ -44,11 +44,11 @@ public:
 
   /** Composition constructor */
   PointToPointConnection(const Function & leftFunction,
-                        const Function & rightFunction);
+                         const Function & rightFunction);
 
   /** Composition constructor */
   PointToPointConnection(const FieldToPointFunction & fieldToPointFunction,
-                        const PointToFieldFunction & pointToFieldFunction);
+                         const PointToFieldFunction & pointToFieldFunction);
 
   /** Virtual constructor */
   virtual PointToPointConnection * clone() const;

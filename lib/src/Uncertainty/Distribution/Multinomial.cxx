@@ -175,7 +175,7 @@ Scalar Multinomial::computePDF(const Point & point) const
 
 /* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
 Complex Multinomial::computeGlobalPhi(const Complex & z,
-    const Point & x) const
+                                      const Point & x) const
 {
   // Initialize with the non truncated term
   Complex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
@@ -194,8 +194,8 @@ Complex Multinomial::computeGlobalPhi(const Complex & z,
 
 /* Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
 Complex Multinomial::computeLocalPhi(const Complex & z,
-    const Scalar lambda,
-    const Scalar a) const
+                                     const Scalar lambda,
+                                     const Scalar a) const
 {
   if (z == 0.0) return 1.0;
   const Complex u(lambda * z);

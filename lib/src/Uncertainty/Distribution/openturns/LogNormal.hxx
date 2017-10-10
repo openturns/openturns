@@ -158,7 +158,7 @@ private:
 
   /** Compute the integrand that is involved in the computation of the characteristic function */
   Complex characteristicIntegrand(const Scalar eta,
-      const Scalar sStar) const;
+                                  const Scalar sStar) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();

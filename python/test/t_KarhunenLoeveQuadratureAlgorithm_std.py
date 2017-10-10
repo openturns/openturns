@@ -38,16 +38,16 @@ try:
     lambd = result.getEigenValues()
     KLModes = result.getScaledModesAsProcessSample()
     # Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
-    #print("KL modes=", KLModes)
+    # print("KL modes=", KLModes)
     print("KL eigenvalues=", lambd)
     coefficients = result.project(sample)
-    #print("KL coefficients=", coefficients)
+    # print("KL coefficients=", coefficients)
     KLFunctions = result.getModes()
-    #print("KL functions=", KLFunctions)
+    # print("KL functions=", KLFunctions)
     lifted = result.lift(coefficients[0])
-    #print("KL lift=", lifted)
+    # print("KL lift=", lifted)
     liftedAsField = result.liftAsField(coefficients[0])
-    #print("KL lift as field=", liftedAsField)
+    # print("KL lift as field=", liftedAsField)
 
 except:
     import sys

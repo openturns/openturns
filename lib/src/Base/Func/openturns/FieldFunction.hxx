@@ -51,8 +51,8 @@ public:
 
   /** Parameter constructor */
   explicit FieldFunction(const UnsignedInteger spatialDimension,
-			 const UnsignedInteger inputDimension,
-			 const UnsignedInteger outputDimension);
+                         const UnsignedInteger inputDimension,
+                         const UnsignedInteger outputDimension);
 
   /** Constructor from Function */
   explicit FieldFunction(const Function & function,

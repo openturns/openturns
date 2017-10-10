@@ -141,12 +141,12 @@ private:
 
   /** Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
   Complex computeGlobalPhi(const Complex & z,
-                                    const Point & x) const;
+                           const Point & x) const;
 
   /** Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
   Complex computeLocalPhi(const Complex & z,
-                                   const Scalar lambda,
-                                   const Scalar a) const;
+                          const Scalar lambda,
+                          const Scalar a) const;
 
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,

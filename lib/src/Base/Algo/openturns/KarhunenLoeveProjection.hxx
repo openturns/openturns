@@ -74,7 +74,7 @@ public:
 protected:
   /** Underlying KarhunenLoeveResult */
   KarhunenLoeveResult result_;
-  
+
 }; /* class KarhunenLoeveProjection */
 
 

@@ -51,9 +51,9 @@ public:
 
   /** Parameter constructor */
   FieldFunctionImplementation(const UnsignedInteger spatialDimension,
-			      const UnsignedInteger inputDimension,
-			      const UnsignedInteger outputDimension);
-  
+                              const UnsignedInteger inputDimension,
+                              const UnsignedInteger outputDimension);
+
   /** Virtual constructor */
   virtual FieldFunctionImplementation * clone() const;
 

@@ -44,8 +44,8 @@ FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger s
 
 /* Default constructor */
 FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger spatialDimension,
-							 const UnsignedInteger inputDimension,
-							 const UnsignedInteger outputDimension)
+    const UnsignedInteger inputDimension,
+    const UnsignedInteger outputDimension)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
   , inputDimension_(inputDimension)

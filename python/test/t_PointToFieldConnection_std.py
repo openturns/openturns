@@ -15,7 +15,8 @@ try:
     lifting = KarhunenLoeveLifting(result)
     # Construction based on a Function followed by a PointToFieldFunction
     dimension = lifting.getInputDimension()
-    function = SymbolicFunction(Description.BuildDefault(dimension, "x"), Description.BuildDefault(dimension, "x"))
+    function = SymbolicFunction(Description.BuildDefault(
+        dimension, "x"), Description.BuildDefault(dimension, "x"))
     # Create an instance
     myFunc = PointToFieldConnection(lifting, function)
 
@@ -27,13 +28,14 @@ try:
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Connection on a point
-    point = [1.0]*myFunc.getInputDimension()
+    point = [1.0] * myFunc.getInputDimension()
     print("point=", point)
     print("myFunc(point)=", myFunc(point))
     # Get the number of calls
     print("called ", myFunc.getCallsNumber(), " times")
 
-    # Construction based on a PointToFieldFunction followed by a FieldToPointFunction
+    # Construction based on a PointToFieldFunction followed by a
+    # FieldToPointFunction
     fieldFunction = ValueFunction(SymbolicFunction("x", "x"))
     # Create an instance
     myFunc = PointToFieldConnection(fieldFunction, lifting)
@@ -46,12 +48,13 @@ try:
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Connection on a point
-    point = [1.0]*myFunc.getInputDimension()
+    point = [1.0] * myFunc.getInputDimension()
     print("point=", point)
     print("myFunc(point)=", myFunc(point))
     # Get the number of calls
     print("called ", myFunc.getCallsNumber(), " times")
-    
+
 except:
     import sys
-    print("t_PointToFieldConnection_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_PointToFieldConnection_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

@@ -86,7 +86,7 @@ public:
    * to a XML file
    */
   explicit XMLStorageManager(const FileName & filename,
-			     const UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel"));
+                             const UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel"));
 
   /**
    * Virtual constructor
@@ -255,7 +255,7 @@ private:
 
   /** The compression level for the XML export */
   UnsignedInteger compressionLevel_;
-  
+
 }; /* class XMLStorageManager */
 
 END_NAMESPACE_OPENTURNS

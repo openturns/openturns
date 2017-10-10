@@ -118,7 +118,7 @@ protected:
 
   /** compute the covariance of the distribution */
   void computeCovariance() const;
-  
+
   /** Method to set simultaneously the conditioning distribution, the conditioned distribution and the link function */
   void setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,
       const Distribution & conditioningDistribution,

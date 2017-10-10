@@ -176,7 +176,7 @@ UnsignedInteger ComplexMatrix::getNbColumns() const
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
 Complex & ComplexMatrix::operator() (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                     const UnsignedInteger j)
 {
   copyOnWrite();
   return (*getImplementation())(i, j);

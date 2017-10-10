@@ -8,7 +8,8 @@ TESTPREAMBLE()
 try:
     # Construction based on two functions
     # Create an instance
-    myFunc = FieldToFieldConnection(ValueFunction(SymbolicFunction("x", "sin(x)")), ValueFunction(SymbolicFunction("x", "cos(x)")))
+    myFunc = FieldToFieldConnection(
+        ValueFunction(SymbolicFunction("x", "sin(x)")), ValueFunction(SymbolicFunction("x", "cos(x)")))
 
     print("myFunc=", myFunc)
     # Get the input and output description
@@ -55,5 +56,5 @@ try:
 
 except:
     import sys
-    print("t_FieldToFieldConnection_std.py", sys.exc_info()[0], sys.exc_info()[1])
-
+    print("t_FieldToFieldConnection_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

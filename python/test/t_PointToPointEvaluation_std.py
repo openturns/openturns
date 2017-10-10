@@ -7,8 +7,9 @@ TESTPREAMBLE()
 
 try:
     # Create an instance
-    myFunc = PointToPointEvaluation(SymbolicFunction("x", "sin(x)"), SymbolicFunction("x", "cos(x)"))
-    
+    myFunc = PointToPointEvaluation(
+        SymbolicFunction("x", "sin(x)"), SymbolicFunction("x", "cos(x)"))
+
     print("myFunc=", myFunc)
     # Get the input and output description
     print("myFunc input description=", myFunc.getInputDescription())
@@ -17,7 +18,7 @@ try:
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Evaluation on a point
-    point = [1.0]*myFunc.getInputDimension()
+    point = [1.0] * myFunc.getInputDimension()
     print("point=", point)
     print("myFunc(point)=", myFunc(point))
     # Get the number of calls
@@ -45,7 +46,7 @@ try:
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Evaluation on a point
-    point = [1.0]*myFunc.getInputDimension()
+    point = [1.0] * myFunc.getInputDimension()
     print("point=", point)
     print("myFunc(point)=", myFunc(point))
     # Get the number of calls
@@ -53,4 +54,5 @@ try:
 
 except:
     import sys
-    print("t_PointToPointEvaluation_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_PointToPointEvaluation_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

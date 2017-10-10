@@ -47,8 +47,8 @@ public:
 
   /** Parameter constructor */
   FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension,
-				     const UnsignedInteger inputDimension,
-				     const UnsignedInteger outputDimension);
+                                     const UnsignedInteger inputDimension,
+                                     const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
   virtual FieldToPointFunctionImplementation * clone() const;

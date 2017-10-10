@@ -43,7 +43,7 @@ public:
 
   /** Standard constructor  */
   ConditionedGaussianProcess(const KrigingResult & result,
-                           const Mesh & mesh);
+                             const Mesh & mesh);
 
   /** Virtual constructor */
   virtual ConditionedGaussianProcess * clone() const;

@@ -53,7 +53,7 @@ class OT_API AdaptiveStrategyImplementation
 public:
 
   typedef Collection<Function> FunctionCollection;
-  
+
   /** Default constructor */
   AdaptiveStrategyImplementation();
 

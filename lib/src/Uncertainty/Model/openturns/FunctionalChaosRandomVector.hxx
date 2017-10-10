@@ -39,7 +39,7 @@ class OT_API FunctionalChaosRandomVector
 public:
 
   /** Default constructor */
-  FunctionalChaosRandomVector();  
+  FunctionalChaosRandomVector();
 
   /** Default constructor */
   explicit FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult);

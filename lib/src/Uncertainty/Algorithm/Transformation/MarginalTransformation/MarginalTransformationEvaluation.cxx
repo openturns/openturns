@@ -255,8 +255,8 @@ void MarginalTransformationEvaluation::initialize(const Bool simplify)
 
 /* Parameter constructor */
 MarginalTransformationEvaluation::MarginalTransformationEvaluation(const DistributionCollection & distributionCollection,
-                                                                   const UnsignedInteger direction,
-                                                                   const Distribution & standardMarginal)
+    const UnsignedInteger direction,
+    const Distribution & standardMarginal)
   : EvaluationImplementation()
   , parameterSide_(NONE)
 {
@@ -457,7 +457,7 @@ void MarginalTransformationEvaluation::setParameter(const Point & parameter)
 
 //   if (parameter.getDimension() != getParameter().getDimension())
 //     throw InvalidArgumentException(HERE) << "Required " << getParameter().getDimension() << " parameters, got " << parameter.getDimension();
-// 
+//
 //   UnsignedInteger index = 0;
 //   if ((direction_ == FROM) || (direction_ == FROMTO))
 //     for (UnsignedInteger i = 0; i < getInputDimension(); ++ i)
@@ -488,7 +488,7 @@ Description MarginalTransformationEvaluation::getParameterDescription() const
 //   // use externally set parameters possibly with copula parameters
 //   if (parameterDescription_.getSize() > 0)
 //     return parameterDescription_;
-// 
+//
 //   // else use marginals
 //   Description description;
 //   if (parameterSide_ & LEFT)

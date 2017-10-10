@@ -8,7 +8,8 @@ TESTPREAMBLE()
 try:
     # Construction based on two functions
     # Create an instance */
-    myFunc = PointToPointConnection(SymbolicFunction("x", "sin(x)"), SymbolicFunction("x", "cos(x)"))
+    myFunc = PointToPointConnection(
+        SymbolicFunction("x", "sin(x)"), SymbolicFunction("x", "cos(x)"))
 
     print("myFunc=", myFunc)
     # Get the input and output description */
@@ -18,7 +19,7 @@ try:
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Connection on a point */
-    point = [1.0]*myFunc.getInputDimension()
+    point = [1.0] * myFunc.getInputDimension()
     print("point=", point)
     print("myFunc(point)=", myFunc(point))
     print("myFunc.gradient(point)=", myFunc.gradient(point))
@@ -48,7 +49,7 @@ try:
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Connection on a point */
-    point = [1.0]*myFunc.getInputDimension()
+    point = [1.0] * myFunc.getInputDimension()
     print("point=", point)
     print("myFunc(point)=", myFunc(point))
     print("myFunc.gradient(point)=", myFunc.gradient(point).clean(1.0e-8))
@@ -58,4 +59,5 @@ try:
 
 except:
     import sys
-    print("t_PointToPointConnection_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_PointToPointConnection_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

@@ -51,7 +51,7 @@ public:
 
   /** Parameter constructor */
   PointToFieldFunction(const UnsignedInteger inputDimension,
-		       const UnsignedInteger outputDimension);
+                       const UnsignedInteger outputDimension);
 
   /** Constructor from PointToFieldFunctionImplementation */
   PointToFieldFunction(const PointToFieldFunctionImplementation & implementation);

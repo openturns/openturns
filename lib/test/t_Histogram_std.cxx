@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     {
       Histogram distribution(ticks, frequencies);
       fullprint << "ticks=" << ticks << " frequencies=" << frequencies << std::endl;
-      
+
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
     }

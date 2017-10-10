@@ -44,11 +44,11 @@ public:
 
   /** Composition constructor */
   FieldToPointConnection(const Function & function,
-                   const FieldToPointFunction & fieldToPointFunction);
+                         const FieldToPointFunction & fieldToPointFunction);
 
   /** Composition constructor */
   FieldToPointConnection(const FieldToPointFunction & fieldToPointFunction,
-                   const FieldFunction & fieldFunction);
+                         const FieldFunction & fieldFunction);
 
   /** Virtual constructor */
   virtual FieldToPointConnection * clone() const;
@@ -98,7 +98,7 @@ private:
    * a field to point function or a field to point function
    * and a field function */
   Bool startByFieldToPointFunction_;
-  
+
   /** The function f in h = f o g */
   Function function_;
 

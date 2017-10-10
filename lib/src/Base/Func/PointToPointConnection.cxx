@@ -37,7 +37,7 @@ PointToPointConnection::PointToPointConnection()
 
 /* Parameters constructor */
 PointToPointConnection::PointToPointConnection(const Function & leftFunction,
-					     const Function & rightFunction)
+    const Function & rightFunction)
   : FunctionImplementation(new PointToPointEvaluation(leftFunction, rightFunction))
 {
   // Nothing to do
@@ -45,7 +45,7 @@ PointToPointConnection::PointToPointConnection(const Function & leftFunction,
 
 /* Parameters constructor */
 PointToPointConnection::PointToPointConnection(const FieldToPointFunction & fieldToPointFunction,
-                                       const PointToFieldFunction & pointToFieldFunction)
+    const PointToFieldFunction & pointToFieldFunction)
   : FunctionImplementation(new PointToPointEvaluation(fieldToPointFunction, pointToFieldFunction))
 {
   // Nothing to do

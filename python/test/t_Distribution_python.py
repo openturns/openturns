@@ -4,6 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+
 class UniformNdPy(ot.PythonDistribution):
 
     def __init__(self, a=[0.0], b=[1.0]):
@@ -218,4 +219,4 @@ myDist = ot.Distribution(UniformNdPy([0.0] * 2, [2.0] * 2))
 copula = myDist.getCopula()
 
 # Test computePDF over a sample (ticket #899)
-res = copula.computePDF([[0.5]*2]*10)
+res = copula.computePDF([[0.5] * 2] * 10)

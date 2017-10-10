@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief The class that implements the composition between field functions or 
+ * @brief The class that implements the composition between field functions or
  *        point to field and field to point functions
  *
  * Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
@@ -36,7 +36,7 @@ FieldToFieldConnection::FieldToFieldConnection()
 
 /* Parameters constructor */
 FieldToFieldConnection::FieldToFieldConnection(const FieldFunction & leftFieldFunction,
-					     const FieldFunction & rightFieldFunction)
+    const FieldFunction & rightFieldFunction)
   : FieldFunctionImplementation(rightFieldFunction.getSpatialDimension(), rightFieldFunction.getInputDimension(), leftFieldFunction.getOutputDimension())
   , isFieldFunctionComposition_(true)
   , leftFieldFunction_(leftFieldFunction)
@@ -52,7 +52,7 @@ FieldToFieldConnection::FieldToFieldConnection(const FieldFunction & leftFieldFu
 
 /* Parameters constructor */
 FieldToFieldConnection::FieldToFieldConnection(const PointToFieldFunction & pointToFieldFunction,
-                                       const FieldToPointFunction & fieldToPointFunction)
+    const FieldToPointFunction & fieldToPointFunction)
   : FieldFunctionImplementation(fieldToPointFunction.getSpatialDimension(), fieldToPointFunction.getInputDimension(), fieldToPointFunction.getOutputDimension())
   , isFieldFunctionComposition_(false)
   , leftFieldFunction_()
@@ -114,15 +114,15 @@ String FieldToFieldConnection::__str__(const String & offset) const
   OSS oss(false);
   if (hasVisibleName()) oss << offset << "name=" << getName() << "\n";
   if (isFieldFunctionComposition_)
-    {
-      oss << "(" << leftFieldFunction_.__str__() << ")o(";
-      oss << rightFieldFunction_.__str__() << ")";
-    }
+  {
+    oss << "(" << leftFieldFunction_.__str__() << ")o(";
+    oss << rightFieldFunction_.__str__() << ")";
+  }
   else
-    {
-      oss << "(" << fieldToPointFunction_.__str__() << ")o(";
-      oss << pointToFieldFunction_.__str__() << ")";
-    }
+  {
+    oss << "(" << fieldToPointFunction_.__str__() << ")o(";
+    oss << pointToFieldFunction_.__str__() << ")";
+  }
   return oss;
 }
 

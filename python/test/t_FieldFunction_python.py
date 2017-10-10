@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
+
 class FUNC(ot.OpenTURNSPythonFieldFunction):
 
     def __init__(self):
@@ -10,9 +11,10 @@ class FUNC(ot.OpenTURNSPythonFieldFunction):
         super(FUNC, self).__init__(2, 2, 1)
         self.setInputDescription(['R', 'S'])
         self.setOutputDescription(['T', 'U'])
-        
+
     def _exec(self, X):
-        Y = ot.Field(X.getMesh(), X.getValues() * ([2.0]*X.getValues().getDimension()))
+        Y = ot.Field(X.getMesh(), X.getValues()
+                     * ([2.0] * X.getValues().getDimension()))
         return Y
 
 F = FUNC()
@@ -40,10 +42,12 @@ print(myFunc(X))
 
 print(myFunc(Xsample))
 
+
 def myPyFunc(X):
     mesh = X.getMesh()
-    values = X.getValues() * ([2.0]*X.getValues().getDimension())
-    values.setDescription(ot.Description.BuildDefault(values.getDimension(), "Y"))
+    values = X.getValues() * ([2.0] * X.getValues().getDimension())
+    values.setDescription(
+        ot.Description.BuildDefault(values.getDimension(), "Y"))
     Y = ot.Field(mesh, values)
     return Y
 

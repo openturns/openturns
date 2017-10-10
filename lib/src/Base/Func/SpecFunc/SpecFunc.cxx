@@ -780,8 +780,8 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
 
 // Complex hypergeometric function of type (1,1): HyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
 Complex SpecFunc::HyperGeom_1_1(const Scalar p1,
-    const Scalar q1,
-    const Complex & x)
+                                const Scalar q1,
+                                const Complex & x)
 {
   Complex pochhammerP1(p1);
   Complex pochhammerQ1(q1);

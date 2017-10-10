@@ -2319,7 +2319,7 @@ void SampleImplementation::load(Advocate & adv)
 SampleImplementation operator *(const Scalar scalar,
                                 const SampleImplementation & rhs)
 {
-  return rhs.operator*(scalar);
+  return rhs.operator * (scalar);
 }
 
 END_NAMESPACE_OPENTURNS

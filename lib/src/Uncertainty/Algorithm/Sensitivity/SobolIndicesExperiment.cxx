@@ -30,8 +30,8 @@ static const Factory<SobolIndicesExperiment> Factory_SobolIndicesExperiment;
 
 /* Default constructor */
 SobolIndicesExperiment::SobolIndicesExperiment()
-: WeightedExperimentImplementation()
-, computeSecondOrder_(true)
+  : WeightedExperimentImplementation()
+  , computeSecondOrder_(true)
 {
   // Nothing to do
 }
@@ -39,10 +39,10 @@ SobolIndicesExperiment::SobolIndicesExperiment()
 
 /* Constructor with parameters */
 SobolIndicesExperiment::SobolIndicesExperiment(const WeightedExperiment & experiment,
-                                               const Bool computeSecondOrder)
-: WeightedExperimentImplementation()
-, experiment_(experiment)
-, computeSecondOrder_(computeSecondOrder)
+    const Bool computeSecondOrder)
+  : WeightedExperimentImplementation()
+  , experiment_(experiment)
+  , computeSecondOrder_(computeSecondOrder)
 {
   if (!experiment.getDistribution().hasIndependentCopula())
     throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment weighted's distribution should have independent copula";
@@ -59,7 +59,7 @@ SobolIndicesExperiment::SobolIndicesExperiment(const WeightedExperiment & experi
 SobolIndicesExperiment::SobolIndicesExperiment(const Distribution & distribution,
     const UnsignedInteger size,
     const Bool computeSecondOrder)
-: WeightedExperimentImplementation()
+  : WeightedExperimentImplementation()
 {
   const MonteCarloExperiment experiment(distribution, size);
   *this = SobolIndicesExperiment(experiment, computeSecondOrder);

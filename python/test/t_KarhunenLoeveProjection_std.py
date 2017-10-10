@@ -29,4 +29,5 @@ try:
 
 except:
     import sys
-    print("t_KarhunenLoeveProjection_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_KarhunenLoeveProjection_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

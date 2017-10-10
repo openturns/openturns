@@ -34,7 +34,7 @@ Bool Text::IsTextFirstInitialization = true;
 
 /* Default constructor */
 Text::Text()
- : DrawableImplementation()
+  : DrawableImplementation()
 {}
 
 /* Default constructor */

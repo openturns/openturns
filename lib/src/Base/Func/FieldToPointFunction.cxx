@@ -33,8 +33,8 @@ FieldToPointFunction::FieldToPointFunction(const UnsignedInteger spatialDimensio
 
 /* Parameter constructor */
 FieldToPointFunction::FieldToPointFunction(const UnsignedInteger spatialDimension,
-					   const UnsignedInteger inputDimension,
-					   const UnsignedInteger outputDimension)
+    const UnsignedInteger inputDimension,
+    const UnsignedInteger outputDimension)
   : TypedInterfaceObject<FieldToPointFunctionImplementation>(new FieldToPointFunctionImplementation(spatialDimension, inputDimension, outputDimension))
 {
   // Nothing to do

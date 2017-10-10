@@ -104,7 +104,7 @@ String LowDiscrepancyExperiment::__repr__() const
       << " size=" << size_
       << " restart=" << restart_
       << " randomize=" << randomize_;
-      return oss;
+  return oss;
 }
 
 String LowDiscrepancyExperiment::__str__(const String & offset) const

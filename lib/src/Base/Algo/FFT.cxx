@@ -63,17 +63,17 @@ FFT::ComplexCollection FFT::transform(const ScalarCollection & collection) const
 
 /** FFT transformation on real - The transformation is applied on a part of the collection*/
 FFT::ComplexCollection FFT::transform(const ScalarCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger size) const
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger size) const
 {
   return getImplementation()->transform(collection, first, size);
 }
 
 /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
 FFT::ComplexCollection FFT::transform(const ScalarCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger step,
-    const UnsignedInteger last) const
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger step,
+                                      const UnsignedInteger last) const
 {
   return getImplementation()->transform(collection, first, step, last);
 }
@@ -86,8 +86,8 @@ FFT::ComplexCollection FFT::transform(const ComplexCollection & collection) cons
 
 /* FFT transformation on complex. The transformation is applied on a part of the collection */
 FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger size) const
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger size) const
 {
   return getImplementation()->transform(collection, first, size);
 }
@@ -95,9 +95,9 @@ FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
 
 /* FFT transformation on complex. This transforms a regular sequence of the collection (between first and last, with elements separated by step)*/
 FFT::ComplexCollection FFT::transform(const ComplexCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger step,
-    const UnsignedInteger last) const
+                                      const UnsignedInteger first,
+                                      const UnsignedInteger step,
+                                      const UnsignedInteger last) const
 {
   return getImplementation()->transform(collection, first, step, last);
 }

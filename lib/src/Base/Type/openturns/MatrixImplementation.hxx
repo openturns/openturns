@@ -221,7 +221,7 @@ public:
   /** Compute eigenvalues */
   ComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
   ComplexCollection computeEVSquare(ComplexMatrixImplementation & v,
-      const Bool keepIntact = true);
+                                    const Bool keepIntact = true);
   Point computeEigenValuesSym(const Bool keepIntact = true);
   Point computeEVSym(MatrixImplementation & v,
                      const Bool keepIntact = true);
