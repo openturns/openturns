@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MonomialFunction);
+CLASSNAMEINIT(MonomialFunction)
 
 static const Factory<MonomialFunction> Factory_MonomialFunction;
 

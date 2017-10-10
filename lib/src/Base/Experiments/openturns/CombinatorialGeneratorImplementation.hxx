@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CombinatorialGeneratorImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<CombinatorialGeneratorImplementation> Implementation;

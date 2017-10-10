@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API UniVariateFunction
   : public TypedInterfaceObject<UniVariateFunctionImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

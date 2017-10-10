@@ -36,7 +36,7 @@ class OT_API WeightedExperiment
   : public TypedInterfaceObject<WeightedExperimentImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<WeightedExperimentImplementation> Implementation;

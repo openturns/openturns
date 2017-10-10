@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MeixnerDistribution);
+CLASSNAMEINIT(MeixnerDistribution)
 
 static const Factory<MeixnerDistribution> Factory_MeixnerDistribution;
 

@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FixedExperiment);
+CLASSNAMEINIT(FixedExperiment)
 
 static const Factory<FixedExperiment> Factory_FixedExperiment;
 

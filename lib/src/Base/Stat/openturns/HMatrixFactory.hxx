@@ -41,7 +41,7 @@ class Sample;
 class OT_API HMatrixFactory
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

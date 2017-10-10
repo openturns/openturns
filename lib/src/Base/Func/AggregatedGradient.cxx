@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AggregatedGradient);
+CLASSNAMEINIT(AggregatedGradient)
 
 static const Factory<AggregatedGradient> Factory_AggregatedGradient;
 

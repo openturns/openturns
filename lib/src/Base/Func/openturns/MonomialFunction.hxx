@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MonomialFunction
   : public UniVariateFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<UniVariateFunctionImplementation> Implementation;

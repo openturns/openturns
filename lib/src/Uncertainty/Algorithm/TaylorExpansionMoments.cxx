@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Pointer<RandomVectorImplementation> Implementation;
 
-CLASSNAMEINIT(TaylorExpansionMoments);
+CLASSNAMEINIT(TaylorExpansionMoments)
 
 static const Factory<TaylorExpansionMoments> Factory_TaylorExpansionMoments;
 

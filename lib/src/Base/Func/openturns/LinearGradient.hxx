@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LinearGradient
   : public GradientImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

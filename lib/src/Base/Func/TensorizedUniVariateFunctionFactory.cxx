@@ -32,11 +32,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<UniVariateFunctionFamily>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<UniVariateFunctionFamily>)
 
 static const Factory<PersistentCollection<UniVariateFunctionFamily> > Factory_PersistentCollection_UniVariateFunctionFamily;
 
-CLASSNAMEINIT(TensorizedUniVariateFunctionFactory);
+CLASSNAMEINIT(TensorizedUniVariateFunctionFactory)
 
 static const Factory<TensorizedUniVariateFunctionFactory> Factory_TensorizedUniVariateFunctionFactory;
 

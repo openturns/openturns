@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WhiteNoise);
+CLASSNAMEINIT(WhiteNoise)
 
 static const Factory<WhiteNoise> Factory_WhiteNoise;
 

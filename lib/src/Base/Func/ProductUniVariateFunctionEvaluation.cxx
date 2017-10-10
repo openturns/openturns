@@ -24,11 +24,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<UniVariateFunction>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<UniVariateFunction>)
 
 static const Factory<PersistentCollection<UniVariateFunction> > Factory_PersistentCollection_UniVariateFunction;
 
-CLASSNAMEINIT(ProductUniVariateFunctionEvaluation);
+CLASSNAMEINIT(ProductUniVariateFunctionEvaluation)
 
 static const Factory<ProductUniVariateFunctionEvaluation> Factory_ProductUniVariateFunctionEvaluation;
 

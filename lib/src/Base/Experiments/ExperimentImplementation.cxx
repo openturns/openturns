@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ExperimentImplementation);
+CLASSNAMEINIT(ExperimentImplementation)
 
 /* Default constructor */
 ExperimentImplementation::ExperimentImplementation()

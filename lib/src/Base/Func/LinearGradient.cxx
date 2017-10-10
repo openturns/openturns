@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LinearGradient);
+CLASSNAMEINIT(LinearGradient)
 
 static const Factory<LinearGradient> Factory_LinearGradient;
 

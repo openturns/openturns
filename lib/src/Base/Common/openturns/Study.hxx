@@ -50,7 +50,7 @@ class StorageManager;
 class OT_API Study
   : public Object
 {
-  CLASSNAME;
+  CLASSNAME
 
   friend class StorageManager;
 

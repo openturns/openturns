@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CovarianceMatrix);
+CLASSNAMEINIT(CovarianceMatrix)
 
 /* Default constructor */
 CovarianceMatrix::CovarianceMatrix()

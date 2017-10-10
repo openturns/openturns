@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(OrthogonalBasis);
+CLASSNAMEINIT(OrthogonalBasis)
 
 /* Default constructor */
 OrthogonalBasis::OrthogonalBasis()

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MarginalTransformationGradient
   : public GradientImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef GradientImplementation GradientImplementation; // Required by SWIG

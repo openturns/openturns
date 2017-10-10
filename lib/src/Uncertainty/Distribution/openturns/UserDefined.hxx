@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API UserDefined
   : public DiscreteDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

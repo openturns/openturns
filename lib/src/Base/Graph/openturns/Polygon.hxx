@@ -38,7 +38,7 @@ class OT_API Polygon
   : public DrawableImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

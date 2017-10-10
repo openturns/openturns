@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TimeSeries
   : public FieldImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -28,10 +28,10 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection< TriangularComplexMatrix >);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection< TriangularComplexMatrix >)
 static const Factory<PersistentCollection<TriangularComplexMatrix> > Factory_PersistentCollection_TriangularComplexMatrix;
 
-CLASSNAMEINIT(SpectralGaussianProcess);
+CLASSNAMEINIT(SpectralGaussianProcess)
 
 static const Factory<SpectralGaussianProcess> Factory_SpectralGaussianProcess;
 

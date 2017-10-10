@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for elliptical distributions
  */
 
-CLASSNAMEINIT(InverseNatafEllipticalDistributionGradient);
+CLASSNAMEINIT(InverseNatafEllipticalDistributionGradient)
 
 static const Factory<InverseNatafEllipticalDistributionGradient> Factory_InverseNatafEllipticalDistributionGradient;
 

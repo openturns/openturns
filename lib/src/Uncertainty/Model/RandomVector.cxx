@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(RandomVector);
+CLASSNAMEINIT(RandomVector)
 
 /* Default constructor */
 RandomVector:: RandomVector()

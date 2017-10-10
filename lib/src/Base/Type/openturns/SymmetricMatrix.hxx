@@ -37,7 +37,7 @@ class IdentityMatrix;
 class OT_API SymmetricMatrix :
   public SquareMatrix
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   friend SymmetricMatrix operator * (const Scalar & s,

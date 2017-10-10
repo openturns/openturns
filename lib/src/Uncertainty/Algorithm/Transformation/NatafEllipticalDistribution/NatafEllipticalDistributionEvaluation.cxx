@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical distributions
  */
 
-CLASSNAMEINIT(NatafEllipticalDistributionEvaluation);
+CLASSNAMEINIT(NatafEllipticalDistributionEvaluation)
 
 static const Factory<NatafEllipticalDistributionEvaluation> Factory_NatafEllipticalDistributionEvaluation;
 

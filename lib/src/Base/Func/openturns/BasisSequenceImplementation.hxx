@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API BasisSequenceImplementation
   : public PersistentCollection<Indices>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

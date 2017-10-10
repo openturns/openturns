@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DiscreteDistribution);
+CLASSNAMEINIT(DiscreteDistribution)
 
 /* Default constructor */
 DiscreteDistribution::DiscreteDistribution()

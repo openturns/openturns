@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Poisson);
+CLASSNAMEINIT(Poisson)
 
 static const Factory<Poisson> Factory_Poisson;
 

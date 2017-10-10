@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComplexMatrix);
+CLASSNAMEINIT(ComplexMatrix)
 
 /* Default constructor */
 ComplexMatrix::ComplexMatrix()

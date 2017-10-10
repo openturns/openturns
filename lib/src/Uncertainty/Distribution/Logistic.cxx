@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Logistic);
+CLASSNAMEINIT(Logistic)
 
 static const Factory<Logistic> Factory_Logistic;
 

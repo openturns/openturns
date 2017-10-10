@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API VertexFunction
   : public FieldFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef EvaluationImplementation::Implementation EvaluationPointer;

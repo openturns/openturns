@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is an interface for the 1D nonlinear Brents
  */
 
-CLASSNAMEINIT(Brent);
+CLASSNAMEINIT(Brent)
 
 static const Factory<Brent> Factory_Brent;
 

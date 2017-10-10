@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API GradientImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<GradientImplementation> Implementation;

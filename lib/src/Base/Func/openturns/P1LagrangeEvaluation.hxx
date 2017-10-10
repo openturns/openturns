@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API P1LagrangeEvaluation
   : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
   friend class FunctionImplementation;
   friend class P1LagrangeEvaluationComputeSamplePolicy;
 

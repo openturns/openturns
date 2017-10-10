@@ -27,7 +27,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(SVDMethod);
+CLASSNAMEINIT(SVDMethod)
 
 
 static const Factory<SVDMethod> Factory_SVDMethod;

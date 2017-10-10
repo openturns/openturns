@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseWishart);
+CLASSNAMEINIT(InverseWishart)
 
 static const Factory<InverseWishart> Factory_InverseWishart;
 

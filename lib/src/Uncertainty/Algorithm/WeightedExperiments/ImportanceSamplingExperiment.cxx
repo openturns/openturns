@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ImportanceSamplingExperiment);
+CLASSNAMEINIT(ImportanceSamplingExperiment)
 
 static const Factory<ImportanceSamplingExperiment> Factory_ImportanceSamplingExperiment;
 

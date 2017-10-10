@@ -34,7 +34,7 @@ class OT_API ContinuousDistribution
   : public DistributionImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

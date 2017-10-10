@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class BoxCoxFactory
  */
 
-CLASSNAMEINIT(BoxCoxFactory);
+CLASSNAMEINIT(BoxCoxFactory)
 
 static const Factory<BoxCoxFactory> Factory_BoxCoxFactory;
 

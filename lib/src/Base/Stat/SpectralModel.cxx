@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SpectralModel);
+CLASSNAMEINIT(SpectralModel)
 
 //   static const Factory<SpectralModel> Factory_SpectralModel;
 

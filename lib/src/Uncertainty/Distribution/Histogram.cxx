@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Histogram);
+CLASSNAMEINIT(Histogram)
 
 static const Factory<Histogram> Factory_Histogram;
 

@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(RandomWalk);
+CLASSNAMEINIT(RandomWalk)
 
 static const Factory<RandomWalk> Factory_RandomWalk;
 

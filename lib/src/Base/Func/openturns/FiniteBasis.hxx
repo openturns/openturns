@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FiniteBasis
   : public BasisImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<Function> FunctionCollection;
   typedef PersistentCollection<Function> FunctionPersistentCollection;

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LeastSquaresStrategy);
+CLASSNAMEINIT(LeastSquaresStrategy)
 
 static const Factory<LeastSquaresStrategy> Factory_LeastSquaresStrategy;
 

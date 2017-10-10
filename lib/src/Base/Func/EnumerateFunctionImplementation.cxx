@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EnumerateFunctionImplementation);
+CLASSNAMEINIT(EnumerateFunctionImplementation)
 
 static const Factory<EnumerateFunctionImplementation> Factory_EnumerateFunctionImplementation;
 

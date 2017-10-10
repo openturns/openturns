@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CumulativeDistributionNetwork);
+CLASSNAMEINIT(CumulativeDistributionNetwork)
 
 static const Factory<CumulativeDistributionNetwork> Factory_CumulativeDistributionNetwork;
 

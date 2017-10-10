@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NormalCopulaFactory);
+CLASSNAMEINIT(NormalCopulaFactory)
 
 static const Factory<NormalCopulaFactory> Factory_NormalCopulaFactory;
 

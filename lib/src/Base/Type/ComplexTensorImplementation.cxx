@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComplexTensorImplementation);
+CLASSNAMEINIT(ComplexTensorImplementation)
 
 static const Factory<ComplexTensorImplementation> Factory_ComplexTensorImplementation;
 

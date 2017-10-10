@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MonteCarloExperiment);
+CLASSNAMEINIT(MonteCarloExperiment)
 
 static const Factory<MonteCarloExperiment> Factory_MonteCarloExperiment;
 

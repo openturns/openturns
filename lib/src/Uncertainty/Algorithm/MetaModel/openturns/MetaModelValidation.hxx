@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MetaModelValidation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

@@ -41,7 +41,7 @@ class OT_API DrawableImplementation :
   public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
   friend class GraphImplementation;
 

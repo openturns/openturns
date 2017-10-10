@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API BayesDistribution
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

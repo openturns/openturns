@@ -17,7 +17,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TrendEvaluation);
+CLASSNAMEINIT(TrendEvaluation)
 
 static const Factory<TrendEvaluation> Factory_TrendEvaluation;
 

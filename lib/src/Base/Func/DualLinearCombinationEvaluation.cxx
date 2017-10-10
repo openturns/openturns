@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DualLinearCombinationEvaluation);
+CLASSNAMEINIT(DualLinearCombinationEvaluation)
 
 static const Factory<DualLinearCombinationEvaluation> Factory_DualLinearCombinationEvaluation;
 

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for elliptical copula
  */
 
-CLASSNAMEINIT(InverseNatafEllipticalCopulaEvaluation);
+CLASSNAMEINIT(InverseNatafEllipticalCopulaEvaluation)
 
 static const Factory<InverseNatafEllipticalCopulaEvaluation> Factory_InverseNatafEllipticalCopulaEvaluation;
 

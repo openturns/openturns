@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FittingAlgorithmImplementation);
+CLASSNAMEINIT(FittingAlgorithmImplementation)
 
 static const Factory<FittingAlgorithmImplementation> Factory_FittingAlgorithmImplementation;
 

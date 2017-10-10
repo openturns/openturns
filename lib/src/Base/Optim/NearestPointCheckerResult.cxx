@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(NearestPointCheckerResult);
+CLASSNAMEINIT(NearestPointCheckerResult)
 
 /* Default constructor */
 NearestPointCheckerResult::NearestPointCheckerResult():

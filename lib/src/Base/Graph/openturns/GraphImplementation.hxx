@@ -38,7 +38,7 @@ class OT_API GraphImplementation :
   public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

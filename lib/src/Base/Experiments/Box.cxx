@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Box);
+CLASSNAMEINIT(Box)
 
 static const Factory<Box> Factory_Box;
 

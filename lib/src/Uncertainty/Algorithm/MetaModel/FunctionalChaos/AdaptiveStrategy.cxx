@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(AdaptiveStrategy);
+CLASSNAMEINIT(AdaptiveStrategy)
 
 /* Constructor from an orthogonal basis */
 AdaptiveStrategy::AdaptiveStrategy()

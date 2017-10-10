@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Cobyla :
   public OptimizationAlgorithmImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

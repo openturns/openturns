@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LogUniformFactory);
+CLASSNAMEINIT(LogUniformFactory)
 
 static const Factory<LogUniformFactory> Factory_LogUniformFactory;
 

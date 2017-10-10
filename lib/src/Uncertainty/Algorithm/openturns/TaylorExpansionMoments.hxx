@@ -45,7 +45,7 @@ class OT_API TaylorExpansionMoments
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

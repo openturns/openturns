@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Experiment
   : public TypedInterfaceObject<ExperimentImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

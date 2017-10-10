@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DualLinearCombinationHessian
   : public HessianImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   /** Default constructor */
   DualLinearCombinationHessian();

@@ -148,7 +148,7 @@ struct XMLStorageManagerState : public StorageManager::InternalObject
 
 const int XMLStorageManager::Precision_ = 17;
 
-CLASSNAMEINIT(XMLStorageManager);
+CLASSNAMEINIT(XMLStorageManager)
 const VersionList XMLStorageManager::SupportedVersions;
 
 /* Default constructor */

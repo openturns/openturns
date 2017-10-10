@@ -41,7 +41,7 @@ class SquareComplexMatrix;
 class OT_API SquareMatrix :
   public Matrix
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   friend SquareMatrix operator * (const Scalar s,

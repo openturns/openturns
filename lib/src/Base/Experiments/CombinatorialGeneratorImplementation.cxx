@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CombinatorialGeneratorImplementation);
+CLASSNAMEINIT(CombinatorialGeneratorImplementation)
 
 /* Default constructor */
 CombinatorialGeneratorImplementation::CombinatorialGeneratorImplementation()

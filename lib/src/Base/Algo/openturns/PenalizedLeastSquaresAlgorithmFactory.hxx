@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API PenalizedLeastSquaresAlgorithmFactory
   : public ApproximationAlgorithmImplementationFactory
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

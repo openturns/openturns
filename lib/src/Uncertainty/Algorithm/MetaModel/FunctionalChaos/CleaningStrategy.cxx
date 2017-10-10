@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(CleaningStrategy);
+CLASSNAMEINIT(CleaningStrategy)
 
 typedef Collection<Scalar> ScalarCollection;
 

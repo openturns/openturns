@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(IntegrationStrategy);
+CLASSNAMEINIT(IntegrationStrategy)
 
 
 static const Factory<IntegrationStrategy> Factory_IntegrationStrategy;

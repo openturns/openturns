@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SobolIndicesExperiment
   : public WeightedExperimentImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

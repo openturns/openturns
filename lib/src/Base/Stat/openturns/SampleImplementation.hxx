@@ -450,7 +450,7 @@ NSI_const_iterator::difference_type operator - (const NSI_const_iterator & lhs, 
 class OT_API SampleImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
   friend class NSI_point;
   friend class NSI_const_point;
   friend class NSI_iterator;

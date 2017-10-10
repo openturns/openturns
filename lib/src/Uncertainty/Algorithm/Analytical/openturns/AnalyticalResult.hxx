@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API AnalyticalResult
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Graph>                         GraphCollection;

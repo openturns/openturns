@@ -24,7 +24,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(TestResult);
+CLASSNAMEINIT(TestResult)
 
 static const Factory<TestResult> Factory_TestResult;
 

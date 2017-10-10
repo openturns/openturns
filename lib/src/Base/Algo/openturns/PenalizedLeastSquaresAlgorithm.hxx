@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API PenalizedLeastSquaresAlgorithm
   : public ApproximationAlgorithmImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Function> FunctionCollection;

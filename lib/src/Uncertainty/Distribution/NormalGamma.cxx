@@ -32,7 +32,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NormalGamma);
+CLASSNAMEINIT(NormalGamma)
 
 static const Factory<NormalGamma> Factory_NormalGamma;
 

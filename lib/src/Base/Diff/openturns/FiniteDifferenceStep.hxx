@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FiniteDifferenceStep
   : public TypedInterfaceObject<FiniteDifferenceStepImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

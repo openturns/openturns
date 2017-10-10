@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProductDistribution);
+CLASSNAMEINIT(ProductDistribution)
 
 static const Factory<ProductDistribution> Factory_ProductDistribution;
 

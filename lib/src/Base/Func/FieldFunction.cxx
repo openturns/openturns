@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldFunction);
+CLASSNAMEINIT(FieldFunction)
 
 /* Default constructor */
 FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)

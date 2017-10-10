@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Copula);
+CLASSNAMEINIT(Copula)
 
 /* Default constructor */
 Copula::Copula()

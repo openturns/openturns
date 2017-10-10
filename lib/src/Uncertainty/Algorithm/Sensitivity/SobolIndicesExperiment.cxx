@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SobolIndicesExperiment);
+CLASSNAMEINIT(SobolIndicesExperiment)
 
 static const Factory<SobolIndicesExperiment> Factory_SobolIndicesExperiment;
 

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Hamming
  */
 
-CLASSNAMEINIT(Hamming);
+CLASSNAMEINIT(Hamming)
 
 static const Factory<Hamming> Factory_Hamming;
 

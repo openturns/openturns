@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(IdentityEvaluation);
+CLASSNAMEINIT(IdentityEvaluation)
 
 static const Factory<IdentityEvaluation> Factory_IdentityEvaluation;
 

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FilteringWindowsImplementation
  */
 
-CLASSNAMEINIT(FilteringWindowsImplementation);
+CLASSNAMEINIT(FilteringWindowsImplementation)
 
 static const Factory<FilteringWindowsImplementation> Factory_FilteringWindowsImplementation;
 

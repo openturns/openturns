@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LogNormal
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Pointer<DistributionImplementation> Implementation;
 

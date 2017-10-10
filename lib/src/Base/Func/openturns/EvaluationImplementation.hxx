@@ -48,7 +48,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API EvaluationImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<EvaluationImplementation>      Implementation;

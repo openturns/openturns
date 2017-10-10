@@ -35,10 +35,10 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Copula>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Copula>)
 static const Factory<PersistentCollection<Copula> > Factory_PersistentCollection_Copula;
 
-CLASSNAMEINIT(ComposedCopula);
+CLASSNAMEINIT(ComposedCopula)
 
 static const Factory<ComposedCopula> Factory_ComposedCopula;
 

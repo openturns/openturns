@@ -19,7 +19,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToPointEvaluation);
+CLASSNAMEINIT(PointToPointEvaluation)
 
 static const Factory<PointToPointEvaluation> Factory_PointToPointEvaluation;
 

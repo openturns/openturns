@@ -55,7 +55,7 @@ int csvparse (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile,
 BEGIN_NAMESPACE_OPENTURNS
 
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Point>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Point>)
 
 static const Factory<PersistentCollection<Point> > Factory_PersistentCollection_Point;
 
@@ -283,7 +283,7 @@ OStream & operator << (OStream & OS, const NSI_const_point & point)
 
 static const Factory<SampleImplementation> Factory_SampleImplementation;
 
-CLASSNAMEINIT(SampleImplementation);
+CLASSNAMEINIT(SampleImplementation)
 
 
 /* Factory of SampleImplementation from CSV file */

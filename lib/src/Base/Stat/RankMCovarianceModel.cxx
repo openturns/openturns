@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(RankMCovarianceModel);
+CLASSNAMEINIT(RankMCovarianceModel)
 
 static const Factory<RankMCovarianceModel> Factory_RankMCovarianceModel;
 

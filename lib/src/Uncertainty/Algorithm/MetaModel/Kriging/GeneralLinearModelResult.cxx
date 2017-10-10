@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GeneralLinearModelResult);
+CLASSNAMEINIT(GeneralLinearModelResult)
 static const Factory<GeneralLinearModelResult> Factory_GeneralLinearModelResult;
 
 /* Default constructor */

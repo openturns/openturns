@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HyperbolicAnisotropicEnumerateFunction);
+CLASSNAMEINIT(HyperbolicAnisotropicEnumerateFunction)
 
 static const Factory<HyperbolicAnisotropicEnumerateFunction> Factory_HyperbolicAnisotropicEnumerateFunction;
 

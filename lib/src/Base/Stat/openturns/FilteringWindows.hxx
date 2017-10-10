@@ -36,7 +36,7 @@ class OT_API FilteringWindows
   : public TypedInterfaceObject<FilteringWindowsImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

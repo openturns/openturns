@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SobolIndicesAlgorithmImplementation);
+CLASSNAMEINIT(SobolIndicesAlgorithmImplementation)
 
 static const Factory<SobolIndicesAlgorithmImplementation> Factory_SobolIndicesAlgorithmImplementation;
 

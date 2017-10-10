@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FFT);
+CLASSNAMEINIT(FFT)
 
 /* Constructor with parameters */
 FFT::FFT()

@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API RandomMixture
   : public DistributionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Distribution>               DistributionCollection;

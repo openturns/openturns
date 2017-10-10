@@ -35,7 +35,7 @@ class OT_API Student
   : public EllipticalDistribution
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<DistributionImplementation> Implementation;

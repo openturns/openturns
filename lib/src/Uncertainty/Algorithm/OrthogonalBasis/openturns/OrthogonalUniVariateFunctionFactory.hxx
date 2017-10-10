@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OrthogonalUniVariateFunctionFactory
   : public UniVariateFunctionFactory
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

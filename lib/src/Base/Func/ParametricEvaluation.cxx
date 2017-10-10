@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ParametricEvaluation);
+CLASSNAMEINIT(ParametricEvaluation)
 
 static const Factory<ParametricEvaluation> Factory_ParametricEvaluation;
 

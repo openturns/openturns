@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ArcsineMuSigma);
+CLASSNAMEINIT(ArcsineMuSigma)
 
 /* Default constructor */
 ArcsineMuSigma::ArcsineMuSigma()

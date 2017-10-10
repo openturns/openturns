@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ComplexTensor);
+CLASSNAMEINIT(ComplexTensor)
 
 /* Default constructor */
 ComplexTensor::ComplexTensor()

@@ -48,7 +48,7 @@ class OT_API Analytical
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<PointWithDescription> Sensitivity;

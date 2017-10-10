@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SimulationSensitivityAnalysis);
+CLASSNAMEINIT(SimulationSensitivityAnalysis)
 
 
 static const Factory<SimulationSensitivityAnalysis> Factory_SimulationSensitivityAnalysis;

@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SobolIndicesAlgorithm);
+CLASSNAMEINIT(SobolIndicesAlgorithm)
 
 /* Default constructor */
 SobolIndicesAlgorithm::SobolIndicesAlgorithm() :

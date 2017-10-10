@@ -38,7 +38,7 @@ class OT_API SymmetricTensor :
   public Tensor
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef Collection<Scalar>       ScalarCollection;

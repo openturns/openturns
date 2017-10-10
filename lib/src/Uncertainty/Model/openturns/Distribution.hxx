@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Distribution
   : public TypedInterfaceObject<DistributionImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Function                     IsoProbabilisticTransformation;

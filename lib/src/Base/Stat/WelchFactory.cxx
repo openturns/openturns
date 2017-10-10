@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WelchFactory);
+CLASSNAMEINIT(WelchFactory)
 static const Factory<WelchFactory> Factory_WelchFactory;
 
 typedef Collection<Complex> ComplexCollection;

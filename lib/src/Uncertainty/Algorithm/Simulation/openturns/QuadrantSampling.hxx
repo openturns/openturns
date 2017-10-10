@@ -34,7 +34,7 @@ class OT_API QuadrantSampling :
   public SamplingStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

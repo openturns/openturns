@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Burr);
+CLASSNAMEINIT(Burr)
 
 static const Factory<Burr> Factory_Burr;
 

@@ -41,7 +41,7 @@ namespace OT
 class OT_API LHSResult
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

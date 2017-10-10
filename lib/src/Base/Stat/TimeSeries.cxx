@@ -43,7 +43,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TimeSeries);
+CLASSNAMEINIT(TimeSeries)
 
 /* Default constructor */
 TimeSeries::TimeSeries()

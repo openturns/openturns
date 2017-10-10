@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldFunctionImplementation);
+CLASSNAMEINIT(FieldFunctionImplementation)
 
 static const Factory<FieldFunctionImplementation> Factory_FieldFunctionImplementation;
 

@@ -52,7 +52,7 @@ class OT_API PersistentObject
   : public Object
 {
 public:
-  CLASSNAME;
+  CLASSNAME
 
   /**
    * Default constructor

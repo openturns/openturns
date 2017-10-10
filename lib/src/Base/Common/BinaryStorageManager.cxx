@@ -179,7 +179,7 @@ struct BinaryStorageManagerState : public StorageManager::InternalObject
 /* ====================================================================== */
 
 
-CLASSNAMEINIT(BinaryStorageManager);
+CLASSNAMEINIT(BinaryStorageManager)
 const BinaryStorageManager::VersionList BinaryStorageManager::SupportedVersions;
 
 /* Default constructor */

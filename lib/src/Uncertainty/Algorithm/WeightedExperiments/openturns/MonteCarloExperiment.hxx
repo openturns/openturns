@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MonteCarloExperiment
   : public WeightedExperimentImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

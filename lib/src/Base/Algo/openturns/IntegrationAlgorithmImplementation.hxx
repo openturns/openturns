@@ -35,7 +35,7 @@ class OT_API IntegrationAlgorithmImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

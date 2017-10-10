@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ExponentialFactory);
+CLASSNAMEINIT(ExponentialFactory)
 
 static const Factory<ExponentialFactory> Factory_ExponentialFactory;
 

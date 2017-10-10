@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ArchimedeanCopula);
+CLASSNAMEINIT(ArchimedeanCopula)
 
 
 /* Default constructor */

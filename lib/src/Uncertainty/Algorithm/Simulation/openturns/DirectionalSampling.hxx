@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DirectionalSampling :
   public Simulation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Scalar> ScalarCollection;

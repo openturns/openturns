@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(RayleighFactory);
+CLASSNAMEINIT(RayleighFactory)
 
 static const Factory<RayleighFactory> Factory_RayleighFactory;
 

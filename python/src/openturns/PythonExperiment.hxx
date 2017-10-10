@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonExperiment
   : public ExperimentImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

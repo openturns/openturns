@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(DualLinearCombinationGradient);
+CLASSNAMEINIT(DualLinearCombinationGradient)
 
 static const Factory<DualLinearCombinationGradient> Factory_DualLinearCombinationGradient;
 

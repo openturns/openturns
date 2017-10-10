@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CorrectedLeaveOneOut);
+CLASSNAMEINIT(CorrectedLeaveOneOut)
 
 static const Factory<CorrectedLeaveOneOut> Factory_CorrectedLeaveOneOut;
 

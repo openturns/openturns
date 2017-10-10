@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NLopt);
+CLASSNAMEINIT(NLopt)
 
 static const Factory<NLopt> Factory_NLopt;
 

@@ -39,7 +39,7 @@ class OT_API FFTImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -29,7 +29,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(MonteCarloLHS);
+CLASSNAMEINIT(MonteCarloLHS)
 
 static const Factory<MonteCarloLHS> Factory_MonteCarloLHS;
 

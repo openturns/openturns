@@ -32,7 +32,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DrawableImplementation);
+CLASSNAMEINIT(DrawableImplementation)
 
 static const Factory<DrawableImplementation> Factory_DrawableImplementation;
 

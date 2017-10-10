@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API NonCenteredFiniteDifferenceGradient
   : public FiniteDifferenceGradient
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<EvaluationImplementation>        EvaluationPointer;

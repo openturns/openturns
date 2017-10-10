@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CompositeProcess
   : public ProcessImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

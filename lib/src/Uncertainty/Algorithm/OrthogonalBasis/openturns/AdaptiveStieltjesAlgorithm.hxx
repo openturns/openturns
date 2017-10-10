@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API AdaptiveStieltjesAlgorithm
   : public OrthonormalizationAlgorithmImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<Coefficients>           CoefficientsCollection;
   typedef PersistentCollection<Coefficients> CoefficientsPersistentCollection;

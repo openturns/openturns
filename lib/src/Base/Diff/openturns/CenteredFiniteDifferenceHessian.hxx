@@ -46,7 +46,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CenteredFiniteDifferenceHessian
   : public FiniteDifferenceHessian
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<EvaluationImplementation>               EvaluationPointer;

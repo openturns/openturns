@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API AggregatedFunction
   : public Function
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   /* Default constructor */
   AggregatedFunction();

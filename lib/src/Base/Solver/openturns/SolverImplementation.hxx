@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SolverImplementation :
   public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Parameter constructor */

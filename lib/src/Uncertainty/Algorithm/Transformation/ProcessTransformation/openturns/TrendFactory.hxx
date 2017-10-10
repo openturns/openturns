@@ -42,7 +42,7 @@ class OT_API TrendFactory
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

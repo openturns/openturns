@@ -23,8 +23,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointWithDescription);
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<PointWithDescription>);
+CLASSNAMEINIT(PointWithDescription)
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<PointWithDescription>)
 
 static const Factory<PointWithDescription> Factory_PointWithDescription;
 static const Factory<PersistentCollection<PointWithDescription> > Factory_PersistentCollection_PointWithDescription;

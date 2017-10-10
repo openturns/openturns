@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ChebychevFactory
   : public OrthogonalUniVariatePolynomialFactory
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

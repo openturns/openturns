@@ -35,7 +35,7 @@ class OT_API GaussKronrodRule
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
   /** Default constructor without parameters */
   GaussKronrodRule();

@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API InverseBoxCoxGradient
   : public GradientImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

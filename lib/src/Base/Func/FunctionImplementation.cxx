@@ -43,7 +43,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FunctionImplementation);
+CLASSNAMEINIT(FunctionImplementation)
 
 static const Factory<FunctionImplementation> Factory_FunctionImplementation;
 

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Compact
  */
 
-CLASSNAMEINIT(Compact);
+CLASSNAMEINIT(Compact)
 
 static const Factory<Compact> Factory_Compact;
 

@@ -35,7 +35,7 @@ class OT_API ParametrizedDistribution
   : public DistributionImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

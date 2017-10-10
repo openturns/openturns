@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SamplingStrategy
  */
 
-CLASSNAMEINIT(SamplingStrategy);
+CLASSNAMEINIT(SamplingStrategy)
 
 /* Defaultonstructor */
 SamplingStrategy::SamplingStrategy()

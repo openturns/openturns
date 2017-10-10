@@ -20,7 +20,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldToPointConnection);
+CLASSNAMEINIT(FieldToPointConnection)
 
 static const Factory<FieldToPointConnection> Factory_FieldToPointConnection;
 

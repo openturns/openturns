@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Null
  */
 
-CLASSNAMEINIT(Null);
+CLASSNAMEINIT(Null)
 
 static const Factory<Null> Factory_Null;
 /* Constructor with parameters */

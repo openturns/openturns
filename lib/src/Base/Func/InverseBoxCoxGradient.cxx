@@ -18,7 +18,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseBoxCoxGradient);
+CLASSNAMEINIT(InverseBoxCoxGradient)
 
 static const Factory<InverseBoxCoxGradient> Factory_InverseBoxCoxGradient;
 

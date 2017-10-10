@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Geometric);
+CLASSNAMEINIT(Geometric)
 
 static const Factory<Geometric> Factory_Geometric;
 

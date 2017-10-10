@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is an interface for the 1D nonlinear Secants
  */
 
-CLASSNAMEINIT(Secant);
+CLASSNAMEINIT(Secant)
 
 static const Factory<Secant> Factory_Secant;
 

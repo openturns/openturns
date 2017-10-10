@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class PostAnalyticalSimulation
  */
 
-CLASSNAMEINIT(PostAnalyticalSimulation);
+CLASSNAMEINIT(PostAnalyticalSimulation)
 
 static const Factory<PostAnalyticalSimulation> Factory_PostAnalyticalSimulation;
 

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SphereUniformNormImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConstantHessian);
+CLASSNAMEINIT(ConstantHessian)
 
 static const Factory<ConstantHessian> Factory_ConstantHessian;
 

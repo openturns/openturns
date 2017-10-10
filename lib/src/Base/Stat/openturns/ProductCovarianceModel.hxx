@@ -34,7 +34,7 @@ class OT_API ProductCovarianceModel
   : public CovarianceModelImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

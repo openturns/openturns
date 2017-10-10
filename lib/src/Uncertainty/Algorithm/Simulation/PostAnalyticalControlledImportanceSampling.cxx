@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class PostAnalyticalControlledImportanceSampling
  */
 
-CLASSNAMEINIT(PostAnalyticalControlledImportanceSampling);
+CLASSNAMEINIT(PostAnalyticalControlledImportanceSampling)
 
 static const Factory<PostAnalyticalControlledImportanceSampling> Factory_PostAnalyticalControlledImportanceSampling;
 

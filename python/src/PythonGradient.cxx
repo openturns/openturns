@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PythonGradient);
+CLASSNAMEINIT(PythonGradient)
 
 static const Factory<PythonGradient> Factory_PythonGradient;
 

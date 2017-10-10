@@ -68,7 +68,7 @@ public:
 class OT_API XMLStorageManager
   : public StorageManager
 {
-  CLASSNAME;
+  CLASSNAME
 
 
 

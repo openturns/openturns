@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API Pairs : public DrawableImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

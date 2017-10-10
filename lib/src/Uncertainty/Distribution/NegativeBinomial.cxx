@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NegativeBinomial);
+CLASSNAMEINIT(NegativeBinomial)
 
 static const Factory<NegativeBinomial> Factory_NegativeBinomial;
 

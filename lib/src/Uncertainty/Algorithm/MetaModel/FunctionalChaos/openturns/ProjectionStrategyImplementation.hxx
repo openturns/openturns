@@ -46,7 +46,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ProjectionStrategyImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
   // Make the FunctionalChaosAlgorithm class a friend of the ProjectionStrategyImplementation class
   // as this last class is in charge of managing data that are part of the FunctionalChaosAlgorithm
   // state

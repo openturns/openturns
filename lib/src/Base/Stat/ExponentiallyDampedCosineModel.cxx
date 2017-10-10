@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ExponentiallyDampedCosineModel
  */
 
-CLASSNAMEINIT(ExponentiallyDampedCosineModel);
+CLASSNAMEINIT(ExponentiallyDampedCosineModel)
 
 static const Factory<ExponentiallyDampedCosineModel> Factory_ExponentiallyDampedCosineModel;
 

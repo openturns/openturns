@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonGradient
   : public GradientImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

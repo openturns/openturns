@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Less);
+CLASSNAMEINIT(Less)
 
 static const Factory<Less> Factory_Less;
 

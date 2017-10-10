@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for elliptical copula
  */
 
-CLASSNAMEINIT(InverseNatafEllipticalCopulaHessian);
+CLASSNAMEINIT(InverseNatafEllipticalCopulaHessian)
 
 static const Factory<InverseNatafEllipticalCopulaHessian> Factory_InverseNatafEllipticalCopulaHessian;
 

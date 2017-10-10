@@ -25,11 +25,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection< HermitianMatrix >);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection< HermitianMatrix >)
 static const Factory<PersistentCollection<HermitianMatrix> > Factory_PersistentCollection_HermitianMatrix;
 
 
-CLASSNAMEINIT(UserDefinedSpectralModel);
+CLASSNAMEINIT(UserDefinedSpectralModel)
 static const Factory<UserDefinedSpectralModel> Factory_UserDefinedSpectralModel;
 /* Constructor with parameters */
 UserDefinedSpectralModel::UserDefinedSpectralModel()

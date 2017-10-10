@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<Distribution> DistributionCollection;
 
-CLASSNAMEINIT(DistributionTransformation);
+CLASSNAMEINIT(DistributionTransformation)
 
 /* Default constructor */
 DistributionTransformation::DistributionTransformation ()

@@ -35,7 +35,7 @@ namespace OT
 class OT_API TemperatureProfile
   : public TypedInterfaceObject<TemperatureProfileImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API InverseNatafEllipticalDistributionGradient
   : public ConstantGradient
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

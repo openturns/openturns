@@ -34,7 +34,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Mesh);
+CLASSNAMEINIT(Mesh)
 
 static const Factory<Mesh> Factory_Mesh;
 

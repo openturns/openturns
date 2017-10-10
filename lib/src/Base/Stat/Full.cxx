@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Full
  */
 
-CLASSNAMEINIT(Full);
+CLASSNAMEINIT(Full)
 
 static const Factory<Full> Factory_Full;
 

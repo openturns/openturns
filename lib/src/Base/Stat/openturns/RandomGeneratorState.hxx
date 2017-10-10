@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API RandomGeneratorState
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
   friend class RandomGenerator;
 

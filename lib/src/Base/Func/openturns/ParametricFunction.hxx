@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ParametricFunction
   : public Function
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /* Default constructor */

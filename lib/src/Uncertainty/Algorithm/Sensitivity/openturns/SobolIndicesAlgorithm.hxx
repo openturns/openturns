@@ -38,7 +38,7 @@ class OT_API SobolIndicesAlgorithm
   : public TypedInterfaceObject<SobolIndicesAlgorithmImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<SobolIndicesAlgorithmImplementation> Implementation;

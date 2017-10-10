@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EventDomain);
+CLASSNAMEINIT(EventDomain)
 
 static const Factory<EventDomain> Factory_EventDomain;
 /* Default constructor */

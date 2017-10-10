@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 static const Factory<RegularGrid> Factory_RegularGrid;
 
-CLASSNAMEINIT(RegularGrid);
+CLASSNAMEINIT(RegularGrid)
 
 /* Default constructor */
 RegularGrid::RegularGrid()

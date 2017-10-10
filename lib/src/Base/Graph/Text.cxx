@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Text);
+CLASSNAMEINIT(Text)
 
 static const Factory<Text> Factory_Text;
 

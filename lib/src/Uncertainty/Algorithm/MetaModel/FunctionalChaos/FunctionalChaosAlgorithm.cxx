@@ -54,7 +54,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<Function> FunctionCollection;
 
-CLASSNAMEINIT(FunctionalChaosAlgorithm);
+CLASSNAMEINIT(FunctionalChaosAlgorithm)
 
 static const Factory<FunctionalChaosAlgorithm> Factory_FunctionalChaosAlgorithm;
 

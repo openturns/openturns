@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToFieldFunction);
+CLASSNAMEINIT(PointToFieldFunction)
 
 /* Default constructor */
 PointToFieldFunction::PointToFieldFunction()

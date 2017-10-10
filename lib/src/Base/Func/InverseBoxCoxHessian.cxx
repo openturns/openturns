@@ -18,7 +18,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseBoxCoxHessian);
+CLASSNAMEINIT(InverseBoxCoxHessian)
 
 static const Factory<InverseBoxCoxHessian> Factory_InverseBoxCoxHessian;
 

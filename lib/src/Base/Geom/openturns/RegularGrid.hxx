@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API RegularGrid
   : public Mesh
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

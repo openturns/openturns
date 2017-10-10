@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class DirectionalSampling
  */
 
-CLASSNAMEINIT(DirectionalSampling);
+CLASSNAMEINIT(DirectionalSampling)
 
 static const Factory<DirectionalSampling> Factory_DirectionalSampling;
 

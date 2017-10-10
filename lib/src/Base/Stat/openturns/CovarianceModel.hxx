@@ -34,7 +34,7 @@ class OT_API CovarianceModel
   : public TypedInterfaceObject<CovarianceModelImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

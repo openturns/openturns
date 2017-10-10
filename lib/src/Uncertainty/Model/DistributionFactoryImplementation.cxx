@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DistributionFactoryImplementation);
+CLASSNAMEINIT(DistributionFactoryImplementation)
 
 static const Factory<DistributionFactoryImplementation> Factory_DistributionFactoryImplementation;
 

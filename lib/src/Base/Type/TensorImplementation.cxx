@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TensorImplementation);
+CLASSNAMEINIT(TensorImplementation)
 
 static const Factory<TensorImplementation> Factory_TensorImplementation;
 

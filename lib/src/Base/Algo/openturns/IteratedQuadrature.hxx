@@ -37,7 +37,7 @@ class OT_API IteratedQuadrature
   : public IntegrationAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WeibullMuSigma);
+CLASSNAMEINIT(WeibullMuSigma)
 
 /* Default constructor */
 WeibullMuSigma::WeibullMuSigma()

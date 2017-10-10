@@ -30,7 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(SparseMethod);
+CLASSNAMEINIT(SparseMethod)
 
 
 static const Factory<SparseMethod> Factory_SparseMethod;

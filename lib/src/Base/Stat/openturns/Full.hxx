@@ -38,7 +38,7 @@ class OT_API Full
   : public HistoryStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

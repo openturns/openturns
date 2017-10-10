@@ -34,7 +34,7 @@ class OT_API TensorizedCovarianceModel
   : public CovarianceModelImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

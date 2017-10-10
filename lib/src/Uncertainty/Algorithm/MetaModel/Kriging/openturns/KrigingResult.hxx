@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API KrigingResult
   : public MetaModelResult
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

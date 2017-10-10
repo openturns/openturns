@@ -33,10 +33,10 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<WhittleFactoryState>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<WhittleFactoryState>)
 static const Factory<PersistentCollection<WhittleFactoryState> > Factory_PersistentCollection_WhittleFactoryState;
 
-CLASSNAMEINIT(WhittleFactory);
+CLASSNAMEINIT(WhittleFactory)
 
 static const Factory<WhittleFactory> Factory_WhittleFactory;
 

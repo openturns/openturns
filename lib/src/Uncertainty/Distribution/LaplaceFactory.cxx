@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LaplaceFactory);
+CLASSNAMEINIT(LaplaceFactory)
 
 static const Factory<LaplaceFactory> Factory_LaplaceFactory;
 

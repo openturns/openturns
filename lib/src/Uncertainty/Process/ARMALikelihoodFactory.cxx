@@ -36,7 +36,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ARMALikelihoodFactory);
+CLASSNAMEINIT(ARMALikelihoodFactory)
 
 static const Factory<ARMALikelihoodFactory> Factory_ARMALikelihoodFactory;
 

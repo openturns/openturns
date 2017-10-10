@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Uniform);
+CLASSNAMEINIT(Uniform)
 
 static const Factory<Uniform> Factory_Uniform;
 

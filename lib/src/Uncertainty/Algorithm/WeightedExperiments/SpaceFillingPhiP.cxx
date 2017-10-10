@@ -27,7 +27,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(SpaceFillingPhiP);
+CLASSNAMEINIT(SpaceFillingPhiP)
 
 static const Factory<SpaceFillingPhiP> Factory_SpaceFillingPhiP;
 

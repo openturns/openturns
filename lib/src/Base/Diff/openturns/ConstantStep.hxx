@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ConstantStep
   : public FiniteDifferenceStepImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

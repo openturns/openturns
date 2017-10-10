@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MaximumEntropyOrderStatisticsCopula);
+CLASSNAMEINIT(MaximumEntropyOrderStatisticsCopula)
 
 static const Factory<MaximumEntropyOrderStatisticsCopula> Factory_MaximumEntropyOrderStatisticsCopula;
 

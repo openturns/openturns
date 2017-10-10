@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Hanning
  */
 
-CLASSNAMEINIT(Hanning);
+CLASSNAMEINIT(Hanning)
 
 static const Factory<Hanning> Factory_Hanning;
 

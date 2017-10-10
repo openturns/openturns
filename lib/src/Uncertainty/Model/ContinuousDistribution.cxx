@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ContinuousDistribution);
+CLASSNAMEINIT(ContinuousDistribution)
 
 /* Default constructor */
 ContinuousDistribution::ContinuousDistribution()

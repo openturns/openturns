@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API QuadraticBasisFactory
   : public BasisFactory
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

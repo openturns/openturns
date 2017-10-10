@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CanonicalTensorEvaluation);
+CLASSNAMEINIT(CanonicalTensorEvaluation)
 
 static const Factory<CanonicalTensorEvaluation> Factory_CanonicalTensorEvaluation;
 

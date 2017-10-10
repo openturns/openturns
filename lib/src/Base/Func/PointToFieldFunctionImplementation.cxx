@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToFieldFunctionImplementation);
+CLASSNAMEINIT(PointToFieldFunctionImplementation)
 
 static const Factory<PointToFieldFunctionImplementation> Factory_PointToFieldFunctionImplementation;
 

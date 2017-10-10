@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(Staircase);
+CLASSNAMEINIT(Staircase)
 
 static const Factory<Staircase> Factory_Staircase;
 

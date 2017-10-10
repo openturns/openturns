@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(SimulationResult);
+CLASSNAMEINIT(SimulationResult)
 
 /* Default constructor */
 SimulationResult::SimulationResult()

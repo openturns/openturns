@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ProbabilitySimulationAlgorithm
  */
 
-CLASSNAMEINIT(ProbabilitySimulationAlgorithm);
+CLASSNAMEINIT(ProbabilitySimulationAlgorithm)
 
 static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulationAlgorithm;
 

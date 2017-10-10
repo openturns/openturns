@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComparisonOperator);
+CLASSNAMEINIT(ComparisonOperator)
 
 /* Default constructor */
 ComparisonOperator::ComparisonOperator()

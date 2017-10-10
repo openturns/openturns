@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(IdentityMatrix);
+CLASSNAMEINIT(IdentityMatrix)
 
 /* Default constructor */
 IdentityMatrix::IdentityMatrix()

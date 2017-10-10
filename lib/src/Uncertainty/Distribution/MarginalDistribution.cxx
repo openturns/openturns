@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MarginalDistribution);
+CLASSNAMEINIT(MarginalDistribution)
 
 static const Factory<MarginalDistribution> Factory_MarginalDistribution;
 

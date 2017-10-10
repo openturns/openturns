@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MetaModelResult);
+CLASSNAMEINIT(MetaModelResult)
 
 static const Factory<MetaModelResult> Factory_MetaModelResult;
 

@@ -36,7 +36,7 @@ class OT_API MultiStart
   : public OptimizationAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef OT::Collection<OT::OptimizationResult>           OptimizationResultCollection;
   typedef OT::PersistentCollection<OT::OptimizationResult> OptimizationResultPersistentCollection;

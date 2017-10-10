@@ -31,7 +31,7 @@ typedef EvaluationImplementation::CacheKeyType             CacheKeyType;
 typedef EvaluationImplementation::CacheValueType           CacheValueType;
 typedef EvaluationImplementation::CacheType                CacheType;
 
-CLASSNAMEINIT(DatabaseEvaluation);
+CLASSNAMEINIT(DatabaseEvaluation)
 
 static const Factory<DatabaseEvaluation> Factory_DatabaseEvaluation;
 

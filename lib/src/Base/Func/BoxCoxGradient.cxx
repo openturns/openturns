@@ -18,7 +18,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BoxCoxGradient);
+CLASSNAMEINIT(BoxCoxGradient)
 
 static const Factory<BoxCoxGradient> Factory_BoxCoxGradient;
 

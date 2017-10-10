@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
 
-CLASSNAMEINIT(Multinomial);
+CLASSNAMEINIT(Multinomial)
 
 static const Factory<Multinomial> Factory_Multinomial;
 

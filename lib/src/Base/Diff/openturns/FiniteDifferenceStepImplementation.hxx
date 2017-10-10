@@ -31,7 +31,7 @@ class OT_API FiniteDifferenceStepImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Pointer<FiniteDifferenceStepImplementation> Implementation;
 

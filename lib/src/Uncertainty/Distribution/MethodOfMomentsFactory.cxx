@@ -34,7 +34,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MethodOfMomentsFactory);
+CLASSNAMEINIT(MethodOfMomentsFactory)
 
 static const Factory<MethodOfMomentsFactory> Factory_MethodOfMomentsFactory;
 

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LowDiscrepancyExperiment
   : public WeightedExperimentImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Distribution> DistributionCollection;

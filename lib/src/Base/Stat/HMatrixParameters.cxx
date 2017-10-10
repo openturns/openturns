@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HMatrixParameters);
+CLASSNAMEINIT(HMatrixParameters)
 
 static const Factory<HMatrixParameters> Factory_HMatrixParameters;
 

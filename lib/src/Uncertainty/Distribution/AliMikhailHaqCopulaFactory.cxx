@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AliMikhailHaqCopulaFactory);
+CLASSNAMEINIT(AliMikhailHaqCopulaFactory)
 
 static const Factory<AliMikhailHaqCopulaFactory> Factory_AliMikhailHaqCopulaFactory;
 

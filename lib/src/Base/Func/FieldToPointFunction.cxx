@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldToPointFunction);
+CLASSNAMEINIT(FieldToPointFunction)
 
 /* Default constructor */
 FieldToPointFunction::FieldToPointFunction(const UnsignedInteger spatialDimension)

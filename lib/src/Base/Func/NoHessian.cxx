@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(NoHessian);
+CLASSNAMEINIT(NoHessian)
 
 static const Factory<NoHessian> Factory_NoHessian;
 

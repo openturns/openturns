@@ -42,7 +42,7 @@ class OT_API SimulationSensitivityAnalysis
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Function IsoProbabilisticTransformation;

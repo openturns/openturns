@@ -23,7 +23,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(DistributionParameters);
+CLASSNAMEINIT(DistributionParameters)
 
 /* Default constructor */
 DistributionParameters::DistributionParameters()

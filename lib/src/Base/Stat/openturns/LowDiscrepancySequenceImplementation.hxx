@@ -39,7 +39,7 @@ class OT_API LowDiscrepancySequenceImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

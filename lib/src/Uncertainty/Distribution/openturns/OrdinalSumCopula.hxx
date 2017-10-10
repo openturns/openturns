@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OrdinalSumCopula
   : public CopulaImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** A type for distribution collection */

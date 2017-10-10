@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ExponentialModel
  */
 
-CLASSNAMEINIT(ExponentialModel);
+CLASSNAMEINIT(ExponentialModel)
 
 static const Factory<ExponentialModel> Factory_ExponentialModel;
 

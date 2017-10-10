@@ -36,7 +36,7 @@ class OT_API FFT
   : public TypedInterfaceObject<FFTImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

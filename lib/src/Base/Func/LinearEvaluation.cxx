@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LinearEvaluation);
+CLASSNAMEINIT(LinearEvaluation)
 
 static const Factory<LinearEvaluation> Factory_LinearEvaluation;
 

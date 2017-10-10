@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LogNormalFactory);
+CLASSNAMEINIT(LogNormalFactory)
 
 static const Factory<LogNormalFactory> Factory_LogNormalFactory;
 

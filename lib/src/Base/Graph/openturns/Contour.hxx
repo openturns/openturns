@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API Contour : public DrawableImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API HyperbolicAnisotropicEnumerateFunction
   : public EnumerateFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef std::pair< Indices , Scalar > ValueType;

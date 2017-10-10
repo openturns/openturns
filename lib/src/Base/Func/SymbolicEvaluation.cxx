@@ -20,7 +20,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SymbolicEvaluation);
+CLASSNAMEINIT(SymbolicEvaluation)
 
 static const Factory<SymbolicEvaluation> Factory_SymbolicEvaluation;
 

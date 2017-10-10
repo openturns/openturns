@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KarhunenLoeveAlgorithmImplementation);
+CLASSNAMEINIT(KarhunenLoeveAlgorithmImplementation)
 
 static const Factory<KarhunenLoeveAlgorithmImplementation> Factory_KarhunenLoeveAlgorithmImplementation;
 

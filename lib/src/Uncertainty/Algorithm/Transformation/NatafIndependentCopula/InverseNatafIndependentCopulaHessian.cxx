@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for independent copula
  */
 
-CLASSNAMEINIT(InverseNatafIndependentCopulaHessian);
+CLASSNAMEINIT(InverseNatafIndependentCopulaHessian)
 
 static const Factory<InverseNatafIndependentCopulaHessian> Factory_InverseNatafIndependentCopulaHessian;
 

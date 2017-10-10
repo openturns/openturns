@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ExpertMixture);
+CLASSNAMEINIT(ExpertMixture)
 
 static const Factory<ExpertMixture> Factory_ExpertMixture;
 

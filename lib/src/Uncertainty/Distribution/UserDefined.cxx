@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(UserDefined);
+CLASSNAMEINIT(UserDefined)
 static const Factory<UserDefined> Factory_UserDefined;
 
 

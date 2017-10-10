@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the Nataf function for elliptical copula
  */
 
-CLASSNAMEINIT(NatafEllipticalCopulaEvaluation);
+CLASSNAMEINIT(NatafEllipticalCopulaEvaluation)
 
 static const Factory<NatafEllipticalCopulaEvaluation> Factory_NatafEllipticalCopulaEvaluation;
 

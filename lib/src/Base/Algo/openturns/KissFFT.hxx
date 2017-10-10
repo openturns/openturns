@@ -36,7 +36,7 @@ class OT_API KissFFT
   : public FFTImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

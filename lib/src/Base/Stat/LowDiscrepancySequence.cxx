@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LowDiscrepancySequence);
+CLASSNAMEINIT(LowDiscrepancySequence)
 
 
 /* Default constructor */

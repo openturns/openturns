@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Point
   : public PersistentCollection<Scalar>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

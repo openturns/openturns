@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SQP :
   public OptimizationAlgorithmImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

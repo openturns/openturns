@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API BasisSequenceFactory
   : public TypedInterfaceObject<BasisSequenceFactoryImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

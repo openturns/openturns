@@ -39,7 +39,7 @@ class OT_API CauchyModel
   : public SpectralModelImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

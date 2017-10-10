@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(SymmetricTensor);
+CLASSNAMEINIT(SymmetricTensor)
 
 /* Default constructor */
 SymmetricTensor::SymmetricTensor()

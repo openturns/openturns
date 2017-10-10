@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HistogramPolynomialFactory);
+CLASSNAMEINIT(HistogramPolynomialFactory)
 
 static const Factory<HistogramPolynomialFactory> Factory_HistogramPolynomialFactory;
 

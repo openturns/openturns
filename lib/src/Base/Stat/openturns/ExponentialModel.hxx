@@ -40,7 +40,7 @@ class OT_API ExponentialModel
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

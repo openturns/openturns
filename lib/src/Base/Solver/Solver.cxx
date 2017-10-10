@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Solver);
+CLASSNAMEINIT(Solver)
 
 /* Parameter constructor */
 Solver::Solver(const Implementation & p_implementation)

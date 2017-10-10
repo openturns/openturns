@@ -40,7 +40,7 @@ class OT_API PolygonArray
   : public DrawableImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

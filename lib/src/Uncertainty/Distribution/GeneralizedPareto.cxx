@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GeneralizedPareto);
+CLASSNAMEINIT(GeneralizedPareto)
 
 static const Factory<GeneralizedPareto> Factory_GeneralizedPareto;
 

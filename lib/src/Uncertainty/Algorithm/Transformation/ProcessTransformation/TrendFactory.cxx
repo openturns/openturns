@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class TrendFactory
  */
 
-CLASSNAMEINIT(TrendFactory);
+CLASSNAMEINIT(TrendFactory)
 
 // static const Factory<TrendFactory> Factory_TrendFactory;
 

@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseGamma);
+CLASSNAMEINIT(InverseGamma)
 
 static const Factory<InverseGamma> Factory_InverseGamma;
 

@@ -40,7 +40,7 @@ class OT_API ComplexTensorImplementation
   : public PersistentCollection<Complex>
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

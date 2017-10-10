@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Field);
+CLASSNAMEINIT(Field)
 
 
 /* Default constructor */

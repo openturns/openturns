@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HMatrix);
+CLASSNAMEINIT(HMatrix)
 
 /* Default constructor */
 HMatrix::HMatrix()

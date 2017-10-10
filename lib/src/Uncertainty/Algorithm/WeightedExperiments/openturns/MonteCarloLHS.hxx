@@ -39,7 +39,7 @@ namespace OT
 class OT_API MonteCarloLHS
   : public OptimalLHSExperiment
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

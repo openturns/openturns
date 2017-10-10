@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(IdentityFunction);
+CLASSNAMEINIT(IdentityFunction)
 
 /* Default constructor */
 IdentityFunction::IdentityFunction(const UnsignedInteger dimension)

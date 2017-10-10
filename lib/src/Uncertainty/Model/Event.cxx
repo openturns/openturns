@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(Event);
+CLASSNAMEINIT(Event)
 
 /* Default constructor for save/load */
 Event::Event()

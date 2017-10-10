@@ -38,7 +38,7 @@ namespace OT
 class OT_API SimulatedAnnealingLHS
   : public OptimalLHSExperiment
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

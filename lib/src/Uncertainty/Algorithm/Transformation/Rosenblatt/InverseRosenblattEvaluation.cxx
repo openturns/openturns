@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseRosenblattEvaluation);
+CLASSNAMEINIT(InverseRosenblattEvaluation)
 
 
 static const Factory<InverseRosenblattEvaluation> Factory_InverseRosenblattEvaluation;

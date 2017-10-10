@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(IntervalMesher);
+CLASSNAMEINIT(IntervalMesher)
 static const Factory<IntervalMesher> Factory_IntervalMesher;
 
 

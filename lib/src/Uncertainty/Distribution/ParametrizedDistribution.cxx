@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ParametrizedDistribution);
+CLASSNAMEINIT(ParametrizedDistribution)
 
 static const Factory<ParametrizedDistribution> Factory_ParametrizedDistribution;
 

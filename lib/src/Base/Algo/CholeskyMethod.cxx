@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CholeskyMethod);
+CLASSNAMEINIT(CholeskyMethod)
 
 
 static const Factory<CholeskyMethod> Factory_CholeskyMethod;

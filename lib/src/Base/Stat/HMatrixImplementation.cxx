@@ -32,7 +32,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HMatrixImplementation);
+CLASSNAMEINIT(HMatrixImplementation)
 
 #ifdef OPENTURNS_HAVE_HMAT
 static void trampoline_simple(void* user_context, int row, int col, void* result)

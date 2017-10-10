@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LeastSquaresStrategy
   : public ProjectionStrategyImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<ApproximationAlgorithmImplementationFactory>  ApproximationAlgorithmImplementationFactoryImplementation;

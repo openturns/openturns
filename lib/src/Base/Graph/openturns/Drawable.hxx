@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Drawable :
   public TypedInterfaceObject<DrawableImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

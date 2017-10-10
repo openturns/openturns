@@ -35,7 +35,7 @@ class OT_API GaussKronrod
   : public IntegrationAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

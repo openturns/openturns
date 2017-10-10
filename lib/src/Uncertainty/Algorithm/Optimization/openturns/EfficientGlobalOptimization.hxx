@@ -38,7 +38,7 @@ class OT_API EfficientGlobalOptimization
   : public OptimizationAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

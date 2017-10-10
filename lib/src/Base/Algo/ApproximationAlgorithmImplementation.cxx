@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ApproximationAlgorithmImplementation);
+CLASSNAMEINIT(ApproximationAlgorithmImplementation)
 
 static const Factory<ApproximationAlgorithmImplementation> Factory_ApproximationAlgorithmImplementation;
 

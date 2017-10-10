@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComplexMatrixImplementation);
+CLASSNAMEINIT(ComplexMatrixImplementation)
 
 
 static const Factory<ComplexMatrixImplementation> Factory_ComplexMatrixImplementation;

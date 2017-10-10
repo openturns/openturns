@@ -25,7 +25,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(LinearProfile);
+CLASSNAMEINIT(LinearProfile)
 
 static const Factory<LinearProfile> Factory_LinearProfile;
 

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(CanonicalTensorGradient);
+CLASSNAMEINIT(CanonicalTensorGradient)
 
 static const Factory<CanonicalTensorGradient> Factory_CanonicalTensorGradient;
 

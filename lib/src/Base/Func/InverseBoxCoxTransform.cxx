@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseBoxCoxTransform);
+CLASSNAMEINIT(InverseBoxCoxTransform)
 
 /* Default constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform()

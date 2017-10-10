@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MetaModelValidation);
+CLASSNAMEINIT(MetaModelValidation)
 
 static const Factory<MetaModelValidation> Factory_MetaModelValidation;
 

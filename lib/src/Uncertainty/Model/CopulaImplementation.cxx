@@ -33,7 +33,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CopulaImplementation);
+CLASSNAMEINIT(CopulaImplementation)
 
 /* Default constructor */
 CopulaImplementation::CopulaImplementation()

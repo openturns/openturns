@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class KarhunenLoeveSVDAlgorithm
  */
 
-CLASSNAMEINIT(KarhunenLoeveSVDAlgorithm);
+CLASSNAMEINIT(KarhunenLoeveSVDAlgorithm)
 
 static const Factory<KarhunenLoeveSVDAlgorithm> Algorithm_KarhunenLoeveSVDAlgorithm;
 

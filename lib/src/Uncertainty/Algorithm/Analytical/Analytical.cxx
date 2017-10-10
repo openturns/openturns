@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Analytical);
+CLASSNAMEINIT(Analytical)
 
 static const Factory<Analytical> Factory_Analytical;
 

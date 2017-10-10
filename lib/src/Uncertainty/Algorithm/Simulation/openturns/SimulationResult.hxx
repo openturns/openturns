@@ -37,7 +37,7 @@ class OT_API SimulationResult
   : public TypedInterfaceObject<SimulationResultImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<SimulationResultImplementation>                       Implementation;

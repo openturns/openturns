@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Trapezoidal);
+CLASSNAMEINIT(Trapezoidal)
 
 static const Factory<Trapezoidal> Factory_Trapezoidal;
 

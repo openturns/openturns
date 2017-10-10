@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API EllipticalDistribution
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

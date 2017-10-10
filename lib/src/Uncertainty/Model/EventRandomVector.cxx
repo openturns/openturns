@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EventRandomVector);
+CLASSNAMEINIT(EventRandomVector)
 
 static const Factory<EventRandomVector> Factory_EventRandomVector;
 

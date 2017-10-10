@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API Cloud : public DrawableImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Complex>               ComplexCollection;

@@ -42,7 +42,7 @@ class HermitianMatrix;
 class OT_API TriangularComplexMatrix :
   public SquareComplexMatrix
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   friend TriangularComplexMatrix operator * (const Complex s,

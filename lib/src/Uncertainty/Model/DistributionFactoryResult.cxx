@@ -24,7 +24,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(DistributionFactoryResult);
+CLASSNAMEINIT(DistributionFactoryResult)
 
 static const Factory<DistributionFactoryResult> Factory_DistributionFactoryResult;
 

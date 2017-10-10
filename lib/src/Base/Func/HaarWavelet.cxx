@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HaarWavelet);
+CLASSNAMEINIT(HaarWavelet)
 
 static const Factory<HaarWavelet> Factory_HaarWavelet;
 

@@ -17,7 +17,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseBoxCoxEvaluation);
+CLASSNAMEINIT(InverseBoxCoxEvaluation)
 
 static const Factory<InverseBoxCoxEvaluation> Factory_InverseBoxCoxEvaluation;
 

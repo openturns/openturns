@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(TensorApproximationResult);
+CLASSNAMEINIT(TensorApproximationResult)
 static const Factory<TensorApproximationResult> Factory_TensorApproximationResult;
 
 static const Factory<PersistentCollection<CanonicalTensorEvaluation> > Factory_PersistentCollection_CanonicalTensorEvaluation;

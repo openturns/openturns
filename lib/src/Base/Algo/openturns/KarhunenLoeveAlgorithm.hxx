@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API KarhunenLoeveAlgorithm
   : public TypedInterfaceObject<KarhunenLoeveAlgorithmImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

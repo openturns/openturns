@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CompositeRandomVector);
+CLASSNAMEINIT(CompositeRandomVector)
 
 static const Factory<CompositeRandomVector> Factory_CompositeRandomVector;
 

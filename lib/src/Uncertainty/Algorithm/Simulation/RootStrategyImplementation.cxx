@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RootStrategyImplementation
  */
 
-CLASSNAMEINIT(RootStrategyImplementation);
+CLASSNAMEINIT(RootStrategyImplementation)
 
 static const Factory<RootStrategyImplementation> Factory_RootStrategyImplementation;
 

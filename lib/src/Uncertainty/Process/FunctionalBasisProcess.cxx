@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FunctionalBasisProcess);
+CLASSNAMEINIT(FunctionalBasisProcess)
 
 static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 

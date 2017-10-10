@@ -36,7 +36,7 @@ namespace OT
 class OT_API SpaceFilling
   : public TypedInterfaceObject<SpaceFillingImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
   /* Allow OptimalLHS derived classes to call perturb method */
   friend class OptimalLHS;

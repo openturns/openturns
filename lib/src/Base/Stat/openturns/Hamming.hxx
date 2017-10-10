@@ -35,7 +35,7 @@ class OT_API Hamming
   : public FilteringWindowsImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

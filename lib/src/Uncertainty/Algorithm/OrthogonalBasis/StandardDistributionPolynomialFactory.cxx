@@ -35,7 +35,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(StandardDistributionPolynomialFactory);
+CLASSNAMEINIT(StandardDistributionPolynomialFactory)
 
 static const Factory<StandardDistributionPolynomialFactory> Factory_StandardDistributionPolynomialFactory;
 

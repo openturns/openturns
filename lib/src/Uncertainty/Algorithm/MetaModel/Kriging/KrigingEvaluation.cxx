@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KrigingEvaluation);
+CLASSNAMEINIT(KrigingEvaluation)
 
 
 static const Factory<KrigingEvaluation> Factory_KrigingEvaluation;

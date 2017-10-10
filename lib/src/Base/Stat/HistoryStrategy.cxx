@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HistoryStrategy
  */
 
-CLASSNAMEINIT(HistoryStrategy);
+CLASSNAMEINIT(HistoryStrategy)
 
 /* Defaultonstructor */
 HistoryStrategy::HistoryStrategy()

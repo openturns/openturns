@@ -36,7 +36,7 @@ class OT_API IntegrationAlgorithm
   : public TypedInterfaceObject<IntegrationAlgorithmImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

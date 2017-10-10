@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComposedFunction);
+CLASSNAMEINIT(ComposedFunction)
 
 static const Factory<ComposedFunction> Factory_ComposedFunction;
 

@@ -38,7 +38,7 @@ class OT_API ComplexMatrixImplementation
   : public PersistentCollection<Complex>
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   /** Declaration of friend operators */

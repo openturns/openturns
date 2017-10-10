@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(Matrix);
+CLASSNAMEINIT(Matrix)
 
 /* Default constructor */
 Matrix::Matrix()

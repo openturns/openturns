@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API RandomWalkMetropolisHastings
   : public MCMC
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<Distribution> DistributionCollection;
   typedef PersistentCollection<Distribution> DistributionPersistentCollection;

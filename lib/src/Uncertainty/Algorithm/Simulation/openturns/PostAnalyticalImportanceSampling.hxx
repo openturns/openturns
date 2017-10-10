@@ -35,7 +35,7 @@ class OT_API PostAnalyticalImportanceSampling :
   public PostAnalyticalSimulation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
   /** for save/load mecanism */
   PostAnalyticalImportanceSampling();

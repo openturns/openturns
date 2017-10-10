@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AdaptiveDirectionalSampling);
+CLASSNAMEINIT(AdaptiveDirectionalSampling)
 
 /* Default constructor */
 AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()

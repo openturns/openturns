@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(JacobiFactory);
+CLASSNAMEINIT(JacobiFactory)
 
 static const Factory<JacobiFactory> Factory_JacobiFactory;
 

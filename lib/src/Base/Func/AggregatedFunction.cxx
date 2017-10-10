@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AggregatedFunction);
+CLASSNAMEINIT(AggregatedFunction)
 
 /* Default constructor */
 AggregatedFunction::AggregatedFunction ()

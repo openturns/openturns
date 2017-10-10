@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilisticTransformation;
 
-CLASSNAMEINIT(StandardEvent);
+CLASSNAMEINIT(StandardEvent)
 
 /* Default constructor */
 StandardEvent::StandardEvent()

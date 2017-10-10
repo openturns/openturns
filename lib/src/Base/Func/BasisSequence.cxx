@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(BasisSequence);
+CLASSNAMEINIT(BasisSequence)
 
 /* Default constructor */
 BasisSequence::BasisSequence()

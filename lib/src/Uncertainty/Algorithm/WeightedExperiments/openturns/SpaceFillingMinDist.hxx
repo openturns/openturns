@@ -35,7 +35,7 @@ namespace OT
 class OT_API SpaceFillingMinDist
   : public SpaceFillingImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

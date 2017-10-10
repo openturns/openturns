@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LinearLeastSquares);
+CLASSNAMEINIT(LinearLeastSquares)
 
 /* Constructor with parameters */
 LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,

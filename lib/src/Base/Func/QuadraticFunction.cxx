@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(QuadraticFunction);
+CLASSNAMEINIT(QuadraticFunction)
 
 /* Default constructor */
 QuadraticFunction::QuadraticFunction (const Point & center,

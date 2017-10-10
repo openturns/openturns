@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CorrelationMatrix);
+CLASSNAMEINIT(CorrelationMatrix)
 
 /* Default constructor */
 CorrelationMatrix::CorrelationMatrix()

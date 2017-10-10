@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ConditionedGaussianProcess
   : public GaussianProcess
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LinearModel :
   public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(CalibrationStrategy);
+CLASSNAMEINIT(CalibrationStrategy)
 
 /* Default constructor */
 CalibrationStrategy::CalibrationStrategy()

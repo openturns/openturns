@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ARMAFactory);
+CLASSNAMEINIT(ARMAFactory)
 
 /* Default constructor */
 ARMAFactory::ARMAFactory()

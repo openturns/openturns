@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RandomDirection
  */
 
-CLASSNAMEINIT(RandomDirection);
+CLASSNAMEINIT(RandomDirection)
 
 static const Factory<RandomDirection> Factory_RandomDirection;
 

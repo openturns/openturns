@@ -22,7 +22,7 @@
 #include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-CLASSNAMEINIT(Graph);
+CLASSNAMEINIT(Graph)
 
 /* Default constructor */
 Graph::Graph(const String & title):

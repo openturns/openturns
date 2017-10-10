@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MarginalDistribution
   : public DistributionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor for save/load methods : 1D distribution with default Uniform underlying distribution */

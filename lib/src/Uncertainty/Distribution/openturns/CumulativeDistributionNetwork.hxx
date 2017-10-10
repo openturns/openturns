@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CumulativeDistributionNetwork
   : public DistributionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** A type for distribution collection */

@@ -327,7 +327,7 @@ private:
 
 };
 
-CLASSNAMEINIT(SphereUniformNormImplementation);
+CLASSNAMEINIT(SphereUniformNormImplementation)
 
 /** Default constructor */
 SphereUniformNormImplementation::SphereUniformNormImplementation(const Point & step, const Bool symmetric)

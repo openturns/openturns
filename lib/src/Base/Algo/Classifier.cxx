@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Classifier);
+CLASSNAMEINIT(Classifier)
 
 /* Constructor from implementation */
 Classifier::Classifier()

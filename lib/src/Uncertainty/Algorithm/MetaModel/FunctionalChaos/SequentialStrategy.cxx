@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(SequentialStrategy);
+CLASSNAMEINIT(SequentialStrategy)
 
 static const Factory<SequentialStrategy> Factory_SequentialStrategy;
 

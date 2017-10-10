@@ -34,7 +34,7 @@ class OT_API FilteringWindowsImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

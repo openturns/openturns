@@ -19,7 +19,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(IndicatorEvaluation);
+CLASSNAMEINIT(IndicatorEvaluation)
 
 static const Factory<IndicatorEvaluation> Factory_IndicatorEvaluation;
 

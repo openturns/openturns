@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TrendTransform);
+CLASSNAMEINIT(TrendTransform)
 
 static const Factory<TrendTransform> Factory_TrendTransform;
 

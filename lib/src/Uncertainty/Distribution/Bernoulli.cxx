@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Bernoulli);
+CLASSNAMEINIT(Bernoulli)
 
 static const Factory<Bernoulli> Factory_Bernoulli;
 

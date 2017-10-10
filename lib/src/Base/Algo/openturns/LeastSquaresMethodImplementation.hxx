@@ -39,7 +39,7 @@ class OT_API LeastSquaresMethodImplementation
   friend class KFold;
   friend class CorrectedLeaveOneOut;
   friend class LeastSquaresMetaModelSelection;
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

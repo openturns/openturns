@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LinearTaylor);
+CLASSNAMEINIT(LinearTaylor)
 
 LinearTaylor::LinearTaylor()
   : PersistentObject()

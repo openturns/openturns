@@ -38,7 +38,7 @@ class OT_API HistoryStrategyImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

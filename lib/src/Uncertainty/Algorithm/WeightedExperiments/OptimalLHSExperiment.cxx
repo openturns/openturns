@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OptimalLHSExperiment);
+CLASSNAMEINIT(OptimalLHSExperiment)
 
 static const Factory<OptimalLHSExperiment> Factory_OptimalLHSExperiment;
 

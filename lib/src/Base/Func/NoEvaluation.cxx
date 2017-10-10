@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(NoEvaluation);
+CLASSNAMEINIT(NoEvaluation)
 
 static const Factory<NoEvaluation> Factory_NoEvaluation;
 

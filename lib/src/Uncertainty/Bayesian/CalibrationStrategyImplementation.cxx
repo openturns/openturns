@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(CalibrationStrategyImplementation);
+CLASSNAMEINIT(CalibrationStrategyImplementation)
 
 static const Factory<CalibrationStrategyImplementation> Factory_CalibrationStrategyImplementation;
 

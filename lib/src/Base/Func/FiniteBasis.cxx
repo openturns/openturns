@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(FiniteBasis);
+CLASSNAMEINIT(FiniteBasis)
 
 static const Factory<FiniteBasis> Factory_FiniteBasis;
 

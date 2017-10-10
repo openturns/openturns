@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-CLASSNAMEINIT(InverseNatafIndependentCopulaEvaluation);
+CLASSNAMEINIT(InverseNatafIndependentCopulaEvaluation)
 
 /* Parameter constructor */
 InverseNatafIndependentCopulaEvaluation::InverseNatafIndependentCopulaEvaluation(const UnsignedInteger dimension)

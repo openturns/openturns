@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SubSquareCopula);
+CLASSNAMEINIT(SubSquareCopula)
 
 static const Factory<SubSquareCopula> Factory_SubSquareCopula;
 

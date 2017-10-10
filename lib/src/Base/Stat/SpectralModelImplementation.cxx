@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SpectralModelImplementation);
+CLASSNAMEINIT(SpectralModelImplementation)
 static const Factory<SpectralModelImplementation> Factory_SpectralModelImplementation;
 
 /* Constructor with parameters */

@@ -68,7 +68,7 @@ struct OT_API LoadAction {};
 class OT_API StorageManager
   : public Object
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 #ifndef SWIG

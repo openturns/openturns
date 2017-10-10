@@ -58,7 +58,7 @@ struct FFTPolicy
  * @class KissFFT
  */
 
-CLASSNAMEINIT(KissFFT);
+CLASSNAMEINIT(KissFFT)
 
 static const Factory<KissFFT> Factory_KissFFT;
 

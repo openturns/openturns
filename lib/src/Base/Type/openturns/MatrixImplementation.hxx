@@ -41,7 +41,7 @@ class OT_API MatrixImplementation
   : public PersistentCollection<Scalar>
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   /** Declaration of friend operators */

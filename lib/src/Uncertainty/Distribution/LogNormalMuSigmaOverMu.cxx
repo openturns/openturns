@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LogNormalMuSigmaOverMu);
+CLASSNAMEINIT(LogNormalMuSigmaOverMu)
 
 /* Default constructor */
 LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu()

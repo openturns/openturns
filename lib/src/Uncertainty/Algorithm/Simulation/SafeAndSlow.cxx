@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SafeAndSlow
  */
 
-CLASSNAMEINIT(SafeAndSlow);
+CLASSNAMEINIT(SafeAndSlow)
 
 static const Factory<SafeAndSlow> Factory_SafeAndSlow;
 

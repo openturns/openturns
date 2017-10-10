@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API InverseNatafEllipticalDistributionEvaluation
   : public LinearEvaluation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

@@ -36,7 +36,7 @@ class OT_API MetaModelResult
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

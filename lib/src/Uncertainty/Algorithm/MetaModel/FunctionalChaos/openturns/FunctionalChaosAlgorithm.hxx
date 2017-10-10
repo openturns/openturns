@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FunctionalChaosAlgorithm
   : public MetaModelAlgorithm
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

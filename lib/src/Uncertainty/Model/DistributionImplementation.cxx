@@ -77,7 +77,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DistributionImplementation);
+CLASSNAMEINIT(DistributionImplementation)
 
 typedef FunctionImplementation::EvaluationPointer EvaluationPointer;
 typedef FunctionImplementation::GradientPointer   GradientPointer;

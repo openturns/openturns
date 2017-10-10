@@ -38,7 +38,7 @@ class OT_API FORM
   : public Analytical
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KDTree);
+CLASSNAMEINIT(KDTree)
 
 static const Factory<KDTree> Factory_KDTree;
 

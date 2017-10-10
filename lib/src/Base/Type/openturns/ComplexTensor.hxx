@@ -41,7 +41,7 @@ class OT_API ComplexTensor :
   public TypedInterfaceObject<ComplexTensorImplementation>
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

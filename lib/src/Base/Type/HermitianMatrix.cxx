@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HermitianMatrix);
+CLASSNAMEINIT(HermitianMatrix)
 
 /* Default constructor */
 HermitianMatrix::HermitianMatrix()

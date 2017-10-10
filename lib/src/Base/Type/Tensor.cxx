@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(Tensor);
+CLASSNAMEINIT(Tensor)
 
 /* Default constructor */
 Tensor::Tensor()

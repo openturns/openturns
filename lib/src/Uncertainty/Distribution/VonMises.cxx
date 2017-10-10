@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(VonMises);
+CLASSNAMEINIT(VonMises)
 
 static const Factory<VonMises> Factory_VonMises;
 

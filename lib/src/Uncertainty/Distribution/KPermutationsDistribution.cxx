@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
 
-CLASSNAMEINIT(KPermutationsDistribution);
+CLASSNAMEINIT(KPermutationsDistribution)
 
 static const Factory<KPermutationsDistribution> Factory_KPermutationsDistribution;
 

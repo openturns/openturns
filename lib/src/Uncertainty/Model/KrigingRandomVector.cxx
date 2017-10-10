@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(KrigingRandomVector);
+CLASSNAMEINIT(KrigingRandomVector)
 
 static const Factory<KrigingRandomVector> Factory_KrigingRandomVector;
 

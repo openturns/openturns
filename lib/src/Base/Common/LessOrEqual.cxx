@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LessOrEqual);
+CLASSNAMEINIT(LessOrEqual)
 
 static const Factory<LessOrEqual> Factory_LessOrEqual;
 

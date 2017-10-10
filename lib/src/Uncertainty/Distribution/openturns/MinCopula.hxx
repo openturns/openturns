@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MinCopula
   : public CopulaImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

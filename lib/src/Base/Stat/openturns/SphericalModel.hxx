@@ -40,7 +40,7 @@ class OT_API SphericalModel
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

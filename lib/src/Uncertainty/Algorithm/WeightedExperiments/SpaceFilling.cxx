@@ -27,7 +27,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(SpaceFilling);
+CLASSNAMEINIT(SpaceFilling)
 
 /* Default constructor */
 SpaceFilling::SpaceFilling()

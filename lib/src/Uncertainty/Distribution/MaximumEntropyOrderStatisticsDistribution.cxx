@@ -32,7 +32,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MaximumEntropyOrderStatisticsDistribution);
+CLASSNAMEINIT(MaximumEntropyOrderStatisticsDistribution)
 
 static const Factory<MaximumEntropyOrderStatisticsDistribution> Factory_MaximumEntropyOrderStatisticsDistribution;
 

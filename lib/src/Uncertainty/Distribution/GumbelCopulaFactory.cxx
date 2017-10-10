@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GumbelCopulaFactory);
+CLASSNAMEINIT(GumbelCopulaFactory)
 
 static const Factory<GumbelCopulaFactory> Factory_GumbelCopulaFactory;
 

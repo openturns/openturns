@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComparisonOperatorImplementation);
+CLASSNAMEINIT(ComparisonOperatorImplementation)
 
 static const Factory<ComparisonOperatorImplementation> Factory_ComparisonOperatorImplementation;
 

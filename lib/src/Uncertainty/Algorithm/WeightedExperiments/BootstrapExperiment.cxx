@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BootstrapExperiment);
+CLASSNAMEINIT(BootstrapExperiment)
 
 static const Factory<BootstrapExperiment> Factory_BootstrapExperiment;
 

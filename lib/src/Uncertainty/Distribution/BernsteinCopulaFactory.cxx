@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of BernsteinCopulaFactory.
  */
 
-CLASSNAMEINIT(BernsteinCopulaFactory);
+CLASSNAMEINIT(BernsteinCopulaFactory)
 
 static const Factory<BernsteinCopulaFactory> Factory_BernsteinCopulaFactory;
 

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SubsetSamplingResult
   : public SimulationResultImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Constructor with parameters */

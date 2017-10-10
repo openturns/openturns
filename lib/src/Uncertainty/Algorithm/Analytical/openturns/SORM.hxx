@@ -41,7 +41,7 @@ class OT_API SORM :
   public Analytical
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

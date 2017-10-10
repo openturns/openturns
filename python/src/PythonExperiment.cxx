@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(PythonExperiment);
+CLASSNAMEINIT(PythonExperiment)
 
 static const Factory<PythonExperiment> Factory_PythonExperiment;
 

@@ -18,7 +18,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComposedEvaluation);
+CLASSNAMEINIT(ComposedEvaluation)
 
 static const Factory<ComposedEvaluation> Factory_ComposedEvaluation;
 

@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(FunctionalBasis);
+CLASSNAMEINIT(FunctionalBasis)
 
 /* Default constructor */
 FunctionalBasis::FunctionalBasis()

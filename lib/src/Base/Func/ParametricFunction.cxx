@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ParametricFunction);
+CLASSNAMEINIT(ParametricFunction)
 
 /* Default constructor */
 ParametricFunction::ParametricFunction ()

@@ -32,7 +32,7 @@ class OT_API MaternModel
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

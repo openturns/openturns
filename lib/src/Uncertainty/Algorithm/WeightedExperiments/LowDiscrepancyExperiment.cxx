@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LowDiscrepancyExperiment);
+CLASSNAMEINIT(LowDiscrepancyExperiment)
 
 static const Factory<LowDiscrepancyExperiment> Factory_LowDiscrepancyExperiment;
 

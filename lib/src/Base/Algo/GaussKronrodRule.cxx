@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class GaussKronrodRule
  */
 
-CLASSNAMEINIT(GaussKronrodRule);
+CLASSNAMEINIT(GaussKronrodRule)
 
 static const Factory<GaussKronrodRule> Factory_GaussKronrodRule;
 

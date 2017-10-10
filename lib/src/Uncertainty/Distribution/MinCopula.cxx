@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MinCopula);
+CLASSNAMEINIT(MinCopula)
 
 static const Factory<MinCopula> Factory_MinCopula;
 

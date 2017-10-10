@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ProductUniVariateFunctionGradient);
+CLASSNAMEINIT(ProductUniVariateFunctionGradient)
 
 static const Factory<ProductUniVariateFunctionGradient> Factory_ProductUniVariateFunctionGradient;
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonDistribution
   : public DistributionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

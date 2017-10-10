@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PenalizedLeastSquaresAlgorithm);
+CLASSNAMEINIT(PenalizedLeastSquaresAlgorithm)
 
 static const Factory<PenalizedLeastSquaresAlgorithm> Factory_PenalizedLeastSquaresAlgorithm;
 

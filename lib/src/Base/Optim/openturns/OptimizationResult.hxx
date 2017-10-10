@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OptimizationResult
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
   // Make the OptimizationAlgorithmImplementation class friend in order to allow them to use protected methods
   friend class OptimizationAlgorithmImplementation;

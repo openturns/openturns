@@ -25,7 +25,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(PersistentObject);
+CLASSNAMEINIT(PersistentObject)
 
 /* Method save() stores the object through the StorageManager */
 void PersistentObject::save(StorageManager & mgr, const String & label, bool fromStudy) const

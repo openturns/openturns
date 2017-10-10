@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DiscreteDistribution
   : public DistributionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

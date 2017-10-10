@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ParametricHessian);
+CLASSNAMEINIT(ParametricHessian)
 
 static const Factory<ParametricHessian> Factory_ParametricHessian;
 

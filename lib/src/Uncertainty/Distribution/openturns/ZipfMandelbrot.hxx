@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ZipfMandelbrot
   : public DiscreteDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Scalar> ScalarCollection;

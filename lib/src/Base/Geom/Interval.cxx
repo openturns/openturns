@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Interval);
+CLASSNAMEINIT(Interval)
 
 static const Factory<Interval> Factory_Interval;
 

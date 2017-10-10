@@ -26,7 +26,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(SpaceFillingImplementation);
+CLASSNAMEINIT(SpaceFillingImplementation)
 
 static const Factory<SpaceFillingImplementation> Factory_SpaceFillingImplementation;
 

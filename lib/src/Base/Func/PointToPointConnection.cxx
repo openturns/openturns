@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToPointConnection);
+CLASSNAMEINIT(PointToPointConnection)
 
 static const Factory<PointToPointConnection> Factory_PointToPointConnection;
 

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(Study);
+CLASSNAMEINIT(Study)
 
 /*
  * Default constructor

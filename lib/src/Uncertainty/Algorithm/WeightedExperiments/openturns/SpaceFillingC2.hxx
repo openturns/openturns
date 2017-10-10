@@ -34,7 +34,7 @@ namespace OT
 class OT_API SpaceFillingC2
   : public SpaceFillingImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

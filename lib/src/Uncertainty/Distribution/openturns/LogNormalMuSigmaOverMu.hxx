@@ -33,7 +33,7 @@ class OT_API LogNormalMuSigmaOverMu
   : public DistributionParametersImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

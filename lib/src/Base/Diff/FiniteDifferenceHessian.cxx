@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FiniteDifferenceHessian);
+CLASSNAMEINIT(FiniteDifferenceHessian)
 
 static const Factory<FiniteDifferenceHessian> Factory_FiniteDifferenceHessian;
 

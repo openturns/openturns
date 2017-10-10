@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ProbabilitySimulationAlgorithm : public Simulation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
   /** Default constructor */
   ProbabilitySimulationAlgorithm(const Bool verbose = true,

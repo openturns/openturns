@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class offers an interface for the InverseNataf function for independent copula
  */
 
-CLASSNAMEINIT(InverseNatafIndependentCopulaGradient);
+CLASSNAMEINIT(InverseNatafIndependentCopulaGradient)
 
 static const Factory<InverseNatafIndependentCopulaGradient> Factory_InverseNatafIndependentCopulaGradient;
 

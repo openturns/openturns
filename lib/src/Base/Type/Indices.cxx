@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Indices);
+CLASSNAMEINIT(Indices)
 static const Factory<Indices> Factory_Indices;
 
 /* Check that no value is repeated and no value exceeds the given bound */

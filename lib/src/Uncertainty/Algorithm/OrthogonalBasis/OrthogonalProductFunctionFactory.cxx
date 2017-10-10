@@ -33,11 +33,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<OrthogonalUniVariateFunctionFamily>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<OrthogonalUniVariateFunctionFamily>)
 
 static const Factory<PersistentCollection<OrthogonalUniVariateFunctionFamily> > Factory_PersistentCollection_OrthogonalUniVariateFunctionFamily;
 
-CLASSNAMEINIT(OrthogonalProductFunctionFactory);
+CLASSNAMEINIT(OrthogonalProductFunctionFactory)
 
 static const Factory<OrthogonalProductFunctionFactory> Factory_OrthogonalProductFunctionFactory;
 

@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LowDiscrepancySequence :
   public TypedInterfaceObject<LowDiscrepancySequenceImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef Pointer<LowDiscrepancySequenceImplementation> Implementation;

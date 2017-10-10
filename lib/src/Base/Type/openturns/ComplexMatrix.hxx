@@ -42,7 +42,7 @@ class TriangularComplexMatrix;
 class OT_API ComplexMatrix :
   public TypedInterfaceObject<ComplexMatrixImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   /** Declaration of friend operators */

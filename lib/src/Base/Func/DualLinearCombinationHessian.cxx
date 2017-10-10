@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(DualLinearCombinationHessian);
+CLASSNAMEINIT(DualLinearCombinationHessian)
 
 static const Factory<DualLinearCombinationHessian> Factory_DualLinearCombinationHessian;
 

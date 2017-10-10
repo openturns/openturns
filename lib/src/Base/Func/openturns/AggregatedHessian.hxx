@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API AggregatedHessian
   : public HessianImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   /** Default constructor */
   AggregatedHessian();

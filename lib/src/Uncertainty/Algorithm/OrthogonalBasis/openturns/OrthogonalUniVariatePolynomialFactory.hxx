@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OrthogonalUniVariatePolynomialFactory
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

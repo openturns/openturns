@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ARMAState);
+CLASSNAMEINIT(ARMAState)
 static const Factory<ARMAState> Factory_ARMAState;
 
 /* Default constructor */

@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OrthogonalProductFunctionFactory
   : public OrthogonalFunctionFactory
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<OrthogonalUniVariateFunctionFamily>           FunctionFamilyCollection;

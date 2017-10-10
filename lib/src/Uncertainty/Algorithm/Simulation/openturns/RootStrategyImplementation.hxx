@@ -36,7 +36,7 @@ class OT_API RootStrategyImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Scalar> ScalarCollection;

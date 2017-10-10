@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Dirac);
+CLASSNAMEINIT(Dirac)
 
 static const Factory<Dirac> Factory_Dirac;
 

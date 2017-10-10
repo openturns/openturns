@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OptimizationProblemImplementation);
+CLASSNAMEINIT(OptimizationProblemImplementation)
 
 static const Factory<OptimizationProblemImplementation> Factory_OptimizationProblemImplementation;
 

@@ -41,7 +41,7 @@ class OT_API Tensor :
   public TypedInterfaceObject<TensorImplementation>
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

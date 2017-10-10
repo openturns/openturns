@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(P1LagrangeEvaluation);
+CLASSNAMEINIT(P1LagrangeEvaluation)
 
 static const Factory<P1LagrangeEvaluation> Factory_P1LagrangeEvaluation;
 

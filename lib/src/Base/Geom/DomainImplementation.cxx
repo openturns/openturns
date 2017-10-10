@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DomainImplementation);
+CLASSNAMEINIT(DomainImplementation)
 
 static const Factory<DomainImplementation> Factory_DomainImplementation;
 

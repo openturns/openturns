@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API CanonicalTensorEvaluation : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<OrthogonalUniVariateFunctionFamily>           FunctionFamilyCollection;
   typedef PersistentCollection<OrthogonalUniVariateFunctionFamily> FunctionFamilyPersistentCollection;

@@ -18,7 +18,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldToFieldConnection);
+CLASSNAMEINIT(FieldToFieldConnection)
 
 static const Factory<FieldToFieldConnection> Factory_FieldToFieldConnection;
 

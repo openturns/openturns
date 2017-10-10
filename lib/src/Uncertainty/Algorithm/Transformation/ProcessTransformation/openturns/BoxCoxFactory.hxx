@@ -42,7 +42,7 @@ class OT_API BoxCoxFactory
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

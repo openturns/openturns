@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PolygonArray);
+CLASSNAMEINIT(PolygonArray)
 
 static const Factory<PolygonArray> Factory_PolygonArray;
 

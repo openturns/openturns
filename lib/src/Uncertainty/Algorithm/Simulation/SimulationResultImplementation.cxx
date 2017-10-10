@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SimulationResultImplementation);
+CLASSNAMEINIT(SimulationResultImplementation)
 
 static const Factory<SimulationResultImplementation> Factory_SimulationResultImplementation;
 

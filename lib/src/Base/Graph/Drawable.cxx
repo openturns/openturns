@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Drawable);
+CLASSNAMEINIT(Drawable)
 
 /* Default constructor */
 Drawable::Drawable():

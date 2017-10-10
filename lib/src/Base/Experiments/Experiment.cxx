@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Experiment);
+CLASSNAMEINIT(Experiment)
 
 /* Default constructor */
 Experiment::Experiment()

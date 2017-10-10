@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Curve : public DrawableImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

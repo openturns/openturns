@@ -32,7 +32,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LeastSquaresMetaModelSelection);
+CLASSNAMEINIT(LeastSquaresMetaModelSelection)
 
 static const Factory<LeastSquaresMetaModelSelection> Factory_LeastSquaresMetaModelSelection;
 

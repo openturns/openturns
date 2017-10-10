@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ProductPolynomialGradient);
+CLASSNAMEINIT(ProductPolynomialGradient)
 
 static const Factory<ProductPolynomialGradient> Factory_ProductPolynomialGradient;
 

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TruncatedDistribution
   : public DistributionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   enum BoundSide { LOWER, UPPER };

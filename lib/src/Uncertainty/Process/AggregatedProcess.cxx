@@ -28,8 +28,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection< Process >);
-CLASSNAMEINIT(AggregatedProcess);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection< Process >)
+CLASSNAMEINIT(AggregatedProcess)
 
 static const Factory<AggregatedProcess> Factory_AggregatedProcess;
 static const Factory<PersistentCollection<Process> > Factory_PersistentCollection_Process;

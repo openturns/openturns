@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(AdaptiveStrategyImplementation);
+CLASSNAMEINIT(AdaptiveStrategyImplementation)
 
 static const Factory<AdaptiveStrategyImplementation> Factory_AdaptiveStrategyImplementation;
 

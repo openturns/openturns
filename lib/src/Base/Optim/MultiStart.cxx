@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MultiStart);
+CLASSNAMEINIT(MultiStart)
 
 static const Factory<MultiStart> Factory_MultiStart;
 

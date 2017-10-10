@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WeightedExperimentImplementation);
+CLASSNAMEINIT(WeightedExperimentImplementation)
 
 static const Factory<WeightedExperimentImplementation> Factory_WeightedExperimentImplementation;
 

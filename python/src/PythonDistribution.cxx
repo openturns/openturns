@@ -31,7 +31,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(PythonDistribution);
+CLASSNAMEINIT(PythonDistribution)
 
 static const Factory<PythonDistribution> Factory_PythonDistribution;
 

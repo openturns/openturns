@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ChebychevFactory);
+CLASSNAMEINIT(ChebychevFactory)
 
 static const Factory<ChebychevFactory> Factory_ChebychevFactory;
 

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OrderStatisticsMarginalChecker
   : public Object
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Distribution> DistributionCollection;
