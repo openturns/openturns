@@ -1,3 +1,11 @@
+openturns (1.10~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream pre-release.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 11 Oct 2017 18:14:47 +0200
+
 openturns (1.9-2) experimental; urgency=medium
 
   * debian/control: Remove Christophe from Uploaders.
