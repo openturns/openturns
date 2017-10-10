@@ -187,7 +187,12 @@ void MarginalTransformationEvaluation::initialize(const Bool simplify)
         {
           OSS oss;
           oss.setPrecision(20);
-          oss << "max(0.0, " << gamma2 + log(lambda2) << " + " << lambda1 << " * ";
+          // T(x) = gamma2+lambda1/lambda2*(x-gamma1)
+          oss << "max(0.0, ";
+          if (gamma2 != 0.0)
+            oss << gamma2 << " + ";
+          if (lambda1 != lambda2)
+            oss << lambda1 / lambda2 << " * ";
           if (gamma1 == 0.0) oss << xName << ")";
           else
           {

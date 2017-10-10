@@ -21,3 +21,9 @@ transformation( [-0.686224,0.202089] )= class=Point name=Unnamed dimension=2 val
 transformation( [2.68622,0.684724] )= class=Point name=Unnamed dimension=2 values=[1.65642,4.01173]
 input dimension= 2
 output dimension= 2
+T1= [x0]->[max(0.0, 2 * x0)]
+
+T2= [x0]->[max(0.0, 0.5 * x0)]
+
+T3= [x0]->[max(0.0, 5 + (x0 - 4))]
+
