@@ -157,7 +157,10 @@ Differential equation solvers
     :template: class.rst_t
 
     ODESolver
+
+    :template: ODESolver.rst_t
     RungeKutta
+    Fehlberg
 
 Special constants & functions
 =============================

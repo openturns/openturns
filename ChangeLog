@@ -8,6 +8,7 @@
 
 ==== New classes ====
  * FrechetFactory
+ * Fehlberg
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class

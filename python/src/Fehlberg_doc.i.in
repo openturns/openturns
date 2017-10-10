@@ -1,0 +1,121 @@
+%feature("docstring") OT::Fehlberg
+"Adaptive order Fehlberg method.
+
+Parameters
+----------
+transitionFunction : :class:`~openturns.FieldFunction`
+    The function defining the flow of the ordinary differential equation.
+localPrecision : float
+    The expected absolute error on one step.
+order : int, :math:`order\in\{0,1,2,3,4\}`
+    The order of the method, ie the exponent :math:`p` in the estimate of the
+    local error for a step of size :math:`h` written as :math:`\cO(h^p)`.
+
+Notes
+-----
+The Fehlberg method of order :math:`p\in\Nset` is a *one-step* *explicit* method
+made of two *embedded* Runge Kutta methods of order :math:`p` and :math:`p+1`.
+More precisely, such a method approximate the solution of:
+
+.. math::
+    \vect{y}'(t)=f\left(t,\vect{y}(t)\right)\quad\mbox{with}\quad \vect{y}(t_0)=\vect{y}_0
+
+at a given set of locations :math:`t_0,\dots,t_N` by first building an
+approximation over an adapted grid :math:`\tau_0=t_0,\dots,\tau_M=t_N` with a
+number of points :math:`M` not necessarily equal to the number of locations
+:math:`N` and internal nodes not necessarily part of the set of locations. Then,
+the solution :math:`\vect{y}` is approximated by a smooth piecewise polynomial
+function using :class:`~openturns.PiecewiseHermiteEvaluation`, which is evaluated
+over the set of locations.
+
+The method proceeds as follows. Knowing the solution at location
+:math:`\vect{y}_i=\vect{y}(\tau_i)` and a current time step :math:`h_i`, two
+approximations :math:`\hat{\vect{y}}_{i+1}` and :math:`\bar{\vect{y}}_{i+1}` of
+:math:`\vect{y}_{i+1}=\vect{y}(\tau_i+h_i)=\vect{y}(\tau_{i+1})` are built, such
+that:
+
+.. math::
+    \hat{\vect{y}}_{i+1}=\vect{y}_i+h_i\vect{\Phi}_{\mathrm{I}}\left(\tau_i, \vect{y}_i, h_i\right) \\
+    \bar{\vect{y}}_{i+1}=\vect{y}_i+h_i\vect{\Phi}_{\mathrm{II}}\left(\tau_i, \vect{y}_i, h_i\right)
+
+where we assume that:
+
+.. math::
+    \left|\vect{\Phi}_{\mathrm{I}}\left(\tau_i,\vect{y}_i,h_i\right)-(\vect{y}_{i+1}-\vect{y}_i)/h_i\right|=\cO\left(h_i^p\right)\\
+    \left|\vect{\Phi}_{\mathrm{II}}\left(\tau_i, \vect{y}_i,h_i\right)-(\vect{y}_{i+1}-\vect{y}_i)/h_i\right|=\cO\left(h_i^{p+1}\right)
+
+The evolution operators :math:`\vect{\Phi}_{\mathrm{I}}` and
+:math:`\vect{\Phi}_{\mathrm{II}}` are constructed as follows:
+
+.. math::
+    \vect{\Phi}_{\mathrm{I}}\left(\tau, \vect{y}_i, h_i\right)=\sum_{k=0}^p
+    c_kf_k\left(\tau,\vect{y}_i; h_i\right)\\ 
+    \vect{\Phi}_{\mathrm{II}}\left(\tau, \vect{y}_i, h_i\right)=\sum_{k=0}^{p+1}
+    \hat{c}_kf_k\left(\tau,\vect{y}_i; h_i\right)
+
+with
+:math:`f_k=f_k\left(\tau,\vect{y}_i,h_i\right)=f\left(\tau+\alpha_kh_i,\vect{y}_i+h_i\sum_{\ell=0}^{k-1}\beta_{k\ell}f_{\ell}\right)`. The most desirable property of
+these methods is their *embedded* nature: the high-order approximation reuses all
+the evaluations of :math:`f` needed by the low-order approximation. The
+coefficients :math:`c_k`, :math:`\hat{c}_k`, :math:`\alpha_k` and
+:math:`\beta_{k\ell}` fully specify the method.
+
+For :math:`p=0` we have:
+
+.. table::
+
+    +-----------+------------------+--------------------+-------------+-------------------+
+    | :math:`k` | :math:`\alpha_k` | :math:`\beta_{k0}` | :math:`c_k` | :math:`\hat{c}_k` |
+    +===========+==================+====================+=============+===================+
+    | 0         | 0                | 0                  | 1           | 1/2               |
+    +-----------+------------------+--------------------+-------------+-------------------+
+    | 1         | 1                | 1                  |             | 1/2               |
+    +-----------+------------------+--------------------+-------------+-------------------+
+
+For :math:`p=1` we have:
+
+.. table::
+
+    +-----------+------------------+--------------------+--------------------+-------------+-------------------+
+    | :math:`k` | :math:`\alpha_k` | :math:`\beta_{k0}` | :math:`\beta_{k1}` | :math:`c_k` | :math:`\hat{c}_k` |
+    +===========+==================+====================+====================+=============+===================+
+    | 0         | 0                | 0                  |                    | 1/256       | 1/512             |
+    +-----------+------------------+--------------------+--------------------+-------------+-------------------+
+    | 1         | 1/2              | 1/2                |                    | 255/256     | 255/256           |
+    +-----------+------------------+--------------------+--------------------+-------------+-------------------+
+    | 2         | 1                | 1/256              | 255/256            |             | 1/512             |
+    +-----------+------------------+--------------------+--------------------+-------------+-------------------+
+
+For :math:`p=2` we have:
+
+.. table::
+
+    +-----------+------------------+--------------------+--------------------+--------------------+-------------+-------------------+
+    | :math:`k` | :math:`\alpha_k` | :math:`\beta_{k0}` | :math:`\beta_{k1}` | :math:`\beta_{k2}` | :math:`c_k` | :math:`\hat{c}_k` |
+    +===========+==================+====================+====================+====================+=============+===================+
+    | 0         | 0                | 0                  |                    |                    | 214/891     | 533/2106          |
+    +-----------+------------------+--------------------+--------------------+--------------------+-------------+-------------------+
+    | 1         | 1/4              | 1/4                |                    |                    | 1/33        | 0                 |
+    +-----------+------------------+--------------------+--------------------+--------------------+-------------+-------------------+
+    | 2         | 27/40            | -189/800           | 214/891            |                    | 650/891     | 800/1053          |
+    +-----------+------------------+--------------------+--------------------+--------------------+-------------+-------------------+
+    | 3         | 1                | 729/800            | 1/35               | 650/891            |             | -1/78             |
+    +-----------+------------------+--------------------+--------------------+--------------------+-------------+-------------------+
+
+For :math:`p>2` the coefficients can be found eg in the C++ source code. For
+additional theory on these methods see [Stoer1993]_, chapter 7. 
+
+See also
+--------
+ODESolver
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
+>>> phi = ot.VertexValueFunction(f)
+>>> solver = ot.Fehlberg(phi)
+>>> Y0 = [1.0, -1.0]
+>>> nt = 100
+>>> timeGrid = list(map(lambda i:(i**2.0) / (nt - 1.0)**2.0, range(nt)))
+>>> result = solver.solve(Y0, timeGrid)"

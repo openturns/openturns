@@ -160,3 +160,7 @@ Bibliography
     discrete random variates*. Journal of Computational and Applied Mathematics,
     vol. 31, no. 1, pp. 181-189, 1990.
     `pdf <http://doc.openturns.org/papers/stadlober1990.pdf>`__
+.. [Stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
+    Analysis*, Second Edition, Springer-Verlag, 1993.
+    `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
+	       

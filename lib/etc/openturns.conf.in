@@ -152,6 +152,11 @@
   <IteratedQuadrature-MaximumSubIntervals         value="32"     />
   <IteratedQuadrature-MaximumError                value="1.0e-7" />
 
+  <!-- OT::Fehlberg parameters -->
+  <Fehlberg-LocalPrecision                   value="1.0e-10" />
+  <Fehlberg-InitialStep                      value="1.0e-7" />
+  <Fehlberg-DefaultOrder                     value="4"      />
+
   <!-- OT::KarhunenLoeveQuadratureAlgorithm parameters -->
   <KarhunenLoeveQuadratureAlgorithm-RegularizationFactor value="0.0" />
 

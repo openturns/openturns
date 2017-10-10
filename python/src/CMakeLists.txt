@@ -384,6 +384,7 @@ ot_add_python_module(solver solver_module.i
                       ODESolverImplementation.i ODESolverImplementation_doc.i.in
                       ODESolver.i ODESolver_doc.i.in
                       RungeKutta.i RungeKutta_doc.i.in
+                      Fehlberg.i Fehlberg_doc.i.in
                       BaseSolverTemplateDefs.i
                    )
 

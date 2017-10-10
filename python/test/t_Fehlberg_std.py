@@ -8,7 +8,7 @@ ot.TESTPREAMBLE()
 
 f = ot.Function(['t', 'y0', 'y1'], ['dy0', 'dy1'], ['t - y0', 'y1 + t^2'])
 phi = ot.VertexValueFunction(f)
-solver = ot.RungeKutta(phi)
+solver = ot.Fehlberg(phi)
 print('ODE solver=', solver)
 initialState = [1.0, -1.0]
 nt = 100
@@ -19,14 +19,6 @@ print('result=', result)
 print('last value=', result[nt - 1])
 t = timeGrid[nt - 1]
 ref = ot.Point(2)
-ref[0] = -1.0 + t + 2.0 * m.exp(-t)
-ref[1] = -2.0 + -2.0 * t - t * t + m.exp(t)
-print('ref. value=', ref)
-grid = ot.RegularGrid(0.0, 0.01, nt)
-result = solver.solve(initialState, grid)
-print('result=', result)
-print('last value=', result[nt - 1])
-t = grid.getValue(nt - 1)
 ref[0] = -1.0 + t + 2.0 * m.exp(-t)
 ref[1] = -2.0 + -2.0 * t - t * t + m.exp(t)
 print('ref. value=', ref)
