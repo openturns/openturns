@@ -368,6 +368,9 @@ class View(object):
                 self._ax[0].pie(x, **pie_kwargs)
 
             elif drawableKind == 'Contour':
+                if len(drawable.getLevels()) < 2:
+                    warnings.warn('-- Ignoring contour with too few levels.')
+                    break
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
                 Z = np.reshape(drawable.getData(), (
                     drawable.getX().getSize(), drawable.getY().getSize()))
@@ -389,7 +392,7 @@ class View(object):
                         fmt[l] = s
                     clabel_kwargs.setdefault('fmt', fmt)
                     plt.clabel(contourset, **clabel_kwargs)
-                for i in range(len(drawable.getLabels())):
+                for i in range(len(contourset.levels)):
                     contourset.collections[i].set_label(
                         '_nolegend_' if i > 0 else drawable.getLegend())
 
