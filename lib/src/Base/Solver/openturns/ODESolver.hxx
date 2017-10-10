@@ -62,6 +62,9 @@ public:
   Sample solve(const Point & initialState,
                const Point & timeGrid) const;
 
+  Sample solve(const Point & initialState,
+               const Mesh & timeGrid) const;
+
   /** Transition function accessor */
   void setTransitionFunction(const FieldFunction & transitionFunction);
   FieldFunction getTransitionFunction() const;

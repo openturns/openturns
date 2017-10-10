@@ -23,6 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunction.hxx"
+#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,6 +54,9 @@ public:
   /** Solve the ODE */
   virtual Sample solve(const Point & initialState,
                        const Point & timeGrid) const;
+
+  virtual Sample solve(const Point & initialState,
+                       const Mesh & timeGrid) const;
 
   /** Transition function accessor */
   void setTransitionFunction(const FieldFunction & transitionFunction);
