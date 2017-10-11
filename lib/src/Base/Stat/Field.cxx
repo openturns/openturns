@@ -218,12 +218,6 @@ UnsignedInteger Field::getDimension() const
 }
 
 
-/* Return the values stored in the field as a sample */
-Sample Field::getSample() const
-{
-  return getImplementation()->getSample();
-}
-
 Sample Field::getValues() const
 {
   return getImplementation()->getValues();

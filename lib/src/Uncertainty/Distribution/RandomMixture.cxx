@@ -815,9 +815,9 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
         while (currentContinuous >= firstContinuous && currentDiscrete >= firstDiscrete)
         {
           const Distribution continuousAtom(distributionCollection_[currentContinuous]);
-          const NumericalScalar continuousWeight = weights[currentContinuous][0];
+          const Scalar continuousWeight = weights[currentContinuous][0];
           Distribution discreteAtom(distributionCollection_[currentDiscrete]);
-          NumericalScalar discreteWeight = weights[currentDiscrete][0];
+          Scalar discreteWeight = weights[currentDiscrete][0];
           const Sample support(discreteAtom.getSupport());
           DistributionCollection mixtureAtoms;
           for (UnsignedInteger i = 0; i < support.getSize(); ++i)

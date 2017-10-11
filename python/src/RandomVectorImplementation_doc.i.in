@@ -45,7 +45,7 @@ A :class:`~openturns.RandomVector` provides at least a way to generate realizati
 See also
 --------
 UsualRandomVector, CompositeRandomVector, ConditionalRandomVector,
-ConstantRandomVector, PosteriorRandomVector, FunctionalChaosRandomVector, Event,
+ConstantRandomVector, FunctionalChaosRandomVector, Event,
 PythonRandomVector"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation

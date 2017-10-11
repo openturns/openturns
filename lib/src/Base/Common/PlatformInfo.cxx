@@ -64,11 +64,6 @@ String PlatformInfo::GetInstallationDirectory()
   return InstallationDirectory;
 }
 
-String PlatformInfo::GetConfigureCommandLine()
-{
-  return "";
-}
-
 UnsignedInteger PlatformInfo::GetNumericalPrecision()
 {
   return PlatformInfo::Precision_;

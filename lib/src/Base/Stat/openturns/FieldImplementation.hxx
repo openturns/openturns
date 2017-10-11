@@ -97,9 +97,7 @@ public:
   UnsignedInteger getSpatialDimension() const;
   UnsignedInteger getDimension() const;
 
-  /** Return the values stored in the field as a sample
-   @deprecated */
-  Sample getSample() const;
+  /** Return the values stored in the field as a sample */
   Sample getValues() const;
   void setValues(const Sample & values);
 

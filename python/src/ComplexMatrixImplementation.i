@@ -30,10 +30,3 @@
 %include openturns/ComplexMatrixImplementation.hxx
 namespace OT{ %extend ComplexMatrixImplementation { ComplexMatrixImplementation(const ComplexMatrixImplementation & other) { return new OT::ComplexMatrixImplementation(other); } } }
 
-
-%pythoncode %{
-class NumericalComplexCollection(ComplexCollection):
-    def __init__(self, *args):
-        super(NumericalComplexCollection, self).__init__(*args)
-        openturns.common.Log.Warn('class NumericalComplexCollection is deprecated in favor of ComplexCollection')
-%}

@@ -313,10 +313,4 @@ class PythonFunction(Function):
                 raise RuntimeError('hessian argument is not callable.')
             instance._hessian = hessian 
         return Function(instance)
-
-# deprecated
-class NumericalMathFunction(Function):
-    def __init__(self, *args):
-        super(NumericalMathFunction, self).__init__(*args)
-        openturns.common.Log.Warn('class NumericalMathFunction is deprecated in favor of Function')
 %}

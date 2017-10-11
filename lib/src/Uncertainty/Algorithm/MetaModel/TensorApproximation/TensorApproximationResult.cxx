@@ -25,6 +25,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/CanonicalTensorGradient.hxx"
+#include "openturns/AggregatedFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -74,8 +76,8 @@ TensorApproximationResult::TensorApproximationResult(
     tensorFunction.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), tensorFunction.getEvaluation()));
     marginals.add(tensorFunction);
   }
-  composedMetaModel_ = Function(marginals);
-  metaModel_ = Function(composedMetaModel_, transformation);
+  composedMetaModel_ = AggregatedFunction(marginals);
+  metaModel_ = ComposedFunction(composedMetaModel_, transformation);
 }
 
 

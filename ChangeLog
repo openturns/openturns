@@ -1,5 +1,38 @@
 = New Features =
 
+== 1.11 release (in progress) == #release-1.11
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated NumericalMathFunction class
+ * Removed deprecated QuadraticNumericalMathFunction class
+ * Removed deprecated LinearNumericalMathFunction class
+ * Removed deprecated NumericalSample class
+ * Removed deprecated NumericalPoint[WithDescription] class
+ * Removed deprecated NumericalScalarCollection class
+ * Removed deprecated NumericalComplexCollection class
+ * Removed deprecated PosteriorRandomVector class
+ * Removed deprecated ConditionedNormalProcess class
+ * Removed deprecated ResourceMap::[SG]AsNumericalScalar methods
+ * Removed deprecated SpecFunc::*NumericalScalar* constants
+ * Removed deprecated PlatformInfo::GetConfigureCommandLine method
+ * Removed deprecated Field::getSample method
+ * Removed deprecated SobolIndicesAlgorithm::Generate method
+ * Removed deprecated NumericalScalar, NumericalComplex types
+ * Removed deprecated Function constructors
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.10rc1 release (2017-10-11) == #release-1.10rc1
 
 === Library ===

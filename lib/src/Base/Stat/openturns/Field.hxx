@@ -116,7 +116,6 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Return the values stored in the field as a sample */
-  Sample getSample() const;
   Sample getValues() const;
   void setValues(const Sample & values);
 

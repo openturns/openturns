@@ -55,16 +55,10 @@ typedef unsigned long Id;
  */
 typedef double Scalar;
 
-/** @deprecated */
-typedef double NumericalScalar;
-
 /**
  * Type Complex is a complex floating point number representation
  */
 typedef std::complex<Scalar> Complex;
-
-/** @deprecated */
-typedef std::complex<Scalar> NumericalComplex;
 
 /**
  * Type FileName stores file names and pathes

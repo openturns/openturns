@@ -19,22 +19,11 @@
  *
  */
 #include "openturns/Function.hxx"
-#include "openturns/ComposedFunction.hxx"
-#include "openturns/AggregatedEvaluation.hxx"
-#include "openturns/AggregatedGradient.hxx"
-#include "openturns/AggregatedHessian.hxx"
-#include "openturns/IndicatorEvaluation.hxx"
-#include "openturns/DualLinearCombinationEvaluation.hxx"
-#include "openturns/DualLinearCombinationGradient.hxx"
-#include "openturns/DualLinearCombinationHessian.hxx"
 #include "openturns/LinearCombinationEvaluation.hxx"
 #include "openturns/LinearCombinationGradient.hxx"
 #include "openturns/LinearCombinationHessian.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
-#include "openturns/ParametricEvaluation.hxx"
-#include "openturns/ParametricGradient.hxx"
-#include "openturns/ParametricHessian.hxx"
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
@@ -81,14 +70,6 @@ Function::Function(const EvaluationImplementation & evaluation)
 }
 
 
-/* Composition constructor */
-Function::Function(const Function & left,
-                   const Function & right)
-  : TypedInterfaceObject<FunctionImplementation>(new ComposedFunction(left.getImplementation(), right.getImplementation()))
-{
-  Log::Warn(OSS() << "Function(FunctionCollection, Sample) is deprecated: use ComposedFunction");
-}
-
 /* Analytical formula constructor */
 Function::Function(const Description & inputVariablesNames,
                    const Description & outputVariablesNames,
@@ -97,73 +78,6 @@ Function::Function(const Description & inputVariablesNames,
 {
   // Nothing to do
 }
-
-/* Analytical formula constructor */
-Function::Function(const Description & inputVariablesNames,
-                   const Description & formulas)
-  : TypedInterfaceObject<FunctionImplementation>()
-{
-  Log::Warn(OSS() << "Function(Description, Description) is deprecated: use SymbolicFunction");
-  const UnsignedInteger size = formulas.getSize();
-  Description outputVariablesNames(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-    outputVariablesNames[i] = String(OSS() << "y" << i);
-  *this = Function(inputVariablesNames, outputVariablesNames, formulas);
-}
-
-/* Indicator function constructor */
-Function::Function(const Function & function,
-                   const ComparisonOperator & comparisonOperator,
-                   const Scalar threshold)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold), new NoGradient(), new NoHessian()))
-{
-  Log::Warn(OSS() << "Function(Function, ComparisonOperator, Scalar) is deprecated: use IndicatorFunction");
-}
-
-/* Aggregated function constructor: the output is the aggregation of the several functions */
-Function::Function(const FunctionCollection & functionCollection)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
-{
-  Log::Warn(OSS() << "Function(FunctionCollection) is deprecated: use AggregatedFunction");
-  const AggregatedEvaluation evaluation(functionCollection);
-  setEvaluation(evaluation.clone());
-  setGradient(new AggregatedGradient(evaluation));
-  setHessian(new AggregatedHessian(evaluation));
-}
-
-/* Linear combination function constructor */
-Function::Function(const FunctionCollection & functionCollection,
-                   const Point & coefficients)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
-{
-  Log::Warn(OSS() << "Function(FunctionCollection, Point) is deprecated: use LinearCombinationFunction");
-  const LinearCombinationEvaluation evaluation(functionCollection, coefficients);
-  setEvaluation(evaluation.clone());
-  setGradient(new LinearCombinationGradient(evaluation));
-  setHessian(new LinearCombinationHessian(evaluation));
-}
-
-/* Dual linear combination function constructor */
-Function::Function(const FunctionCollection & functionCollection,
-                   const Sample & coefficients)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
-{
-  Log::Warn(OSS() << "Function(FunctionCollection, Sample) is deprecated: use DualLinearCombinationFunction");
-  const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);
-  setEvaluation(evaluation.clone());
-  setGradient(new DualLinearCombinationGradient(evaluation));
-  setHessian(new DualLinearCombinationHessian(evaluation));
-}
-
-/* Simplified analytical formula constructor */
-Function::Function(const String & inputVariableName,
-                   const String & formula,
-                   const String & outputVariableName)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(Description(1, inputVariableName), Description(1, outputVariableName), Description(1, formula)))
-{
-  Log::Warn(OSS() << "Function(String, String, String) is deprecated: use SymbolicFunction");
-}
-
 
 /* Constructor from evaluation */
 Function::Function(const EvaluationPointer & evaluationImplementation)
@@ -182,33 +96,11 @@ Function::Function(const EvaluationPointer & evaluationImplementation,
   // Nothing to do
 }
 
-/* Constructor from samples */
-Function::Function(const Sample & inputSample,
-                   const Sample & outputSample)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation( inputSample, outputSample ))
-{
-  Log::Warn(OSS() << "Function(Sample, Sample) is deprecated: use DatabaseFunction");
-}
-
 /* Constructor from field */
 Function::Function(const Field & field)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new P1LagrangeEvaluation( field )))
 {
   // Nothing to do
-}
-
-/* Constructor by splitting the input of a function between variables and parameters */
-Function::Function(const Function & function,
-                   const Indices & set,
-                   const Point & referencePoint,
-                   const Bool parametersSet)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation())
-{
-  Log::Warn(OSS() << "Function(Function, Indices, Point, Bool) is deprecated: use ParametricFunction");
-  const Pointer<ParametricEvaluation> p_evaluation = new ParametricEvaluation(function, set, referencePoint, parametersSet);
-  setEvaluation(p_evaluation);
-  setGradient(new ParametricGradient(p_evaluation));
-  setHessian(new ParametricHessian(p_evaluation));
 }
 
 /* Comparison operator */

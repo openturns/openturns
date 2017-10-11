@@ -73,10 +73,3 @@ PointWithDescription(PyObject * pyObj)
 %template(PointWithDescriptionCollection) OT::Collection<OT::PointWithDescription>;
 %template(PointWithDescriptionPersistentCollection) OT::PersistentCollection<OT::PointWithDescription>;
 
-%pythoncode %{
-# deprecated
-class NumericalPointWithDescription(PointWithDescription):
-    def __init__(self, *args):
-        super(NumericalPointWithDescription, self).__init__(*args)
-        openturns.common.Log.Warn('class NumericalPointWithDescription is deprecated in favor of PointWithDescription')
-%}

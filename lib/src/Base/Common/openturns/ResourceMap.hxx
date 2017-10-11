@@ -55,17 +55,11 @@ public:
   static UnsignedInteger GetAsUnsignedInteger(String key);
   static Scalar GetAsScalar(String key);
 
-  /** @deprecated */
-  static Scalar GetAsNumericalScalar(String key);
-
   /** Set a value in the map */
   static void Set(String key, String value);
   static void SetAsBool(String key, Bool value);
   static void SetAsUnsignedInteger(String key, UnsignedInteger value);
   static void SetAsScalar(String key, Scalar value);
-
-  /** @deprecated */
-  static void SetAsNumericalScalar(String key, Scalar value);
 
   /** Get the size of the map */
   static UnsignedInteger GetSize();
