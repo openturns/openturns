@@ -121,7 +121,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   if (inputDimension != distribution.getDimension())
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. distribution dimension=" << distribution.getDimension()
                                          << ", model input dimension = " << inputDimension;
-  inputDesign_ = Generate(distribution, size, computeSecondOrder);
+  const SobolIndicesExperiment sobolExperiment(distribution, size, computeSecondOrder);
+  inputDesign_ = sobolExperiment.generate();
   outputDesign_ = model(inputDesign_);
 
   // center Y
@@ -158,7 +159,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   if (inputDimension != experiment.getDistribution().getDimension())
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. Experiment dimension=" << experiment.getDistribution().getDimension()
                                          << ", model input dimension = " << inputDimension;
-  inputDesign_ = Generate(experiment, computeSecondOrder);
+  const SobolIndicesExperiment sobolExperiment(experiment, computeSecondOrder);
+  inputDesign_ = sobolExperiment.generate();
   outputDesign_ = model(inputDesign_);
 
   // center Y
@@ -172,22 +174,6 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   referenceVariance_ = outReference.computeVariance();
 }
 
-Sample SobolIndicesAlgorithmImplementation::Generate(const Distribution & distribution,
-    const UnsignedInteger size,
-    const Bool computeSecondOrder)
-{
-  Log::Warn(OSS() << "SobolIndicesAlgorithm::Generate is deprecated: use SobolIndicesExperiment");
-  SobolIndicesExperiment sobolExperiment(distribution, size, computeSecondOrder);
-  return sobolExperiment.generate();
-}
-
-Sample SobolIndicesAlgorithmImplementation::Generate(const WeightedExperiment & experiment,
-    const Bool computeSecondOrder)
-{
-  Log::Warn(OSS() << "SobolIndicesAlgorithm::Generate is deprecated: use SobolIndicesExperiment");
-  SobolIndicesExperiment sobolExperiment(experiment, computeSecondOrder);
-  return sobolExperiment.generate();
-}
 
 /* First order indices accessor */
 Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedInteger marginalIndex) const

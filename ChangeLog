@@ -20,8 +20,9 @@
  * Removed deprecated ConditionedNormalProcess class
  * Removed deprecated ResourceMap::[SG]AsNumericalScalar methods
  * Removed deprecated SpecFunc::*NumericalScalar* constants
- * Removed deprecated PlatformInfo::GetConfigureCommandLine
+ * Removed deprecated PlatformInfo::GetConfigureCommandLine method
  * Removed deprecated Field::getSample method
+ * Removed deprecated SobolIndicesAlgorithm::Generate method
 
 === Python module ===
 

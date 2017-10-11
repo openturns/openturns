@@ -27,8 +27,7 @@ try:
 
     # Use of Generate method to build input/output designs
     computeSO = True
-    inputDesign = ot.SaltelliSensitivityAlgorithm.Generate(
-        distribution, size, computeSO)
+    inputDesign = ot.SobolIndicesExperiment(distribution, size, computeSO).generate()
     outputDesign = model(inputDesign)
     # Case 1 : Estimation of sensitivity using estimator and no bootstrap
     for method in methods:
