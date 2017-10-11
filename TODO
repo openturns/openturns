@@ -1,4 +1,3 @@
-Remove deprecated ResourceMap::[SG]AsNumericalScalar
 Remove deprecated SpecFunc::*NumericalScalar* in 1.11
 Remove deprecated PlatformInfo[GetConfigureCommandLine] in 1.11
 Remove deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS aliases in 1.12

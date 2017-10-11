@@ -18,7 +18,7 @@
  * Removed deprecated NumericalComplexCollection class
  * Removed deprecated PosteriorRandomVector class
  * Removed deprecated ConditionedNormalProcess class
-
+ * Removed deprecated ResourceMap::[SG]AsNumericalScalar methods
 
 === Python module ===
 

@@ -106,12 +106,6 @@ Scalar ResourceMap::GetAsScalar(String key)
   return GetInstance().lock().getAsScalar( key );
 }
 
-Scalar ResourceMap::GetAsNumericalScalar(String key)
-{
-  return GetAsScalar(key);
-}
-
-/* Get the size of the map */
 UnsignedInteger ResourceMap::GetSize()
 {
   return GetInstance().lock().getSize();
@@ -136,11 +130,6 @@ void ResourceMap::SetAsUnsignedInteger(String key, UnsignedInteger value)
 void ResourceMap::SetAsScalar(String key, Scalar value)
 {
   GetInstance().lock().setAsScalar( key, value );
-}
-
-void ResourceMap::SetAsNumericalScalar(String key, Scalar value)
-{
-  SetAsScalar(key, value);
 }
 
 /* Default constructor */
