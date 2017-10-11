@@ -1,13 +1,6 @@
-Remove deprecated NumericalMathFunction in 1.11
-Remove deprecated NumericalSample in 1.11
-Remove deprecated NumericalPoint[WithDescription] in 1.11
 Remove deprecated ResourceMap::[SG]AsNumericalScalar
 Remove deprecated SpecFunc::*NumericalScalar* in 1.11
-Remove deprecated NumericalScalar[Collection] in 1.11
-Remove deprecated NumericalComplex[Collection] in 1.11
-Remove deprecated PosteriorRandomVector in 1.11
 Remove deprecated PlatformInfo[GetConfigureCommandLine] in 1.11
 Remove deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS aliases in 1.12
-Remove deprecated ConditionedNormalProcess alias in 1.11
 Remove deprecated Field::getSample in 1.11
 Remove deprecated SobolIndicesAlgorithm::Generate method in 1.11

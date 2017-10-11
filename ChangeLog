@@ -9,6 +9,16 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated NumericalMathFunction class
+ * Removed deprecated QuadraticNumericalMathFunction class
+ * Removed deprecated LinearNumericalMathFunction class
+ * Removed deprecated NumericalSample class
+ * Removed deprecated NumericalPoint[WithDescription] class
+ * Removed deprecated NumericalScalarCollection class
+ * Removed deprecated NumericalComplexCollection class
+ * Removed deprecated PosteriorRandomVector class
+ * Removed deprecated ConditionedNormalProcess class
+
 
 === Python module ===
 

@@ -463,10 +463,3 @@ Sample __rmul__(Scalar s)
 } // %extend
 } // namespace OT
 
-%pythoncode %{
-# deprecated
-class NumericalSample(Sample):
-    def __init__(self, *args):
-        super(NumericalSample, self).__init__(*args)
-        openturns.common.Log.Warn('class NumericalSample is deprecated in favor of Sample')
-%}
