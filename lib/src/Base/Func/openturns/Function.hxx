@@ -69,24 +69,6 @@ public:
   /** Constructor from evaluation implementation */
   Function(const EvaluationImplementation & evaluation);
 
-  /** @brief Composition constructor
-   *
-   * Builds a new %Function from two others as if they were mathematicaly composed,
-   *
-   * Example: h = f o g
-   * - f is the left %Function
-   * - g is the right %Function
-   * - h is the composed %Function
-   * .
-   * The condition for successful composition is that the dimension of the output of g is the dimension
-   * of the input of f. The composed %Function has the input dimension of g and the output dimension
-   * of f.
-   * @param left The left %Function (aka f)
-   * @param right The right %Function (aka g)
-   */
-  Function(const Function & left,
-           const Function & right);
-
   /** @brief Analytical formula constructor
    *
    * Builds a new %Function by analytical expression parsing. The expression involving the input
@@ -103,35 +85,6 @@ public:
            const Description & outputVariablesNames,
            const Description & formulas);
 
-  /** Same as the previous one, but with default names for the output variables
-   * @deprecated */
-  Function(const Description & inputVariablesNames,
-           const Description & formulas);
-
-  /** Indicator function constructor
-    * @deprecated */
-  Function(const Function & function,
-           const ComparisonOperator & comparisonOperator,
-           const Scalar threshold);
-
-  /** Aggregated function constructor: the output is the aggregation of the several functions */
-  Function(const FunctionCollection & functionCollection);
-
-  /** Linear combination function constructor
-    * @deprecated */
-  Function(const FunctionCollection & functionCollection,
-           const Point & coefficients);
-
-  /** Dual linear combination function constructor */
-  Function(const FunctionCollection & functionCollection,
-           const Sample & coefficients);
-
-  /** Simplified analytical formula constructor
-   * @deprecated */
-  Function(const String & inputVariableName,
-           const String & formula,
-           const String & outputVariableName = "outputVariable");
-
 #ifndef SWIG
   /** Constructor from evaluation */
   explicit Function(const EvaluationPointer & evaluationImplementation);
@@ -142,20 +95,8 @@ public:
            const HessianPointer  & hessianImplementation);
 #endif
 
-  /** Constructor from samples
-    * @deprecated */
-  Function(const Sample & inputSample,
-           const Sample & outputSample);
-
   /** Constructor from field using P1 Lagrange interpolation */
   Function(const Field & field);
-
-  /** Constructor by splitting the input of a function between variables and parameters
-   * @deprecated */
-  Function(const Function & function,
-           const Indices & set,
-           const Point & referencePoint,
-           const Bool parametersSet = true);
 
   /** Comparison operator */
   Bool operator ==(const Function & other) const;
