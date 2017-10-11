@@ -105,13 +105,6 @@ public:
   // Real number accuracy
   static const Scalar ScalarEpsilon;
 
-  // @deprecated
-  static const Scalar MinNumericalScalar;
-  static const Scalar LogMinNumericalScalar;
-  static const Scalar MaxNumericalScalar;
-  static const Scalar LogMaxNumericalScalar;
-  static const Scalar NumericalScalarEpsilon;
-
   // Some facilities for NaN and inf
   static Bool IsNaN(const Scalar value);
   static Bool IsInf(const Scalar value);

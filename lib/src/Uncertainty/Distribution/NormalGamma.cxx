@@ -282,7 +282,7 @@ Scalar NormalGamma::computeCDF(const Point & point) const
     return DistFunc::pGamma(alpha_, beta_ * y);
   }
   // Here the integration wrt x is given in closed form
-  const Function integrand(NormalGammaFunctions::KernelProbability(-SpecFunc::MaxNumericalScalar, x, kappa_, alpha_, beta_, logNormalization_, 0));
+  const Function integrand(NormalGammaFunctions::KernelProbability(-SpecFunc::MaxScalar, x, kappa_, alpha_, beta_, logNormalization_, 0));
   // Integrate over the interval (-inf, y] of the conditioning Gamma distribution
   const Scalar cdf = GaussKronrod().integrate(integrand, Interval(a, std::min(y, b)))[0];
   return cdf;
@@ -306,7 +306,7 @@ Scalar NormalGamma::computeSurvivalFunction(const Point & point) const
     return DistFunc::pGamma(alpha_, beta_ * y, true);
   }
   // Here the integration wrt x is given in closed form
-  const Function integrand(NormalGammaFunctions::KernelProbability(x, SpecFunc::MaxNumericalScalar, kappa_, alpha_, beta_, logNormalization_, 1));
+  const Function integrand(NormalGammaFunctions::KernelProbability(x, SpecFunc::MaxScalar, kappa_, alpha_, beta_, logNormalization_, 1));
   // Integrate over the interval [y, +inf) of the conditioning Gamma distribution
   const Scalar survival = GaussKronrod().integrate(integrand, Interval(std::max(y, a), b))[0];
   return survival;

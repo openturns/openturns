@@ -19,6 +19,7 @@
  * Removed deprecated PosteriorRandomVector class
  * Removed deprecated ConditionedNormalProcess class
  * Removed deprecated ResourceMap::[SG]AsNumericalScalar methods
+ * Removed deprecated SpecFunc::*NumericalScalar* constants
 
 === Python module ===
 
