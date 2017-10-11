@@ -23,6 +23,7 @@
  * Removed deprecated PlatformInfo::GetConfigureCommandLine method
  * Removed deprecated Field::getSample method
  * Removed deprecated SobolIndicesAlgorithm::Generate method
+ * Removed deprecated NumericalScalar, NumericalComplex types
 
 === Python module ===
 
