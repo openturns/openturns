@@ -35,7 +35,7 @@ class OT_API SpectralModel
   : public TypedInterfaceObject<SpectralModelImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

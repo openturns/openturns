@@ -23,7 +23,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(SymbolicGradient);
+CLASSNAMEINIT(SymbolicGradient)
 
 static const Factory<SymbolicGradient> Factory_SymbolicGradient;
 

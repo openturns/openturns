@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FrankCopula);
+CLASSNAMEINIT(FrankCopula)
 
 static const Factory<FrankCopula> Factory_FrankCopula;
 

@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(NearestPointChecker);
+CLASSNAMEINIT(NearestPointChecker)
 /*
  * @brief  Standard constructor: the problem is defined by a scalar valued function  (in fact, a 1-D vector valued fnction)
  *         and a level value

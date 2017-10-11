@@ -29,13 +29,13 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<ProcessSample>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<ProcessSample>)
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Field>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Field>)
 
 static const Factory<PersistentCollection<Field> > Factory_PersistentCollection_Field;
 
-CLASSNAMEINIT(ProcessSample);
+CLASSNAMEINIT(ProcessSample)
 
 static const Factory<ProcessSample> Factory_ProcessSample;
 

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OrthogonalUniVariateFunctionFamily
   : public TypedInterfaceObject<OrthogonalUniVariateFunctionFactory>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

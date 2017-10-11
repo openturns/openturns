@@ -38,7 +38,7 @@ class OT_API ComplexMatrixImplementation
   : public PersistentCollection<Complex>
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   /** Declaration of friend operators */
@@ -93,7 +93,7 @@ public:
 
   /** Resolution of a linear system in case of a rectangular matrix */
   ComplexCollection solveLinearSystemRect(const ComplexCollection & b,
-      const Bool keepIntact = true);
+                                          const Bool keepIntact = true);
 
   ComplexMatrixImplementation solveLinearSystemRect(const ComplexMatrixImplementation & b,
       const Bool keepIntact = true);
@@ -110,12 +110,12 @@ public:
   /** Operator () gives access to the elements of the ComplexMatrixImplementation (to modify these elements) */
   /** The element of the ComplexMatrixImplementation is designated by its row number i and its column number j */
   Complex & operator () (const UnsignedInteger i,
-                                  const UnsignedInteger j);
+                         const UnsignedInteger j);
 
   /** Operator () gives access to the elements of the ComplexMatrixImplementation (read only) */
   /** The element of the ComplexMatrixImplementation is designated by its row number i and its column number j */
   const Complex & operator () (const UnsignedInteger i,
-                                        const UnsignedInteger j) const;
+                               const UnsignedInteger j) const;
 
   /** Get the dimensions of the ComplexMatrixImplementation */
   /** Number of rows */
@@ -192,13 +192,13 @@ public:
 
   /** Using triangular matrix */
   ComplexCollection triangularVectProd(const ComplexCollection & pt,
-      const char side = 'L') const;
+                                       const char side = 'L') const;
   ComplexCollection triangularVectProd(const ScalarCollection & pt,
-      const char side = 'L') const;
+                                       const char side = 'L') const;
 
 
   ComplexCollection triangularVectProd(const Point & pt,
-      const char side = 'L') const;
+                                       const char side = 'L') const;
 
   /** Check if the matrix is self-adjoint */
   virtual Bool isHermitian() const;

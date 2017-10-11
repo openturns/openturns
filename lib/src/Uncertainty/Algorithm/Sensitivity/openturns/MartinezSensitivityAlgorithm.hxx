@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MartinezSensitivityAlgorithm
   : public SobolIndicesAlgorithmImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

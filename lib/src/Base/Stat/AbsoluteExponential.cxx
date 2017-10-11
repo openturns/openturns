@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AbsoluteExponential);
+CLASSNAMEINIT(AbsoluteExponential)
 
 static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 

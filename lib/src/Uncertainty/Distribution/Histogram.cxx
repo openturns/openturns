@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Histogram);
+CLASSNAMEINIT(Histogram)
 
 static const Factory<Histogram> Factory_Histogram;
 
@@ -80,11 +80,11 @@ Histogram::Histogram(const Point & ticks,
   Point height(size - 1);
   Point width(size - 1);
   for (UnsignedInteger i = 0; i < size - 1; ++i)
-    {
-      const Scalar w = ticks[i + 1] - ticks[i];
-      width[i] = w;
-      height[i] = frequencies[i] / w;
-    }
+  {
+    const Scalar w = ticks[i + 1] - ticks[i];
+    width[i] = w;
+    height[i] = frequencies[i] / w;
+  }
   setData(width, height);
   setDimension(1);
 }

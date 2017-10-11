@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(OrthogonalUniVariatePolynomialFamily);
+CLASSNAMEINIT(OrthogonalUniVariatePolynomialFamily)
 
 /* Default constructor */
 OrthogonalUniVariatePolynomialFamily::OrthogonalUniVariatePolynomialFamily()

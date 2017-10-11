@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ValueFunction);
+CLASSNAMEINIT(ValueFunction)
 
 static const Factory<ValueFunction> Factory_ValueFunction;
 

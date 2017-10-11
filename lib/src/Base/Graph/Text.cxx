@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Text);
+CLASSNAMEINIT(Text)
 
 static const Factory<Text> Factory_Text;
 
@@ -34,7 +34,7 @@ Bool Text::IsTextFirstInitialization = true;
 
 /* Default constructor */
 Text::Text()
- : DrawableImplementation()
+  : DrawableImplementation()
 {}
 
 /* Default constructor */

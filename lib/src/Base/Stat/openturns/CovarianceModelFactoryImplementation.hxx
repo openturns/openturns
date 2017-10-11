@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CovarianceModelFactoryImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<CovarianceModelFactoryImplementation>    Implementation;

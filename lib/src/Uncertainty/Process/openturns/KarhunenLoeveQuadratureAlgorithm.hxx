@@ -37,7 +37,7 @@ class OT_API KarhunenLoeveQuadratureAlgorithm
   : public KarhunenLoeveAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

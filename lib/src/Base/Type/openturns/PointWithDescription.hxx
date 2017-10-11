@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API PointWithDescription
   : public Point
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

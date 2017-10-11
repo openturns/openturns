@@ -29,7 +29,7 @@ enum Token_value
   PEV3NAME, PEV3NUMBER, PEV3END, PEV3PLUS = '+', PEV3NLPLUS = '|',
   PEV3MINUS = '-', PEV3MUL = '*', PEV3DIV = '/', PEV3POWER = '^',
   PEV3PRINT = ';', PEV3ASSIGN = '=', PEV3LP = '(', PEV3RP = ')',
-  PEV3UNARYMINUS = '#',
+  PEV3UNARYMINUS = '#'
 };
 
 // constants

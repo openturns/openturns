@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FarlieGumbelMorgensternCopula);
+CLASSNAMEINIT(FarlieGumbelMorgensternCopula)
 
 static const Factory<FarlieGumbelMorgensternCopula> Factory_FarlieGumbelMorgensternCopula;
 

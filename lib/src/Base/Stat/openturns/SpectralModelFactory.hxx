@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API  SpectralModelFactory
   : public TypedInterfaceObject<SpectralModelFactoryImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<SpectralModelFactoryImplementation> Implementation;

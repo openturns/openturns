@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Pie);
+CLASSNAMEINIT(Pie)
 
 static const Factory<Pie> Factory_Pie;
 

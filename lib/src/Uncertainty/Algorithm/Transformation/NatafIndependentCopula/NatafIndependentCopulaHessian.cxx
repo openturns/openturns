@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-CLASSNAMEINIT(NatafIndependentCopulaHessian);
+CLASSNAMEINIT(NatafIndependentCopulaHessian)
 
 static const Factory<NatafIndependentCopulaHessian> Factory_NatafIndependentCopulaHessian;
 

@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ProductPolynomialHessian
   : public HessianImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<UniVariatePolynomial>           PolynomialCollection;

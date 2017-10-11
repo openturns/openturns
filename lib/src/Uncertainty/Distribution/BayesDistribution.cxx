@@ -33,7 +33,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BayesDistribution);
+CLASSNAMEINIT(BayesDistribution)
 
 static const Factory<BayesDistribution> Factory_BayesDistribution;
 
@@ -279,19 +279,19 @@ void BayesDistribution::setParameter(const Point & parameter)
   Point::const_iterator start = parameter.begin();
   const UnsignedInteger linkParameterSize = linkFunction_.getParameterDimension();
   if (linkParameterSize > 0)
-    {
-      Point linkParameter(linkParameterSize);
-      std::copy(start, start + linkParameterSize, linkParameter.begin());
-      linkFunction_.setParameter(linkParameter);
-      start += linkParameterSize;
-    }
+  {
+    Point linkParameter(linkParameterSize);
+    std::copy(start, start + linkParameterSize, linkParameter.begin());
+    linkFunction_.setParameter(linkParameter);
+    start += linkParameterSize;
+  }
   const UnsignedInteger conditioningParameterSize = parameter.getSize() - linkParameterSize;
   if (conditioningParameterSize > 0)
-    {
-      Point conditioningParameter(conditioningParameterSize);
-      std::copy(start, parameter.end(), conditioningParameter.begin());
-      conditioningDistribution_.setParameter(conditioningParameter);
-    }
+  {
+    Point conditioningParameter(conditioningParameterSize);
+    std::copy(start, parameter.end(), conditioningParameter.begin());
+    conditioningDistribution_.setParameter(conditioningParameter);
+  }
   *this = BayesDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_);
   setWeight(w);
 } // setParameter
@@ -346,15 +346,15 @@ public:
     const Scalar pdf(distribution_.computePDF(point));
     UnsignedInteger index = 0;
     for (UnsignedInteger i = 0; i < conditionedDimension_; ++i)
+    {
+      const Scalar deltaI(point[i] - mu_[i]);
+      for (UnsignedInteger j = i; j < dimension_; ++j)
       {
-	const Scalar deltaI(point[i] - mu_[i]);
-	for (UnsignedInteger j = i; j < dimension_; ++j)
-	  {
-	    const Scalar deltaJ(point[j] - mu_[j]);
-	    value[index] = pdf * deltaI * deltaJ;
-	    ++index;
-	  } // j
-      } // i
+        const Scalar deltaJ(point[j] - mu_[j]);
+        value[index] = pdf * deltaI * deltaJ;
+        ++index;
+      } // j
+    } // i
     return value;
   }
 
@@ -396,7 +396,7 @@ private:
   const Point mu_;
 }; // KernelCovariance
 
-}; // namespace BayesDistributionFunctions
+} // namespace BayesDistributionFunctions
 
 /* Compute the covariance of the distribution */
 void BayesDistribution::computeCovariance() const
@@ -409,15 +409,15 @@ void BayesDistribution::computeCovariance() const
   IntegrationAlgorithm integrator;
   if (useAdaptiveAlgorithm) integrator = IteratedQuadrature(GaussKronrod());
   else integrator = GaussLegendre(Indices(2, static_cast<UnsignedInteger>(std::ceil(std::sqrt(1.0 * integrationNodesNumber_)))));
-  // Integrate over the interval (-inf, y] of the conditioning Gamma distribution 
+  // Integrate over the interval (-inf, y] of the conditioning Gamma distribution
   const Point upperCovariance(integrator.integrate(integrand, getRange()));
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < conditionedDimension; ++i)
     for (UnsignedInteger j = i; j < dimension; ++j)
-      {
-	covariance_(i, j) = upperCovariance[index];
-	++index;
-      }
+    {
+      covariance_(i, j) = upperCovariance[index];
+      ++index;
+    }
   // The conditioning covariance can be reused as is
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   Indices upper(conditioningDimension);
@@ -428,7 +428,7 @@ void BayesDistribution::computeCovariance() const
       covariance_(conditionedDimension + i, conditionedDimension + j) = conditioningCovariance(i, j);
   isAlreadyComputedCovariance_ = true;
 }
-  
+
 /* Method save() stores the object through the StorageManager */
 void BayesDistribution::save(Advocate & adv) const
 {

@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(IntegrationAlgorithm);
+CLASSNAMEINIT(IntegrationAlgorithm)
 
 /* Constructor with parameters */
 IntegrationAlgorithm::IntegrationAlgorithm()

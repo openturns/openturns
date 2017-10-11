@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Indices :
   public PersistentCollection<UnsignedInteger>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef PersistentCollection<UnsignedInteger>   InternalType;

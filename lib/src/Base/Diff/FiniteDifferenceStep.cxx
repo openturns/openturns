@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FiniteDifferenceStep);
+CLASSNAMEINIT(FiniteDifferenceStep)
 
 /* Default constructor */
 FiniteDifferenceStep::FiniteDifferenceStep()

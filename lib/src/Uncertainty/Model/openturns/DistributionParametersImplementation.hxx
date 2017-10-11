@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DistributionParametersImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<Point>                PointCollection;
   typedef Collection<PointWithDescription> PointWithDescriptionCollection;
@@ -80,3 +80,4 @@ public:
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_DISTRIBUTIONPARAMETERSIMPLEMENTATION_HXX */
+

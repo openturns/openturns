@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DiracCovarianceModel);
+CLASSNAMEINIT(DiracCovarianceModel)
 
 static const Factory<DiracCovarianceModel> Factory_DiracCovarianceModel;
 

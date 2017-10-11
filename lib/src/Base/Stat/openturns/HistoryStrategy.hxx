@@ -37,7 +37,7 @@ class OT_API HistoryStrategy
   : public TypedInterfaceObject<HistoryStrategyImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Pairs);
+CLASSNAMEINIT(Pairs)
 
 static const Factory<Pairs> Factory_Pairs;
 

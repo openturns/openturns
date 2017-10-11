@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class RootStrategy
  */
 
-CLASSNAMEINIT(RootStrategy);
+CLASSNAMEINIT(RootStrategy)
 
 /* Constructor with parameters */
 RootStrategy::RootStrategy(const RootStrategyImplementation & implementation)

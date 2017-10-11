@@ -6,6 +6,7 @@ import math as m
 
 ot.TESTPREAMBLE()
 
+
 def printPoint(point, digits):
     oss = "["
     eps = pow(0.1, digits)

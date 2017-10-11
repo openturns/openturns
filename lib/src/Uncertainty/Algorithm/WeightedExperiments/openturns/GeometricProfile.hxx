@@ -34,7 +34,7 @@ namespace OT
 class OT_API GeometricProfile
   : public TemperatureProfileImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

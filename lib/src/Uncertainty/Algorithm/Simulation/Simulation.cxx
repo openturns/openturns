@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class Simulation
  */
 
-CLASSNAMEINIT(Simulation);
+CLASSNAMEINIT(Simulation)
 
 static const Factory<Simulation> Factory_Simulation;
 

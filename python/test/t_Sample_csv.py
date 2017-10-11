@@ -95,18 +95,20 @@ try:
     print("aSample with special chars (see log)=", repr(aSample))
 
     # Print stream to R format
-    print ("Stream to R format = ",  aSample.getImplementation().streamToRFormat())
+    print ("Stream to R format = ",
+           aSample.getImplementation().streamToRFormat())
 
     # Store to a temporary file and compute difference with current aSample
     tmpFilename = aSample.getImplementation().storeToTemporaryFile()
     tmpSample = Sample.ImportFromTextFile(tmpFilename)
     #// Difference with aSample
-    assert_almost_equal(tmpSample, aSample, 1e-15, 1e-15);
+    assert_almost_equal(tmpSample, aSample, 1e-15, 1e-15)
     os.remove(tmpFilename)
 
     # text file with comments
     f = open('sample.csv', 'w')
-    f.write("# hello\n\nh1 h2 h3 h4 \n-1.2 2.3 3.4 -4.5 \n#spock\n5.6 -6.7 7.8 8.9 \n-0.1 3.2 5.1 7.5 \n")
+    f.write(
+        "# hello\n\nh1 h2 h3 h4 \n-1.2 2.3 3.4 -4.5 \n#spock\n5.6 -6.7 7.8 8.9 \n-0.1 3.2 5.1 7.5 \n")
     f.close()
     aSample = Sample.ImportFromTextFile("sample.csv")
     print("aSample with comments=", repr(aSample))

@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ClassifierImplementation);
+CLASSNAMEINIT(ClassifierImplementation)
 
 static const Factory<ClassifierImplementation> Factory_ClassifierImplementation;
 

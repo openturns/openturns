@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ProductHessian);
+CLASSNAMEINIT(ProductHessian)
 
 static const Factory<ProductHessian> Factory_ProductHessian;
 

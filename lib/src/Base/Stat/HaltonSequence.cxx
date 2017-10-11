@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HaltonSequence);
+CLASSNAMEINIT(HaltonSequence)
 
 
 /* Constructor with parameters */

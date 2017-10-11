@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MultinomialFactory);
+CLASSNAMEINIT(MultinomialFactory)
 
 static const Factory<MultinomialFactory> Factory_MultinomialFactory;
 

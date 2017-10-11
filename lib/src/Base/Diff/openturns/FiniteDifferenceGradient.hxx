@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FiniteDifferenceGradient
   : public GradientImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<EvaluationImplementation>                          EvaluationPointer;

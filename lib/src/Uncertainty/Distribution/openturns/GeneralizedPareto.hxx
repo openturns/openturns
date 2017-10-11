@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API GeneralizedPareto
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<DistributionImplementation> Implementation;

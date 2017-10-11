@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Domain);
+CLASSNAMEINIT(Domain)
 
 /* Default constructor */
 Domain::Domain():

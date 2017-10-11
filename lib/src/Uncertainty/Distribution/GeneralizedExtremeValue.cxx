@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GeneralizedExtremeValue);
+CLASSNAMEINIT(GeneralizedExtremeValue)
 
 static const Factory<GeneralizedExtremeValue> Factory_GeneralizedExtremeValue;
 

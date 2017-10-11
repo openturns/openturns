@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MixtureClassifier
   : public ClassifierImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Parameters constructor */

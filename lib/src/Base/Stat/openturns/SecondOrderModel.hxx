@@ -42,7 +42,7 @@ class OT_API SecondOrderModel
   : public TypedInterfaceObject<SecondOrderModelImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

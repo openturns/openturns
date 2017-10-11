@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DualLinearCombinationEvaluation
   : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Function>                              FunctionCollection;

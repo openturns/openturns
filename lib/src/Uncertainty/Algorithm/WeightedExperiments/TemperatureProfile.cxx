@@ -27,7 +27,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(TemperatureProfile);
+CLASSNAMEINIT(TemperatureProfile)
 
 /* Default constructor */
 TemperatureProfile::TemperatureProfile()

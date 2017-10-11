@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Axial);
+CLASSNAMEINIT(Axial)
 
 static const Factory<Axial> Factory_Axial;
 

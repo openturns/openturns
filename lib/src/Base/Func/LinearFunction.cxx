@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LinearFunction);
+CLASSNAMEINIT(LinearFunction)
 
 /* Default constructor */
 LinearFunction::LinearFunction(const Point & center,

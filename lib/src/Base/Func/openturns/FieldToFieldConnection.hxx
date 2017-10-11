@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief The class that implements the composition between field functions or 
+ * @brief The class that implements the composition between field functions or
  *        point to field and field to point functions
  *
  * Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
@@ -25,13 +25,13 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class FieldToFieldConnection
  *
- * The class that implements the composition between field functions or 
+ * The class that implements the composition between field functions or
  * point to field and field to point functions
  */
 class OT_API FieldToFieldConnection
   : public FieldFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */
@@ -39,12 +39,12 @@ public:
 
   /** Parameter constructor */
   FieldToFieldConnection(const FieldFunction & leftFieldFunction,
-			const FieldFunction & rightFieldFunction);
+                         const FieldFunction & rightFieldFunction);
 
 
   /** parameter constructor */
   FieldToFieldConnection(const PointToFieldFunction & pointToFieldFunction,
-			const FieldToPointFunction & fieldToPointFunction);
+                         const FieldToPointFunction & fieldToPointFunction);
 
 
   /** Virtual constructor */
@@ -95,7 +95,7 @@ private:
   /** Flag to tell if it is a composition of functions or a
    * composition of point to field and field to point functions */
   Bool isFieldFunctionComposition_;
-  
+
   /** The field function f in h = f o g */
   FieldFunction leftFieldFunction_;
 

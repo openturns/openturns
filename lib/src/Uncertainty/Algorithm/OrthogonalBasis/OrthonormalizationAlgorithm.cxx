@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class OrthonormalizationAlgorithm
  */
 
-CLASSNAMEINIT(OrthonormalizationAlgorithm);
+CLASSNAMEINIT(OrthonormalizationAlgorithm)
 
 /* Constructor with parameters */
 OrthonormalizationAlgorithm::OrthonormalizationAlgorithm(const OrthonormalizationAlgorithmImplementation & implementation)

@@ -43,7 +43,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ComposedDistribution);
+CLASSNAMEINIT(ComposedDistribution)
 
 static const Factory<ComposedDistribution> Factory_ComposedDistribution;
 

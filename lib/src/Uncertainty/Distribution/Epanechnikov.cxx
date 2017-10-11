@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Epanechnikov);
+CLASSNAMEINIT(Epanechnikov)
 
 static const Factory<Epanechnikov> Factory_Epanechnikov;
 

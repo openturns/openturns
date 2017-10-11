@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(FittingAlgorithm);
+CLASSNAMEINIT(FittingAlgorithm)
 
 /* Default constructor */
 FittingAlgorithm::FittingAlgorithm()

@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Tuples);
+CLASSNAMEINIT(Tuples)
 
 /* Default constructor */
 Tuples::Tuples()

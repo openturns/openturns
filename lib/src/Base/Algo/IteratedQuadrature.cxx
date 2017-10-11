@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IteratedQuadrature
  */
 
-CLASSNAMEINIT(IteratedQuadrature);
+CLASSNAMEINIT(IteratedQuadrature)
 
 static const Factory<IteratedQuadrature> Factory_IteratedQuadrature;
 

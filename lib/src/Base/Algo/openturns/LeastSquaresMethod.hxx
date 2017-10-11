@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LeastSquaresMethod
   : public TypedInterfaceObject<LeastSquaresMethodImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

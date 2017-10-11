@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class GaussLegendre
  */
 
-CLASSNAMEINIT(GaussLegendre);
+CLASSNAMEINIT(GaussLegendre)
 
 static const Factory<GaussLegendre> Factory_GaussLegendre;
 

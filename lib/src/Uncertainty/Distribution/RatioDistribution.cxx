@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(RatioDistribution);
+CLASSNAMEINIT(RatioDistribution)
 
 static const Factory<RatioDistribution> Factory_RatioDistribution;
 

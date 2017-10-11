@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConditionedGaussianProcess);
+CLASSNAMEINIT(ConditionedGaussianProcess)
 
 static const Factory<ConditionedGaussianProcess> Factory_ConditionedGaussianProcess;
 

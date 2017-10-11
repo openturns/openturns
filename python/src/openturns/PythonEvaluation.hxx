@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonEvaluation
   : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

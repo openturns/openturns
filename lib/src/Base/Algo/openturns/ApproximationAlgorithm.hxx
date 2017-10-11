@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ApproximationAlgorithm
   : public TypedInterfaceObject<ApproximationAlgorithmImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

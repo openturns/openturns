@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ProjectionStrategy
   : public TypedInterfaceObject<ProjectionStrategyImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Function> FunctionCollection;

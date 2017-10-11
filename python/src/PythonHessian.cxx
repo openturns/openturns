@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PythonHessian);
+CLASSNAMEINIT(PythonHessian)
 
 static const Factory<PythonHessian> Factory_PythonHessian;
 

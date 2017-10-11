@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LinearModel);
+CLASSNAMEINIT(LinearModel)
 
 static const Factory<LinearModel> Factory_LinearModel;
 

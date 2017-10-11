@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API BoxCoxHessian
   : public HessianImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

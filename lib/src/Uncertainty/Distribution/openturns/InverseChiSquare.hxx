@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API InverseChiSquare
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<DistributionImplementation> Implementation;

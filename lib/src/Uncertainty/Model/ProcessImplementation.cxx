@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProcessImplementation);
+CLASSNAMEINIT(ProcessImplementation)
 
 static const Factory<ProcessImplementation> Factory_ProcessImplementation;
 

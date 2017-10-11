@@ -14,7 +14,7 @@ try:
     t = [first]
     f = list()
     for i in range(len(l)):
-        t.append(t[i]+l[i])
+        t.append(t[i] + l[i])
         f.append(h[i] * l[i])
     distribution = Histogram(t, f)
     print("Distribution ", repr(distribution))

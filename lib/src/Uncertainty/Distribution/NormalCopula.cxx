@@ -37,7 +37,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NormalCopula);
+CLASSNAMEINIT(NormalCopula)
 
 static const Factory<NormalCopula> Factory_NormalCopula;
 

@@ -33,7 +33,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LevelSet);
+CLASSNAMEINIT(LevelSet)
 
 static const Factory<LevelSet> Factory_LevelSet;
 

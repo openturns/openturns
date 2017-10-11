@@ -24,7 +24,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(SubsetSamplingResult);
+CLASSNAMEINIT(SubsetSamplingResult)
 
 static const Factory<SubsetSamplingResult> Factory_SubsetSamplingResult;
 

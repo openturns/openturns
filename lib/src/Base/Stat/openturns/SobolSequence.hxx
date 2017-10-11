@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SobolSequence :
   public LowDiscrepancySequenceImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   // this implementation supports dimensions up to 40

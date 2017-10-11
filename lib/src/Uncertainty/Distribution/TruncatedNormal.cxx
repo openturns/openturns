@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TruncatedNormal);
+CLASSNAMEINIT(TruncatedNormal)
 
 static const Factory<TruncatedNormal> Factory_TruncatedNormal;
 

@@ -31,7 +31,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(SimulatedAnnealingLHS);
+CLASSNAMEINIT(SimulatedAnnealingLHS)
 
 static const Factory<SimulatedAnnealingLHS> Factory_SimulatedAnnealingLHS;
 

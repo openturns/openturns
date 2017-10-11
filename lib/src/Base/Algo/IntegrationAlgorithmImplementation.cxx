@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class IntegrationAlgorithmImplementation
  */
 
-CLASSNAMEINIT(IntegrationAlgorithmImplementation);
+CLASSNAMEINIT(IntegrationAlgorithmImplementation)
 
 static const Factory<IntegrationAlgorithmImplementation> Factory_IntegrationAlgorithmImplementation;
 

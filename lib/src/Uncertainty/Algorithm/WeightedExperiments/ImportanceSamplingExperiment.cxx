@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ImportanceSamplingExperiment);
+CLASSNAMEINIT(ImportanceSamplingExperiment)
 
 static const Factory<ImportanceSamplingExperiment> Factory_ImportanceSamplingExperiment;
 
@@ -38,8 +38,8 @@ ImportanceSamplingExperiment::ImportanceSamplingExperiment():
 
 /* Constructor with parameters */
 ImportanceSamplingExperiment::ImportanceSamplingExperiment(const Distribution & importanceDistribution)
-: WeightedExperimentImplementation(),
-  importanceDistribution_(importanceDistribution)
+  : WeightedExperimentImplementation(),
+    importanceDistribution_(importanceDistribution)
 {
   // Take the default distribution as the importance distribution
 }

@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Composite);
+CLASSNAMEINIT(Composite)
 
 static const Factory<Composite> Factory_Composite;
 

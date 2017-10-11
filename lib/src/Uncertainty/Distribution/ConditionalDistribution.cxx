@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConditionalDistribution);
+CLASSNAMEINIT(ConditionalDistribution)
 
 static const Factory<ConditionalDistribution> Factory_ConditionalDistribution;
 

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Domain
   : public TypedInterfaceObject<DomainImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

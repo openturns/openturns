@@ -52,7 +52,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DistributionImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<DistributionImplementation>       Implementation;

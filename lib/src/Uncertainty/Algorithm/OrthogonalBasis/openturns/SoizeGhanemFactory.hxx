@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SoizeGhanemFactory
   : public OrthogonalFunctionFactory
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   friend class Factory<SoizeGhanemFactory>;

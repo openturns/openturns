@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API GaussProductExperiment
   : public WeightedExperimentImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<OrthogonalUniVariatePolynomialFamily> OrthogonalUniVariatePolynomialFamilyCollection;

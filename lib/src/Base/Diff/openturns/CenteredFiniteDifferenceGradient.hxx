@@ -44,7 +44,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CenteredFiniteDifferenceGradient
   : public FiniteDifferenceGradient
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<EvaluationImplementation>                EvaluationPointer;

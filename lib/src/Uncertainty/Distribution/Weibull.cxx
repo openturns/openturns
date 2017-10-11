@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Weibull);
+CLASSNAMEINIT(Weibull)
 
 static const Factory<Weibull> Factory_Weibull;
 

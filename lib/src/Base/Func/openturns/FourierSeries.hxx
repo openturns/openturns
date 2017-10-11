@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FourierSeries
   : public UniVariateFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Parameter constructor */

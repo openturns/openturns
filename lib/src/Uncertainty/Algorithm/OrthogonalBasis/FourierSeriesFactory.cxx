@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(FourierSeriesFactory);
+CLASSNAMEINIT(FourierSeriesFactory)
 
 static const Factory<FourierSeriesFactory> Factory_FourierSeriesFactory;
 

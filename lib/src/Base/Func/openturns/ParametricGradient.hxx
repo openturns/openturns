@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ParametricGradient
   : public GradientImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef Pointer<ParametricEvaluation>                EvaluationPointer;

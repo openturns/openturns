@@ -45,7 +45,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TensorApproximationResult
   : public MetaModelResult
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

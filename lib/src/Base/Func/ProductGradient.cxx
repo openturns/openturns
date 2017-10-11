@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ProductGradient);
+CLASSNAMEINIT(ProductGradient)
 
 static const Factory<ProductGradient> Factory_ProductGradient;
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Classifier
   : public TypedInterfaceObject<ClassifierImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

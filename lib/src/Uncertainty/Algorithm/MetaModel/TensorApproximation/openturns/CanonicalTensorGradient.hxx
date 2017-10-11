@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CanonicalTensorGradient
   : public GradientImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

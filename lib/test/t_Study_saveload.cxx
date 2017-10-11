@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
       study2.load();
       Point point2;
       study2.fillObject("point", point2);
-      
+
       // cleanup
       Os::Remove(fileName);
     }
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
       study2.load();
       Point point2;
       study2.fillObject("point", point2);
-      
+
       // cleanup
       Os::Remove(fileName);
     }

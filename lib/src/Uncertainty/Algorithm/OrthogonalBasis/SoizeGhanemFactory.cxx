@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SoizeGhanemFactory);
+CLASSNAMEINIT(SoizeGhanemFactory)
 
 static const Factory<SoizeGhanemFactory> Factory_SoizeGhanemFactory;
 

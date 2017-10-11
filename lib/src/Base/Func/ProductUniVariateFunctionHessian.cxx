@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProductUniVariateFunctionHessian);
+CLASSNAMEINIT(ProductUniVariateFunctionHessian)
 
 static const Factory<ProductUniVariateFunctionHessian> Factory_ProductUniVariateFunctionHessian;
 

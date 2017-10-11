@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(RandomVectorImplementation);
+CLASSNAMEINIT(RandomVectorImplementation)
 
 static const Factory<RandomVectorImplementation> Factory_RandomVectorImplementation;
 

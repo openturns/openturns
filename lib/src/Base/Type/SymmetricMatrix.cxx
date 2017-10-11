@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SymmetricMatrix);
+CLASSNAMEINIT(SymmetricMatrix)
 
 /* Default constructor */
 SymmetricMatrix::SymmetricMatrix()

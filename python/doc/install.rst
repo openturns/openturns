@@ -18,7 +18,7 @@ Install the package from `Anaconda.org <https://anaconda.org/conda-forge/opentur
 
 Windows
 -------
-Download the installer matching your python version and architecture from `SourceForge <http://sourceforge.net/projects/openturns/files/openturns/>`_
+Download the installer matching your python version and architecture from `GitHub <https://github.com/openturns/build/releases>`_
 
 
 Debian/Ubuntu
@@ -31,20 +31,18 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------+
     | Distribution name                   | Repository address                           |
     +=====================================+==============================================+
-    | Ubuntu 12.04 LTS 'Precise Pangolin' | deb http://ubuntu.openturns.org precise main |
-    +-------------------------------------+----------------------------------------------+
     | Ubuntu 14.04 LTS 'Trusty Tahr'      | deb http://ubuntu.openturns.org trusty main  |
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb http://ubuntu.openturns.org xenial main  |
     +-------------------------------------+----------------------------------------------+
-    | Ubuntu 16.10 'Yakkety Yak'          | deb http://ubuntu.openturns.org yakkety main |
-    +-------------------------------------+----------------------------------------------+
-    | Debian 7.0 'Wheezy'                 | deb http://debian.openturns.org wheezy main  |
+    | Ubuntu 17.04 'Zesty Zapus'          | deb http://ubuntu.openturns.org zesty main   |
     +-------------------------------------+----------------------------------------------+
     | Debian 8.0 'Jessie'                 | deb http://debian.openturns.org jessie main  |
     +-------------------------------------+----------------------------------------------+
+    | Debian 9.0 'Stretch'                | deb http://debian.openturns.org stretch main |
+    +-------------------------------------+----------------------------------------------+
 
-Add OpenTURNS' mirror signature::
+Add the mirror signature::
 
     curl http://debian.openturns.org/openturns.org-repo.key | sudo apt-key add -
 
@@ -101,14 +99,14 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_25/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.2/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_26/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.3/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_7/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_25/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.2/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_26/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.3/repodata/repomd.xml.key
 
 Install the package::
 

@@ -49,11 +49,11 @@ static const Factory<PersistentCollection<UnsignedInteger> > Factory_PersistentC
 static const Factory<PersistentCollection<Unsigned64BitsInteger> > Factory_PersistentCollection_Unsigned64BitsInteger;
 #endif
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<Scalar> >);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<Scalar> >)
 static const Factory<PersistentCollection<PersistentCollection<Scalar> > > Factory_PersistentCollection_PersistentCollection_Scalar;
 
 
-CLASSNAMEINIT(EvaluationImplementation);
+CLASSNAMEINIT(EvaluationImplementation)
 
 static const Factory<EvaluationImplementation> Factory_EvaluationImplementation;
 

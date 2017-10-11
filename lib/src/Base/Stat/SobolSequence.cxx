@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SobolSequence);
+CLASSNAMEINIT(SobolSequence)
 static const Factory<SobolSequence> Factory_SobolSequence;
 
 

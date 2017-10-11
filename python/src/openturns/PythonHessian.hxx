@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonHessian
   : public HessianImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

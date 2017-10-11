@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FieldToPointFunction
   : public TypedInterfaceObject<FieldToPointFunctionImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */
@@ -45,8 +45,8 @@ public:
 
   /** Parameter constructor */
   FieldToPointFunction(const UnsignedInteger spatialDimension,
-		       const UnsignedInteger inputDimension,
-		       const UnsignedInteger outputDimension);
+                       const UnsignedInteger inputDimension,
+                       const UnsignedInteger outputDimension);
 
   /** Constructor from FieldToPointFunctionImplementation */
   FieldToPointFunction(const FieldToPointFunctionImplementation & implementation);

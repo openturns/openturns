@@ -17,7 +17,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseTrendEvaluation);
+CLASSNAMEINIT(InverseTrendEvaluation)
 
 static const Factory<InverseTrendEvaluation> Factory_InverseTrendEvaluation;
 

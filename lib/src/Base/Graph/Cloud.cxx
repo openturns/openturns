@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Cloud);
+CLASSNAMEINIT(Cloud)
 
 static const Factory<Cloud> Factory_Cloud;
 

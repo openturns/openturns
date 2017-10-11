@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(FixedStrategy);
+CLASSNAMEINIT(FixedStrategy)
 
 static const Factory<FixedStrategy> Factory_FixedStrategy;
 

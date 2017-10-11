@@ -41,7 +41,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Function);
+CLASSNAMEINIT(Function)
 
 
 /* Default constructor */

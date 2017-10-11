@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Mixture);
+CLASSNAMEINIT(Mixture)
 
 static const Factory<Mixture> Factory_Mixture;
 

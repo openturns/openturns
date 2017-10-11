@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(RungeKutta);
+CLASSNAMEINIT(RungeKutta)
 
 static const Factory<RungeKutta> Factory_RungeKutta;
 

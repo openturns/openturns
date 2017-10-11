@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KarhunenLoeveLifting);
+CLASSNAMEINIT(KarhunenLoeveLifting)
 
 static const Factory<KarhunenLoeveLifting> Factory_KarhunenLoeveLifting;
 

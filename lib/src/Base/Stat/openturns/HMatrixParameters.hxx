@@ -33,7 +33,7 @@ class OT_API HMatrixParameters
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

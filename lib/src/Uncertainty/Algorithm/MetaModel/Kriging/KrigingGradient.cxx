@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KrigingGradient);
+CLASSNAMEINIT(KrigingGradient)
 
 
 static const Factory<KrigingGradient> Factory_KrigingGradient;

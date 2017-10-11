@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Arcsine);
+CLASSNAMEINIT(Arcsine)
 
 static const Factory<Arcsine> Factory_Arcsine;
 

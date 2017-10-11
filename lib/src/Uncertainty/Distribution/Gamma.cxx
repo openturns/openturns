@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Gamma);
+CLASSNAMEINIT(Gamma)
 
 static const Factory<Gamma> Factory_Gamma;
 

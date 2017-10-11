@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(Object);
+CLASSNAMEINIT(Object)
 
 /* Destructor */
 Object::~Object()

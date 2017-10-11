@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ODESolver);
+CLASSNAMEINIT(ODESolver)
 
 /* Default constructor */
 ODESolver::ODESolver()

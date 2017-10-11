@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API EnumerateFunction
   : public TypedInterfaceObject<EnumerateFunctionImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<EnumerateFunctionImplementation> Implementation;

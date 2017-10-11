@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ComposedHessian
   : public HessianImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /* Some typedefs for easy reading */

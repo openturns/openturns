@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LowDiscrepancyExperiment);
+CLASSNAMEINIT(LowDiscrepancyExperiment)
 
 static const Factory<LowDiscrepancyExperiment> Factory_LowDiscrepancyExperiment;
 
@@ -104,7 +104,7 @@ String LowDiscrepancyExperiment::__repr__() const
       << " size=" << size_
       << " restart=" << restart_
       << " randomize=" << randomize_;
-      return oss;
+  return oss;
 }
 
 String LowDiscrepancyExperiment::__str__(const String & offset) const

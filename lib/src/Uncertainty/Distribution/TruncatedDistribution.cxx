@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TruncatedDistribution);
+CLASSNAMEINIT(TruncatedDistribution)
 
 static const Factory<TruncatedDistribution> Factory_TruncatedDistribution;
 

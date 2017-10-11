@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(TracyWidomGUE);
+CLASSNAMEINIT(TracyWidomGUE)
 
 static const Factory<TracyWidomGUE> Factory_TracyWidomGUE;
 

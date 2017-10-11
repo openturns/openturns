@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class LHS
  */
 
-CLASSNAMEINIT(LHS);
+CLASSNAMEINIT(LHS)
 
 static const Factory<LHS> Factory_LHS;
 

@@ -34,11 +34,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<OrthogonalUniVariatePolynomialFamily>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<OrthogonalUniVariatePolynomialFamily>)
 
 static const Factory<PersistentCollection<OrthogonalUniVariatePolynomialFamily> > Factory_PersistentCollection_OrthogonalUniVariatePolynomialFamily;
 
-CLASSNAMEINIT(OrthogonalProductPolynomialFactory);
+CLASSNAMEINIT(OrthogonalProductPolynomialFactory)
 
 static const Factory<OrthogonalProductPolynomialFactory> Factory_OrthogonalProductPolynomialFactory;
 

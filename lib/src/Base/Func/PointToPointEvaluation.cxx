@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief The class that implements the composition between evaluations or 
+ * @brief The class that implements the composition between evaluations or
  *        field to point and point to field functions
  *
  * Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
@@ -19,7 +19,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToPointEvaluation);
+CLASSNAMEINIT(PointToPointEvaluation)
 
 static const Factory<PointToPointEvaluation> Factory_PointToPointEvaluation;
 
@@ -37,7 +37,7 @@ PointToPointEvaluation::PointToPointEvaluation()
 
 /* Parameters constructor */
 PointToPointEvaluation::PointToPointEvaluation(const Function & leftFunction,
-                                       const Function & rightFunction)
+    const Function & rightFunction)
   : EvaluationImplementation()
   , isFunctionComposition_(true)
   , leftFunction_(leftFunction)
@@ -53,7 +53,7 @@ PointToPointEvaluation::PointToPointEvaluation(const Function & leftFunction,
 
 /* Parameters constructor */
 PointToPointEvaluation::PointToPointEvaluation(const FieldToPointFunction & fieldToPointFunction,
-                                       const PointToFieldFunction & pointToFieldFunction)
+    const PointToFieldFunction & pointToFieldFunction)
   : EvaluationImplementation()
   , isFunctionComposition_(false)
   , leftFunction_()
@@ -115,15 +115,15 @@ String PointToPointEvaluation::__str__(const String & offset) const
   OSS oss(false);
   if (hasVisibleName()) oss << offset << "name=" << getName() << "\n";
   if (isFunctionComposition_)
-    {
-      oss << "(" << leftFunction_.__str__(offset) << ")o(";
-      oss << rightFunction_.__str__(offset) << ")";
-    }
+  {
+    oss << "(" << leftFunction_.__str__(offset) << ")o(";
+    oss << rightFunction_.__str__(offset) << ")";
+  }
   else
-    {
-      oss << "(" << fieldToPointFunction_.__str__(offset) << ")o(";
-      oss << pointToFieldFunction_.__str__(offset) << ")";
-    }
+  {
+    oss << "(" << fieldToPointFunction_.__str__(offset) << ")o(";
+    oss << pointToFieldFunction_.__str__(offset) << ")";
+  }
   return oss;
 }
 
@@ -151,21 +151,21 @@ Sample PointToPointEvaluation::operator() (const Sample & inSample) const
   if (isFunctionComposition_) outSample = leftFunction_.operator()(rightFunction_.operator()(inSample));
   // Else compute the intermediate sample by slices of reasonable size
   else
+  {
+    const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("PointToPointEvaluation-BlockSize");
+    UnsignedInteger remaining = inSample.getSize();
+    while (remaining > 0)
     {
-      const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("PointToPointEvaluation-BlockSize");
-      UnsignedInteger remaining = inSample.getSize();
-      while (remaining > 0)
-	{
-	  const UnsignedInteger currentBlockSize = std::min(blockSize, remaining);
-	  Sample inBlock(currentBlockSize, inSample.getDimension());
-	  for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
-	    inBlock[i] = inSample[remaining - i - 1];
-	  const Sample outBlock(fieldToPointFunction_.operator()(pointToFieldFunction_.operator()(inBlock)));
-	  for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
-	    outSample[remaining - i - 1] = outBlock[i];
-	  remaining -= currentBlockSize;
-	} // while (ramaining > 0)
-    } // isFunctionComposition_
+      const UnsignedInteger currentBlockSize = std::min(blockSize, remaining);
+      Sample inBlock(currentBlockSize, inSample.getDimension());
+      for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
+        inBlock[i] = inSample[remaining - i - 1];
+      const Sample outBlock(fieldToPointFunction_.operator()(pointToFieldFunction_.operator()(inBlock)));
+      for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
+        outSample[remaining - i - 1] = outBlock[i];
+      remaining -= currentBlockSize;
+    } // while (ramaining > 0)
+  } // isFunctionComposition_
   outSample.setDescription(getOutputDescription());
   if (isHistoryEnabled_)
   {

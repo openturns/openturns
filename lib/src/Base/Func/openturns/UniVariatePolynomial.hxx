@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API UniVariatePolynomial
   : public TypedInterfaceObject<UniVariatePolynomialImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef UniVariatePolynomialImplementation::ComplexCollection ComplexCollection;

@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SecondOrderModel);
+CLASSNAMEINIT(SecondOrderModel)
 
 /* Constructor with parameters */
 SecondOrderModel::SecondOrderModel()

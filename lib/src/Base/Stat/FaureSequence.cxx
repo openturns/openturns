@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FaureSequence);
+CLASSNAMEINIT(FaureSequence)
 
 /* Constructor with parameters */
 FaureSequence::FaureSequence(const UnsignedInteger dimension) :

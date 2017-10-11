@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProductFunction);
+CLASSNAMEINIT(ProductFunction)
 
 static const Factory<ProductFunction> Factory_ProductFunction;
 

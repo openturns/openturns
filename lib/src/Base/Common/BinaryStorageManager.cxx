@@ -179,7 +179,7 @@ struct BinaryStorageManagerState : public StorageManager::InternalObject
 /* ====================================================================== */
 
 
-CLASSNAMEINIT(BinaryStorageManager);
+CLASSNAMEINIT(BinaryStorageManager)
 const BinaryStorageManager::VersionList BinaryStorageManager::SupportedVersions;
 
 /* Default constructor */
@@ -609,8 +609,8 @@ void AttributeWriter(Pointer<StorageManager::InternalObject> & p_obj,
 template <>
 inline
 void AttributeWriter<Complex>(Pointer<StorageManager::InternalObject> & p_obj,
-                                       const String & name,
-                                       Complex value)
+                              const String & name,
+                              Complex value)
 {
   assert(p_obj);
   //      XMLInternalObject & obj = dynamic_cast<XMLInternalObject&>(*p_obj);

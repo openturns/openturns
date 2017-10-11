@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BetaFactory);
+CLASSNAMEINIT(BetaFactory)
 
 static const Factory<BetaFactory> Factory_BetaFactory;
 

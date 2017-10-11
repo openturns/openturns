@@ -36,7 +36,7 @@ class ODESolverImplementation;
 class OT_API ODESolver
   : public TypedInterfaceObject<ODESolverImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

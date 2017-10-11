@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MixtureClassifier);
+CLASSNAMEINIT(MixtureClassifier)
 
 static const Factory<MixtureClassifier> Factory_MixtureClassifier;
 

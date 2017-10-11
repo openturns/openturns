@@ -43,7 +43,7 @@ typedef Collection<Distribution> DistributionCollection;
 typedef Collection<Function> FunctionCollection;
 typedef Collection<OrthogonalUniVariateFunctionFamily> FunctionFamilyCollection;
 
-CLASSNAMEINIT(TensorApproximationAlgorithm);
+CLASSNAMEINIT(TensorApproximationAlgorithm)
 
 static const Factory<TensorApproximationAlgorithm> Factory_TensorApproximationAlgorithm;
 

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ExponentialCauchy
  */
 
-CLASSNAMEINIT(ExponentialCauchy);
+CLASSNAMEINIT(ExponentialCauchy)
 
 static const Factory<ExponentialCauchy> Factory_ExponentialCauchy;
 

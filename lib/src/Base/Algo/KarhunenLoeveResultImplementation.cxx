@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KarhunenLoeveResultImplementation);
+CLASSNAMEINIT(KarhunenLoeveResultImplementation)
 
 static const Factory<KarhunenLoeveResultImplementation> Factory_KarhunenLoeveResultImplementation;
 

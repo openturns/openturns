@@ -39,11 +39,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Sample>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Sample>)
 
 static const Factory<PersistentCollection<Sample> > Factory_PersistentCollection_Sample;
 
-CLASSNAMEINIT(FieldImplementation);
+CLASSNAMEINIT(FieldImplementation)
 
 static const Factory<FieldImplementation> Factory_FieldImplementation;
 

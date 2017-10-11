@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Dirichlet);
+CLASSNAMEINIT(Dirichlet)
 
 static const Factory<Dirichlet> Factory_Dirichlet;
 

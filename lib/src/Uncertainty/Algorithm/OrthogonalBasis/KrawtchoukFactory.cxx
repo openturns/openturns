@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(KrawtchoukFactory);
+CLASSNAMEINIT(KrawtchoukFactory)
 
 static const Factory<KrawtchoukFactory> Factory_KrawtchoukFactory;
 

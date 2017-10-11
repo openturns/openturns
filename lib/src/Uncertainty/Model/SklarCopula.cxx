@@ -39,7 +39,7 @@ typedef FunctionImplementation::GradientPointer   GradientPointer;
 typedef FunctionImplementation::HessianPointer    HessianPointer;
 
 
-CLASSNAMEINIT(SklarCopula);
+CLASSNAMEINIT(SklarCopula)
 
 static const Factory<SklarCopula> Factory_SklarCopula;
 

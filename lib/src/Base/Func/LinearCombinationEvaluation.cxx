@@ -25,12 +25,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Function>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Function>)
 
 static const Factory<PersistentCollection<Function> > Factory_PersistentCollection_Function;
 
 
-CLASSNAMEINIT(LinearCombinationEvaluation);
+CLASSNAMEINIT(LinearCombinationEvaluation)
 
 static const Factory<LinearCombinationEvaluation> Factory_LinearCombinationEvaluation;
 

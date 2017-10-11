@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 conditionedDistribution = Normal()
 conditioningDistribution = ComposedDistribution([Uniform(0.0, 1.0),
-    Uniform(1.0, 2.0)])
+                                                 Uniform(1.0, 2.0)])
 distribution = BayesDistribution(
     conditionedDistribution, conditioningDistribution)
 dim = distribution.getDimension()
@@ -27,7 +27,7 @@ print("Independent copula= ", distribution.hasIndependentCopula())
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
 print("oneRealization=", oneRealization)
-    
+
 # Test for sampling
 size = 10
 oneSample = distribution.getSample(size)

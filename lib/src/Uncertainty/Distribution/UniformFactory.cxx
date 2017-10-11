@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(UniformFactory);
+CLASSNAMEINIT(UniformFactory)
 
 /* Default constructor */
 UniformFactory::UniformFactory()

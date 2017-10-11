@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(InterfaceObject);
+CLASSNAMEINIT(InterfaceObject)
 
 
 /* String converter */

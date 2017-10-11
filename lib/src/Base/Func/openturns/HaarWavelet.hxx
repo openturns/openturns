@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API HaarWavelet
   : public UniVariateFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Parameter constructor */

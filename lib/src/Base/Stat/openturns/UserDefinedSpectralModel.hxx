@@ -38,7 +38,7 @@ class OT_API UserDefinedSpectralModel
   : public SpectralModelImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

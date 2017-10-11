@@ -230,8 +230,8 @@ public:
                               const Scalar x);
   // Complex hypergeometric function of type (1,1): hyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
   static Complex HyperGeom_1_1(const Scalar p1,
-                                        const Scalar q1,
-                                        const Complex & x);
+                               const Scalar q1,
+                               const Complex & x);
   // Hypergeometric function of type (2,1): hyperGeom_2_1(p1, p2, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k)] * x^n / n!
   static Scalar HyperGeom_2_1(const Scalar p1,
                               const Scalar p2,

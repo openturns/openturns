@@ -33,7 +33,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HessianImplementation);
+CLASSNAMEINIT(HessianImplementation)
 
 static const Factory<HessianImplementation> Factory_HessianImplementation;
 

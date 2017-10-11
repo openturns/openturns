@@ -48,7 +48,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FunctionImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /* Some typedefs for easy reading */

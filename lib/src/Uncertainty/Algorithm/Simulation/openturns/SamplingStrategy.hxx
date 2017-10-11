@@ -37,7 +37,7 @@ class OT_API SamplingStrategy
   : public TypedInterfaceObject<SamplingStrategyImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

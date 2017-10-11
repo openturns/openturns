@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SphereUniformNorm);
+CLASSNAMEINIT(SphereUniformNorm)
 
 /** Default constructor */
 SphereUniformNorm::SphereUniformNorm()

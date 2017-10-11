@@ -45,7 +45,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class KarhunenLoeveQuadratureAlgorithm
  */
 
-CLASSNAMEINIT(KarhunenLoeveQuadratureAlgorithm);
+CLASSNAMEINIT(KarhunenLoeveQuadratureAlgorithm)
 
 static const Factory<KarhunenLoeveQuadratureAlgorithm> Algorithm_KarhunenLoeveQuadratureAlgorithm;
 

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SamplingStrategyImplementation
  */
 
-CLASSNAMEINIT(SamplingStrategyImplementation);
+CLASSNAMEINIT(SamplingStrategyImplementation)
 
 static const Factory<SamplingStrategyImplementation> Factory_SamplingStrategyImplementation;
 

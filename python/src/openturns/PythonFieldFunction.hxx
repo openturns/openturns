@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonFieldFunction
   : public FieldFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Constructor from Python object*/

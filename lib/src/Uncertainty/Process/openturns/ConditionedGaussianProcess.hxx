@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ConditionedGaussianProcess
   : public GaussianProcess
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 
@@ -43,7 +43,7 @@ public:
 
   /** Standard constructor  */
   ConditionedGaussianProcess(const KrigingResult & result,
-                           const Mesh & mesh);
+                             const Mesh & mesh);
 
   /** Virtual constructor */
   virtual ConditionedGaussianProcess * clone() const;

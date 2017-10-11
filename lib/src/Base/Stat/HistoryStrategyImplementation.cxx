@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class HistoryStrategyImplementation
  */
 
-CLASSNAMEINIT(HistoryStrategyImplementation);
+CLASSNAMEINIT(HistoryStrategyImplementation)
 
 static const Factory<HistoryStrategyImplementation> Factory_HistoryStrategyImplementation;
 

@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BoxCoxTransform);
+CLASSNAMEINIT(BoxCoxTransform)
 
 /* Default constructor */
 BoxCoxTransform::BoxCoxTransform()

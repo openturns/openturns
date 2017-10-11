@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToFieldFunctionImplementation);
+CLASSNAMEINIT(PointToFieldFunctionImplementation)
 
 static const Factory<PointToFieldFunctionImplementation> Factory_PointToFieldFunctionImplementation;
 
@@ -43,7 +43,7 @@ PointToFieldFunctionImplementation::PointToFieldFunctionImplementation()
 
 /* Parameter constructor */
 PointToFieldFunctionImplementation::PointToFieldFunctionImplementation(const UnsignedInteger inputDimension,
-								       const UnsignedInteger outputDimension)
+    const UnsignedInteger outputDimension)
   : PersistentObject()
   , inputDimension_(inputDimension)
   , outputDimension_(outputDimension)

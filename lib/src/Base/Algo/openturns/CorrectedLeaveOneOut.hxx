@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CorrectedLeaveOneOut
   : public FittingAlgorithmImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

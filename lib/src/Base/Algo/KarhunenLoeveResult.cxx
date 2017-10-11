@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(KarhunenLoeveResult);
+CLASSNAMEINIT(KarhunenLoeveResult)
 
 
 /* Default constructor */

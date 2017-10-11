@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(JansenSensitivityAlgorithm);
+CLASSNAMEINIT(JansenSensitivityAlgorithm)
 
 static const Factory<JansenSensitivityAlgorithm> Factory_JansenSensitivityAlgorithm;
 

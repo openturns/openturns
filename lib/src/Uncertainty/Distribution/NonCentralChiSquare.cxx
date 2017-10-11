@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NonCentralChiSquare);
+CLASSNAMEINIT(NonCentralChiSquare)
 
 static const Factory<NonCentralChiSquare> Factory_NonCentralChiSquare;
 

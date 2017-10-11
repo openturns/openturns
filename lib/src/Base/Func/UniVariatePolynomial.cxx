@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(UniVariatePolynomial);
+CLASSNAMEINIT(UniVariatePolynomial)
 
 /* Default constructor */
 UniVariatePolynomial::UniVariatePolynomial()

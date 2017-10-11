@@ -32,7 +32,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MatrixImplementation);
+CLASSNAMEINIT(MatrixImplementation)
 
 
 static const Factory<MatrixImplementation> Factory_MatrixImplementation;

@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ODESolverImplementation);
+CLASSNAMEINIT(ODESolverImplementation)
 
 static const Factory<ODESolverImplementation> Factory_ODESolverImplementation;
 

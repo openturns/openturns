@@ -39,7 +39,7 @@ class OT_API Graph :
   public TypedInterfaceObject<GraphImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

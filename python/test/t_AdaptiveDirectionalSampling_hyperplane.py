@@ -6,6 +6,7 @@ import math as m
 
 ot.TESTPREAMBLE()
 
+
 def hyperplane(coefs):
     """
     Generate a linear NMF from its coefficients

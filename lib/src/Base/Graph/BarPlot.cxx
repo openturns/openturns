@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(BarPlot);
+CLASSNAMEINIT(BarPlot)
 
 static const Factory<BarPlot> Factory_BarPlot;
 

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Point);
+CLASSNAMEINIT(Point)
 
 static const Factory<PersistentCollection<Scalar> > Factory_PersistentCollection_Scalar;
 

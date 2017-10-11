@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(PosteriorDistribution);
+CLASSNAMEINIT(PosteriorDistribution)
 
 static const Factory<PosteriorDistribution> Factory_PosteriorDistribution;
 

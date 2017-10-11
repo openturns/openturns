@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DualLinearCombinationEvaluation);
+CLASSNAMEINIT(DualLinearCombinationEvaluation)
 
 static const Factory<DualLinearCombinationEvaluation> Factory_DualLinearCombinationEvaluation;
 
@@ -277,11 +277,11 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
     {
       Point currentCoefficient(coefficients[i]);
       for (UnsignedInteger j = 0; j < currentCoefficient.getDimension(); ++j)
-	if (std::abs(currentCoefficient[j]) <= epsilon)
-	  {
-	    currentCoefficient[j] = 0.0;
-	    LOGWARN(OSS() << "set the component " << j << " of contributor " << i << "=" << currentCoefficient[j] << " to zero as it is too small");
-	  }
+        if (std::abs(currentCoefficient[j]) <= epsilon)
+        {
+          currentCoefficient[j] = 0.0;
+          LOGWARN(OSS() << "set the component " << j << " of contributor " << i << "=" << currentCoefficient[j] << " to zero as it is too small");
+        }
       coefficients_.add(currentCoefficient);
       functionsCollection_.add(functionsCollection[i]);
     }

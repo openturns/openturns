@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(FORMResult);
+CLASSNAMEINIT(FORMResult)
 
 static const Factory<FORMResult> Factory_FORMResult;
 

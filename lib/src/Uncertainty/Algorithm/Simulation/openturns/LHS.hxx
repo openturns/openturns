@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LHS: public Simulation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Distribution>           Marginals;

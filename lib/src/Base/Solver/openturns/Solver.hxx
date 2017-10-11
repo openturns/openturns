@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Solver :
   public TypedInterfaceObject<SolverImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<SolverImplementation>           Implementation;

@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FFTImplementation
  */
 
-CLASSNAMEINIT(FFTImplementation);
+CLASSNAMEINIT(FFTImplementation)
 
 static const Factory<FFTImplementation> Factory_FFTImplementation;
 

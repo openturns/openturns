@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LeastSquaresMetaModelSelectionFactory
   : public ApproximationAlgorithmImplementationFactory
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Constructor */

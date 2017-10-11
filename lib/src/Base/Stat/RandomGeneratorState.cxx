@@ -26,7 +26,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(RandomGeneratorState);
+CLASSNAMEINIT(RandomGeneratorState)
 
 static const Factory<RandomGeneratorState> Factory_RandomGeneratorState;
 
@@ -104,3 +104,4 @@ void RandomGeneratorState::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LeastSquaresMethod);
+CLASSNAMEINIT(LeastSquaresMethod)
 
 /* Default constructor */
 LeastSquaresMethod::LeastSquaresMethod()

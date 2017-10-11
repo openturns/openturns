@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Process);
+CLASSNAMEINIT(Process)
 
 /* Default constructor */
 Process::Process()

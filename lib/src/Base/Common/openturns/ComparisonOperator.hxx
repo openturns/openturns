@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ComparisonOperator
   : public TypedInterfaceObject<ComparisonOperatorImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

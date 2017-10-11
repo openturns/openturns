@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(OrthogonalUniVariateFunctionFamily);
+CLASSNAMEINIT(OrthogonalUniVariateFunctionFamily)
 
 /* Default constructor */
 OrthogonalUniVariateFunctionFamily::OrthogonalUniVariateFunctionFamily()

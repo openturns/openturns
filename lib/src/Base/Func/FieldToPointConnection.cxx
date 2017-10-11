@@ -20,7 +20,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldToPointConnection);
+CLASSNAMEINIT(FieldToPointConnection)
 
 static const Factory<FieldToPointConnection> Factory_FieldToPointConnection;
 
@@ -37,7 +37,7 @@ FieldToPointConnection::FieldToPointConnection()
 
 /* Parameters constructor */
 FieldToPointConnection::FieldToPointConnection(const Function & function,
-                                       const FieldToPointFunction & fieldToPointFunction)
+    const FieldToPointFunction & fieldToPointFunction)
   : FieldToPointFunctionImplementation(fieldToPointFunction.getSpatialDimension(), fieldToPointFunction.getInputDimension(), function.getOutputDimension())
   , startByFieldToPointFunction_(true)
   , function_(function)
@@ -52,7 +52,7 @@ FieldToPointConnection::FieldToPointConnection(const Function & function,
 
 /* Parameters constructor */
 FieldToPointConnection::FieldToPointConnection(const FieldToPointFunction & fieldToPointFunction,
-                                       const FieldFunction & fieldFunction)
+    const FieldFunction & fieldFunction)
   : FieldToPointFunctionImplementation(fieldFunction.getSpatialDimension(), fieldFunction.getInputDimension(), fieldToPointFunction.getOutputDimension())
   , startByFieldToPointFunction_(false)
   , function_()
@@ -112,15 +112,15 @@ String FieldToPointConnection::__str__(const String & offset) const
   OSS oss(false);
   if (hasVisibleName()) oss << offset << "name=" << getName() << "\n";
   if (startByFieldToPointFunction_)
-    {
-      oss << "(" << function_ << ")o(";
-      oss << fieldToPointFunction_ << ")";
-    }
+  {
+    oss << "(" << function_ << ")o(";
+    oss << fieldToPointFunction_ << ")";
+  }
   else
-    {
-      oss << "(" << fieldToPointFunction_ << ")o(";
-      oss << fieldFunction_ << ")";
-    }
+  {
+    oss << "(" << fieldToPointFunction_ << ")o(";
+    oss << fieldFunction_ << ")";
+  }
   return oss;
 }
 
@@ -144,21 +144,21 @@ Sample FieldToPointConnection::operator() (const ProcessSample & inSample) const
   if (startByFieldToPointFunction_) outSample = function_(fieldToPointFunction_(inSample));
   // Else compute the intermediate sample by slices of reasonable size
   else
+  {
+    const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("FieldToPointConnection-BlockSize");
+    UnsignedInteger remaining = inSample.getSize();
+    while (remaining > 0)
     {
-      const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("FieldToPointConnection-BlockSize");
-      UnsignedInteger remaining = inSample.getSize();
-      while (remaining > 0)
-	{
-	  const UnsignedInteger currentBlockSize = std::min(blockSize, remaining);
-	  ProcessSample inBlock(inSample.getMesh(), currentBlockSize, inSample.getDimension());
-	  for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
-	    inBlock[i] = inSample[remaining - i - 1];
-	  const Sample outBlock(fieldToPointFunction_(fieldFunction_(inBlock)));
-	  for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
-	    outSample[remaining - i - 1] = outBlock[i];
-	  remaining -= currentBlockSize;
-	} // while (ramaining > 0)
-    } // startByFieldToPointFunction_
+      const UnsignedInteger currentBlockSize = std::min(blockSize, remaining);
+      ProcessSample inBlock(inSample.getMesh(), currentBlockSize, inSample.getDimension());
+      for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
+        inBlock[i] = inSample[remaining - i - 1];
+      const Sample outBlock(fieldToPointFunction_(fieldFunction_(inBlock)));
+      for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
+        outSample[remaining - i - 1] = outBlock[i];
+      remaining -= currentBlockSize;
+    } // while (ramaining > 0)
+  } // startByFieldToPointFunction_
   outSample.setDescription(getOutputDescription());
   return outSample;
 }

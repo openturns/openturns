@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(CharlierFactory);
+CLASSNAMEINIT(CharlierFactory)
 
 static const Factory<CharlierFactory> Factory_CharlierFactory;
 

@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToFieldFunction);
+CLASSNAMEINIT(PointToFieldFunction)
 
 /* Default constructor */
 PointToFieldFunction::PointToFieldFunction()
@@ -33,7 +33,7 @@ PointToFieldFunction::PointToFieldFunction()
 
 /* Parameter constructor */
 PointToFieldFunction::PointToFieldFunction(const UnsignedInteger inputDimension,
-					   const UnsignedInteger outputDimension)
+    const UnsignedInteger outputDimension)
   : TypedInterfaceObject<PointToFieldFunctionImplementation>(new PointToFieldFunctionImplementation(inputDimension, outputDimension))
 {
   // Nothing to do

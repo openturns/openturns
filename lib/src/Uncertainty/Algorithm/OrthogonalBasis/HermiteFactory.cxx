@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(HermiteFactory);
+CLASSNAMEINIT(HermiteFactory)
 
 static const Factory<HermiteFactory> Factory_HermiteFactory;
 

@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AggregatedEvaluation);
+CLASSNAMEINIT(AggregatedEvaluation)
 
 static const Factory<AggregatedEvaluation> Factory_AggregatedEvaluation;
 

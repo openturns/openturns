@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldFunction);
+CLASSNAMEINIT(FieldFunction)
 
 /* Default constructor */
 FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)
@@ -34,8 +34,8 @@ FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)
 
 /* Parameter constructor */
 FieldFunction::FieldFunction(const UnsignedInteger spatialDimension,
-			     const UnsignedInteger inputDimension,
-			     const UnsignedInteger outputDimension)
+                             const UnsignedInteger inputDimension,
+                             const UnsignedInteger outputDimension)
   : TypedInterfaceObject<FieldFunctionImplementation>(new FieldFunctionImplementation(spatialDimension, inputDimension, outputDimension))
 {
   // Nothing to do

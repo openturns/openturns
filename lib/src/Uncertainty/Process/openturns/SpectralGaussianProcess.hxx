@@ -39,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SpectralGaussianProcess
   : public ProcessImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

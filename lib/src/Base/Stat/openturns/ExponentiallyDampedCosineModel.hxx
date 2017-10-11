@@ -40,7 +40,7 @@ class OT_API ExponentiallyDampedCosineModel
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

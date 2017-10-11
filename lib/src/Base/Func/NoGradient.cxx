@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(NoGradient);
+CLASSNAMEINIT(NoGradient)
 
 static const Factory<NoGradient> Factory_NoGradient;
 

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API KrigingRandomVector
   : public UsualRandomVector
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

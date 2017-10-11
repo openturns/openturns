@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SVDMethod
   : public LeastSquaresMethodImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   /** Default constructor */
   SVDMethod();

@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MaximumDistribution);
+CLASSNAMEINIT(MaximumDistribution)
 
 static const Factory<MaximumDistribution> Factory_MaximumDistribution;
 

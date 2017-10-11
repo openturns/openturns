@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FieldToPointFunctionImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /* Some typedefs for easy reading */
@@ -47,8 +47,8 @@ public:
 
   /** Parameter constructor */
   FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension,
-				     const UnsignedInteger inputDimension,
-				     const UnsignedInteger outputDimension);
+                                     const UnsignedInteger inputDimension,
+                                     const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
   virtual FieldToPointFunctionImplementation * clone() const;

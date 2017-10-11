@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DatabaseFunction);
+CLASSNAMEINIT(DatabaseFunction)
 
 /* Default constructor */
 DatabaseFunction::DatabaseFunction ()

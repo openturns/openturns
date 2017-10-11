@@ -40,7 +40,7 @@ class OT_API Simulation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

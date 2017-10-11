@@ -49,7 +49,7 @@ class BinaryStorageManagerState;
 class OT_API BinaryStorageManager
   : public StorageManager
 {
-  CLASSNAME;
+  CLASSNAME
 
   class VersionList
   {

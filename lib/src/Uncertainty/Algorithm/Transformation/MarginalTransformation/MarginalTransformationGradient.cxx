@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MarginalTransformationGradient);
+CLASSNAMEINIT(MarginalTransformationGradient)
 
 static const Factory<MarginalTransformationGradient> Factory_MarginalTransformationGradient;
 

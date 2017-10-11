@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FiniteDifferenceStepImplementation);
+CLASSNAMEINIT(FiniteDifferenceStepImplementation)
 
 static const Factory<FiniteDifferenceStepImplementation> Factory_FiniteDifferenceStepImplementation;
 

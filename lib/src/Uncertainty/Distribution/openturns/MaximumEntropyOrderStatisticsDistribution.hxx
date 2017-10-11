@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MaximumEntropyOrderStatisticsDistribution
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 
   /** The MaximumEntropyOrderStatisticsDistributionWrapper class is closely linked with the MaximumEntropyOrderStatisticsDistribution class */
   friend struct MaximumEntropyOrderStatisticsDistributionWrapper;

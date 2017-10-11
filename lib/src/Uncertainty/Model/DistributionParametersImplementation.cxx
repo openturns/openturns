@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DistributionParametersImplementation);
+CLASSNAMEINIT(DistributionParametersImplementation)
 
 // static const Factory<DistributionParametersImplementation> Factory_DistributionParametersImplementation;
 
@@ -126,3 +126,4 @@ void DistributionParametersImplementation::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+

@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API InterfaceObject
   : public Object
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<PersistentObject>   ImplementationAsPersistentObject;

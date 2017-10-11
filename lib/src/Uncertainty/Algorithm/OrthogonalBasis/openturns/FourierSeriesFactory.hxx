@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FourierSeriesFactory
   : public OrthogonalUniVariateFunctionFactory
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

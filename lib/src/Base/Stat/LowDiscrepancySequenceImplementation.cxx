@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-CLASSNAMEINIT(LowDiscrepancySequenceImplementation);
+CLASSNAMEINIT(LowDiscrepancySequenceImplementation)
 
 static const Factory<LowDiscrepancySequenceImplementation> Factory_LowDiscrepancySequenceImplementation;
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API KFold
   : public FittingAlgorithmImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

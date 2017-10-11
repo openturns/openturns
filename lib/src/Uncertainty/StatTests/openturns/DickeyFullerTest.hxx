@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DickeyFullerTest
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

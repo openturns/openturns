@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SpectralModelFactory);
+CLASSNAMEINIT(SpectralModelFactory)
 
 /* Default constructor */
 SpectralModelFactory::SpectralModelFactory()

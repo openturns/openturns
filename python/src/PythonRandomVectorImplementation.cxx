@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(PythonRandomVectorImplementation);
+CLASSNAMEINIT(PythonRandomVectorImplementation)
 
 static const Factory<PythonRandomVectorImplementation> Factory_PythonRandomVectorImplementation;
 

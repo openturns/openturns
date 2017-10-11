@@ -35,7 +35,7 @@ class OT_API RiskyAndFast :
   public RootStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

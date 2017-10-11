@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(VertexFunction);
+CLASSNAMEINIT(VertexFunction)
 
 static const Factory<VertexFunction> Factory_VertexFunction;
 

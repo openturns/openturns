@@ -35,7 +35,7 @@ class OT_API SafeAndSlow :
   public RootStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

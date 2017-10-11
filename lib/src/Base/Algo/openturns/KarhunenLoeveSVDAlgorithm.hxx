@@ -36,7 +36,7 @@ class OT_API KarhunenLoeveSVDAlgorithm
   : public KarhunenLoeveAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

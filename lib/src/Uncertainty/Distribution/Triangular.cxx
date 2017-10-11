@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Triangular);
+CLASSNAMEINIT(Triangular)
 
 static const Factory<Triangular> Factory_Triangular;
 

@@ -40,7 +40,7 @@ class OT_API OptimizationProblem
   : public TypedInterfaceObject<OptimizationProblemImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<OptimizationProblemImplementation>   Implementation;

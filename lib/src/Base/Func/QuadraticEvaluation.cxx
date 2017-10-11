@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(QuadraticEvaluation);
+CLASSNAMEINIT(QuadraticEvaluation)
 
 static const Factory<QuadraticEvaluation> Factory_QuadraticEvaluation;
 

@@ -35,7 +35,7 @@ class OT_API Normal
   : public EllipticalDistribution
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

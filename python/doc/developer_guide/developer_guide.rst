@@ -12,10 +12,9 @@ Providing us with feedback on your own experience using the software is extremel
 valuable for the other users as well as our developers. There exists many
 channels for you to contact us:
 
-  - We host two mailing lists at sourceforge, one for `users <http://openturns.org/mailman/listinfo/users>`_
-    and the other one for `developers <http://openturns.org/mailman/listinfo/developers>`_.
+  - We provide an `users <http://openturns.org/mailman/listinfo/users>`_ mailing list.
   - Bugs can be reported on our `trac server <http://trac.openturns.org/report/1>`_.
-  - Once a year, one of the partners hosts the OpenTURNS Users day which is a
+  - Once a year, one of the partners hosts the Users day which is a
     unique occasion for users to meet up and share their experience using the
     library.
 

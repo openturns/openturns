@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FieldFunctionImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /* Some typedefs for easy reading */
@@ -51,9 +51,9 @@ public:
 
   /** Parameter constructor */
   FieldFunctionImplementation(const UnsignedInteger spatialDimension,
-			      const UnsignedInteger inputDimension,
-			      const UnsignedInteger outputDimension);
-  
+                              const UnsignedInteger inputDimension,
+                              const UnsignedInteger outputDimension);
+
   /** Virtual constructor */
   virtual FieldFunctionImplementation * clone() const;
 

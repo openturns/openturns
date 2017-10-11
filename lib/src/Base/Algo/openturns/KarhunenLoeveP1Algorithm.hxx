@@ -35,7 +35,7 @@ class OT_API KarhunenLoeveP1Algorithm
   : public KarhunenLoeveAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -33,7 +33,7 @@ class OT_API GammaMuSigma
   : public DistributionParametersImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

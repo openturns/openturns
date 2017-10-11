@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ConditionalRandomVector
   : public RandomVectorImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -35,7 +35,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HMatrixFactory);
+CLASSNAMEINIT(HMatrixFactory)
 
 /* Default constructor */
 HMatrixFactory::HMatrixFactory()

@@ -39,7 +39,7 @@ class OT_API SimulationResultImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

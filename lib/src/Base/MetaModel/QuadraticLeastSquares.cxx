@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(QuadraticLeastSquares);
+CLASSNAMEINIT(QuadraticLeastSquares)
 
 /* Constructor with parameters */
 QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,

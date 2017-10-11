@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WeightedExperiment);
+CLASSNAMEINIT(WeightedExperiment)
 
 /* Default constructor */
 WeightedExperiment::WeightedExperiment() :

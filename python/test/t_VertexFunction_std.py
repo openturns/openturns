@@ -12,8 +12,10 @@ try:
 
     print("myVertexFunc=", myVertexFunc)
     # Get the input and output description
-    print("myVertexFunc input description=", myVertexFunc.getInputDescription())
-    print("myVertexFunc output description=", myVertexFunc.getOutputDescription())
+    print("myVertexFunc input description=",
+          myVertexFunc.getInputDescription())
+    print("myVertexFunc output description=",
+          myVertexFunc.getOutputDescription())
     # Get the input and output dimension, based on description
     print("myVertexFunc input dimension=", myVertexFunc.getInputDimension())
     print("myVertexFunc output dimension=", myVertexFunc.getOutputDimension())

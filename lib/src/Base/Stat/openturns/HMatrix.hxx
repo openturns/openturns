@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API HMatrix :
   public TypedInterfaceObject<HMatrixImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
   /** Default constructor */
   HMatrix();

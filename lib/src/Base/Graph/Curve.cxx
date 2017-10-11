@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Curve);
+CLASSNAMEINIT(Curve)
 
 static const Factory<Curve> Factory_Curve;
 

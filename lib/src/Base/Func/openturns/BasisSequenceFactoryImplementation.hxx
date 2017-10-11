@@ -42,7 +42,7 @@ class OT_API BasisSequenceFactoryImplementation
 {
   friend class LeastSquaresMetaModelSelection;
   friend class SparseMethod;
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

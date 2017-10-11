@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Composite
   : public StratifiedExperiment
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Basis);
+CLASSNAMEINIT(Basis)
 
 /* Default constructor */
 Basis::Basis()

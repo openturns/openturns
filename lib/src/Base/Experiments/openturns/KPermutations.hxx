@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API KPermutations
   : public CombinatorialGeneratorImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

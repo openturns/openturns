@@ -35,7 +35,7 @@ class OT_API Hanning
   : public FilteringWindowsImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

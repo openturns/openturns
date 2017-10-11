@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ComposedCopula
   : public CopulaImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** A type for distribution collection */

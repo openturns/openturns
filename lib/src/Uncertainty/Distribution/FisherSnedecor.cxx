@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FisherSnedecor);
+CLASSNAMEINIT(FisherSnedecor)
 
 static const Factory<FisherSnedecor> Factory_FisherSnedecor;
 

@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConstantRandomVector);
+CLASSNAMEINIT(ConstantRandomVector)
 
 static const Factory<ConstantRandomVector> Factory_ConstantRandomVector;
 

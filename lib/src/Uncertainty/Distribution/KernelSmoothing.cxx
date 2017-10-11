@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class describes the probabilistic concept of KernelSmoothing.
  */
 
-CLASSNAMEINIT(KernelSmoothing);
+CLASSNAMEINIT(KernelSmoothing)
 
 static const Factory<KernelSmoothing> Factory_KernelSmoothing;
 

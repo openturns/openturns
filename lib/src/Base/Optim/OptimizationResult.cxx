@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OptimizationResult);
+CLASSNAMEINIT(OptimizationResult)
 
 static const Factory<OptimizationResult> Factory_OptimizationResult;
 

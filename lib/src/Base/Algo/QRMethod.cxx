@@ -28,7 +28,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(QRMethod);
+CLASSNAMEINIT(QRMethod)
 
 
 static const Factory<QRMethod> Factory_QRMethod;

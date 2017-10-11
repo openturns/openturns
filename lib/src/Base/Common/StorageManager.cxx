@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(StorageManager);
+CLASSNAMEINIT(StorageManager)
 
 
 Pointer<Advocate> StorageManager::registerObject(const PersistentObject & obj, bool fromStudy)

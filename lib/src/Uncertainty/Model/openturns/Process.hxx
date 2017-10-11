@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Process
   : public TypedInterfaceObject<ProcessImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

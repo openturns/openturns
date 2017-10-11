@@ -36,7 +36,7 @@ class OT_API SamplingStrategyImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

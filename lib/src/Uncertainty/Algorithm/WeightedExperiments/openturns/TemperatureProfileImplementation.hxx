@@ -35,7 +35,7 @@ namespace OT
 class OT_API TemperatureProfileImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

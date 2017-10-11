@@ -40,7 +40,7 @@ class OT_API TensorImplementation
   : public PersistentCollection<Scalar>
 
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

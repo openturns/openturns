@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(StationaryCovarianceModelFactory);
+CLASSNAMEINIT(StationaryCovarianceModelFactory)
 static const Factory<StationaryCovarianceModelFactory> Factory_StationaryCovarianceModelFactory;
 
 static const Factory<PersistentCollection<Complex> > Factory_PersistentCollection_Complex;

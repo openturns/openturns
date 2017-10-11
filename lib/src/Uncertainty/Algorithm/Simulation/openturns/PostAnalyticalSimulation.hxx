@@ -40,7 +40,7 @@ class OT_API PostAnalyticalSimulation
   : public Simulation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
   /** for save/load mecanism */
   PostAnalyticalSimulation();

@@ -27,12 +27,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-TEMPLATE_CLASSNAMEINIT( PersistentCollection<Indices> );
+TEMPLATE_CLASSNAMEINIT( PersistentCollection<Indices> )
 static const Factory<PersistentCollection<Indices> > Factory_PersistentCollection_Indices;
 
 
 
-CLASSNAMEINIT(BasisSequenceImplementation);
+CLASSNAMEINIT(BasisSequenceImplementation)
 
 static const Factory<BasisSequenceImplementation> Factory_BasisSequenceImplementation;
 

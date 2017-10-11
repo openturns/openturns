@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SaltelliSensitivityAlgorithm);
+CLASSNAMEINIT(SaltelliSensitivityAlgorithm)
 
 static const Factory<SaltelliSensitivityAlgorithm> Factory_SaltelliSensitivityAlgorithm;
 

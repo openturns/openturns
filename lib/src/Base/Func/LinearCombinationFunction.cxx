@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LinearCombinationFunction);
+CLASSNAMEINIT(LinearCombinationFunction)
 
 /* Default constructor */
 LinearCombinationFunction::LinearCombinationFunction ()

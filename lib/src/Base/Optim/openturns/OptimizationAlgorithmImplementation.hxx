@@ -37,7 +37,7 @@ class OT_API OptimizationAlgorithmImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

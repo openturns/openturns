@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LogNormal
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Pointer<DistributionImplementation> Implementation;
 
@@ -158,7 +158,7 @@ private:
 
   /** Compute the integrand that is involved in the computation of the characteristic function */
   Complex characteristicIntegrand(const Scalar eta,
-      const Scalar sStar) const;
+                                  const Scalar sStar) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();

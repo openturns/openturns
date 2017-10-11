@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API RandomVector
   : public TypedInterfaceObject<RandomVectorImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

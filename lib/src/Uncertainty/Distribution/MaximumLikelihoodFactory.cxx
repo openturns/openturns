@@ -38,7 +38,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MaximumLikelihoodFactory);
+CLASSNAMEINIT(MaximumLikelihoodFactory)
 
 static const Factory<MaximumLikelihoodFactory> Factory_MaximumLikelihoodFactory;
 

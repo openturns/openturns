@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NonCentralStudent);
+CLASSNAMEINIT(NonCentralStudent)
 
 static const Factory<NonCentralStudent> Factory_NonCentralStudent;
 

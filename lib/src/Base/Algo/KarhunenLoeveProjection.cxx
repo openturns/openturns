@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KarhunenLoeveProjection);
+CLASSNAMEINIT(KarhunenLoeveProjection)
 
 static const Factory<KarhunenLoeveProjection> Factory_KarhunenLoeveProjection;
 

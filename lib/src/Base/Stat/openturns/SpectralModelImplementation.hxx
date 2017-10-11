@@ -36,7 +36,7 @@ class OT_API SpectralModelImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PiecewiseLinearEvaluation);
+CLASSNAMEINIT(PiecewiseLinearEvaluation)
 
 static const Factory<PiecewiseLinearEvaluation> Factory_PiecewiseLinearEvaluation;
 

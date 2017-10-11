@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Factorial
   : public StratifiedExperiment
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BlendedStep);
+CLASSNAMEINIT(BlendedStep)
 
 static const Factory<BlendedStep> Factory_BlendedStep;
 

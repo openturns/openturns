@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API PointToFieldFunction
   : public TypedInterfaceObject<PointToFieldFunctionImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /* Some typedefs for easy reading */
@@ -51,7 +51,7 @@ public:
 
   /** Parameter constructor */
   PointToFieldFunction(const UnsignedInteger inputDimension,
-		       const UnsignedInteger outputDimension);
+                       const UnsignedInteger outputDimension);
 
   /** Constructor from PointToFieldFunctionImplementation */
   PointToFieldFunction(const PointToFieldFunctionImplementation & implementation);

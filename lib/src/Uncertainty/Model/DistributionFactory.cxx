@@ -68,7 +68,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DistributionFactory);
+CLASSNAMEINIT(DistributionFactory)
 
 /* Catalog of factories */
 DistributionFactory::DistributionFactoryCollection DistributionFactory::GetContinuousUniVariateFactories()

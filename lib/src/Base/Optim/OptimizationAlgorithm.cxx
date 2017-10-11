@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OptimizationAlgorithm);
+CLASSNAMEINIT(OptimizationAlgorithm)
 
 /* Default constructor */
 OptimizationAlgorithm::OptimizationAlgorithm() :

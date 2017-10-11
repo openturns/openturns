@@ -50,7 +50,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Distribution>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Distribution>)
 static const Factory<PersistentCollection<Distribution> > Factory_PersistentCollection_Distribution;
 
 
@@ -59,7 +59,7 @@ typedef Collection<Point> PointCollection;
 typedef Collection<Complex> ComplexCollection;
 
 
-CLASSNAMEINIT(RandomMixture);
+CLASSNAMEINIT(RandomMixture)
 
 static const Factory<RandomMixture> Factory_RandomMixture;
 

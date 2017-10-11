@@ -33,7 +33,7 @@ namespace OT
 
 static const Factory<LHSResult> Factory_LHSResult;
 
-CLASSNAMEINIT(LHSResult);
+CLASSNAMEINIT(LHSResult)
 
 /* Default constructor */
 LHSResult::LHSResult()

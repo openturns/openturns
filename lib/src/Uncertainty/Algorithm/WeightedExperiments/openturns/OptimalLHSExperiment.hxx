@@ -40,7 +40,7 @@ namespace OT
 class OT_API OptimalLHSExperiment
   : public WeightedExperimentImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */

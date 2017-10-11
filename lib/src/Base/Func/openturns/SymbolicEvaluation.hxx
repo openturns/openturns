@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SymbolicEvaluation
   : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

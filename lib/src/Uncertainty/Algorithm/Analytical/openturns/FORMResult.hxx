@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FORMResult:
   public AnalyticalResult
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

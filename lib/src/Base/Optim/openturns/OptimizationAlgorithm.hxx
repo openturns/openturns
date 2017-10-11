@@ -37,7 +37,7 @@ class OT_API OptimizationAlgorithm
   : public TypedInterfaceObject<OptimizationAlgorithmImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Pointer<OptimizationAlgorithmImplementation>   Implementation;

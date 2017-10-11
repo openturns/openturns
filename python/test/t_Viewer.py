@@ -243,7 +243,8 @@ try:
     algo = ot.FORM(solver, event, mean)
     algo.run()
     result = algo.getResult()
-    marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
+    marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity(
+    )
     view = View(marginalSensitivity)
 
     # Optimization error history

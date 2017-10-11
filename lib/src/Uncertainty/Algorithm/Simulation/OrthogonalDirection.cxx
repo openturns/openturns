@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class OrthogonalDirection
  */
 
-CLASSNAMEINIT(OrthogonalDirection);
+CLASSNAMEINIT(OrthogonalDirection)
 
 static const Factory<OrthogonalDirection> Factory_OrthogonalDirection;
 

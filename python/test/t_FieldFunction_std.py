@@ -16,4 +16,3 @@ print('myFunc output dimension=', myFunc.getOutputDimension())
 print('myFunc spatial dimension=', myFunc.getSpatialDimension())
 # Get the number of calls
 print('called ', myFunc.getCallsNumber(), ' times')
-

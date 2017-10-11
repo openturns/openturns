@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DesignProxy
   : public Object
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

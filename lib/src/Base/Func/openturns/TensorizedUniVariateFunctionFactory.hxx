@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TensorizedUniVariateFunctionFactory
   : public FunctionalBasisImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<UniVariateFunctionFamily>           FunctionFamilyCollection;

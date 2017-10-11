@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FieldImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /**
@@ -97,7 +97,7 @@ public:
   UnsignedInteger getSpatialDimension() const;
   UnsignedInteger getDimension() const;
 
-  /** Return the values stored in the field as a sample 
+  /** Return the values stored in the field as a sample
    @deprecated */
   Sample getSample() const;
   Sample getValues() const;

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TriangularComplexMatrix);
+CLASSNAMEINIT(TriangularComplexMatrix)
 
 /* Default constructor */
 TriangularComplexMatrix::TriangularComplexMatrix()

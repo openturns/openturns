@@ -33,11 +33,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Drawable>);
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<Drawable>)
 
 static const Factory<PersistentCollection<Drawable> > Factory_PersistentCollection_Drawable;
 
-CLASSNAMEINIT(GraphImplementation);
+CLASSNAMEINIT(GraphImplementation)
 
 static const Factory<GraphImplementation> Factory_GraphImplementation;
 

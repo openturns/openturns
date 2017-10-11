@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SymbolicFunction);
+CLASSNAMEINIT(SymbolicFunction)
 
 // Inline documentation for analytical functions
 Bool SymbolicFunction::IsDocumentationInitialized_ = false;

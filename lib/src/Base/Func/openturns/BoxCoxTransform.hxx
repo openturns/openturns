@@ -39,7 +39,7 @@ class OT_API BoxCoxTransform
   : public Function
 
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

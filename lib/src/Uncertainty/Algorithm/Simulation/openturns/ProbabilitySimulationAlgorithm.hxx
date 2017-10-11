@@ -34,22 +34,22 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ProbabilitySimulationAlgorithm : public Simulation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
   /** Default constructor */
   ProbabilitySimulationAlgorithm(const Bool verbose = true,
-                        const HistoryStrategy & convergenceStrategy = Compact());
+                                 const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
   ProbabilitySimulationAlgorithm(const Event & event,
-                        const Bool verbose = true,
-                        const HistoryStrategy & convergenceStrategy = Compact());
+                                 const Bool verbose = true,
+                                 const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
   ProbabilitySimulationAlgorithm(const Event & event,
-                        const WeightedExperiment & experiment,
-                        const Bool verbose = true,
-                        const HistoryStrategy & convergenceStrategy = Compact());
+                                 const WeightedExperiment & experiment,
+                                 const Bool verbose = true,
+                                 const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
   virtual ProbabilitySimulationAlgorithm * clone() const;

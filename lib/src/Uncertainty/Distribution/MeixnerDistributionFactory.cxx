@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MeixnerDistributionFactory);
+CLASSNAMEINIT(MeixnerDistributionFactory)
 
 static const Factory<MeixnerDistributionFactory> Factory_MeixnerDistributionFactory;
 

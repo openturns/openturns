@@ -36,7 +36,7 @@ class OT_API GaussLegendre
   : public IntegrationAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

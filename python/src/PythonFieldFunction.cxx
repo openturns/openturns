@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PythonFieldFunction);
+CLASSNAMEINIT(PythonFieldFunction)
 
 static const Factory<PythonFieldFunction> Factory_PythonFieldFunction;
 

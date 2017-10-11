@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonRandomVectorImplementation
   : public RandomVectorImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

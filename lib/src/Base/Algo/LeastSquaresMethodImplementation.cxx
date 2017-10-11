@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LeastSquaresMethodImplementation);
+CLASSNAMEINIT(LeastSquaresMethodImplementation)
 
 static const Factory<LeastSquaresMethodImplementation> Factory_LeastSquaresMethodImplementation;
 

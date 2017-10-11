@@ -35,7 +35,7 @@ class OT_API MediumSafe :
   public RootStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OrdinalSumCopula);
+CLASSNAMEINIT(OrdinalSumCopula)
 
 static const Factory<OrdinalSumCopula> Factory_OrdinalSumCopula;
 

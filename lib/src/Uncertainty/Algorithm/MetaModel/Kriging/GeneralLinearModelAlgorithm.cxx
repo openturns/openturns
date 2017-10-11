@@ -38,7 +38,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GeneralLinearModelAlgorithm);
+CLASSNAMEINIT(GeneralLinearModelAlgorithm)
 
 static const Factory<GeneralLinearModelAlgorithm> Factory_GeneralLinearModelAlgorithm;
 

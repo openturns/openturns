@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ApproximationAlgorithmImplementationFactory);
+CLASSNAMEINIT(ApproximationAlgorithmImplementationFactory)
 
 
 

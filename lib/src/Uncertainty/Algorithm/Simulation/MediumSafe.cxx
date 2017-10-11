@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class MediumSafe
  */
 
-CLASSNAMEINIT(MediumSafe);
+CLASSNAMEINIT(MediumSafe)
 
 static const Factory<MediumSafe> Factory_MediumSafe;
 

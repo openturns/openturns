@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(RiceFactory);
+CLASSNAMEINIT(RiceFactory)
 
 static const Factory<RiceFactory> Factory_RiceFactory;
 

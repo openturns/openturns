@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API RatioDistribution
   : public ContinuousDistribution
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

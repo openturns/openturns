@@ -41,7 +41,7 @@ class SymmetricMatrix;
 class OT_API Matrix :
   public TypedInterfaceObject<MatrixImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   /** Declaration of friend operators */

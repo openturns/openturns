@@ -34,12 +34,12 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FunctionalChaosRandomVector
   : public CompositeRandomVector
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 
   /** Default constructor */
-  FunctionalChaosRandomVector();  
+  FunctionalChaosRandomVector();
 
   /** Default constructor */
   explicit FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult);

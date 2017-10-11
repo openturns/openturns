@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AggregatedHessian);
+CLASSNAMEINIT(AggregatedHessian)
 
 static const Factory<AggregatedHessian> Factory_AggregatedHessian;
 

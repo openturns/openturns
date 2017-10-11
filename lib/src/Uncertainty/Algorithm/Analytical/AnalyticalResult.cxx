@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
 typedef Distribution::InverseIsoProbabilisticTransformation InverseIsoProbabilisticTransformation;
 typedef PersistentCollection<PointWithDescription> PersistentSensitivity;
 
-CLASSNAMEINIT(AnalyticalResult);
+CLASSNAMEINIT(AnalyticalResult)
 
 static const Factory<AnalyticalResult> Factory_AnalyticalResult;
 

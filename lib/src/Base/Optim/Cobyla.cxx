@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Cobyla);
+CLASSNAMEINIT(Cobyla)
 
 static const Factory<Cobyla> Factory_Cobyla;
 

@@ -37,7 +37,7 @@ class OT_API OptimizationProblemImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(TruncatedNormalFactory);
+CLASSNAMEINIT(TruncatedNormalFactory)
 
 static const Factory<TruncatedNormalFactory> Factory_TruncatedNormalFactory;
 

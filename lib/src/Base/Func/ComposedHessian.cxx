@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ComposedHessian);
+CLASSNAMEINIT(ComposedHessian)
 
 static const Factory<ComposedHessian> Factory_ComposedHessian;
 

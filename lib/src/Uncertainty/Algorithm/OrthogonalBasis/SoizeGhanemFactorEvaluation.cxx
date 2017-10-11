@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SoizeGhanemFactorEvaluation);
+CLASSNAMEINIT(SoizeGhanemFactorEvaluation)
 
 static const Factory<SoizeGhanemFactorEvaluation> Factory_SoizeGhanemFactorEvaluation;
 

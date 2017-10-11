@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LinearBasisFactory);
+CLASSNAMEINIT(LinearBasisFactory)
 
 static const Factory<LinearBasisFactory> Factory_LinearBasisFactory;
 

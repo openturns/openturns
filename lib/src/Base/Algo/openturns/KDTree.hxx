@@ -36,7 +36,7 @@ class KDNearestNeighboursFinder;
 class OT_API KDTree
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
   friend class KDNearestNeighboursFinder;
 

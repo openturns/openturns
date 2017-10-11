@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MetaModelAlgorithm);
+CLASSNAMEINIT(MetaModelAlgorithm)
 
 static const Factory<MetaModelAlgorithm> Factory_MetaModelAlgorithm;
 

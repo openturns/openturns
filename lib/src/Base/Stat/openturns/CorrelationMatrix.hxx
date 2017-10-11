@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API CorrelationMatrix
   : public CovarianceMatrix
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef Collection<Scalar>       ScalarCollection;

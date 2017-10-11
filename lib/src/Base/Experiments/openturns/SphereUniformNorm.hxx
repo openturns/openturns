@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SphereUniformNorm
   : public TypedInterfaceObject<SphereUniformNormImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

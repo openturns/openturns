@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ChiSquareFactory);
+CLASSNAMEINIT(ChiSquareFactory)
 
 static const Factory<ChiSquareFactory> Factory_ChiSquareFactory;
 

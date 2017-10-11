@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ComposedGradient);
+CLASSNAMEINIT(ComposedGradient)
 
 static const Factory<ComposedGradient> Factory_ComposedGradient;
 

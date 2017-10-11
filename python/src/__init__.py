@@ -86,6 +86,7 @@ from .stattests import *
 from .bayesian import *
 from .uncertainty import *
 
+
 def Show(graph):
     """
     Display a graph pop-up.

@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ConditionalRandomVector);
+CLASSNAMEINIT(ConditionalRandomVector)
 
 static const Factory<ConditionalRandomVector> Factory_ConditionalRandomVector;
 

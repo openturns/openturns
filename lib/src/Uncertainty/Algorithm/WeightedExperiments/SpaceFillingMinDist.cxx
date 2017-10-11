@@ -28,7 +28,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(SpaceFillingMinDist);
+CLASSNAMEINIT(SpaceFillingMinDist)
 
 static const Factory<SpaceFillingMinDist> Factory_SpaceFillingMinDist;
 

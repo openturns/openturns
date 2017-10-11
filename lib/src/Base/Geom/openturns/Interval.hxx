@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Interval
   : public DomainImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef Collection<UnsignedInteger>           BoolCollection;

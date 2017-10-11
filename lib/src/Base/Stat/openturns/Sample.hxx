@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Sample
   : public TypedInterfaceObject<SampleImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

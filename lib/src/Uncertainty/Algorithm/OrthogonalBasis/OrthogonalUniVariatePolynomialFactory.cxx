@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(OrthogonalUniVariatePolynomialFactory);
+CLASSNAMEINIT(OrthogonalUniVariatePolynomialFactory)
 
 static const Factory<OrthogonalUniVariatePolynomialFactory> Factory_OrthogonalUniVariatePolynomialFactory;
 

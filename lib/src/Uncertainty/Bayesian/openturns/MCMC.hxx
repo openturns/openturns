@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MCMC
   : public RandomVectorImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<Point> PointCollection;
   typedef PersistentCollection<Point> PointPersistentCollection;

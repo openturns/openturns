@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API UniVariateFunctionFactory
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

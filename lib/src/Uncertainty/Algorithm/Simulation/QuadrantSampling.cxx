@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class QuadrantSampling
  */
 
-CLASSNAMEINIT(QuadrantSampling);
+CLASSNAMEINIT(QuadrantSampling)
 
 
 /* Constructor with parameters */

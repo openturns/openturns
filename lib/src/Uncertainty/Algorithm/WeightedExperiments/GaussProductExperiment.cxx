@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GaussProductExperiment);
+CLASSNAMEINIT(GaussProductExperiment)
 
 static const Factory<GaussProductExperiment> Factory_GaussProductExperiment;
 

@@ -34,7 +34,8 @@ try:
 
     # Construction based on a FieldToPointFunction followed by a Function
     dimension = projection.getOutputDimension()
-    function = SymbolicFunction(Description.BuildDefault(dimension, "x"), Description.BuildDefault(dimension, "x"))
+    function = SymbolicFunction(Description.BuildDefault(
+        dimension, "x"), Description.BuildDefault(dimension, "x"))
     # Create an instance
     myFunc = FieldToPointConnection(function, projection)
 
@@ -54,5 +55,5 @@ try:
 
 except:
     import sys
-    print("t_FieldToPointConnection_std.py", sys.exc_info()[0], sys.exc_info()[1])
-
+    print("t_FieldToPointConnection_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SklarCopula
   : public CopulaImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef PersistentCollection<Distribution>  DistributionPersistentCollection;

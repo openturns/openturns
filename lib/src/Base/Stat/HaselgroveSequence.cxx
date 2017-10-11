@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HaselgroveSequence);
+CLASSNAMEINIT(HaselgroveSequence)
 
 /* Constructor with parameters */
 HaselgroveSequence::HaselgroveSequence(const UnsignedInteger dimension) :

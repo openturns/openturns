@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API UniformFactory
   : public DistributionFactoryImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

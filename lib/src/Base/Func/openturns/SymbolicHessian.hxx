@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SymbolicHessian
   : public HessianImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

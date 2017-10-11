@@ -42,7 +42,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API QuadraticEvaluation
   : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EventProcess);
+CLASSNAMEINIT(EventProcess)
 
 static const Factory<EventProcess> Factory_EventProcess;
 

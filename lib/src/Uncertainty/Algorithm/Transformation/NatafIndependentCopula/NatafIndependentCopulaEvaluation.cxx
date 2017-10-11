@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 
-CLASSNAMEINIT(NatafIndependentCopulaEvaluation);
+CLASSNAMEINIT(NatafIndependentCopulaEvaluation)
 
 static const Factory<NatafIndependentCopulaEvaluation> Factory_NatafIndependentCopulaEvaluation;
 

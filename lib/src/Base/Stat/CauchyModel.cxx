@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CauchyModel
  */
 
-CLASSNAMEINIT(CauchyModel);
+CLASSNAMEINIT(CauchyModel)
 
 static const Factory<CauchyModel> Factory_CauchyModel;
 

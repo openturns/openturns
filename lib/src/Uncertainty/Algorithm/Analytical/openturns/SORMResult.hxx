@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API SORMResult:
   public AnalyticalResult
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Standard constructor */

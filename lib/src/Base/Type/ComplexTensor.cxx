@@ -25,7 +25,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ComplexTensor);
+CLASSNAMEINIT(ComplexTensor)
 
 /* Default constructor */
 ComplexTensor::ComplexTensor()
@@ -127,8 +127,8 @@ String ComplexTensor::__str__(const String & offset) const
 /* Operator () gives access to the elements of the tensor (to modify these elements) */
 /* The element of the tensor is designated by its row number i, its column number j and its sheet number k */
 Complex & ComplexTensor::operator () (const UnsignedInteger i,
-    const UnsignedInteger j,
-    const UnsignedInteger k)
+                                      const UnsignedInteger j,
+                                      const UnsignedInteger k)
 {
   copyOnWrite();
   return (*getImplementation())(i, j, k);

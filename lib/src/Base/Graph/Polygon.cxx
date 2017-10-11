@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Polygon);
+CLASSNAMEINIT(Polygon)
 
 static const Factory<Polygon> Factory_Polygon;
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API BasisSequence
   : public TypedCollectionInterfaceObject<BasisSequenceImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

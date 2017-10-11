@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FieldFunction
   : public TypedInterfaceObject<FieldFunctionImplementation>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /* Some typedefs for easy reading */
@@ -51,8 +51,8 @@ public:
 
   /** Parameter constructor */
   explicit FieldFunction(const UnsignedInteger spatialDimension,
-			 const UnsignedInteger inputDimension,
-			 const UnsignedInteger outputDimension);
+                         const UnsignedInteger inputDimension,
+                         const UnsignedInteger outputDimension);
 
   /** Constructor from Function */
   explicit FieldFunction(const Function & function,

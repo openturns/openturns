@@ -33,7 +33,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KernelMixture);
+CLASSNAMEINIT(KernelMixture)
 
 static const Factory<KernelMixture> Factory_KernelMixture;
 

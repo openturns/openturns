@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API KarhunenLoeveProjection
   : public FieldToPointFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */
@@ -74,7 +74,7 @@ public:
 protected:
   /** Underlying KarhunenLoeveResult */
   KarhunenLoeveResult result_;
-  
+
 }; /* class KarhunenLoeveProjection */
 
 

@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CombinatorialGenerator);
+CLASSNAMEINIT(CombinatorialGenerator)
 
 /* Default constructor */
 CombinatorialGenerator::CombinatorialGenerator()

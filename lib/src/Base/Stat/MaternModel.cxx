@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(MaternModel);
+CLASSNAMEINIT(MaternModel)
 
 static const Factory<MaternModel> Factory_MaternModel;
 
@@ -38,7 +38,7 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
   definesComputeStandardRepresentative_ = true;
   // Compute the normalization factor
   computeLogNormalizationFactor();
-    // Compute usefull scaling factor
+  // Compute usefull scaling factor
   computeSqrt2nuOverTheta();
 }
 

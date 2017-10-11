@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<Distribution> DistributionCollection;
 
-CLASSNAMEINIT(LHSExperiment);
+CLASSNAMEINIT(LHSExperiment)
 
 static const Factory<LHSExperiment> Factory_LHSExperiment;
 

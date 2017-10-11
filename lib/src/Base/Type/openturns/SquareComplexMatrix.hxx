@@ -41,7 +41,7 @@ class TriangularComplexMatrix;
 class OT_API SquareComplexMatrix :
   public ComplexMatrix
 {
-  CLASSNAME;
+  CLASSNAME
 
 #ifndef SWIG
   friend SquareComplexMatrix operator * (const Complex s,

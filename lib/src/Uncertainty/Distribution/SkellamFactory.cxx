@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SkellamFactory);
+CLASSNAMEINIT(SkellamFactory)
 
 static const Factory<SkellamFactory> Factory_SkellamFactory;
 

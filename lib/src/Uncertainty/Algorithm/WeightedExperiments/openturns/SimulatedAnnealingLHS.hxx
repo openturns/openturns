@@ -38,13 +38,13 @@ namespace OT
 class OT_API SimulatedAnnealingLHS
   : public OptimalLHSExperiment
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 
   typedef Collection<LHSResult> LHSResultCollection;
 
-  SimulatedAnnealingLHS(); 
+  SimulatedAnnealingLHS();
 
   /** SimulatedAnnealingLHS */
   explicit SimulatedAnnealingLHS (const LHSExperiment & lhs,

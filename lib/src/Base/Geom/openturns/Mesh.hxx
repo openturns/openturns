@@ -43,7 +43,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Mesh
   : public DomainImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef Collection< Indices >           IndicesCollection;

@@ -22,7 +22,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OptimizationProblem);
+CLASSNAMEINIT(OptimizationProblem)
 
 /* Default constructor */
 OptimizationProblem::OptimizationProblem() :

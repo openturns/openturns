@@ -34,7 +34,7 @@ class OT_API RankMCovarianceModel
   : public CovarianceModelImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

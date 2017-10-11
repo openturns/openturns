@@ -27,7 +27,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(UniVariateFunctionFactory);
+CLASSNAMEINIT(UniVariateFunctionFactory)
 
 static const Factory<UniVariateFunctionFactory> Factory_UniVariateFunctionFactory;
 

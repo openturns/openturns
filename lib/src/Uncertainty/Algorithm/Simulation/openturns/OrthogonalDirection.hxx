@@ -37,7 +37,7 @@ class OT_API OrthogonalDirection :
   public SamplingStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

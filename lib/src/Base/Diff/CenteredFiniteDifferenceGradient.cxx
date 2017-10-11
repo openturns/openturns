@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CenteredFiniteDifferenceGradient);
+CLASSNAMEINIT(CenteredFiniteDifferenceGradient)
 
 static const Factory<CenteredFiniteDifferenceGradient> Factory_CenteredFiniteDifferenceGradient;
 

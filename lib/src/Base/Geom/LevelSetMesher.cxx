@@ -34,7 +34,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LevelSetMesher);
+CLASSNAMEINIT(LevelSetMesher)
 static const Factory<LevelSetMesher> Factory_LevelSetMesher;
 
 

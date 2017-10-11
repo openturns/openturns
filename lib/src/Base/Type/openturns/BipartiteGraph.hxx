@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API BipartiteGraph :
   public PersistentCollection<Indices>
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   typedef PersistentCollection<Indices> InternalType;

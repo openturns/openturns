@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API PointToFieldConnection
   : public PointToFieldFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */
@@ -40,12 +40,12 @@ public:
 
   /** Parameter constructor */
   PointToFieldConnection(const FieldFunction & fieldFunction,
-			const PointToFieldFunction & pointToFieldFunction);
+                         const PointToFieldFunction & pointToFieldFunction);
 
 
   /** parameter constructor */
   PointToFieldConnection(const PointToFieldFunction & pointToFieldFunction,
-			const Function & function);
+                         const Function & function);
 
 
   /** Virtual constructor */
@@ -89,7 +89,7 @@ private:
   /** Flag to tell if it is a composition between a field function and a point
       to field function (true) or a point to field function and a field function */
   Bool startByPointToFieldFunction_;
-  
+
   /** The function f in h = f o g */
   Function function_;
 

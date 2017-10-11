@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DesignProxy);
+CLASSNAMEINIT(DesignProxy)
 
 /* Default constructor */
 DesignProxy::DesignProxy ()

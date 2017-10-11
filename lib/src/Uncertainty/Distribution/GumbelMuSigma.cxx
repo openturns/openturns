@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GumbelMuSigma);
+CLASSNAMEINIT(GumbelMuSigma)
 
 /* Default constructor */
 GumbelMuSigma::GumbelMuSigma()

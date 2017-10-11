@@ -40,12 +40,12 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TensorApproximationAlgorithm
   : public MetaModelAlgorithm
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
   /** Default constructor */
   TensorApproximationAlgorithm();
- 
+
   /** Constructor */
   TensorApproximationAlgorithm(const Sample & inputSample,
                                const Sample & outputSample,

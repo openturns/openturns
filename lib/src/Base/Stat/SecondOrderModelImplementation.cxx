@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SecondOrderModelImplementation
  */
 
-CLASSNAMEINIT(SecondOrderModelImplementation);
+CLASSNAMEINIT(SecondOrderModelImplementation)
 
 static const Factory<SecondOrderModelImplementation> Factory_SecondOrderModelImplementation;
 

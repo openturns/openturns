@@ -32,7 +32,7 @@ class OT_API AbsoluteExponential
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

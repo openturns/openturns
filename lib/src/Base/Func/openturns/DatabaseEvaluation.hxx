@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API DatabaseEvaluation
   : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
   friend class FunctionImplementation;
 
 public:

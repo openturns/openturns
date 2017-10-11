@@ -36,7 +36,7 @@ class OT_API FFT
   : public TypedInterfaceObject<FFTImplementation>
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 
@@ -66,14 +66,14 @@ public:
 
   /** FFT transformation on real - The transformation is applied on a part of the collection*/
   ComplexCollection transform(const ScalarCollection & collection,
-                                       const UnsignedInteger first,
-                                       const UnsignedInteger size) const;
+                              const UnsignedInteger first,
+                              const UnsignedInteger size) const;
 
   /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
   ComplexCollection transform(const ScalarCollection & collection,
-                                       const UnsignedInteger first,
-                                       const UnsignedInteger step,
-                                       const UnsignedInteger last) const;
+                              const UnsignedInteger first,
+                              const UnsignedInteger step,
+                              const UnsignedInteger last) const;
 
   /** FFT transformation on complex
    * Given the complex sequence Y_n, compute the sequence Z_k such that:
@@ -83,14 +83,14 @@ public:
 
   /** FFT transformation on complex - For some FFT implementation, the transformation is applied on a part of the collection */
   ComplexCollection transform(const ComplexCollection & collection,
-                                       const UnsignedInteger first,
-                                       const UnsignedInteger size) const;
+                              const UnsignedInteger first,
+                              const UnsignedInteger size) const;
 
   /** FFT transformation on complex - For some FFT implementation, the need is to transform a regular sequence of the collection (between first and last, by step = step)*/
   ComplexCollection transform(const ComplexCollection & collection,
-                                       const UnsignedInteger first,
-                                       const UnsignedInteger step,
-                                       const UnsignedInteger last) const;
+                              const UnsignedInteger first,
+                              const UnsignedInteger step,
+                              const UnsignedInteger last) const;
 
   /** FFT 2D transformation on real
    * Given the real sequence X_n, compute the sequence Z_k such that:
@@ -123,27 +123,27 @@ public:
 
   /** FFT inverse transformation - The transformation is applied on a part of the collection */
   ComplexCollection inverseTransform(const ScalarCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger size) const;
+                                     const UnsignedInteger first,
+                                     const UnsignedInteger size) const;
 
   /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
   ComplexCollection inverseTransform(const ScalarCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger step,
-      const UnsignedInteger last) const;
+                                     const UnsignedInteger first,
+                                     const UnsignedInteger step,
+                                     const UnsignedInteger last) const;
 
   ComplexCollection inverseTransform(const ComplexCollection & collection) const;
 
   /** FFT inverse transformation - The transformation is applied on a part of the collection */
   ComplexCollection inverseTransform(const ComplexCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger size) const;
+                                     const UnsignedInteger first,
+                                     const UnsignedInteger size) const;
 
   /** FFT inverse transformation on a regular sequence of the collection (between first and last, by step = step)*/
   ComplexCollection inverseTransform(const ComplexCollection & collection,
-      const UnsignedInteger first,
-      const UnsignedInteger step,
-      const UnsignedInteger last) const;
+                                     const UnsignedInteger first,
+                                     const UnsignedInteger step,
+                                     const UnsignedInteger last) const;
 
   /** FFT inverse transformation
    * Given the complex sequence Z_n, compute the sequence Y_k such that:

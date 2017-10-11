@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Axial
   : public StratifiedExperiment
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
 

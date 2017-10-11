@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class PythonFieldToPointFunction
   : public FieldToPointFunctionImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Constructor from Python object*/

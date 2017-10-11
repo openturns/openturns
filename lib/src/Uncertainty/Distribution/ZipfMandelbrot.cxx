@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ZipfMandelbrot);
+CLASSNAMEINIT(ZipfMandelbrot)
 
 static const Factory<ZipfMandelbrot> Factory_ZipfMandelbrot;
 

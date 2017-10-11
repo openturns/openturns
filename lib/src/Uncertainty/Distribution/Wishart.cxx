@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Wishart);
+CLASSNAMEINIT(Wishart)
 
 static const Factory<Wishart> Factory_Wishart;
 

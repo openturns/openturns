@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(UniVariateFunction);
+CLASSNAMEINIT(UniVariateFunction)
 
 /* Default constructor */
 UniVariateFunction::UniVariateFunction()

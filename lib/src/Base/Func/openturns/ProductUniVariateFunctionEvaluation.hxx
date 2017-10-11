@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ProductUniVariateFunctionEvaluation
   : public EvaluationImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<UniVariateFunction>           UniVariateFunctionCollection;

@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Sample);
+CLASSNAMEINIT(Sample)
 
 /* Factory of Sample from CSV file */
 Sample Sample::ImportFromCSVFile(const FileName & fileName,

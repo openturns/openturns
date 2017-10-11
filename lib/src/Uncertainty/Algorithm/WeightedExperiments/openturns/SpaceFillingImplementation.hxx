@@ -37,7 +37,7 @@ namespace OT
 class OT_API SpaceFillingImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
   /* Allow OptimalLHS derived classes to call perturb method */
   friend class SpaceFilling;

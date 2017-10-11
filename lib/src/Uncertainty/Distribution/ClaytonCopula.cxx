@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ClaytonCopula);
+CLASSNAMEINIT(ClaytonCopula)
 
 static const Factory<ClaytonCopula> Factory_ClaytonCopula;
 

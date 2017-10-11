@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FittingAlgorithmImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

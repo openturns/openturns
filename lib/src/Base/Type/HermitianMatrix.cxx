@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(HermitianMatrix);
+CLASSNAMEINIT(HermitianMatrix)
 
 /* Default constructor */
 HermitianMatrix::HermitianMatrix()
@@ -131,7 +131,7 @@ void HermitianMatrix::checkHermitian() const
 /* The element of the matrix is designated by its row number i and its column number j */
 /* the first element of the matrix is m(0,0) */
 Complex & HermitianMatrix::operator () (const UnsignedInteger i,
-    const UnsignedInteger j)
+                                        const UnsignedInteger j)
 {
   if (i < j) throw InvalidArgumentException(HERE) << "Error: only the lower triangle of an Hermitian matrix can be filled directly.";
   copyOnWrite();

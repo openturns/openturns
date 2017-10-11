@@ -41,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API AdaptiveStrategyImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
   // Make the FunctionalChaosAlgorithm class a friend of the AdaptiveStrategyImplementation class
   // as this last class is in charge of managing data that are part of the FunctionalChaosAlgorithm
   // state
@@ -53,7 +53,7 @@ class OT_API AdaptiveStrategyImplementation
 public:
 
   typedef Collection<Function> FunctionCollection;
-  
+
   /** Default constructor */
   AdaptiveStrategyImplementation();
 

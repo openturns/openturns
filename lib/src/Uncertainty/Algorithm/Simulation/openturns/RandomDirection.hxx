@@ -35,7 +35,7 @@ class OT_API RandomDirection :
   public SamplingStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

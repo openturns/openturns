@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PiecewiseHermiteEvaluation);
+CLASSNAMEINIT(PiecewiseHermiteEvaluation)
 
 static const Factory<PiecewiseHermiteEvaluation> Factory_PiecewiseHermiteEvaluation;
 

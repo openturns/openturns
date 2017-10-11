@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConstantStep);
+CLASSNAMEINIT(ConstantStep)
 
 static const Factory<ConstantStep> Factory_ConstantStep;
 

@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(NormalFactory);
+CLASSNAMEINIT(NormalFactory)
 
 static const Factory<NormalFactory> Factory_NormalFactory;
 

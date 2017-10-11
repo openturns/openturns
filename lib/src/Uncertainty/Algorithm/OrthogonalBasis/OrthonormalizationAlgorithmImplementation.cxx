@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class OrthonormalizationAlgorithmImplementation
  */
 
-CLASSNAMEINIT(OrthonormalizationAlgorithmImplementation);
+CLASSNAMEINIT(OrthonormalizationAlgorithmImplementation)
 
 static const Factory<OrthonormalizationAlgorithmImplementation> Factory_OrthonormalizationAlgorithmImplementation;
 

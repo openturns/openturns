@@ -39,7 +39,7 @@ class InverseTrendTransform;
 class OT_API TrendTransform
   : public VertexValueFunction
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

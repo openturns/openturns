@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection< Complex >         ComplexCollection;
 
-CLASSNAMEINIT(ARMA);
+CLASSNAMEINIT(ARMA)
 
 static const Factory<ARMA> Factory_ARMA;
 

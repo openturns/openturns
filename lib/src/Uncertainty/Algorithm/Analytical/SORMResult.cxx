@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(SORMResult);
+CLASSNAMEINIT(SORMResult)
 
 static const Factory<SORMResult> Factory_SORMResult;
 

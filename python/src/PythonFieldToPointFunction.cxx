@@ -30,7 +30,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PythonFieldToPointFunction);
+CLASSNAMEINIT(PythonFieldToPointFunction)
 
 static const Factory<PythonFieldToPointFunction> Factory_PythonFieldToPointFunction;
 

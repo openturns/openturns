@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LogNormalMuSigma);
+CLASSNAMEINIT(LogNormalMuSigma)
 
 /* Default constructor */
 LogNormalMuSigma::LogNormalMuSigma()

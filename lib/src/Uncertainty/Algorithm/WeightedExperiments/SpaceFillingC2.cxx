@@ -25,7 +25,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(SpaceFillingC2);
+CLASSNAMEINIT(SpaceFillingC2)
 
 static const Factory<SpaceFillingC2> Factory_SpaceFillingC2;
 

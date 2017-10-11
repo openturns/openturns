@@ -32,7 +32,7 @@ class OT_API DiracCovarianceModel
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

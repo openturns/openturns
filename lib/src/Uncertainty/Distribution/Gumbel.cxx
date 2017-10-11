@@ -26,7 +26,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Gumbel);
+CLASSNAMEINIT(Gumbel)
 
 static const Factory<Gumbel> Factory_Gumbel;
 

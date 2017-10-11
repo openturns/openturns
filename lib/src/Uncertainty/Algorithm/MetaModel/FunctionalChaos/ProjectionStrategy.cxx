@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(ProjectionStrategy);
+CLASSNAMEINIT(ProjectionStrategy)
 
 /* Default constructor */
 ProjectionStrategy::ProjectionStrategy()

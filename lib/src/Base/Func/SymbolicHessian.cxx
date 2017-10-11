@@ -24,7 +24,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(SymbolicHessian);
+CLASSNAMEINIT(SymbolicHessian)
 
 static const Factory<SymbolicHessian> Factory_SymbolicHessian;
 

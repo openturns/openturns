@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LevelSetMesher
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

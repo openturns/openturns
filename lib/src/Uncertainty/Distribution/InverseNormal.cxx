@@ -27,7 +27,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(InverseNormal);
+CLASSNAMEINIT(InverseNormal)
 
 static const Factory<InverseNormal> Factory_InverseNormal;
 

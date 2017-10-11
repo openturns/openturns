@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(KrigingAlgorithm);
+CLASSNAMEINIT(KrigingAlgorithm)
 
 static const Factory<KrigingAlgorithm> Factory_KrigingAlgorithm;
 

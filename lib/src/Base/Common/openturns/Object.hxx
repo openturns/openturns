@@ -62,7 +62,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API Object
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Destructor */

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SphericalModel
  */
 
-CLASSNAMEINIT(SphericalModel);
+CLASSNAMEINIT(SphericalModel)
 
 static const Factory<SphericalModel> Factory_SphericalModel;
 

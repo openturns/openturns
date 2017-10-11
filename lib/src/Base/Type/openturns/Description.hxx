@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API Description :
   public PersistentCollection<String>
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef PersistentCollection<String> InternalType;
 

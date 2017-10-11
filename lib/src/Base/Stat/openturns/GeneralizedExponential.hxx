@@ -32,7 +32,7 @@ class OT_API GeneralizedExponential
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

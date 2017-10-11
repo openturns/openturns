@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Description);
+CLASSNAMEINIT(Description)
 
 static const Factory<PersistentCollection<String> > Factory_PersistentCollection_String;
 

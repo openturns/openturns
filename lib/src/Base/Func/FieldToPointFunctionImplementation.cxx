@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FieldToPointFunctionImplementation);
+CLASSNAMEINIT(FieldToPointFunctionImplementation)
 
 static const Factory<FieldToPointFunctionImplementation> Factory_FieldToPointFunctionImplementation;
 
@@ -44,8 +44,8 @@ FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const Uns
 
 /* Parameter constructor */
 FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension,
-								       const UnsignedInteger inputDimension,
-								       const UnsignedInteger outputDimension)
+    const UnsignedInteger inputDimension,
+    const UnsignedInteger outputDimension)
   : PersistentObject()
   , spatialDimension_(spatialDimension)
   , inputDimension_(inputDimension)

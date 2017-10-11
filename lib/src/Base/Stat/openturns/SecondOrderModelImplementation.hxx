@@ -41,7 +41,7 @@ class OT_API SecondOrderModelImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

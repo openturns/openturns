@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(QuadraticBasisFactory);
+CLASSNAMEINIT(QuadraticBasisFactory)
 
 static const Factory<QuadraticBasisFactory> Factory_QuadraticBasisFactory;
 

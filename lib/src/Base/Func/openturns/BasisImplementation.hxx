@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API BasisImplementation
   : public PersistentObject
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<Function> FunctionCollection;
   typedef PersistentCollection<Function> FunctionPersistentCollection;

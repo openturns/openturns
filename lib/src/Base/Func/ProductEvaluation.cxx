@@ -20,7 +20,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProductEvaluation);
+CLASSNAMEINIT(ProductEvaluation)
 
 static const Factory<ProductEvaluation> Factory_ProductEvaluation;
 

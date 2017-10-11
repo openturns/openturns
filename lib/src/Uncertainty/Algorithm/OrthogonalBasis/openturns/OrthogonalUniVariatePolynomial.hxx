@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API OrthogonalUniVariatePolynomial
   : public UniVariatePolynomialImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef Collection<Coefficients>           CoefficientsCollection;

@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SquareComplexMatrix);
+CLASSNAMEINIT(SquareComplexMatrix)
 
 /* Default constructor */
 SquareComplexMatrix::SquareComplexMatrix()

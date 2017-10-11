@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProductPolynomialHessian);
+CLASSNAMEINIT(ProductPolynomialHessian)
 
 static const Factory<ProductPolynomialHessian> Factory_ProductPolynomialHessian;
 

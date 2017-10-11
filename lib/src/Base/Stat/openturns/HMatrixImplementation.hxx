@@ -109,7 +109,7 @@ class OT_API HMatrixImplementation
 {
   friend class HMatrixFactory;
 
-  CLASSNAME;
+  CLASSNAME
 
 private:
   // Only visible from HMatrixFactory::build

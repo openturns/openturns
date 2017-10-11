@@ -27,7 +27,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(GeometricProfile);
+CLASSNAMEINIT(GeometricProfile)
 
 static const Factory<GeometricProfile> Factory_GeometricProfile;
 

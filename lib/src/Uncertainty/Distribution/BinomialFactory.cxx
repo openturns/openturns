@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BinomialFactory);
+CLASSNAMEINIT(BinomialFactory)
 
 static const Factory<BinomialFactory> Factory_BinomialFactory;
 

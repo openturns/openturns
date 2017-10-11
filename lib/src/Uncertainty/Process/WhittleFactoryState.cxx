@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WhittleFactoryState);
+CLASSNAMEINIT(WhittleFactoryState)
 
 static const Factory<WhittleFactoryState> Factory_WhittleFactoryState;
 

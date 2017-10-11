@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API FunctionalBasisImplementation
   : public BasisImplementation
 {
-  CLASSNAME;
+  CLASSNAME
 public:
   typedef Collection<Function> FunctionCollection;
 

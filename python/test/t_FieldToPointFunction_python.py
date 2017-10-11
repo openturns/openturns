@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
+
 class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
 
     def __init__(self):
@@ -10,7 +11,7 @@ class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
         super(FUNC, self).__init__(2, 2, 1)
         self.setInputDescription(['R', 'S'])
         self.setOutputDescription(['T', 'U'])
-        
+
     def _exec(self, X):
         Y = X.getValues().computeMean()
         return Y
@@ -38,6 +39,7 @@ print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
 print(myFunc(X))
 
 print(myFunc(Xsample))
+
 
 def myPyFunc(X):
     Y = X.getValues().computeMean()

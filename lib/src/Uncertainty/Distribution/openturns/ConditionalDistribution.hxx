@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API ConditionalDistribution
   : public Mixture
 {
-  CLASSNAME;
+  CLASSNAME
 
   /** The PosteriorDistribution class is closely linked with the ConditionalDistribution class
       as they are the two parts of the Bayesian modeling using distributions */

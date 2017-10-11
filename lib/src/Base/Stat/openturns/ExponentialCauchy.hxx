@@ -39,7 +39,7 @@ class OT_API ExponentialCauchy
   : public SecondOrderModelImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(BipartiteGraph);
+CLASSNAMEINIT(BipartiteGraph)
 static const Factory<BipartiteGraph> Factory_BipartiteGraph;
 
 /* Accessor to the red nodes */

@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class StationaryCovarianceModel
  */
 
-CLASSNAMEINIT(StationaryCovarianceModel);
+CLASSNAMEINIT(StationaryCovarianceModel)
 
 static const Factory<StationaryCovarianceModel> Factory_StationaryCovarianceModel;
 

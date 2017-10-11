@@ -26,7 +26,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(EnumerateFunction);
+CLASSNAMEINIT(EnumerateFunction)
 
 /* Constructor with parameters */
 EnumerateFunction::EnumerateFunction(const EnumerateFunctionImplementation & implementation)

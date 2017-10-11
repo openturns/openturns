@@ -25,7 +25,7 @@
 namespace OT
 {
 
-CLASSNAMEINIT(TemperatureProfileImplementation);
+CLASSNAMEINIT(TemperatureProfileImplementation)
 
 static const Factory<TemperatureProfileImplementation> Factory_TemperatureProfileImplementation;
 

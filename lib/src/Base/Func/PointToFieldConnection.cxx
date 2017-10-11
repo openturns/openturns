@@ -19,7 +19,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(PointToFieldConnection);
+CLASSNAMEINIT(PointToFieldConnection)
 
 static const Factory<PointToFieldConnection> Factory_PointToFieldConnection;
 

@@ -23,7 +23,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ParametricGradient);
+CLASSNAMEINIT(ParametricGradient)
 
 static const Factory<ParametricGradient> Factory_ParametricGradient;
 

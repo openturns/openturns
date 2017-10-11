@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API MaximumEntropyOrderStatisticsCopula
   : public SklarCopula
 {
-  CLASSNAME;
+  CLASSNAME
 public:
 
   typedef MaximumEntropyOrderStatisticsDistribution::DistributionCollection DistributionCollection;

@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(SolverImplementation);
+CLASSNAMEINIT(SolverImplementation)
 
 static const Factory<SolverImplementation> Factory_SolverImplementation;
 

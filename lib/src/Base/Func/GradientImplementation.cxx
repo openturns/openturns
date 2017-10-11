@@ -31,7 +31,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GradientImplementation);
+CLASSNAMEINIT(GradientImplementation)
 
 static const Factory<GradientImplementation> Factory_GradientImplementation;
 

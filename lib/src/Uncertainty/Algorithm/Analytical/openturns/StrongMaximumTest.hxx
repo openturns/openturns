@@ -38,7 +38,7 @@ class OT_API StrongMaximumTest :
   public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 public:
 
   /** Default constructor */

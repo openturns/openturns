@@ -40,7 +40,7 @@ class OT_API CovarianceModelImplementation
   : public PersistentObject
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(FilteringWindows);
+CLASSNAMEINIT(FilteringWindows)
 
 /* Constructor with parameters */
 FilteringWindows::FilteringWindows()

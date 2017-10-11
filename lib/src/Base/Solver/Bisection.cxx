@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * This class is an interface for the 1D nonlinear Bisections
  */
 
-CLASSNAMEINIT(Bisection);
+CLASSNAMEINIT(Bisection)
 
 static const Factory<Bisection> Factory_Bisection;
 

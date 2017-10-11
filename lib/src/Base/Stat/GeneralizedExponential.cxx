@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(GeneralizedExponential);
+CLASSNAMEINIT(GeneralizedExponential)
 
 static const Factory<GeneralizedExponential> Factory_GeneralizedExponential;
 

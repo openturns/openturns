@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EfficientGlobalOptimization);
+CLASSNAMEINIT(EfficientGlobalOptimization)
 
 static const Factory<EfficientGlobalOptimization> Factory_EfficientGlobalOptimization;
 

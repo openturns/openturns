@@ -36,7 +36,7 @@ class OT_API Compact
   : public HistoryStrategyImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

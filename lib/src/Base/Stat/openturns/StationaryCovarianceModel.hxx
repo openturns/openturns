@@ -34,7 +34,7 @@ class OT_API StationaryCovarianceModel
   : public CovarianceModelImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 

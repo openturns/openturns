@@ -24,7 +24,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ConstantGradient);
+CLASSNAMEINIT(ConstantGradient)
 
 static const Factory<ConstantGradient> Factory_ConstantGradient;
 

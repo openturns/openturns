@@ -29,7 +29,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(OrderStatisticsMarginalChecker);
+CLASSNAMEINIT(OrderStatisticsMarginalChecker)
 
 /* Parameters constructor */
 OrderStatisticsMarginalChecker::OrderStatisticsMarginalChecker(const DistributionCollection & collection)

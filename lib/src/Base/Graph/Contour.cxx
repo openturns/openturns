@@ -28,7 +28,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Contour);
+CLASSNAMEINIT(Contour)
 
 static const Factory<Contour> Factory_Contour;
 

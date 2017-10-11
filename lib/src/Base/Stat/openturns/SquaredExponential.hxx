@@ -32,7 +32,7 @@ class OT_API SquaredExponential
   : public StationaryCovarianceModel
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 
