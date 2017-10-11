@@ -514,9 +514,11 @@ public:
   UnsignedInteger getIntegrationNodesNumber() const;
   void setIntegrationNodesNumber(const UnsignedInteger integrationNodesNumber) const;
 
+protected:
   /** Gauss nodes and weights accessor */
   Point getGaussNodesAndWeights(Point & weights) const;
 
+public:
   /** Draw the PDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawPDF() const;
 
