@@ -20,6 +20,7 @@
  * Removed deprecated ConditionedNormalProcess class
  * Removed deprecated ResourceMap::[SG]AsNumericalScalar methods
  * Removed deprecated SpecFunc::*NumericalScalar* constants
+ * Removed deprecated PlatformInfo::GetConfigureCommandLine
 
 === Python module ===
 

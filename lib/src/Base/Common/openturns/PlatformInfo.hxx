@@ -57,10 +57,6 @@ public:
   /** Return the path OpenTURNS was installed to */
   static String GetInstallationDirectory();
 
-  /** Return the command line used to configure OpenTURNS
-   * @deprecated */
-  static String GetConfigureCommandLine();
-
   /** Return the precision used for floating %point output */
   static UnsignedInteger GetNumericalPrecision();
 
