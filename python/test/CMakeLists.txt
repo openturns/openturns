@@ -624,7 +624,12 @@ ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
 if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND)
-  ot_pyinstallcheck_test (notebook IGNOREOUT)
+  file (GLOB_RECURSE IPYNBS "${CMAKE_SOURCE_DIR}/python/doc/examples/*.ipynb")
+  foreach (IPYNB ${IPYNBS})
+    get_filename_component (TESTNAME "${IPYNB}" NAME_WE)
+    add_test (NAME pyinstallcheck_notebook_${TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/t_notebook.py ${IPYNB})
+    set_tests_properties (pyinstallcheck_notebook_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
+  endforeach ()
 endif ()
 if (MATPLOTLIB_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
