@@ -1,3 +1,2 @@
 Remove deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS aliases in 1.12
-Remove deprecated Field::getSample in 1.11
 Remove deprecated SobolIndicesAlgorithm::Generate method in 1.11

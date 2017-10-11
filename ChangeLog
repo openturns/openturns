@@ -21,6 +21,7 @@
  * Removed deprecated ResourceMap::[SG]AsNumericalScalar methods
  * Removed deprecated SpecFunc::*NumericalScalar* constants
  * Removed deprecated PlatformInfo::GetConfigureCommandLine
+ * Removed deprecated Field::getSample method
 
 === Python module ===
 
