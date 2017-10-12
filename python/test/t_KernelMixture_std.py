@@ -148,8 +148,10 @@ try:
     covariance = distribution.getCovariance()
     print("covariance=", repr(covariance))
     print("covariance (ref)=", repr(distributionRef.getCovariance()))
-    # parameters = distribution.getParametersCollection()
-    # print "parameters=" , parameters
+    parameters = distribution.getParameter()
+    print("parameters=" , parameters)
+    print("parametersDesc=" , distribution.getParameterDescription())
+    distribution.setParameter(parameters)
 
 except:
     import sys

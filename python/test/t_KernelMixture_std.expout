@@ -35,3 +35,5 @@ mean= class=Point name=Unnamed dimension=3 values=[1.5,0.5,2]
 mean (ref)= class=Point name=Unnamed dimension=3 values=[1.5,0.5,2]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,0.666667,0.666667,0.666667,9.66667,0.666667,0.666667,0.666667,1.66667]
 covariance (ref)= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.66667,0.666667,0.666667,0.666667,9.66667,0.666667,0.666667,0.666667,1.66667]
+parameters= [0.5,-0.5,1,1.5,0.5,2,2.5,1.5,3,2,3,1]#12
+parametersDesc= [x_0^0,x_0^1,x_0^2,x_1^0,x_1^1,x_1^2,x_2^0,x_2^1,x_2^2,h_0,h_1,h_2]#12
