@@ -57,6 +57,10 @@ try:
     print("covariance=", repr(covariance))
     parameters = distribution.getParametersCollection()
     print("parameters=", repr(parameters))
+    parameter = distribution.getParameter()
+    print("parameter=", repr(parameter))
+    print("parameterDesc=", distribution.getParameterDescription())
+    distribution.setParameter(parameter)
 
 except:
     import sys

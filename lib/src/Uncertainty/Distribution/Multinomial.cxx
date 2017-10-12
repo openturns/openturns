@@ -556,6 +556,34 @@ Multinomial::PointWithDescriptionCollection Multinomial::getParametersCollection
   return parameters;
 }
 
+
+Point Multinomial::getParameter() const
+{
+  Point parameter(1, n_);
+  parameter.add(p_);
+  return parameter;
+}
+
+Description Multinomial::getParameterDescription() const
+{
+  Description description(1, "n");
+  const UnsignedInteger dimension = getDimension();
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    description.add(OSS() << "p_" << i);
+  return description;
+}
+
+void Multinomial::setParameter(const Point & parameter)
+{
+  const UnsignedInteger dimension = getDimension();
+  if (parameter.getDimension() != (dimension + 1))
+    throw InvalidArgumentException(HERE) << "Expected " << (dimension + 1) << " parameters";
+  setN(parameter[0]);
+  Point p(dimension);
+  std::copy(parameter.begin() + 1, parameter.end(), p.begin());
+  setP(p);
+}
+
 /* Check if the distribution is elliptical */
 Bool Multinomial::isElliptical() const
 {

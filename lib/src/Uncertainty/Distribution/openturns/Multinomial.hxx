@@ -104,6 +104,13 @@ public:
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
 
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
 
