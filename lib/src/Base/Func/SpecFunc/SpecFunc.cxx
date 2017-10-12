@@ -49,7 +49,7 @@
 #else
 
 #include "openturns/GaussKronrod.hxx"
-#include "openturns/Function.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/Interval.hxx"
 
 #endif
@@ -298,13 +298,13 @@ Scalar SpecFunc::LogBesselK(const Scalar nu,
   Scalar upper = -1.0;
   if (nu == 0.0)
   {
-    integrand = Function("t", String(OSS() << "exp(-" << x << "*cosh(t))"));
+    integrand = SymbolicFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))"));
     upper = std::log(-2.0 * std::log(ScalarEpsilon) / x);
   }
   else
   {
     logFactor = nu * std::log(0.5 * x) - LogGamma(0.5 + nu) + 0.5 * std::log(M_PI);
-    integrand = Function("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
+    integrand = SymbolicFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
     upper = std::log(ScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(ScalarEpsilon) / nu) / nu, false);
   }
   Scalar epsilon = -1.0;
