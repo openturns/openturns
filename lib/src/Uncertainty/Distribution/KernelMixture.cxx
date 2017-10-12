@@ -632,7 +632,7 @@ KernelMixture::PointWithDescriptionCollection KernelMixture::getParametersCollec
     }
     marginalParameters[size] = bandwidth_[i];
     if (dimension > 1) description[size] = (OSS() << "h_" << i);
-    else description[size] = (OSS() << "h");
+    else description[size] = "h";
     marginalParameters.setDescription(description);
     parameters[i] = marginalParameters;
   }
@@ -660,6 +660,64 @@ KernelMixture::PointWithDescriptionCollection KernelMixture::getParametersCollec
   }
   return parameters;
 } // getParametersCollection
+
+
+Point KernelMixture::getParameter() const
+{
+  const UnsignedInteger size = sample_.getSize();
+  Point parameter;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    parameter.add(sample_[i]);
+  }
+  parameter.add(bandwidth_);
+  return parameter;
+}
+
+Description KernelMixture::getParameterDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = sample_.getSize();
+  Description description;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    if (dimension > 1)
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+        description.add(OSS() << "x_" << i << "^" << j);
+    else
+      description.add(OSS() << "x_" << i);
+  }
+
+  if (dimension > 1)
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+      description.add(OSS() << "h_" << j);
+  else
+    description.add("h");
+  return description;
+}
+
+
+void KernelMixture::setParameter(const Point & parameter)
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = sample_.getSize();
+  if (parameter.getDimension() != (dimension * (size + 1))) throw InvalidArgumentException(HERE) << "Expected " << (dimension * (size + 1)) << " parameters";
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      sample_[i][j] = parameter[index];
+      ++ index;
+    }
+  }
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+  {
+    bandwidth_[j] = parameter[index];
+    ++ index;
+  }
+}
+
 
 /* Check if the distribution is elliptical */
 Bool KernelMixture::isElliptical() const
