@@ -177,3 +177,6 @@ Distribution __div__(Scalar s)
 
 } // class Distribution
 } // namespace OT
+
+%clear OT::Point & marginalProb;
+%clear OT::Point & threshold;

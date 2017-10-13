@@ -101,5 +101,9 @@ Pointer<DistributionImplementation> __rmul__(Scalar s)
 
 } }
 
-%clear OT::Point & weights;
+%clear OT::Sample & grid;
+%clear OT::Point & marginalProb;
+%clear OT::Point & threshold;
+%clear OT::Scalar & marginalProb;
+%clear OT::Scalar & threshold;
 

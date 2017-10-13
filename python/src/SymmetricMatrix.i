@@ -41,3 +41,5 @@ namespace OT {
 
 } // SymmetricMatrix
 } // OT
+
+%clear OT::SquareMatrix & v;
