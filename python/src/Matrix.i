@@ -341,3 +341,5 @@ namespace OT {
 
 } // Matrix
 } // OT
+
+%clear OT::Matrix & R;

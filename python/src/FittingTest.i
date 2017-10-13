@@ -25,3 +25,4 @@ OT::Distribution OT::FittingTest::BestModelChiSquared(const OT::Sample  & sample
 
 %include openturns/FittingTest.hxx
 
+%clear OT::TestResult & bestResult;

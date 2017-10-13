@@ -19,3 +19,5 @@ OT::Indices OT::Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const OT:
 %include openturns/Mesh.hxx
 
 namespace OT { %extend Mesh { Mesh(const Mesh & other) { return new OT::Mesh(other); } } }
+
+%clear OT::Point & coordinates;

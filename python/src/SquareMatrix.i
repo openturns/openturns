@@ -31,3 +31,5 @@ namespace OT {
 
 } // SquareMatrix
 } // OT
+
+%clear OT::SquareComplexMatrix & v;

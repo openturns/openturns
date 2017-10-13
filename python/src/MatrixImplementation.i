@@ -20,3 +20,6 @@ OT::Scalar OT::MatrixImplementation::computeLogAbsoluteDeterminantSym(OT::Scalar
 
 %include openturns/MatrixImplementation.hxx
 namespace OT{ %extend MatrixImplementation { MatrixImplementation(const MatrixImplementation & other) { return new OT::MatrixImplementation(other); } } }
+
+%clear OT::MatrixImplementation & R;
+%clear OT::Scalar & sign;

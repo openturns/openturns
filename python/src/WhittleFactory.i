@@ -19,3 +19,5 @@ OT::ARMA OT::WhittleFactory::buildWithCriteria(const OT::ProcessSample & sample,
 
 %include openturns/WhittleFactory.hxx
 namespace OT { %extend WhittleFactory { WhittleFactory(const WhittleFactory & other) { return new OT::WhittleFactory(other); } } }
+
+%clear OT::Point & informationCriteria;

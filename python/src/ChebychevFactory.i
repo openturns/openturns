@@ -13,3 +13,5 @@ OT::Point OT::ChebychevFactory::getNodesAndWeights(OT::Point & weights) const;
 
 %include openturns/ChebychevFactory.hxx
 namespace OT { %extend ChebychevFactory { ChebychevFactory(const ChebychevFactory & other) { return new OT::ChebychevFactory(other); } } }
+
+%clear OT::Point & weights;

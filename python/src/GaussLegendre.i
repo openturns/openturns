@@ -15,3 +15,5 @@ OT::Point OT::GaussLegendre::integrateWithNodes(const OT::Function & function,
 
 %include openturns/GaussLegendre.hxx
 namespace OT { %extend GaussLegendre { GaussLegendre(const GaussLegendre & other) { return new OT::GaussLegendre(other); } } }
+
+%clear OT::Sample & adaptedNodes;

@@ -12,3 +12,5 @@ OT::DistributionCollection OT::RandomMixture::project(const DistributionFactoryC
 
 %include openturns/RandomMixture.hxx
 namespace OT { %extend RandomMixture { RandomMixture(const RandomMixture & other) { return new OT::RandomMixture(other); } } }
+
+%clear OT::Point & kolmogorovNorm;
