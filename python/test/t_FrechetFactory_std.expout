@@ -1,0 +1,10 @@
+Distribution                      = class=Frechet name=Frechet dimension=1 alpha=2 beta=2.5 gamma=-1.5
+Estimated distribution            = class=Frechet name=Frechet dimension=1 alpha=1.9596 beta=2.48708 gamma=-1.47832
+Parameter distribution            = Normal(mu = [1.9596,2.48708,-1.47832], sigma = [0.0393878,0.0530234,0.046005], R = [[  1         0.858608 -0.918773 ]
+ [  0.858608  1        -0.967707 ]
+ [ -0.918773 -0.967707  1        ]])
+Default distribution              = Frechet(alpha = 1, beta = 1, gamma = 0)
+Distribution from parameters      = Frechet(alpha = 2, beta = 2.5, gamma = -1.5)
+Typed estimated distribution      = Frechet(alpha = 1.9596, beta = 2.48708, gamma = -1.47832)
+Default typed distribution        = Frechet(alpha = 1, beta = 1, gamma = 0)
+Typed distribution from parameters= Frechet(alpha = 2, beta = 2.5, gamma = -1.5)

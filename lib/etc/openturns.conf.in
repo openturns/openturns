@@ -280,7 +280,10 @@
   <FisherSnedecorFactory-D1LowerBound            value="1.0e-2"  />
   <FisherSnedecorFactory-D2LowerBound            value="1.0e-2"  />
 
-  <!-- OT::GeneralizedParetoFactory parameters -->
+  <!-- OT::FrechetFactory parameters -->
+  <FrechetFactory-BoundMargin            value="10.0"  />
+
+<!-- OT::GeneralizedParetoFactory parameters -->
   <GeneralizedExtremeValue-XiThreshold              value="1.0e-6"  />
 
 <!-- OT::GeneralizedParetoFactory parameters -->
