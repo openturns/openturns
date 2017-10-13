@@ -87,6 +87,96 @@ class=Point name=Unnamed dimension=0 values=[]"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Point::isIncreasing
+"Check if the components are in increasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.isIncreasing()
+True
+>>> x = ot.Point([1.0, 1.0, 3.0])
+>>> x.isIncreasing()
+False
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isIncreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isNonDecreasing
+"Check if the components are in nondecreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.isNonDecreasing()
+True
+>>> x = ot.Point([1.0, 1.0, 3.0])
+>>> x.isNonDecreasing()
+True
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isNonDecreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isDecreasing
+"Check if the components are in decreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([3.0, 2.0, 1.0])
+>>> x.isDecreasing()
+True
+>>> x = ot.Point([3.0, 3.0, 1.0])
+>>> x.isDecreasing()
+False
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isIncreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isNonIncreasing
+"Check if the components are in nonincreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([3.0, 2.0, 1.0])
+>>> x.isNonIncreasing()
+True
+>>> x = ot.Point([3.0, 3.0, 1.0])
+>>> x.isNonIncreasing()
+True
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isNonIncreasing()
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isMonotonic
+"Check if the components are in nonincreasing or nondecreasing order.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.isMonotonic()
+True
+>>> x = ot.Point([2.0, 2.0, 1.0])
+>>> x.isMonotonic()
+True
+>>> x = ot.Point([1.0, 3.0, 2.0])
+>>> x.isMonotonic()
+False"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Point::getDescription
 "Accessor to the componentwise description.
 

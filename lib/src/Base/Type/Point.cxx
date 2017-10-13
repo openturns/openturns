@@ -92,6 +92,52 @@ Point Point::clean(const Scalar threshold) const
   return result;
 }
 
+/* Check if the components are in increasing order */
+Bool Point::isIncreasing() const
+{
+  const UnsignedInteger size = getSize();
+  Bool isIncreasing = true;
+  for (UnsignedInteger i = 1; isIncreasing && i < size; ++i)
+    isIncreasing = isIncreasing && (*this)[i - 1] < (*this)[i];
+  return isIncreasing;
+}
+
+/* Check if the components are in nondecreasing order */
+Bool Point::isNonDecreasing() const
+{
+  const UnsignedInteger size = getSize();
+  Bool isNonDecreasing = true;
+  for (UnsignedInteger i = 1; isNonDecreasing && i < size; ++i)
+    isNonDecreasing = isNonDecreasing && (*this)[i - 1] <= (*this)[i];
+  return isNonDecreasing;
+}
+
+/* Check if the components are in decreasing order */
+Bool Point::isDecreasing() const
+{
+  const UnsignedInteger size = getSize();
+  Bool isDecreasing = true;
+  for (UnsignedInteger i = 1; isDecreasing && i < size; ++i)
+    isDecreasing = isDecreasing && (*this)[i - 1] > (*this)[i];
+  return isDecreasing;
+}
+
+/* Check if the components are in nonincreasing order */
+Bool Point::isNonIncreasing() const
+{
+  const UnsignedInteger size = getSize();
+  Bool isNonIncreasing = true;
+  for (UnsignedInteger i = 1; isNonIncreasing && i < size; ++i)
+    isNonIncreasing = isNonIncreasing && (*this)[i - 1] >= (*this)[i];
+  return isNonIncreasing;
+}
+
+/* Check if the components are in increasing or decreasing order */
+Bool Point::isMonotonic() const
+{
+  // This order assumes that the nondecreasing case is the most frequent case
+  return isNonDecreasing() || isNonIncreasing();
+}
 
 /* String converter */
 String Point::__repr__() const

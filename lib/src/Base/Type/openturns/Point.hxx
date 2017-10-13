@@ -69,6 +69,21 @@ public:
   /** Set small elements to zero */
   Point clean(const Scalar threshold) const;
 
+  /** Check if the components are in increasing order */
+  Bool isIncreasing() const;
+  
+  /** Check if the components are in nondecreasing order */
+  Bool isNonDecreasing() const;
+  
+  /** Check if the components are in decreasing order */
+  Bool isDecreasing() const;
+  
+  /** Check if the components are in nonincreasing order */
+  Bool isNonIncreasing() const;
+  
+  /** Check if the components are in nonincreasing or nondecreasing order */
+  Bool isMonotonic() const;
+  
   /** Dimension accessor */
   inline UnsignedInteger getDimension() const
   {
