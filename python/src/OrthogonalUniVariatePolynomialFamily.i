@@ -1,10 +1,5 @@
 // SWIG file OrthogonalUniVariatePolynomialFamily.i
 
-// do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::Point & weights ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & weights %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
-OT::Point OT::OrthogonalUniVariatePolynomialFamily::getNodesAndWeights(OT::Point & weights) const;
-
 %{
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 %}
@@ -27,5 +22,3 @@ OrthogonalUniVariatePolynomialFamily(const OrthogonalUniVariatePolynomialFamily 
 }
 
 }
-
-%clear OT::Point & weights;

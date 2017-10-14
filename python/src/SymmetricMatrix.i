@@ -1,9 +1,8 @@
 // SWIG file SymmetricMatrix.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::SquareMatrix & v ($*ltype temp) %{ temp = OT::SquareMatrix(); $1 = &temp; %}
-%typemap(argout) OT::SquareMatrix & v %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::SquareMatrix(*$1), SWIG_TypeQuery("OT::SquareMatrix *"), SWIG_POINTER_OWN |  0 )); %}
-OT::SymmetricMatrix OT::SymmetricMatrix::computeEV(OT::SquareMatrix & v, const Bool keepIntact = true);
+%typemap(in, numinputs=0) OT::SquareMatrix & vOut ($*ltype temp) %{ temp = OT::SquareMatrix(); $1 = &temp; %}
+%typemap(argout) OT::SquareMatrix & vOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::SquareMatrix(*$1), SWIG_TypeQuery("OT::SquareMatrix *"), SWIG_POINTER_OWN |  0 )); %}
 
 %{
 #include "openturns/SymmetricMatrix.hxx"
@@ -41,5 +40,3 @@ namespace OT {
 
 } // SymmetricMatrix
 } // OT
-
-%clear OT::SquareMatrix & v;

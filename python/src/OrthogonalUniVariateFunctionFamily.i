@@ -22,5 +22,3 @@ OrthogonalUniVariateFunctionFamily(const OrthogonalUniVariateFunctionFamily & ot
 }
 
 }
-
-%clear OT::Point & weights;

@@ -67,10 +67,10 @@ public:
   /** Build method ==> estimating the coefficients */
   virtual ARMA build(const TimeSeries & timeSeries) const;
   ARMA buildWithCriteria(const TimeSeries & timeSeries,
-                         Point & informationCriteria) const;
+                         Point & informationCriteriaOut) const;
   virtual ARMA build(const ProcessSample & sample) const;
   ARMA buildWithCriteria(const ProcessSample & sample,
-                         Point & informationCriteria) const;
+                         Point & informationCriteriaOut) const;
 
   /** Verbosity accessor */
   Bool getVerbose() const;

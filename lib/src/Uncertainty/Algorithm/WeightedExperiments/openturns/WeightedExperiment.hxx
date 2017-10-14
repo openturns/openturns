@@ -67,7 +67,7 @@ public:
   virtual Sample generate() const;
 
   /** Sample generation with weights*/
-  virtual Sample generateWithWeights(Point & weights) const;
+  virtual Sample generateWithWeights(Point & weightsOut) const;
 
   /** Uniform weights ? */
   virtual Bool hasUniformWeights() const;

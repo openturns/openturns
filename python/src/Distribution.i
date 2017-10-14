@@ -1,16 +1,5 @@
 // SWIG file Distribution.i
 
-// do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::Point & marginalProb ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & marginalProb %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
-OT::Interval OT::DistributionImplementation::computeMinimumVolumeInterval(const OT::Scalar prob, OT::Point & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeBilateralConfidenceInterval(const OT::Scalar prob, OT::Point & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeUnilateralConfidenceInterval(const OT::Scalar prob, const OT::Bool tail, OT::Point & marginalProb) const;
-
-%typemap(in, numinputs=0) OT::Point & threshold ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & threshold %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
-OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSet(const OT::Scalar prob, OT::Point & threshold) const;
-
 %{
 #include "openturns/Distribution.hxx"
 #include "openturns/PythonDistribution.hxx"
@@ -177,6 +166,3 @@ Distribution __div__(Scalar s)
 
 } // class Distribution
 } // namespace OT
-
-%clear OT::Point & marginalProb;
-%clear OT::Point & threshold;

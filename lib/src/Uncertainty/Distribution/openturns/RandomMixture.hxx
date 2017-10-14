@@ -204,7 +204,7 @@ public:
                          const Bool tail = false) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;
@@ -278,7 +278,7 @@ public:
 
   /** Project a RandomMixture distribution over a collection of DistributionFactory by using sampling and Kolmogorov distance. */
   DistributionCollection project(const DistributionFactoryCollection & factoryCollection,
-                                 Point & kolmogorovNorm,
+                                 Point & kolmogorovNormOut,
                                  const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize" )) const;
 
   /** Tell if the distribution has independent copula */

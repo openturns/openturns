@@ -66,7 +66,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weights) const;
+  Sample generateWithWeights(Point & weightsOut) const;
 
   /** Shuffle the cells. */
   static Matrix ComputeShuffle(const UnsignedInteger dimension,

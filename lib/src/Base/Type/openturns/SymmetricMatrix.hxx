@@ -141,13 +141,13 @@ public:
                            const Bool keepIntact = true);
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
                                        const Bool keepIntact = true);
   Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
   Point computeEigenValues(const Bool keepIntact = true);
-  Point computeEV(SquareMatrix & v,
+  Point computeEV(SquareMatrix & vOut,
                   const Bool keepIntact = true);
 
   /** Comparison operators */

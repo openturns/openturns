@@ -54,7 +54,7 @@ public:
 
   /** Nodes and weights of the polynomial of degree n as the eigenvalues of the associated matrix, to build quadrature rules */
   Point getNodesAndWeights(const UnsignedInteger n,
-                           Point & weights) const;
+                           Point & weightsOut) const;
 
   /** String converter */
   String __repr__() const;
