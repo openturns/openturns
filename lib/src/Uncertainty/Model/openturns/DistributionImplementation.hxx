@@ -315,11 +315,13 @@ public:
                                  const UnsignedInteger pointNumber,
                                  const Bool tail = false) const;
 
+#ifndef SWIG
   virtual Sample computeQuantile(const Scalar qMin,
                                  const Scalar qMax,
                                  const UnsignedInteger pointNumber,
                                  Sample & grid,
                                  const Bool tail = false) const;
+#endif
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   virtual Interval computeMinimumVolumeInterval(const Scalar prob) const;

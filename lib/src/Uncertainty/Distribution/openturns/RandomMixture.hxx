@@ -129,6 +129,7 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const;
 
+#ifndef SWIG
   /** Compute the PDF over a regular grid */
   Sample computePDF(const Scalar xMin,
                     const Scalar xMax,
@@ -140,6 +141,7 @@ public:
                     const Point & xMax,
                     const Indices & pointNumber,
                     Sample & grid) const;
+#endif
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -183,11 +185,13 @@ public:
   using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const;
 
+#ifndef SWIG
   /** Compute the CDF over a regular grid */
   Sample computeCDF(const Scalar xMin,
                     const Scalar xMax,
                     const UnsignedInteger pointNumber,
                     Sample & grid) const;
+#endif
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
