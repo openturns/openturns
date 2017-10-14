@@ -252,6 +252,7 @@ public:
   /** Build the Cholesky factorization of the matrix */
   virtual MatrixImplementation computeCholesky(const Bool keepIntact = true);
 
+#ifndef SWIG
   /** Update in-place the Cholesky factor L of an SPD matrix M given a rank-one update vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M + vv^t */
   static void CholeskyUpdate(MatrixImplementation & cholesky,
                              const Point & vector);
@@ -259,6 +260,7 @@ public:
   /** Downdate in-place the Cholesky factor L of an SPD matrix M given a rank-one downdate vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M - vv^t */
   static void CholeskyDowndate(MatrixImplementation & cholesky,
                                const Point & vector);
+#endif
 
   /** Build the QR factorization of the matrix */
   virtual MatrixImplementation computeQR(MatrixImplementation & R,
