@@ -64,7 +64,7 @@ public:
   virtual Bool hasUniformWeights() const;
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weights) const;
+  Sample generateWithWeights(Point & weightsOut) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

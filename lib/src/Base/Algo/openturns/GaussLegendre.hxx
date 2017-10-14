@@ -56,7 +56,7 @@ public:
                   const Interval & interval) const;
   Point integrateWithNodes(const Function & function,
                            const Interval & interval,
-                           Sample & adaptedNodes) const;
+                           Sample & adaptedNodesOut) const;
 
   /** Discretization accessor */
   Indices getDiscretization() const;

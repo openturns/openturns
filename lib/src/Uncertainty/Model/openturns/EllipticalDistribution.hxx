@@ -95,7 +95,7 @@ public:
   virtual Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
   /** Mean point accessor */
   void setMean(const Point & mean);

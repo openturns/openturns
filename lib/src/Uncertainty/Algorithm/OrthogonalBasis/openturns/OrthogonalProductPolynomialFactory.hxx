@@ -71,7 +71,7 @@ public:
 
   /** Nodes and weights of the multivariate polynomial associated with the marginal degrees indices[0], ...,indices[dimension] as the tensor product of the marginal orthogonal univariate polynomials, to build multivariate quadrature rules */
   Sample getNodesAndWeights(const Indices & degrees,
-                            Point & weights) const;
+                            Point & weightsOut) const;
 
   /** String converter */
   virtual String __repr__() const;

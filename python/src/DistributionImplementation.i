@@ -1,36 +1,20 @@
 // SWIG file DistributionImplementation.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::Sample & grid ($*ltype temp) %{ temp = OT::Sample(); $1 = &temp; %}
-%typemap(argout) OT::Sample & grid %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN |  0 )); %}
-OT::Sample OT::DistributionImplementation::computePDF(const OT::Scalar xMin,
-                           const OT::Scalar xMax,
-                           const OT::UnsignedInteger pointNumber,
-                           OT::Sample & grid) const;
-OT::Sample OT::DistributionImplementation::computePDF(const OT::Point & xMin,
-                           const OT::Point & xMax,
-                           const OT::Indices & pointNumber,
-                           OT::Sample & grid) const;
+%typemap(in, numinputs=0) OT::Sample & gridOut ($*ltype temp) %{ temp = OT::Sample(); $1 = &temp; %}
+%typemap(argout) OT::Sample & gridOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN |  0 )); %}
 
-%typemap(in, numinputs=0) OT::Point & marginalProb ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & marginalProb %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
-OT::Interval OT::DistributionImplementation::computeMinimumVolumeInterval(const OT::Scalar prob, OT::Point & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeBilateralConfidenceInterval(const OT::Scalar prob, OT::Point & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeUnilateralConfidenceInterval(const OT::Scalar prob, const OT::Bool tail, OT::Point & marginalProb) const;
+%typemap(in, numinputs=0) OT::Point & marginalProbOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
+%typemap(argout) OT::Point & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
 
-%typemap(in, numinputs=0) OT::Point & threshold ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & threshold %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
-OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSet(const OT::Scalar prob, OT::Point & threshold) const;
+%typemap(in, numinputs=0) OT::Point & thresholdOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
+%typemap(argout) OT::Point & thresholdOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
 
+%typemap(in, numinputs=0) OT::Scalar & marginalProbOut ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
+%typemap(argout) OT::Scalar & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}
 
-%typemap(in, numinputs=0) OT::Scalar & marginalProb ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
-%typemap(argout) OT::Scalar & marginalProb %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}
-OT::Interval OT::DistributionImplementation::computeMinimumVolumeIntervalWithMarginalProbability(const OT::Scalar prob, OT::Scalar & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability(const OT::Scalar prob, OT::Scalar & marginalProb) const;
-OT::Interval OT::DistributionImplementation::computeUnilateralConfidenceIntervalWithMarginalProbability(const OT::Scalar prob, const OT::Bool tail, OT::Scalar & marginalProb) const;
-%typemap(in, numinputs=0) OT::Scalar & threshold ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
-%typemap(argout) OT::Scalar & threshold %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}
-OT::LevelSet OT::DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(const OT::Scalar prob, OT::Scalar & threshold) const;
+%typemap(in, numinputs=0) OT::Scalar & thresholdOut ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
+%typemap(argout) OT::Scalar & thresholdOut %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}
 
 
 %{
@@ -96,10 +80,3 @@ Pointer<DistributionImplementation> __rmul__(Scalar s)
 
 
 } }
-
-%clear OT::Sample & grid;
-%clear OT::Point & marginalProb;
-%clear OT::Point & threshold;
-%clear OT::Scalar & marginalProb;
-%clear OT::Scalar & threshold;
-
