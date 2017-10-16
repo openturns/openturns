@@ -64,6 +64,7 @@
 #include "openturns/FisherSnedecor.hxx"
 #include "openturns/FisherSnedecorFactory.hxx"
 #include "openturns/Frechet.hxx"
+#include "openturns/FrechetFactory.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/GammaFactory.hxx"
 #include "openturns/GammaMuSigma.hxx"

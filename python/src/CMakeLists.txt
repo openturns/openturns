@@ -549,6 +549,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       FisherSnedecor.i FisherSnedecor_doc.i.in
                       FisherSnedecorFactory.i FisherSnedecorFactory_doc.i.in
                       Frechet.i Frechet_doc.i.in
+                      FrechetFactory.i FrechetFactory_doc.i.in
                       Gamma.i Gamma_doc.i.in
                       GammaFactory.i GammaFactory_doc.i.in
                       GammaMuSigma.i GammaMuSigma_doc.i.in

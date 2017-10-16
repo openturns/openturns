@@ -1,0 +1,25 @@
+%feature("docstring") OT::FrechetFactory
+"Frechet factory.
+
+Available constructor:
+    FrechetFactory()
+
+The parameters are estimated by likelihood maximization. The starting point is obtained from the estimation of a Gumbel distribution based on the logarithm of the shifted observations:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\alpha} =\frac{\pi}{\Hat{\sigma}_y\sqrt{6}} \\
+      \displaystyle\Hat{\beta} =\exp\left\{\bar{y}_n-\frac{\gamma\sqrt{6}}{\pi}\Hat{\sigma}_y\right\} \\
+      \displaystyle\Hat{\gamma} =x_{(1)} - \frac{|x_{(1)}|}{n+2}
+    \end{eqnarray*}
+
+with :math:`\gamma \simeq 0.57721` as Euler's constant (not to be confused with the location parameter of the Frechet distribution!), :math:`x_{(1)}=\min_{i=1,\dots,n}x_i` and :math:`y_i=x_i-\Hat{\gamma}`.
+
+See also
+--------
+DistributionFactory, Frechet"
+
+
+

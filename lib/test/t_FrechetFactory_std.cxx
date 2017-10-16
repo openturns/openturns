@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class Gumbel for standard methods
+ *  @brief The test file of class Frechet for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
 
   try
   {
-    Gumbel distribution(2.0, 2.5);
+    Frechet distribution(2.0, 2.5, -1.5);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
-    GumbelFactory factory;
+    FrechetFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
@@ -46,13 +46,13 @@ int main(int argc, char *argv[])
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
-    Gumbel estimatedGumbel(factory.buildAsGumbel(sample));
-    fullprint << "Gumbel          =" << distribution << std::endl;
-    fullprint << "Estimated gumbel=" << estimatedGumbel << std::endl;
-    estimatedGumbel = factory.buildAsGumbel();
-    fullprint << "Default gumbel=" << estimatedGumbel << std::endl;
-    estimatedGumbel = factory.buildAsGumbel(distribution.getParameter());
-    fullprint << "Gumbel from parameters=" << estimatedGumbel << std::endl;
+    Frechet estimatedFrechet(factory.buildAsFrechet(sample));
+    fullprint << "Frechet          =" << distribution << std::endl;
+    fullprint << "Estimated frechet=" << estimatedFrechet << std::endl;
+    estimatedFrechet = factory.buildAsFrechet();
+    fullprint << "Default frechet=" << estimatedFrechet << std::endl;
+    estimatedFrechet = factory.buildAsFrechet(distribution.getParameter());
+    fullprint << "Frechet from parameters=" << estimatedFrechet << std::endl;
   }
   catch (TestFailed & ex)
   {

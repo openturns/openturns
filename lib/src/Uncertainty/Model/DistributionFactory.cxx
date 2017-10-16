@@ -38,6 +38,7 @@
 #include "openturns/FarlieGumbelMorgensternCopulaFactory.hxx"
 #include "openturns/FisherSnedecorFactory.hxx"
 #include "openturns/FrankCopulaFactory.hxx"
+#include "openturns/FrechetFactory.hxx"
 #include "openturns/GammaFactory.hxx"
 #include "openturns/GeneralizedParetoFactory.hxx"
 #include "openturns/GeometricFactory.hxx"
@@ -82,6 +83,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(DirichletFactory());
   collection.add(ExponentialFactory());
   collection.add(FisherSnedecorFactory());
+  collection.add(FrechetFactory());
   collection.add(GammaFactory());
   collection.add(GeneralizedParetoFactory());
   collection.add(GumbelFactory());

@@ -38,6 +38,7 @@ Building distributions from samples
     DirichletFactory
     ExponentialFactory
     FisherSnedecorFactory
+    FrechetFactory
     GammaFactory
     GeneralizedParetoFactory
     GeometricFactory

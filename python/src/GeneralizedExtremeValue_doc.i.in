@@ -52,7 +52,7 @@ Its first moments are:
 
 where :math:`\gamma` is Euler's constant.
 
-Link with other distributions: if :math:`X\sim`:class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)`, then :math:`X\sim`:class:`~openturns.Frechet`:math:`(1/\xi, \sigma/\xi, \mu-\sigma/\xi)` if :math:`\xi>0`, :math:`-X\sim`:class:`~openturns.Weibull`:math:`(sigma/\xi, -1/\xi, \sigma/\xi-\mu)` if :math:`\xi<0` (note the minus sign) and :math:`X\sim`:class:`~openturns.Gumbel`:math:`(1/\sigma, \mu)` if :math:`\xi=0`.
+Link with other distributions: if :math:`X\sim`:class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)`, then :math:`X\sim`:class:`~openturns.Frechet`:math:`(1/\xi, \sigma/\xi, \mu-\sigma/\xi)` if :math:`\xi>0`, :math:`-X\sim`:class:`~openturns.Weibull`:math:`(-\sigma/\xi, -1/\xi, \sigma/\xi-\mu)` if :math:`\xi<0` (note the minus sign) and :math:`X\sim`:class:`~openturns.Gumbel`:math:`(1/\sigma, \mu)` if :math:`\xi=0`.
 
 Examples
 --------

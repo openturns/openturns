@@ -543,6 +543,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "FisherSnedecorFactory-D1LowerBound", 1.0e-2 );
   setAsScalar( "FisherSnedecorFactory-D2LowerBound", 1.0e-2 );
 
+  // FrechetFactory parameters //
+  setAsScalar( "FrechetFactory-BoundMargin", 10.0 );
+
   // GeneralizedExtremeValue parameters //
   setAsScalar( "GeneralizedExtremeValue-XiThreshold", 1.0e-6 );
 
