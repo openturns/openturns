@@ -49,6 +49,8 @@ public:
   virtual String __repr__() const;
 
   /** Perform cross-validation */
+  using ODESolverImplementation::solve;
+  
   Sample solve(const Point & initialState,
                const Point & timeGrid) const;
 

@@ -57,6 +57,14 @@ Sample ODESolverImplementation::solve(const Point & initialState,
   throw NotYetImplementedException(HERE) << "In ODESolverImplementation::solve(const Point & initialState, const Point & timeGrid) const";
 }
 
+Sample ODESolverImplementation::solve(const Point & initialState,
+                                      const Mesh & timeGrid) const
+{
+  if (timeGrid.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a mesh of dimension=1, here dimension=" << timeGrid.getDimension();
+  const Sample vertices(timeGrid.getVertices());
+  return solve(initialState, vertices.getImplementation()->getData());
+}
+
 /* String converter */
 String ODESolverImplementation::__repr__() const
 {

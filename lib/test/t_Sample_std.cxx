@@ -146,6 +146,13 @@ int main(int argc, char *argv[])
     Sample sample4(sample2, 4, 8);
     fullprint << "sample4=" << sample4 << std::endl;
 
+    // Internal storage
+    Sample sample5(3, 1);
+    sample5[0][0] = 1.0;
+    sample5[1][0] = 3.0;
+    sample5[2][0] = 2.0;
+    fullprint << "sample5=" << sample5.asPoint() << std::endl;
+    fullprint << "sample5 (linear)=" << sample5.asPoint() << std::endl;
   }
   catch (TestFailed & ex)
   {

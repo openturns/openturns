@@ -15,8 +15,8 @@ Parameters
 ----------
 initialState : sequence of float
     Initial value of the equation
-timeGrid : sequence of float
-    Time steps
+timeGrid : sequence of float or :class:`~openturns.Mesh` of dimension 1
+    Time stamps, ie values of :math:`t` at which the solution is computed.
 
 Returns
 -------

@@ -315,6 +315,12 @@ void Sample::stack(const Sample & sample)
   getImplementation()->stack(*sample.getImplementation());
 }
 
+/* Return the internal linear storage */
+Point Sample::asPoint() const
+{
+  if (getDimension() != 1) throw NotDefinedException(HERE) << "Error: the conversion to Point is defined only for a sample of dimension=1, here dimension=" << getDimension();
+  return getImplementation()->getData();
+}
 
 void Sample::erase(const UnsignedInteger first,
                    const UnsignedInteger last)

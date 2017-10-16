@@ -1104,6 +1104,38 @@ Examples
 1 : [ -0.438266  1.20548   0.810668  0.793156 ]
 2 : [ -2.18139   0.350042 -0.470526  0.261018 ]"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::asPoint()
+"Returns the internal linear storage for 1D sample.
+
+Returns
+-------
+values : :class:`~openturns.Point`
+    Flat internal representation of the sample.
+
+Notes
+-----
+Available only for 1D sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(5)
+>>> print(sample)
+    [ X0        ]
+0 : [  0.608202 ]
+1 : [ -1.26617  ]
+2 : [ -0.438266 ]
+3 : [  1.20548  ]
+4 : [ -2.18139  ]
+>>> print(sample.asPoint())
+[0.608202,-1.26617,-0.438266,1.20548,-2.18139]
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::sortUnique
 "Sort the sample and remove duplicate points.
 

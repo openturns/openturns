@@ -86,6 +86,10 @@ try:
     sample4 = Sample(sample2, 4, 8)
     print("sample4=", repr(sample4))
 
+    sample5 = Sample([[1.0], [3.0], [2.0]])
+    print("sample5=", repr(sample5))
+    print("sample5 (linear)=", sample5.asPoint())
+
 except:
     import sys
     print("t_Sample_std.py", sys.exc_info()[0], sys.exc_info()[1])

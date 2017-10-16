@@ -66,9 +66,15 @@ String ODESolver::__str__(const String & offset) const
   return getImplementation()->__str__( offset );
 }
 
-/* Perform cross-validation */
+/* Solve ODE */
 Sample ODESolver::solve(const Point & initialState,
                         const Point & timeGrid) const
+{
+  return getImplementation()->solve(initialState, timeGrid);
+}
+
+Sample ODESolver::solve(const Point & initialState,
+                        const Mesh & timeGrid) const
 {
   return getImplementation()->solve(initialState, timeGrid);
 }

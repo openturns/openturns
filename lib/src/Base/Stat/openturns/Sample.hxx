@@ -174,6 +174,9 @@ public:
   /** Stack the given sample to the current one */
   void stack(const Sample & sample);
 
+  /** Return the internal linear storage */
+  Point asPoint() const;
+  
   /**
    * Method split() trunk the sample before the index passed as argument
    * and returns the remainder as new sample. This method tries its best not for doubling

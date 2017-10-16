@@ -64,6 +64,14 @@ int main(int argc, char *argv[])
     ref[0] = -1.0 + t + 2.0 * exp(-t);
     ref[1] = -2.0 + -2.0 * t - t * t + exp(t);
     fullprint << "ref. value=" << ref << std::endl;
+    RegularGrid grid(0.0, 0.01, nt);
+    result = solver.solve(initialState, grid);
+    fullprint << "result=" << result << std::endl;
+    fullprint << "last value=" << result[nt - 1] << std::endl;
+    t = grid.getValue(nt - 1);
+    ref[0] = -1.0 + t + 2.0 * exp(-t);
+    ref[1] = -2.0 + -2.0 * t - t * t + exp(t);
+    fullprint << "ref. value=" << ref << std::endl;
   }
   catch (TestFailed & ex)
   {
