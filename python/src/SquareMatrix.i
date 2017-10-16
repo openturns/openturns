@@ -1,9 +1,8 @@
 // SWIG file SquareMatrix.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::SquareComplexMatrix & v ($*ltype temp) %{ temp = OT::SquareComplexMatrix(); $1 = &temp; %}
-%typemap(argout) OT::SquareComplexMatrix & v %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::SquareComplexMatrix(*$1), SWIG_TypeQuery("OT::SquareComplexMatrix *"), SWIG_POINTER_OWN |  0 )); %}
-OT::SquareMatrix OT::SquareMatrix::computeEV(OT::SquareComplexMatrix & v, const Bool keepIntact = true);
+%typemap(in, numinputs=0) OT::SquareComplexMatrix & vOut ($*ltype temp) %{ temp = OT::SquareComplexMatrix(); $1 = &temp; %}
+%typemap(argout) OT::SquareComplexMatrix & vOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::SquareComplexMatrix(*$1), SWIG_TypeQuery("OT::SquareComplexMatrix *"), SWIG_POINTER_OWN |  0 )); %}
 
 %{
 #include "openturns/SquareMatrix.hxx"

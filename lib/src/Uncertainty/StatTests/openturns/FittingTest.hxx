@@ -54,22 +54,22 @@ public:
   /** Best model for a given numerical sample by Kolmogorov */
   static Distribution BestModelKolmogorov(const Sample  & sample,
                                           const DistributionFactoryCollection & factoryCollection,
-                                          TestResult & bestResult);
+                                          TestResult & bestResultOut);
 
   /** Best model for a given numerical sample by Kolmogorov */
   static Distribution BestModelKolmogorov(const Sample  & sample,
                                           const DistributionCollection & distributionCollection,
-                                          TestResult & bestResult);
+                                          TestResult & bestResultOut);
 
   /** Best model for a given numerical sample by ChiSquared */
   static Distribution BestModelChiSquared(const Sample  & sample,
                                           const DistributionFactoryCollection & factoryCollection,
-                                          TestResult & bestResult);
+                                          TestResult & bestResultOut);
 
   /** Best model for a given numerical sample by ChiSquared */
   static Distribution BestModelChiSquared(const Sample  & sample,
                                           const DistributionCollection & distributionCollection,
-                                          TestResult & bestResult);
+                                          TestResult & bestResultOut);
 
   /** Bayesian Information Criterion computation */
   static Scalar BIC(const Sample & sample,

@@ -1,12 +1,13 @@
 // SWIG file Matrix.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::Matrix & R ($*ltype temp) %{ temp = OT::Matrix(); $1 = &temp; %}
-%typemap(argout) OT::Matrix & R %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Matrix(*$1), SWIG_TypeQuery("OT::Matrix *"), SWIG_POINTER_OWN |  0 )); %}
-OT::Matrix OT::Matrix::computeQR(OT::Matrix & R, const OT::Bool fullQR = false, const OT::Bool keepIntact = true);
-%apply OT::Matrix & R { OT::Matrix & u, OT::Matrix & vT };
-OT::Matrix OT::Matrix::computeSVD(OT::Matrix & u, OT::Matrix & vT, const Bool fullSVD = false, const Bool keepIntact = true);
+%typemap(in, numinputs=0) OT::Matrix & ROut ($*ltype temp) %{ temp = OT::Matrix(); $1 = &temp; %}
+%typemap(argout) OT::Matrix & ROut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Matrix(*$1), SWIG_TypeQuery("OT::Matrix *"), SWIG_POINTER_OWN |  0 )); %}
 
+%apply OT::Matrix & ROut { OT::Matrix & uOut, OT::Matrix & vTOut, OT::Matrix & vOut };
+
+%typemap(in, numinputs=0) OT::ComplexMatrix & vOut ($*ltype temp) %{ temp = OT::ComplexMatrix(); $1 = &temp; %}
+%typemap(argout) OT::ComplexMatrix & vOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::ComplexMatrix(*$1), SWIG_TypeQuery("OT::ComplexMatrix *"), SWIG_POINTER_OWN |  0 )); %}
 
 %{
 #include "openturns/Matrix.hxx"

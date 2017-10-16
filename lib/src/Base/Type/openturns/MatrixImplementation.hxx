@@ -208,10 +208,10 @@ public:
                                       const char uplo = 'L') const;
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
                                        const Bool keepIntact = true);
   Scalar computeDeterminant(const Bool keepIntact = true);
-  Scalar computeLogAbsoluteDeterminantSym(Scalar & sign,
+  Scalar computeLogAbsoluteDeterminantSym(Scalar & signOut,
                                           const Bool keepIntact = true);
   Scalar computeDeterminantSym(const Bool keepIntact = true);
 
@@ -220,18 +220,18 @@ public:
 
   /** Compute eigenvalues */
   ComplexCollection computeEigenValuesSquare(const Bool keepIntact = true);
-  ComplexCollection computeEVSquare(ComplexMatrixImplementation & v,
+  ComplexCollection computeEVSquare(ComplexMatrixImplementation & vOut,
                                     const Bool keepIntact = true);
   Point computeEigenValuesSym(const Bool keepIntact = true);
-  Point computeEVSym(MatrixImplementation & v,
+  Point computeEVSym(MatrixImplementation & vOut,
                      const Bool keepIntact = true);
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);
 
   /** Build the singular value decomposition */
-  Point computeSVD(MatrixImplementation & u,
-                   MatrixImplementation & vT,
+  Point computeSVD(MatrixImplementation & uOut,
+                   MatrixImplementation & vTOut,
                    const Bool fullSVD = false,
                    const Bool keepIntact = true);
 
@@ -252,6 +252,7 @@ public:
   /** Build the Cholesky factorization of the matrix */
   virtual MatrixImplementation computeCholesky(const Bool keepIntact = true);
 
+#ifndef SWIG
   /** Update in-place the Cholesky factor L of an SPD matrix M given a rank-one update vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M + vv^t */
   static void CholeskyUpdate(MatrixImplementation & cholesky,
                              const Point & vector);
@@ -259,9 +260,10 @@ public:
   /** Downdate in-place the Cholesky factor L of an SPD matrix M given a rank-one downdate vv^T, ie L becomes Lnew such that LnewLnew^t = Mnew with Mnew = M - vv^t */
   static void CholeskyDowndate(MatrixImplementation & cholesky,
                                const Point & vector);
+#endif
 
   /** Build the QR factorization of the matrix */
-  virtual MatrixImplementation computeQR(MatrixImplementation & R,
+  virtual MatrixImplementation computeQR(MatrixImplementation & ROut,
                                          const Bool fullQR = false,
                                          const Bool keepIntact = true);
 

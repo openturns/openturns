@@ -67,7 +67,7 @@ public:
   virtual Bool hasUniformWeights() const;
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weights) const;
+  Sample generateWithWeights(Point & weightsOut) const;
 
   /** Marginal degrees accessor */
   void setMarginalDegrees(const Indices & marginalDegrees);

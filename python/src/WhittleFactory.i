@@ -1,12 +1,8 @@
 // SWIG file WhittleFactory.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::Point & informationCriteria ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & informationCriteria %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
-OT::ARMA OT::WhittleFactory::buildWithCriteria(const OT::TimeSeries & timeSeries,
-                                               OT::Point & informationCriteria) const;
-OT::ARMA OT::WhittleFactory::buildWithCriteria(const OT::ProcessSample & sample,
-                                               OT::Point & informationCriteria) const;
+%typemap(in, numinputs=0) OT::Point & informationCriteriaOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
+%typemap(argout) OT::Point & informationCriteriaOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
 
 %{
 #include "openturns/WhittleFactory.hxx"

@@ -183,25 +183,25 @@ public:
   virtual Sample computePDF(const Scalar xMin,
                             const Scalar xMax,
                             const UnsignedInteger pointNumber,
-                            Sample & grid) const;
+                            Sample & gridOut) const;
 
   /** Compute the PDF of nD distributions over a regular grid */
   virtual Sample computePDF(const Point & xMin,
                             const Point & xMax,
                             const Indices & pointNumber,
-                            Sample & grid) const;
+                            Sample & gridOut) const;
 
   /** Compute the log-PDF of 1D distributions over a regular grid */
   virtual Sample computeLogPDF(const Scalar xMin,
                                const Scalar xMax,
                                const UnsignedInteger pointNumber,
-                               Sample & grid) const;
+                               Sample & gridOut) const;
 
   /** Compute the log-PDF of nD distributions over a regular grid */
   virtual Sample computeLogPDF(const Point & xMin,
                                const Point & xMax,
                                const Indices & pointNumber,
-                               Sample & grid) const;
+                               Sample & gridOut) const;
 
   /** Get the CDF of the distribution */
   virtual Scalar computeCDF(const Scalar scalar) const;
@@ -236,18 +236,18 @@ public:
   virtual Sample computeCDF(const Scalar xMin,
                             const Scalar xMax,
                             const UnsignedInteger pointNumber,
-                            Sample & grid) const;
+                            Sample & gridOut) const;
 
   /** Compute the CDF of nD distributions over a regular grid */
   virtual Sample computeCDF(const Point & xMin,
                             const Point & xMax,
                             const Indices & pointNumber,
-                            Sample & grid) const;
+                            Sample & gridOut) const;
 
   virtual Sample computeComplementaryCDF(const Scalar xMin,
                                          const Scalar xMax,
                                          const UnsignedInteger pointNumber,
-                                         Sample & grid) const;
+                                         Sample & gridOut) const;
 
   /** Get the probability content of an interval */
   virtual Scalar computeProbability(const Interval & interval) const;
@@ -315,39 +315,41 @@ public:
                                  const UnsignedInteger pointNumber,
                                  const Bool tail = false) const;
 
+#ifndef SWIG
   virtual Sample computeQuantile(const Scalar qMin,
                                  const Scalar qMax,
                                  const UnsignedInteger pointNumber,
                                  Sample & grid,
                                  const Bool tail = false) const;
+#endif
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   virtual Interval computeMinimumVolumeInterval(const Scalar prob) const;
-  virtual Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
+  virtual Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProbOut) const;
 
 protected:
   Interval computeUnivariateMinimumVolumeIntervalByOptimization(const Scalar prob,
-      Scalar & marginalProb) const;
+      Scalar & marginalProbOut) const;
   Interval computeUnivariateMinimumVolumeIntervalByRootFinding(const Scalar prob,
-      Scalar & marginalProb) const;
+      Scalar & marginalProbOut) const;
 
 public:
 
   /** Get the product bilateral confidence interval containing a given probability of the distribution */
   virtual Interval computeBilateralConfidenceInterval(const Scalar prob) const;
-  virtual Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const;
+  virtual Interval computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProbOut) const;
 
   /** Get the product unilateral confidence interval containing a given probability of the distribution */
   virtual Interval computeUnilateralConfidenceInterval(const Scalar prob, const Bool tail = false) const;
-  virtual Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProb) const;
+  virtual Interval computeUnilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, const Bool tail, Scalar & marginalProbOut) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
   virtual LevelSet computeMinimumVolumeLevelSet(const Scalar prob) const;
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
 protected:
   virtual LevelSet computeUnivariateMinimumVolumeLevelSetByQMC(const Scalar prob,
-      Scalar & threshold) const;
+      Scalar & thresholdOut) const;
 
 public:
 

@@ -82,13 +82,13 @@ public:
                            const Bool keepIntact = true);
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
                                        const Bool keepIntact = true);
   Scalar computeDeterminant(const Bool keepIntact = true);
 
   /** Compute eigenvalues */
   Point computeEigenValues(const Bool keepIntact = true);
-  Point computeEV(SquareMatrix & v,
+  Point computeEV(SquareMatrix & vOut,
                   const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
@@ -100,8 +100,8 @@ public:
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);
 
-  Point computeSVD(Matrix & u,
-                   Matrix & vT,
+  Point computeSVD(Matrix & uOut,
+                   Matrix & vTOut,
                    const Bool fullSVD = false,
                    const Bool keepIntact = true);
 

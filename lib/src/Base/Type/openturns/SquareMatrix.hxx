@@ -128,7 +128,7 @@ public:
                            const Bool keepIntact = true);
 
   /** Compute determinant */
-  Scalar computeLogAbsoluteDeterminant(Scalar & sign,
+  Scalar computeLogAbsoluteDeterminant(Scalar & signOut,
                                        const Bool keepIntact = true);
   Scalar computeDeterminant(const Bool keepIntact = true);
 
@@ -137,7 +137,7 @@ public:
 
   /** Compute eigenvalues */
   ComplexCollection computeEigenValues(const Bool keepIntact = true);
-  ComplexCollection computeEV(SquareComplexMatrix & v,
+  ComplexCollection computeEV(SquareComplexMatrix & vOut,
                               const Bool keepIntact = true);
 
   /** Check if it is diagonal */

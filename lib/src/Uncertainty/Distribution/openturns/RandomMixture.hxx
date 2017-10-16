@@ -129,6 +129,7 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const;
 
+#ifndef SWIG
   /** Compute the PDF over a regular grid */
   Sample computePDF(const Scalar xMin,
                     const Scalar xMax,
@@ -140,6 +141,7 @@ public:
                     const Point & xMax,
                     const Indices & pointNumber,
                     Sample & grid) const;
+#endif
 
   /** Get the i-th marginal distribution */
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -183,11 +185,13 @@ public:
   using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const;
 
+#ifndef SWIG
   /** Compute the CDF over a regular grid */
   Sample computeCDF(const Scalar xMin,
                     const Scalar xMax,
                     const UnsignedInteger pointNumber,
                     Sample & grid) const;
+#endif
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
@@ -200,7 +204,7 @@ public:
                          const Bool tail = false) const;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const;
+  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;
@@ -274,7 +278,7 @@ public:
 
   /** Project a RandomMixture distribution over a collection of DistributionFactory by using sampling and Kolmogorov distance. */
   DistributionCollection project(const DistributionFactoryCollection & factoryCollection,
-                                 Point & kolmogorovNorm,
+                                 Point & kolmogorovNormOut,
                                  const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize" )) const;
 
   /** Tell if the distribution has independent copula */

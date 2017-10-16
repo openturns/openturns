@@ -1,16 +1,22 @@
 // SWIG file MatrixImplementation.i
 
 // do not pass argument by reference, return it as tuple item
-%typemap(in, numinputs=0) OT::MatrixImplementation & R ($*ltype temp) %{ temp = OT::MatrixImplementation(); $1 = &temp; %}
-%typemap(argout) OT::MatrixImplementation & R %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::MatrixImplementation(*$1), SWIG_TypeQuery("OT::MatrixImplementation *"), SWIG_POINTER_OWN |  0 )); %}
-OT::MatrixImplementation OT::MatrixImplementation::computeQR(OT::MatrixImplementation & R, const OT::Bool fullQR = false, const OT::Bool keepIntact = true);
-%apply OT::MatrixImplementation & R { OT::MatrixImplementation & u, OT::MatrixImplementation & vT };
-OT::MatrixImplementation OT::MatrixImplementation::computeSVD(OT::MatrixImplementation & u, OT::MatrixImplementation & vT, const Bool fullSVD = false, const Bool keepIntact = true);
+%typemap(in, numinputs=0) OT::MatrixImplementation & ROut ($*ltype temp) %{ temp = OT::MatrixImplementation(); $1 = &temp; %}
+%typemap(argout) OT::MatrixImplementation & ROut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::MatrixImplementation(*$1), SWIG_TypeQuery("OT::MatrixImplementation *"), SWIG_POINTER_OWN |  0 )); %}
 
-%typemap(in, numinputs=0) OT::Scalar & sign ($*ltype temp) %{ temp = 0.; $1 = &temp; %}
-%typemap(argout) OT::Scalar & sign %{ $result = SWIG_Python_AppendOutput($result, OT::convert< OT::Scalar, OT::_PyFloat_ >(*$1) ); %}
-OT::Scalar OT::MatrixImplementation::computeLogAbsoluteDeterminant(OT::Scalar & sign, const OT::Bool keepIntact = true);
-OT::Scalar OT::MatrixImplementation::computeLogAbsoluteDeterminantSym(OT::Scalar & sign, const OT::Bool keepIntact = true);
+%apply OT::MatrixImplementation & ROut { OT::MatrixImplementation & uOut, OT::MatrixImplementation & vTOut, OT::MatrixImplementation & vOut };
+
+%typemap(in, numinputs=0) OT::ComplexMatrixImplementation & vOut ($*ltype temp) %{ temp = OT::ComplexMatrixImplementation(); $1 = &temp; %}
+%typemap(argout) OT::ComplexMatrixImplementation & vOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::ComplexMatrixImplementation(*$1), SWIG_TypeQuery("OT::ComplexMatrixImplementation *"), SWIG_POINTER_OWN |  0 )); %}
+
+%typemap(in, numinputs=0) OT::SquareComplexMatrix & vOut ($*ltype temp) %{ temp = OT::SquareComplexMatrix(); $1 = &temp; %}
+%typemap(argout) OT::SquareComplexMatrix & vOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::SquareComplexMatrix(*$1), SWIG_TypeQuery("OT::SquareComplexMatrix *"), SWIG_POINTER_OWN |  0 )); %}
+
+%typemap(in, numinputs=0) OT::SquareMatrix & vOut ($*ltype temp) %{ temp = OT::SquareMatrix(); $1 = &temp; %}
+%typemap(argout) OT::SquareMatrix & vOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::SquareMatrix(*$1), SWIG_TypeQuery("OT::SquareMatrix *"), SWIG_POINTER_OWN |  0 )); %}
+
+%typemap(in, numinputs=0) OT::Scalar & signOut ($*ltype temp) %{ temp = 0.; $1 = &temp; %}
+%typemap(argout) OT::Scalar & signOut %{ $result = SWIG_Python_AppendOutput($result, OT::convert< OT::Scalar, OT::_PyFloat_ >(*$1) ); %}
 
 %{
 #include "openturns/MatrixImplementation.hxx"

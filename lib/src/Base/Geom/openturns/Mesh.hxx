@@ -79,7 +79,7 @@ public:
 
   /** Get the index of the nearest vertex and the index of the containing simplex if any */
   Indices getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,
-      Point & coordinates) const;
+      Point & coordinatesOut) const;
 
   /** Get the nearest vertex */
   Point getNearestVertex(const Point & point) const;
@@ -115,7 +115,7 @@ public:
   /** Check if the given point is in the given simplex and returns its barycentric coordinates */
   Bool checkPointInSimplexWithCoordinates(const Point & point,
                                           const UnsignedInteger index,
-                                          Point & coordinates) const;
+                                          Point & coordinatesOut) const;
 
   /** Vertices accessor */
   Sample getVertices() const;
