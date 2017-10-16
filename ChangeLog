@@ -74,6 +74,7 @@
  * #914 (KarhunenLoeveQuadratureAlgorithm crashes for covariance models of dimension>1)
  * #917 (Bug in RandomMixture::computeCDF())
  * #919 (Wrong simplification mechanism in MarginalTransformationEvaluation for Exponential distribution)
+ * #921 (Cannot print a FixedExperiment when built from sample and weight)
 
 == 1.9 release (2017-04-18) == #release-1.9
 
