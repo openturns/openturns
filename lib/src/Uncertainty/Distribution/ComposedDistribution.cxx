@@ -343,9 +343,10 @@ Point ComposedDistribution::computeDDF(const Point & point) const
   Point pdfMarginal(dimension);
   Point ddfMarginal(dimension);
   Scalar productPDF = 1.0;
+  Point component(1);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Point component(Point(1, point[i]));
+    component[0] = point[i];
     uPoint[i] = distributionCollection_[i].computeCDF(component);
     pdfMarginal[i] = distributionCollection_[i].computePDF(component);
     ddfMarginal[i] = distributionCollection_[i].computeDDF(component)[0];
@@ -384,9 +385,10 @@ Scalar ComposedDistribution::computePDF(const Point & point) const
   }
   // General case
   Point uPoint(dimension);
+  Point component(1);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Point component(Point(1, point[i]));
+    component[0] = point[i];
     uPoint[i] = distributionCollection_[i].computeCDF(component);
     productPDF *= distributionCollection_[i].computePDF(component);
   }
