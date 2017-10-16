@@ -23,6 +23,10 @@ matrix:
   include:
     - os: linux
       compiler: clang
+      env: BUILD_PYTHON=ON
+    - os: linux
+      compiler: clang
+      env: BUILD_PYTHON=OFF
     - os: osx
       compiler: clang
 
@@ -87,9 +91,9 @@ script:
               -DNLOPT_INCLUDE_DIR=~/.local/include
               -DUSE_COTIRE=ON
               -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j2"
+              -DBUILD_PYTHON=${BUILD_PYTHON}
               . &&
-        make install -j2 &&
-        make -j4 check;
+        make install -j2;
     fi
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         cmake -DCMAKE_INSTALL_PREFIX=~/.local
@@ -110,7 +114,11 @@ script:
               . &&
         make install -j4;
     fi
-  - ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100
+  - if test "${BUILD_PYTHON}" = "OFF"; then
+        make tests -j2 && ctest -R cppcheck -j2 --output-on-failure --timeout 100;
+    else
+        ctest -R pyinstallcheck -j4 --output-on-failure --timeout 100;
+    fi
 
 after_success:
   - exit 0
