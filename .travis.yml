@@ -61,7 +61,7 @@ install:
 # use latest nlopt
   - git clone https://github.com/stevengj/nlopt.git
   - pushd nlopt
-  - cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_PYTHON=OFF -DBUILD_OCTAVE=OFF -DBUILD_GUILE=OFF -DCMAKE_MACOSX_RPATH=ON .
+  - cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DBUILD_SHARED_LIBS:BOOL=ON -DNLOPT_PYTHON=OFF -DNLOPT_OCTAVE=OFF -DNLOPT_GUILE=OFF -DCMAKE_MACOSX_RPATH=ON .
   - make install -j4
   - popd
 
