@@ -23,8 +23,8 @@ for all :math:`x+\alpha_i >0`.
 
 |
 
-BoxCox transformation could alse be performed in the case of the estimation of a generalized linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
-The objective is to estimate the most likely surrogate model (generalized linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the generalized linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
+BoxCox transformation could alse be performed in the case of the estimation of a general linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
+The objective is to estimate the most likely surrogate model (general linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the general linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
 "
 
 // ---------------------------------------------------------------------
@@ -45,9 +45,9 @@ Available usages:
 
     build(*mySample, shift, likelihoodGraph*)
 
-    build(*inputSample, outputSample, covarianceModel, basis, shift, generalizedLinearModelResult*)
+    build(*inputSample, outputSample, covarianceModel, basis, shift, generalLinearModelResult*)
 
-    build(*inputSample, outputSample, covarianceModel, shift, generalizedLinearModelResult*)
+    build(*inputSample, outputSample, covarianceModel, shift, generalLinearModelResult*)
 
 Parameters
 ----------
@@ -71,8 +71,8 @@ covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model.
     Should have spatial dimension equal to input sample's dimension and dimension equal to output sample's dimension.
     See note for some particular applications.
-generalizedLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
-    Empty structure that contains results of generalized linear model algorithm.
+generalLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
+    Empty structure that contains results of general linear model algorithm.
 
 Returns
 -------
@@ -141,7 +141,7 @@ Thus, the maximum likelihood estimators for :math:`(\beta(\lambda), \sigma^2(\la
      \hat{\sigma}^2(\lambda)  & = &  \frac{1}{N} \sum_{k=0}^{N-1} (h_{\lambda}(x_k) - \beta(\lambda))^2
     \end{array}
 
-Substituting these expressions in the  likelihood equation  and taking the :math:`\log-` likelihood leads to:
+Substituting these expressions in the likelihood equation and taking the :math:`\log-` likelihood leads to:
 
 .. math::
 
@@ -150,7 +150,7 @@ Substituting these expressions in the  likelihood equation  and taking the :math
       \frac{N}{2}
       \log\left[\hat{\sigma}^2(\lambda)\right]
       \;+\;
-      \left(\lambda - 1 \right) \sum_{k=0}^{N-1} \log(x_i)\,,%\qquad mbox{where $C$ is a constant.}
+      \left(\lambda - 1 \right) \sum_{k=0}^{N-1} \log(x_i)\,,%\qquad mbox{where :math:`C` is a constant.}
     \end{array}
 
 The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell(\lambda)`.
@@ -160,7 +160,7 @@ When the empty graph *likelihoodGraph* is precised, it is fulfilled with the evo
 |
 
 In the case of surrogate model estimate, we note :math:`(x_0, \dots, x_{N-1})` the input sample of :math:`X`, :math:`(y_0, \dots, y_{N-1})` the input sample of :math:`Y`.
-We suppose the generalized linear model link :math:`h_\lambda(Y) = \vect{F}^t(\vect{x}) \vect{\beta} + \vect{Z}` with :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)`:
+We suppose the general linear model link :math:`h_\lambda(Y) = \vect{F}^t(\vect{x}) \vect{\beta} + \vect{Z}` with :math:`\mat{F} \in \mathcal{M}_{np, M}(\Rset)`:
 
 .. math::
     \mat{F}(\vect{x}) = \left(
@@ -215,7 +215,7 @@ Estimate the Box Cox transformation from a field:
 >>> myField = myXtProcess.getRealization()
 >>> myModelTransform = ot.BoxCoxFactory().build(myField)
 
-Estimation of a generalized linear model:
+Estimation of a general linear model:
 
 >>> inputSample = ot.Uniform(-1.0, 1.0).getSample(20)
 >>> outputSample = ot.Sample(inputSample)
