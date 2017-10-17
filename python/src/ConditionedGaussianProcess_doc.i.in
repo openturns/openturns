@@ -22,7 +22,7 @@ ConditionedGaussianProcess helps to create Gaussian random fields,
 
     Y(\vect{x}) = \Tr{\vect{f}(\vect{x})} \vect{\beta} + Z(\vect{x})
 
-with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a generalized linear model, :math:`Z(\vect{x})` a zero-mean Gaussian process with a stationary autocorrelation function :math:`\cC^{stat}`:
+with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a general linear model, :math:`Z(\vect{x})` a zero-mean Gaussian process with a stationary autocorrelation function :math:`\cC^{stat}`:
 
 .. math::
 

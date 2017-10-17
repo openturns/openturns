@@ -36,7 +36,7 @@ Notes
 -----
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all *k*, with :math:`\cM:\Rset^d \mapsto \Rset^p` the model.
 
-The meta model *Kriging* is based on the same principles as those of the generalized linear model: it assumes that the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the trace of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The meta model *Kriging* is based on the same principles as those of the general linear model: it assumes that the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the trace of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
 
 .. math::
@@ -62,7 +62,7 @@ with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})`
 
 The estimation of the parameters :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}` are made by the :class:`~openturns.GeneralLinearModelAlgorithm` class.
 
-The Kriging algorithm makes the generalized linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
+The Kriging algorithm makes the general linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
 
 
 .. math::

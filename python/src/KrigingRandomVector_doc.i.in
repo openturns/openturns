@@ -23,7 +23,7 @@ Let :math:`Y(x=x_1)=y_1,\cdots,Y(x=x_n)=y_n` be the observations of the Gaussian
 
     Y(\vect{x}) = \Tr{\vect{f}(\vect{x})} \vect{\beta} + Z(\vect{x})
 
-with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a generalized linear model, :math:`Z(\vect{x})` a zero-mean Gaussian process with a stationary autocorrelation function :math:`\cC^{stat}`:
+with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a general linear model, :math:`Z(\vect{x})` a zero-mean Gaussian process with a stationary autocorrelation function :math:`\cC^{stat}`:
 
 .. math::
 

@@ -41,7 +41,7 @@ Notes
 -----
 We suppose we have a sample :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}` where :math:`\vect{y}_k = \cM(\vect{x}_k)` for all :math:`k`, with :math:`\cM:\Rset^n \mapsto \Rset^d` a given function.
 
-The objective is to build a metamodel :math:`\tilde{\cM}`, using a **generalized linear model**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the restriction of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
+The objective is to build a metamodel :math:`\tilde{\cM}`, using a **general linear model**: the sample :math:`(\vect{y}_k)_{1 \leq k \leq N}` is considered as the restriction of a Gaussian process :math:`\vect{Y}(\omega, \vect{x})` on :math:`(\vect{x}_k)_{1 \leq k \leq N}`. The Gaussian process :math:`\vect{Y}(\omega, \vect{x})` is defined by:
 
 .. math::
 
@@ -139,7 +139,7 @@ If :math:`\mat{L}` is the Cholesky factor of :math:`\mat{C}`, ie the lower trian
 
     \log \cL(\vect{\beta}, \vect{p};(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq N}) = cste - \log \det \mat{L}_{\vect{p}} -\dfrac{1}{2}  \| \mat{L}_{\vect{p}}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
 
-The maximization of :eq:`logLikelihood` leads to the following optimality condition for $\vect{\beta}$:
+The maximization of :eq:`logLikelihood` leads to the following optimality condition for :math:`\vect{\beta}`:
 
 .. math::
 

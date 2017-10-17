@@ -1,5 +1,5 @@
 %feature("docstring") OT::GeneralLinearModelResult
-"Generalized linear model result.
+"General linear model result.
 
 Available constructors:
     GeneralLinearModelResult(*inputSample, outputSample, metaModel, residuals, relativeErrors, basis, trendCoefficients, covarianceModel, optimalLogLikelihood*)
