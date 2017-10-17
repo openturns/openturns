@@ -539,6 +539,7 @@ ot_pyinstallcheck_test (Experiment_python)
 ## OrthogonalBasis
 ot_pyinstallcheck_test (LinearEnumerateFunction_std)
 ot_pyinstallcheck_test (HyperbolicAnisotropicEnumerateFunction_std)
+ot_pyinstallcheck_test (NormInfEnumerateFunction_std)
 ot_pyinstallcheck_test (CharlierFactory_std)
 ot_pyinstallcheck_test (ChebychevFactory_std)
 ot_pyinstallcheck_test (HermiteFactory_std)

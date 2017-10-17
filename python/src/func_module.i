@@ -42,6 +42,7 @@
 %include EnumerateFunction.i
 %include LinearEnumerateFunction.i
 %include HyperbolicAnisotropicEnumerateFunction.i
+%include NormInfEnumerateFunction.i
 %include FieldImplementation.i
 %include Field.i
 %include TimeSeries.i 

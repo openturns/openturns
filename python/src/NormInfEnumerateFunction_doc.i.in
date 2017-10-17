@@ -1,0 +1,40 @@
+%feature("docstring") OT::NormInfEnumerateFunction
+"Infinite norm enumerate function.
+
+Parameters
+----------
+dim : integer
+    Dimension of the :class:`~openturns.EnumerateFunction`. *dim* must be equal
+    to the dimension of the :class:`~openturns.OrthogonalBasis`.
+
+See also
+--------
+EnumerateFunction, LinearEnumerateFunction
+
+Notes
+-----
+One defines the infinity norm of a multi-index :math:`a` by:
+
+.. math::
+
+    \| \vect{a} \|_{\infty} = max_i a_i
+
+This would lead to first select the basis polynomials depending on a specific subset of input variables.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # 2-dimensional case
+>>> enumerateFunction = ot.NormInfEnumerateFunction(2)
+>>> for i in range(10):
+...     print(enumerateFunction(i))
+[0,0]
+[1,0]
+[0,1]
+[1,1]
+[2,0]
+[2,1]
+[0,2]
+[1,2]
+[2,2]
+[3,0]"

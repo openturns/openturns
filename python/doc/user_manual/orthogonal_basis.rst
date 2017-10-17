@@ -112,4 +112,5 @@ Truncation schemes
     EnumerateFunction
     LinearEnumerateFunction
     HyperbolicAnisotropicEnumerateFunction
+    NormInfEnumerateFunction
 
