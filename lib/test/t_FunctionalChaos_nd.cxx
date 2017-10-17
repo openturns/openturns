@@ -205,6 +205,7 @@ int main(int argc, char *argv[])
 
         // Post-process the results
         FunctionalChaosRandomVector vector(result);
+        FunctionalChaosSobolIndices sensitivity(result);
         for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
         {
           fullprint << "output=" << outputIndex << std::endl;
@@ -216,7 +217,7 @@ int main(int argc, char *argv[])
           for(UnsignedInteger i = 0; i < inputDimension; ++i)
           {
             indices[0] = i;
-            Scalar value = vector.getSobolIndex(i, outputIndex);
+            Scalar value = sensitivity.getSobolIndex(i, outputIndex);
             fullprint << "Sobol index " << i << " = " << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_1[i + inputDimension * outputIndex]) << std::endl;
           }
           indices = Indices(2);
@@ -227,7 +228,7 @@ int main(int argc, char *argv[])
             for (UnsignedInteger j = i + 1; j < inputDimension; ++j)
             {
               indices[1] = j;
-              Scalar value = vector.getSobolIndex(indices, outputIndex);
+              Scalar value = sensitivity.getSobolIndex(indices, outputIndex);
               fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k + inputDimension * outputIndex]) << std::endl;
               k = k + 1;
             } // j
@@ -236,11 +237,11 @@ int main(int argc, char *argv[])
           indices[0] = 0;
           indices[1] = 1;
           indices[2] = 2;
-          Scalar value = vector.getSobolIndex(indices, outputIndex);
+          Scalar value = sensitivity.getSobolIndex(indices, outputIndex);
           fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[outputIndex]) << std::endl;
           for (UnsignedInteger i = 0; i < inputDimension; ++i)
           {
-            value = vector.getSobolTotalIndex(i, outputIndex);
+            value = sensitivity.getSobolTotalIndex(i, outputIndex);
             fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i + inputDimension * outputIndex]) << std::endl;
           }
           indices = Indices(2);
@@ -251,7 +252,7 @@ int main(int argc, char *argv[])
             for (UnsignedInteger j = i + 1; j < inputDimension; ++j)
             {
               indices[1] = j;
-              value = vector.getSobolTotalIndex(indices, outputIndex);
+              value = sensitivity.getSobolTotalIndex(indices, outputIndex);
               fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T2[k + inputDimension * outputIndex]) << std::endl;
               k = k + 1;
             }
@@ -260,7 +261,7 @@ int main(int argc, char *argv[])
           indices[0] = 0;
           indices[1] = 1;
           indices[2] = 2;
-          value = vector.getSobolTotalIndex(indices, outputIndex);
+          value = sensitivity.getSobolTotalIndex(indices, outputIndex);
           fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T3[1]) << std::endl;
 
         } // outputIndex

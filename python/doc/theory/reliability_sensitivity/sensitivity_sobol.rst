@@ -45,7 +45,7 @@ For the :math:`n_X` total order indices :math:`T_i`, we only swap the variable :
 .. topic:: API:
 
     - See :class:`~openturns.SobolIndicesAlgorithm` for indices based on sampling
-    - See :class:`~openturns.FunctionalChaosRandomVector` for indices based on chaos expansion
+    - See :class:`~openturns.FunctionalChaosSobolIndices` for indices based on chaos expansion
 
 .. topic:: Examples:
 

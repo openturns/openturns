@@ -14,3 +14,4 @@ Remove deprecated Interval,Mesh::computeVolume in 1.12
 Remove deprecated Domain,DomainImplementation::getLowerBound, getUpperBound in 1.12
 Remove deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel in 1.12
 Remove deprecated Mesh::getVerticesToSimplicesMap,computeSimplexVolume in 1.12
+Remove deprecated FunctionalChaosRandomVector::getSobol* in 1.13

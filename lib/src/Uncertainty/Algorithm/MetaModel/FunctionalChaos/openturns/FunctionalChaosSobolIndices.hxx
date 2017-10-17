@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief An implementation class for functionalChaos random vectors
+ *  @brief Sensitivity analysis based on functional chaos expansion
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,59 +18,55 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_FUNCTIONALCHAOSRANDOMVECTOR_HXX
-#define OPENTURNS_FUNCTIONALCHAOSRANDOMVECTOR_HXX
+#ifndef OPENTURNS_FUNCTIONALCHAOSSOBOLINDICES_HXX
+#define OPENTURNS_FUNCTIONALCHAOSSOBOLINDICES_HXX
 
-#include "openturns/CompositeRandomVector.hxx"
 #include "openturns/FunctionalChaosResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class FunctionalChaosRandomVector
+ * @class FunctionalChaosSobolIndices
  *
- * An implementation class for functionalChaos random vectors
+ * Sensitivity analysis based on functional chaos expansion
  */
-class OT_API FunctionalChaosRandomVector
-  : public CompositeRandomVector
+class OT_API FunctionalChaosSobolIndices
+  : public PersistentObject
 {
   CLASSNAME
 
 public:
 
   /** Default constructor */
-  FunctionalChaosRandomVector();
+  FunctionalChaosSobolIndices();
 
   /** Default constructor */
-  explicit FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult);
+  explicit FunctionalChaosSobolIndices(const FunctionalChaosResult & functionalChaosResult);
 
   /** Virtual constructor */
-  virtual FunctionalChaosRandomVector * clone() const;
+  virtual FunctionalChaosSobolIndices * clone() const;
 
   /** String converter */
   String __repr__() const;
 
+  /** Summary table */
+  String summary() const;
+
   /* Here is the interface that all derived class must implement */
 
-  /** Mean accessor */
-  Point getMean() const;
-
-  /** Covariance accessor */
-  CovarianceMatrix getCovariance() const;
-
-  /** Sobol index accessor @deprecated */
+  /** Sobol index accessor */
   Scalar getSobolIndex(const Indices & variableIndices,
                        const UnsignedInteger marginalIndex = 0) const;
   Scalar getSobolIndex(const UnsignedInteger variableIndex,
                        const UnsignedInteger marginalIndex = 0) const;
 
-  /** Sobol total index accessor @deprecated */
+  /** Sobol total index accessor */
   Scalar getSobolTotalIndex(const Indices & variableIndices,
                             const UnsignedInteger marginalIndex = 0) const;
   Scalar getSobolTotalIndex(const UnsignedInteger variableIndex,
                             const UnsignedInteger marginalIndex = 0) const;
 
-  /** Sobol grouped index accessor @deprecated */
+  /** Sobol grouped index accessor */
   Scalar getSobolGroupedIndex(const Indices & variableIndices,
                               const UnsignedInteger marginalIndex = 0) const;
   Scalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
@@ -86,21 +82,13 @@ public:
   void load(Advocate & adv);
 
 private:
-  /** Compute the covariance */
-  void computeCovariance() const;
-
-  /** Scalar value of the covariance */
-  mutable CovarianceMatrix covariance_;
-
-  /** Flag to tell if the covariance has already been computed */
-  mutable Bool isAlreadyComputedCovariance_;
 
   /** The functional chaos result tht allows to build the random vector */
   FunctionalChaosResult functionalChaosResult_;
 
-}; /* class FunctionalChaosRandomVector */
+}; /* class FunctionalChaosSobolIndices */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_FUNCTIONALCHAOSRANDOMVECTOR_HXX */
+#endif /* OPENTURNS_FUNCTIONALCHAOSSOBOLINDICES_HXX */

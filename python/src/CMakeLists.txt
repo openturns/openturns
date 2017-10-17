@@ -778,6 +778,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
+                      FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
                       TensorApproximationResult.i TensorApproximationResult_doc.i.in
                       TensorApproximationAlgorithm.i TensorApproximationAlgorithm_doc.i.in

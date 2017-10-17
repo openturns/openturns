@@ -1,0 +1,94 @@
+%feature("docstring") OT::FunctionalChaosSobolIndices
+"Sensitivity analysis based on functional chaos expansion.
+
+Available constructors:
+    FunctionalChaosSobolIndices(functionalChaosResult)
+
+Parameters
+----------
+functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
+    A functional chaos result resulting from a polynomial chaos decomposition.
+
+See also
+--------
+FunctionalChaosAlgorithm, FunctionalChaosResult
+
+Notes
+-----
+This structure is created from a FunctionalChaosResult in order to evaluate the
+Sobol indices associated to the polynomial chaos decomposition of the model.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::getFunctionalChaosResult
+"Accessor to the functional chaos result.
+
+Returns
+-------
+functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
+    The functional chaos result resulting from a polynomial chaos decomposition."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::getSobolIndex
+"Get the Sobol indices.
+
+Parameters
+----------
+i : int or sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated Sobol indices. :math:`d`
+    is the dimension of the input variables.
+out_marginal : int
+    Output marginal
+    Default value is 0
+
+Returns
+-------
+s : float
+    The Sobol indice."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::getSobolTotalIndex
+"Get the total Sobol indices.
+
+Parameters
+----------
+i : int or sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated total Sobol indices.
+    :math:`d` is the dimension of the input variables.
+out_marginal : int
+    Output marginal
+    Default value is 0
+
+Returns
+-------
+s : float
+    The total Sobol indice."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
+"Get the grouped Sobol indices.
+
+Parameters
+----------
+i : int or sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated grouped Sobol indices.
+    :math:`d` is the dimension of the input variables.
+
+Returns
+-------
+s : float
+    The grouped Sobol indice."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::summary
+"Summary accessor.
+
+Returns
+-------
+summary : str
+    A text summary of the sensitivity analysis to be shown in a console."

@@ -58,6 +58,7 @@
 %include ProjectionStrategy.i
 %include FunctionalChaosResult.i
 %include FunctionalChaosAlgorithm.i
+%include FunctionalChaosSobolIndices.i
 %include MetaModelValidation.i
 %include GeneralLinearModelResult.i
 %include GeneralLinearModelAlgorithm.i

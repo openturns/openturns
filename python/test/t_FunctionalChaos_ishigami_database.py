@@ -106,8 +106,9 @@ try:
             variance = vector.getCovariance()[0, 0]
             print("variance=%.8f" % variance, "absolute error=%.10f" %
                   fabs(variance - covTh))
+            sensitivity = FunctionalChaosSobolIndices(result)
             for i in range(dimension):
-                value = vector.getSobolIndex(i)
+                value = sensitivity.getSobolIndex(i)
                 print("Sobol index", i, "= %.8f" %
                       value, "absolute error=%.10f" % fabs(value - sob_1[i]))
             indices = Indices(2)
@@ -116,7 +117,7 @@ try:
                 indices[0] = i
                 for j in range(i + 1, dimension):
                     indices[1] = j
-                    value = vector.getSobolIndex(indices)
+                    value = sensitivity.getSobolIndex(indices)
                     print("Sobol index", indices, "=%.8f" %
                           value, "absolute error=%.10f" % fabs(value - sob_2[k]))
                     k = k + 1
@@ -124,11 +125,11 @@ try:
             indices[0] = 0
             indices[1] = 1
             indices[2] = 2
-            value = vector.getSobolIndex(indices)
+            value = sensitivity.getSobolIndex(indices)
             print("Sobol index", indices, "=%.8f" %
                   value, "absolute error=%.10f" % fabs(value - sob_3[0]))
             for i in range(dimension):
-                value = vector.getSobolTotalIndex(i)
+                value = sensitivity.getSobolTotalIndex(i)
                 print("Sobol total index", i, "=%.8f" %
                       value, "absolute error=%.10f" % fabs(value - sob_T1[i]))
             indices = Indices(2)
@@ -137,7 +138,7 @@ try:
                 indices[0] = i
                 for j in range(i + 1, dimension):
                     indices[1] = j
-                    value = vector.getSobolIndex(indices)
+                    value = sensitivity.getSobolIndex(indices)
                     print("Sobol total index", indices, "=%.8f" %
                           value, "absolute error=%.10f" % fabs(value - sob_2[k]))
                     k = k + 1
@@ -145,7 +146,7 @@ try:
             indices[0] = 0
             indices[1] = 1
             indices[2] = 2
-            value = vector.getSobolTotalIndex(indices)
+            value = sensitivity.getSobolTotalIndex(indices)
             print("Sobol total index ", indices, "=%.8f" %
                   value, "absolute error=%.10f" % fabs(value - sob_3[0]))
 

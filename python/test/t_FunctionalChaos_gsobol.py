@@ -103,12 +103,13 @@ try:
             print("mean=%.8f" % mean, "absolute error=%.8f" %
                   fabs(mean - meanTh))
             variance = vector.getCovariance()[0, 0]
+            sensitivity = FunctionalChaosSobolIndices(result)
             print("variance=%.8f" % variance, "absolute error=%.8f" %
                   fabs(variance - covTh))
             indices = Indices(1)
             for i in range(dimension):
                 indices[0] = i
-                value = vector.getSobolIndex(i)
+                value = sensitivity.getSobolIndex(i)
                 print("Sobol index", i, "= %.8f" % value, "absolute error=%.8f" %
                       fabs(value - sobol(indices, a) / covTh))
             indices = Indices(2)
@@ -117,7 +118,7 @@ try:
                 indices[0] = i
                 for j in range(i + 1, dimension):
                     indices[1] = j
-                    value = vector.getSobolIndex(indices)
+                    value = sensitivity.getSobolIndex(indices)
                     print("Sobol index", indices, "=%.8f" % value, "absolute error=%.8f" % fabs(
                         value - sobol(indices, a) / covTh))
                     k = k + 1
@@ -125,7 +126,7 @@ try:
             indices[0] = 0
             indices[1] = 1
             indices[2] = 2
-            value = vector.getSobolIndex(indices)
+            value = sensitivity.getSobolIndex(indices)
             print("Sobol index", indices, "=%.8f" % value, "absolute error=%.8f" %
                   fabs(value - sobol(indices, a) / covTh))
 
