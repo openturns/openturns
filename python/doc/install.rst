@@ -13,7 +13,8 @@ This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python pack
 
 Install the package from `Anaconda.org <https://anaconda.org/conda-forge/openturns>`_::
 
-    conda install -c conda-forge openturns
+    conda config --add channels conda-forge
+    conda install openturns
 
 
 Windows
