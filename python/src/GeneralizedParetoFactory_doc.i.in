@@ -6,17 +6,71 @@ Available constructor:
 
 Notes
 -----
+OpenTURNS proposes several estimators to build a GeneralizedPareto distribution
+from a scalar sample (see [Matthys2003]_ for the theory).
 
-We implement three parametric estimation methods: the
-classical moments method, the exponential regression method and the
-probability weighted moments method, according to the reference [Matthys2003]_.
-The default strategy is to use the probability
-weighted moments method when the sample size is smaller than the
-threshold defined in the RessourceMap object
-*GeneralizedParetoFactory-SmallSize*. In case of failure, it
-uses the exponential regression method. If the sample size is to high,
-it uses the exponential regression method. The classical moments
-method is proposed but not used by default.
+**Moments based estimator:**
+
+Lets denote:
+
+- :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical
+  mean of the sample, 
+- :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2`
+  its empirical variance,
+
+Then we estimate :math:`(\hat{\sigma}, \hat{\xi})`
+using:
+
+.. math::
+    :label: gpd_moment_estimator
+
+    \hat{\xi} &= \dfrac{1}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}-1\right) \\
+    \hat{\sigma} &= \dfrac{\overline{x}_n}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}+1\right)
+
+this estimator is well-defined only if :math:`\hat{\xi}>-1/4`, otherwise the second moment does not exist.
+
+**Probability weighted moments based estimator:**
+
+Lets denote:
+
+- :math:`\left(x_{(i)}\right)_{i\in\{1,\dots,n\}}` the sample sorted in ascending order
+- :math:`m=\dfrac{1}{n}\sum_{i=1}^n\left(1-\dfrac{i-7/20}{n}\right)x_{(i)}`
+- :math:`\rho=\dfrac{m}{\overline{x}_n}`
+
+Then we estimate :math:`(\hat{\sigma}, \hat{\xi})`
+using:
+
+.. math::
+    :label: gpd_probability_weighted_moment_estimator
+
+    \hat{\xi} &= \dfrac{1-4\rho}{1-2\rho} \\
+    \hat{\sigma} &= \dfrac{2\overline{x}_n}{1-2\rho}
+
+this estimator is well-defined only if :math:`\hat{\xi}>-1/2`, otherwise the first moment does not exist.
+
+**Exponential regression based estimator:**
+
+Lets denote:
+
+- :math:`y_{i}=i\log\left(\dfrac{x_{(n-i)}-x_{(1)}}{x_{(n-i-1)}-x_{(1)}}\right)` for :math:`i\in\{1,n-3\}`
+
+Then we estimate :math:`(\hat{\sigma}, \hat{\xi})`
+using:
+
+.. math::
+    :label: gpd_exponential_estimator
+
+    \hat{\xi} &= \xi^* \\
+    \hat{\sigma} &= \dfrac{2\overline{x}_n}{1-2\rho}
+
+Where :math:`\xi^*` maximizes:
+
+.. math::
+    :label: gpd_xi_relation
+    
+    \sum_{i=1}^{n-2}\log\left(\dfrac{1-(j/n)^{\xi}}{\xi}\right)-\dfrac{1-(j/n)^{\xi}}{\xi}y_i
+
+under the constraint :math:`-1 \leq \xi \leq 1`.
 
 See also
 --------
@@ -42,3 +96,84 @@ Returns
 solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization of the likelihood."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::build
+"Build the distribution.
+
+**Available usages**:
+
+    build()
+
+    build(*sample*)
+
+    build(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Notes
+-----
+In the first usage, the default :class:`~openturns.GeneralizedPareto` distribution is built.
+
+In the second usage, the parameters are evaluated according the following strategy:
+
+- If the sample size is less or equal to `GeneralizedParetoFactory-SmallSize` from :class:`~openturns.ResourceMap`, then the method of probability weighted moments is used. If it fails, the method of exponential regression is used.
+- Otherwise, the first method tried is the method of exponential regression, then the method of probability weighted moments if the first one fails.
+
+In the fourth usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildAsGeneralizedPareto
+"Build the distribution as a GeneralizedPareto type.
+
+**Available usages**:
+
+    build()
+
+    build(*sample*)
+
+    build(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+param : sequence of float
+    A vector of parameters of the distribution.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfExponentialRegression
+"Build the distribution based on the exponential regression estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments
+"Build the distribution based on the probability weighted moments estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedParetoFactory::buildMethodOfMoments
+"Build the distribution based on the method of moments estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated."
