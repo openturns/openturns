@@ -25,6 +25,7 @@
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/GeneralizedPareto.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,7 +39,7 @@ class OT_API GeneralizedParetoFactory
 public:
 
   /** Default constructor */
-  GeneralizedParetoFactory();
+  explicit GeneralizedParetoFactory(const OptimizationAlgorithm & solver = TNC());
 
   /** Virtual constructor */
   virtual GeneralizedParetoFactory * clone() const;
@@ -57,8 +58,6 @@ public:
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
 
-protected:
-
   /** Algorithm associated with the method of moments */
   GeneralizedPareto buildMethodOfMoments(const Sample & sample) const;
 
@@ -67,6 +66,8 @@ protected:
 
   /** Algorithm associated with the method of modified moments */
   GeneralizedPareto buildMethodOfProbabilityWeightedMoments(const Sample & sample) const;
+
+private:
 
   /** Optimization solver */
   mutable OptimizationAlgorithm  solver_;

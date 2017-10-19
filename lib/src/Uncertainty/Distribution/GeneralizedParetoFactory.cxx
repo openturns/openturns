@@ -32,9 +32,9 @@ CLASSNAMEINIT(GeneralizedParetoFactory)
 static const Factory<GeneralizedParetoFactory> Factory_GeneralizedParetoFactory;
 
 /* Default constructor */
-GeneralizedParetoFactory::GeneralizedParetoFactory()
+GeneralizedParetoFactory::GeneralizedParetoFactory(const OptimizationAlgorithm & solver)
   : DistributionFactoryImplementation()
-  , solver_(new TNC())
+  , solver_(solver)
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
   solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
@@ -75,7 +75,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
   Scalar xMin = sample.getMin()[0];
   if (!(xMin > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution based on a sample with nonpositive values.";
   Scalar smallSize = ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize" );
-  // The strategy is to use the probability weighted moment method for small size and to switch to the maximum likelihood if the estimator is not defined. For large size, we only use the ML estimator.
+  // The strategy is to use the probability weighted moment method for small size and to switch to the maximum likelihood if the estimator is not defined. For large size, we use the ML estimator in priority and switch to the probability weighted moment method if the estimator is not defined. No other fallback is proposed if both method failed.
   if (size <= smallSize)
   {
     try
@@ -85,9 +85,20 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
     catch (InvalidArgumentException)
     {
       // Nothing to do, fallback on the exponential regression
+      LOGINFO("Method of probability weighted moment failed, using method of exponential regression");
+      return buildMethodOfExponentialRegression(sample);
     }
   } // small size
-  return buildMethodOfExponentialRegression(sample);
+  try
+    {
+      return buildMethodOfExponentialRegression(sample);
+    }
+  catch (InvalidArgumentException)
+    {
+      // Nothing to do, fallback on the exponential regression
+      LOGINFO("Method of exponential regression failed, using method of probability weighted moment");
+      return buildMethodOfProbabilityWeightedMoments(sample);
+    }
 }
 
 GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Point & parameters) const
@@ -112,6 +123,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto() const
 /* Algorithm associated with the method of moments */
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & sample) const
 {
+  LOGINFO("Using method of moment");
   const Scalar mean = sample.computeMean()[0];
   const Scalar std = sample.computeStandardDeviationPerComponent()[0];
   const Scalar xi = 0.5 * (std::pow(mean / std, 2) - 1.0);
@@ -126,19 +138,23 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
 struct GeneralizedParetoFactoryParameterConstraint
 {
   /** Constructor from a sample and a derivative factor estimate */
-  GeneralizedParetoFactoryParameterConstraint(const Sample & sample)
+  GeneralizedParetoFactoryParameterConstraint(const Sample & sortedSample)
     : sampleY_(0, 1)
-    , size_(sample.getSize())
+    , size_(sortedSample.getSize())
   {
-    const Sample sortedSample(sample.sort(0));
     sampleY_ = Sample(size_ - 2, 1);
-    const Scalar xMin = sortedSample[0][0];
+    const Scalar xMin = sortedSample(0, 0);
     for (UnsignedInteger j = 0; j < size_ - 2; ++j)
     {
-      const Scalar xNm1mJ = sortedSample[size_ - 1 - j][0];
-      const Scalar xNm2mJ = sortedSample[size_ - 2 - j][0];
-      if ((xNm1mJ == xMin) || (xNm2mJ == xMin)) sampleY_[j][0] = (j + 1.0) * SpecFunc::LogMaxScalar;
-      else sampleY_[j][0] = (j + 1.0) * std::log((xNm1mJ - xMin) / (xNm2mJ - xMin));
+      const Scalar xNm1mJ = sortedSample(size_ - 1 - j, 0);
+      const Scalar xNm2mJ = sortedSample(size_ - 2 - j, 0);
+      if ((xNm1mJ == xMin) || (xNm2mJ == xMin))
+	{
+	  const String message("Cannot use exponential regression to estimate a GeneralizedPareto distribution when the mininmum value of the sample is repeated");
+	  LOGINFO(message);
+	  throw InvalidArgumentException(HERE) << message;
+	}
+      sampleY_(j, 0) = (j + 1.0) * std::log((xNm1mJ - xMin) / (xNm2mJ - xMin));
     }
   };
 
@@ -153,7 +169,7 @@ struct GeneralizedParetoFactoryParameterConstraint
       {
         const Scalar logAlphaJ = std::log((j + 1.0) / size_);
         const Scalar gammaLogAlphaJ = gamma * logAlphaJ;
-        const Scalar yLogAlphaJ = sampleY_[j][0] * logAlphaJ;
+        const Scalar yLogAlphaJ = sampleY_(j, 0) * logAlphaJ;
         exponentialRegressionLogLikelihood += std::log(-logAlphaJ) + yLogAlphaJ + 0.5 * gammaLogAlphaJ * (1.0 + yLogAlphaJ + gammaLogAlphaJ * (1.0 / 12.0 + yLogAlphaJ / 3.0 + gammaLogAlphaJ * yLogAlphaJ / 12.0));
       }
       return Point(1, -exponentialRegressionLogLikelihood);
@@ -163,7 +179,7 @@ struct GeneralizedParetoFactoryParameterConstraint
     for (UnsignedInteger j = 0; j < size_ - 2; ++j)
     {
       const Scalar alphaJ = (1.0 - std::pow((j + 1.0) / size_, gamma)) / gamma;
-      exponentialRegressionLogLikelihood += std::log(alphaJ) - alphaJ * sampleY_[j][0];
+      exponentialRegressionLogLikelihood += std::log(alphaJ) - alphaJ * sampleY_(j, 0);
     }
     return Point(1, -exponentialRegressionLogLikelihood);
   }
@@ -175,7 +191,9 @@ struct GeneralizedParetoFactoryParameterConstraint
 /* Algorithm associated with the method of exponential regression */
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const Sample & sample) const
 {
-  GeneralizedParetoFactoryParameterConstraint constraint(sample);
+  LOGINFO("Using method of exponential regression");
+  const Sample sortedSample(sample.sort(0));
+  GeneralizedParetoFactoryParameterConstraint constraint(sortedSample);
   Function f(bindMethod<GeneralizedParetoFactoryParameterConstraint, Point, Point>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
   f.setGradient(gradient);
@@ -199,11 +217,10 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   const Scalar xi = solver_.getResult().getOptimalPoint()[0];
 
   const Scalar mean = sample.computeMean()[0];
-  const Sample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
   Scalar m = 0.0;
   const UnsignedInteger size = sample.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
+  for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample(i, 0);
   m /= size * size;
   const Scalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
   GeneralizedPareto result(sigma, xi);
@@ -214,16 +231,26 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 /* Algorithm associated with the method of modified moments */
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const Sample & sample) const
 {
+  LOGINFO("Using method of probability weighted moment");
   const Scalar mean = sample.computeMean()[0];
   const Sample sortedSample(sample.sort(0));
   // Compute the first probability weighted moment
   Scalar m = 0.0;
   const UnsignedInteger size = sample.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample[i][0];
+  for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample(i, 0);
   m /= size * size;
-  const Scalar xi = mean / (mean - 2.0 * m) - 2.0;
-  if (xi <= -0.5) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of probability weighted moments when the estimated xi parameter=" << xi << " is less than -0.5";
-  const Scalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
+  // r=m/mu
+  // rho=1/(1-2r)
+  // xi=2-1/(1-2r)=(1-4r)/(1-2r)
+  const Scalar rho = m / mean;
+  const Scalar xi = (1.0 - 4.0 * rho) / (1.0 - 2.0 * rho);
+  if (xi <= -0.5)
+    {
+      const String message(OSS() << "Error: cannot estimate a GeneralizedPareto distribution with the method of probability weighted moments when the estimated xi parameter=" << xi << " is less than -0.5");
+      throw InvalidArgumentException(HERE) << message;
+    }
+  // sigma=2*m*/(1-2r)
+  const Scalar sigma = 2.0 * m / (1.0 - 2.0 * rho);
   GeneralizedPareto result(sigma, xi);
   result.setDescription(sample.getDescription());
   return result;

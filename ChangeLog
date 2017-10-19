@@ -78,6 +78,7 @@
  * #919 (Wrong simplification mechanism in MarginalTransformationEvaluation for Exponential distribution)
  * #921 (Cannot print a FixedExperiment when built from sample and weight)
  * #923 (Fix ExponentialModel::getParameter for diagonal correlation)
+ * #924 (Probleme with the factory of a Generalized Pareto distribution)
  * #927 (Functional chaos is memory hungry)
  * #929 (The labels of the sensitivity analysis graphics are poor)
  * #930 (The getMean method has a weird behavior on parametrized distribution)
