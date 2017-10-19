@@ -677,9 +677,15 @@ Point CovarianceModelImplementation::getFullParameter() const
   // Second the amplitude parameter
   parameter.add(getAmplitude());
   // Third the spatial correation parameter, only the lower triangle
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
-    for (UnsignedInteger j = 0; j < i; ++ j)
-      parameter.add(spatialCorrelation_(i, j));
+  if (isDiagonal_)
+  {
+    if (dimension_ > 1)
+      parameter.add(Point((dimension_ * (dimension_ - 1)) / 2));
+  }
+  else
+    for (UnsignedInteger i = 0; i < dimension_; ++ i)
+      for (UnsignedInteger j = 0; j < i; ++ j)
+        parameter.add(spatialCorrelation_(i, j));
   return parameter;
 }
 
