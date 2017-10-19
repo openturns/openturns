@@ -10,10 +10,10 @@ DistributionFactory, LogNormal
 
 Notes
 -----
-OpenTURNS has implemented several estimators to build a LogNormal distribution
-from a scalar sample. Here are detailed the estimators.
+OpenTURNS proposes several estimators to build a LogNormal distribution
+from a scalar sample.
 
-**Moments based estimators:**
+**Moments based estimator:**
 
 Lets denote:
 
@@ -36,7 +36,7 @@ Then we estimate :math:`(\hat{\mu}_{ln}, \hat{\sigma}_{ln}, \hat{\gamma}_{n})`
 using:
 
 .. math::
-    :label: moment_estimators
+    :label: moment_estimator
 
     \hat{\mu}_{ln} &= \log \hat{\beta}_{n} \\
     \hat{\sigma}_{ln} &= \sqrt{ \log \hat{\omega}_{n} } \\
@@ -44,9 +44,9 @@ using:
 
 where :math:`\displaystyle \hat{\beta}_{n} = \frac{s_n}{\hat{\omega}_{n} (\hat{\omega}_{n} - 1)}`.
 
-**Modified moments based estimators:**
+**Modified moments based estimator:**
 
-we use :math:`\overline{x}_n` and :math:`s_n^2` defined as previously. The third
+Using :math:`\overline{x}_n` and :math:`s_n^2` previously defined, the third
 equation is:
 
 .. math::
@@ -63,9 +63,9 @@ is the mean of the first order statistics of a standard normal sample of size
 
     EZ_1(n) = \int_\Rset nz\phi(z) (1 - \Phi(z))^{n-1}\di{z}
 
-where :math:`\varphi` and :math:`\Phi` are the pdf and cdf of the standard
+where :math:`\varphi` and :math:`\Phi` are the PDF and CDF of the standard
 normal distribution. The estimator :math:`\hat{\omega}_{n}` of :math:`\omega` is
-obtained as solution of:
+obtained as the solution of:
 
 .. math::
     :label: omega_modified_moment_relation
@@ -73,10 +73,10 @@ obtained as solution of:
     \omega (\omega - 1) - \kappa_n \left[ \sqrt{\omega} - e^{EZ_1(n)\sqrt{\log \omega}} \right]^2 = 0
 
 where :math:`\displaystyle \kappa_n = \frac{s_n^2}{(\overline{x}_n - x_{(1)})^2}`.
-The we have :math:`(\hat{\mu}_{ln}, \hat{\sigma}_{ln}, \hat{\gamma}_{n})` using
-the relations defined for the moments based estimators :eq:`moment_estimators`.
+Then we have :math:`(\hat{\mu}_{ln}, \hat{\sigma}_{ln}, \hat{\gamma}_{n})` using
+the relations defined for the moments based estimator :eq:`moment_estimator`.
 
-**Local maximum likelihood estimators:**
+**Local maximum likelihood estimator:**
 
 The following sums are defined:
 
@@ -87,16 +87,16 @@ The following sums are defined:
     S_2 &= \sum_{i=1}^n \log^2 (x_i - \gamma) \\
     S_3 &= \sum_{i=1}^n \frac{\log (x_i - \gamma)}{x_i - \gamma}
 
-The Maximum Likelihood estimators of :math:`(\mu_{l}, \sigma_{l}, \gamma)` are 
+The Maximum Likelihood estimator of :math:`(\mu_{l}, \sigma_{l}, \gamma)` is 
 defined by:
 
 .. math::
-    :label: mll_estimators
+    :label: mll_estimator
 
     \hat{\mu}_{l,n} &= \frac{S_1(\hat{\gamma})}{n} \\
     \hat{\sigma}_{l,n}^2 &= \frac{S_2(\hat{\gamma})}{n} - \hat{\mu}_{l,n}^2
 
-This, :math:`\hat{\gamma}_n` verifies the relation:
+Thus, :math:`\hat{\gamma}_n` satisfies the relation:
 
 .. math::
     :label: mll_relation
@@ -131,10 +131,10 @@ Notes
 -----
 In the first usage, the parameters are evaluated according the following strategy:
 
-- OpenTURNS first uses the local likelihood maximum based estimators. 
-- OpenTURNS uses the modified moments based estimators if the resolution of
+- OpenTURNS first uses the local likelihood maximum based estimator. 
+- OpenTURNS uses the modified moments based estimator if the resolution of
   :eq:`mll_relation` is not possible.
-- OpenTURNS uses the moments based estimators, which are always defined, if
+- OpenTURNS uses the moments based estimator, which are always defined, if
   the resolution of :eq:`omega_modified_moment_relation` is not possible.
 
 In the second usage, the covariance matrix *covMat* is fulfilled with the
@@ -161,9 +161,9 @@ sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
 method : integer
     An integer ranges from 0 to 2 corresponding to a specific estimator method:
-    - 0 : Local likelihood maximum estimators
-    - 1 : Modified moment estimators
-    - 2 : method of moment estimators.
+    - 0 : Local likelihood maximum estimator
+    - 1 : Modified moment estimator
+    - 2 : method of moment estimator.
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 "
@@ -171,7 +171,7 @@ param : Collection of :class:`~openturns.PointWithDescription`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LogNormalFactory::buildMethodOfLocalLikelihoodMaximization
-"Build the distribution based on the local likelihood maximum estimators.
+"Build the distribution based on the local likelihood maximum estimator.
 
 Parameters
 ----------
@@ -181,7 +181,7 @@ sample : 2-d sequence of float, of dimension 1
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LogNormalFactory::buildMethodOfModifiedMoments
-"Build the distribution based on the modified moments estimators.
+"Build the distribution based on the modified moments estimator.
 
 Parameters
 ----------
@@ -191,7 +191,7 @@ sample : 2-d sequence of float, of dimension 1
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LogNormalFactory::buildMethodOfMoments
-"Build the distribution based on the method of moments estimators.
+"Build the distribution based on the method of moments estimator.
 
 Parameters
 ----------
