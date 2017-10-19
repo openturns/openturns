@@ -114,15 +114,13 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , amplitude_(0)
   , dimension_(spatialCovariance.getDimension())
   , spatialCorrelation_(0)
-  , spatialCovariance_(0)
+  , spatialCovariance_(spatialCovariance)
   , spatialCovarianceCholeskyFactor_(0)
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
 {
-  // spatialCovariance
-  spatialCovariance_ = spatialCovariance;
   Point amplitude(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
   // Check that the amplitudes are valid
