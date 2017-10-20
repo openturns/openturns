@@ -74,7 +74,12 @@ try:
 
     # parameter bug
     model = ExponentialModel([1.0]*3, [2.0] * 2)
-    print(model.getParameter())
+    p = model.getParameter()
+    print(p)
+    p[-1] = 0.5
+    model.setParameter(p)
+    p = model.getParameter()
+    print(p)
 except:
     import sys
     print("t_ExponentialModel_std.py", sys.exc_info()[0], sys.exc_info()[1])
