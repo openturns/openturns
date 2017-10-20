@@ -52,6 +52,22 @@
 int csvparse (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension, const char * separator);
 #endif
 
+namespace {
+
+// wraps std::getline to handle EOLs across systems
+OT::Bool GetLine(std::ifstream & file, OT::String & line)
+{
+  const OT::Bool ok = std::getline(file, line).good();
+  // deal with DOS EOLs from UNIX
+  if (line.size() && (line[line.size() - 1] == '\r'))
+  {
+    line.erase(line.size() - 1, 1);
+  }
+  return ok;
+}
+
+}
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -481,7 +497,7 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   String line;
   Point data;
   Description description(0);
-  while (!impl.dimension_ && std::getline(theFile, line))
+  while (!impl.dimension_ && GetLine(theFile, line))
   {
     if (line.empty())
     {
@@ -514,7 +530,7 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   // Now, read all the other rows. If they don't contain a point
   // or if the number of values is not equal to the dimension the
   // row is ignored
-  while (std::getline(theFile, line))
+  while (GetLine(theFile, line))
   {
     if (ParseComment(line, commentMarkers))
     {
