@@ -85,7 +85,7 @@ Point TrendEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Invalid input dimension";
-  UnsignedInteger outputDimension = getOutputDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
   Point result(outputDimension);
   const UnsignedInteger reducedInputDimension = function_.getInputDimension();
   Point t(reducedInputDimension);
@@ -96,6 +96,29 @@ Point TrendEvaluation::operator() (const Point & inP) const
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
+Sample TrendEvaluation::operator() (const Sample & inSample) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  const UnsignedInteger outputDimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  const UnsignedInteger reducedInputDimension = function_.getInputDimension();
+  Indices inputIndices(reducedInputDimension);
+  inputIndices.fill();
+  Sample input(inSample.getMarginal(inputIndices));
+  Indices remainingIndices(inputDimension - reducedInputDimension);
+  remainingIndices.fill(reducedInputDimension);
+  Sample trend(inSample.getMarginal(remainingIndices));
+  const Sample result(function_(input) + trend);
+  ++callsNumber_;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
     outputStrategy_.store(result);
   }
   return result;

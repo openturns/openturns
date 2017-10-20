@@ -108,6 +108,7 @@ void IndicatorEvaluation::setEvaluation(const EvaluationPointer & p_evaluation)
 {
   if (p_evaluation->getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot use an evaluation implementation with output dimension not equal to 1";
   p_evaluation_ = p_evaluation;
+  setParallel(p_evaluation_->isParallel());
 }
 
 /* Accessor for the comparison operator */

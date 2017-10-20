@@ -39,7 +39,7 @@ InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation()
   , standardDistribution_()
   , cholesky_()
 {
-  // Nothing to do
+  setParallel(false);
 }
 
 /* Parameter constructor */
@@ -52,6 +52,7 @@ InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation(c
   Description description(Description::BuildDefault(cholesky_.getDimension(), "x"));
   description.add(Description::BuildDefault(cholesky_.getDimension(), "y"));
   setDescription(description);
+  setParallel(false);
 }
 
 /* Virtual constructor */

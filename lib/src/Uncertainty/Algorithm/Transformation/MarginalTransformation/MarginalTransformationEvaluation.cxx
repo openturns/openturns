@@ -329,6 +329,49 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
   return result;
 }
 
+Sample MarginalTransformationEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  Sample result(size, dimension);
+  // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
+  const Scalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+  {
+    const Sample inputMarginal(inSample.getMarginal(k));
+    if (simplifications_[k])
+    {
+      const Point resultMarginal(expressions_[k](inputMarginal).asPoint());
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        result(i, k) = resultMarginal[i];
+      }
+    }
+    else
+    {
+      const Point resultMarginal(inputDistributionCollection_[k].computeCDF(inputMarginal).asPoint());
+      // For accuracy reason, check if we are in the upper tail of the distribution
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        Scalar value = resultMarginal[i];
+        const Bool upperTail = value > tailThreshold;
+        if (upperTail) value = inputDistributionCollection_[k].computeComplementaryCDF(inputMarginal[i]);
+        // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
+        // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
+        const Scalar q = outputDistributionCollection_[k].computeQuantile(value, upperTail)[0];
+        result(i, k) = q;
+      }
+    }
+  }
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
 /* Gradient according to the marginal parameters.
  *
  * F is the CDF of the ith marginal input distribution

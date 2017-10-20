@@ -220,6 +220,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  /** Is it safe to compute evaluations in parallel? */
+  virtual Bool isParallel() const;
+  virtual void setParallel(const Bool flag);
+
 
 protected:
 
@@ -242,6 +246,9 @@ protected:
 
   /** The description of the parameters */
   Description parameterDescription_;
+
+  /** Use parallelism */
+  Bool isParallel_;
 
 private:
 

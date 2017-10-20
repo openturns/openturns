@@ -123,6 +123,7 @@ public:
     // Build the descriptions
     setInputDescription(Description::BuildDefault(inputDimension, "x"));
     setOutputDescription(Description::BuildDefault(outputDimension, "y"));
+    setParallel(false);
   }
 
 

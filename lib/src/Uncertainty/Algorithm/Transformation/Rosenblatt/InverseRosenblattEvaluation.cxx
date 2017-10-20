@@ -35,7 +35,7 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation()
   : EvaluationImplementation()
   , distribution_()
 {
-  // Nothing to do
+  setParallel(false);
 }
 
 /* Parameter constructor */
@@ -46,6 +46,7 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & di
   Description description(Description::BuildDefault(distribution.getDimension(), "X"));
   description.add(distribution.getDescription());
   setDescription(description);
+  setParallel(false);
 }
 
 /* Virtual constructor */

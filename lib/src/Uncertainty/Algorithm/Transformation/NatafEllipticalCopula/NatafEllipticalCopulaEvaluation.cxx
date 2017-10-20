@@ -41,7 +41,7 @@ NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation()
   , standardDistribution_()
   , cholesky_()
 {
-  // Nothing to do
+  setParallel(false);
 }
 
 /* Parameter constructor */
@@ -54,6 +54,7 @@ NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation(const Distribut
   Description description(Description::BuildDefault(cholesky_.getDimension(), "x"));
   description.add(Description::BuildDefault(cholesky_.getDimension(), "y"));
   setDescription(description);
+  setParallel(false);
 }
 
 /* Virtual constructor */

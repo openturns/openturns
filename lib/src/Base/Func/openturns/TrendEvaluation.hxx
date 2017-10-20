@@ -18,6 +18,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -55,6 +56,7 @@ public:
   /** Operator () */
   using EvaluationImplementation::operator();
   Point operator() (const Point & inP) const;
+  Sample operator() (const Sample & inSample) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

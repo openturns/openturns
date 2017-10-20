@@ -67,6 +67,7 @@ EvaluationImplementation::EvaluationImplementation()
   , outputStrategy_(Full())
   , isHistoryEnabled_(false)
   , parameter_(0)
+  , isParallel_(ResourceMap::GetAsBool("Evaluation-Parallel"))
   , inputDescription_(0)
   , outputDescription_(0)
 {
@@ -162,21 +163,61 @@ Bool EvaluationImplementation::isActualImplementation() const
 
 /* Here is the interface that all derived class must implement */
 
+namespace {
+Sample evaluateSequential(const EvaluationImplementation & evaluation, const Sample & inSample)
+{
+  const UnsignedInteger size = inSample.getSize();
+  Sample outSample(size, evaluation.getOutputDimension());
+  // Simple loop over the evaluation operator based on point
+  // The calls number is updated by these calls
+  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = evaluation.operator()(inSample[i]);
+  return outSample;
+}
+
+/* Parallel evaluation */
+struct EvaluationPolicy
+{
+  const Sample & input_;
+  Sample & output_;
+  const EvaluationImplementation & evaluation_;
+
+  EvaluationPolicy( const Sample & input,
+                    Sample & output,
+                    const EvaluationImplementation & evaluation)
+    : input_(input)
+    , output_(output)
+    , evaluation_(evaluation)
+  {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] = evaluation_.operator()(input_[i]);
+  }
+
+}; /* end struct EvaluationPolicy */
+
+Sample evaluateParallel(const EvaluationImplementation & evaluation, const Sample & inSample)
+{
+  const UnsignedInteger size = inSample.getSize();
+  Sample result(size, evaluation.getOutputDimension());
+  const EvaluationPolicy policy( inSample, result, evaluation );
+  TBB::ParallelFor( 0, size, policy );
+  return result;
+}
+
+
+}
+
 /* Operator () */
 Sample EvaluationImplementation::operator() (const Sample & inSample) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
 
-  const UnsignedInteger size = inSample.getSize();
-  Sample outSample(size, getOutputDimension());
-  // Simple loop over the evaluation operator based on point
-  // The calls number is updated by these calls
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = operator()(inSample[i]);
+  Sample outSample(isParallel_ ? evaluateParallel(*this, inSample) : evaluateSequential(*this, inSample));
   outSample.setDescription(getOutputDescription());
   return outSample;
 }
-
 
 /* Operator () */
 Field EvaluationImplementation::operator() (const Field & inField) const
@@ -429,6 +470,17 @@ UnsignedInteger EvaluationImplementation::getCallsNumber() const
   return callsNumber_;
 }
 
+/** Parallelization flag accessor */
+void EvaluationImplementation::setParallel(const Bool flag)
+{
+  isParallel_ = flag;
+}
+
+Bool EvaluationImplementation::isParallel() const
+{
+  return isParallel_;
+}
+
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
@@ -601,6 +653,7 @@ void EvaluationImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", callsNumber_ );
   adv.saveAttribute( "cache_", *p_cache_ );
+  adv.saveAttribute( "isParallel_", isParallel_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "parameter_", parameter_ );
@@ -615,6 +668,7 @@ void EvaluationImplementation::load(Advocate & adv)
   adv.loadAttribute( "callsNumber_", callsNumber_ );
   adv.loadAttribute( "cache_", cache );
   p_cache_ = cache.getImplementation();
+  adv.loadAttribute( "isParallel_", isParallel_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   adv.loadAttribute( "parameter_", parameter_ );

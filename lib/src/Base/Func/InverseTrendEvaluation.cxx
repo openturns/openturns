@@ -41,6 +41,7 @@ InverseTrendEvaluation::InverseTrendEvaluation(const Function & function)
   for (UnsignedInteger i = 0; i < outputDimension; ++i) inputDescription.add(otherInputDescription[i]);
   setInputDescription(inputDescription);
   setOutputDescription(outputDescription);
+  setParallel(function_.getEvaluation()->isParallel());
 }
 
 /* Clone constructor */

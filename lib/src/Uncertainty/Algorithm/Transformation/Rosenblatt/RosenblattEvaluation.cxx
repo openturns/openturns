@@ -35,7 +35,7 @@ RosenblattEvaluation::RosenblattEvaluation()
   : EvaluationImplementation()
   , distribution_()
 {
-  // Nothing to do
+  setParallel(false);
 }
 
 /* Parameter constructor */
@@ -46,6 +46,7 @@ RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution)
   Description description(distribution.getDescription());
   description.add(Description::BuildDefault(distribution.getDimension(), "Y"));
   setDescription(description);
+  setParallel(false);
 }
 
 /* Virtual constructor */
