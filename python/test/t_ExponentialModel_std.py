@@ -72,6 +72,14 @@ try:
     print("discretized covariance over the time grid=",
           timeGrid, "is=", myHighModel.discretize(timeGrid))
 
+    # parameter bug
+    model = ExponentialModel([1.0]*3, [2.0] * 2)
+    p = model.getParameter()
+    print(p)
+    p[-1] = 0.5
+    model.setParameter(p)
+    p = model.getParameter()
+    print(p)
 except:
     import sys
     print("t_ExponentialModel_std.py", sys.exc_info()[0], sys.exc_info()[1])

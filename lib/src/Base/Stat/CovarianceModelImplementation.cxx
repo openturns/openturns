@@ -100,8 +100,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   setAmplitude(amplitude);
   setScale(scale);
   activeParameter_.fill();
-  if (spatialCorrelation.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::CovarianceModelImplementation, the given spatial correlation has a dimension different from the scales and amplitudes.";
   setSpatialCorrelation(spatialCorrelation);
 }
 
@@ -114,15 +112,13 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , amplitude_(0)
   , dimension_(spatialCovariance.getDimension())
   , spatialCorrelation_(0)
-  , spatialCovariance_(0)
+  , spatialCovariance_(spatialCovariance)
   , spatialCovarianceCholeskyFactor_(0)
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(spatialDimension_ + (dimension_ * (dimension_ + 1)) / 2)
 {
-  // spatialCovariance
-  spatialCovariance_ = spatialCovariance;
   Point amplitude(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
   // Check that the amplitudes are valid
@@ -599,8 +595,10 @@ CorrelationMatrix CovarianceModelImplementation::getSpatialCorrelation() const
 
 void CovarianceModelImplementation::setSpatialCorrelation(const CorrelationMatrix & spatialCorrelation)
 {
-  spatialCorrelation_ = spatialCorrelation;
-  isDiagonal_ = spatialCorrelation_.isDiagonal();
+  if (spatialCorrelation.getDimension() != dimension_)
+    throw InvalidArgumentException(HERE) << "The given spatial correlation has a dimension different from the amplitudes.";
+  isDiagonal_ = spatialCorrelation.isDiagonal();
+  spatialCorrelation_ = isDiagonal_ ? CorrelationMatrix() : spatialCorrelation;
   updateSpatialCovariance();
 }
 
@@ -657,15 +655,15 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
     amplitude_[i] = parameter[index];
     ++ index;
   }
+  CorrelationMatrix spatialCorrelation(dimension_);
   // Third the spatial correation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < dimension_; ++ i)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
-      spatialCorrelation_(i, j) = parameter[index];
+      spatialCorrelation(i, j) = parameter[index];
       ++ index;
     }
-  isDiagonal_ = spatialCorrelation_.isDiagonal();
-  updateSpatialCovariance();
+  setSpatialCorrelation(spatialCorrelation);
 }
 
 
@@ -677,9 +675,15 @@ Point CovarianceModelImplementation::getFullParameter() const
   // Second the amplitude parameter
   parameter.add(getAmplitude());
   // Third the spatial correation parameter, only the lower triangle
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
-    for (UnsignedInteger j = 0; j < i; ++ j)
-      parameter.add(spatialCorrelation_(i, j));
+  if (isDiagonal_)
+  {
+    if (dimension_ > 1)
+      parameter.add(Point((dimension_ * (dimension_ - 1)) / 2));
+  }
+  else
+    for (UnsignedInteger i = 0; i < dimension_; ++ i)
+      for (UnsignedInteger j = 0; j < i; ++ j)
+        parameter.add(spatialCorrelation_(i, j));
   return parameter;
 }
 
