@@ -334,17 +334,20 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       y[diracMarginalsIndices_[i]] = diracValues_[i];
     // Second, the discrete components
     // For each combination of the discrete components
+    Sample currentY(discreteAtomsNumber, y);
     for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
     {
-      Point currentY(y);
       // Get the discrete values
-      const Point discreteNode(discreteNodes_[i]);
       for (UnsignedInteger j = 0; j < discreteDimension; ++j)
-        currentY[discreteMarginalsIndices_[j]] = discreteNode[j];
-      const Scalar w = conditioningDistribution.computePDF(currentY);
+        currentY(i, discreteMarginalsIndices_[j]) = discreteNodes_(i, j);
+    }
+    const Sample yPDF(conditioningDistribution.computePDF(currentY));
+    const Sample parameters(linkFunction_(currentY));
+    for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
+    {
       Distribution dist(conditionedDistribution);
-      dist.setWeight(w);
-      dist.setParameter(linkFunction_(currentY));
+      dist.setWeight(yPDF(i, 0));
+      dist.setParameter(parameters[i]);
       atoms[atomIndex] = dist;
       ++atomIndex;
     } // Discrete measure
@@ -363,19 +366,23 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     for (UnsignedInteger i = 0; i < diracDimension; ++i)
       y[diracMarginalsIndices_[i]] = diracValues_[i];
     // Continuous part using Gauss integration
+    Sample currentY(continuousAtomsNumber, y);
     for (UnsignedInteger i = 0; i < continuousAtomsNumber; ++i)
     {
-      Point currentY(y);
       // Complete the filling of theta using the Gauss integration node
-      const Point continuousNode(continuousNodes_[i]);
       for (UnsignedInteger j = 0; j < continuousDimension; ++j)
-        currentY[continuousMarginalsIndices_[j]] = continuousLowerBounds_[j] + 0.5 * (1.0 + continuousNode[j]) * (continuousUpperBounds_[j] - continuousLowerBounds_[j]);
-      const Scalar w = conditioningDistribution.computePDF(currentY) * continuousWeights_[i];
+        currentY(i, continuousMarginalsIndices_[j]) = continuousLowerBounds_[j] + 0.5 * (1.0 + continuousNodes_(i, j)) * (continuousUpperBounds_[j] - continuousLowerBounds_[j]);
+    }
+    const Sample yPDF(conditioningDistribution.computePDF(currentY));
+    const Sample parameters(linkFunction_(currentY));
+    for (UnsignedInteger i = 0; i < continuousAtomsNumber; ++i)
+    {
+      const Scalar w = yPDF(i, 0) * continuousWeights_[i];
       Distribution dist(conditionedDistribution);
       dist.setWeight(w);
-      dist.setParameter(linkFunction_(currentY));
+      dist.setParameter(parameters[i]);
       atoms[atomIndex] = dist;
-      LOGDEBUG(OSS() << "i=" << i << ", w=" << w << ", Y=" << currentY << ", dist=" << dist.__str__());
+      LOGDEBUG(OSS() << "i=" << i << ", w=" << w << ", Y=" << currentY[i] << ", dist=" << dist.__str__());
       ++atomIndex;
     } // Continuous measure
     // Now, update the underlying Mixture
@@ -392,28 +399,32 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     y[diracMarginalsIndices_[i]] = diracValues_[i];
   // Second, the discrete components
   // For each combination of the discrete components
+  Sample currentYs(0, y);
   for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
   {
     Point currentY(y);
     // Get the discrete values
-    const Point discreteNode(discreteNodes_[i]);
     for (UnsignedInteger j = 0; j < discreteDimension; ++j)
-      currentY[discreteMarginalsIndices_[j]] = discreteNode[j];
+      currentY[discreteMarginalsIndices_[j]] = discreteNodes_(i, j);
     // Now, complete by the discretization of the continuous part using Gauss integration
     for (UnsignedInteger j = 0; j < continuousAtomsNumber; ++j)
     {
       // Complete the filling of theta using the Gauss integration node
-      const Point continuousNode(continuousNodes_[j]);
       for (UnsignedInteger k = 0; k < continuousDimension; ++k)
-        currentY[continuousMarginalsIndices_[k]] = continuousLowerBounds_[k] + 0.5 * (1.0 + continuousNode[k]) * (continuousUpperBounds_[k] - continuousLowerBounds_[k]);
-      const Scalar w = conditioningDistribution.computePDF(currentY) * continuousWeights_[j];
-      Distribution dist(conditionedDistribution);
-      dist.setWeight(w);
-      dist.setParameter(linkFunction_(currentY));
-      atoms[atomIndex] = dist;
-      ++atomIndex;
-    } // Continuous atoms
-  } // Overall discretization
+        currentY[continuousMarginalsIndices_[k]] = continuousLowerBounds_[k] + 0.5 * (1.0 + continuousNodes_(j, k)) * (continuousUpperBounds_[k] - continuousLowerBounds_[k]);
+      currentYs.add(currentY);
+    }
+  }
+  const Sample yPDF(conditioningDistribution.computePDF(currentYs));
+  const Sample parameters(linkFunction_(currentYs));
+  for (UnsignedInteger i = 0; i < currentYs.getSize(); ++i)
+  {
+    Distribution dist(conditionedDistribution);
+    dist.setWeight(yPDF(i, 0) * continuousWeights_[i % continuousAtomsNumber]);
+    dist.setParameter(parameters[i]);
+    atoms[atomIndex] = dist;
+    ++atomIndex;
+  }
   // Now, update the underlying Mixture
   setDistributionCollection(atoms);
 }
@@ -457,23 +468,32 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
     }
     // Second, the discrete components
     // For each combination of the discrete components
+    Sample currentThetas(0, theta);
     for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
     {
       Point currentTheta(theta);
       // Get the discrete values
-      const Point discreteNode(discreteNodes_[i]);
       Bool rejectNode = false;
       for (UnsignedInteger j = 0; j < discreteDimension; ++j)
       {
-        const Scalar value = discreteNode[j];
+        const Scalar value = discreteNodes_(i, j);
         currentTheta[discreteMarginalsIndices_[j]] = value;
         rejectNode = (value > thetaStar[i] + epsilon);
         if (rejectNode) break;
       }
       // Skip the current integration point if the current sub-manifold is outside of the integration region
-      if (rejectNode) continue;
-      const Scalar w = conditioningDistribution_.computePDF(currentTheta);
-      result += w * f(currentTheta);
+      if (!rejectNode)
+      {
+        currentThetas.add(currentTheta);
+      }
+    }
+    if (currentThetas.getSize() == 0)
+      return result;
+    const Sample currentThetasPDF(conditioningDistribution_.computePDF(currentThetas));
+    const Sample fCurrentThetas(f(currentThetas));
+    for (UnsignedInteger i = 0; i < currentThetas.getSize(); ++i)
+    {
+      result += currentThetasPDF(i, 0) * fCurrentThetas[i];
     } // Discrete measure
     return result;
   } // No continuous marginal
@@ -496,17 +516,19 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
       theta[diracMarginalsIndices_[i]] = value;
     }
     // Continuous part using Gauss integration
+    Sample currentTheta(continuousAtomsNumber, theta);
     for (UnsignedInteger i = 0; i < continuousAtomsNumber; ++i)
     {
-      Point currentTheta(theta);
       // Complete the filling of theta using the Gauss integration node
-      const Point continuousNode(continuousNodes_[i]);
       for (UnsignedInteger j = 0; j < continuousDimension; ++j)
-        currentTheta[continuousMarginalsIndices_[j]] = continuousLowerBounds_[j] + 0.5 * (1.0 + continuousNode[j]) * (subPoint[j] - continuousLowerBounds_[j]);
+        currentTheta(i, continuousMarginalsIndices_[j]) = continuousLowerBounds_[j] + 0.5 * (1.0 + continuousNodes_(i, j)) * (subPoint[j] - continuousLowerBounds_[j]);
+    }
+    const Sample thetaPDF(conditioningDistribution_.computePDF(currentTheta));
+    const Sample fTheta(f(currentTheta));
+    for (UnsignedInteger i = 0; i < continuousAtomsNumber; ++i)
+    {
       // Current contribution to the CDF
-      const Scalar w = conditioningDistribution_.computePDF(currentTheta) * continuousWeights_[i];
-      const Point fTheta(f(currentTheta));
-      result += w * f(currentTheta);
+      result += (thetaPDF(i, 0) * continuousWeights_[i]) * fTheta[i];
     } // Continuous measure
     result *= Interval(continuousLowerBounds_, subPoint).getNumericalVolume();
     return result;
@@ -528,33 +550,42 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
   }
   // Second, the discrete components
   // For each combination of the discrete components
+  Sample currentThetas(0, theta);
   for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
   {
     Point currentTheta(theta);
     // Get the discrete values
-    const Point discreteNode(discreteNodes_[i]);
     Bool rejectNode;
     for (UnsignedInteger j = 0; j < discreteDimension; ++j)
     {
-      const Scalar value = discreteNode[j];
+      const Scalar value = discreteNodes_(i, j);
       currentTheta[discreteMarginalsIndices_[j]] = value;
       rejectNode = (value > thetaStar[i] + epsilon);
       if (rejectNode) break;
     }
     // Skip the current integration point if the current sub-manifold is outside of the integration region
-    if (rejectNode) continue;
-    // Now, complete by the discretization of the continuous part using Gauss integration
-    for (UnsignedInteger j = 0; j < continuousAtomsNumber; ++j)
+    if (!rejectNode)
     {
-      // Complete the filling of theta using the Gauss integration node
-      const Point continuousNode(continuousNodes_[j]);
-      for (UnsignedInteger k = 0; k < continuousDimension; ++k)
-        currentTheta[continuousMarginalsIndices_[k]] = continuousLowerBounds_[k] + 0.5 * (1.0 + continuousNode[k]) * (subPoint[k] - continuousLowerBounds_[k]);
-      const Scalar w = conditioningDistribution_.computePDF(currentTheta) * continuousWeights_[j];
-      const Point fTheta(f(currentTheta));
-      result += w * f(currentTheta);
-    } // Continuous atoms
-  } // Overall discretization
+      for (UnsignedInteger j = 0; j < continuousAtomsNumber; ++j)
+      {
+        // Complete the filling of theta using the Gauss integration node
+        for (UnsignedInteger k = 0; k < continuousDimension; ++k)
+          currentTheta[continuousMarginalsIndices_[k]] = continuousLowerBounds_[k] + 0.5 * (1.0 + continuousNodes_(j, k)) * (subPoint[k] - continuousLowerBounds_[k]);
+        currentThetas.add(currentTheta);
+      } // Continuous atoms
+    }
+  }
+  if (currentThetas.getSize() > 0)
+  {
+    const Sample currentThetasPDF(conditioningDistribution_.computePDF(currentThetas));
+    const Sample fCurrentThetas(f(currentThetas));
+    for (UnsignedInteger i = 0; i < currentThetas.getSize(); ++i)
+    {
+      // Now, complete by the discretization of the continuous part using Gauss integration
+      const Point q(currentThetasPDF(i, 0) * fCurrentThetas[i]);
+      result += continuousWeights_[i % continuousAtomsNumber] * q;
+    }
+  }
   result *= Interval(continuousLowerBounds_, subPoint).getNumericalVolume();
   return result;
 }
