@@ -134,10 +134,12 @@ Scalar MCMC::computeLogLikelihood(const Point & xi) const
   if (value == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
 
   const UnsignedInteger size = observations_.getSize();
+  const Point originalParameters(model_.getParameter());
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     // retrieve model data if available
-    const Point zi(model_(xi, parameters_[i]));
+    model_.setParameter(parameters_[i]);
+    const Point zi(model_(xi));
 
     Distribution pI(conditional_);
     pI.setParameter(zi);
@@ -145,6 +147,7 @@ Scalar MCMC::computeLogLikelihood(const Point & xi) const
     if (logPdf == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
     value += logPdf;
   }
+  model_.setParameter(originalParameters);
   return value;
 }
 

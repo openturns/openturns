@@ -58,17 +58,11 @@ int main(int argc, char *argv[])
     Function g2_0(g2.getMarginal(0));
     Point theta(2, 0.2);
     theta[1] = 50.0;
-    fullprint << "g2_0(x, theta)=" << g2_0(x, theta) << std::endl;
+    g2_0.setParameter(theta);
+    fullprint << "g2_0(x)=" << g2_0(x) << std::endl;
 
     // gradient / parameters
     fullprint << "dg2_0/dtheta(x)=" << g2_0.parameterGradient(x) << std::endl;
-
-    // single point, several parameters
-    Sample thetas(3, 2);
-    thetas[0] = theta;
-    thetas[1] = Point(2, 0.3);
-    thetas[1] = Point(2, 0.4);
-    fullprint << "g2_0(x, thetas)=" << g2_0(x, thetas) << std::endl;
   }
   catch (TestFailed & ex)
   {

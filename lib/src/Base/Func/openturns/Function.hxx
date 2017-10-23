@@ -224,10 +224,6 @@ public:
 
   /** Operator () */
   Point operator() (const Point & inP) const;
-  Point operator() (const Point & inP,
-                    const Point & parameter);
-  Sample operator() (const Point & point,
-                     const Sample & parameters);
 
   Sample operator() (const Sample & inS) const;
 
@@ -236,18 +232,12 @@ public:
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   Matrix gradient(const Point & inP) const;
-  Matrix gradient(const Point & inP,
-                  const Point & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   SymmetricTensor hessian(const Point & inP) const;
-  SymmetricTensor hessian(const Point & inP,
-                          const Point & parameters);
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const Point & inP) const;
-  virtual Matrix parameterGradient(const Point & inP,
-                                   const Point & parameters);
 
   /** Parameters value accessor */
   virtual Point getParameter() const;

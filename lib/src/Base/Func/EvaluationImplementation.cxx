@@ -298,27 +298,32 @@ Sample EvaluationImplementation::getInputParameterHistory() const
 /* Gradient according to the marginal parameters */
 Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
 {
-  Point parameter(getParameter());
+  const Point parameter(getParameter());
   const UnsignedInteger parameterDimension = parameter.getDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
 
   const Scalar epsilon = ResourceMap::GetAsScalar("NumericalMathEvaluation-ParameterEpsilon");
 
-  Sample inS(parameterDimension + 1, parameter);
-  for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
-  {
-    inS[1 + i][i] += epsilon;
-  }
-  // operator()(x, theta) is non-const as it sets the parameter
+  // Const method, we need a copy in order to call setParameter()
   Pointer<EvaluationImplementation> p_evaluation(clone());
-  Sample outS(p_evaluation->operator()(inP, inS));
+  const Point outCentered(operator()(inP));
 
   Matrix grad(parameterDimension, outputDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
   {
+    Point inPerturbed(parameter);
+    inPerturbed[i] += epsilon;
+    p_evaluation->setParameter(inPerturbed);
+    const Point outPerturbed(p_evaluation->operator()(inP));
+    // Since we use a copy, we have to update callsNumber_
+    ++callsNumber_;
+    if (isHistoryEnabled_) {
+      inputStrategy_.store(inPerturbed);
+      outputStrategy_.store(outPerturbed);
+    }
     for (UnsignedInteger j = 0; j < outputDimension; ++ j)
     {
-      grad(i, j) = (outS[1 + i][j] - outS[0][j]) / epsilon;
+      grad(i, j) = (outPerturbed[j] - outCentered[j]) / epsilon;
     }
   }
   return grad;
@@ -351,26 +356,6 @@ Description EvaluationImplementation::getParameterDescription() const
 Point EvaluationImplementation::operator() (const Point & inP) const
 {
   throw NotYetImplementedException(HERE) << "In EvaluationImplementation::operator() (const Point & inP) const";
-}
-
-Point EvaluationImplementation::operator() (const Point & inP,
-    const Point & parameter)
-{
-  setParameter(parameter);
-  return (*this)(inP);
-}
-
-Sample EvaluationImplementation::operator() (const Point & inP,
-    const Sample & parameters)
-{
-  const UnsignedInteger size = parameters.getSize();
-  Sample outS(size, getOutputDimension());
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    setParameter(parameters[i]);
-    outS[i] = operator()(inP);
-  }
-  return outS;
 }
 
 /* Accessor for input point dimension */
