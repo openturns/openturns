@@ -13,3 +13,5 @@ Numerical methods
     minmax_optimization.ipynb
     estimate_integral_iterated_quadrature.ipynb
     control_termination.ipynb
+    logistic_growth_model.ipynb
+
