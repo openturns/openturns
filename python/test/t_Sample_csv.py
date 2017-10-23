@@ -113,6 +113,14 @@ try:
     aSample = Sample.ImportFromTextFile("sample.csv")
     print("aSample with comments=", repr(aSample))
 
+    # DOS EOLs
+    f = open('sample.csv', 'w')
+    f.write(
+        '-1.2;2.3;3.4;-4.5\r\n5.6;-6.7;7.8\r\n-0.1;3.2;7.5;4.6\r\n')
+    f.close()
+    aSample = Sample.ImportFromTextFile('sample.csv', ';')
+    print('aSample from CRLF file=', repr(aSample))
+
     os.remove('sample.csv')
 except:
     import sys
