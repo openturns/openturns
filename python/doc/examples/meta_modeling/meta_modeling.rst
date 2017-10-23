@@ -10,3 +10,5 @@ Meta modeling
     general_linear_model.ipynb
     kriging.ipynb
     fieldfunction_metamodel.ipynb
+    viscous_fall_metamodel.ipynb
+
