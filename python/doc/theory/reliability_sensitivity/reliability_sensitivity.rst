@@ -13,6 +13,7 @@ and probability of exceeding a threshold / failure probability.
     :maxdepth: 1
 
     taylor_importance_factors
+    independence_test_pearson
     low_discrepancy_sequence
     monte_carlo_simulation
     sensitivity_sobol
