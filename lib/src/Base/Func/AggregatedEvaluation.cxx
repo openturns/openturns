@@ -230,8 +230,8 @@ Matrix AggregatedEvaluation::parameterGradient(const Point & inP) const
     const Matrix currentGradient(functionsCollection_[i].parameterGradient(functionsCollection_[i].getParameter()));
     const UnsignedInteger currentRowDim = currentGradient.getNbRows();
     const UnsignedInteger currentColumnDim = currentGradient.getNbColumns();
-    for (UnsignedInteger j = 0; j < currentRowDim; ++j)
-      for (UnsignedInteger k = 0; k < currentColumnDim; ++k)
+    for (UnsignedInteger k = 0; k < currentColumnDim; ++k)
+      for (UnsignedInteger j = 0; j < currentRowDim; ++j)
         result(rowShift + j, columnShift + k) = currentGradient(j, k);
     rowShift += currentRowDim;
     columnShift += currentColumnDim;
