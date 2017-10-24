@@ -86,6 +86,27 @@ Point IndicatorEvaluation::operator() (const Point & inP) const
   return result;
 }
 
+/* Operator () */
+Sample IndicatorEvaluation::operator() (const Sample & inSample) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
+  const Point eval(p_evaluation_->operator()(inSample).asPoint());
+  SampleImplementation result(size, 1);
+  for(UnsignedInteger i = 0; i < size; ++i) {
+    result(i, 0) = comparisonOperator_.compare(eval[i], threshold_) ? 1.0 : 0.0;
+  }
+
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
 /* Accessor for input point dimension */
 UnsignedInteger IndicatorEvaluation::getInputDimension() const
 {
@@ -108,7 +129,6 @@ void IndicatorEvaluation::setEvaluation(const EvaluationPointer & p_evaluation)
 {
   if (p_evaluation->getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot use an evaluation implementation with output dimension not equal to 1";
   p_evaluation_ = p_evaluation;
-  setParallel(p_evaluation_->isParallel());
 }
 
 /* Accessor for the comparison operator */
