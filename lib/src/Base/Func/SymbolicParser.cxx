@@ -64,6 +64,7 @@ protected:
 SymbolicParser::SymbolicParser()
   : Object()
 {
+  // Nothing to do
 }
 
 
@@ -75,12 +76,12 @@ void SymbolicParser::setVariablesFormulas(const Description & inputVariablesName
 }
 
 
-void SymbolicParser::initialize() const
+void SymbolicParser::initialize(const UnsignedInteger size) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger outputDimension = formulas_.getSize();
-  inputStack_ = Point(inputDimension);
-  if (parsers_.getSize() == outputDimension) return;
+  if (parsers_.getSize() == outputDimension && inputStack_.getDimension() >= size && inputStack_.getSize() > 0) return;
+  inputStack_ = Sample(inputDimension, size);
   parsers_ = Collection<Pointer<MuParser> >(outputDimension);
   try
   {
@@ -91,7 +92,7 @@ void SymbolicParser::initialize() const
       for (UnsignedInteger inputIndex = 0; inputIndex < inputDimension; ++ inputIndex)
       {
         // DefineVar defines all the values given to variables
-        parsers_[outputIndex].get()->DefineVar(inputVariablesNames_[inputIndex].c_str(), &inputStack_[inputIndex]);
+        parsers_[outputIndex].get()->DefineVar(inputVariablesNames_[inputIndex].c_str(), &inputStack_(inputIndex, 0));
       }
       parsers_[outputIndex].get()->SetExpr(formulas_[outputIndex].c_str());
     }
@@ -109,8 +110,8 @@ Point SymbolicParser::operator() (const Point & inP) const
   const UnsignedInteger outputDimension = formulas_.getSize();
   if (inP.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
-  initialize();
-  std::copy(inP.begin(), inP.end(), inputStack_.begin());
+  initialize(1);
+  std::copy(inP.begin(), inP.end(), &inputStack_(0, 0));
   Point result(outputDimension);
   try
   {
@@ -122,6 +123,43 @@ Point SymbolicParser::operator() (const Point & inP) const
   catch (mu::Parser::exception_type & ex)
   {
     throw InternalException(HERE) << ex.GetMsg();
+  }
+  return result;
+}
+
+
+Sample SymbolicParser::operator() (const Sample & inSample) const
+{
+  const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
+  const UnsignedInteger outputDimension = formulas_.getSize();
+  if (inSample.getDimension() != inputDimension)
+    throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inSample.getDimension() << ") expected " << inputDimension;
+  const UnsignedInteger size = inSample.getSize();
+  initialize(size);
+  for(UnsignedInteger i = 0; i < inputDimension; ++ i)
+  {
+    const Point inP(inSample.getMarginal(i).asPoint());
+    std::copy(inP.begin(), inP.end(), &inputStack_(i, 0));
+  }
+  SampleImplementation transposed(outputDimension, size);
+  SampleImplementation result(size, outputDimension);
+  try
+  {
+    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+    {
+      parsers_[outputIndex].get()->Eval(&transposed(outputIndex, 0), size);
+    }
+  }
+  catch (mu::Parser::exception_type & ex)
+  {
+    throw InternalException(HERE) << ex.GetMsg();
+  }
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+    {
+      result(i, outputIndex) = transposed(outputIndex, i);
+    }
   }
   return result;
 }

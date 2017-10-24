@@ -37,6 +37,7 @@ public:
   SymbolicParser();
 
   Point operator()(const Point & inP) const;
+  Sample operator()(const Sample & inSample) const;
 
   void setVariablesFormulas(const Description & inputVariablesNames,
                             const Description & formulas);
@@ -44,12 +45,12 @@ public:
   Description getFormulas() const;
 
 protected:
-  void initialize() const;
+  void initialize(UnsignedInteger size) const;
 
   Description inputVariablesNames_;
   Description formulas_;
   mutable Collection<Pointer<MuParser> > parsers_;
-  mutable Point inputStack_;
+  mutable Sample inputStack_;
 
 };
 
