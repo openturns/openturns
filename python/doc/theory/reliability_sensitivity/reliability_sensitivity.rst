@@ -16,6 +16,7 @@ and probability of exceeding a threshold / failure probability.
     independence_test_pearson
     independence_test_spearman
     ranking_src
+    ranking_pcc
     low_discrepancy_sequence
     monte_carlo_simulation
     sensitivity_sobol
