@@ -18,6 +18,7 @@ and probability of exceeding a threshold / failure probability.
     ranking_src
     ranking_pcc
     ranking_prcc
+    sensitivity_sobol
+    sensitivity_ancova
     low_discrepancy_sequence
     monte_carlo_simulation
-    sensitivity_sobol
