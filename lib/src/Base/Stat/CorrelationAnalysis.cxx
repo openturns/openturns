@@ -32,32 +32,29 @@ BEGIN_NAMESPACE_OPENTURNS
 CorrelationAnalysis::CorrelationAnalysis() {}
 
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
-Scalar CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
-    const Sample & outputSample,
-    const UnsignedInteger index)
+Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
+                                              const Sample & outputSample)
 {
-  if (index >= inputSample.getDimension()) throw InvalidArgumentException(HERE) << "Error: given index out of bound";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedInteger size = inputSample.getSize();
-  Sample pairedSample(size, 2);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  const UnsignedInteger dimension = inputSample.getDimension();
+  Point result(dimension);
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    pairedSample[i][0] = inputSample[i][index];
-    pairedSample[i][1] = outputSample[i][0];
+    Sample pairedSample(inputSample.getMarginal(j));
+    pairedSample.stack(outputSample);
+    result[j] = pairedSample.computePearsonCorrelation()(1, 0);
   }
-  return pairedSample.computePearsonCorrelation()(0, 1);
+  return result;
 }
 
 /* Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
-Scalar CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
-    const Sample & outputSample,
-    const UnsignedInteger index)
+Point CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
+                                               const Sample & outputSample)
 {
-  if (index >= inputSample.getDimension()) throw InvalidArgumentException(HERE) << "Error: given index out of bound";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  return PearsonCorrelation(inputSample.getMarginal(index).rank(), outputSample.rank());
+  return PearsonCorrelation(inputSample.rank(), outputSample.rank());
 }
 
 /* Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
@@ -112,7 +109,7 @@ Point CorrelationAnalysis::PCC(const Sample & inputSample,
     // Compute the correlation between the residuals
     const Sample residualOutput(outputVersusTruncatedInput.getResidual(truncatedInput, outputSample));
     const Sample residualRemaining(remainingVersusTruncatedInput.getResidual(truncatedInput, remainingInput));
-    pcc[index] = PearsonCorrelation(residualOutput, residualRemaining);
+    pcc[index] = PearsonCorrelation(residualOutput, residualRemaining)[0];
   }
   return pcc;
 }

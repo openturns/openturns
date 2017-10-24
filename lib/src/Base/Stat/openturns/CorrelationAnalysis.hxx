@@ -38,15 +38,13 @@ class OT_API CorrelationAnalysis
 {
 public:
 
-  /** Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
-  static Scalar PearsonCorrelation(const Sample & inputSample,
-                                   const Sample & outputSample,
-                                   const UnsignedInteger index = 0);
+  /** Compute the Pearson correlation coefficient between the input sample and the output sample */
+  static Point PearsonCorrelation(const Sample & inputSample,
+                                  const Sample & outputSample);
 
-  /** Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
-  static Scalar SpearmanCorrelation(const Sample & inputSample,
-                                    const Sample & outputSample,
-                                    const UnsignedInteger index = 0);
+  /** Compute the Spearman correlation coefficient between the input sample and the output sample */
+  static Point SpearmanCorrelation(const Sample & inputSample,
+                                   const Sample & outputSample);
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
   static Point SRC(const Sample & inputSample,

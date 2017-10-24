@@ -50,14 +50,14 @@ CorrelationAnalysis_PCC"
 Parameters
 ----------
 sample1 : 2-d sequence of float
-    First sample, of dimension = 1.
+    First sample
 sample2 : 2-d sequence of float
     Second sample, of dimension = 1.
 
 Returns
 -------
-coef : float
-    The Pearson correlation coefficients evaluated between the *sample2* and the
+coef : :class:`~openturns.Point`
+    The Pearson coefficients evaluated between the *sample2* and each coordinate of
     *sample1*.
 
 See Also
@@ -73,14 +73,14 @@ CorrelationAnalysis_SpearmanCorrelation"
 Parameters
 ----------
 sample1 : 2-d sequence of float
-    First sample, of dimension = 1.
+    First sample
 sample2 : 2-d sequence of float
     Second sample, of dimension = 1.
 
 Returns
 -------
-coef : float
-    The Spearman correlation coefficients evaluated between the *sample2* and the
+coef : :class:`~openturns.Point`
+    The Spearman coefficients evaluated between the *sample2* and each coordinate of
     *sample1* (based on the rank values).
 
 See Also

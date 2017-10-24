@@ -36,8 +36,8 @@ print("pcc=", pcc)
 prcc = ot.CorrelationAnalysis.PRCC(inputSample, outputSample)
 print("prcc=", prcc)
 
-pearson = ot.Point(list(map(lambda x: ot.CorrelationAnalysis.PearsonCorrelation(inputSample.getMarginal(x), outputSample), range(dimension))))
+pearson = ot.CorrelationAnalysis.PearsonCorrelation(inputSample, outputSample)
 print("pearson=", pearson)
 
-spearman = ot.Point(list(map(lambda x: ot.CorrelationAnalysis.SpearmanCorrelation(inputSample.getMarginal(x), outputSample), range(dimension))))
+spearman = ot.CorrelationAnalysis.SpearmanCorrelation(inputSample, outputSample)
 print("spearman=", spearman)
