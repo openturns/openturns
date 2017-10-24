@@ -214,7 +214,7 @@ Sample EvaluationImplementation::operator() (const Sample & inSample) const
   const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
 
-  Sample outSample(isParallel_ ? evaluateParallel(*this, inSample) : evaluateSequential(*this, inSample));
+  Sample outSample((isParallel_ && !isCacheEnabled() && !isHistoryEnabled()) ? evaluateParallel(*this, inSample) : evaluateSequential(*this, inSample));
   outSample.setDescription(getOutputDescription());
   return outSample;
 }
