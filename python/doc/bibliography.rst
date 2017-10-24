@@ -107,6 +107,10 @@ Bibliography
 .. [Nataf1962] Nataf, A. *Determination des distributions dont les marges sont
     donnees.* C. R. Acad. Sci. Paris, 1962, 225, 42-43.
     `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__
+.. [Nash1999] Stephen G. Nash, 1999, *A survey of Truncated-Newton methods*,
+    Systems Engineering and Operations Research Dept.,
+    George Mason University, Fairfax, VA 22030.
+    `pdf <http://doc.openturns.org/papers/nash1999.pdf>`__
 .. [NISThandbook] NIST/SEMATECH e-Handbook of Statistical Methods,
     http://www.itl.nist.gov/div898/handbook/
 .. [NLopt] Steven G. Johnson, The NLopt nonlinear-optimization package,
