@@ -8,4 +8,5 @@ Numerical methods
 
     uniform_random_generator
     distribution_realization
+    optimization_algorithm
     optimal_lhs
