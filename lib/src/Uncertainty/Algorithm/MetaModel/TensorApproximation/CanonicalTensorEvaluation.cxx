@@ -251,6 +251,7 @@ Sample CanonicalTensorEvaluation::operator() (const Sample & inSample) const
 
   Sample outSample(size, 1);
   outSample.getImplementation()->setData(result);
+  outSample.setDescription(getOutputDescription());
 
   if (isHistoryEnabled_)
   {

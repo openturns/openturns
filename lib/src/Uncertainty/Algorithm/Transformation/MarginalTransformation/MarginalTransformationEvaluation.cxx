@@ -334,6 +334,7 @@ Sample MarginalTransformationEvaluation::operator () (const Sample & inSample) c
   const UnsignedInteger dimension = getOutputDimension();
   const UnsignedInteger size = inSample.getSize();
   SampleImplementation result(size, dimension);
+  result.setDescription(getOutputDescription());
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
   const Scalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
   for (UnsignedInteger k = 0; k < dimension; ++k)

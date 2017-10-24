@@ -110,12 +110,12 @@ Sample InverseTrendEvaluation::operator() (const Sample & inSample) const
   const UnsignedInteger reducedInputDimension = function_.getInputDimension();
   Indices inputIndices(reducedInputDimension);
   inputIndices.fill();
-  Sample input(inSample.getMarginal(inputIndices));
   Indices remainingIndices(inputDimension - reducedInputDimension);
   remainingIndices.fill(reducedInputDimension);
-  Sample trend(inSample.getMarginal(remainingIndices));
-  const Sample result(trend - function_(input));
-  ++callsNumber_;
+  Sample result(inSample.getMarginal(remainingIndices));
+  result -= function_(inSample.getMarginal(inputIndices));
+  result.setDescription(getOutputDescription());
+  callsNumber_ += size;
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inSample);
