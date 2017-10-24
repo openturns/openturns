@@ -1,3 +1,5 @@
+.. _design_experiments:
+
 ======================
 Designs of experiments
 ======================
