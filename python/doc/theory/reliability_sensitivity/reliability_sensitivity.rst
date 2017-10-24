@@ -21,5 +21,6 @@ and probability of exceeding a threshold / failure probability.
     sensitivity_sobol
     sensitivity_ancova
     sensitivity_fast
+    importance_form
     low_discrepancy_sequence
     monte_carlo_simulation
