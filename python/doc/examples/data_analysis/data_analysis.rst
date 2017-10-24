@@ -12,8 +12,7 @@ Data analysis
     visualize_empirical_cdf.ipynb
     visualize_histogram.ipynb
     estimate_moments.ipynb
-    estimate_spearman.ipynb
-    estimate_pcc.ipynb
+    sample_correlation.ipynb
     estimate_normal.ipynb
     maximumlikelihood_estimator.ipynb
     estimate_non_parametric_distribution.ipynb
