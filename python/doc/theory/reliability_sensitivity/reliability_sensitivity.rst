@@ -35,3 +35,4 @@ and probability of exceeding a threshold / failure probability.
     importance_simulation
     directional_simulation
     lhs_simulation
+    qmc_simulation
