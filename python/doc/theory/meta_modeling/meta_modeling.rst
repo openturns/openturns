@@ -9,10 +9,8 @@ This methodology is relevant if each model evaluation is time consuming.
 Indeed, once a response surface has been built up, the various propagation steps may be applied at a negligible cost.
 A special focus will be given to polynomial response surfaces.
 
-.. Methods description
-.. ===================
-.. 
-.. .. toctree::
-..     :maxdepth: 1
-.. 
-..     optimal_lhs
+
+.. toctree::
+    :maxdepth: 1
+
+    taylor_expansion
