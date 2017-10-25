@@ -34,4 +34,4 @@ and probability of exceeding a threshold / failure probability.
     monte_carlo_simulation
     importance_simulation
     directional_simulation
-    
+    lhs_simulation
