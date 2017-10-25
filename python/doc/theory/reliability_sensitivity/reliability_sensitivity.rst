@@ -30,4 +30,5 @@ and probability of exceeding a threshold / failure probability.
     form_approximation
     sorm_approximation
     reliability_index
+    strong_maximum_test
     monte_carlo_simulation
