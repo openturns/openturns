@@ -1,3 +1,5 @@
+.. _isoprobabilistic_transformations:
+
 ===============================
 Isoprobabilistic transformation
 ===============================
