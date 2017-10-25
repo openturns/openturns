@@ -26,4 +26,5 @@ and probability of exceeding a threshold / failure probability.
     low_discrepancy_sequence
     design_experiment
     taylor_moments
+    monte_carlo_moments
     monte_carlo_simulation
