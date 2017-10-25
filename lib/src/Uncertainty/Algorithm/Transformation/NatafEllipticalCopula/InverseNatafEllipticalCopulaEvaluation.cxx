@@ -36,7 +36,7 @@ static const Factory<InverseNatafEllipticalCopulaEvaluation> Factory_InverseNata
 /* Default constructor */
 InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation()
   : EvaluationImplementation()
-  , standardDistribution_()
+  , standardMarginal_()
   , cholesky_()
 {
   // Nothing to do
@@ -46,7 +46,7 @@ InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation()
 InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation(const Distribution & standardDistribution,
     const TriangularMatrix & cholesky)
   : EvaluationImplementation()
-  , standardDistribution_(standardDistribution)
+  , standardMarginal_(standardDistribution.getMarginal(0))
   , cholesky_(cholesky)
 {
   Description description(Description::BuildDefault(cholesky_.getDimension(), "x"));
@@ -66,7 +66,7 @@ String InverseNatafEllipticalCopulaEvaluation::__repr__() const
   OSS oss;
   oss << "class=" << InverseNatafEllipticalCopulaEvaluation::GetClassName()
       << " description=" << getDescription()
-      << " standardDistribution=" << standardDistribution_
+      << " standardMarginal=" << standardMarginal_
       << " cholesky=" << cholesky_;
 
   return oss;
@@ -76,7 +76,7 @@ String InverseNatafEllipticalCopulaEvaluation::__str__(const String & offset) co
 {
   OSS oss(false);
   oss << offset << InverseNatafEllipticalCopulaEvaluation::GetClassName()
-      << "("  << standardDistribution_ << "->Copula(cholesky=" << cholesky_ << ", E=" << standardDistribution_.getMarginal(0) << "))";
+      << "(Copula(cholesky=" << cholesky_ << ", E=" << standardMarginal_ << "))";
 
   return oss;
 }
@@ -92,9 +92,8 @@ Point InverseNatafEllipticalCopulaEvaluation::operator () (const Point & inP) co
   const UnsignedInteger dimension = getInputDimension();
   // First, correlate the components
   Point result(cholesky_ * inP);
-  const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Second, apply the commmon marginal distribution
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(Point(1, result[i]));
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal_.computeCDF(Point(1, result[i]));
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -113,11 +112,10 @@ Sample InverseNatafEllipticalCopulaEvaluation::operator () (const Sample & inSam
   const Matrix resultMatrix(cholesky_ * inSampleMatrix);
   SampleImplementation result(size, dimension);
   result.setData(*resultMatrix.getImplementation());
-  const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Second, apply the commmon marginal distribution
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Point resultI(standardMarginal.computeCDF(result.getMarginal(i)).asPoint());
+    const Point resultI(standardMarginal_.computeCDF(result.getMarginal(i)).asPoint());
     for (UnsignedInteger j = 0; j < size; ++j)
       result(j, i) = resultI[j];
   }
@@ -153,7 +151,7 @@ UnsignedInteger InverseNatafEllipticalCopulaEvaluation::getOutputDimension() con
 void InverseNatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
-  adv.saveAttribute( "standardDistribution_", standardDistribution_ );
+  adv.saveAttribute( "standardMarginal_", standardMarginal_ );
   adv.saveAttribute( "cholesky_", cholesky_ );
 }
 
@@ -161,7 +159,7 @@ void InverseNatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 void InverseNatafEllipticalCopulaEvaluation::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
-  adv.loadAttribute( "standardDistribution_", standardDistribution_ );
+  adv.loadAttribute( "standardMarginal_", standardMarginal_ );
   adv.loadAttribute( "cholesky_", cholesky_ );
 }
 

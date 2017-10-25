@@ -81,7 +81,7 @@ protected:
 
 
 private:
-  Distribution standardDistribution_;
+  Distribution standardMarginal_;
   mutable TriangularMatrix cholesky_;
 
 }; /* NatafEllipticalCopulaEvaluation */
