@@ -10,5 +10,6 @@ Numerical methods
     distribution_realization
     isoprobabilistic_transformation
     nataf_transformation
+    rosenblatt_transformation
     optimization_algorithm
     optimal_lhs
