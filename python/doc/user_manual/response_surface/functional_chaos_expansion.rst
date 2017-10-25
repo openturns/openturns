@@ -47,6 +47,8 @@ Computation of the polynomial chaos coefficients
     KFold
     DesignProxy
 
+.. _least_squares_methods:
+
 Least Squares problem resolution
 ================================
 
