@@ -33,4 +33,5 @@ and probability of exceeding a threshold / failure probability.
     strong_maximum_test
     monte_carlo_simulation
     importance_simulation
+    directional_simulation
     
