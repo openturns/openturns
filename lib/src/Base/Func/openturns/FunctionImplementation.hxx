@@ -190,6 +190,10 @@ public:
   Bool getUseDefaultHessianImplementation() const;
   void setUseDefaultHessianImplementation(const Bool hessianFlag);
 
+  /** Is it safe to compute evaluations in parallel? */
+  virtual Bool isParallel() const;
+  virtual void setParallel(const Bool flag);
+
   /** Operator () */
   virtual Point operator() (const Point & inP) const;
 

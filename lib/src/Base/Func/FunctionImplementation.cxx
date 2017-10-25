@@ -348,6 +348,17 @@ void FunctionImplementation::setUseDefaultHessianImplementation(const Bool hessi
   useDefaultHessianImplementation_ = hessianFlag;
 }
 
+/** Parallelization flag accessor */
+void FunctionImplementation::setParallel(const Bool flag)
+{
+  p_evaluationImplementation_->setParallel(flag);
+}
+
+Bool FunctionImplementation::isParallel() const
+{
+  return p_evaluationImplementation_->isParallel();
+}
+
 
 /* Gradient according to the marginal parameters */
 Matrix FunctionImplementation::parameterGradient(const Point & inP) const
