@@ -9,5 +9,6 @@ Numerical methods
     uniform_random_generator
     distribution_realization
     isoprobabilistic_transformation
+    nataf_transformation
     optimization_algorithm
     optimal_lhs
