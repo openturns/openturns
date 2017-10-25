@@ -35,7 +35,7 @@ RosenblattEvaluation::RosenblattEvaluation()
   : EvaluationImplementation()
   , distribution_()
 {
-  setParallel(distribution_.getImplementation()->isParallel());
+  // Nothing to do
 }
 
 /* Parameter constructor */
@@ -46,7 +46,6 @@ RosenblattEvaluation::RosenblattEvaluation(const Distribution & distribution)
   Description description(distribution.getDescription());
   description.add(Description::BuildDefault(distribution.getDimension(), "Y"));
   setDescription(description);
-  setParallel(distribution_.getImplementation()->isParallel());
 }
 
 /* Virtual constructor */
@@ -73,6 +72,33 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
+/* Evaluation */
+Sample RosenblattEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  if (inSample.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inSample.getDimension();
+  Sample result(size, dimension);
+  SampleImplementation & resultImpl(*result.getImplementation());
+  Sample y(size, 0);
+  // Apply Phi^{-1} o conditional CDF over the components
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Sample inSampleMarginal(inSample.getMarginal(i));
+    const Point conditionalCDF(distribution_.computeConditionalCDF(inSampleMarginal.asPoint(), y));
+    for (UnsignedInteger j = 0; j < size; ++j)
+      resultImpl(j, i) = DistFunc::qNormal(conditionalCDF[j]);
+    y.stack(inSampleMarginal);
+  }
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
     outputStrategy_.store(result);
   }
   return result;

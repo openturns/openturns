@@ -35,7 +35,7 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation()
   : EvaluationImplementation()
   , distribution_()
 {
-  setParallel(distribution_.getImplementation()->isParallel());
+  // Nothing to do
 }
 
 /* Parameter constructor */
@@ -46,7 +46,6 @@ InverseRosenblattEvaluation::InverseRosenblattEvaluation(const Distribution & di
   Description description(Description::BuildDefault(distribution.getDimension(), "X"));
   description.add(distribution.getDescription());
   setDescription(description);
-  setParallel(distribution_.getImplementation()->isParallel());
 }
 
 /* Virtual constructor */
@@ -72,6 +71,34 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
+Sample InverseRosenblattEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  if (inSample.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inSample.getDimension();
+  Sample result(size, 0);
+  Point q(size);
+  const SampleImplementation & inSampleImpl(*inSample.getImplementation());
+  SampleImplementation resultMarginal(size, 1);
+  // Apply conditional Quantile o Phi over the components
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    for(UnsignedInteger j = 0; j < size; ++j) {
+      q[j] = DistFunc::pNormal(inSampleImpl(j, i));
+    }
+    const Point resultMarginalPoint(distribution_.computeConditionalQuantile(q, result));
+    resultMarginal.setData(resultMarginalPoint);
+    result.stack(resultMarginal);
+  }
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
     outputStrategy_.store(result);
   }
   return result;
