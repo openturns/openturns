@@ -89,6 +89,6 @@ def getCorrelationMatrixFromMap(Vars, Map):
 
 %pythoncode %{
 class BoolCollection(UnsignedIntegerCollection):
-    """Proxy of C++ OT::BoolCollection class"""
+    """Proxy of C++ OT::BoolCollection class."""
     pass
 %}

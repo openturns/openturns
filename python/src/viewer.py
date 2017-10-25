@@ -27,7 +27,6 @@ __all__ = ["View", "PlotDesign"]
 
 
 class View(object):
-
     """
     Create the figure.
 

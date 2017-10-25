@@ -25,7 +25,7 @@ inputSample : :class:`~openturns.Sample`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DesignProxy::getBasis
-"Basis accessor.
+"Accessor to the basis.
 
 Returns
 -------
@@ -90,7 +90,7 @@ hasRowFilter : bool
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DesignProxy::setWeight
-"Weights accessor.
+"Accessor to the weights.
 
 Parameters
 ----------
@@ -100,7 +100,7 @@ weight : sequence of float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DesignProxy::getWeight
-"Weights accessor.
+"Accessor to the weights.
 
 Returns
 -------

@@ -1,7 +1,6 @@
 %define OT_Function_doc
 "Function base class.
 
-
 Notes
 -----
 A function acts on points to produce points: :math:`f: \Rset^d \rightarrow \Rset^{d'}`.

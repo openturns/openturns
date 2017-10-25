@@ -29,7 +29,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CanonicalTensorEvaluation::getFunctionFamilies
-"Basis accessor.
+"Accessor to the Basis.
 
 Returns
 -------
@@ -69,7 +69,7 @@ nk : :class:`~openturns.Indices`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CanonicalTensorEvaluation::getBasis
-"Basis accessor.
+"Accessor to the basis.
 
 Parameters
 ----------
@@ -84,7 +84,7 @@ basis : :class:`~openturns.Basis`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CanonicalTensorEvaluation::getCoefficients
-"Coefficients accessor.
+"Accessor to the coefficients.
 
 Parameters
 ----------
@@ -101,7 +101,7 @@ beta : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CanonicalTensorEvaluation::setCoefficients
-"Coefficients accessor.
+"Accessor to the coefficients.
 
 Parameters
 ----------

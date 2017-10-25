@@ -1106,8 +1106,8 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Sample::asPoint()
-"Returns the internal linear storage for 1D sample.
+%feature("docstring") OT::Sample::asPoint
+"Accessor to the internal linear storage for 1D sample.
 
 Returns
 -------
@@ -1133,6 +1133,12 @@ Examples
 >>> print(sample.asPoint())
 [0.608202,-1.26617,-0.438266,1.20548,-2.18139]
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::clear
+"Erase all values."
+
 
 // ---------------------------------------------------------------------
 

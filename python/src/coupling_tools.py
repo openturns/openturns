@@ -98,7 +98,8 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
     >>> # display file
     >>> with open('prgm.dat', 'r') as f:
     ...     print(f.read())
-    E=1.4 F=5"""
+    E=1.4 F=5
+    """
     if len(tokens) != len(values):
         raise AssertionError("Error: tokens size is != values size!")
     check_param(tokens, list)
