@@ -32,3 +32,5 @@ and probability of exceeding a threshold / failure probability.
     reliability_index
     strong_maximum_test
     monte_carlo_simulation
+    importance_simulation
+    
