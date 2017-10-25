@@ -40,7 +40,6 @@ InverseNatafIndependentCopulaEvaluation::InverseNatafIndependentCopulaEvaluation
   Description description(Description::BuildDefault(dimension_, "X"));
   description.add(Description::BuildDefault(dimension_, "Y"));
   setDescription(description);
-  setParallel(false);
 }
 
 /* Virtual constructor */
