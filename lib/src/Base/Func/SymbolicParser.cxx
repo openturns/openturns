@@ -142,7 +142,8 @@ Sample SymbolicParser::operator() (const Sample & inSample) const
     std::copy(inP.begin(), inP.end(), &inputStack_(i, 0));
   }
   SampleImplementation transposed(outputDimension, size);
-  SampleImplementation result(size, outputDimension);
+  Sample result(size, outputDimension);
+  SampleImplementation & resultImpl(*result.getImplementation());
   try
   {
     for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
@@ -158,7 +159,7 @@ Sample SymbolicParser::operator() (const Sample & inSample) const
   {
     for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
     {
-      result(i, outputIndex) = transposed(outputIndex, i);
+      resultImpl(i, outputIndex) = transposed(outputIndex, i);
     }
   }
   return result;

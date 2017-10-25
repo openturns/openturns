@@ -315,7 +315,8 @@ Sample MarginalTransformationEvaluation::operator () (const Sample & inSample) c
 {
   const UnsignedInteger dimension = getOutputDimension();
   const UnsignedInteger size = inSample.getSize();
-  SampleImplementation result(size, dimension);
+  Sample result(size, dimension);
+  SampleImplementation & resultImpl(*result.getImplementation());
   result.setDescription(getOutputDescription());
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
   const Scalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
@@ -327,7 +328,7 @@ Sample MarginalTransformationEvaluation::operator () (const Sample & inSample) c
       const Point resultMarginal(expressions_[k](inputMarginal).asPoint());
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        result(i, k) = resultMarginal[i];
+        resultImpl(i, k) = resultMarginal[i];
       }
     }
     else
@@ -342,7 +343,7 @@ Sample MarginalTransformationEvaluation::operator () (const Sample & inSample) c
         // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
         // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
         const Scalar q = outputDistributionCollection_[k].computeQuantile(value, upperTail)[0];
-        result(i, k) = q;
+        resultImpl(i, k) = q;
       }
     }
   }

@@ -120,11 +120,12 @@ Sample NatafEllipticalCopulaEvaluation::operator () (const Sample & inSample) co
   }
   // Second, decorrelate the components
   resultMatrix = *cholesky_.solveLinearSystem(Matrix(resultMatrix)).getImplementation();
-  SampleImplementation result(size, dimension);
+  Sample result(size, dimension);
+  SampleImplementation & resultImpl(*result.getImplementation());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     for (UnsignedInteger j = 0; j < size; ++j)
-      result(j, i) = resultMatrix(i, j);
+      resultImpl(j, i) = resultMatrix(i, j);
   }
   callsNumber_ += size;
   if (isHistoryEnabled_)

@@ -110,14 +110,15 @@ Sample InverseNatafEllipticalCopulaEvaluation::operator () (const Sample & inSam
   // First, correlate the components
   const Matrix inSampleMatrix(inSample.getDimension(), size, inSample.getImplementation()->getData());
   const Matrix resultMatrix(cholesky_ * inSampleMatrix);
-  SampleImplementation result(size, dimension);
-  result.setData(*resultMatrix.getImplementation());
+  Sample result(size, dimension);
+  SampleImplementation & resultImpl(*result.getImplementation());
+  resultImpl.setData(*resultMatrix.getImplementation());
   // Second, apply the commmon marginal distribution
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Point resultI(standardMarginal_.computeCDF(result.getMarginal(i)).asPoint());
+    const Point resultI(standardMarginal_.computeCDF(resultImpl.getMarginal(i)).asPoint());
     for (UnsignedInteger j = 0; j < size; ++j)
-      result(j, i) = resultI[j];
+      resultImpl(j, i) = resultI[j];
   }
   callsNumber_ += size;
   if (isHistoryEnabled_)

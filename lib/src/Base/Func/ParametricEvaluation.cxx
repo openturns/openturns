@@ -171,10 +171,12 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
   const UnsignedInteger parametersDimension = getParameterDimension();
   if (sampleDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << inputDimension - parametersDimension << ", got dimension=" << sampleDimension;
   Sample input(size, inputDimension);
+  SampleImplementation & inputImpl(*input.getImplementation());
+  const SampleImplementation & inSampleImpl(*inSample.getImplementation());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameter_[j];
-    for (UnsignedInteger j = 0; j < sampleDimension; ++j) input[i][inputPositions_[j]] = inSample[i][j];
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) inputImpl(i, parametersPositions_[j]) = parameter_[j];
+    for (UnsignedInteger j = 0; j < sampleDimension; ++j) inputImpl(i, inputPositions_[j]) = inSampleImpl(i, j);
   }
   const Sample output(function_(input));
   if (isHistoryEnabled_)

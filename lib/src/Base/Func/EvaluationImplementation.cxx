@@ -177,15 +177,15 @@ Sample evaluateSequential(const EvaluationImplementation & evaluation, const Sam
 /* Parallel evaluation */
 struct EvaluationPolicy
 {
-  const Sample & input_;
-  Sample & output_;
+  const SampleImplementation & input_;
+  SampleImplementation & output_;
   const EvaluationImplementation & evaluation_;
 
   EvaluationPolicy( const Sample & input,
                     Sample & output,
                     const EvaluationImplementation & evaluation)
-    : input_(input)
-    , output_(output)
+    : input_(*input.getImplementation())
+    , output_(*output.getImplementation())
     , evaluation_(evaluation)
   {}
 
