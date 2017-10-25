@@ -41,7 +41,7 @@ NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation()
   , standardDistribution_()
   , cholesky_()
 {
-  setParallel(false);
+  // Nothing to do
 }
 
 /* Parameter constructor */
@@ -54,7 +54,6 @@ NatafEllipticalCopulaEvaluation::NatafEllipticalCopulaEvaluation(const Distribut
   Description description(Description::BuildDefault(cholesky_.getDimension(), "x"));
   description.add(Description::BuildDefault(cholesky_.getDimension(), "y"));
   setDescription(description);
-  setParallel(false);
 }
 
 /* Virtual constructor */
@@ -103,6 +102,36 @@ Point NatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
+Sample NatafEllipticalCopulaEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  MatrixImplementation resultMatrix(dimension, size);
+  const Distribution standardMarginal(standardDistribution_.getMarginal(0));
+  // First, filter the commmon marginal distribution
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Point resultI(standardMarginal.computeQuantile(inSample.getMarginal(i).asPoint()).asPoint());
+    for (UnsignedInteger j = 0; j < size; ++j)
+      resultMatrix(i, j) = resultI[j];
+  }
+  // Second, decorrelate the components
+  resultMatrix = *cholesky_.solveLinearSystem(Matrix(resultMatrix)).getImplementation();
+  SampleImplementation result(size, dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    for (UnsignedInteger j = 0; j < size; ++j)
+      result(j, i) = resultMatrix(i, j);
+  }
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
     outputStrategy_.store(result);
   }
   return result;
