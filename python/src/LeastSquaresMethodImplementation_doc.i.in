@@ -47,7 +47,7 @@ OT_LeastSquaresMethod_getInputSample_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getWeight_doc
-"Weights accessor.
+"Accessor to the weights.
 
 Returns
 -------
@@ -60,7 +60,7 @@ OT_LeastSquaresMethod_getWeight_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getBasis_doc
-"Basis accessor.
+"Accessor to the basis.
 
 Returns
 -------

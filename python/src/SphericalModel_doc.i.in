@@ -77,7 +77,7 @@ Create a  squared exponential covariance function specifying the scale vector, t
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SphericalModel::setRadius
-"Radius accessor.
+"Accessor to the radius.
 
 Parameters
 ----------
@@ -87,7 +87,7 @@ radius : float, :math:`a > 0`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SphericalModel::getRadius
-"Radius accessor.
+"Accessor to the radius.
 
 Returns
 -------

@@ -55,7 +55,7 @@ conditional : :class:`~openturns.ConditionalDistribution`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::PosteriorDistribution::setObservations
-"Observations accessor.
+"Accessor to the observations.
 
 Parameters
 ----------
@@ -65,7 +65,7 @@ observations : 2-d sequence of float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::PosteriorDistribution::getObservations
-"Observations accessor.
+"Accessor to the observations.
 
 Returns
 -------

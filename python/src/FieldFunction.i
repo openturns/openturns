@@ -92,11 +92,11 @@ class OpenTURNSPythonFieldFunction(object):
     Parameters
     ----------
     spatialDim : int, :math:`\geq 1`
-    Dimension :math:`n` of the domain :math:`\cD`
-inputDim : int, :math:`\geq 1`
-    Dimension :math:`d` of the values of the input field
-outputDim : int, :math:`\geq 1`
-    Dimension :math:`d'` of the values of the output field 
+        Dimension :math:`n` of the domain :math:`\cD`
+    inputDim : int, :math:`\geq 1`
+        Dimension :math:`d` of the values of the input field
+    outputDim : int, :math:`\geq 1`
+        Dimension :math:`d'` of the values of the output field 
 
     Notes
     -----

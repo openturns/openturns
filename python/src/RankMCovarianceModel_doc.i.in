@@ -79,7 +79,7 @@ variance : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RankMCovarianceModel::getBasis
-"Basis accessor.
+"Accessor to the Basis.
 
 Returns
 -------
