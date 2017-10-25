@@ -11,5 +11,6 @@ Numerical methods
     isoprobabilistic_transformation
     nataf_transformation
     rosenblatt_transformation
+    sphere_sampling
     optimization_algorithm
     optimal_lhs
