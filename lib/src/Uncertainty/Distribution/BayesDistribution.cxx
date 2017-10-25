@@ -332,7 +332,7 @@ public:
     , outputDimension_(conditionedDimension_ * (2 * dimension_ - conditionedDimension_ + 3) / 2)
     , mu_(distribution.getMean())
   {
-    // Nothing to do
+    setParallel(false);
   }
 
   KernelCovariance * clone() const
