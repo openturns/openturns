@@ -27,4 +27,5 @@ and probability of exceeding a threshold / failure probability.
     design_experiment
     taylor_moments
     monte_carlo_moments
+    form_approximation
     monte_carlo_simulation
