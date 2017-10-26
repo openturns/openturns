@@ -115,6 +115,7 @@ Sample InverseNatafEllipticalCopulaEvaluation::operator () (const Sample & inSam
   resultFlatten.setData(*resultMatrix.getImplementation());
   Sample result(size, dimension);
   result.getImplementation()->setData(standardMarginal_.computeCDF(resultFlatten).asPoint());
+  result.setDescription(getOutputDescription());
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

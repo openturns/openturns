@@ -95,6 +95,7 @@ Sample RosenblattEvaluation::operator () (const Sample & inSample) const
       resultImpl(j, i) = DistFunc::qNormal(conditionalCDF[j]);
     y.stack(inSampleMarginal);
   }
+  result.setDescription(getOutputDescription());
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

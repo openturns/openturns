@@ -98,7 +98,7 @@ Sample IndicatorEvaluation::operator() (const Sample & inSample) const
   for(UnsignedInteger i = 0; i < size; ++i) {
     resultImpl(i, 0) = comparisonOperator_.compare(eval[i], threshold_) ? 1.0 : 0.0;
   }
-
+  result.setDescription(getOutputDescription());
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

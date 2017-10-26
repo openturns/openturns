@@ -178,7 +178,8 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
     for (UnsignedInteger j = 0; j < parametersDimension; ++j) inputImpl(i, parametersPositions_[j]) = parameter_[j];
     for (UnsignedInteger j = 0; j < sampleDimension; ++j) inputImpl(i, inputPositions_[j]) = inSampleImpl(i, j);
   }
-  const Sample output(function_(input));
+  Sample output(function_(input));
+  output.setDescription(getOutputDescription());
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(input);

@@ -140,7 +140,8 @@ Sample LinearEvaluation::operator() (const Sample & inS) const
   // + Then the resulting matrix is converted into a sample and the final
   //   translation is parallelized
   temporary.setData(linear_.getImplementation()->genProd(MatrixImplementation(getInputDimension(), size, (inS - center_).getImplementation()->getData()), true, false));
-  const Sample result(temporary + constant_);
+  Sample result(temporary + constant_);
+  result.setDescription(getOutputDescription());
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

@@ -122,6 +122,7 @@ Sample NatafEllipticalCopulaEvaluation::operator () (const Sample & inSample) co
   resultMatrix = *cholesky_.solveLinearSystem(Matrix(resultMatrix)).getImplementation();
   Sample result(size, dimension);
   SampleImplementation & resultImpl(*result.getImplementation());
+  result.setDescription(getOutputDescription());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     for (UnsignedInteger j = 0; j < size; ++j)

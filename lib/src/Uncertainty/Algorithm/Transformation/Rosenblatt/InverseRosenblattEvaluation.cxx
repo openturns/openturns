@@ -95,6 +95,7 @@ Sample InverseRosenblattEvaluation::operator () (const Sample & inSample) const
     resultMarginal.setData(resultMarginalPoint);
     result.stack(resultMarginal);
   }
+  result.setDescription(getOutputDescription());
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {
