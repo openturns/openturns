@@ -26,6 +26,7 @@
  * Removed deprecated SobolIndicesAlgorithm::Generate method
  * Removed deprecated NumericalScalar, NumericalComplex types
  * Removed deprecated Function constructors
+ * CorrelationAnalysis::(Pearson|Spearman)Correlation accepts a multivariate sample and returns a Point
 
 === Python module ===
 
