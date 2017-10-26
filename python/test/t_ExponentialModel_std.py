@@ -74,6 +74,7 @@ try:
 
     # parameter bug
     model = ExponentialModel([1.0]*3, [2.0] * 2)
+    model.setActiveParameter(range(6))
     p = model.getParameter()
     print(p)
     p[-1] = 0.5

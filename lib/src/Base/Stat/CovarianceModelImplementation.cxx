@@ -72,7 +72,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-  , activeParameter_(inputDimension_ + (outputDimension_ * (outputDimension_ + 1)) / 2)
+  , activeParameter_(inputDimension_ + outputDimension_)
 {
   setAmplitude(amplitude);
   setScale(scale);
@@ -95,7 +95,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-  , activeParameter_(inputDimension_ + (outputDimension_ * (outputDimension_ + 1)) / 2)
+  , activeParameter_(inputDimension_ + outputDimension_)
 {
   setAmplitude(amplitude);
   setScale(scale);
@@ -117,7 +117,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
-  , activeParameter_(inputDimension_ + (outputDimension_ * (outputDimension_ + 1)) / 2)
+  , activeParameter_(inputDimension_ + outputDimension_)
 {
   Point amplitude(outputDimension_);
   for (UnsignedInteger i = 0; i < outputDimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
