@@ -240,6 +240,10 @@ ParametrizedDistribution::Implementation ParametrizedDistribution::getStandardRe
   return distribution_.getStandardRepresentative().getImplementation()->clone();
 }
 
+Interval ParametrizedDistribution::getRange() const
+{
+  return distribution_.getRange();
+}
 
 /* Method save() stores the object through the StorageManager */
 void ParametrizedDistribution::save(Advocate & adv) const

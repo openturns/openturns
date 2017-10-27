@@ -134,6 +134,8 @@ public:
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Implementation getStandardRepresentative() const;
 
+  virtual Interval getRange() const;
+
   /** String converter */
   String __repr__() const;
 

@@ -615,8 +615,8 @@ Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar pr
 {
   // Special case for bording values
   marginalProb = prob;
-  if (prob < 0.0) return range_.getUpperBound();
-  if (prob >= 1.0) return range_.getLowerBound();
+  if (prob < 0.0) return getRange().getUpperBound();
+  if (prob >= 1.0) return getRange().getLowerBound();
   // Special case for dimension 1
   if (dimension_ == 1) return Point(1, computeScalarQuantile(prob, true));
   // Special case for independent copula
@@ -965,8 +965,8 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     const Point legendreNodes(getGaussNodesAndWeights(legendreWeights));
     // How many sub-intervals?
     // nPts = 8*x(b-a)/2\pi => (b-a)/2 = nPts * \pi / (8*x)
-    const Scalar xMin = range_.getLowerBound()[0];
-    const Scalar xMax = range_.getUpperBound()[0];
+    const Scalar xMin = getRange().getLowerBound()[0];
+    const Scalar xMax = getRange().getUpperBound()[0];
     const Scalar delta = xMax - xMin;
     const UnsignedInteger intervalsNumber = std::max(1, static_cast<int>(round(2 * x * delta / integrationNodesNumber_)));
     if (intervalsNumber * integrationNodesNumber_ < N)
@@ -986,8 +986,8 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     }
     else
     {
-      const Scalar a = range_.getLowerBound()[0];
-      const Scalar b = range_.getUpperBound()[0];
+      const Scalar a = getRange().getLowerBound()[0];
+      const Scalar b = getRange().getUpperBound()[0];
       const Scalar T = 0.5 * (b - a);
       const Scalar c = 0.5 * (a + b);
       const Scalar dt = T / N;
@@ -1968,8 +1968,8 @@ Point DistributionImplementation::computeConditionalQuantile(const Point & q,
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
     return getMarginal(conditioningDimension)->computeQuantile(q).getImplementation()->getData();
   // General case
-  const Scalar xMin = range_.getLowerBound()[conditioningDimension];
-  const Scalar xMax = range_.getUpperBound()[conditioningDimension];
+  const Scalar xMin = getRange().getLowerBound()[conditioningDimension];
+  const Scalar xMax = getRange().getUpperBound()[conditioningDimension];
   Point result(size);
   // Here we recreate a ConditionalCDFWrapper only if none has been created or if the parameter dimension has changed
   if (p_conditionalCDFWrapper_.isNull() || (p_conditionalCDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalCDFWrapper_ = new ConditionalCDFWrapper(this);
@@ -1988,8 +1988,8 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   // This test allows to check if one can trust the current range. If not, it means that we are here to compute the range and then we cannot rely on it!
-  Scalar lower = range_.getLowerBound()[0];
-  Scalar upper = range_.getUpperBound()[0];
+  Scalar lower = getRange().getLowerBound()[0];
+  Scalar upper = getRange().getUpperBound()[0];
   // This test allows to know if the range has already been computed. If not, it is the role of the computeScalarQuantile() to do it.
   if (lower > upper)
   {
@@ -2064,8 +2064,8 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
   const Scalar q = tail ? 1.0 - prob : prob;
   marginalProb = q;
   // Special case for bording values
-  if (prob < 0.0) return (tail ? range_.getUpperBound() : range_.getLowerBound());
-  if (prob >= 1.0) return (tail ? range_.getLowerBound() : range_.getUpperBound());
+  if (prob < 0.0) return (tail ? getRange().getUpperBound() : getRange().getLowerBound());
+  if (prob >= 1.0) return (tail ? getRange().getLowerBound() : getRange().getUpperBound());
   // Special case for dimension 1
   if (dimension_ == 1) return Point(1, computeScalarQuantile(prob, tail));
   // Special case for independent copula
@@ -2242,7 +2242,7 @@ Interval DistributionImplementation::computeMinimumVolumeIntervalWithMarginalPro
   if (prob >= 1.0)
   {
     marginalProb = 1.0;
-    return range_;
+    return getRange();
   }
   if (dimension_ == 1)
   {
@@ -2281,7 +2281,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRoo
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
   const Function function(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::operator(), 1, 1));
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
-  const Scalar xMin = range_.getLowerBound()[0];
+  const Scalar xMin = getRange().getLowerBound()[0];
   const Scalar xMax = computeScalarQuantile(prob, true);
   const Scalar a = solver.solve(function, 0.0, xMin, xMax);
   const Scalar b = minimumVolumeIntervalWrapper.getLastB();
@@ -2329,7 +2329,7 @@ Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMargi
   if (prob >= 1.0)
   {
     marginalProb = 1.0;
-    return range_;
+    return getRange();
   }
   if (dimension_ == 1)
   {
@@ -2363,10 +2363,10 @@ Interval DistributionImplementation::computeUnilateralConfidenceIntervalWithMarg
   if (tail)
   {
     const Point lowerBound(computeInverseSurvivalFunction(prob, marginalProb));
-    return Interval(lowerBound, range_.getUpperBound());
+    return Interval(lowerBound, getRange().getUpperBound());
   }
   const Point upperBound(computeQuantile(prob, false, marginalProb));
-  return Interval(range_.getLowerBound(), upperBound);
+  return Interval(getRange().getLowerBound(), upperBound);
 }
 
 /* Get the minimum volume level set containing at least a given probability of the distribution.
@@ -3224,8 +3224,8 @@ Graph DistributionImplementation::drawPDF(const UnsignedInteger pointNumber) con
   const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
-    Scalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
-    Scalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
+    Scalar a = std::max(xMin - delta, getRange().getLowerBound()[0] - 1.0);
+    Scalar b = std::min(xMax + delta, getRange().getUpperBound()[0] + 1.0);
     if (b <= a)
     {
       a -= 1.0;
@@ -3425,8 +3425,8 @@ Graph DistributionImplementation::drawLogPDF(const UnsignedInteger pointNumber) 
   const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
-    Scalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
-    Scalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
+    Scalar a = std::max(xMin - delta, getRange().getLowerBound()[0] - 1.0);
+    Scalar b = std::min(xMax + delta, getRange().getUpperBound()[0] + 1.0);
     if (b <= a)
     {
       a -= 1.0;
@@ -3633,8 +3633,8 @@ Graph DistributionImplementation::drawCDF(const UnsignedInteger pointNumber) con
   const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
   if (isDiscrete())
   {
-    Scalar a = std::max(xMin - delta, range_.getLowerBound()[0] - 1.0);
-    Scalar b = std::min(xMax + delta, range_.getUpperBound()[0] + 1.0);
+    Scalar a = std::max(xMin - delta, getRange().getLowerBound()[0] - 1.0);
+    Scalar b = std::min(xMax + delta, getRange().getUpperBound()[0] + 1.0);
     if (b <= a)
     {
       a -= 1.0;
