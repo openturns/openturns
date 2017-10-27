@@ -56,10 +56,14 @@ public:
   Distribution getMeasure() const;
 
   /** Sample accessors */
+  virtual void setInputSample(const Sample & inputSample);
   virtual Sample getInputSample() const;
+
+  virtual void setOutputSample(const Sample & outputSample);
   virtual Sample getOutputSample() const;
 
   /** Weights accessor */
+  virtual void setWeights(const Point & weights);
   virtual Point getWeights() const;
 
   /** Residual accessor */

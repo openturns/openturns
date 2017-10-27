@@ -155,12 +155,13 @@ Distribution ProjectionStrategyImplementation::getMeasure() const
 /* Experiment accessors */
 void ProjectionStrategyImplementation::setExperiment(const WeightedExperiment & weightedExperiment)
 {
-  if (!(weightedExperiment == weightedExperiment_))
-  {
+  // TODO: implement experiments comparison
+//   if (!(weightedExperiment == weightedExperiment_))
+//   {
     weightedExperiment_ = weightedExperiment;
     weightedExperiment_.setDistribution(getMeasure());
     inputSample_ = Sample(0, 0);
-  }
+//   }
 }
 
 WeightedExperiment ProjectionStrategyImplementation::getExperiment() const
@@ -169,9 +170,19 @@ WeightedExperiment ProjectionStrategyImplementation::getExperiment() const
 }
 
 /* Sample accessors */
+void ProjectionStrategyImplementation::setInputSample(const Sample & inputSample)
+{
+  inputSample_ = inputSample;
+}
+
 Sample ProjectionStrategyImplementation::getInputSample() const
 {
   return inputSample_;
+}
+
+void ProjectionStrategyImplementation::setOutputSample(const Sample & outputSample)
+{
+  outputSample_ = outputSample;
 }
 
 Sample ProjectionStrategyImplementation::getOutputSample() const
@@ -180,6 +191,11 @@ Sample ProjectionStrategyImplementation::getOutputSample() const
 }
 
 /* Weights accessor */
+void ProjectionStrategyImplementation::setWeights(const Point & weights)
+{
+  weights_ = weights;
+}
+
 Point ProjectionStrategyImplementation::getWeights() const
 {
   return weights_;

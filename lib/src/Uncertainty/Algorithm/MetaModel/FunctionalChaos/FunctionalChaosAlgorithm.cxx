@@ -97,11 +97,11 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.getImplementation()->inputSample_ = inputSample;
-  projectionStrategy_.getImplementation()->measure_ = UserDefined(inputSample);
-  projectionStrategy_.getImplementation()->weights_ = Point(inputSample.getSize(), 1.0 / inputSample.getSize());
-  projectionStrategy_.getImplementation()->weightedExperiment_ = FixedExperiment(inputSample);
-  projectionStrategy_.getImplementation()->outputSample_ = outputSample;
+  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setExperiment(FixedExperiment(inputSample));
+  projectionStrategy_.setWeights(Point(inputSample.getSize(), 1.0 / inputSample.getSize()));
+  projectionStrategy_.setInputSample(inputSample);
+  projectionStrategy_.setOutputSample(outputSample);
 }
 
 /* Constructor */
@@ -119,11 +119,11 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.getImplementation()->inputSample_ = inputSample;
-  projectionStrategy_.getImplementation()->measure_ = UserDefined(inputSample);
-  projectionStrategy_.getImplementation()->weights_ = weights;
-  projectionStrategy_.getImplementation()->weightedExperiment_ = FixedExperiment(inputSample, weights);
-  projectionStrategy_.getImplementation()->outputSample_ = outputSample;
+  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setExperiment(FixedExperiment(inputSample));
+  projectionStrategy_.setWeights(weights);
+  projectionStrategy_.setInputSample(inputSample);
+  projectionStrategy_.setOutputSample(outputSample);
 }
 
 /* Constructor */
@@ -277,7 +277,7 @@ void FunctionalChaosAlgorithm::run()
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
   const Distribution measure(basis.getMeasure());
   // Correct the measure of the projection strategy if no input sample
-  const Bool databaseProjection = projectionStrategy_.getImplementation()->inputSample_.getSize() > 0;
+  const Bool databaseProjection = projectionStrategy_.getInputSample().getSize() > 0;
   if (!databaseProjection) projectionStrategy_.setMeasure(measure);
 
   // First, compute all the parts that are independent of the marginal output
@@ -299,8 +299,8 @@ void FunctionalChaosAlgorithm::run()
   if (noTransformation) composedModel_ = model_;
   else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
-  const Sample initialInputSample(projectionStrategy_.getImplementation()->inputSample_);
-  if (databaseProjection && !noTransformation) projectionStrategy_.getImplementation()->inputSample_ = transformation_(initialInputSample);
+  const Sample initialInputSample(projectionStrategy_.getInputSample());
+  if (databaseProjection && !noTransformation) projectionStrategy_.setInputSample(transformation_(initialInputSample));
   // Second, compute the results for each marginal output and merge
   // these marginal results.
   // As all the components have been projected using the same basis,
@@ -357,11 +357,6 @@ void FunctionalChaosAlgorithm::run()
   }
   // Build the result
   result_ = FunctionalChaosResult(model_, distribution_, transformation_, inverseTransformation_, composedModel_, basis, I_k, alpha_k, Psi_k, residuals, relativeErrors);
-  // Restore the initial input sample
-  // If it was not empty, it was given by the user
-  if (initialInputSample.getSize() > 0) projectionStrategy_.getImplementation()->inputSample_ = initialInputSample;
-  // else it has been produced in the measure space, convert it into the physical space
-  else projectionStrategy_.getImplementation()->inputSample_ = inverseTransformation_(projectionStrategy_.getImplementation()->inputSample_);
 }
 
 /* Marginal computation */
@@ -381,13 +376,13 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
     // The basis is adapted under the following conditions:
     // + the current residual is small enough
     // + the adaptive strategy has no more vector to propose
-    if (projectionStrategy_.getImplementation()->residual_p_ < maximumResidual_)
+    if (projectionStrategy_.getResidual() < maximumResidual_)
     {
       LOGINFO("Stop on small residual");
       indices = adaptiveStrategy_.getImplementation()->I_p_;
-      coefficients = projectionStrategy_.getImplementation()->alpha_k_p_;
-      residual = projectionStrategy_.getImplementation()->residual_p_;
-      relativeError = projectionStrategy_.getImplementation()->relativeError_p_;
+      coefficients = projectionStrategy_.getCoefficients();
+      residual = projectionStrategy_.getResidual();
+      relativeError = projectionStrategy_.getRelativeError();
       return;
     }
     LOGINFO("Adapt the basis");
@@ -398,9 +393,9 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
 
   LOGINFO("No more basis adaptation");
   indices = adaptiveStrategy_.getImplementation()->I_p_;
-  coefficients = projectionStrategy_.getImplementation()->alpha_k_p_;
-  residual = projectionStrategy_.getImplementation()->residual_p_;
-  relativeError = projectionStrategy_.getImplementation()->relativeError_p_;
+  coefficients = projectionStrategy_.getCoefficients();
+  residual = projectionStrategy_.getResidual();
+  relativeError = projectionStrategy_.getRelativeError();
 }
 
 
