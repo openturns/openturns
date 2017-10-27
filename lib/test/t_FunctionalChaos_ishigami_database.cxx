@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
         FunctionalChaosResult result(algo.getResult());
         fullprint << "//////////////////////////////////////////////////////////////////////" << std::endl;
         fullprint << adaptiveStrategy << std::endl;
-        fullprint << projectionStrategy << std::endl;
+        fullprint << algo.getProjectionStrategy() << std::endl;
         Point residuals(result.getResiduals());
         fullprint << "residuals=" << std::fixed << std::setprecision(5) << residuals << std::endl;
         Point relativeErrors(result.getRelativeErrors());

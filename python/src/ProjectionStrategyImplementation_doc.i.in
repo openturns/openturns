@@ -109,6 +109,19 @@ OT_ProjectionStrategy_getExperiment_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_ProjectionStrategy_setInputSample_doc
+"Accessor to the input sample.
+
+Parameters
+----------
+X : :class:`~openturns.Sample`
+    Input Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setInputSample
+OT_ProjectionStrategy_setInputSample_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_ProjectionStrategy_getInputSample_doc
 "Accessor to the input sample.
 
@@ -132,6 +145,19 @@ mu : Distribution
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getMeasure
 OT_ProjectionStrategy_getMeasure_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setOutputSample_doc
+"Accessor to the output sample.
+
+Parameters
+----------
+Y : :class:`~openturns.Sample`
+    Output Sample."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setOutputSample
+OT_ProjectionStrategy_setOutputSample_doc
 
 // ---------------------------------------------------------------------
 
@@ -171,6 +197,19 @@ er : float
 %enddef
 %feature("docstring") OT::ProjectionStrategyImplementation::getResidual
 OT_ProjectionStrategy_getResidual_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProjectionStrategy_setWeights_doc
+"Accessor to the weights.
+
+Parameters
+----------
+w : :class:`~openturns.Point`
+    Weights of the design of experiments."
+%enddef
+%feature("docstring") OT::ProjectionStrategyImplementation::setWeights
+OT_ProjectionStrategy_setWeights_doc
 
 // ---------------------------------------------------------------------
 

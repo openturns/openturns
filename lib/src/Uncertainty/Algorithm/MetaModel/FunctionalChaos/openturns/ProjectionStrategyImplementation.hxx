@@ -85,10 +85,14 @@ public:
   Distribution getMeasure() const;
 
   /** Sample accessors */
+  virtual void setInputSample(const Sample & inputSample);
   virtual Sample getInputSample() const;
+
+  virtual void setOutputSample(const Sample & outputSample);
   virtual Sample getOutputSample() const;
 
   /** Weights accessor */
+  virtual void setWeights(const Point & weights);
   virtual Point getWeights() const;
 
   /** Residual accessor */
@@ -98,6 +102,7 @@ public:
   virtual Scalar getRelativeError() const;
 
   /** Relative error accessor */
+//   virtual void setCoefficients(const Point & alpha_k);
   virtual Point getCoefficients() const;
 
   /** Experiment accessors */
@@ -119,9 +124,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-
 protected:
-
   /** The collection of Alpha_k coefficients */
   Point alpha_k_p_;
 

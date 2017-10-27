@@ -6,16 +6,22 @@ OT_ProjectionStrategy_doc
 OT_ProjectionStrategy_getCoefficients_doc
 %feature("docstring") OT::ProjectionStrategy::getExperiment
 OT_ProjectionStrategy_getExperiment_doc
+%feature("docstring") OT::ProjectionStrategy::setInputSample
+OT_ProjectionStrategy_setInputSample_doc
 %feature("docstring") OT::ProjectionStrategy::getInputSample
 OT_ProjectionStrategy_getInputSample_doc
 %feature("docstring") OT::ProjectionStrategy::getMeasure
 OT_ProjectionStrategy_getMeasure_doc
+%feature("docstring") OT::ProjectionStrategy::setOutputSample
+OT_ProjectionStrategy_setOutputSample_doc
 %feature("docstring") OT::ProjectionStrategy::getOutputSample
 OT_ProjectionStrategy_getOutputSample_doc
 %feature("docstring") OT::ProjectionStrategy::getRelativeError
 OT_ProjectionStrategy_getRelativeError_doc
 %feature("docstring") OT::ProjectionStrategy::getResidual
 OT_ProjectionStrategy_getResidual_doc
+%feature("docstring") OT::ProjectionStrategy::setWeights
+OT_ProjectionStrategy_setWeights_doc
 %feature("docstring") OT::ProjectionStrategy::getWeights
 OT_ProjectionStrategy_getWeights_doc
 %feature("docstring") OT::ProjectionStrategy::setExperiment

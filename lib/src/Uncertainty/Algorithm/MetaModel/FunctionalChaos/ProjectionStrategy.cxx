@@ -78,9 +78,21 @@ WeightedExperiment ProjectionStrategy::getExperiment() const
 }
 
 /* Sample accessors */
+void ProjectionStrategy::setInputSample(const Sample & inputSample)
+{
+  copyOnWrite();
+  getImplementation()->setInputSample(inputSample);
+}
+
 Sample ProjectionStrategy::getInputSample() const
 {
   return getImplementation()->getInputSample();
+}
+
+void ProjectionStrategy::setOutputSample(const Sample & outputSample)
+{
+  copyOnWrite();
+  getImplementation()->setOutputSample(outputSample);
 }
 
 Sample ProjectionStrategy::getOutputSample() const
@@ -89,6 +101,12 @@ Sample ProjectionStrategy::getOutputSample() const
 }
 
 /* Weights accessor */
+void ProjectionStrategy::setWeights(const Point & weights)
+{
+  copyOnWrite();
+  getImplementation()->setWeights(weights);
+}
+
 Point ProjectionStrategy::getWeights() const
 {
   return getImplementation()->getWeights();
