@@ -185,7 +185,7 @@ private:
   Function function_;
   Distribution antecedent_;
 
-  /** Usefull quantities */
+  /** Useful quantities */
   Point bounds_;
   Point values_;
   Point probabilities_;

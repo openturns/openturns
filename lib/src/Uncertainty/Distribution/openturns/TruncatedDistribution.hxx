@@ -184,7 +184,7 @@ private:
   Distribution distribution_;
   Interval bounds_;
   Scalar thresholdRealization_;
-  /** Usefull quantities */
+  /** Useful quantities */
   Scalar pdfLowerBound_;
   Scalar pdfUpperBound_;
   Scalar cdfLowerBound_;

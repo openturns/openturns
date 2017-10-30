@@ -179,7 +179,7 @@ private:
   Scalar sigma_;
   Scalar a_;
   Scalar b_;
-  /** Usefull quantities */
+  /** Useful quantities */
   Scalar aNorm_;
   Scalar bNorm_;
   Scalar phiANorm_;
