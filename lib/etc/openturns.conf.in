@@ -249,7 +249,7 @@
   <Matrix-SymmetryThreshold value="1.0e-12"    />
 
   <!-- OT::BernsteinCopulaFactory parameters -->
-  <BernsteinCopulaFactory-Parallel value="true" />
+  <BernsteinCopulaFactory-Parallel value="false" />
 
   <!-- OT::BurrFactory parameters -->
   <BurrFactory-AbsolutePrecision value="1e-12" />

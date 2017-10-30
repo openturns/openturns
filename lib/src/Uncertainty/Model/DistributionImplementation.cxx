@@ -1191,6 +1191,7 @@ Sample DistributionImplementation::computeDDF(const Sample & inSample) const
 /* Get the PDF of the distribution */
 Sample DistributionImplementation::computePDFSequential(const Sample & inSample) const
 {
+  LOGINFO("In DistributionImplementation::computePDFSequential(const Sample & inSample)");
   const UnsignedInteger size = inSample.getSize();
   Sample outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample[i][0] = computePDF(inSample[i]);
@@ -1214,13 +1215,14 @@ struct ComputePDFPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][0] = distribution_.computePDF(input_[i]);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computePDF(input_[i]);
   }
 
 }; /* end struct ComputePDFPolicy */
 
 Sample DistributionImplementation::computePDFParallel(const Sample & inSample) const
 {
+  LOGINFO("In DistributionImplementation::computePDFParallel(const Sample & inSample)");
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
