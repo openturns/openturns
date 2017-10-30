@@ -52,7 +52,8 @@ public:
 
   /** Factory of Sample from Text file */
   static Sample ImportFromTextFile(const FileName & fileName,
-                                   const String & separator = " ");
+                                   const String & separator = " ",
+                                   const UnsignedInteger skippedLines = 0);
 
   /** Export Sample into CSV file */
   void exportToCSVFile(const FileName & fileName,

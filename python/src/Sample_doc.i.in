@@ -147,6 +147,9 @@ file_name : str
 separator : str
     Separating string.
     Default uses a blank space.
+skipped_lines : int
+    Number of lines skipped.
+    Default is 0.
 
 Returns
 -------
