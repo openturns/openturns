@@ -32,10 +32,12 @@
  * Deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation
  * Deprecated SecondOrderModel::getDimension, getSpatialDimension
  * Deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation
+ * Deprecated TruncatedDistribution single bound accessors in favor of setBounds/getBounds
 
 === Python module ===
 
 === Miscellaneous ===
+ * Multivariate TruncatedDistribution
 
 === Bug fixes ===
  * #870 (Problem with TensorizedCovarianceModel with spatial dim > 1)

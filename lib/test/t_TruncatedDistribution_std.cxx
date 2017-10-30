@@ -116,12 +116,6 @@ int main(int argc, char *argv[])
       for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distributionTestCase.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distributionTestCase.getStandardRepresentative()->__str__() << std::endl;
 
-      // Specific to this distribution
-      Scalar lowerBound = distributionTestCase.getLowerBound();
-      fullprint << "lowerBound=" << lowerBound << std::endl;
-      Scalar upperBound = distributionTestCase.getUpperBound();
-      fullprint << "upperBound=" << upperBound << std::endl;
-
       // Get/Set parameter
       Point parameter(distributionTestCase.getParameter());
       fullprint << "Distribution parameters      =" << parameter.__str__() << std::endl;
