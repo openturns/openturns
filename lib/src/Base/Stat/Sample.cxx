@@ -37,9 +37,10 @@ Sample Sample::ImportFromCSVFile(const FileName & fileName,
 
 /* Factory of Sample from Text file */
 Sample Sample::ImportFromTextFile(const FileName & fileName,
-                                  const String & separator)
+                                  const String & separator,
+                                  const UnsignedInteger skippedLines)
 {
-  Sample sample(SampleImplementation::BuildFromTextFile(fileName, separator));
+  Sample sample(SampleImplementation::BuildFromTextFile(fileName, separator, skippedLines));
   return sample;
 }
 

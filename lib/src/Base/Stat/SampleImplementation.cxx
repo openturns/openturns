@@ -462,7 +462,8 @@ Bool SampleImplementation::ParseComment(const String & line, const String & mark
 
 
 SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fileName,
-    const String & separator)
+                                                             const String & separator,
+                                                             const UnsignedInteger skippedLines)
 {
   if (separator.size() != 1) throw InvalidArgumentException(HERE) << "Expected a separator with one character, got separator=" << separator;
   const char theSeparator = separator[0];
@@ -491,10 +492,14 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   setlocale(LC_NUMERIC, "C");
 #endif
 
+  String line;
   UnsignedInteger index = 1;
 
+  // skip N lines
+  for ( ; index <= skippedLines; ++ index)
+    GetLine(theFile, line);
+
   // Go to the first line containing data
-  String line;
   Point data;
   Description description(0);
   while (!impl.dimension_ && GetLine(theFile, line))
