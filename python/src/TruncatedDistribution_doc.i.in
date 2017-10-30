@@ -93,83 +93,23 @@ distribution : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TruncatedDistribution::getFiniteLowerBound
-"Get the finite lower bound flag.
-
-Returns
--------
-isLowerBoundFinite : bool
-    Flag telling if the lower bound is finite or not."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TruncatedDistribution::setFiniteLowerBound
-"Set the finite lower bound flag.
+%feature("docstring") OT::TruncatedDistribution::setBounds
+"Set the bounds.
 
 Parameters
 ----------
-isLowerBoundFinite : bool
-    Flag telling if the lower bound is finite or not."
+bounds : :class:`~openturns.Interval`
+    Truncation bounds."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TruncatedDistribution::getFiniteUpperBound
-"Get the finite upper bound flag.
+%feature("docstring") OT::TruncatedDistribution::getBounds
+"Set the bounds.
 
 Returns
 -------
-isUpperBoundFinite : bool
-    Flag telling if the upper bound is finite or not."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TruncatedDistribution::setFiniteUpperBound
-"Set the finite upper bound flag.
-
-Parameters
-----------
-isUpperBoundFinite : bool
-    Flag telling if the upper bound is finite or not."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TruncatedDistribution::getLowerBound
-"Get the lower bound.
-
-Returns
--------
-lowerBound : float
-    Lower bound."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TruncatedDistribution::setLowerBound
-"Set the lower bound.
-
-Parameters
-----------
-lowerBound : float
-    Lower bound. The upper bound must be strictly greater than the lower bound. "
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TruncatedDistribution::getUpperBound
-"Get the upper bound.
-
-Returns
--------
-upperBound : float
-    Upper bound."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TruncatedDistribution::setUpperBound
-"Set the upper bound.
-
-Parameters
-----------
-upperBound : float
-    Upper bound. The upper bound must be strictly greater than the lower bound."
+bounds : :class:`~openturns.Interval`
+    Truncation bounds."
 
 // ---------------------------------------------------------------------
 

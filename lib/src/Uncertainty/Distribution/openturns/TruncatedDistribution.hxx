@@ -89,8 +89,8 @@ public:
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const;
-  using DistributionImplementation::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  using DistributionImplementation::computeSurvivalFunction;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */
   using DistributionImplementation::computePDFGradient;
@@ -116,25 +116,29 @@ public:
   void setDistribution(const Distribution & distribution);
   Distribution getDistribution() const;
 
-  /** Lower bound accessor */
+  /** Lower bound accessor @deprecated */
   void setLowerBound(const Scalar lowerBound);
   Scalar getLowerBound() const;
 
-  /** Lower bound finite flag accessor */
+  /** Lower bound finite flag accessor @deprecated */
   void setFiniteLowerBound(const Bool finiteLowerBound);
   Bool getFiniteLowerBound() const;
 
-  /** Upper bound accessor */
+  /** Upper bound accessor @deprecated */
   void setUpperBound(const Scalar upperBound);
   Scalar getUpperBound() const;
 
-  /** Upper bound finite flag accessor */
+  /** Upper bound finite flag accessor @deprecated */
   void setFiniteUpperBound(const Bool finiteUpperBound);
   Bool getFiniteUpperBound() const;
 
   /** Threshold realization accessor */
   void setThresholdRealization(const Scalar thresholdRealization);
   Scalar getThresholdRealization() const;
+
+  /** Truncation bounds accessor */
+  void setBounds(const Interval & bounds);
+  Interval getBounds() const;
 
   /** Tell if the distribution is continuous */
   Bool isContinuous() const;
@@ -151,6 +155,12 @@ public:
 
   /** Get the PDF singularities inside of the range - 1D only */
   Point getSingularities() const;
+
+  /** Get the i-th marginal distribution */
+  Implementation getMarginal(const UnsignedInteger i) const;
+
+  /** Get the distribution of the marginal distribution corresponding to indices dimensions */
+  Implementation getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -172,10 +182,7 @@ private:
 
   /** The main parameter set of the distribution */
   Distribution distribution_;
-  Scalar lowerBound_;
-  Bool finiteLowerBound_;
-  Scalar upperBound_;
-  Bool finiteUpperBound_;
+  Interval bounds_;
   Scalar thresholdRealization_;
   /** Usefull quantities */
   Scalar pdfLowerBound_;
@@ -183,6 +190,8 @@ private:
   Scalar cdfLowerBound_;
   Scalar cdfUpperBound_;
   Scalar normalizationFactor_;
+
+  mutable Interval epsilonRange_;
 }; /* class TruncatedDistribution */
 
 

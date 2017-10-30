@@ -1,5 +1,5 @@
-Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=1 finiteLowerBound=true upperBound=4 finiteUpperBound=true thresholdRealization=0.5
-Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = 4)
+Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
+Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4])
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[2.9123]
@@ -38,13 +38,11 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[6.19122]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[17.7136]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[53.9574]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[172.105]
-Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = 4)
-lowerBound=1
-upperBound=4
+Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, 4])
 Distribution parameters      =[2,1.5,1,1,1,4]
 Distribution after setParameter =[1,1.5,1,1,1,4]
-Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=1 finiteLowerBound=true upperBound=13.4759 finiteUpperBound=false thresholdRealization=0.5
-Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = +inf)
+Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[13.4759] finite lower bound=[1] finite upper bound=[0] thresholdRealization=0.5
+Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[2.69199]
@@ -83,13 +81,11 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[8.17308]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[28.8718]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[113.553]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[487.593]
-Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = 1, b = +inf)
-lowerBound=1
-upperBound=13.4759
+Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[)
 Distribution parameters      =[2,1.5,1,1,0,13.4759]
 Distribution after setParameter =[1,1.5,1,1,0,12.4759]
-Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] lowerBound=-9.47594 finiteLowerBound=false upperBound=4 finiteUpperBound=true thresholdRealization=0.5
-Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = -inf, b = 4)
+Distribution class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[1.5] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-9.47594] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[0] finite upper bound=[1] thresholdRealization=0.5
+Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4])
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[2.38239]
@@ -128,8 +124,6 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[4.62576]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[12.702]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[39.3027]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[123.623]
-Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), a = -inf, b = 4)
-lowerBound=-9.47594
-upperBound=4
+Standard representative=TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4])
 Distribution parameters      =[2,1.5,0,-9.47594,1,4]
-Distribution after setParameter =[1,1.5,0,-10.4759,1,4]
+Distribution after setParameter =[1,1.5,0,-9.47594,1,4]

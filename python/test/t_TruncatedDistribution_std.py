@@ -25,6 +25,17 @@ distribution = [ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
                     ot.Normal(2.0, 1.5), 4.0, ot.TruncatedDistribution.UPPER),
                 ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval([1.0], [4.0], [True], [True]))]
 
+# add a 2-d test
+dimension = 2
+size = 70
+ref = ot.Normal([2.0] * dimension, ot.CovarianceMatrix(2))
+sample = ref.getSample(size)
+ks = ot.KernelSmoothing().build(sample)
+truncatedKS = ot.TruncatedDistribution(ks, ot.Interval([1.0]*dimension, [3.0]*dimension))
+distribution.append(truncatedKS)
+referenceDistribution.append(ref)  # N/A
+ot.RandomGenerator.SetSeed(0)
+
 for testCase in range(len(distribution)):
     print('Distribution ', distribution[testCase])
 
@@ -69,15 +80,21 @@ for testCase in range(len(distribution)):
     print('ccdf=%.6f' % CCDF)
     print('cdf (ref)=%.6f' %
           referenceDistribution[testCase].computeCDF(point))
-    PDFgr = distribution[testCase].computePDFGradient(point)
-    print('pdf gradient      =', repr(cleanPoint(PDFgr)))
-    print('pdf gradient (ref)=', repr(
-        cleanPoint(referenceDistribution[testCase].computePDFGradient(point))))
+    try:
+        PDFgr = distribution[testCase].computePDFGradient(point)
+        print('pdf gradient      =', repr(cleanPoint(PDFgr)))
+        print('pdf gradient (ref)=', repr(
+            cleanPoint(referenceDistribution[testCase].computePDFGradient(point))))
+    except:
+        pass
 
-    CDFgr = distribution[testCase].computeCDFGradient(point)
-    print('cdf gradient      =', repr(cleanPoint(CDFgr)))
-    print('cdf gradient (ref)=', repr(
-        cleanPoint(referenceDistribution[testCase].computeCDFGradient(point))))
+    try:
+        CDFgr = distribution[testCase].computeCDFGradient(point)
+        print('cdf gradient      =', repr(cleanPoint(CDFgr)))
+        print('cdf gradient (ref)=', repr(
+            cleanPoint(referenceDistribution[testCase].computeCDFGradient(point))))
+    except:
+        pass
 
     # quantile
     quantile = distribution[testCase].computeQuantile(0.95)
@@ -94,26 +111,27 @@ for testCase in range(len(distribution)):
           distribution[testCase].computeSurvivalFunction(inverseSurvival))
 
     # Confidence regions
-    interval, threshold = distribution[
-        testCase].computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    print("Minimum volume interval=", interval)
-    print("threshold=", ot.Point(1, threshold))
-    levelSet, beta = distribution[
-        testCase].computeMinimumVolumeLevelSetWithThreshold(0.95)
-    print("Minimum volume level set=", levelSet)
-    print("beta=", ot.Point(1, beta))
-    interval, beta = distribution[
-        testCase].computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-    print("Bilateral confidence interval=", interval)
-    print("beta=", ot.Point(1, beta))
-    interval, beta = distribution[
-        testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
-    print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", ot.Point(1, beta))
-    interval, beta = distribution[
-        testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-    print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", ot.Point(1, beta))
+    if distribution[testCase].getDimension() == 1:
+        interval, threshold = distribution[
+            testCase].computeMinimumVolumeIntervalWithMarginalProbability(0.95)
+        print("Minimum volume interval=", interval)
+        print("threshold=", ot.Point(1, threshold))
+        levelSet, beta = distribution[
+            testCase].computeMinimumVolumeLevelSetWithThreshold(0.95)
+        print("Minimum volume level set=", levelSet)
+        print("beta=", ot.Point(1, beta))
+        interval, beta = distribution[
+            testCase].computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
+        print("Bilateral confidence interval=", interval)
+        print("beta=", ot.Point(1, beta))
+        interval, beta = distribution[
+            testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
+        print("Unilateral confidence interval (lower tail)=", interval)
+        print("beta=", ot.Point(1, beta))
+        interval, beta = distribution[
+            testCase].computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
+        print("Unilateral confidence interval (upper tail)=", interval)
+        print("beta=", ot.Point(1, beta))
 
     mean = distribution[testCase].getMean()
     print('mean      =', repr(mean))
@@ -138,6 +156,9 @@ for testCase in range(len(distribution)):
     print('parameters      =', repr(parameters))
     print('parameters (ref)=', repr(
         referenceDistribution[testCase].getParametersCollection()))
+    print('parameter       =', repr(distribution[testCase].getParameter()))
+    print('parameter desc  =', repr(distribution[testCase].getParameterDescription()))
+    print('marginal 0      =', repr(distribution[testCase].getMarginal(0)))
     for i in range(6):
         print('standard moment n=', i, ' value=',
               referenceDistribution[testCase].getStandardMoment(i))
