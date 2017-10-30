@@ -58,6 +58,7 @@
 === Bug fixes ===
  * #890 (Cannot build triangular distribution)
  * #891 (Viewer issue with Pairs drawables)
+ * #895 (Trouble reading CSV files with separators in description)
  * #896 (Python iteration in ProcessSample leads to capacity overflow)
  * #897 (Bug in Graph::draw with small data)
  * #898 (Could not save/load some persistent classes)
