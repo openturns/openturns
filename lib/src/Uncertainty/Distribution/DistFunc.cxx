@@ -1042,7 +1042,7 @@ Point DistFunc::rStudent(const Scalar nu,
   return result;
 }
 
-/* Compute the expectation of the min of n independent standard normal random variables. Usefull for the modified moment estimator of the LogNormal distribution. */
+/* Compute the expectation of the min of n independent standard normal random variables. Useful for the modified moment estimator of the LogNormal distribution. */
 Scalar DistFunc::eZ1(const UnsignedInteger n)
 {
   if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: n must be strictly positive.";

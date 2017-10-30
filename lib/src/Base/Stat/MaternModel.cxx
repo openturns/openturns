@@ -38,7 +38,7 @@ MaternModel::MaternModel(const UnsignedInteger spatialDimension)
   definesComputeStandardRepresentative_ = true;
   // Compute the normalization factor
   computeLogNormalizationFactor();
-  // Compute usefull scaling factor
+  // Compute useful scaling factor
   computeSqrt2nuOverTheta();
 }
 
@@ -76,7 +76,7 @@ void MaternModel::computeLogNormalizationFactor()
 
 void MaternModel::computeSqrt2nuOverTheta()
 {
-  // Compute usefull scaling factor
+  // Compute useful scaling factor
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
 }
 
@@ -240,7 +240,7 @@ void MaternModel::setNu(const Scalar nu)
     nu_ = nu;
     // Compute the normalization factor
     computeLogNormalizationFactor();
-    // Compute usefull scaling factor
+    // Compute useful scaling factor
     computeSqrt2nuOverTheta();
   }
 }
