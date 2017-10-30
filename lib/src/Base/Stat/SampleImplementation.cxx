@@ -417,18 +417,32 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
     const char separator,
     Description & description)
 {
-  description = Description(0);
   // Here the speed is not critical at all
   String workingLine(line);
+
+  // replace non escaped separators by spaces
   if (!(separator == ' '))
-    std::replace(workingLine.begin(), workingLine.end(), separator, ' ');
+  {
+    Bool escaped = false;
+    for (UnsignedInteger i = 0; i < workingLine.size(); ++ i)
+    {
+      if (workingLine[i] == '\"')
+        escaped = !escaped;
+      else if (workingLine[i] == separator)
+        if (!escaped)
+          workingLine[i] = ' ';
+    }
+  }
+
   // Store every fields of the current line in a vector
   std::stringstream strstr(workingLine);
   std::vector<std::string> words;
   std::copy(std::istream_iterator<std::string>(strstr),
             std::istream_iterator<std::string>(), back_inserter(words));
+
   // Check and store the fields in a Point
-  for(UnsignedInteger i = 0; i < words.size(); i++)
+  description = Description(words.size());
+  for(UnsignedInteger i = 0; i < words.size(); ++ i)
   {
     String word(words[i]);
     // trim double quote delimiters
@@ -436,7 +450,7 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
     {
       word = word.substr(1, word.size() - 2);
     }
-    description.add(word);
+    description[i] = word;
   } // for i
   return true;
 }
