@@ -78,10 +78,10 @@ struct BernsteinCopulaFactoryPolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const Point nu(input_[i] * binNumber_);
+      const Point nu(input_[i]);
       Mixture::DistributionCollection atomsKernel(dimension_);
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber_ + 1.0, 0.0, 1.0);
+	atomsKernel[j] = Beta(std::floor(nu[j] * binNumber_) + 1.0, binNumber_ + 1.0, 0.0, 1.0);
       output_[i] = ComposedDistribution(atomsKernel);
     }
   }
@@ -89,13 +89,13 @@ struct BernsteinCopulaFactoryPolicy
 }; /* end struct BernsteinCopulaFactoryPolicy */
 
 /* Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
-Distribution BernsteinCopulaFactory::build(const Sample & sample)
+BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::build(const Sample & sample)
 {
   return build(sample, computeBinNumber(sample));
 }
 
 /* Build a Bernstein copula based on the given sample */
-Distribution BernsteinCopulaFactory::buildParallel(const Sample & empiricalCopulaSample,
+BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildParallel(const Sample & empiricalCopulaSample,
     const UnsignedInteger binNumber)
 {
   const UnsignedInteger size = empiricalCopulaSample.getSize();
@@ -105,31 +105,30 @@ Distribution BernsteinCopulaFactory::buildParallel(const Sample & empiricalCopul
   Mixture result(atomsMixture);
   // Here we know that the mixture is a copula even if none of its atoms is.
   result.isCopula_ = true;
-  return result;
+  return result.clone();
 }
 
-Distribution BernsteinCopulaFactory::buildSequential(const Sample & empiricalCopulaSample,
+BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildSequential(const Sample & empiricalCopulaSample,
     const UnsignedInteger binNumber)
 {
   const UnsignedInteger size = empiricalCopulaSample.getSize();
   const UnsignedInteger dimension = empiricalCopulaSample.getDimension();
-  LOGINFO("BernsteinCopulaFactory - Create the resulting Bernstein copula");
   Mixture::DistributionCollection atomsMixture(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Point nu(empiricalCopulaSample[i] * binNumber);
+    const Point nu(empiricalCopulaSample[i]);
     Mixture::DistributionCollection atomsKernel(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++j)
-      atomsKernel[j] = Beta(std::floor(nu[j]) + 1.0, binNumber + 1.0, 0.0, 1.0);
+      atomsKernel[j] = Beta(std::floor(nu[j] * binNumber) + 1.0, binNumber + 1.0, 0.0, 1.0);
     atomsMixture[i] = ComposedDistribution(atomsKernel);
   }
   Mixture result(atomsMixture);
   // Here we know that the mixture is a copula even if none of its atoms is.
   result.isCopula_ = true;
-  return result;
+  return result.clone();
 }
 
-Distribution BernsteinCopulaFactory::build(const Sample & sample,
+BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::build(const Sample & sample,
     const UnsignedInteger binNumber)
 {
   if (binNumber == 0) throw InvalidDimensionException(HERE) << "Error: the bin number must be positive for the BernsteinCopulaFactory";

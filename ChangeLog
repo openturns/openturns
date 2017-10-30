@@ -96,6 +96,7 @@
 
 === Miscellaneous ===
  * Changed bounds evaluation in UniformFactory, BetaFactory
+ * Worked around bug #864 (parallel segfault in BernsteinCopulaFactory)
 
 === Bug fixes ===
  * #890 (Cannot build triangular distribution)
