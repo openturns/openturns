@@ -83,7 +83,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
     const RegularGrid & frequencyGrid) const
 {
   // We get the dimension of the model
-  const UnsignedInteger dimension = mySpectralModel.getDimension();
+  const UnsignedInteger dimension = mySpectralModel.getOutputDimension();
   // From the spectral model, we want to evaluate the autocovariance function
   const UnsignedInteger N = frequencyGrid.getN();
   const Scalar df = frequencyGrid.getStep();

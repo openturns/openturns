@@ -3,3 +3,4 @@ Remove deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getT
 Remove deprecated Process::getDimension, getSpatialDimension in 1.12
 Remove deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation in 1.12
 Remove deprecated SecondOrderModel::getDimension, getSpatialDimension in 1.12
+Remove deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation in 1.12

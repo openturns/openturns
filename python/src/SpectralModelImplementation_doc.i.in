@@ -112,7 +112,7 @@ OT_SpectralModel_getAmplitude_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SpectralModel_getDimension_doc
+%define OT_SpectralModel_getOutputDimension_doc
 "Get the dimension of the *SpectralModel*.
 
 Returns
@@ -120,8 +120,8 @@ Returns
 dimension : int
     Dimension of the *SpectralModel*."
 %enddef
-%feature("docstring") OT::SpectralModelImplementation::getDimension
-OT_SpectralModel_getDimension_doc
+%feature("docstring") OT::SpectralModelImplementation::getOutputDimension
+OT_SpectralModel_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
@@ -138,7 +138,7 @@ OT_SpectralModel_getScale_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SpectralModel_getSpatialCorrelation_doc
+%define OT_SpectralModel_getOutputCorrelation_doc
 "Get the spatial correlation matrix of the spectral density function.
 
 Returns
@@ -146,12 +146,12 @@ Returns
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \mathcal{M}_{dimension \times dimension}([-1, 1])`."
 %enddef
-%feature("docstring") OT::SpectralModelImplementation::getSpatialCorrelation
-OT_SpectralModel_getSpatialCorrelation_doc
+%feature("docstring") OT::SpectralModelImplementation::getOutputCorrelation
+OT_SpectralModel_getOutputCorrelation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SpectralModel_get_spatial_dimension_doc
+%define OT_SpectralModel_getInputDimension_doc
 "Get the spatial dimension of the spectral density function.
 
 Returns
@@ -160,8 +160,8 @@ spatialDimension : int
     SpatialDimension of the *SpectralModel*."
 
 %enddef
-%feature("docstring") OT::SpectralModelImplementation::getSpatialDimension
-OT_SpectralModel_get_spatial_dimension_doc
+%feature("docstring") OT::SpectralModelImplementation::getInputDimension
+OT_SpectralModel_getInputDimension_doc
 
 // ---------------------------------------------------------------------
 

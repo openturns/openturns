@@ -36,7 +36,7 @@ UserDefinedSpectralModel::UserDefinedSpectralModel()
   : SpectralModelImplementation()
   , DSPCollection_(0)
 {
-  dimension_ = 0;
+  outputDimension_ = 0;
 }
 
 UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequencyGrid,
@@ -54,11 +54,11 @@ UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequency
   // put the first element
   DSPCollection_[0] = spectralFunction[0];
   DSPCollection_[0].checkHermitian();
-  setDimension(DSPCollection_[0].getDimension());
+  setOutputDimension(DSPCollection_[0].getDimension());
   // put the next elements if dimension is ok
   for (UnsignedInteger k = 1; k < N; ++k)
   {
-    if (spectralFunction[k].getDimension() != dimension_)
+    if (spectralFunction[k].getDimension() != outputDimension_)
       throw InvalidArgumentException(HERE) << " Error with dimension; the spectral matrices should be of same dimension";
     DSPCollection_[k] = spectralFunction[k];
     DSPCollection_[k].checkHermitian();
@@ -113,7 +113,7 @@ String UserDefinedSpectralModel::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << "frequency=" << frequencyGrid_.__str__(offset)
-      << " dimension=" << dimension_
+      << " dimension=" << outputDimension_
       << " DSPCollection=" << DSPCollection_.__str__(offset);
   return oss;
 }
