@@ -30,6 +30,7 @@
  * Deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean
  * Deprecated Process::getDimension, getSpatialDimension
  * Deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation
+ * Deprecated SecondOrderModel::getDimension, getSpatialDimension
 
 === Python module ===
 

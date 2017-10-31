@@ -8,7 +8,7 @@
     from matplotlib import pyplot as plt
     from openturns.viewer import View
     secondOrderModel = ot.{{ objname }}()
-    if secondOrderModel.getSpatialDimension() == 1:
+    if secondOrderModel.getInputDimension() == 1:
 	scale = secondOrderModel.getCovarianceModel().getScale()[0]
         def f(x):
             return [secondOrderModel.computeCovariance(x)[0, 0]]

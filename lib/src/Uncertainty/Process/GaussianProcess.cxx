@@ -72,10 +72,10 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   , stationaryTrendValue_(trend.getOutputDimension())
   , samplingMethod_(0)
 {
-  if (trend.getInputDimension() != model.getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the second order model spatial dimension=" << model.getSpatialDimension();
-  if (trend.getOutputDimension() != model.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the second order model dimension=" << model.getDimension();
+  if (trend.getInputDimension() != model.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the second order model spatial dimension=" << model.getInputDimension();
+  if (trend.getOutputDimension() != model.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the second order model dimension=" << model.getOutputDimension();
   setMesh(mesh);
-  setOutputDimension(model.getDimension());
+  setOutputDimension(model.getOutputDimension());
   setDescription(trend_.getOutputDescription());
 }
 
@@ -112,12 +112,12 @@ GaussianProcess::GaussianProcess(const SecondOrderModel & model,
   , hasStationaryTrend_(true)
   , checkedStationaryTrend_(true)
   , trend_()
-  , stationaryTrendValue_(model.getDimension())
+  , stationaryTrendValue_(model.getOutputDimension())
   , samplingMethod_(0)
 {
   // We use the upper class accessor to prevent the reinitialization of the flags
   ProcessImplementation::setMesh(mesh);
-  setOutputDimension(model.getDimension());
+  setOutputDimension(model.getOutputDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
 #else
