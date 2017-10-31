@@ -519,7 +519,7 @@ void GeneralLinearModelAlgorithm::normalizeInputSample()
     normalizedInputSample_ = inputSample_;
     return;
   }
-  LOGINFO("Data are normalized");
+  LOGINFO("Normalize input data");
   normalizedInputSample_ = inputTransformation_(inputSample_);
 }
 
@@ -528,6 +528,7 @@ void GeneralLinearModelAlgorithm::computeF()
 {
   // Nothing to do if the design matrix has already been computed
   if (F_.getNbRows() != 0) return;
+  LOGINFO("Compute the design matrix");
   // No early exit based on the sample/basis size as F_ must be initialized with the correct dimensions
   // With a multivariate basis of size similar to output dimension, each ith-basis should be applied to elements
   // of corresponding marginal
@@ -578,13 +579,10 @@ void GeneralLinearModelAlgorithm::run()
 {
   // Do not run again if already computed
   if (hasRun_) return;
-  LOGINFO("Normalize the data");
   normalizeInputSample();
-  LOGINFO("Compute the design matrix");
   computeF();
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   // optimization of likelihood function if provided
-  LOGINFO("Optimize the parameter of the covariance model if needed");
   // Here we call the optimizeReducedLogLikelihood() method even if the covariance
   // model has no active parameter, because:
   // + it can be due to the fact that the amplitude is obtained through an
@@ -715,18 +713,20 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   solver_.setProblem(problem);
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
-  const Scalar optimalLogLikelihood = solver_.getResult().getOptimalValue()[0];
-  const Point optimalParameters = solver_.getResult().getOptimalPoint();
+  const OptimizationAlgorithm::Result result(solver_.getResult());
+  const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
+  const Point optimalParameters = result.getOptimalPoint();
+  const UnsignedInteger iterationNumber = result.getIterationNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)
   {
-    LOGINFO(OSS(false) << "Need to evaluate the objective function one more time because the last computed reduced log-likelihood value=" << lastReducedLogLikelihood_ << " is different from the optimal one=" << optimalLogLikelihood);
+    LOGDEBUG(OSS(false) << "Need to evaluate the objective function one more time because the last computed reduced log-likelihood value=" << lastReducedLogLikelihood_ << " is different from the optimal one=" << optimalLogLikelihood);
     (void) computeReducedLogLikelihood(optimalParameters);
   }
   // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
   // No additional cost since the cache mechanism is activated
-  LOGDEBUG(OSS() << "Optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
+  LOGINFO(OSS() << iterationNumber << " iterations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
   return optimalLogLikelihood;
 }
 
@@ -737,7 +737,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
     throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeReducedLogLikelihood, could not compute likelihood,"
                                          << " covariance model requires an argument of size " << reducedCovarianceModel_.getParameter().getSize()
                                          << " but here we got " << parameters.getSize();
-  LOGINFO(OSS(false) << "Compute reduced log-likelihood for parameters=" << parameters);
+  LOGDEBUG(OSS(false) << "Compute reduced log-likelihood for parameters=" << parameters);
   Scalar logDeterminant = 0.0;
   // If the amplitude is deduced from the other parameters, work with
   // the correlation function
@@ -753,7 +753,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   // and update the reduced log-likelihood.
   if (analyticalAmplitude_)
   {
-    LOGINFO("Analytical amplitude");
+    LOGDEBUG("Analytical amplitude");
     // J(\sigma)=-\log(\sqrt{\sigma^{2N}\det{R}})-(Y-M)^tR^{-1}(Y-M)/(2\sigma^2)
     //          =-N\log(\sigma)-\log(\det{R})/2-(Y-M)^tR^{-1}(Y-M)/(2\sigma^2)
     // dJ/d\sigma=-N/\sigma+(Y-M)^tR^{-1}(Y-M)/\sigma^3=0
@@ -781,17 +781,17 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
 Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
 {
   // Using the hypothesis that parameters = scale & model writes : C(s,t) = diag(sigma) * R(s,t) * diag(sigma) with R a correlation function
-  LOGINFO(OSS(false) << "Compute the LAPACK log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
+  LOGDEBUG(OSS(false) << "Compute the LAPACK log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
 
-  LOGINFO("Discretize the covariance model");
+  LOGDEBUG("Discretize the covariance model");
   CovarianceMatrix C(reducedCovarianceModel_.discretize(normalizedInputSample_));
   if (noise_.getDimension() > 0)
   {
-    LOGINFO("Add noise to the covariance matrix");
+    LOGDEBUG("Add noise to the covariance matrix");
     for (UnsignedInteger i = 0; i < C.getDimension(); ++ i) C(i, i) += noise_[i];
   }
   LOGDEBUG(OSS(false) << "C=\n" << C);
-  LOGINFO("Compute the Cholesky factor of the covariance matrix");
+  LOGDEBUG("Compute the Cholesky factor of the covariance matrix");
   Bool continuationCondition = true;
   const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
   const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
@@ -824,25 +824,25 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
   const Point y(outputSample_.getImplementation()->getData());
   LOGDEBUG(OSS(false) << "y=" << y);
   // rho = L^{-1}y
-  LOGINFO("Solve L.rho = y");
+  LOGDEBUG("Solve L.rho = y");
   rho_ = covarianceCholeskyFactor_.solveLinearSystem(y);
   LOGDEBUG(OSS(false) << "rho_=L^{-1}y=" << rho_);
   // If trend to estimate
   if (basisCollection_.getSize() > 0)
   {
     // Phi = L^{-1}F
-    LOGINFO("Solve L.Phi = F");
+    LOGDEBUG("Solve L.Phi = F");
     LOGDEBUG(OSS(false) << "F_=\n" << F_);
     Matrix Phi(covarianceCholeskyFactor_.solveLinearSystem(F_));
     LOGDEBUG(OSS(false) << "Phi=\n" << Phi);
-    LOGINFO("Solve min_beta||Phi.beta - rho||^2");
+    LOGDEBUG("Solve min_beta||Phi.beta - rho||^2");
     beta_ = Phi.solveLinearSystem(rho_);
     LOGDEBUG(OSS(false) << "beta_=" << beta_);
-    LOGINFO("Update rho");
+    LOGDEBUG("Update rho");
     rho_ -= Phi * beta_;
     LOGDEBUG(OSS(false) << "rho_=L^{-1}y-L^{-1}F.beta=" << rho_);
   }
-  LOGINFO("Compute log(|det(L)|)=log(sqrt(|det(C)|))");
+  LOGDEBUG("Compute log(|det(L)|)=log(sqrt(|det(C)|))");
   Scalar logDetL = 0.0;
   for (UnsignedInteger i = 0; i < covarianceCholeskyFactor_.getDimension(); ++i )
   {
@@ -857,7 +857,7 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
 Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
 {
   // Using the hypothesis that parameters = scale & model writes : C(s,t) = \sigma^2 * R(s,t) with R a correlation function
-  LOGINFO(OSS(false) << "Compute the HMAT log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
+  LOGDEBUG(OSS(false) << "Compute the HMAT log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
 
   Bool continuationCondition = true;
   const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
@@ -912,7 +912,7 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   // The PersistentCollection is returned as Point with the right memory map
   Point y(outputSample_.getImplementation()->getData());
   // rho = L^{-1}y
-  LOGINFO("Solve L.rho = y");
+  LOGDEBUG("Solve L.rho = y");
   rho_ = covarianceCholeskyFactorHMatrix_.solveLower(y);
   // If trend to estimate
   if (basisCollection_.getSize() > 0)
@@ -920,11 +920,11 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
     // Phi = L^{-1}F
     LOGDEBUG("Solve L.Phi = F");
     Matrix Phi(covarianceCholeskyFactorHMatrix_.solveLower(F_));
-    LOGINFO("Solve min_beta||Phi.beta - rho||^2");
+    LOGDEBUG("Solve min_beta||Phi.beta - rho||^2");
     beta_ = Phi.solveLinearSystem(rho_);
     rho_ -= Phi * beta_;
   }
-  LOGINFO("Compute log(sqrt(|det(C)|)) = log(|det(L)|)");
+  LOGDEBUG("Compute log(sqrt(|det(C)|)) = log(|det(L)|)");
   Scalar logDetL = 0.0;
   Point diagonal(covarianceCholeskyFactorHMatrix_.getDiagonal());
   for (UnsignedInteger i = 0; i < rho_.getSize(); ++i )
@@ -1055,9 +1055,7 @@ GeneralLinearModelResult GeneralLinearModelAlgorithm::getResult()
 
 Function GeneralLinearModelAlgorithm::getObjectiveFunction()
 {
-  LOGINFO("Normalizing the data (if needed)...");
   normalizeInputSample();
-  LOGINFO("Compute the design matrix");
   computeF();
   Function logLikelihood(ReducedLogLikelihoodEvaluation(*this));
   // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
