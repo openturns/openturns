@@ -240,6 +240,7 @@ void TNC::run()
   } // for i
 
   /* Store the result */
+  result_.setIterationNumber(size);
   result_.setOptimalPoint(x);
   const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
   result_.setOptimalValue(Point(1, sign * f));

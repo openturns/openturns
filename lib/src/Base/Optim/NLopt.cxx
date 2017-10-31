@@ -348,6 +348,7 @@ void NLopt::run()
     result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
   }
 
+  result.setIterationNumber(size);
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
   result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
