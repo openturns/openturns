@@ -62,7 +62,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
   , fftAlgorithm_()
 {
   setTimeGrid(timeGrid);
-  setOutputDimension(model.getDimension());
+  setOutputDimension(model.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
@@ -102,7 +102,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
   // Adapt the time grid to the frequency discretization
   computeTimeGrid();
   computeAlpha();
-  setOutputDimension(model.getDimension());
+  setOutputDimension(model.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 

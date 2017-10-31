@@ -58,13 +58,25 @@ SecondOrderModelImplementation * SecondOrderModelImplementation::clone() const
 }
 
 /* Dimension accessor */
+UnsignedInteger SecondOrderModelImplementation::getInputDimension() const
+{
+  return covarianceModel_.getInputDimension();
+}
+
+UnsignedInteger SecondOrderModelImplementation::getOutputDimension() const
+{
+  return covarianceModel_.getOutputDimension();
+}
+
 UnsignedInteger SecondOrderModelImplementation::getSpatialDimension() const
 {
+  LOGWARN(OSS() << "SecondOrder::getSpatialDimension is deprecated in favor of getInputDimension.");
   return covarianceModel_.getInputDimension();
 }
 
 UnsignedInteger SecondOrderModelImplementation::getDimension() const
 {
+  LOGWARN(OSS() << "SecondOrder::getDimension is deprecated in favor of getOutputDimension.");
   return covarianceModel_.getOutputDimension();
 }
 

@@ -56,8 +56,12 @@ public:
   virtual SecondOrderModelImplementation * clone() const;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getSpatialDimension() const;
-  virtual UnsignedInteger getDimension() const;
+  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getOutputDimension() const;
+
+  /** @deprecated */
+  UnsignedInteger getSpatialDimension() const;
+  UnsignedInteger getDimension() const;
 
   /** Computation of the covariance matrix */
   virtual CovarianceMatrix computeCovariance(const Scalar s,

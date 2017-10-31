@@ -79,6 +79,16 @@ void SecondOrderModel::setModels(const CovarianceModel & covarianceModel,
 }
 
 /* Dimension accessor */
+UnsignedInteger SecondOrderModel::getInputDimension() const
+{
+  return getImplementation()->getInputDimension();
+}
+
+UnsignedInteger SecondOrderModel::getOutputDimension() const
+{
+  return getImplementation()->getOutputDimension();
+}
+
 UnsignedInteger SecondOrderModel::getSpatialDimension() const
 {
   return getImplementation()->getSpatialDimension();
