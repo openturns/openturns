@@ -27,6 +27,7 @@
  * Removed deprecated NumericalScalar, NumericalComplex types
  * Removed deprecated Function constructors
  * CorrelationAnalysis::(Pearson|Spearman)Correlation accepts a multivariate sample and returns a Point
+ * Transpose matrix returned by CovarianceModel::partialGradient
 
 === Python module ===
 
