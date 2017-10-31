@@ -55,16 +55,16 @@ CompositeProcess::CompositeProcess(const FieldFunction & function,
   , function_(function)
   , p_antecedent_(antecedent.getImplementation())
 {
-  if (function.getInputDimension() != p_antecedent_->getDimension())
+  if (function.getInputDimension() != p_antecedent_->getOutputDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible dimensions "
-                                         << "here Process dimension=" << p_antecedent_->getDimension()
+                                         << "here Process dimension=" << p_antecedent_->getOutputDimension()
                                          << " and FieldFunction input dimension=" << function.getInputDimension();
-  if (function.getSpatialDimension() != p_antecedent_->getSpatialDimension())
+  if (function.getSpatialDimension() != p_antecedent_->getInputDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible mesh dimensions "
-                                         << "here Process mesh dimension=" << p_antecedent_->getSpatialDimension()
+                                         << "here Process mesh dimension=" << p_antecedent_->getInputDimension()
                                          << " and FieldFunction mesh dimension=" << function.getSpatialDimension();
   setMesh(function.getOutputMesh(p_antecedent_->getMesh()));
-  setDimension(function.getOutputDimension());
+  setOutputDimension(function.getOutputDimension());
   setDescription(function.getOutputDescription());
 }
 

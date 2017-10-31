@@ -79,6 +79,10 @@ public:
   virtual TrendTransform getTrend() const;
 
   /** Dimension accessor */
+  virtual UnsignedInteger getInputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
+
+  /** @deprecated */
   virtual UnsignedInteger getSpatialDimension() const;
   virtual UnsignedInteger getDimension() const;
 
@@ -123,13 +127,13 @@ public:
 protected:
 
   /** Dimension accessor */
-  void setDimension(const UnsignedInteger dimension);
+  void setOutputDimension(const UnsignedInteger outputDimension);
 
   /** Description of each component */
   Description description_;
 
   /** Dimension of the process */
-  UnsignedInteger dimension_;
+  UnsignedInteger ouputDimension_;
 
   /** The mesh over which the process is defined or discretized */
   Mesh mesh_;

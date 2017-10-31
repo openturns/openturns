@@ -116,11 +116,11 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
 /* Get the random vector corresponding to the i-th marginal component */
 AggregatedProcess::Implementation AggregatedProcess::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
+  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
   UnsignedInteger lastBlock = 0;
   for (UnsignedInteger k = 0; k < processCollection_.getSize(); ++k)
   {
-    const UnsignedInteger block = lastBlock + processCollection_[k].getDimension();
+    const UnsignedInteger block = lastBlock + processCollection_[k].getOutputDimension();
     if (i < block) return processCollection_[k].getMarginal(i - lastBlock).getImplementation();
     lastBlock = block;
   }
@@ -138,8 +138,8 @@ AggregatedProcess::Implementation AggregatedProcess::getMarginal(const UnsignedI
 */
 AggregatedProcess::Implementation AggregatedProcess::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";
+  const UnsignedInteger outputDimension = getOutputDimension();
+  if (!indices.check(outputDimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";
   ProcessCollection marginalProcesses(0);
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger size = processCollection_.getSize();
@@ -155,7 +155,7 @@ AggregatedProcess::Implementation AggregatedProcess::getMarginal(const Indices &
     const Process process(processCollection_[i]);
     // Update index range for the current copula
     lowerIndex = upperIndex;
-    upperIndex += process.getDimension();
+    upperIndex += process.getOutputDimension();
     Indices processIndices(0);
     // Find the indices related to the current copula
     while ((currentPosition < indicesSize) && (currentIndex >= lowerIndex) && (currentIndex < upperIndex))
@@ -183,15 +183,15 @@ void AggregatedProcess::setProcessCollection(const ProcessCollection & coll)
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated process based on an empty process collection.";
   processCollection_ = ProcessCollection(size);
   processCollection_[0] = coll[0];
-  const UnsignedInteger spatialDimension = processCollection_[0].getSpatialDimension();
-  UnsignedInteger dimension = processCollection_[0].getDimension();
+  const UnsignedInteger inputDimension = processCollection_[0].getInputDimension();
+  UnsignedInteger outputDimension = processCollection_[0].getOutputDimension();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    if (coll[i].getSpatialDimension() != spatialDimension) throw InvalidArgumentException(HERE) << "Error: expected a spatial dimension=" << spatialDimension << ", got process " << i << " with a spatial dimension=" << coll[i].getSpatialDimension();
+    if (coll[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a spatial dimension=" << inputDimension << ", got process " << i << " with a spatial dimension=" << coll[i].getInputDimension();
     processCollection_[i] = coll[i];
-    dimension += coll[i].getDimension();
+    outputDimension += coll[i].getOutputDimension();
   }
-  setDimension(dimension);
+  setOutputDimension(outputDimension);
   setMesh(processCollection_[0].getMesh());
 }
 
@@ -204,7 +204,7 @@ AggregatedProcess::ProcessCollection AggregatedProcess::getProcessCollection() c
 void AggregatedProcess::setMesh(const Mesh & mesh)
 {
   // We know that an AggregatedProcess cannot be built with an empty process collection
-  if (mesh.getDimension() != processCollection_[0].getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given mesh has a dimension=" << mesh.getDimension() << " which is different from the spatial dimension of the aggregated process spatial dimension=" << processCollection_[0].getSpatialDimension();
+  if (mesh.getDimension() != processCollection_[0].getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given mesh has a dimension=" << mesh.getDimension() << " which is different from the spatial dimension of the aggregated process spatial dimension=" << processCollection_[0].getInputDimension();
   for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
     processCollection_[i].setMesh(mesh);
   ProcessImplementation::setMesh(mesh);

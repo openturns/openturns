@@ -8,8 +8,8 @@ OT_Process_getContinuousRealization_doc
 OT_Process_getDescription_doc
 %feature("docstring") OT::Process::setDescription
 OT_Process_setDescription_doc
-%feature("docstring") OT::Process::getDimension
-OT_Process_getDimension_doc
+%feature("docstring") OT::Process::getOutputDimension
+OT_Process_getOutputDimension_doc
 %feature("docstring") OT::Process::getFuture
 OT_Process_getFuture_doc
 %feature("docstring") OT::Process::getMarginal
@@ -24,8 +24,8 @@ OT_Process_getMeshDimension_doc
 OT_Process_getRealization_doc
 %feature("docstring") OT::Process::getSample
 OT_Process_getSample_doc
-%feature("docstring") OT::Process::getSpatialDimension
-OT_Process_getSpatialDimension_doc
+%feature("docstring") OT::Process::getInputDimension
+OT_Process_getInputDimension_doc
 %feature("docstring") OT::Process::getTimeGrid
 OT_Process_getTimeGrid_doc
 %feature("docstring") OT::Process::setTimeGrid

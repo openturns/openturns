@@ -28,6 +28,7 @@
  * Removed deprecated Function constructors
  * CorrelationAnalysis::(Pearson|Spearman)Correlation accepts a multivariate sample and returns a Point
  * Deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean
+ * Deprecated Process::getDimension, getSpatialDimension
 
 === Python module ===
 

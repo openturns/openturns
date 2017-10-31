@@ -83,6 +83,10 @@ public:
   TrendTransform getTrend() const;
 
   /** Dimension accessor */
+  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getOutputDimension() const;
+
+  /** @deprecated */
   UnsignedInteger getSpatialDimension() const;
   UnsignedInteger getDimension() const;
 

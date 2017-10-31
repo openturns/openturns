@@ -92,7 +92,7 @@ OT_Process_setDescription_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Process_getDimension_doc
+%define OT_Process_getOutputDimension_doc
 "Get the dimension of the domain :math:`\cD`.
 
 Returns
@@ -100,8 +100,8 @@ Returns
 d : int
     Dimension of the domain :math:`\cD`."
 %enddef
-%feature("docstring") OT::ProcessImplementation::getDimension
-OT_Process_getDimension_doc
+%feature("docstring") OT::ProcessImplementation::getOutputDimension
+OT_Process_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
@@ -217,7 +217,7 @@ OT_Process_getSample_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Process_getSpatialDimension_doc
+%define OT_Process_getInputDimension_doc
 "Get the dimension of the domain :math:`\cD`.
 
 Returns
@@ -225,8 +225,8 @@ Returns
 n : int
     Dimension of the domain :math:`\cD`: :math:`n`."
 %enddef
-%feature("docstring") OT::ProcessImplementation::getSpatialDimension
-OT_Process_getSpatialDimension_doc
+%feature("docstring") OT::ProcessImplementation::getInputDimension
+OT_Process_getInputDimension_doc
 
 // ---------------------------------------------------------------------
 

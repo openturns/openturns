@@ -50,9 +50,9 @@ ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & res
   // set covariance model
   covarianceModel_ = result.getCovarianceModel();
   // Set the mesh & dimension
-  setDimension(covarianceModel_.getDimension());
+  setOutputDimension(covarianceModel_.getDimension());
   if (covarianceModel_.getSpatialDimension() != mesh.getDimension())
-    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
+    throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getOutputDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
   setMesh(mesh);
   // Initialize
   initialize();
@@ -107,8 +107,8 @@ void ConditionedGaussianProcess::initialize()
   // Set the trend function
   trend_ = TrendTransform(krigingEvaluation);
   // Set descriptions
-  trend_.setInputDescription( Description::BuildDefault(getSpatialDimension(), "x"));
-  trend_.setOutputDescription( Description::BuildDefault(getDimension(), "y"));
+  trend_.setInputDescription( Description::BuildDefault(getInputDimension(), "x"));
+  trend_.setOutputDescription( Description::BuildDefault(getOutputDimension(), "y"));
   // Set description
   setDescription(trend_.getOutputDescription());
   isInitialized_ = true;
@@ -154,7 +154,7 @@ Field ConditionedGaussianProcess::getRealization() const
   // 2) X <- LX
   gaussianPoint = covarianceCholeskyFactor_ * gaussianPoint;
   const UnsignedInteger size = getMesh().getVerticesNumber();
-  Sample values(size, getDimension());
+  Sample values(size, getOutputDimension());
   values.getImplementation()->setData(gaussianPoint);
 
   // 3) Add the trend part

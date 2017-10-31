@@ -117,6 +117,16 @@ TrendTransform Process::getTrend() const
 /* Here is the interface that all derived class may implement */
 
 /* Dimension accessor */
+UnsignedInteger Process::getInputDimension() const
+{
+  return getImplementation()->getInputDimension();
+}
+
+UnsignedInteger Process::getOutputDimension() const
+{
+  return getImplementation()->getOutputDimension();
+}
+
 UnsignedInteger Process::getSpatialDimension() const
 {
   return getImplementation()->getSpatialDimension();

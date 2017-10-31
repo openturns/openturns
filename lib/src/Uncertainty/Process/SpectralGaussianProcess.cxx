@@ -45,8 +45,8 @@ SpectralGaussianProcess::SpectralGaussianProcess()
   , alpha_(0)
   , fftAlgorithm_()
 {
-  setDimension(spectralModel_.getDimension());
-  setDescription(Description::BuildDefault(getDimension(), "x"));
+  setOutputDimension(spectralModel_.getDimension());
+  setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
 /* Standard constructor  */
@@ -62,8 +62,8 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
   , fftAlgorithm_()
 {
   setTimeGrid(timeGrid);
-  setDimension(model.getDimension());
-  setDescription(Description::BuildDefault(getDimension(), "x"));
+  setOutputDimension(model.getDimension());
+  setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
@@ -79,8 +79,8 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , fftAlgorithm_()
 {
   setTimeGrid(timeGrid);
-  setDimension(spectralModel.getDimension());
-  setDescription(Description::BuildDefault(getDimension(), "x"));
+  setOutputDimension(spectralModel.getDimension());
+  setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
 /* Standard constructor  */
@@ -102,8 +102,8 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
   // Adapt the time grid to the frequency discretization
   computeTimeGrid();
   computeAlpha();
-  setDimension(model.getDimension());
-  setDescription(Description::BuildDefault(getDimension(), "x"));
+  setOutputDimension(model.getDimension());
+  setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
@@ -126,8 +126,8 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   // Adapt the time grid to the frequency discretization
   computeTimeGrid();
   computeAlpha();
-  setDimension(spectralModel.getDimension());
-  setDescription(Description::BuildDefault(getDimension(), "x"));
+  setOutputDimension(spectralModel.getDimension());
+  setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
 /* Virtual constructor */
@@ -177,7 +177,7 @@ TriangularComplexMatrix SpectralGaussianProcess::computeCholeskyFactor(const Uns
     catch (InternalException &)
     {
       cumulatedScaling += scaling;
-      for (UnsignedInteger  index = 0; index < dimension_; ++index) spectralDensityMatrix(index, index) += scaling;
+      for (UnsignedInteger  index = 0; index < getOutputDimension(); ++index) spectralDensityMatrix(index, index) += scaling;
       scaling *= 2.0;
     }
     // No reasonable regularization succeeded
@@ -205,7 +205,7 @@ String SpectralGaussianProcess::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << " SpectralGaussianProcess=" << SpectralGaussianProcess::GetClassName()
-      << " dimension=" << dimension_
+      << " dimension=" << getOutputDimension()
       << " spectralModel=" << spectralModel_
       << " maximal frequency=" << maximalFrequency_
       << " n frequency=" << nFrequency_;
@@ -300,7 +300,7 @@ Field SpectralGaussianProcess::getRealization() const
 {
   // Build the big collection of size dimension * number of frequencies
   const UnsignedInteger twoNF = 2 * nFrequency_;
-  ComplexCollection arrayCollection(dimension_ * twoNF);
+  ComplexCollection arrayCollection(getOutputDimension() * twoNF);
   // Loop over the frequencies
   // Gaussian vector
   // Loop over half of the frequency range
@@ -308,14 +308,14 @@ Field SpectralGaussianProcess::getRealization() const
   {
     const TriangularComplexMatrix choleskyFactor(getCholeskyFactor(k));
     // Use matrix/vector product to optimize the loop
-    ComplexCollection left(dimension_);
-    ComplexCollection right(dimension_);
+    ComplexCollection left(getOutputDimension());
+    ComplexCollection right(getOutputDimension());
     // Compute both the left and the right points using the current Cholesky factor R.
     // We use the relation S(-f)=conjugate(S(f)) from which R(-f)=conjugate(R(f))
     // and R(-f).z = conjugate(R(f).conjugate(z))
     // If z ~ N(0, 1) in C, then conjugate(z) ~ N(0, 1) in C, so there is no need to conjugate z
     // Complex gaussian realization
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
     {
       // Care! Getting a realization of a random gaussian should be done using two intermediate variables
       // Complex(DistFunc::rNormal(), DistFunc::rNormal()) is correct but the fill of the complex depends on the os and compiler
@@ -329,15 +329,15 @@ Field SpectralGaussianProcess::getRealization() const
     // Use an efficient matrix/vector product here
     ComplexCollection resultLeft(choleskyFactor * left);
     ComplexCollection resultRight(choleskyFactor * right);
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
     {
       arrayCollection[i * twoNF + nFrequency_ - 1 - k] = conj(resultLeft[i]);
       arrayCollection[i * twoNF + nFrequency_     + k] = resultRight[i];
     }
   } // Loop over the frequencies
   // From the big collection, build the inverse FFT by blocks
-  Sample sampleValues(twoNF , dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  Sample sampleValues(twoNF , getOutputDimension());
+  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
   {
     const ComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));
     for (UnsignedInteger k = 0; k < twoNF; ++k) sampleValues[k][i] = std::real(inverseFFTResult[k] * alpha_[k]);
