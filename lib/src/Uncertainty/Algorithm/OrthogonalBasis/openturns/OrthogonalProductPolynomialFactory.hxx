@@ -43,7 +43,7 @@ class OT_API OrthogonalProductPolynomialFactory
 {
   CLASSNAME
 public:
-
+  typedef Collection<Distribution>                                   DistributionCollection;
   typedef Collection<OrthogonalUniVariatePolynomialFamily>           PolynomialFamilyCollection;
   typedef PersistentCollection<OrthogonalUniVariatePolynomialFamily> PolynomialFamilyPersistentCollection;
 
@@ -56,6 +56,9 @@ public:
   /** Constructor */
   OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll,
                                      const EnumerateFunction & phi);
+
+  /** Simplified constructor */
+  explicit OrthogonalProductPolynomialFactory(const DistributionCollection & marginals);
 
   /** Build the Function of the given index */
   Function build(const UnsignedInteger index) const;

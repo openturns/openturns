@@ -20,6 +20,7 @@
 
 /* Uncertainty/Model */
 /* Uncertainty/Distribution */
+%include UncertaintyModelCopulaCollection.i
 %import model_copula_module.i
 %import UncertaintyModelCopulaTemplateDefs.i
 

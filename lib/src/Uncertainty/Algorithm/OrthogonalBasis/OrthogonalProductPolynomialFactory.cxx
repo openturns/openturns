@@ -28,7 +28,7 @@
 #include "openturns/ProductPolynomialEvaluation.hxx"
 #include "openturns/ProductPolynomialGradient.hxx"
 #include "openturns/ProductPolynomialHessian.hxx"
-#include "openturns/Collection.hxx"
+#include "openturns/StandardDistributionPolynomialFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -74,6 +74,17 @@ OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const Pol
 {
   if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size";
   buildMeasure();
+}
+
+
+/* Constructor */
+OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const DistributionCollection & marginals)
+  : OrthogonalFunctionFactory()
+{
+  PolynomialFamilyCollection coll;
+  for (UnsignedInteger i = 0; i < marginals.getSize(); ++ i)
+    coll.add(StandardDistributionPolynomialFactory(marginals[i]));
+  *this = OrthogonalProductPolynomialFactory(coll);
 }
 
 

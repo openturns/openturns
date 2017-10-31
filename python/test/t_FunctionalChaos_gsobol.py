@@ -37,12 +37,12 @@ try:
     model = SymbolicFunction(inputVariables, formula)
 
     # Create the input distribution
-    distribution = ComposedDistribution([Uniform(0.0, 1.0)] * dimension)
+    marginals = [Uniform(0.0, 1.0)] * dimension
+    distribution = ComposedDistribution(marginals)
 
     # Create the orthogonal basis
     enumerateFunction = LinearEnumerateFunction(dimension)
-    productBasis = OrthogonalProductPolynomialFactory(
-        [LegendreFactory()] * dimension, enumerateFunction)
+    productBasis = OrthogonalProductPolynomialFactory(marginals)
 
     # Create the adaptive strategy
     # We can choose amongst several strategies
