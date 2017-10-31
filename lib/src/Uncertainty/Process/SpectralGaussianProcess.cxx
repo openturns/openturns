@@ -45,7 +45,7 @@ SpectralGaussianProcess::SpectralGaussianProcess()
   , alpha_(0)
   , fftAlgorithm_()
 {
-  setOutputDimension(spectralModel_.getDimension());
+  setOutputDimension(spectralModel_.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
@@ -79,7 +79,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , fftAlgorithm_()
 {
   setTimeGrid(timeGrid);
-  setOutputDimension(spectralModel.getDimension());
+  setOutputDimension(spectralModel.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
@@ -126,7 +126,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   // Adapt the time grid to the frequency discretization
   computeTimeGrid();
   computeAlpha();
-  setOutputDimension(spectralModel.getDimension());
+  setOutputDimension(spectralModel.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 

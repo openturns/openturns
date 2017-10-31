@@ -58,12 +58,21 @@ SpectralModel::SpectralModel(SpectralModelImplementation * p_implementation)
 
 
 /* Dimension accessor */
+UnsignedInteger SpectralModel::getOutputDimension() const
+{
+  return getImplementation()->getOutputDimension();
+}
+
+UnsignedInteger SpectralModel::getInputDimension() const
+{
+  return getImplementation()->getInputDimension();
+}
+
 UnsignedInteger SpectralModel::getDimension() const
 {
   return getImplementation()->getDimension();
 }
 
-/* Dimension accessor */
 UnsignedInteger SpectralModel::getSpatialDimension() const
 {
   return getImplementation()->getSpatialDimension();
@@ -115,6 +124,11 @@ void SpectralModel::setScale(const Point & scale)
 }
 
 /** Spatial correlation accessor */
+CorrelationMatrix SpectralModel::getOutputCorrelation() const
+{
+  return getImplementation()->getOutputCorrelation();
+}
+
 CorrelationMatrix SpectralModel::getSpatialCorrelation() const
 {
   return getImplementation()->getSpatialCorrelation();

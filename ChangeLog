@@ -31,6 +31,7 @@
  * Deprecated Process::getDimension, getSpatialDimension
  * Deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation
  * Deprecated SecondOrderModel::getDimension, getSpatialDimension
+ * Deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation
 
 === Python module ===
 

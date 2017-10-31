@@ -57,6 +57,10 @@ public:
 
 
   /** Dimension accessor */
+  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getInputDimension() const;
+
+  /** @deprecated */
   UnsignedInteger getDimension() const;
   UnsignedInteger getSpatialDimension() const;
 
@@ -85,6 +89,9 @@ public:
   void setScale(const Point & scale);
 
   /** Spatial correlation accessor */
+  CorrelationMatrix getOutputCorrelation() const;
+
+  /** @deprecated */
   CorrelationMatrix getSpatialCorrelation() const;
 
   /** String converter */

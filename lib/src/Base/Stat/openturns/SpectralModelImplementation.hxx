@@ -63,6 +63,10 @@ public:
   virtual SpectralModelImplementation * clone() const;
 
   /** Dimension accessor */
+  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getInputDimension() const;
+
+  /** @deprecated */
   UnsignedInteger getDimension() const;
   UnsignedInteger getSpatialDimension() const;
 
@@ -83,6 +87,9 @@ public:
   virtual void setScale(const Point & scale);
 
   /** Spatial correlation accessor */
+  virtual CorrelationMatrix getOutputCorrelation() const;
+
+  /** @deprecated */
   virtual CorrelationMatrix getSpatialCorrelation() const;
 
   /** String converter */
@@ -108,12 +115,12 @@ public:
 protected:
 
   // set the covariance structure
-  void updateSpatialCovariance();
+  void updateOutputCovariance();
 
-  void setDimension(const UnsignedInteger dimension);
+  void setOutputDimension(const UnsignedInteger outputDimension);
 
   /** dimension parameter */
-  UnsignedInteger dimension_;
+  UnsignedInteger outputDimension_;
 
   /** Container for scale values  */
   Point scale_;
@@ -122,13 +129,13 @@ protected:
   Point amplitude_;
 
   /** Spatial dimension parameter */
-  UnsignedInteger spatialDimension_;
+  UnsignedInteger inputDimension_;
 
-  /** Correlation matrix of the spatial dependence structure */
-  CorrelationMatrix spatialCorrelation_;
+  /** Correlation matrix of the output dependence structure */
+  CorrelationMatrix outputCorrelation_;
 
-  /** Covariance matrix of the spatial dependence structure */
-  HermitianMatrix spatialCovariance_;
+  /** Covariance matrix of the output dependence structure */
+  HermitianMatrix outputCovariance_;
 
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;

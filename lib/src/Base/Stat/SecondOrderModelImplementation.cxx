@@ -141,13 +141,13 @@ void SecondOrderModelImplementation::setModels(const CovarianceModel & covarianc
     const SpectralModel & spectralModel)
 {
   if (!covarianceModel.isStationary()) throw InvalidArgumentException(HERE) << "Error: the covariance model is not stationary.";
-  if (covarianceModel.getOutputDimension() != spectralModel.getDimension())
+  if (covarianceModel.getOutputDimension() != spectralModel.getOutputDimension())
     throw InvalidDimensionException(HERE) << "Error: the spectral model and the covariance model have different dimensions"
-                                          << " spectral dimension = " << spectralModel.getDimension()
+                                          << " spectral dimension = " << spectralModel.getOutputDimension()
                                           << " covariance dimension = " << covarianceModel.getOutputDimension();
-  if (covarianceModel.getInputDimension() != spectralModel.getSpatialDimension())
+  if (covarianceModel.getInputDimension() != spectralModel.getInputDimension())
     throw InvalidDimensionException(HERE) << "Error: the spectral model and the covariance model have different spatial dimensions"
-                                          << " spectral spatial dimension = " << spectralModel.getSpatialDimension()
+                                          << " spectral spatial dimension = " << spectralModel.getInputDimension()
                                           << " covariance spatial dimension = " << covarianceModel.getInputDimension();
   covarianceModel_ = covarianceModel;
   spectralModel_ = spectralModel;

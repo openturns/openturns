@@ -33,85 +33,85 @@ static const Factory<SpectralModelImplementation> Factory_SpectralModelImplement
 /* Constructor with parameters */
 SpectralModelImplementation::SpectralModelImplementation()
   : PersistentObject()
-  , dimension_(1)
+  , outputDimension_(1)
   , scale_(Point(1, 1.0))
   , amplitude_(Point(1, 1.0))
-  , spatialDimension_(1)
-  , spatialCorrelation_(0)
-  , spatialCovariance_(0)
+  , inputDimension_(1)
+  , outputCorrelation_(0)
+  , outputCovariance_(0)
   , isDiagonal_(true)
 {
-  updateSpatialCovariance();
+  updateOutputCovariance();
 }
 
 SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
     const Point & amplitude)
   : PersistentObject()
-  , dimension_(amplitude.getDimension())
+  , outputDimension_(amplitude.getDimension())
   , scale_(0)
   , amplitude_(0)
-  , spatialDimension_(scale.getDimension())
-  , spatialCorrelation_(0)
-  , spatialCovariance_(0)
+  , inputDimension_(scale.getDimension())
+  , outputCorrelation_(0)
+  , outputCovariance_(0)
   , isDiagonal_(true)
 {
   setAmplitude(amplitude);
   setScale(scale);
-  updateSpatialCovariance();
+  updateOutputCovariance();
 }
 
 SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
     const Point & amplitude,
     const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
-  , dimension_(amplitude.getDimension())
+  , outputDimension_(amplitude.getDimension())
   , scale_(0)
   , amplitude_(0)
-  , spatialDimension_(scale.getDimension())
-  , spatialCorrelation_(0)
-  , spatialCovariance_(0)
+  , inputDimension_(scale.getDimension())
+  , outputCorrelation_(0)
+  , outputCovariance_(0)
   , isDiagonal_(false)
 {
-  if (spatialCorrelation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
+  if (spatialCorrelation.getDimension() != outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given spatial correlation has a dimension different from the scales and amplitudes.";
   isDiagonal_ = spatialCorrelation.isDiagonal();
-  if (!isDiagonal_) spatialCorrelation_ = spatialCorrelation;
+  if (!isDiagonal_) outputCorrelation_ = spatialCorrelation;
   setAmplitude(amplitude);
   setScale(scale);
-  updateSpatialCovariance();
+  updateOutputCovariance();
 }
 
 SpectralModelImplementation::SpectralModelImplementation(const Point & scale,
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
-  , dimension_(spatialCovariance.getDimension())
+  , outputDimension_(spatialCovariance.getDimension())
   , scale_(0)
   , amplitude_(0)
-  , spatialDimension_(scale.getDimension())
-  , spatialCorrelation_(0)
-  , spatialCovariance_(0)
+  , inputDimension_(scale.getDimension())
+  , outputCorrelation_(0)
+  , outputCovariance_(0)
   , isDiagonal_(false)
 {
   // Check scale values
   setScale(scale);
-  spatialCovariance_ = HermitianMatrix(dimension_);
-  amplitude_ = Point(dimension_);
+  outputCovariance_ = HermitianMatrix(outputDimension_);
+  amplitude_ = Point(outputDimension_);
   // As spatialCovariance is a covariance matrix, we convert it into an HermitianMatrix
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
     amplitude_[i] = sqrt(spatialCovariance(i, i));
-    spatialCovariance_(i, i) = spatialCovariance(i, i);
+    outputCovariance_(i, i) = spatialCovariance(i, i);
   }
   // Convert the spatial covariance into a spatial correlation
   isDiagonal_ = spatialCovariance.isDiagonal();
   if (!isDiagonal_)
   {
-    spatialCorrelation_ = CorrelationMatrix(dimension_);
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    outputCorrelation_ = CorrelationMatrix(outputDimension_);
+    for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     {
       for (UnsignedInteger j = 0; j < i; ++j)
       {
-        spatialCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude_[i] * amplitude_[j]);
-        spatialCovariance_(i, j) = spatialCovariance(i, j);
+        outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude_[i] * amplitude_[j]);
+        outputCovariance_(i, j) = spatialCovariance(i, j);
       }
     }
   }
@@ -124,21 +124,32 @@ SpectralModelImplementation * SpectralModelImplementation::clone() const
 }
 
 /* Dimension accessor */
+UnsignedInteger SpectralModelImplementation::getOutputDimension() const
+{
+  return outputDimension_;
+}
+
+UnsignedInteger SpectralModelImplementation::getInputDimension() const
+{
+  return inputDimension_;
+}
+
 UnsignedInteger SpectralModelImplementation::getDimension() const
 {
-  return dimension_;
+  LOGWARN(OSS() << "SpectralModel::getDimension is deprecated in favor of getOutputDimension.");
+  return getOutputDimension();
 }
 
-/* Dimension accessor */
-void SpectralModelImplementation::setDimension(const UnsignedInteger dimension)
-{
-  dimension_ = dimension;
-}
-
-/* Dimension accessor */
 UnsignedInteger SpectralModelImplementation::getSpatialDimension() const
 {
-  return spatialDimension_;
+  LOGWARN(OSS() << "SpectralModel::getSpatialDimension is deprecated in favor of getInputDimension.");
+  return getInputDimension();
+}
+
+/* Dimension accessor */
+void SpectralModelImplementation::setOutputDimension(const UnsignedInteger dimension)
+{
+  outputDimension_ = dimension;
 }
 
 /* Computation of the spectral density function */
@@ -148,7 +159,7 @@ HermitianMatrix SpectralModelImplementation::operator() (const Scalar frequency)
   // With the formal expression of stationary covariance, ie C(x,y) = S * rho( |x- y|/|scale|),
   // the dsp writes as S * \hat{rho}(f)
   Complex rho = computeStandardRepresentative(frequency);
-  return spatialCovariance_ * rho;
+  return outputCovariance_ * rho;
 }
 
 /** Standard representative */
@@ -165,11 +176,11 @@ Point SpectralModelImplementation::getAmplitude() const
 
 void SpectralModelImplementation::setAmplitude(const Point & amplitude)
 {
-  for (UnsignedInteger index = 0; index < dimension_; ++index)
+  for (UnsignedInteger index = 0; index < outputDimension_; ++index)
     if (amplitude[index] <= 0)
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of amplitude is non positive" ;
   amplitude_ = amplitude;
-  updateSpatialCovariance();
+  updateOutputCovariance();
 }
 
 /* Scale accessor */
@@ -180,29 +191,35 @@ Point SpectralModelImplementation::getScale() const
 
 void SpectralModelImplementation::setScale(const Point & scale)
 {
-  for (UnsignedInteger index = 0; index < spatialDimension_; ++index)
+  for (UnsignedInteger index = 0; index < inputDimension_; ++index)
     if (scale[index] <= 0)
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of scale is non positive" ;
   scale_ = scale;
 }
 
 /* Spatial correlation accessor */
-CorrelationMatrix SpectralModelImplementation::getSpatialCorrelation() const
+CorrelationMatrix SpectralModelImplementation::getOutputCorrelation() const
 {
-  if (!isDiagonal_) return spatialCorrelation_;
-  return CorrelationMatrix(dimension_);
+  if (!isDiagonal_) return outputCorrelation_;
+  return CorrelationMatrix(outputDimension_);
 }
 
-void SpectralModelImplementation::updateSpatialCovariance()
+CorrelationMatrix SpectralModelImplementation::getSpatialCorrelation() const
 {
-  spatialCovariance_ = HermitianMatrix(dimension_);
-  for (UnsignedInteger j = 0; j < dimension_; ++j)
+  LOGWARN(OSS() << "SpectralModel::getSpatialCorrelation is deprecated in favor of getOutputCorrelation.");
+  return getOutputCorrelation();
+}
+
+void SpectralModelImplementation::updateOutputCovariance()
+{
+  outputCovariance_ = HermitianMatrix(outputDimension_);
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
   {
-    spatialCovariance_(j, j) = amplitude_[j] * amplitude_[j];
+    outputCovariance_(j, j) = amplitude_[j] * amplitude_[j];
     if (!isDiagonal_)
     {
-      for (UnsignedInteger i = j + 1; i < dimension_; ++i)
-        spatialCovariance_(i, j) = spatialCorrelation_(i , j) * amplitude_[i] * amplitude_[j];
+      for (UnsignedInteger i = j + 1; i < outputDimension_; ++i)
+        outputCovariance_(i, j) = outputCorrelation_(i , j) * amplitude_[i] * amplitude_[j];
     }
   }
 }
@@ -231,8 +248,8 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
                                         const UnsignedInteger frequencyNumber,
                                         const Bool module) const
 {
-  if (rowIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << dimension_ << ", here rowIndex=" << rowIndex;
-  if (columnIndex >= dimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << dimension_ << ", here columnIndex=" << columnIndex;
+  if (rowIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
+  if (columnIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
   Sample data(frequencyNumber, 2);
   for (UnsignedInteger i = 0; i < frequencyNumber; ++i)
   {
@@ -255,12 +272,12 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
 void SpectralModelImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
+  adv.saveAttribute( "outputDimension_", outputDimension_);
   adv.saveAttribute( "scale_", scale_);
   adv.saveAttribute( "amplitude_", amplitude_);
-  adv.saveAttribute( "spatialDimension_", spatialDimension_);
-  adv.saveAttribute( "spatialCorrelation_", spatialCorrelation_);
-  adv.saveAttribute( "spatialCovariance_", spatialCovariance_);
+  adv.saveAttribute( "inputDimension_", inputDimension_);
+  adv.saveAttribute( "outputCorrelation_", outputCorrelation_);
+  adv.saveAttribute( "outputCovariance_", outputCovariance_);
   adv.saveAttribute( "isDiagonal_", isDiagonal_);
 }
 
@@ -268,12 +285,12 @@ void SpectralModelImplementation::save(Advocate & adv) const
 void SpectralModelImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
+  adv.loadAttribute( "outputDimension_", outputDimension_);
   adv.loadAttribute( "scale_", scale_);
   adv.loadAttribute( "amplitude_", amplitude_);
-  adv.loadAttribute( "spatialDimension_", spatialDimension_);
-  adv.loadAttribute( "spatialCorrelation_", spatialCorrelation_);
-  adv.loadAttribute( "spatialCovariance_", spatialCovariance_);
+  adv.loadAttribute( "inputDimension_", inputDimension_);
+  adv.loadAttribute( "outputCorrelation_", outputCorrelation_);
+  adv.loadAttribute( "outputCovariance_", outputCovariance_);
   adv.loadAttribute( "isDiagonal_", isDiagonal_);
 }
 

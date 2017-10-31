@@ -75,7 +75,7 @@ Complex CauchyModel::computeStandardRepresentative(const Scalar frequency) const
 
 {
   Complex value = 1.0;
-  for (UnsignedInteger k = 0; k < spatialDimension_; ++k)
+  for (UnsignedInteger k = 0; k < inputDimension_; ++k)
   {
     const Scalar scaledFrequency = 2.0 * M_PI * scale_[k] * std::abs(frequency);
     const Scalar scaledFrequencySquared = scaledFrequency * scaledFrequency;
@@ -91,7 +91,7 @@ String CauchyModel::__repr__() const
   oss << "class=" << CauchyModel::GetClassName();
   oss << " amplitude=" << amplitude_
       << " scale=" << scale_
-      << " spatial correlation=" << spatialCorrelation_
+      << " spatial correlation=" << outputCorrelation_
       << " isDiagonal=" << isDiagonal_;
   return oss;
 }
@@ -104,7 +104,7 @@ String CauchyModel::__str__(const String & offset) const
   oss << " amplitude=" << amplitude_
       << " scale=" << scale_;
   if (!isDiagonal_)
-    oss << " spatial correlation=\n" << spatialCorrelation_.__str__(offset);
+    oss << " spatial correlation=\n" << outputCorrelation_.__str__(offset);
   else
     oss << " no spatial correlation";
   return oss;
