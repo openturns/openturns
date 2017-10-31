@@ -54,14 +54,14 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
 {
   if (basis.getSize() > 0)
   {
-    if (basis.getSize() != covarianceModel.getDimension())
-      throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, output sample dimension (" << covarianceModel.getDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
+    if (basis.getSize() != covarianceModel.getOutputDimension())
+      throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, output sample dimension (" << covarianceModel.getOutputDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
     // Total basis size = sum of all sizes
     UnsignedInteger basisCollectionTotalSize = 0;
     for (UnsignedInteger i = 0; i < basis.getSize(); ++i) basisCollectionTotalSize += basis[i].getSize();
   }
-  if (covarianceModel.getSpatialDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the spatial dimension=" << covarianceModel.getSpatialDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
-  if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getDimension();
+  if (covarianceModel.getInputDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the spatial dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
+  if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();
   setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
   setParameter(Point(getInputDimension()));
@@ -252,7 +252,7 @@ UnsignedInteger KrigingEvaluation::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger KrigingEvaluation::getOutputDimension() const
 {
-  return covarianceModel_.getDimension();
+  return covarianceModel_.getOutputDimension();
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -93,12 +93,12 @@ RankMCovarianceModel * RankMCovarianceModel::clone() const
 CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
-  MatrixImplementation result(dimension_, dimension_);
+  MatrixImplementation result(outputDimension_, outputDimension_);
   const UnsignedInteger size = functions_.getSize();
-  int dim = static_cast<int>(dimension_);
+  int dim = static_cast<int>(outputDimension_);
   Scalar plusOne = 1.0;
   int increment = 1;
   // If the variance are uncorrelated
@@ -116,10 +116,10 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
   {
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const MatrixImplementation phiS(dimension_, 1, functions_[i](s));
+      const MatrixImplementation phiS(outputDimension_, 1, functions_[i](s));
       for (UnsignedInteger j = 0; j < size; ++j)
       {
-        const MatrixImplementation phiT(1, dimension_, functions_[j](t));
+        const MatrixImplementation phiT(1, outputDimension_, functions_[j](t));
         result += phiS.genProd(phiT) * covariance_(i, j);
       } // j
     } // i
@@ -131,17 +131,17 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
 Matrix RankMCovarianceModel::partialGradient(const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
   throw NotYetImplementedException(HERE);
 }
 
 CovarianceMatrix RankMCovarianceModel::discretize(const Sample & vertices) const
 {
-  if (vertices.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << spatialDimension_;
+  if (vertices.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << inputDimension_;
   const UnsignedInteger size = vertices.getSize();
-  const UnsignedInteger fullSize = size * dimension_;
+  const UnsignedInteger fullSize = size * outputDimension_;
   // Precompute the discretizations of the functions over the vertices
   const UnsignedInteger basisSize = functions_.getSize();
   MatrixImplementation basisDiscretization(fullSize, basisSize);

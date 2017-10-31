@@ -77,11 +77,11 @@ ExponentialModel * ExponentialModel::clone() const
  */
 Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_)
-    throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
+  if (tau.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
   // Absolute value of tau / scale
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  Point tauOverTheta(getInputDimension());
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverThetaNorm = tauOverTheta.norm();
   // Return value
   return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
@@ -96,12 +96,12 @@ Matrix ExponentialModel::partialGradient(const Point & s,
    * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
     Note that if spatial dimesnion is 1, factor = sgn(tau_k)
    */
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
+  if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
   const Point tau(s - t);
   const Scalar absTau = tau.norm();
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  Point tauOverTheta(getInputDimension());
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar absTauOverTheta = tauOverTheta.norm();
 
   // TODO check
@@ -114,18 +114,18 @@ Matrix ExponentialModel::partialGradient(const Point & s,
   if (!isDiagonal_) covariance.getImplementation()->symmetrize();
   Point covariancePoint(*covariance.getImplementation());
   // Compute the gradient part (gradient of rho)
-  Point factor(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
+  Point factor(getInputDimension());
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
   {
-    if ((spatialDimension_ == 1.0) && (tau[i] < 0))  factor[i] = 1.0 / scale_[i] ;
-    else if ((spatialDimension_ == 1.0) && (tau[i] > 0))  factor[i] = -1.0 / scale_[i];
+    if ((getInputDimension() == 1.0) && (tau[i] < 0))  factor[i] = 1.0 / scale_[i] ;
+    else if ((getInputDimension() == 1.0) && (tau[i] > 0))  factor[i] = -1.0 / scale_[i];
     // General case
     else factor[i] = -1.0 * tau[i] / (absTauOverTheta * scale_[i] * scale_[i]);
   }
   // Finally assemble the final matrix
-  Matrix gradient(spatialDimension_, covariancePoint.getDimension());
+  Matrix gradient(getInputDimension(), covariancePoint.getDimension());
   for (UnsignedInteger j = 0; j < covariancePoint.getDimension(); ++ j)
-    for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
+    for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
       gradient(i, j) = covariancePoint[j] * factor[i];
   return gradient;
 }
@@ -134,7 +134,7 @@ Matrix ExponentialModel::partialGradient(const Point & s,
 CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) const
 {
   const UnsignedInteger size = timeGrid.getN();
-  const UnsignedInteger fullSize = size * dimension_;
+  const UnsignedInteger fullSize = size * getOutputDimension();
   const Scalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);
@@ -149,9 +149,9 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
   // Loop over the main diagonal block
   for (UnsignedInteger block = 0; block < size; ++block)
   {
-    const UnsignedInteger base = block * dimension_;
+    const UnsignedInteger base = block * getOutputDimension();
     // Copy of the lower triangle only
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
     {
       // The diagonal part
       cov( base + i,
@@ -171,10 +171,10 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
     // Loop over the main block diagonal
     for (UnsignedInteger block = 0; block < size - diag; ++block)
     {
-      const UnsignedInteger base = block * dimension_;
-      const UnsignedInteger baseDiag = (block + diag) * dimension_;
+      const UnsignedInteger base = block * getOutputDimension();
+      const UnsignedInteger baseDiag = (block + diag) * getOutputDimension();
       // Copy of the full block
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
+      for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
       {
         // The diagonal part
         cov(base + i, baseDiag + i) = covTau(i, i);
@@ -183,7 +183,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
         {
           for (UnsignedInteger j = 0; j < i; ++j)
             cov(base + i, baseDiag + j) = covTau(i, j);
-          for (UnsignedInteger j = i + 1; j < dimension_; ++j)
+          for (UnsignedInteger j = i + 1; j < getOutputDimension(); ++j)
             cov(base + i, baseDiag + j) = covTau(i, j);
         } // Off-diagonal
       } // Full block
@@ -200,7 +200,7 @@ String ExponentialModel::__repr__() const
   oss << "class=" << ExponentialModel::GetClassName();
   oss << " scale=" << getScale()
       << " amplitude=" << getAmplitude()
-      << " spatial correlation=" << getSpatialCorrelation()
+      << " spatial correlation=" << getOutputCorrelation()
       << " isDiagonal=" << isDiagonal();
   return oss;
 }
@@ -213,7 +213,7 @@ String ExponentialModel::__str__(const String & offset) const
   oss << "(scale=" << getScale()
       << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
-    oss << ", spatial correlation=\n" << getSpatialCorrelation().__str__(offset);
+    oss << ", spatial correlation=\n" << getOutputCorrelation().__str__(offset);
   else
     oss << ", no spatial correlation";
   oss << ")";

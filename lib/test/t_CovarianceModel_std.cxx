@@ -32,8 +32,8 @@ static void test_model(const CovarianceModel & myModel)
 
   fullprint << "myModel = " << myModel << std::endl;
 
-  const UnsignedInteger spatialDimension = myModel.getSpatialDimension();
-  const UnsignedInteger dimension = myModel.getDimension();
+  const UnsignedInteger spatialDimension = myModel.getInputDimension();
+  const UnsignedInteger dimension = myModel.getOutputDimension();
 
   Point x1(spatialDimension);
   Point x2(spatialDimension);

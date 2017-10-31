@@ -377,10 +377,10 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   // 4) The spatial dimension of the model is 1 and different from the spatial dimension of the problem, and the dimension of the model is 1 and different from the dimension of the problem. The actual model is a tensorization of products of the given model.
   // The other situations are invalid.
 
-  const Bool sameDimension = dimension == covarianceModel.getDimension();
-  const Bool unitModelDimension = covarianceModel.getDimension() == 1;
-  const Bool sameSpatialDimension = inputDimension == covarianceModel.getSpatialDimension();
-  const Bool unitModelSpatialDimension = covarianceModel.getSpatialDimension() == 1;
+  const Bool sameDimension = dimension == covarianceModel.getOutputDimension();
+  const Bool unitModelDimension = covarianceModel.getOutputDimension() == 1;
+  const Bool sameSpatialDimension = inputDimension == covarianceModel.getInputDimension();
+  const Bool unitModelSpatialDimension = covarianceModel.getInputDimension() == 1;
   // Case 1
   if (sameSpatialDimension && sameDimension)
     covarianceModel_ = covarianceModel;
@@ -393,7 +393,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   // Case 4
   else if (unitModelSpatialDimension && unitModelDimension)
     covarianceModel_ = TensorizedCovarianceModel(TensorizedCovarianceModel::CovarianceModelCollection(dimension, ProductCovarianceModel(ProductCovarianceModel::CovarianceModelCollection(inputDimension, covarianceModel))));
-  else throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, invalid dimension=" << covarianceModel.getDimension() << " or spatial dimension=" << covarianceModel.getSpatialDimension() << " for the given covariance model. A model of both spatial dimension=" << inputDimension << " and dimension=" << dimension << " is expected, or a model of spatial dimension=" << inputDimension << " and unit dimension, or a model of unit spatial dimension and dimension=" << dimension << ", or a model of unit spatial dimension and unit dimension.";
+  else throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm, invalid dimension=" << covarianceModel.getOutputDimension() << " or spatial dimension=" << covarianceModel.getInputDimension() << " for the given covariance model. A model of both spatial dimension=" << inputDimension << " and dimension=" << dimension << " is expected, or a model of spatial dimension=" << inputDimension << " and unit dimension, or a model of unit spatial dimension and dimension=" << dimension << ", or a model of unit spatial dimension and unit dimension.";
   // All the computation will be done on the reduced covariance model. We keep the initial covariance model (ie the one we just built) in order to reinitialize the reduced covariance model if some flags are changed after the creation of the algorithm.
   reducedCovarianceModel_ = covarianceModel_;
   // Now, adapt the model parameters.
@@ -404,7 +404,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   else if (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate"))
   {
     // The model has to be of dimension 1
-    if (reducedCovarianceModel_.getDimension() == 1)
+    if (reducedCovarianceModel_.getOutputDimension() == 1)
     {
       const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
       // And one of the active parameters must be called amplitude_0
@@ -600,7 +600,7 @@ void GeneralLinearModelAlgorithm::run()
   // 1) To get a collection of Point for the result class
   // 2) To get same results as Sample for the trend NMF
   Collection<Point> trendCoefficients(basisCollection_.getSize());
-  Sample trendCoefficientsSample(beta_.getSize(), reducedCovarianceModel_.getDimension());
+  Sample trendCoefficientsSample(beta_.getSize(), reducedCovarianceModel_.getOutputDimension());
 
   UnsignedInteger cumulatedSize = 0;
   for (UnsignedInteger outputIndex = 0; outputIndex < basisCollection_.getSize(); ++ outputIndex)
@@ -634,9 +634,9 @@ void GeneralLinearModelAlgorithm::run()
   {
     // If no basis ==> zero function
 #ifdef OPENTURNS_HAVE_MUPARSER
-    metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(covarianceModel_.getDimension(), "0.0"));
+    metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(covarianceModel_.getOutputDimension(), "0.0"));
 #else
-    metaModel = Function(Sample(1, reducedCovarianceModel_.getSpatialDimension()), Sample(1, reducedCovarianceModel_.getDimension()));
+    metaModel = Function(Sample(1, reducedCovarianceModel_.getInputDimension()), Sample(1, reducedCovarianceModel_.getOutputDimension()));
 #endif
   }
 
@@ -864,7 +864,7 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
   Scalar cumulatedScaling = 0.0;
   Scalar scaling = startingScaling;
-  const UnsignedInteger covarianceDimension = reducedCovarianceModel_.getDimension();
+  const UnsignedInteger covarianceDimension = reducedCovarianceModel_.getOutputDimension();
 
   HMatrixFactory hmatrixFactory;
   HMatrixParameters hmatrixParameters;

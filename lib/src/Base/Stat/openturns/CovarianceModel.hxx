@@ -55,6 +55,10 @@ public:
 #endif
 
   /** Dimension accessor */
+  virtual UnsignedInteger getInputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
+
+  /** @deprecated */
   virtual UnsignedInteger getSpatialDimension() const;
   virtual UnsignedInteger getDimension() const;
 
@@ -128,6 +132,10 @@ public:
   void setScale(const Point & scale);
 
   /** Spatial correlation accessors */
+  CorrelationMatrix getOutputCorrelation() const;
+  void setOutputCorrelation(const CorrelationMatrix & correlation);
+
+  /** @deprecated */
   CorrelationMatrix getSpatialCorrelation() const;
   void setSpatialCorrelation(const CorrelationMatrix & correlation);
 

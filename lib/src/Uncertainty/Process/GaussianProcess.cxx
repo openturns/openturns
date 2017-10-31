@@ -50,9 +50,9 @@ GaussianProcess::GaussianProcess()
   , samplingMethod_(0)
 {
 #ifdef OPENTURNS_HAVE_MUPARSER
-  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getSpatialDimension(), "x"), Description(getOutputDimension(), "0.0")));
+  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(Function(Sample(1, covarianceModel_.getSpatialDimension()), Sample(1, getOutputDimension())));
+  trend_ = TrendTransform(Function(Sample(1, covarianceModel_.getInputDimension()), Sample(1, getOutputDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -94,10 +94,10 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   , stationaryTrendValue_(trend.getOutputDimension())
   , samplingMethod_(0)
 {
-  if (trend.getInputDimension() != covarianceModel.getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model spatial dimension=" << covarianceModel.getSpatialDimension();
-  if (trend.getOutputDimension() != covarianceModel.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the covariance model dimension=" << covarianceModel.getDimension();
+  if (trend.getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model spatial dimension=" << covarianceModel.getInputDimension();
+  if (trend.getOutputDimension() != covarianceModel.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the covariance model dimension=" << covarianceModel.getOutputDimension();
   setMesh(mesh);
-  setOutputDimension(covarianceModel.getDimension());
+  setOutputDimension(covarianceModel.getOutputDimension());
   setDescription(trend_.getOutputDescription());
 }
 
@@ -137,12 +137,12 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
   , hasStationaryTrend_(true)
   , checkedStationaryTrend_(true)
   , trend_()
-  , stationaryTrendValue_(covarianceModel.getDimension())
+  , stationaryTrendValue_(covarianceModel.getOutputDimension())
   , samplingMethod_(0)
 {
   // We use the upper class accessor to prevent the reinitialization of the flags
   ProcessImplementation::setMesh(mesh);
-  setOutputDimension(covarianceModel.getDimension());
+  setOutputDimension(covarianceModel.getOutputDimension());
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
 #else
@@ -184,8 +184,8 @@ void GaussianProcess::initialize() const
     if (samplingMethod_ == 1)
     {
       LOGINFO(OSS() << "Assemble and factor the covariance matrix");
-      covarianceHMatrix_ = hmatFactory.build(mesh_.getVertices(), covarianceModel_.getDimension(), true, hmatrixParameters);
-      if (covarianceModel_.getDimension() == 1)
+      covarianceHMatrix_ = hmatFactory.build(mesh_.getVertices(), covarianceModel_.getOutputDimension(), true, hmatrixParameters);
+      if (covarianceModel_.getOutputDimension() == 1)
       {
         CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices(), cumulatedScaling);
         covarianceHMatrix_.assemble(simple, 'L');

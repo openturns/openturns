@@ -48,9 +48,9 @@ SquaredExponential::SquaredExponential(const Point & scale,
                                        const Point & amplitude)
   : StationaryCovarianceModel(scale, amplitude)
 {
-  if (getDimension() != 1)
+  if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() << ")";
+                                         << " Here, (got dimension=" << getOutputDimension() << ")";
 }
 
 /* Virtual constructor */
@@ -62,9 +62,9 @@ SquaredExponential * SquaredExponential::clone() const
 /* Computation of the covariance function */
 Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverTheta2 = tauOverTheta.normSquare();
   return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
 }
@@ -73,19 +73,19 @@ Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) cons
 Matrix SquaredExponential::partialGradient(const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   const Point tau = s - t;
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar norm2 = tauOverTheta.normSquare();
   // For zero norm
-  if (norm2 == 0.0) return Matrix(spatialDimension_, 1);
+  if (norm2 == 0.0) return Matrix(inputDimension_, 1);
   // General case
   const Scalar value = -std::exp(-0.5 * norm2);
   // Compute tau/theta^2
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] /= scale_[i];
-  return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] /= scale_[i];
+  return Matrix(inputDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];
 }
 
 /* String converter */

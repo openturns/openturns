@@ -61,9 +61,9 @@ MaternModel::MaternModel(const Point & scale,
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
-  if (getDimension() != 1)
+  if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() << ")";
+                                         << " Here, (got dimension=" << getOutputDimension() << ")";
   definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
@@ -77,7 +77,7 @@ void MaternModel::computeLogNormalizationFactor()
 void MaternModel::computeSqrt2nuOverTheta()
 {
   // Compute usefull scaling factor
-  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+  for(UnsignedInteger i = 0; i < inputDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
 }
 
 /* Virtual constructor */
@@ -89,9 +89,9 @@ MaternModel * MaternModel::clone() const
 /* Computation of the covariance  function */
 Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  Point scaledTau(spatialDimension_);
-  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
+  if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+  Point scaledTau(inputDimension_);
+  for(UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const Scalar scaledPoint = scaledTau.norm();
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return 1.0 + nuggetFactor_;
@@ -103,33 +103,33 @@ Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
 Matrix MaternModel::partialGradient(const Point & s,
                                     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   const Point tau(s - t);
-  Point scaledTau(spatialDimension_);
-  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
+  Point scaledTau(inputDimension_);
+  for(UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const Scalar scaledTauNorm = scaledTau.norm();
   const Scalar norm2 = scaledTauNorm * scaledTauNorm;
   // For zero norm
   if (norm2 == 0.0)
   {
     // Infinite gradient for nu < 1/2
-    if (nu_ < 0.5) return Matrix(spatialDimension_, 1, Point(spatialDimension_, -SpecFunc::MaxScalar));
+    if (nu_ < 0.5) return Matrix(inputDimension_, 1, Point(inputDimension_, -SpecFunc::MaxScalar));
     // Non-zero gradient for nu = 1/2
     if (nu_ == 0.5)
     {
-      Matrix gradient(spatialDimension_, 1);
-      for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
+      Matrix gradient(inputDimension_, 1);
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
       return gradient;
     }
     // Zero gradient for p > 1
-    return Matrix(spatialDimension_, 1);
+    return Matrix(inputDimension_, 1);
   }
   // General case
   const Scalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
-  Point tauDotsquareSqrt2nuOverTheta(spatialDimension_);
-  for(UnsignedInteger i = 0; i < spatialDimension_; ++i) tauDotsquareSqrt2nuOverTheta[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
-  return Matrix(spatialDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0] * amplitude_[0];
+  Point tauDotsquareSqrt2nuOverTheta(inputDimension_);
+  for(UnsignedInteger i = 0; i < inputDimension_; ++i) tauDotsquareSqrt2nuOverTheta[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
+  return Matrix(inputDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0] * amplitude_[0];
 }
 
 void MaternModel::setScale(const Point & scale)
@@ -145,16 +145,16 @@ void MaternModel::setFullParameter(const Point & parameter)
   /*
     Care! To make the method not bogus, the size of paramter argument
     should be :
-     - Size of scale : spatialDimension_
+     - Size of scale : inputDimension_
      - Size of amplitude : here 1
      - Nu parameter : 1
     CovarianceModelImplementation::setFullParameter checks that size is
-    equal to spatialDimension_ + dimension_
+    equal to inputDimension_ + dimension_
   As we set the Nu parameter it is not coherant.
   We should check that totalSize = generic totalSize + 1
   */
   // Check the size
-  const UnsignedInteger totalSize = spatialDimension_ + dimension_  + 1;
+  const UnsignedInteger totalSize = inputDimension_ + outputDimension_  + 1;
   if (parameter.getSize() < totalSize)
     throw InvalidArgumentException(HERE) << "In MaternModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;

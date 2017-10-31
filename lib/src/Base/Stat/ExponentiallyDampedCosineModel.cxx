@@ -48,7 +48,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & sca
   : StationaryCovarianceModel(scale, amplitude)
   , frequency_(0.0)
 {
-  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
   setFrequency(frequency);
   definesComputeStandardRepresentative_ = true;
 }
@@ -64,7 +64,7 @@ ExponentiallyDampedCosineModel * ExponentiallyDampedCosineModel::clone() const
  */
 CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) const
 {
-  CovarianceMatrix covarianceMatrix(dimension_);
+  CovarianceMatrix covarianceMatrix(outputDimension_);
 
   covarianceMatrix(0, 0) = computeAsScalar(tau);
   return covarianceMatrix;
@@ -77,10 +77,10 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
 
 Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_)
-    throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
 
   const Scalar absTau = tauOverTheta.norm();
   if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
@@ -91,7 +91,7 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point
 CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & timeGrid) const
 {
   const UnsignedInteger size = timeGrid.getN();
-  const UnsignedInteger fullSize = size * dimension_;
+  const UnsignedInteger fullSize = size * outputDimension_;
   const Scalar timeStep = timeGrid.getStep();
 
   CovarianceMatrix cov(fullSize);

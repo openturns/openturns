@@ -29,6 +29,7 @@
  * CorrelationAnalysis::(Pearson|Spearman)Correlation accepts a multivariate sample and returns a Point
  * Deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean
  * Deprecated Process::getDimension, getSpatialDimension
+ * Deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation
 
 === Python module ===
 

@@ -48,9 +48,9 @@ AbsoluteExponential::AbsoluteExponential(const Point & scale,
     const Point & amplitude)
   : StationaryCovarianceModel(scale, amplitude)
 {
-  if (getDimension() != 1)
+  if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
-                                         << " Here, (got dimension=" << getDimension() << ")";
+                                         << " Here, (got dimension=" << getOutputDimension() << ")";
 }
 
 /* Virtual constructor */
@@ -62,9 +62,9 @@ AbsoluteExponential * AbsoluteExponential::clone() const
 /* Computation of the covariance function */
 Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverThetaNorm = tauOverTheta.norm1();
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
 }
@@ -73,31 +73,31 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) con
 Matrix AbsoluteExponential::partialGradient(const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   const Point tau(s - t);
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar norm1 = tauOverTheta.norm1();
   // For zero norm
   // Norm1 is null if all elements are zero
   // In that case gradient is not defined
   if (norm1 == 0.0)
   {
-    Matrix gradient(spatialDimension_, 1);
-    for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
+    Matrix gradient(inputDimension_, 1);
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
     return gradient;
   }
   // General case
   const Scalar value = std::exp(-norm1);
   // Gradient take as factor sign(tau_i) /theta_i
-  Point factor(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
+  Point factor(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
   {
     factor[i] = amplitude_[0] * amplitude_[0] / scale_[i];
     if (tau[i] > 0) factor[i] *= -1.0;
   }
-  return Matrix(spatialDimension_, 1, factor * value) ;
+  return Matrix(inputDimension_, 1, factor * value) ;
 }
 
 /* String converter */

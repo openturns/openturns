@@ -184,7 +184,7 @@ Process GeneralLinearModelResult::getNoise() const
     // Here it is assumed that the covariance model parameters are the
     // marginal amplitude.
     const Point sigma(covarianceModel_.getParameter());
-    const CorrelationMatrix R(covarianceModel_.getSpatialCorrelation());
+    const CorrelationMatrix R(covarianceModel_.getOutputCorrelation());
     const Normal dist(Point(sigma.getSize(), 0.0), sigma, R);
     WhiteNoise noise(dist);
     return noise;

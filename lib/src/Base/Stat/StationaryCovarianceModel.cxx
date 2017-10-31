@@ -81,20 +81,20 @@ CovarianceMatrix StationaryCovarianceModel::operator() (const Point & s,
 CovarianceMatrix StationaryCovarianceModel::operator() (const Point & tau) const
 {
   const Scalar rho = computeStandardRepresentative(tau);
-  return CovarianceMatrix((spatialCovariance_ * rho).getImplementation());
+  return CovarianceMatrix((outputCovariance_ * rho).getImplementation());
 }
 
 Scalar StationaryCovarianceModel::computeAsScalar(const Point & s,
     const Point & t) const
 {
-  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
-  return spatialCovariance_(0, 0) * computeStandardRepresentative(t - s);
+  if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
+  return outputCovariance_(0, 0) * computeStandardRepresentative(t - s);
 }
 
 Scalar StationaryCovarianceModel::computeAsScalar(const Point & tau) const
 {
-  if (dimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << dimension_ << ", expected dimension=1.";
-  return spatialCovariance_(0, 0) * computeStandardRepresentative(tau);
+  if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
+  return outputCovariance_(0, 0) * computeStandardRepresentative(tau);
 }
 
 Scalar StationaryCovarianceModel::computeStandardRepresentative(const Point & s,
@@ -113,7 +113,7 @@ CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeG
 {
   const UnsignedInteger size = timeGrid.getN();
   const Scalar timeStep = timeGrid.getStep();
-  const UnsignedInteger fullSize = size * dimension_;
+  const UnsignedInteger fullSize = size * outputDimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 
   // Fill-in the matrix by blocks
@@ -123,14 +123,14 @@ CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeG
     // Only the lower part has to be filled-in
     for (UnsignedInteger rowIndex = diagonalOffset; rowIndex < size; ++rowIndex)
     {
-      const UnsignedInteger rowBase = rowIndex * dimension_;
+      const UnsignedInteger rowBase = rowIndex * outputDimension_;
       const UnsignedInteger columnIndex = rowIndex - diagonalOffset;
-      const UnsignedInteger columnBase = columnIndex * dimension_;
+      const UnsignedInteger columnBase = columnIndex * outputDimension_;
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
       // not copied on a symmetric position
-      for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
-        for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
+      for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < outputDimension_; ++columnIndexLocal)
+        for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < outputDimension_; ++rowIndexLocal)
           covarianceMatrix(rowBase + rowIndexLocal, columnBase + columnIndexLocal) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
     } // column index of the block
   } // row index of the block

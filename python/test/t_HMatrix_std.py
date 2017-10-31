@@ -86,10 +86,10 @@ class TestHMatrixTensorRealAssemblyFunction(object):
 
 covarianceModel = ot.ExponentialModel([0.1] * 2, [1.0] * 2)
 hmat = factory.build(
-    vertices, covarianceModel.getDimension(), True, parameters)
+    vertices, covarianceModel.getOutputDimension(), True, parameters)
 blockAssembly = TestHMatrixTensorRealAssemblyFunction(
     covarianceModel, vertices)
-hmat.assembleTensor(blockAssembly, covarianceModel.getDimension(), 'L')
+hmat.assembleTensor(blockAssembly, covarianceModel.getOutputDimension(), 'L')
 hmatRef = ot.HMatrix(hmat)
 hmat.factorize('LLt')
 normL = hmat.norm()

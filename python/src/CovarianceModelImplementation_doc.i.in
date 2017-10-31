@@ -312,7 +312,7 @@ OT_CovarianceModel_getAmplitude_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_getDimension_doc
+%define OT_CovarianceModel_getOutputDimension_doc
 "Get the dimension :math:`d` of the covariance function.
 
 Returns
@@ -321,8 +321,8 @@ d : int
     Dimension :math:`d` such that :math:`C : \cD \times \cD \mapsto \cS_d^+(\Rset).`
     This is the dimension of the process :math:`X`."
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::getDimension
-OT_CovarianceModel_getDimension_doc
+%feature("docstring") OT::CovarianceModelImplementation::getOutputDimension
+OT_CovarianceModel_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
@@ -402,7 +402,7 @@ OT_CovarianceModel_getScale_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_getSpatialCorrelation_doc
+%define OT_CovarianceModel_getOutputCorrelation_doc
 "Get the spatial correlation matrix :math:`\mat{R}` of the covariance function.
 
 Returns
@@ -410,12 +410,12 @@ Returns
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+(\Rset)`."
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::getSpatialCorrelation
-OT_CovarianceModel_getSpatialCorrelation_doc
+%feature("docstring") OT::CovarianceModelImplementation::getOutputCorrelation
+OT_CovarianceModel_getOutputCorrelation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_getSpatialDimension_doc
+%define OT_CovarianceModel_getInputDimension_doc
 "Get the spatial dimension :math:`n` of the covariance function.
 
 Returns
@@ -424,8 +424,8 @@ spatialDimension : int
     Spatial dimension :math:`n` of the covariance function."
 
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::getSpatialDimension
-OT_CovarianceModel_getSpatialDimension_doc
+%feature("docstring") OT::CovarianceModelImplementation::getInputDimension
+OT_CovarianceModel_getInputDimension_doc
 
 // ---------------------------------------------------------------------
 
@@ -567,7 +567,7 @@ OT_CovarianceModel_setParameter_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_setSpatialCorrelation_doc
+%define OT_CovarianceModel_setOutputCorrelation_doc
 "Set the spatial correlation matrix :math:`\mat{R}` of the covariance function.
 
 Parameters
@@ -575,8 +575,8 @@ Parameters
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+([-1,1])`."
 %enddef
-%feature("docstring") OT::CovarianceModelImplementation::setSpatialCorrelation
-OT_CovarianceModel_setSpatialCorrelation_doc
+%feature("docstring") OT::CovarianceModelImplementation::setOutputCorrelation
+OT_CovarianceModel_setOutputCorrelation_doc
 
 // ---------------------------------------------------------------------
 

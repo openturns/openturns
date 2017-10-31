@@ -33,7 +33,7 @@ private:
 
 public:
   TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
-    : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
+    : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
   {}
@@ -83,19 +83,19 @@ int main(int argc, char *argv[])
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix
-    HMatrix hmat(hmatrixFactory.build(vertices, covarianceModel.getDimension(), false));
+    HMatrix hmat(hmatrixFactory.build(vertices, covarianceModel.getOutputDimension(), false));
     hmat.assemble(blockAssembly, 'N');
 
     hmat.factorize("LU");
 
-    Point rhs(covarianceModel.getDimension() * vertices.getSize());
-    CovarianceMatrix local(covarianceModel.getDimension());
+    Point rhs(covarianceModel.getOutputDimension() * vertices.getSize());
+    CovarianceMatrix local(covarianceModel.getOutputDimension());
     for (UnsignedInteger i = 0; i < vertices.getSize(); ++i)
     {
       blockAssembly.compute(i, 0, &local);
-      for (UnsignedInteger dim = 0; dim < covarianceModel.getDimension(); ++dim)
+      for (UnsignedInteger dim = 0; dim < covarianceModel.getOutputDimension(); ++dim)
       {
-        rhs[covarianceModel.getDimension() * i + dim] = local(dim, 0);
+        rhs[covarianceModel.getOutputDimension() * i + dim] = local(dim, 0);
       }
     }
     Point rhsCopy(rhs);
@@ -108,11 +108,11 @@ int main(int argc, char *argv[])
       for (UnsignedInteger j = 0; j < vertices.getSize(); ++j)
       {
         blockAssembly.compute(i, j, &local);
-        for (UnsignedInteger dimI = 0; dimI < covarianceModel.getDimension(); ++dimI)
+        for (UnsignedInteger dimI = 0; dimI < covarianceModel.getOutputDimension(); ++dimI)
         {
-          for (UnsignedInteger dimJ = 0; dimJ < covarianceModel.getDimension(); ++dimJ)
+          for (UnsignedInteger dimJ = 0; dimJ < covarianceModel.getOutputDimension(); ++dimJ)
           {
-            rhsCopy[covarianceModel.getDimension() * i + dimI] -= local(dimI, dimJ) * result[covarianceModel.getDimension() * j + dimJ];
+            rhsCopy[covarianceModel.getOutputDimension() * i + dimI] -= local(dimI, dimJ) * result[covarianceModel.getOutputDimension() * j + dimJ];
           }
         }
       }

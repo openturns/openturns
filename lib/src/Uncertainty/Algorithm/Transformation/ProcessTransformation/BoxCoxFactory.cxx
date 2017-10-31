@@ -341,11 +341,11 @@ void BoxCoxFactory::checkGLMData(const Sample & inputSample,
   // Check the dimensions
   const UnsignedInteger dimension = outputSample.getDimension();
   const UnsignedInteger spatialDimension = inputSample.getDimension();
-  if (covarianceModel.getSpatialDimension() != spatialDimension)
-    throw InvalidArgumentException(HERE) << "Error: the covariance model has a spatial dimension=" << covarianceModel.getSpatialDimension() << " different from the input sample dimension=" << spatialDimension;
+  if (covarianceModel.getInputDimension() != spatialDimension)
+    throw InvalidArgumentException(HERE) << "Error: the covariance model has a spatial dimension=" << covarianceModel.getInputDimension() << " different from the input sample dimension=" << spatialDimension;
 
-  if (covarianceModel.getDimension() != dimension)
-    throw InvalidArgumentException(HERE) << "Error: the covariance model should be of dimension " << dimension << ". Here, covariance model dimension=" << covarianceModel.getDimension();
+  if (covarianceModel.getOutputDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the covariance model should be of dimension " << dimension << ". Here, covariance model dimension=" << covarianceModel.getOutputDimension();
 
   if ((basis.getSize() != 0) && (basis.getSize() != dimension))
     throw InvalidArgumentException(HERE) << "Error: the basis should be of size 0 or " << dimension << ". Here, basis size=" << basis.getSize();
