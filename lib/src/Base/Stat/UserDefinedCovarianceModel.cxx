@@ -39,7 +39,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel()
   , covarianceCollection_(0)
   , p_mesh_(RegularGrid().clone())
 {
-  dimension_ = 0;
+  outputDimension_ = 0;
 }
 
 // For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
@@ -56,15 +56,15 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
                                          << " mesh size=" << N << " and covariance function size=" << covarianceFunction.getSize() << " instead of " << size;
   p_mesh_ = mesh.clone();
-  spatialDimension_ = mesh.getDimension();
+  inputDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
   covarianceCollection_[0] = covarianceFunction[0];
-  dimension_ = covarianceCollection_[0].getDimension();
+  outputDimension_ = covarianceCollection_[0].getDimension();
   // put the next elements if dimension is ok
   for (UnsignedInteger k = 1; k < size; ++k)
   {
-    if (covarianceFunction[k].getDimension() != dimension_)
+    if (covarianceFunction[k].getDimension() != outputDimension_)
       throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
     covarianceCollection_[k] = covarianceFunction[k];
   }
@@ -81,8 +81,8 @@ UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values
   const UnsignedInteger N = p_mesh_->getVerticesNumber();
@@ -115,7 +115,7 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i
 CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices) const
 {
   const UnsignedInteger size = vertices.getSize();
-  CovarianceMatrix covariance(size * dimension_);
+  CovarianceMatrix covariance(size * outputDimension_);
   // It is better to check vertices as the simplices don't play a role in the discretization
   if (vertices == p_mesh_->getVertices())
   {
@@ -124,8 +124,8 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
     {
       const UnsignedInteger jBase = static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5);
       const UnsignedInteger kBase = i - (jBase * (jBase + 1)) / 2;
-      for (UnsignedInteger k = 0; k < dimension_; ++k)
-        for (UnsignedInteger j = 0; j < dimension_; ++j)
+      for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+        for (UnsignedInteger j = 0; j < outputDimension_; ++j)
           covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
     }
     return covariance;
@@ -143,18 +143,18 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
   // Fill-in the matrix by blocks
   for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
   {
-    const UnsignedInteger rowBase = rowIndex * dimension_;
+    const UnsignedInteger rowBase = rowIndex * outputDimension_;
     // Only the lower part has to be filled-in
     for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
     {
-      const UnsignedInteger columnBase = columnIndex * dimension_;
+      const UnsignedInteger columnBase = columnIndex * outputDimension_;
       const CovarianceMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
       // not copied on a symmetric position
-      for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < dimension_; ++rowIndexLocal)
+      for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < outputDimension_; ++rowIndexLocal)
       {
-        for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < dimension_; ++columnIndexLocal)
+        for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < outputDimension_; ++columnIndexLocal)
         {
           covariance(rowBase + rowIndexLocal, columnBase + columnIndexLocal) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
         } // column index within the block
@@ -167,7 +167,7 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
 Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
 {
-  if (dimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if the output dimension is not 1. Here, dimension=" << dimension_;
+  if (outputDimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if the output dimension is not 1. Here, dimension=" << outputDimension_;
   const UnsignedInteger size = vertices.getSize();
   Sample result(size, 1);
   if (vertices == p_mesh_->getVertices())

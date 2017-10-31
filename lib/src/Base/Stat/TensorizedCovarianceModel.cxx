@@ -69,18 +69,18 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   const UnsignedInteger size = collection.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
   Point amplitude(0);
-  spatialDimension_ = collection[0].getSpatialDimension();
+  inputDimension_ = collection[0].getInputDimension();
   // Get dimension: should be the same for all elements
-  dimension_ = 0;
+  outputDimension_ = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger localSpatialDimension = collection[i].getSpatialDimension();
-    if (spatialDimension_ != localSpatialDimension)
+    const UnsignedInteger localSpatialDimension = collection[i].getInputDimension();
+    if (inputDimension_ != localSpatialDimension)
       throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setCollection, incompatible spatial dimension of the element #" << i
-                                           << " spatial dimension of element = " << localSpatialDimension << ", spatial dimension of the model = " << spatialDimension_;
+                                           << " spatial dimension of element = " << localSpatialDimension << ", spatial dimension of the model = " << inputDimension_;
 
-    const UnsignedInteger localDimension = collection[i].getDimension();
-    dimension_ += localDimension;
+    const UnsignedInteger localDimension = collection[i].getOutputDimension();
+    outputDimension_ += localDimension;
     const Point localAmplitude(collection[i].getAmplitude());
     amplitude.add(localAmplitude);
   }
@@ -105,9 +105,9 @@ TensorizedCovarianceModel * TensorizedCovarianceModel::clone() const
 CovarianceMatrix TensorizedCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
-  CovarianceMatrix covariance(getDimension());
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  CovarianceMatrix covariance(getOutputDimension());
   // Fill by block ==> block index
   UnsignedInteger blockIndex = 0;
   const UnsignedInteger size = collection_.getSize();
@@ -115,7 +115,7 @@ CovarianceMatrix TensorizedCovarianceModel::operator() (const Point & s,
   {
     // Compute the ith block
     const CovarianceMatrix localCovariance = collection_[i](s, t);
-    const UnsignedInteger localDimension = collection_[i].getDimension();
+    const UnsignedInteger localDimension = collection_[i].getOutputDimension();
     // Fill lower part of the covariance matrix
     for (UnsignedInteger localColumn = 0; localColumn < localDimension; ++localColumn)
       for (UnsignedInteger localRow = localColumn; localRow < localDimension; ++localRow)
@@ -132,13 +132,13 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
 {
   // Gradient definition results from definition of model
   // We should pay attention to the scaling factor scale_
-  Matrix gradient(spatialDimension_, dimension_ * dimension_);
+  Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
   UnsignedInteger dimension = 0;
   const UnsignedInteger size = collection_.getSize();
   for(UnsignedInteger k = 0; k < size; ++k)
   {
     const CovarianceModel localCovariance = collection_[k];
-    const UnsignedInteger localDimension = localCovariance.getDimension();
+    const UnsignedInteger localDimension = localCovariance.getOutputDimension();
     const Matrix gradient_k = localCovariance.partialGradient(s, t);
     // Gradient gradient_k is of size spatialDimension x localDimension^2
     for (UnsignedInteger localIndex = 0; localIndex < localDimension * localDimension; ++localIndex)
@@ -149,15 +149,15 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
       const UnsignedInteger localRowIndex = localIndex % localDimension;
       const UnsignedInteger localColumnIndex = localIndex / localDimension;
       // We seek the corresponding rowIndex & localIndex, if the each row of the
-      // matrix 'gradient' was a matrix of size dimension_ * dimension,
+      // matrix 'gradient' was a matrix of size outputDimension_ * dimension,
       const UnsignedInteger rowIndex = dimension + localRowIndex;
       const UnsignedInteger columnIndex = dimension + localColumnIndex;
       // With rowIndex & columnIndex, we get the index in collection
       // because data are presented as vector (or row matrix)
-      const UnsignedInteger index = dimension_ * columnIndex + rowIndex;
+      const UnsignedInteger index = outputDimension_ * columnIndex + rowIndex;
       // Fill gradient matrix
       // Same index are used for all it rows
-      for (UnsignedInteger spatialIndex = 0; spatialIndex < spatialDimension_; ++spatialIndex)
+      for (UnsignedInteger spatialIndex = 0; spatialIndex < inputDimension_; ++spatialIndex)
         gradient(spatialIndex, index) = gradient_k(spatialIndex, localIndex);
     }
     // update dimension
@@ -174,10 +174,10 @@ void TensorizedCovarianceModel::setFullParameter(const Point & parameter)
   const UnsignedInteger parameterDimension = getParameter().getDimension();
   if (parameter.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: parameter dimension should be " << getParameter().getDimension()
         << " (got " << parameter.getDimension() << ")";
-  Point scale(spatialDimension_);
-  Point amplitude(dimension_);
+  Point scale(inputDimension_);
+  Point amplitude(outputDimension_);
   for (UnsignedInteger i = 0; i < scale_.getDimension(); ++i) scale[i] = parameter[i];
-  for (UnsignedInteger i = 0; i < amplitude_.getDimension(); ++i) amplitude[i] = parameter[i + spatialDimension_];
+  for (UnsignedInteger i = 0; i < amplitude_.getDimension(); ++i) amplitude[i] = parameter[i + inputDimension_];
   // set parameters
   setScale(scale);
   setAmplitude(amplitude);
@@ -202,8 +202,8 @@ Description TensorizedCovarianceModel::getFullParameterDescription() const
 
 void TensorizedCovarianceModel::setScale(const Point & scale)
 {
-  if (scale.getDimension() != getSpatialDimension())
-    throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setScale, incompatible dimension of the scale vector. Expected scale of size = " << spatialDimension_
+  if (scale.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setScale, incompatible dimension of the scale vector. Expected scale of size = " << inputDimension_
                                          << ", vector size = " << scale.getDimension();
 
   Point scale0(collection_[0].getScale());
@@ -211,7 +211,7 @@ void TensorizedCovarianceModel::setScale(const Point & scale)
   for (UnsignedInteger i = 1; i < collection_.getSize(); ++i)
   {
     Point newScale(collection_[i].getScale());
-    for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
+    for (UnsignedInteger j = 0; j < inputDimension_; ++j)
       newScale[j] *= scale[j] / scale0[j];
     collection_[i].setScale(newScale);
   }
@@ -222,14 +222,14 @@ void TensorizedCovarianceModel::setScale(const Point & scale)
 /** Amplitude accessor */
 void TensorizedCovarianceModel::setAmplitude(const Point & amplitude)
 {
-  if (amplitude.getDimension() != getDimension())
-    throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setAmplitude, incompatible dimension of the amplitude vector. Expected amplitude of size = " << dimension_
+  if (amplitude.getDimension() != getOutputDimension())
+    throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setAmplitude, incompatible dimension of the amplitude vector. Expected amplitude of size = " << outputDimension_
                                          << ", vector size = " << amplitude.getDimension();
 
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
-    const UnsignedInteger localDimension = collection_[i].getDimension();
+    const UnsignedInteger localDimension = collection_[i].getOutputDimension();
     Point localAmplitude(collection_[i].getAmplitude());
     for (UnsignedInteger j = 0; j < localDimension; ++j)
     {
@@ -265,8 +265,8 @@ String TensorizedCovarianceModel::__repr__() const
 {
   OSS oss;
   oss << "class=" << TensorizedCovarianceModel::GetClassName()
-      << " input dimension=" << spatialDimension_
-      << ", dimension = " << dimension_
+      << " input dimension=" << inputDimension_
+      << ", dimension = " << outputDimension_
       << ", models=" << collection_;
   return oss;
 }
@@ -280,13 +280,13 @@ String TensorizedCovarianceModel::__str__(const String & offset) const
 /* Marginal accessor */
 TensorizedCovarianceModel::Implementation TensorizedCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= dimension_)
-    throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << dimension_;
+  if (index >= outputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
   UnsignedInteger size = collection_.getSize();
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger localDimension = collection_[i].getDimension();
+    const UnsignedInteger localDimension = collection_[i].getOutputDimension();
     const UnsignedInteger stop = start + localDimension;
     if (index < stop) return collection_[i].getMarginal(index - start).getImplementation();
     start = stop;

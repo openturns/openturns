@@ -38,7 +38,7 @@ SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
   : StationaryCovarianceModel(spatialDimension)
   , radius_(1.0)
 {
-  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
   definesComputeStandardRepresentative_ = true;
 }
 
@@ -49,7 +49,7 @@ SphericalModel::SphericalModel(const Point & scale,
   : StationaryCovarianceModel(scale, amplitude)
   , radius_(-1.0)
 {
-  if (dimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << dimension_;
+  if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
   definesComputeStandardRepresentative_ = true;
   setRadius(radius);
 }
@@ -62,7 +62,7 @@ SphericalModel * SphericalModel::clone() const
 
 CovarianceMatrix SphericalModel::operator() (const Point & tau) const
 {
-  CovarianceMatrix covarianceMatrix(dimension_);
+  CovarianceMatrix covarianceMatrix(outputDimension_);
   covarianceMatrix(0, 0) = computeAsScalar(tau);
   return covarianceMatrix;
 }
@@ -77,10 +77,10 @@ Scalar SphericalModel::computeAsScalar(const Point & tau) const
  */
 Scalar SphericalModel::computeStandardRepresentative(const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_)
-    throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(spatialDimension_);
-  for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar normTauOverScaleA = tauOverTheta.norm() / radius_;
   if (normTauOverScaleA <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
   if (normTauOverScaleA >= 1.0) return 0.0;

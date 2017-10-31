@@ -47,29 +47,31 @@ public:
   typedef Pointer<CovarianceModelImplementation> Implementation;
 
   /** Dimension-based constructor */
-  explicit CovarianceModelImplementation(const UnsignedInteger spatialDimension = 1);
+  explicit CovarianceModelImplementation(const UnsignedInteger outputDimension = 1);
 
 
   /** Standard constructor with scale and amplitude parameter parameter */
   CovarianceModelImplementation(const Point & scale,
                                 const Point & amplitude);
 
-  /** Standard constructor with scale, amplitude and spatial correlation parameter parameter */
+  /** Standard constructor with scale, amplitude and output correlation parameter parameter */
   CovarianceModelImplementation(const Point & scale,
                                 const Point & amplitude,
-                                const CorrelationMatrix & spatialCorrelation);
+                                const CorrelationMatrix & outputCorrelation);
 
-  /** Standard constructor with scale and spatial covariance parameter parameter */
+  /** Standard constructor with scale and output covariance parameter parameter */
   CovarianceModelImplementation(const Point & scale,
-                                const CovarianceMatrix & spatialCovariance);
+                                const CovarianceMatrix & outputCovariance);
 
   /** Virtual copy constructor */
   virtual CovarianceModelImplementation * clone() const;
 
   /** Dimensions accessors */
-  /** Dimension of the argument */
+  virtual UnsignedInteger getInputDimension() const;
+  virtual UnsignedInteger getOutputDimension() const;
+
+  /** @deprecated */
   virtual UnsignedInteger getSpatialDimension() const;
-  /** Dimension of the values */
   virtual UnsignedInteger getDimension() const;
 
   /** Compute the covariance function */
@@ -146,7 +148,11 @@ public:
   virtual Point getScale() const;
   virtual void setScale(const Point & scale);
 
-  /** Spatial correlation accessors */
+  /** Output correlation accessors */
+  virtual CorrelationMatrix getOutputCorrelation() const;
+  virtual void setOutputCorrelation(const CorrelationMatrix & correlation);
+
+  /** @deprecated */
   virtual CorrelationMatrix getSpatialCorrelation() const;
   virtual void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
@@ -195,28 +201,28 @@ public:
 protected:
 
   // set the covariance structure
-  void updateSpatialCovariance();
+  void updateOutputCovariance();
 
   /** Container for scale values  */
   Point scale_;
 
   /** Input dimension */
-  UnsignedInteger spatialDimension_;
+  UnsignedInteger inputDimension_;
 
   /** Amplitude values  */
   Point amplitude_;
 
   /** Output dimension */
-  UnsignedInteger dimension_;
+  UnsignedInteger outputDimension_;
 
-  /** Correlation matrix of the spatial dependence structure */
-  CorrelationMatrix spatialCorrelation_;
+  /** Correlation matrix of the output dependence structure */
+  CorrelationMatrix outputCorrelation_;
 
-  /** Covariance matrix of the spatial dependence structure */
-  mutable CovarianceMatrix spatialCovariance_;
+  /** Covariance matrix of the output dependence structure */
+  mutable CovarianceMatrix outputCovariance_;
 
-  /** Cholesky factor of covariance matrix of the spatial dependence structure */
-  mutable TriangularMatrix spatialCovarianceCholeskyFactor_;
+  /** Cholesky factor of covariance matrix of the output dependence structure */
+  mutable TriangularMatrix outputCovarianceCholeskyFactor_;
 
   /** Flag to tell if computeStandardRepresentative() method is defined */
   Bool definesComputeStandardRepresentative_;

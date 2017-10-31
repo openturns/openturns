@@ -10,8 +10,8 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
 
     print('myModel = ',  myModel)
 
-    spatialDimension = myModel.getSpatialDimension()
-    dimension = myModel.getDimension()
+    spatialDimension = myModel.getInputDimension()
+    dimension = myModel.getOutputDimension()
     active = myModel.getActiveParameter()
     print('active=', active)
     print('parameter=', myModel.getParameter())

@@ -211,7 +211,7 @@ public:
     : HMatrixRealAssemblyFunction()
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
-    , covarianceDimension_(covarianceModel.getDimension())
+    , covarianceDimension_(covarianceModel.getOutputDimension())
     , epsilon_(epsilon) {}
 
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const
@@ -238,14 +238,14 @@ private:
 
 public:
   CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
-    : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
+    : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
     , epsilon_(epsilon)
   {
-    Matrix eps = epsilon_ * IdentityMatrix(covarianceModel.getDimension());
+    Matrix eps = epsilon_ * IdentityMatrix(covarianceModel.getOutputDimension());
     Pointer<MatrixImplementation> impl = eps.getImplementation();
-    epsilonId_ = CovarianceMatrix(covarianceModel.getDimension(), *impl.get());
+    epsilonId_ = CovarianceMatrix(covarianceModel.getOutputDimension(), *impl.get());
   }
 
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const

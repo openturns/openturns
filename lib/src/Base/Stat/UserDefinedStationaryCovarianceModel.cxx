@@ -37,8 +37,8 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
   , covarianceCollection_(0)
   , mesh_()
 {
-  spatialDimension_ = 1;
-  dimension_ = 0;
+  inputDimension_ = 1;
+  outputDimension_ = 0;
 }
 
 // Classical constructor
@@ -53,15 +53,15 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
                                          << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();
-  spatialDimension_ = mesh.getDimension();
+  inputDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
   covarianceCollection_[0] = covarianceFunction[0];
-  dimension_ = covarianceCollection_[0].getDimension();
+  outputDimension_ = covarianceCollection_[0].getDimension();
   // put the next elements if dimension is ok
   for (UnsignedInteger k = 1; k < size; ++k)
   {
-    if (covarianceFunction[k].getDimension() != dimension_)
+    if (covarianceFunction[k].getDimension() != outputDimension_)
       throw InvalidArgumentException(HERE) << " Error with dimension; the covariance matrices should be of same dimension";
     covarianceCollection_[k] = covarianceFunction[k];
   }
@@ -76,7 +76,7 @@ UserDefinedStationaryCovarianceModel * UserDefinedStationaryCovarianceModel::clo
 /* Computation of the covariance function */
 CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << spatialDimension_ << ", got dimension=" << tau.getDimension();
+  if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values with nonnegative first component
   if (mesh_.getN() == 1) return covarianceCollection_[0];

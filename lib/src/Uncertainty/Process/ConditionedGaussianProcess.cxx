@@ -50,8 +50,8 @@ ConditionedGaussianProcess::ConditionedGaussianProcess(const KrigingResult & res
   // set covariance model
   covarianceModel_ = result.getCovarianceModel();
   // Set the mesh & dimension
-  setOutputDimension(covarianceModel_.getDimension());
-  if (covarianceModel_.getSpatialDimension() != mesh.getDimension())
+  setOutputDimension(covarianceModel_.getOutputDimension());
+  if (covarianceModel_.getInputDimension() != mesh.getDimension())
     throw InvalidArgumentException(HERE) << "In ConditionedGaussianProcess::ConditionedGaussianProcess, process dimension incompatible with mesh dimension. Here, (process dimension= " << getOutputDimension() << ", mesh dimension=" << mesh.getDimension() << ")";
   setMesh(mesh);
   // Initialize

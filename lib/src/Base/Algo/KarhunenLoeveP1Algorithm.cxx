@@ -91,7 +91,7 @@ void KarhunenLoeveP1Algorithm::run()
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
   // Extend the Gram matrix of the mesh
-  const UnsignedInteger dimension = covariance_.getDimension();
+  const UnsignedInteger dimension = covariance_.getOutputDimension();
   const UnsignedInteger augmentedDimension = dimension * numVertices;
   CovarianceMatrix G;
   if (dimension == 1) G = gram;

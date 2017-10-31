@@ -231,7 +231,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
 
   // Discretize the covariance model
   LOGINFO("Discretize the covariance matrix");
-  const UnsignedInteger dimension = covariance_.getDimension();
+  const UnsignedInteger dimension = covariance_.getOutputDimension();
   CovarianceMatrix C(covariance_.discretize(nodes));
   // Prepare the generalized eigenvalues problem
   // Step 1: scale C by the weights

@@ -60,12 +60,12 @@ SecondOrderModelImplementation * SecondOrderModelImplementation::clone() const
 /* Dimension accessor */
 UnsignedInteger SecondOrderModelImplementation::getSpatialDimension() const
 {
-  return covarianceModel_.getSpatialDimension();
+  return covarianceModel_.getInputDimension();
 }
 
 UnsignedInteger SecondOrderModelImplementation::getDimension() const
 {
-  return covarianceModel_.getDimension();
+  return covarianceModel_.getOutputDimension();
 }
 
 /* Computation of the covariance function */
@@ -129,14 +129,14 @@ void SecondOrderModelImplementation::setModels(const CovarianceModel & covarianc
     const SpectralModel & spectralModel)
 {
   if (!covarianceModel.isStationary()) throw InvalidArgumentException(HERE) << "Error: the covariance model is not stationary.";
-  if (covarianceModel.getDimension() != spectralModel.getDimension())
+  if (covarianceModel.getOutputDimension() != spectralModel.getDimension())
     throw InvalidDimensionException(HERE) << "Error: the spectral model and the covariance model have different dimensions"
                                           << " spectral dimension = " << spectralModel.getDimension()
-                                          << " covariance dimension = " << covarianceModel.getDimension();
-  if (covarianceModel.getSpatialDimension() != spectralModel.getSpatialDimension())
+                                          << " covariance dimension = " << covarianceModel.getOutputDimension();
+  if (covarianceModel.getInputDimension() != spectralModel.getSpatialDimension())
     throw InvalidDimensionException(HERE) << "Error: the spectral model and the covariance model have different spatial dimensions"
                                           << " spectral spatial dimension = " << spectralModel.getSpatialDimension()
-                                          << " covariance spatial dimension = " << covarianceModel.getSpatialDimension();
+                                          << " covariance spatial dimension = " << covarianceModel.getInputDimension();
   covarianceModel_ = covarianceModel;
   spectralModel_ = spectralModel;
 }

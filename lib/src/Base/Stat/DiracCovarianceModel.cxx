@@ -37,8 +37,8 @@ private:
 
 public:
   DiracAssemblyFunction(const DiracCovarianceModel & covarianceModel)
-    : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
-    , covarianceMatrix_(covarianceModel(Point(covarianceModel.getSpatialDimension())))
+    : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
+    , covarianceMatrix_(covarianceModel(Point(covarianceModel.getInputDimension())))
   {
     // Nothing to do
   }
@@ -58,7 +58,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
   , covarianceFactor_()
 {
   // Remove the scale from the active parameter
-  activeParameter_ = Indices(dimension_);
+  activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
 }
 
@@ -68,11 +68,11 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
   : StationaryCovarianceModel(spatialDimension)
   , covarianceFactor_()
 {
-  dimension_ = amplitude.getDimension();
+  outputDimension_ = amplitude.getDimension();
   setAmplitude(amplitude);
 
   // Remove the scale from the active parameter
-  activeParameter_ = Indices(dimension_);
+  activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
 }
 
@@ -83,14 +83,14 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
   : StationaryCovarianceModel(Point(spatialDimension, 1.0), Point(amplitude.getDimension(), 1.0))
   , covarianceFactor_()
 {
-  dimension_ = amplitude.getDimension();
+  outputDimension_ = amplitude.getDimension();
   // Set spatial correlation
-  setSpatialCorrelation(correlation);
+  setOutputCorrelation(correlation);
   // set amplitude & compute covariance
   setAmplitude(amplitude);
 
   // Remove the scale from the active parameter
-  activeParameter_ = Indices(dimension_);
+  activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
 }
 
@@ -99,39 +99,39 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
     const CovarianceMatrix & covariance)
   : StationaryCovarianceModel(spatialDimension)
 {
-  dimension_ = covariance.getDimension();
-  amplitude_ = Point(dimension_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  outputDimension_ = covariance.getDimension();
+  amplitude_ = Point(outputDimension_);
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     amplitude_[i] = sqrt(covariance(i, i));
   if (!covariance.isDiagonal())
   {
-    CorrelationMatrix correlation(dimension_);
-    for(UnsignedInteger j = 0; j < dimension_; ++j)
-      for(UnsignedInteger i = j; i < dimension_; ++i)
-        spatialCorrelation_(i, j) = covariance(i, j) / (amplitude_[i] * amplitude_[j]);
+    CorrelationMatrix correlation(outputDimension_);
+    for(UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for(UnsignedInteger i = j; i < outputDimension_; ++i)
+        outputCorrelation_(i, j) = covariance(i, j) / (amplitude_[i] * amplitude_[j]);
   }
   // Copy covariance
-  spatialCovariance_ = covariance;
+  outputCovariance_ = covariance;
 
   // Remove the scale from the active parameter
-  activeParameter_ = Indices(dimension_);
+  activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
 }
 
 void DiracCovarianceModel::computeCovariance()
 {
-  // Method that helps to compute spatialCovariance_ attribut (for tau=0)
-  // after setAmplitude, setSpatialCorrelation
-  spatialCovariance_ = CovarianceMatrix(dimension_);
-  for(UnsignedInteger j = 0; j < dimension_; ++j) spatialCovariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor_);
-  if (!spatialCorrelation_.isDiagonal())
+  // Method that helps to compute outputCovariance_ attribut (for tau=0)
+  // after setAmplitude, setOutputCorrelation
+  outputCovariance_ = CovarianceMatrix(outputDimension_);
+  for(UnsignedInteger j = 0; j < outputDimension_; ++j) outputCovariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor_);
+  if (!outputCorrelation_.isDiagonal())
   {
-    for(UnsignedInteger j = 0; j < dimension_; ++j)
-      for(UnsignedInteger i = j + 1; i < dimension_; ++i)
-        spatialCovariance_(i, j) = spatialCorrelation_(i, j) * amplitude_[i] * amplitude_[j];
+    for(UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for(UnsignedInteger i = j + 1; i < outputDimension_; ++i)
+        outputCovariance_(i, j) = outputCorrelation_(i, j) * amplitude_[i] * amplitude_[j];
   }
   // Compute once the Cholesky factor
-  covarianceFactor_ = spatialCovariance_.computeCholesky();
+  covarianceFactor_ = outputCovariance_.computeCholesky();
 }
 
 /* Virtual constructor */
@@ -143,13 +143,13 @@ DiracCovarianceModel * DiracCovarianceModel::clone() const
 /* Computation of the covariance density function */
 CovarianceMatrix DiracCovarianceModel::operator() (const Point & tau) const
 {
-  if (tau.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::operator(), the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::operator(), the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
   // If tau.norm1 is zero we compute the covariance matrix
   // Otherwise the returned value is 0
   if (tau.norm() == 0)
-    return spatialCovariance_;
+    return outputCovariance_;
   else
-    return CovarianceMatrix(SquareMatrix(dimension_).getImplementation());
+    return CovarianceMatrix(SquareMatrix(outputDimension_).getImplementation());
 }
 
 // The following structure helps to compute the full covariance matrix
@@ -166,7 +166,7 @@ struct DiracCovarianceModelDiscretizePolicy
     : input_(input)
     , output_(output)
     , model_(model)
-    , dimension_(model.getDimension())
+    , dimension_(model.getOutputDimension())
   {}
 
   inline void operator()(const TBB::BlockedRange<UnsignedInteger> & r) const
@@ -176,22 +176,22 @@ struct DiracCovarianceModelDiscretizePolicy
       const UnsignedInteger indexBlock = index * dimension_;
       for (UnsignedInteger j = 0; j < dimension_; ++j)
         for (UnsignedInteger i = 0; i < dimension_; ++i)
-          output_(indexBlock + i, indexBlock + j) = model_.spatialCovariance_(i, j);
+          output_(indexBlock + i, indexBlock + j) = model_.outputCovariance_(i, j);
     }
   }
 }; /* end struct DiracCovarianceModelDiscretizePolicy */
 
 CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 {
-  if (vertices.getDimension() != spatialDimension_)
+  if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
-                                         << " different from the input spatial dimension=" << spatialDimension_;
+                                         << " different from the input spatial dimension=" << inputDimension_;
 
   if (vertices.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
   const UnsignedInteger size = vertices.getSize();
-  const UnsignedInteger fullSize = size * dimension_;
+  const UnsignedInteger fullSize = size * outputDimension_;
   CovarianceMatrix covarianceMatrix(fullSize);
 
   const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
@@ -215,7 +215,7 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
     : input_(input)
     , output_(output)
     , model_(model)
-    , dimension_(model.getDimension())
+    , dimension_(model.getOutputDimension())
   {}
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
@@ -232,15 +232,15 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
 
 TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & vertices) const
 {
-  if (vertices.getDimension() != spatialDimension_)
+  if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
-                                         << " different from the input spatial dimension=" << spatialDimension_;
+                                         << " different from the input spatial dimension=" << inputDimension_;
 
   if (vertices.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
   const UnsignedInteger size = vertices.getSize();
-  const UnsignedInteger fullSize = size * dimension_;
+  const UnsignedInteger fullSize = size * outputDimension_;
   TriangularMatrix covarianceFactor(fullSize);
 
   const DiracCovarianceModelDiscretizeAndFactorizePolicy policy( vertices, covarianceFactor, *this );
@@ -253,9 +253,9 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
 Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
     const UnsignedInteger p) const
 {
-  if (vertices.getDimension() != spatialDimension_)
+  if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the given sample has a dimension=" << vertices.getDimension()
-                                         << " different from the input dimension=" << spatialDimension_;
+                                         << " different from the input dimension=" << inputDimension_;
   if (vertices.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the given sample has a size 0";
   if (p >= vertices.getSize())
@@ -263,10 +263,10 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
                                          << ", here, p=" << p;
 
   const UnsignedInteger size = vertices.getSize();
-  Sample result(size * dimension_, dimension_);
-  for(UnsignedInteger j = 0; j < dimension_; ++j)
-    for(UnsignedInteger i = j; i < dimension_; ++i)
-      result[p * dimension_ + i][j] = spatialCovariance_(i, j);
+  Sample result(size * outputDimension_, outputDimension_);
+  for(UnsignedInteger j = 0; j < outputDimension_; ++j)
+    for(UnsignedInteger i = j; i < outputDimension_; ++i)
+      result[p * outputDimension_ + i][j] = outputCovariance_(i, j);
   return result;
 }
 
@@ -277,16 +277,16 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
 {
 #ifdef OPENTURNS_HAVE_HMAT
   HMatrixFactory hmatrixFactory;
-  HMatrix covarianceHMatrix(hmatrixFactory.build(vertices, dimension_, true, parameters));
+  HMatrix covarianceHMatrix(hmatrixFactory.build(vertices, outputDimension_, true, parameters));
   // Update covariance matrix
   // Take into account nuggetFactor
-  CovarianceMatrix oldCovariance(spatialCovariance_);
-  for(UnsignedInteger j = 0; j < dimension_; ++j) spatialCovariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor);
+  CovarianceMatrix oldCovariance(outputCovariance_);
+  for(UnsignedInteger j = 0; j < outputDimension_; ++j) outputCovariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor);
   // Compute the covariance
   DiracAssemblyFunction dirac(*this);
   covarianceHMatrix.assemble(dirac, 'L');
   // Restore old covariance
-  spatialCovariance_ = CovarianceMatrix(oldCovariance);
+  outputCovariance_ = CovarianceMatrix(oldCovariance);
   return covarianceHMatrix;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
@@ -297,18 +297,18 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
 Matrix DiracCovarianceModel::partialGradient(const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   // Gradient should be checked
-  Matrix gradient(spatialDimension_, dimension_ * dimension_);
+  Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
   return gradient;
 }
 
 /* Parameters accessor */
 void DiracCovarianceModel::setFullParameter(const Point & parameters)
 {
-  if (parameters.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << dimension_ << ", here, parameters dimension = " << parameters.getDimension();
+  if (parameters.getDimension() != outputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setParameter, parameters should be of size " << outputDimension_ << ", here, parameters dimension = " << parameters.getDimension();
   setAmplitude(parameters);
 }
 
@@ -320,7 +320,7 @@ Point DiracCovarianceModel::getFullParameter() const
 Description DiracCovarianceModel::getFullParameterDescription() const
 {
   Description description(0);
-  for (UnsignedInteger j = 0; j < dimension_; ++j)
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     description.add(OSS() << "amplitude_" << j);
   return description;
 }
@@ -336,11 +336,11 @@ void DiracCovarianceModel::setScale(const Point & scale)
 /** Amplitude accessor */
 void DiracCovarianceModel::setAmplitude(const Point & amplitude)
 {
-  if (amplitude.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude vector should be of size " << dimension_
+  if (amplitude.getDimension() != outputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude vector should be of size " << outputDimension_
                                          << ", here, amplitude dimension = " << amplitude.getDimension();
   // Check positivity of amplitude
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
     if (amplitude[i] <= 0)
       throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive but the #" << i << " component equals " << amplitude[i];
@@ -349,12 +349,12 @@ void DiracCovarianceModel::setAmplitude(const Point & amplitude)
   computeCovariance();
 }
 
-void DiracCovarianceModel::setSpatialCorrelation(const CorrelationMatrix & correlation)
+void DiracCovarianceModel::setOutputCorrelation(const CorrelationMatrix & correlation)
 {
-  if (correlation.getDimension() != dimension_)
-    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setSpatialCorrelation, correlation matrix should be of dimension " << dimension_
+  if (correlation.getDimension() != outputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setOutputCorrelation, correlation matrix should be of dimension " << outputDimension_
                                          << ", here, matrix's dimension = " << correlation.getDimension();
-  spatialCorrelation_ = correlation;
+  outputCorrelation_ = correlation;
   computeCovariance();
 }
 
@@ -364,7 +364,7 @@ String DiracCovarianceModel::__repr__() const
   OSS oss;
   oss << "class=" << DiracCovarianceModel::GetClassName()
       << ", amplitude=" << amplitude_
-      << ", spatialCorrelation=" << spatialCorrelation_;
+      << ", spatialCorrelation=" << outputCorrelation_;
   return oss;
 }
 
@@ -373,8 +373,8 @@ String DiracCovarianceModel::__str__(const String & offset) const
 {
   OSS oss;
   oss << DiracCovarianceModel::GetClassName();
-  oss << "(t)=" << spatialCovariance_.__str__()
-      << " * t==" << Point(spatialDimension_, 0.0).__str__();
+  oss << "(t)=" << outputCovariance_.__str__()
+      << " * t==" << Point(inputDimension_, 0.0).__str__();
   return oss;
 }
 

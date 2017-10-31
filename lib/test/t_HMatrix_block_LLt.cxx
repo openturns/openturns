@@ -33,7 +33,7 @@ private:
 
 public:
   TestHMatrixTensorRealAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
-    : HMatrixTensorRealAssemblyFunction(covarianceModel.getDimension())
+    : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
     , covarianceModel_(covarianceModel)
     , vertices_(vertices)
   {}
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
     TestHMatrixTensorRealAssemblyFunction blockAssembly(covarianceModel, vertices);
     // Non-symmetric HMatrix
-    HMatrix hmat(hmatrixFactory.build(vertices, covarianceModel.getDimension(), true));
+    HMatrix hmat(hmatrixFactory.build(vertices, covarianceModel.getOutputDimension(), true));
     hmat.assemble(blockAssembly, 'L');
 
     HMatrix hmatRef(hmat);

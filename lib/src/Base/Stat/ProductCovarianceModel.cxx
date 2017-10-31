@@ -67,19 +67,19 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   // Scale & amplitude
   Point scale(0);
   Point amplitude(1, 1.0);
-  spatialDimension_ = 0;
+  inputDimension_ = 0;
   // Get dimension: should be the same for all elements
-  dimension_ = 1;
+  outputDimension_ = 1;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger localDimension = collection[i].getDimension();
-    if (dimension_ != localDimension)
+    const UnsignedInteger localDimension = collection[i].getOutputDimension();
+    if (outputDimension_ != localDimension)
       throw InvalidArgumentException(HERE) << "In ProductCovarianceModel::setCollection, incompatible dimension of the element #" << i
-                                           << " dimension of element = " << localDimension << ", dimension of the model = " << dimension_;
+                                           << " dimension of element = " << localDimension << ", dimension of the model = " << outputDimension_;
     // Add element to the collection
     // Get its scale, which is seen as a concatenation of collection scale
-    const UnsignedInteger localSpatialDimension = collection[i].getSpatialDimension();
-    spatialDimension_ += localSpatialDimension;
+    const UnsignedInteger localSpatialDimension = collection[i].getInputDimension();
+    inputDimension_ += localSpatialDimension;
     scale.add(collection[i].getScale());
     // Get amplitude as amplitude product
     const Scalar localAmplitude = collection[i].getAmplitude()[0];
@@ -109,14 +109,14 @@ ProductCovarianceModel * ProductCovarianceModel::clone() const
 Scalar ProductCovarianceModel::computeStandardRepresentative(const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
   Scalar rho = 1.0;
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
-    const UnsignedInteger localSpatialDimension = collection_[i].getSpatialDimension();
+    const UnsignedInteger localSpatialDimension = collection_[i].getInputDimension();
     const UnsignedInteger stop = start + localSpatialDimension;
     Point localS(localSpatialDimension);
     std::copy(s.begin() + start, s.begin() + stop, localS.begin());
@@ -132,18 +132,18 @@ Scalar ProductCovarianceModel::computeStandardRepresentative(const Point & s,
 Matrix ProductCovarianceModel::partialGradient(const Point & s,
     const Point & t) const
 {
-  if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
-  if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
   const UnsignedInteger size = collection_.getSize();
   Point localCovariances(size);
   Scalar leftValue = 1.0;
   Scalar rightValue = 1.0;
   UnsignedInteger start = 0;
-  Matrix gradient(spatialDimension_, 1);
+  Matrix gradient(inputDimension_, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger localSpatialDimension = collection_[i].getSpatialDimension();
+    const UnsignedInteger localSpatialDimension = collection_[i].getInputDimension();
     const UnsignedInteger stop = start + localSpatialDimension;
     Point localS(localSpatialDimension);
     std::copy(s.begin() + start, s.begin() + stop, localS.begin());
@@ -157,11 +157,11 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
     start = stop;
   }
   // Decrement
-  start = getSpatialDimension();
+  start = getInputDimension();
   // Second step
   for (UnsignedInteger i = size; i > 0; --i)
   {
-    const UnsignedInteger localSpatialDimension = collection_[i - 1].getSpatialDimension();
+    const UnsignedInteger localSpatialDimension = collection_[i - 1].getInputDimension();
     start -= localSpatialDimension;
     for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) gradient(start + j, 0) *= rightValue;
     rightValue *= localCovariances[i - 1];
@@ -201,7 +201,7 @@ Point ProductCovarianceModel::getFullParameter() const
 
 Description ProductCovarianceModel::getFullParameterDescription() const
 {
-  const UnsignedInteger size = spatialDimension_ + 1;
+  const UnsignedInteger size = inputDimension_ + 1;
   Description description(size);
   for (UnsignedInteger i = 0; i < size - 1; ++i)
     description[i] = OSS() << "scale_" << i;
@@ -212,8 +212,8 @@ Description ProductCovarianceModel::getFullParameterDescription() const
 
 void ProductCovarianceModel::setScale(const Point & scale)
 {
-  if (scale.getDimension() != spatialDimension_)
-    throw InvalidArgumentException(HERE) << "Error: scale dimension should be " << spatialDimension_ << ". Here we got " << scale.getDimension();
+  if (scale.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: scale dimension should be " << inputDimension_ << ". Here we got " << scale.getDimension();
   // Set the scale
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
@@ -242,7 +242,7 @@ String ProductCovarianceModel::__repr__() const
 {
   OSS oss;
   oss << "class=" << ProductCovarianceModel::GetClassName()
-      << " input dimension=" << spatialDimension_
+      << " input dimension=" << inputDimension_
       << " models=" << collection_;
   return oss;
 }
@@ -256,7 +256,7 @@ String ProductCovarianceModel::__str__(const String & offset) const
 /* Marginal accessor */
 ProductCovarianceModel::Implementation ProductCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= dimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << dimension_;
+  if (index >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
   return collection_[index].getImplementation();
 }
 

@@ -81,7 +81,7 @@ public:
   /** Scale/amplitude set accessors */
   void setScale(const Point & scale);
   void setAmplitude(const Point & amplitude);
-  void setSpatialCorrelation(const CorrelationMatrix & correlation);
+  void setOutputCorrelation(const CorrelationMatrix & outputCorrelation);
 
   /** String converter */
   String __repr__() const;

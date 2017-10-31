@@ -61,6 +61,16 @@ CovarianceModel::CovarianceModel(CovarianceModelImplementation * p_implementatio
 }
 
 /* Dimension accessor */
+UnsignedInteger CovarianceModel::getInputDimension() const
+{
+  return getImplementation()->getInputDimension();
+}
+
+UnsignedInteger CovarianceModel::getOutputDimension() const
+{
+  return getImplementation()->getOutputDimension();
+}
+
 UnsignedInteger CovarianceModel::getSpatialDimension() const
 {
   return getImplementation()->getSpatialDimension();
@@ -228,6 +238,17 @@ void CovarianceModel::setScale(const Point & scale)
 }
 
 /* Spatial correlation accessor */
+CorrelationMatrix CovarianceModel::getOutputCorrelation() const
+{
+  return getImplementation()->getOutputCorrelation();
+}
+
+void CovarianceModel::setOutputCorrelation(const CorrelationMatrix & outputCorrelation)
+{
+  copyOnWrite();
+  getImplementation()->setOutputCorrelation(outputCorrelation);
+}
+
 CorrelationMatrix CovarianceModel::getSpatialCorrelation() const
 {
   return getImplementation()->getSpatialCorrelation();
