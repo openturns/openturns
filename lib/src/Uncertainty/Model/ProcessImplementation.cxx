@@ -36,7 +36,7 @@ static const Factory<ProcessImplementation> Factory_ProcessImplementation;
 ProcessImplementation::ProcessImplementation()
   : PersistentObject()
   , description_()
-  , dimension_(1)
+  , ouputDimension_(1)
   , mesh_(RegularGrid(0.0, 1.0, 1))
 {
   // Nothing to do
@@ -53,7 +53,7 @@ String ProcessImplementation::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << ProcessImplementation::GetClassName()
-      << " dimension_=" << dimension_
+      << " ouputDimension=" << ouputDimension_
       << " description=" << description_
       << " mesh=" << mesh_;
   return oss;
@@ -64,26 +64,38 @@ String ProcessImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << "class=" << ProcessImplementation::GetClassName()
-      << " dimension=" << dimension_
+      << " ouputDimension=" << ouputDimension_
       << " description=" << description_.__str__(offset)
       << " mesh=" << mesh_.__str__(offset);
   return oss;
 }
 
 /* Dimension accessor */
-UnsignedInteger ProcessImplementation::getSpatialDimension() const
+UnsignedInteger ProcessImplementation::getInputDimension() const
 {
   return mesh_.getDimension();
 }
 
-UnsignedInteger ProcessImplementation::getDimension() const
+UnsignedInteger ProcessImplementation::getOutputDimension() const
 {
-  return dimension_;
+  return ouputDimension_;
 }
 
-void ProcessImplementation::setDimension(const UnsignedInteger dimension)
+UnsignedInteger ProcessImplementation::getSpatialDimension() const
 {
-  dimension_ = dimension;
+  LOGWARN(OSS() << "Process::getSpatialDimension is deprecated in favor of getInputDimension.");
+  return getInputDimension();
+}
+
+UnsignedInteger ProcessImplementation::getDimension() const
+{
+  LOGWARN(OSS() << "Process::getDimension is deprecated in favor of getOutputDimension.");
+  return getOutputDimension();
+}
+
+void ProcessImplementation::setOutputDimension(const UnsignedInteger ouputDimension)
+{
+  ouputDimension_ = ouputDimension;
 }
 
 /* Description accessor */
@@ -165,7 +177,7 @@ Function ProcessImplementation::getContinuousRealization() const
   // The continuous realization is obtained by a piecewise linear interpolation
   const Field field(getRealization());
   const Sample values(field.getValues());
-  if (getSpatialDimension() == 1)
+  if (getInputDimension() == 1)
   {
     const Point locations(mesh_.getVertices().getImplementation()->getData());
     return PiecewiseLinearEvaluation(locations, values);
@@ -189,8 +201,8 @@ TimeSeries ProcessImplementation::getFuture(const UnsignedInteger stepNumber) co
 ProcessSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
     const UnsignedInteger size) const
 {
-  if (getSpatialDimension() != 1) throw NotDefinedException(HERE) << "Error: can extend the realization of a process only if defined on a 1D mesh.";
-  if (size == 0) return ProcessSample(mesh_, 0, dimension_);
+  if (getInputDimension() != 1) throw NotDefinedException(HERE) << "Error: can extend the realization of a process only if defined on a 1D mesh.";
+  if (size == 0) return ProcessSample(mesh_, 0, getOutputDimension());
   ProcessSample result(size, getFuture(stepNumber));
   for (UnsignedInteger i = 1; i < size; ++i) result[i] = getFuture(stepNumber).getValues();
   return result;
@@ -199,17 +211,17 @@ ProcessSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
 /* Get the random vector corresponding to the i-th marginal component */
 ProcessImplementation::Implementation ProcessImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
-  if (getDimension() == 1) return clone();
+  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
+  if (getOutputDimension() == 1) return clone();
   throw NotYetImplementedException(HERE) << "In ProcessImplementation::getMarginal(const UnsignedInteger i) const";
 }
 
 /* Get the marginal random vector corresponding to indices components */
 ProcessImplementation::Implementation ProcessImplementation::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";
-  if (dimension == 1) return clone();
+  const UnsignedInteger outputDimension = getOutputDimension();
+  if (!indices.check(outputDimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";
+  if (outputDimension == 1) return clone();
   throw NotYetImplementedException(HERE) << "In ProcessImplementation::getMarginal(const Indices & indices) const";
 }
 
@@ -218,7 +230,7 @@ ProcessImplementation::Implementation ProcessImplementation::getMarginal(const I
 void ProcessImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_ );
+  adv.saveAttribute( "ouputDimension_", ouputDimension_ );
   adv.saveAttribute( "description_", description_ );
   adv.saveAttribute( "mesh_", mesh_ );
 }
@@ -227,7 +239,7 @@ void ProcessImplementation::save(Advocate & adv) const
 void ProcessImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_ );
+  adv.loadAttribute( "ouputDimension_", ouputDimension_ );
   adv.loadAttribute( "description_", description_ );
   adv.loadAttribute( "mesh_", mesh_ );
 }

@@ -46,7 +46,7 @@ ARMA::ARMA()
   , hasComputedNThermalization_(true)
   , nThermalization_(2)
 {
-  setDimension(1);
+  setOutputDimension(1);
   thermalize();
   setDescription(noiseDistribution_.getDescription());
 }
@@ -71,13 +71,13 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
   ARCoefficients_ = ARCoefficients;
   MACoefficients_ = MACoefficients;
 
-  setDimension(ARCoefficients_.getDimension());
+  setOutputDimension(ARCoefficients_.getDimension());
   setWhiteNoise(whiteNoise);
   setDescription(noiseDistribution_.getDescription());
   // This call checks that the given WhiteNoise is based on a RegularGrid
   setTimeGrid(whiteNoise.getTimeGrid());
   // The default state is with null values and noises
-  state_ = ARMAState(Sample(p_, dimension_), Sample(q_, dimension_));
+  state_ = ARMAState(Sample(p_, getOutputDimension()), Sample(q_, getOutputDimension()));
   // Thermalize
   thermalize();
 }
@@ -103,7 +103,7 @@ ARMA::ARMA(const ARMACoefficients & ARCoefficients,
   ARCoefficients_ = ARCoefficients;
   MACoefficients_ = MACoefficients;
 
-  setDimension(ARCoefficients_.getDimension());
+  setOutputDimension(ARCoefficients_.getDimension());
   setWhiteNoise(whiteNoise);
   setDescription(noiseDistribution_.getDescription());
   // This call checks that the given WhiteNoise is based on a RegularGrid
@@ -135,7 +135,7 @@ String ARMA::__str__(const String & offset) const
   OSS oss;
   oss << "ARMA(";
   //  ARMA process
-  for (UnsignedInteger d = 0; d < dimension_ ; ++d)
+  for (UnsignedInteger d = 0; d < getOutputDimension() ; ++d)
   {
     if (d > 0) oss << "\n";
     // Writing d-th the marginal process
@@ -143,7 +143,7 @@ String ARMA::__str__(const String & offset) const
     // decomposition by number of elements
     for (UnsignedInteger i = 0; i < p_ ; i++)
     {
-      for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
+      for (UnsignedInteger dimensionComponent = 0; dimensionComponent < getOutputDimension() ; ++dimensionComponent)
       {
         const Scalar ai = ARCoefficients_[i](d, dimensionComponent);
         if (ai > 0) oss << " + " <<  ai << " X_{" << dimensionComponent << ",t-" << i + 1 << "}";
@@ -156,7 +156,7 @@ String ARMA::__str__(const String & offset) const
     // q - 1 first components
     for (UnsignedInteger i = 0; i < q_  ; ++i)
     {
-      for (UnsignedInteger dimensionComponent = 0; dimensionComponent < dimension_ ; ++dimensionComponent)
+      for (UnsignedInteger dimensionComponent = 0; dimensionComponent < getOutputDimension() ; ++dimensionComponent)
       {
         const Scalar ai = MACoefficients_[i](d, dimensionComponent);
         if (ai > 0) oss << " + " <<  ai << " E_{" << dimensionComponent << ",t-" << i + 1 << "}";
@@ -194,22 +194,22 @@ UnsignedInteger ARMA::computeNThermalization(const Scalar epsilon) const
   // the initial noise values
   if (p_ == 0) return q_ + 1;
   // Companion matrix - Matrix is of size (dimension * p_)
-  SquareMatrix matrix(dimension_ * p_);
+  SquareMatrix matrix(getOutputDimension() * p_);
   for (UnsignedInteger coefficientIndex = 0; coefficientIndex < p_ ; ++coefficientIndex)
   {
-    for  (UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++ rowIndex)
+    for  (UnsignedInteger rowIndex = 0; rowIndex < getOutputDimension(); ++ rowIndex)
     {
-      for (UnsignedInteger columnIndex = 0; columnIndex < dimension_; ++ columnIndex)
+      for (UnsignedInteger columnIndex = 0; columnIndex < getOutputDimension(); ++ columnIndex)
       {
-        matrix( dimension_ * (p_ - 1) +  rowIndex, coefficientIndex * dimension_ + columnIndex ) = -ARCoefficients_[p_ - 1 - coefficientIndex](rowIndex, columnIndex) ;
+        matrix( getOutputDimension() * (p_ - 1) +  rowIndex, coefficientIndex * getOutputDimension() + columnIndex ) = -ARCoefficients_[p_ - 1 - coefficientIndex](rowIndex, columnIndex) ;
       }
     }
   }
 
   // Incorporation into the previous for loop
-  for (UnsignedInteger index = 0; index < dimension_ * (p_ - 1); ++index)
+  for (UnsignedInteger index = 0; index < getOutputDimension() * (p_ - 1); ++index)
   {
-    matrix(index, dimension_ + index) = 1.0;
+    matrix(index, getOutputDimension() + index) = 1.0;
   }
 
   // Computation of EigenValues without keeping intact (matrix not used after)
@@ -251,7 +251,7 @@ ARMAState ARMA::computeReccurence(const UnsignedInteger stepNumber) const
   Sample result(state_.getX());
   Sample epsilonValues(state_.getEpsilon());
   // Pre-allocate the room for the stepNumber next values
-  result.add(Sample(stepNumber, dimension_));
+  result.add(Sample(stepNumber, getOutputDimension()));
   epsilonValues.add(noiseDistribution_.getSample(stepNumber));
 
   // Consider : X_t = \sum_{i=0}^{p-1} A[i] * X_{t-i-1} + \sum_{i=0}^{q-1} B[i] * \epsilon_{t-i-1} + \epsilon_{t}
@@ -365,15 +365,15 @@ void ARMA::setWhiteNoise(const WhiteNoise & whiteNoise)
 /* Get the random vector corresponding to the i-th marginal component */
 ARMA::Implementation ARMA::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
-  if (getDimension() == 1) return clone();
+  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
+  if (getOutputDimension() == 1) return clone();
   throw NotYetImplementedException(HERE) << "In ARMA::getMarginal(const UnsignedInteger i) const";
 }
 
 /* Get the marginal random vector corresponding to indices components */
 ARMA::Implementation ARMA::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(dimension_)) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   throw NotYetImplementedException(HERE) << "In ARMA::getMarginal(const Indices & indices) const";
 }
 

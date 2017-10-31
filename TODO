@@ -1,2 +1,3 @@
 Remove deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS aliases in 1.12
 Remove deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean in 1.12
+Remove deprecated Process::getDimension, getSpatialDimension in 1.12

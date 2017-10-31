@@ -43,7 +43,7 @@ FunctionalBasisProcess::FunctionalBasisProcess()
   , state_(1, 0.0)
 {
   // Set the dimension of the process
-  setDimension(1);
+  setOutputDimension(1);
   setDescription(basis_[0].getOutputDescription());
 }
 
@@ -132,12 +132,12 @@ Field FunctionalBasisProcess::getRealization() const
   const UnsignedInteger timeGridSize = mesh_.getVerticesNumber();
   const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
-  Sample result(timeGridSize, Point(dimension_, 0.0));
+  Sample result(timeGridSize, Point(getOutputDimension(), 0.0));
   // Loop over the basis
   for (UnsignedInteger j = 0; j < basisSize; ++j)
   {
     Sample currentBasisContribution(basis_[j](mesh_.getVertices()));
-    currentBasisContribution *= Point(dimension_, state_[j]);
+    currentBasisContribution *= Point(getOutputDimension(), state_[j]);
     result += currentBasisContribution;
   }
   result.setDescription(getDescription());
@@ -171,7 +171,7 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
   const RegularGrid futureTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   const UnsignedInteger basisSize = basis_.getSize();
   // Loop over the time stamps
-  Sample result(stepNumber, Point(dimension_, 0.0));
+  Sample result(stepNumber, Point(getOutputDimension(), 0.0));
   for (UnsignedInteger i = 0; i  < stepNumber; ++i)
   {
     const Point t(1, futureTimeGrid.getValue(i));
@@ -184,14 +184,14 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
 /* Get the marginal process corresponding to the i-th marginal component */
 FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
+  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the marginal random vector corresponding to indices components */
 FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   // First the marginal distribution
   Distribution marginalDistribution(distribution_.getMarginal(indices));
   // Second the marginal basis
@@ -231,14 +231,14 @@ void FunctionalBasisProcess::setBasis(const Basis & basis)
   // Check the basis against the distribution
   if (size != distribution_.getDimension() ) throw InvalidArgumentException(HERE) << "Error: the given basis has a size=" << size << " that does not match the distribution dimension=" << distribution_.getDimension();
   // Check if the functions in the basis are from R to R^n for the same n
-  dimension_ = basis[0].getOutputDimension();
+  setOutputDimension(basis[0].getOutputDimension());
   const UnsignedInteger inputDimension = mesh_.getDimension();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Check the input dimension
     if (basis[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the function at index=" << i << " has an input dimension=" << basis[i].getInputDimension() << " which is not equal to " << inputDimension << ".";
     // Check the output dimension
-    if (basis[i].getOutputDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the function at index=" << i << " has an output dimension=" << basis[i].getOutputDimension() << " which is not equal to the process dimension=" << dimension_;
+    if (basis[i].getOutputDimension() != getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the function at index=" << i << " has an output dimension=" << basis[i].getOutputDimension() << " which is not equal to the process dimension=" << getOutputDimension();
   }
   basis_ = basis;
   setDescription(basis[0].getOutputDescription());
