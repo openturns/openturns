@@ -133,24 +133,23 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
   // Gradient definition results from definition of model
   // We should pay attention to the scaling factor scale_
   Matrix gradient(dimension_ * dimension_, spatialDimension_);
+  MatrixImplementation & gradientImpl(*gradient.getImplementation());
   UnsignedInteger dimension = 0;
   const UnsignedInteger size = collection_.getSize();
   for(UnsignedInteger k = 0; k < size; ++k)
   {
     const CovarianceModel localCovariance = collection_[k];
+    const Matrix gradient_k(localCovariance.partialGradient(s, t));
+    const MatrixImplementation & gradient_k_Impl(*gradient_k.getImplementation());
     const UnsignedInteger localDimension = localCovariance.getDimension();
-    const Matrix gradient_k = localCovariance.partialGradient(s, t);
     // Gradient gradient_k is of size localDimension^2 x spatialDimension
     for (UnsignedInteger spatialIndex = 0; spatialIndex < spatialDimension_; ++spatialIndex)
     {
       for (UnsignedInteger localColumnIndex = 0; localColumnIndex < localDimension; ++localColumnIndex)
       {
-        for (UnsignedInteger localRowIndex = 0; localRowIndex < localDimension; ++localRowIndex)
-        {
-          const UnsignedInteger localIndex = localDimension * localColumnIndex + localRowIndex;
-          const UnsignedInteger index = dimension_ * (dimension + localColumnIndex) + dimension + localRowIndex;
-          gradient(index, spatialIndex) = gradient_k(localIndex, spatialIndex);
-        }
+        const UnsignedInteger localStart = localDimension * localColumnIndex;
+        const UnsignedInteger start = dimension_ * (dimension + localColumnIndex) + dimension;
+        std::copy(&gradient_k_Impl(localStart, spatialIndex), &gradient_k_Impl(localStart, spatialIndex) + localDimension, &gradientImpl(start, spatialIndex));
       }
     }
     // update dimension
