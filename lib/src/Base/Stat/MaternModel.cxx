@@ -114,22 +114,22 @@ Matrix MaternModel::partialGradient(const Point & s,
   if (norm2 == 0.0)
   {
     // Infinite gradient for nu < 1/2
-    if (nu_ < 0.5) return Matrix(spatialDimension_, 1, Point(spatialDimension_, -SpecFunc::MaxScalar));
+    if (nu_ < 0.5) return Matrix(1, spatialDimension_, Point(spatialDimension_, -SpecFunc::MaxScalar));
     // Non-zero gradient for nu = 1/2
     if (nu_ == 0.5)
     {
-      Matrix gradient(spatialDimension_, 1);
+      Matrix gradient(1, spatialDimension_);
       for (UnsignedInteger i = 0; i < spatialDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
       return gradient;
     }
     // Zero gradient for p > 1
-    return Matrix(spatialDimension_, 1);
+    return Matrix(1, spatialDimension_);
   }
   // General case
   const Scalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
   Point tauDotsquareSqrt2nuOverTheta(spatialDimension_);
   for(UnsignedInteger i = 0; i < spatialDimension_; ++i) tauDotsquareSqrt2nuOverTheta[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
-  return Matrix(spatialDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0] * amplitude_[0];
+  return Matrix(1, spatialDimension_, tauDotsquareSqrt2nuOverTheta * value * amplitude_[0] * amplitude_[0]);
 }
 
 void MaternModel::setScale(const Point & scale)

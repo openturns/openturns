@@ -105,7 +105,7 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
   const Scalar value = p_ * exponent * std::exp(exponent) / norm2;
   // Needs tau/theta ==> reuse same NP
   for (UnsignedInteger i = 0; i < spatialDimension_; ++i) tauOverTheta[i] /= scale_[i];
-  return Matrix(spatialDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];
+  return Matrix(1, spatialDimension_, tauOverTheta * value * amplitude_[0] * amplitude_[0]);
 }
 
 

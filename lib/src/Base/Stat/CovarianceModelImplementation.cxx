@@ -196,7 +196,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
 {
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
-  Matrix gradient(spatialDimension_, dimension_ * dimension_);
+  Matrix gradient(dimension_ * dimension_, spatialDimension_);
   CovarianceMatrix covarianceST(operator()(s, t));
   // Convert result into MatrixImplementation to symmetrize & get the collection
   MatrixImplementation covarianceSTImplementation(*covarianceST.getImplementation());
@@ -213,7 +213,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
     localCovarianceImplementation.symmetrize();
     const Point currentValue(localCovarianceImplementation);
     for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
-      gradient(i, j) = (currentValue[j] - centralValue[j]) / epsilon;
+      gradient(j, i) = (currentValue[j] - centralValue[j]) / epsilon;
   }
   return gradient;
 }

@@ -64,7 +64,7 @@ static void test_model(const CovarianceModel & myModel)
   }
   else
   {
-    Matrix gradfd(spatialDimension, dimension * dimension);
+    Matrix gradfd(dimension * dimension, spatialDimension);
     CovarianceMatrix covarianceX1X2 = myModel(x1, x2);
     // Convert result into MatrixImplementation to symmetrize & get the collection
     MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
@@ -80,7 +80,7 @@ static void test_model(const CovarianceModel & myModel)
       localCovarianceImplementation.symmetrize();
       const Point currentValue(localCovarianceImplementation);
       for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
-        gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
+        gradfd(j, i) = (currentValue[j] - centralValue[j]) / eps;
     }
     fullprint << "dCov (FD)=" << gradfd << std::endl;
   }
