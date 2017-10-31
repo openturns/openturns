@@ -549,7 +549,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 
   // passing time series to log likelihood function
   w_ = timeSeries;
-  const UnsignedInteger dimension = w_.getDimension();
+  const UnsignedInteger dimension = w_.getOutputDimension();
   if (dimension != dimension_)
     throw InvalidDimensionException(HERE) << "Error : expected time series of dimension " << dimension_
                                           << " here time series is of dimension " << dimension;

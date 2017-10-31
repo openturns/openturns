@@ -53,8 +53,8 @@ FieldImplementation::FieldImplementation()
   , mesh_()
   , values_(mesh_.getVerticesNumber(), 0)
   , description_(mesh_.getDescription())
-  , spatialMean_(0)
-  , isAlreadyComputedSpatialMean_(false)
+  , inputMean_(0)
+  , isAlreadyComputedInputMean_(false)
 {
   // Nothing to do
 }
@@ -66,8 +66,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , mesh_(mesh)
   , values_(mesh.getVerticesNumber(), dim)
   , description_(0)
-  , spatialMean_(dim)
-  , isAlreadyComputedSpatialMean_(false)
+  , inputMean_(dim)
+  , isAlreadyComputedInputMean_(false)
 {
   // Build the default description
   Description description(mesh_.getVertices().getDescription());
@@ -82,8 +82,8 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , mesh_(mesh)
   , values_(values)
   , description_()
-  , spatialMean_(values.getDimension())
-  , isAlreadyComputedSpatialMean_(false)
+  , inputMean_(values.getDimension())
+  , isAlreadyComputedInputMean_(false)
 {
   if (mesh.getVerticesNumber() != values.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a Field with a number of values=" << values.getSize() << " different from the number of vertices=" << mesh.getVerticesNumber();
   Description description(mesh_.getVertices().getDescription());
@@ -104,14 +104,26 @@ UnsignedInteger FieldImplementation::getSize() const
 }
 
 /* Dimension accessor */
-UnsignedInteger FieldImplementation::getSpatialDimension() const
+UnsignedInteger FieldImplementation::getInputDimension() const
 {
   return mesh_.getDimension();
 }
 
-UnsignedInteger FieldImplementation::getDimension() const
+UnsignedInteger FieldImplementation::getOutputDimension() const
 {
   return values_.getDimension();
+}
+
+UnsignedInteger FieldImplementation::getSpatialDimension() const
+{
+  LOGWARN(OSS() << "Field::getSpatialDimension is deprecated in favor of getInputDimension.");
+  return getInputDimension();
+}
+
+UnsignedInteger FieldImplementation::getDimension() const
+{
+  LOGWARN(OSS() << "Field::getDimension is deprecated in favor of getOutputDimension.");
+  return getOutputDimension();
 }
 
 /* Mesh accessor */
@@ -128,7 +140,7 @@ RegularGrid FieldImplementation::getTimeGrid() const
 /* Individual value accessor */
 NSI_point FieldImplementation::operator[](const UnsignedInteger index)
 {
-  isAlreadyComputedSpatialMean_ = false;
+  isAlreadyComputedInputMean_ = false;
   return values_[index];
 }
 
@@ -140,7 +152,7 @@ NSI_const_point FieldImplementation::operator[](const UnsignedInteger index) con
 Scalar & FieldImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
-  isAlreadyComputedSpatialMean_ = false;
+  isAlreadyComputedInputMean_ = false;
 #ifdef DEBUG_BOUNDCHECKING
   // No copyOnWrite() as the at() method already do it
   return at(i, j);
@@ -163,7 +175,7 @@ const Scalar & FieldImplementation::operator () (const UnsignedInteger i,
 NSI_point FieldImplementation::at (const UnsignedInteger index)
 {
   if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
-  isAlreadyComputedSpatialMean_ = false;
+  isAlreadyComputedInputMean_ = false;
   return (*this)[index];
 }
 
@@ -177,8 +189,8 @@ Scalar & FieldImplementation::at (const UnsignedInteger i,
                                   const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
-  isAlreadyComputedSpatialMean_ = false;
+  if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
+  isAlreadyComputedInputMean_ = false;
   return (*this)[i][j];
 }
 
@@ -186,7 +198,7 @@ const Scalar & FieldImplementation::at (const UnsignedInteger i,
                                         const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
+  if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
   return (*this)[i][j];
 }
 
@@ -199,7 +211,7 @@ Point FieldImplementation::getValueAtIndex(const UnsignedInteger index) const
 void FieldImplementation::setValueAtIndex(const UnsignedInteger index,
     const Point & val)
 {
-  isAlreadyComputedSpatialMean_ = false;
+  isAlreadyComputedInputMean_ = false;
   values_[index] = val;
 }
 
@@ -211,7 +223,7 @@ Point FieldImplementation::getValueAtNearestPosition(const Point & position) con
 void FieldImplementation::setValueAtNearestPosition(const Point & position,
     const Point & val)
 {
-  isAlreadyComputedSpatialMean_ = false;
+  isAlreadyComputedInputMean_ = false;
   values_[mesh_.getNearestVertexIndex(position)] = val;
 }
 
@@ -223,7 +235,7 @@ Point FieldImplementation::getValueAtNearestTime(const Scalar timestamp) const
 
 void FieldImplementation::setValueAtNearestTime(const Scalar timestamp, const Point & val)
 {
-  isAlreadyComputedSpatialMean_ = false;
+  isAlreadyComputedInputMean_ = false;
   setValueAtNearestPosition(Point(1, timestamp), val);
 }
 
@@ -244,7 +256,7 @@ FieldImplementation FieldImplementation::getMarginal(const Indices & indices) co
 /* Description Accessor */
 void FieldImplementation::setDescription(const Description & description)
 {
-  if (description.getSize() != (getSpatialDimension() + getDimension())) throw InvalidArgumentException(HERE) << "Error: the given description does not match the field input+output dimension.";
+  if (description.getSize() != (getInputDimension() + getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the given description does not match the field input+output dimension.";
   description_ = description;
 }
 
@@ -279,23 +291,23 @@ String FieldImplementation::__str__(const String & offset) const
   return data.__str__(offset);
 }
 
-/* TBB functor to speed-up spatial mean computation */
-struct FieldSpatialMeanFunctor
+/* TBB functor to speed-up input mean computation */
+struct FieldInputMeanFunctor
 {
   const FieldImplementation & field_;
   Scalar volumeAccumulator_;
   Point accumulator_;
 
-  FieldSpatialMeanFunctor(const FieldImplementation & field)
-    : field_(field), volumeAccumulator_(0.0), accumulator_(field.getDimension(), 0.0) {}
+  FieldInputMeanFunctor(const FieldImplementation & field)
+    : field_(field), volumeAccumulator_(0.0), accumulator_(field.getOutputDimension(), 0.0) {}
 
-  FieldSpatialMeanFunctor(const FieldSpatialMeanFunctor & other, TBB::Split)
-    : field_(other.field_), volumeAccumulator_(0.0), accumulator_(other.field_.getDimension(), 0.0) {}
+  FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBB::Split)
+    : field_(other.field_), volumeAccumulator_(0.0), accumulator_(other.field_.getOutputDimension(), 0.0) {}
 
   void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
   {
-    const UnsignedInteger meshDimension = field_.getSpatialDimension();
-    const UnsignedInteger dimension = field_.getDimension();
+    const UnsignedInteger meshDimension = field_.getInputDimension();
+    const UnsignedInteger dimension = field_.getOutputDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       const Scalar volume = field_.mesh_.computeSimplexVolume(i);
@@ -307,37 +319,49 @@ struct FieldSpatialMeanFunctor
     }
   }
 
-  void join(const FieldSpatialMeanFunctor & other)
+  void join(const FieldInputMeanFunctor & other)
   {
     volumeAccumulator_ += other.volumeAccumulator_;
     accumulator_ += other.accumulator_;
   }
 
-}; /* end struct FieldSpatialMeanFunctor */
+}; /* end struct FieldInputMeanFunctor */
 
-/* Compute the spatial mean of the field */
-void FieldImplementation::computeSpatialMean() const
+/* Compute the input mean of the field */
+void FieldImplementation::computeInputMean() const
 {
-  FieldSpatialMeanFunctor functor( *this );
+  FieldInputMeanFunctor functor( *this );
   TBB::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
-  if (functor.volumeAccumulator_ == 0.0) throw InternalException(HERE) << "Error: cannot compute the spatial mean of a field supported by a mesh of zero volume.";
-  spatialMean_ = functor.accumulator_ / functor.volumeAccumulator_;
-  isAlreadyComputedSpatialMean_ = true;
+  if (functor.volumeAccumulator_ == 0.0) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
+  inputMean_ = functor.accumulator_ / functor.volumeAccumulator_;
+  isAlreadyComputedInputMean_ = true;
 }
 
 
-/* Compute the spatial mean of the field */
+/* Compute the input mean of the field */
+Point FieldImplementation::getInputMean() const
+{
+  if (!isAlreadyComputedInputMean_) computeInputMean();
+  return inputMean_;
+}
+
 Point FieldImplementation::getSpatialMean() const
 {
-  if (!isAlreadyComputedSpatialMean_) computeSpatialMean();
-  return spatialMean_;
+  LOGWARN(OSS() << "Field::getSpatialMean is deprecated in favor of getInputMean.");
+  return getInputMean();
 }
 
-/* Compute the spatial mean of the field */
-Point FieldImplementation::getTemporalMean() const
+/* Compute the input mean of the field */
+Point FieldImplementation::getOutputMean() const
 {
   if (!mesh_.isRegular() || (mesh_.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the temporal mean is defined only when the mesh is regular and of dimension 1.";
   return values_.computeMean();
+}
+
+Point FieldImplementation::getTemporalMean() const
+{
+  LOGWARN(OSS() << "Field::getTemporalMean is deprecated in favor of getOutputMean.");
+  return getTemporalMean();
 }
 
 Sample FieldImplementation::getValues() const
@@ -362,7 +386,7 @@ Sample FieldImplementation::asSample() const
 /* Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
 Mesh FieldImplementation::asDeformedMesh() const
 {
-  if (getDimension() != getSpatialDimension()) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << values_.getDimension() << " does not match the mesh dimension=" << getSpatialDimension();
+  if (getOutputDimension() != getInputDimension()) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << values_.getDimension() << " does not match the mesh dimension=" << getInputDimension();
   Sample data(mesh_.getVertices());
   data += values_;
   return Mesh(data, mesh_.getSimplices());
@@ -372,7 +396,7 @@ Mesh FieldImplementation::asDeformedMesh() const
 Graph FieldImplementation::draw() const
 {
   // Specific drawing method for bidimensional fields indexed by a scalar
-  if ((getSpatialDimension() == 1) && (getDimension() == 2))
+  if ((getInputDimension() == 1) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
     Graph graph(title, description_[0], description_[1], true, "");
@@ -381,7 +405,7 @@ Graph FieldImplementation::draw() const
     return graph;
   }
   // Specific drawing method for bidimensional fields indexed by a 2d-point
-  if ((getSpatialDimension() == 2) && (getDimension() == 2))
+  if ((getInputDimension() == 2) && (getOutputDimension() == 2))
   {
     const String title(OSS() << getName());
     Graph graph(title, description_[0], description_[1], true, "");
@@ -449,8 +473,8 @@ Graph FieldImplementation::draw() const
 Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const
 {
-  if (index >= getDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
-  const UnsignedInteger meshDimension = getSpatialDimension();
+  if (index >= getOutputDimension() ) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
+  const UnsignedInteger meshDimension = getInputDimension();
   if (meshDimension > 2) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
@@ -616,8 +640,8 @@ void FieldImplementation::save(Advocate & adv) const
   adv.saveAttribute( "mesh_", mesh_);
   adv.saveAttribute( "values_", values_);
   adv.saveAttribute( "description_", description_);
-  adv.saveAttribute( "spatialMean_", spatialMean_);
-  adv.saveAttribute( "isAlreadyComputedSpatialMean_", isAlreadyComputedSpatialMean_);
+  adv.saveAttribute( "inputMean_", inputMean_);
+  adv.saveAttribute( "isAlreadyComputedInputMean_", isAlreadyComputedInputMean_);
 }
 
 
@@ -628,8 +652,8 @@ void FieldImplementation::load(Advocate & adv)
   adv.loadAttribute( "mesh_", mesh_);
   adv.loadAttribute( "values_", values_);
   adv.loadAttribute( "description_", description_);
-  adv.loadAttribute( "spatialMean_", spatialMean_);
-  adv.loadAttribute( "isAlreadyComputedSpatialMean_", isAlreadyComputedSpatialMean_);
+  adv.loadAttribute( "inputMean_", inputMean_);
+  adv.loadAttribute( "isAlreadyComputedInputMean_", isAlreadyComputedInputMean_);
 }
 
 /* Export to VTK file */
@@ -642,9 +666,9 @@ void FieldImplementation::exportToVTKFile(const String & fileName) const
   PlatformInfo::SetNumericalPrecision(16);
   file << content << "\nPOINT_DATA " << getSize() << "\n";
 
-  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
   {
-    String fieldName(getDescription()[getSpatialDimension() + i]);
+    String fieldName(getDescription()[getInputDimension() + i]);
     replace(fieldName.begin(), fieldName.end(), ' ', '~');
     if (fieldName.size() == 0) fieldName = String(OSS() << "v_" << i);
     file << "SCALARS " << fieldName << " float\nLOOKUP_TABLE default\n";

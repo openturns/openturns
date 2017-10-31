@@ -59,7 +59,7 @@ Returns
 deformedMesh : :class:`~openturns.Mesh`
     The initial mesh is deformed as follows: each vertex of the mesh is
     replaced by the sum of the vertex and the value of the field at this
-    vertex. Only works when the spatial dimension :math:`n`: is
+    vertex. Only works when the input dimension :math:`n`: is
     equal to the dimension of the field :math:`d`."
 %enddef
 %feature("docstring") OT::FieldImplementation::asDeformedMesh
@@ -68,7 +68,7 @@ OT_Field_asDeformedMesh_doc
 // ---------------------------------------------------------------------
 
 %define OT_Field_draw_doc
-"Draw the first marginal of the field if the spatial dimension is less than 2.
+"Draw the first marginal of the field if the input dimension is less than 2.
 
 Returns
 -------
@@ -85,7 +85,7 @@ OT_Field_draw_doc
 // ---------------------------------------------------------------------
 
 %define OT_Field_drawMarginal_doc
-"Draw one marginal field if the spatial dimension is less than 2.
+"Draw one marginal field if the input dimension is less than 2.
 
 Parameters
 ----------
@@ -152,7 +152,7 @@ description : :class:`~openturns.Description`
 OT_Field_getDescription_doc
 
 // ---------------------------------------------------------------------
-%define OT_Field_getDimension_doc
+%define OT_Field_getOutputDimension_doc
 "Get the dimension :math:`d` of the values.
 
 Returns
@@ -160,8 +160,8 @@ Returns
 d : int
     Dimension of the field values: :math:`d`."
 %enddef
-%feature("docstring") OT::FieldImplementation::getDimension
-OT_Field_getDimension_doc
+%feature("docstring") OT::FieldImplementation::getOutputDimension
+OT_Field_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_getMesh_doc
@@ -202,7 +202,7 @@ size : int
 OT_Field_getSize_doc
 
 // ---------------------------------------------------------------------
-%define OT_Field_getSpatialDimension_doc
+%define OT_Field_getInputDimension_doc
 "Get the dimension of the domain :math:`\cD`.
 
 Returns
@@ -210,22 +210,22 @@ Returns
 n : int
     Dimension of the domain :math:`\cD`: :math:`n`."
 %enddef
-%feature("docstring") OT::FieldImplementation::getSpatialDimension
-OT_Field_getSpatialDimension_doc
+%feature("docstring") OT::FieldImplementation::getInputDimension
+OT_Field_getInputDimension_doc
 
 // ---------------------------------------------------------------------
-%define OT_Field_getSpatialMean_doc
-"Get the spatial weighted mean of the values of the field.
+%define OT_Field_getInputMean_doc
+"Get the input weighted mean of the values of the field.
 
 Returns
 -------
-spatialMean : :class:`~openturns.Point`
+inputMean : :class:`~openturns.Point`
     Weighted mean of the  values of the field, weighted by the volume of each
     simplex.
 
 Notes
 -----
-The spatial mean of the field is defined by:
+The input mean of the field is defined by:
 
 .. math::
 
@@ -236,11 +236,11 @@ its volume and :math:`(\vect{v}_{i_0}, \dots, \vect{v}_{i_n})` the values of
 the field associated to the  vertices of :math:`S_i`, and
 :math:`\displaystyle V=\sum_{S_i \in \cD} |S_i|`."
 %enddef
-%feature("docstring") OT::FieldImplementation::getSpatialMean
-OT_Field_getSpatialMean_doc
+%feature("docstring") OT::FieldImplementation::getInputMean
+OT_Field_getInputMean_doc
 
 // ---------------------------------------------------------------------
-%define OT_Field_getTemporalMean_doc
+%define OT_Field_getOutputMean_doc
 "Get the mean of the values of the field.
 
 Returns
@@ -259,8 +259,8 @@ If we note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values in
 
 Only makes sense in the case of a regular grid."
 %enddef
-%feature("docstring") OT::FieldImplementation::getTemporalMean
-OT_Field_getTemporalMean_doc
+%feature("docstring") OT::FieldImplementation::getOutputMean
+OT_Field_getOutputMean_doc
 
 // ---------------------------------------------------------------------
 
@@ -380,3 +380,21 @@ values : 2-d sequence of float
 %enddef
 %feature("docstring") OT::FieldImplementation::setValues
 OT_Field_setValues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Field_getMarginal_doc
+"Marginal accessor.
+
+Parameters
+----------
+i : int or sequence of int
+    Index of the marginal.
+
+Returns
+-------
+value : :class:`~openturns.Field`.
+    Marginal field."
+%enddef
+%feature("docstring") OT::FieldImplementation::getMarginal
+OT_Field_getMarginal_doc

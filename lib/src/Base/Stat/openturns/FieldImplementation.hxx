@@ -94,6 +94,10 @@ public:
   UnsignedInteger getSize() const;
 
   /** Dimension accessor */
+  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getOutputDimension() const;
+
+  /** @deprecated */
   UnsignedInteger getSpatialDimension() const;
   UnsignedInteger getDimension() const;
 
@@ -129,11 +133,17 @@ public:
   /** Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
   Mesh asDeformedMesh() const;
 
-  /** Compute the spatial mean of the field */
+  /** Compute the input mean of the field */
+  Point getInputMean() const;
+
+  /** @deprecated */
   Point getSpatialMean() const;
 
-  /** Compute the temporal mean of the field, ie its spatial mean when the mesh
+  /** Compute the temporal mean of the field, ie its input mean when the mesh
       is regular and of dimension 1 */
+  Point getOutputMean() const;
+
+  /** @deprecated */
   Point getTemporalMean() const;
 
   /** Draw a marginal of the timeSerie */
@@ -153,8 +163,8 @@ public:
 
 protected:
 
-  /** Compute the spatial mean of the field */
-  void computeSpatialMean() const;
+  /** Compute the input mean of the field */
+  void computeInputMean() const;
 
   /** The mesh associated to the field */
   Mesh mesh_;
@@ -165,14 +175,14 @@ protected:
   /** The description of all components */
   Description description_;
 
-  /** The spatial mean */
-  mutable Point spatialMean_;
+  /** The input mean */
+  mutable Point inputMean_;
 
-  /** Flag to tell if the spatial mean has already been computed */
-  mutable Bool isAlreadyComputedSpatialMean_;
+  /** Flag to tell if the input mean has already been computed */
+  mutable Bool isAlreadyComputedInputMean_;
 
 private:
-  friend struct FieldSpatialMeanFunctor;
+  friend struct FieldInputMeanFunctor;
 }; /* class FieldImplementation */
 
 

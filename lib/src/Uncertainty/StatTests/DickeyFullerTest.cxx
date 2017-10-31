@@ -88,7 +88,7 @@ DickeyFullerTest::DickeyFullerTest(const TimeSeries & series,
   , sum_ti_(0.0)
   , sum_ti_ti_(0.0)
 {
-  if (series.getDimension() != 1)
+  if (series.getOutputDimension() != 1)
     throw InvalidDimensionException(HERE) << "Expected time series of dimension 1";
 
   // Build the estimation of parameters rho and \phi_i

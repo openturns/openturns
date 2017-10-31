@@ -194,7 +194,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Fie
 {
   // We split the time series into overlaping blockNumbers that are used as a ProcessSample
   const UnsignedInteger size = timeSeries.getSize();
-  const UnsignedInteger dimension = timeSeries.getDimension();
+  const UnsignedInteger dimension = timeSeries.getOutputDimension();
   // First, compute the block size
   const UnsignedInteger blockSize = static_cast<UnsignedInteger>(size / (1.0 + (blockNumber_ - 1.0) * (1.0 - overlap_)));
   // Then, compute the associated hop size, even if it is not exactly associated with the overlap value

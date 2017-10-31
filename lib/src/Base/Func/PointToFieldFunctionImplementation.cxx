@@ -142,7 +142,7 @@ ProcessSample PointToFieldFunctionImplementation::operator() (const Sample & inS
   const UnsignedInteger size = inS.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given sample has a size of 0.";
   Field field0(operator()(inS[0]));
-  ProcessSample outSample(field0.getMesh(), size, field0.getDimension());
+  ProcessSample outSample(field0.getMesh(), size, field0.getOutputDimension());
   outSample.setField(field0, 0);
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls

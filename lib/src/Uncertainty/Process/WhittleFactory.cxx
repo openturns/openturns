@@ -357,7 +357,7 @@ void WhittleFactory::setSpectralModelFactory(const WelchFactory & factory)
 ARMA WhittleFactory::buildWithCriteria(const TimeSeries & timeSeries,
                                        Point & informationCriteria) const
 {
-  if (timeSeries.getDimension() != 1)
+  if (timeSeries.getOutputDimension() != 1)
     throw NotYetImplementedException(HERE) << "In WhittleFactory::build(const TimeSeries & timeSeries, Point & informationCriteria) const: currently implemented for 1 d case only";
 
   // Compute the tapered periodogramme for the time series using the Welch method

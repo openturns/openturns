@@ -121,7 +121,7 @@ Scalar & Field::at (const UnsignedInteger i,
                     const UnsignedInteger j)
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
+  if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
   copyOnWrite();
   return (*getImplementation())[i][j];
 }
@@ -130,7 +130,7 @@ const Scalar & Field::at (const UnsignedInteger i,
                           const UnsignedInteger j) const
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j > getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
+  if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
   return (*getImplementation())[i][j];
 }
 
@@ -207,6 +207,16 @@ UnsignedInteger Field::getSize() const
 }
 
 /* Dimension accessor */
+UnsignedInteger Field::getInputDimension() const
+{
+  return getImplementation()->getInputDimension();
+}
+
+UnsignedInteger Field::getOutputDimension() const
+{
+  return getImplementation()->getOutputDimension();
+}
+
 UnsignedInteger Field::getSpatialDimension() const
 {
   return getImplementation()->getSpatialDimension();
@@ -248,6 +258,11 @@ Mesh Field::asDeformedMesh() const
 }
 
 /* Compute the spatial mean of the field */
+Point Field::getInputMean() const
+{
+  return getImplementation()->getInputMean();
+}
+
 Point Field::getSpatialMean() const
 {
   return getImplementation()->getSpatialMean();
