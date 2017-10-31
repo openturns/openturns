@@ -12,18 +12,18 @@ OT_Field_drawMarginal_doc
 OT_Field_exportToVTKFile_doc
 %feature("docstring") OT::Field::getDescription
 OT_Field_getDescription_doc
-%feature("docstring") OT::Field::getDimension
-OT_Field_getDimension_doc
+%feature("docstring") OT::Field::getOutputDimension
+OT_Field_getOutputDimension_doc
 %feature("docstring") OT::Field::getMesh
 OT_Field_getMesh_doc
 %feature("docstring") OT::Field::getSize
 OT_Field_getSize_doc
-%feature("docstring") OT::Field::getSpatialDimension
-OT_Field_getSpatialDimension_doc
-%feature("docstring") OT::Field::getSpatialMean
-OT_Field_getSpatialMean_doc
-%feature("docstring") OT::Field::getTemporalMean
-OT_Field_getTemporalMean_doc
+%feature("docstring") OT::Field::getInputDimension
+OT_Field_getInputDimension_doc
+%feature("docstring") OT::Field::getInputMean
+OT_Field_getInputMean_doc
+%feature("docstring") OT::Field::getOutputMean
+OT_Field_getOutputMean_doc
 %feature("docstring") OT::Field::getTimeGrid
 OT_Field_getTimeGrid_doc
 %feature("docstring") OT::Field::getValueAtIndex
@@ -40,3 +40,5 @@ OT_Field_setValueAtIndex_doc
 OT_Field_setValueAtNearestPosition_doc
 %feature("docstring") OT::Field::setValues
 OT_Field_setValues_doc
+%feature("docstring") OT::Field::getMarginal
+OT_Field_getMarginal_doc

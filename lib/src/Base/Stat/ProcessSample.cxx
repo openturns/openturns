@@ -101,7 +101,7 @@ void ProcessSample::add(const Field & field)
     data_.add(field.getValues());
     mesh_ = field.getMesh();
   }
-  else if ((data_[0].getDimension() == field.getDimension()) && (mesh_ == field.getMesh())) data_.add(field.getValues());
+  else if ((data_[0].getDimension() == field.getOutputDimension()) && (mesh_ == field.getMesh())) data_.add(field.getValues());
   else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimenson or its mesh are incompatible.";
 }
 
@@ -124,7 +124,7 @@ void ProcessSample::setField(const Field & field,
                              const UnsignedInteger index)
 {
   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-  if (field.getDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getDimension();
+  if (field.getOutputDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getOutputDimension();
   data_[index] = field.getValues();
 }
 

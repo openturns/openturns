@@ -146,7 +146,7 @@ TimeSeries & TimeSeries::add(const Point & point)
 /* Appends a sample to the collection */
 TimeSeries & TimeSeries::add(const Sample & sample)
 {
-  if ((n_ > 0) && (sample.getDimension() != getDimension())) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
+  if ((n_ > 0) && (sample.getDimension() != getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getOutputDimension() << ", got dimension=" << sample.getDimension();
   if (sample.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension greater than 0";
   const UnsignedInteger size = sample.getSize();
   if (size == 0) return *this;

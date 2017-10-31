@@ -141,12 +141,12 @@ String PythonFieldFunction::__str__(const String & offset) const
 Field PythonFieldFunction::operator() (const Field & inF) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inputDimension != inF.getDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect dimension. Got " << inF.getDimension() << ". Expected " << getInputDimension();
+  if (inputDimension != inF.getOutputDimension())
+    throw InvalidDimensionException(HERE) << "Input field has incorrect dimension. Got " << inF.getOutputDimension() << ". Expected " << getInputDimension();
 
   const UnsignedInteger spatialDimension = getSpatialDimension();
-  if (spatialDimension != inF.getSpatialDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect spatial dimension. Got " << inF.getSpatialDimension() << ". Expected " << getSpatialDimension();
+  if (spatialDimension != inF.getInputDimension())
+    throw InvalidDimensionException(HERE) << "Input field has incorrect spatial dimension. Got " << inF.getInputDimension() << ". Expected " << getSpatialDimension();
 
   ++ callsNumber_;
 
@@ -167,9 +167,9 @@ Field PythonFieldFunction::operator() (const Field & inF) const
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a Field";
   }
 
-  if (p_outF->getDimension() != getOutputDimension())
+  if (p_outF->getOutputDimension() != getOutputDimension())
   {
-    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getDimension() << ". Expected " << getOutputDimension();
+    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getOutputDimension() << ". Expected " << getOutputDimension();
   }
   return *p_outF;
 }

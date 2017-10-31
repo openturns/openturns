@@ -112,7 +112,7 @@ String VertexValueFunction::__str__(const String & offset) const
 /* Operator () */
 Field VertexValueFunction::operator() (const Field & inFld) const
 {
-  if (inFld.getSpatialDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getSpatialDimension() << ", got mesh dimension=" << inFld.getSpatialDimension();
+  if (inFld.getInputDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getSpatialDimension() << ", got mesh dimension=" << inFld.getInputDimension();
   ++callsNumber_;
   return Field(inFld.getMesh(), function_(inFld.getImplementation()->asSample()));
 }

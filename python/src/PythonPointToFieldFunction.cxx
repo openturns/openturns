@@ -163,9 +163,9 @@ Field PythonPointToFieldFunction::operator() (const Point & inP) const
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a Field";
   }
 
-  if (p_outF->getDimension() != getOutputDimension())
+  if (p_outF->getOutputDimension() != getOutputDimension())
   {
-    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getDimension() << ". Expected " << getOutputDimension();
+    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getOutputDimension() << ". Expected " << getOutputDimension();
   }
   return *p_outF;
 }

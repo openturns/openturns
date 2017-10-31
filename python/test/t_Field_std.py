@@ -30,11 +30,11 @@ s = 3
 values = ot.Normal(s).getSample(mesh3D.getVerticesNumber())
 field = ot.Field(mesh3D, values)
 print('field=', field)
-print('spatial dim=', field.getSpatialDimension())
+print('input dim=', field.getInputDimension())
 print('value[4]=', field.getValueAtIndex(4))
 print('nearest[2]=', field.getValueAtNearestPosition(field[2]))
 print('mesh=', field.getMesh())
-print('spatial mean=', field.getSpatialMean())
+print('input mean=', field.getInputMean())
 print('deformed=', field.asDeformedMesh())
 print('description=', field.getDescription())
 

@@ -112,6 +112,10 @@ public:
   UnsignedInteger getSize() const;
 
   /** Dimension accessor */
+  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getOutputDimension() const;
+
+  /** @deprecated */
   UnsignedInteger getSpatialDimension() const;
   UnsignedInteger getDimension() const;
 
@@ -123,6 +127,9 @@ public:
   Mesh asDeformedMesh() const;
 
   /** Compute the spatial mean of the field */
+  Point getInputMean() const;
+
+  /** @deprecated */
   Point getSpatialMean() const;
 
   /** Compute the temporal mean of the field */

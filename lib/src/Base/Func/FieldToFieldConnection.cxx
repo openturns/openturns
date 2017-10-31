@@ -129,7 +129,7 @@ String FieldToFieldConnection::__str__(const String & offset) const
 /* Operator () */
 Field FieldToFieldConnection::operator() (const Field & inF) const
 {
-  if (inF.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToFieldConnection with an argument of invalid dimension";
+  if (inF.getOutputDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToFieldConnection with an argument of invalid dimension";
   ++callsNumber_;
   const Field outValue(isFieldFunctionComposition_ ? leftFieldFunction_(rightFieldFunction_(inF)) : pointToFieldFunction_(fieldToPointFunction_(inF)));
   return outValue;
