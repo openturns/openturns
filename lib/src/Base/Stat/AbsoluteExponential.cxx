@@ -97,7 +97,7 @@ Matrix AbsoluteExponential::partialGradient(const Point & s,
     factor[i] = amplitude_[0] * amplitude_[0] / scale_[i];
     if (tau[i] > 0) factor[i] *= -1.0;
   }
-  return Matrix(spatialDimension_, 1, factor * value) ;
+  return Matrix(1, spatialDimension_, factor * value) ;
 }
 
 /* String converter */

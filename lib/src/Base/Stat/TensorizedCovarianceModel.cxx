@@ -132,33 +132,25 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
 {
   // Gradient definition results from definition of model
   // We should pay attention to the scaling factor scale_
-  Matrix gradient(spatialDimension_, dimension_ * dimension_);
+  Matrix gradient(dimension_ * dimension_, spatialDimension_);
+  MatrixImplementation & gradientImpl(*gradient.getImplementation());
   UnsignedInteger dimension = 0;
   const UnsignedInteger size = collection_.getSize();
   for(UnsignedInteger k = 0; k < size; ++k)
   {
     const CovarianceModel localCovariance = collection_[k];
+    const Matrix gradient_k(localCovariance.partialGradient(s, t));
+    const MatrixImplementation & gradient_k_Impl(*gradient_k.getImplementation());
     const UnsignedInteger localDimension = localCovariance.getDimension();
-    const Matrix gradient_k = localCovariance.partialGradient(s, t);
-    // Gradient gradient_k is of size spatialDimension x localDimension^2
-    for (UnsignedInteger localIndex = 0; localIndex < localDimension * localDimension; ++localIndex)
+    // Gradient gradient_k is of size localDimension^2 x spatialDimension
+    for (UnsignedInteger spatialIndex = 0; spatialIndex < spatialDimension_; ++spatialIndex)
     {
-      // Each row of the matrix gradient_k is a matrix localDimension x localDimension
-      // presented as a collection of scalar of size localDimension^2
-      // Objective is to get the corresponding localRowIndex & localColumnIndex
-      const UnsignedInteger localRowIndex = localIndex % localDimension;
-      const UnsignedInteger localColumnIndex = localIndex / localDimension;
-      // We seek the corresponding rowIndex & localIndex, if the each row of the
-      // matrix 'gradient' was a matrix of size dimension_ * dimension,
-      const UnsignedInteger rowIndex = dimension + localRowIndex;
-      const UnsignedInteger columnIndex = dimension + localColumnIndex;
-      // With rowIndex & columnIndex, we get the index in collection
-      // because data are presented as vector (or row matrix)
-      const UnsignedInteger index = dimension_ * columnIndex + rowIndex;
-      // Fill gradient matrix
-      // Same index are used for all it rows
-      for (UnsignedInteger spatialIndex = 0; spatialIndex < spatialDimension_; ++spatialIndex)
-        gradient(spatialIndex, index) = gradient_k(spatialIndex, localIndex);
+      for (UnsignedInteger localColumnIndex = 0; localColumnIndex < localDimension; ++localColumnIndex)
+      {
+        const UnsignedInteger localStart = localDimension * localColumnIndex;
+        const UnsignedInteger start = dimension_ * (dimension + localColumnIndex) + dimension;
+        std::copy(&gradient_k_Impl(localStart, spatialIndex), &gradient_k_Impl(localStart, spatialIndex) + localDimension, &gradientImpl(start, spatialIndex));
+      }
     }
     // update dimension
     dimension += localDimension;

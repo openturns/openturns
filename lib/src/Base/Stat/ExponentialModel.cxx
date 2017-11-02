@@ -123,10 +123,10 @@ Matrix ExponentialModel::partialGradient(const Point & s,
     else factor[i] = -1.0 * tau[i] / (absTauOverTheta * scale_[i] * scale_[i]);
   }
   // Finally assemble the final matrix
-  Matrix gradient(spatialDimension_, covariancePoint.getDimension());
-  for (UnsignedInteger j = 0; j < covariancePoint.getDimension(); ++ j)
-    for (UnsignedInteger i = 0; i < spatialDimension_; ++i)
-      gradient(i, j) = covariancePoint[j] * factor[i];
+  Matrix gradient(covariancePoint.getDimension(), spatialDimension_);
+  for (UnsignedInteger j = 0; j < spatialDimension_; ++j)
+    for (UnsignedInteger i = 0; i < covariancePoint.getDimension(); ++ i)
+      gradient(i, j) = covariancePoint[i] * factor[j];
   return gradient;
 }
 

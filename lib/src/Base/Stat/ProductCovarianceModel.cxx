@@ -140,7 +140,7 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
   Scalar leftValue = 1.0;
   Scalar rightValue = 1.0;
   UnsignedInteger start = 0;
-  Matrix gradient(spatialDimension_, 1);
+  Matrix gradient(1, spatialDimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger localSpatialDimension = collection_[i].getSpatialDimension();
@@ -150,7 +150,7 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
     Point localT(localSpatialDimension);
     std::copy(t.begin() + start, t.begin() + stop, localT.begin());
     Matrix localGradient(collection_[i].partialGradient(localS, localT));
-    for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) localGradient(j, 0) *= leftValue;
+    for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) localGradient(0, j) *= leftValue;
     std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), gradient.getImplementation()->begin() + start);
     localCovariances[i] = collection_[i](localS, localT)(0, 0);
     leftValue *= localCovariances[i];
@@ -163,7 +163,7 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
   {
     const UnsignedInteger localSpatialDimension = collection_[i - 1].getSpatialDimension();
     start -= localSpatialDimension;
-    for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) gradient(start + j, 0) *= rightValue;
+    for (UnsignedInteger j = 0; j < localSpatialDimension; ++j) gradient(0, start + j) *= rightValue;
     rightValue *= localCovariances[i - 1];
   }
   return gradient * amplitude_[0] * amplitude_[0];

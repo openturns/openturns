@@ -300,7 +300,7 @@ Matrix DiracCovarianceModel::partialGradient(const Point & s,
   if (s.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << spatialDimension_;
   if (t.getDimension() != spatialDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << spatialDimension_;
   // Gradient should be checked
-  Matrix gradient(spatialDimension_, dimension_ * dimension_);
+  Matrix gradient(dimension_ * dimension_, spatialDimension_);
   return gradient;
 }
 
