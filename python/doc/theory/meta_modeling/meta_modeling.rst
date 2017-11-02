@@ -21,4 +21,4 @@ A special focus will be given to polynomial response surfaces.
     functional_chaos
     orthorgonal_polynomials
     chaos_basis
-    
+    enumeration_strategy
