@@ -189,7 +189,7 @@ private:
   Scalar pdfUpperBound_;
   Scalar cdfLowerBound_;
   Scalar cdfUpperBound_;
-  Scalar normalizationFactor_;
+  mutable Scalar normalizationFactor_;
 
   mutable Interval epsilonRange_;
 }; /* class TruncatedDistribution */

@@ -329,11 +329,11 @@ Point TruncatedDistribution::getParameter() const
 {
   Point point(distribution_.getParameter());
   for (UnsignedInteger k = 0; k < getDimension(); ++ k)
-    point.add(bounds_.getFiniteLowerBound()[k] ? 1.0 : 0.0);
-  point.add(bounds_.getLowerBound());
+    if (bounds_.getFiniteLowerBound()[k])
+      point.add(bounds_.getLowerBound()[k]);
   for (UnsignedInteger k = 0; k < getDimension(); ++ k)
-    point.add(bounds_.getFiniteUpperBound()[k] ? 1.0 : 0.0);
-  point.add(bounds_.getUpperBound());
+    if (bounds_.getFiniteUpperBound()[k])
+      point.add(bounds_.getUpperBound()[k]);
   return point;
 }
 
@@ -341,23 +341,39 @@ void TruncatedDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger parametersSize = distribution_.getParameterDimension();
   const UnsignedInteger dimension = getDimension();
-  if (parameter.getSize() != parametersSize + 4 * dimension) throw InvalidArgumentException(HERE) << "Error: expected " << parametersSize + 4 * dimension << " values, got " << parameter.getSize();
+  UnsignedInteger finiteBoundCount = 0;
+  for (UnsignedInteger k = 0; k < dimension; ++ k)
+  {
+    if (bounds_.getFiniteLowerBound()[k])
+      ++ finiteBoundCount;
+    if (bounds_.getFiniteUpperBound()[k])
+      ++ finiteBoundCount;
+  }
+
+  if (parameter.getSize() != parametersSize + finiteBoundCount) throw InvalidArgumentException(HERE) << "Error: expected " << parametersSize + finiteBoundCount << " values, got " << parameter.getSize();
   Point newParameters(parametersSize);
   std::copy(parameter.begin(), parameter.begin() + parametersSize, newParameters.begin());
   Distribution newDistribution(distribution_);
   newDistribution.setParameter(newParameters);
-  Point lowerBound(dimension);
-  Point upperBound(dimension);
-  BoolCollection finiteLowerBound(dimension);
-  BoolCollection finiteUpperBound(dimension);
-  for (UnsignedInteger k = 0; k < getDimension(); ++ k)
+
+  UnsignedInteger index = 0;
+
+  Point lowerBound(bounds_.getLowerBound());
+  Point upperBound(bounds_.getUpperBound());
+  for (UnsignedInteger k = 0; k < dimension; ++ k)
   {
-    finiteLowerBound[k] = (parameter[parametersSize + k] == 1.0);
-    lowerBound[k] = parameter[parametersSize + dimension + k];
-    finiteUpperBound[k] = (parameter[parametersSize + 2 * dimension + k] == 1.0);
-    upperBound[k] = parameter[parametersSize + 3 * dimension + k];
+    if (bounds_.getFiniteLowerBound()[k])
+    {
+      lowerBound[k] = parameter[parametersSize + index];
+      ++ index;
+    }
+    if (bounds_.getFiniteUpperBound()[k])
+    {
+      upperBound[k] = parameter[parametersSize + index];
+      ++ index;
+    }
   }
-  Interval bounds(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
+  Interval bounds(lowerBound, upperBound, bounds_.getFiniteLowerBound(), bounds_.getFiniteUpperBound());
   const Scalar w = getWeight();
   *this = TruncatedDistribution(newDistribution, bounds);
   setWeight(w);
@@ -368,13 +384,15 @@ Description TruncatedDistribution::getParameterDescription() const
 {
   Description description(distribution_.getParameterDescription());
   for (UnsignedInteger k = 0; k < getDimension(); ++ k)
-    description.add((getDimension() > 1) ? String(OSS() << "finiteLowerBound_" << k) : "finiteLowerBound");
+  {
+    if (bounds_.getFiniteLowerBound()[k])
+      description.add((getDimension() > 1) ? String(OSS() << "lowerBound_" << k) : "lowerBound");
+  }
   for (UnsignedInteger k = 0; k < getDimension(); ++ k)
-    description.add((getDimension() > 1) ? String(OSS() << "lowerBound_" << k) : "lowerBound");
-  for (UnsignedInteger k = 0; k < getDimension(); ++ k)
-    description.add((getDimension() > 1) ? String(OSS() << "finiteUpperBound_" << k) : "finiteUpperBound");
-  for (UnsignedInteger k = 0; k < getDimension(); ++ k)
-    description.add((getDimension() > 1) ? String(OSS() << "upperBound_" << k) : "upperBound");
+  {
+    if (bounds_.getFiniteUpperBound()[k])
+      description.add((getDimension() > 1) ? String(OSS() << "upperBound_" << k) : "upperBound");
+  }
   return description;
 }
 
