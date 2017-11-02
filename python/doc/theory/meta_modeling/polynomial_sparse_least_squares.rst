@@ -187,7 +187,8 @@ lowest error estimate is retained.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/meta_modeling/functional_chaos.ipynb`
+    - See :ref:`examples/meta_modeling/fieldfunction_metamodel.ipynb`
+
 
 .. topic:: References:
 

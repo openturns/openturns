@@ -20,4 +20,5 @@ A special focus will be given to polynomial response surfaces.
     cross_validation
     functional_chaos
     orthorgonal_polynomials
+    chaos_basis
     
