@@ -27,6 +27,7 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Pie.hxx"
+#include "openturns/Text.hxx"
 #include "openturns/SobolIndicesExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -207,11 +208,11 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
   {
     if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
+              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
     // Another case : Si > STi
-    if (varianceI_[marginalIndex][p] > varianceTI_[marginalIndex][p])
+    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
+              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
   }
   return firstOrderSensitivity;
 }
@@ -399,9 +400,9 @@ Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedIn
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // Another case : Si > STi
-    if (varianceI_[marginalIndex][p] > varianceTI_[marginalIndex][p])
+    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
       LOGWARN(OSS() << "The estimated total order Sobol index (" << p << ") is lesser than first order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  varianceI_[marginalIndex][p] / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_[marginalIndex][p] / referenceVariance_[marginalIndex]);
+              << p << "=" <<  varianceI_(marginalIndex, p) / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
   }
   // return value
   return varianceTI_[marginalIndex] / referenceVariance_[marginalIndex] ;
@@ -500,8 +501,8 @@ Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x
   const UnsignedInteger dimension = x.getDimension();
   const UnsignedInteger size = x.getSize();
 
-  const Scalar * xptr(&x[0][0]);
-  const Scalar * yptr(&y[0][0]);
+  const Scalar * xptr(&x(0, 0));
+  const Scalar * yptr(&y(0, 0));
 
 
   Point value(dimension, 0.0);
@@ -521,8 +522,8 @@ Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & s
   // Suppose that samples have the same size, same dimension
   const UnsignedInteger dimension = sample.getDimension();
 
-  const Scalar * xptr(&sample[indexX][0]);
-  const Scalar * yptr(&sample[indexY][0]);
+  const Scalar * xptr(&sample(indexX, 0));
+  const Scalar * yptr(&sample(indexY, 0));
 
 
   Point value(dimension, 0.0);
@@ -553,29 +554,40 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
   // Define cloud for first order and total order indices
   const Point aggregatedFO(getAggregatedFirstOrderIndices());
   const Point aggregatedTO(getAggregatedTotalOrderIndices());
-  Sample data(aggregatedFO.getDimension(), 2);
-  for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
+  const Description inputDescription(inputDesign_.getDescription());
+  const UnsignedInteger dimension = aggregatedFO.getDimension();
+  Sample data(dimension, 2);
+  for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data[k][0] = k + 1;
-    data[k][1] = aggregatedFO[k];
+    data(k, 0) = k + 1;
+    data(k, 1) = aggregatedFO[k];
   }
   // Define cloud for FO
   Cloud firstOrderIndicesGraph(data, "red", "circle", "Aggregated FO");
   graph.add(firstOrderIndicesGraph);
   // Total order
-  for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
+  for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data[k][0] = (k + 1) + 0.1;
-    data[k][1] = aggregatedTO[k];
+    data(k, 0) = (k + 1) + 0.1;
+    data(k, 1) = aggregatedTO[k];
   }
   // Define cloud for TO
   Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
   graph.add(totalOrderIndicesGraph);
+  // Description
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+  {
+    data(k, 0) = (k + 1) + 0.2;
+    data(k, 1) = 0.5 * (aggregatedTO[k] + aggregatedFO[k]);
+  }
+  Text text(data, inputDescription, "right");
+  text.setColor("black");
+  graph.add(text);
   // Set bounding box
   Point lowerBound(2, -0.1);
   Point upperBound(2);
-  upperBound[0] = aggregatedFO.getDimension() + 1;
-  upperBound[1] = 1.1 ;
+  upperBound[0] = dimension + 1.0;
+  upperBound[1] = 1.1;
   if (bootstrapSize_ > 0 && confidenceLevel_ > 0.0)
   {
     // Add plot of intervals
@@ -583,20 +595,20 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
     const Interval toInterval(getTotalOrderIndicesInterval());
     // transform data
     data = Sample(2, 2);
-    for (UnsignedInteger k = 0; k < aggregatedFO.getDimension(); ++k)
+    for (UnsignedInteger k = 0; k < dimension; ++k)
     {
       // Relative to FirstOrder
-      data[0][0] = (k + 1);
-      data[0][1] = foInterval.getLowerBound()[k];
-      data[1][0] = (k + 1);
-      data[1][1] = foInterval.getUpperBound()[k];
+      data(0, 0) = (k + 1);
+      data(0, 1) = foInterval.getLowerBound()[k];
+      data(1, 0) = (k + 1);
+      data(1, 1) = foInterval.getUpperBound()[k];
       graph.add(Curve(data, "red", "solid", 2, ""));
 
       // Relative to TotalOrder
-      data[0][0] = (k + 1) + 0.1;
-      data[0][1] = toInterval.getLowerBound()[k];
-      data[1][0] = (k + 1) + 0.1;
-      data[1][1] = toInterval.getUpperBound()[k];
+      data(0, 0) = (k + 1) + 0.1;
+      data(0, 1) = toInterval.getLowerBound()[k];
+      data(1, 0) = (k + 1) + 0.1;
+      data(1, 1) = toInterval.getUpperBound()[k];
       graph.add(Curve(data, "blue", "solid", 2, ""));
     }
   }

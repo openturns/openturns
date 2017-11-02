@@ -138,11 +138,17 @@ Sensitivity Analysis
 
     ANCOVA
     FAST
+
+    :template: classWithPlot.rst_t
+
     SobolIndicesAlgorithm
     MartinezSensitivityAlgorithm
     SaltelliSensitivityAlgorithm
     JansenSensitivityAlgorithm
     MauntzKucherenkoSensitivityAlgorithm
+
+    :template: class.rst_t
+
     SobolIndicesExperiment
 
 Statistical tests
