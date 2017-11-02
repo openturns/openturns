@@ -14,3 +14,5 @@ A special focus will be given to polynomial response surfaces.
     :maxdepth: 1
 
     taylor_expansion
+    polynomial_least_squares
+
