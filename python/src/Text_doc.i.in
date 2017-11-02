@@ -12,8 +12,10 @@ data : 2-d sequence of float
     Locations of texts
 dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
     X- and Y-locations of texts
+texts : sequence of str
+    Text content
 position : str
-    Text position; valid values are 'top' (default), 'below', 'left' or 'right'
+    Text position; valid values are 'top' (default), 'bottom', 'left' or 'right'
 legend : str
     Legend of the Text.
 
