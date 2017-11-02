@@ -36,6 +36,9 @@ Bibliography
 .. [Doornik2005] Doornik, J.A. *An Improved Ziggurat Method to Generate Normal Random Samples*,
     mimeo, Nuffield College, University of Oxford, 2005.
     `pdf <http://doc.openturns.org/papers/doornik2005.pdf>`__
+.. [Dubourg2011] Dubourg, V. *Adaptative surrogate models for reliability and reliability-based design optimization*,
+    University Blaise Pascal - Clermont II, 2011.
+    `pdf <http://doc.openturns.org/papers/dubourg2011.pdf>`__
 .. [Fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [Gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
