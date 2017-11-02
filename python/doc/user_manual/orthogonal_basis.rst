@@ -23,6 +23,8 @@ Univariate polynomial families
 
     MonomialFunctionFactory
 
+.. _orthogonal_basis:
+
 Multivariate polynomial functions
 =================================
 .. autosummary::
