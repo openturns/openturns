@@ -132,6 +132,7 @@ Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
     }
   }
   weights = Point(getSize(), 1.0 / getSize());
+  design.setDescription(experiment_.getDistribution().getDescription());
   return design;
 }
 

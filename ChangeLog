@@ -109,10 +109,12 @@
  * #912 (Wrong description of Histogram constructor parameters)
  * #914 (KarhunenLoeveQuadratureAlgorithm crashes for covariance models of dimension>1)
  * #917 (Bug in RandomMixture::computeCDF())
+ * #918 (The class SobolIndicesAlgorithm has a draw method which has no example)
  * #919 (Wrong simplification mechanism in MarginalTransformationEvaluation for Exponential distribution)
  * #921 (Cannot print a FixedExperiment when built from sample and weight)
  * #923 (Fix ExponentialModel::getParameter for diagonal correlation)
  * #927 (Functional chaos is memory hungry)
+ * #929 (The labels of the sensitivity analysis graphics are poor)
  * #930 (The getMean method has a weird behavior on parametrized distribution)
 
 == 1.9 release (2017-04-18) == #release-1.9
@@ -747,7 +749,7 @@
  * #687 (Segfault using BIC and SklarCopula)
  * #688 (incorrect analytical gradient)
  * #691 (Strange behavior of convergence graph)
-   
+
 == 1.2 release (2013-07-26) == #release-1.2
 
 === Library ===
