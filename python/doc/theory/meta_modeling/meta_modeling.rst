@@ -15,4 +15,4 @@ A special focus will be given to polynomial response surfaces.
 
     taylor_expansion
     polynomial_least_squares
-
+    polynomial_sparse_least_squares
