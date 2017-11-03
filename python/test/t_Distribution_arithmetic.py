@@ -21,6 +21,8 @@ result = dist1 / 2.0
 print('dist1/2:', result)
 graph = result.drawPDF()
 
+result = 2.0 / dist1
+print('2/dist1:', result)
 
 result = dist1.cos()
 print('cos(dist1):', result)

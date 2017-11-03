@@ -43,6 +43,10 @@ Pointer<DistributionImplementation> __truediv__(const Scalar s) { return (*self)
 Pointer<DistributionImplementation> __truediv__(const DistributionImplementation & d) { return (*self) / d; }
 #endif
 
+Pointer<DistributionImplementation> __rtruediv__(const Scalar s) { return s / (*self); }
+
+Pointer<DistributionImplementation> __rdiv__(const Scalar s) { return s / (*self); }
+
 Pointer<DistributionImplementation> __pow__(const Scalar s) { return self->pow(s); }
 
 Pointer<DistributionImplementation> __pow__(const SignedInteger s) { return self->pow(s); }
