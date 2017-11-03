@@ -9,12 +9,26 @@ This covers ranking methods for probabilistic criterion on central dispersion (e
 and probability of exceeding a threshold / failure probability.
 
 
+Central dispersion
+------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    low_discrepancy_sequence
+    design_experiment
+    taylor_moments
+    monte_carlo_moments
+
+Sensitivity analysis
+--------------------
+
 .. toctree::
     :maxdepth: 1
 
     taylor_importance_factors
-    independence_test_pearson
-    independence_test_spearman
+    ranking_pearson
+    ranking_spearman
     ranking_src
     ranking_pcc
     ranking_prcc
@@ -23,14 +37,28 @@ and probability of exceeding a threshold / failure probability.
     sensitivity_fast
     importance_form
     sensitivity_form
-    low_discrepancy_sequence
-    design_experiment
-    taylor_moments
-    monte_carlo_moments
+
+
+Probability of exceeding a threshold
+------------------------------------
+
+Approximation methods
+~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+
     form_approximation
     sorm_approximation
     reliability_index
     strong_maximum_test
+
+Sampling methods
+~~~~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+
     monte_carlo_simulation
     importance_simulation
     directional_simulation
