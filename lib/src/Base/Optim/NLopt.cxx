@@ -309,11 +309,11 @@ void NLopt::run()
   {
     // Here we catch the roundoff_limited exception as the result
     // of the optimization may be useful even if not at the requested precision
-    LOGWARN(OSS() << "NLopt raised a roundoff-limited exception");
+    LOGWARN("NLopt raised a roundoff-limited exception");
   }
   catch (nlopt::forced_stop)
   {
-    LOGWARN(OSS() << "NLopt was stopped by user");
+    LOGWARN("NLopt was stopped by user");
   }
   catch (std::exception & exc)
   {
@@ -452,10 +452,14 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   if (!grad.empty())
   {
     Matrix gradient(algorithm->getProblem().getObjective().gradient(inP));
+    Scalar norm = 0;
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      grad[i] = gradient(i, 0);
+      const Scalar gradI = gradient(i, 0);
+      grad[i] = gradI;
+      norm += gradI * gradI;
     }
+    LOGINFO(OSS() << "Gradient norm: " << sqrt(norm));
   }
 
 #ifdef OPENTURNS_HAVE_NLOPT
