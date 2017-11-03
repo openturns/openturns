@@ -58,10 +58,10 @@
 %include ProjectionStrategy.i
 %include FunctionalChaosResult.i
 %include FunctionalChaosAlgorithm.i
-%include KrigingAlgorithm.i
 %include MetaModelValidation.i
 %include GeneralLinearModelResult.i
 %include GeneralLinearModelAlgorithm.i
+%include KrigingAlgorithm.i
 
 /* Uncertainty/Model */
 %include RandomVector.i
