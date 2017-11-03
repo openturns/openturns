@@ -8,11 +8,18 @@ Numerical methods
 
     uniform_random_generator
     distribution_realization
-    isoprobabilistic_transformation
-    nataf_transformation
-    rosenblatt_transformation
     sphere_sampling
     optimization_algorithm
     optimal_lhs
     least_squares
-    
+
+Isoprobabilistic transformation
+-------------------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    isoprobabilistic_transformation
+    nataf_transformation
+    rosenblatt_transformation
+
