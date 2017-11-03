@@ -361,7 +361,7 @@ Point FieldImplementation::getOutputMean() const
 Point FieldImplementation::getTemporalMean() const
 {
   LOGWARN(OSS() << "Field::getTemporalMean is deprecated in favor of getOutputMean.");
-  return getTemporalMean();
+  return getOutputMean();
 }
 
 Sample FieldImplementation::getValues() const
