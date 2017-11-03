@@ -17,8 +17,15 @@ A special focus will be given to polynomial response surfaces.
     polynomial_least_squares
     polynomial_sparse_least_squares
     kriging
-    cross_validation
-    functional_chaos
+
+Functional chaos
+----------------
+
+.. toctree::
+    :maxdepth: 1
+
     orthorgonal_polynomials
     chaos_basis
     enumeration_strategy
+    functional_chaos
+    cross_validation
