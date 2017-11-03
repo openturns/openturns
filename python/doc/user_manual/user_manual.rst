@@ -4,7 +4,7 @@
 User manual for the Python interface
 ====================================
 
-This is the user manual for the Python bindings to the OpenTURNS library.
+This is the user manual for the Python bindings of the library.
 
 .. todo::
 
@@ -13,7 +13,7 @@ This is the user manual for the Python bindings to the OpenTURNS library.
     manual.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     base_objects
     combinatorial_generators
