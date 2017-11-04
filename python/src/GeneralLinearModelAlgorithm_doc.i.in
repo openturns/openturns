@@ -145,7 +145,7 @@ The maximization of :eq:`logLikelihood` leads to the following optimality condit
 
     \vect{\beta}^*(\vect{p}^*)=\argmin_{\vect{\beta}} \| \mat{L}_{\vect{p}^*}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}}) \|^2
 
-This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a general relation between :math:`\vect{\beta}` and :math:`_vect{p}` and is substituted into :eq:`logLikelihood`, leading to a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
+This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a general relation between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
 In the particular case where :math:`d=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of :math:`\vect{p}`, then a further reduction is possible. In this case, if :math:`\vect{q}` is the vector :math:`\vect{p}` in which :math:`\sigma` has been substituted by 1, then:
 
@@ -167,12 +167,12 @@ User could also change the default optimization solver by setting the `GeneralLi
 It is also possible to proceed as follows:
 
     - ask for the reduced log-likelihood function of the *GeneralLinearModelAlgorithm* thanks to the *getObjectiveFunction()* method
-    - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimisation algorithms (that can take into account some additional constraints if needed)
+    - optimize it with respect to the parameters :math:`\vect{\theta}` and  :math:`\vect{\sigma}` using any optimization algorithms (that can take into account some additional constraints if needed)
     - set the optimal parameter value into the covariance model used in the *GeneralLinearModelAlgorithm*
-    - tell the algorithm not to optimize the parameter using *setOptimizeParameter*
+    - tell the algorithm not to optimize the parameter using *setOptimizeParameters*
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
-    - *ResourceMap.SetAsBooletAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', true)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
+    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', true)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
     - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', true)* allows to use the *unbiased* estimate of :math:`sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
