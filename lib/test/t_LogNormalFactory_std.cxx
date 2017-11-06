@@ -33,14 +33,19 @@ int main(int argc, char *argv[])
   try
   {
     LogNormal distribution(1.5, 2.5, -1.5);
-    UnsignedInteger size = 10000;
+    fullprint << "Distribution          =" << distribution << std::endl;    UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     LogNormalFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
-    fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    estimatedDistribution = factory.build(sample, 0);
+    fullprint << "Estimated distribution (local likelihood)=" << estimatedDistribution << std::endl;
+    estimatedDistribution = factory.build(sample, 1);
+    fullprint << "Estimated distribution (modified moments)=" << estimatedDistribution << std::endl;
+    estimatedDistribution = factory.build(sample, 2);
+    fullprint << "Estimated distribution (moments)=" << estimatedDistribution << std::endl;
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;

@@ -112,42 +112,7 @@ under the constraint :math:`\gamma \leq \min x_i`."
 
 **Available usages**:
 
-    build(*sample*)
-
-    build(*param*)
-
-    build(*sample, covMat*)
-
-Parameters
-----------
-sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated.
-param : Collection of :class:`~openturns.PointWithDescription`
-    A vector of parameters of the distribution.
-covMat : :class:`~openturns.CovarianceMatrix`
-    A covariance matrix.
-
-Notes
------
-In the first usage, the parameters are evaluated according the following strategy:
-
-- OpenTURNS first uses the local likelihood maximum based estimator. 
-- OpenTURNS uses the modified moments based estimator if the resolution of
-  :eq:`mll_relation` is not possible.
-- OpenTURNS uses the moments based estimator, which are always defined, if
-  the resolution of :eq:`omega_modified_moment_relation` is not possible.
-
-In the second usage, the covariance matrix *covMat* is fulfilled with the
-covariance of the estimator of the parameter vector :math:`\vect{\theta}`. The
-technique used is bootstrap. In case of asymptotical normal convergence of the
-estimator, it enables to build confidence intervals."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LogNormalFactory::buildAsLogNormal
-"Build the distribution as a LogNormal type.
-
-**Available usages**:
+    build()
 
     build(*sample*)
 
@@ -166,7 +131,54 @@ method : integer
     - 2 : method of moment estimator.
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
+
+Notes
+-----
+See the *buildAsLogNormal* method.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildAsLogNormal
+"Build the distribution as a LogNormal type.
+
+**Available usages**:
+
+    build()
+
+    build(*sample*)
+
+    build(*sample, method*)
+
+    build(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated.
+method : integer
+    An integer ranges from 0 to 2 corresponding to a specific estimator method:
+    - 0 : Local likelihood maximum estimator
+    - 1 : Modified moment estimator
+    - 2 : method of moment estimator.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Notes
+-----
+In the first usage, the default :class:`~openturns.LogNormal` distribution is built.
+
+In the second usage, the parameters are evaluated according the following strategy:
+
+- OpenTURNS first uses the local likelihood maximum based estimator. 
+- OpenTURNS uses the modified moments based estimator if the resolution of
+  :eq:`mll_relation` is not possible.
+- OpenTURNS uses the moments based estimator, which are always defined, if
+  the resolution of :eq:`omega_modified_moment_relation` is not possible.
+
+In the third usage, the parameters of the :class:`~openturns.LogNormal` are estimated using the given method.
+  
+In the fourth usage, a :class:`~openturns.LogNormal` distribution corresponding to the given parameters is built."
 
 // ---------------------------------------------------------------------
 
