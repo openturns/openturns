@@ -36,10 +36,10 @@ evaluated at those points:
    rule.
 
 -  If the points are chosen to be randomly distributed, this is the
-   Monte Carlo method: – see page .
+   Monte Carlo method.
 
 -  If the points are chosen as elements of a low-discrepancy sequence,
-   this is the quasi-Monte Carlo method: – see page .
+   this is the quasi-Monte Carlo method.
 
 The **discrepancy** of a set :math:`P = \{x_1, \hdots, x_N\}` is
 defined, using Niederreiter’s notation, as
@@ -155,7 +155,7 @@ We then obtain:
 
 Be careful: using low discrepancy sequences instead of random
 distributed points do not lead to the same control of the variance of
-the approximation : in the case of random distributed points, this
+the approximation: in the case of random distributed points, this
 control is given by the Central Limit Theorem that provides confidence
 intervals. In the case of low discrepancy sequences, it is given by
 the Koksma-Hlawka inequality.
@@ -207,4 +207,4 @@ pseudo-random sequences.
 .. topic:: References:
 
     - Inna Krykova, *Evaluating of path-dependent securities with low discrepancy methods*, Master of Science Thesis, Worcester Polytechnic Institute, 2003.
-    - Wikipedia contributors, *Low-discrepancy sequence.*, Wikipedia, The Free Encyclopedia, 10 April 2012, 17:48 UTC, <en.wikipedia.org/wiki/Low-discrepancy_sequence>
+    - Wikipedia contributors, *Low-discrepancy sequence.*, Wikipedia, The Free Encyclopedia, 10 April 2012, 17:48 UTC, `<https://en.wikipedia.org/wiki/Low-discrepancy_sequence>`_
