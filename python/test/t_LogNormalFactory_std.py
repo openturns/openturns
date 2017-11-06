@@ -10,10 +10,16 @@ try:
     distribution = LogNormal(1.5, 2.5, -1.5)
     size = 10000
     sample = distribution.getSample(size)
+    print("distribution=", repr(distribution))
     factory = LogNormalFactory()
     estimatedDistribution = factory.build(sample)
-    print("distribution=", repr(distribution))
     print("Estimated distribution=", repr(estimatedDistribution))
+    estimatedDistribution = factory.build(sample, 0)
+    print("Estimated distribution (local likelihood)=", repr(estimatedDistribution))
+    estimatedDistribution = factory.build(sample, 1)
+    print("Estimated distribution (modified moments)=", repr(estimatedDistribution))
+    estimatedDistribution = factory.build(sample, 2)
+    print("Estimated distribution (moments)=", repr(estimatedDistribution))
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
