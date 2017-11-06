@@ -150,6 +150,8 @@ public:
   static Bool IsAvailable();
   static void Enable();
   static void Disable();
+  static UnsignedInteger DisableThreadedBlas();
+  static void EnableThreadedBlas(const UnsignedInteger numberOfThreads);
 
 private:
   static void SetNumberOfThreads(const UnsignedInteger numberOfThreads);

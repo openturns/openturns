@@ -32,6 +32,8 @@ option (BUILD_VALIDATION             "Build the validation files of the library"
 option (LINK_PYTHON_LIBRARY          "Link python modules against python library"                            ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
+option (DISCARD_BLAS_MULTITHREADING  "Allow OpenTURNS to temporarily discard BLAS multithreading"            ON)
+
 if (MSVC)
   option (BUILD_MULTIPROCESSOR       "Enable multiprocessor builds"                                          ON)
 endif ()
@@ -300,6 +302,30 @@ if(OPENTURNS_HAVE_XLOCALE_H)
 check_symbol_exists(uselocale "locale.h;xlocale.h"  OPENTURNS_HAVE_USELOCALE )
 else()
 check_symbol_exists(uselocale "locale.h"  OPENTURNS_HAVE_USELOCALE )
+endif()
+
+if(TBB_FOUND AND DISCARD_BLAS_MULTITHREADING)
+  # We want to disable multithreaded BLAS within TBB blocks, thus
+  # we have to check which function to use.
+  if(CMAKE_VERSION VERSION_GREATER 2.8.8)
+    include(CMakePushCheckState)
+    cmake_push_check_state()
+  else()
+    set(save_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
+    set(save_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
+  endif()
+  list(APPEND CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES} ${CMAKE_CXX_IMPLICIT_LINK_LIBRARIES})
+  list(APPEND CMAKE_REQUIRED_FLAGS ${OpenMP_CXX_FLAGS})
+  check_function_exists(openblas_get_num_threads HAVE_OPENBLAS_GET_NUM_THREADS )
+  check_function_exists(openblas_set_num_threads HAVE_OPENBLAS_SET_NUM_THREADS )
+  check_function_exists(omp_get_max_threads HAVE_OMP_GET_MAX_THREADS )
+  check_function_exists(omp_set_num_threads HAVE_OMP_SET_NUM_THREADS )
+  if(CMAKE_VERSION VERSION_GREATER 2.8.8)
+    cmake_pop_check_state()
+  else()
+    set(CMAKE_REQUIRED_LIBRARIES ${save_CMAKE_REQUIRED_LIBRARIES})
+    set(CMAKE_REQUIRED_FLAGS ${save_CMAKE_REQUIRED_FLAGS})
+  endif()
 endif()
 
 # Some useful macros to ease CMakeLists.txt file writing

@@ -30,6 +30,14 @@
 #include "openturns/TBB.hxx"
 #include "openturns/ResourceMap.hxx"
 
+#if defined(HAVE_OPENBLAS_GET_NUM_THREADS) && defined(HAVE_OPENBLAS_SET_NUM_THREADS)
+// CMakeLists.txt checks that these functions can be linked against, so declare them.
+// We do not check for cblas.h, so we cannot include it.
+extern "C" {
+int  openblas_get_num_threads(void);
+void  openblas_set_num_threads(int);
+}
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -71,7 +79,29 @@ void TBB::Disable()
   SetNumberOfThreads(1);
 }
 
+UnsignedInteger TBB::DisableThreadedBlas()
+{
+    UnsignedInteger numThreads = 1;
+#if defined(HAVE_OPENBLAS_GET_NUM_THREADS) && defined(HAVE_OPENBLAS_SET_NUM_THREADS)
+    numThreads = openblas_get_num_threads();
+    openblas_set_num_threads(1);
+#elif defined(_OPENMP) && defined(HAVE_OMP_GET_MAX_THREADS) && defined(HAVE_OMP_SET_NUM_THREADS)
+    numThreads = omp_get_max_threads();
+    omp_set_num_threads(1);
+#endif
+    return numThreads;
+}
 
+void
+TBB::EnableThreadedBlas(UnsignedInteger n)
+{
+#if defined(HAVE_OPENBLAS_GET_NUM_THREADS) && defined(HAVE_OPENBLAS_SET_NUM_THREADS)
+    openblas_set_num_threads(n);
+#elif defined(_OPENMP) && defined(HAVE_OMP_GET_MAX_THREADS) && defined(HAVE_OMP_SET_NUM_THREADS)
+    omp_set_num_threads(n);
+#endif
+    (void) n;
+}
 
 TBB_init::TBB_init()
 {
