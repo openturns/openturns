@@ -77,6 +77,21 @@ Scalar GeneralizedExponential::computeStandardRepresentative(const Point & tau) 
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
 }
 
+Scalar GeneralizedExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  Scalar tauOverThetaNorm = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = sqrt(tauOverThetaNorm);
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+}
+
 /* Gradient wrt s */
 Matrix GeneralizedExponential::partialGradient(const Point & s,
     const Point & t) const

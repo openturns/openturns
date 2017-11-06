@@ -184,6 +184,12 @@ Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point 
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Point & s, const Point & t) const";
 }
 
+Scalar CovarianceModelImplementation::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
+}
+
 Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
     const Point & t) const
 {
@@ -267,7 +273,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
 
 struct CovarianceModelDiscretizePolicy
 {
-  const Sample & input_;
+  const SampleImplementation & input_;
   CovarianceMatrix & output_;
   const CovarianceModelImplementation & model_;
   const UnsignedInteger outputDimension_;
@@ -275,7 +281,7 @@ struct CovarianceModelDiscretizePolicy
   CovarianceModelDiscretizePolicy(const Sample & input,
                                   CovarianceMatrix & output,
                                   const CovarianceModelImplementation & model)
-    : input_(input)
+    : input_(*input.getImplementation())
     , output_(output)
     , model_(model)
     , outputDimension_(model.getOutputDimension())
@@ -290,9 +296,9 @@ struct CovarianceModelDiscretizePolicy
       const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
       const UnsignedInteger iBase = iLocal * outputDimension_;
       const CovarianceMatrix localCovariance(model_(input_[iLocal], input_[jLocal]));
-      for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
-        for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
-          output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);
+      for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
+        for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
+          output_(iBase + ii, iBase + jj) = localCovariance(ii, jj);
     }
   }
 
@@ -300,16 +306,18 @@ struct CovarianceModelDiscretizePolicy
 
 struct CovarianceModelDiscretizeKroneckerPolicy
 {
-  const Sample & input_;
+  const SampleImplementation & input_;
   CovarianceMatrix & output_;
   const CovarianceModelImplementation & model_;
+  const UnsignedInteger inputDimension_;
 
   CovarianceModelDiscretizeKroneckerPolicy(const Sample & input,
       CovarianceMatrix & output,
       const CovarianceModelImplementation & model)
-    : input_(input)
+    : input_(*input.getImplementation())
     , output_(output)
     , model_(model)
+    , inputDimension_(input_.getDimension())
   {}
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
@@ -318,7 +326,7 @@ struct CovarianceModelDiscretizeKroneckerPolicy
     {
       const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
       const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
-      output_(iLocal, jLocal) = model_.computeStandardRepresentative(input_[iLocal], input_[jLocal]);
+      output_(iLocal, jLocal) = model_.computeStandardRepresentative(input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
     }
   }
   static void genericKroneckerProduct(const SquareMatrix & leftMatrix, const SquareMatrix & rightMatrix, SquareMatrix & productMatrix)

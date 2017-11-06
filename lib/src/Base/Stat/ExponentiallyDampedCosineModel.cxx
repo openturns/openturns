@@ -87,6 +87,22 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point
   return exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
 
+Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  Scalar absTau = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    absTau += dx * dx;
+  }
+  absTau = sqrt(absTau);
+  if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
+  return exp(-absTau) * cos(2.0 * M_PI * absTau);
+}
+
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & timeGrid) const
 {
