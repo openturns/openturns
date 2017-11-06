@@ -112,18 +112,19 @@ Scalar ProductCovarianceModel::computeStandardRepresentative(const Point & s,
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
+  return computeStandardRepresentative(s.begin(), t.begin());
+}
+
+Scalar ProductCovarianceModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
   Scalar rho = 1.0;
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
     const UnsignedInteger localSpatialDimension = collection_[i].getInputDimension();
-    const UnsignedInteger stop = start + localSpatialDimension;
-    Point localS(localSpatialDimension);
-    std::copy(s.begin() + start, s.begin() + stop, localS.begin());
-    Point localT(localSpatialDimension);
-    std::copy(t.begin() + start, t.begin() + stop, localT.begin());
-    rho *= collection_[i].computeStandardRepresentative(localS, localT);
-    start = stop;
+    rho *= collection_[i].getImplementation()->computeStandardRepresentative(s_begin + start, t_begin + start);
+    start += localSpatialDimension;
   }
   return rho;
 }

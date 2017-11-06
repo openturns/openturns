@@ -70,6 +70,19 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) con
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
 }
 
+Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  Scalar tauOverThetaNorm = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    tauOverThetaNorm += std::abs(*s_it - *t_it) / scale_[i];
+  }
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+}
+
 /* Gradient */
 Matrix AbsoluteExponential::partialGradient(const Point & s,
     const Point & t) const

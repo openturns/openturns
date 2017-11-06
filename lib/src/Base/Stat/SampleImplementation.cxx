@@ -1132,8 +1132,8 @@ Point SampleImplementation::computeMean() const
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
   Point accumulated(dimension_);
 
-  const_data_iterator it(data_begin());
-  const const_data_iterator guard(data_end());
+  data_const_iterator it(data_begin());
+  const data_const_iterator guard(data_end());
   while (it != guard)
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i, ++it)
@@ -1162,8 +1162,8 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
   const UnsignedInteger squaredDim(dimension_ * dimension_);
   Point accumulated(squaredDim);
 
-  const_data_iterator it(data_begin());
-  const const_data_iterator guard(data_end());
+  data_const_iterator it(data_begin());
+  const data_const_iterator guard(data_end());
   while (it != guard)
   {
     UnsignedInteger baseIndex = 0;
@@ -1211,8 +1211,8 @@ Point SampleImplementation::computeVariance() const
   const Point mean( computeMean() );
   Point accumulated(dimension_);
 
-  const_data_iterator it(data_begin());
-  const const_data_iterator guard(data_end());
+  data_const_iterator it(data_begin());
+  const data_const_iterator guard(data_end());
   while (it != guard)
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i, ++it)

@@ -87,6 +87,23 @@ Scalar SphericalModel::computeStandardRepresentative(const Point & tau) const
   return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
 }
 
+Scalar SphericalModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  Scalar normTauOverScaleA = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    normTauOverScaleA += dx * dx;
+  }
+  normTauOverScaleA = sqrt(normTauOverScaleA) / radius_;
+  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
+  if (normTauOverScaleA >= 1.0) return 0.0;
+  return 1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA);
+}
+
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
 {

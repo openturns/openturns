@@ -467,8 +467,8 @@ public:
   /* Some typedefs for easy reading */
   typedef NSI_iterator               iterator;
   typedef NSI_const_iterator         const_iterator;
-  typedef       Scalar *       data_iterator;
-  typedef const Scalar * const_data_iterator;
+  typedef Collection<Scalar>::iterator       data_iterator;
+  typedef Collection<Scalar>::const_iterator data_const_iterator;
 
   typedef Collection<UnsignedInteger>   UnsignedIntegerCollection;
 
@@ -539,19 +539,19 @@ public:
 
   inline data_iterator data_begin()
   {
-    return &data_[0];
+    return data_.begin();
   }
   inline data_iterator data_end()
   {
-    return &data_[0] + size_ * dimension_;
+    return data_.end();
   }
-  inline const_data_iterator data_begin() const
+  inline data_const_iterator data_begin() const
   {
-    return &data_[0];
+    return data_.begin();
   }
-  inline const_data_iterator data_end() const
+  inline data_const_iterator data_end() const
   {
-    return &data_[0] + size_ * dimension_;
+    return data_.end();
   }
 
   void erase(const UnsignedInteger first, const UnsignedInteger last);

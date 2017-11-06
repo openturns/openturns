@@ -54,6 +54,10 @@ public:
   using CovarianceModelImplementation::computeStandardRepresentative;
   Scalar computeStandardRepresentative(const Point & s,
                                        const Point & t) const;
+#ifndef SWIG
+  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const;
+#endif
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,

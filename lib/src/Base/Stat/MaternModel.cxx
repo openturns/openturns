@@ -99,6 +99,24 @@ Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
     return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
+Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  Scalar scaledPoint = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it) * sqrt2nuOverTheta_[i];
+    scaledPoint += dx * dx;
+  }
+  scaledPoint = sqrt(scaledPoint);
+  if (scaledPoint <= SpecFunc::ScalarEpsilon)
+    return 1.0 + nuggetFactor_;
+  else
+    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+}
+
 /* Gradient */
 Matrix MaternModel::partialGradient(const Point & s,
                                     const Point & t) const
