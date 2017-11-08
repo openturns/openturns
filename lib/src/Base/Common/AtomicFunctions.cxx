@@ -23,11 +23,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-#if !defined(HAVE_SYNC_PRIMITIVES)
+#if !defined(OPENTURNS_HAVE_SYNC_BUILTINS)
 pthread_mutex_t Atomic::Atomic_Mutex_ = PTHREAD_MUTEX_INITIALIZER;
 #endif
 
-#if !defined(HAVE_SYNC_PRIMITIVES) && !defined(WIN32) && !defined(__i386__)
+#if !defined(OPENTURNS_HAVE_SYNC_BUILTINS) && !defined(_WIN32) && !defined(__i386__)
 #warning "Using slow implementation for synchronization functions."
 #endif
 

@@ -273,6 +273,10 @@ try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
 
+try_compile (OPENTURNS_HAVE_SYNC_BUILTINS
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/gcc_sync_builtins.cxx)
+
 # Find system prerequisites
 include (CheckIncludeFile)
 check_include_file (assert.h      OPENTURNS_HAVE_ASSERT_H     )

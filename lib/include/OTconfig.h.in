@@ -202,3 +202,6 @@
 
 /* Define to 1 if UnsignedInteger and uint64_t are the same type */
 #cmakedefine OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+
+/* Define to 1 if built-in functions for atomic memory access are available */
+#cmakedefine OPENTURNS_HAVE_SYNC_BUILTINS
