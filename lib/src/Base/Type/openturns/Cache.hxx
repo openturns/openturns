@@ -277,7 +277,7 @@ public:
       {
         ++(*it).second.second; // increment age
         ++hits_;
-        LOGINFO(OSS() << "Cache hit !");
+        LOGDEBUG(OSS() << "Cache hit !");
         return V_( (*it).second.first );
 
       }
