@@ -180,7 +180,12 @@ private:
     // It is a simple call to the computeReducedLogLikelihood() of the algo
     Point operator() (const Point & point) const
     {
+      if (p_cache_->hasKey(point))
+      {
+        return p_cache_->find(point);
+      }
       const Point value(algorithm_.computeReducedLogLikelihood(point));
+      p_cache_->add( point, value );
       return value;
     }
 
