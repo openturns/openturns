@@ -739,6 +739,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
                                          << " covariance model requires an argument of size " << reducedCovarianceModel_.getParameter().getSize()
                                          << " but here we got " << parameters.getSize();
   LOGDEBUG(OSS(false) << "Compute reduced log-likelihood for parameters=" << parameters);
+  const Scalar constant = - SpecFunc::LOGSQRT2PI * static_cast<Scalar>(inputSample_.getSize()) * static_cast<Scalar>(outputSample_.getDimension());
   Scalar logDeterminant = 0.0;
   // If the amplitude is deduced from the other parameters, work with
   // the correlation function
@@ -773,7 +774,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   LOGDEBUG(OSS(false) << "epsilon=||rho||^2=" << epsilon);
   if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LogMinScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
-  else lastReducedLogLikelihood_ = -0.5 * (logDeterminant + epsilon);
+  else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
   LOGINFO(OSS(false) << "Reduced log-likelihood=" << lastReducedLogLikelihood_);
   return Point(1, lastReducedLogLikelihood_);
 }
