@@ -104,12 +104,8 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
-  // set data & covariance model
+  // Set data
   setData(inputSample, outputSample);
-  // If no basis then we suppose output sample centered
-  checkYCentered(outputSample);
-  setCovarianceModel(covarianceModel);
-
   // Build a normalization function if needed
   if (normalize_)
   {
@@ -125,6 +121,11 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+  // If no basis then we suppose output sample centered
+  checkYCentered(outputSample);
+  // Set covariance model
+  setCovarianceModel(covarianceModel);
+
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
 }
@@ -159,23 +160,8 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
-  // set data & covariance model
+  // Set data
   setData(inputSample, outputSample);
-  setCovarianceModel(covarianceModel);
-
-  if (basis.getSize() > 0)
-  {
-    if (basis[0].getOutputDimension() > 1) LOGWARN(OSS() << "Expected a basis of scalar functions, but first function has dimension " << basis[0].getOutputDimension() << ". Only the first output component will be taken into account.");
-    if (outputSample.getDimension() > 1) LOGWARN(OSS() << "The basis of functions will be applied to all output marginals" );
-    // Set basis
-    basisCollection_ = BasisCollection(outputSample.getDimension(), basis);
-  }
-  else
-  {
-    // If no basis then we suppose output sample centered
-    checkYCentered(outputSample);
-  }
-
   // Build a normalization function if needed
   if (normalize_)
   {
@@ -191,6 +177,22 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+  // Set covariance model
+  setCovarianceModel(covarianceModel);
+
+  if (basis.getSize() > 0)
+  {
+    if (basis[0].getOutputDimension() > 1) LOGWARN(OSS() << "Expected a basis of scalar functions, but first function has dimension " << basis[0].getOutputDimension() << ". Only the first output component will be taken into account.");
+    if (outputSample.getDimension() > 1) LOGWARN(OSS() << "The basis of functions will be applied to all output marginals" );
+    // Set basis
+    basisCollection_ = BasisCollection(outputSample.getDimension(), basis);
+  }
+  else
+  {
+    // If no basis then we suppose output sample centered
+    checkYCentered(outputSample);
+  }
+
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
 }
@@ -226,8 +228,11 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
-  // set data & covariance model
+  // Set data
   setData(inputSample, outputSample);
+  // Set the isoprobabilistic transformation
+  setInputTransformation(inputTransformation);
+  // Set covariance model
   setCovarianceModel(covarianceModel);
 
   // basis setter
@@ -244,8 +249,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     checkYCentered(outputSample);
   }
 
-  // Set the isoprobabilistic transformation
-  setInputTransformation(inputTransformation);
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
 }
@@ -281,13 +284,8 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
-  // set data & covariance model
+  // Set data
   setData(inputSample, outputSample);
-  setCovarianceModel(covarianceModel);
-
-  // Set basis collection
-  if (basisCollection.getSize() > 0) setBasisCollection(basisCollection);
-
   // Build a normalization function if needed
   if (normalize_)
   {
@@ -303,6 +301,12 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+  // Set covariance model
+  setCovarianceModel(covarianceModel);
+
+  // Set basis collection
+  if (basisCollection.getSize() > 0) setBasisCollection(basisCollection);
+
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
 }
@@ -338,15 +342,16 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
 {
-  // set data & covariance model
+  // Set data
   setData(inputSample, outputSample);
+  // Set the isoprobabilistic transformation
+  setInputTransformation(inputTransformation);
+  // Set covariance model
   setCovarianceModel(covarianceModel);
 
   // Set basis collection
   if (basisCollection.getSize() > 0)  setBasisCollection(basisCollection);
 
-  // Set the isoprobabilistic transformation
-  setInputTransformation(inputTransformation);
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
 }
@@ -431,8 +436,13 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
-    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    const Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    if (normalize_)
+    {
+      lowerBound = inputTransformation_(lowerBound);
+      upperBound = inputTransformation_(upperBound);
+    }
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
