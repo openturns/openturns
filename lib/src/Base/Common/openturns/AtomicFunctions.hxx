@@ -35,16 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 struct OT_API Atomic
 {
-
-  // sometimes __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 is not defined altough sync primitives are available
-#if defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || ( ( GCC_VERSION >= 40100 ) && ! defined( __i386__ ) )
-#define HAVE_SYNC_PRIMITIVES
-#endif
-#ifdef _MSC_VER
-#undef HAVE_SYNC_PRIMITIVES
-#endif
-
-#if !defined(HAVE_SYNC_PRIMITIVES)
+#if !defined(OPENTURNS_HAVE_SYNC_BUILTINS)
   static pthread_mutex_t Atomic_Mutex_;
 #endif
 
@@ -52,9 +43,9 @@ struct OT_API Atomic
   static inline
   int FetchAndAdd( int * p , int d )
   {
-#if defined(HAVE_SYNC_PRIMITIVES)
+#if defined(OPENTURNS_HAVE_SYNC_BUILTINS)
     return __sync_fetch_and_add( p, d );
-#elif defined(WIN32)
+#elif defined(_WIN32)
     return InterlockedExchangeAdd( (LONG *)p, d );
 #elif defined(__i386__)
     int result;
@@ -78,9 +69,9 @@ struct OT_API Atomic
   static inline
   void Increment( int * p )
   {
-#if defined(HAVE_SYNC_PRIMITIVES)
+#if defined(OPENTURNS_HAVE_SYNC_BUILTINS)
     __sync_fetch_and_add( p, 1 );
-#elif defined(WIN32)
+#elif defined(_WIN32)
     InterlockedIncrement( (LONG *)p );
 #elif defined(__i386__)
     __asm__ (
@@ -100,9 +91,9 @@ struct OT_API Atomic
   static inline
   void Decrement( int * p )
   {
-#if defined(HAVE_SYNC_PRIMITIVES)
+#if defined(OPENTURNS_HAVE_SYNC_BUILTINS)
     __sync_fetch_and_sub( p, 1 );
-#elif defined(WIN32)
+#elif defined(_WIN32)
     InterlockedDecrement( (LONG *)p );
 #elif defined(__i386__)
     __asm__ (
@@ -122,7 +113,7 @@ struct OT_API Atomic
   static inline
   int OrAndFetch( int * p , int d )
   {
-#if defined(HAVE_SYNC_PRIMITIVES)
+#if defined(OPENTURNS_HAVE_SYNC_BUILTINS)
     return __sync_or_and_fetch( p, d );
 #else // TODO: windows ? i386 ?
     MutexLock lock( Atomic_Mutex_ );
@@ -136,9 +127,9 @@ struct OT_API Atomic
   static inline
   void Reset( int * p )
   {
-#if defined(HAVE_SYNC_PRIMITIVES)
+#if defined(OPENTURNS_HAVE_SYNC_BUILTINS)
     __sync_and_and_fetch( p, 0x00 );
-#elif defined(WIN32)
+#elif defined(_WIN32)
     InterlockedExchange ( (LONG *)p, 0x00 );
 #else // TODO: i386 ?
     MutexLock lock( Atomic_Mutex_ );
