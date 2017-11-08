@@ -6,8 +6,8 @@ Probabilistic modelling
 
 .. _parametric_distributions:
 
-Parametric distributions
-========================
+Continuous parametric distributions
+===================================
 
 .. autosummary::
     :toctree: _generated/
@@ -23,13 +23,10 @@ Parametric distributions
     :template: Distribution.rst_t
 
     Arcsine
-    Bernoulli
     Beta
-    Binomial
     Burr
     Chi
     ChiSquare
-    Dirac
     Dirichlet
     Epanechnikov
     Exponential
@@ -38,7 +35,6 @@ Parametric distributions
     Gamma
     GeneralizedExtremeValue
     GeneralizedPareto
-    Geometric
     Gumbel
     Histogram
     InverseChiSquare
@@ -51,25 +47,37 @@ Parametric distributions
     LogNormal
     LogUniform
     MeixnerDistribution
-    Multinomial
-    NegativeBinomial
     NonCentralChiSquare
     NonCentralStudent
     Normal
     NormalGamma
-    Poisson
     Rayleigh
     Rice
-    Skellam
     Student
     Trapezoidal
     Triangular
     TruncatedNormal
     Uniform
-    UserDefined
     VonMises
     Weibull
     Wishart
+
+Discrete parametric distributions
+=================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: Distribution.rst_t
+
+    Bernoulli
+    Binomial
+    Dirac
+    Geometric
+    Multinomial
+    NegativeBinomial
+    Poisson
+    Skellam
+    UserDefined
     ZipfMandelbrot
 
 Parametrized distributions
