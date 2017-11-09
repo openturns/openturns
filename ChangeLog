@@ -40,6 +40,7 @@
 === Bug fixes ===
  * #926 (Covariance model active parameter set behavior)
  * #928 (Covariance model/ Field/Process properties naming)
+ * #933 (Compilation failed when Muparser is missing)
 
 == 1.10rc1 release (2017-10-11) == #release-1.10rc1
 

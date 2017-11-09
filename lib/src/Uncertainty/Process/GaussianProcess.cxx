@@ -30,6 +30,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/DatabaseFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,7 +53,7 @@ GaussianProcess::GaussianProcess()
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(Function(Sample(1, covarianceModel_.getInputDimension()), Sample(1, getOutputDimension())));
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, covarianceModel_.getInputDimension()), Sample(1, getOutputDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -121,7 +122,7 @@ GaussianProcess::GaussianProcess(const SecondOrderModel & model,
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(Function(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -146,7 +147,7 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
 #ifdef OPENTURNS_HAVE_MUPARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
 #else
-  trend_ = TrendTransform(Function(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
 #endif
   setDescription(trend_.getOutputDescription());
 }
