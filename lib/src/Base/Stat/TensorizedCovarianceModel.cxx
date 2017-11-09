@@ -46,6 +46,7 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
   : CovarianceModelImplementation()
 {
   setCollection(collection);
+  scale_ = Point(inputDimension_, 1.0);
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
 }
