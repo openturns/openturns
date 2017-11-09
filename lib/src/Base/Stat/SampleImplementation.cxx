@@ -1064,8 +1064,8 @@ SampleImplementation & SampleImplementation::stack(const SampleImplementation & 
   // First, the values
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    for (UnsignedInteger j = 0; j < dimension_; ++j) result[i][j] = (*this)[i][j];
-    for (UnsignedInteger j = 0; j < otherDimension; ++j) result[i][dimension_ + j] = sample[i][j];
+    for (UnsignedInteger j = 0; j < dimension_; ++j) result(i, j) = operator()(i, j);
+    for (UnsignedInteger j = 0; j < otherDimension; ++j) result(i, dimension_ + j) = sample(i, j);
   }
   // Second, the description
   if (!p_description_.isNull() || !sample.p_description_.isNull())
@@ -1311,10 +1311,10 @@ struct Comparison
 
   Bool operator() (const UnsignedInteger i, const UnsignedInteger j) const
   {
-    const Scalar xI = nsi_[ permutation_[i] ][ first_  ];
-    const Scalar xJ = nsi_[ permutation_[j] ][ first_  ];
-    const Scalar yI = nsi_[ permutation_[i] ][ second_ ];
-    const Scalar yJ = nsi_[ permutation_[j] ][ second_ ];
+    const Scalar xI = nsi_( permutation_[i], first_  );
+    const Scalar xJ = nsi_( permutation_[j], first_  );
+    const Scalar yI = nsi_( permutation_[i], second_ );
+    const Scalar yJ = nsi_( permutation_[j], second_ );
     hasTies_ |= (xI == xJ);
     return ( (xI < xJ) || ((xI == xJ) && (yI < yJ)) );
   }
@@ -1335,7 +1335,7 @@ SampleImplementation SampleImplementation::rank() const
     Collection<Pair> sortedMarginalSamples(size_);
     for (UnsignedInteger j = 0; j < size_; ++j)
     {
-      sortedMarginalSamples[j].value_ = (*this)[j][i];
+      sortedMarginalSamples[j].value_ = operator()(j, i);
       sortedMarginalSamples[j].index_ = j;
     }
     // sort
@@ -1350,7 +1350,7 @@ SampleImplementation SampleImplementation::rank() const
       if (currentValue > lastValue)
       {
         const Scalar rankValue = 0.5 * (lastIndex + j - 1);
-        for (UnsignedInteger k = lastIndex; k < j; ++k) rankedSample[ sortedMarginalSamples[k].index_ ][i] = rankValue;
+        for (UnsignedInteger k = lastIndex; k < j; ++k) rankedSample(sortedMarginalSamples[k].index_, i) = rankValue;
         lastIndex = j;
         lastValue = currentValue;
       }
@@ -1359,7 +1359,7 @@ SampleImplementation SampleImplementation::rank() const
     if (currentValue == lastValue)
     {
       const Scalar rankValue = 0.5 * (lastIndex + size_ - 1);
-      for (UnsignedInteger k = lastIndex; k < size_; ++k) rankedSample[ sortedMarginalSamples[k].index_ ][i] = rankValue;
+      for (UnsignedInteger k = lastIndex; k < size_; ++k) rankedSample(sortedMarginalSamples[k].index_, i) = rankValue;
     }
   }
   if (!p_description_.isNull()) rankedSample.setDescription(getDescription());
@@ -1521,17 +1521,17 @@ struct ComputeKendallPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
+    const UnsignedInteger size = input_.getSize();
+    Point x(size);
+    Point y(size);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const UnsignedInteger size = input_.getSize();
       const UnsignedInteger indX = indicesX_[i];
       const UnsignedInteger indY = indicesY_[i];
-      Point x(size);
-      Point y(size);
       for (UnsignedInteger k = 0; k < size; ++k)
       {
-        x[k] = input_[k][indX];
-        y[k] = input_[k][indY];
+        x[k] = input_(k, indX);
+        y[k] = input_(k, indY);
       }
       if (smallCase_) output_[i] = kendallSmallN(&x[0], &y[0], size);
       else output_[i] = kendallNlogN(&x[0], &y[0], size);
@@ -1808,7 +1808,7 @@ Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
   for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
     for (UnsignedInteger i = 0; i < size_; ++i)
-      component[i] = operator[](i)[j];
+      component[i] = operator()(i, j);
 
     TBB::ParallelSort(component.begin(), component.end());
 
@@ -2243,7 +2243,7 @@ SampleImplementation SampleImplementation::getMarginal(const UnsignedInteger ind
   if (!p_description_.isNull())
     marginalSample.setDescription(Description(1, getDescription()[index]));
   for (UnsignedInteger i = 0; i < size_; ++i)
-    marginalSample[i][0] = operator[](i)[index];
+    marginalSample(i, 0) = operator()(i, index);
 
   return marginalSample;
 }
@@ -2275,7 +2275,7 @@ SampleImplementation SampleImplementation::getMarginal(const Indices & indices) 
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
     {
       // We access directly to the component of the Point for performance reason
-      marginalSample[i][j] = operator[](i)[indices[j]];
+      marginalSample(i, j) = operator()(i, indices[j]);
     }
   }
 
