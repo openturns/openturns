@@ -38,6 +38,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #870 (Problem with TensorizedCovarianceModel with spatial dim > 1)
  * #926 (Covariance model active parameter set behavior)
  * #928 (Covariance model/ Field/Process properties naming)
  * #933 (Compilation failed when Muparser is missing)
