@@ -307,7 +307,10 @@ struct CovarianceModelDiscretizePolicy
 struct CovarianceModelDiscretizeKroneckerPolicy
 {
   const SampleImplementation & input_;
-  CovarianceMatrix & output_;
+  // output_ is a CovarianceMatrix, but since we fill only its half part,
+  // we can directly store results in the underlying MatrixImplementation.
+  // This avoids comparing row and column numbers.
+  MatrixImplementation & output_;
   const CovarianceModelImplementation & model_;
   const UnsignedInteger inputDimension_;
 
@@ -315,7 +318,7 @@ struct CovarianceModelDiscretizeKroneckerPolicy
       CovarianceMatrix & output,
       const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
-    , output_(output)
+    , output_(*output.getImplementation())
     , model_(model)
     , inputDimension_(input_.getDimension())
   {}
@@ -326,7 +329,8 @@ struct CovarianceModelDiscretizeKroneckerPolicy
     {
       const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
       const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
-      output_(iLocal, jLocal) = model_.computeStandardRepresentative(input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
+      // By construction, iLocal <= jLocal
+      output_(jLocal, iLocal) = model_.computeStandardRepresentative(input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
     }
   }
   static void genericKroneckerProduct(const SquareMatrix & leftMatrix, const SquareMatrix & rightMatrix, SquareMatrix & productMatrix)
