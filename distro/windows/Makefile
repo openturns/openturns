@@ -143,7 +143,7 @@ ifeq ($(CHECK_OT),y)
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/lib/test
 	cp $(OT_PREFIX)/bin/*.dll $(OT_BUILD)/python/test
 	cp $(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).dll $(OT_BUILD)/python/test
-	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --output-on-failure --timeout 1500
+	cd $(OT_BUILD) && ctest -j$(JOBS_TEST) --output-on-failure --timeout 1500 -E "Bayes|Posterior"
 endif
 	touch ot-test
 
