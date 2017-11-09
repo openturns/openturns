@@ -414,12 +414,12 @@ x^= [5.000,5.000,-3.000,5.000]
 -- Not supported: algo= LN_PRAXIS inequality= True equality= False
 -- Not supported: algo= LN_PRAXIS inequality= False equality= True
 algo= class=NLopt algorithm=LN_PRAXIS
-x^= [-3.000,-3.000,4.000,-2.000]
+-- Not supported: algo= LN_PRAXIS inequality= False equality= False
 -- Not supported: algo= LN_PRAXIS inequality= True equality= True
 -- Not supported: algo= LN_PRAXIS inequality= True equality= False
 -- Not supported: algo= LN_PRAXIS inequality= False equality= True
 algo= class=NLopt algorithm=LN_PRAXIS
-x^= [5.000,4.000,-3.000,2.000]
+-- Not supported: algo= LN_PRAXIS inequality= False equality= False
 -- Not supported: algo= LN_SBPLX inequality= True equality= True
 -- Not supported: algo= LN_SBPLX inequality= True equality= False
 -- Not supported: algo= LN_SBPLX inequality= False equality= True

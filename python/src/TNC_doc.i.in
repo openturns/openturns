@@ -45,7 +45,7 @@ Examples
 >>> bounds = ot.Interval([1.0]*4, [2.0]*4)
 >>> problem = ot.OptimizationProblem(model, ot.Function(), ot.Function(), bounds)
 >>> algo = ot.TNC(problem)
->>> algo.setStartingPoint([0.0] * 4)
+>>> algo.setStartingPoint([1.0] * 4)
 >>> algo.run()
 >>> result = algo.getResult()"
 

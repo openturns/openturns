@@ -116,7 +116,11 @@ Point SymbolicParser::operator() (const Point & inP) const
   {
     for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
     {
-      result[outputIndex] = parsers_[outputIndex].get()->Eval();
+      const Scalar value = parsers_[outputIndex].get()->Eval();
+      // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
+      if (!SpecFunc::IsNormal(value))
+        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      result[outputIndex] = value;
     }
   }
   catch (mu::Parser::exception_type & ex)
