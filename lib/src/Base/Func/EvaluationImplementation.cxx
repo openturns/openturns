@@ -212,7 +212,9 @@ void EvaluationImplementation::addCacheContent(const Sample& inSample, const Sam
 {
   p_cache_->enable();
   const UnsignedInteger size = inSample.getSize();
-  for ( UnsignedInteger i = 0; i < size; ++ i )
+  const UnsignedInteger cacheSize = p_cache_->getMaxSize();
+  const UnsignedInteger start = size <= cacheSize ? 0 : size - cacheSize;
+  for ( UnsignedInteger i = start; i < size; ++ i )
   {
     p_cache_->add( inSample[i], outSample[i] );
   }
