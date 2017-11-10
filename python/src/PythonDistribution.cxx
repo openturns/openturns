@@ -309,11 +309,10 @@ Point PythonDistribution::computeQuantile(const Scalar prob, const Bool tail) co
   {
     const UnsignedInteger dimension = getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeQuantile"));
-    ScopedPyObjectPointer probArg(convert< Scalar, _PyFloat_ >(prob));
-    ScopedPyObjectPointer tailArg(convert< Bool, _PyBool_ >(tail));
+    ScopedPyObjectPointer probArg(convert< Scalar, _PyFloat_ >(tail ? 1.0 - prob : prob));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
-                                     probArg.get(), tailArg.get(), NULL));
+                                     probArg.get(), NULL));
     if (callResult.isNull())
     {
       handleException();
@@ -414,7 +413,7 @@ Scalar PythonDistribution::computeScalarQuantile(const Scalar prob,
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeScalarQuantile") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeScalarQuantile"));
-    ScopedPyObjectPointer cProb(convert< Scalar, _PyFloat_ >( tail ? 1 - prob : prob ));
+    ScopedPyObjectPointer cProb(convert< Scalar, _PyFloat_ >(tail ? 1.0 - prob : prob));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
                                      cProb.get(), NULL));

@@ -42,7 +42,15 @@ class SciPyDistribution(PythonDistribution):
     Parameters
     ----------
     dist : a scipy.stats distribution
-        the distribution to wrap
+        The distribution to wrap
+
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> # import scipy.stats as st
+    >>> # scipy_dist = st.johnsonsu(2.55, 2.25)
+    >>> # distribution = ot.Distribution(ot.SciPyDistribution(scipy_dist))
+    >>> # distribution.getRealization()
     """
     def __init__(self, dist):
         super(SciPyDistribution, self).__init__(1)
@@ -51,10 +59,16 @@ class SciPyDistribution(PythonDistribution):
         self._dist = dist
 
         # compute range
-        lb = dist.ppf(0.)
-        ub = dist.ppf(1.)
+        from openturns import ResourceMap
+        cdf_epsilon = ResourceMap.GetAsScalar('Distribution-DefaultCDFEpsilon')
+        lb = dist.ppf(0.0)
+        ub = dist.ppf(1.0)
         flb = lb != float('-inf')
         fub = ub != float('+inf')
+        if not flb:
+            lb = dist.ppf(cdf_epsilon)
+        if not fub:
+            ub = dist.ppf(1.0 - cdf_epsilon)
         self.__range = Interval([lb], [ub])
         self.__range.setFiniteLowerBound([int(flb)])
         self.__range.setFiniteUpperBound([int(fub)])
@@ -92,12 +106,20 @@ class SciPyDistribution(PythonDistribution):
         return [skewness]
 
     def getKurtosis(self):
-        kurtosis = float(self._dist.stats('k'))
+        kurtosis = float(self._dist.stats('k')) + 3.0
         return [kurtosis]
 
     def getMoment(self, n):
         moment = self._dist.moment(n)
         return [moment]
+
+    def computeScalarQuantile(self, p):
+        q = self._dist.ppf(p)
+        return q
+
+    def computeQuantile(self, p):
+        q = self._dist.ppf(p)
+        return [q]
 %}
 
 %include UncertaintyModelCopulaCollection.i

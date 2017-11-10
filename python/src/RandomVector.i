@@ -154,37 +154,6 @@ class PythonRandomVector(object):
         """
         raise RuntimeError('You must define a method var -> M, where M is a CovarianceMatrix')
 
-class SciPyRandomVector(PythonRandomVector):
-    """
-    Build a PythonRandomVector from a scipy distribution.
-
-    Parameters
-    ----------
-    dist : a scipy.stats distribution
-        the distribution to wrap
-    """
-    def __init__(self, dist):
-        super(SciPyRandomVector, self).__init__(1)
-        if dist.__class__.__name__ != 'rv_frozen':
-            raise TypeError('Argument is not a scipy distribution')
-        self._dist = dist
-
-    def getRealization(self):
-        rvs = self._dist.rvs()
-        return [rvs]
-
-    def getSample(self, size):
-        rvs = self._dist.rvs(size)
-        return rvs.reshape(size, 1)
-
-    def getMean(self):
-        mean = float(self._dist.stats('m'))
-        return [mean]
-
-    def getCovariance(self):
-        var = float(self._dist.stats('v'))
-        return [[var]]
-
 %}
 
 OTTypedInterfaceObjectHelper(RandomVector)
