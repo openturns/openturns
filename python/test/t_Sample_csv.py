@@ -108,7 +108,7 @@ try:
     # text file with comments
     f = open('sample.csv', 'w')
     f.write(
-        "# hello\n\nh1 h2 h3 h4 \n-1.2 2.3 3.4 -4.5 \n#spock\n5.6 -6.7 7.8 8.9 \n-0.1 3.2 5.1 7.5 \n")
+        "# hello\n\nh1 h2 h3 h4 \n-1.2 2.3 3.4 -4.5 \n#spock\n5.6 -6.7 7.8 8.9 \n-0.1 3.2 5.1 7.5 ")
     f.close()
     aSample = Sample.ImportFromTextFile("sample.csv")
     print("aSample with comments=", repr(aSample))
