@@ -368,9 +368,6 @@ class View(object):
                 self._ax[0].pie(x, **pie_kwargs)
 
             elif drawableKind == 'Contour':
-                if len(drawable.getLevels()) < 2:
-                    warnings.warn('-- Ignoring contour with too few levels.')
-                    break
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
                 Z = np.reshape(drawable.getData(), (
                     drawable.getX().getSize(), drawable.getY().getSize()))
@@ -391,7 +388,11 @@ class View(object):
                     for l, s in zip(np.array(drawable.getLevels()), drawable.getLabels()):
                         fmt[l] = s
                     clabel_kwargs.setdefault('fmt', fmt)
-                    plt.clabel(contourset, **clabel_kwargs)
+                    try:
+                        plt.clabel(contourset, **clabel_kwargs)
+                    except KeyError:
+                        # https://github.com/matplotlib/matplotlib/issues/9742
+                        warnings.warn('pyplot.clabel likely failed on boundary level')
                 for i in range(len(contourset.levels)):
                     contourset.collections[i].set_label(
                         '_nolegend_' if i > 0 else drawable.getLegend())
