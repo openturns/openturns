@@ -57,13 +57,14 @@ namespace {
 // wraps std::getline to handle EOLs across systems
 OT::Bool GetLine(std::ifstream & file, OT::String & line)
 {
-  const OT::Bool ok = std::getline(file, line).good();
+  if (std::getline(file, line).fail())
+    return false;
   // deal with DOS EOLs from UNIX
   if (line.size() && (line[line.size() - 1] == '\r'))
   {
     line.erase(line.size() - 1, 1);
   }
-  return ok;
+  return true;
 }
 
 }
