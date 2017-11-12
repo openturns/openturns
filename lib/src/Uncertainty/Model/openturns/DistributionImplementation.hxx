@@ -299,6 +299,10 @@ public:
                                 const Bool tail,
                                 Scalar & marginalProb) const;
 #endif
+  /** Quantile computation for dimension=1 */
+  virtual Scalar computeScalarQuantile(const Scalar prob,
+                                       const Bool tail = false) const;
+
   /** Get the quantile over a provided grid */
 protected:
   virtual Sample computeQuantileSequential(const Point & prob,
@@ -731,10 +735,6 @@ protected:
 
   /** Dimension accessor */
   void setDimension(UnsignedInteger dim);
-
-  /** Quantile computation for dimension=1 */
-  virtual Scalar computeScalarQuantile(const Scalar prob,
-                                       const Bool tail = false) const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   virtual void computeRange();

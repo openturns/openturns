@@ -625,6 +625,12 @@ Sample Distribution::computeQuantile(const Point & prob,
   return getImplementation()->computeQuantile(prob, tail);
 }
 
+Scalar Distribution::computeScalarQuantile(const Scalar prob,
+					  const Bool tail) const
+{
+  return getImplementation()->computeScalarQuantile(prob, tail);
+}
+
 /* Get the product minimum volume interval containing at least a given probability of the distribution.
    The minimum volume interval [a, b] is such that:
    a\in[lowerBound, F^{-1}(1-p)]
