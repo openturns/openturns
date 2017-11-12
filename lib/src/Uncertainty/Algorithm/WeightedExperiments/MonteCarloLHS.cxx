@@ -25,7 +25,6 @@
 #include "openturns/SpaceFillingPhiP.hxx"
 #include "openturns/SpaceFillingMinDist.hxx"
 
-
 namespace OT
 {
 
@@ -37,12 +36,15 @@ static const Factory<MonteCarloLHS> Factory_MonteCarloLHS;
 MonteCarloLHS::MonteCarloLHS()
   : OptimalLHSExperiment()
 {
+  // Nothing to do
 }
 
 /* Default constructor */
-MonteCarloLHS::MonteCarloLHS(const LHSExperiment & lhs, const UnsignedInteger N, const SpaceFilling & spaceFilling)
-  : OptimalLHSExperiment(lhs, spaceFilling),
-    N_(N)
+MonteCarloLHS::MonteCarloLHS(const LHSExperiment & lhs,
+                             const UnsignedInteger N,
+                             const SpaceFilling & spaceFilling)
+  : OptimalLHSExperiment(lhs, spaceFilling)
+  , N_(N)
 {
   // Nothing to do
 }
@@ -62,27 +64,26 @@ Sample MonteCarloLHS::generateWithWeights(Point & weights) const
   historyDescription[0] = spaceFilling_.getImplementation()->getName() + " criterion";
   history.setDescription(historyDescription);
   // initialing algo
-  Sample optimalDesign;
+  Sample optimalStandardDesign;
   Scalar optimalValue = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
 
   for (UnsignedInteger i = 0; i < N_; ++i)
   {
-    const Sample design(lhs_.generate());
-    const Scalar value = spaceFilling_.evaluate(rankTransform(design));
-    history[i][0] = value;
+    const Sample standardDesign(lhs_.generateStandard());
+    const Scalar value = spaceFilling_.evaluate(standardDesign);
+    history(i, 0) = value;
     if (spaceFilling_.isMinimizationProblem() && (value < optimalValue))
     {
-      optimalDesign = design;
+      optimalStandardDesign = standardDesign;
       optimalValue = value;
     }
     if (!spaceFilling_.isMinimizationProblem() && (value > optimalValue))
     {
-      optimalDesign = design;
+      optimalStandardDesign = standardDesign;
       optimalValue = value;
     }
   }
-  Sample optimalDesignU(rankTransform(optimalDesign));
-  result.add(optimalDesign, optimalValue, SpaceFillingC2().evaluate(optimalDesignU), SpaceFillingPhiP().evaluate(optimalDesignU), SpaceFillingMinDist().evaluate(optimalDesignU), history);
+  result.add(transformation_(optimalStandardDesign), optimalValue, SpaceFillingC2().evaluate(optimalStandardDesign), SpaceFillingPhiP().evaluate(optimalStandardDesign), SpaceFillingMinDist().evaluate(optimalStandardDesign), history);
   result_ = result;
   weights = Point(size_, 1.0 / size_);
   return result.getOptimalDesign();

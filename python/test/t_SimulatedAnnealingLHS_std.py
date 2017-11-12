@@ -80,7 +80,6 @@ print(
 result = optimalLHSAlgorithm.getResult()
 print("Final criteria: C2=%f, PhiP=%f, MinDist=%f" %
       (result.getC2(), result.getPhiP(), result.getMinDist()))
-
 # 4) Simulated Annealing LHS with linear temperature profile, PhiP
 # optimization and nStart > 1
 nStart = 10

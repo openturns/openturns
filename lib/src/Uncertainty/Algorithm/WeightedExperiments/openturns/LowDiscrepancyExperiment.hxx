@@ -96,9 +96,7 @@ public:
 protected:
 
 private:
-  // Marginal distributions
-  mutable DistributionCollection marginals_;
-
+  
   // Low discrepancy sequence
   LowDiscrepancySequence sequence_;
 

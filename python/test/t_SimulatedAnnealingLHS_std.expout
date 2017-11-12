@@ -30,7 +30,7 @@ design=      [ X0   X1   X2   ]
 24 : [ 0.62 0.38 0.66 ]
 PhiP=7.538512, C2=0.080495
 lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
-Generating design using geometric temperature profile & C2 criterion=      [ X0   X1   X2   ]
+Generating design using geometric temperature profile & C2 criterion=      [ y0   y1   y2   ]
  0 : [ 0.06 0.1  0.3  ]
  1 : [ 0.26 0.82 0.26 ]
  2 : [ 0.34 0.62 0.74 ]
@@ -58,7 +58,7 @@ Generating design using geometric temperature profile & C2 criterion=      [ X0 
 24 : [ 0.54 0.7  0.02 ]
 Final criteria: C2=0.039557, PhiP=4.642392, MinDist=0.215407
 lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=10 profile=class=TemperatureProfile implementation=class=LinearProfile name=Unnamed T0=10 iMax=2000
-Generating design using linear temperature profile & PhiP criterion =      [ X0   X1   X2   ]
+Generating design using linear temperature profile & PhiP criterion =      [ y0   y1   y2   ]
  0 : [ 0.74 0.58 0.46 ]
  1 : [ 0.82 0.42 0.22 ]
  2 : [ 0.7  0.86 0.14 ]
@@ -86,7 +86,7 @@ Generating design using linear temperature profile & PhiP criterion =      [ X0 
 24 : [ 0.66 0.94 0.66 ]
 Final criteria: C2=0.057259, PhiP=5.455553, MinDist=0.183303
 lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=10 profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
-initial design=      [ X0   X1   X2   ]
+initial design=      [ y0   y1   y2   ]
  0 : [ 0.74 0.58 0.46 ]
  1 : [ 0.82 0.42 0.22 ]
  2 : [ 0.7  0.86 0.14 ]
@@ -113,7 +113,7 @@ initial design=      [ X0   X1   X2   ]
 23 : [ 0.58 0.34 0.94 ]
 24 : [ 0.66 0.94 0.66 ]
 PhiP=5.455553, C2=0.057259
-Generating design using linear temperature profile & PhiP criterion =      [ X0   X1   X2   ]
+Generating design using linear temperature profile & PhiP criterion =      [ y0   y1   y2   ]
  0 : [ 0.14 0.3  0.22 ]
  1 : [ 0.1  0.14 0.62 ]
  2 : [ 0.78 0.1  0.26 ]
@@ -140,7 +140,7 @@ Generating design using linear temperature profile & PhiP criterion =      [ X0 
 23 : [ 0.7  0.9  0.78 ]
 24 : [ 0.98 0.38 0.18 ]
 Final criteria: C2=0.045191, PhiP=3.222263, MinDist=0.312410
-Generating design using linear temperature profile & PhiP criterion =      [ X0   X1   X2   ]
+Generating design using linear temperature profile & PhiP criterion =      [ y0   y1   y2   ]
  0 : [ 0.86 0.38 0.9  ]
  1 : [ 0.7  0.58 0.66 ]
  2 : [ 0.74 0.22 0.1  ]
@@ -167,7 +167,7 @@ Generating design using linear temperature profile & PhiP criterion =      [ X0 
 23 : [ 0.42 0.34 0.86 ]
 24 : [ 0.34 0.26 0.06 ]
 Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
-  Intermediate design for restart iteration number  0      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  0      [ y0   y1   y2   ]
  0 : [ 0.78 0.9  0.5  ]
  1 : [ 0.42 0.3  0.86 ]
  2 : [ 0.74 0.1  0.9  ]
@@ -194,7 +194,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.82 0.78 0.1  ]
 24 : [ 0.22 0.94 0.42 ]
   Final criteria: C2=0.045937, PhiP=3.096597, MinDist=0.332265
-  Intermediate design for restart iteration number  1      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  1      [ y0   y1   y2   ]
  0 : [ 0.1  0.9  0.5  ]
  1 : [ 0.66 0.74 0.22 ]
  2 : [ 0.14 0.22 0.34 ]
@@ -221,7 +221,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.62 0.26 0.9  ]
 24 : [ 0.18 0.58 0.3  ]
   Final criteria: C2=0.047119, PhiP=3.200459, MinDist=0.314960
-  Intermediate design for restart iteration number  2      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  2      [ y0   y1   y2   ]
  0 : [ 0.66 0.7  0.34 ]
  1 : [ 0.86 0.42 0.38 ]
  2 : [ 0.7  0.74 0.66 ]
@@ -248,7 +248,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.14 0.78 0.58 ]
 24 : [ 0.06 0.38 0.5  ]
   Final criteria: C2=0.048239, PhiP=3.247425, MinDist=0.314960
-  Intermediate design for restart iteration number  3      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  3      [ y0   y1   y2   ]
  0 : [ 0.66 0.98 0.38 ]
  1 : [ 0.02 0.3  0.74 ]
  2 : [ 0.94 0.62 0.9  ]
@@ -275,7 +275,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.34 0.86 0.66 ]
 24 : [ 0.74 0.5  0.46 ]
   Final criteria: C2=0.046129, PhiP=3.091662, MinDist=0.324962
-  Intermediate design for restart iteration number  4      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  4      [ y0   y1   y2   ]
  0 : [ 0.86 0.38 0.9  ]
  1 : [ 0.7  0.58 0.66 ]
  2 : [ 0.74 0.22 0.1  ]
@@ -302,7 +302,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.42 0.34 0.86 ]
 24 : [ 0.34 0.26 0.06 ]
   Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
-  Intermediate design for restart iteration number  5      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  5      [ y0   y1   y2   ]
  0 : [ 0.86 0.38 0.94 ]
  1 : [ 0.78 0.78 0.82 ]
  2 : [ 0.74 0.26 0.06 ]
@@ -329,7 +329,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.58 0.34 0.7  ]
 24 : [ 0.82 0.06 0.66 ]
   Final criteria: C2=0.046928, PhiP=3.089224, MinDist=0.324962
-  Intermediate design for restart iteration number  6      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  6      [ y0   y1   y2   ]
  0 : [ 0.7  0.46 0.02 ]
  1 : [ 0.82 0.14 0.86 ]
  2 : [ 0.46 0.26 0.26 ]
@@ -356,7 +356,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.1  0.22 0.74 ]
 24 : [ 0.38 0.42 0.62 ]
   Final criteria: C2=0.047943, PhiP=3.142412, MinDist=0.324962
-  Intermediate design for restart iteration number  7      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  7      [ y0   y1   y2   ]
  0 : [ 0.26 0.18 0.14 ]
  1 : [ 0.82 0.38 0.18 ]
  2 : [ 0.62 0.78 0.9  ]
@@ -383,7 +383,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.58 0.1  0.1  ]
 24 : [ 0.14 0.22 0.46 ]
   Final criteria: C2=0.050139, PhiP=3.187333, MinDist=0.314960
-  Intermediate design for restart iteration number  8      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  8      [ y0   y1   y2   ]
  0 : [ 0.1  0.7  0.26 ]
  1 : [ 0.02 0.34 0.3  ]
  2 : [ 0.5  0.98 0.38 ]
@@ -410,7 +410,7 @@ Final criteria: C2=0.045505, PhiP=3.054091, MinDist=0.332265
 23 : [ 0.22 0.02 0.66 ]
 24 : [ 0.86 0.94 0.5  ]
   Final criteria: C2=0.050769, PhiP=3.097313, MinDist=0.329848
-  Intermediate design for restart iteration number  9      [ X0   X1   X2   ]
+  Intermediate design for restart iteration number  9      [ y0   y1   y2   ]
  0 : [ 0.9  0.62 0.54 ]
  1 : [ 0.02 0.5  0.5  ]
  2 : [ 0.06 0.22 0.26 ]

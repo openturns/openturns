@@ -36,17 +36,20 @@ CLASSNAMEINIT(SimulatedAnnealingLHS)
 static const Factory<SimulatedAnnealingLHS> Factory_SimulatedAnnealingLHS;
 
 
-/** Default constructor */
+/* Default constructor */
 SimulatedAnnealingLHS::SimulatedAnnealingLHS()
   : OptimalLHSExperiment()
-{}
+{
+  // Nothing to do
+}
 
-/** Geometric temperature profil */
-SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const TemperatureProfile & profile,
+/* Geometric temperature profil */
+SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs,
+    const TemperatureProfile & profile,
     const SpaceFilling & spaceFilling)
   : OptimalLHSExperiment(lhs, spaceFilling)
   , profile_(profile)
-  , initialDesign_()
+  , standardInitialDesign_()
 {
   if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
   {
@@ -55,14 +58,14 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs, const Te
   }
 }
 
-/** SimulatedAnnealingLHS constructor with LHS*/
+/* SimulatedAnnealingLHS constructor with LHS*/
 SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
     const Distribution & distribution,
     const TemperatureProfile & profile,
     const SpaceFilling & spaceFilling)
   : OptimalLHSExperiment()
   , profile_(profile)
-  , initialDesign_(initialDesign)
+  , standardInitialDesign_(initialDesign)
 {
   if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
   {
@@ -71,11 +74,13 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
   }
   else
     spaceFilling_ = spaceFilling;
-  if (initialDesign_.getSize() == 0) throw InvalidArgumentException(HERE) << "Initial design must not be empty";
-  if (initialDesign_.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Initial design dimension " << initialDesign_.getDimension() << " does not match distribution dimension " << distribution.getDimension();
-
+  if (initialDesign.getSize() == 0) throw InvalidArgumentException(HERE) << "Initial design must not be empty";
+  if (initialDesign.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Initial design dimension " << initialDesign.getDimension() << " does not match distribution dimension " << distribution.getDimension();
+  // Transform the initial design into a standard design
   // dummy lhs, only distribution is needed
-  lhs_ = LHSExperiment(distribution, 1);
+  // It is used to 
+  setLHS(LHSExperiment(distribution, 1));
+  standardInitialDesign_ = transformation_(initialDesign);
 }
 
 /* Virtual constructor method */
@@ -108,20 +113,20 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
     LOGDEBUG("Starting simulated annealing process");
 
     // Starting sample, in the [0,1]^d space
-    Sample optimalDesign(rankTransform(initialDesign_.getSize() > 0 ? initialDesign_ : lhs_.generate()));
+    Sample standardOptimalDesign(standardInitialDesign_.getSize() > 0 ? standardInitialDesign_ : lhs_.generateStandard());
 
     // Starting implementation
     UnsignedInteger iteration(0);
     Scalar T(profile_.getT0());
-    Scalar optimalValue(spaceFilling_.evaluate(optimalDesign));
+    Scalar optimalValue(spaceFilling_.evaluate(standardOptimalDesign));
     const UnsignedInteger iMax(profile_.getIMax());
     while(iteration < iMax && T > 0)
     {
       LOGDEBUG(OSS() << "Current iteration =" <<  iteration << ", current temperature =" << T);
       // Generate rows & column indexes
-      const UnsignedInteger columnIndex = RandomGenerator::IntegerGenerate(optimalDesign.getDimension());
-      const UnsignedInteger row1 = RandomGenerator::IntegerGenerate(optimalDesign.getSize());
-      const UnsignedInteger row2 = RandomGenerator::IntegerGenerate(optimalDesign.getSize());
+      const UnsignedInteger columnIndex = RandomGenerator::IntegerGenerate(standardOptimalDesign.getDimension());
+      const UnsignedInteger row1 = RandomGenerator::IntegerGenerate(standardOptimalDesign.getSize());
+      const UnsignedInteger row2 = RandomGenerator::IntegerGenerate(standardOptimalDesign.getSize());
       if (row1 == row2) continue;
       // WARNING: bernoulliTrial is computed here and not in the else clause below to avoid
       //          numerical discrepancies between x86 and x86_64.  When optimalValue and
@@ -129,19 +134,19 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
       //          branches.  In order to have the same random generator state,
       //          RandomGenerator::Generate() is called here.
       const Scalar bernoulliTrial = RandomGenerator::Generate();
-      const Scalar newCriterion = spaceFilling_.perturbLHS(optimalDesign, optimalValue, row1, row2, columnIndex);
+      const Scalar newCriterion = spaceFilling_.perturbLHS(standardOptimalDesign, optimalValue, row1, row2, columnIndex);
       const Scalar criteriaDifference = std::min(std::exp((optimalValue - newCriterion) / T), 1.0);
       // Decision with respect to criteriaDifference
       if (optimalValue >= newCriterion)
       {
-        std::swap(optimalDesign[row1][columnIndex], optimalDesign[row2][columnIndex]);
+        std::swap(standardOptimalDesign(row1, columnIndex), standardOptimalDesign(row2, columnIndex));
         optimalValue = newCriterion;
       }
       else
       {
         if (bernoulliTrial < criteriaDifference)
         {
-          std::swap(optimalDesign[row1][columnIndex], optimalDesign[row2][columnIndex]);
+          std::swap(standardOptimalDesign(row1, columnIndex), standardOptimalDesign(row2, columnIndex));
           optimalValue = newCriterion;
         }
       }
@@ -156,10 +161,8 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
       T = profile_(iteration);
     }
     LOGDEBUG("End of simulated annealing process");
-    // Transform again optimalDesign
-    Sample optimalDesignX(inverseRankTransform(optimalDesign));
     // Add elements to result
-    result.add(optimalDesignX, optimalValue, SpaceFillingC2().evaluate(optimalDesign), SpaceFillingPhiP().evaluate(optimalDesign), SpaceFillingMinDist().evaluate(optimalDesign), history);
+    result.add(transformation_(standardOptimalDesign), optimalValue, SpaceFillingC2().evaluate(standardOptimalDesign), SpaceFillingPhiP().evaluate(standardOptimalDesign), SpaceFillingMinDist().evaluate(standardOptimalDesign), history);
   }
   result_ = result;
   return result.getOptimalDesign();
@@ -182,7 +185,7 @@ void SimulatedAnnealingLHS::save(Advocate & adv) const
 {
   OptimalLHSExperiment::save( adv );
   adv.saveAttribute( "profile_", profile_ );
-  adv.saveAttribute( "initialDesign_", initialDesign_ );
+  adv.saveAttribute( "standardInitialDesign_", standardInitialDesign_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -190,7 +193,7 @@ void SimulatedAnnealingLHS::load(Advocate & adv)
 {
   OptimalLHSExperiment::load( adv );
   adv.loadAttribute( "profile_", profile_ );
-  adv.loadAttribute( "initialDesign_", initialDesign_ );
+  adv.loadAttribute( "standardInitialDesign_", standardInitialDesign_ );
 }
 
 

@@ -75,7 +75,7 @@ public:
 
 private:
   TemperatureProfile profile_;
-  Sample initialDesign_;
+  Sample standardInitialDesign_;
 
 }; /* class SimulatedAnnealingLHS */
 

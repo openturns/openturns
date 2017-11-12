@@ -34,7 +34,6 @@ static const Factory<LowDiscrepancyExperiment> Factory_LowDiscrepancyExperiment;
 /* Default constructor */
 LowDiscrepancyExperiment::LowDiscrepancyExperiment()
   : WeightedExperimentImplementation()
-  , marginals_(1, distribution_)
   , sequence_(SobolSequence())
   , restart_(true)
   , randomize_(false)
@@ -47,7 +46,6 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment()
 LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
     const Bool restart)
   : WeightedExperimentImplementation(size)
-  , marginals_(1, distribution_)
   , sequence_(SobolSequence())
   , restart_(restart)
   , randomize_(false)
@@ -62,7 +60,6 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
     const UnsignedInteger size,
     const Bool restart)
   : WeightedExperimentImplementation(size)
-  , marginals_(0)
   , sequence_(sequence)
   , restart_(restart)
   , randomize_(false)
@@ -78,7 +75,6 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
     const UnsignedInteger size,
     const Bool restart)
   : WeightedExperimentImplementation(size)
-  , marginals_(0)
   , sequence_(sequence)
   , restart_(restart)
   , randomize_(false)
@@ -137,7 +133,7 @@ void LowDiscrepancyExperiment::load(Advocate & adv)
   adv.loadAttribute("sequence_", sequence_);
   adv.loadAttribute("restart_", restart_);
   adv.loadAttribute("randomize_", randomize_);
-  setDistribution(distribution_);// set marginals_
+  setDistribution(distribution_);
 }
 
 /* Distribution accessor */
@@ -191,15 +187,21 @@ Sample LowDiscrepancyExperiment::generateWithWeights(Point & weights) const
 {
   Sample sample(sequence_.generate(size_));
   sample.setDescription(distribution_.getDescription());
-  const UnsignedInteger dimension = marginals_.getSize();
+  const UnsignedInteger dimension = distribution_.getDimension();
   Scalar tmp = -1.0;
-  Sample uniformSample(size_, dimension);
   if (randomize_)
+  {
     for (UnsignedInteger i = 0; i < size_; ++ i)
+    {
       for (UnsignedInteger j = 0; j < dimension; ++ j)
+      {
         // with a cyclic scrambling of the low discrepancy point as in
-	// L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds) Modeling Uncertainty. International Series in Operations Research & Management Science, vol 46. Springer, Boston, MA
-        sample(i, j) = std::modf(sample(i, j) + RandomGenerator::Generate(), &tmp);
+        // L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds) Modeling Uncertainty. International Series in Operations Research & Management Science, vol 46. Springer, Boston, MA
+        const Scalar u = RandomGenerator::Generate();
+        sample(i, j) = std::modf(sample(i, j) + u, &tmp);
+      } // j
+    } // i
+  } // randomize
   // In-place transformation to reduce memory consumption
   sample = transformation_(sample);
   weights = Point(size_, 1.0 / size_);
@@ -207,4 +209,3 @@ Sample LowDiscrepancyExperiment::generateWithWeights(Point & weights) const
 }
 
 END_NAMESPACE_OPENTURNS
-

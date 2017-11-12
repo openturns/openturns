@@ -42,7 +42,8 @@ LHSExperiment::LHSExperiment()
   , alwaysShuffle_(false)
   , randomShift_(true)
 {
-  // Nothing to do
+  // Check if the distribution has an independent copula and build the transformation
+  setDistribution(distribution_);
 }
 
 /* Constructor with parameters */
@@ -56,7 +57,8 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
-  // Nothing to do
+  // Check if the distribution has an independent copula and build the transformation
+  setDistribution(distribution_);
 }
 
 /* Constructor with parameters */
@@ -71,7 +73,7 @@ LHSExperiment::LHSExperiment(const Distribution & distribution,
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
-  // Check if the distribution has an independent copula
+  // Check if the distribution has an independent copula and build the transformation
   setDistribution(distribution);
 }
 
@@ -176,7 +178,7 @@ void LHSExperiment::setDistribution(const Distribution & distribution)
   if (dimension != getDistribution().getDimension())
     isAlreadyComputedShuffle_ = false;
   // Build the iso-probabilistic transformation
-  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);  
+  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
   WeightedExperimentImplementation::setDistribution(distribution);
 }
 
@@ -220,4 +222,3 @@ void LHSExperiment::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
-

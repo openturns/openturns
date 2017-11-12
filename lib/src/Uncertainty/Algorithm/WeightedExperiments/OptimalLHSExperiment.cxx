@@ -61,7 +61,7 @@ void OptimalLHSExperiment::setLHS(const LHSExperiment & lhs)
   for (UnsignedInteger j = 0; j < dimension; ++ j)
     marginals[j] = distribution.getMarginal(j);
   // Build the iso-probabilistic transformation
-  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);  
+  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
 }
 
 /* Virtual constructor method */
