@@ -36,6 +36,7 @@
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -706,6 +707,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   }
   // At this point we have an optimization problem to solve
   // Define the optimization problem
+  const UnsignedInteger nrThreads = TBB::DisableThreadedBlas();
   OptimizationProblem problem;
   problem.setObjective(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
@@ -728,6 +730,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
   // No additional cost since the cache mechanism is activated
   LOGINFO(OSS() << iterationNumber << " iterations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
+  TBB::EnableThreadedBlas(nrThreads);
   return optimalLogLikelihood;
 }
 
