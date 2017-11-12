@@ -57,9 +57,11 @@ void OptimalLHSExperiment::setLHS(const LHSExperiment & lhs)
   // marginal extraction can be costly
   const Distribution distribution(getDistribution());
   const UnsignedInteger dimension = distribution.getDimension();
-  marginals_.resize(dimension);
+  ComposedDistribution::DistributionCollection marginals(dimension);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
-    marginals_[j] = distribution.getMarginal(j);
+    marginals[j] = distribution.getMarginal(j);
+  // Build the iso-probabilistic transformation
+  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);  
 }
 
 /* Virtual constructor method */
@@ -113,42 +115,6 @@ void OptimalLHSExperiment::load(Advocate & adv)
   setLHS(lhs_);
   adv.loadAttribute("spaceFilling_", spaceFilling_);
 }
-
-/* Rank transformation */
-Sample OptimalLHSExperiment::rankTransform(const Sample design) const
-{
-  const Distribution distribution(getLHS().getDistribution());
-  const UnsignedInteger size = design.getSize();
-  const UnsignedInteger dimension = distribution.getDimension();
-  Sample result(size, dimension);
-  result.setDescription(design.getDescription());
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      result[i][j] = distribution.getMarginal(j).computeCDF(Point(1, design[i][j]));
-    }
-  }
-  return result;
-}
-
-Sample OptimalLHSExperiment::inverseRankTransform(const Sample design) const
-{
-  const Distribution distribution(getLHS().getDistribution());
-  const UnsignedInteger size = design.getSize();
-  const UnsignedInteger dimension = distribution.getDimension();
-  Sample result(size, dimension);
-  result.setDescription(design.getDescription());
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      result[i][j] = distribution.getMarginal(j).computeQuantile(design[i][j])[0];
-    }
-  }
-  return result;
-}
-
 
 
 END_NAMESPACE_OPENTURNS

@@ -149,6 +149,7 @@ randomize : bool
 Parameters
 ----------
 randomize : bool
-    Use a cyclic scrambling of the low discrepancy sequence.
+    Use a cyclic scrambling of the low discrepancy sequence. See [Lecuyer2005]_ for
+    the interest of such a scrambling.
     Default is false.
 "

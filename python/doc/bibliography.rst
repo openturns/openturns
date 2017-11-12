@@ -82,6 +82,11 @@ Bibliography
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
     `pdf <http://doc.openturns.org/papers/lebrun2009c.pdf>`__
+.. [Lecuyer2005] L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized
+    Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds)
+    Modeling Uncertainty. International Series in Operations Research &
+    Management Science, vol 46. Springer, Boston, MA
+    `pdf <http://doc.openturns.org/papers/lecuyer2005.pdf>`__
 .. [Marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
     Journal of Statistical Computational and Simulation, vol 46, pp101 - 110,1993.
 .. [Martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,

@@ -39,7 +39,8 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment()
   , restart_(true)
   , randomize_(false)
 {
-  // Nothing to do
+  // Build the iso-probabilistic transformation
+  setDistribution(distribution_);
 }
 
 /* Constructor with parameters */
@@ -51,7 +52,8 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const UnsignedInteger size,
   , restart_(restart)
   , randomize_(false)
 {
-  // Nothing to do
+  // Build the iso-probabilistic transformation
+  setDistribution(distribution_);
 }
 
 /* Constructor with parameters */
@@ -143,12 +145,14 @@ void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the LowDiscrepancyExperiment can only be used with distributions having an independent copula.";
   const UnsignedInteger dimension = distribution.getDimension();
-  marginals_ = DistributionCollection(dimension);
+  DistributionCollection marginals(dimension);
   // Get the marginal distributions
-  for (UnsignedInteger i = 0; i < dimension; ++ i) marginals_[i] = distribution.getMarginal(i);
+  for (UnsignedInteger i = 0; i < dimension; ++ i) marginals[i] = distribution.getMarginal(i);
   // restart the low-discrepancy sequence if asked for or mandatory (dimension changed)
   if (restart_ || (dimension != getDistribution().getDimension()))
     sequence_.initialize(dimension);
+  // Build the iso-probabilistic transformation
+  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
   WeightedExperimentImplementation::setDistribution(distribution);
 }
 
@@ -185,28 +189,19 @@ void LowDiscrepancyExperiment::setRandomize(const Bool randomize)
 /* Sample generation */
 Sample LowDiscrepancyExperiment::generateWithWeights(Point & weights) const
 {
-  // In-place transformation to reduce memory consumption
   Sample sample(sequence_.generate(size_));
   sample.setDescription(distribution_.getDescription());
   const UnsignedInteger dimension = marginals_.getSize();
   Scalar tmp = -1.0;
-  for (UnsignedInteger i = 0; i < size_; ++ i)
-  {
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      Scalar p = sample(i, j);
-      if (randomize_)
-      {
-        // with a cyclic scrambling of the low discrepancy point as in R. Cranley and T.N.L. Patterson,
-        // "Randomization of number theoretic methods for multiple integration.",
-        // SIAM Journal of Numerical Analysis, 13:904-914, 1976.
-        const Scalar u = RandomGenerator::Generate();
-        p = std::modf(p + u, &tmp);
-      }
-      // use marginal laws to compute quantile from the low-discrepancy value to build the sample
-      sample[i][j] = marginals_[j].computeQuantile(p)[0];
-    }
-  }
+  Sample uniformSample(size_, dimension);
+  if (randomize_)
+    for (UnsignedInteger i = 0; i < size_; ++ i)
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+        // with a cyclic scrambling of the low discrepancy point as in
+	// L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds) Modeling Uncertainty. International Series in Operations Research & Management Science, vol 46. Springer, Boston, MA
+        sample(i, j) = std::modf(sample(i, j) + RandomGenerator::Generate(), &tmp);
+  // In-place transformation to reduce memory consumption
+  sample = transformation_(sample);
   weights = Point(size_, 1.0 / size_);
   return sample;
 }
