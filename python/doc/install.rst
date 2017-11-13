@@ -36,7 +36,7 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb http://ubuntu.openturns.org xenial main  |
     +-------------------------------------+----------------------------------------------+
-    | Ubuntu 17.04 'Zesty Zapus'          | deb http://ubuntu.openturns.org zesty main   |
+    | Ubuntu 17.10 'Artful Aardvark'      | deb http://ubuntu.openturns.org artful main  |
     +-------------------------------------+----------------------------------------------+
     | Debian 8.0 'Jessie'                 | deb http://debian.openturns.org jessie main  |
     +-------------------------------------+----------------------------------------------+
