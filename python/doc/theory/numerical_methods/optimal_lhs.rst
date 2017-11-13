@@ -17,16 +17,7 @@ We may notice two types of LHS designs:
 - Centered design is obtained by choosing for each point the center of the corresponding cell
 - Randomized LHS is obtained by adding random perturbations inside each cell
 
-Let us fix the following properties for the input vector X:
-
-- Its marginals are independent
-- Its associated probabilistic measure is
-
-.. math::
-
-    \mathcal{L}_{X}(x_1,...,x_d) = \mathcal{U}(a_1, b_1) \otimes \mathcal{U}(a_2, b_2)\otimes\cdots\otimes\mathcal{U}(a_d, b_d)
-
-with :math:`\mathcal{U}` the uniform distribution.
+Let the input vector X whose marginals are independent and associated probabilistic measure :math:`\mathcal{L}_{X}(x_1,...,x_d)`
 
 In practice, we look for a design in the space :math:`[0,1]^d` and we use an inverse
 iso-probabilistic transformation to get the result in the original domain.
@@ -122,7 +113,7 @@ and thus, :math:`C_2(X')` becomes:
         + c^{\prime}_{i_1i_1} + c^{\prime}_{i_2i_2} + 2\sum_{\substack{1\leq j\leq N\\j\neq i_1,i_2}} (c^{\prime}_{i_1j}+c^{\prime}_{i_2j})\\
       {} - c_{i_1i_1} - c_{i_2i_2} - 2\sum_{\substack{1\leq j\leq N\\j\neq i_1,i_2}} (c_{i_1j}+c_{i_2j})
 
-Updating :math:`C_2` criterion can be performed by a :math:`\mathcal{O}(N)` algorithm, which has a much better complexity than a naive computation.\\
+Updating :math:`C_2` criterion can be performed by a :math:`\mathcal{O}(N)` algorithm, which has a much better complexity than a naive computation.
 
 The same trick can also be applied on :math:`\phi_p` criterion, because we can write
 
@@ -155,14 +146,24 @@ These :math:`f_{ij}` coefficients satisfy the same conditions, so the same compu
 In practice, a marginal transformation is performed to map the initial multivariate distribution into :math:`[0,1]^d`.
 Optimization is performed in :math:`[0,1]^d` and the inverse transformation maps the design into the initial space.
 
+.. topic:: API:
 
-Bibliography
-~~~~~~~~~~~~
+    - :class:`~openturns.MonteCarloLHS`
+    - :class:`~openturns.SimulatedAnnealingLHS`
 
-- [Damblin2013]_
-- [Fang2006]_
-- [Jin2005]_
-- [Koehler1996]_
-- [Johnson1990]_
-- [Morris1995]_
-- [Pronzato2012]_
+
+.. topic:: Examples:
+
+    - See :ref:`examples/optimal_lhs.ipynb`
+
+
+.. topic:: References:
+
+    - [Damblin2013]_
+    - [Fang2006]_
+    - [Jin2005]_
+    - [Koehler1996]_
+    - [Johnson1990]_
+    - [Morris1995]_
+    - [Pronzato2012]_
+
