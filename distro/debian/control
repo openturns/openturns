@@ -71,26 +71,6 @@ Description: headers and development libraries for OpenTURNS
  This package provides the OpenTURNS headers should be used if one
  wants to link its application against the library.
 
-Package: libopenturns0.11-dbg
-Section: debug
-Architecture: any
-Depends: libopenturns0.11 (= ${binary:Version}), ${misc:Depends}
-Description: debug symbols for OpenTURNS
- OpenTURNS is a powerful and generic tool to treat and quantify
- uncertainties in numerical simulations in design, optimization and
- control. It allows both sensitivity and reliability analysis studies:
-  * defining the outputs of interest and decision criterion;
-  * quantify and model the source of uncertainties;
-  * propagate uncertainties and/or analyse sensitivity and
-  * rank the sources of uncertainty
- .
- OpenTURNS is a large project with more than 300 C++ classes which
- uses well known and supported software such as R for the statistical
- methods and BLAS/LAPACK for the linear algebra.
- .
- This package provides the debug symbols of the OpenTurns libraries to
- help with debugging either your applications or OpenTURNS
-
 Package: python-openturns
 Section: python
 Architecture: any
