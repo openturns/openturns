@@ -84,9 +84,21 @@ before starting new developments.
     git merge upstream/master
 
 
-4. Push to your remote personal repository::
+You may also want to synchronize your current topic branch with the main repository:
 
-    git push
+1. Add upstream remote repository::
+
+    git remote add upstream https://github.com/openturns/openturns.git
+
+
+2. Retrieve usptream::
+
+    git fetch upstream
+
+
+3. Rebase your current branch to the main repository master branch::
+
+    git rebase upstream/master
 
 
 Delete a branch
