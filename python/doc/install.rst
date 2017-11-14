@@ -77,8 +77,6 @@ The following packages should now be available:
     +----------------------+------------------------------------+
     | libopenturns-dev     | development package                |
     +----------------------+------------------------------------+
-    | libopenturns0.x-dbg  | debug package                      |
-    +----------------------+------------------------------------+
     | python-openturns     | Python module                      |
     +----------------------+------------------------------------+
     | python3-openturns    | Python 3 module                    |
