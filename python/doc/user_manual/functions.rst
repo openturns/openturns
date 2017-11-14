@@ -264,6 +264,8 @@ as Python functions.
     SpecFunc_RegularizedIncompleteGammaInverse
     SpecFunc_TriGamma
 
+.. _coupling_tools:
+
 External code coupling
 ======================
 

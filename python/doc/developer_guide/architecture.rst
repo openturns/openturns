@@ -282,8 +282,6 @@ platforms:
 
 -  mingw-w64 i686 (wine)
 
--  msvc 2010 i686 (wine)
-
 The result of the autobuilder made public to anyone registered to the
 mailing list ``commits@openturns.org``. A summary of each build is
 provided by mail with links to the logs stored on the server.
