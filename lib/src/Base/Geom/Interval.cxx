@@ -216,6 +216,34 @@ Interval Interval::operator +(const Interval & rhs) const
 }
 
 
+Interval Interval::getMarginal(const Indices & indices) const
+{
+  if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "Marginal indices cannot exceed dimension";
+  const UnsignedInteger size = indices.getSize();
+  Point lowerBound(size);
+  Point upperBound(size);
+  Interval::BoolCollection finiteLowerBound(size);
+  Interval::BoolCollection finiteUpperBound(size);
+  for(UnsignedInteger i = 0; i < size; ++ i)
+  {
+    lowerBound[i] = lowerBound_[indices[i]];
+    upperBound[i] = upperBound_[indices[i]];
+    finiteLowerBound[i] = finiteLowerBound_[indices[i]];
+    finiteUpperBound[i] = finiteUpperBound_[indices[i]];
+  }
+  return Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
+}
+
+
+Interval Interval::getMarginal(const UnsignedInteger index) const
+{
+  if (index >= getDimension()) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension";
+  return Interval(Point(1, lowerBound_[index]),
+                  Point(1, upperBound_[index]),
+                  Interval::BoolCollection(1, finiteLowerBound_[index]),
+                  Interval::BoolCollection(1, finiteUpperBound_[index]));
+}
+
 
 /* In-place addition operator */
 Interval & Interval::operator +=(const Interval & other)
