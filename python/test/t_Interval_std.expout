@@ -17,3 +17,6 @@ interval [p2, p1] empty?  True
 intersection of  class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1,-1] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]  and  class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.5,-1.5] upper bound=class=Point name=Unnamed dimension=2 values=[1.5,2.5] finite lower bound=[1,1] finite upper bound=[1,1]  equals  class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.5,-1] upper bound=class=Point name=Unnamed dimension=2 values=[1.5,2] finite lower bound=[1,1] finite upper bound=[1,1]
 is point [0.5,0.5] inside class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1,-1] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1] ?  True
 is point [4,4] inside class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1,-1] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1] ?  False
+marginal(1)= [-1.5, 2.5]
+marginal(1,0)= [-1.5, 2.5]
+[0.5, 1.5]

@@ -264,3 +264,18 @@ Examples
 >>> print(interval1.join(interval2))
 [1, 6]
 [3, 13]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::getMarginal
+"Marginal accessor.
+
+Parameters
+----------
+index : int or sequence of int
+    Index or indices of the selected components.
+
+Returns
+-------
+interval : :class:`~openturns.Interval`
+    The marginal interval."

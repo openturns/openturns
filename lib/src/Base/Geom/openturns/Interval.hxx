@@ -79,6 +79,10 @@ public:
   /** Returns the interval equals to the union between the interval and another one */
   Interval join(const Interval & other) const;
 
+  /** Marginal accessor */
+  Interval getMarginal(const Indices & indices) const;
+  Interval getMarginal(const UnsignedInteger index) const;
+
   /** Addition operator */
   Interval operator +(const Interval & rhs) const;
 
