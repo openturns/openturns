@@ -117,9 +117,23 @@ class SciPyDistribution(PythonDistribution):
         q = self._dist.ppf(p)
         return q
 
-    def computeQuantile(self, p):
+    def computeQuantile(self, prob, tail=False):
+        p = 1.0 - prob if tail else prob
         q = self._dist.ppf(p)
         return [q]
+
+    def getParameter(self):
+        return self._dist.args
+
+    def setParameter(self, params):
+        size = len(self._dist.args)
+        if len(params) != size:
+            raise ValueError('Parameter must be of size %d' % size)
+        self._dist.args = params
+
+    def getParameterDescription(self):
+        size = len(self._dist.args)
+        return ['parameter' + str(i + 1) for i in range(size)]
 %}
 
 %include UncertaintyModelCopulaCollection.i

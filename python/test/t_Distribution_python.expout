@@ -23,6 +23,9 @@ isCopula= True
 range= [0, 1]
 marginal= class=PythonDistribution name=UniformNdPy
 quantile= [0.5]
+parameter= [0.5,1]
+parameter= [0.4,1]
+parameterDesc= [a_0,b_0]
 pyDist= PythonDistribution -> #2
 myDist= class=PythonDistribution name=UniformNdPy description=[X0,X1]
 dimension= 2
@@ -48,6 +51,9 @@ range= [0, 1]
 [0, 1]
 marginal= class=PythonDistribution name=UniformNdPy
 quantile= [0.5,0.5]
+parameter= [0.5,0.5,1,1]
+parameter= [0.4,0.5,1,1]
+parameterDesc= [a_0,a_1,b_0,b_1]
 ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), class=PythonDistribution name=UniformNdPy)
 try with another Python distribution
 The construction failed on purpose as class=PythonDistribution name=UniformNdPy is not a copula

@@ -309,10 +309,11 @@ Point PythonDistribution::computeQuantile(const Scalar prob, const Bool tail) co
   {
     const UnsignedInteger dimension = getDimension();
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeQuantile"));
-    ScopedPyObjectPointer probArg(convert< Scalar, _PyFloat_ >(tail ? 1.0 - prob : prob));
+    ScopedPyObjectPointer probArg(convert< Scalar, _PyFloat_ >(prob));
+    ScopedPyObjectPointer tailArg(convert< Bool, _PyBool_ >(tail));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
-                                     probArg.get(), NULL));
+                                     probArg.get(), tailArg.get(), NULL));
     if (callResult.isNull())
     {
       handleException();
@@ -871,9 +872,6 @@ convert< _PyObject_, Interval >(PyObject * pyObj)
 }
 
 
-
-
-
 /* Compute the numerical range of the distribution given the parameters values */
 void PythonDistribution::computeRange()
 {
@@ -894,5 +892,67 @@ void PythonDistribution::computeRange()
     DistributionImplementation::computeRange();
   }
 }
+
+
+Point PythonDistribution::getParameter() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameter")))
+  {
+    ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
+                                     const_cast<char *>( "getParameter" ),
+                                     const_cast<char *>( "()" ) ));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Point parameter(convert< _PySequence_, Point >(callResult.get()));
+    return parameter;
+  }
+  else
+  {
+    // DistributionImplementation::getParameter throws
+    return Point();
+  }
+}
+
+
+void PythonDistribution::setParameter(const Point & parameter)
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("setParameter")))
+  {
+    ScopedPyObjectPointer methodName(convert< String, _PyString_ >("setParameter"));
+    ScopedPyObjectPointer parameterArg(convert< Point, _PySequence_ >(parameter));
+    ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
+                                     methodName.get(),
+                                     parameterArg.get(), NULL));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+  }
+  // no else: DistributionImplementation::setParameter throws
+}
+
+Description PythonDistribution::getParameterDescription() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameterDescription")))
+  {
+    ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
+                                     const_cast<char *>( "getParameterDescription" ),
+                                     const_cast<char *>( "()" ) ));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Description parameterDescription(convert< _PySequence_, Description >(callResult.get()));
+    return parameterDescription;
+  }
+  else
+  {
+    // DistributionImplementation::getParameterDescription throws
+    return Description();
+  }
+}
+
 
 END_NAMESPACE_OPENTURNS

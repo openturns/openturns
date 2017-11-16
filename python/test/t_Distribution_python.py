@@ -112,11 +112,27 @@ class UniformNdPy(ot.PythonDistribution):
         return ot.Distribution(py_dist)
 
     def computeQuantile(self, prob, tail=False):
-        q = 1.0 - prob if tail else prob
+        p = 1.0 - prob if tail else prob
         quantile = self.a
         for i in range(len(self.a)):
-            quantile[i] += q * (self.b[i] - self.a[i])
+            quantile[i] += p * (self.b[i] - self.a[i])
         return quantile
+
+    def getParameter(self):
+        param = list(self.a)
+        param.extend(self.b)
+        return param
+
+    def getParameterDescription(self):
+        paramDesc = ['a_'+str(i) for i in range(len(self.a))]
+        paramDesc.extend(['b_'+str(i) for i in range(len(self.a))])
+        return paramDesc
+
+    def setParameter(self, parameter):
+        dim = len(self.a)
+        for i in range(dim):
+            self.a[i] = parameter[i]
+            self.b[i] = parameter[dim + i]
 
 for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
 
@@ -203,6 +219,13 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
     # quantile
     quantile = myDist.computeQuantile(0.5)
     print('quantile=', quantile)
+
+    param = myDist.getParameter()
+    print('parameter=', param)
+    param[0] = 0.4
+    myDist.setParameter(param)
+    print('parameter=', myDist.getParameter())
+    print('parameterDesc=', myDist.getParameterDescription())
 
 # Use the distribution as a copula
 myDist = ot.Distribution(UniformNdPy([0.0] * 2, [1.0] * 2))
