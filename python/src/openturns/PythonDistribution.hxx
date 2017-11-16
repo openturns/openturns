@@ -122,10 +122,12 @@ public:
   /** Get the centered moments of the distribution */
   Point getCenteredMoment(const UnsignedInteger n) const;
 
-  /** Parameters value and description accessor */
-  //   PointWithDescriptionCollection getParametersCollection() const;
-  //   void setParametersCollection(const PointCollection & parametersCollection);
-  //
+  /** Parameters value accessors */
+  void setParameter(const Point & parameter);
+  Point getParameter() const;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
 
   /** Check if the distribution is a copula */
   Bool isCopula() const;

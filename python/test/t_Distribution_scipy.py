@@ -30,3 +30,10 @@ for scipy_dist in [st.uniform(), st.johnsonsu(2.55, 2.25)]:
     print('kurtosis=', distribution.getKurtosis())
     print('kurtosis(sampling)=', sample.computeKurtosis())
     print('range=', distribution.getRange())
+    parameter = distribution.getParameter()
+    print('parameter=', distribution.getParameter())
+    if len(parameter) > 0:
+        parameter[0] = 3.5
+    distribution.setParameter(parameter)
+    print('parameter=', distribution.getParameter())
+    print('parameterDesc=', distribution.getParameterDescription())
