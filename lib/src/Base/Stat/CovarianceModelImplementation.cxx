@@ -298,7 +298,7 @@ struct CovarianceModelDiscretizePolicy
       const CovarianceMatrix localCovariance(model_(input_[iLocal], input_[jLocal]));
       for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
         for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
-          output_(iBase + ii, iBase + jj) = localCovariance(ii, jj);
+          output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);
     }
   }
 
