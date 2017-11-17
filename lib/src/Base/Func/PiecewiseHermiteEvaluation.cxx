@@ -102,6 +102,46 @@ String PiecewiseHermiteEvaluation::__str__(const String & offset) const
          << ", derivatives=" << derivatives_ << ")";
 }
 
+namespace {
+Bool computeRegularHermite(const Point & locations)
+{
+  const UnsignedInteger size = locations.getSize();
+  const Scalar step = locations[1] - locations[0];
+  const Scalar relativeEpsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
+  for (UnsignedInteger i = 2; i < size; ++i)
+  {
+    if (!(std::abs(locations[i] - locations[0] - i * step) < relativeEpsilon))
+      return false;
+  }
+  return true;
+}
+
+// Find the segment containing value by bisection
+UnsignedInteger findSegmentIndexHermite(const Point & locations, const Scalar value, const UnsignedInteger start)
+{
+  UnsignedInteger iRight = locations.getSize() - 1;
+  UnsignedInteger iLeft  = start;
+  if (value >= locations[start])
+  {
+    // Shortcuts for the most common cases when looping over a Sample
+    if (start == iRight || value < locations[start+1])
+      return start;
+    else if (start + 1 == iRight || value < locations[start+2])
+      return start + 1 ;
+  }
+  else
+    iLeft = 0;
+
+  while (iRight > iLeft + 1)
+  {
+    const UnsignedInteger im = (iRight + iLeft) / 2;
+    if (value < locations[im]) iRight = im;
+    else iLeft = im;
+  }
+  return  iLeft;
+}
+} // anonymous namespace
+
 
 /* Evaluation operator */
 Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
@@ -113,32 +153,56 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight]) return values_[iRight];
   if (isRegular_)
-  {
     iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
-    iRight = iLeft + 1;
-  }
   else
-    // Find the segment containing x by bisection
-    while (iRight - iLeft > 1)
-    {
-      const UnsignedInteger im = (iRight + iLeft) / 2;
-      if (x < locations_[im]) iRight = im;
-      else iLeft = im;
-    }
+    iLeft = findSegmentIndexHermite(locations_, x, 0);
 
-  const Scalar h = locations_[iRight] - locations_[iLeft];
+  const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
   const Scalar theta = (x - locations_[iLeft]) / h;
-  const Point vLeft(values_[iLeft]);
-  const Point vRight(values_[iRight]);
-  const Point dvLeft(derivatives_[iLeft]);
-  const Point dvRight(derivatives_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
   Point value(dimension);
   const Scalar alpha = 1.0 - theta;
   const Scalar beta = theta * alpha;
   const Scalar gamma = 2.0 * theta - 1.0;
-  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * vLeft[i] + theta * vRight[i] + beta * (gamma * (vRight[i] - vLeft[i]) + h * (alpha * dvLeft[i] - theta * dvRight[i]));
+  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = alpha * values_(iLeft, i) + theta * values_(iLeft + 1, i) + beta * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, i) - theta * derivatives_(iLeft + 1, i)));
   return value;
+}
+
+Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
+{
+  if (inSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inSample.getDimension();
+  const UnsignedInteger size = inSample.getSize();
+  const UnsignedInteger dimension = getOutputDimension();
+  Sample output(size, dimension);
+  const UnsignedInteger maxIndex = locations_.getSize() - 1;
+  UnsignedInteger iLeft = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar x = inSample(i, 0);
+    if (x <= locations_[0])
+    {
+      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
+      continue;
+    }
+    UnsignedInteger iRight = maxIndex;
+    if (x >= locations_[iRight])
+    {
+      for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
+      continue;
+    }
+    if (isRegular_)
+      iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
+    else
+      iLeft = findSegmentIndexHermite(locations_, x, iLeft);
+
+    const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
+    const Scalar theta = (x - locations_[iLeft]) / h;
+    const Scalar alpha = 1.0 - theta;
+    const Scalar beta = theta * alpha;
+    const Scalar gamma = 2.0 * theta - 1.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = alpha * values_(iLeft, i) + theta * values_(iLeft + 1, i) + beta * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, i) - theta * derivatives_(iLeft + 1, i)));
+    return output;
+  }
 }
 
 /* Compute the derivative */
@@ -151,31 +215,18 @@ Point PiecewiseHermiteEvaluation::derivate(const Point & inP) const
   UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight]) return values_[iRight];
   if (isRegular_)
-  {
     iLeft = static_cast<UnsignedInteger>(trunc((x - locations_[0]) / (locations_[1] - locations_[0])));
-    iRight = iLeft + 1;
-  }
   else
-    // Find the segment containing x by bisection
-    while (iRight - iLeft > 1)
-    {
-      const UnsignedInteger im = (iRight + iLeft) / 2;
-      if (x < locations_[im]) iRight = im;
-      else iLeft = im;
-    }
+    iLeft = findSegmentIndexHermite(locations_, x, 0);
 
-  const Scalar h = locations_[iRight] - locations_[iLeft];
+  const Scalar h = locations_[iLeft + 1] - locations_[iLeft];
   const Scalar theta = (x - locations_[iLeft]) / h;
-  const Point vLeft(values_[iLeft]);
-  const Point vRight(values_[iRight]);
-  const Point dvLeft(derivatives_[iLeft]);
-  const Point dvRight(derivatives_[iRight]);
   const UnsignedInteger dimension = getOutputDimension();
   Point value(dimension);
   const Scalar alpha = 1.0 - theta;
   const Scalar beta = theta * alpha;
   const Scalar gamma = 2.0 * theta - 1.0;
-  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-vLeft[i] + vRight[i] + alpha * (gamma * (vRight[i] - vLeft[i]) + h * (alpha * dvLeft[i] - theta * dvRight[i])) + beta * (2.0 * (vRight[i] - vLeft[i]) + h * (- dvLeft[i] - dvRight[i]))) / h;
+  for (UnsignedInteger i = 0; i < dimension; ++i) value[i] = (-values_(iLeft, i) + values_(iLeft + 1, i) + alpha * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, 1) - theta * derivatives_(iLeft + 1, i))) + beta * (2.0 * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (- derivatives_(iLeft, 1) - derivatives_(iLeft + 1, i)))) / h;
   return value;
 }
 
@@ -192,10 +243,9 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
   const Scalar step = locations_[0] - locations_[0];
   const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
-  isRegular_ = true;
-  for (UnsignedInteger i = 0; i < size; ++i) isRegular_ = isRegular_ && (std::abs(locations[i] - locations[0] - i * step) < epsilon);
   locations_ = locations;
   std::stable_sort(locations_.begin(), locations_.end());
+  isRegular_ = computeRegularHermite(locations_);
 }
 
 /* Values accessor */
@@ -241,28 +291,25 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Point & 
   Sample data(size, 1 + 2 * outputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    data[i][0] = locations[i];
+    data(i, 0) = locations[i];
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      data[i][1 + j] = values[i][j];
+      data(i, 1 + j) = values(i, j);
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      data[i][1 + outputDimension + j] = derivatives[i][j];
+      data(i, 1 + outputDimension + j) = derivatives(i, j);
   }
   data = data.sortAccordingToAComponent(0);
   locations_ = Point(size);
   values_ = Sample(size, outputDimension);
   derivatives_ = Sample(size, outputDimension);
-  const Scalar step = data[1][0] - data[0][0];
-  const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
-  isRegular_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    locations_[i] = data[i][0];
-    isRegular_ = isRegular_ && (std::abs(locations_[i] - locations_[0] - i * step) < epsilon);
+    locations_[i] = data(i, 0);
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      values_[i][j] = data[i][1 + j];
+      values_(i, j) = data(i, 1 + j);
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      derivatives_[i][j] = data[i][1 + outputDimension + j];
+      derivatives_(i, j) = data(i, 1 + outputDimension + j);
   }
+  isRegular_ = computeRegularHermite(locations_);
 }
 
 /* Input dimension accessor */
@@ -285,7 +332,6 @@ void PiecewiseHermiteEvaluation::save(Advocate & adv) const
   adv.saveAttribute( "locations_", locations_ );
   adv.saveAttribute( "values_", values_ );
   adv.saveAttribute( "derivatives_", derivatives_ );
-  adv.saveAttribute( "isRegular_", isRegular_ );
 }
 
 
@@ -296,7 +342,7 @@ void PiecewiseHermiteEvaluation::load(Advocate & adv)
   adv.loadAttribute( "locations_", locations_ );
   adv.loadAttribute( "values_", values_ );
   adv.loadAttribute( "derivatives_", derivatives_ );
-  adv.loadAttribute( "isRegular_", isRegular_ );
+  isRegular_ = computeRegularHermite(locations_);
 }
 
 

@@ -63,6 +63,7 @@ public:
   /** Evaluation operator */
   using EvaluationImplementation::operator ();
   Point operator () (const Point & inP) const;
+  Sample operator () (const Sample & inSample) const;
 
   /** Compute the derivative */
   Point derivate(const Point & inP) const;

@@ -61,6 +61,7 @@ public:
   /** Evaluation operator */
   using EvaluationImplementation::operator ();
   Point operator () (const Point & inP) const;
+  Sample operator () (const Sample & inSample) const;
 
   /** Locations accessor */
   Point getLocations() const;
