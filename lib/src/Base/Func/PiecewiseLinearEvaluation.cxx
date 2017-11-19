@@ -159,7 +159,7 @@ Point PiecewiseLinearEvaluation::operator () (const Point & inP) const
 
 Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
 {
-  if (inSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input point of dimension 1, got dimension=" << inSample.getDimension();
+  if (inSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected an input sample of dimension 1, got dimension=" << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   const UnsignedInteger dimension = getOutputDimension();
   Sample output(size, dimension);
