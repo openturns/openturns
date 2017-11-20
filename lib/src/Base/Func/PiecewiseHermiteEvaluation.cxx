@@ -201,8 +201,8 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     const Scalar beta = theta * alpha;
     const Scalar gamma = 2.0 * theta - 1.0;
     for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = alpha * values_(iLeft, i) + theta * values_(iLeft + 1, i) + beta * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, i) - theta * derivatives_(iLeft + 1, i)));
-    return output;
   }
+  return output;
 }
 
 /* Compute the derivative */
@@ -242,7 +242,6 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
   const Scalar step = locations_[0] - locations_[0];
-  const Scalar epsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
   locations_ = locations;
   std::stable_sort(locations_.begin(), locations_.end());
   isRegular_ = computeRegularHermite(locations_);
