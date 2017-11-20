@@ -226,9 +226,10 @@ void ProjectionStrategyImplementation::computeCoefficients(const Function & func
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
+    const UnsignedInteger maximumDimension,
     const UnsignedInteger marginalIndex)
 {
-  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const Function & function, const Basis & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger marginalIndex)";
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const Function & function, const Basis & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger maximumDimension, const UnsignedInteger marginalIndex)";
 }
 
 

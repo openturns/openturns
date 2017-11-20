@@ -10,7 +10,9 @@ Parameters
 x : :class:`~openturns.Sample`
     Input sample
 psi : :class:`~openturns.Basis`
-    Functional basis"
+    Functional basis
+ncol : int, optional
+    Maximum number of columns"
 
 // ---------------------------------------------------------------------
 

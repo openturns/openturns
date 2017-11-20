@@ -130,6 +130,7 @@ private:
 
   /** Marginal computation */
   void runMarginal(const UnsignedInteger marginalIndex,
+                   const UnsignedInteger maximumDimension,
                    Indices & indices,
                    Point & coefficients,
                    Scalar & residual,

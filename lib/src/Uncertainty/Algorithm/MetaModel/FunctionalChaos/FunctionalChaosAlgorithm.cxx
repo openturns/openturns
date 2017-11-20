@@ -272,6 +272,7 @@ AdaptiveStrategy FunctionalChaosAlgorithm::getAdaptiveStrategy() const
 void FunctionalChaosAlgorithm::run()
 {
   const UnsignedInteger outputDimension = model_.getOutputDimension();
+  const UnsignedInteger maximumDimension = adaptiveStrategy_.getMaximumDimension();
 
   // Get the measure upon which the orthogonal basis is built
   const OrthogonalBasis basis(adaptiveStrategy_.getImplementation()->basis_);
@@ -319,7 +320,7 @@ void FunctionalChaosAlgorithm::run()
     Scalar marginalResidual = -1.0;
     Scalar marginalRelativeError = -1.0;
     // Compute the indices, the coefficients, the residual and the relative error of the current marginal output
-    runMarginal(outputIndex, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
+    runMarginal(outputIndex, maximumDimension, marginalIndices, marginalAlpha_k, marginalResidual, marginalRelativeError);
     residuals[outputIndex] = marginalResidual;
     relativeErrors[outputIndex] = marginalRelativeError;
     for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
@@ -361,6 +362,7 @@ void FunctionalChaosAlgorithm::run()
 
 /* Marginal computation */
 void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
+    const UnsignedInteger maximumDimension,
     Indices & indices,
     Point & coefficients,
     Scalar & residual,
@@ -372,7 +374,7 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
   do
   {
     LOGINFO("Compute the coefficients");
-    projectionStrategy_.computeCoefficients(composedModel_, *adaptiveStrategy_.getImplementation()->basis_.getImplementation(), adaptiveStrategy_.getImplementation()->I_p_, adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->conservedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_, marginalIndex);
+    projectionStrategy_.computeCoefficients(composedModel_, *adaptiveStrategy_.getImplementation()->basis_.getImplementation(), adaptiveStrategy_.getImplementation()->I_p_, adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->conservedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_, maximumDimension, marginalIndex);
     // The basis is adapted under the following conditions:
     // + the current residual is small enough
     // + the adaptive strategy has no more vector to propose

@@ -138,9 +138,10 @@ void ProjectionStrategy::computeCoefficients(const Function & function,
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
+    const UnsignedInteger maximumDimension,
     const UnsignedInteger marginalIndex)
 {
-  getImplementation()->computeCoefficients(function, basis, indices, addedRanks, conservedRanks, removedRanks, marginalIndex);
+  getImplementation()->computeCoefficients(function, basis, indices, addedRanks, conservedRanks, removedRanks, maximumDimension, marginalIndex);
 }
 
 
