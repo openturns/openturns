@@ -10,6 +10,7 @@ Reliability, sensitivity
     estimate_probability_directional_sampling.ipynb
     estimate_probability_randomized_qmc.ipynb
     probability_simulation_parametrization.ipynb
+    probability_simulation_results.ipynb
     estimate_probability_form.ipynb
     strong_maximum_test.ipynb
     composite_experiment.ipynb
