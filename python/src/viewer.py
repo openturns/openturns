@@ -91,6 +91,8 @@ class View(object):
 
     add_legend : bool, optional
         Adds a legend if True. Default is True.
+    square_axes : bool, optional
+        Forces the axes to share the same scale if True. Default is False.
     """
 
     @staticmethod
@@ -128,6 +130,7 @@ class View(object):
                  text_kwargs=None,
                  legend_kwargs=None,
                  add_legend=True,
+                 square_axes=False,
                  **kwargs):
 
         # prevent Qt from stopping the interpreter, see matplotlib PR #1905
@@ -524,6 +527,8 @@ class View(object):
             legend_kwargs.setdefault('prop', {'size': 10})
 
             self._ax[0].legend(**legend_kwargs)
+        if square_axes:
+            self._ax[0].axis('square')
 
     def show(self, **kwargs):
         """
