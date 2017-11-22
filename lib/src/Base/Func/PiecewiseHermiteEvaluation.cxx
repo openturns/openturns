@@ -241,7 +241,6 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
   const UnsignedInteger size = locations.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  const Scalar step = locations_[0] - locations_[0];
   locations_ = locations;
   std::stable_sort(locations_.begin(), locations_.end());
   isRegular_ = computeRegularHermite(locations_);
