@@ -724,7 +724,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   {
     if (normalizedOptimizationBounds_.getDimension() == 0)
     {
-      const Point lowerPoint(inputTransformation_(optimizationBounds_.getLowerBound()));
+      const Point lowerPoint(optimizationBounds_.getLowerBound());
       const Point upperPoint(inputTransformation_(optimizationBounds_.getUpperBound()));
       const Interval::BoolCollection finiteLower(optimizationBounds_.getFiniteLowerBound());
       const Interval::BoolCollection finiteUpper(optimizationBounds_.getFiniteUpperBound());
