@@ -55,6 +55,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
+  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -90,6 +91,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
+  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -146,6 +148,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
+  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -214,6 +217,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
+  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -270,6 +274,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
+  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -328,6 +333,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
+  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -436,13 +442,8 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
-    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
-    if (normalize_)
-    {
-      lowerBound = inputTransformation_(lowerBound);
-      upperBound = inputTransformation_(upperBound);
-    }
+    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    const Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
@@ -719,7 +720,20 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem;
   problem.setObjective(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
-  problem.setBounds(optimizationBounds_);
+  if (normalize_)
+  {
+    if (normalizedOptimizationBounds_.getDimension() == 0)
+    {
+      const Point lowerPoint(inputTransformation_(optimizationBounds_.getLowerBound()));
+      const Point upperPoint(inputTransformation_(optimizationBounds_.getUpperBound()));
+      const Interval::BoolCollection finiteLower(optimizationBounds_.getFiniteLowerBound());
+      const Interval::BoolCollection finiteUpper(optimizationBounds_.getFiniteUpperBound());
+      normalizedOptimizationBounds_ = Interval(lowerPoint, upperPoint, finiteLower, finiteUpper);
+    }
+    problem.setBounds(normalizedOptimizationBounds_);
+  }
+  else
+    problem.setBounds(optimizationBounds_);
   solver_.setStartingPoint(initialParameters);
   solver_.setProblem(problem);
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
@@ -1000,6 +1014,7 @@ void GeneralLinearModelAlgorithm::setOptimizationBounds(const Interval & optimiz
 {
   if (!(optimizationBounds.getDimension() == reducedCovarianceModel_.getParameter().getSize())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << reducedCovarianceModel_.getParameter().getSize() << ", got dimension=" << optimizationBounds.getDimension();
   optimizationBounds_ = optimizationBounds;
+  normalizedOptimizationBounds_ = Interval();
 }
 
 Interval GeneralLinearModelAlgorithm::getOptimizationBounds() const

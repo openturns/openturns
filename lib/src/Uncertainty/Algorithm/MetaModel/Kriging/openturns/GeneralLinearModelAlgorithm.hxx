@@ -272,6 +272,9 @@ private:
   // Bounds used for parameter optimization
   Interval optimizationBounds_;
 
+  // Standardized version of the optimization bounds
+  Interval normalizedOptimizationBounds_;
+
   // The coefficients of the current output conditional expectation part
   mutable Point beta_;
   // Temporarly used to compute gamma
