@@ -24,7 +24,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -170,14 +170,14 @@ private:
   void computeRange();
 
   /** Weights distribution accessor */
-  void setWeightsDistribution(const UserDefined & weighstDistribution);
-  UserDefined getWeightsDistribution() const;
+  void setWeightsDistribution(const Categorical & weighstDistribution);
+  Categorical getWeightsDistribution() const;
 
   /** The collection of distribution of the mixture */
   DistributionPersistentCollection distributionCollection_;
 
   /** The discrete distribution of the weights */
-  UserDefined weightsDistribution_;
+  Categorical weightsDistribution_;
 
   /** PDF approximation associated to the CDF approximation */
   PiecewiseHermiteEvaluation pdfApproximationCDF_;

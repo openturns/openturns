@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/BootstrapExperiment.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,7 +37,7 @@ BootstrapExperiment::BootstrapExperiment():
 
 /* Constructor with parameters */
 BootstrapExperiment::BootstrapExperiment(const Sample & sample):
-  WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
+  WeightedExperimentImplementation(Categorical(sample), sample.getSize())
 {
   // Nothing to do
 }

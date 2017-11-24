@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
   p[0] = 0.3;
   p[1] = 0.2;
   p[2] = 0.5;
-  UserDefined userdefined(x, p);
+  Categorical userdefined(x, p);
   distributionCollection.add(userdefined);
   discreteDistributionCollection.add(userdefined);
 

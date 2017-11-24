@@ -24,7 +24,7 @@
 #include "openturns/CopulaImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Copula.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -170,7 +170,7 @@ private:
   Point blockLengths_;
 
   /** Discrete distribution to select the component of the sum for sampling */
-  UserDefined blockDistribution_;
+  Categorical blockDistribution_;
 }; /* class ComposedCopula */
 
 

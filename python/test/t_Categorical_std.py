@@ -11,7 +11,7 @@ try:
     # Instanciate one distribution object
     x = [[1.0], [2.0], [3.0], [3.0]]
     p = [0.3, 0.1, 0.6, 0.6]
-    distribution = UserDefined(x, p)
+    distribution = Categorical(x, p)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -48,14 +48,14 @@ try:
     print("Standard representative=", distribution.getStandardRepresentative())
 
     # To prevent automatic compaction
-    ResourceMap.SetAsUnsignedInteger("UserDefined-SmallSize", 5)
+    ResourceMap.SetAsUnsignedInteger("Categorical-SmallSize", 5)
     sample = Sample(40, 3)
     for i in range(4):
         for j in range(3):
             sample[i, j] = 10 * (i // 3 + 1) + 0.1 * (j + 1)
 
-    multivariateUserDefined = UserDefined(sample)
-    print("Multivariate UserDefined=", multivariateUserDefined)
+    multivariateUserDefined = Categorical(sample)
+    print("Multivariate Categorical=", multivariateUserDefined)
     print("Marginal 0=", multivariateUserDefined.getMarginal(0))
     indices = Indices(2)
     indices[0] = 2

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The UserDefined distribution
+ *  @brief The Categorical distribution
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_USERDEFINED_HXX
-#define OPENTURNS_USERDEFINED_HXX
+#ifndef OPENTURNS_CATEGORICAL_HXX
+#define OPENTURNS_CATEGORICAL_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DiscreteDistribution.hxx"
@@ -30,29 +30,29 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class UserDefined
+ * @class Categorical
  *
- * The UserDefined distribution.
+ * The Categorical distribution.
  */
-class OT_API UserDefined
+class OT_API Categorical
   : public DiscreteDistribution
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  UserDefined();
+  Categorical();
 
   /** Constructor from a sample */
-  explicit UserDefined(const Sample & points);
+  explicit Categorical(const Sample & points);
 
   /** Constructor from a sample and associated weights */
-  UserDefined(const Sample & points,
+  Categorical(const Sample & points,
               const Point & weights);
 
 
   /** Comparison operator */
-  Bool operator ==(const UserDefined & other) const;
+  Bool operator ==(const Categorical & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;
 public:
@@ -66,7 +66,7 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual UserDefined * clone() const;
+  virtual Categorical * clone() const;
 
   /** Get one realization of the distribution */
   Point getRealization() const;
@@ -106,7 +106,7 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
-  /* Interface specific to UserDefined */
+  /* Interface specific to Categorical */
 
   /** Data accessors */
   void setData(const Sample & points,
@@ -159,8 +159,8 @@ private:
   /** Flag to accelerate computations in case of uniform weights */
   Bool hasUniformWeights_;
 
-}; /* class UserDefined */
+}; /* class Categorical */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_USERDEFINED_HXX */
+#endif /* OPENTURNS_CATEGORICAL_HXX */

@@ -28,7 +28,7 @@
 #include "openturns/Indices.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/HistogramFactory.hxx"
 #include "openturns/Normal.hxx"
@@ -45,7 +45,7 @@ Graph VisualTest::DrawEmpiricalCDF(const Sample & sample)
 {
   if (sample.getDimension() != 1)
     throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
-  return UserDefined(sample).drawCDF();
+  return Categorical(sample).drawCDF();
 }
 
 /* Draw the empirical CDF of the Sample when its dimension is 1 */
@@ -55,7 +55,7 @@ Graph VisualTest::DrawEmpiricalCDF(const Sample & sample,
 {
   if (sample.getDimension() != 1)
     throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
-  return UserDefined(sample).drawCDF(xMin, xMax);
+  return Categorical(sample).drawCDF(xMin, xMax);
 }
 
 

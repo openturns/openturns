@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/FixedExperiment.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,7 +38,7 @@ FixedExperiment::FixedExperiment()
 
 /* Constructor with parameters */
 FixedExperiment::FixedExperiment(const Sample & sample)
-  : WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
+  : WeightedExperimentImplementation(Categorical(sample), sample.getSize())
   , sample_(sample)
   , weights_(sample.getSize(), 1.0 / sample.getSize())
 {
@@ -47,7 +47,7 @@ FixedExperiment::FixedExperiment(const Sample & sample)
 /* Constructor with parameters */
 FixedExperiment::FixedExperiment(const Sample & sample,
                                  const Point & weights)
-  : WeightedExperimentImplementation(UserDefined(sample, weights), sample.getSize())
+  : WeightedExperimentImplementation(Categorical(sample, weights), sample.getSize())
   , sample_(sample)
   , weights_(weights)
 {

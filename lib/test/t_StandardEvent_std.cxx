@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     p[0] = 0.0;
     p[1] = 0.3;
     p[2] = 0.325;
-    UserDefined myDistribution3(x, p);
+    Categorical myDistribution3(x, p);
     /* We create a 'usual' RandomVector from the Distribution */
     RandomVector vect3(myDistribution3);
 

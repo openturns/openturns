@@ -1,10 +1,10 @@
-%feature("docstring") OT::UserDefined
-"UserDefined distribution.
+%feature("docstring") OT::Categorical
+"Categorical distribution.
 
 Available constructors:
-    UserDefined(*points*)
+    Categorical(*points*)
 
-    UserDefined(*points, weights*)
+    Categorical(*points, weights*)
 
 Parameters
 ----------
@@ -47,11 +47,11 @@ Create a distribution:
 ...     for j in range(3):
 ...         points[i, j] = 10 * (i + 1) + 0.1 * (j + 1)
 
->>> distribution = ot.UserDefined(points, [0.3,0.2,0.25,0.25])"
+>>> distribution = ot.Categorical(points, [0.3,0.2,0.25,0.25])"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::getX
+%feature("docstring") OT::Categorical::getX
 "Accessor to the distribution's :math:`x` parameter.
 
 Returns
@@ -61,7 +61,7 @@ coll : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::getP
+%feature("docstring") OT::Categorical::getP
 "Accessor to the distribution's :math:`p` parameter.
 
 Returns
@@ -71,7 +71,7 @@ coll : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::setData
+%feature("docstring") OT::Categorical::setData
 "Accessor to the distribution's :math:`x` and :math:`p` parameters.
 
 Parameters
@@ -83,7 +83,7 @@ weights : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::UserDefined::compactSupport()
+%feature("docstring") OT::Categorical::compactSupport()
 "Compact the support of the distribution.
 
 Compact by concatenating points of distance less than :math:`\varepsilon`
@@ -100,5 +100,5 @@ change the default value the new value :math:`1.3e-3`, use the command:
 The method is always used for any univariate distributions and for upper
 dimensions, it is only used when the number of points defining the support is
 less than a limit specified in the ResourceMap in the key
-'UserDefined-SmallSize'. By default, the size limit is equal to :math:`1e4`.
+'Categorical-SmallSize'. By default, the size limit is equal to :math:`1e4`.
 "

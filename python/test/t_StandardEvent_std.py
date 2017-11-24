@@ -73,7 +73,7 @@ try:
 
     x = [[1.0, 0.5, 1.0, 0.5], [2.0, 1.0, 2.0, 1.0], [3.0, 1.5, 3.0, 1.5]]
     p = [0.3, 0.325, 0.375]
-    myDistribution3 = UserDefined(x, p)
+    myDistribution3 = Categorical(x, p)
 
     # We create a 'usual' RandomVector from the Distribution */
     vect3 = RandomVector(myDistribution3)

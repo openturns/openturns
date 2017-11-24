@@ -61,7 +61,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Poisson()
 >>> sample = distribution.getSample(30)
->>> tested_distributions = [ot.PoissonFactory(), ot.UserDefinedFactory()]
+>>> tested_distributions = [ot.PoissonFactory(), ot.CategoricalFactory()]
 >>> best_model = ot.FittingTest.BestModelBIC(sample, tested_distributions)
 >>> print(best_model)
 Poisson(lambda = 1.06667)"

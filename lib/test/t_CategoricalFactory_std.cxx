@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     sample[1][1] = 2.5;
     sample[2][0] = 3.0;
     sample[2][1] = 3.5;
-    UserDefinedFactory factory;
+    CategoricalFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
@@ -48,11 +48,11 @@ int main(int argc, char *argv[])
     // fullprint << "Covariance=" << covariance << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    UserDefined estimatedUserDefined(factory.buildAsUserDefined(sample));
+    Categorical estimatedUserDefined(factory.buildAsCategorical(sample));
     fullprint << "Sample                =" << sample << std::endl;
-    fullprint << "Estimated UserDefined=" << estimatedUserDefined << std::endl;
-    estimatedUserDefined = factory.buildAsUserDefined();
-    fullprint << "Default UserDefined=" << estimatedUserDefined << std::endl;
+    fullprint << "Estimated Categorical=" << estimatedUserDefined << std::endl;
+    estimatedUserDefined = factory.buildAsCategorical();
+    fullprint << "Default Categorical=" << estimatedUserDefined << std::endl;
     // For ticket 784
     estimatedDistribution = factory.build(Sample(2000, Point(1, 0.0)));
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;

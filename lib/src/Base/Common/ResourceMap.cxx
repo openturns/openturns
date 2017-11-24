@@ -662,8 +662,8 @@ void ResourceMap::loadDefaultConfiguration()
   // NonCentralStudent parameters //
   setAsUnsignedInteger( "NonCentralStudent-CDFAlgo", 0 );
 
-  // UserDefined parameters //
-  setAsUnsignedInteger( "UserDefined-SmallSize", 10000 );
+  // Categorical parameters //
+  setAsUnsignedInteger( "Categorical-SmallSize", 10000 );
 
   // AliMikhailHaqCopulaFactory parameters //
   setAsScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14 );

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for UserDefined distribution
+ *  @brief Factory for Categorical distribution
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,29 +18,29 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_USERDEFINEDFACTORY_HXX
-#define OPENTURNS_USERDEFINEDFACTORY_HXX
+#ifndef OPENTURNS_CATEGORICALFACTORY_HXX
+#define OPENTURNS_CATEGORICALFACTORY_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class UserDefinedFactory
+ * @class CategoricalFactory
  */
-class OT_API UserDefinedFactory
+class OT_API CategoricalFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  UserDefinedFactory();
+  CategoricalFactory();
 
   /** Virtual constructor */
-  virtual UserDefinedFactory * clone() const;
+  virtual CategoricalFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
@@ -49,13 +49,13 @@ public:
   Implementation build(const Sample & sample,
                        const Scalar epsilon) const;
   Implementation build() const;
-  UserDefined buildAsUserDefined(const Sample & sample,
+  Categorical buildAsCategorical(const Sample & sample,
                                  const Scalar epsilon = 0.0) const;
-  UserDefined buildAsUserDefined() const;
+  Categorical buildAsCategorical() const;
 
-}; /* class UserDefinedFactory */
+}; /* class CategoricalFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_USERDEFINEDFACTORY_HXX */
+#endif /* OPENTURNS_CATEGORICALFACTORY_HXX */

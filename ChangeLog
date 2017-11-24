@@ -33,6 +33,7 @@
  * Deprecated SecondOrderModel::getDimension, getSpatialDimension
  * Deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation
  * Deprecated TruncatedDistribution single bound accessors in favor of setBounds/getBounds
+ * Deprecated UserDefined, UserDefinedFactory in favor of Categorical, CategoricalFactory
 
 === Python module ===
 

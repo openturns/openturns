@@ -39,7 +39,7 @@
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 #include "openturns/DistributionFactory.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
@@ -97,7 +97,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setMeasure(Categorical(inputSample));
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
   projectionStrategy_.setWeights(Point(inputSample.getSize(), 1.0 / inputSample.getSize()));
   projectionStrategy_.setInputSample(inputSample);
@@ -119,7 +119,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Overwrite the content of the projection strategy with the given data
-  projectionStrategy_.setMeasure(UserDefined(inputSample));
+  projectionStrategy_.setMeasure(Categorical(inputSample));
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
   projectionStrategy_.setWeights(weights);
   projectionStrategy_.setInputSample(inputSample);
@@ -175,8 +175,8 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     TestResult bestResult;
-    // Here we remove the duplicate entries in the marginal sample using the automatic compaction of the support in the UserDefined class
-    const Sample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
+    // Here we remove the duplicate entries in the marginal sample using the automatic compaction of the support in the Categorical class
+    const Sample marginalSample(Categorical(inputSample.getMarginal(i)).getSupport());
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
     if (bestResult.getPValue() > ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;

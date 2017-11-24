@@ -67,7 +67,7 @@ try:
 
     x = [[1.0], [2.0], [3.0]]
     p = [0.3, 0.2, 0.5]
-    userdefined = UserDefined(x, p)
+    userdefined = Categorical(x, p)
     distributionCollection.add(userdefined)
     discreteDistributionCollection.add(userdefined)
 

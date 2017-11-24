@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
     TruncatedNormal truncatedNormal(0.5, 3.0, -2.0, 2.0);
     study.add("truncatedNormal", truncatedNormal);
 
-    // Create an UserDefined
+    // Create an Categorical
     Sample x(3, 1);
     x[0][0] = 1.0;
     x[1][0] = 2.0;
@@ -296,8 +296,8 @@ int main(int argc, char *argv[])
     p[0] = 0.3;
     p[1] = 0.1;
     p[2] = 0.6;
-    UserDefined userDefined(x, p);
-    study.add("userDefined", userDefined);
+    Categorical categorical(x, p);
+    study.add("categorical", categorical);
 
     // Create a Weibull distribution
     Weibull weibull(2.0, 1.5, -0.5);
@@ -1054,7 +1054,7 @@ int main(int argc, char *argv[])
     compare<TruncatedDistribution>(truncatedDistribution, study2 );
     compare<TruncatedNormal>(truncatedNormal, study2 );
     compare<Uniform >( uniform, study2 );
-    compare<UserDefined>(userDefined, study2 );
+    compare<Categorical>(categorical, study2);
     compare<Weibull>(weibull, study2 );
 
     // Simulation
