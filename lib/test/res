@@ -26,5 +26,5 @@
 ../src/Uncertainty/Distribution/openturns/RandomMixture.hxx
 ../src/Uncertainty/Distribution/openturns/Student.hxx
 ../src/Uncertainty/Distribution/openturns/SubSquareCopula.hxx
-../src/Uncertainty/Distribution/openturns/UserDefined.hxx
+../src/Uncertainty/Distribution/openturns/Categorical.hxx
 ../src/Uncertainty/Distribution/openturns/Wishart.hxx

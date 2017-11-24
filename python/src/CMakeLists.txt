@@ -534,6 +534,8 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       BinomialFactory.i BinomialFactory_doc.i.in
                       Burr.i Burr_doc.i.in
                       BurrFactory.i BurrFactory_doc.i.in
+                      Categorical.i Categorical_doc.i.in
+                      CategoricalFactory.i CategoricalFactory_doc.i.in
                       ChiSquare.i ChiSquare_doc.i.in
                       ChiSquareFactory.i ChiSquareFactory_doc.i.in
                       Chi.i Chi_doc.i.in
@@ -631,8 +633,6 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       TruncatedNormalFactory.i TruncatedNormalFactory_doc.i.in
                       Uniform.i Uniform_doc.i.in
                       UniformFactory.i UniformFactory_doc.i.in
-                      UserDefined.i UserDefined_doc.i.in
-                      UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
                       Weibull.i Weibull_doc.i.in
                       WeibullFactory.i WeibullFactory_doc.i.in

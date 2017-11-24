@@ -400,8 +400,8 @@
   <!-- OT::NonCentralStudent parameters -->
   <NonCentralStudent-CDFAlgo value="0" />
   
-  <!-- OT::UserDefined parameters -->
-  <UserDefined-SmallSize value="10000" />
+  <!-- OT::Categorical parameters -->
+  <Categorical-SmallSize value="10000" />
   
   <!-- OT::AliMikhailHaqCopulaFactory parameters -->
   <AliMikhailHaqCopulaFactory-ThetaEpsilon value="1.0e-14" />

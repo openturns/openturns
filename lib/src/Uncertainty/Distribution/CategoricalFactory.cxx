@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for UserDefined distribution
+ *  @brief Factory for Categorical distribution
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,62 +18,62 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/UserDefinedFactory.hxx"
+#include "openturns/CategoricalFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(UserDefinedFactory)
+CLASSNAMEINIT(CategoricalFactory)
 
-static const Factory<UserDefinedFactory> Factory_UserDefinedFactory;
+static const Factory<CategoricalFactory> Factory_CategoricalFactory;
 
 /* Default constructor */
-UserDefinedFactory::UserDefinedFactory()
+CategoricalFactory::CategoricalFactory()
   : DistributionFactoryImplementation()
 {
   // Nothing to do
 }
 
 /* Virtual constructor */
-UserDefinedFactory * UserDefinedFactory::clone() const
+CategoricalFactory * CategoricalFactory::clone() const
 {
-  return new UserDefinedFactory(*this);
+  return new CategoricalFactory(*this);
 }
 
 
 /* Here is the interface that all derived class must implement */
 
-UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & sample) const
+CategoricalFactory::Implementation CategoricalFactory::build(const Sample & sample) const
 {
-  return buildAsUserDefined(sample, 0.0).clone();
+  return buildAsCategorical(sample, 0.0).clone();
 }
 
-UserDefinedFactory::Implementation UserDefinedFactory::build(const Sample & sample,
+CategoricalFactory::Implementation CategoricalFactory::build(const Sample & sample,
     const Scalar epsilon) const
 {
-  return buildAsUserDefined(sample, epsilon).clone();
+  return buildAsCategorical(sample, epsilon).clone();
 }
 
-UserDefinedFactory::Implementation UserDefinedFactory::build() const
+CategoricalFactory::Implementation CategoricalFactory::build() const
 {
-  return buildAsUserDefined().clone();
+  return buildAsCategorical().clone();
 }
 
-UserDefined UserDefinedFactory::buildAsUserDefined(const Sample & sample,
+Categorical CategoricalFactory::buildAsCategorical(const Sample & sample,
     const Scalar epsilon) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a UserDefined distribution from an empty sample";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Categorical distribution from an empty sample";
   const Scalar p = 1.0 / Scalar(size);
-  UserDefined result(sample, Point(size, p));
+  Categorical result(sample, Point(size, p));
   result.compactSupport(epsilon);
   result.setDescription(sample.getDescription());
   return result;
 }
 
-UserDefined UserDefinedFactory::buildAsUserDefined() const
+Categorical CategoricalFactory::buildAsCategorical() const
 {
-  return UserDefined();
+  return Categorical();
 }
 
 

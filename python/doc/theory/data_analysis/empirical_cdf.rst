@@ -104,7 +104,7 @@ distribution function.
 
 .. topic:: API:
 
-    - See :class:`~openturns.UserDefined` for the empirical distribution
+    - See :class:`~openturns.Categorical` for the empirical distribution
     - See :py:func:`~openturns.VisualTest_DrawEmpiricalCDF` to draw an empirical CDF
 
 .. topic:: Examples:

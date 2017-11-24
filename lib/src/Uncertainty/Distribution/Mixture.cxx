@@ -35,7 +35,7 @@ static const Factory<Mixture> Factory_Mixture;
 Mixture::Mixture()
   : DistributionImplementation()
   , distributionCollection_(1)
-  , weightsDistribution_(UserDefined())
+  , weightsDistribution_(Categorical())
   , pdfApproximationCDF_()
   , cdfApproximation_()
   , pdfApproximationCCDF_()
@@ -176,12 +176,12 @@ void Mixture::computeRange()
 }
 
 /* Weights distribution accessor */
-void Mixture::setWeightsDistribution(const UserDefined & weightsDistribution)
+void Mixture::setWeightsDistribution(const Categorical & weightsDistribution)
 {
   weightsDistribution_ = weightsDistribution;
 }
 
-UserDefined Mixture::getWeightsDistribution() const
+Categorical Mixture::getWeightsDistribution() const
 {
   return weightsDistribution_;
 }
@@ -259,7 +259,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     parallel = parallel && distributionCollection_[i].getImplementation()->isParallel();
   } /* end for */
   setParallel(parallel);
-  setWeightsDistribution(UserDefined(x, p));
+  setWeightsDistribution(Categorical(x, p));
   setDimension(dimension);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

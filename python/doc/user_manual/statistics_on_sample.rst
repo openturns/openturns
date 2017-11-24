@@ -32,6 +32,7 @@ Building distributions from samples
     BetaFactory
     BinomialFactory
     BurrFactory
+    CategoricalFactory
     ChiFactory
     ChiSquareFactory
     DiracFactory
@@ -89,7 +90,6 @@ Building distributions from samples
     TriangularFactory
     TruncatedNormalFactory
     UniformFactory
-    UserDefinedFactory
     WeibullFactory
 
 Building copulas from samples

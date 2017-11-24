@@ -14,10 +14,10 @@ d= RandomMixture(Mixture((w = 0.9, d = RandomMixture(Logistic(alpha = 0, beta = 
 d= RandomMixture(2 + 4 * Geometric(p = 0.5) + 3 * Poisson(lambda = 1) + Binomial(n = 2, p = 0.1) + 2 * Binomial(n = 3, p = 0.5))
 
 
-d= RandomMixture(2 + 4 * Geometric(p = 0.5) + 3 * Poisson(lambda = 1) + UserDefined({x = [0], p = 0.10125}, {x = [1], p = 0.0225}, {x = [2], p = 0.305}, {x = [3], p = 0.0675}, {x = [4], p = 0.3075}, {x = [5], p = 0.0675}, {x = [6], p = 0.105}, {x = [7], p = 0.0225}, {x = [8], p = 0.00125}))
+d= RandomMixture(2 + 4 * Geometric(p = 0.5) + 3 * Poisson(lambda = 1) + Categorical({x = [0], p = 0.10125}, {x = [1], p = 0.0225}, {x = [2], p = 0.305}, {x = [3], p = 0.0675}, {x = [4], p = 0.3075}, {x = [5], p = 0.0675}, {x = [6], p = 0.105}, {x = [7], p = 0.0225}, {x = [8], p = 0.00125}))
 
 
-d= RandomMixture(2 + 3 * Poisson(lambda = 1) + UserDefined({x = [0], p = 0.6561}, {x = [1], p = 0.1458}, {x = [2], p = 0.0081}, {x = [4], p = 0.1458}, {x = [5], p = 0.0324}, {x = [6], p = 0.0018}, {x = [8], p = 0.0081}, {x = [9], p = 0.0018}, {x = [10], p = 0.0001}) + 4 * Binomial(n = 3, p = 0.5) + 2 * Binomial(n = 3, p = 0.5))
+d= RandomMixture(2 + 3 * Poisson(lambda = 1) + Categorical({x = [0], p = 0.6561}, {x = [1], p = 0.1458}, {x = [2], p = 0.0081}, {x = [4], p = 0.1458}, {x = [5], p = 0.0324}, {x = [6], p = 0.0018}, {x = [8], p = 0.0081}, {x = [9], p = 0.0018}, {x = [10], p = 0.0001}) + 4 * Binomial(n = 3, p = 0.5) + 2 * Binomial(n = 3, p = 0.5))
 
 
-d= RandomMixture(2 + UserDefined({x = [0], p = 0.3024}, {x = [1], p = 0.0336}, {x = [2], p = 0.0756}, {x = [3], p = 0.138}, {x = [4], p = 0.216}, {x = [5], p = 0.0548}, {x = [6], p = 0.054}, {x = [7], p = 0.092}, {x = [8], p = 0.0096}, {x = [9], p = 0.0216}, {x = [10], p = 0.0024}))
+d= RandomMixture(2 + Categorical({x = [0], p = 0.3024}, {x = [1], p = 0.0336}, {x = [2], p = 0.0756}, {x = [3], p = 0.138}, {x = [4], p = 0.216}, {x = [5], p = 0.0548}, {x = [6], p = 0.054}, {x = [7], p = 0.092}, {x = [8], p = 0.0096}, {x = [9], p = 0.0216}, {x = [10], p = 0.0024}))

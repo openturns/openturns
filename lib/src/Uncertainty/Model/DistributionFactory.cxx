@@ -64,7 +64,7 @@
 #include "openturns/TriangularFactory.hxx"
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/UniformFactory.hxx"
-#include "openturns/UserDefinedFactory.hxx"
+#include "openturns/CategoricalFactory.hxx"
 #include "openturns/WeibullFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -131,7 +131,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetDiscr
   collection.add(MultinomialFactory());
   collection.add(NegativeBinomialFactory());
   collection.add(PoissonFactory());
-  collection.add(UserDefinedFactory());
+  collection.add(CategoricalFactory());
   collection.add(SkellamFactory());
   return collection;
 }
@@ -141,7 +141,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetDiscr
   DistributionFactoryCollection collection(0);
   collection.add(DiracFactory());
   collection.add(MultinomialFactory());
-  collection.add(UserDefinedFactory());
+  collection.add(CategoricalFactory());
   return collection;
 }
 

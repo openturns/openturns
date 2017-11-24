@@ -71,13 +71,13 @@ Discrete parametric distributions
 
     Bernoulli
     Binomial
+    Categorical
     Dirac
     Geometric
     Multinomial
     NegativeBinomial
     Poisson
     Skellam
-    UserDefined
     ZipfMandelbrot
 
 Parametrized distributions

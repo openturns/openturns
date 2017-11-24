@@ -34,6 +34,8 @@
 %include BinomialFactory.i
 %include Burr.i
 %include BurrFactory.i
+%include Categorical.i
+%include CategoricalFactory.i
 %include Chi.i
 %include ChiFactory.i
 %include ChiSquare.i

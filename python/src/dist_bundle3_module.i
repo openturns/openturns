@@ -44,8 +44,6 @@
 %include TruncatedNormalFactory.i
 %include Uniform.i
 %include UniformFactory.i
-%include UserDefined.i
-%include UserDefinedFactory.i
 %include VonMises.i
 %include Weibull.i
 %include WeibullFactory.i

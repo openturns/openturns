@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
 #include "openturns/FixedExperiment.hxx"
-#include "openturns/UserDefined.hxx"
+#include "openturns/Categorical.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -87,7 +87,7 @@ ProjectionStrategyImplementation::ProjectionStrategyImplementation(const Sample 
   : PersistentObject()
   , alpha_k_p_(0)
   , residual_p_(0.0)
-  , measure_(UserDefined(inputSample))
+  , measure_(Categorical(inputSample))
   , weightedExperiment_(FixedExperiment(inputSample, weights))
   , inputSample_(0, 0)
   , weights_(0)

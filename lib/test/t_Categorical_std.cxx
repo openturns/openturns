@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class UserDefined for standard methods
+ *  @brief The test file of class Categorical for standard methods
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     p[1] = 0.1;
     p[2] = 0.6;
     p[3] = 0.6;
-    UserDefined distribution(x, p);
+    Categorical distribution(x, p);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
     // Is this distribution elliptical ?
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
     // To prevent automatic compaction
-    ResourceMap::SetAsUnsignedInteger("UserDefined-SmallSize", 5);
+    ResourceMap::SetAsUnsignedInteger("Categorical-SmallSize", 5);
     Sample sample(40, 3);
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
@@ -88,11 +88,11 @@ int main(int argc, char *argv[])
         sample[i][j] = 10 * (i / 3 + 1) + 0.1 * (j + 1);
       }
     }
-    UserDefined multivariateUserDefined(sample);
+    Categorical multivariateUserDefined(sample);
     multivariateUserDefined.setName("Unnamed");
-    fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
+    fullprint << "Multivariate Categorical=" << multivariateUserDefined << std::endl;
     multivariateUserDefined.compactSupport();
-    fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
+    fullprint << "Multivariate Categorical=" << multivariateUserDefined << std::endl;
     fullprint << "Marginal 0=" << Distribution(multivariateUserDefined.getMarginal(0)) << std::endl;
     Indices indices(2);
     indices[0] = 2;
