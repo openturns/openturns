@@ -949,38 +949,28 @@ Point RandomMixture::getRealization() const
   return weights_ * realization + constant_;
 }
 
-/* Get a of the RandomMixture */
+/* Get a Sample of the RandomMixture */
 Sample RandomMixture::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger atomSize = distributionCollection_.getSize();
-  MatrixImplementation sample(size, atomSize);
-  UnsignedInteger index = 0;
+  Sample sample(atomSize, size);
   for (UnsignedInteger i = 0; i < atomSize; ++i)
   {
-    const Point atomSample(distributionCollection_[i].getSample(size).getImplementation()->getData());
-    std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index);
-    index += size;
+    sample[i] = distributionCollection_[i].getSample(size).asPoint();
   }
-  SampleImplementation result(size, getDimension());
-  result.setData(sample.genProd(*weights_.getImplementation(), false, true));
-  return result + constant_;
+  return weights_.getImplementation()->genSampleProd(sample, true, true, 'R') + constant_;
 }
 
 Sample RandomMixture::getSampleByQMC(const UnsignedInteger size) const
 {
   const UnsignedInteger atomSize = distributionCollection_.getSize();
-  MatrixImplementation sample(size, atomSize);
-  UnsignedInteger index = 0;
+  Sample sample(atomSize, size);
   const Point u(SobolSequence(1).generate(size).getImplementation()->getData());
   for (UnsignedInteger i = 0; i < atomSize; ++i)
   {
-    const Point atomSample(distributionCollection_[i].computeQuantile(u).getImplementation()->getData());
-    std::copy(atomSample.begin(), atomSample.end(), sample.begin() + index);
-    index += size;
+    sample[i] = distributionCollection_[i].computeQuantile(u).asPoint();
   }
-  SampleImplementation result(size, getDimension());
-  result.setData(sample.genProd(*weights_.getImplementation(), false, true));
-  return result + constant_;
+  return weights_.getImplementation()->genSampleProd(sample, true, true, 'R') + constant_;
 }
 
 /* Get the DDF of the RandomMixture */
