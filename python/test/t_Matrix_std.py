@@ -178,6 +178,17 @@ try:
     print("B = ", repr(B))
     print("id = ", repr(id))
     print("ptResult2 = ", repr(ptResult2))
+
+    # TEST NUMBER FIFTEEN : MULTIPLICATION WITH A SAMPLE
+    print(
+        "test number fifteen : multiplication with a sample")
+    s = Sample([[1.0, 3.0, -1.0, -3.0], [-2.0, -5.0, 3.0, 1.0]])
+    matrix32 = Matrix(3, 2, [1.0 + i for i in range(6)])
+    print("matrix32 = ", repr(matrix32))
+    print("s = ", repr(s))
+    sampleResult1 = matrix32 * s
+    print("matrix32*s = ", repr(sampleResult1))
+
 except:
     import sys
     print("t_Matrix_std.py", sys.exc_info()[0], sys.exc_info()[1])

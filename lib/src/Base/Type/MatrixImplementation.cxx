@@ -29,6 +29,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -349,6 +350,53 @@ Point MatrixImplementation::genVectProd (const Point & pt, const Bool transposed
   int n = nbColumns_;
 
   dgemv_(&trans, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
+
+  return prod;
+}
+
+/* Multiplications with a SampleImplementation (must have consistent dimensions)
+   If side=='L', we compute this * S, otherwise we compute S * this */
+Sample MatrixImplementation::genSampleProd (const Sample & sample, const Bool transposeMatrix, const Bool transposeSample, const char side) const
+{
+  // Sample and matrices are stored in reverse order, thus instead of computing
+  // P = this * S, we compute P^T = S^T * this^T and S^T has a column-major order
+  // as expected by dgemm.
+  // Likewise when side is 'R', we compute P^T = this^T * S^T instead of P = S * this.
+  const UnsignedInteger matrixRows(transposeMatrix ? nbColumns_ : nbRows_);
+  const UnsignedInteger matrixColumns(transposeMatrix ? nbRows_ : nbColumns_);
+  const UnsignedInteger sampleRows(transposeSample ? sample.getDimension() : sample.getSize());
+  const UnsignedInteger sampleColumns(transposeSample ? sample.getSize() : sample.getDimension());
+  if (side == 'L' && matrixColumns != sampleRows) throw InvalidDimensionException(HERE) << "Invalid dimension in matrix*sample product: columns=" << matrixColumns << " / sample rows=" << sampleRows << ".";
+  if (side == 'R' && matrixRows != sampleColumns) throw InvalidDimensionException(HERE) << "Invalid dimension in sample*matrix product: rows=" << matrixRows << " / sample columns=" << sampleColumns << ".";
+
+  const UnsignedInteger prodRows(side == 'L' ? matrixRows : sampleRows);
+  const UnsignedInteger prodColumns(side == 'L' ? sampleColumns : matrixColumns);
+  Sample prod(prodRows, prodColumns);
+  if (nbRows_ == 0 || nbColumns_ == 0) return prod;
+  char transa = transposeSample ? 'T' : 'N';
+  char transb = transposeMatrix ? 'N' : 'T';
+  double alpha = 1.0;
+  double beta = 0.0;
+  int ltransa = 1;
+  int ltransb = 1;
+  if (side == 'L')
+  {
+    int m = sampleColumns;
+    int n = matrixRows;
+    int k = matrixColumns;
+    int lda = (transa == 'N' ? m : k);
+    int ldb = (transb == 'N' ? k : n);
+    dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(&(sample(0, 0))), &lda, const_cast<double*>(&((*this)[0])), &ldb, &beta, &prod(0, 0), &m, &ltransa, &ltransb);
+  }
+  else
+  {
+    int m = matrixColumns;
+    int n = sampleRows;
+    int k = matrixRows;
+    int lda = (transb == 'N' ? m : k);
+    int ldb = (transa == 'N' ? k : n);
+    dgemm_(&transb, &transa, &m, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(sample(0, 0))), &ldb, &beta, &prod(0, 0), &m, &ltransb, &ltransa);
+  }
 
   return prod;
 }

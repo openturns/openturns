@@ -147,10 +147,10 @@ int main(int argc, char *argv[])
   fullprint << "prod = " << prod << std::endl;
 
 
-  /** TEST NUMBER TEN : MULTIPLICATION WITH A NUMERICAL POINT METHOD */
-  fullprint << "test number ten : multiplication with a numerical point method" << std::endl;
+  /** TEST NUMBER TEN : MULTIPLICATION WITH A POINT METHOD */
+  fullprint << "test number ten : multiplication with a point method" << std::endl;
 
-  /* Create the numerical point */
+  /* Create the point */
   Point pt ;
   pt.add(1.) ;
   pt.add(2.) ;
@@ -160,8 +160,8 @@ int main(int argc, char *argv[])
   Point ptResult = matrix1.operator * ( pt ) ;
   fullprint << "ptResult = " << ptResult << std::endl;
 
-  /** TEST NUMBER ELEVEN : MULTIPLICATION AND DIVISION BY A NUMERICAL SCALAR METHODS */
-  fullprint << "test number eleven : multiplication and division by a numerical scalar methods" << std::endl;
+  /** TEST NUMBER ELEVEN : MULTIPLICATION AND DIVISION BY A SCALAR METHODS */
+  fullprint << "test number eleven : multiplication and division by a scalar methods" << std::endl;
 
   /* Check the multiplication method */
   double s = 3.;
@@ -195,10 +195,10 @@ int main(int argc, char *argv[])
             << "matrix6 is empty = " << matrix6.isEmpty() << std::endl
             << "matrix0 is empty = " << matrix0.isEmpty() << std::endl;
 
-  /** TEST NUMBER FOURTEEN : MULTIPLICATION WITH A NUMERICAL POINT METHOD */
-  fullprint << "test number fourteen : multiplication with a numerical point method" << std::endl;
+  /** TEST NUMBER FOURTEEN : MULTIPLICATION WITH A POINT METHOD */
+  fullprint << "test number fourteen : multiplication with a point method" << std::endl;
 
-  /* Create the numerical point */
+  /* Create the point */
   Point pt_test ;
   pt_test.add(1.) ;
   pt_test.add(2.) ;
@@ -219,6 +219,58 @@ int main(int argc, char *argv[])
   fullprint << "id = " << id << std::endl;
   fullprint << "ptResult2 = " << ptResult2 << std::endl;
 
+
+  /** TEST NUMBER FIFTEEN : MULTIPLICATION WITH A SAMPLE METHOD */
+  fullprint << "test number fifteen : multiplication with a sample method" << std::endl;
+  Sample S(2,4);
+  S(0,0) = 1.0;
+  S(0,1) = 3.0;
+  S(0,2) = -1.0;
+  S(0,3) = -3.0;
+  S(1,0) = -2.0;
+  S(1,1) = -5.0;
+  S(1,2) = 3.0;
+  S(1,3) = 1.0;
+  Matrix matrix32 = Matrix(3, 2, elementsValues);
+  Matrix matrix23 = Matrix(2, 3, elementsValues);
+  Collection<double> elementsValues12(elementsValues);
+  for(UnsignedInteger i = 7; i < 13; ++i)
+    elementsValues12.add(i);
+  Matrix matrix34 = Matrix(3, 4, elementsValues12);
+  Matrix matrix43 = Matrix(4, 3, elementsValues12);
+  fullprint << "matrix32 = " << matrix32 << std::endl;
+  fullprint << "matrix23 = " << matrix23 << std::endl;
+  fullprint << "matrix34 = " << matrix34 << std::endl;
+  fullprint << "matrix43 = " << matrix43 << std::endl;
+  fullprint << "S = " << S << std::endl;
+  Sample resultS = matrix32.operator * (S);
+  fullprint << "matrix32*S = " << resultS << std::endl;
+  Sample resultS1(matrix32.getImplementation()->genSampleProd(S, false, false, 'L'));
+  fullprint << "matrix32*S = " << resultS1 << std::endl;
+  Sample resultS2(matrix23.getImplementation()->genSampleProd(S, true, false, 'L'));
+  fullprint << "matrix23^T*S = " << resultS2 << std::endl;
+  Sample resultS3(matrix43.getImplementation()->genSampleProd(S, false, false, 'R'));
+  fullprint << "S*matrix43 = " << resultS3 << std::endl;
+  Sample resultS4(matrix34.getImplementation()->genSampleProd(S, true, false, 'R'));
+  fullprint << "S*matrix34^T = " << resultS4 << std::endl;
+  Sample S2(4,2);
+  S2(0,0) = S(0,0);
+  S2(1,0) = S(0,1);
+  S2(2,0) = S(0,2);
+  S2(3,0) = S(0,3);
+  S2(0,1) = S(1,0);
+  S2(1,1) = S(1,1);
+  S2(2,1) = S(1,2);
+  S2(3,1) = S(1,3);
+  fullprint << "S2 = " << S2 << std::endl;
+  Sample resultS1T(matrix32.getImplementation()->genSampleProd(S2, false, true, 'L'));
+  fullprint << "matrix32*S2^T = " << resultS1T << std::endl;
+  Sample resultS2T(matrix23.getImplementation()->genSampleProd(S2, true, true, 'L'));
+  fullprint << "matrix23^T*S2^T = " << resultS2T << std::endl;
+  Sample resultS3T(matrix43.getImplementation()->genSampleProd(S2, false, true, 'R'));
+  fullprint << "S2^T*matrix43 = " << resultS3T << std::endl;
+  Sample resultS4T(matrix34.getImplementation()->genSampleProd(S2, true, true, 'R'));
+  fullprint << "S2^T*matrix34^T = " << resultS4T << std::endl;
 
   return ExitCode::Success;
 }

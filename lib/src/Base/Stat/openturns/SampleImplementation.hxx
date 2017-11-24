@@ -782,9 +782,11 @@ public:
 
   SampleImplementation operator * (const Scalar scaling) const;
   SampleImplementation operator * (const Point & scaling) const;
+  /** @deprecated */
   SampleImplementation operator * (const SquareMatrix & scaling) const;
   SampleImplementation operator / (const Scalar scaling) const;
   SampleImplementation operator / (const Point & scaling) const;
+  /** @deprecated */
   SampleImplementation operator / (const SquareMatrix & scaling) const;
 
   /**
@@ -793,9 +795,11 @@ public:
 
   SampleImplementation & operator *= (const Scalar scaling);
   SampleImplementation & operator *= (const Point & scaling);
+  /** @deprecated */
   SampleImplementation & operator *= (const SquareMatrix & scaling);
   SampleImplementation & operator /= (const Scalar scaling);
   SampleImplementation & operator /= (const Point & scaling);
+  /** @deprecated */
   SampleImplementation & operator /= (const SquareMatrix & scaling);
 
   /** Save to CSV file */
@@ -825,6 +829,7 @@ private:
 
   void translate(const Point & translation);
   void scale(const Point & scaling);
+  /** @deprecated */
   void scale(const SquareMatrix & scaling);
 
   /** The size of the sample */

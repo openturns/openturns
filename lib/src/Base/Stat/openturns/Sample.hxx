@@ -299,9 +299,11 @@ public:
   Sample operator - (const Sample & translation) const;
   Sample operator * (const Scalar scaling) const;
   Sample operator * (const Point & scaling) const;
+  /** @deprecated */
   Sample operator * (const SquareMatrix & scaling) const;
   Sample operator / (const Scalar scaling) const;
   Sample operator / (const Point & scaling) const;
+  /** @deprecated */
   Sample operator / (const SquareMatrix & scaling) const;
 
   /**
@@ -309,9 +311,11 @@ public:
    */
   Sample & operator *= (const Scalar scaling);
   Sample & operator *= (const Point & scaling);
+  /** @deprecated */
   Sample & operator *= (const SquareMatrix & scaling);
   Sample & operator /= (const Scalar scaling);
   Sample & operator /= (const Point & scaling);
+  /** @deprecated */
   Sample & operator /= (const SquareMatrix & scaling);
 
   /** Ranked sample */
