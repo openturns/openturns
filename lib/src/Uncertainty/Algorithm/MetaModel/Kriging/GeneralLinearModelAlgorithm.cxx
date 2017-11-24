@@ -724,11 +724,23 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   {
     if (normalizedOptimizationBounds_.getDimension() == 0)
     {
-      const Point lowerPoint(optimizationBounds_.getLowerBound());
-      const Point upperPoint(inputTransformation_(optimizationBounds_.getUpperBound()));
-      const Interval::BoolCollection finiteLower(optimizationBounds_.getFiniteLowerBound());
-      const Interval::BoolCollection finiteUpper(optimizationBounds_.getFiniteUpperBound());
-      normalizedOptimizationBounds_ = Interval(lowerPoint, upperPoint, finiteLower, finiteUpper);
+      normalizedOptimizationBounds_ = optimizationBounds_;
+      // Normalize upper bounds.  This can be done only if all scale parameters are activated, and scale
+      // parameters are the first ones.
+      const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
+      UnsignedInteger count = 0;
+      for (UnsignedInteger i = 0; i == count && i < activeParametersDescription.getSize(); ++i)
+        if (activeParametersDescription[i].compare(0, 6, "scale_") == 0)
+          ++ count;
+      if (count == inputTransformation_.getInputDimension())
+      {
+        Point upperPoint(optimizationBounds_.getUpperBound());
+        Point scaleParameters(count);
+        for(UnsignedInteger i = 0; i < count; ++i) scaleParameters[i] = upperPoint[i];
+        scaleParameters = inputTransformation_(scaleParameters);
+        for(UnsignedInteger i = 0; i < count; ++i) upperPoint[i] = scaleParameters[i];
+        normalizedOptimizationBounds_.setUpperBound(upperPoint);
+      }
     }
     problem.setBounds(normalizedOptimizationBounds_);
   }
