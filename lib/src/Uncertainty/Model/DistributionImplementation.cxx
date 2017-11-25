@@ -1108,29 +1108,29 @@ Complex DistributionImplementation::computeGeneratingFunction(const Complex & z)
 {
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error:  cannot use the computeCharacteristicFunction method with distributions of dimension > 1";
   if (!isDiscrete()) throw NotDefinedException(HERE) << "Error: cannot compute the generating function for non discrete distributions.";
-  const Sample support(getSupport());
-  const UnsignedInteger size = support.getSize();
   Complex value(0.0);
-  // If the distribution is integral, the generating function is either a polynomial if the support is finite, or can be well approximated by such a polynomial
-  if (isAlreadyCreatedGeneratingFunction_) value = generatingFunction_(z);
-  else
-    // If isIntegral, then we have to create the generating function as a polynomial
-    if (isIntegral())
+  // Create the generating function as a univariate polynomial. It will be used as such if the distribution is integral, or as a container for the individual probabilities if the distribution is not integral
+  if (!isAlreadyCreatedGeneratingFunction_)
     {
-      Point coefficients(size);
-      for (UnsignedInteger i = 0; i < size; ++i) coefficients[i] = computePDF(support[i]);
-      generatingFunction_ = UniVariatePolynomial(coefficients);
+      generatingFunction_ = UniVariatePolynomial(getProbabilities());
       isAlreadyCreatedGeneratingFunction_ = true;
+    }
+  // If the distribution is integral, the generating function is either a polynomial if the support is finite, or can be well approximated by such a polynomial
+  if (isIntegral())
+    {
       value = generatingFunction_(z);
     }
   // The distribution is discrete but not integral
-    else
+  else
     {
+      const Sample support(getSupport());
+      const UnsignedInteger size = support.getSize();
+      const Point probabilities(generatingFunction_.getCoefficients());
       for (UnsignedInteger i = 0; i < size; ++i)
-      {
-        const Scalar pt = support[i][0];
-        value += computePDF(pt) * std::pow(z, pt);
-      }
+	{
+	  const Scalar pt = support(i, 0);
+	  value += probabilities[i] * std::pow(z, pt);
+	}
     }
   return value;
 }
