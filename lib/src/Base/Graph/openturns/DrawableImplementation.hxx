@@ -226,7 +226,7 @@ protected:
 
   /** Check validity of color */
   static Bool ScanColorCode(const String & key,
-                            UnsignedInteger & code);
+                            Indices & rgba);
   static Bool IsValidColorCode(const String & key);
   static Bool IsValidColorName(const String & key);
   static Bool IsValidColor(const String & key);
