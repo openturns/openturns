@@ -8,6 +8,7 @@ Meta modeling
     functional_chaos.ipynb
     functional_chaos_advanced_ctors.ipynb
     functional_chaos_exploitation.ipynb
+    functional_chaos_graphs.ipynb
     expert_mixture.ipynb
     general_linear_model.ipynb
     kriging.ipynb
