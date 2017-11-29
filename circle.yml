@@ -20,7 +20,8 @@ deployment:
   staging:
     branch: /.*/
     commands:
-      - export GH_TOKEN && ./ci_support/upload_github_io.sh
+      - SOURCE_DATE_EPOCH=1483228800
+      - export GH_TOKEN SOURCE_DATE_EPOCH && ./ci_support/upload_github_io.sh
   release:
     tag: /v.*/
     commands:
