@@ -357,6 +357,33 @@ OT_Distribution_computeDensityGeneratorSecondDerivative_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_computeEntropy_doc
+"Compute the entropy of the distribution.
+
+Returns
+-------
+e : float
+    Entropy of the distribution.
+
+Notes
+-----
+The entropy of a distribution is defined by:
+
+.. math::
+
+    \cE_X = \Expect{-\log(p_X(\vect{X}))}
+
+Where the random vector :math:`\vect{X}` follows the probability
+distribution of interest, and :math:`p_X` is either the *probability
+density function* of :math:`\vect{X}` if it is continuous or the
+*probability distribution function* if it is discrete.
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeEntropy
+OT_Distribution_computeEntropy_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_computeGeneratingFunction_doc
 "Compute the probability-generating function.
 

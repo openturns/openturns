@@ -1111,27 +1111,27 @@ Complex DistributionImplementation::computeGeneratingFunction(const Complex & z)
   Complex value(0.0);
   // Create the generating function as a univariate polynomial. It will be used as such if the distribution is integral, or as a container for the individual probabilities if the distribution is not integral
   if (!isAlreadyCreatedGeneratingFunction_)
-    {
-      generatingFunction_ = UniVariatePolynomial(getProbabilities());
-      isAlreadyCreatedGeneratingFunction_ = true;
-    }
+  {
+    generatingFunction_ = UniVariatePolynomial(getProbabilities());
+    isAlreadyCreatedGeneratingFunction_ = true;
+  }
   // If the distribution is integral, the generating function is either a polynomial if the support is finite, or can be well approximated by such a polynomial
   if (isIntegral())
-    {
-      value = generatingFunction_(z);
-    }
+  {
+    value = generatingFunction_(z);
+  }
   // The distribution is discrete but not integral
   else
+  {
+    const Sample support(getSupport());
+    const UnsignedInteger size = support.getSize();
+    const Point probabilities(generatingFunction_.getCoefficients());
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Sample support(getSupport());
-      const UnsignedInteger size = support.getSize();
-      const Point probabilities(generatingFunction_.getCoefficients());
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const Scalar pt = support(i, 0);
-	  value += probabilities[i] * std::pow(z, pt);
-	}
+      const Scalar pt = support(i, 0);
+      value += probabilities[i] * std::pow(z, pt);
     }
+  }
   return value;
 }
 
@@ -1139,6 +1139,63 @@ Complex DistributionImplementation::computeLogGeneratingFunction(const Complex &
 {
   Complex value = computeGeneratingFunction(z);
   return std::log(value);
+}
+
+/* Compute the entropy of the distribution */
+Scalar DistributionImplementation::computeEntropy() const
+{
+  if (isDiscrete())
+  {
+    const Point probabilities(getProbabilities());
+    Scalar entropy = 0.0;
+    for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i)
+    {
+      const Scalar pI = probabilities[i];
+      if (pI > 0.0)
+        entropy += -pI * std::log(pI);
+    }
+    return entropy;
+  }
+  if (isContinuous())
+  {
+    // If the components are independent the entropy is the sum of the marginal entropies
+    // We factor the construction of the 1D quadrature rules over the marginals
+    const Point lowerBound_(range_.getLowerBound());
+    const Point upperBound_(range_.getUpperBound());
+    if (hasIndependentCopula())
+    {
+      const GaussLegendre integrator(Indices(1, integrationNodesNumber_));
+      const Sample nodes(integrator.getNodes());
+      const Point weights(integrator.getWeights());
+      Scalar entropy = 0.0;
+      for (UnsignedInteger marginal = 0; marginal < dimension_; ++marginal)
+      {
+	Point integrationBounds(1, lowerBound_[marginal]);
+	integrationBounds.add(getSingularities());
+	integrationBounds.add(upperBound_[marginal]);
+	for (UnsignedInteger j = 0; j < integrationBounds.getSize() - 1; ++j)
+	  {
+	    const Scalar a = integrationBounds[j];
+	    const Scalar b = integrationBounds[j + 1];
+	    const Scalar delta = b - a;
+	    const Point logPDFAtNodes(getMarginal(marginal)->computeLogPDF(nodes * Point(1, delta) + Point(1, a)).asPoint());
+	    for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
+	      {
+		const Scalar logPI = logPDFAtNodes[i];
+		entropy += -logPI * std::exp(logPI) * weights[i] * delta;
+	      } // integration nodes
+	  } // Singularities
+      } // marginal
+      return entropy;
+    } // hasIndependentCopula()
+    // In low dimension, use an adaptive quadrature
+    if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallDimensionEntropy"))
+      {
+	const EntropyKernel entropyKernel(this);
+	return IteratedQuadrature().integrate(entropyKernel, getRange())[0];
+      } // Low dimension
+  } // isContinuous()
+  return -computeLogPDF(getSampleByQMC(ResourceMap::GetAsUnsignedInteger("Distribution-EntropySamplingSize"))).computeMean()[0];
 }
 
 /* Get the DDF of the distribution */
@@ -2292,7 +2349,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByRoo
 }
 
 /* We minimize b-a with the constraint F(b)-F(a)=prob, b>=a
- ie b=F^{-1}(prob+F(a))
+   ie b=F^{-1}(prob+F(a))
 */
 Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOptimization(const Scalar prob,
     Scalar & marginalProb) const

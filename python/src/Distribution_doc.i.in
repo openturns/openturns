@@ -26,6 +26,8 @@ OT_Distribution_computeDensityGenerator_doc
 OT_Distribution_computeDensityGeneratorDerivative_doc
 %feature("docstring") OT::Distribution::computeDensityGeneratorSecondDerivative
 OT_Distribution_computeDensityGeneratorSecondDerivative_doc
+%feature("docstring") OT::Distribution::computeEntropy
+OT_Distribution_computeEntropy_doc
 %feature("docstring") OT::Distribution::computeGeneratingFunction
 OT_Distribution_computeGeneratingFunction_doc
 %feature("docstring") OT::Distribution::computeLogCharacteristicFunction

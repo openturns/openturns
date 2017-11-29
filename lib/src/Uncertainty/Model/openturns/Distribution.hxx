@@ -200,6 +200,9 @@ public:
   Complex computeGeneratingFunction(const Complex & z) const;
   Complex computeLogGeneratingFunction(const Complex & z) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the PDF gradient of the distribution */
   Point computePDFGradient(const Point & point) const;
   Sample computePDFGradient(const Sample & sample) const;

@@ -455,6 +455,12 @@ Complex Distribution::computeLogGeneratingFunction(const Complex & z) const
   return getImplementation()->computeLogGeneratingFunction(z);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Distribution::computeEntropy() const
+{
+  return getImplementation()->computeEntropy();
+}
+
 /* Get the DDF of the distribution (for a sample) */
 Sample Distribution::computeDDF(const Sample & sample) const
 {
