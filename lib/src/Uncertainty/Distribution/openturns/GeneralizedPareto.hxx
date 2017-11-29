@@ -86,6 +86,9 @@ public:
   /** Get the minimum volume level set containing a given probability of the distribution */
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const;
   Complex computeLogCharacteristicFunction(const Scalar x) const;

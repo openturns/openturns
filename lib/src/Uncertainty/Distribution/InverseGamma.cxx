@@ -238,6 +238,12 @@ Scalar InverseGamma::computeComplementaryCDF(const Point & point) const
   return DistFunc::pGamma(k_, 1.0 / (lambda_ * x));
 }
 
+/* Compute the entropy of the distribution */
+Scalar InverseGamma::computeEntropy() const
+{
+  return SpecFunc::LogGamma(k_) - (k_ + 1.0) * SpecFunc::Psi(k_) + k_ - std::log(lambda_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex InverseGamma::computeCharacteristicFunction(const Scalar x) const
 {

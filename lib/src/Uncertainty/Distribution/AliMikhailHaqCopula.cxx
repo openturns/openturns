@@ -173,6 +173,25 @@ Scalar AliMikhailHaqCopula::computeCDF(const Point & point) const
   return u * v / (1.0 - theta_ * (1.0 - u) * (1.0 - v));
 }
 
+/* Compute the entropy of the distribution */
+Scalar AliMikhailHaqCopula::computeEntropy() const
+{
+  if (theta_ == 0.0) return 0.0;
+  if (std::abs(theta_) <= 0.25) return theta_ * theta_ * (-1.0 / 18.0 + (-1.0 / 36.0 + (-1.0 / 50.0 + (-1.0 / 75.0 + (-1.0 / 98.0 + (-3.0 / 392.0 + (-1.0 / 162.0 + (-2.0 / 405.0 + (-1.0 / 242.0 + (-5.0 / 1452.0 + (-1.0 / 338.0 + (-3.0 / 1183.0 + (-1.0 / 450.0 + (-7.0 / 3600.0 + (-1.0 / 578.0 + (-4.0 / 2601.0 + (-1.0 / 722.0 + (-9.0 / 7220.0 - theta_ / 882.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_);
+
+  const Scalar t1 = theta_ - 1.0;
+  const Scalar t3 = 1.0 / t1;
+  const Scalar t5 = SpecFunc::DiLog(t3 * (theta_ + 1.0));
+  const Scalar t9 = SpecFunc::DiLog(2.0 * t3 * theta_);
+  const Scalar t11 = log1p(-theta_);
+  const Scalar t12 = t11 * t11;
+  const Scalar t15 = log1p(theta_);
+  const Scalar t21 = 24.0 * theta_;
+  const Scalar t24 = M_PI * M_PI;
+  const Scalar t30 = -(12.0 * t1 * t5 + 12.0 * t9 * t1 + 12.0 * t12 * t1 - 12.0 * t11 * t1 * (M_LN2 + t15 + 2.0) + t15 * (12.0 * M_LN2 * t1 + t21 + 24.0) + theta_ * t24 - t24 - t21) / (48.0 * theta_);
+  return t30;
+}
+
 /* Compute the covariance of the distribution */
 void AliMikhailHaqCopula::computeCovariance() const
 {

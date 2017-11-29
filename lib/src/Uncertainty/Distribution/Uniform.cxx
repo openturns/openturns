@@ -235,6 +235,12 @@ Scalar Uniform::computeScalarQuantile(const Scalar prob,
   return a_ + prob * (b_ - a_);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Uniform::computeEntropy() const
+{
+  return std::log(b_ - a_);
+}
+
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar Uniform::getRoughness() const
 {

@@ -18,6 +18,7 @@ generating function= (4.64245238616e-05+6.70957137037e-05j)
 log generating function= (-9.41379310345+0.965517241379j)
 quantile= [11]
 cdf(quantile)= 0.951369424716
+entropy=2.772305
 mean= [5]
 standard deviation= [3.87298]
 skewness= [0.0860663]

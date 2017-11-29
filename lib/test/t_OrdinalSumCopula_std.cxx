@@ -115,6 +115,8 @@ int main(int argc, char *argv[])
       fullprint << "beta=" << beta << std::endl;
     }
 
+    fullprint << "entropy=" << copula.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -copula.computeLogPDF(copula.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = copula.getMean();
     fullprint << "mean=" << mean << std::endl;
     precision = PlatformInfo::GetNumericalPrecision();

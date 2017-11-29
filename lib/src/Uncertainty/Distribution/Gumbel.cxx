@@ -158,6 +158,12 @@ Scalar Gumbel::computeComplementaryCDF(const Point & point) const
   return 1.0 - std::exp(-expX);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Gumbel::computeEntropy() const
+{
+  return -std::log(alpha_) + SpecFunc::EulerConstant + 1.0;
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Gumbel::computeCharacteristicFunction(const Scalar x) const
 {

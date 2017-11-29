@@ -74,6 +74,9 @@ public:
   using ContinuousDistribution::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
   Point getParameter() const;

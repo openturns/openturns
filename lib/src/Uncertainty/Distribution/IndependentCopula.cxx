@@ -198,20 +198,26 @@ Point IndependentCopula::computeQuantile(const Scalar prob,
   return Point(dimension_, marginalProb);
 }
 
-/** Get the product minimum volume interval containing a given probability of the distribution */
+/* Compute the entropy of the distribution */
+Scalar IndependentCopula::computeEntropy() const
+{
+  return 0.0;
+}
+
+/* Get the product minimum volume interval containing a given probability of the distribution */
 Interval IndependentCopula::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   return computeBilateralConfidenceIntervalWithMarginalProbability(prob, marginalProb);
 }
 
-/** Get the product bilateral confidence interval containing a given probability of the distribution */
+/* Get the product bilateral confidence interval containing a given probability of the distribution */
 Interval IndependentCopula::computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
   marginalProb = std::pow(prob, 1.0 / dimension_);
   return Interval(Point(dimension_, 0.5 * (1.0 - marginalProb)), Point(dimension_, 0.5 * (1.0 + marginalProb)));
 }
 
-/** Get the minimum volume level set containing a given probability of the distribution */
+/* Get the minimum volume level set containing a given probability of the distribution */
 LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {
   const Description inVars(Description::BuildDefault(dimension_, "x"));

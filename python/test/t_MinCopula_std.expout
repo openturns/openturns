@@ -29,6 +29,7 @@ CDF(quantile)= 0.5
 Quantile= [0.05,0.05,0.05]
 InverseSurvival= class=Point name=Unnamed dimension=3 values=[0.05,0.05,0.05]
 Survival(inverseSurvival)=0.950000
+entropy=1.000000e+00
 margin= IndependentCopula(dimension = 1)
 margin PDF= 1.0
 margin CDF= 0.25

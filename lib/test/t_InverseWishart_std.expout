@@ -1,4 +1,4 @@
-Distribution class=InverseWishart name=InverseWishart dimension=1 cholesky=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] nu=5
+Distribution class=InverseWishart name=InverseWishart dimension=1 cholesky=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] nu=5 inverseCholeskyInverse=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution InverseWishart(V = 
 [[ 1 ]], nu = 5)
 Elliptical = false
@@ -41,6 +41,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0903302] upper bound=class=Point name=Unnamed dimension=1 values=[59.8961] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=-0.369531
+entropy (MC)=-0.36834
 mean=class=Point name=Unnamed dimension=1 values=[0.333333]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1]
 skewness=class=Point name=Unnamed dimension=1 values=[18.5998]

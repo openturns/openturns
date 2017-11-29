@@ -80,6 +80,10 @@ public:
   using CopulaImplementation::computePDF;
   Scalar computePDF(const Point & point) const;
 
+  /** Get the log-PDF of the ComposedCopula */
+  using CopulaImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const;
+
   /** Get the CDF of the ComposedCopula */
   using CopulaImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const;
@@ -137,6 +141,9 @@ public:
   /** Get the inverse isoprobabilistic transformation */
   InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

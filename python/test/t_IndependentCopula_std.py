@@ -72,6 +72,7 @@ try:
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" %
           copula.computeSurvivalFunction(inverseSurvival))
+    print("entropy=%.6f" % copula.computeEntropy())
     # Confidence regions
     interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability(
         0.95)

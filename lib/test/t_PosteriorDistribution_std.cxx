@@ -71,6 +71,8 @@ int main(int argc, char *argv[])
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
       fullprint << "range=" << distribution.getRange() << std::endl;
+      // fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+      // fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
       Point mean(distribution.getMean());
       fullprint << "Mean " << mean << std::endl;
       fullprint << "Covariance " << distribution.getCovariance() << std::endl;

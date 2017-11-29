@@ -167,6 +167,12 @@ Scalar Dirac::computeScalarQuantile(const Scalar prob,
   return point_[0];
 }
 
+/* Compute the entropy of the distribution */
+Scalar Dirac::computeEntropy() const
+{
+  return 0.0;
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Dirac::computeCharacteristicFunction(const Scalar u) const
 {

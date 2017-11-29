@@ -360,6 +360,12 @@ CorrelationMatrix NormalCopula::getKendallTau() const
   return tau;
 }
 
+/* Compute the entropy of the distribution */
+Scalar NormalCopula::computeEntropy() const
+{
+  return normal_.computeEntropy() - getDimension() * (SpecFunc::LOGSQRT2PI + 0.5);
+}
+
 /* Get the Shape matrix of the copula */
 CorrelationMatrix NormalCopula::getShapeMatrix() const
 {

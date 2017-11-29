@@ -228,6 +228,14 @@ Point VonMises::getParameter() const
   return point;
 }
 
+/* Compute the entropy of the distribution */
+Scalar VonMises::computeEntropy() const
+{
+  const Scalar logI0 = SpecFunc::LogBesselI0(kappa_);
+  const Scalar logI1 = SpecFunc::LogBesselI1(kappa_);
+  return -kappa_ * std::exp(logI1 - logI0) + 2.0 * SpecFunc::LOGSQRT2PI + logI0;
+}
+
 void VonMises::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();

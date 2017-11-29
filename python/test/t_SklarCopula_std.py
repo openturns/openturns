@@ -74,6 +74,8 @@ try:
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" %
           copula.computeSurvivalFunction(inverseSurvival))
+    # Takes too much time
+    # print("entropy=%.6f" % copula.computeEntropy())
     # Confidence regions
     if copula.getDimension() <= 2:
         threshold = Point()

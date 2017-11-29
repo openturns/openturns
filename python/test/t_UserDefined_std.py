@@ -41,6 +41,7 @@ try:
     # Get 95% quantile
     quantile = distribution.computeQuantile(0.95)
     print("Quantile=", repr(quantile))
+    print("entropy=%.6f" % distribution.computeEntropy())
 
     for i in range(6):
         print("standard moment n=", i, " value=",

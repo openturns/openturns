@@ -195,6 +195,12 @@ void FisherSnedecor::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the entropy of the distribution */
+Scalar FisherSnedecor::computeEntropy() const
+{
+  return std::log(d2_ / d1_) + SpecFunc::LogBeta(0.5 * d1_, 0.5 * d2_) + (1.0 - 0.5 * d1_) * SpecFunc::Psi(0.5 * d1_) + (0.5 * (d1_ + d2_)) * SpecFunc::Psi(0.5 * (d1_ + d2_)) - (1.0 + 0.5 * d2_) * SpecFunc::Psi(0.5 * d2_);
+}
+
 /* Get the standard deviation of the distribution */
 Point FisherSnedecor::getStandardDeviation() const
 {

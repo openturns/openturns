@@ -50,6 +50,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.47] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=2.37986
+entropy (MC)=2.37958
 mean=class=Point name=Unnamed dimension=1 values=[5.48108]
 standard deviation=class=Point name=Unnamed dimension=1 values=[3.02371]
 skewness=class=Point name=Unnamed dimension=1 values=[0.548305]

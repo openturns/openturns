@@ -222,6 +222,12 @@ Scalar Arcsine::getRoughness() const
   throw NotDefinedException(HERE) << "roughness of Arcsine distribution is not L2-integrable";
 }
 
+/* Compute the entropy of the distribution */
+Scalar Arcsine::computeEntropy() const
+{
+  return std::log(M_PI * (b_ - a_) / 4.0);
+}
+
 /* Compute the mean of the distribution */
 void Arcsine::computeMean() const
 {

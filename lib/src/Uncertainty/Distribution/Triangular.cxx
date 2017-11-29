@@ -242,6 +242,12 @@ Scalar Triangular::computeScalarQuantile(const Scalar prob,
   return b_ - std::sqrt((1.0 - prob) * ba * bm);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Triangular::computeEntropy() const
+{
+  return 0.5 - std::log(2.0 / (b_ - a_));
+}
+
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar Triangular::getRoughness() const
 {

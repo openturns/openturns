@@ -156,6 +156,12 @@ Scalar LogUniform::computeComplementaryCDF(const Point & point) const
   return (bLog_ - std::log(x)) / (bLog_ - aLog_);
 }
 
+/* Compute the entropy of the distribution */
+Scalar LogUniform::computeEntropy() const
+{
+  return std::log(bLog_ - aLog_) + 0.5 * (aLog_ + bLog_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex LogUniform::computeCharacteristicFunction(const Scalar x) const
 {

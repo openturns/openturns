@@ -164,6 +164,14 @@ Scalar Geometric::computeScalarQuantile(const Scalar prob,
   return ceil(log1p(-prob) / log1p(-p_));
 }
 
+/* Compute the entropy of the distribution */
+Scalar Geometric::computeEntropy() const
+{
+  if (p_ == 0.0) return SpecFunc::LogMaxScalar;
+  if (p_ == 1.0) return 0.0;
+  return log1p(-p_) * (1.0 - 1.0 / p_) - std::log(p_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Geometric::computeCharacteristicFunction(const Scalar x) const
 {

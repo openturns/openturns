@@ -17,6 +17,7 @@ characteristic function= (0.939372712847+0.342897807455j)
 generating function= (0.637047453196+0.253185274612j)
 quantile= [0.7]
 cdf(quantile)= 1.0
+entropy=0.000000
 mean= [0.7]
 standard deviation= [0]
 skewness= [0]

@@ -83,6 +83,9 @@ public:
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the PDFGradient of the distribution */
   using EllipticalDistribution::computePDFGradient;
   Point computePDFGradient(const Point & point) const;

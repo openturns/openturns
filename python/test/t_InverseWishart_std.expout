@@ -1,4 +1,4 @@
-Distribution  class=InverseWishart name=InverseWishart dimension=1 cholesky=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] nu=5
+Distribution  class=InverseWishart name=InverseWishart dimension=1 cholesky=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] nu=5 inverseCholeskyInverse=class=TriangularMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Distribution  InverseWishart(V = 
 [[ 1 ]], nu = 5)
 Mean=  class=Point name=Unnamed dimension=1 values=[0.333333]
@@ -24,6 +24,7 @@ quantile= class=Point name=Unnamed dimension=1 values=[0.872999]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0903302]
 Survival(inverseSurvival)=0.950000
+entropy=-0.369531
 Minimum volume interval= [0.0458714, 0.877774]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 16.35} with f=

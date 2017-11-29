@@ -209,6 +209,12 @@ Complex Weibull::computeCharacteristicFunction(const Scalar x) const
   return value;
 }
 
+/* Compute the entropy of the distribution */
+Scalar Weibull::computeEntropy() const
+{
+  return 1.0 + SpecFunc::EulerConstant * (1.0 - 1.0 / beta_) + std::log(alpha_ / beta_);
+}
+
 /* Get the PDFGradient of the distribution */
 Point Weibull::computePDFGradient(const Point & point) const
 {

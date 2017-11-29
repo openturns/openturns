@@ -6,6 +6,7 @@ oneRealization= class=Point name=Unnamed dimension=1 values=[3]
 oneSample=Ok class=Sample name=UserDefined implementation=class=SampleImplementation name=UserDefined size=10 dimension=1 description=[v0] data=[[3],[1],[1],[3],[3],[3],[3],[1],[3],[3]]
 point=  class=Point name=Unnamed dimension=1 values=[2]  pdf= 0.0625  cdf= 0.25
 Quantile= class=Point name=Unnamed dimension=1 values=[3]
+entropy=0.702919
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [2.5625]
 standard moment n= 2  value= [7.1875]

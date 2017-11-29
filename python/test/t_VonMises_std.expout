@@ -3,8 +3,8 @@ Elliptical =  False
 Continuous =  True
 oneRealization= [0.492446]
 oneSample first= [-0.494608]  last= [0.388969]
-mean= [-0.474891]
-covariance= [[ 0.986948 ]]
+mean= [-0.512904]
+covariance= [[ 1.08763 ]]
 Kolmogorov test for the generator, sample size= 100  is  True
 Kolmogorov test for the generator, sample size= 1000  is  True
 Point=  [1]
@@ -12,45 +12,46 @@ ddf     = [-0.160799]
 log pdf= -2.23055863162
 pdf     =0.107468
 pdf (FD)=0.107468
-cdf= 0.915928213128
-ccdf= 0.0840717868715
-survival= 0.0840717868715
+cdf= 0.927414932933
+ccdf= 0.0725850670669
+survival= 0.0725850670669
 characteristic function=(0.523156, -0.285801)
 log characteristic function=(-0.517291, -0.5)
 pdf gradient     = [0.160799,-0.0564635]
 pdf gradient (FD)= [0.160799,-0.0564635]
-cdf gradient     = [-0.0815561,0.0925495]
-cdf gradient (FD)= [-0.0815561,0.0925495]
-quantile= [1.42908]
+cdf gradient     = [-0.107468,0.0747113]
+cdf gradient (FD)= [-0.107468,0.0747113]
+quantile= [1.25235]
 cdf(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.1122]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-2.25235]
 Survival(inverseSurvival)=0.950000
+entropy=1.442465
 Minimum volume interval= [-2.71399, 1.71399]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 3.2363} with f=
 MinimumVolumeLevelSetEvaluation(VonMises(mu = -0.5, kappa=1.5))
 beta= [0.0393091]
-Bilateral confidence interval= [-2.46547, 2.0656]
+Bilateral confidence interval= [-2.71399, 1.71399]
 beta= [0.95]
-Unilateral confidence interval (lower tail)= [-3.14159, 1.42908]
+Unilateral confidence interval (lower tail)= [-3.64159, 1.25235]
 beta= [0.95]
-Unilateral confidence interval (upper tail)= [-2.1122, 3.14159]
+Unilateral confidence interval (upper tail)= [-2.25235, 2.64159]
 beta= [0.95]
-mean= [-0.427827]
-standard deviation= [1.05959]
-skewness= [0.410037]
-kurtosis= [3.70254]
-covariance= [[ 1.12273 ]]
+mean= [-0.5]
+standard deviation= [1.04438]
+skewness= [1.94923e-15]
+kurtosis= [3.44545]
+covariance= [[ 1.09073 ]]
 correlation= [[ 1 ]]
 spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : -0.5, kappa : 1.5]]
 standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [-0.427827]
-standard moment n= 2 , value= [1.30577]
-standard moment n= 3 , value= [-1.03152]
-standard moment n= 4 , value= [5.0989]
-standard moment n= 5 , value= [-4.03982]
+standard moment n= 1 , value= [-0.5]
+standard moment n= 2 , value= [1.34073]
+standard moment n= 3 , value= [-1.7611]
+standard moment n= 4 , value= [5.79766]
+standard moment n= 5 , value= [-11.6423]
 Standard representative= VonMises(mu = -0.5, kappa=1.5)
 Circular mean= -0.5
 Circular variance= 0.403866761169

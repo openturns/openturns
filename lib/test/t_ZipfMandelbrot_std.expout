@@ -29,6 +29,8 @@ generating function=(0.394858,0.153137)
 log generating function=(-0.859168,0.36997)
 quantile=class=Point name=Unnamed dimension=1 values=[10]
 cdf(quantile)=0.95019
+entropy=1.9468
+entropy (MC)=1.94817
 mean=class=Point name=Unnamed dimension=1 values=[3.22681]
 standard deviation=class=Point name=Unnamed dimension=1 values=[3.10469]
 skewness=class=Point name=Unnamed dimension=1 values=[1.81133]

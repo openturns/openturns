@@ -88,6 +88,9 @@ public:
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const;
 

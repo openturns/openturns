@@ -31,6 +31,7 @@ quantile= class=Point name=Unnamed dimension=3 values=[4.6596,5.7395,3.0798]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=3 values=[-3.6596,-6.7395,-1.0798]
 Survival(inverseSurvival)=0.950000
+entropy=5.702001
 mean= class=Point name=Unnamed dimension=3 values=[0.5,-0.5,1]
 standard deviation= class=Point name=Unnamed dimension=3 values=[2,3,1]
 skewness= class=Point name=Unnamed dimension=3 values=[0,0,0]

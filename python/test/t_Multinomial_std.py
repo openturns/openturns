@@ -50,8 +50,9 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)= %.6f" % distribution.computeCDF(quantile))
-    mean = distribution.getMean()
+    print("entropy=%.6f" % distribution.computeEntropy())
 
+    mean = distribution.getMean()
     print("mean=", repr(mean))
     covariance = distribution.getCovariance()
     print("covariance=", repr(covariance))

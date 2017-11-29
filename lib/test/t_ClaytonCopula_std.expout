@@ -1,13 +1,15 @@
 Copula class=ClaytonCopula name=a clayton copula dimension=2 theta=2.5
 Copula ClaytonCopula(theta = 2.5)
+entropy=-0.538461
+entropy (MC)=-0.539085
 Mean class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 Elliptical distribution= false
 Elliptical copula= false
 Independent copula= false
-oneRealization=class=Point name=Unnamed dimension=2 values=[0.629877,0.901557]
-oneSample=class=Sample name=a clayton copula implementation=class=SampleImplementation name=a clayton copula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0526823],[0.347057,0.895953],[0.92068,0.794201],[0.0632061,0.0551566],[0.714382,0.621802],[0.373767,0.583326],[0.883503,0.65348],[0.92851,0.935197],[0.684575,0.88113],[0.359802,0.865943]]
-anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.502777,0.50134]
-anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0628988,0.0628988,0.0838004]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.976434,0.9104]
+oneSample=class=Sample name=a clayton copula implementation=class=SampleImplementation name=a clayton copula size=10 dimension=2 description=[X0,X1] data=[[0.084502,0.0841681],[0.0111884,0.0165697],[0.462462,0.351093],[0.587674,0.336097],[0.908026,0.916299],[0.00398058,0.00569048],[0.373997,0.31094],[0.0134696,0.0199597],[0.768466,0.480384],[0.663918,0.322531]]
+anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.497404,0.501523]
+anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0826296,0.0614658,0.0614658,0.0830042]
 point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-8.01112,-8.01112] ddf (FD)=[-8.01111,-8.01111] pdf=3.3879 cdf=0.152117
 Survival      =0.752117
 Survival (ref)=0.752117
@@ -17,8 +19,8 @@ Quantile=class=Point name=Unnamed dimension=2 values=[0.618165,0.618165]
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0156773,0.0156773] upper bound=class=Point name=Unnamed dimension=2 values=[0.984323,0.984323] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.968645
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(ClaytonCopula(theta = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(ClaytonCopula(theta = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(ClaytonCopula(theta = 2.5)) level=0.815537
-beta=0.442402
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(ClaytonCopula(theta = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(ClaytonCopula(theta = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(ClaytonCopula(theta = 2.5)) level=0.818954
+beta=0.440892
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0156773,0.0156773] upper bound=class=Point name=Unnamed dimension=2 values=[0.984323,0.984323] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.968645
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.973879,0.973879] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -33,19 +35,19 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.294088]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.568102]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.47206]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.761047]
 indices=[1,0]
 margins=class=ClaytonCopula name=a clayton copula dimension=2 theta=2.5
 margins PDF=2.75468
 margins CDF=0.190662
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.973879,0.973879]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.196586,0.274622]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.68799,0.378093]
 ClaytonCopula(theta = 1e-12)
 PDF([1e-12,1e-12])=1.00000000071
 CDF([1e-12,1e-12])=1.00000000076e-24

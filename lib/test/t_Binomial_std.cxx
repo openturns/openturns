@@ -103,6 +103,8 @@ int main(int argc, char *argv[])
     fullprint << "generating function=" << GF << std::endl;
     Complex LGF = distribution.computeLogGeneratingFunction( Complex(0.3, 0.7) );
     fullprint << "log generating function=" << LGF << std::endl;
+    fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();

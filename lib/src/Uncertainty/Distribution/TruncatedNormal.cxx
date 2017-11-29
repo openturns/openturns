@@ -222,6 +222,12 @@ Scalar TruncatedNormal::computeComplementaryCDF(const Point & point) const
   return normalizationFactor_ * (PhiBNorm_ - DistFunc::pNormal((x - mu_) / sigma_));
 }
 
+/* Compute the entropy of the distribution */
+Scalar TruncatedNormal::computeEntropy() const
+{
+  return 0.5 - std::log(SpecFunc::ISQRT2PI * normalizationFactor_ / sigma_) + 0.5 * (aNorm_ * phiANorm_ - bNorm_ * phiBNorm_) * normalizationFactor_;
+}
+
 /* Get the product minimum volume interval containing a given probability of the distribution */
 Interval TruncatedNormal::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {

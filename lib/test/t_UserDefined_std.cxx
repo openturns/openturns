@@ -75,6 +75,8 @@ int main(int argc, char *argv[])
     // Get 95% quantile
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "Quantile=" << quantile << std::endl;
+    fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
 
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
@@ -93,6 +95,8 @@ int main(int argc, char *argv[])
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
     multivariateUserDefined.compactSupport();
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
+    fullprint << "entropy=" << multivariateUserDefined.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -multivariateUserDefined.computeLogPDF(multivariateUserDefined.getSample(1000000)).computeMean()[0] << std::endl;
     fullprint << "Marginal 0=" << Distribution(multivariateUserDefined.getMarginal(0)) << std::endl;
     Indices indices(2);
     indices[0] = 2;

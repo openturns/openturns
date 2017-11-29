@@ -106,6 +106,9 @@ int main(int argc, char *argv[])
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
 //     Point PDFgr = distribution.computePDFGradient( point );
 //     fullprint << "pdf gradient     =" << PDFgr << std::endl;
+    // Takes too much time
+    // fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    // fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();

@@ -46,6 +46,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0526499] upper bound=class=Point name=Unnamed dimension=1 values=[85.793] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=-1.63163
+entropy (MC)=-1.63055
 mean=class=Point name=Unnamed dimension=1 values=[0.117647]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00425872]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -66,11 +68,11 @@ Distribution class=InverseChiSquare name=InverseChiSquare dimension=1 nu=15
 Distribution InverseChiSquare(nu = 15)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.0913064]
-oneSample first=class=Point name=Unnamed dimension=1 values=[0.0472117] last=class=Point name=Unnamed dimension=1 values=[0.0823255]
-mean=class=Point name=Unnamed dimension=1 values=[0.0764712]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00106545]
-Kolmogorov test for the generator, sample size=100 is accepted
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.0610812]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.0541265] last=class=Point name=Unnamed dimension=1 values=[0.0791917]
+mean=class=Point name=Unnamed dimension=1 values=[0.077503]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00113156]
+Kolmogorov test for the generator, sample size=100 is rejected
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.133333]
 ddf     =class=Point name=Unnamed dimension=1 values=[-67.8131]
@@ -101,6 +103,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0400067] upper bound=class=Point name=Unnamed dimension=1 values=[10.2372] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=-2.20622
+entropy (MC)=-2.20801
 mean=class=Point name=Unnamed dimension=1 values=[0.0769231]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.00107585]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

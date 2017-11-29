@@ -578,6 +578,15 @@ void ComposedDistribution::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the entropy of the distribution */
+Scalar ComposedDistribution::computeEntropy() const
+{
+  Scalar entropy = copula_.computeEntropy();
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+    entropy += distributionCollection_[i].computeEntropy();
+  return entropy;
+}
+
 /* Get the standard deviation of the distribution */
 Point ComposedDistribution::getStandardDeviation() const
 {

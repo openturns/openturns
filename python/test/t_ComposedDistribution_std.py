@@ -108,6 +108,7 @@ try:
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" %
           distribution.computeSurvivalFunction(inverseSurvival))
+    print("entropy=%.6f" % distribution.computeEntropy())
     # Confidence regions
     if distribution.getDimension() <= 2:
         threshold = Point()

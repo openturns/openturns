@@ -1,13 +1,15 @@
 Copula class=FrankCopula name=a frank copula dimension=2 theta=2.5
 Copula FrankCopula(theta = 2.5)
+entropy=-0.0795204
+entropy (MC)=-0.0798213
 Mean class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 Elliptical distribution= false
 Elliptical copula= false
 Independent copula= false
-oneRealization=class=Point name=Unnamed dimension=2 values=[0.629877,0.895308]
-oneSample=class=Sample name=a frank copula implementation=class=SampleImplementation name=a frank copula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.016871],[0.347057,0.945426],[0.92068,0.721499],[0.0632061,0.142503],[0.714382,0.513452],[0.373767,0.654314],[0.883503,0.519404],[0.92851,0.915709],[0.684575,0.864187],[0.359802,0.923248]]
-anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.502777,0.501102]
-anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0329314,0.0329314,0.0835427]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.976434,0.881486]
+oneSample=class=Sample name=a frank copula implementation=class=SampleImplementation name=a frank copula size=10 dimension=2 description=[X0,X1] data=[[0.084502,0.199357],[0.0111884,0.360396],[0.462462,0.238134],[0.587674,0.157156],[0.908026,0.891122],[0.00398058,0.337571],[0.373997,0.241657],[0.0134696,0.361901],[0.768466,0.291325],[0.663918,0.119739]]
+anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.497404,0.503867]
+anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0826296,0.0316293,0.0316293,0.0826082]
 point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-1.35738,-1.35738] ddf (FD)=class=Point name=Unnamed dimension=2 values=[-1.35738,-1.35738] pdf=1.44974 cdf=0.0738879
 Survival      =0.673888
 Survival (ref)=0.673888
@@ -17,8 +19,8 @@ Quantile=class=Point name=Unnamed dimension=2 values=[0.662772,0.662772]
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0127327,0.0127327] upper bound=class=Point name=Unnamed dimension=2 values=[0.987267,0.987267] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974535
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(FrankCopula(theta = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(FrankCopula(theta = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(FrankCopula(theta = 2.5)) level=0.654845
-beta=0.519522
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(FrankCopula(theta = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(FrankCopula(theta = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(FrankCopula(theta = 2.5)) level=0.655386
+beta=0.519241
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0127327,0.0127327] upper bound=class=Point name=Unnamed dimension=2 values=[0.987267,0.987267] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974535
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974144,0.974144] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -33,16 +35,16 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.294088]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.568102]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.47206]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.761047]
 indices=[1,0]
 margins=class=FrankCopula name=a frank copula dimension=2 theta=2.5
 margins PDF=1.33439
 margins CDF=0.107307
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974144,0.974144]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.196586,0.435233]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.68799,0.177555]

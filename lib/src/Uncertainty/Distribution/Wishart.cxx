@@ -143,8 +143,7 @@ CovarianceMatrix Wishart::getRealizationAsMatrix() const
     // The off-diagonal elements are normaly distributed
     for (UnsignedInteger j = 0; j < i; ++j) A(i, j) = DistFunc::rNormal();
   }
-  const TriangularMatrix M((cholesky_ * A).getImplementation());
-  return (M * M.transpose()).getImplementation();
+  return (cholesky_ * A).computeGram(false).getImplementation();
 }
 
 
@@ -153,7 +152,7 @@ Scalar Wishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const Scalar logPDF = computeLogPDF(m);
-  const Scalar pdf = (logPDF == SpecFunc::LogMinScalar ? 0.0 : std::exp(logPDF));
+  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar ? 0.0 : std::exp(logPDF));
   return pdf;
 }
 
@@ -161,7 +160,7 @@ Scalar Wishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const Scalar logPDF = computeLogPDF(point);
-  const Scalar pdf = (logPDF == SpecFunc::LogMinScalar) ? 0.0 : std::exp(logPDF);
+  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar) ? 0.0 : std::exp(logPDF);
   return pdf;
 }
 
@@ -190,21 +189,21 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
     // If the Cholesky factor is not defined, it means that M is not symmetric positive definite (an exception is thrown) and the PDF is zero
     TriangularMatrix X(CovarianceMatrix(m).computeCholesky());
     // Compute the determinant of the Cholesky factor, ie the square-root of the determinant of M
-    Scalar logPDF = logNormalizationFactor_;
     // Here, the diagonal of X is positive
+    Scalar logPDF = 0.0;
     for (UnsignedInteger i = 0; i < p; ++i) logPDF += std::log(X(i, i));
     logPDF *= nu_ - p - 1.0;
-    // V^{-1}M = (CC')^{-1}(XX')
-    // = C'^{-1}(C^{-1}X)X'
-    TriangularMatrix A(cholesky_.solveLinearSystem(X).getImplementation());
-    SquareMatrix B((A * X.transpose()).getImplementation());
-    SquareMatrix C(cholesky_.transpose().solveLinearSystem(B).getImplementation());
-    logPDF -= 0.5 * C.computeTrace();
+    // Add the term which does not depend on M
+    logPDF += logNormalizationFactor_;
+    // Trace(V^{-1} M) = Trace(C'^{-1} C^{-1} X X') = Trace(C^{-1}XX'C'^{-1})
+    //                 = Trace(AA') with A = C^{-1}X
+    const TriangularMatrix A(cholesky_.solveLinearSystem(X).getImplementation());
+    logPDF -= 0.5 * A.computeGram(false).computeTrace();
     return logPDF;
   }
   catch (...)
   {
-    return SpecFunc::LogMinScalar;
+    return -SpecFunc::LogMaxScalar;
   }
 }
 
@@ -218,7 +217,7 @@ Scalar Wishart::computeCDF(const Point & point) const
 /* Compute the mean of the distribution */
 void Wishart::computeMean() const
 {
-  const CovarianceMatrix V((cholesky_ * cholesky_.transpose()).getImplementation());
+  const CovarianceMatrix V(getV());
   const UnsignedInteger p = cholesky_.getDimension();
   mean_ = Point(getDimension());
   UnsignedInteger index = 0;
@@ -231,11 +230,32 @@ void Wishart::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the entropy of the distribution */
+Scalar Wishart::computeEntropy() const
+{
+  // E = p\nu/2 - logNormalizationFactor + (p + 1 - \nu)[\log|L|+{p\log(2)\sum_{i=0}^{p-1}\psi((\nu-i)/2)}/2] 
+  const Scalar p = cholesky_.getDimension();
+  Scalar E = 0.5 * nu_ * p - logNormalizationFactor_;
+  Scalar logDetL = 0.0;
+  for (UnsignedInteger i = 0; i < p; ++i) logDetL += std::log(cholesky_(i, i));
+  Scalar sumPsi = 0.0;
+  for (UnsignedInteger i = 0; i < p; ++i) sumPsi += SpecFunc::Psi(0.5 * (nu_ - i));
+  E += (p + 1.0 - nu_) * (0.5 * (p * M_LN2 + sumPsi) + logDetL);
+  return E;
+}
+
 /* Get the standard deviation of the distribution */
 Point Wishart::getStandardDeviation() const /*throw(NotDefinedException)*/
 {
   const UnsignedInteger p = cholesky_.getDimension();
   Point sigma(getDimension());
+  // If the covariance has already been computed, use it
+  if (isAlreadyComputedCovariance_)
+  {
+    for (UnsignedInteger i = 0; i < getDimension(); ++i) sigma[i] = std::sqrt(covariance_(i, i));
+    return sigma;
+  }
+  // else compute only the standard deviation as the covariance may be huge
   const CovarianceMatrix V(getV());
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
@@ -346,6 +366,7 @@ void Wishart::setV(const CovarianceMatrix & v)
 {
   try
   {
+    // Copy of v because v is const and not computeCholesky()
     cholesky_ = CovarianceMatrix(v).computeCholesky();
   }
   catch(...)
@@ -361,7 +382,7 @@ void Wishart::setV(const CovarianceMatrix & v)
 
 CovarianceMatrix Wishart::getV() const
 {
-  return (cholesky_ * cholesky_.transpose()).getImplementation();
+  return cholesky_.computeGram(false).getImplementation();
 }
 
 
@@ -388,6 +409,7 @@ Scalar Wishart::getNu() const
 void Wishart::update()
 {
   const UnsignedInteger p = cholesky_.getDimension();
+  // logNormalizationFactor = -log(2^{p\nu/2}|V|^{\nu/2}multigamma_p(\nu/2)
   logNormalizationFactor_ = -0.5 * p * (nu_ * M_LN2 + 0.5 * (p - 1) * std::log(M_PI));
   for (UnsignedInteger i = 0; i < p; ++i) logNormalizationFactor_ -= SpecFunc::LogGamma(0.5 * (nu_ - i)) + nu_ * std::log(cholesky_(i, i));
 }

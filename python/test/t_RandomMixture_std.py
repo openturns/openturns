@@ -94,6 +94,9 @@ try:
         print("InverseSurvival=", repr(inverseSurvival))
         print("Survival(inverseSurvival)=%.6f" %
               distribution.computeSurvivalFunction(inverseSurvival))
+        # Entropy: too expansive for now...
+        if False:
+            print("entropy=%.6f" % distribution.computeEntropy())
 
         # Confidence regions: too expansive for now...
         if False:

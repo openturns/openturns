@@ -44,6 +44,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.211041] upper bound=class=Point name=Unnamed dimension=1 values=[12] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=1.8961
+entropy (MC)=1.89661
 mean=class=Point name=Unnamed dimension=1 values=[2.66959]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.64028]
 skewness=class=Point name=Unnamed dimension=1 values=[0.435743]
@@ -68,10 +70,10 @@ Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sig
 Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[1.37981]
-oneSample first=class=Point name=Unnamed dimension=1 values=[2.81173] last=class=Point name=Unnamed dimension=1 values=[1.71953]
-mean=class=Point name=Unnamed dimension=1 values=[2.87466]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.75194]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.17248]
+oneSample first=class=Point name=Unnamed dimension=1 values=[3.9261] last=class=Point name=Unnamed dimension=1 values=[2.95417]
+mean=class=Point name=Unnamed dimension=1 values=[2.8704]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.61937]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
@@ -101,6 +103,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.354217] upper bound=class=Point name=Unnamed dimension=1 values=[50.3543] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=1.98268
+entropy (MC)=1.98194
 mean=class=Point name=Unnamed dimension=1 values=[2.86582]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.92382]
 skewness=class=Point name=Unnamed dimension=1 values=[1.13955]
@@ -125,10 +129,10 @@ Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sig
 Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[2.16249]
-oneSample first=class=Point name=Unnamed dimension=1 values=[0.614999] last=class=Point name=Unnamed dimension=1 values=[6.02257]
-mean=class=Point name=Unnamed dimension=1 values=[3.12347]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.04599]
+oneRealization=class=Point name=Unnamed dimension=1 values=[3.21984]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.921849] last=class=Point name=Unnamed dimension=1 values=[3.34899]
+mean=class=Point name=Unnamed dimension=1 values=[3.166]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.66831]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
@@ -158,6 +162,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.482513] upper bound=class=Point name=Unnamed dimension=1 values=[1251.08] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=2.06926
+entropy (MC)=2.07062
 mean=class=Point name=Unnamed dimension=1 values=[3.12484]
 standard deviation=class=Point name=Unnamed dimension=1 values=[2.45836]
 skewness=class=Point name=Unnamed dimension=1 values=[2.53025]

@@ -25,6 +25,9 @@ quantile (ref)=class=Point name=Unnamed dimension=1 values=[4.73509]
 cdf(quantile)=0.95
 quantile comp.=class=Point name=Unnamed dimension=1 values=[-0.735089]
 cdfComp(quantileComp)=0.95
+entropy      =1.8863
+entropy (ref)=1.88629
+entropy (MC)=1.88661
 mean      =class=Point name=Unnamed dimension=1 values=[2]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[2]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[1.63299]
@@ -46,10 +49,10 @@ Distribution class=RandomMixture name=RandomMixture distribution collection=[cla
 Distribution RandomMixture(Normal(mu = -1, sigma = 3))
 Elliptical = true
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[-2.3693]
-oneSample first=class=Point name=Unnamed dimension=1 values=[-3.73534] last=class=Point name=Unnamed dimension=1 values=[-1.06758]
-mean=class=Point name=Unnamed dimension=1 values=[-1.01449]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[8.84831]
+oneRealization=class=Point name=Unnamed dimension=1 values=[-2.89793]
+oneSample first=class=Point name=Unnamed dimension=1 values=[-0.736818] last=class=Point name=Unnamed dimension=1 values=[-0.585723]
+mean=class=Point name=Unnamed dimension=1 values=[-0.966869]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.11644]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
@@ -67,6 +70,9 @@ quantile (ref)=class=Point name=Unnamed dimension=1 values=[3.93456]
 cdf(quantile)=0.95
 quantile comp.=class=Point name=Unnamed dimension=1 values=[-5.93456]
 cdfComp(quantileComp)=0.95
+entropy      =2.51755
+entropy (ref)=2.51755
+entropy (MC)=2.51781
 mean      =class=Point name=Unnamed dimension=1 values=[-1]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[-1]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[3]
@@ -88,11 +94,11 @@ Distribution class=RandomMixture name=RandomMixture distribution collection=[cla
 Distribution RandomMixture(Gamma(k = 3, lambda = 1, gamma = 0))
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[1.5317]
-oneSample first=class=Point name=Unnamed dimension=1 values=[1.68201] last=class=Point name=Unnamed dimension=1 values=[3.04448]
-mean=class=Point name=Unnamed dimension=1 values=[3.0296]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.09676]
-Kolmogorov test for the generator, sample size=100 is accepted
+oneRealization=class=Point name=Unnamed dimension=1 values=[2.41048]
+oneSample first=class=Point name=Unnamed dimension=1 values=[2.20998] last=class=Point name=Unnamed dimension=1 values=[6.8757]
+mean=class=Point name=Unnamed dimension=1 values=[2.99141]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.0171]
+Kolmogorov test for the generator, sample size=100 is rejected
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
 ddf      =class=Point name=Unnamed dimension=1 values=[0.227448]
@@ -109,6 +115,9 @@ quantile (ref)=class=Point name=Unnamed dimension=1 values=[6.29579]
 cdf(quantile)=0.95
 quantile comp.=class=Point name=Unnamed dimension=1 values=[0.817691]
 cdfComp(quantileComp)=0.95
+entropy      =1.84758
+entropy (ref)=1.84758
+entropy (MC)=1.84762
 mean      =class=Point name=Unnamed dimension=1 values=[3]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[3]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[1.73205]
@@ -165,6 +174,7 @@ range = class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unn
 mean = class=Point name=Unnamed dimension=2 values=[0,0]
 cov = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[6,-4,-4,11]
 sigma = class=Point name=Unnamed dimension=2 values=[2.44949,3.31662]
+entropy      =2.37519
 pdf      =0.0225079
 pdf (ref)=0.0225079
 pdf      =0.0139715
@@ -277,6 +287,7 @@ range = class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unn
 mean = class=Point name=Unnamed dimension=3 values=[0.25,0.125,0.2]
 cov = class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1.11667,0.233333,-0.341667,0.233333,5.25771,-0.775,-0.341667,-0.775,0.473333]
 sigma = class=Point name=Unnamed dimension=3 values=[1.05672,2.29297,0.687992]
+entropy      =2.37519
 pdf      =0.0128814
 pdf      =0.0128655
 pdf      =0.0122294

@@ -177,6 +177,12 @@ Scalar Logistic::computeComplementaryCDF(const Point & point) const
   return 1.0 / (1.0 + std::exp(z));
 }
 
+/* Compute the entropy of the distribution */
+Scalar Logistic::computeEntropy() const
+{
+  return 2.0 + std::log(beta_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Logistic::computeCharacteristicFunction(const Scalar x) const
 {

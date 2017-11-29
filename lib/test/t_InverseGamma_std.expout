@@ -46,6 +46,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0406605] upper bound=class=Point name=Unnamed dimension=1 values=[50.1015] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=-1.93058
+entropy (MC)=-1.92949
 mean=class=Point name=Unnamed dimension=1 values=[0.0888889]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0022575]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -66,10 +68,10 @@ Distribution class=InverseGamma name=InverseGamma dimension=1 k=15 lambda=2.5
 Distribution InverseGamma(k = 15, lambda = 2.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.0272144]
-oneSample first=class=Point name=Unnamed dimension=1 values=[0.0286215] last=class=Point name=Unnamed dimension=1 values=[0.0158049]
-mean=class=Point name=Unnamed dimension=1 values=[0.0284817]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.38042e-05]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.0384087]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.0216497] last=class=Point name=Unnamed dimension=1 values=[0.0206564]
+mean=class=Point name=Unnamed dimension=1 values=[0.0286652]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.41493e-05]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.0533333]
@@ -101,6 +103,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0182761] upper bound=class=Point name=Unnamed dimension=1 values=[0.508519] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=-3.51462
+entropy (MC)=-3.51597
 mean=class=Point name=Unnamed dimension=1 values=[0.0285714]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.27943e-05]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

@@ -346,6 +346,22 @@ Description FrankCopula::getParameterDescription() const
   return Description(1, "theta");
 }
 
+/* Compute the entropy of the distribution */
+Scalar FrankCopula::computeEntropy() const
+{
+  // To insure full relative precision in double precision
+  const Scalar theta2 = theta_ * theta_;
+  if (theta_ < 0.01636160042996688)
+    return theta2 * (-1.0 / 72.0 + theta2 * (1.0 / 4800.0 - theta2 / 254016.0));
+  const Scalar t1 = expm1(theta_);
+  const Scalar t2 = std::log(t1);
+  const Scalar t3 = std::exp(theta_);
+  const Scalar t7 = std::log(theta_);
+  const Scalar t11 = SpecFunc::DiLog(-t1);
+  const Scalar t23 = SpecFunc::DiLog(1.0 / t3);
+  return 2.0 - t7 + t11 / theta_ + (t3 * t2 + (t11 * t3 + SpecFunc::PI2_6 - 0.5 * theta2 - t23) / theta_) / t1;
+}
+
 /* Tell if the distribution has independent copula */
 Bool FrankCopula::hasIndependentCopula() const
 {
