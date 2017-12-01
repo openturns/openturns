@@ -387,7 +387,6 @@ Scalar KernelMixture::computeSurvivalFunction(const Point & point) const
     }
     survivalValue += cdfAtom;
   } /* end for */
-  cdfEpsilon_ = kernel_.getCDFEpsilon() * size;
   return survivalValue / size;
 }
 

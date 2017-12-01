@@ -100,6 +100,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   // the setDistributionCollection() method that do it for us.
   // This call set also the range.
   setDistributionCollection( coll );
+  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
 
 /* Default constructor */
@@ -135,6 +137,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   weights_ = Matrix(1, coll.getSize(), weights);
   // This call set also the range.
   setDistributionCollection(coll);
+  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
@@ -172,6 +176,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   // This call set also the range.
   weights_ = weights;
   setDistributionCollection(coll);
+  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
@@ -204,6 +210,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (weights.getNbColumns() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
   weights_ = weights;
   setDistributionCollection(coll);
+  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
@@ -237,6 +245,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (weights.getDimension() != constant.getDimension()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same dimension as the distribution dimension";
   weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
+  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
 
 /* Parameter constructor - nD */
@@ -268,6 +278,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
   weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
   setDistributionCollection(coll);
+  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
 /* Compute the numerical range of the distribution given the parameters values */
 void RandomMixture::computeRange()
@@ -1101,7 +1113,7 @@ Scalar RandomMixture::computePDF(const Point & point) const
     GaussKronrod algo;
     const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
     const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionPDFKernel, 1, 1));
-    return algo.integrate(convolutionKernel, Interval(lower, upper), pdfEpsilon_)[0] / std::abs(alpha2);
+    return algo.integrate(convolutionKernel, Interval(lower, upper))[0] / std::abs(alpha2);
   }
 
   LOGDEBUG(OSS() << "Equivalent normal=" << equivalentNormal_);
@@ -1192,7 +1204,6 @@ Scalar RandomMixture::computePDF(const Point & point) const
   } // while
   // For very low level of PDF, the computed value can be slightly negative. Round it up to zero.
   if (value < 0.0) value = 0.0;
-  pdfEpsilon_ = error;
   return value;
 }
 
@@ -2241,7 +2252,6 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   // Special case for combination containing only one contributor
   if (isAnalytical_)
   {
-    cdfEpsilon_ = ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" );
     const Scalar lower = interval.getLowerBound()[0];
     const Scalar upper = interval.getUpperBound()[0];
     const Scalar weight = getWeight();
@@ -2292,7 +2302,6 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
     }
     k *= 2;
   }
-  cdfEpsilon_ = error;
   // For extrem values of the argument, the computed value can be slightly outside of [0,1]. Truncate it.
   return (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
 }

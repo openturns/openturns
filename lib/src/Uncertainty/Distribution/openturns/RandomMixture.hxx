@@ -454,7 +454,7 @@ private:
   mutable Scalar pdfPrecision_;
 
   /** Requested precision for CDF computation */
-  mutable Scalar cdfPrecision_;
+  Scalar cdfPrecision_;
 
   /** Normal distribution with the same mean and standard deviation than the RandomMixture */
   Normal equivalentNormal_;
