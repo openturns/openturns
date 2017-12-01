@@ -227,12 +227,12 @@ Scalar ProductDistribution::computePDFQ1(const Scalar x,
     if (x < ad)
     {
       LOGDEBUG(OSS() << x << " < " << ad);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << ad << " <= " << x);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -242,19 +242,19 @@ Scalar ProductDistribution::computePDFQ1(const Scalar x,
     if (x < ad)
     {
       LOGDEBUG(OSS() << x << " < " << ad);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < bc)
     {
       LOGDEBUG(OSS() << x << " < " << bc);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / d, x / c), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(x / d, x / c))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << bd);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -262,19 +262,19 @@ Scalar ProductDistribution::computePDFQ1(const Scalar x,
   if (x < bc)
   {
     LOGDEBUG(OSS() << x << " < " << bc);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < ad)
   {
     LOGDEBUG(OSS() << x << " < " << ad);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << x << " < " << bd);
-  const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+  const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -303,12 +303,12 @@ Scalar ProductDistribution::computePDFQ2(const Scalar x,
     if (x < bd)
     {
       LOGDEBUG(OSS() << x << " < " << bd);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << 0.0);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -318,19 +318,19 @@ Scalar ProductDistribution::computePDFQ2(const Scalar x,
     if (x < ac)
     {
       LOGDEBUG(OSS() << x << " < " << ac);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < bd)
     {
       LOGDEBUG(OSS() << x << " < " << bd);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, x / d), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << bc);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -338,19 +338,19 @@ Scalar ProductDistribution::computePDFQ2(const Scalar x,
   if (x < bd)
   {
     LOGDEBUG(OSS() << x << " < " << bd);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < ac)
   {
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << x << " < " << bc);
-  const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+  const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -379,12 +379,12 @@ Scalar ProductDistribution::computePDFQ3(const Scalar x,
     if (x < bc)
     {
       LOGDEBUG(OSS() << x << " < " << bc);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -394,19 +394,19 @@ Scalar ProductDistribution::computePDFQ3(const Scalar x,
     if (x < ad)
     {
       LOGDEBUG(OSS() << x << " < " << ad);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < bc)
     {
       LOGDEBUG(OSS() << x << " < " << bc);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -414,19 +414,19 @@ Scalar ProductDistribution::computePDFQ3(const Scalar x,
   if (x < bc)
   {
     LOGDEBUG(OSS() << x << " < " << bc);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < ad)
   {
     LOGDEBUG(OSS() << x << " < " << ad);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, x / c), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, x / c))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << x << " < " << ac);
-  const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
+  const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -455,12 +455,12 @@ Scalar ProductDistribution::computePDFQ4(const Scalar x,
     if (x < ac)
     {
       LOGDEBUG(OSS() << x << " < " << ac);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << 0.0);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -470,19 +470,19 @@ Scalar ProductDistribution::computePDFQ4(const Scalar x,
     if (x < bd)
     {
       LOGDEBUG(OSS() << x << " < " << bd);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < ac)
     {
       LOGDEBUG(OSS() << x << " < " << ac);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, x / d), pdfEpsilon_)[0];
+      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << ad);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -491,19 +491,19 @@ Scalar ProductDistribution::computePDFQ4(const Scalar x,
   if (x < ac)
   {
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < bd)
   {
     LOGDEBUG(OSS() << x << " < " << bd);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << bd << " <= " << x << " < " << ad);
-  const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
+  const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -527,12 +527,12 @@ Scalar ProductDistribution::computeCDF(const Point & point) const
   if (aLeft < 0)
   {
     const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
-    value += algo.integrate(cdfKernel, Interval(aLeft, std::min(bLeft, 0.0)), cdfEpsilon_)[0];
+    value += algo.integrate(cdfKernel, Interval(aLeft, std::min(bLeft, 0.0)))[0];
   }
   if (bLeft >= 0)
   {
     const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
-    value += algo.integrate(cdfKernel, Interval(std::max(0.0, aLeft), bLeft), cdfEpsilon_)[0];
+    value += algo.integrate(cdfKernel, Interval(std::max(0.0, aLeft), bLeft))[0];
   }
   return value;
 }
@@ -559,14 +559,14 @@ Scalar ProductDistribution::computeCDFQ1(const Scalar x,
     if ((x >= 0.0) && (x < ad))
     {
       LOGDEBUG(OSS() << 0.0 << " <= " << x << " < " << ad);
-      const Scalar value = algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+      const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= ad) && (x < bd))
     {
       LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b), cdfEpsilon_)[0];
+      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -579,21 +579,21 @@ Scalar ProductDistribution::computeCDFQ1(const Scalar x,
     if ((x >= ac) && (x < ad))
     {
       LOGDEBUG(OSS() << ac << " <= " << x << " < " << ad);
-      const Scalar value = algo.integrate(cdfKernel, Interval(a, x / c), cdfEpsilon_)[0];
+      const Scalar value = algo.integrate(cdfKernel, Interval(a, x / c))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= ad) && (x < bc))
     {
       LOGDEBUG(OSS() << ad << " <= " << x << " < " << bc);
-      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, x / c), cdfEpsilon_)[0];
+      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, x / c))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= bc) && (x < bd))
     {
       LOGDEBUG(OSS() << bc << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b), cdfEpsilon_)[0];
+      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -604,21 +604,21 @@ Scalar ProductDistribution::computeCDFQ1(const Scalar x,
   if ((x >= ac) && (x < bc))
   {
     LOGDEBUG(OSS() << ac << " <= " << x << " < " << bc);
-    const Scalar value = algo.integrate(cdfKernel, Interval(a, x / c), cdfEpsilon_)[0];
+    const Scalar value = algo.integrate(cdfKernel, Interval(a, x / c))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= bc) && (x < ad))
   {
     LOGDEBUG(OSS() << bc << " <= " << x << " < " << ad);
-    const Scalar value = algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+    const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= ad) && (x < bd))
   {
     LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-    const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b), cdfEpsilon_)[0];
+    const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -648,14 +648,14 @@ Scalar ProductDistribution::computeCDFQ2(const Scalar x,
     if ((x >= ad) && (x < bd))
     {
       LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d), cdfEpsilon_)[0];
+      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= bd) && (x < 0.0))
     {
       LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -668,21 +668,21 @@ Scalar ProductDistribution::computeCDFQ2(const Scalar x,
     if ((x >= ad) && (x < ac))
     {
       LOGDEBUG(OSS() << ad << " <= " << x << " < " << ac);
-      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d), cdfEpsilon_)[0];
+      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= ac) && (x < bd))
     {
       LOGDEBUG(OSS() << ac << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(x / c, x / d), cdfEpsilon_)[0];
+      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(x / c, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= bd) && (x < bc))
     {
       LOGDEBUG(OSS() << bd << " <= " << x << " < " << bc);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(x / c, b), cdfEpsilon_)[0];
+      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(x / c, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -693,21 +693,21 @@ Scalar ProductDistribution::computeCDFQ2(const Scalar x,
   if ((x >= ad) && (x < bd))
   {
     LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-    const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d), cdfEpsilon_)[0];
+    const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= bd) && (x < ac))
   {
     LOGDEBUG(OSS() << bd << " <= " << x << " < " << ac);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= ac) && (x < bc))
   {
     LOGDEBUG(OSS() << ac << " <= " << x << " < " << bc);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(x / c, b), cdfEpsilon_)[0];
+    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(x / c, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -737,14 +737,14 @@ Scalar ProductDistribution::computeCDFQ3(const Scalar x,
     if ((x >= 0.0) && (x < bc))
     {
       LOGDEBUG(OSS() << 0.0 << " <= " << x << " < " << bc);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= bc) && (x < ac))
     {
       LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c), cdfEpsilon_)[0];
+      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -757,21 +757,21 @@ Scalar ProductDistribution::computeCDFQ3(const Scalar x,
     if ((x >= bd) && (x < bc)) // BUG
     {
       LOGDEBUG(OSS() << bd << " <= " << x << " < " << ad);
-      const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, b), cdfEpsilon_)[0];
+      const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= bc) && (x < ad)) // BUG
     {
       LOGDEBUG(OSS() << ad << " <= " << x << " < " << bc);
-      const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, x / c), cdfEpsilon_)[0];
+      const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, x / c))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= ad) && (x < ac)) // BUG
     {
       LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c), cdfEpsilon_)[0];
+      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -782,21 +782,21 @@ Scalar ProductDistribution::computeCDFQ3(const Scalar x,
   if ((x >= bd) && (x < ad)) // BUG
   {
     LOGDEBUG(OSS() << bd << " <= " << x << " < " << bc);
-    const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, b), cdfEpsilon_)[0];
+    const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= ad) && (x < bc)) // BUG
   {
     LOGDEBUG(OSS() << bc << " <= " << x << " < " << ad);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= bc) && (x < ac)) // BUG
   {
     LOGDEBUG(OSS() << ad << " <= " << x << " < " << ac);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c), cdfEpsilon_)[0];
+    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -826,14 +826,14 @@ Scalar ProductDistribution::computeCDFQ4(const Scalar x,
     if ((x >= bc) && (x < 0.0))
     {
       LOGDEBUG(OSS() << ac << " <= " << x << " < " << 0.0);
-      const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b), cdfEpsilon_)[0];
+      const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= ac) && (x < 0.0))
     {
       LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-      const Scalar value = algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+      const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -846,21 +846,21 @@ Scalar ProductDistribution::computeCDFQ4(const Scalar x,
     if ((x >= bc) && (x < bd))
     {
       LOGDEBUG(OSS() << bc << " <= " << x << " < " << bd);
-      const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b), cdfEpsilon_)[0];
+      const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= bd) && (x < ac))
     {
       LOGDEBUG(OSS() << bd << " <= " << x << " < " << ac);
-      const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(x / c, x / d), cdfEpsilon_)[0];
+      const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(x / c, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if ((x >= ac) && (x < ad))
     {
       LOGDEBUG(OSS() << ac << " <= " << x << " < " << ad);
-      const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(a, x / d), cdfEpsilon_)[0];
+      const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(a, x / d))[0];
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
@@ -871,21 +871,21 @@ Scalar ProductDistribution::computeCDFQ4(const Scalar x,
   if ((x >= bc) && (x < ac))
   {
     LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-    const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b), cdfEpsilon_)[0];
+    const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= ac) && (x < bd))
   {
     LOGDEBUG(OSS() << ac << " <= " << x << " < " << bd);
-    const Scalar value = algo.integrate(cdfKernel, Interval(a, b), cdfEpsilon_)[0];
+    const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if ((x >= bd) && (x < ad))
   {
     LOGDEBUG(OSS() << bd << " <= " << x << " < " << ad);
-    const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(a, x / d), cdfEpsilon_)[0];
+    const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(a, x / d))[0];
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }

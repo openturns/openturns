@@ -1840,7 +1840,6 @@ Scalar DistributionImplementation::computeConditionalPDF(const Scalar x,
   z.add(x);
   const Implementation conditionedDistribution(getMarginal(conditioned));
   const Scalar pdfConditioned = conditionedDistribution->computePDF(z);
-  pdfEpsilon_ = conditionedDistribution->getPDFEpsilon() + conditioningDistribution->getPDFEpsilon();
   return pdfConditioned / pdfConditioning;
 }
 

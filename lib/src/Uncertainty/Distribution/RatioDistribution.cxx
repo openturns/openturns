@@ -173,20 +173,20 @@ Scalar RatioDistribution::computePDFQ1(const Scalar x,
   const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
-    if ((x >= 0.0) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
-    if ((x >= ad) && (x <= bd)) return algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+    if ((x >= 0.0) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, b))[0];
+    if ((x >= ad) && (x <= bd)) return algo.integrate(pdfKernel, Interval(x / d, b))[0];
     return 0.0;
   }
   if (ad <= bc)
   {
-    if ((x >= ac) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
-    if ((x >= ad) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / d, x / c), pdfEpsilon_)[0];
-    if ((x >= bc) && (x < bd)) return algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+    if ((x >= ac) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, x / c))[0];
+    if ((x >= ad) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / d, x / c))[0];
+    if ((x >= bc) && (x < bd)) return algo.integrate(pdfKernel, Interval(x / d, b))[0];
     return 0.0;
   }
-  if ((x >= ac) && (x < bc)) return algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
-  if ((x >= bc) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
-  if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+  if ((x >= ac) && (x < bc)) return algo.integrate(pdfKernel, Interval(a, x / c))[0];
+  if ((x >= bc) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, b))[0];
+  if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(x / d, b))[0];
   return 0.0;
 }
 
@@ -206,20 +206,20 @@ Scalar RatioDistribution::computePDFQ2(const Scalar x,
   const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (c == 0.0)
   {
-    if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
-    if ((x >= bd) && (x <= 0.0)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+    if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, x / d))[0];
+    if ((x >= bd) && (x <= 0.0)) return algo.integrate(pdfKernel, Interval(a, b))[0];
     return 0.0;
   }
   if (ac <= bd)
   {
-    if ((x >= ad) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
-    if ((x >= ac) && (x < bd)) return algo.integrate(pdfKernel, Interval(x / c, x / d), pdfEpsilon_)[0];
-    if ((x >= bd) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+    if ((x >= ad) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / d))[0];
+    if ((x >= ac) && (x < bd)) return algo.integrate(pdfKernel, Interval(x / c, x / d))[0];
+    if ((x >= bd) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / c, b))[0];
     return 0.0;
   }
-  if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
-  if ((x >= bd) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
-  if ((x >= ac) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+  if ((x >= ad) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, x / d))[0];
+  if ((x >= bd) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, b))[0];
+  if ((x >= ac) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / c, b))[0];
   return 0.0;
 }
 
@@ -239,20 +239,20 @@ Scalar RatioDistribution::computePDFQ3(const Scalar x,
   const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
-    if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
-    if ((x >= 0.0) && (x < bc)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
+    if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c))[0];
+    if ((x >= 0.0) && (x < bc)) return algo.integrate(pdfKernel, Interval(a, b))[0];
     return 0.0;
   }
   if (ad <= bc)
   {
-    if ((x >= ad) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
-    if ((x >= bc) && (x < ad)) return algo.integrate(pdfKernel, Interval(x / d, x / c), pdfEpsilon_)[0];
-    if ((x >= bd) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+    if ((x >= ad) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c))[0];
+    if ((x >= bc) && (x < ad)) return algo.integrate(pdfKernel, Interval(x / d, x / c))[0];
+    if ((x >= bd) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / d, b))[0];
     return 0.0;
   }
-  if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c), pdfEpsilon_)[0];
-  if ((x >= ad) && (x < bc)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
-  if ((x >= bd) && (x < ad)) return algo.integrate(pdfKernel, Interval(x / d, b), pdfEpsilon_)[0];
+  if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / c))[0];
+  if ((x >= ad) && (x < bc)) return algo.integrate(pdfKernel, Interval(a, b))[0];
+  if ((x >= bd) && (x < ad)) return algo.integrate(pdfKernel, Interval(x / d, b))[0];
   return 0.0;
 }
 
@@ -272,20 +272,20 @@ Scalar RatioDistribution::computePDFQ4(const Scalar x,
   const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
   if (d == 0.0)
   {
-    if ((x >= ac) && (x <= 0.0)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
-    if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+    if ((x >= ac) && (x <= 0.0)) return algo.integrate(pdfKernel, Interval(a, b))[0];
+    if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(x / c, b))[0];
     return 0.0;
   }
   if (bd <= ac)
   {
-    if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
-    if ((x >= ad) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / c, x / d), pdfEpsilon_)[0];
-    if ((x >= bd) && (x < ad)) return algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+    if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(a, x / d))[0];
+    if ((x >= ad) && (x < bc)) return algo.integrate(pdfKernel, Interval(x / c, x / d))[0];
+    if ((x >= bd) && (x < ad)) return algo.integrate(pdfKernel, Interval(x / c, b))[0];
     return 0.0;
   }
-  if ((x >= bd) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, x / d), pdfEpsilon_)[0];
-  if ((x >= ac) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, b), pdfEpsilon_)[0];
-  if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(x / c, b), pdfEpsilon_)[0];
+  if ((x >= bd) && (x < ad)) return algo.integrate(pdfKernel, Interval(a, x / d))[0];
+  if ((x >= ac) && (x < bd)) return algo.integrate(pdfKernel, Interval(a, b))[0];
+  if ((x >= bc) && (x < ac)) return algo.integrate(pdfKernel, Interval(x / c, b))[0];
   return 0.0;
 }
 

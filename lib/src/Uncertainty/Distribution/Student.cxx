@@ -219,7 +219,6 @@ Scalar Student::computeCDF(const Point & point) const
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
   }
-  cdfEpsilon_ = precision;
   return value;
 } // computeCDF
 

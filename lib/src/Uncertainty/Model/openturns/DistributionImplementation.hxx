@@ -761,10 +761,10 @@ protected:
   mutable Bool isAlreadyComputedGaussNodesAndWeights_;
 
   /** Indicators for PDF and CDF absolute precision. By default, equals to DefaultPDFEpsilon, DefaultCDFEpsilon and DefaultQuantileEpsilon */
-  mutable Scalar pdfEpsilon_;
-  mutable Scalar cdfEpsilon_;
-  mutable Scalar quantileEpsilon_;
-  mutable UnsignedInteger quantileIterations_;
+  Scalar pdfEpsilon_;
+  Scalar cdfEpsilon_;
+  Scalar quantileEpsilon_;
+  UnsignedInteger quantileIterations_;
 
   /** Standard distribution */
   mutable Bool isAlreadyComputedStandardDistribution_;
