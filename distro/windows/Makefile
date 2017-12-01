@@ -16,11 +16,6 @@
 ARCH=i686
 TARGET = $(ARCH)-w64-mingw32
 
-# OpenTurns paths
-OT_SRC    ?= $(PWD)/../..
-OT_BUILD  ?= $(OT_SRC)/build-$(TARGET)
-OT_PREFIX ?= $(OT_BUILD)/install
-
 OT_VERSION ?= $(shell cat ../../VERSION)
 
 WINDEPS = $(PWD)/openturns-developers-windeps
@@ -45,6 +40,10 @@ PYTHON_EXECUTABLE=$(MINGW_PREFIX)/$(TARGET)/bin/python$(PYBASEVER_NODOT).exe
 export PYTHONHOME := $(MINGW_PREFIX)/$(TARGET)
 export PYTHONPATH := $(MINGW_PREFIX)/$(TARGET)/lib/python$(PYBASEVER_NODOT)
 
+# OpenTurns paths
+OT_SRC    ?= $(PWD)/../..
+OT_BUILD  ?= $(OT_SRC)/build-py$(PYBASEVER)-ot$(OT_VERSION)-$(TARGET)
+OT_PREFIX ?= $(OT_BUILD)/install
 
 R_PATH = $(WINDEPS)/opt/R-2.12.0
 PATH := $(R_PATH)/bin:$(PATH)
