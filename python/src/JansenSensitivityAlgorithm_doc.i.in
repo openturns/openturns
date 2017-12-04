@@ -39,7 +39,7 @@ These last ones are respectively given as follows:
 .. math::
 
    \begin{array}{ccc}
-   \hat{V_i} & = & \frac{1}{n} \sum_{k=1}^{n} \left(G(A_k)^2 - G_0^2\right) - \frac{1}{2n} \sum_{k=1}^{n} \left( G(E_k) - G(B_k) \right)^2 \\
+   \hat{V_i} & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k)^2 - G_0^2 - \frac{1}{2n} \sum_{k=1}^{n} \left( G(E_k) - G(B_k) \right)^2 \\
    \hat{VT_{i}} & = & \frac{1}{n} \sum_{k=1}^{n} \left( G(A_k) -  G(E_k) \right)^2
    \end{array}
 

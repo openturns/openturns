@@ -72,18 +72,18 @@ Each line is a realization of the random vector. The purpose is to mix these two
 .. math::
 
    C^i = \left(
-   \begin{array}{ccccc}
-   b_{1,1} & b_{1,2} & a_{1,i} & \cdots & b_{1, n_X} \\
-   b_{2,1} & b_{2,2} & a_{2,i} & \cdots & b_{2, n_X} \\
-   \vdots  & \vdots  & \vdots  & \ddots  & \vdots \\
-   b_{n,1} & b_{1,2} & a_{n,i} & \cdots & b_{n, n_X}
+   \begin{array}{cccccc}
+   b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & b_{1, n_X} \\
+   b_{2,1} & b_{2,2} & \cdots & a_{2,i} & \cdots & b_{2, n_X} \\
+   \vdots  & \vdots  &        & \vdots  & \ddots  & \vdots \\
+   b_{n,1} & b_{1,2} & \cdots & a_{n,i} & \cdots & b_{n, n_X}
    \end{array}
    \right), \ D^{i,j} = \left(
-   \begin{array}{ccccccc}
-   b_{1,1} & b_{1,2} & a_{1,i} & \cdots & a_{1,j} & \cdots & b_{1, n_X} \\
-   b_{2,1} & b_{2,2} & a_{2,i} & \cdots & a_{2,j} & \cdots & b_{2, n_X} \\
-   \vdots  & \vdots  & \vdots  & \vdots & \vdots  & \ddots & \vdots \\
-   b_{n,1} & b_{n,2} & a_{n,i} & \cdots & a_{n,j} & \cdots & b_{n, n_X} \\
+   \begin{array}{cccccccc}
+   b_{1,1} & b_{1,2} & \cdots & a_{1,i} & \cdots & a_{1,j} & \cdots & b_{1, n_X} \\
+   b_{2,1} & b_{2,2} & \cdots & a_{2,i} & \cdots & a_{2,j} & \cdots & b_{2, n_X} \\
+   \vdots  & \vdots  &        & \vdots  &        & \vdots  & \ddots & \vdots \\
+   b_{n,1} & b_{n,2} & \cdots & a_{n,i} & \cdots & a_{n,j} & \cdots & b_{n, n_X} \\
    \end{array}
    \right)
 
@@ -104,11 +104,11 @@ The major methods (`Saltelli`, `Jansen`, `Mauntz-Kucherenko`, `Martinez`) use th
 .. math::
 
    E^i = \left(
-   \begin{array}{ccccc}
-   a_{1,1} & a_{1,2} & b_{1,i} & \cdots & a_{1, n_X} \\
-   a_{2,1} & a_{2,2} & b_{2,i} & \cdots & a_{2, n_X} \\
-   \vdots  & \vdots  & \vdots  & \ddots  & \vdots \\
-   a_{n,1} & a_{1,2} & b_{n,i} & \cdots & a_{n, n_X}
+   \begin{array}{cccccc}
+   a_{1,1} & a_{1,2} & \cdots & b_{1,i} & \cdots & a_{1, n_X} \\
+   a_{2,1} & a_{2,2} & \cdots & b_{2,i} & \cdots & a_{2, n_X} \\
+   \vdots  & \vdots  &        & \vdots  & \ddots & \vdots \\
+   a_{n,1} & a_{1,2} & \cdots & b_{n,i} & \cdots & a_{n, n_X}
    \end{array}
    \right)
 
