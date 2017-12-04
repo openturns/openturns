@@ -638,6 +638,50 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
   return Collection<Complex>( *ptr );
 }
 
+inline
+void handleException()
+{
+  PyObject * exception = PyErr_Occurred();
+
+  if ( exception )
+  {
+    PyObject *type = NULL, *value = NULL, *traceback = NULL;
+    PyErr_Fetch( &type, &value, &traceback );
+
+    String exceptionMessage("Python exception");
+
+    // get the name of the exception
+    if ( type )
+    {
+      ScopedPyObjectPointer nameObj(PyObject_GetAttrString( type, "__name__" ));
+      if ( nameObj.get() )
+      {
+        String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
+        exceptionMessage += ": " + typeString;
+      }
+    }
+
+    // try to get error msg, value and traceback can be NULL
+    if(value)
+    {
+      try
+      {
+        String valueString = checkAndConvert< _PyString_, String >(value);
+        exceptionMessage += ": " + valueString;
+      }
+      catch (InvalidArgumentException &)
+      {
+        // could not get msg from strings
+      }
+    }
+
+    PyErr_Restore( type, value, traceback );
+    PyErr_Print();
+    throw InternalException(HERE) << exceptionMessage;
+  }
+}
+
+
 
 template <>
 struct traitsPythonType< Sample >
@@ -650,8 +694,51 @@ inline
 Sample
 convert< _PySequence_, Sample >(PyObject * pyObj)
 {
-  Pointer<Collection<Point> > ptr = buildCollectionFromPySequence<Point>(pyObj);
-  return Sample( *ptr );
+  check<_PySequence_>(pyObj);
+  ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
+  if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
+  const UnsignedInteger size = PySequence_Fast_GET_SIZE( newPyObj.get() );
+  if (size == 0) return Sample();
+
+  // Get dimension of first point
+  PyObject * firstPoint = PySequence_Fast_GET_ITEM( newPyObj.get(), 0 );
+  try
+  {
+    check<_PySequence_>( firstPoint );
+  }
+  catch (InvalidArgumentException &)
+  {
+    throw;
+  }
+  ScopedPyObjectPointer newPyFirstObj(PySequence_Fast( firstPoint, "" ));
+  const UnsignedInteger dimension = PySequence_Fast_GET_SIZE( newPyFirstObj.get() );
+  // Allocate result Sample
+  Sample sample( size, dimension );
+  for(UnsignedInteger i = 0; i < size; ++i)
+  {
+    PyObject * pointObj = PySequence_Fast_GET_ITEM( newPyObj.get(), i );
+    ScopedPyObjectPointer newPyPointObj(PySequence_Fast( pointObj, "" ));
+    if (i > 0)
+    {
+      // Check that object is a sequence, and has the right size
+      try
+      {
+        check<_PySequence_>( pointObj );
+      }
+      catch (InvalidArgumentException &)
+      {
+        throw;
+      }
+      if (PySequence_Fast_GET_SIZE( newPyPointObj.get() ) != dimension) throw;
+    }
+    for(UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      PyObject * value = PySequence_Fast_GET_ITEM( newPyPointObj.get(), j );
+      sample(i, j) = PyFloat_AsDouble(value);
+      handleException();
+    }
+  }
+  return sample;
 }
 
 template <>
@@ -1205,50 +1292,6 @@ WhittleFactoryState
 convert< _PySequence_, WhittleFactoryState >(PyObject * pyObj)
 {
   return WhittleFactoryState();
-}
-
-
-inline
-void handleException()
-{
-  PyObject * exception = PyErr_Occurred();
-
-  if ( exception )
-  {
-    PyObject *type = NULL, *value = NULL, *traceback = NULL;
-    PyErr_Fetch( &type, &value, &traceback );
-
-    String exceptionMessage("Python exception");
-
-    // get the name of the exception
-    if ( type )
-    {
-      ScopedPyObjectPointer nameObj(PyObject_GetAttrString( type, "__name__" ));
-      if ( nameObj.get() )
-      {
-        String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
-        exceptionMessage += ": " + typeString;
-      }
-    }
-
-    // try to get error msg, value and traceback can be NULL
-    if(value)
-    {
-      try
-      {
-        String valueString = checkAndConvert< _PyString_, String >(value);
-        exceptionMessage += ": " + valueString;
-      }
-      catch (InvalidArgumentException &)
-      {
-        // could not get msg from strings
-      }
-    }
-
-    PyErr_Restore( type, value, traceback );
-    PyErr_Print();
-    throw InternalException(HERE) << exceptionMessage;
-  }
 }
 
 
