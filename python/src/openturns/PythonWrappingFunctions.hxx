@@ -694,6 +694,45 @@ inline
 Sample
 convert< _PySequence_, Sample >(PyObject * pyObj)
 {
+  // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
+  if ( PyObject_HasAttrString(pyObj, const_cast<char *>("shape")) )
+  {
+    ScopedPyObjectPointer shapeObj(PyObject_GetAttrString( pyObj, "shape" ));
+    if ( !shapeObj.get() ) throw;
+
+    Indices shape( checkAndConvert< _PySequence_, Indices >( shapeObj.get() ) );
+    if ( shape.getSize() == 2 )
+    {
+      UnsignedInteger size = shape[0];
+      UnsignedInteger dimension = shape[1];
+      ScopedPyObjectPointer askObj(PyTuple_New(2));
+      ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
+      Sample sample( size, dimension );
+      try
+      {
+        for ( UnsignedInteger i = 0; i < size; ++ i )
+        {
+          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
+          for ( UnsignedInteger j = 0; j < dimension; ++ j )
+          {
+            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
+            ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
+            if (elt.get())
+            {
+              sample( i, j ) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
+            }
+          }
+        }
+      }
+      catch (InvalidArgumentException &)
+      {
+        throw;
+      }
+      return sample;
+    }
+    else
+      throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
+  }
   check<_PySequence_>(pyObj);
   ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
   if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
