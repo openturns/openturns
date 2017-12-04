@@ -904,7 +904,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
     p_implementation = new MatrixImplementation( nbRows, nbColumns );
     for ( UnsignedInteger i = 0; i < nbRows; ++ i )
       for ( UnsignedInteger j = 0; j < nbColumns; ++ j )
-        p_implementation->operator()( i, j ) = sample[i][j];
+        p_implementation->operator()( i, j ) = sample(i, j);
   }
   return p_implementation;
 }
@@ -1012,7 +1012,7 @@ convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
   for ( UnsignedInteger i = 0; i < nbRows; ++ i )
     for ( UnsignedInteger j = 0; j < nbColumns; ++ j )
       for ( UnsignedInteger k = 0; k < nbSheets; ++ k )
-        p_implementation->operator()( i, j, k ) = (*ptr)[i][j][k];
+        p_implementation->operator()( i, j, k ) = (*ptr)[i](j, k);
   return p_implementation;
 }
 
