@@ -23,7 +23,7 @@
 #include "openturns/ComposedCopula.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/IndependentCopula.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/MarginalDistribution.hxx"
 #include "openturns/RosenblattEvaluation.hxx"
 #include "openturns/InverseRosenblattEvaluation.hxx"
 #include "openturns/Log.hxx"
@@ -459,13 +459,6 @@ Scalar ComposedCopula::computeConditionalQuantile(const Scalar q, const Point & 
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions
-   Some additional restriction occur for this copula: the indices must be of the form:
-   [i_1^1,...,i_k1^1,i_1^2,...,i_k2^2,...,i_1^n,...,i_kn^n]
-   where:
-   i_1^1,...,i_k1^1 is a subset of {0,...,dim_1-1},
-   i_1^2,...,i_k2^2 is a subset of {0,...,dim_2-1}+dim_1,
-   i_1^n,...,i_kn^n is a subset of {0,...,dim_n-1}+dim_1+...+dim_(n-1),
-   dim_1 = dimension(copula_1) etc.
 */
 ComposedCopula::Implementation ComposedCopula::getMarginal(const Indices & indices) const
 {
@@ -501,8 +494,9 @@ ComposedCopula::Implementation ComposedCopula::getMarginal(const Indices & indic
     if (copulaIndices.getSize() > 0) marginalCopulas.add(copulaCollection_[i].getMarginal(copulaIndices));
     // All the indices have been taken into account
     if (currentPosition == indicesSize) break;
-    // Check if a bad case occurs: one index related to copula i is found after indices related to copula j, with j > i
-    if (currentIndex < lowerIndex) throw InvalidArgumentException(HERE) << "Error: one index related to the ith copula has been found after indices related to the jth copula, with j > i";
+    // non-contiguous dependency blocs case
+    if (currentIndex < lowerIndex)
+      return new MarginalDistribution(*this, indices);
   }
   return new ComposedCopula(marginalCopulas);
 }
