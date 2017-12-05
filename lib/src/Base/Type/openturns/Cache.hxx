@@ -22,6 +22,7 @@
 #define OPENTURNS_CACHE_HXX
 
 #include <map>
+#include <list>
 #include <sstream>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/StorageManager.hxx"
@@ -32,23 +33,6 @@
 #include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
-
-
-template <typename K_, typename V_, typename U_>
-inline static
-std::ostream & operator << ( std::ostream & os, const std::pair< K_, std::pair< V_, U_ > > & val)
-{
-  os << val.first << "->" << val.second.first << "/" << val.second.second;
-  return os;
-}
-
-template <typename K_, typename V_, typename U_>
-inline static
-OStream & operator << ( OStream & OS, const std::pair< K_, std::pair< V_, U_ > > & val)
-{
-  OS << val.first << "->" << val.second.first << "/" << val.second.second;
-  return OS;
-}
 
 
 /**
@@ -71,80 +55,26 @@ OStream & operator << ( OStream & OS, const std::pair< K_, std::pair< V_, U_ > >
  * data before the insertion.
  */
 
-template <typename K_, typename V_>
+template <typename KeyType, typename ValueType>
 class Cache
   : public PersistentObject
 {
+  typedef typename std::list<KeyType> list_key_type;
+  typedef typename list_key_type::iterator         list_key_iterator;
+  typedef typename list_key_type::const_iterator   list_key_const_iterator;
+  typedef typename list_key_type::reverse_iterator list_key_reverse_iterator;
+  typedef typename std::map<KeyType, std::pair<ValueType, list_key_iterator> > map_type;
+
 public:
   static  OT::String GetClassName()
   {
-    return OT::String("Cache<") + OT::String(K_::GetClassName()) + OT::String(", ") + OT::String(V_::GetClassName()) + OT::String(">");
+    return OT::String("Cache<") + OT::String(KeyType::GetClassName()) + OT::String(", ") + OT::String(ValueType::GetClassName()) + OT::String(">");
   }
   virtual OT::String getClassName() const
   {
-    return Cache<K_, V_>::GetClassName();
+    return Cache<KeyType, ValueType>::GetClassName();
   }
 
-public:
-
-  typedef K_                              KeyType;
-  typedef std::pair< V_ , UnsignedInteger >  ValueType;
-  typedef std::pair< KeyType, ValueType > PairType;
-#ifndef SWIG
-  struct ConvertMapToCollections
-  {
-    typedef typename std::map< KeyType, ValueType >::iterator::value_type value_type;
-    typedef typename std::map< KeyType, ValueType >::iterator::difference_type difference_type;
-    typedef typename std::map< KeyType, ValueType >::iterator::pointer pointer;
-    typedef typename std::map< KeyType, ValueType >::iterator::reference reference;
-    typedef std::output_iterator_tag                 iterator_category;
-
-    PersistentCollection< KeyType >      & keyColl_;
-    PersistentCollection< KeyType >      & valueColl_;
-    PersistentCollection< UnsignedInteger > & ageColl_;
-    UnsignedInteger i_;
-
-    ConvertMapToCollections(PersistentCollection< KeyType > & keyColl,
-                            PersistentCollection< KeyType > & valueColl,
-                            PersistentCollection< UnsignedInteger > & ageColl)
-      : keyColl_(keyColl), valueColl_(valueColl), ageColl_(ageColl), i_(0) {}
-
-    ConvertMapToCollections &
-    operator = (const typename std::map< KeyType, ValueType >::value_type & val)
-    {
-      keyColl_  [i_] = val.first;
-      valueColl_[i_] = val.second.first;
-      ageColl_  [i_] = val.second.second;
-      ++i_;
-      return *this;
-    }
-
-    ConvertMapToCollections &
-    operator = (const ConvertMapToCollections & other)
-    {
-      keyColl_   = other.keyColl_;
-      valueColl_ = other.valueColl_;
-      ageColl_   = other.ageColl_;
-      i_         = other.i_;
-      return *this;
-    }
-
-    ConvertMapToCollections & operator *  ()
-    {
-      return *this;
-    }
-    ConvertMapToCollections & operator ++ ()
-    {
-      return *this;
-    }
-    ConvertMapToCollections & operator ++ (int)
-    {
-      return *this;
-    }
-  };
-  // #else
-  //      typedef ConvertMapToCollections;
-#endif
 protected:
 
   /** True if cache is enabled */
@@ -156,8 +86,11 @@ protected:
   /** Number of hits */
   mutable UnsignedInteger hits_;
 
+  /** The list of keys */
+  mutable list_key_type keys_;
+
   /** The map of elements */
-  mutable std::map< KeyType, ValueType > points_;
+  mutable map_type points_;
 
 public:
 
@@ -167,6 +100,7 @@ public:
     enabled_(true),
     maxSize_(ResourceMap::GetAsUnsignedInteger("cache-max-size")),
     hits_(0),
+    keys_(),
     points_()
   {
     // Nothing to do
@@ -178,6 +112,7 @@ public:
     enabled_(true),
     maxSize_(maxSize),
     hits_(0),
+    keys_(),
     points_()
   {
     // Nothing to do
@@ -188,9 +123,14 @@ public:
     enabled_(other.enabled_),
     maxSize_(other.maxSize_),
     hits_(other.hits_),
-    points_(other.hits_)
+    keys_(other.keys_),
+    points_()
   {
-    //Nothing to do
+    for(list_key_reverse_iterator it = other.keys_.rbegin(); it != other.keys_.rend(); ++it)
+    {
+      const KeyType & key = *it;
+      points_.insert(std::make_pair(key, std::make_pair(other.find(key), it)));
+    }
   }
 
 #endif
@@ -213,7 +153,14 @@ public:
         << " size=" << getSize()
         << " hits=" << getHits()
         << " points={" ;
-    copy( this->points_.begin(), this->points_.end(), OSS_iterator<PairType>( oss, ", " ) );
+    Bool first = true;
+    for(list_key_const_iterator it = keys_.begin(); it != keys_.end(); ++it)
+    {
+      if (!first) oss << ", ";
+      const KeyType & key = *it;
+      oss << std::make_pair(key, points_[key].first);
+      first = false;
+    }
     oss << "}" ;
 
     return oss;
@@ -227,11 +174,18 @@ public:
   {
     if (this != &other)
     {
+      clear();
       PersistentObject::operator=(other);
-      const_cast<UnsignedInteger&>(this->maxSize_)        = other.maxSize_;
-      this->points_                                    = other.points_;
-      this->enabled_                                   = other.enabled_;
-      this->hits_                                      = other.hits_;
+      const_cast<UnsignedInteger&>(this->maxSize_) = other.maxSize_;
+      this->keys_                                  = other.keys_;
+      this->hits_                                  = other.hits_;
+      this->enabled_                               = other.enabled_;
+      for(list_key_reverse_iterator it = other.keys_.rbegin(); it != other.keys_.rend(); ++it)
+      {
+        const KeyType & key = *it;
+        keys_.push_front(key);
+        points_.insert(std::make_pair(key, std::make_pair(other.find(key), keys_.begin())));
+      }
     }
 
     return *this;
@@ -243,9 +197,14 @@ public:
   inline
   Cache & merge (const Cache & other)
   {
-    if (isEnabled())
+    if (enabled_)
     {
-      for_each( other.points_.begin(), other.points_.end(), addFunctor( this ) );
+      for(list_key_reverse_iterator it = other.keys_.rbegin(); it != other.keys_.rend(); ++it)
+      {
+        const KeyType & key = *it;
+        const ValueType & value = other.points_.find(key)->second.first;
+        add(key, value);
+      }
     }
     return *this;
   }
@@ -258,42 +217,54 @@ public:
 
   /** Query the cache for the key presence */
   inline
-  Bool hasKey(const K_ & key) const
+  Bool hasKey(const KeyType & key) const
   {
-    if (! isEnabled() ) return false;
+    if (!enabled_) return false;
     Bool found = ( this->points_.find( key ) != this->points_.end() );
     return found;
   }
 
   /** Retrieve the value from the cache with the key */
   inline
-  const V_ find(const K_ & key) const
+  const ValueType find(const KeyType & key) const
   {
-    if (isEnabled())
-    {
-      typename std::map< KeyType, ValueType >::iterator it = this->points_.find( key );
-      Bool found = ( it != this->points_.end() );
-      if (found)
-      {
-        ++(*it).second.second; // increment age
-        ++hits_;
-        LOGDEBUG(OSS() << "Cache hit !");
-        return V_( (*it).second.first );
+    if (!enabled_) return ValueType();
 
-      }
-      else
-        return V_();
+    typename map_type::iterator it = this->points_.find( key );
+    Bool found = ( it != this->points_.end() );
+    if (!found) return ValueType();
+
+    list_key_iterator pos = it->second.second;
+    if (pos != keys_.begin())
+    {
+      // Move key at the beginning
+      keys_.erase(pos);
+      keys_.push_front(key);
+      it->second.second = keys_.begin();
     }
-    else
-      return V_();
+    LOGDEBUG(OSS() << "Cache hit !");
+    ++hits_;
+    return it->second.first;
   }
 
   /** Add a pair (key,value) to the cache. This may wipe out some older pair if maxSize is reached */
   inline
-  void add(const K_ & key,
-           const V_ & value)
+  void add(const KeyType & key,
+           const ValueType & value)
   {
-    if (isEnabled()) insert( key, ValueType( value, 0 ) );
+    if (!enabled_) return;
+
+    if (points_.size() == maxSize_)
+    {
+      // Remove the last element
+      list_key_iterator last = keys_.end();
+      --last;
+      points_.erase(*last);
+      keys_.erase(last);
+    }
+    // Insert the element at the beginning
+    keys_.push_front(key);
+    points_[key] = std::make_pair(value, keys_.begin());
   }
 
 
@@ -302,18 +273,20 @@ public:
   void save(Advocate & adv) const
   {
     const UnsignedInteger size = this->points_.size();
-    PersistentCollection< KeyType >      keyColl(size);
-    PersistentCollection< KeyType >      valueColl(size);
-    PersistentCollection< UnsignedInteger > ageColl(size);
-    std::copy(this->points_.begin(),
-              this->points_.end(),
-              ConvertMapToCollections(keyColl, valueColl, ageColl));
-
+    PersistentCollection< KeyType >   keyColl(size);
+    PersistentCollection< ValueType > valueColl(size);
+    UnsignedInteger index = 0;
+    // Save entries in reverse order, so that they get loaded in the right order
+    for(list_key_reverse_iterator it = keys_.rbegin(); it != keys_.rend(); ++it, ++index)
+    {
+      const KeyType & key = *it;
+      keyColl[index] = key;
+      valueColl[index] = points_[key].first;
+    }
     PersistentObject::save(adv);
     adv.saveAttribute( "size", size );
     adv.saveAttribute( "keyColl", keyColl );
     adv.saveAttribute( "valueColl", valueColl );
-    adv.saveAttribute( "ageColl", ageColl );
   }
 
   /** Method load() reloads the object from the StorageManager */
@@ -325,14 +298,13 @@ public:
     adv.loadAttribute( "size", size );
 
     PersistentCollection< KeyType >      keyColl(size);
-    PersistentCollection< KeyType >      valueColl(size);
-    PersistentCollection< UnsignedInteger > ageColl(size);
+    PersistentCollection< ValueType >    valueColl(size);
     adv.loadAttribute( "keyColl", keyColl );
     adv.loadAttribute( "valueColl", valueColl );
-    adv.loadAttribute( "ageColl", ageColl );
 
     clear();
-    for( UnsignedInteger i = 0; i < size; ++i) this->points_[ keyColl[i] ] = ValueType( valueColl[i], ageColl[i] );
+    for( UnsignedInteger i = 0; i < size; ++i)
+      add(keyColl[i], valueColl[i]);
   }
 
 
@@ -349,32 +321,25 @@ public:
    */
   inline UnsignedInteger getMaxSize() const
   {
-    return this->maxSize_;
+    return maxSize_;
   }
 
   /** @brief return the keys
    */
   inline PersistentCollection<KeyType> getKeys() const
   {
-    PersistentCollection<KeyType> keyColl;
-    if ( isEnabled() )
-    {
-      for( typename std::map< KeyType, ValueType >::iterator it = points_.begin(); it != points_.end(); ++ it )
-      {
-        keyColl.add( it->first );
-      }
-    }
-    return keyColl;
+    if (enabled_) return PersistentCollection<KeyType>(keys_.begin(), keys_.end());
+    return PersistentCollection<KeyType>();
   }
 
   /** @brief return the values
    */
-  inline PersistentCollection<V_> getValues() const
+  inline PersistentCollection<ValueType> getValues() const
   {
-    PersistentCollection<V_> valuesColl;
-    if ( isEnabled() )
+    PersistentCollection<ValueType> valuesColl;
+    if (enabled_)
     {
-      for( typename std::map< KeyType, ValueType >::iterator it = points_.begin(); it != points_.end(); ++ it )
+      for( typename map_type::iterator it = points_.begin(); it != points_.end(); ++ it )
       {
         valuesColl.add( it->second.first );
       }
@@ -400,46 +365,8 @@ public:
   inline void clear()
   {
     points_.clear();
+    keys_.clear();
     hits_ = 0;
-  }
-
-private:
-
-  /* Used in sort algorithm to find the Least Recently Used item.
-   * This structure implements the BinaryPredicate concept of the STL.
-   */
-  struct OrderAccordingToAges
-  {
-    inline
-    bool operator() (const PairType & a,
-                     const PairType & b)
-    {
-      return a.second.second < b.second.second ;
-    }
-  };
-
-  /* Used to insert elements into the cache */
-  struct addFunctor : public std::unary_function< Cache, void >
-  {
-    Cache * p_cache_;
-    inline addFunctor( Cache * p_cache ) : p_cache_(p_cache) {}
-    inline void operator() ( const typename std::map< typename Cache::KeyType, typename Cache::ValueType >::value_type & val )
-    {
-      p_cache_->insert( val.first, val.second );
-    }
-  };
-
-
-  /* Insert a (key,value) pair in the cache */
-  inline
-  void insert( const KeyType & key, const ValueType & value )
-  {
-    if (this->points_.size() == maxSize_)
-    {
-      typename std::map< KeyType, ValueType >::iterator it = min_element( this->points_.begin(), this->points_.end(), OrderAccordingToAges() );
-      if (it != this->points_.end() ) this->points_.erase( it );
-    }
-    this->points_[key] = value;
   }
 
 }; /* class Cache */
