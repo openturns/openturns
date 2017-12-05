@@ -50,6 +50,7 @@ public:
 
   /** Solve the ODE */
   using ODESolverImplementation::solve;
+
   Sample solve(const Point & initialState,
                const Point & timeGrid) const;
 
