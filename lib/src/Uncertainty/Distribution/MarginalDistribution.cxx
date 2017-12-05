@@ -134,6 +134,7 @@ void MarginalDistribution::setDistributionAndIndices(const Distribution & distri
 {
   if (!indices.check(distribution.getDimension())) throw InvalidArgumentException(HERE) << "Error: the given indices=" << indices << " are not compatible with the given distribution dimension=" << distribution.getDimension();
   distribution_ = distribution;
+  isCopula_ = distribution.isCopula();
   indices_ = indices;
   // Set the dimension
   const UnsignedInteger dimension = indices.getSize();
