@@ -15,14 +15,13 @@ dependencies:
 
 test:
   override:
-    - ./ci_support/build.sh
+    - SOURCE_DATE_EPOCH=1483228800 && export SOURCE_DATE_EPOCH && ./ci_support/build.sh
 
 deployment:
   staging:
     branch: /.*/
     commands:
-      - SOURCE_DATE_EPOCH=1483228800
-      - export GH_TOKEN SOURCE_DATE_EPOCH && ./ci_support/upload_github_io.sh
+      - export GH_TOKEN && ./ci_support/upload_github_io.sh
   release:
     tag: /v.*/
     commands:
