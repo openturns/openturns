@@ -48,9 +48,14 @@ OpenTURNS Uncertainty treatment library
 %package libs
 Summary:        Uncertainty treatment library
 Group:          Development/Libraries/C and C++
+%if ! 0%{?mageia}
 Requires:       muParser
-Requires:       libxml2
 Requires:       lapack
+%else
+Requires:       lib64muparser2
+Requires:       liblapack
+%endif
+Requires:       libxml2
 %if ! 0%{?suse_version}
 Requires:       nlopt
 %endif
@@ -103,6 +108,7 @@ Python textual interface to OpenTURNS uncertainty library
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
+       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES=-j8 \
 %ifarch i586 i686
        -DCMAKE_C_FLAGS_RELEASE="%optflags -O0" \
 %endif
