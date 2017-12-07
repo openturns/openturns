@@ -634,7 +634,7 @@ void ResourceMap::loadDefaultConfiguration()
   // TrapezoidalFactory parameters //
   setAsScalar( "TrapezoidalFactory-RhoBeg", 0.1 );
   setAsScalar( "TrapezoidalFactory-RhoEnd", 1.0e-5 );
-  setAsUnsignedInteger( "TrapezoidalFactory-MaximumIteration", 10000 );
+  setAsUnsignedInteger( "TrapezoidalFactory-MaximumIteration", 2000 );
 
   // TruncatedDistribution parameters //
   setAsScalar( "TruncatedDistribution-DefaultThresholdRealization", 0.5 );

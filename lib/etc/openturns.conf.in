@@ -372,7 +372,7 @@
   <!-- OT::TrapezoidalFactory parameters -->
   <TrapezoidalFactory-RhoBeg           value="0.1"    />
   <TrapezoidalFactory-RhoEnd           value="1.0e-5" />
-  <TrapezoidalFactory-MaximumIteration value="10000"  />
+  <TrapezoidalFactory-MaximumIteration value="2000"  />
 
   <!-- OT::TruncatedDistribution parameters -->
   <TruncatedDistribution-DefaultThresholdRealization value="0.5" />
