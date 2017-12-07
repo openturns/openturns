@@ -6,7 +6,6 @@ Data analysis
     import_export_sample_csv.ipynb
     sample_manipulation.ipynb
     visualize_clouds.ipynb
-    visualize_cobweb.ipynb
     visualize_pairs.ipynb
     visualize_empirical_cdf.ipynb
     visualize_histogram.ipynb

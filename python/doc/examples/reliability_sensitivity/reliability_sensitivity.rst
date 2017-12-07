@@ -22,3 +22,4 @@ Reliability, sensitivity
     sensitivity_sobol.ipynb
     sensitivity_ancova.ipynb
     sensitivity_fast.ipynb
+    sensitivity_cobweb.ipynb
