@@ -58,15 +58,6 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
 
 protected:
-  /** Likelihood constraint accessor */
-  Function getLogLikelihoodInequalityConstraint() const;
-
-  /** likelihood estimate */
-  Point computeLogLikelihoodInequalityConstraint( const Point & x ) const;
-
-  /** only used to pass data to be used in computeLogLikeliHood */
-  mutable Sample sample_;
-
   /**   OptimizationAlgorithm   */
   mutable OptimizationAlgorithm solver_;
 

@@ -19,14 +19,12 @@
  *
  */
 #include "openturns/TrapezoidalFactory.hxx"
-#include <limits>
-#include "openturns/Distribution.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,22 +44,6 @@ TrapezoidalFactory::TrapezoidalFactory()
 TrapezoidalFactory * TrapezoidalFactory::clone() const
 {
   return new TrapezoidalFactory(*this);
-}
-
-/* Compute the log-likelihood constraint */
-Point TrapezoidalFactory::computeLogLikelihoodInequalityConstraint(const Point & x) const
-{
-  Point result(3, 0.0);
-  result[0] = x[1] - x[0] ;                                // x[0] <= x[1]
-  result[1] = x[2] - x[1] - SpecFunc::ScalarEpsilon;  // x[1] <  x[2]
-  result[2] = x[3] - x[2] ;                                // x[2] <= x[3]
-  return result;
-}
-
-/* Compute the log-likelihood constraint accessor */
-Function TrapezoidalFactory::getLogLikelihoodInequalityConstraint() const
-{
-  return bindMethod <TrapezoidalFactory, Point, Point> (*this, &TrapezoidalFactory::computeLogLikelihoodInequalityConstraint, 4, 3);
 }
 
 /* Optimization solver accessor */
@@ -94,16 +76,13 @@ TrapezoidalFactory::Implementation TrapezoidalFactory::build() const
 
 Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 {
-
   const UnsignedInteger size = sample.getSize();
 
   if (sample.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "Error: can build a Trapezoidal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
-  const UnsignedInteger dimension = build()->getParameterDimension();
-
   // starting point
-  Point startingPoint(dimension);
+  Point startingPoint(4);
   const Scalar min = sample.getMin()[0];
   const Scalar max = sample.getMax()[0];
   if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
@@ -122,7 +101,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 
   MaximumLikelihoodFactory factory(buildAsTrapezoidal());
 
-  // override starting point
+  // override solver
   Cobyla solver;
   solver.setRhoBeg(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg"));
   solver.setMaximumAbsoluteError(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd"));
@@ -131,7 +110,17 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   factory.setOptimizationAlgorithm(solver);
 
   // override constraint
-  factory.setOptimizationInequalityConstraint(getLogLikelihoodInequalityConstraint());
+  Description input(4);
+  input[0] = "a";
+  input[1] = "b";
+  input[2] = "c";
+  input[3] = "d";
+  Description formula(3);
+  formula[0] = "b - a";// a <= b
+  formula[1] = OSS() << "c - b - " << SpecFunc::ScalarEpsilon;// b < c
+  formula[2] = "d - c";// c <= d
+  SymbolicFunction constraint(input, formula);
+  factory.setOptimizationInequalityConstraint(constraint);
 
   Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
   result.setDescription(sample.getDescription());
