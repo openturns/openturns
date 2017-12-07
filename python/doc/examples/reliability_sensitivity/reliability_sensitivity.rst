@@ -19,6 +19,6 @@ Reliability, sensitivity
     gauss_product_experiment.ipynb
     low_discrepancy_sequence.ipynb
     estimate_moments_taylor.ipynb
-    estimate_sobol.ipynb
+    sensitivity_sobol.ipynb
     sensitivity_ancova.ipynb
     sensitivity_fast.ipynb
