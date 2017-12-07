@@ -294,6 +294,8 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
   problem.setMinimization(false);
   problem.setObjective(logLikelihood);
   problem.setBounds(optimizationBounds_);
+  problem.setInequalityConstraint(optimizationInequalityConstraint_);
+
   OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != logLikelihood.getInputDimension())
   {
