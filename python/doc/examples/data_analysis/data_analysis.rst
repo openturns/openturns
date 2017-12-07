@@ -19,6 +19,7 @@ Data analysis
     kolmogorov_test.ipynb
     chi2_fitting_test.ipynb
     fitted_distribution_ranking.ipynb
+    estimate_multivariate_distribution.ipynb
     qqplot_graph.ipynb
     independence_test.ipynb
     smirnov_test.ipynb
