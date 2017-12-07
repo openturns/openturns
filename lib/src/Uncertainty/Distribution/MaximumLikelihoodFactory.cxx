@@ -167,7 +167,7 @@ public:
       return Point(1, SpecFunc::LogMinScalar);
     }
     // Take into account the mean over sample
-    // Parallelization (evaluation over a sample) is handeled by distribution_
+    // Parallelization (evaluation over a sample) is handled by distribution_
     const Sample logPdfSample = distribution.computeLogPDF(sample_);
     const Scalar logPdf = logPdfSample.computeMean()[0];
     result = SpecFunc::IsNormal(logPdf) ? logPdf : SpecFunc::LogMinScalar;
