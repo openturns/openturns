@@ -105,16 +105,4 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor() const
   return FisherSnedecor();
 }
 
-/* Optimization solver accessor */
-OptimizationAlgorithm FisherSnedecorFactory::getOptimizationAlgorithm() const
-{
-  return solver_;
-}
-
-void FisherSnedecorFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
-{
-  solver_ = solver;
-}
-
-
 END_NAMESPACE_OPENTURNS

@@ -53,14 +53,6 @@ public:
   Trapezoidal buildAsTrapezoidal(const Point & parameters) const;
   Trapezoidal buildAsTrapezoidal() const;
 
-  /** Optimization solver accessor */
-  OptimizationAlgorithm getOptimizationAlgorithm() const;
-  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
-
-protected:
-  /**   OptimizationAlgorithm   */
-  mutable OptimizationAlgorithm solver_;
-
 }; /* class TrapezoidalFactory */
 
 END_NAMESPACE_OPENTURNS

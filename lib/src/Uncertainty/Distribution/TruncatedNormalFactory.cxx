@@ -147,16 +147,4 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal() const
   return TruncatedNormal();
 }
 
-/* Optimization solver accessor */
-OptimizationAlgorithm TruncatedNormalFactory::getOptimizationAlgorithm() const
-{
-  return solver_;
-}
-
-void TruncatedNormalFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
-{
-  solver_ = solver;
-}
-
-
 END_NAMESPACE_OPENTURNS

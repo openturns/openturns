@@ -11,21 +11,3 @@ See also
 DistributionFactory, Trapezoidal"
 
 // ---------------------------------------------------------------------
-
-%feature("docstring") OT::TrapezoidalFactory::setOptimizationAlgorithm
-"Accessor to the solver.
-
-Parameters
-----------
-solver : :class:`~openturns.OptimizationAlgorithm`
-    The solver used for numerical optimization of the likelihood."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::TrapezoidalFactory::getOptimizationAlgorithm
-"Accessor to the solver.
-
-Returns
--------
-solver : :class:`~openturns.OptimizationAlgorithm`
-    The solver used for numerical optimization of the likelihood."

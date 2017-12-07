@@ -638,6 +638,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "TruncatedNormalFactory-SigmaLowerBound", 1.0e-4 );
 
   // MaximumLikelihoodFactory parameters //
+  set( "MaximumLikelihoodFactory-DefaultOptimizationAlgorithm", "TNC" );
   setAsUnsignedInteger( "MaximumLikelihoodFactory-MaximumEvaluationNumber", 1000 );
   setAsScalar( "MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10 );
   setAsScalar( "MaximumLikelihoodFactory-MaximumRelativeError", 1.0e-10 );

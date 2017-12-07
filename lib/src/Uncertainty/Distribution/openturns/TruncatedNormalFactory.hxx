@@ -53,14 +53,6 @@ public:
   TruncatedNormal buildAsTruncatedNormal(const Point & parameters) const;
   TruncatedNormal buildAsTruncatedNormal() const;
 
-  /** Optimization solver accessor */
-  OptimizationAlgorithm getOptimizationAlgorithm() const;
-  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
-protected:
-
-  /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
-
 }; /* class TruncatedNormalFactory */
 
 END_NAMESPACE_OPENTURNS
