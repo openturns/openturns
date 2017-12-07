@@ -57,15 +57,6 @@ public:
   FisherSnedecor buildAsFisherSnedecor(const Point & parameters) const;
   FisherSnedecor buildAsFisherSnedecor() const;
 
-  /** Optimization solver accessor */
-  OptimizationAlgorithm getOptimizationAlgorithm() const;
-  void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
-
-protected:
-
-  /** Optimization solver */
-  mutable OptimizationAlgorithm  solver_;
-
 }; /* class FisherSnedecorFactory */
 
 END_NAMESPACE_OPENTURNS

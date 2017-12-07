@@ -46,17 +46,6 @@ TrapezoidalFactory * TrapezoidalFactory::clone() const
   return new TrapezoidalFactory(*this);
 }
 
-/* Optimization solver accessor */
-OptimizationAlgorithm TrapezoidalFactory::getOptimizationAlgorithm() const
-{
-  return solver_;
-}
-
-void TrapezoidalFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
-{
-  solver_ = solver;
-}
-
 /* Here is the interface that all derived class must implement */
 
 TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Sample & sample) const
