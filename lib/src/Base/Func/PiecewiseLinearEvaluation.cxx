@@ -203,17 +203,30 @@ Point PiecewiseLinearEvaluation::getLocations() const
 void PiecewiseLinearEvaluation::setLocations(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  Collection< std::pair<Scalar, Point> > locationsAndValues(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-    locationsAndValues[i] = std::pair<Scalar, Point>(locations[i], values_[i]);
-  std::stable_sort(locationsAndValues.begin(), locationsAndValues.end());
-  locations_ = Point(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  Bool isSorted = true;
+  for (UnsignedInteger i = 1; isSorted && i < size; ++i)
+    isSorted = isSorted && locations[i-1] <= locations[i];
+  if (isSorted)
   {
-    locations_[i] = locationsAndValues[i].first;
-    values_[i] = locationsAndValues[i].second;
+    locations_ = locations;
+  }
+  else
+  {
+    // Sort the data in increasing order according to the locations
+    Collection< std::pair<Scalar, UnsignedInteger> > locationAndIndex(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
+    std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
+    for (UnsignedInteger i = 0; i < size; ++i)
+      locations_[i] = locationAndIndex[i].first;
+    const UnsignedInteger dimension = values_.getDimension();
+    const Sample oldValues(values_);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        values_(i, j) = oldValues(locationAndIndex[i].second, j);
+    }
   }
   isRegular_ = computeRegular(locations_);
 }
@@ -245,24 +258,21 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const Point & locations,
     const Sample & values)
 {
   const UnsignedInteger size = locations.getSize();
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
   if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << values.getSize() << " must match the number of locations=" << size;
   // Sort the data in increasing order according to the locations
-  const UnsignedInteger dimension = values.getDimension();
-  Sample data(size, 1 + dimension);
+  Collection< std::pair<Scalar, UnsignedInteger> > locationAndIndex(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    data(i, 0) = locations[i];
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      data(i, j + 1) = values(i, j);
-  }
-  data = data.sortAccordingToAComponent(0);
+    locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
+  std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
+  const UnsignedInteger dimension = values.getDimension();
   locations_ = Point(size);
   values_ = Sample(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    locations_[i] = data(i, 0);
+    locations_[i] = locationAndIndex[i].first;
     for (UnsignedInteger j = 0; j < dimension; ++j)
-      values_(i, j) = data(i, j + 1);
+      values_(i, j) = values(locationAndIndex[i].second, j);
   }
   isRegular_ = computeRegular(locations_);
 }

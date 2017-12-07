@@ -239,10 +239,35 @@ Point PiecewiseHermiteEvaluation::getLocations() const
 void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  locations_ = locations;
-  std::stable_sort(locations_.begin(), locations_.end());
+  Bool isSorted = true;
+  for (UnsignedInteger i = 1; isSorted && i < size; ++i)
+    isSorted = isSorted && locations[i-1] <= locations[i];
+  if (isSorted)
+  {
+    locations_ = locations;
+  }
+  else
+  {
+    // Sort the data in increasing order according to the locations
+    Collection< std::pair<Scalar, UnsignedInteger> > locationAndIndex(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
+    std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
+    for (UnsignedInteger i = 0; i < size; ++i)
+      locations_[i] = locationAndIndex[i].first;
+    const UnsignedInteger outputDimension = values_.getDimension();
+    const Sample oldValues(values_);
+    const Sample oldDerivatives(derivatives_);
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      {
+        values_(i, j) = oldValues(locationAndIndex[i].second, j);
+        derivatives_(i, j) = oldDerivatives(locationAndIndex[i].second, j);
+      }
+    }
+  }
   isRegular_ = computeRegularHermite(locations_);
 }
 
@@ -255,7 +280,6 @@ Sample PiecewiseHermiteEvaluation::getValues() const
 void PiecewiseHermiteEvaluation::setValues(const Sample & values)
 {
   const UnsignedInteger size = values.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function.";
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
   values_ = values;
 }
@@ -286,26 +310,21 @@ void PiecewiseHermiteEvaluation::setLocationsValuesAndDerivatives(const Point & 
   const UnsignedInteger outputDimension = values.getDimension();
   if (outputDimension != derivatives.getDimension()) throw InvalidArgumentException(HERE) << "Error: the dimension of the derivatives=" << derivatives.getDimension() << " must match the dimension of the locations=" << outputDimension;
   // Sort the data in increasing order according to the locations
-  Sample data(size, 1 + 2 * outputDimension);
+  Collection< std::pair<Scalar, UnsignedInteger> > locationAndIndex(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    data(i, 0) = locations[i];
-    for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      data(i, 1 + j) = values(i, j);
-    for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      data(i, 1 + outputDimension + j) = derivatives(i, j);
-  }
-  data = data.sortAccordingToAComponent(0);
+    locationAndIndex[i] = std::pair<Scalar, UnsignedInteger>(locations[i], i);
+  std::stable_sort(locationAndIndex.begin(), locationAndIndex.end());
   locations_ = Point(size);
   values_ = Sample(size, outputDimension);
   derivatives_ = Sample(size, outputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    locations_[i] = data(i, 0);
+    locations_[i] = locationAndIndex[i].first;
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      values_(i, j) = data(i, 1 + j);
-    for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      derivatives_(i, j) = data(i, 1 + outputDimension + j);
+    {
+      values_(i, j) = values(locationAndIndex[i].second, j);
+      derivatives_(i, j) = derivatives(locationAndIndex[i].second, j);
+    }
   }
   isRegular_ = computeRegularHermite(locations_);
 }
