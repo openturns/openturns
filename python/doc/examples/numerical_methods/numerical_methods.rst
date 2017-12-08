@@ -14,4 +14,5 @@ Numerical methods
     estimate_integral_iterated_quadrature.ipynb
     control_termination.ipynb
     logistic_growth_model.ipynb
+    study_save_load.ipynb
 
