@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/TrapezoidalFactory.hxx"
-#include "openturns/SymbolicFunction.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Log.hxx"
@@ -99,16 +99,17 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   factory.setOptimizationAlgorithm(solver);
 
   // override constraint
-  Description input(4);
-  input[0] = "a";
-  input[1] = "b";
-  input[2] = "c";
-  input[3] = "d";
-  Description formula(3);
-  formula[0] = "b - a";// a <= b
-  formula[1] = OSS() << "c - b - " << SpecFunc::ScalarEpsilon;// b < c
-  formula[2] = "d - c";// c <= d
-  SymbolicFunction constraint(input, formula);
+  Point center(4);
+  Point constant(3);
+  Matrix linear(3, 4);
+  for (UnsignedInteger i = 0; i < 3; ++ i)
+  {
+    // x_{i+1}-x_i>=0 <=> a<=b, b<=c, c<=d
+    linear(i, i) = -1.0;
+    linear(i, i + 1) = 1.0;
+  }
+  constant[1] = -SpecFunc::ScalarEpsilon;// b < c
+  LinearFunction constraint(center, constant, linear);
   factory.setOptimizationInequalityConstraint(constraint);
 
   Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
