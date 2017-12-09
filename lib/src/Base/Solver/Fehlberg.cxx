@@ -217,7 +217,7 @@ Sample Fehlberg::solve(const Point & initialState,
   while (!done)
     {
       Scalar newT = t + h;
-      if (positiveStep && (newT > tEnd) || !positiveStep && (newT < tEnd))
+      if ((positiveStep && (newT > tEnd)) || (!positiveStep && (newT < tEnd)))
 	{
 	  done = true;
 	  h = tEnd - t;
