@@ -204,10 +204,7 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
   if (locations.getSize() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of locations=" << size << " must match the number of previously set values=" << values_.getSize();
-  Bool isSorted = true;
-  for (UnsignedInteger i = 1; isSorted && i < size; ++i)
-    isSorted = isSorted && locations[i-1] <= locations[i];
-  if (isSorted)
+  if (locations.isNonDecreasing())
   {
     locations_ = locations;
   }
