@@ -734,9 +734,9 @@ Point ComposedDistribution::getKurtosis() const
 ComposedDistribution::Implementation ComposedDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  Distribution marginal(distributionCollection_[i]);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.getImplementation()->clone();
+  ComposedDistribution::Implementation marginal(distributionCollection_[i].getImplementation()->clone());
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
