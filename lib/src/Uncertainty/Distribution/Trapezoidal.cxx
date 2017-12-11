@@ -396,7 +396,7 @@ Point Trapezoidal::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Trapezoidal::Implementation Trapezoidal::getStandardRepresentative() const
 {
-  return Trapezoidal(-1.0, 1.0 - 2.0 * (d_ - b_) / (d_ - a_), 1.0 - 2.0 * (d_ - c_) / (d_ - a_), 1.0).clone();
+  return new Trapezoidal(-1.0, 1.0 - 2.0 * (d_ - b_) / (d_ - a_), 1.0 - 2.0 * (d_ - c_) / (d_ - a_), 1.0);
 }
 
 /* Compute the covariance of the distribution */

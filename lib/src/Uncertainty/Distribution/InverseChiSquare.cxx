@@ -290,7 +290,7 @@ Point InverseChiSquare::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 InverseChiSquare::Implementation InverseChiSquare::getStandardRepresentative() const
 {
-  return InverseChiSquare(nu_).clone();
+  return new InverseChiSquare(nu_);
 }
 
 /* Compute the covariance of the distribution */

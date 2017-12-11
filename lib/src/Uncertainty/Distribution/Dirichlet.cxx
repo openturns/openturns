@@ -440,9 +440,9 @@ Dirichlet::Implementation Dirichlet::getMarginal(const UnsignedInteger i) const
   Point thetaMarginal(2);
   thetaMarginal[0] = theta_[i];
   thetaMarginal[1] = sumTheta_ - theta_[i];
-  Dirichlet marginal(thetaMarginal);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  Dirichlet::Implementation marginal(new Dirichlet(thetaMarginal));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -465,7 +465,7 @@ Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
     marginalDescription[i] = description[index_i];
   }
   thetaMarginal[outputDimension] = sumTheta_ - sumMarginal;
-  Dirichlet marginal(thetaMarginal);
+  Dirichlet* marginal(new Dirichlet(thetaMarginal));
   // Initialize the CDF computation if the data are available
   if (isInitializedCDF_)
   {
@@ -476,12 +476,12 @@ Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
       marginalIntegrationNodes_.add(integrationNodes_[indices[i]]);
       marginalIntegrationWeights_.add(integrationWeights_[indices[i]]);
     }
-    marginal.integrationNodes_ = marginalIntegrationNodes_;
-    marginal.integrationWeights_ = marginalIntegrationWeights_;
-    marginal.isInitializedCDF_ = true;
+    marginal->integrationNodes_ = marginalIntegrationNodes_;
+    marginal->integrationWeights_ = marginalIntegrationWeights_;
+    marginal->isInitializedCDF_ = true;
   }
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Tell if the distribution has independent marginals */

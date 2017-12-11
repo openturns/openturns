@@ -248,7 +248,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
     }
   } // Loop over the CDFs
   if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
-  return CumulativeDistributionNetwork(contributors, marginalGraph).clone();
+  return new CumulativeDistributionNetwork(contributors, marginalGraph);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -292,7 +292,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
     } // Loop over the CDFs
   if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
   LOGINFO(OSS() << "in getMarginal(" << indices << "), marginal contributors=" << contributors << ", marginalGraph=" << marginalGraph);
-  return CumulativeDistributionNetwork(contributors, marginalGraph).clone();
+  return new CumulativeDistributionNetwork(contributors, marginalGraph);
   */
 }
 

@@ -323,9 +323,9 @@ Dirac::Implementation Dirac::getMarginal(const UnsignedInteger i) const
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   if (dimension == 1) return clone();
-  Dirac marginal(point_[i]);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  Dirac::Implementation marginal(new Dirac(point_[i]));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -344,9 +344,9 @@ Dirac::Implementation Dirac::getMarginal(const Indices & indices) const
     pointMarginal[i] = point_[index_i];
     marginalDescription[i] = description[index_i];
   }
-  Dirac marginal(pointMarginal);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  Dirac::Implementation marginal(new Dirac(pointMarginal));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Check if the distribution is elliptical */

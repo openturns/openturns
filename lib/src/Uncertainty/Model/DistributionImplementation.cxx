@@ -155,7 +155,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
   Collection< Distribution > coll(2);
   coll[0] = *this;
   coll[1] = *other;
-  return RandomMixture(coll).clone();
+  return new RandomMixture(coll);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::operator + (const Scalar value) const
@@ -165,7 +165,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
   Collection< Distribution > coll(2);
   coll[0] = *this;
   coll[1] = Dirac(Point(1, value));
-  return RandomMixture(coll).clone();
+  return new RandomMixture(coll);
 }
 
 /* Substraction operator */
@@ -183,7 +183,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
   Point weights(2);
   weights[0] = 1.0;
   weights[1] = -1.0;
-  return RandomMixture(coll, weights).clone();
+  return new RandomMixture(coll, weights);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::operator - (const Scalar value) const
@@ -193,7 +193,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
   Collection< Distribution > coll(2);
   coll[0] = *this;
   coll[1] = Dirac(Point(1, -value));
-  return RandomMixture(coll).clone();
+  return new RandomMixture(coll);
 }
 
 /* Multiplication operator */
@@ -209,7 +209,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
   {
     const Point parameters(getParameter());
     const Point otherParameters(other->getParameter());
-    return LogNormal(parameters[0] + otherParameters[0], std::sqrt(parameters[1] * parameters[1] + otherParameters[1] * otherParameters[1])).clone();
+    return new LogNormal(parameters[0] + otherParameters[0], std::sqrt(parameters[1] * parameters[1] + otherParameters[1] * otherParameters[1]));
   }
   if ((getClassName() == "LogUniform") && (other->getClassName() == "LogUniform"))
   {
@@ -229,17 +229,17 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
     const Point otherParameters(other->getParameter());
     return (Normal(parameters[0], parameters[1]) + Uniform(otherParameters[0], otherParameters[1]))->exp();
   }
-  return ProductDistribution(*this, *other).clone();
+  return new ProductDistribution(*this, *other);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::operator * (const Scalar value) const
 {
   if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator * (const Scalar value) const: can multiply by a constant 1D distributions only.";
-  if (value == 0.0) return Dirac(Point(1, 0.0)).clone();
+  if (value == 0.0) return new Dirac(Point(1, 0.0));
   if (value == 1.0) return clone();
   const Collection< Distribution > coll(1, *this);
   const Point weight(1, value);
-  return RandomMixture(coll, weight).clone();
+  return new RandomMixture(coll, weight);
 }
 
 /* Division operator */
@@ -331,7 +331,7 @@ DistributionImplementation::Implementation maximum(const DistributionImplementat
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = p_left;
   coll[1] = p_right;
-  return MaximumDistribution(coll).clone();
+  return new MaximumDistribution(coll);
 }
 
 DistributionImplementation::Implementation maximum(const DistributionImplementation & left,
@@ -340,7 +340,7 @@ DistributionImplementation::Implementation maximum(const DistributionImplementat
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = left;
   coll[1] = p_right;
-  return MaximumDistribution(coll).clone();
+  return new MaximumDistribution(coll);
 }
 
 DistributionImplementation::Implementation maximum(const DistributionImplementation::Implementation & p_left,
@@ -349,7 +349,7 @@ DistributionImplementation::Implementation maximum(const DistributionImplementat
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = p_left;
   coll[1] = right;
-  return MaximumDistribution(coll).clone();
+  return new MaximumDistribution(coll);
 }
 
 DistributionImplementation::Implementation maximum(const DistributionImplementation & left,
@@ -358,7 +358,7 @@ DistributionImplementation::Implementation maximum(const DistributionImplementat
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = left;
   coll[1] = right;
-  return MaximumDistribution(coll).clone();
+  return new MaximumDistribution(coll);
 }
 
 
@@ -3049,7 +3049,7 @@ DistributionImplementation::Implementation DistributionImplementation::getMargin
   if (!(i < dimension_)) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension";
   if (dimension_ == 1) return clone();
   if (isCopula()) return new Uniform(0.0, 1.0);
-  return MarginalDistribution(*this, i).clone();
+  return new MarginalDistribution(*this, i);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -3060,7 +3060,7 @@ DistributionImplementation::Implementation DistributionImplementation::getMargin
   full.fill();
   if (indices == full) return clone();
   if (isCopula() && (indices.getSize() == 1)) return new Uniform(0.0, 1.0);
-  return MarginalDistribution(*this, indices).clone();
+  return new MarginalDistribution(*this, indices);
 }
 
 /* Get the copula of a distribution */
@@ -4019,7 +4019,7 @@ DistributionImplementation::Implementation DistributionImplementation::cos() con
   }
   bounds.add(b);
   values.add(std::cos(b));
-  return CompositeDistribution(SymbolicFunction("x", "cos(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "cos(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::sin() const
@@ -4038,7 +4038,7 @@ DistributionImplementation::Implementation DistributionImplementation::sin() con
   }
   bounds.add(b);
   values.add(std::sin(b));
-  return CompositeDistribution(SymbolicFunction("x", "sin(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "sin(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::tan() const
@@ -4063,7 +4063,7 @@ DistributionImplementation::Implementation DistributionImplementation::tan() con
   }
   bounds.add(b);
   values.add(std::tan(b));
-  return CompositeDistribution(SymbolicFunction("x", "tan(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "tan(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::acos() const
@@ -4077,7 +4077,7 @@ DistributionImplementation::Implementation DistributionImplementation::acos() co
   Point values(1, std::acos(a));
   bounds.add(b);
   values.add(std::acos(b));
-  return CompositeDistribution(SymbolicFunction("x", "acos(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "acos(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::asin() const
@@ -4091,7 +4091,7 @@ DistributionImplementation::Implementation DistributionImplementation::asin() co
   Point values(1, std::asin(a));
   bounds.add(b);
   values.add(std::asin(b));
-  return CompositeDistribution(SymbolicFunction("x", "asin(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "asin(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::atan() const
@@ -4103,7 +4103,7 @@ DistributionImplementation::Implementation DistributionImplementation::atan() co
   const Scalar b = getRange().getUpperBound()[0];
   bounds.add(b);
   values.add(std::atan(b));
-  return CompositeDistribution(SymbolicFunction("x", "atan(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "atan(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::cosh() const
@@ -4120,7 +4120,7 @@ DistributionImplementation::Implementation DistributionImplementation::cosh() co
   }
   bounds.add(b);
   values.add(std::cosh(b));
-  return CompositeDistribution(SymbolicFunction("x", "cosh(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "cosh(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::sinh() const
@@ -4132,7 +4132,7 @@ DistributionImplementation::Implementation DistributionImplementation::sinh() co
   Point values(1, std::sinh(a));
   bounds.add(b);
   values.add(std::sinh(b));
-  return CompositeDistribution(SymbolicFunction("x", "sinh(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "sinh(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::tanh() const
@@ -4144,7 +4144,7 @@ DistributionImplementation::Implementation DistributionImplementation::tanh() co
   Point values(1, std::tanh(a));
   bounds.add(b);
   values.add(std::tanh(b));
-  return CompositeDistribution(SymbolicFunction("x", "tanh(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "tanh(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::acosh() const
@@ -4157,7 +4157,7 @@ DistributionImplementation::Implementation DistributionImplementation::acosh() c
   Point values(1, SpecFunc::Acosh(a));
   bounds.add(b);
   values.add(SpecFunc::Acosh(b));
-  return CompositeDistribution(SymbolicFunction("x", "acosh(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "acosh(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::asinh() const
@@ -4169,7 +4169,7 @@ DistributionImplementation::Implementation DistributionImplementation::asinh() c
   Point values(1, SpecFunc::Asinh(a));
   bounds.add(b);
   values.add(SpecFunc::Asinh(b));
-  return CompositeDistribution(SymbolicFunction("x", "asinh(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "asinh(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::atanh() const
@@ -4186,7 +4186,7 @@ DistributionImplementation::Implementation DistributionImplementation::atanh() c
   Point values(1, a == -1.0 ? SpecFunc::Atanh(computeQuantile(quantileEpsilon_)[0]) : SpecFunc::Atanh(a));
   bounds.add(b);
   values.add(b == 1.0 ? SpecFunc::Atanh(computeQuantile(quantileEpsilon_, true)[0]) : SpecFunc::Atanh(b));
-  return CompositeDistribution(SymbolicFunction("x", "atanh(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "atanh(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::exp() const
@@ -4196,12 +4196,12 @@ DistributionImplementation::Implementation DistributionImplementation::exp() con
   if (getClassName() == "Normal")
   {
     Point parameters(getParameter());
-    return LogNormal(parameters[0], parameters[1]).clone();
+    return new LogNormal(parameters[0], parameters[1]);
   }
   if (getClassName() == "Uniform")
   {
     Point parameters(getParameter());
-    return LogUniform(parameters[0], parameters[1]).clone();
+    return new LogUniform(parameters[0], parameters[1]);
   }
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
@@ -4209,7 +4209,7 @@ DistributionImplementation::Implementation DistributionImplementation::exp() con
   Point values(1, std::exp(a));
   bounds.add(b);
   values.add(std::exp(b));
-  return CompositeDistribution(SymbolicFunction("x", "exp(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "exp(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::log() const
@@ -4219,12 +4219,12 @@ DistributionImplementation::Implementation DistributionImplementation::log() con
   if (getClassName() == "LogNormal")
   {
     Point parameters(getParameter());
-    if (parameters[2] == 0.0) return Normal(parameters[0], parameters[1]).clone();
+    if (parameters[2] == 0.0) return new Normal(parameters[0], parameters[1]);
   }
   if (getClassName() == "LogUniform")
   {
     Point parameters(getParameter());
-    return Uniform(parameters[0], parameters[1]).clone();
+    return new Uniform(parameters[0], parameters[1]);
   }
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the logarithm of a random variable that takes negative values with positive probability.";
@@ -4233,7 +4233,7 @@ DistributionImplementation::Implementation DistributionImplementation::log() con
   Point values(1, (a == 0.0 ? std::log(computeQuantile(quantileEpsilon_)[0]) : std::log(a)));
   bounds.add(b);
   values.add(std::log(b));
-  return CompositeDistribution(SymbolicFunction("x", "log(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "log(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::ln() const
@@ -4255,13 +4255,13 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
   const Scalar b = getRange().getUpperBound()[0];
   bounds.add(b);
   values.add(std::pow(b, exponent));
-  return CompositeDistribution(toPower, clone(), bounds, values).clone();
+  return new CompositeDistribution(toPower, clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::pow(const SignedInteger exponent) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
-  if (exponent == 0.0) return Dirac(Point(1, 1.0)).clone();
+  if (exponent == 0.0) return new Dirac(Point(1, 1.0));
   const Scalar a = getRange().getLowerBound()[0];
   SymbolicFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
   // Easy case: a >= 0
@@ -4272,7 +4272,7 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
     const Scalar b = getRange().getUpperBound()[0];
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    return CompositeDistribution(toPower, clone(), bounds, values).clone();
+    return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Easy case: b <= 0
   Point bounds(1, a);
@@ -4282,7 +4282,7 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
   {
     bounds.add(b);
     values.add(b == 0.0 ? (exponent < 0.0 ? std::pow(computeQuantile(quantileEpsilon_, true)[0], 1.0 * exponent) : 0.0) : std::pow(b, 1.0 * exponent));
-    return CompositeDistribution(toPower, clone(), bounds, values).clone();
+    return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
   // For odd exponents, the function is bijective
@@ -4293,7 +4293,7 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
     {
       bounds.add(b);
       values.add(std::pow(b, 1.0 * exponent));
-      return CompositeDistribution(toPower, clone(), bounds, values).clone();
+      return new CompositeDistribution(toPower, clone(), bounds, values);
     }
     // A singularity at 0 for negative exponent
     bounds.add(0.0);
@@ -4302,14 +4302,14 @@ DistributionImplementation::Implementation DistributionImplementation::pow(const
     values.add(SpecFunc::MaxScalar);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    return CompositeDistribution(SymbolicFunction("x", String(OSS() << "x^(" << exponent << ")")), clone(), bounds, values).clone();
+    return new CompositeDistribution(SymbolicFunction("x", String(OSS() << "x^(" << exponent << ")")), clone(), bounds, values);
   }
   // For even exponent, the behaviour changes at 0
   bounds.add(0.0);
   values.add(exponent > 0 ? 0.0 : SpecFunc::MaxScalar);
   bounds.add(b);
   values.add(std::pow(b, 1.0 * exponent));
-  return CompositeDistribution(toPower, clone(), bounds, values).clone();
+  return new CompositeDistribution(toPower, clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::sqr() const
@@ -4318,7 +4318,7 @@ DistributionImplementation::Implementation DistributionImplementation::sqr() con
   if (getClassName() == "Chi")
   {
     Point parameters(getParameter());
-    return ChiSquare(parameters[0]).clone();
+    return new ChiSquare(parameters[0]);
   }
   return pow(static_cast< SignedInteger >(2));
 }
@@ -4338,7 +4338,7 @@ DistributionImplementation::Implementation DistributionImplementation::inverse()
       values.add(1.0 / b);
     else
       values.add(0.0);
-    return CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values).clone();
+    return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
   }
   // Here, a < 0
   Point values(1);
@@ -4352,7 +4352,7 @@ DistributionImplementation::Implementation DistributionImplementation::inverse()
   {
     bounds.add(b);
     values.add(b == 0.0 ? 1.0 / computeQuantile(quantileEpsilon_, true)[0] : 1.0 / b);
-    return CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values).clone();
+    return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
   // A singularity at 0
@@ -4370,7 +4370,7 @@ DistributionImplementation::Implementation DistributionImplementation::inverse()
     values.add(1.0 / b);
   else
     values.add(0.0);
-  return CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::sqrt() const
@@ -4380,7 +4380,7 @@ DistributionImplementation::Implementation DistributionImplementation::sqrt() co
   if (getClassName() == "ChiSquare")
   {
     Point parameters(getParameter());
-    return Chi(parameters[0]).clone();
+    return new Chi(parameters[0]);
   }
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the square root of a random variable that takes negative values with positive probability.";
@@ -4389,7 +4389,7 @@ DistributionImplementation::Implementation DistributionImplementation::sqrt() co
   const Scalar b = getRange().getUpperBound()[0];
   bounds.add(b);
   values.add(std::sqrt(b));
-  return CompositeDistribution(SymbolicFunction("x", "sqrt(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "sqrt(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::cbrt() const
@@ -4401,7 +4401,7 @@ DistributionImplementation::Implementation DistributionImplementation::cbrt() co
   const Scalar b = getRange().getUpperBound()[0];
   bounds.add(b);
   values.add(SpecFunc::Cbrt(b));
-  return CompositeDistribution(SymbolicFunction("x", "cbrt(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "cbrt(x)"), clone(), bounds, values);
 }
 
 DistributionImplementation::Implementation DistributionImplementation::abs() const
@@ -4418,7 +4418,7 @@ DistributionImplementation::Implementation DistributionImplementation::abs() con
   }
   bounds.add(b);
   values.add(std::abs(b));
-  return CompositeDistribution(SymbolicFunction("x", "abs(x)"), clone(), bounds, values).clone();
+  return new CompositeDistribution(SymbolicFunction("x", "abs(x)"), clone(), bounds, values);
 }
 
 END_NAMESPACE_OPENTURNS

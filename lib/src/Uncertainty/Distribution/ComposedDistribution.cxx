@@ -754,9 +754,9 @@ ComposedDistribution::Implementation ComposedDistribution::getMarginal(const Ind
     marginalDistributions.add(distributionCollection_[j]);
     marginalDescription[i] = description[j];
   }
-  ComposedDistribution marginal(marginalDistributions, marginalCopula);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  ComposedDistribution::Implementation marginal(new ComposedDistribution(marginalDistributions, marginalCopula));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 }
 
 /* Get the isoprobabilistic transformation */

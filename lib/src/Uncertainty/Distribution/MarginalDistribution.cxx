@@ -306,7 +306,7 @@ MarginalDistribution::Implementation MarginalDistribution::getMarginal(const Ind
   Indices marginalIndices(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
     marginalIndices[i] = indices_[indices[i]];
-  return MarginalDistribution(distribution_, marginalIndices).clone();
+  return new MarginalDistribution(distribution_, marginalIndices);
 }
 
 /* Get the isoprobabilistic transformation */

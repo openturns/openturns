@@ -199,7 +199,7 @@ FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const
   Basis marginalBasis(basisSize);
   for (UnsignedInteger i = 0; i < basisSize; ++i) marginalBasis[i] = basis_[i].getMarginal(indices);
   // Return the associated FunctionalBasisProcess
-  return FunctionalBasisProcess(marginalDistribution, marginalBasis, mesh_).clone();
+  return new FunctionalBasisProcess(marginalDistribution, marginalBasis, mesh_);
 }
 
 /* Distribution accessor */

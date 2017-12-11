@@ -300,7 +300,7 @@ Point Weibull::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Weibull::Implementation Weibull::getStandardRepresentative() const
 {
-  return Weibull(1.0, beta_, 0.0).clone();
+  return new Weibull(1.0, beta_, 0.0);
 }
 
 /* Parameters value accessor */

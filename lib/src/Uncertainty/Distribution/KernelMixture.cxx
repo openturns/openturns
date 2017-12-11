@@ -495,9 +495,9 @@ KernelMixture::Implementation KernelMixture::getMarginal(const UnsignedInteger i
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  KernelMixture marginal(kernel_, Point(1, bandwidth_[i]), sample_.getMarginal(i));
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  KernelMixture::Implementation marginal(new KernelMixture(kernel_, Point(1, bandwidth_[i]), sample_.getMarginal(i)));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -518,9 +518,9 @@ KernelMixture::Implementation KernelMixture::getMarginal(const Indices & indices
     marginalBandwidth[i] = bandwidth_[index_i];
     marginalDescription[i] = description[index_i];
   }
-  KernelMixture marginal(kernel_, marginalBandwidth, sample_.getMarginal(indices));
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  KernelMixture::Implementation marginal(new KernelMixture(kernel_, marginalBandwidth, sample_.getMarginal(indices)));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 }
 
 /* Compute the mean of the KernelMixture

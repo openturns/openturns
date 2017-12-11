@@ -406,9 +406,9 @@ Multinomial::Implementation Multinomial::getMarginal(const UnsignedInteger i) co
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  Binomial marginal(n_, p_[i]);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  Multinomial::Implementation marginal(new Binomial(n_, p_[i]));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -430,9 +430,9 @@ Multinomial::Implementation Multinomial::getMarginal(const Indices & indices) co
     marginalP[i] = p_[index_i];
     marginalDescription[i] = description[index_i];
   }
-  Multinomial marginal(n_, marginalP);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  Multinomial::Implementation marginal(new Multinomial(n_, marginalP));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Get the support of a discrete distribution that intersect a given interval */

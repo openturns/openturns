@@ -423,7 +423,7 @@ Point TruncatedNormal::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 TruncatedNormal::Implementation TruncatedNormal::getStandardRepresentative() const
 {
-  return TruncatedNormal((2.0 * mu_ - (b_ + a_)) / (b_ - a_), 2.0 * sigma_ / (b_ - a_), -1.0, 1.0).clone();
+  return new TruncatedNormal((2.0 * mu_ - (b_ + a_)) / (b_ - a_), 2.0 * sigma_ / (b_ - a_), -1.0, 1.0);
 }
 
 /* Compute the covariance of the distribution */

@@ -138,7 +138,7 @@ TimeSeries WhiteNoise::getFuture(const UnsignedInteger stepNumber) const
 WhiteNoise::Implementation WhiteNoise::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
-  return WhiteNoise(distribution_.getMarginal(i), mesh_).clone();
+  return new WhiteNoise(distribution_.getMarginal(i), mesh_);
 }
 
 /* Get the marginal random vector corresponding to indices components */

@@ -179,7 +179,7 @@ Point NonCentralStudent::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 NonCentralStudent::Implementation NonCentralStudent::getStandardRepresentative() const
 {
-  return NonCentralStudent(nu_, delta_, 0.0).clone();
+  return new NonCentralStudent(nu_, delta_, 0.0);
 }
 
 /* Compute the covariance of the distribution */

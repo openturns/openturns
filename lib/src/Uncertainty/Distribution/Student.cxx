@@ -391,9 +391,9 @@ Student::Implementation Student::getMarginal(const UnsignedInteger i) const
   const CorrelationMatrix R(1);
   const Point sigma(1, sigma_[i]);
   const Point mean(1, mean_[i]);
-  Student marginal(nu_, mean, sigma, R);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  Student::Implementation marginal(new Student(nu_, mean, sigma, R));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -419,9 +419,9 @@ Student::Implementation Student::getMarginal(const Indices & indices) const
     for (UnsignedInteger j = 0; j <= i; ++j) R(i, j) = R_(index_i, indices[j]);
     marginalDescription[i] = description[index_i];
   }
-  Student marginal(nu_, mean, sigma, R);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  Student::Implementation marginal(new Student(nu_, mean, sigma, R));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Compute the radial distribution CDF */
@@ -495,7 +495,7 @@ Point Student::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Student::Implementation Student::getStandardRepresentative() const
 {
-  return Student(nu_).clone();
+  return new Student(nu_);
 }
 
 /* Parameters value and description accessor */

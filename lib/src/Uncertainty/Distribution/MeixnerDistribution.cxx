@@ -561,7 +561,7 @@ Point MeixnerDistribution::getKurtosis() const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 MeixnerDistribution::Implementation MeixnerDistribution::getStandardRepresentative() const
 {
-  return MeixnerDistribution(1.0, beta_, delta_, 0.0).clone();
+  return new MeixnerDistribution(1.0, beta_, delta_, 0.0);
 }
 
 /* Compute the covariance of the distribution */

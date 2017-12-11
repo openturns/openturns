@@ -102,10 +102,10 @@ BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildParallel(con
   Mixture::DistributionCollection atomsMixture(size);
   BernsteinCopulaFactoryPolicy policy(empiricalCopulaSample, binNumber, atomsMixture);
   TBB::ParallelFor( 0, size, policy );
-  Mixture result(atomsMixture);
+  Mixture* result(new Mixture(atomsMixture));
   // Here we know that the mixture is a copula even if none of its atoms is.
-  result.isCopula_ = true;
-  return result.clone();
+  result->isCopula_ = true;
+  return result;
 }
 
 BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildSequential(const Sample & empiricalCopulaSample,
@@ -122,10 +122,10 @@ BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildSequential(c
       atomsKernel[j] = Beta(std::floor(nu[j] * binNumber) + 1.0, binNumber + 1.0, 0.0, 1.0);
     atomsMixture[i] = ComposedDistribution(atomsKernel);
   }
-  Mixture result(atomsMixture);
+  Mixture* result(new Mixture(atomsMixture));
   // Here we know that the mixture is a copula even if none of its atoms is.
-  result.isCopula_ = true;
-  return result.clone();
+  result->isCopula_ = true;
+  return result;
 }
 
 BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::build(const Sample & sample,

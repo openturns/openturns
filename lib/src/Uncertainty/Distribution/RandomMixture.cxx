@@ -3033,9 +3033,9 @@ RandomMixture::Implementation RandomMixture::getMarginal(const UnsignedInteger i
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   if (dimension == 1) return clone();
-  RandomMixture marginal(distributionCollection_, weights_.getRow(i), Point(1, constant_[i]));
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, weights_.getRow(i), Point(1, constant_[i])));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -3058,9 +3058,9 @@ RandomMixture::Implementation RandomMixture::getMarginal(const Indices & indices
     for (UnsignedInteger j = 0; j < outputDimension; ++j) marginalWeights(i, j) = row(0, j);
     marginalDescription[i] = description[index_i];
   }
-  RandomMixture marginal(distributionCollection_, marginalWeights, marginalConstant);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  RandomMixture::Implementation marginal(new RandomMixture(distributionCollection_, marginalWeights, marginalConstant));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Tell if the distribution has independent copula */
