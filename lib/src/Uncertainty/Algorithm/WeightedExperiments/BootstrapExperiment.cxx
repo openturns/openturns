@@ -20,6 +20,7 @@
  */
 #include "openturns/BootstrapExperiment.hxx"
 #include "openturns/UserDefined.hxx"
+#include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,7 +38,8 @@ BootstrapExperiment::BootstrapExperiment():
 
 /* Constructor with parameters */
 BootstrapExperiment::BootstrapExperiment(const Sample & sample):
-  WeightedExperimentImplementation(UserDefined(sample), sample.getSize())
+  WeightedExperimentImplementation(UserDefined(), sample.getSize())
+  , sample_(sample)
 {
   // Nothing to do
 }
@@ -54,7 +56,7 @@ String BootstrapExperiment::__repr__() const
   OSS oss;
   oss << "class=" << GetClassName()
       << " name=" << getName()
-      << " distribution=" << distribution_
+      << " sample=" << sample_
       << " size=" << size_;
   return oss;
 }
@@ -63,7 +65,34 @@ String BootstrapExperiment::__repr__() const
 Sample BootstrapExperiment::generateWithWeights(Point & weights) const
 {
   weights = Point(size_, 1.0 / size_);
-  return distribution_.getSample(size_);
+  return sample_.select(GenerateSelection(size_, size_));
 }
+
+/* Selection generation */
+Indices BootstrapExperiment::GenerateSelection(const UnsignedInteger size,
+					       const UnsignedInteger length)
+{
+  const RandomGenerator::UnsignedIntegerCollection selection(RandomGenerator::IntegerGenerate(size, length));
+  return Indices(selection.begin(), selection.end());
+}
+
+/* Distribution accessor */
+void BootstrapExperiment::setDistribution(const Distribution & distribution)
+{
+  if (!distribution.isDiscrete()) throw InvalidArgumentException(HERE) << "Error: the distribution must be discrete in BootstrapExperiment.";
+  const Point probabilities(distribution.getProbabilities());
+  // Here we know that size>0 as no discrete distribution can have an empty probability table
+  const UnsignedInteger size = probabilities.getSize();
+  for (UnsignedInteger i = 1; i < probabilities.getSize(); ++i)
+    if (probabilities[i] != probabilities[0]) throw InvalidArgumentException(HERE) << "Error: the distribution must be uniform over its support in BootstrapEperiment.";
+  distribution_ = distribution;
+  sample_ = distribution.getSupport();
+}
+
+Distribution BootstrapExperiment::getDistribution() const
+{
+  return UserDefined(sample_);
+}
+
 
 END_NAMESPACE_OPENTURNS

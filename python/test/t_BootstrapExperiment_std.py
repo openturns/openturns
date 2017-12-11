@@ -21,7 +21,7 @@ try:
     sample, weights = myPlane.generateWithWeights()
     print("sample = ", repr(sample))
     print("weights = ", repr(weights))
-
+    print("selection=", BootstrapExperiment.GenerateSelection(size, size))
 except:
     import sys
     print("t_BootstrapExperiment_std.py", sys.exc_info()[0], sys.exc_info()[1])

@@ -1,5 +1,5 @@
-ref. sample= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=6 data=[[0,1,2,3,4,5],[1,2,3,4,5,6],[2,3,4,5,6,7],[3,4,5,6,7,8],[4,5,6,7,8,9]]
-myPlane =  class=BootstrapExperiment name=Unnamed sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=6 data=[[0,1,2,3,4,5],[1,2,3,4,5,6],[2,3,4,5,6,7],[3,4,5,6,7,8],[4,5,6,7,8,9]] size=5
-sample =  class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=6 data=[[4,5,6,7,8,9],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[2,3,4,5,6,7]]
-weights =  class=Point name=Unnamed dimension=5 values=[0.2,0.2,0.2,0.2,0.2]
-selection= [1,1,4,3,1]
+ref. sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=6 data=[[0,1,2,3,4,5],[1,2,3,4,5,6],[2,3,4,5,6,7],[3,4,5,6,7,8],[4,5,6,7,8,9]]
+myPlane = class=BootstrapExperiment name=Unnamed sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=6 data=[[0,1,2,3,4,5],[1,2,3,4,5,6],[2,3,4,5,6,7],[3,4,5,6,7,8],[4,5,6,7,8,9]] size=5
+sample = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=6 description=[v0,v1,v2,v3,v4,v5] data=[[4,5,6,7,8,9],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[2,3,4,5,6,7]]
+weights = class=Point name=Unnamed dimension=5 values=[0.2,0.2,0.2,0.2,0.2]
+selection=[1,1,4,3,1]
