@@ -401,7 +401,7 @@ void MarginalDistribution::load(Advocate & adv)
   Distribution distribution;
   Indices indices;
   adv.loadAttribute( "distribution_", distribution );
-  adv.loadAttribute( "indices_", indices_ );
+  adv.loadAttribute( "indices_", indices );
   setDistributionAndIndices(distribution, indices);
 }
 
