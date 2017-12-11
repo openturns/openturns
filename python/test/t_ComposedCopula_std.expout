@@ -43,3 +43,5 @@ isoprobabilistic transformation (single contributor)= (class=LinearEvaluation na
  [ 0        0.333333 ]])o(| y0 = Uniform(a = 0, b = 1) -> y0 : Student(nu = 3, mu = 1, sigma = 3)
 | y1 = Uniform(a = 0, b = 1) -> y1 : Student(nu = 3, mu = 1, sigma = 3)
 )
+ComposedCopula(NormalCopula(R = [[ 1 0 ]
+ [ 0 1 ]]))

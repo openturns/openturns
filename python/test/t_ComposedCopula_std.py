@@ -146,6 +146,9 @@ try:
     sklarCopula = myEstimatedDist.getCopula()
     copulas.add(sklarCopula)
 
+    # getMarginal to merge NormalCopula
+    copula = ComposedCopula([NormalCopula(R), NormalCopula(R)])
+    print(copula.getMarginal([0, 3]))
 except:
     import sys
     print("t_ComposedCopula.py", sys.exc_info()[0], sys.exc_info()[1])
