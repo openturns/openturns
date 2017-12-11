@@ -1039,6 +1039,41 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Sample::select
+"Select points in a sample.
+
+It selects the points at given locations and returns them as a new sample.
+
+Parameters
+----------
+indices : sequence of int, :math:`0 \leq i < m`
+    The selected indices.
+
+Returns
+-------
+selected_sample : :class:`~openturns.Sample`
+    The selected points as a sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(2).getSample(3)
+>>> print(sample)
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+>>> selected_sample = sample.select([1, 0, 1])
+>>> print(selected_sample)
+    [ X0        X1        ]
+0 : [ -0.438266  1.20548  ]
+1 : [  0.608202 -1.26617  ]
+2 : [ -0.438266  1.20548  ]
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::split
 "Trunk the sample.
 

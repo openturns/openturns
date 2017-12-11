@@ -43,7 +43,8 @@ class OT_API Sample
 public:
 
   /* Some typedefs for easy reading */
-
+  typedef SampleImplementation::UnsignedIntegerCollection UnsignedIntegerCollection;
+  
 public:
 
   /** Factory of Sample from CSV file */
@@ -339,6 +340,9 @@ public:
 
   /** Get the marginal sample corresponding to indices dimensions */
   Sample getMarginal(const Indices & indices) const;
+
+  /** Select points in the sample */
+  Sample select(const UnsignedIntegerCollection & indices) const;
 
   /** Returns a pointer to the underlying implementation object */
   virtual ImplementationAsPersistentObject getImplementationAsPersistentObject() const;

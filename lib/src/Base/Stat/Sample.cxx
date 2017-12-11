@@ -766,6 +766,12 @@ Sample Sample::getMarginal(const Indices & indices) const
   return getImplementation()->getMarginal(indices);
 }
 
+/* Select points as a sample */
+Sample Sample::select(const UnsignedIntegerCollection & indices) const
+{
+  return getImplementation()->select(indices);
+}
+
 /* Returns a pointer to the underlying implementation object */
 Sample::ImplementationAsPersistentObject Sample::getImplementationAsPersistentObject() const
 {

@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     Sample sample(myPlane.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
+    fullprint << "selection=" << BootstrapExperiment::GenerateSelection(size, size) << std::endl;
   }
   catch (TestFailed & ex)
   {
