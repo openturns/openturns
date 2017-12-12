@@ -286,7 +286,7 @@ Point Beta::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Beta::Implementation Beta::getStandardRepresentative() const
 {
-  return Beta(r_, t_, -1.0, 1.0).clone();
+  return new Beta(r_, t_, -1.0, 1.0);
 }
 
 /* Parameters value accessor */

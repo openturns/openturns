@@ -284,7 +284,7 @@ Point Frechet::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Frechet::Implementation Frechet::getStandardRepresentative() const
 {
-  return Frechet(alpha_, 1.0, 0.0).clone();
+  return new Frechet(alpha_, 1.0, 0.0);
 }
 
 /* Alpha accessor */

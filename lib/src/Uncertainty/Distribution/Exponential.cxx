@@ -238,7 +238,7 @@ Point Exponential::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Exponential::Implementation Exponential::getStandardRepresentative() const
 {
-  return Exponential(1.0).clone();
+  return new Exponential(1.0);
 }
 
 /* Parameters value accessor */

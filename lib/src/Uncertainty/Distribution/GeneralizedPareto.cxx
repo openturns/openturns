@@ -285,7 +285,7 @@ Point GeneralizedPareto::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 GeneralizedPareto::Implementation GeneralizedPareto::getStandardRepresentative() const
 {
-  return GeneralizedPareto(1.0, xi_).clone();
+  return new GeneralizedPareto(1.0, xi_);
 }
 
 /* Compute the covariance of the distribution */

@@ -286,7 +286,7 @@ Point Uniform::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Uniform::Implementation Uniform::getStandardRepresentative() const
 {
-  return Uniform(-1.0, 1.0).clone();
+  return new Uniform(-1.0, 1.0);
 }
 
 /* Parameters value accessor */

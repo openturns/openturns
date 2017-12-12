@@ -549,9 +549,9 @@ Normal::Implementation Normal::getMarginal(const UnsignedInteger i) const
   CorrelationMatrix R(1);
   Point sigma(1, sigma_[i]);
   Point mean(1, mean_[i]);
-  Normal marginal(mean, sigma, R);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  Normal::Implementation marginal(new Normal(mean, sigma, R));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -580,9 +580,9 @@ Normal::Implementation Normal::getMarginal(const Indices & indices) const
     }
     marginalDescription[i] = description[index_i];
   }
-  Normal marginal(mean, sigma, R);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  Normal::Implementation marginal(new Normal(mean, sigma, R));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Get the skewness of the distribution */
@@ -604,7 +604,7 @@ Point Normal::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Normal::Implementation Normal::getStandardRepresentative() const
 {
-  return Normal(0.0, 1.0).clone();
+  return new Normal(0.0, 1.0);
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */

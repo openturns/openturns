@@ -416,10 +416,10 @@ Mixture::Implementation Mixture::getMarginal(const UnsignedInteger i) const
     collection.add(distributionCollection_[index].getMarginal(i));
     collection[index].setWeight(distributionCollection_[index].getWeight());
   }
-  Mixture marginal(collection);
-  marginal.isCopula_ = isCopula_;
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  Mixture* marginal(new Mixture(collection));
+  marginal->isCopula_ = isCopula_;
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -444,10 +444,10 @@ Mixture::Implementation Mixture::getMarginal(const Indices & indices) const
     const UnsignedInteger index_i = indices[i];
     marginalDescription[i] = description[index_i];
   }
-  Mixture marginal(collection);
-  marginal.isCopula_ = isCopula_;
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  Mixture* marginal(new Mixture(collection));
+  marginal->isCopula_ = isCopula_;
+  marginal->setDescription(marginalDescription);
+  return marginal;
 }
 
 /* Compute the mean of the Mixture */

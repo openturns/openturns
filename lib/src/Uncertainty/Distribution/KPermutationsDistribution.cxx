@@ -184,9 +184,9 @@ KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  KPermutationsDistribution marginal(1, n_);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  KPermutationsDistribution::Implementation marginal(new KPermutationsDistribution(1, n_));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -205,9 +205,9 @@ KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal
     const UnsignedInteger index_i = indices[i];
     marginalDescription[i] = description[index_i];
   }
-  KPermutationsDistribution marginal(outputDimension, n_);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  KPermutationsDistribution::Implementation marginal(new KPermutationsDistribution(outputDimension, n_));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Get the support of a discrete distribution that intersect a given interval */

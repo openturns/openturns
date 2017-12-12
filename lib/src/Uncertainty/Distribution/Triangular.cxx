@@ -314,7 +314,7 @@ Point Triangular::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Triangular::Implementation Triangular::getStandardRepresentative() const
 {
-  return Triangular(-1.0, ((m_ - a_) + (m_ - b_)) / (b_ - a_), 1.0).clone();
+  return new Triangular(-1.0, ((m_ - a_) + (m_ - b_)) / (b_ - a_), 1.0);
 }
 
 /* Parameters value accessor */

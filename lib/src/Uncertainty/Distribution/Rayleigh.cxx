@@ -247,7 +247,7 @@ Point Rayleigh::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Rayleigh::Implementation Rayleigh::getStandardRepresentative() const
 {
-  return Rayleigh(1.0, 0.0).clone();
+  return new Rayleigh(1.0, 0.0);
 }
 
 /* Compute the covariance of the distribution */

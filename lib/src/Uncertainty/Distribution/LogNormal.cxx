@@ -336,7 +336,7 @@ Point LogNormal::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 LogNormal::Implementation LogNormal::getStandardRepresentative() const
 {
-  return LogNormal(muLog_, sigmaLog_, 0.0).clone();
+  return new LogNormal(muLog_, sigmaLog_, 0.0);
 }
 
 /* Compute the covariance of the distribution */

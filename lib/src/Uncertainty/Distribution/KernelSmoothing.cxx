@@ -247,17 +247,17 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
   if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
   if ((dimension > 2) || ((!mustBin) && (!boundaryCorrection_)))
   {
-    KernelMixture result(kernel_, bandwidth, sample);
-    result.setDescription(sample.getDescription());
-    return result.clone();
+    KernelSmoothing::Implementation result(new KernelMixture(kernel_, bandwidth, sample));
+    result->setDescription(sample.getDescription());
+    return result;
   }
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
   if (xmin == xmax)
   {
-    Dirac result(xmin);
-    result.setDescription(sample.getDescription());
-    return result.clone();
+    KernelSmoothing::Implementation result(new Dirac(xmin));
+    result->setDescription(sample.getDescription());
+    return result;
   }
   // 2D binning?
   if ((dimension == 2) && mustBin)
@@ -298,9 +298,9 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
         atoms[i + j * binNumber_] = atom;
       }
     }
-    Mixture result(atoms, reducedData);
-    result.setDescription(sample.getDescription());
-    return result.clone();
+    KernelSmoothing::Implementation result(new Mixture(atoms, reducedData));
+    result->setDescription(sample.getDescription());
+    return result;
   } // 2D binning
 
   // Here we are in the 1D case, with at least binning or boundary boundary correction
@@ -322,9 +322,9 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
   // Now, work on the extended sample
   if (!mustBin)
   {
-    TruncatedDistribution result(KernelMixture(kernel_, bandwidth, newSample), xmin[0], xmax[0]);
-    result.setDescription(sample.getDescription());
-    return result.clone();
+    KernelSmoothing::Implementation result(new TruncatedDistribution(KernelMixture(kernel_, bandwidth, newSample), xmin[0], xmax[0]));
+    result->setDescription(sample.getDescription());
+    return result;
   }
   if (boundaryCorrection_)
   {
@@ -354,13 +354,13 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
   }
   if (boundaryCorrection_)
   {
-    TruncatedDistribution result(Mixture(atoms, reducedData), xmin[0], xmax[0]);
-    result.setDescription(sample.getDescription());
-    return result.clone();
+    KernelSmoothing::Implementation result(new TruncatedDistribution(Mixture(atoms, reducedData), xmin[0], xmax[0]));
+    result->setDescription(sample.getDescription());
+    return result;
   }
-  Mixture result(atoms, reducedData);
-  result.setDescription(sample.getDescription());
-  return result.clone();
+  KernelSmoothing::Implementation result(new Mixture(atoms, reducedData));
+  result->setDescription(sample.getDescription());
+  return result;
 }
 
 /* Bandwidth accessor */

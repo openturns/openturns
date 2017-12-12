@@ -456,9 +456,9 @@ UserDefined::Implementation UserDefined::getMarginal(const UnsignedInteger i) co
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  UserDefined marginal(points_.getMarginal(i), probabilities_);
-  marginal.setDescription(Description(1, getDescription()[i]));
-  return marginal.clone();
+  UserDefined::Implementation marginal(new UserDefined(points_.getMarginal(i), probabilities_));
+  marginal->setDescription(Description(1, getDescription()[i]));
+  return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -477,9 +477,9 @@ UserDefined::Implementation UserDefined::getMarginal(const Indices & indices) co
     const UnsignedInteger index_i = indices[i];
     marginalDescription[i] = description[index_i];
   }
-  UserDefined marginal(points_.getMarginal(indices), probabilities_);
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  UserDefined::Implementation marginal(new UserDefined(points_.getMarginal(indices), probabilities_));
+  marginal->setDescription(marginalDescription);
+  return marginal;
 } // getMarginal(Indices)
 
 /* Interface specific to UserDefined */

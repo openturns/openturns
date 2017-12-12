@@ -325,7 +325,7 @@ Point InverseGamma::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 InverseGamma::Implementation InverseGamma::getStandardRepresentative() const
 {
-  return InverseGamma(k_, 1.0).clone();
+  return new InverseGamma(k_, 1.0);
 }
 
 /* Compute the covariance of the distribution */

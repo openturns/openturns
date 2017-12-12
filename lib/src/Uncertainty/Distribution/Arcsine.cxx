@@ -262,7 +262,7 @@ Point Arcsine::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Arcsine::Implementation Arcsine::getStandardRepresentative() const
 {
-  return Arcsine(-1.0, 1.0).clone();
+  return new Arcsine(-1.0, 1.0);
 }
 
 /* Compute the covariance of the distribution */

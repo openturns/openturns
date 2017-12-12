@@ -119,14 +119,14 @@ MaximumEntropyOrderStatisticsCopula::Implementation MaximumEntropyOrderStatistic
   }
   Description marginalDescription(0);
   const Description description(getDescription());
-  MaximumEntropyOrderStatisticsCopula marginal(distribution_.getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices));
+  MaximumEntropyOrderStatisticsCopula::Implementation marginal(new MaximumEntropyOrderStatisticsCopula(distribution_.getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices)));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger j = indices[i];
     marginalDescription.add(description[j]);
   }
-  marginal.setDescription(marginalDescription);
-  return marginal.clone();
+  marginal->setDescription(marginalDescription);
+  return marginal;
 }
 
 

@@ -58,8 +58,7 @@ PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(co
     const Basis & psi,
     const Indices & indices) const
 {
-  const PenalizedLeastSquaresAlgorithm algo( x, y, weight, psi, indices, false, useNormal_ );
-  return algo.clone();
+  return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi, indices, false, useNormal_ );
 }
 
 /* Method save() stores the object through the StorageManager */

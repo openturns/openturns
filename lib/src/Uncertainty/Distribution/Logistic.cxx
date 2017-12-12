@@ -298,7 +298,7 @@ Point Logistic::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Logistic::Implementation Logistic::getStandardRepresentative() const
 {
-  return Logistic(0.0, 1.0).clone();
+  return new Logistic(0.0, 1.0);
 }
 
 /* Parameters value accessor */

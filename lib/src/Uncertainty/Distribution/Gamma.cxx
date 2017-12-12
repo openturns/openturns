@@ -343,7 +343,7 @@ Point Gamma::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Gamma::Implementation Gamma::getStandardRepresentative() const
 {
-  return Gamma(k_, 1.0, 0.0).clone();
+  return new Gamma(k_, 1.0, 0.0);
 }
 
 /* Compute the covariance of the distribution */

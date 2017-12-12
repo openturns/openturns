@@ -432,12 +432,12 @@ EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(c
   Point constant(outputDimension);
   const LinearEvaluation left(center, constant, linear);
 #endif
-  ComposedEvaluation marginal(left.clone(), clone());
+  EvaluationImplementation::Implementation marginal(new ComposedEvaluation(left.clone(), clone()));
   if (isHistoryEnabled())
   {
-    marginal.enableHistory();
+    marginal->enableHistory();
   }
-  return marginal.clone();
+  return marginal;
 }
 
 /* Get the number of calls to operator() */

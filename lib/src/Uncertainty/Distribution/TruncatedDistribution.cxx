@@ -437,7 +437,7 @@ TruncatedDistribution::Implementation TruncatedDistribution::getMarginal(const U
 TruncatedDistribution::Implementation TruncatedDistribution::getMarginal(const Indices & indices) const
 {
   Interval marginalBounds(bounds_.getMarginal(indices));
-  return TruncatedDistribution(distribution_.getMarginal(indices), marginalBounds).clone();
+  return new TruncatedDistribution(distribution_.getMarginal(indices), marginalBounds);
 }
 
 /* Realization threshold accessor */
