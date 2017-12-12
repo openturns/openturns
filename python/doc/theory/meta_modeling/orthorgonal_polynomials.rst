@@ -132,5 +132,5 @@ the so-called Charlier and Krawtchouk polynomials:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/meta_modeling/functional_chaos.ipynb`
+    - See :doc:`/examples/meta_modeling/functional_chaos`
 

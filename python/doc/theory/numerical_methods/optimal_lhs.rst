@@ -154,7 +154,7 @@ Optimization is performed in :math:`[0,1]^d` and the inverse transformation maps
 
 .. topic:: Examples:
 
-    - See :ref:`examples/optimal_lhs.ipynb`
+    - See :doc:`/examples/optimal_lhs`
 
 
 .. topic:: References:

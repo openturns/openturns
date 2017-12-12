@@ -242,7 +242,7 @@ be abandoned, or at least used very cautiously.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/linear_regression.ipynb`
+    - See :doc:`/examples/data_analysis/linear_regression`
 
 .. topic:: References:
 

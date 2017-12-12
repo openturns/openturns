@@ -108,7 +108,7 @@ estimators are obtained analytically:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/maximumlikelihood_estimator.ipynb`
+    - See :doc:`/examples/data_analysis/maximumlikelihood_estimator`
 
 .. topic:: References:
 

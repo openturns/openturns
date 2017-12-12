@@ -79,4 +79,4 @@ the sequence :math:`\{\vect{x}_1, \hdots, \vect{x}_N\}`.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/estimate_probability_randomized_qmc.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/estimate_probability_randomized_qmc`

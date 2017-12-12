@@ -65,7 +65,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/chi2_fitting_test.ipynb`
+    - See :doc:`/examples/data_analysis/chi2_fitting_test`
 
 .. topic:: References:
 

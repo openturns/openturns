@@ -17,11 +17,11 @@ described in the form :math:`\Prob{\vect{X} = \vect{x};\vect{\theta}}`.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/probabilistic_modeling/draw_1d_distribution.ipynb`
-    - See :ref:`examples/probabilistic_modeling/draw_2d_distribution.ipynb`
-    - See :ref:`examples/probabilistic_modeling/gaussian_distribution.ipynb`
-    - See :ref:`examples/probabilistic_modeling/2d_gaussian_distribution.ipynb`
-    - See :ref:`examples/probabilistic_modeling/geometric_distribution.ipynb`
+    - See :doc:`/examples/probabilistic_modeling/draw_1d_distribution`
+    - See :doc:`/examples/probabilistic_modeling/draw_2d_distribution`
+    - See :doc:`/examples/probabilistic_modeling/gaussian_distribution`
+    - See :doc:`/examples/probabilistic_modeling/2d_gaussian_distribution`
+    - See :doc:`/examples/probabilistic_modeling/geometric_distribution`
 
 .. topic:: References:
 

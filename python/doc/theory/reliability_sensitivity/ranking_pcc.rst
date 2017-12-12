@@ -72,7 +72,7 @@ the greater the impact the variable :math:`X^i` has on :math:`Y^j`.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/sample_correlation.ipynb`
+    - See :doc:`/examples/data_analysis/sample_correlation`
 
 
 .. topic:: References:

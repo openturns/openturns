@@ -294,8 +294,8 @@ To summarize:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/probabilistic_modeling/random_mixture_distribution.ipynb`
-    - See :ref:`examples/probabilistic_modeling/random_mixture_distribution_discrete.ipynb`
+    - See :doc:`/examples/probabilistic_modeling/random_mixture_distribution`
+    - See :doc:`/examples/probabilistic_modeling/random_mixture_distribution_discrete`
 
 .. topic:: References:
 

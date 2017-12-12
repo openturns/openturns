@@ -59,5 +59,5 @@ is the transposed Hessian matrix.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/meta_modeling/taylor_approximation.ipynb`
+    - See :doc:`/examples/meta_modeling/taylor_approximation`
 

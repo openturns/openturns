@@ -150,7 +150,7 @@ the choice of:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/estimate_probability_directional_sampling.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/estimate_probability_directional_sampling`
 
 
 .. topic:: References:

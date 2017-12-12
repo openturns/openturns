@@ -197,7 +197,7 @@ of the sample. The following tabular presents the whole results for
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/quantile_estimation_wilks.ipynb`
+    - See :doc:`/examples/data_analysis/quantile_estimation_wilks`
 
 .. topic:: References:
 

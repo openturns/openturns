@@ -273,6 +273,6 @@ The following figures illustrates the different patterns obtained.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/numerical_methods/deterministic_design.ipynb`
-    - See :ref:`examples/numerical_methods/probabilistic_design.ipynb`
+    - See :doc:`/examples/numerical_methods/deterministic_design`
+    - See :doc:`/examples/numerical_methods/probabilistic_design`
 

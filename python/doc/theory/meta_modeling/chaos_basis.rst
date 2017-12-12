@@ -136,7 +136,7 @@ strictly equivalent to:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/meta_modeling/functional_chaos.ipynb`
+    - See :doc:`/examples/meta_modeling/functional_chaos`
 
 
 .. topic:: References:

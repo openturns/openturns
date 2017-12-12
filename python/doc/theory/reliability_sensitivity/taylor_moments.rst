@@ -146,5 +146,5 @@ order strictly greater than 2 of the pdf.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/estimate_moments_taylor.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/estimate_moments_taylor`
 

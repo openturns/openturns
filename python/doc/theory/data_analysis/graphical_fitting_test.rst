@@ -269,9 +269,9 @@ This way of doing is more efficient.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/qqplot_graph.ipynb`
-    - See :ref:`examples/data_analysis/henry_line_graph.ipynb`
-    - See :ref:`examples/data_analysis/kendallplot_test.ipynb`
+    - See :doc:`/examples/data_analysis/qqplot_graph`
+    - See :doc:`/examples/data_analysis/henry_line_graph`
+    - See :doc:`/examples/data_analysis/kendallplot_test`
 
 .. topic:: References:
 

@@ -347,8 +347,8 @@ Anisotropic hyperbolic enumeration strategy
 
 .. topic:: Examples:
 
-    - See :ref:`examples/meta_modeling/functional_chaos.ipynb`
-    - See :ref:`examples/meta_modeling/fieldfunction_metamodel.ipynb`
+    - See :doc:`/examples/meta_modeling/functional_chaos`
+    - See :doc:`/examples/meta_modeling/fieldfunction_metamodel`
 
 
 .. topic:: References:
