@@ -58,6 +58,8 @@ protected:
   static mu::value_type Ceil(mu::value_type v);
   static mu::value_type Trunc(mu::value_type v);
   static mu::value_type Round(mu::value_type v);
+  static mu::value_type Not(mu::value_type v);
+  static mu::value_type Xor(mu::value_type v1, mu::value_type v2);
 };
 
 
@@ -162,6 +164,8 @@ MuParser::MuParser()
   DefineFun(_T("ceil"), Ceil); // added
   DefineFun(_T("trunc"), Trunc); // added
   DefineFun(_T("round"), Round); // added
+  DefineInfixOprt(_T("!"), Not); // added
+  DefineOprt(_T("^^"), Xor, 0, mu::oaLEFT, true); // added
 }
 
 value_type MuParser::Cotan(value_type v)
@@ -273,6 +277,16 @@ value_type MuParser::Trunc(value_type v)
 value_type MuParser::Round(value_type v)
 {
   return round(v);
+}
+
+value_type MuParser::Not(value_type v)
+{
+  return v == 0;
+}
+
+value_type MuParser::Xor(value_type v1, value_type v2)
+{
+  return (v1 == static_cast<value_type>(0)) ^ (v2 == static_cast<value_type>(0));
 }
 
 END_NAMESPACE_OPENTURNS

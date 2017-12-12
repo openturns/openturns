@@ -163,22 +163,22 @@ void SymbolicFunction::InitializeDocumentation()
   // Third, the operators
   ValidOperators_.setName("Valid operators");
   ValidOperators_.add("= -> assignement, can only be applied to variable names (priority -1)");
-  ValidOperators_.add("and -> logical and (priority 1)");
-  ValidOperators_.add("or -> logical or (priority 1)");
-  ValidOperators_.add("xor -> logical xor (priority 1)");
+  ValidOperators_.add("&& -> logical and (priority 1)");
+  ValidOperators_.add("|| -> logical or (priority 1)");
+  ValidOperators_.add("^^ -> logical xor (priority 1)");
+  ValidOperators_.add("!  -> logical negation (priority 4)");
   ValidOperators_.add("<= -> less or equal (priority 2)");
   ValidOperators_.add(">= -> greater or equal (priority 2)");
   ValidOperators_.add("!= -> not equal (priority 2)");
   ValidOperators_.add("== -> equal (priority 2)");
-  ValidOperators_.add("> -> greater than (priority 2)");
-  ValidOperators_.add("< -> less than (priority 2)");
-  ValidOperators_.add("+ -> addition (priority 3)");
-  ValidOperators_.add("- -> subtraction (priority 3)");
-  ValidOperators_.add("* -> multiplication (priority 4)");
-  ValidOperators_.add("/ -> division (priority 4)");
-  ValidOperators_.add("~ -> logical negation (priority 4)");
-  ValidOperators_.add("- -> sign change (priority 4)");
-  ValidOperators_.add("^ -> raise x to the power of y (priority 5)");
+  ValidOperators_.add(">  -> greater (priority 2)");
+  ValidOperators_.add("<  -> less (priority 2)");
+  ValidOperators_.add("+  -> addition (priority 3)");
+  ValidOperators_.add("-  -> subtraction (priority 3)");
+  ValidOperators_.add("*  -> multiplication (priority 4)");
+  ValidOperators_.add("/  -> division (priority 4)");
+  ValidOperators_.add("-  -> sign change (priority 4)");
+  ValidOperators_.add("^  -> x to the power of y (priority 5)");
   IsDocumentationInitialized_ = true;
 }
 
