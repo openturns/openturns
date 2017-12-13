@@ -88,6 +88,9 @@ try:
     a1 = np.array(s0)
     print("Sample", s0, "=> array", a1)
 
+    s0 = Sample(a0.transpose())
+    print("with transpose, array", a0.transpose(), "=> Sample", s0)
+
     # Check tuple / Function interoperability
     F = Function(
         ('E', 'F', 'L', 'I'), ('d',), ('-F*L^3/(3.*E*I)',))
@@ -302,6 +305,8 @@ try:
     print("array", a0, "=> Matrix", m0)
     a1 = np.array(m0)
     print("Matrix", m0, "=> array", a1)
+    m0 = Matrix(a0.transpose())
+    print("with transpose, array", a0.transpose(), "=> Matrix", m0)
 
     a0 = np.array(((1., 2.), (3., 4.)))
     m0 = SquareMatrix(a0)
@@ -329,6 +334,8 @@ try:
     print("array", a0, "=> Tensor", m0)
     a1 = np.array(m0)
     print("Tensor", m0, "=> array", a1)
+    m0 = Tensor(a0.transpose())
+    print("with transpose, array", a0.transpose(), "=> Tensor", m0)
 
     a0 = np.array((((1., 2.), (3., 4.)), ((3., 4.), (7., 8.))))
     m0 = SymmetricTensor(a0)
@@ -354,6 +361,8 @@ try:
     print("array", a0, "=> ComplexMatrix", m0)
     a1 = np.array(m0)
     print("ComplexMatrix", m0, "=> array", a1)
+    m0 = ComplexMatrix(a0.transpose())
+    print("with transpose, array", a0.transpose(), "=> ComplexMatrix", m0)
 
     a0 = np.array(((1. + 3j, 2. - 5j), (3. + 7j, 4. - 9j)))
     m0 = SquareComplexMatrix(a0)
@@ -380,6 +389,8 @@ try:
     print("matrix", a0, "=> Matrix", m0)
     a1 = np.array(m0)
     print("Matrix", m0, "=> matrix", a1)
+    m0 = Matrix(a0.transpose())
+    print("with transpose, matrix", a0.transpose(), "=> Matrix", m0)
 
     a0 = np.matrix(
         ((1. + 3j, 2. - 5j, 3. + 7j), (4. - 9j, 5. + 11j, 6. - 13j)))
@@ -387,6 +398,8 @@ try:
     print("matrix", a0, "=> ComplexMatrix", m0)
     a1 = np.array(m0)
     print("ComplexMatrix", m0, "=> matrix", a1)
+    m0 = ComplexMatrix(a0.transpose())
+    print("with transpose, matrix", a0.transpose(), "=> ComplexMatrix", m0)
 
 except:
     import sys
