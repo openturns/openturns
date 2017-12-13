@@ -478,7 +478,7 @@ namePython<_PySequence_>()
 
 
 /* Buffer protocol PEP 3118 */
-template <class CPP_Type, int ndim=1>
+template <class CPP_Type, int ndim>
 static inline
 bool
 isAPythonBufferOf(PyObject * pyObj)
