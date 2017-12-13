@@ -173,10 +173,22 @@ namePython< _PyInt_ >()
   return "integer";
 }
 
+// In C++11, it is no more possible to define a static member which is a const char*.
+// We could use constexpr instead, if we are sure that compiler support is okay.
+// As only numerical types are concerned, it is unlikely that new types are added,
+// so let us use an array instead and initialize an index into this array.
+static const char* const pyBuf_formats [] = {
+  "l",
+  "d",
+  "Zd"
+};
+
 template <>
 struct traitsPythonType< UnsignedInteger >
 {
   typedef _PyInt_ Type;
+  static const int buf_itemsize = sizeof(UnsignedInteger);
+  static const int buf_format_idx = 0; // "l"
 };
 
 template <>
@@ -230,6 +242,8 @@ template <>
 struct traitsPythonType< Scalar >
 {
   typedef _PyFloat_ Type;
+  static const int buf_itemsize = sizeof(Scalar);
+  static const int buf_format_idx = 1; // "d"
 };
 
 template <>
@@ -272,6 +286,8 @@ template <>
 struct traitsPythonType< Complex >
 {
   typedef _PyComplex_ Type;
+  static const int buf_itemsize = sizeof(Complex);
+  static const int buf_format_idx = 2; // "Zd"
 };
 
 template <>
@@ -461,6 +477,34 @@ namePython<_PySequence_>()
 
 
 
+/* Buffer protocol PEP 3118 */
+template <class CPP_Type, int ndim=1>
+static inline
+bool
+isAPythonBufferOf(PyObject * pyObj)
+{
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      bool result = (view.ndim == ndim &&
+                     view.itemsize == traitsPythonType<CPP_Type>::buf_itemsize &&
+                     view.format != NULL &&
+                     strcmp(view.format, pyBuf_formats[traitsPythonType<CPP_Type>::buf_format_idx]) == 0);
+      PyBuffer_Release(&view);
+      return result;
+    }
+    else
+    {
+      // When PyObject_GetBuffer fails, it sets PyErr_BufferException,
+      // thus PyErr_Clear must be called.
+      PyErr_Clear();
+    }
+  }
+  return false;
+}
 
 template <class PYTHON_Type>
 static inline
@@ -590,6 +634,32 @@ inline
 Point
 convert< _PySequence_, Point >(PyObject * pyObj)
 {
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 1 &&
+          view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
+      {
+        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        const Scalar* data = static_cast<const Scalar*>(view.buf);
+        const UnsignedInteger size = view.shape[0];
+        Point point( size );
+        std::copy(data, data + size, &point[0]);
+        PyBuffer_Release(&view);
+        return point;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
   Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
   return Point( *ptr );
 }
@@ -634,6 +704,32 @@ inline
 Collection<Complex>
 convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
 {
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 1 &&
+          view.itemsize == traitsPythonType<Complex>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Complex>::buf_format_idx]) == 0)
+      {
+        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        const Complex* data = static_cast<const Complex*>(view.buf);
+        const UnsignedInteger size = view.shape[0];
+        Collection<Complex> result( size );
+        std::copy(data, data + size, &result[0]);
+        PyBuffer_Release(&view);
+        return result;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
   Pointer<Collection<Complex> > ptr = buildCollectionFromPySequence<Complex>(pyObj);
   return Collection<Complex>( *ptr );
 }
@@ -694,6 +790,33 @@ inline
 Sample
 convert< _PySequence_, Sample >(PyObject * pyObj)
 {
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 2 &&
+          view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
+      {
+        // 2-d contiguous array in C notation, we can directly copy memory chunk
+        const Scalar* data = static_cast<const Scalar*>(view.buf);
+        const UnsignedInteger size = view.shape[0];
+        const UnsignedInteger dimension = view.shape[1];
+        Sample sample( size, dimension );
+        std::copy(data, data + size * dimension, &sample(0,0));
+        PyBuffer_Release(&view);
+        return sample;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if ( PyObject_HasAttrString(pyObj, const_cast<char *>("shape")) )
   {
@@ -791,6 +914,32 @@ inline
 Collection< UnsignedInteger >
 convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
 {
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 1 &&
+          view.itemsize == traitsPythonType<UnsignedInteger>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<UnsignedInteger>::buf_format_idx]) == 0)
+      {
+        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        const UnsignedInteger* data = static_cast<const UnsignedInteger*>(view.buf);
+        const UnsignedInteger size = view.shape[0];
+        Collection<UnsignedInteger> result( size );
+        std::copy(data, data + size, &result[0]);
+        PyBuffer_Release(&view);
+        return result;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
   Pointer<Collection<UnsignedInteger> > ptr = buildCollectionFromPySequence<UnsignedInteger>(pyObj);
   return Collection<UnsignedInteger>( ptr->begin(), ptr->end() );
 }
@@ -854,6 +1003,31 @@ inline
 Collection<Scalar>
 convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
 {
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 1 &&
+          view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
+      {
+        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        const Scalar* data = static_cast<const Scalar*>(view.buf);
+        const UnsignedInteger size = view.shape[0];
+        Collection<Scalar> result(size);
+        std::copy(data, data + size, &result[0]);
+        PyBuffer_Release(&view);
+        return result;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
   Pointer<Collection<Scalar> > ptr = buildCollectionFromPySequence<Scalar>(pyObj);
   return Collection<Scalar>( *ptr );
 }
@@ -874,6 +1048,35 @@ MatrixImplementation*
 convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
 {
   MatrixImplementation *p_implementation = 0;
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 2 &&
+          view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
+      {
+        // 2-d contiguous array in C notation, but we use Fortran notation in OT
+        const Scalar* data = static_cast<const Scalar*>(view.buf);
+        const UnsignedInteger nbRows = view.shape[0];
+        const UnsignedInteger nbColumns = view.shape[1];
+        p_implementation = new MatrixImplementation( nbRows, nbColumns );
+        for(UnsignedInteger i = 0; i < nbRows; ++i)
+          for (UnsignedInteger j = 0; j < nbColumns; ++j, ++data)
+            p_implementation->operator()(i, j) = *data;
+        PyBuffer_Release(&view);
+        return p_implementation;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if ( PyObject_HasAttrString(pyObj, const_cast<char *>("shape")) )
   {
@@ -1043,6 +1246,37 @@ inline
 TensorImplementation*
 convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
 {
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 3 &&
+          view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
+      {
+        // 3-d contiguous array in C notation, but we use Fortran notation in OT
+        const Scalar* data = static_cast<const Scalar*>(view.buf);
+        const UnsignedInteger nbRows = view.shape[0];
+        const UnsignedInteger nbColumns = view.shape[1];
+        const UnsignedInteger nbSheets = view.shape[2];
+        TensorImplementation *p_implementation = new TensorImplementation( nbRows, nbColumns, nbSheets );
+        for(UnsignedInteger i = 0; i < nbRows; ++i)
+          for (UnsignedInteger j = 0; j < nbColumns; ++j)
+            for (UnsignedInteger k = 0; k < nbSheets; ++k, ++data )
+              p_implementation->operator()( i, j, k ) = *data;
+        PyBuffer_Release(&view);
+        return p_implementation;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
   Pointer< Collection< Sample > > ptr = buildCollectionFromPySequence< Sample >(pyObj);
   UnsignedInteger nbRows = ptr->getSize();
   UnsignedInteger nbColumns = ptr->getSize() > 0 ? (*ptr)[0].getSize() : 0;
@@ -1094,6 +1328,35 @@ inline
 ComplexMatrixImplementation*
 convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
 {
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 2 &&
+          view.itemsize == traitsPythonType<Complex>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Complex>::buf_format_idx]) == 0)
+      {
+        // 2-d contiguous array in C notation, but we use Fortran notation in OT
+        const Complex* data = static_cast<const Complex*>(view.buf);
+        const UnsignedInteger nbRows = view.shape[0];
+        const UnsignedInteger nbColumns = view.shape[1];
+        ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns );
+        for(UnsignedInteger i = 0; i < nbRows; ++i)
+          for (UnsignedInteger j = 0; j < nbColumns; ++j, ++data)
+            p_implementation->operator()(i, j) = *data;
+        PyBuffer_Release(&view);
+        return p_implementation;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if ( PyObject_HasAttrString(pyObj, const_cast<char *>("shape")) )
   {
@@ -1239,6 +1502,36 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
 {
   ComplexTensorImplementation *p_implementation = 0;
 
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    // TODO: handle Fortran contiguous buffers
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 3 &&
+          view.itemsize == traitsPythonType<Complex>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<Complex>::buf_format_idx]) == 0)
+      {
+        // 3-d contiguous array in C notation, but we use Fortran notation in OT
+        const Complex* data = static_cast<const Complex*>(view.buf);
+        const UnsignedInteger nbRows = view.shape[0];
+        const UnsignedInteger nbColumns = view.shape[1];
+        const UnsignedInteger nbSheets = view.shape[2];
+        p_implementation = new ComplexTensorImplementation( nbRows, nbColumns, nbSheets );
+        for(UnsignedInteger i = 0; i < nbRows; ++i)
+          for (UnsignedInteger j = 0; j < nbColumns; ++j)
+            for (UnsignedInteger k = 0; k < nbSheets; ++k, ++data )
+              p_implementation->operator()( i, j, k ) = *data;
+        PyBuffer_Release(&view);
+        return p_implementation;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if ( PyObject_HasAttrString(pyObj, const_cast<char *>("shape")) )
   {
