@@ -25,7 +25,7 @@
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const ScalarCollection & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-       OT::isAPythonBufferOf<OT::Scalar>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>( $input );
+       OT::isAPythonBufferOf<OT::Scalar, 1>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>( $input );
 }
 
 %template(PointCollection)            OT::Collection<OT::Point>;
@@ -39,7 +39,7 @@
   {
     //Nothing to do for NP
   }
-  else if (OT::isAPythonBufferOf<OT::Scalar>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>( $input ))
+  else if (OT::isAPythonBufferOf<OT::Scalar, 1>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>( $input ))
   {
     temp = OT::convert<OT::_PySequence_,OT::Point>( $input );
     $1 = &temp;
@@ -52,7 +52,7 @@
 
 %typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALPOINT) const Point & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-       OT::isAPythonBufferOf<OT::Scalar>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>( $input );
+       OT::isAPythonBufferOf<OT::Scalar, 1>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>( $input );
 }
 
 %apply const Point & { const OT::Point & };
