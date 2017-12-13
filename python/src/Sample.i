@@ -4,6 +4,7 @@
 %ignore OT::Sample::streamToRFormat;
 
 %{
+#include "openturns/PythonWrappingFunctions.hxx"
 #include "openturns/SampleImplementation.hxx"
 #include "openturns/Sample.hxx"
 %}
@@ -31,6 +32,19 @@
 }
 
 %apply const Sample & { const OT::Sample & };
+
+%typemap(in) const UnsignedIntegerCollection & ($1_basetype temp) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+    try {
+      temp = OT::convert<OT::_PySequence_,OT::Collection<OT::UnsignedInteger> >( $input );
+      $1 = &temp;
+    } catch (OT::InvalidArgumentException &) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of UnsignedInteger");
+    }
+  }
+}
+
+%apply const UnsignedIntegerCollection & { const OT::Sample::UnsignedIntegerCollection &, const OT::SampleImplementation::UnsignedIntegerCollection & };
 
 %rename(__contains__) OT::Sample::contains;
 
