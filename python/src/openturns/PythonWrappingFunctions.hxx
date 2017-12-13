@@ -486,8 +486,7 @@ isAPythonBufferOf(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       bool result = (view.ndim == ndim &&
                      view.itemsize == traitsPythonType<CPP_Type>::buf_itemsize &&
@@ -638,15 +637,14 @@ convert< _PySequence_, Point >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 1 &&
           view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
       {
-        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        // 1-d contiguous array, we can directly copy memory chunk
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Point point( size );
@@ -708,15 +706,14 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 1 &&
           view.itemsize == traitsPythonType<Complex>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Complex>::buf_format_idx]) == 0)
       {
-        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        // 1-d contiguous array, we can directly copy memory chunk
         const Complex* data = static_cast<const Complex*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<Complex> result( size );
@@ -794,20 +791,28 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 2 &&
           view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
       {
-        // 2-d contiguous array in C notation, we can directly copy memory chunk
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         const UnsignedInteger dimension = view.shape[1];
         Sample sample( size, dimension );
-        std::copy(data, data + size * dimension, &sample(0,0));
+        if (PyBuffer_IsContiguous(&view, 'C'))
+        {
+          // 2-d contiguous array in C notation, we can directly copy memory chunk
+          std::copy(data, data + size * dimension, &sample(0,0));
+        }
+        else
+        {
+          for (UnsignedInteger j = 0; j < dimension; ++j)
+            for(UnsignedInteger i = 0; i < size; ++i, ++data)
+              sample(i, j) = *data;
+        }
         PyBuffer_Release(&view);
         return sample;
       }
@@ -918,15 +923,14 @@ convert< _PySequence_, Collection<UnsignedInteger> >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 1 &&
           view.itemsize == traitsPythonType<UnsignedInteger>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<UnsignedInteger>::buf_format_idx]) == 0)
       {
-        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        // 1-d contiguous array, we can directly copy memory chunk
         const UnsignedInteger* data = static_cast<const UnsignedInteger*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<UnsignedInteger> result( size );
@@ -1007,15 +1011,14 @@ convert< _PySequence_, Collection<Scalar> >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 1 &&
           view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
       {
-        // 1-d contiguous array in C notation, we can directly copy memory chunk
+        // 1-d contiguous array, we can directly copy memory chunk
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         Collection<Scalar> result(size);
@@ -1052,22 +1055,28 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 2 &&
           view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
       {
-        // 2-d contiguous array in C notation, but we use Fortran notation in OT
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger nbRows = view.shape[0];
         const UnsignedInteger nbColumns = view.shape[1];
         p_implementation = new MatrixImplementation( nbRows, nbColumns );
-        for(UnsignedInteger i = 0; i < nbRows; ++i)
-          for (UnsignedInteger j = 0; j < nbColumns; ++j, ++data)
-            p_implementation->operator()(i, j) = *data;
+        if (PyBuffer_IsContiguous(&view, 'F'))
+        {
+          // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
+          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0,0));
+        }
+        else
+        {
+          for(UnsignedInteger i = 0; i < nbRows; ++i)
+            for (UnsignedInteger j = 0; j < nbColumns; ++j, ++data)
+              p_implementation->operator()(i, j) = *data;
+        }
         PyBuffer_Release(&view);
         return p_implementation;
       }
@@ -1250,24 +1259,30 @@ convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 3 &&
           view.itemsize == traitsPythonType<Scalar>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Scalar>::buf_format_idx]) == 0)
       {
-        // 3-d contiguous array in C notation, but we use Fortran notation in OT
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger nbRows = view.shape[0];
         const UnsignedInteger nbColumns = view.shape[1];
         const UnsignedInteger nbSheets = view.shape[2];
         TensorImplementation *p_implementation = new TensorImplementation( nbRows, nbColumns, nbSheets );
-        for(UnsignedInteger i = 0; i < nbRows; ++i)
-          for (UnsignedInteger j = 0; j < nbColumns; ++j)
-            for (UnsignedInteger k = 0; k < nbSheets; ++k, ++data )
-              p_implementation->operator()( i, j, k ) = *data;
+        if (PyBuffer_IsContiguous(&view, 'F'))
+        {
+          // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
+          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0,0,0));
+        }
+        else
+        {
+          for(UnsignedInteger i = 0; i < nbRows; ++i)
+            for (UnsignedInteger j = 0; j < nbColumns; ++j)
+              for (UnsignedInteger k = 0; k < nbSheets; ++k, ++data )
+                p_implementation->operator()( i, j, k ) = *data;
+        }
         PyBuffer_Release(&view);
         return p_implementation;
       }
@@ -1332,22 +1347,28 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 2 &&
           view.itemsize == traitsPythonType<Complex>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Complex>::buf_format_idx]) == 0)
       {
-        // 2-d contiguous array in C notation, but we use Fortran notation in OT
         const Complex* data = static_cast<const Complex*>(view.buf);
         const UnsignedInteger nbRows = view.shape[0];
         const UnsignedInteger nbColumns = view.shape[1];
         ComplexMatrixImplementation *p_implementation = new ComplexMatrixImplementation( nbRows, nbColumns );
-        for(UnsignedInteger i = 0; i < nbRows; ++i)
-          for (UnsignedInteger j = 0; j < nbColumns; ++j, ++data)
-            p_implementation->operator()(i, j) = *data;
+        if (PyBuffer_IsContiguous(&view, 'F'))
+        {
+          // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
+          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0,0));
+        }
+        else
+        {
+          for(UnsignedInteger i = 0; i < nbRows; ++i)
+            for (UnsignedInteger j = 0; j < nbColumns; ++j, ++data)
+              p_implementation->operator()(i, j) = *data;
+        }
         PyBuffer_Release(&view);
         return p_implementation;
       }
@@ -1506,24 +1527,30 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
   if (PyObject_CheckBuffer(pyObj))
   {
     Py_buffer view;
-    // TODO: handle Fortran contiguous buffers
-    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_C_CONTIGUOUS) >= 0)
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
     {
       if (view.ndim == 3 &&
           view.itemsize == traitsPythonType<Complex>::buf_itemsize &&
           view.format != NULL &&
           strcmp(view.format, pyBuf_formats[traitsPythonType<Complex>::buf_format_idx]) == 0)
       {
-        // 3-d contiguous array in C notation, but we use Fortran notation in OT
         const Complex* data = static_cast<const Complex*>(view.buf);
         const UnsignedInteger nbRows = view.shape[0];
         const UnsignedInteger nbColumns = view.shape[1];
         const UnsignedInteger nbSheets = view.shape[2];
         p_implementation = new ComplexTensorImplementation( nbRows, nbColumns, nbSheets );
-        for(UnsignedInteger i = 0; i < nbRows; ++i)
-          for (UnsignedInteger j = 0; j < nbColumns; ++j)
-            for (UnsignedInteger k = 0; k < nbSheets; ++k, ++data )
-              p_implementation->operator()( i, j, k ) = *data;
+        if (PyBuffer_IsContiguous(&view, 'F'))
+        {
+          // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
+          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0,0,0));
+        }
+        else
+        {
+          for(UnsignedInteger i = 0; i < nbRows; ++i)
+            for (UnsignedInteger j = 0; j < nbColumns; ++j)
+              for (UnsignedInteger k = 0; k < nbSheets; ++k, ++data )
+                p_implementation->operator()( i, j, k ) = *data;
+        }
         PyBuffer_Release(&view);
         return p_implementation;
       }
