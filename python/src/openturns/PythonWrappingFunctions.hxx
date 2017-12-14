@@ -896,7 +896,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
       {
         throw;
       }
-      if (PySequence_Fast_GET_SIZE( newPyPointObj.get() ) != dimension) throw;
+      if (static_cast<UnsignedInteger>(PySequence_Fast_GET_SIZE( newPyPointObj.get() )) != dimension) throw;
     }
     for(UnsignedInteger j = 0; j < dimension; ++j)
     {
