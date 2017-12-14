@@ -582,18 +582,25 @@ void UserDefined::compactSupport(const Scalar epsilon)
     const UnsignedInteger hashSize = 511;
     Collection<Indices> indices(hashSize);
     Collection<Indices> residuals(hashSize);
+    union
+    {
+      Scalar *s;
+      Unsigned64BitsInteger *u64;
+    } typepun;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Point x(points_[i]);
       Scalar roundedComponent = x[0];
       if (epsilon > 0.0) roundedComponent = epsilon * round(roundedComponent / epsilon);
-      UnsignedInteger index = *reinterpret_cast<Unsigned64BitsInteger*>(&roundedComponent);
+      typepun.s = &roundedComponent;
+      UnsignedInteger index = *typepun.u64;
       for (UnsignedInteger j = 1; j < dimension; ++j)
       {
         roundedComponent = x[j];
         if (epsilon > 0.0) roundedComponent = epsilon * round(roundedComponent / epsilon);
         // XOR based hash function on the binary representation of the floating point coordinates
-        index ^= *reinterpret_cast<Unsigned64BitsInteger*>(&roundedComponent);
+        typepun.s = &roundedComponent;
+        index ^= *typepun.u64;
       }
       const UnsignedInteger hash = index % hashSize;
       const UnsignedInteger quotient = index / hashSize;
