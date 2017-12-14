@@ -10,7 +10,6 @@ Numerical methods
     distribution_realization
     sphere_sampling
     optimization_algorithm
-    optimal_lhs
     least_squares
 
 Isoprobabilistic transformation
