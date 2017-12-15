@@ -1,6 +1,21 @@
-Reference copulaclass=GumbelCopula name=GumbelCopula dimension=2 theta=3
-Max. error=0.039628
-Reference copulaclass=ClaytonCopula name=ClaytonCopula dimension=2 theta=3
-Max. error=0.0378453
-Reference copulaclass=FrankCopula name=FrankCopula dimension=2 theta=3
-Max. error=0.0174008
+Reference copula GumbelCopula(theta = 3)
+Log-likelihood bin number=27
+Max. error=0.0272721
+AMISE bin number=5
+Max. error=0.0707687
+Penalized Csiszar divergence bin number=92
+Max. error=0.0272734
+Reference copula ClaytonCopula(theta = 3)
+Log-likelihood bin number=26
+Max. error=0.0264101
+AMISE bin number=5
+Max. error=0.0692999
+Penalized Csiszar divergence bin number=96
+Max. error=0.0198244
+Reference copula FrankCopula(theta = 3)
+Log-likelihood bin number=27
+Max. error=0.0334921
+AMISE bin number=5
+Max. error=0.0425407
+Penalized Csiszar divergence bin number=14
+Max. error=0.0366729

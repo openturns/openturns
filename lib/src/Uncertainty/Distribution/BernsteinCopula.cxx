@@ -47,7 +47,7 @@ BernsteinCopula::BernsteinCopula()
 }
 
 /* Default constructor */
-BernsteinCopula::BernsteinCopula(const Sample & sample,
+BernsteinCopula::BernsteinCopula(const Sample & copulaSample,
 				 const UnsignedInteger binNumber,
 				 const Bool isEmpiricalCopulaSample)
   : CopulaImplementation()
@@ -223,7 +223,7 @@ Scalar BernsteinCopula::computePDF(const Point & point) const
   UnsignedInteger linearIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
     {
-      Scalar logPDFAtom = logBetaFactors_[i];
+      Scalar logPDFAtom = 0.0;
       for (UnsignedInteger j = 0; j < dimension; ++j)
 	{
 	  logPDFAtom += (logFactors_[linearIndex] - 1.0) * logX[j] + (binNumber_ - logFactors_[linearIndex]) * log1pX[j] - logBetaFactors_[linearIndex];
@@ -255,7 +255,7 @@ Scalar BernsteinCopula::computeLogPDF(const Point & point) const
   const Scalar logW = -std::log(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     {
-      Scalar logPDFAtom = logBetaFactors_[i];
+      Scalar logPDFAtom = 0.0;
       for (UnsignedInteger j = 0; j < dimension; ++j)
 	{
 	  logPDFAtom += (logFactors_[linearIndex] - 1.0) * logX[j] + (binNumber_ - logFactors_[linearIndex]) * log1pX[j] + logW - logBetaFactors_[linearIndex];
@@ -323,7 +323,24 @@ BernsteinCopula::Implementation BernsteinCopula::getMarginal(const Indices & ind
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
-  return new BernsteinCopula(copulaSample_.getMarginal(indices), binNumber_);
+  const UnsignedInteger size = copulaSample_.getSize();
+  const UnsignedInteger marginalDimension = indices.getSize();
+  Point marginalLogBetaFactors(size * marginalDimension);
+  Point marginalLogFactors(size * marginalDimension);
+  UnsignedInteger linearIndex = 0;
+  UnsignedInteger baseIndex = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      for (UnsignedInteger j = 0; j < marginalDimension; ++j)
+	{
+	  const UnsignedInteger marginalIndex = indices[j];
+	  marginalLogBetaFactors[linearIndex] = logBetaFactors_[baseIndex + marginalIndex];
+	  marginalLogFactors[linearIndex] = logFactors_[baseIndex + marginalIndex];
+	  ++linearIndex;
+	} // j
+      baseIndex += dimension;
+    } // i
+  return new BernsteinCopula(copulaSample_.getMarginal(indices), binNumber_, marginalLogBetaFactors, marginalLogFactors);
 }
 
 /* Get the Spearman correlation of the distribution */
@@ -368,7 +385,7 @@ void BernsteinCopula::update()
 {
   const UnsignedInteger size = copulaSample_.getSize();
   const UnsignedInteger dimension = copulaSample_.getDimension();
-  logBetaFactors_ = Point(size);
+  logBetaFactors_ = Point(size * dimension);
   logFactors_ = Point(size * dimension);
   UnsignedInteger linearIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)

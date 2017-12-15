@@ -113,6 +113,12 @@ public:
 
 private:
 
+  /** Default constructor */
+  BernsteinCopula(const Sample & copulaSample,
+		  const UnsignedInteger binNumber,
+		  const Point & logBetaFactors,
+		  const Point & logFactors);
+
   /** Compute the normalization factors */
   void update();
   

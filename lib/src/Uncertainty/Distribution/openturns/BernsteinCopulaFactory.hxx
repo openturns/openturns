@@ -26,6 +26,8 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/EmpiricalBernsteinCopula.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,39 +50,50 @@ public:
 
   /** Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build(const Sample & sample);
+  virtual Distribution build();
+
+  virtual Distribution build(const Sample & sample,
+                             const String & method = ResourceMap::Get("BernsteinCopulaFactory-BinNumberSelectionMethod"),
+                             const Function & objective = Function());
 
   /** Build a Bernstein copula based on the given sample and bin number */
   virtual Distribution build(const Sample & sample,
-                             const UnsignedInteger binNumber,
-                             const Bool copulaSample = false);
+                             const UnsignedInteger binNumber);
 
   /** Build a Bernstein copula based on the given sample and bin number as a EmpiricalBernsteinCopula */
   EmpiricalBernsteinCopula buildAsBernsteinCopula();
 
-  EmpiricalBernsteinCopula buildAsBernsteinCopula(const Sample & sample,
-      const String & method = ResourceMap::Get("BernsteinCopulaFactory-BinNumberSelection"),
+  EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula(const Sample & sample,
+      const String & method = ResourceMap::Get("BernsteinCopulaFactory-BinNumberSelectionMethod"),
       const Function & objective = Function());
 
-  EmpiricalBernsteinCopula buildAsBernsteinCopula(const Sample & sample,
-      const UnsignedInteger binNumber,
-      const Bool copulaSample = false);
-
-  virtual Distribution buildSequential(const Sample & sample,
-                                       const UnsignedInteger binNumber);
-public:
+  EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula(const Sample & sample,
+      const UnsignedInteger binNumber);
 
   /** Compute the number of bins according to the inverse power rule */
-  UnsignedInteger computeBinNumber(const Sample & sample);
+      static UnsignedInteger ComputeAMISEBinNumber(const Sample & sample);
 
-  /** Parallelization flag accessor */
-  void setParallel(const Bool flag);
-  Bool isParallel() const;
+  /** Compute the number of bins according to cross-validation maximum log-likelihood */
+  static UnsignedInteger ComputeLogLikelihoodBinNumber(const Sample & sample,
+      const UnsignedInteger kFraction = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-kFraction"));
+
+  /** Compute the number of bins according to penalized Csiszar divergence */
+  static UnsignedInteger ComputePenalizedCsiszarDivergenceBinNumber(const Sample & sample,
+								    const Function & f,
+								    const Scalar alpha = ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
+
+  /** Build all the learning/validation partitions of the given sample */
+  static void BuildCrossValidationSamples(const Sample & sample,
+                                          const UnsignedInteger kFraction,
+                                          Collection<Sample> & learningCollection,
+                                          Collection<Sample> & validationCollection);
 
 private:
 
-  /** Flag to tell if parallelization must be used */
-  Bool isParallel_;
+  /** Find the best bin number using an exhaustive search between two bounds given throug ResourceMap, or between 1 and size/2 if the bounds are in reverse order */
+  static UnsignedInteger FindBestBinNumberSequential(const Function & mObjective,
+						     const UnsignedInteger mMin,
+						     const UnsignedInteger mMax);
 
 }; /* class BernsteinCopulaFactory */
 

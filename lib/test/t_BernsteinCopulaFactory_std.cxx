@@ -36,25 +36,65 @@ int main(int argc, char *argv[])
     coll.add(ClaytonCopula(3.0));
     coll.add(FrankCopula(3.0));
     Point point(2);
-    UnsignedInteger size = 1000;
+    UnsignedInteger size = 100;
     for (UnsignedInteger i = 0; i < coll.getSize(); ++i)
     {
       Copula ref_copula(coll[i]);
-      fullprint << "Reference copula" << ref_copula << std::endl;
+      fullprint << "Reference copula " << ref_copula.__str__() << std::endl;
       Sample sample(ref_copula.getSample(size));
-      Distribution est_copula(BernsteinCopulaFactory().build(sample));
-      Scalar max_error = 0.0;
-      for (UnsignedInteger m = 0; m < 11; ++m)
+      // Default method: log-likelihood
       {
-        point[0] = 0.1 * m;
-        for (UnsignedInteger n = 0; n < 11; ++n)
-        {
-          point[1] = 0.1 * n;
-          max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
-        }
+	UnsignedInteger m = BernsteinCopulaFactory::ComputeLogLikelihoodBinNumber(sample);
+	fullprint << "Log-likelihood bin number=" << m << std::endl;
+	Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
+	Scalar max_error = 0.0;
+	for (UnsignedInteger n = 0; n < 11; ++n)
+	  {
+	    point[0] = 0.1 * n;
+	    for (UnsignedInteger p = 0; p < 11; ++p)
+	      {
+		point[1] = 0.1 * p;
+		max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
+	      }
+	  }
+	fullprint << "Max. error=" << max_error << std::endl;
       }
-      fullprint << "Max. error=" << max_error << std::endl;
-    }
+      // AMISE method
+      {
+	UnsignedInteger m = BernsteinCopulaFactory::ComputeAMISEBinNumber(sample);
+	fullprint << "AMISE bin number=" << m << std::endl;
+	Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
+	Scalar max_error = 0.0;
+	for (UnsignedInteger n = 0; n < 11; ++n)
+	  {
+	    point[0] = 0.1 * n;
+	    for (UnsignedInteger p = 0; p < 11; ++p)
+	      {
+		point[1] = 0.1 * p;
+		max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
+	      }
+	  }
+	fullprint << "Max. error=" << max_error << std::endl;
+      }
+      // Penalized Csiszar divergence method
+      {
+	SymbolicFunction f("t", "-log(t)");
+	UnsignedInteger m = BernsteinCopulaFactory::ComputePenalizedCsiszarDivergenceBinNumber(sample, f);
+	fullprint << "Penalized Csiszar divergence bin number=" << m << std::endl;
+	Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
+	Scalar max_error = 0.0;
+	for (UnsignedInteger n = 0; n < 11; ++n)
+	  {
+	    point[0] = 0.1 * n;
+	    for (UnsignedInteger p = 0; p < 11; ++p)
+	      {
+		point[1] = 0.1 * p;
+		max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
+	      }
+	  }
+	fullprint << "Max. error=" << max_error << std::endl;
+      }
+    }      
   }
   catch (TestFailed & ex)
   {
