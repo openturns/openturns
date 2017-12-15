@@ -466,7 +466,33 @@ ComposedCopula::Implementation ComposedCopula::getMarginal(const Indices & indic
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   CopulaCollection marginalCopulas;
   const UnsignedInteger indicesSize = indices.getSize();
-  const UnsignedInteger size = copulaCollection_.getSize();
+  // Merge contiguous Gaussian copulas
+  CopulaCollection copulaCollection(1, copulaCollection_[0]);
+  UnsignedInteger size = copulaCollection.getSize();
+  for (UnsignedInteger ii = 1; ii < copulaCollection_.getSize(); ++ ii)
+  {
+    if ((copulaCollection_[ii].getImplementation()->getClassName() == "NormalCopula")
+      && (copulaCollection[size - 1].getImplementation()->getClassName() == "NormalCopula"))
+    {
+      const CorrelationMatrix corr1(copulaCollection[size - 1].getShapeMatrix());
+      const UnsignedInteger dim1 = corr1.getDimension();
+      const CorrelationMatrix corr2(copulaCollection_[ii].getShapeMatrix());
+      const UnsignedInteger dim2 = corr2.getDimension();
+      CorrelationMatrix aggregatedCorrelation(dim1 + dim2);
+      for (UnsignedInteger j = 0; j < dim1; ++ j)
+        for (UnsignedInteger i = 0; i < j; ++ i)
+          aggregatedCorrelation(i, j) = corr1(i, j);
+      for (UnsignedInteger j = 0; j < dim2; ++ j)
+        for (UnsignedInteger i = 0; i < j; ++ i)
+          aggregatedCorrelation(dim1 + i, dim1 + j) = corr2(i, j);
+      copulaCollection[size - 1] = NormalCopula(aggregatedCorrelation);
+    }
+    else
+    {
+      copulaCollection.add(copulaCollection_[ii]);
+      ++ size;
+    }
+  }
   // For each copula, see if there is something to extract
   UnsignedInteger currentPosition = 0;
   UnsignedInteger currentIndex = indices[currentPosition];
@@ -476,7 +502,7 @@ ComposedCopula::Implementation ComposedCopula::getMarginal(const Indices & indic
   UnsignedInteger upperIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Copula copula(copulaCollection_[i]);
+    const Copula copula(copulaCollection[i]);
     // Update index range for the current copula
     lowerIndex = upperIndex;
     upperIndex += copula.getDimension();
@@ -491,7 +517,7 @@ ComposedCopula::Implementation ComposedCopula::getMarginal(const Indices & indic
       currentIndex = indices[currentPosition];
     }
     // If there is something to extract
-    if (copulaIndices.getSize() > 0) marginalCopulas.add(copulaCollection_[i].getMarginal(copulaIndices));
+    if (copulaIndices.getSize() > 0) marginalCopulas.add(copulaCollection[i].getMarginal(copulaIndices));
     // All the indices have been taken into account
     if (currentPosition == indicesSize) break;
     // non-contiguous dependency blocs case
