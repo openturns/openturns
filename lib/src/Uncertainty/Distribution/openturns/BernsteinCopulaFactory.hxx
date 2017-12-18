@@ -24,6 +24,7 @@
 
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/EmpiricalBernsteinCopula.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -51,11 +52,19 @@ public:
 
   /** Build a Bernstein copula based on the given sample and bin number */
   virtual Distribution build(const Sample & sample,
-                             const UnsignedInteger binNumber);
+                             const UnsignedInteger binNumber,
+                             const Bool copulaSample = false);
 
-private:
-  virtual Distribution buildParallel(const Sample & sample,
-                                     const UnsignedInteger binNumber);
+  /** Build a Bernstein copula based on the given sample and bin number as a EmpiricalBernsteinCopula */
+  EmpiricalBernsteinCopula buildAsBernsteinCopula();
+
+  EmpiricalBernsteinCopula buildAsBernsteinCopula(const Sample & sample,
+      const String & method = ResourceMap::Get("BernsteinCopulaFactory-BinNumberSelection"),
+      const Function & objective = Function());
+
+  EmpiricalBernsteinCopula buildAsBernsteinCopula(const Sample & sample,
+      const UnsignedInteger binNumber,
+      const Bool copulaSample = false);
 
   virtual Distribution buildSequential(const Sample & sample,
                                        const UnsignedInteger binNumber);

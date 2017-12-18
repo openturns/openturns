@@ -556,6 +556,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       BayesDistribution.i BayesDistribution_doc.i.in
                       Bernoulli.i Bernoulli_doc.i.in
                       BernoulliFactory.i BernoulliFactory_doc.i.in
+                      EmpiricalBernsteinCopula.i EmpiricalBernsteinCopula_doc.i.in
                       BernsteinCopulaFactory.i BernsteinCopulaFactory_doc.i.in
                       Beta.i Beta_doc.i.in
                       BetaFactory.i BetaFactory_doc.i.in

@@ -86,7 +86,70 @@ struct BernsteinCopulaFactoryPolicy
     }
   }
 
-}; /* end struct BernsteinCopulaFactoryPolicy */
+  MeanObjective * clone() const
+  {
+    return new MeanObjective(*this);
+  }
+
+  Scalar computeMC(const EmpiricalBernsteinCopula & copula,
+                   const Sample & sample) const
+  {
+    const UnsignedInteger size = sample.getSize();
+    const Sample pdfSample(copula.computePDF(sample));
+    Scalar value = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar pdf = pdfSample(i, 0);
+      if (pdf > 0.0) value += pdf * objective_(Point(1, 1.0 / pdf))[0];
+    } // i
+    return value / size;
+  }
+
+  Point operator() (const Point & point) const
+  {
+    const UnsignedInteger m = static_cast<UnsignedInteger>(point[0]);
+    if (isLogLikelihood_) return Point(1, computeLogLikelihood(m) / kFraction_);
+    return Point(1, computeCsiszar(m) / kFraction_);
+  }
+
+  Scalar computeCsiszar(const UnsignedInteger m) const
+  {
+    Scalar result = 0.0;
+    for (UnsignedInteger k = 0; k < kFraction_; ++k)
+    {
+      const Sample learning(p_learningSamples_[k]);
+      const Sample validation(p_validationSamples_[k]);
+      const EmpiricalBernsteinCopula copula(learning, m, false);
+      const Scalar rHat = computeMC(copula, copula.getSample(N_));
+      const Scalar rTilde = computeMC(copula, fullSample_);
+      const Scalar delta = (rTilde > 0.0 ? 1.0 - rHat / rTilde : 1.0);
+      result += delta * delta;
+    } // k
+    return result;
+  }
+
+  Scalar computeLogLikelihood(const UnsignedInteger m) const
+  {
+    Scalar result = 0.0;
+    for (UnsignedInteger k = 0; k < kFraction_; ++k)
+    {
+      const Sample learning(p_learningSamples_[k]);
+      const Sample validation(p_validationSamples_[k]);
+      const EmpiricalBernsteinCopula copula(learning, m, false);
+      result -= copula.computeLogPDF(validation).computeMean()[0];
+    } // k
+    return result;
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 1;
+  }
 
 /* Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
 Distribution BernsteinCopulaFactory::build(const Sample & sample)
@@ -142,16 +205,34 @@ Distribution BernsteinCopulaFactory::build(const Sample & sample,
   return buildSequential(empiricalCopulaSample, binNumber);
 }
 
-/** Parallelization flag accessor */
-void BernsteinCopulaFactory::setParallel(const Bool flag)
+/* Build a Bernstein copula based on the given sample. */
+EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsBernsteinCopula()
 {
-  isParallel_ = flag;
+  return EmpiricalBernsteinCopula();
 }
 
-Bool BernsteinCopulaFactory::isParallel() const
+EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsBernsteinCopula(const Sample & sample,
+    const String & method,
+    const Function & objective)
 {
   return isParallel_;
 }
 
+EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsBernsteinCopula(const Sample & sample,
+    const UnsignedInteger binNumber,
+    const Bool copulaSample)
+{
+  if (binNumber == 0) throw InvalidDimensionException(HERE) << "Error: the bin number must be positive for the BernsteinCopulaFactory";
+  const UnsignedInteger size = sample.getSize();
+  if (size == 0) throw InvalidDimensionException(HERE) << "Error: cannot build a copula using the Bernstein copula factory based on an empty sample";
+  if (binNumber > size) throw InvalidArgumentException(HERE) << "Error: cannot build a copula using the Bernstein copula factory when the bin number is greater than the sample size";
+  const UnsignedInteger remainder = size % binNumber;
+  // If the bin number is compatible with the sample size
+  if (remainder == 0) return EmpiricalBernsteinCopula((copulaSample ? sample : sample.toEmpiricalCopula()), binNumber, true);
+  Sample localSample(sample);
+  (void) localSample.split(size - remainder);
+  // We must recompute the empirical copula sample as the size has changed
+  return EmpiricalBernsteinCopula(localSample.toEmpiricalCopula(), binNumber, true);
+}
 
 END_NAMESPACE_OPENTURNS
