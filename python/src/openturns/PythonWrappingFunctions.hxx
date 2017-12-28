@@ -518,7 +518,7 @@ isAPythonSequenceOf(PyObject * pyObj)
     for( UnsignedInteger i = 0; ok && (i < size); ++i )
     {
       ScopedPyObjectPointer elt(PySequence_ITEM( pyObj, i ));
-      int elt_ok = isAPython<PYTHON_Type>(elt.get());
+      int elt_ok = elt.get() && isAPython<PYTHON_Type>(elt.get());
       ok *= elt_ok;
     }
   }
