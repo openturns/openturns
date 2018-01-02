@@ -97,7 +97,7 @@ def Sample__repr_html_(self):
                 if i > printEllipsisSize and i < sampleSize - printEllipsisSize:
                     continue
         # Write row
-        data_row = list(map(str, self[i]))
+        data_row = [str(x) for x in self]
         if ellipsis and sampleDimension > 2 * printEllipsisSize:
             html += '<TR><TD>' + str(i)
             if sampleDimension > 0:

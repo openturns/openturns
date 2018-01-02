@@ -361,7 +361,7 @@ class View(object):
 
             elif drawableKind == 'Pie':
                 pie_kwargs.setdefault(
-                    'labels', list(map(self.ToUnicode, drawable.getLabels())))
+                    'labels', [self.ToUnicode(label) for label in drawable.getLabels()])
                 pie_kwargs.setdefault('colors', drawable.getPalette())
                 self._ax[0].set_aspect('equal')
                 self._ax[0].pie(x, **pie_kwargs)

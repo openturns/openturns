@@ -13,5 +13,5 @@ Examples
 >>> solver = ot.RungeKutta(phi)
 >>> Y0 = [1.0, -1.0]
 >>> nt = 100
->>> timeGrid = list(map(lambda i:(i**2.0) / (nt - 1.0)**2.0, range(nt)))
+>>> timeGrid = [(i**2.0) / (nt - 1.0)**2.0 for i in range(nt)]
 >>> result = solver.solve(Y0, timeGrid)"

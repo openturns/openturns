@@ -33,8 +33,8 @@ coll = [ot.Uniform()] * dim
         # ot.Uniform(9855.0, 12045.0)]
 
 distribution = ot.ComposedDistribution(coll)
-factoryCollection = list(map(lambda dist: ot.OrthogonalUniVariateFunctionFamily(
-    ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.StandardDistributionPolynomialFactory(dist))), coll))
+factoryCollection = [ot.OrthogonalUniVariateFunctionFamily(
+    ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.StandardDistributionPolynomialFactory(dist))) for dist in coll]
 
 
 functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)
