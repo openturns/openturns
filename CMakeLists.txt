@@ -183,7 +183,7 @@ if (TBB_FOUND)
 endif ()
 
 if (USE_MUPARSER)
-  find_package (muParser 1.32)
+  find_package (muParser 2.2.3)
 endif ()
 if (MUPARSER_FOUND)
   set (OPENTURNS_HAVE_MUPARSER TRUE)
