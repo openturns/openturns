@@ -15,7 +15,7 @@
 #  TBB_ROOT_DIR - root dir (ex. /usr/local)
 
 #=============================================================================
-# Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+# Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.

@@ -4,7 +4,7 @@
  *        and a field to point function or between a field to point function
  *        and a field function
  *
- * Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ * Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
  * Permission to copy, use, modify, sell and distribute this software
  * is granted provided this copyright notice appears in all copies.
