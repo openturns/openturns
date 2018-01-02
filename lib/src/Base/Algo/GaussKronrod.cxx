@@ -3,7 +3,7 @@
  *  @brief Implement the Gauss-Kronrod adaptive integration method for functions
  *         with 1D argument.
  *
- *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
