@@ -116,8 +116,6 @@
 %include Basis.i
 %include BasisSequenceImplementation.i
 %include BasisSequence.i
-%include FunctionalBasisImplementation.i
-%include FunctionalBasis.i
 %include BasisSequenceFactoryImplementation.i
 %include BasisSequenceFactory.i
 %include UniVariateFunctionFactory.i

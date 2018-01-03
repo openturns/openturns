@@ -45,7 +45,7 @@ typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVar
 
 /* Default constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
-  : FunctionalBasisImplementation()
+  : BasisImplementation()
   , coll_()
   , phi_()
 {
@@ -55,7 +55,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
 
 /* Constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll)
-  : FunctionalBasisImplementation()
+  : BasisImplementation()
   , coll_(coll)
   , phi_(coll.getSize())
 {
@@ -66,7 +66,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const F
 /* Constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll,
     const EnumerateFunction & phi)
-  : FunctionalBasisImplementation(),
+  : BasisImplementation(),
     coll_(coll),
     phi_(phi)
 {
@@ -140,7 +140,7 @@ String TensorizedUniVariateFunctionFactory::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void TensorizedUniVariateFunctionFactory::save(Advocate & adv) const
 {
-  FunctionalBasisImplementation::save(adv);
+  BasisImplementation::save(adv);
   adv.saveAttribute( "coll_", coll_ );
   adv.saveAttribute( "phi_", phi_ );
 }
@@ -149,7 +149,7 @@ void TensorizedUniVariateFunctionFactory::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void TensorizedUniVariateFunctionFactory::load(Advocate & adv)
 {
-  FunctionalBasisImplementation::load(adv);
+  BasisImplementation::load(adv);
   adv.loadAttribute( "coll_", coll_ );
   adv.loadAttribute( "phi_", phi_ );
 }

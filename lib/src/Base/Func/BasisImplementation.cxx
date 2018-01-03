@@ -94,7 +94,7 @@ Bool BasisImplementation::isOrthogonal() const
 
 Bool BasisImplementation::isFunctional() const
 {
-  return false;
+  return true;
 }
 
 String BasisImplementation::__repr__() const
