@@ -63,7 +63,7 @@ public:
   virtual UnsignedInteger getSize() const;
 
   /** Tells whether the basis is finite */
-  virtual Bool isFunctional() const;
+  virtual Bool isFinite() const;
 
   virtual void add(const Function & elt);
 

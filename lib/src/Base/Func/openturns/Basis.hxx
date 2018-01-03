@@ -76,8 +76,8 @@ public:
   /** Tells whether the basis is orthogonal */
   Bool isOrthogonal() const;
 
-  /** Tells whether the basis is infinite */
-  Bool isFunctional() const;
+  /** Tells whether the basis is finite */
+  Bool isFinite() const;
 
   /** String converter */
   String __repr__() const;

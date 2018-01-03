@@ -115,16 +115,16 @@ OT_Basis_getSubBasis_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Basis_isFunctional_doc
-"Tell whether the basis is functional.
+%define OT_Basis_isFinite_doc
+"Tell whether the basis is finite.
 
 Returns
 -------
-isOrthogonal : bool
-    `True` if the basis is functional i.e. infinite."
+isFinite : bool
+    `True` if the basis is finite."
 %enddef
-%feature("docstring") OT::BasisImplementation::isFunctional
-OT_Basis_isFunctional_doc
+%feature("docstring") OT::BasisImplementation::isFinite
+OT_Basis_isFinite_doc
 
 // ---------------------------------------------------------------------
 
