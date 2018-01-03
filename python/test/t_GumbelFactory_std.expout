@@ -1,12 +1,12 @@
 Distribution                      = class=Gumbel name=Gumbel dimension=1 alpha=2 beta=2.5
 Estimated distribution            = class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
-Parameter distribution            = Normal(mu = [1.98645,2.5058], sigma = [0.0197004,0.00534587], R = [[  1         -0.0721044 ]
- [ -0.0721044  1         ]])
+Parameter distribution            = Normal(mu = [1.98704,2.50636], sigma = [0.0198687,0.00503881], R = [[  1         -0.0307802 ]
+ [ -0.0307802  1         ]])
 Default distribution              = Gumbel(alpha = 1, beta = 0)
 Distribution from parameters      = Gumbel(alpha = 2, beta = 2.5)
 Typed estimated distribution      = Gumbel(alpha = 1.98682, beta = 2.50626)
 Default typed distribution        = Gumbel(alpha = 1, beta = 0)
 Typed distribution from parameters= Gumbel(alpha = 2, beta = 2.5)
 Estimated distribution (AB)       = class=ParametrizedDistribution parameters=class=GumbelAB name=Unnamed a=2.50626 b=0.503317 distribution=class=Gumbel name=Gumbel dimension=1 alpha=1.98682 beta=2.50626
-Parameter distribution (AB)       = Normal(mu = [2.50626,0.503317], sigma = [0.00554983,0.0763013], R = [[ 1        0.234284 ]
- [ 0.234284 1        ]])
+Parameter distribution (AB)       = Normal(mu = [2.50626,0.503317], sigma = [0.00499641,0.0778421], R = [[ 1        0.124345 ]
+ [ 0.124345 1        ]])

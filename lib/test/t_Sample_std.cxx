@@ -153,6 +153,15 @@ int main(int argc, char *argv[])
     sample5[2][0] = 2.0;
     fullprint << "sample5=" << sample5.asPoint() << std::endl;
     fullprint << "sample5 (linear)=" << sample5.asPoint() << std::endl;
+
+    // Selection
+    Indices indices(5);
+    indices[0] = 1;
+    indices[1] = 0;
+    indices[2] = 2;
+    indices[3] = 1;
+    indices[4] = 2;
+    fullprint << "selection=" << sample5.select(indices) << std::endl;
   }
   catch (TestFailed & ex)
   {

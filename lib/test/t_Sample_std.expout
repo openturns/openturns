@@ -21,3 +21,4 @@ sample3=class=Sample name=Unnamed implementation=class=SampleImplementation name
 sample4=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=2 data=[[10,20],[11,21],[10,20],[10,20]]
 sample5=class=Point name=Unnamed dimension=3 values=[1,3,2]
 sample5 (linear)=class=Point name=Unnamed dimension=3 values=[1,3,2]
+selection=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=5 dimension=1 description=[v0] data=[[3],[1],[2],[3],[2]]

@@ -51,15 +51,25 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
+  /** Distribution accessor */
+  virtual void setDistribution(const Distribution & distribution);
+  virtual Distribution getDistribution() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
   Sample generateWithWeights(Point & weightsOut) const;
 
+  /** Selection generation */
+  static Indices GenerateSelection(const UnsignedInteger size,
+				   const UnsignedInteger length);
+  
 protected:
 
 private:
 
+  /** The sample from which we resample */
+  Sample sample_;
 }; /* class BootstrapExperiment */
 
 

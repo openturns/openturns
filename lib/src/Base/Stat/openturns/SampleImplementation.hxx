@@ -759,6 +759,9 @@ public:
   /** Get the marginal sample corresponding to indices dimensions */
   SampleImplementation getMarginal(const Indices & indices) const;
 
+  /** Select points in the sample */
+  SampleImplementation select(const UnsignedIntegerCollection & indices) const;
+  
   /**
    * Translate realizations in-place
    */

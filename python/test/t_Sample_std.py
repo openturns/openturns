@@ -90,6 +90,10 @@ try:
     print("sample5=", repr(sample5))
     print("sample5 (linear)=", sample5.asPoint())
 
+    # Selection
+    indices = [1, 0, 2, 1, 2]
+    print("selection=", sample5.select(indices))
+    
 except:
     import sys
     print("t_Sample_std.py", sys.exc_info()[0], sys.exc_info()[1])
