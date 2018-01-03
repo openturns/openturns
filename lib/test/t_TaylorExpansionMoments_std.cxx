@@ -39,13 +39,10 @@ int main(int argc, char *argv[])
     input_r[1] = "x2";
     input_r[2] = "x3";
     input_r[3] = "x4";
-    Description output_r(2);
-    output_r[0] = "y1";
-    output_r[1] = "y2";
     Description formula_r(2);
     formula_r[0] = "(x1*x1+x2^3*x1)/(2*x3*x3+x4^4+1)";
     formula_r[1] = "cos(x2*x2+x4)/(x1*x1+1+x3^4)";
-    Function myFunc(input_r, output_r, formula_r);
+    SymbolicFunction myFunc(input_r, formula_r);
 
     /* We create a distribution */
     UnsignedInteger dim = myFunc.getInputDimension();

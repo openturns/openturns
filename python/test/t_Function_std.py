@@ -8,8 +8,8 @@ TESTPREAMBLE()
 try:
 
     # Instance creation
-    myFunc = Function(
-        ['x1', 'x2'], ['y1', 'y2', 'y3'], ['x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
+    myFunc = SymbolicFunction(
+        ['x1', 'x2'], ['x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
 
     # Copy constructor
     newFunc = Function(myFunc)

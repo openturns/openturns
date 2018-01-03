@@ -43,11 +43,9 @@ int main(int argc, char *argv[])
     inputVariables[0] = "xi1";
     inputVariables[1] = "xi2";
     inputVariables[2] = "xi3";
-    Description outputVariables(1);
-    outputVariables[0] = "y";
     Description formula(1);
     formula[0] = (OSS() << "sin(xi1) + (" << a << ") * (sin(xi2)) ^ 2 + (" << b << ") * xi3^4 * sin(xi1)");
-    Function model(inputVariables, outputVariables, formula);
+    SymbolicFunction model(inputVariables, formula);
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension);

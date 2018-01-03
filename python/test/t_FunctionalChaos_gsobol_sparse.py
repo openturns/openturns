@@ -26,8 +26,6 @@ try:
     a[6] = 100.0
     a[7] = 500.0
     inputVariables = Description(dimension)
-    outputVariables = Description(1)
-    outputVariables[0] = "y"
     formula = Description(1)
     formula[0] = "1.0"
     for i in range(dimension):
@@ -38,7 +36,7 @@ try:
             str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
     covTh = covTh - 1.0
 
-    model = Function(inputVariables, outputVariables, formula)
+    model = SymbolicFunction(inputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * dimension)

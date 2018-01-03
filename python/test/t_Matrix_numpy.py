@@ -92,8 +92,8 @@ try:
     print("with transpose, array", a0.transpose(), "=> Sample", s0)
 
     # Check tuple / Function interoperability
-    F = Function(
-        ('E', 'F', 'L', 'I'), ('d',), ('-F*L^3/(3.*E*I)',))
+    F = SymbolicFunction(
+        ('E', 'F', 'L', 'I'), ('-F*L^3/(3.*E*I)',))
 
     t0 = (1., 2., 3., 4.)
     print("Point", F(t0), "= F( tuple", t0, ")")

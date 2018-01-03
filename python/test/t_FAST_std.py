@@ -13,7 +13,6 @@ try:
     outputDimension = 1
 
     inputName = ["X1", "X2", "X3"]
-    outputName = ["Y"]
 
     # Test with Ishigami function
     formulaIshigami = Description(outputDimension)
@@ -64,7 +63,7 @@ try:
             str(a[i]) + "))"
 
     covTh = covTh - 1.0
-    modelGSobol = Function(inputName, outputName, formulaGSobol)
+    modelGSobol = SymbolicFunction(inputName, formulaGSobol)
 
     distributions = ComposedDistribution([Uniform(0.0, 1.0)] * inputDimension)
 

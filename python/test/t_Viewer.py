@@ -112,7 +112,7 @@ try:
         if i > 0:
             expression += '+'
         expression += 'cos(' + str(i + 1) + '*' + inputVar[i] + ')'
-    model = ot.Function(inputVar, ['y'], [expression])
+    model = ot.SymbolicFunction(inputVar, [expression])
     outputSample = model(inputSample)
     graph = ot.VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, 'red', False)

@@ -36,13 +36,10 @@ int main(int argc, char *argv[])
     inputVariables[0] = "t";
     inputVariables[1] = "y0";
     inputVariables[2] = "y1";
-    Description outputVariables(2);
-    outputVariables[0] = "dy0";
-    outputVariables[1] = "dy1";
     Description formulas(2);
     formulas[0] = "t - y0";
     formulas[1] = "y1 + t^2";
-    Function f(inputVariables, outputVariables, formulas);
+    SymbolicFunction f(inputVariables, formulas);
     VertexValueFunction phi(f);
     Point initialState(2);
     initialState[0] =  1.0;

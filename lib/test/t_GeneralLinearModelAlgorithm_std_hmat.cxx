@@ -46,11 +46,9 @@ int main(int argc, char *argv[])
     // Create the function to estimate
     Description input(spatialDimension);
     input[0] = "x0";
-    Description foutput(1);
-    foutput[0] = "f0";
     Description formulas(1);
     formulas[0] = "x0";
-    Function model(input, foutput, formulas);
+    SymbolicFunction model(input, formulas);
 
     Sample X(sampleSize, spatialDimension);
     Sample X2(sampleSize, spatialDimension);

@@ -9,7 +9,7 @@ import openturns as ot
 
 formulas = [
     'min(0.1 * (u1 - u2)^2.0 - (u1 + u2) / sqrt(2.0) + 3.0, 0.1 * (u1 - u2)^2.0 + (u1 + u2) / sqrt(2.0) + 3.0, u1 - u2 + 3.5 * sqrt(2.0), -u1 + u2 + 3.5 * sqrt(2.0))']
-limitState = ot.Function(['u1', 'u2'], ['g'], formulas)
+limitState = ot.SymbolicFunction(['u1', 'u2'], formulas)
 dim = limitState.getInputDimension()
 
 #

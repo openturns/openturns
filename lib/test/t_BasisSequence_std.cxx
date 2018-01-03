@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
   Indices partialBasis[dimension];
   for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
-    Function ei(input, output[j], output[j]);
+    SymbolicFunction ei(input, output[j]);
     coll.add(ei);
     cumulBasis.add(j);
     partialBasis[j] = cumulBasis;

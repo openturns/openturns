@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     Description input(2);
     input[0] = "x1";
     input[1] = "x2";
-    Function myFunction(input, Description(1, "y1"), Description(1, "(x1-0.6)*(x1-0.6)-x2*x2"));
+    SymbolicFunction myFunction(input, Description(1, "(x1-0.6)*(x1-0.6)-x2*x2"));
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */

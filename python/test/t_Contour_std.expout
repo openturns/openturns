@@ -1,5 +1,5 @@
 contour= Contour(name=Unnamed, color=red, fill=solid, line=solid, point=plus, width=1, data=
-       [ z        ]
+       [ y0       ]
    0 : [ 1.14151  ]
    1 : [ 0.398118 ]
    2 : [ 0.369272 ]

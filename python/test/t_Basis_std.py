@@ -14,7 +14,7 @@ try:
 
     phis = []
     for j in range(basisSize):
-        phis.append(ot.Function(['x'], ['y'], ['x^' + str(j + 1)]))
+        phis.append(ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]))
     basis = ot.Basis(phis)
     print('basis =', basis)
 

@@ -7,8 +7,8 @@ ot.TESTPREAMBLE()
 
 # create a function
 dim = 4
-function = ot.Function(
-    ['E', 'F', 'L', 'I'], ['d'], ['F*L^3/(3.*E*I)'])
+function = ot.SymbolicFunction(
+    ['E', 'F', 'L', 'I'], ['F*L^3/(3.*E*I)'])
 
 # create a distribution
 distribution = ot.Normal(

@@ -23,8 +23,6 @@ try:
     meanTh = 1.0
     a = Point(dimension)
     inputVariables = Description(dimension)
-    outputVariables = Description(1)
-    outputVariables[0] = "y"
     formula = Description(1)
     formula[0] = "1.0"
     covTh = 1.0
@@ -36,7 +34,7 @@ try:
             " * ((abs(4.0 * xi" + str(i) + " - 2.0) + " + \
             str(a[i]) + ") / (1.0 + " + str(a[i]) + "))"
     covTh = covTh - 1.0
-    model = Function(inputVariables, outputVariables, formula)
+    model = SymbolicFunction(inputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * dimension)

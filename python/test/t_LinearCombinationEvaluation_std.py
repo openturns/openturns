@@ -16,9 +16,9 @@ try:
     formula = Description(1)
     formula[0] = "x1^3 * sin(x2 + 2.5 * x3) - (x1 + x2)^2 / (1.0 + x3^2)"
     functions = []
-    functions.append(Function(inVar, outVar, formula))
+    functions.append(SymbolicFunction(inVar, formula))
     formula[0] = "exp(-x1 * x2 + x3) / cos(1.0 + x2 * x3 - x1)"
-    functions.append(Function(inVar, outVar, formula))
+    functions.append(SymbolicFunction(inVar, formula))
     # Second, build the weights
     coefficients = Point(2)
     coefficients[0] = 0.3

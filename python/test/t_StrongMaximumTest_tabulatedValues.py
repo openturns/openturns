@@ -13,8 +13,8 @@ try:
         print("dimension = ", dim)
 
         # We create a numerical math function
-        inputVar = list(['X' + str(i) for i in range(dim)])
-        myFunction = Function(inputVar, ['y'], ['0'])
+        inputVar = ['X' + str(i) for i in range(dim)]
+        myFunction = SymbolicFunction(inputVar, ['0'])
 
         # We create a normal distribution point of dimension 1
         mean = [0.] * dim

@@ -4,8 +4,8 @@ from __future__ import print_function
 import openturns as ot
 ot.TESTPREAMBLE()
 
-levelFunction = ot.Function(
-    ["x1", "x2", "x3", "x4"], ["y1"], ["x1+2*x2-3*x3+4*x4"])
+levelFunction = ot.SymbolicFunction(
+    ["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
 # Add a finite difference gradient to the function, as Abdo Rackwitz algorithm
 # needs it
 myGradient = ot.NonCenteredFiniteDifferenceGradient(
@@ -20,8 +20,8 @@ algo.setStartingPoint(startingPoint)
 algo.run()
 print("result = ", algo.getResult())
 
-levelFunction = ot.Function(
-    ["x1", "x2", "x3", "x4"], ["y1"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
+levelFunction = ot.SymbolicFunction(
+    ["x1", "x2", "x3", "x4"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
 # Add a finite difference gradient to the function, as Abdo Rackwitz algorithm
 # needs it
 myGradient = ot.NonCenteredFiniteDifferenceGradient(

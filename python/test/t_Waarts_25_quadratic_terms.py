@@ -25,15 +25,12 @@ try:
     for i in range(1, dim):
         inputFunction[i] = "s" + str(i)
 
-    outputFunction = Description(1)
-    outputFunction[0] = "g"
-
-    formulas = Description(outputFunction.getSize())
+    formulas = Description(1)
     formulas[0] = "r"
     for i in range(1, dim):
         formulas[0] = formulas[0] + \
             " - (" + inputFunction[i] + " ^ 2.0) / " + str(i)
-    limitState = Function(inputFunction, outputFunction, formulas)
+    limitState = SymbolicFunction(inputFunction, formulas)
 
     #
     # Probabilistic model

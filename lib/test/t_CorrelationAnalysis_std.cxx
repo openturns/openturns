@@ -41,12 +41,8 @@ int main(int argc, char *argv[])
     Description input(dimension);
     input[0] = "x0";
     input[1] = "x1";
-
-    Description foutput(1, "f");
-
     Description formulas(1, "10+3*x0+x1");
-
-    Function analytical(input, foutput, formulas);
+    SymbolicFunction analytical(input, formulas);
 
     // we create a collection of Normal centered distributions
     DistributionCollection aCollection;

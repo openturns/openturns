@@ -105,9 +105,7 @@ try:
             expression += "+"
         expression += "cos(" + str(i + 1) + "*" + inputVar[i] + ")"
     formula[0] = expression
-    outputVar = Description(1)
-    outputVar[0] = "y"
-    model = Function(inputVar, outputVar, formula)
+    model = SymbolicFunction(inputVar, formula)
     outputSample = model(inputSample)
     cobwebValue = VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, "red", False)

@@ -22,8 +22,8 @@ try:
     inputSample *= 10
 
     # Define model
-    model = ot.Function(
-        ['x', 'y'], ['z'], ['cos(0.5*x) + sin(y)'])
+    model = ot.SymbolicFunction(
+        ['x', 'y'], ['cos(0.5*x) + sin(y)'])
     outputSample = model(inputSample)
 
     # 2) Definition of exponential model

@@ -25,7 +25,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
-#include "openturns/Function.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/BarPlot.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/CompositeRandomVector.hxx"
@@ -76,7 +76,7 @@ AnalyticalResult::AnalyticalResult():
   standardSpaceDesignPoint_(0),
   physicalSpaceDesignPoint_(0),
   // Fake event based on a fake 1D composite random vector, which requires a fake 1D Function
-  limitStateVariable_(RandomVector(CompositeRandomVector(Function(Description(0), Description(1), Description(1)),
+  limitStateVariable_(RandomVector(CompositeRandomVector(SymbolicFunction(Description(0), Description(1)),
                                    ConstantRandomVector(Point(0)))),
                       Less(), 0.0),
   isStandardPointOriginInFailureSpace_(false),

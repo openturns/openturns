@@ -21,9 +21,8 @@ try:
 
     # Create the function to estimate
     input_description = ["x0"]
-    foutput = ["f0"]
     formulas = ["x0"]
-    model = ot.Function(input_description, foutput, formulas)
+    model = ot.SymbolicFunction(input_description, formulas)
 
     X = ot.Sample(sampleSize, spatialDimension)
     X2 = ot.Sample(sampleSize, spatialDimension)

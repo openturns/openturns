@@ -10,20 +10,18 @@ dimension = 2
 inVar = Description(dimension)
 inVar[0] = "x1"
 inVar[1] = "x2"
-outVar = Description(1)
-outVar[0] = "y"
 formula = Description(1)
 formula[0] = "x1^3+1.5*x2^3-x1*x2"
-model = Function(inVar, outVar, formula)
+model = SymbolicFunction(inVar, formula)
 coll = []
 formula[0] = "x1"
-coll.append(Function(inVar, outVar, formula))
+coll.append(SymbolicFunction(inVar, formula))
 formula[0] = "x2"
-coll.append(Function(inVar, outVar, formula))
+coll.append(SymbolicFunction(inVar, formula))
 formula[0] = "x1^2"
-coll.append(Function(inVar, outVar, formula))
+coll.append(SymbolicFunction(inVar, formula))
 formula[0] = "x2^2"
-coll.append(Function(inVar, outVar, formula))
+coll.append(SymbolicFunction(inVar, formula))
 basis = Basis(coll)
 indices = list(range(len(coll)))
 size = 5
