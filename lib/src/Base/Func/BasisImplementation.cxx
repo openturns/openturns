@@ -92,9 +92,9 @@ Bool BasisImplementation::isOrthogonal() const
   return false;
 }
 
-Bool BasisImplementation::isFunctional() const
+Bool BasisImplementation::isFinite() const
 {
-  return true;
+  return false;
 }
 
 String BasisImplementation::__repr__() const
