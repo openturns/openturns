@@ -115,7 +115,7 @@ myDefautModel = ot.DiracCovarianceModel()
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-amplitude = list(map(lambda k: 1.5 + 2.0 * k, range(2)))
+amplitude = [1.5 + 2.0 * k for k in range(2)]
 dimension = 2
 spatialCorrelation = ot.CorrelationMatrix(dimension)
 for j in range(dimension):

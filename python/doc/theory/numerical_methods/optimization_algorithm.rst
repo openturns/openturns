@@ -75,7 +75,7 @@ where :math:`\alpha_k` is the parameter *stepmx*.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/numerical_methods/optimization_constraints.ipynb`
+    - See :doc:`/examples/numerical_methods/optimization_constraints`
 
 
 .. topic:: References:

@@ -167,7 +167,7 @@ coefficient.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/sample_correlation.ipynb`
+    - See :doc:`/examples/data_analysis/sample_correlation`
 
 .. topic:: References:
 

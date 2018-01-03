@@ -18,4 +18,4 @@ Each estimator is detailed its corresponding :ref:`factory <parametric_distibuti
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/estimate_normal.ipynb`
+    - See :doc:`/examples/data_analysis/estimate_normal`

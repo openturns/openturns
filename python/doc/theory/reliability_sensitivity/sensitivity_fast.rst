@@ -149,7 +149,7 @@ vector of :math:`n_X` independent components.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/sensitivity_fast.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/sensitivity_fast`
 
 
 .. topic:: References:

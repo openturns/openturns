@@ -130,8 +130,8 @@ class OpenTURNSPythonFunction(object):
             self.__p = int(p)
         except:
             raise TypeError('outputDim argument is not an integer.')
-        self.__descIn = list(map(lambda i: 'x' + str(i), range(n)))
-        self.__descOut = list(map(lambda i: 'y' + str(i), range(p)))
+        self.__descIn = ['x' + str(i) for i in range(n)]
+        self.__descOut = ['y' + str(i) for i in range(p)]
 
     def setInputDescription(self, descIn):
         if (len(descIn) != self.__n):

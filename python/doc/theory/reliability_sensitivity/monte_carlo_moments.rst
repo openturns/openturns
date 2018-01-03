@@ -91,7 +91,7 @@ integration.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/estimate_moments.ipynb`
+    - See :doc:`/examples/data_analysis/estimate_moments`
 
 
 .. topic:: References:

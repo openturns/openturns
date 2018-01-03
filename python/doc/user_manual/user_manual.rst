@@ -6,12 +6,6 @@ User manual for the Python interface
 
 This is the user manual for the Python bindings of the library.
 
-.. todo::
-
-    Fill the docstrings in the :ref:`SWIG docstrings header files <contribute_docstrings>`
-    and refer to the documented objects here in order to complete the user
-    manual.
-
 .. toctree::
     :maxdepth: 1
 

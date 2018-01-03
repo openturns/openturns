@@ -146,7 +146,7 @@ Monte-Carlo Markov-Chain (MCMC) methods. See :ref:`metropolis_hastings`.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/bayesian_calibration.ipynb`
+    - See :doc:`/examples/data_analysis/bayesian_calibration`
 
 .. topic:: References:
 

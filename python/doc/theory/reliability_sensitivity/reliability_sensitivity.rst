@@ -17,6 +17,7 @@ Central dispersion
 
     low_discrepancy_sequence
     design_experiment
+    optimal_lhs
     taylor_moments
     monte_carlo_moments
 

@@ -127,7 +127,7 @@ Kriging may also be referred to as *Gaussian process regression*.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/meta_modeling/kriging.ipynb`
+    - See :doc:`/examples/meta_modeling/kriging`
 
 
 .. topic:: References:

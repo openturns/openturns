@@ -20,8 +20,7 @@ try:
     sinGraph.add(Curve(data, 'red', 'solid', 2, 'sin'))
     # Test export to all formats
     sinGraph.draw('sinGraph_ALL', 640, 480, GraphImplementation.ALL)
-    list(map(lambda ext: os.remove('sinGraph_ALL' + ext),
-             ['.eps', '.png', '.fig', '.pdf']))
+    [os.remove('sinGraph_ALL' + ext) for ext in ['.eps', '.png', '.fig', '.pdf']]
     # Test export to PNG format
     sinGraph.draw('sinGraph.png', 640, 480, GraphImplementation.PNG)
     os.remove('sinGraph.png')

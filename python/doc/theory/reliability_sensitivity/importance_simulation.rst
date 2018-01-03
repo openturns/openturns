@@ -82,7 +82,7 @@ not biased as it gives exactly the same result).
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/estimate_probability_importance_sampling.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/estimate_probability_importance_sampling`
 
 
 .. topic:: References:

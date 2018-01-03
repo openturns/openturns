@@ -169,7 +169,7 @@ independent sampling.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/bayesian_calibration.ipynb`
+    - See :doc:`/examples/data_analysis/bayesian_calibration`
 
 .. topic:: References:
 

@@ -4,8 +4,12 @@ Meta modeling
 .. toctree::
 
     create_linear_least_squares_model.ipynb
-    create_linear_taylor_model.ipynb
+    taylor_approximation.ipynb
     functional_chaos.ipynb
+    functional_chaos_advanced_ctors.ipynb
+    functional_chaos_exploitation.ipynb
+    functional_chaos_graphs.ipynb
+    functional_chaos_database.ipynb
     expert_mixture.ipynb
     general_linear_model.ipynb
     kriging.ipynb

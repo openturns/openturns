@@ -295,7 +295,7 @@ trace of the limit state function on the sphere of radius
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/strong_maximum_test.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/strong_maximum_test`
 
 
 .. topic:: References:

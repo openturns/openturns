@@ -55,9 +55,9 @@ The joined cumulative density function is therefore defined by:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/probabilistic_modeling/create_copula.ipynb`
-    - See :ref:`examples/probabilistic_modeling/composed_copula.ipynb`
-    - See :ref:`examples/probabilistic_modeling/extract_copula.ipynb`
+    - See :doc:`/examples/probabilistic_modeling/create_copula`
+    - See :doc:`/examples/probabilistic_modeling/composed_copula`
+    - See :doc:`/examples/probabilistic_modeling/extract_copula`
 
 .. topic:: References:
 

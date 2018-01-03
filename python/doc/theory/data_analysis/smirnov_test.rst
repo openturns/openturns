@@ -55,7 +55,7 @@ samples.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/smirnov_test.ipynb`
+    - See :doc:`/examples/data_analysis/smirnov_test`
 
 .. topic:: References:
 

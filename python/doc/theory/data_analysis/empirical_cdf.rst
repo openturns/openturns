@@ -109,7 +109,7 @@ distribution function.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/visualize_empirical_cdf.ipynb`
+    - See :doc:`/examples/data_analysis/visualize_empirical_cdf`
 
 
 .. topic:: References:

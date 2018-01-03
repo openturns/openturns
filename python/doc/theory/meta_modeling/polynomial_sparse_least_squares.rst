@@ -187,7 +187,7 @@ lowest error estimate is retained.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/meta_modeling/fieldfunction_metamodel.ipynb`
+    - See :doc:`/examples/meta_modeling/fieldfunction_metamodel`
 
 
 .. topic:: References:

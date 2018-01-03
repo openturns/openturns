@@ -87,7 +87,7 @@ chaos.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/sensitivity_ancova.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/sensitivity_ancova`
 
 
 .. topic:: References:

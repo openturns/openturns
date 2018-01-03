@@ -38,7 +38,7 @@ covarianceModel = ot.SquaredExponential([0.3007, 0.2483], [0.981959])
 basis = ot.ConstantBasisFactory(dim).build()
 kriging = ot.KrigingAlgorithm(
     inputSample, outputSample, covarianceModel, basis)
-noise = list(map(lambda x: x[1], modelEval))
+noise = [x[1] for x in modelEval]
 kriging.setNoise(noise)
 kriging.run()
 

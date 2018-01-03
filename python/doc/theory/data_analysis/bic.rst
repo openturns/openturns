@@ -64,7 +64,7 @@ distribution’s logarithm for the model :math:`\cM_i`.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/fitted_distribution_ranking.ipynb`
+    - See :doc:`/examples/data_analysis/fitted_distribution_ranking`
 
 .. topic:: References:
 

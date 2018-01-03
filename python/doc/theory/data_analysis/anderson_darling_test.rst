@@ -69,7 +69,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/andersondarling_test.ipynb`
+    - See :doc:`/examples/data_analysis/andersondarling_test`
 
 .. topic:: References:
 

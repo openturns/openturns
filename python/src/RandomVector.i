@@ -77,7 +77,7 @@ class PythonRandomVector(object):
     def __init__(self, dim=0):
         # Warning: these names are used in PythonRandomVectorImplementation class. Synchronize the files if changed
         self.__dim = dim
-        self.__desc = list(map(lambda i: 'x' + str(i), range(dim)))
+        self.__desc = ['x' + str(i) for i in range(dim)]
 
     def __str__(self):
         return 'PythonRandomVector -> %s #%d' % (self.__desc, self.__dim)

@@ -81,7 +81,7 @@ the impact the variable :math:`X^i` has on the dispersion of
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/independence_test.ipynb`
+    - See :doc:`/examples/data_analysis/independence_test`
 
 
 .. topic:: References:

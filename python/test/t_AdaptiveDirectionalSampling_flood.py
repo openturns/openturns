@@ -33,7 +33,7 @@ Zm_law = ot.Triangular(54., 55., 56.)
 coll = ot.DistributionCollection([Q_law, Ks_law, Zv_law, Zm_law])
 distribution = ot.ComposedDistribution(coll)
 
-x = list(map(lambda dist: dist.computeQuantile(0.5)[0], coll))
+x = [dist.computeQuantile(0.5)[0] for dist in coll]
 fx = function(x)
 
 for k in [0.0, 2.0, 5.0, 8.][0:1]:
