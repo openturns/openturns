@@ -32,7 +32,7 @@ static const Factory<OrthogonalFunctionFactory> Factory_OrthogonalFunctionFactor
 
 /* Default constructor */
 OrthogonalFunctionFactory::OrthogonalFunctionFactory()
-  : FunctionalBasisImplementation()
+  : BasisImplementation()
   , measure_()
 {
   // Nothing to do
@@ -41,7 +41,7 @@ OrthogonalFunctionFactory::OrthogonalFunctionFactory()
 
 /* Parameter constructor */
 OrthogonalFunctionFactory::OrthogonalFunctionFactory(const Distribution & measure)
-  : FunctionalBasisImplementation()
+  : BasisImplementation()
   , measure_(measure)
 {
   // Nothing to do
@@ -91,7 +91,7 @@ String OrthogonalFunctionFactory::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void OrthogonalFunctionFactory::save(Advocate & adv) const
 {
-  FunctionalBasisImplementation::save(adv);
+  BasisImplementation::save(adv);
   adv.saveAttribute( "measure_", measure_ );
   adv.saveAttribute( "enumerateFunction_", enumerateFunction_ );
 }
@@ -100,7 +100,7 @@ void OrthogonalFunctionFactory::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void OrthogonalFunctionFactory::load(Advocate & adv)
 {
-  FunctionalBasisImplementation::load(adv);
+  BasisImplementation::load(adv);
   adv.loadAttribute( "measure_", measure_ );
   adv.loadAttribute( "enumerateFunction_", enumerateFunction_ );
 }

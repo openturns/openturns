@@ -66,6 +66,8 @@ public:
 
   /** Tells whether the basis is orthogonal */
   virtual Bool isOrthogonal() const;
+
+  /** Tells whether the basis is infinite */
   virtual Bool isFunctional() const;
 
   virtual void add(const Function & elt);

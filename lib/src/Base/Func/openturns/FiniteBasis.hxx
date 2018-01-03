@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class FiniteBasis
  *
- * Allows to use a NMF collection as FunctionalBasis required to use chaos algo, used in TrendFactory
+ * Allows to use a NMF collection as a Basis, required to use chaos algo, used in TrendFactory
  */
 
 class OT_API FiniteBasis
@@ -61,6 +61,9 @@ public:
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
   virtual UnsignedInteger getSize() const;
+
+  /** Tells whether the basis is finite */
+  virtual Bool isFunctional() const;
 
   virtual void add(const Function & elt);
 

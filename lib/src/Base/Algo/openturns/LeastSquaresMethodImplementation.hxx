@@ -23,7 +23,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/FunctionalBasis.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Function.hxx"
