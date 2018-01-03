@@ -83,7 +83,7 @@ void BootstrapExperiment::setDistribution(const Distribution & distribution)
   const Point probabilities(distribution.getProbabilities());
   // Here we know that size>0 as no discrete distribution can have an empty probability table
   const UnsignedInteger size = probabilities.getSize();
-  for (UnsignedInteger i = 1; i < probabilities.getSize(); ++i)
+  for (UnsignedInteger i = 1; i < size; ++ i)
     if (probabilities[i] != probabilities[0]) throw InvalidArgumentException(HERE) << "Error: the distribution must be uniform over its support in BootstrapEperiment.";
   distribution_ = distribution;
   sample_ = distribution.getSupport();
