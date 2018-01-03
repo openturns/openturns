@@ -114,6 +114,13 @@ public:
   virtual void setDescription(const Description & description);
   virtual Description getDescription() const;
 
+  /** Parameters value accessor */
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameters);
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

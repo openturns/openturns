@@ -95,6 +95,25 @@ Sample ConstantRandomVector::getSample(const UnsignedInteger size) const
   return sample;
 }
 
+
+Point ConstantRandomVector::getParameter() const
+{
+  Point parameter;
+  return parameter;
+}
+
+void ConstantRandomVector::setParameter(const Point & parameter)
+{
+  if (parameter.getDimension() > 0)
+    throw InvalidArgumentException(HERE) << "Wrong constant random vector parameter size";
+}
+
+Description ConstantRandomVector::getParameterDescription() const
+{
+  Description description;
+  return description;
+}
+
 /* Mean accessor */
 Point ConstantRandomVector::getMean() const
 {

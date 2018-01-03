@@ -103,6 +103,35 @@ RandomVector ConditionalRandomVector::getRandomParameters() const
   return randomParameters_;
 }
 
+
+Point ConditionalRandomVector::getParameter() const
+{
+  Point parameter(distribution_.getParameter());
+  parameter.add(randomParameters_.getParameter());
+  return parameter;
+}
+
+void ConditionalRandomVector::setParameter(const Point & parameter)
+{
+  const UnsignedInteger distributionParameterDimension = distribution_.getParameter().getDimension();
+  const UnsignedInteger randomParametersParameterDimension = randomParameters_.getParameter().getDimension();
+  if (parameter.getDimension() != (distributionParameterDimension + randomParametersParameterDimension))
+    throw InvalidArgumentException(HERE) << "Wrong conditional random vector parameter size";
+  Point distributionParameter(distributionParameterDimension);
+  std::copy(parameter.begin(), parameter.begin() + distributionParameterDimension, distributionParameter.begin());
+  distribution_.setParameter(distributionParameter);
+  Point randomParametersParameter(randomParametersParameterDimension);
+  std::copy(parameter.begin() + distributionParameterDimension, parameter.end(), randomParametersParameter.begin());
+  randomParameters_.setParameter(randomParametersParameter);
+}
+
+Description ConditionalRandomVector::getParameterDescription() const
+{
+  Description description(distribution_.getParameterDescription());
+  description.add(randomParameters_.getParameterDescription());
+  return description;
+}
+
 /* Method save() stores the object through the StorageManager */
 void ConditionalRandomVector::save(Advocate & adv) const
 {

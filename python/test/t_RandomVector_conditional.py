@@ -36,3 +36,8 @@ randomParameters.getRealization()
 print('dist realization=', repr(distribution.getRealization()))
 
 print('vect sample =', repr(vect.getSample(5)))
+
+parameter = vect.getParameter()
+print("parameter =", repr(parameter))
+vect.setParameter(parameter)
+print("parameter desc =", repr(vect.getParameterDescription()))

@@ -328,4 +328,19 @@ Domain RandomVector::getDomain() const
   return getImplementation()->getDomain();
 }
 
+Point RandomVector::getParameter() const
+{
+  return getImplementation()->getParameter();
+}
+
+void RandomVector::setParameter(const Point & parameter)
+{
+  getImplementation()->setParameter(parameter);
+}
+
+Description RandomVector::getParameterDescription() const
+{
+  return getImplementation()->getParameterDescription();
+}
+
 END_NAMESPACE_OPENTURNS

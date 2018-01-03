@@ -49,7 +49,10 @@ try:
     print("Y realization (second)=", repr(Y.getRealization()))
     print("Y realization (third )=", repr(Y.getRealization()))
     print("Y sample =", repr(Y.getSample(5)))
-
+    parameter = Y.getParameter()
+    print("Y parameter =", repr(parameter))
+    Y.setParameter(parameter)
+    print("Y parameter desc =", repr(Y.getParameterDescription()))
 
 except:
     import sys

@@ -133,6 +133,31 @@ Sample EventRandomVector::getSample(const UnsignedInteger size) const
   return returnSample;
 }
 
+Point EventRandomVector::getParameter() const
+{
+  Point parameter(CompositeRandomVector::getParameter());
+  parameter.add(threshold_);
+  return parameter;
+}
+
+void EventRandomVector::setParameter(const Point & parameter)
+{
+  const UnsignedInteger compositeParameterDimension = CompositeRandomVector::getParameter().getDimension();
+  if (parameter.getDimension() != (compositeParameterDimension + 1))
+    throw InvalidArgumentException(HERE) << "Wrong event random vector parameter size";
+  Point compositeParameter(compositeParameterDimension);
+  std::copy(parameter.begin(), parameter.begin() + compositeParameterDimension, compositeParameter.begin());
+  CompositeRandomVector::setParameter(compositeParameter);
+  threshold_ = parameter[compositeParameterDimension];
+}
+
+Description EventRandomVector::getParameterDescription() const
+{
+  Description description(CompositeRandomVector::getParameterDescription());
+  description.add("threshold");
+  return description;
+}
+
 /* Method save() stores the object through the StorageManager */
 void EventRandomVector::save(Advocate & adv) const
 {

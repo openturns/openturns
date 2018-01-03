@@ -106,6 +106,21 @@ Distribution UsualRandomVector::getDistribution() const
   return distribution_;
 }
 
+Point UsualRandomVector::getParameter() const
+{
+  return distribution_.getParameter();
+}
+
+void UsualRandomVector::setParameter(const Point & parameter)
+{
+  distribution_.setParameter(parameter);
+}
+
+Description UsualRandomVector::getParameterDescription() const
+{
+  return distribution_.getParameterDescription();
+}
+
 /* Method save() stores the object through the StorageManager */
 void UsualRandomVector::save(Advocate & adv) const
 {
