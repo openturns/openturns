@@ -834,9 +834,11 @@ void ResourceMap::loadDefaultConfiguration()
   setAsBool("Distribution-Parallel", true);
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionBlockMax", 20 );
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionNMax", 1000000 );
-  setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 1000000 );
+  setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 1048576 );
   setAsBool( "Distribution-MinimumVolumeLevelSetBySampling", false );
   setAsBool( "Distribution-UseCovarianceAdaptiveAlgorithm", true );
+  setAsUnsignedInteger( "Distribution-SmallDimensionEntropy", 3 );
+  setAsUnsignedInteger( "Distribution-EntropySamplingSize", 1048576 );
 
   // ContinuousDistribution parameters //
   setAsUnsignedInteger( "ContinuousDistribution-DefaultIntegrationNodesNumber", 256 );
