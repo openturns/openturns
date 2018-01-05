@@ -229,8 +229,6 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Python notebook  (optional for doc)   | `IPython <https://ipython.org/>`_                         | N/A               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
-| LaTeX to XML (optional for doc)       | `Tralics <http://www-sop.inria.fr/marelle/tralics/>`_     | 2.14.5            |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
 
 The versions given here are only meant as indications of minimum version and newer ones
 may be used.
