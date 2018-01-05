@@ -939,17 +939,12 @@ if (SPHINX_FOUND)
     endif ()
   endforeach ()
 
-  # write a fake *.ipynb.rst to avoid sphinx warnings
-  if (NOT NBSPHINX_FOUND)
-    file (GLOB_RECURSE ipynb_sources ${SPHINX_SOURCE_DIR}/*.ipynb)
-    foreach (file ${ipynb_sources})
-      file (RELATIVE_PATH rel_file ${SPHINX_SOURCE_DIR} ${file})
-      file (WRITE ${SPHINX_BINARY_DIR}/${rel_file}.rst ".. _${rel_file}:\n\ntitle\n-----\n\ntext\n")
-    endforeach ()
-  endif ()
-
   set (SPHINX_FLAGS "-W" CACHE STRING "sphinx flags")
-  string (REPLACE " " ";" SPHINX_FLAGS ${SPHINX_FLAGS})
+  if (NOT NBSPHINX_FOUND)
+    # without notebook examples there are invalid links
+    string (REPLACE "-W" "" SPHINX_FLAGS "${SPHINX_FLAGS}")
+  endif ()
+  string (REPLACE " " ";" SPHINX_FLAGS "${SPHINX_FLAGS}")
 
   # generate sphinx rule for each format
   foreach (format ${doc_formats})
