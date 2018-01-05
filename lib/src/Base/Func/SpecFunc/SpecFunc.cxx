@@ -468,17 +468,26 @@ Scalar SpecFunc::DiLog(const Scalar x)
 {
   // Special case for 0
   if (x == 0.0) return 0.0;
+  // Special case for 1
+  if (x == 1.0) return PI2_6;
   // No real value on (1, \infty)
   if (!(x <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the DiLog function does not take real values for arguments greater than 1.";
+  // Special case for x close to 1
+  if (x >= 0.999997)
+    {
+      const Scalar z = 1.0 - x;
+      const Scalar logZ = std::log(z);
+      return PI2_6 + z * (logZ - 1.0 + z * (logZ - 0.5) * 0.5);
+    }
   // Use DiLog(x) = -DiLog(1 / x) - \pi^2 / 6 - \log^2(-x) / 2
   // to map (-\infty, -1) into (-1, 0) for the argument
-  if (x < -1.0) return -DiLog(1.0 / x) - SpecFunc::PI2_6  - 0.5 * pow(log(-x), 2);
-  // Use DiLog(x) = \pi^2 / 6 - DiLog(1 - x) - \log(x)\log(1-x)
-  // to map (1/2, 1] into [0, 1/2)
-  if (x > 0.5) return SpecFunc::PI2_6 - DiLog(1.0 - x) - log(x) * log1p(-x);
+  if (x < -1.0) return -DiLog(1.0 / x) - PI2_6  - 0.5 * pow(log(-x), 2);
   // Use DiLog(x) = DiLog(x^2) / 2 - DiLog(-x)
   // to map [-1, 0) into (0, 1]
   if (x < 0.0) return 0.5 * DiLog(x * x) - DiLog(-x);
+  // Use DiLog(x) = \pi^2 / 6 - DiLog(1 - x) - \log(x)\log(1-x)
+  // to map (1/2, 1] into [0, 1/2)
+  if (x > 0.5) return PI2_6 - DiLog(1.0 - x) - log(x) * log1p(-x);
   // Use the definition of DiLog in terms of series
   // DiLog(x)=\sum_{k=1}^{\infty} x^k/k^2
   // for (0, 1/2)
