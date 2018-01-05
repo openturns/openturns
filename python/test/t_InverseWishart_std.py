@@ -144,7 +144,7 @@ class TestInverseWishartMethods(ut.TestCase):
     # to the corresponding theoretical expectations
     def test_getSample_getMean(self):
         """Test InverseWishart.getSample and InverseWishart.getMean"""
-        d, Scale, DoF, N = self.dimension, self.Scale, self.DoF, int(1E+5)
+        d, Scale, DoF, N = self.dimension, self.Scale, self.DoF, int(1E+4)
         Identity = ot.CovarianceMatrix(d)
         Scale_wishart = ot.CovarianceMatrix(Scale.solveLinearSystem(Identity))
         inverse_wishart = ot.InverseWishart(Scale, DoF)
@@ -171,9 +171,9 @@ class TestInverseWishartMethods(ut.TestCase):
                 assert_almost_equal(theoretical_mean[indice],
                                     DoF * Scale_wishart[k, j])
                 assert_almost_equal(mean_inverse[indice],
-                                    coefficient * Scale[k, j], 0.1, 1.E-3)
+                                    coefficient * Scale[k, j], 0.15, 1.E-3)
                 assert_almost_equal(mean[indice],
-                                    DoF * Scale_wishart[k, j], 0.1, 1.E-3)
+                                    DoF * Scale_wishart[k, j], 0.15, 1.E-3)
                 indice += 1
 
 
