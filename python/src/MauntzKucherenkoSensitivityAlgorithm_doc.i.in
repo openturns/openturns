@@ -40,7 +40,7 @@ These last ones are respectively given as follows:
 
    \begin{array}{ccc}
    \hat{V_i} & = & \frac{1}{n} \sum_{k=1}^{n} G(B_k) \left( G(E_k) - G(A_k) \right) \\
-   \hat{VT_{i}} & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) \left( G(A_k) -  G(E_k) \right)
+   \hat{V_{-i}} & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) \left( G(A_k) -  G(E_k) \right)
    \end{array}
 
 See also
