@@ -130,7 +130,6 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   Point muY(outputDesign_.computeMean());
   outputDesign_ -= muY;
 
-  size_ = size;
   // Reference sample and its variance
   Sample outReference(size, outputDesign_.getDimension());
   for (UnsignedInteger k = 0; k < size_; ++k) outReference[k] = outputDesign_[k];
@@ -144,7 +143,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   : PersistentObject()
   , inputDesign_()
   , outputDesign_()
-  , size_()
+  , size_(experiment.getSize())
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
   , referenceVariance_()
@@ -168,7 +167,6 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   Point muY(outputDesign_.computeMean());
   outputDesign_ -= muY;
 
-  size_ = experiment.getSize();
   // Reference sample and its variance
   Sample outReference(size_, outputDesign_.getDimension());
   for (UnsignedInteger k = 0; k < size_; ++k) outReference[k] = outputDesign_[k];
