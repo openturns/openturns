@@ -110,7 +110,8 @@ ot_pyinstallcheck_test (HermitianMatrix_std)
 ot_pyinstallcheck_test (TriangularComplexMatrix_std)
 ot_pyinstallcheck_test (Matrix_slice)
 ot_pyinstallcheck_test (Matrix_operators)
-if (NUMPY_FOUND)
+if (NUMPY_FOUND AND NOT NUMPY_VERSION_STRING STREQUAL "1.14.0")
+  # https://github.com/numpy/numpy/issues/10356
   ot_pyinstallcheck_test (Matrix_numpy)
 endif ()
 

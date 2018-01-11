@@ -37,8 +37,7 @@ Create a Point from a flat (1d) array, list or tuple
 
 and back
 
->>> np.array(y)
-array([ 0.,  1.,  2.])
+>>> z = np.array(y)
 
 Addition, subtraction (with compatible dimensions)
 
