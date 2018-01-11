@@ -3,6 +3,7 @@
 from __future__ import print_function
 from openturns import *
 import numpy as np
+np.set_printoptions(formatter={'float': '{: 4.1f}'.format, 'complexfloat': '{: 4.1f}'.format})
 
 TESTPREAMBLE()
 
