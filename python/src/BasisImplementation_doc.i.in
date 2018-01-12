@@ -74,7 +74,7 @@ Examples
 >>> for i in range(dimension):
 ...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
->>> print(basis.build(0).getEvaluation())
+>>> print(basis[0].getEvaluation())
 [x0,x1,x2]->[x0]"
 %enddef
 %feature("docstring") OT::BasisImplementation::build
@@ -101,10 +101,23 @@ OT_Basis_getDimension_doc
 Returns
 -------
 size : int
-    Size of the Basis."
+    Size of the Basis, not available if infinite."
 %enddef
 %feature("docstring") OT::BasisImplementation::getSize
 OT_Basis_getSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_getCurrentSize_doc
+"Get the current size of the Basis.
+
+Returns
+-------
+size : int
+    Size of the stored Basis, even if infinite."
+%enddef
+%feature("docstring") OT::BasisImplementation::getCurrentSize
+OT_Basis_getCurrentSize_doc
 
 // ---------------------------------------------------------------------
 

@@ -77,6 +77,8 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
+  virtual Bool isFinite() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

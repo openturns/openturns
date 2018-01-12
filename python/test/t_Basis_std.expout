@@ -4,3 +4,5 @@ basis = Basis( [[x]->[x^1],[x]->[x^2],[x]->[x^3]] )
 [[x]->[x^2],[x]->[x^3]]
 True
 False
+[x]->[x^2]
+basis = Basis( [[x]->[x^1],[x]->[x^42],[x]->[x^3]] )

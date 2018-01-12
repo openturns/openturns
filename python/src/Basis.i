@@ -61,6 +61,18 @@ Basis(const Basis & other)
   return new OT::Basis(other);
 }
 
+Function __getitem__ (SignedInteger index) const
+{
+  return self->operator[](index);
+}
+
+void __setitem__(SignedInteger index,
+                 const Function & function)
+{
+  self->operator[](index) = function;
+}
+
+
 UnsignedInteger __len__() const
 {
   return self->getSize();

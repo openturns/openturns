@@ -80,6 +80,11 @@ Bool OrthogonalFunctionFactory::isOrthogonal() const
   return true;
 }
 
+Bool OrthogonalFunctionFactory::isFinite() const
+{
+  return false;
+}
+
 
 /* String converter */
 String OrthogonalFunctionFactory::__repr__() const

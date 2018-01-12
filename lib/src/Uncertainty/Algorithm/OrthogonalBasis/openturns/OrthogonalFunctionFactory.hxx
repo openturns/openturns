@@ -62,6 +62,8 @@ public:
 
   virtual Bool isOrthogonal() const;
 
+  virtual Bool isFinite() const;
+
   /** String converter */
   virtual String __repr__() const;
 

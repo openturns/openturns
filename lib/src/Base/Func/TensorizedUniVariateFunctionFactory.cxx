@@ -112,6 +112,9 @@ TensorizedUniVariateFunctionFactory::FunctionFamilyCollection TensorizedUniVaria
 /* Build the Function of the given index */
 Function TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index) const
 {
+  if (index < getCurrentSize())
+    return BasisImplementation::operator[](index);
+
   // Compute the multi-indices using the EnumerateFunction
   const Indices indices(phi_(index));
   const UnsignedInteger size = indices.getSize();
@@ -122,9 +125,12 @@ Function TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index)
     functions[i] = coll_[i].build(indices[i]);
   }
   const Pointer<ProductUniVariateFunctionEvaluation> p_evaluation(ProductUniVariateFunctionEvaluation(functions).clone());
-  return FunctionImplementation(p_evaluation,
+  FunctionImplementation result(p_evaluation,
                                 ProductUniVariateFunctionGradient(p_evaluation).clone(),
                                 ProductUniVariateFunctionHessian(p_evaluation).clone());
+  if (index == getCurrentSize())
+    BasisImplementation::add(result);
+  return result;
 }
 
 
@@ -134,6 +140,12 @@ String TensorizedUniVariateFunctionFactory::__repr__() const
   return OSS() << "class=" << getClassName()
          << " univariate function collection=" << coll_
          << " enumerate function=" << phi_;
+}
+
+
+Bool TensorizedUniVariateFunctionFactory::isFinite() const
+{
+  return false;
 }
 
 
