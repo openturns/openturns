@@ -448,7 +448,7 @@ std::pair<size_t, size_t> HMatrixImplementation::fullrkRatio() const
 #ifdef OPENTURNS_HAVE_HMAT
   hmat_info_t mat_info;
   static_cast<hmat_interface_t*>(hmatInterface_)->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
-  return std::pair<size_t, size_t>(mat_info.full_size, mat_info.rk_size);
+  return std::pair<size_t, size_t>(mat_info.full_size, mat_info.uncompressed_size - mat_info.full_size);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
 #endif
