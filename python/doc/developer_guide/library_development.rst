@@ -252,7 +252,7 @@ Document your contribution more thoroughly
 
 If your class introduces important mathematical concepts or impacts the
 library architecture it may be useful to add some more details in the
-latex documentation, see :ref:`latex_doc`.
+documentation, see :ref:`sphinx_doc`.
 
 That’s all, folks!
 

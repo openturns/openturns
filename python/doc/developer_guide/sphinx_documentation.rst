@@ -1,3 +1,5 @@
+.. _sphinx_doc:
+
 Sphinx documentation
 ====================
 
@@ -26,6 +28,10 @@ matplotlib.sphinxext.plot_directive
     Matplotlib/Sphinx extension is used for *executing* and *testing* the
     code blocks featured in the pages of this documentation, especially in the
     :ref:`examples section <examples>`.
+
+nbsphinx
+    The `nbsphinx <https://nbsphinx.readthedocs.io/>`_ allows to
+    include Jupyter notebooks as examples.
 
 .. _contribute_docstrings:
 
