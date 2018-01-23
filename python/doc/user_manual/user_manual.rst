@@ -1,10 +1,10 @@
 .. _user_manual:
 
-====================================
-User manual for the Python interface
-====================================
+====
+API
+====
 
-This is the user manual for the Python bindings of the library.
+This section details classes, functions included in the Python bindings.
 
 .. toctree::
     :maxdepth: 1
