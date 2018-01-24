@@ -2,6 +2,7 @@ Meta modeling
 =============
 
 .. toctree::
+    :maxdepth: 1
 
     create_linear_least_squares_model.ipynb
     taylor_approximation.ipynb

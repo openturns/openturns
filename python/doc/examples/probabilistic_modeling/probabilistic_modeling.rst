@@ -5,6 +5,7 @@ Distributions
 -------------
 
 .. toctree::
+    :maxdepth: 1
 
     gaussian_distribution.ipynb
     geometric_distribution.ipynb
@@ -37,6 +38,7 @@ Stochastic processes
 --------------------
 
 .. toctree::
+    :maxdepth: 1
 
     mesh_creation.ipynb
     gaussian_process_covariance.ipynb

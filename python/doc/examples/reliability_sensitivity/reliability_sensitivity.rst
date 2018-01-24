@@ -2,6 +2,7 @@ Reliability, sensitivity
 ========================
 
 .. toctree::
+    :maxdepth: 1
 
     event_manipulation.ipynb
     estimate_probability_monte_carlo.ipynb

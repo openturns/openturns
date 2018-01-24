@@ -2,6 +2,7 @@ Numerical methods
 =================
 
   .. toctree::
+    :maxdepth: 1
 
     random_generator.ipynb
     combinatorial_generator.ipynb
