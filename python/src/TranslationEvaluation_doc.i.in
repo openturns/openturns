@@ -1,0 +1,39 @@
+%feature("docstring") OT::TranslationEvaluation
+"Translation evaluation.
+
+Available constructors:
+   TranslationEvaluation(*linear*)
+
+Parameters
+----------
+constant : sequence of float
+    Vector :math:`\vect{c}`.
+
+See also
+--------
+Function
+
+Notes
+-----
+This implements a :class:`~openturns.Function` :math:`f`
+defined as :
+
+.. math::
+
+    f : & \Rset^n \rightarrow \Rset^n  \\
+        & \vect{X} \mapsto \vect{X} + \vect{c}
+
+where:
+
+- :math:`\vect{c}` is the :math:`\Rset^n` vector defined by the object *constant*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TranslationEvaluation::getConstant
+"Accessor to the constant.
+
+Returns
+-------
+constant : :class:`~openturns.Point`
+    The constant :math:`\vect{c}`."
+

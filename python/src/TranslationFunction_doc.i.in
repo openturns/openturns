@@ -1,0 +1,28 @@
+%feature("docstring") OT::TranslationFunction
+"Translation function.
+
+Available constructors:
+   TranslationFunction(*constant*)
+
+Parameters
+----------
+constant : sequence of float
+    Vector :math:`\vect{c}`.
+
+See also
+--------
+Function
+
+Notes
+-----
+This implements a :class:`~openturns.Function` :math:`f`
+defined as :
+
+.. math::
+
+    f : & \Rset^n \rightarrow \Rset^n  \\
+        & \vect{X} \mapsto \vect{X} + \vect{c}
+
+where:
+
+- :math:`\vect{c}` is the :math:`\Rset^n` vector defined by the object *constant*."

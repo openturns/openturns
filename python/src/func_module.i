@@ -48,6 +48,7 @@
 %include NoEvaluation.i
 %include NoGradient.i
 %include NoHessian.i
+%include TranslationEvaluation.i
 %include LinearEvaluation.i
 %include LinearGradient.i
 %include QuadraticEvaluation.i
@@ -90,6 +91,7 @@
 %include LinearCombinationGradient.i
 %include LinearCombinationHessian.i
 %include LinearFunction.i
+%include TranslationFunction.i
 %include QuadraticFunction.i
 %include UniVariateFunctionImplementation.i
 %include UniVariateFunction.i

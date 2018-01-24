@@ -74,6 +74,8 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/IdentityEvaluation.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/TranslationEvaluation.hxx"
+#include "openturns/TranslationFunction.hxx"
 #include "openturns/IndicatorFunction.hxx"
 #include "openturns/QuadraticFunction.hxx"
 #include "openturns/LinearGradient.hxx"

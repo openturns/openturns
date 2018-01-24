@@ -247,6 +247,7 @@ ot_add_python_module(func func_module.i
                       NoEvaluation.i
                       NoGradient.i
                       NoHessian.i
+                      TranslationEvaluation.i TranslationEvaluation_doc.i.in
                       LinearEvaluation.i LinearEvaluation_doc.i.in
                       LinearGradient.i LinearGradient_doc.i.in
                       QuadraticEvaluation.i
@@ -295,6 +296,7 @@ ot_add_python_module(func func_module.i
                       ValueFunction.i ValueFunction_doc.i.in
                       VertexFunction.i VertexFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in
+                      TranslationFunction.i TranslationFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
                       QuadraticFunction.i QuadraticFunction_doc.i.in
                       UniVariatePolynomialImplementation.i UniVariatePolynomialImplementation_doc.i.in
