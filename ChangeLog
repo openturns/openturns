@@ -35,6 +35,7 @@
  * Deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation
  * Deprecated TruncatedDistribution single bound accessors in favor of setBounds/getBounds
  * Deprecated remaining analytical & database Function ctors
+ * Mesh constructor no longer builds a KDTree, new method Mesh::computeKDTree must be called explicitly
 
 === Python module ===
 
