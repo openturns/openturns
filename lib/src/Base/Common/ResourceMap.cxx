@@ -501,7 +501,10 @@ void ResourceMap::loadDefaultConfiguration()
   // Mesh parameters
   setAsScalar( "Mesh-VertexEpsilon", 1.0e-12 );
   setAsUnsignedInteger( "Mesh-LargeSize", 5000 );
-  setAsUnsignedInteger( "Mesh-UseKDTree", 1 );
+  setAsScalar( "Mesh-DiffuseFactor", 0.7 );
+  setAsScalar( "Mesh-AmbientFactor", 0.1 );
+  setAsScalar( "Mesh-SpecularFactor", 0.2 );
+  setAsScalar( "Mesh-Shininess", 100.0 );
 
   // Matrix parameters
   setAsUnsignedInteger( "Matrix-size-visible-in-str-from", 5 );

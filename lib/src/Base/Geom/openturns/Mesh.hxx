@@ -188,7 +188,10 @@ public:
 
   /** VTK export */
   String streamToVTKFormat() const;
+  String streamToVTKFormat(const IndicesCollection & simplices) const;
   void exportToVTKFile(const String & fileName) const;
+  void exportToVTKFile(const String & fileName,
+		       const IndicesCollection & simplices) const;
 
 protected:
   // Build the affine matrix associated with a given simplex
