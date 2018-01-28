@@ -354,7 +354,7 @@ class View(object):
                 if 'facecolors' not in polygoncollection_kwargs_default:
                     polygoncollection_kwargs['facecolors'] = colorsRGBA
 
-                if 'edgecolors' not in polygon_kwargs_default:
+                if 'edgecolors' not in polygoncollection_kwargs_default:
                     polygoncollection_kwargs['edgecolors'] = colorsRGBA
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(np.array(data).reshape((polygonsNumber, verticesNumber, 2)), **polygoncollection_kwargs))
