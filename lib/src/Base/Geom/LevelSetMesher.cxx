@@ -132,7 +132,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
   // Second, keep only the simplices with a majority of vertices in the level set
   const Function function(levelSet.getFunction());
-  Sample values(function(boundingVertices));
+  const Point values(function(boundingVertices).asPoint());
   const Scalar level = levelSet.getLevel();
   Mesh::IndicesCollection goodSimplices(0);
   Sample goodVertices(0, dimension);
@@ -146,6 +146,9 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   TranslationFunction shiftFunction((Point(dimension)));
   OptimizationProblem problem;
   problem.setLevelValue(level);
+  // Create once some objects that will be reused a lot
+  Sample localVertices(dimension + 1, dimension);
+  Point localValues(dimension + 1);
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     const Indices currentSimplex(boundingSimplices[i]);
@@ -154,7 +157,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
       const UnsignedInteger globalVertexIndex = currentSimplex[j];
-      if (values[globalVertexIndex][0] <= level)
+      if (values[globalVertexIndex] <= level)
       {
         ++numGood;
         ++flagGoodVertices[globalVertexIndex];
@@ -167,13 +170,11 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
-        Sample localVertices(dimension + 1, dimension);
-        Point localValues(dimension + 1, dimension);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
           const UnsignedInteger index = currentSimplex[j];
           localVertices[j] = boundingVertices[index];
-          localValues[j] = values[index][0];
+          localValues[j] = values[index];
         }
         Point center(dimension);
         Scalar centerValue = 0.0;
@@ -198,7 +199,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
             // (M-C)/(B-C) = (level-v*)/(v-v*) = a
             // M-B=(v-level)/(v-v*)(C-B)
             const Point currentVertex(boundingVertices[globalVertexIndex]);
-            const Point delta((center - currentVertex) * (localValues[j] - centerValue) / (localValues[j] - centerValue));
+            const Point delta((center - currentVertex) * (localValues[j] - level) / (localValues[j] - centerValue));
             // If no projection, just add the linear correction
             flagMovedVertices.add(globalVertexIndex);
             if (!project) movedVertices.add(currentVertex + delta);

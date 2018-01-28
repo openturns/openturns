@@ -75,9 +75,11 @@ int main(int argc, char *argv[])
     // Automatic bounding box
     Mesh mesh3D(mesher3D.build(levelSet3D));
     fullprint << "mesh3D=" << mesh3D << std::endl;
+    mesh3D.draw().draw("automatic.png");
     // Manual bounding box
     mesh3D = mesher3D.build(levelSet3D, Interval(Point(3, -10.0), Point(3, 10.0)));
     fullprint << "mesh3D=" << mesh3D << std::endl;
+    mesh3D.draw().draw("manual.png");
   }
   catch (TestFailed & ex)
   {
