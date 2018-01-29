@@ -59,6 +59,7 @@ void SequentialStrategy::computeInitialBasis()
   // Start with the first vector
   currentVectorIndex_ = 0;
   Psi_k_p_ = FunctionCollection(1, basis_.build(currentVectorIndex_));
+  Psi_ = Psi_k_p_;
   I_p_ = Indices(1, currentVectorIndex_);
   addedPsi_k_ranks_ = Indices(1, currentVectorIndex_);
   removedPsi_k_ranks_ = Indices(0);
@@ -88,6 +89,7 @@ void SequentialStrategy::updateBasis(const Point & alpha_k,
   {
     const Function newVector(basis_.build(currentVectorIndex_));
     Psi_k_p_.add(newVector);
+    Psi_.add(newVector);
     I_p_.add(currentVectorIndex_);
     addedPsi_k_ranks_ = Indices(1, currentVectorIndex_);
     ++currentVectorIndex_;

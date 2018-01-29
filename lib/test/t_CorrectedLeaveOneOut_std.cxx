@@ -36,9 +36,8 @@ int main(int argc, char *argv[])
   Uniform yuniform(1.9, 2.1);
   Sample y( yuniform.getSample(size) );
   SymbolicFunction f( Description(1, "x"), Description(1, "2.0*x") );
-  Basis basis;
-  basis.add(f);
-  Indices indices(basis.getSize());
+  Collection<Function> basis(1, f);
+  Indices indices(1);
   indices.fill();
   FittingAlgorithm fittingAlgo = CorrectedLeaveOneOut();
 

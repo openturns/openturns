@@ -14,9 +14,8 @@ try:
     y = yuniform.getSample(size)
     w = [1.0] * size
     f = SymbolicFunction(['x'], ['2.0*x'])
-    basis = Basis()
-    basis.add(f)
-    indices = list(range(basis.getSize()))
+    basis = [f]
+    indices = list(range(len(basis)))
 
     fittingAlgo = KFold()
 

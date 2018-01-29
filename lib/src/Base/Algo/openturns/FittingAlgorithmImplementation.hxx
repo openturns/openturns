@@ -23,7 +23,8 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Basis.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Collection.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
 #include "openturns/DesignProxy.hxx"
 
@@ -40,6 +41,7 @@ class OT_API FittingAlgorithmImplementation
   CLASSNAME
 
 public:
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   FittingAlgorithmImplementation();
@@ -54,12 +56,12 @@ public:
   virtual Scalar run(const Sample & x,
                      const Sample & y,
                      const Point & weight,
-                     const Basis & psi,
+                     const FunctionCollection & psi,
                      const Indices & indices) const;
 
   virtual Scalar run(const Sample & x,
                      const Sample & y,
-                     const Basis & psi,
+                     const FunctionCollection & psi,
                      const Indices & indices) const;
 
 #ifndef SWIG

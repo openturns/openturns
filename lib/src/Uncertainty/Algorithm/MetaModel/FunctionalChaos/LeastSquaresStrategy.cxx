@@ -109,7 +109,7 @@ String LeastSquaresStrategy::__repr__() const
    the L2 integral by a finite sum: the same input sample is used for all the calls
    to this method */
 void LeastSquaresStrategy::computeCoefficients(const Function & function,
-    const Basis & basis,
+    const FunctionCollection & basis,
     const Indices & indices,
     const Indices & addedRanks,
     const Indices & conservedRanks,

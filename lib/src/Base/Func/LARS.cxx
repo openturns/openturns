@@ -51,7 +51,7 @@ LARS * LARS::clone() const
 /* Method to create new BasisSequence objects */
 BasisSequence LARS::build (const Sample & x,
                            const Sample & y,
-                           const Basis & basis,
+                           const FunctionCollection & basis,
                            const Indices & indices)
 {
   return BasisSequenceFactoryImplementation::build(x, y, basis, indices);

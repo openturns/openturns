@@ -63,7 +63,7 @@ String FittingAlgorithm::__str__(const String & offset) const
 Scalar FittingAlgorithm::run(const Sample & x,
                              const Sample & y,
                              const Point & weight,
-                             const Basis & basis,
+                             const FunctionCollection & basis,
                              const Indices & indices) const
 {
   return getImplementation()->run(x, y, weight, basis, indices);
@@ -71,7 +71,7 @@ Scalar FittingAlgorithm::run(const Sample & x,
 
 Scalar FittingAlgorithm::run(const Sample & x,
                              const Sample & y,
-                             const Basis & basis,
+                             const FunctionCollection & basis,
                              const Indices & indices) const
 {
   return getImplementation()->run(x, y, basis, indices);

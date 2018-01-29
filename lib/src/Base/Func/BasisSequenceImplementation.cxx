@@ -88,12 +88,12 @@ Basis BasisSequenceImplementation::getMasterBasis() const
   return masterBasis_;
 }
 
-Basis BasisSequenceImplementation::getBasis(const UnsignedInteger index) const
+BasisSequenceImplementation::FunctionCollection BasisSequenceImplementation::getBasis(const UnsignedInteger index) const
 {
-  Basis result;
+  Collection<Function> functions;
   Indices subBasisIndices(getIndices(index));
-  for (UnsignedInteger i = 0; i < subBasisIndices.getSize(); ++ i) result.add(masterBasis_[subBasisIndices[i]]);
-  return result;
+  for (UnsignedInteger i = 0; i < subBasisIndices.getSize(); ++ i) functions.add(masterBasis_[subBasisIndices[i]]);
+  return functions;
 }
 
 /* IndicesCollection accessor */

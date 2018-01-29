@@ -538,7 +538,10 @@ ot_add_python_module(model_process model_process_module.i
                       ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in  
                       ARMAFactory.i ARMAFactory_doc.i.in
 		      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
-		      KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in                
+		      KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in
+                      PythonEvaluation.cxx
+                      PythonGradient.cxx
+                      PythonHessian.cxx
                       UncertaintyProcessTemplateDefs.i
                    )
 

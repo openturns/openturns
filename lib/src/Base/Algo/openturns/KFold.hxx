@@ -38,6 +38,7 @@ class OT_API KFold
 {
   CLASSNAME
 public:
+  typedef FittingAlgorithmImplementation::FunctionCollection FunctionCollection;
 
 
   /** Default constructor */
@@ -54,7 +55,7 @@ public:
   virtual Scalar run(const Sample & x,
                      const Sample & y,
                      const Point & weight,
-                     const Basis & basis,
+                     const FunctionCollection & basis,
                      const Indices & indices) const;
 #ifndef SWIG
   virtual Scalar run(const Sample & y,

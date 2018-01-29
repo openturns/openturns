@@ -37,6 +37,7 @@ class OT_API LARS
 {
   CLASSNAME
 public:
+  typedef BasisSequenceFactoryImplementation::FunctionCollection FunctionCollection;
 
 
   /** Default constructor */
@@ -48,7 +49,7 @@ public:
   /** Method to create new BasisSequence objects */
   virtual BasisSequence build(const Sample & x,
                               const Sample & y,
-                              const Basis & psi,
+                              const FunctionCollection & psi,
                               const Indices & indices);
 #ifndef SWIG
 //   virtual BasisSequence build(const Sample & y,

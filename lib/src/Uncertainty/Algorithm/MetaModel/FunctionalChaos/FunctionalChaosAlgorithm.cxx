@@ -372,7 +372,7 @@ void FunctionalChaosAlgorithm::runMarginal(const UnsignedInteger marginalIndex,
   do
   {
     LOGINFO("Compute the coefficients");
-    projectionStrategy_.computeCoefficients(composedModel_, *adaptiveStrategy_.getImplementation()->basis_.getImplementation(), adaptiveStrategy_.getImplementation()->I_p_, adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->conservedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_, marginalIndex);
+    projectionStrategy_.computeCoefficients(composedModel_, adaptiveStrategy_.getImplementation()->Psi_, adaptiveStrategy_.getImplementation()->I_p_, adaptiveStrategy_.getImplementation()->addedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->conservedPsi_k_ranks_, adaptiveStrategy_.getImplementation()->removedPsi_k_ranks_, marginalIndex);
     // The basis is adapted under the following conditions:
     // + the current residual is small enough
     // + the adaptive strategy has no more vector to propose

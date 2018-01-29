@@ -34,12 +34,11 @@ int main(int argc, char *argv[])
   Point weight(1, 1.0);
   Collection<Function> coll;
   coll.add(SymbolicFunction("x", "x"));
-  Basis psi(coll);
   Indices indices(coll.getSize());
   indices.fill();
 
   LeastSquaresMetaModelSelectionFactory factory = LeastSquaresMetaModelSelectionFactory(LARS(), CorrectedLeaveOneOut());
-  ApproximationAlgorithm algo(factory.build(x, y, weight, psi, indices));
+  ApproximationAlgorithm algo(factory.build(x, y, weight, coll, indices));
   fullprint << "algo = " << algo << std::endl;
 
   return ExitCode::Success;

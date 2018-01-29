@@ -64,7 +64,7 @@ OT_LeastSquaresMethod_getWeight_doc
 
 Returns
 -------
-basis : :class:`~openturns.getBasis`
+basis : collection of :class:`~openturns.Function`
     Basis."
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getBasis
@@ -95,19 +95,6 @@ indices : :class:`~openturns.Indices`
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getInitialIndices
 OT_LeastSquaresMethod_getInitialIndices_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_LeastSquaresMethod_buildCurrentBasis_doc
-"Build the current basis.
-
-Returns
--------
-phi : :class:`~openturns.Basis`
-    The basis according to current indices."
-%enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::buildCurrentBasis
-OT_LeastSquaresMethod_buildCurrentBasis_doc
 
 // ---------------------------------------------------------------------
 

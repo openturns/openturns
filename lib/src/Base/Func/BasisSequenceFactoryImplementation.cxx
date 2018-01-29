@@ -74,7 +74,7 @@ Bool BasisSequenceFactoryImplementation::getVerbose() const
 /* Method to create new BasisSequence objects */
 BasisSequence BasisSequenceFactoryImplementation::build(const Sample & x,
     const Sample & y,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices)
 {
   const DesignProxy proxy(x, psi);
@@ -92,7 +92,6 @@ BasisSequence BasisSequenceFactoryImplementation::build(const Sample & y,
 BasisSequence BasisSequenceFactoryImplementation::build(LeastSquaresMethod & method,
     const Sample & y)
 {
-//   BasisSequence basisSequence(method.buildCurrentBasis());
   BasisSequence basisSequence(method.getBasis());
   initialize();
 

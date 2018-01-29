@@ -28,7 +28,6 @@ CLASSNAMEINIT(CanonicalTensorEvaluation)
 
 static const Factory<CanonicalTensorEvaluation> Factory_CanonicalTensorEvaluation;
 
-
 CanonicalTensorEvaluation::CanonicalTensorEvaluation()
   : EvaluationImplementation()
 {
@@ -53,7 +52,7 @@ CanonicalTensorEvaluation::CanonicalTensorEvaluation(const FunctionFamilyCollect
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     coefficients_[j] = Sample(rank, nk[j]);
-    basis_[j] = Basis(nk[j]);
+    basis_[j] = Collection<Function>(nk[j]);
     for (UnsignedInteger k = 0; k < nk[j]; ++ k)
     {
       basis_[j][k] = Function(UniVariateFunctionEvaluation(functionFamilies[j].build(k)));
@@ -88,7 +87,7 @@ Point CanonicalTensorEvaluation::getCoefficients(const UnsignedInteger i, const 
 
 
 /* Basis accessor along i-th component */
-Basis CanonicalTensorEvaluation::getBasis(const UnsignedInteger i) const
+CanonicalTensorEvaluation::FunctionCollection CanonicalTensorEvaluation::getBasis(const UnsignedInteger i) const
 {
   return basis_[i];
 }
@@ -161,7 +160,7 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
     const Point xj(1, inP[j]);
-    const Basis basisI(getBasis(j));
+    const FunctionCollection basisI(getBasis(j));
     const UnsignedInteger basisSize = degrees_[j];
 
     // compute phi_(j,k)(xj)
@@ -214,7 +213,9 @@ void CanonicalTensorEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute("degrees_", degrees_);
   adv.saveAttribute("coefficients_", coefficients_);
-  adv.saveAttribute("basis_", basis_);
+  // FIXME: got a segfault in t_Study_saveload.py when serializing basis_ directly
+  for (UnsignedInteger i = 0; i < basis_.getSize(); ++ i)
+    adv.saveAttribute(OSS() << "basis_" << i, basis_[i]);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -223,7 +224,9 @@ void CanonicalTensorEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute("degrees_", degrees_);
   adv.loadAttribute("coefficients_", coefficients_);
-  adv.loadAttribute("basis_", basis_);
+  basis_.resize(degrees_.getSize());
+  for (UnsignedInteger i = 0; i < basis_.getSize(); ++ i)
+    adv.loadAttribute(OSS() << "basis_" << i, basis_[i]);
 }
 
 END_NAMESPACE_OPENTURNS

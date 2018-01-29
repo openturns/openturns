@@ -68,7 +68,7 @@ Point KarhunenLoeveResult::getEigenValues() const
 }
 
 /* Modes accessors */
-Basis KarhunenLoeveResult::getModes() const
+KarhunenLoeveResult::FunctionCollection KarhunenLoeveResult::getModes() const
 {
   return getImplementation()->getModes();
 }
@@ -79,7 +79,7 @@ ProcessSample KarhunenLoeveResult::getModesAsProcessSample() const
 }
 
 /* Scaled modes accessors */
-Basis KarhunenLoeveResult::getScaledModes() const
+KarhunenLoeveResult::FunctionCollection KarhunenLoeveResult::getScaledModes() const
 {
   return getImplementation()->getScaledModes();
 }

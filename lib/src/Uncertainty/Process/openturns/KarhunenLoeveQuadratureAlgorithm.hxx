@@ -41,6 +41,8 @@ class OT_API KarhunenLoeveQuadratureAlgorithm
   CLASSNAME
 
 public:
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor without parameters */
   KarhunenLoeveQuadratureAlgorithm();
@@ -50,8 +52,7 @@ public:
                                    const Interval & domainBounds,
                                    const CovarianceModel & covariance,
                                    const WeightedExperiment & experiment,
-                                   const Basis & basis,
-                                   const UnsignedInteger basisSize,
+                                   const FunctionCollection & basis,
                                    const Bool mustScale,
                                    const Scalar threshold = 0.0);
 
@@ -59,7 +60,7 @@ public:
   KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
                                    const Interval & domainBounds,
                                    const CovarianceModel & covariance,
-                                   const UnsignedInteger basisSize,
+                                   const UnsignedInteger marginalDegree,
                                    const Scalar threshold = 0.0);
 
   /** Virtual copy constructor */
@@ -79,10 +80,7 @@ public:
   WeightedExperiment getExperiment() const;
 
   /** Basis accessor */
-  Basis getBasis() const;
-
-  /** BasisSize accessor */
-  UnsignedInteger getBasisSize() const;
+  FunctionCollection getBasis() const;
 
   /** MustScale accessor */
   Bool getMustScale() const;
@@ -113,10 +111,7 @@ private:
   WeightedExperiment experiment_;
 
   /** Basis */
-  Basis basis_;
-
-  /** Basis size */
-  UnsignedInteger basisSize_;
+  FunctionPersistentCollection basis_;
 
   /** Scaling flag */
   Bool mustScale_;

@@ -41,7 +41,7 @@ ExpertMixture::ExpertMixture()
 
 
 /* Constructor */
-ExpertMixture::ExpertMixture(const Basis & experts,
+ExpertMixture::ExpertMixture(const FunctionCollection & experts,
                              const Classifier & classifier,
                              const Bool supervised)
   : EvaluationImplementation()
@@ -96,13 +96,13 @@ String ExpertMixture::__str__(const String & offset) const
 
 
 /* Local experts accessor */
-void ExpertMixture::setExperts(const Basis & experts)
+void ExpertMixture::setExperts(const FunctionCollection & experts)
 {
-  if (experts.getDimension() != classifier_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the local experts must have the same input dimension as the classifier dimension. Here, experts input dimension=" << experts.getDimension() << " and classifier dimension=" << classifier_.getDimension();
+  if (experts[0].getInputDimension() != classifier_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the local experts must have the same input dimension as the classifier dimension. Here, experts input dimension=" << experts[0].getInputDimension() << " and classifier dimension=" << classifier_.getDimension();
   experts_ = experts;
 }
 
-Basis ExpertMixture::getExperts() const
+ExpertMixture::FunctionCollection ExpertMixture::getExperts() const
 {
   return experts_;
 }
@@ -110,7 +110,7 @@ Basis ExpertMixture::getExperts() const
 /* Classifier accessor */
 void ExpertMixture::setClassifier(const Classifier & classifier)
 {
-  if (experts_.getDimension() != classifier.getDimension()) throw InvalidArgumentException(HERE) << "Error: the local experts must have the same input dimension as the classifier dimension. Here, experts input dimension=" << experts_.getDimension() << " and classifier dimension=" << classifier.getDimension();
+  if (experts_[0].getInputDimension() != classifier.getDimension()) throw InvalidArgumentException(HERE) << "Error: the local experts must have the same input dimension as the classifier dimension. Here, experts input dimension=" << experts_[0].getInputDimension() << " and classifier dimension=" << classifier.getDimension();
   classifier_ = classifier;
 }
 

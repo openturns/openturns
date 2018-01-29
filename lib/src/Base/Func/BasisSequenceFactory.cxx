@@ -68,7 +68,7 @@ Bool BasisSequenceFactory::getVerbose() const
 /* Method to create new BasisSequence objects */
 BasisSequence BasisSequenceFactory::build(const Sample & x,
     const Sample & y,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices)
 {
   return getImplementation()->build(x, y, psi, indices);

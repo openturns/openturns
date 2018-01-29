@@ -12,7 +12,7 @@ distribution = ot.Mixture([d1, d2], [1.0] * 2)
 classifier = ot.MixtureClassifier(distribution)
 f1 = ot.SymbolicFunction(['x'], ['-x'])
 f2 = ot.SymbolicFunction(['x'], ['x'])
-experts = ot.Basis([f1, f2])
+experts = [f1, f2]
 moe = ot.ExpertMixture(experts, classifier)
 moeNMF = ot.Function(moe)
 
@@ -30,7 +30,7 @@ print('x=', ot.Sample(x), 'moeNMF(x)=', moeNMF(x))
 # non-supervised mode (2d)
 f1 = ot.SymbolicFunction(['x1', 'x2'], ['-8'])
 f2 = ot.SymbolicFunction(['x1', 'x2'], ['8'])
-experts = ot.Basis([f1, f2])
+experts = [f1, f2]
 moe = ot.ExpertMixture(experts, classifier, False)
 moeNMF = ot.Function(moe)
 

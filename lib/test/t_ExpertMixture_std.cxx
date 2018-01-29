@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     fullprint << "classifier dimension=" << classifier.getDimension() << std::endl;
 
     // Create local experts
-    Basis experts(0);
+    Collection<Function> experts(0);
     experts.add(SymbolicFunction("x", "-x"));
     experts.add(SymbolicFunction("x", "x"));
 

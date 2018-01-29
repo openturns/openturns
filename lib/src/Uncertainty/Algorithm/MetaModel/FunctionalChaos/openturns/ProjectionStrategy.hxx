@@ -40,7 +40,7 @@ class OT_API ProjectionStrategy
   CLASSNAME
 public:
 
-  typedef Collection<Function> FunctionCollection;
+  typedef ProjectionStrategyImplementation::FunctionCollection FunctionCollection;
 
   /** Default constructor */
   ProjectionStrategy();
@@ -81,7 +81,7 @@ public:
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,
-                           const Basis & basis,
+                           const FunctionCollection & basis,
                            const Indices & indices,
                            const Indices & addedRanks,
                            const Indices & conservedRanks,

@@ -27,8 +27,8 @@ whereas in non-supervised mode only the input space is partitioned:
 
 Parameters
 ----------
-basis : :class:`~openturns.Basis`
-    A basis which is a collection of :class:`~openturns.Function`.
+basis : sequence of :class:`~openturns.Function`
+    A basis
 classifier : :class:`~openturns.Classifier`
     A classifier
 supervised : bool (default=True)
@@ -48,7 +48,7 @@ Examples
 >>> classifier = ot.MixtureClassifier(distribution)
 >>> f1 = ot.SymbolicFunction(['x'], ['-x'])
 >>> f2 = ot.SymbolicFunction(['x'], ['x'])
->>> experts = ot.Basis([f1, f2])
+>>> experts = [f1, f2]
 >>> evaluation = ot.ExpertMixture(experts, classifier)
 >>> moe = ot.Function(evaluation)
 >>> print(moe([-0.3]))
@@ -71,7 +71,7 @@ Classifier, MixtureClassifier"
 
 Returns
 -------
-basis : :class:`~openturns.Basis`
+basis : collection of :class:`~openturns.Function`
     The collection of functions :math:`(f_i)_{i=1, \ldots, N}`."
 
 // ---------------------------------------------------------------------

@@ -106,7 +106,6 @@ int main(int argc, char *argv[])
   {
     coll.add(productBasis.build(i));
   }
-  Basis psi(coll);
   Indices indices(basisSize);
   indices.fill();
 
@@ -115,7 +114,7 @@ int main(int argc, char *argv[])
   factory.setVerbose(true);
   fullprint << "factory = " << factory << std::endl;
 
-  BasisSequence seq = factory.build( u, y, psi, indices);
+  BasisSequence seq = factory.build( u, y, coll, indices);
 
   UnsignedInteger first = 20;
   if ( seq.getSize() >= first )

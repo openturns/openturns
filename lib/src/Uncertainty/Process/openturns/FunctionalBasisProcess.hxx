@@ -22,7 +22,8 @@
 #define OPENTURNS_FUNCTIONALBASISPROCESS_HXX
 
 #include "openturns/ProcessImplementation.hxx"
-#include "openturns/Basis.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/PersistentCollection.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Process.hxx"
@@ -40,6 +41,8 @@ class OT_API FunctionalBasisProcess
   CLASSNAME
 
 public:
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Some typedefs to ease reading */
 
@@ -48,11 +51,11 @@ public:
 
   /** Standard constructor */
   FunctionalBasisProcess(const Distribution & distribution,
-                         const Basis & basis);
+                         const FunctionCollection & basis);
 
   /** Standard constructor */
   FunctionalBasisProcess(const Distribution & distribution,
-                         const Basis & basis,
+                         const FunctionCollection & basis,
                          const Mesh & mesh);
 
   /** Virtual constructor */
@@ -90,10 +93,10 @@ public:
   void setDistribution(const Distribution & distribution);
 
   /** Basis accessor */
-  Basis getBasis() const;
+  FunctionCollection getBasis() const;
 
   /** Basis accessor */
-  void setBasis(const Basis & basis);
+  void setBasis(const FunctionCollection & basis);
 
   /** Covariance model accessor */
   CovarianceModel getCovarianceModel() const;
@@ -110,7 +113,7 @@ private:
   Distribution distribution_;
 
   /** The functional basis */
-  Basis basis_;
+  FunctionPersistentCollection basis_;
 
   /** The last state */
   mutable Point state_;

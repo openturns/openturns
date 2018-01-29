@@ -42,6 +42,7 @@ class OT_API BasisSequenceImplementation
   CLASSNAME
 
 public:
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   BasisSequenceImplementation();
@@ -66,7 +67,7 @@ public:
   Basis getMasterBasis() const;
 
   /** Basis accessor */
-  Basis getBasis(const UnsignedInteger index) const;
+  FunctionCollection getBasis(const UnsignedInteger index) const;
 
   /** IndicesCollection accessor */
   IndicesCollection getIndicesCollection() const;

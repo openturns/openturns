@@ -39,7 +39,7 @@ static const Factory<FunctionalBasisProcess> Factory_FunctionalBasisProcess;
 FunctionalBasisProcess::FunctionalBasisProcess()
   : ProcessImplementation()
   , distribution_(Normal())
-  , basis_(Collection<Function>(1, SymbolicFunction("t", "t")))
+  , basis_(1, SymbolicFunction("t", "t"))
   , state_(1, 0.0)
 {
   // Set the dimension of the process
@@ -49,7 +49,7 @@ FunctionalBasisProcess::FunctionalBasisProcess()
 
 /* Standard constructor */
 FunctionalBasisProcess::FunctionalBasisProcess(const Distribution & distribution,
-    const Basis & basis)
+    const FunctionCollection & basis)
   : ProcessImplementation()
   , distribution_(distribution)
   , basis_()
@@ -62,7 +62,7 @@ FunctionalBasisProcess::FunctionalBasisProcess(const Distribution & distribution
 
 /* Standard constructor */
 FunctionalBasisProcess::FunctionalBasisProcess(const Distribution & distribution,
-    const Basis & basis,
+    const FunctionCollection & basis,
     const Mesh & mesh)
   : ProcessImplementation()
   , distribution_(distribution)
@@ -94,9 +94,6 @@ String FunctionalBasisProcess::__repr__() const
 CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
-  Collection<Function> functions(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    functions[i] = basis_.build(i);
   if (distribution_.hasIndependentCopula())
   {
     // We use the standard deviation as it is an O(dim) computation
@@ -104,9 +101,9 @@ CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
     Point coefficients(distribution_.getStandardDeviation());
     for (UnsignedInteger i = 0; i < dimension; ++i)
       coefficients[i] *= coefficients[i];
-    return RankMCovarianceModel(coefficients, functions);
+    return RankMCovarianceModel(coefficients, basis_);
   }
-  return RankMCovarianceModel(distribution_.getCovariance(), functions);
+  return RankMCovarianceModel(distribution_.getCovariance(), basis_);
 }
 
 /* Is the process stationary ? */
@@ -196,7 +193,7 @@ Process FunctionalBasisProcess::getMarginal(const Indices & indices) const
   Distribution marginalDistribution(distribution_.getMarginal(indices));
   // Second the marginal basis
   const UnsignedInteger basisSize = basis_.getSize();
-  Basis marginalBasis(basisSize);
+  FunctionCollection marginalBasis(basisSize);
   for (UnsignedInteger i = 0; i < basisSize; ++i) marginalBasis[i] = basis_[i].getMarginal(indices);
   // Return the associated FunctionalBasisProcess
   return new FunctionalBasisProcess(marginalDistribution, marginalBasis, mesh_);
@@ -217,13 +214,13 @@ void FunctionalBasisProcess::setDistribution(const Distribution & distribution)
 }
 
 /* Basis accessor */
-Basis FunctionalBasisProcess::getBasis() const
+FunctionalBasisProcess::FunctionCollection FunctionalBasisProcess::getBasis() const
 {
   return basis_;
 }
 
 /* Basis accessor */
-void FunctionalBasisProcess::setBasis(const Basis & basis)
+void FunctionalBasisProcess::setBasis(const FunctionCollection & basis)
 {
   const UnsignedInteger size = basis.getSize();
   // Check if the basis is not empty

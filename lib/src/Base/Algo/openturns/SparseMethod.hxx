@@ -40,6 +40,7 @@ class OT_API SparseMethod
 {
   CLASSNAME
 public:
+  typedef LeastSquaresMethodImplementation::FunctionCollection FunctionCollection;
 
   /** Default constructor */
   SparseMethod();
@@ -62,7 +63,7 @@ public:
   virtual Point getWeight() const;
 
   /** Basis accessor */
-  virtual Basis getBasis() const;
+  virtual FunctionCollection getBasis() const;
 
   /** Current indices accessor */
   virtual Indices getCurrentIndices() const;
@@ -82,9 +83,6 @@ public:
                       const Bool row = false);
 
   virtual void trashDecomposition();
-
-  /** Build the current functions */
-  virtual Basis buildCurrentBasis() const;
 
   /** Build the weighted design matrix */
   virtual MatrixImplementation computeWeightedDesign(const Bool whole = false) const;

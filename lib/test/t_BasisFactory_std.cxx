@@ -55,7 +55,9 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      AggregatedFunction f(basis);
+      Indices indices(basis.getSize());
+      indices.fill();
+      AggregatedFunction f(basis.getSubBasis(indices));
       Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
@@ -65,7 +67,9 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      AggregatedFunction f(basis);
+      Indices indices(basis.getSize());
+      indices.fill();
+      AggregatedFunction f(basis.getSubBasis(indices));
       Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }
@@ -75,7 +79,9 @@ int main(int argc, char *argv[])
       Basis basis(factory.build());
       std::cout << "basis=" << basis << std::endl;
 
-      AggregatedFunction f(basis);
+      Indices indices(basis.getSize());
+      indices.fill();
+      AggregatedFunction f(basis.getSubBasis(indices));
       Point y(f(x));
       std::cout << "y=" << y << std::endl;
     }

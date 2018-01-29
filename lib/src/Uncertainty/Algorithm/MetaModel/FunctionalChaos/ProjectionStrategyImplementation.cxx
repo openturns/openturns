@@ -221,14 +221,14 @@ Point ProjectionStrategyImplementation::getCoefficients() const
 
 /* Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
 void ProjectionStrategyImplementation::computeCoefficients(const Function & function,
-    const Basis & basis,
+    const FunctionCollection & basis,
     const Indices & indices,
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
     const UnsignedInteger marginalIndex)
 {
-  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const Function & function, const Basis & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger marginalIndex)";
+  throw NotYetImplementedException(HERE) << "In ProjectionStrategyImplementation::computeCoefficients(const Function & function, const FunctionCollection & basis, const Indices & indices, const Indices & addedRanks, const Indices & conservedRanks, const Indices & removedRanks, const UnsignedInteger marginalIndex)";
 }
 
 

@@ -51,7 +51,7 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation()
 KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
     const Scalar threshold,
     const Point & eigenvalues,
-    const Basis & modes,
+    const FunctionCollection & modes,
     const ProcessSample & modesAsProcessSample,
     const Matrix & projection)
   : PersistentObject()
@@ -90,7 +90,7 @@ Point KarhunenLoeveResultImplementation::getEigenValues() const
 }
 
 /* Modes accessors */
-Basis KarhunenLoeveResultImplementation::getModes() const
+KarhunenLoeveResultImplementation::FunctionCollection KarhunenLoeveResultImplementation::getModes() const
 {
   return modes_;
 }
@@ -101,15 +101,16 @@ ProcessSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
 }
 
 /* Scaled modes accessors */
-Basis KarhunenLoeveResultImplementation::getScaledModes() const
+KarhunenLoeveResultImplementation::FunctionCollection KarhunenLoeveResultImplementation::getScaledModes() const
 {
   Collection<Function> scaledModes(modes_.getSize());
-  const UnsignedInteger dimension = modes_.getDimension();
+  if (modes_.getSize() == 0) return scaledModes;
+  const UnsignedInteger dimension = modes_[0].getInputDimension();
   const Point zero(dimension);
   const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)
   {
-    const Function modeI(modes_.build(i));
+    const Function modeI(modes_[i]);
     LinearFunction scaling(zero, zero, id * std::sqrt(eigenvalues_[i]));
     scaledModes[i] = ComposedFunction(scaling, modeI);
   }
@@ -198,7 +199,7 @@ Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) con
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     scaledCoefficients[i] = std::sqrt(eigenvalues_[i]) * coefficients[i];
-    functions[i] = modes_.build(i);
+    functions[i] = modes_[i];
   }
   return LinearCombinationFunction(functions, scaledCoefficients);
 }

@@ -36,13 +36,16 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsScalar("LinearCombinationEvaluation-SmallCoefficient", 1.0e-10);
     UnsignedInteger dim = 1;
     Interval domain(Point(dim, -1.0), Point(dim, 1.0));
-    OrthogonalProductPolynomialFactory basis(Collection<OrthogonalUniVariatePolynomialFamily>(dim, LegendreFactory()));
     UnsignedInteger basisSize = 5;
+    OrthogonalProductPolynomialFactory basis(Collection<OrthogonalUniVariatePolynomialFamily>(dim, LegendreFactory()));
+    Collection<Function> functions(basisSize);
+    for(UnsignedInteger index = 0; index < basisSize; ++index)
+      functions[index] = basis.build(index);
     LHSExperiment experiment(basis.getMeasure(), 100);
     Bool mustScale = false;
     Scalar threshold = 0.0001;
     AbsoluteExponential model(Point(dim, 1.0));
-    KarhunenLoeveQuadratureAlgorithm algo(domain, domain, model, experiment, basis, basisSize, mustScale, threshold);
+    KarhunenLoeveQuadratureAlgorithm algo(domain, domain, model, experiment, functions, mustScale, threshold);
     algo.run();
     KarhunenLoeveResult result(algo.getResult());
     Point lambda(result.getEigenValues());
@@ -53,7 +56,7 @@ int main(int argc, char *argv[])
     ProcessSample sample(process.getSample(10));
     Sample coefficients(result.project(sample));
     fullprint << "KL coefficients=" << coefficients << std::endl;
-    Basis KLFunctions(result.getModes());
+    Collection<Function> KLFunctions(result.getModes());
     fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
     fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
     fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
@@ -70,7 +73,7 @@ int main(int argc, char *argv[])
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       Sample coefficients(result.project(sample));
       // fullprint << "KL coefficients=" << coefficients << std::endl;
-      Basis KLFunctions(result.getModes());
+      Collection<Function> KLFunctions(result.getModes());
       // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
       Function lifted(result.lift(coefficients[0]));
       // fullprint << "KL lift=" << lifted.__str__() << std::endl;

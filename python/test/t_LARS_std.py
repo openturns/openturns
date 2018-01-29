@@ -66,9 +66,7 @@ try:
     # build basis
     degree = 10
     basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
-    basis = Basis()
-    for i in range(basisSize):
-        basis.add(productBasis.build(i))
+    basis = [productBasis.build(i) for i in range(basisSize)]
 
     # run algorithm
     factory = BasisSequenceFactory(LARS())

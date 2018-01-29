@@ -59,6 +59,7 @@ void FixedStrategy::computeInitialBasis()
       Psi_k_p_[i] = basis_.build(i);
     }
   }
+  Psi_ = Psi_k_p_;
   I_p_ = Indices(maximumDimension_);
   I_p_.fill();
   addedPsi_k_ranks_ = Indices(maximumDimension_);

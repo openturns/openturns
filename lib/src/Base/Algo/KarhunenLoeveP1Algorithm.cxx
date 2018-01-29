@@ -139,7 +139,7 @@ void KarhunenLoeveP1Algorithm::run()
   // Reduce and rescale the eigenvectors
   MatrixImplementation projection(K, augmentedDimension);
   Point selectedEV(K);
-  Basis modes(0);
+  Collection<Function> modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
   const UnsignedInteger meshDimension = mesh_.getDimension();
   SampleImplementation values(numVertices, dimension);

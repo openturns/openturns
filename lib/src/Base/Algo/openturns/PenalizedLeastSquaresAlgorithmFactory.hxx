@@ -39,6 +39,7 @@ class OT_API PenalizedLeastSquaresAlgorithmFactory
 {
   CLASSNAME
 public:
+  typedef ApproximationAlgorithmImplementationFactory::FunctionCollection FunctionCollection;
 
   /** Default constructor */
   PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal = false);
@@ -50,7 +51,7 @@ public:
   virtual PenalizedLeastSquaresAlgorithm * build (const Sample & x,
       const Sample & y,
       const Point & weight,
-      const Basis & psi,
+      const FunctionCollection & psi,
       const Indices & indices) const;
 
   /** String converter */

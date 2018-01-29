@@ -23,7 +23,6 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Basis.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -42,6 +41,7 @@ class OT_API LeastSquaresMethod
 public:
 
   typedef TypedInterfaceObject<LeastSquaresMethodImplementation>::Implementation  Implementation;
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   LeastSquaresMethod();
@@ -72,16 +72,13 @@ public:
   Point getWeight() const;
 
   /** Basis accessor */
-  Basis getBasis() const;
+  FunctionCollection getBasis() const;
 
   /** Current indices accessor */
   Indices getCurrentIndices() const;
 
   /** Initial indices accessor */
   Indices getInitialIndices() const;
-
-  /** Build the current functions */
-  Basis buildCurrentBasis() const;
 
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
   Point solve(const Point & rhs);

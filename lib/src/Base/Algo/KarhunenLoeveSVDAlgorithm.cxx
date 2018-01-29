@@ -221,7 +221,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   // Reduce and rescale the eigenvectors
   MatrixImplementation projection(K, augmentedDimension);
   Point selectedEV(K);
-  Basis modes(0);
+  Collection<Function> modes(0);
   ProcessSample modesAsProcessSample(sample_.getMesh(), 0, dimension);
   const UnsignedInteger meshDimension = sample_.getMesh().getDimension();
   SampleImplementation values(verticesNumber, dimension);

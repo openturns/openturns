@@ -38,6 +38,7 @@ class OT_API IntegrationStrategy
 {
   CLASSNAME
 public:
+  typedef ProjectionStrategyImplementation::FunctionCollection FunctionCollection;
 
 
   /** Default constructor */
@@ -70,7 +71,7 @@ public:
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   void computeCoefficients(const Function & function,
-                           const Basis & basis,
+                           const FunctionCollection & basis,
                            const Indices & indices,
                            const Indices & addedRanks,
                            const Indices & conservedRanks,

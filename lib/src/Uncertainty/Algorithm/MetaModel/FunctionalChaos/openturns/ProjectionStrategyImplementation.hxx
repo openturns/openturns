@@ -30,7 +30,6 @@
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Basis.hxx"
 #include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -111,7 +110,7 @@ public:
 
   /** Compute the components alpha_k_p_ by projecting the model on the partial L2 basis */
   virtual void computeCoefficients(const Function & function,
-                                   const Basis & basis,
+                                   const FunctionCollection & basis,
                                    const Indices & indices,
                                    const Indices & addedRanks,
                                    const Indices & conservedRanks,

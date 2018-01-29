@@ -25,6 +25,8 @@
 #include "openturns/Sample.hxx"
 #include "openturns/FunctionalBasis.hxx"
 #include "openturns/DesignProxy.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,6 +44,7 @@ class OT_API LeastSquaresMethodImplementation
   CLASSNAME
 
 public:
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   LeastSquaresMethodImplementation();
@@ -68,7 +71,7 @@ public:
   virtual Point getWeight() const;
 
   /** Basis accessor */
-  virtual Basis getBasis() const;
+  virtual FunctionCollection getBasis() const;
 
   /** Current indices accessor */
   virtual Indices getCurrentIndices() const;
@@ -103,9 +106,6 @@ public:
 
   /** Destroy the internal decomposition of the design matrix */
   virtual void trashDecomposition();
-
-  /** Build the current functions */
-  virtual Basis buildCurrentBasis() const;
 
   /** Build the weighted design matrix */
   virtual MatrixImplementation computeWeightedDesign(const Bool whole = false) const;

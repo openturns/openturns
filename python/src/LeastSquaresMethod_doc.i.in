@@ -1,7 +1,5 @@
 %feature("docstring") OT::LeastSquaresMethod
 OT_LeastSquaresMethod_doc
-%feature("docstring") OT::LeastSquaresMethod::buildCurrentBasis
-OT_LeastSquaresMethod_buildCurrentBasis_doc
 %feature("docstring") OT::LeastSquaresMethod::computeWeightedDesign
 OT_LeastSquaresMethod_computeWeightedDesign_doc
 %feature("docstring") OT::LeastSquaresMethod::getInputSample

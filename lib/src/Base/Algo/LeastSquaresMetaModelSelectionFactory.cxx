@@ -75,7 +75,7 @@ String LeastSquaresMetaModelSelectionFactory::__repr__() const
 LeastSquaresMetaModelSelection * LeastSquaresMetaModelSelectionFactory::build(const Sample & x,
     const Sample & y,
     const Point & weight,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices) const
 {
   return new LeastSquaresMetaModelSelection( x, y, weight, psi, indices, basisSequenceFactory_, fittingAlgorithm_ );

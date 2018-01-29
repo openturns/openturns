@@ -23,6 +23,8 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -60,11 +62,11 @@ public:
   Point getEigenValues() const;
 
   /** Modes accessors */
-  Basis getModes() const;
+  FunctionCollection getModes() const;
   ProcessSample getModesAsProcessSample() const;
 
   /** Scaled modes accessors */
-  Basis getScaledModes() const;
+  FunctionCollection getScaledModes() const;
   ProcessSample getScaledModesAsProcessSample() const;
 
   /** Projection matrix accessor */

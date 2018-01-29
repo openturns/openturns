@@ -41,6 +41,7 @@ class OT_API LeastSquaresMetaModelSelectionFactory
 {
   CLASSNAME
 public:
+  typedef ApproximationAlgorithmImplementationFactory::FunctionCollection FunctionCollection;
 
   /** Constructor */
   explicit LeastSquaresMetaModelSelectionFactory(const BasisSequenceFactory & fact = LARS(),
@@ -57,7 +58,7 @@ public:
   virtual LeastSquaresMetaModelSelection * build (const Sample & x,
       const Sample & y,
       const Point & weight,
-      const Basis & psi,
+      const FunctionCollection & psi,
       const Indices & indices) const;
 
   /** String converter */

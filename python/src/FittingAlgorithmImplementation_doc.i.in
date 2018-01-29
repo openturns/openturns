@@ -17,8 +17,34 @@ CorrectedLeaveOneOut, KFold
 Notes
 -----
 FittingAlgorithm is the interface of the FittingAlgorithmImplementation.
-This class is not usable because it has sense only whithin the
+This class is not usable because it has sense only within the
 :class:`~openturns.FunctionalChaosAlgorithm`."
 %enddef
 %feature("docstring") OT::FittingAlgorithmImplementation
 OT_FittingAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FittingAlgorithm_run_doc
+"Run the algorithm.
+
+Parameters
+----------
+x : 2-d sequence of float
+    Input sample
+y : 2-d sequence of float
+    Output sample
+weight : sequence of float
+    Weights associated to the outputs
+psi : sequence of :class:`~openturns.Function`
+    Basis
+indices : sequence of int
+    Indices of the basis
+
+Returns
+-------
+measure : float
+    Fitting measure"
+%enddef
+%feature("docstring") OT::FittingAlgorithmImplementation::run
+OT_FittingAlgorithm_run_doc

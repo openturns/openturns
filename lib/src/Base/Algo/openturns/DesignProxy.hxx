@@ -24,7 +24,8 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Basis.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,13 +40,15 @@ class OT_API DesignProxy
 {
   CLASSNAME
 public:
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor */
   DesignProxy();
 
   /** Parameters constructor */
   DesignProxy(const Sample & x,
-              const Basis & basis);
+              const FunctionCollection & basis);
 
   /** Virtual constructor */
   virtual DesignProxy * clone() const;
@@ -55,7 +58,7 @@ public:
 
   /** Accessors */
   Sample getInputSample() const;
-  Basis getBasis() const;
+  FunctionCollection getBasis() const;
 
   /** Compute the design matrix with the provided basis terms indices */
   MatrixImplementation computeDesign(const Indices & indices) const;
@@ -84,7 +87,7 @@ protected:
   Sample x_;
 
   /** Basis */
-  Basis basis_;
+  FunctionPersistentCollection basis_;
 
   /** Design matrix cache */
   mutable Matrix designCache_;
