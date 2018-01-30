@@ -32,3 +32,9 @@ OT_RandomVector_setDescription_doc
 OT_RandomVector_getRealization_doc
 %feature("docstring") OT::RandomVector::getDomain
 OT_RandomVector_getDomain_doc
+%feature("docstring") OT::RandomVector::setParameter
+OT_RandomVector_setParameter_doc
+%feature("docstring") OT::RandomVector::getParameter
+OT_RandomVector_getParameter_doc
+%feature("docstring") OT::RandomVector::getParameterDescription
+OT_RandomVector_getParameterDescription_doc

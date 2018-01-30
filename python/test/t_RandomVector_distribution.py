@@ -29,6 +29,10 @@ try:
     print("vect realization (second)=", repr(vect.getRealization()))
     print("vect realization (third )=", repr(vect.getRealization()))
     print("vect sample =", repr(vect.getSample(5)))
+    parameter = vect.getParameter()
+    print("vect parameter =", repr(parameter))
+    vect.setParameter(parameter)
+    print("vect parameter desc =", repr(vect.getParameterDescription()))
 
 except:
     import sys

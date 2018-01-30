@@ -74,6 +74,13 @@ public:
   /** Random parameters accessor */
   RandomVector getRandomParameters() const;
 
+  /** Parameters value accessor */
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameters);
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

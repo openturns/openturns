@@ -46,6 +46,10 @@ try:
     # We compute a sample of the event
     print("myEvent sample=", repr(myEvent.getSample(10)))
 
+    parameter = myEvent.getParameter()
+    print("parameter =", repr(parameter))
+    myEvent.setParameter(parameter)
+    print("parameter desc =", repr(myEvent.getParameterDescription()))
 except:
     import sys
     print("t_Event_std.py", sys.exc_info()[0], sys.exc_info()[1])

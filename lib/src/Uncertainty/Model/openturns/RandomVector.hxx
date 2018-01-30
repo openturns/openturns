@@ -127,6 +127,13 @@ public:
   /** Domain */
   Domain getDomain() const;
 
+  /** Parameters value accessor */
+  Point getParameter() const;
+  void setParameter(const Point & parameters);
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const;
+
 protected:
   /** Constructor for event vector */
   RandomVector(const RandomVector & antecedent,

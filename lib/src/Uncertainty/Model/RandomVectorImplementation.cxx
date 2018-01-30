@@ -163,6 +163,21 @@ Scalar RandomVectorImplementation::getThreshold() const
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getThreshold() const";
 }
 
+Point RandomVectorImplementation::getParameter() const
+{
+  throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getParameter";
+}
+
+void RandomVectorImplementation::setParameter(const Point & parameter)
+{
+  throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::setParameter";
+}
+
+Description RandomVectorImplementation::getParameterDescription() const
+{
+  throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getParameterDescription";
+}
+
 /* Method save() stores the object through the StorageManager */
 void RandomVectorImplementation::save(Advocate & adv) const
 {

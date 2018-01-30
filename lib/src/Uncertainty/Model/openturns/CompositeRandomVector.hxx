@@ -78,12 +78,6 @@ public:
   /** Numerical sample accessor */
   Sample getSample(const UnsignedInteger size) const;
 
-  /** Mean accessor */
-  Point getMean() const;
-
-  /** Covariance accessor */
-  CovarianceMatrix getCovariance() const;
-
   /** Get the random vector corresponding to the i-th marginal component */
   Implementation getMarginal(const UnsignedInteger i) const;
 
@@ -96,8 +90,12 @@ public:
   /** Function accessor */
   Function getFunction() const;
 
-  /** Distribution accessor */
-  Distribution getDistribution() const;
+  /** Parameters value accessor */
+  virtual Point getParameter() const;
+  virtual void setParameter(const Point & parameters);
+
+  /** Parameters description accessor */
+  virtual Description getParameterDescription() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

@@ -368,3 +368,43 @@ domain : :class:`~openturns.Domain`
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getDomain
 OT_RandomVector_getDomain_doc
+
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_setParameter_doc
+"Accessor to the parameter of the distribution.
+
+Parameters
+----------
+parameter : sequence of float
+    Parameter values."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::setParameter
+OT_RandomVector_setParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_getParameter_doc
+"Accessor to the parameter of the distribution.
+
+Returns
+-------
+parameter : :class:`~openturns.Point`
+    Parameter values."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getParameter
+OT_RandomVector_getParameter_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_getParameterDescription_doc
+"Accessor to the parameter description of the distribution.
+
+Returns
+-------
+description : :class:`~openturns.Description`
+    Parameter names."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::getParameterDescription
+OT_RandomVector_getParameterDescription_doc

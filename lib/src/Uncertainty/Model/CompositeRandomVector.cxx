@@ -113,23 +113,6 @@ Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
   return sample;
 }
 
-
-/* Mean accessor */
-Point CompositeRandomVector::getMean() const
-{
-  /* To be implemented by a suitable algorithm, given by the user.
-     It could be the e.g. quadratic cumul algorithm */
-  throw NotYetImplementedException(HERE) << "In CompositeRandomVector::getMean() const";
-}
-
-/* Covariance accessor */
-CovarianceMatrix CompositeRandomVector::getCovariance() const
-{
-  /* To be implemented by a suitable algorithm, given by the user.
-     It could be the e.g. quadratic cumul algorithm */
-  throw NotYetImplementedException(HERE) << "In CompositeRandomVector::getCovariance() const";
-}
-
 /* Get the random vector corresponding to the i-th marginal component */
 CompositeRandomVector::Implementation CompositeRandomVector::getMarginal(const UnsignedInteger i) const
 {
@@ -156,10 +139,32 @@ Function CompositeRandomVector::getFunction() const
   return function_;
 }
 
-/* Distribution accessor */
-Distribution CompositeRandomVector::getDistribution() const
+Point CompositeRandomVector::getParameter() const
 {
-  throw NotYetImplementedException(HERE) << "In CompositeRandomVector::getDistribution() const";
+  Point parameter(function_.getParameter());
+  parameter.add(p_antecedent_->getParameter());
+  return parameter;
+}
+
+void CompositeRandomVector::setParameter(const Point & parameter)
+{
+  const UnsignedInteger functionParameterDimension = function_.getParameter().getDimension();
+  const UnsignedInteger antecedentParameterDimension = p_antecedent_->getParameter().getDimension();
+  if (parameter.getDimension() != (functionParameterDimension + antecedentParameterDimension))
+    throw InvalidArgumentException(HERE) << "Wrong composite random vector parameter size";
+  Point functionParameter(functionParameterDimension);
+  std::copy(parameter.begin(), parameter.begin() + functionParameterDimension, functionParameter.begin());
+  function_.setParameter(functionParameter);
+  Point antecedentParameter(antecedentParameterDimension);
+  std::copy(parameter.begin() + functionParameterDimension, parameter.end(), antecedentParameter.begin());
+  p_antecedent_->setParameter(antecedentParameter);
+}
+
+Description CompositeRandomVector::getParameterDescription() const
+{
+  Description description(function_.getParameterDescription());
+  description.add(p_antecedent_->getParameterDescription());
+  return description;
 }
 
 /* Method save() stores the object through the StorageManager */
