@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    Function levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
+    SymbolicFunction levelFunction(input, Description(1, "x1+2*x2-3*x3+4*x4"));
     Point startingPoint(4, 0.0);
     Interval bounds(Point(4, -3.0), Point(4, 5.0));
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    Function levelFunction(input, Description(1, "y1"), Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
+    SymbolicFunction levelFunction(input, Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     Point startingPointNearMinimizationCorner(4);
     startingPointNearMinimizationCorner[0] = 3.0;
     startingPointNearMinimizationCorner[0] = -2.5;

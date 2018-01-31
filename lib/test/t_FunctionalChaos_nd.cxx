@@ -56,9 +56,6 @@ int main(int argc, char *argv[])
     Scalar b = 0.1;
     // Create the gSobol function
     Description inputVariables(inputDimension);
-    Description outputVariables(outputDimension);
-    outputVariables[0] = "y0";
-    outputVariables[1] = "y1";
     Description formula(outputDimension);
     formula[0] = "1.0";
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
@@ -148,7 +145,7 @@ int main(int argc, char *argv[])
     sob_T2[5] = sob_2[5] + sob_3[1];
     // 3rd order Total Sobol
     Point sob_T3(sob_3);
-    Function model(inputVariables, outputVariables, formula);
+    SymbolicFunction model(inputVariables, formula);
 
     // Create the input distribution
     Collection<Distribution> marginals(inputDimension);

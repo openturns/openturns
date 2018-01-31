@@ -62,12 +62,12 @@ public:
   /** Default constructor */
   FunctionImplementation();
 
-  /** Analytical formula constructor */
+  /** @deprecated */
   FunctionImplementation(const Description & inputVariablesNames,
                          const Description & outputVariablesNames,
                          const Description & formulas);
 
-  /** Database constructor */
+  /** @deprecated */
   FunctionImplementation(const Sample & inputSample,
                          const Sample & outputSample);
 

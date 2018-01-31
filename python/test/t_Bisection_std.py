@@ -11,11 +11,9 @@ try:
     # Analytical construction
     input = Description(1)
     input[0] = "x"
-    output = Description(1)
-    output[0] = "y"
-    formulas = Description(output.getSize())
+    formulas = Description(1)
     formulas[0] = "x-cos(x)"
-    analytical = Function(input, output, formulas)
+    analytical = SymbolicFunction(input, formulas)
     myAlgo = Bisection()
     print("myAlgo=", myAlgo)
     value = 0.0

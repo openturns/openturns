@@ -112,15 +112,11 @@ try:
     input[0] = 'a'
     input[1] = 'b'
     input[2] = 'c'
-    output = ot.Description(3)
-    output[0] = 'squaresum'
-    output[1] = 'prod'
-    output[2] = 'complex'
-    formulas = ot.Description(output.getSize())
+    formulas = ot.Description(3)
     formulas[0] = 'a+b+c'
     formulas[1] = 'a-b*c'
     formulas[2] = '(a+2*b^2+3*c^3)/6'
-    analytical = ot.Function(input, output, formulas)
+    analytical = ot.SymbolicFunction(input, formulas)
     analytical.setName('analytical')
     myStudy.add('analytical', analytical)
 
@@ -142,11 +138,9 @@ try:
     input2 = ot.Description(2)
     input2[0] = 'x'
     input2[1] = 'y'
-    output2 = ot.Description(1)
-    output2[0] = 'd'
     formula2 = ot.Description(1)
     formula2[0] = 'y^2-x'
-    model = ot.Function(input2, output2, formula2)
+    model = ot.SymbolicFunction(input2, formula2)
     model.setName('sum')
     input3 = ot.RandomVector(ot.Normal(2))
     input3.setName('input')
@@ -191,7 +185,7 @@ try:
 
     # TensorApproximationAlgorithm/Result
     dim = 1
-    model = ot.Function(['x'], ['y'], ['x*sin(x)'])
+    model = ot.SymbolicFunction(['x'], ['x*sin(x)'])
     distribution = ot.ComposedDistribution([ot.Uniform()] * dim)
     factoryCollection = [ot.FourierSeriesFactory()] * dim
     functionFactory = ot.OrthogonalProductFunctionFactory(factoryCollection)

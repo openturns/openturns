@@ -53,8 +53,6 @@ int main(int argc, char *argv[])
     Point a(dimension);
     // Create the gSobol function
     Description inputVariables(dimension);
-    Description outputVariables(1);
-    outputVariables[0] = "y";
     Description formula(1);
     formula[0] = "1.0";
     for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -66,7 +64,7 @@ int main(int argc, char *argv[])
     }
     --covTh;
 
-    Function model(inputVariables, outputVariables, formula);
+    SymbolicFunction model(inputVariables, formula);
 
     // Create the input distribution
     Collection<Distribution> marginals(dimension);

@@ -23,13 +23,11 @@ try:
     inputFunction[0] = "u1"
     inputFunction[1] = "u2"
 
-    outputFunction = Description(1)
-    outputFunction[0] = "g"
 
-    formulas = Description(outputFunction.getSize())
+    formulas = Description(1)
     formulas[0] = "3.0 - u1 * u2"
 
-    limitState = Function(inputFunction, outputFunction, formulas)
+    limitState = SymbolicFunction(inputFunction, formulas)
 
     dim = limitState.getInputDimension()
 

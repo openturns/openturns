@@ -10,7 +10,7 @@ obj_list.append(ot.Sample([[4.6, -3.7], [8.4, 6.3]]))
 obj_list.append(ot.Description(['x', 'y', 'z']))
 obj_list.append(ot.Indices([1, 2, 4]))
 obj_list.append(ot.Matrix([[1, 2], [3, 4]]))
-obj_list.append(ot.Function(['x1', 'x2'], ['y1'], ['y1=x1+x2']))
+obj_list.append(ot.SymbolicFunction(['x1', 'x2'], ['y1=x1+x2']))
 
 src = BytesIO()
 

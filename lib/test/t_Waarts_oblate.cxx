@@ -44,13 +44,10 @@ int main(int argc, char *argv[])
     inputFunction[8] = "S09";
     inputFunction[9] = "S10";
 
-    Description outputFunction(1);
-    outputFunction[0] = "G";
-
     Description formulas(outputFunction.getSize());
     formulas[0] = "10 - (S01^2/(1.0+1.0/10.0) + S02^2/(1.0+2.0/10.0) + S03^2/(1.0+3.0/10.0) + S04^2/(1.0+4.0/10.0) + S05^2/(1.0+5.0/10.0) + S06^2/(1.0+6.0/10.0) + S07^2/(1.0+7.0/10.0) + S08^2/(1.0+8.0/10.0) + S09^2/(1.0+9.0/10.0) + S10^2/(1.0+10.0/10.0))";
 
-    Function EtatLimite(inputFunction, outputFunction, formulas);
+    SymbolicFunction EtatLimite(inputFunction, formulas);
 
     UnsignedInteger dim = EtatLimite.getInputDimension();
     fullprint << dim << std::endl;

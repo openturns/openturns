@@ -31,13 +31,11 @@ try:
     inputVariables[0] = "xi1"
     inputVariables[1] = "xi2"
     inputVariables[2] = "xi3"
-    outputVariables = Description(1)
-    outputVariables[0] = "y"
     formula = Description(1)
     formula[0] = "sin(xi1) + (" + str(a) + \
         ") * (sin(xi2)) ^ 2 + (" + str(
             b) + ") * xi3^4 * sin(xi1)"
-    model = Function(inputVariables, outputVariables, formula)
+    model = SymbolicFunction(inputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(-pi, pi)] * dimension)

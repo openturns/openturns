@@ -6,7 +6,7 @@ import math as m
 
 ot.TESTPREAMBLE()
 
-f = ot.Function(['t', 'y0', 'y1'], ['dy0', 'dy1'], ['t - y0', 'y1 + t^2'])
+f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
 phi = ot.VertexValueFunction(f)
 solver = ot.Fehlberg(phi)
 print('ODE solver=', solver)

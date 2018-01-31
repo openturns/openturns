@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 
 
-myFunc = ot.Function(['x1', 'x2'], ['f1', 'f2', 'f3'], [
+myFunc = ot.SymbolicFunction(['x1', 'x2'], [
     'x1*sin(x2)', 'cos(x1+x2)', '(x2+1)*exp(x1-2*x2)'])
 data = ot.Sample(9, myFunc.getInputDimension())
 point = ot.Point(myFunc.getInputDimension())

@@ -27,8 +27,8 @@ def printPoint(point, digits):
 try:
 
         # We create a numerical math function
-    myFunction = Function(
-        ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
+    myFunction = SymbolicFunction(
+        ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
     dim = myFunction.getInputDimension()
 

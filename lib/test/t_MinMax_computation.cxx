@@ -36,11 +36,9 @@ int main(int argc, char *argv[])
     inputVariables[1] = "F";
     inputVariables[2] = "L";
     inputVariables[3] = "I";
-    Description outputVariables(1);
-    outputVariables[0] = "d";
     Description formula(1);
     formula[0] = "-F*L^3/(3*E*I)";
-    Function model(inputVariables, outputVariables, formula);
+    SymbolicFunction model(inputVariables, formula);
     UnsignedInteger inputDimension = model.getInputDimension();
     Point levels(inputDimension);
     levels[0] = 5.;

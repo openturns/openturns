@@ -69,18 +69,7 @@ public:
   /** Constructor from evaluation implementation */
   Function(const EvaluationImplementation & evaluation);
 
-  /** @brief Analytical formula constructor
-   *
-   * Builds a new %Function by analytical expression parsing. The expression involving the input
-   * variables (stored in \e inputVariablesNames) to produce the output variables (stored in \e outputVariablesNames)
-   * are described in \e formulas.
-   *
-   * The input dimension of the new %Function is the size of \e inputVariablesNames and
-   * the output dimension of the new %Function is the size of \e outputVariablesName.
-   * @param inputVariablesNames The ordered collection of input variables names
-   * @param outputVariablesNames The ordered collection of output variables names
-   * @param formulas The ordered collection of analytical expressions to compute the output variables
-   */
+  /** @deprecated */
   Function(const Description & inputVariablesNames,
            const Description & outputVariablesNames,
            const Description & formulas);
@@ -95,7 +84,7 @@ public:
            const HessianPointer  & hessianImplementation);
 #endif
 
-  /** Constructor from field using P1 Lagrange interpolation */
+  /** @deprecated */
   Function(const Field & field);
 
   /** Comparison operator */

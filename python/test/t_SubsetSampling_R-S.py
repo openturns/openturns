@@ -7,7 +7,7 @@ import openturns as ot
 # Physical model
 #
 
-limitState = ot.Function(['u1', 'u2'], ['g'], ['u1-u2'])
+limitState = ot.SymbolicFunction(['u1', 'u2'], ['u1-u2'])
 dim = limitState.getInputDimension()
 
 #

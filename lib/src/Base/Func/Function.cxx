@@ -76,7 +76,7 @@ Function::Function(const Description & inputVariablesNames,
                    const Description & formulas)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(inputVariablesNames, outputVariablesNames, formulas))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "Function(Description, Description, Description) is deprecated in favor of SymbolicFunction.");
 }
 
 /* Constructor from evaluation */
@@ -100,7 +100,7 @@ Function::Function(const EvaluationPointer & evaluationImplementation,
 Function::Function(const Field & field)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new P1LagrangeEvaluation( field )))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "Function(Field) is deprecated.");
 }
 
 /* Comparison operator */

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    Function levelFunction(input, Description(1, "y1"), Description(1, "x1+2*x2-3*x3+4*x4"));
+    SymbolicFunction levelFunction(input, Description(1, "x1+2*x2-3*x3+4*x4"));
     LessOrEqual myOperator;
     Scalar threshold = 2.0;
     Sample mySample(0, levelFunction.getInputDimension());

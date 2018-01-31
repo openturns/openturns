@@ -47,9 +47,8 @@ int main(int argc, char *argv[])
     Description inVars;
     inVars.add("x");
     inVars.add("y");
-    Description outVar(1, "z");
     Description formula(1, "3*(1-x)^2*exp(-x^2-(y+1)^2)-10*(x/5-x^3-y^5)*exp(-x^2-y^2)-exp(-(x+1)^2-y^2)/3");
-    Function model(inVars, outVar, formula);
+    SymbolicFunction model(inVars, formula);
 
     UnsignedInteger dim = model.getInputDimension();
     Point startingPoint(dim);

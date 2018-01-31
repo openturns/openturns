@@ -9,14 +9,12 @@ try:
     # Product
     # First, build a function from R^3->R
     inVar = ["x0", "x1", "x2"]
-    outVar = ["y0"]
     formula = ["x0^2 + 2 * x1 * x2 + 3 * x2"]
-    f1 = Function(inVar, outVar, formula)
+    f1 = SymbolicFunction(inVar, formula)
     # Second, build a function from R^3->R^2
     formula = ["x2 - x0 + x1"]
     formula.append("x0 + x1 * x0 + x2")
-    outVar = ["y0", "y1"]
-    f2 = Function(inVar, outVar, formula)
+    f2 = SymbolicFunction(inVar, formula)
     # Third, build the product function
     myFunction = f1 * f2
     inPoint = Point([1.2, 2.3, 3.4])
@@ -31,11 +29,10 @@ try:
     # Sum/difference
     # First, build two functions from R^3->R^2
     inVar = ["x0", "x1", "x2"]
-    outVar = ["y0", "y1"]
     formula = ["x0 + 2 * x1 * x2 + 3 * x2", "x2 - x0 + x1 * x0"]
-    f1 = Function(inVar, outVar, formula)
+    f1 = SymbolicFunction(inVar, formula)
     formula = ["x0 + x1 + x2", "-2 * x0 + 3 * x2 * x1 - x1"]
-    f2 = Function(inVar, outVar, formula)
+    f2 = SymbolicFunction(inVar, formula)
     # Second, build the function
     mySum = f1 + f2
     print("mySum=", mySum)

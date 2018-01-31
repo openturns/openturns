@@ -35,15 +35,13 @@ int main(int argc, char *argv[])
       // Product
       // First, build a function from R^3->R
       Description inVar(Description::BuildDefault(3, "x"));
-      Description outVar(Description::BuildDefault(1, "y"));
       Description formula(1);
       formula[0] = "x0^2 + 2 * x1 * x2 + 3 * x2";
-      Function f1(inVar, outVar, formula);
+      SymbolicFunction f1(inVar, formula);
       // Second, build a function from R^3->R^2
       formula[0] = "x2 - x0 + x1";
       formula.add("x0 + x1 * x0 + x2");
-      outVar = Description::BuildDefault(2, "y");
-      Function f2(inVar, outVar, formula);
+      SymbolicFunction f2(inVar, formula);
       // Third, build the product function
       Function myFunction(f1 * f2);
       Point inPoint(3);
@@ -70,10 +68,10 @@ int main(int argc, char *argv[])
       Description formula(2);
       formula[0] = "x0 + 2 * x1 * x2 + 3 * x2";
       formula[1] = "x2 - x0 + x1 * x0";
-      Function f1(inVar, outVar, formula);
+      SymbolicFunction f1(inVar, formula);
       formula[0] = "x0 + x1 + x2";
       formula[1] = "-2 * x0 + 3 * x2 * x1 - x1";
-      Function f2(inVar, outVar, formula);
+      SymbolicFunction f2(inVar, formula);
       Point inPoint(3);
       inPoint[0] = 1.2;
       inPoint[1] = 2.3;

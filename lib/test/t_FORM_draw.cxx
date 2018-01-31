@@ -50,12 +50,10 @@ int main(int argc, char *argv[])
     Description inputFunc(2);
     inputFunc[0] = "x0";
     inputFunc[1] = "x1";
-    Description outputFunc(1);
-    outputFunc[0] = "y0";
-    Description formulas(outputFunc.getSize());
+    Description formulas(1);
     formulas[0] = "-(6+x0^2-x1)";
     fullprint << "formulas=" << formulas << std::endl;
-    Function myFunction(inputFunc, outputFunc, formulas);
+    SymbolicFunction myFunction(inputFunc, formulas);
 
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */

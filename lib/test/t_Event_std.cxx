@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     input[1] = "F";
     input[2] = "L";
     input[3] = "I";
-    Function myFunction(input, Description(1, "d"), Description(1, "-F*L^3/(3*E*I)"));
+    SymbolicFunction myFunction(input, Description(1, "-F*L^3/(3*E*I)"));
 
     /* We create a composite random vector */
     RandomVector output(myFunction, vect);

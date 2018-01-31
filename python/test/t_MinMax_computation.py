@@ -12,11 +12,9 @@ try:
     inputVariables[1] = "F"
     inputVariables[2] = "L"
     inputVariables[3] = "I"
-    outputVariables = Description(1)
-    outputVariables[0] = "d"
     formula = Description(1)
     formula[0] = "-F*L^3/(3*E*I)"
-    model = Function(inputVariables, outputVariables, formula)
+    model = SymbolicFunction(inputVariables, formula)
     inputDimension = model.getInputDimension()
     # Define the reference domaine that will be sampled: an hypercube of side
     # length 2, discretized with 9+2=11 points in each dimension

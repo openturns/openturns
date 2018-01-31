@@ -26,8 +26,8 @@ def printSample(name, sample):
 try:
 
     # We create a numerical math function
-    myFunction = Function(
-        ["x1", "x2"], ["y1"], ["(x1-0.3)*(x1-0.3)-x2*x2"])
+    myFunction = SymbolicFunction(
+        ["x1", "x2"], ["(x1-0.3)*(x1-0.3)-x2*x2"])
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1

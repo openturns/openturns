@@ -50,12 +50,10 @@ int main(int argc, char *argv[])
     Description inputVariables(dimension);
     inputVariables[0] = "X1";
     inputVariables[1] = "X2";
-    Description outputVariables(1);
-    outputVariables[0] = "y";
     Description formula(1);
     formula[0] = (OSS() << a << "* X1 + " << b << "* X2");
 
-    Function model(inputVariables, outputVariables, formula);
+    SymbolicFunction model(inputVariables, formula);
 
     // Input distribution
     Collection<Distribution> marginals(dimension);

@@ -24,8 +24,8 @@ def printPoint(point, digits):
 
 
 # bounds
-linear = ot.Function(
-    ['x1', 'x2', 'x3', 'x4'], ['y1'], ['x1+2*x2-3*x3+4*x4'])
+linear = ot.SymbolicFunction(
+    ['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
 
 dim = 4
 startingPoint = [0.0] * dim
@@ -53,12 +53,12 @@ for algoName in algoNames:
                 problem.setMinimization(minimization)
                 if inequality:
                     # x3 <= x1
-                    problem.setInequalityConstraint(ot.Function(
-                        ['x1', 'x2', 'x3', 'x4'], ['ineq'], ['x1-x3']))
+                    problem.setInequalityConstraint(ot.SymbolicFunction(
+                        ['x1', 'x2', 'x3', 'x4'], ['x1-x3']))
                 if equality:
                     # x4 = 2
-                    problem.setEqualityConstraint(ot.Function(
-                        ['x1', 'x2', 'x3', 'x4'], ['eq'], ['x4-2']))
+                    problem.setEqualityConstraint(ot.SymbolicFunction(
+                        ['x1', 'x2', 'x3', 'x4'], ['x4-2']))
                 try:
                     ot.NLopt.SetSeed(0)
                     algo.setProblem(problem)
@@ -77,8 +77,8 @@ for algoName in algoNames:
                           'inequality=', inequality, 'equality=', equality)
 
 # FORM
-f = ot.Function(
-    ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
+f = ot.SymbolicFunction(
+    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 dim = f.getInputDimension()
 mean = [50.0, 1.0, 10.0, 5.0]
 sigma = ot.Point(dim, 1.0)

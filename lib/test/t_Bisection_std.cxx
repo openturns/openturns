@@ -34,11 +34,9 @@ int main(int argc, char *argv[])
     /** Analytical construction */
     Description input(1);
     input[0] = "x";
-    Description output(1);
-    output[0] = "y";
-    Description formulas(output.getSize());
+    Description formulas(1);
     formulas[0] = "x-cos(x)";
-    Function analytical(input, output, formulas);
+    SymbolicFunction analytical(input, formulas);
     Bisection myAlgo;
     fullprint << "myAlgo=" << myAlgo << std::endl;
     Scalar value = 0.0;

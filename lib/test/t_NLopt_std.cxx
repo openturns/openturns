@@ -50,10 +50,9 @@ int main(int argc, char *argv[])
     inVars.add("x2");
     inVars.add("x3");
     inVars.add("x4");
-    Description outVar(1, "y1");
     Description formula(1, "x1+2*x2-3*x3+4*x4");
 
-    Function linear(inVars, outVar, formula);
+    SymbolicFunction linear(inVars, formula);
 
     UnsignedInteger dim = linear.getInputDimension();
     Point startingPoint(dim);

@@ -29,8 +29,6 @@ try:
     # Create the gSobol function
     inputVariables = Description(inputDimension)
     outputVariables = Description(outputDimension)
-    outputVariables[0] = "y0"
-    outputVariables[1] = "y1"
     formula = Description(outputDimension)
     formula[0] = "1.0"
     for i in range(inputDimension):
@@ -119,7 +117,7 @@ try:
     sob_T2[5] = sob_2[5] + sob_3[1]
     # 3rd order Total Sobol
     sob_T3 = Point(sob_3)
-    model = Function(inputVariables, outputVariables, formula)
+    model = SymbolicFunction(inputVariables, formula)
 
     # Create the input distribution
     distribution = ComposedDistribution([Uniform(0.0, 1.0)] * inputDimension)

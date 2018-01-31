@@ -31,12 +31,10 @@ try:
     inputFunc = Description(2)
     inputFunc[0] = "x0"
     inputFunc[1] = "x1"
-    outputFunc = Description(1)
-    outputFunc[0] = "y0"
-    formulas = Description(outputFunc.getSize())
+    formulas = Description(1)
     formulas[0] = "-(6+x0^2-x1)"
     print("formulas=", formulas)
-    myFunction = Function(inputFunc, outputFunc, formulas)
+    myFunction = SymbolicFunction(inputFunc, formulas)
 
     dim = myFunction.getInputDimension()
     # We create a normal distribution point of dimension 1

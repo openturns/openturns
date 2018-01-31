@@ -45,11 +45,9 @@ int main(int argc, char *argv[])
       // Create the function to estimate
       Description input(dimension);
       input[0] = "x0";
-      Description foutput(1);
-      foutput[0] = "f0";
       Description formulas(1);
       formulas[0] = "x0 * sin(x0)";
-      Function model(input, foutput, formulas);
+      SymbolicFunction model(input, formulas);
 
       Sample X(sampleSize, dimension);
       Sample X2(sampleSize, dimension);
@@ -100,11 +98,9 @@ int main(int argc, char *argv[])
       Description input(dimension);
       input[0] = "x0";
       input[1] = "x1";
-      Description foutput(1);
-      foutput[0] = "f0";
       Description formulas(1);
       formulas[0] = "5.-x1-0.5*(x0-0.1)^2";
-      Function model(input, foutput, formulas);
+      SymbolicFunction model(input, formulas);
       Sample X(sampleSize, dimension);
       X[0][0] = -4.61611719;
       X[0][1] = -6.00099547;
