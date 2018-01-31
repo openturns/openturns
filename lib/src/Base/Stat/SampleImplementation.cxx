@@ -19,7 +19,6 @@
  *
  */
 #include <sstream>
-#include <limits>        // std::numeric_limits
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -39,6 +38,7 @@
 #include "openturns/TBB.hxx"
 #include "kendall.h"
 #include "openturns/IdentityMatrix.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #include <locale.h>
 #ifdef OPENTURNS_HAVE_XLOCALE_H
@@ -1816,7 +1816,7 @@ Point SampleImplementation::getMax() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
 
-  Point maxPoint(dimension_, - std::numeric_limits<Scalar>::max());
+  Point maxPoint(dimension_, - SpecFunc::MaxScalar);
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -1834,7 +1834,7 @@ Point SampleImplementation::getMin() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
 
-  Point minPoint(dimension_, std::numeric_limits<Scalar>::max());
+  Point minPoint(dimension_, SpecFunc::MaxScalar);
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
     for (UnsignedInteger j = 0; j < dimension_; ++j)
