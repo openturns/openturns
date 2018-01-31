@@ -36,7 +36,7 @@ static const Factory<InverseNatafEllipticalCopulaEvaluation> Factory_InverseNata
 /* Default constructor */
 InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation()
   : EvaluationImplementation()
-  , standardDistribution_()
+  , standardMarginal_()
   , cholesky_()
 {
   // Nothing to do
@@ -46,7 +46,7 @@ InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation()
 InverseNatafEllipticalCopulaEvaluation::InverseNatafEllipticalCopulaEvaluation(const Distribution & standardDistribution,
     const TriangularMatrix & cholesky)
   : EvaluationImplementation()
-  , standardDistribution_(standardDistribution)
+  , standardMarginal_(standardDistribution.getMarginal(0))
   , cholesky_(cholesky)
 {
   Description description(Description::BuildDefault(cholesky_.getDimension(), "x"));
@@ -66,7 +66,7 @@ String InverseNatafEllipticalCopulaEvaluation::__repr__() const
   OSS oss;
   oss << "class=" << InverseNatafEllipticalCopulaEvaluation::GetClassName()
       << " description=" << getDescription()
-      << " standardDistribution=" << standardDistribution_
+      << " standardMarginal=" << standardMarginal_
       << " cholesky=" << cholesky_;
 
   return oss;
@@ -76,7 +76,7 @@ String InverseNatafEllipticalCopulaEvaluation::__str__(const String & offset) co
 {
   OSS oss(false);
   oss << offset << InverseNatafEllipticalCopulaEvaluation::GetClassName()
-      << "("  << standardDistribution_ << "->Copula(cholesky=" << cholesky_ << ", E=" << standardDistribution_.getMarginal(0) << "))";
+      << "(Copula(cholesky=" << cholesky_ << ", E=" << standardMarginal_ << "))";
 
   return oss;
 }
@@ -92,13 +92,34 @@ Point InverseNatafEllipticalCopulaEvaluation::operator () (const Point & inP) co
   const UnsignedInteger dimension = getInputDimension();
   // First, correlate the components
   Point result(cholesky_ * inP);
-  const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // Second, apply the commmon marginal distribution
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(Point(1, result[i]));
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal_.computeCDF(Point(1, result[i]));
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
+Sample InverseNatafEllipticalCopulaEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getInputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  // First, correlate the components
+  const Matrix inSampleMatrix(inSample.getDimension(), size, inSample.getImplementation()->getData());
+  const Matrix resultMatrix(cholesky_ * inSampleMatrix);
+  // Second, apply the commmon marginal distribution
+  SampleImplementation resultFlatten(size*dimension, 1);
+  resultFlatten.setData(*resultMatrix.getImplementation());
+  Sample result(size, dimension);
+  result.getImplementation()->setData(standardMarginal_.computeCDF(resultFlatten).asPoint());
+  result.setDescription(getOutputDescription());
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
     outputStrategy_.store(result);
   }
   return result;
@@ -127,7 +148,7 @@ UnsignedInteger InverseNatafEllipticalCopulaEvaluation::getOutputDimension() con
 void InverseNatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
-  adv.saveAttribute( "standardDistribution_", standardDistribution_ );
+  adv.saveAttribute( "standardMarginal_", standardMarginal_ );
   adv.saveAttribute( "cholesky_", cholesky_ );
 }
 
@@ -135,7 +156,7 @@ void InverseNatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 void InverseNatafEllipticalCopulaEvaluation::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
-  adv.loadAttribute( "standardDistribution_", standardDistribution_ );
+  adv.loadAttribute( "standardMarginal_", standardMarginal_ );
   adv.loadAttribute( "cholesky_", cholesky_ );
 }
 

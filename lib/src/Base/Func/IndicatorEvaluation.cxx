@@ -86,6 +86,28 @@ Point IndicatorEvaluation::operator() (const Point & inP) const
   return result;
 }
 
+/* Operator () */
+Sample IndicatorEvaluation::operator() (const Sample & inSample) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
+  const Point eval(p_evaluation_->operator()(inSample).asPoint());
+  Sample result(size, 1);
+  SampleImplementation & resultImpl(*result.getImplementation());
+  for(UnsignedInteger i = 0; i < size; ++i) {
+    resultImpl(i, 0) = comparisonOperator_.compare(eval[i], threshold_) ? 1.0 : 0.0;
+  }
+  result.setDescription(getOutputDescription());
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
 /* Accessor for input point dimension */
 UnsignedInteger IndicatorEvaluation::getInputDimension() const
 {

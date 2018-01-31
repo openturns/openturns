@@ -169,12 +169,18 @@ private:
       : EvaluationImplementation()
       , algorithm_(algorithm)
     {
-      // Nothing to do
+      // This implementation is not parallel
+      EvaluationImplementation::setParallel(false);
     }
 
     ReducedLogLikelihoodEvaluation * clone() const
     {
       return new ReducedLogLikelihoodEvaluation(*this);
+    }
+
+    void setParallel(const Bool flag)
+    {
+      // Discard this method, ReducedLogLikelihoodEvaluation is not parallel
     }
 
     // It is a simple call to the computeReducedLogLikelihood() of the algo

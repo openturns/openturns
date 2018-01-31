@@ -339,13 +339,6 @@ Matrix Function::parameterGradient(const Point & inP) const
   return getImplementation()->parameterGradient(inP);
 }
 
-Matrix Function::parameterGradient(const Point & inP,
-                                   const Point & parameter)
-{
-  copyOnWrite();
-  return getImplementation()->parameterGradient(inP, parameter);
-}
-
 /* Parameters value accessor */
 Point Function::getParameter() const
 {
@@ -376,20 +369,6 @@ Point Function::operator() (const Point & inP) const
   return getImplementation()->operator()(inP);
 }
 
-Point Function::operator() (const Point & inP,
-                            const Point & parameter)
-{
-  copyOnWrite();
-  return getImplementation()->operator()(inP, parameter);
-}
-
-Sample Function::operator() (const Point & inP,
-                             const Sample & parameters)
-{
-  copyOnWrite();
-  return getImplementation()->operator()(inP, parameters);
-}
-
 /* Operator () */
 Sample Function::operator() (const Sample & inSample) const
 {
@@ -408,26 +387,11 @@ Matrix Function::gradient(const Point & inP) const
   return getImplementation()->gradient(inP);
 }
 
-Matrix Function::gradient(const Point & inP,
-                          const Point & parameters)
-{
-  copyOnWrite();
-  return getImplementation()->gradient(inP, parameters);
-}
-
 /* Method hessian() returns the symmetric tensor of the function at point */
 SymmetricTensor Function::hessian(const Point & inP) const
 {
   return getImplementation()->hessian(inP);
 }
-
-SymmetricTensor Function::hessian(const Point & inP,
-                                  const Point & parameters)
-{
-  copyOnWrite();
-  return getImplementation()->hessian(inP, parameters);
-}
-
 
 /* Accessor for parameter dimension */
 UnsignedInteger Function::getParameterDimension() const

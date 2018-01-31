@@ -348,18 +348,21 @@ void FunctionImplementation::setUseDefaultHessianImplementation(const Bool hessi
   useDefaultHessianImplementation_ = hessianFlag;
 }
 
+/** Parallelization flag accessor */
+void FunctionImplementation::setParallel(const Bool flag)
+{
+  p_evaluationImplementation_->setParallel(flag);
+}
+
+Bool FunctionImplementation::isParallel() const
+{
+  return p_evaluationImplementation_->isParallel();
+}
+
 
 /* Gradient according to the marginal parameters */
 Matrix FunctionImplementation::parameterGradient(const Point & inP) const
 {
-  return p_evaluationImplementation_->parameterGradient(inP);
-}
-
-/* Gradient according to the marginal parameters */
-Matrix FunctionImplementation::parameterGradient(const Point & inP,
-    const Point & parameter)
-{
-  setParameter(parameter);
   return p_evaluationImplementation_->parameterGradient(inP);
 }
 
@@ -391,19 +394,6 @@ void FunctionImplementation::setParameterDescription(const Description & descrip
 Point FunctionImplementation::operator() (const Point & inP) const
 {
   return p_evaluationImplementation_->operator()(inP);
-}
-
-Point FunctionImplementation::operator() (const Point & inP,
-    const Point & parameter)
-{
-  setParameter(parameter);
-  return p_evaluationImplementation_->operator()(inP);
-}
-
-Sample FunctionImplementation::operator() (const Point & inP,
-    const Sample & parameters)
-{
-  return p_evaluationImplementation_->operator()(inP, parameters);
 }
 
 /* Operator () */
@@ -443,14 +433,6 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
   } // Usual gradient failed
 }
 
-Matrix FunctionImplementation::gradient(const Point & inP,
-                                        const Point & parameters)
-{
-  if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
-  setParameter(parameters);
-  return p_gradientImplementation_->gradient(inP);
-}
-
 /* Method hessian() returns the symetric tensor of the function at point */
 SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
 {
@@ -474,14 +456,6 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
       throw InternalException(HERE) << "Error: cannot compute hessian at point=" << inP;
     }
   } // Usual gradient failed
-}
-
-SymmetricTensor FunctionImplementation::hessian(const Point & inP,
-    const Point & parameters)
-{
-  if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
-  setParameter(parameters);
-  return p_hessianImplementation_->hessian(inP);
 }
 
 /* Accessor for parameter dimension */

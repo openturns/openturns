@@ -25,6 +25,8 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/LinearFunction.hxx"
+#include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -109,31 +111,11 @@ void MarginalTransformationEvaluation::initialize(const Bool simplify)
           const Scalar a = 0.5 * (q75Output + q25Output);
           // Here, b > 0 by construction
           const Scalar b = (q75Output - q25Output) / (q75Input - q25Input);
-          const Scalar c = -0.5 * (q75Input + q25Input);
-          OSS oss;
-          oss.setPrecision(20);
-          // First case, b = 1: we don't need to center the input variable
-          if (b == 1.0)
-          {
-            const Scalar alpha = a + c;
-            if (alpha != 0.0) oss << alpha << "+";
-            oss << xName;
-          } // b == 1
+          const Scalar c = 0.5 * (q75Input + q25Input);
+          if (c == 0.0 && a == 0.0 && b == 1.0)
+            expressions_[i] = IdentityFunction(1);
           else
-          {
-            if (a != 0.0) oss << a << "+";
-            oss << b << "*";
-            if (c != 0.0)
-            {
-              oss << "(" << xName;
-              if (c > 0.0) oss << "+";
-              if (c < 0.0) oss << "-";
-              oss << std::abs(c) << ")";
-            } // |c| != 0
-            else oss << xName;
-          } // b != 1
-          const String formula(oss);
-          expressions_[i] = SymbolicFunction(xName, formula);
+            expressions_[i] = LinearFunction(Point(1, c), Point(1, a), Matrix(1, 1, Point(1, b)));
           simplifications_[i] = 1;
         } // sameParameters
       } // inputClass == outputClass
@@ -324,6 +306,51 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inP);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
+Sample MarginalTransformationEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  Sample result(size, dimension);
+  SampleImplementation & resultImpl(*result.getImplementation());
+  result.setDescription(getOutputDescription());
+  // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
+  const Scalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+  {
+    const Sample inputMarginal(inSample.getMarginal(k));
+    if (simplifications_[k])
+    {
+      const Point resultMarginal(expressions_[k](inputMarginal).asPoint());
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        resultImpl(i, k) = resultMarginal[i];
+      }
+    }
+    else
+    {
+      const Point resultMarginal(inputDistributionCollection_[k].computeCDF(inputMarginal).asPoint());
+      // For accuracy reason, check if we are in the upper tail of the distribution
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        Scalar value = resultMarginal[i];
+        const Bool upperTail = value > tailThreshold;
+        if (upperTail) value = inputDistributionCollection_[k].computeComplementaryCDF(inputMarginal[i]);
+        // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
+        // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
+        const Scalar q = outputDistributionCollection_[k].computeQuantile(value, upperTail)[0];
+        resultImpl(i, k) = q;
+      }
+    }
+  }
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
     outputStrategy_.store(result);
   }
   return result;

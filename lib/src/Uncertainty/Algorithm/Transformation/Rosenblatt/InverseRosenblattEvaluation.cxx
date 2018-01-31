@@ -76,6 +76,35 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
   return result;
 }
 
+Sample InverseRosenblattEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  if (inSample.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inSample.getDimension();
+  Sample result(size, 0);
+  Point q(size);
+  const SampleImplementation & inSampleImpl(*inSample.getImplementation());
+  SampleImplementation resultMarginal(size, 1);
+  // Apply conditional Quantile o Phi over the components
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    for(UnsignedInteger j = 0; j < size; ++j) {
+      q[j] = DistFunc::pNormal(inSampleImpl(j, i));
+    }
+    const Point resultMarginalPoint(distribution_.computeConditionalQuantile(q, result));
+    resultMarginal.setData(resultMarginalPoint);
+    result.stack(resultMarginal);
+  }
+  result.setDescription(getOutputDescription());
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
 /*
  * Gradient according to the marginal parameters.
  * F(Q(y, p), p) = Id

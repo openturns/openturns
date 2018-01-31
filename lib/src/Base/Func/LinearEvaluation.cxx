@@ -47,7 +47,7 @@ LinearEvaluation::LinearEvaluation(const Point & center,
   : EvaluationImplementation()
   , center_(center)
   , constant_(constant)
-  , linear_(linear.transpose())
+  , linear_(linear)
 {
   /* Check if the dimension of the constant term is compatible with the linear term */
   if (constant.getDimension() != linear.getNbColumns()) throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term";
@@ -77,7 +77,7 @@ String LinearEvaluation::__repr__() const
       << " name=" << getName()
       << " center=" << center_
       << " constant=" << constant_
-      << " linear=" << linear_.transpose();
+      << " linear=" << linear_;
   return oss;
 }
 
@@ -88,7 +88,7 @@ String LinearEvaluation::__str__(const String & offset) const
       << " name=" << getName()
       << " center=" << center_
       << " constant=" << constant_
-      << " linear=" << linear_.transpose();
+      << " linear=" << linear_;
   return oss;
 }
 
@@ -107,7 +107,7 @@ Point LinearEvaluation::getConstant() const
 /* Accessor for the linear term */
 Matrix LinearEvaluation::getLinear() const
 {
-  return linear_.transpose();
+  return linear_;
 }
 
 /* Here is the interface that all derived class must implement */
@@ -116,7 +116,7 @@ Matrix LinearEvaluation::getLinear() const
 Point LinearEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != center_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
-  const Point result(constant_ + linear_ * (inP - center_));
+  const Point result(constant_ + linear_.getImplementation()->genVectProd(inP - center_, true));
   ++callsNumber_;
   if (isHistoryEnabled_)
   {
@@ -139,8 +139,9 @@ Sample LinearEvaluation::operator() (const Sample & inS) const
   //   high-performance BLAS
   // + Then the resulting matrix is converted into a sample and the final
   //   translation is parallelized
-  temporary.setData(*(linear_ * Matrix(getInputDimension(), inS.getSize(), (inS - center_).getImplementation()->getData())).getImplementation());
-  const Sample result(temporary + constant_);
+  temporary.setData(linear_.getImplementation()->genProd(MatrixImplementation(getInputDimension(), size, (inS - center_).getImplementation()->getData()), true, false));
+  Sample result(temporary + constant_);
+  result.setDescription(getOutputDescription());
   callsNumber_ += size;
   if (isHistoryEnabled_)
   {

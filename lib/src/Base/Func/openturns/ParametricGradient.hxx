@@ -52,8 +52,6 @@ public:
   /** Gradient operator */
   using GradientImplementation::gradient;
   Matrix gradient(const Point & point) const;
-  Matrix gradient(const Point & point,
-                  const Point & parameters) const;
 
   /** Evaluation accessor */
   ParametricEvaluation getEvaluation() const;

@@ -195,7 +195,7 @@ public:
       // flag == 2->int_{uMin}^{uMax}p(x,y)dx = F(uMax) - F(uMin) = k(B - A)
     , flag_(flag)
   {
-    // Nothing to do
+    setParallel(false);
   }
 
   KernelProbability * clone() const

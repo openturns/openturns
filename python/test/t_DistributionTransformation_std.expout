@@ -16,10 +16,10 @@ left= ComposedDistribution(Normal(mu = 0, sigma = 1), Gumbel(alpha = 1, beta = 0
 right= ComposedDistribution(Triangular(a = -1, m = 0, b = 1), Triangular(a = -1, m = 0, b = 1), GumbelCopula(theta = 2))
 transformation= ((| y0 = Uniform(a = 0, b = 1) -> y0 : Triangular(a = -1, m = 0, b = 1)
 | y1 = Uniform(a = 0, b = 1) -> y1 : Triangular(a = -1, m = 0, b = 1)
-)o(InverseRosenblattEvaluation(Normal(2)->GumbelCopula(theta = 2))))o(| y0 = [x0]->[x0]
+)o(InverseRosenblattEvaluation(Normal(2)->GumbelCopula(theta = 2))))o(| y0 = IdentityEvaluation(dimension=1)
 | y1 = Gumbel(alpha = 1, beta = 0) -> y1 : Normal(mu = 0, sigma = 1)
 )
-inverseTransformation= (| y0 = [x0]->[x0]
+inverseTransformation= (| y0 = IdentityEvaluation(dimension=1)
 | y1 = Normal(mu = 0, sigma = 1) -> y1 : Gumbel(alpha = 1, beta = 0)
 )o((RosenblattEvaluation(GumbelCopula(theta = 2)->Normal(2))o(| y0 = Triangular(a = -1, m = 0, b = 1) -> y0 : Uniform(a = 0, b = 1)
 | y1 = Triangular(a = -1, m = 0, b = 1) -> y1 : Uniform(a = 0, b = 1)

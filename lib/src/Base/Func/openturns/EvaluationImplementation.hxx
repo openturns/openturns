@@ -147,10 +147,6 @@ public:
 
   /** Operator () */
   virtual Point operator() (const Point & inP) const;
-  virtual Point operator() (const Point & inP,
-                            const Point & parameters);
-  virtual Sample operator() (const Point & point,
-                             const Sample & parameters);
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
   virtual Sample operator() (const Sample & inSample) const;
@@ -224,6 +220,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  /** Is it safe to compute evaluations in parallel? */
+  virtual Bool isParallel() const;
+  virtual void setParallel(const Bool flag);
+
 
 protected:
 
@@ -246,6 +246,9 @@ protected:
 
   /** The description of the parameters */
   Description parameterDescription_;
+
+  /** Use parallelism */
+  Bool isParallel_;
 
 private:
 

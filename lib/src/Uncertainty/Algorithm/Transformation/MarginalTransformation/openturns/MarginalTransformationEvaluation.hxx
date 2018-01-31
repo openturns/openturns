@@ -70,6 +70,7 @@ public:
   /** Evaluation */
   using EvaluationImplementation::operator();
   Point operator () (const Point & inP) const;
+  Sample operator() (const Sample & inSample) const;
 
   /** Gradient according to the marginal parameters */
   Matrix parameterGradient(const Point & inP) const;

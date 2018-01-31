@@ -166,20 +166,14 @@ Matrix ComposedFunction::parameterGradient(const Point & inP) const
   const UnsignedInteger rightParametersDimension = upper.getNbRows();
   const UnsignedInteger leftParametersDimension = leftGradientP.getNbRows();
   Matrix grad(rightParametersDimension + leftParametersDimension, outputDimension);
-  UnsignedInteger rowIndex = 0;
-  // Gradient according to left parameters
-  for (UnsignedInteger i = 0; i < rightParametersDimension; ++i)
+  for (UnsignedInteger j = 0; j < outputDimension; ++j)
   {
-    for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      grad(rowIndex, j) = upper(i, j);
-    ++ rowIndex;
-  }
-  // Gradient according to right parameters
-  for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
-  {
-    for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      grad(rowIndex, j) = leftGradientP(i, j);
-    ++ rowIndex;
+    // Gradient according to left parameters
+    for (UnsignedInteger i = 0; i < rightParametersDimension; ++i)
+      grad(i, j) = upper(i, j);
+    // Gradient according to right parameters
+    for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
+      grad(i + rightParametersDimension, j) = leftGradientP(i, j);
   }
   return grad;
 }

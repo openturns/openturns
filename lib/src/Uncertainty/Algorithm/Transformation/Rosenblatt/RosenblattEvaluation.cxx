@@ -77,6 +77,34 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
   return result;
 }
 
+/* Evaluation */
+Sample RosenblattEvaluation::operator () (const Sample & inSample) const
+{
+  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger size = inSample.getSize();
+  if (inSample.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inSample.getDimension();
+  Sample result(size, dimension);
+  SampleImplementation & resultImpl(*result.getImplementation());
+  Sample y(size, 0);
+  // Apply Phi^{-1} o conditional CDF over the components
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const Sample inSampleMarginal(inSample.getMarginal(i));
+    const Point conditionalCDF(distribution_.computeConditionalCDF(inSampleMarginal.asPoint(), y));
+    for (UnsignedInteger j = 0; j < size; ++j)
+      resultImpl(j, i) = DistFunc::qNormal(conditionalCDF[j]);
+    y.stack(inSampleMarginal);
+  }
+  result.setDescription(getOutputDescription());
+  callsNumber_ += size;
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
+    outputStrategy_.store(result);
+  }
+  return result;
+}
+
 /* Gradient according to the marginal parameters. */
 Matrix RosenblattEvaluation::parameterGradient(const Point & inP) const
 {

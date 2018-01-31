@@ -49,7 +49,7 @@ public:
     , chiSquare_(nu)
     , normal_(0.0, 1.0 / std::sqrt(n))
   {
-    // Nothing to do
+    setParallel(false);
   }
 
   KernelFunction * clone() const

@@ -58,6 +58,7 @@ public:
   /** Operator () */
   using EvaluationImplementation::operator();
   Point operator() (const Point & inP) const;
+  Sample operator() (const Sample & inSample) const;
 
   /** Accessor for the underlying evaluation */
   EvaluationPointer getEvaluation() const;

@@ -670,6 +670,9 @@
   <!-- OT::Classifier parameters -->
   <Classifier-Parallel value="true" />
 
+  <!-- OT::Evaluation parameters -->
+  <Evaluation-Parallel value="true" />
+
   <!-- OT::TensorApproximationAlgorithm parameters -->
   <TensorApproximationAlgorithm-Method value="GreedyRankOne"/>
   <TensorApproximationAlgorithm-DecompositionMethod value="SVD"/>

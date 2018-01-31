@@ -171,37 +171,15 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
   const UnsignedInteger parametersDimension = getParameterDimension();
   if (sampleDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << inputDimension - parametersDimension << ", got dimension=" << sampleDimension;
   Sample input(size, inputDimension);
+  SampleImplementation & inputImpl(*input.getImplementation());
+  const SampleImplementation & inSampleImpl(*inSample.getImplementation());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameter_[j];
-    for (UnsignedInteger j = 0; j < sampleDimension; ++j) input[i][inputPositions_[j]] = inSample[i][j];
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) inputImpl(i, parametersPositions_[j]) = parameter_[j];
+    for (UnsignedInteger j = 0; j < sampleDimension; ++j) inputImpl(i, inputPositions_[j]) = inSampleImpl(i, j);
   }
-  const Sample output(function_(input));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(input);
-    outputStrategy_.store(output);
-  }
-  callsNumber_ += size;
-  return output;
-}
-
-Sample ParametricEvaluation::operator() (const Point & point,
-    const Sample & parameters)
-{
-  const UnsignedInteger size = parameters.getSize();
-  const UnsignedInteger inputDimension = function_.getInputDimension();
-  const UnsignedInteger pointDimension = inputPositions_.getSize();
-  const UnsignedInteger parametersDimension = getParameterDimension();
-  if (point.getDimension() != pointDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << pointDimension << ", got dimension" << point.getDimension();
-  if (parameters.getDimension() != parametersDimension) throw InvalidArgumentException(HERE) << "Error: expected parameters of dimension=" << parametersDimension << ", got dimension=" << parameters.getDimension();
-  Sample input(size, inputDimension);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameters[i][j];
-    for (UnsignedInteger j = 0; j < pointDimension; ++j) input[i][inputPositions_[j]] = point[j];
-  }
-  const Sample output(function_(input));
+  Sample output(function_(input));
+  output.setDescription(getOutputDescription());
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(input);

@@ -55,6 +55,7 @@ public:
   /** Operator () */
   using EvaluationImplementation::operator();
   Point operator() (const Point & inP) const;
+  Sample operator() (const Sample & inSample) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

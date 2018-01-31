@@ -250,14 +250,14 @@ Matrix LinearCombinationEvaluation::parameterGradient(const Point & inP) const
     const UnsignedInteger columnDimension = atomParametersGradient.getNbColumns();
     // Scale the atom gradient and copy it into the result
     const Scalar coefficient = coefficients_[i];
-    for (UnsignedInteger j = 0; j < rowDimension; ++j)
+    for (UnsignedInteger k = 0; k < columnDimension; ++k)
     {
-      for (UnsignedInteger k = 0; k < columnDimension; ++k)
+      for (UnsignedInteger j = 0; j < rowDimension; ++j)
       {
-        result(rowIndex, k) = coefficient * atomParametersGradient(j, k);
+        result(rowIndex + j, k) = coefficient * atomParametersGradient(j, k);
       }
-      ++rowIndex;
     }
+    rowIndex += rowDimension;
   }
   return result;
 }

@@ -1282,7 +1282,7 @@ protected:
       , y_(0.0)
       , p_distribution_(p_distribution)
     {
-      // Nothing to do
+      setParallel(false);
     };
 
     ConditionalCDFWrapper * clone() const

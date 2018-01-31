@@ -202,6 +202,66 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
   return outP;
 }
 
+Sample CanonicalTensorEvaluation::operator() (const Sample & inSample) const
+{
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << ", got dimension=" << inSample.getDimension();
+  const UnsignedInteger size = inSample.getSize();
+
+  const UnsignedInteger m = getRank();
+  SampleImplementation prodI(m, Point(size, 1.0));
+
+  for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+  {
+    const Sample xj(inSample.getMarginal(j));
+    const Basis basisI(getBasis(j));
+    const UnsignedInteger basisSize = degrees_[j];
+
+    // compute phi_(j,k)(xj)
+    // Note: phiX is transposed
+    Sample phiX(0, size);
+    for (UnsignedInteger k = 0; k < basisSize; ++ k)
+    {
+      phiX.add(basisI[k](xj).asPoint());
+    }
+
+    for (UnsignedInteger i = 0; i < m; ++ i)
+    {
+      const Point coeffI(getCoefficients(i, j));
+      Point sumI(size);
+      for (UnsignedInteger k = 0; k < basisSize; ++ k)
+      {
+        if (coeffI[k] != 0.0)
+        {
+          sumI += coeffI[k] * phiX[k];
+        }
+      }
+      for (UnsignedInteger l = 0; l < size; ++ l)
+      {
+        prodI(i, l) *= sumI[l];
+      }
+    }
+  }
+
+  Point result(size);
+  for (UnsignedInteger i = 0; i < m; ++ i)
+  {
+    result += prodI[i];
+  }
+
+  Sample outSample(size, 1);
+  outSample.getImplementation()->setData(result);
+  outSample.setDescription(getOutputDescription());
+
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inSample);
+    outputStrategy_.store(outSample);
+  }
+  callsNumber_ += size;
+  return outSample;
+}
+
 /* Dimension accessor */
 UnsignedInteger CanonicalTensorEvaluation::getInputDimension() const
 {

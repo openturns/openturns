@@ -108,14 +108,16 @@ Sample AggregatedEvaluation::operator () (const Sample & inS) const
   const UnsignedInteger collectionSize = functionsCollection_.getSize();
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension_);
+  SampleImplementation & resultImpl(*result.getImplementation());
   UnsignedInteger outputIndex = 0;
   for ( UnsignedInteger k = 0; k < collectionSize; ++ k )
   {
     const Sample atomValue(functionsCollection_[k](inS));
+    const Sample & atomValueImpl(*atomValue.getImplementation());
     const UnsignedInteger atomDimension = atomValue.getDimension();
     for ( UnsignedInteger i = 0; i < size; ++ i )
       for ( UnsignedInteger j = 0; j < atomDimension; ++ j )
-        result[i][outputIndex + j] = atomValue[i][j];
+        resultImpl(i, outputIndex + j) = atomValueImpl(i, j);
     outputIndex += atomDimension;
   }
   result.setDescription(getOutputDescription());
@@ -230,8 +232,8 @@ Matrix AggregatedEvaluation::parameterGradient(const Point & inP) const
     const Matrix currentGradient(functionsCollection_[i].parameterGradient(functionsCollection_[i].getParameter()));
     const UnsignedInteger currentRowDim = currentGradient.getNbRows();
     const UnsignedInteger currentColumnDim = currentGradient.getNbColumns();
-    for (UnsignedInteger j = 0; j < currentRowDim; ++j)
-      for (UnsignedInteger k = 0; k < currentColumnDim; ++k)
+    for (UnsignedInteger k = 0; k < currentColumnDim; ++k)
+      for (UnsignedInteger j = 0; j < currentRowDim; ++j)
         result(rowShift + j, columnShift + k) = currentGradient(j, k);
     rowShift += currentRowDim;
     columnShift += currentColumnDim;

@@ -932,6 +932,9 @@ void ResourceMap::loadDefaultConfiguration()
   // Classifier parameters //
   setAsBool( "Classifier-Parallel", true);
 
+  // Evaluation parameters //
+  setAsBool( "Evaluation-Parallel", true);
+
   // TensorApproximationAlgorithm parameters //
   set("TensorApproximationAlgorithm-Method", "GreedyRankOne");
   set("TensorApproximationAlgorithm-DecompositionMethod", "SVD");

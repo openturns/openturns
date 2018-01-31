@@ -52,8 +52,6 @@ public:
   /** Hessian operator */
   using HessianImplementation::hessian;
   SymmetricTensor hessian(const Point & point) const;
-  SymmetricTensor hessian(const Point & point,
-                          const Point & parameters) const;
 
   /** Evaluation accessor */
   ParametricEvaluation getEvaluation() const;
