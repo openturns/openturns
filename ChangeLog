@@ -49,6 +49,7 @@
  * #926 (Covariance model active parameter set behavior)
  * #928 (Covariance model/ Field/Process properties naming)
  * #933 (Compilation failed when Muparser is missing)
+ * #938 (DistributionFactory::buildEstimator to handle Exception)
  * #939 (The help of the getMaximumDegreeStrataIndex method is wrong.)
 
 == 1.10 release (2017-11-13) == #release-1.10

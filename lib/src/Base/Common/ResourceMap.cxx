@@ -838,6 +838,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // DistributionFactoryImplementation parameters //
   setAsUnsignedInteger( "DistributionFactory-DefaultBootstrapSize", 100 );
+  setAsScalar( "DistributionFactory-BootstrapErrorTolerance", 0.1 );
 
   // OrderStatisticsMarginalChecker //
   setAsUnsignedInteger( "OrderStatisticsMarginalChecker-QuantileIteration", 100 );

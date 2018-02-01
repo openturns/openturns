@@ -576,6 +576,7 @@
 
   <!-- OT::DistributionFactoryImplementation parameters -->
   <DistributionFactory-DefaultBootstrapSize value="100" />
+  <DistributionFactory-BootstrapErrorTolerance value="0.1" />
 
   <!-- OT::OrderStatisticsMarginalChecker parameters -->
   <OrderStatisticsMarginalChecker-QuantileIteration   value="100"    />
