@@ -103,6 +103,13 @@ public:
     return *getImplementation() == *(other.getImplementation());
   }
 
+  /** Comparison Operator */
+  inline virtual
+  Bool operator != (const TypedInterfaceObject & other) const
+  {
+    return !operator==(other);
+  }
+
 
 protected:
 
