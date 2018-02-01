@@ -3,9 +3,7 @@
 from __future__ import print_function
 from openturns import *
 import numpy as np
-from distutils.version import LooseVersion
-if LooseVersion(np.__version__) >= '1.14':
-    np.set_printoptions(legacy='1.13')
+np.set_printoptions(formatter={'float': '{: 4.1f}'.format, 'complexfloat': '{: 4.1f}'.format})
 
 TESTPREAMBLE()
 
