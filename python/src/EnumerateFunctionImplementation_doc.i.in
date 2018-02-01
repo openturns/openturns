@@ -141,7 +141,7 @@ maximumDegree : int
 Returns
 -------
 index : int
-    Index of the strata of degree :math:`max < maximumDegree`.
+    Index of the strata of degree :math:`max \leq maximumDegree`.
 
 Examples
 --------
