@@ -99,6 +99,7 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
 {
   if (mesh.getVerticesNumber() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << mesh_.getVerticesNumber() << " vertices";
   mesh_ = mesh;
+  mesh_.computeKDTree();
   // Check for pending vertices
   Mesh::IndicesCollection verticesToSimplices(mesh_.getVerticesToSimplicesMap());
   Indices pendingVertices(0);
@@ -120,6 +121,7 @@ Mesh P1LagrangeEvaluation::getMesh() const
 void P1LagrangeEvaluation::setVertices(const Sample & vertices)
 {
   mesh_.setVertices(vertices);
+  mesh_.computeKDTree();
 }
 
 Sample P1LagrangeEvaluation::getVertices() const

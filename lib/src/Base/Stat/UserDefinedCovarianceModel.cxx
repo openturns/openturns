@@ -40,6 +40,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel()
   , p_mesh_(RegularGrid().clone())
 {
   outputDimension_ = 0;
+  p_mesh_->computeKDTree();
 }
 
 // For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
@@ -56,6 +57,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
                                          << " mesh size=" << N << " and covariance function size=" << covarianceFunction.getSize() << " instead of " << size;
   p_mesh_ = mesh.clone();
+  p_mesh_->computeKDTree();
   inputDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element

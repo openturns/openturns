@@ -19,6 +19,7 @@ simplicies[0] = [0, 1]
 simplicies[1] = [1, 2]
 simplicies[2] = [2, 3]
 mesh1D = ot.Mesh(vertices, simplicies)
+mesh1D.computeKDTree()
 print("1D mesh=", mesh1D)
 print("Is empty? ", mesh1D.isEmpty())
 print("vertices=", mesh1D.getVertices())
@@ -43,6 +44,7 @@ vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
 simplicies = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]]
 
 mesh2D = ot.Mesh(vertices, simplicies)
+mesh2D.computeKDTree()
 print("2D mesh=", mesh2D)
 point = [1.8] * 2
 print("Nearest index(", point, ")=", mesh2D.getNearestVertexIndex(point))
@@ -71,6 +73,7 @@ simplicies[4] = [1, 3, 5, 6]
 simplicies[5] = [1, 4, 5, 6]
 
 mesh3D = ot.Mesh(vertices, simplicies)
+mesh3D.computeKDTree()
 print("3D mesh=", mesh3D)
 point = [1.8] * 3
 print("Nearest index(", point, ")=", mesh3D.getNearestVertexIndex(point))

@@ -337,6 +337,11 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Mesh::computeKDTree
+"Compute a KDTree to speed-up nearest vertex searches."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Mesh::getNearestVertex
 "Get the nearest vertex of a given point.
 
@@ -356,6 +361,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplices = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
+>>> mesh2d.computeKDTree()
 >>> point = [0.9, 0.4]
 >>> print(mesh2d.getNearestVertex(point))
 [1,0]"
@@ -382,6 +388,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplices = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
+>>> mesh2d.computeKDTree()
 >>> point = [0.9, 0.4]
 >>> print(mesh2d.getNearestVertexIndex(point))
 1"
@@ -409,6 +416,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplex = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplex)
+>>> mesh2d.computeKDTree()
 >>> # Create a point A inside the simplex
 >>> pointA = [0.6, 0.3]
 >>> print(mesh2d.getNearestVertexAndSimplexIndicesWithCoordinates(pointA))

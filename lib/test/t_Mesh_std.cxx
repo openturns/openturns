@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
       simplicies[2][0] = 2;
       simplicies[2][1] = 3;
       Mesh mesh1D(vertices, simplicies);
+      mesh1D.computeKDTree();
       fullprint << "1D mesh=" << mesh1D << std::endl;
       fullprint << "Is empty? " << mesh1D.isEmpty() << std::endl;
       fullprint << "vertices=" << mesh1D.getVertices() << std::endl;
@@ -126,6 +127,7 @@ int main(int argc, char *argv[])
       simplicies[4][1] = 2;
       simplicies[4][2] = 5;
       Mesh mesh2D(vertices, simplicies);
+      mesh2D.computeKDTree();
       fullprint << "2D mesh=" << mesh2D << std::endl;
       Point point(2, 1.8);
       fullprint << "Nearest index(" << point << ")=" << mesh2D.getNearestVertexIndex(point) << std::endl;
@@ -211,6 +213,7 @@ int main(int argc, char *argv[])
       simplicies[5][3] = 6;
 
       Mesh mesh3D(vertices, simplicies);
+      mesh3D.computeKDTree();
       fullprint << "3D mesh=" << mesh3D << std::endl;
       Point point(3, 1.8);
       fullprint << "Nearest index(" << point << ")=" << mesh3D.getNearestVertexIndex(point) << std::endl;

@@ -97,8 +97,13 @@ void Mesh::setVertices(const Sample & vertices)
 {
   isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
-  tree_ = KDTree(vertices_);
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
+}
+
+/* Compute KDTree to speed-up searches */
+void Mesh::computeKDTree()
+{
+  tree_ = KDTree(vertices_);
 }
 
 /* Vertex accessor */

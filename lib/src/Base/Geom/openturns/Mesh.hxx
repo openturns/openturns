@@ -74,8 +74,11 @@ public:
   /** Get the number of simplices */
   UnsignedInteger getSimplicesNumber() const;
 
+  /** Add a KDTree to speed-up nearest vertex searches */
+  virtual void computeKDTree();
+
   /** Get the index of the nearest vertex */
-  UnsignedInteger getNearestVertexIndex(const Point & point) const;
+  virtual UnsignedInteger getNearestVertexIndex(const Point & point) const;
 
   /** Get the index of the nearest vertex and the index of the containing simplex if any */
   Indices getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,

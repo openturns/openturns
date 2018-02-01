@@ -69,6 +69,7 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , inputMean_(dim)
   , isAlreadyComputedInputMean_(false)
 {
+  mesh_.computeKDTree();
   // Build the default description
   Description description(mesh_.getVertices().getDescription());
   description.add(values_.getDescription());
@@ -86,6 +87,7 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , isAlreadyComputedInputMean_(false)
 {
   if (mesh.getVerticesNumber() != values.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a Field with a number of values=" << values.getSize() << " different from the number of vertices=" << mesh.getVerticesNumber();
+  mesh_.computeKDTree();
   Description description(mesh_.getVertices().getDescription());
   description.add(values_.getDescription());
   setDescription(description);
