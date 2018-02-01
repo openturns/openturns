@@ -91,10 +91,10 @@ try:
     print("sum2 = ", repr(sum2))
     print("sum1 equals sum2 = ", sum1 == sum2)
 
-    # TEST NUMBER EIGHT : SUBSTRACTION METHOD
-    print("test number eight : substraction method")
+    # TEST NUMBER EIGHT : SUBTRACTION METHOD
+    print("test number eight : subtraction method")
 
-    # Check substraction method
+    # Check subtraction method
     diff = matrix1 - matrix4
     print("diff = ", repr(diff))
 

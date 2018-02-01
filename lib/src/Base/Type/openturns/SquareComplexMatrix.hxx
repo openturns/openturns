@@ -89,7 +89,7 @@ public:
   SquareComplexMatrix operator + (const SquareComplexMatrix & m) const;
   SquareComplexMatrix operator + (const HermitianMatrix & m) const;
 
-  /** SquareComplexMatrix substractions (must have the same dimensions) */
+  /** SquareComplexMatrix subtractions (must have the same dimensions) */
   SquareComplexMatrix operator - (const SquareComplexMatrix & m) const;
   SquareComplexMatrix operator - (const HermitianMatrix & m) const;
 

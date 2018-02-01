@@ -35,7 +35,7 @@ component of the given bound is finite and its value is given by bound
 either :math:`-\infty` if bound :math:`i < 0` or :math:`+\infty` if bound
 :math:`i \geq 0`.
 
-It is possible to add or substract two intervals and multiply an interval by a
+It is possible to add or subtract two intervals and multiply an interval by a
 scalar.
 
 Examples
@@ -58,7 +58,7 @@ Examples
 >>> print(interval1 + interval2)
 [3, 11]
 [7, 21]
->>> # Substraction
+>>> # Subtraction
 >>> print(interval1 - interval2)
 [-4, 4]
 [-10, 4]

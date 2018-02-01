@@ -233,13 +233,13 @@ ComplexMatrix ComplexMatrix::operator+ (const Matrix & m) const
   return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
 }
 
-/* ComplexMatrix substractions (must have the same dimensions) */
+/* ComplexMatrix subtractions (must have the same dimensions) */
 ComplexMatrix ComplexMatrix::operator- (const ComplexMatrix & m) const
 {
   return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());
 }
 
-/* ComplexMatrix substractions */
+/* ComplexMatrix subtractions */
 ComplexMatrix ComplexMatrix::operator- (const Matrix & m) const
 {
   return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());

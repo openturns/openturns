@@ -77,7 +77,7 @@ public:
 
   Implementation operator + (const Scalar value) const;
 
-  /** Substraction operator */
+  /** Subtraction operator */
   Implementation operator - (const DistributionImplementation & other) const;
   Implementation operator - (const Implementation & other) const;
 
@@ -1390,7 +1390,7 @@ OT_API DistributionImplementation::Implementation operator + (const Scalar,
 OT_API DistributionImplementation::Implementation operator + (const Scalar,
     const DistributionImplementation::Implementation & p_distribution);
 
-/** Substraction operator */
+/** Subtraction operator */
 OT_API DistributionImplementation::Implementation operator - (const Scalar,
     const DistributionImplementation & distribution);
 

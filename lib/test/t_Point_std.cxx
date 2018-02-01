@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 
 
 
-    /* Addition/Substraction/Product operators */
+    /* Addition/Subtraction/Product operators */
     try
     {
 

@@ -91,7 +91,7 @@ public:
   SquareMatrix operator + (const SquareMatrix & m) const;
   SquareMatrix operator + (const SymmetricMatrix & m) const;
 
-  /** SquareMatrix substractions (must have the same dimensions) */
+  /** SquareMatrix subtractions (must have the same dimensions) */
   SquareMatrix operator - (const SquareMatrix & m) const;
   SquareMatrix operator - (const SymmetricMatrix & m) const;
 

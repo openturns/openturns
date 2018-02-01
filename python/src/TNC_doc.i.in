@@ -15,7 +15,7 @@ specificParameters : :class:`~openturns.TNCSpecificParameters`
 scale : sequence of float
     Scaling factors to apply to each variables
 offset : sequence of float
-    Constant to substract to each variable
+    Constant to subtract to each variable
 maxCGit : int
     Maximum number of hessian*vector evaluation per main iteration
 eta : float
@@ -85,7 +85,7 @@ scale : sequence of float
 Returns
 -------
 offset : :class:`~openturns.Point`
-    Constant to substract to each variable
+    Constant to subtract to each variable
 
     if empty, the constant are (min-max)/2 for interval bounded
 
@@ -99,7 +99,7 @@ offset : :class:`~openturns.Point`
 Parameters
 ----------
 offset : sequence of float
-    Constant to substract to each variable
+    Constant to subtract to each variable
 
     if empty, the constant are (min-max)/2 for interval bounded
 

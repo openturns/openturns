@@ -111,10 +111,10 @@ public:
   /** ComplexMatrix additions */
   SquareComplexMatrix operator + (const SquareComplexMatrix & m) const;
 
-  /** HermitianMatrix substractions */
+  /** HermitianMatrix subtractions */
   HermitianMatrix operator - (const HermitianMatrix & m) const;
 
-  /** ComplexMatrix substractions */
+  /** ComplexMatrix subtractions */
   SquareComplexMatrix operator - (const SquareComplexMatrix & m) const;
 
 #ifdef _MSC_VER   // VS2010 does not like 'using' being called after overloads

@@ -28,7 +28,7 @@ sum2 = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementati
 sum2 = [[ 2 6 ]
  [ 6 8 ]]
 sum1 equals sum2 = true
-test number eight : substraction method
+test number eight : subtraction method
 diff = class=SymmetricMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,0,0,0]
 diff = [[ 0 0 ]
  [ 0 0 ]]

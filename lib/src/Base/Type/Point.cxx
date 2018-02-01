@@ -214,13 +214,13 @@ Point & Point::operator +=(const Point & other)
 
 
 
-/* Substraction operator */
+/* Subtraction operator */
 Point operator - (const Point & lhs, const Point & rhs)
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Points of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be subtracted (LHS dimension = "
         << n
         << "; RHS dimension = "
         << rhs.getDimension();
@@ -235,13 +235,13 @@ Point operator - (const Point & lhs, const Point & rhs)
 
 
 
-/* In-place substraction operator */
+/* In-place subtraction operator */
 Point & Point::operator -=(const Point & other)
 {
   int n = getDimension();
   if (n != (int)other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Points of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be subtracted (LHS dimension = "
         << n
         << "; RHS dimension = " <<
         other.getDimension();

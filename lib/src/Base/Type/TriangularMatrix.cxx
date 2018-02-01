@@ -176,13 +176,13 @@ SquareMatrix TriangularMatrix::operator+ (const SquareMatrix & m) const
   return *getImplementation() + *m.getImplementation();
 }
 
-/* Matrix substractions */
+/* Matrix subtractions */
 SquareMatrix TriangularMatrix::operator- (const SquareMatrix & m) const
 {
   return *getImplementation() - *m.getImplementation();
 }
 
-/* TriangularMatrix substractions */
+/* TriangularMatrix subtractions */
 SquareMatrix TriangularMatrix::operator- (const TriangularMatrix & m) const
 {
   return *getImplementation() - *m.getImplementation();

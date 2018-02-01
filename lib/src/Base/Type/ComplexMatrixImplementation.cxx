@@ -426,10 +426,10 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Matri
   return result;
 }
 
-/* ComplexMatrixImplementation substraction (must have the same dimensions) */
+/* ComplexMatrixImplementation subtraction (must have the same dimensions) */
 ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const ComplexMatrixImplementation & matrix) const
 {
-  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot substract matrices with incompatible dimensions";
+  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot subtract matrices with incompatible dimensions";
   // Must copy as add will be overwritten by the operation
   ComplexMatrixImplementation result(*this);
   int size(nbRows_ * nbColumns_);
@@ -441,7 +441,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const Compl
   return result;
 }
 
-/* ComplexMatrixImplementation substraction (must have the same dimensions) */
+/* ComplexMatrixImplementation subtraction (must have the same dimensions) */
 ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const MatrixImplementation & matrix) const
 {
   return operator - (ComplexMatrixImplementation(matrix));

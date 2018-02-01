@@ -138,7 +138,7 @@ NSI_point & NSI_point::operator -= (const NSI_point & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Points of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be subtracted (LHS dimension = "
         << getDimension()
         << "; RHS dimension = "
         << other.getDimension();
@@ -164,7 +164,7 @@ NSI_point & NSI_point::operator -= (const Point & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Points of different dimensions cannot be substracted (LHS dimension = "
+        << "Points of different dimensions cannot be subtracted (LHS dimension = "
         << getDimension()
         << "; RHS dimension = "
         << other.getDimension();

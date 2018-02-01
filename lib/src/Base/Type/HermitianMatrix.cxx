@@ -162,13 +162,13 @@ SquareComplexMatrix HermitianMatrix::operator + (const SquareComplexMatrix & m) 
   return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
 }
 
-/* ComplexMatrix substractions  */
+/* ComplexMatrix subtractions  */
 HermitianMatrix HermitianMatrix::operator - (const HermitianMatrix & m) const
 {
   return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());
 }
 
-/* HermitianMatrix substractions */
+/* HermitianMatrix subtractions */
 SquareComplexMatrix HermitianMatrix::operator - (const SquareComplexMatrix & m) const
 {
   checkHermitian();

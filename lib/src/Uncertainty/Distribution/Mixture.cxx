@@ -477,7 +477,7 @@ void Mixture::computeCovariance() const
       for(UnsignedInteger column = 0; column <= row; ++column)
         covariance_(row, column) += weightI * (covarianceI(row, column) + meanI[row] * meanI[column]);
   } /* end for */
-  // Then, substract E(X).E(X)^t
+  // Then, subtract E(X).E(X)^t
   const Point mean(getMean());
   for(UnsignedInteger row = 0; row < dimension; ++row)
     for(UnsignedInteger column = 0; column <= row; ++column)

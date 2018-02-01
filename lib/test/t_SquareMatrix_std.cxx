@@ -112,10 +112,10 @@ int main(int argc, char *argv[])
     fullprint << "sum1 equals sum2 = " << (sum1 == sum2) << std::endl;
 
 
-    /** TEST NUMBER EIGHT : SUBSTRACTION METHOD */
-    fullprint << "test number eight : substraction method" << std::endl;
+    /** TEST NUMBER EIGHT : SUBTRACTION METHOD */
+    fullprint << "test number eight : subtraction method" << std::endl;
 
-    /* Check substraction method */
+    /* Check subtraction method */
     SquareMatrix diff = squareMatrix1.operator - ( squareMatrix4 ) ;
     fullprint << "diff = " << diff << std::endl;
 

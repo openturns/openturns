@@ -171,7 +171,7 @@ SymmetricMatrix SymmetricMatrix::operator + (const SymmetricMatrix & m) const
   return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
 }
 
-/* SymmetricMatrix substractions (must have the same dimensions) */
+/* SymmetricMatrix subtractions (must have the same dimensions) */
 Matrix SymmetricMatrix::operator - (const Matrix & m) const
 {
   checkSymmetry();

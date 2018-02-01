@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     fullprint << "P2=" << P2 << std::endl;
     fullprint << "P1+P2=" << P1 + P2 << std::endl;
 
-    // Substraction of two polynomials
+    // Subtraction of two polynomials
     fullprint << "P1-P2=" << P1 - P2 << std::endl;
 
     // Multiplication of two polynomials

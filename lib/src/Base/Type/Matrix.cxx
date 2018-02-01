@@ -160,7 +160,7 @@ Matrix Matrix::operator+ (const SymmetricMatrix & m) const
   return Implementation((*getImplementation() + * (m.getImplementation())).clone());
 }
 
-/* Matrix substractions (must have the same dimensions) */
+/* Matrix subtractions (must have the same dimensions) */
 Matrix Matrix::operator- (const Matrix & m) const
 {
   return Implementation((*getImplementation() - * (m.getImplementation())).clone());

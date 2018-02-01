@@ -15,7 +15,7 @@ test number seven : addition method
 sum1 =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,5,5,8]
 sum2 =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2,5,5,8]
 sum1 equals sum2 =  True
-test number eight : substraction method
+test number eight : subtraction method
 diff =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,-1,1,0]
 test number nine : matrix multiplication method
 prod =  class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[10,14,14,20]

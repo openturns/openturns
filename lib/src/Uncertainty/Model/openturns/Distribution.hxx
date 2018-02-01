@@ -72,7 +72,7 @@ public:
 
   Distribution operator + (const Scalar value) const;
 
-  /** Substraction operator */
+  /** Subtraction operator */
   Distribution operator - (const Distribution & other) const;
 
   Distribution operator - (const Scalar value) const;

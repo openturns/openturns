@@ -113,7 +113,7 @@ public:
   /** In-place addition operator */
   Point & operator +=(const Point & other);
 
-  /** In-place substraction operator */
+  /** In-place subtraction operator */
   Point & operator -=(const Point & other);
 #endif
 
@@ -180,7 +180,7 @@ OT_API Point operator / (const Point & point,
 OT_API Point operator + (const Point & lhs,
                          const Point & rhs);
 
-/** Substraction operator */
+/** Subtraction operator */
 OT_API Point operator - (const Point & lhs,
                          const Point & rhs);
 

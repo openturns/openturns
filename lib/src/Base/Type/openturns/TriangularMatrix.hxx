@@ -105,10 +105,10 @@ public:
   /** Addition operator */
   SquareMatrix operator + (const SquareMatrix & m) const;
 
-  /** Substraction operator with TriangularMatrix */
+  /** Subtraction operator with TriangularMatrix */
   SquareMatrix operator - (const TriangularMatrix & m) const;
 
-  /** Substraction operator */
+  /** Subtraction operator */
   SquareMatrix operator - (const SquareMatrix & m) const;
 
   /** Multiplication with a scalar */

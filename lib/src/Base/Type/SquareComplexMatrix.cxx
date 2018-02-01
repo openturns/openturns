@@ -117,7 +117,7 @@ SquareComplexMatrix SquareComplexMatrix::operator+ (const HermitianMatrix & m) c
   return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
 }
 
-/* Matrix substractions (must have the same dimensions) */
+/* Matrix subtractions (must have the same dimensions) */
 SquareComplexMatrix SquareComplexMatrix::operator- (const SquareComplexMatrix & m) const
 {
   return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());

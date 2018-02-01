@@ -289,7 +289,7 @@ Interval & Interval::operator +=(const Interval & other)
 }
 
 
-/* Substraction operator */
+/* Subtraction operator */
 Interval Interval::operator -(const Interval & rhs) const
 {
   if (getDimension() != rhs.getDimension())
@@ -312,12 +312,12 @@ Interval Interval::operator -(const Interval & rhs) const
 
 
 
-/* In-place substraction operator */
+/* In-place subtraction operator */
 Interval & Interval::operator -=(const Interval & other)
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE)
-        << "Intervals of different dimensions cannot be substracted (LHS dimension = "
+        << "Intervals of different dimensions cannot be subtracted (LHS dimension = "
         << getDimension()
         << "; RHS dimension = " <<
         other.getDimension();

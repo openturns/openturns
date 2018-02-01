@@ -16,7 +16,7 @@ test number 6 : addition method
 sum1 = class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(6,0),(0,0),(8,0)]
 sum2 = class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(6,0),(0,0),(8,0)]
 sum1 equals sum2 = true
-test 7 : substraction method
+test 7 : subtraction method
 diff1 = class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,0),(0,-2),(0,0),(0,0)]
 diff2 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,-2),(-2,-7),(0,-3),(-3,-8)]
 diff3 = class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,2),(2,7),(0,3),(3,8)]

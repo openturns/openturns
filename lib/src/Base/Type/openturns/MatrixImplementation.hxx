@@ -122,10 +122,10 @@ public:
   /** In-place MatrixImplementation addition (must have the same dimensions) */
   MatrixImplementation & operator += (const MatrixImplementation & matrix);
 
-  /** MatrixImplementation substraction (must have the same dimensions) */
+  /** MatrixImplementation subtraction (must have the same dimensions) */
   MatrixImplementation operator - (const MatrixImplementation & matrix) const;
 
-  /** In-place MatrixImplementation substraction (must have the same dimensions) */
+  /** In-place MatrixImplementation subtraction (must have the same dimensions) */
   MatrixImplementation & operator -= (const MatrixImplementation & matrix);
 
   /** MatrixImplementation multiplications (must have consistent dimensions) */

@@ -257,11 +257,11 @@ UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator 
 } // end summation of P1 & P2
 
 
-/* Realize the substraction of two polynomials of any degree ex:P=P1-P2 */
+/* Realize the subtraction of two polynomials of any degree ex:P=P1-P2 */
 UniVariatePolynomialImplementation UniVariatePolynomialImplementation::operator - (const UniVariatePolynomialImplementation & uniVariatePolynomial) const
 {
   return operator + (uniVariatePolynomial * (-1.0));
-} // end substraction of P1 & P2 */
+} // end subtraction of P1 & P2 */
 
 /* Coefficients accessor */
 void UniVariatePolynomialImplementation::setCoefficients(const Coefficients & coefficients)

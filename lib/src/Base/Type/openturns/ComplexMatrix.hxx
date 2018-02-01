@@ -149,10 +149,10 @@ public:
   /** ComplexMatrix additions with Matrix */
   ComplexMatrix operator + (const Matrix & m) const;
 
-  /** ComplexMatrix substractions (must have the same dimensions) */
+  /** ComplexMatrix subtractions (must have the same dimensions) */
   ComplexMatrix operator - (const ComplexMatrix & m) const;
 
-  /** ComplexMatrix substractions with Matrix */
+  /** ComplexMatrix subtractions with Matrix */
   ComplexMatrix operator - (const Matrix & m) const;
 
   /** ComplexMatrix multiplications (must have consistent dimensions) */
