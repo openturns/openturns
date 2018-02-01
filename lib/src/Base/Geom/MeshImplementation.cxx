@@ -352,12 +352,7 @@ Indices MeshImplementation::getNearestVertexIndex(const Sample & points) const
 /* Get the nearest vertex for a set of points */
 Sample MeshImplementation::getNearestVertex(const Sample & points) const
 {
-  const Indices indices(getNearestVertexIndex(points));
-  const UnsignedInteger size = indices.getSize();
-  Sample neighbours(size, getDimension());
-  for (UnsignedInteger i = 0; i < size; ++i)
-    neighbours[i] = vertices_[indices[i]];
-  return neighbours;
+  return vertices_.select(getNearestVertexIndex(points));
 }
 
 /* Compute the volume of a given simplex */
