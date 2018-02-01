@@ -368,19 +368,19 @@ Scalar MeshImplementation::computeSimplexVolume(const UnsignedInteger index) con
   // First special case: 1D simplex
   if (getDimension() == 1)
   {
-    const Scalar x0 = vertices_[simplices_[index][0]][0];
-    const Scalar x1 = vertices_[simplices_[index][1]][0];
+    const Scalar x0 = vertices_(simplices_[index][0], 0);
+    const Scalar x1 = vertices_(simplices_[index][1], 0);
     return std::abs(x1 - x0);
   }
   // Second special case: 2D simplex
   if (getDimension() == 2)
   {
-    const Scalar x0 = vertices_[simplices_[index][0]][0];
-    const Scalar y0 = vertices_[simplices_[index][0]][1];
-    const Scalar x1 = vertices_[simplices_[index][1]][0];
-    const Scalar y1 = vertices_[simplices_[index][1]][1];
-    const Scalar x2 = vertices_[simplices_[index][2]][0];
-    const Scalar y2 = vertices_[simplices_[index][2]][1];
+    const Scalar x0 = vertices_(simplices_[index][0], 0);
+    const Scalar y0 = vertices_(simplices_[index][0], 1);
+    const Scalar x1 = vertices_(simplices_[index][1], 0);
+    const Scalar y1 = vertices_(simplices_[index][1], 1);
+    const Scalar x2 = vertices_(simplices_[index][2], 0);
+    const Scalar y2 = vertices_(simplices_[index][2], 1);
     return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
   }
   SquareMatrix matrix(buildSimplexMatrix(index));
@@ -425,10 +425,10 @@ Bool MeshImplementation::isRegular() const
   if (size <= 1) return true;
   Bool regular = true;
   const Scalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
-  const Scalar step = vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0];
+  const Scalar step = vertices_(simplices_[0][1], 0) - vertices_(simplices_[0][0], 0);
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    regular = regular && (std::abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
+    regular = regular && (std::abs(vertices_(simplices_[i][1], 0) - vertices_(simplices_[i][0], 0) - step) < epsilon);
     if (!regular) break;
   }
   return regular;
@@ -544,8 +544,8 @@ Graph MeshImplementation::draw1D() const
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     Sample data(2, 2);
-    data[0][0] = vertices_[simplices_[i][0]][0];
-    data[1][0] = vertices_[simplices_[i][1]][0];
+    data(0, 0) = vertices_(simplices_[i][0], 0);
+    data(1, 0) = vertices_(simplices_[i][1], 0);
     Curve simplex(data);
     simplex.setColor("blue");
     if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
@@ -639,28 +639,28 @@ Graph MeshImplementation::draw3D(const Bool drawEdge,
     triWithDepth[0] = i0;
     triWithDepth[1] = i1;
     triWithDepth[2] = i2;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i1][2] + vertices_[i2][2];
+    triWithDepth[3] = vertices_(i0, 2) + vertices_(i1, 2) + vertices_(i2, 2);
     trianglesAndDepth.add(triWithDepth);
 
     // Second face: AB=p0p2, AC=p0p3.
     triWithDepth[0] = i0;
     triWithDepth[1] = i2;
     triWithDepth[2] = i3;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i2][2] + vertices_[i3][2];
+    triWithDepth[3] = vertices_(i0, 2) + vertices_(i2, 2) + vertices_(i3, 2);
     trianglesAndDepth.add(triWithDepth);
 
     // Third face: AB=p0p3, AC=p0p1.
     triWithDepth[0] = i0;
     triWithDepth[1] = i3;
     triWithDepth[2] = i1;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i3][2] + vertices_[i1][2];
+    triWithDepth[3] = vertices_(i0, 2) + vertices_(i3, 2) + vertices_(i1, 2);
     trianglesAndDepth.add(triWithDepth);
 
     // Fourth face: AB=p1p3, AC=p1p2.
     triWithDepth[0] = i1;
     triWithDepth[1] = i3;
     triWithDepth[2] = i2;
-    triWithDepth[3] = vertices_[i1][2] + vertices_[i3][2] + vertices_[i2][2];
+    triWithDepth[3] = vertices_(i1, 2) + vertices_(i3, 2) + vertices_(i2, 2);
     trianglesAndDepth.add(triWithDepth);
   }
   // Fourth, draw the triangles in decreasing depth
@@ -670,37 +670,37 @@ Graph MeshImplementation::draw3D(const Bool drawEdge,
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
   for (UnsignedInteger i = trianglesAndDepth.getSize(); i > 0; --i)
   {
-    const UnsignedInteger i0 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][0]);
-    const UnsignedInteger i1 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][1]);
-    const UnsignedInteger i2 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][2]);
+    const UnsignedInteger i0 = static_cast<UnsignedInteger>(trianglesAndDepth(i - 1, 0));
+    const UnsignedInteger i1 = static_cast<UnsignedInteger>(trianglesAndDepth(i - 1, 1));
+    const UnsignedInteger i2 = static_cast<UnsignedInteger>(trianglesAndDepth(i - 1, 2));
     Sample data(3, 2);
     if (clippedRho < 1.0)
     {
       const Point center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
-      data[0][0] = center[0];
-      data[0][1] = center[1];
-      data[1][0] = center[0];
-      data[1][1] = center[1];
-      data[2][0] = center[0];
-      data[2][1] = center[1];
+      data(0, 0) = center[0];
+      data(0, 1) = center[1];
+      data(1, 0) = center[0];
+      data(1, 1) = center[1];
+      data(2, 0) = center[0];
+      data(2, 1) = center[1];
       if (clippedRho > 0.0)
       {
-        data[0][0] += clippedRho * (visuVertices[i0][0] - center[0]);
-        data[0][1] += clippedRho * (visuVertices[i0][1] - center[1]);
-        data[1][0] += clippedRho * (visuVertices[i1][0] - center[0]);
-        data[1][1] += clippedRho * (visuVertices[i1][1] - center[1]);
-        data[2][0] += clippedRho * (visuVertices[i2][0] - center[0]);
-        data[2][1] += clippedRho * (visuVertices[i2][1] - center[1]);
+        data(0, 0) += clippedRho * (visuVertices(i0, 0) - center[0]);
+        data(0, 1) += clippedRho * (visuVertices(i0, 1) - center[1]);
+        data(1, 0) += clippedRho * (visuVertices(i1, 0) - center[0]);
+        data(1, 1) += clippedRho * (visuVertices(i1, 1) - center[1]);
+        data(2, 0) += clippedRho * (visuVertices(i2, 0) - center[0]);
+        data(2, 1) += clippedRho * (visuVertices(i2, 1) - center[1]);
       }
     }
     else
     {
-      data[0][0] = visuVertices[i0][0];
-      data[0][1] = visuVertices[i0][1];
-      data[1][0] = visuVertices[i1][0];
-      data[1][1] = visuVertices[i1][1];
-      data[2][0] = visuVertices[i2][0];
-      data[2][1] = visuVertices[i2][1];
+      data(0, 0) = visuVertices(i0, 0);
+      data(0, 1) = visuVertices(i0, 1);
+      data(1, 0) = visuVertices(i1, 0);
+      data(1, 1) = visuVertices(i1, 1);
+      data(2, 0) = visuVertices(i2, 0);
+      data(2, 1) = visuVertices(i2, 1);
     }
     Polygon triangle(data);
 
@@ -766,8 +766,8 @@ MeshImplementation MeshImplementation::ImportFromMSHFile(const String & fileName
   Sample vertices(verticesNumber, 2);
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
   {
-    file >> vertices[i][0];
-    file >> vertices[i][1];
+    file >> vertices(i, 0);
+    file >> vertices(i, 1);
     file >> scratch;
     LOGINFO(OSS() << "vertex " << i << "=" << vertices[i]);
   }
@@ -813,7 +813,7 @@ String MeshImplementation::streamToVTKFormat() const
   {
     String separator("");
     for (UnsignedInteger j = 0; j < dimension; ++j, separator = " ")
-      oss << separator << vertices_[i][j];
+      oss << separator << vertices_(i, j);
     for (UnsignedInteger j = dimension; j < 3; ++j)
       oss << separator << "0.0";
     oss << "\n";
