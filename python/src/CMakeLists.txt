@@ -211,9 +211,11 @@ ot_add_python_module(statistics statistics_module.i
 ot_add_python_module(geom geom_module.i
                       Domain.i Domain_doc.i.in
                       BipartiteGraph.i BipartiteGraph_doc.i.in
+                      MeshImplementation.i MeshImplementation_doc.i.in
                       Mesh.i Mesh_doc.i.in
                       RegularGrid.i RegularGrid_doc.i.in
                       IntervalMesher.i IntervalMesher_doc.i.in
+                      MeshDomain.i MeshDomain_doc.i.in
                       BaseGeomTemplateDefs.i
                     )
 

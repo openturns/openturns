@@ -1,0 +1,74 @@
+%feature("docstring") OT::MeshDomain
+"Adaptor to convert a Mesh and a Domain.
+
+Available constructors:
+    MeshDomain(*mesh*)
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Underlying mesh.
+
+Examples
+--------
+>>> import openturns as ot
+>>> # A finite interval
+>>> print(ot.Interval([2.0, 3.0], [4.0, 5.0]))
+[2, 4]
+[3, 5]
+>>> # Not finite intervals
+>>> a = 2.0
+>>> print(ot.Interval([a], [1], [True], [False]))
+[2, (1) +inf[
+>>> print(ot.Interval([1], [a], [False], [True]))
+]-inf (1), 2]
+>>> # Operations with intervals:
+>>> interval1 = ot.Interval([2.0, 3.0], [5.0, 8.0])
+>>> interval2 = ot.Interval([1.0, 4.0], [6.0, 13.0])
+>>> # Addition
+>>> print(interval1 + interval2)
+[3, 11]
+[7, 21]
+>>> # Substraction
+>>> print(interval1 - interval2)
+[-4, 4]
+[-10, 4]
+>>> # Multiplication
+>>> print(interval1 * 3)
+[6, 15]
+[9, 24]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeshDomain::getLowerBound
+"Get the lower bound.
+
+Returns
+-------
+lowerBound : :class:`~openturns.Point`
+    Value of the lower bound.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([2.0, 3.0], [4.0, 5.0], [True, False], [True, True])
+>>> print(interval.getLowerBound())
+[2,3]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeshDomain::getUpperBound
+"Get the upper bound.
+
+Returns
+-------
+upperBound : :class:`~openturns.Point`
+    Value of the upper bound.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([2.0, 3.0], [4.0, 5.0], [True, False], [True, True])
+>>> print(interval.getUpperBound())
+[4,5]"
+

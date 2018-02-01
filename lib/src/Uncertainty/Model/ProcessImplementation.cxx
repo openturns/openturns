@@ -112,7 +112,7 @@ Description ProcessImplementation::getDescription() const
 /* TimeGrid accessor */
 RegularGrid ProcessImplementation::getTimeGrid() const
 {
-  return getMesh();
+  return *getMesh().getImplementation();
 }
 
 void ProcessImplementation::setTimeGrid(const RegularGrid & timeGrid)

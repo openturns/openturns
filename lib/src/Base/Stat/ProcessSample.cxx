@@ -143,7 +143,7 @@ const Sample & ProcessSample::operator[] (const UnsignedInteger index) const
 /* Time grid accessors */
 RegularGrid ProcessSample::getTimeGrid() const
 {
-  return RegularGrid(mesh_);
+  return RegularGrid(*mesh_.getImplementation());
 }
 
 /* Mesh accessors */

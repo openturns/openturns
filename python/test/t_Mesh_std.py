@@ -21,10 +21,8 @@ simplicies[2] = [2, 3]
 mesh1D = ot.Mesh(vertices, simplicies)
 mesh1D.computeKDTree()
 print("1D mesh=", mesh1D)
-print("Is empty? ", mesh1D.isEmpty())
 print("vertices=", mesh1D.getVertices())
 print("simplices=", mesh1D.getSimplices())
-print("volume=", mesh1D.getVolume())
 print("First simplex volume=", mesh1D.computeSimplexVolume(0))
 p = [1.3]
 print("is p=", p, " in mesh? ", mesh1D.contains(p))

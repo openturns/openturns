@@ -30,6 +30,8 @@
 /* Base/Geom */
 %include Domain.i
 %include BipartiteGraph.i
+%include MeshImplementation.i
 %include Mesh.i
 %include RegularGrid.i
 %include IntervalMesher.i
+%include MeshDomain.i

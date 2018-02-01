@@ -87,7 +87,7 @@ CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & 
 
 CovarianceMatrix UserDefinedStationaryCovarianceModel::discretize(const Mesh & mesh) const
 {
-  return discretize(RegularGrid(mesh));
+  return discretize(RegularGrid(*mesh.getImplementation()));
 }
 
 CovarianceMatrix UserDefinedStationaryCovarianceModel::discretize(const Sample & vertices) const

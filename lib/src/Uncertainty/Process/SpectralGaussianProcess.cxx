@@ -256,7 +256,7 @@ SpectralModel SpectralGaussianProcess::getSpectralModel() const
 /* Set TimeGrid */
 void SpectralGaussianProcess::setTimeGrid(const RegularGrid & tg)
 {
-  if (tg != RegularGrid(mesh_))
+  if (tg != RegularGrid(*mesh_.getImplementation()))
   {
     // The time grid must contains an even number of points
     const UnsignedInteger nT = tg.getN();

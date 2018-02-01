@@ -37,10 +37,10 @@ static const Factory<UserDefinedCovarianceModel> Factory_UserDefinedCovarianceMo
 UserDefinedCovarianceModel::UserDefinedCovarianceModel()
   : CovarianceModelImplementation()
   , covarianceCollection_(0)
-  , p_mesh_(RegularGrid().clone())
+  , mesh_(RegularGrid())
 {
   outputDimension_ = 0;
-  p_mesh_->computeKDTree();
+  mesh_.computeKDTree();
 }
 
 // For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
@@ -48,7 +48,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
     const CovarianceMatrixCollection & covarianceFunction)
   : CovarianceModelImplementation()
   , covarianceCollection_(0)
-  , p_mesh_(0)
+  , mesh_(mesh)
 {
   const UnsignedInteger N = mesh.getVerticesNumber();
   const UnsignedInteger size = (N * (N + 1)) / 2;
@@ -56,8 +56,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
                                          << " mesh size=" << N << " and covariance function size=" << covarianceFunction.getSize() << " instead of " << size;
-  p_mesh_ = mesh.clone();
-  p_mesh_->computeKDTree();
+  mesh_.computeKDTree();
   inputDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
@@ -87,11 +86,11 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values
-  const UnsignedInteger N = p_mesh_->getVerticesNumber();
+  const UnsignedInteger N = mesh_.getVerticesNumber();
   if (N == 1) return covarianceCollection_[0];
 
   // Use the evaluation based on indices
-  return operator()(p_mesh_->getNearestVertexIndex(s), p_mesh_->getNearestVertexIndex(t));
+  return operator()(mesh_.getNearestVertexIndex(s), mesh_.getNearestVertexIndex(t));
 }
 
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
@@ -119,7 +118,7 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
   const UnsignedInteger size = vertices.getSize();
   CovarianceMatrix covariance(size * outputDimension_);
   // It is better to check vertices as the simplices don't play a role in the discretization
-  if (vertices == p_mesh_->getVertices())
+  if (vertices == mesh_.getVertices())
   {
     // Here we know that the given mesh is exactly the one defining the covariance model
     for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
@@ -138,8 +137,8 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
   Indices nearestIndex(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
-    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
+    nearestIndex[i] = mesh_.getNearestVertexIndex(vertices[i]);
+    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << mesh_.getVertex(nearestIndex[i]).__str__() << ")");
   }
   // Now, we use a set of loops similar to the default algorithm
   // Fill-in the matrix by blocks
@@ -172,7 +171,7 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
   if (outputDimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if the output dimension is not 1. Here, dimension=" << outputDimension_;
   const UnsignedInteger size = vertices.getSize();
   Sample result(size, 1);
-  if (vertices == p_mesh_->getVertices())
+  if (vertices == mesh_.getVertices())
   {
     UnsignedInteger index = (p * (p + 1)) / 2;
     for (UnsignedInteger i = 0; i < p; ++i)
@@ -192,8 +191,8 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
   Indices nearestIndex(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
-    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
+    nearestIndex[i] = mesh_.getNearestVertexIndex(vertices[i]);
+    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << mesh_.getVertex(nearestIndex[i]).__str__() << ")");
   }
   for (UnsignedInteger i = 0; i < size; ++i) result[i][0] = operator()(nearestIndex[p], nearestIndex[i])(0, 0);
   return result;
@@ -210,13 +209,13 @@ TriangularMatrix UserDefinedCovarianceModel::discretizeAndFactorize(const Sample
 /* Mesh accessor */
 Mesh UserDefinedCovarianceModel::getMesh() const
 {
-  return *p_mesh_;
+  return mesh_;
 }
 
 /* Time grid accessor */
 RegularGrid UserDefinedCovarianceModel::getTimeGrid() const
 {
-  return RegularGrid(*p_mesh_);
+  return RegularGrid(*mesh_.getImplementation());
 }
 
 /* String converter */
@@ -224,7 +223,7 @@ String UserDefinedCovarianceModel::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << UserDefinedCovarianceModel::GetClassName()
-      << " mesh=" << p_mesh_->__repr__()
+      << " mesh=" << mesh_.__repr__()
       << " covarianceCollection=" << covarianceCollection_;
   return oss;
 
@@ -240,17 +239,15 @@ String UserDefinedCovarianceModel::__str__(const String & offset) const
 void UserDefinedCovarianceModel::save(Advocate & adv) const
 {
   CovarianceModelImplementation::save(adv);
-  adv.saveAttribute( "mesh_", *p_mesh_);
+  adv.saveAttribute( "mesh_", mesh_);
   adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void UserDefinedCovarianceModel::load(Advocate & adv)
 {
-  TypedInterfaceObject<Mesh> mesh;
   CovarianceModelImplementation::load(adv);
-  adv.loadAttribute( "mesh_", mesh);
-  p_mesh_ = mesh.getImplementation();
+  adv.loadAttribute( "mesh_", mesh_);
   adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
 }
 

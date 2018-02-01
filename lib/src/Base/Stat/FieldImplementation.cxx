@@ -136,7 +136,7 @@ Mesh FieldImplementation::getMesh() const
 
 RegularGrid FieldImplementation::getTimeGrid() const
 {
-  return mesh_;
+  return *mesh_.getImplementation();
 }
 
 /* Individual value accessor */

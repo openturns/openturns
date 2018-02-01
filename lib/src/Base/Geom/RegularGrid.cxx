@@ -31,7 +31,7 @@ CLASSNAMEINIT(RegularGrid)
 
 /* Default constructor */
 RegularGrid::RegularGrid()
-  : Mesh()
+  : MeshImplementation()
   , start_(0.0)
   , step_(1.0)
   , n_(0)
@@ -44,7 +44,7 @@ RegularGrid::RegularGrid()
 RegularGrid::RegularGrid(const Scalar start,
                          const Scalar step,
                          const UnsignedInteger n)
-  : Mesh()
+  : MeshImplementation()
   , start_(start)
   , step_(step)
   , n_(n)
@@ -68,8 +68,8 @@ RegularGrid::RegularGrid(const Scalar start,
   vertices_.setDescription(Description(1, "t"));
 }
 
-RegularGrid::RegularGrid(const Mesh & mesh)
-  : Mesh(mesh)
+RegularGrid::RegularGrid(const MeshImplementation & mesh)
+  : MeshImplementation(mesh)
   , start_(0.0)
   , step_(1.0)
   , n_(0)
@@ -167,6 +167,7 @@ Bool RegularGrid::follows(const RegularGrid & starter) const
 String RegularGrid::__repr__() const
 {
   return OSS(true) << "class=RegularGrid name=" << getName()
+         << " derived from " << MeshImplementation::__repr__()
          << " start=" << start_
          << " step=" << step_
          << " n=" << n_;
@@ -184,7 +185,7 @@ String RegularGrid::__str__(const String & offset) const
 /* Method save() stores the object through the StorageManager */
 void RegularGrid::save(Advocate & adv) const
 {
-  Mesh::save(adv);
+  MeshImplementation::save(adv);
   adv.saveAttribute( "start_", start_);
   adv.saveAttribute( "step_", step_);
   adv.saveAttribute( "n_", n_);
@@ -194,7 +195,7 @@ void RegularGrid::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void RegularGrid::load(Advocate & adv)
 {
-  Mesh::load(adv);
+  MeshImplementation::load(adv);
   adv.loadAttribute( "start_", start_);
   adv.loadAttribute( "step_", step_);
   adv.loadAttribute( "n_", n_);

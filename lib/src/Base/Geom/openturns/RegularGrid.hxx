@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_REGULARGRID_HXX
 #define OPENTURNS_REGULARGRID_HXX
 
-#include "openturns/Mesh.hxx"
+#include "openturns/MeshImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API RegularGrid
-  : public Mesh
+  : public MeshImplementation
 {
   CLASSNAME
 
@@ -53,7 +53,7 @@ public:
               const UnsignedInteger n);
 
   /** Parameters constructor */
-  RegularGrid(const Mesh & mesh);
+  RegularGrid(const MeshImplementation & mesh);
 
   /** Virtual constructor method */
   virtual RegularGrid * clone() const;

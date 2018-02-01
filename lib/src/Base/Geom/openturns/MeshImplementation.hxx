@@ -18,11 +18,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_MESH_HXX
-#define OPENTURNS_MESH_HXX
+#ifndef OPENTURNS_MESHIMPLEMENTATION_HXX
+#define OPENTURNS_MESHIMPLEMENTATION_HXX
 
-#include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/MeshImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
@@ -36,35 +35,31 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Mesh
+ * @class MeshImplementation
  *
  * A class that holds a mesh
  */
-class OT_API Mesh
-  : public TypedInterfaceObject<MeshImplementation>
+class OT_API MeshImplementation
+  : public PersistentObject
 {
   CLASSNAME
 
 public:
-  typedef MeshImplementation::IndicesCollection           IndicesCollection;
-  typedef MeshImplementation::IndicesPersistentCollection IndicesPersistentCollection;
+  typedef Collection< Indices >           IndicesCollection;
+  typedef PersistentCollection< Indices > IndicesPersistentCollection;
 
   /** Default constructor */
-  explicit Mesh(const UnsignedInteger dimension = 1);
-
-  /** Copy-Standard constructors */
-  Mesh(const Implementation & implementation);
-  Mesh(const MeshImplementation & implementation);
+  explicit MeshImplementation(const UnsignedInteger dimension = 1);
 
   /** Parameters constructor */
-  explicit Mesh(const Sample & vertices);
+  explicit MeshImplementation(const Sample & vertices);
 
   /** Parameters constructor */
-  Mesh(const Sample & vertices,
-       const IndicesCollection & simplices);
+  MeshImplementation(const Sample & vertices,
+                     const IndicesCollection & simplices);
 
-  /** String converter */
-  String __repr__() const;
+  /** Virtual constructor method */
+  virtual MeshImplementation * clone() const;
 
   /** Get the spatial dimension */
   UnsignedInteger getDimension() const;
@@ -109,7 +104,7 @@ public:
   Point computeWeights() const;
 
   /** Comparison operator */
-  Bool operator == (const Mesh & rhs) const;
+  Bool operator == (const MeshImplementation & rhs) const;
 
   /** Check mesh validity, i.e:
       non-overlaping simplices,
@@ -173,15 +168,44 @@ public:
                const Bool shading,
                const Scalar rho) const;
 
+  /** String converter */
+  String __repr__() const;
+  String __str__(const String & offset = "") const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
   /** FreeFem mesh import */
-  static Mesh ImportFromMSHFile(const String & fileName);
+  static MeshImplementation ImportFromMSHFile(const String & fileName);
 
   /** VTK export */
   String streamToVTKFormat() const;
   void exportToVTKFile(const String & fileName) const;
 
-}; /* class Mesh */
+protected:
+  // Build the affine matrix associated with a given simplex
+  SquareMatrix buildSimplexMatrix(const UnsignedInteger index) const;
+
+  void checkValidity() const;
+
+  // An n-D mesh is a set of vertices with a topology described by a set of simplices
+  // The vertices
+  Sample vertices_;
+
+  // The simplices
+  IndicesPersistentCollection simplices_;
+
+  // The kd-tree associated to the vertices
+  KDTree tree_;
+
+  // The vertices to simplices map
+  mutable IndicesPersistentCollection verticesToSimplices_;
+
+}; /* class MeshImplementation */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_MESH_HXX */
+#endif /* OPENTURNS_MESHIMPLEMENTATION_HXX */

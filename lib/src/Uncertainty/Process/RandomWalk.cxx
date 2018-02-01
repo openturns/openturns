@@ -127,8 +127,9 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
   }
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const Scalar timeStep = RegularGrid(mesh_).getStep();
-  const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
+  const RegularGrid regularGrid(*mesh_.getImplementation());
+  const Scalar timeStep = regularGrid.getStep();
+  const RegularGrid futurTimeGrid(regularGrid.getEnd(), timeStep, stepNumber);
   Sample data(stepNumber, getOutputDimension());
   Point previous(currentPosition_);
   for (UnsignedInteger i = 0; i < stepNumber; ++i)
@@ -143,7 +144,7 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
 RandomWalk::Implementation RandomWalk::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
-  return new RandomWalk(Point(1, origin_[i]), distribution_.getMarginal(i), mesh_);
+  return new RandomWalk(Point(1, origin_[i]), distribution_.getMarginal(i), *mesh_.getImplementation());
 }
 
 /* Get the marginal process corresponding to indices components */
@@ -153,7 +154,7 @@ RandomWalk::Implementation RandomWalk::getMarginal(const Indices & indices) cons
   const UnsignedInteger size = indices.getSize();
   Point marginalOrigin(size);
   for (UnsignedInteger i = 0; i < size; ++i) marginalOrigin[i] = origin_[indices[i]];
-  return new RandomWalk(marginalOrigin, distribution_.getMarginal(indices), mesh_);
+  return new RandomWalk(marginalOrigin, distribution_.getMarginal(indices), *mesh_.getImplementation());
 }
 
 /* Distribution accessor */

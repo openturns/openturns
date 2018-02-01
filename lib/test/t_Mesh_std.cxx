@@ -51,10 +51,8 @@ int main(int argc, char *argv[])
       Mesh mesh1D(vertices, simplicies);
       mesh1D.computeKDTree();
       fullprint << "1D mesh=" << mesh1D << std::endl;
-      fullprint << "Is empty? " << mesh1D.isEmpty() << std::endl;
       fullprint << "vertices=" << mesh1D.getVertices() << std::endl;
       fullprint << "simplices=" << mesh1D.getSimplices() << std::endl;
-      fullprint << "volume=" << mesh1D.getVolume() << std::endl;
       fullprint << "First simplex volume=" << mesh1D.computeSimplexVolume(0) << std::endl;
       Point p(1);
       p[0] = 1.3;
