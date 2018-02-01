@@ -645,8 +645,8 @@ Graph Mesh::draw3D(const Bool drawEdge,
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
-  Sample visuVertices(vertices_);
-  if (!rotation.isDiagonal()) visuVertices *= rotation;
+  const Sample visuVertices(rotation.isDiagonal() ? vertices_ : rotation.getImplementation()->genSampleProd(vertices_, true, false, 'R'));
+
   // Third, split all the simplices into triangles and compute their mean depth
   Sample trianglesAndDepth(0, 4);
   Point triWithDepth(4);

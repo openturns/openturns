@@ -22,10 +22,10 @@ test number eight : substraction method
 diff = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,-1,1,0]
 test number nine : matrix multiplication method
 prod = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[10,14,14,20]
-test number ten : multiplication with a numerical point method
+test number ten : multiplication with a point method
 pt = class=Point name=Unnamed dimension=2 values=[1,2]
 ptResult = class=Point name=Unnamed dimension=2 values=[7,10]
-test number eleven : multiplication and division by a numerical scalar methods
+test number eleven : multiplication and division by a scalar methods
 scalprod1 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
 scalprod2 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
 scalprod3 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[3,6,9,12]
@@ -40,9 +40,25 @@ matrix1 is empty = false
 matrix5 is empty = true
 matrix6 is empty = true
 matrix0 is empty = true
-test number fourteen : multiplication with a numerical point method
+test number fourteen : multiplication with a point method
 pt_test = class=Point name=Unnamed dimension=2 values=[1,2]
 A = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.5,-0.866025,0.866025,0.5]
 B = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.5,0.866025,-0.866025,0.5]
 id = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
 ptResult2 = class=Point name=Unnamed dimension=2 values=[1,2]
+test number fifteen : multiplication with a sample method
+matrix32 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=2 values=[1,2,3,4,5,6]
+matrix23 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[1,2,3,4,5,6]
+matrix34 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=4 values=[1,2,3,4,5,6,7,8,9,10,11,12]
+matrix43 = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=3 values=[1,2,3,4,5,6,7,8,9,10,11,12]
+S = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=4 data=[[1,3,-1,-3],[-2,-5,3,1]]
+matrix32*S = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=4 data=[[-7,-17,11,1],[-8,-19,13,-1],[-9,-21,15,-3]]
+matrix32*S = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=4 data=[[-7,-17,11,1],[-8,-19,13,-1],[-9,-21,15,-3]]
+matrix23^T*S = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=4 data=[[-3,-7,5,-1],[-5,-11,9,-5],[-7,-15,13,-9]]
+S*matrix43 = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=3 data=[[-8,-8,-8],[1,-11,-23]]
+S*matrix34^T = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=3 data=[[-24,-24,-24],[9,6,3]]
+S2 = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=2 data=[[1,-2],[3,-5],[-1,3],[-3,1]]
+matrix32*S2^T = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=4 data=[[-7,-17,11,1],[-8,-19,13,-1],[-9,-21,15,-3]]
+matrix23^T*S2^T = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=4 data=[[-3,-7,5,-1],[-5,-11,9,-5],[-7,-15,13,-9]]
+S2^T*matrix43 = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=3 data=[[-8,-8,-8],[1,-11,-23]]
+S2^T*matrix34^T = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=3 data=[[-24,-24,-24],[9,6,3]]

@@ -36,6 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 // Forward declaration of ComplexMatrixImplementation
 class ComplexMatrixImplementation;
+class Sample;
 
 class OT_API MatrixImplementation
   : public PersistentCollection<Scalar>
@@ -137,6 +138,12 @@ public:
   /** MatrixImplementation integer power */
   MatrixImplementation genPower(const UnsignedInteger n) const;
   MatrixImplementation symPower(const UnsignedInteger n) const;
+
+  /** Multiplications with a SampleImplementation (must have consistent dimensions) */
+  Sample genSampleProd (const Sample & sample,
+                        const Bool transposeMatrix,
+                        const Bool transposeSample,
+                        const char side) const;
 
   /** Multiplications with a Point (must have consistent dimensions) */
   Point genVectProd (const Point & pt,

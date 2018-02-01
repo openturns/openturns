@@ -23,6 +23,7 @@
 #include "openturns/SymmetricMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -185,6 +186,12 @@ Matrix Matrix::operator* (const SymmetricMatrix & m) const
 Matrix Matrix::operator* (const IdentityMatrix & m) const
 {
   return *this;
+}
+
+/* Multiplication with a Sample (must have consistent dimensions) */
+Sample Matrix::operator* (const Sample & sample) const
+{
+  return getImplementation()->genSampleProd(sample, false, false, 'L');
 }
 
 /* Multiplication with a Point (must have consistent dimensions) */

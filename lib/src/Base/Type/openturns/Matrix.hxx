@@ -31,6 +31,7 @@ class CovarianceMatrix;
 class IdentityMatrix;
 class SquareMatrix;
 class SymmetricMatrix;
+class Sample;
 
 /**
  * @class Matrix
@@ -131,6 +132,9 @@ public:
   Matrix operator * (const Matrix & m) const;
   Matrix operator * (const SymmetricMatrix & m) const;
   Matrix operator * (const IdentityMatrix & m) const;
+
+  /** Multiplication with a Sample (must have consistent dimensions) */
+  Sample operator * (const Sample & sample) const;
 
   /** Multiplication with a Point (must have consistent dimensions) */
   Point operator * (const Point & pt) const;
