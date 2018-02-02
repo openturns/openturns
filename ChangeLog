@@ -9,6 +9,7 @@
 ==== New classes ====
  * FrechetFactory
  * Fehlberg
+ * TranslationFunction
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
