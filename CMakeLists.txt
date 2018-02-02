@@ -497,6 +497,9 @@ if (BUILD_PYTHON)
       execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.version_info[0])"
                        OUTPUT_VARIABLE PYTHON_VERSION_MAJOR
                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import platform; print(platform.python_version())"
+                       OUTPUT_VARIABLE PYTHON_VERSION_STRING
+                       OUTPUT_STRIP_TRAILING_WHITESPACE)
     endif ()
     set (OPENTURNS_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH ${OPENTURNS_PYTHON_MODULE_PATH})
   endif ()
