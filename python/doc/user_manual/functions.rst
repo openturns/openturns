@@ -13,6 +13,7 @@ General mathematical functions
 
     Function
     SymbolicFunction
+    TranslationFunction
     LinearFunction
     QuadraticFunction
     DatabaseFunction

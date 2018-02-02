@@ -24,13 +24,12 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/OptimizationProblem.hxx"
-#include "openturns/LinearFunction.hxx"
+#include "openturns/TranslationFunction.hxx"
 #include "openturns/AbdoRackwitz.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/ParametricFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -144,22 +143,9 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   // Flag for the vertices that have moved
   Indices flagMovedVertices(0);
   // Prepare the optimization problem for the projection
-  Function shiftFunction;
+  TranslationFunction shiftFunction((Point(dimension)));
   OptimizationProblem problem;
-  if (project)
-  {
-    Matrix linear(dimension, 2 * dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      linear(i, i) = 1.0;
-      linear(i, dimension + i) = 1.0;
-    }
-    LinearFunction shiftFunctionBase(Point(2 * dimension), Point(dimension), linear);
-    Indices parameters(dimension);
-    parameters.fill();
-    shiftFunction = ParametricFunction(shiftFunctionBase, parameters, Point(dimension));
-    problem.setLevelValue(level);
-  } // project
+  problem.setLevelValue(level);
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     const Indices currentSimplex(boundingSimplices[i]);
@@ -220,7 +206,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
             {
               // Project the vertices not in the level set on the boundary of the level set
               // Build the optimization problem argmin ||x - x_0||^2 such that level - f(x) >= 0, where x_0 is the current vertex
-              shiftFunction.setParameter(currentVertex);
+              shiftFunction.setConstant(currentVertex);
               ComposedFunction levelFunction(function, shiftFunction);
               problem.setLevelFunction(levelFunction);
               solver_.setStartingPoint(delta);
