@@ -54,10 +54,7 @@ Create a Sample from a (2d) array, list or tuple
 
 and back
 
->>> np.array(sample)
-array([[ 1.,  2.],
-       [ 3.,  4.],
-       [ 5.,  6.]])
+>>> z = np.array(sample)
 
 Eventually samples may also be generated from probability distributions or
 experiments

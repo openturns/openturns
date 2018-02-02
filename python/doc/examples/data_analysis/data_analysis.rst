@@ -2,6 +2,7 @@ Data analysis
 =============
 
 .. toctree::
+    :maxdepth: 1
 
     import_export_sample_csv.ipynb
     sample_manipulation.ipynb

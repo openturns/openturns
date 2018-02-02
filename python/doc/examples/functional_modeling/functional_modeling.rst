@@ -2,6 +2,7 @@ Functional modeling
 ===================
 
   .. toctree::
+    :maxdepth: 1
 
     symbolic_function.ipynb
     python_function.ipynb
