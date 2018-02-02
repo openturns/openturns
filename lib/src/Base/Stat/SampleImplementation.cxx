@@ -19,7 +19,6 @@
  *
  */
 #include <sstream>
-#include <limits>        // std::numeric_limits
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -39,6 +38,8 @@
 #include "openturns/TBB.hxx"
 #include "kendall.h"
 #include "openturns/IdentityMatrix.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/Lapack.hxx"
 
 #include <locale.h>
 #ifdef OPENTURNS_HAVE_XLOCALE_H
@@ -1598,40 +1599,6 @@ Point SampleImplementation::computeMedian() const
   return computeQuantilePerComponent(0.5);
 }
 
-struct SkewnessPerComponentPolicy
-{
-  typedef Point value_type;
-
-  const value_type & mean_;
-  const UnsignedInteger dimension_;
-
-  SkewnessPerComponentPolicy( const value_type & mean)
-    : mean_(mean), dimension_(mean_.getDimension()) {}
-
-  static inline value_type GetInvariant(const SampleImplementation & nsi)
-  {
-    return value_type(2 * nsi.getDimension(), 0.0);
-  }
-
-  inline value_type & inplace_op( value_type & var, NSI_const_point point ) const
-  {
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Scalar val = point[i] - mean_[i];
-      const Scalar val2 = val * val;
-      var[i] += val2;
-      var[i + dimension_] += val2 * val;
-    }
-    return var;
-  }
-
-  static inline value_type & inplace_op( value_type & var, const value_type & point )
-  {
-    return var += point;
-  }
-
-}; /* end struct SkewnessPerComponentPolicy */
-
 /*
  * Gives the skewness of the sample (by component)
  */
@@ -1642,52 +1609,26 @@ Point SampleImplementation::computeSkewness() const
   if (size_ == 2) return Point(dimension_, 0.0);
 
   const Point mean(computeMean());
-  const SkewnessPerComponentPolicy policy ( mean );
-  ReductionFunctor<SkewnessPerComponentPolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
+  Point centeredMoments(2 * dimension_);
+  for(UnsignedInteger i = 0; i < size_; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      const Scalar val = operator()(i, j) - mean[j];
+      const Scalar val2 = val * val;
+      centeredMoments[j] += val2;
+      centeredMoments[j + dimension_] += val2 * val;
+    }
+  }
   Point skewness(dimension_);
   const Scalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
-    skewness[i] = factor * functor.accumulator_[i + dimension_] / pow(functor.accumulator_[i], 1.5);
+    if (centeredMoments[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
+    skewness[i] = factor * centeredMoments[i + dimension_] / pow(centeredMoments[i], 1.5);
   }
   return skewness;
 }
-
-struct KurtosisPerComponentPolicy
-{
-  typedef Point value_type;
-
-  const value_type & mean_;
-  const UnsignedInteger dimension_;
-
-  KurtosisPerComponentPolicy( const value_type & mean)
-    : mean_(mean), dimension_(mean_.getDimension()) {}
-
-  static inline value_type GetInvariant(const SampleImplementation & nsi)
-  {
-    return value_type(2 * nsi.getDimension(), 0.0);
-  }
-
-  inline value_type & inplace_op( value_type & var, NSI_const_point point ) const
-  {
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Scalar val = point[i] - mean_[i];
-      const Scalar val2 = val * val;
-      var[i] += val2;
-      var[i + dimension_] += val2 * val2;
-    }
-    return var;
-  }
-
-  static inline value_type & inplace_op( value_type & var, const value_type & point )
-  {
-    return var += point;
-  }
-
-}; /* end struct KurtosisPerComponentPolicy */
 
 /*
  * Gives the kurtosis of the sample (by component)
@@ -1699,52 +1640,27 @@ Point SampleImplementation::computeKurtosis() const
   if (size_ == 3) return Point(dimension_, 0.0);
 
   const Point mean(computeMean());
-  const KurtosisPerComponentPolicy policy ( mean );
-  ReductionFunctor<KurtosisPerComponentPolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
+  Point centeredMoments(2 * dimension_);
+  for(UnsignedInteger i = 0; i < size_; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      const Scalar val = operator()(i, j) - mean[j];
+      const Scalar val2 = val * val;
+      centeredMoments[j] += val2;
+      centeredMoments[j + dimension_] += val2 * val2;
+    }
+  }
   Point kurtosis(dimension_);
   const Scalar factor1 = (size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0));
   const Scalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (functor.accumulator_[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
-    kurtosis[i] = factor1 * functor.accumulator_[i + dimension_] / (functor.accumulator_[i] * functor.accumulator_[i]) + factor2;
+    if (centeredMoments[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
+    kurtosis[i] = factor1 * centeredMoments[i + dimension_] / (centeredMoments[i] * centeredMoments[i]) + factor2;
   }
   return kurtosis;
 }
-
-struct CenteredMomentPerComponentPolicy
-{
-  typedef Point value_type;
-
-  const value_type & mean_;
-  const UnsignedInteger k_;
-  const UnsignedInteger dimension_;
-
-  CenteredMomentPerComponentPolicy( const value_type & mean, const UnsignedInteger k)
-    : mean_(mean), k_(k), dimension_(mean_.getDimension()) {}
-
-  static inline value_type GetInvariant(const SampleImplementation & nsi)
-  {
-    return value_type(nsi.getDimension(), 0.0);
-  }
-
-  inline value_type & inplace_op( value_type & var, NSI_const_point point ) const
-  {
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Scalar val = point[i] - mean_[i];
-      var[i] += pow(val, static_cast<int>(k_));
-    }
-    return var;
-  }
-
-  static inline value_type & inplace_op( value_type & var, const value_type & point )
-  {
-    return var += point;
-  }
-
-}; /* end struct CenteredMomentPerComponentPolicy */
 
 /*
  * Gives the centered moment of order k of the sample (by component)
@@ -1762,10 +1678,17 @@ Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
   // General case
   const Point mean(computeMean());
 
-  const CenteredMomentPerComponentPolicy policy ( mean, k );
-  ReductionFunctor<CenteredMomentPerComponentPolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
-  return functor.accumulator_ / size_;
+  Point centeredMoment(dimension_);
+  const int intK(static_cast<const int>(k));
+  for(UnsignedInteger i = 0; i < size_; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      const Scalar val = operator()(i, j) - mean[j];
+      centeredMoment[j] += pow(val, intK);
+    }
+  }
+  return centeredMoment / size_;
 }
 
 /*
@@ -1780,11 +1703,16 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
   // Special case: order 0, return (size,...,size)
   if (k == 0) return Point(dimension_, 1.0);
 
-  const Point zero(dimension_);
-  const CenteredMomentPerComponentPolicy policy ( zero, k );
-  ReductionFunctor<CenteredMomentPerComponentPolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
-  return functor.accumulator_ / size_;
+  Point moment(dimension_);
+  const int intK(static_cast<const int>(k));
+  for(UnsignedInteger i = 0; i < size_; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      moment[j] += pow(operator()(i, j), intK);
+    }
+  }
+  return moment / size_;
 }
 
 /*
@@ -1883,52 +1811,23 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
   return static_cast < Scalar > (functor.accumulator_) / size_;
 }
 
-struct MaxPerComponentPolicy
-{
-  typedef Point value_type;
-
-  static inline value_type GetInvariant(const SampleImplementation & nsi)
-  {
-    return value_type(nsi.getDimension(), - std::numeric_limits<Scalar>::max());
-  }
-
-  template <typename T>
-  static inline value_type & inplace_op( value_type & a, const T & b)
-  {
-    const UnsignedInteger dim = a.getDimension();
-    for (UnsignedInteger j = 0; j < dim; ++j) a[j] = std::max( a[j], b[j] );
-    return a;
-  }
-}; /* end struct MaxPerComponentPolicy */
-
-struct MinPerComponentPolicy
-{
-  typedef Point value_type;
-
-  static inline value_type GetInvariant(const SampleImplementation & nsi)
-  {
-    return value_type(nsi.getDimension(), std::numeric_limits<Scalar>::max());
-  }
-
-  template <typename T>
-  static inline value_type & inplace_op( value_type & a, const T & b)
-  {
-    const UnsignedInteger dim = a.getDimension();
-    for (UnsignedInteger j = 0; j < dim; ++j) a[j] = std::min( a[j], b[j] );
-    return a;
-  }
-}; /* end struct MinPerComponentPolicy */
-
 
 /* Maximum accessor */
 Point SampleImplementation::getMax() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
 
-  ReductionFunctor<MaxPerComponentPolicy> functor( *this, MaxPerComponentPolicy() );
-  functor.accumulator_ = operator[](0);
-  TBB::ParallelReduce( 1, size_, functor );
-  return functor.accumulator_;
+  Point maxPoint(dimension_, - SpecFunc::MaxScalar);
+  for(UnsignedInteger i = 0; i < size_; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      const Scalar val = operator()(i, j);
+      if (val > maxPoint[j])
+        maxPoint[j] = val;
+    }
+  }
+  return maxPoint;
 }
 
 /* Minimum accessor */
@@ -1936,27 +1835,19 @@ Point SampleImplementation::getMin() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
 
-  ReductionFunctor<MinPerComponentPolicy> functor( *this, MinPerComponentPolicy() );
-  functor.accumulator_ = operator[](0);
-  TBB::ParallelReduce( 1, size_, functor );
-  return functor.accumulator_;
+  Point minPoint(dimension_, SpecFunc::MaxScalar);
+  for(UnsignedInteger i = 0; i < size_; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+    {
+      const Scalar val = operator()(i, j);
+      if (val < minPoint[j])
+        minPoint[j] = val;
+    }
+  }
+  return minPoint;
 }
 
-
-struct TranslationPolicy
-{
-  const Point & translation_;
-  const UnsignedInteger dimension_;
-
-  TranslationPolicy( const Point & translation)
-    : translation_(translation), dimension_(translation_.getDimension()) {}
-
-  inline void inplace_op( NSI_point point ) const
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j) point[j] += translation_[j];
-  }
-
-}; /* end struct TranslationPolicy */
 
 /*
  * Translate realizations in-place
@@ -1969,9 +1860,9 @@ void SampleImplementation::translate(const Point & translation)
 
   if (size_ == 0) return;
 
-  const TranslationPolicy policy( translation );
-  ParallelFunctor<TranslationPolicy> functor( *this, policy );
-  TBB::ParallelFor( 0, size_, functor );
+  for(UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      operator()(i, j) += translation[j];
 }
 
 SampleImplementation & SampleImplementation::operator += (const Scalar translation)
@@ -1986,44 +1877,14 @@ SampleImplementation & SampleImplementation::operator += (const Point & translat
   return *this;
 }
 
-struct PositiveTranslationSamplePolicy
-{
-  const SampleImplementation & translation_;
-  SampleImplementation & output_;
-
-  PositiveTranslationSamplePolicy( const SampleImplementation & translation,
-                                   SampleImplementation & output)
-    : translation_(translation), output_(output) {}
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] += translation_[i];
-  }
-
-}; /* end struct TranslationSamplePolicy */
-
-struct NegativeTranslationSamplePolicy
-{
-  const SampleImplementation & translation_;
-  SampleImplementation & output_;
-
-  NegativeTranslationSamplePolicy( const SampleImplementation & translation,
-                                   SampleImplementation & output)
-    : translation_(translation), output_(output) {}
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] -= translation_[i];
-  }
-
-}; /* end struct TranslationSamplePolicy */
-
 SampleImplementation & SampleImplementation::operator += (const SampleImplementation & translation)
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  const PositiveTranslationSamplePolicy policy( translation, *this );
-  TBB::ParallelFor( 0, size_, policy );
+  int size(size_ * dimension_);
+  double alpha(1.0);
+  int one(1);
+  daxpy_(&size, &alpha, const_cast<double*>(&((translation)(0,0))), &one, &((*this)(0,0)), &one);
   return *this;
 }
 
@@ -2041,8 +1902,9 @@ SampleImplementation & SampleImplementation::operator -= (const SampleImplementa
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  const NegativeTranslationSamplePolicy policy( translation, *this );
-  TBB::ParallelFor( 0, size_, policy );
+  for(UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      operator()(i, j) -= translation(i, j);
   return *this;
 }
 
@@ -2088,20 +1950,6 @@ SampleImplementation SampleImplementation::operator - (const SampleImplementatio
   return sample;
 }
 
-struct ScalingPolicy
-{
-  const Point & scale_;
-  const UnsignedInteger dimension_;
-
-  ScalingPolicy( const Point & scale) : scale_(scale), dimension_(scale_.getDimension()) {}
-
-  inline void inplace_op( NSI_point point ) const
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j) point[j] *= scale_[j];
-  }
-
-}; /* end struct ScalingPolicy */
-
 struct MatrixMultiplyPolicy
 {
   const SquareMatrix & scale_;
@@ -2139,9 +1987,9 @@ void SampleImplementation::scale(const Point & scaling)
 
   if (size_ == 0) return;
 
-  const ScalingPolicy policy( scaling );
-  ParallelFunctor<ScalingPolicy> functor( *this, policy );
-  TBB::ParallelFor( 0, size_, functor );
+  for(UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      operator()(i, j) *= scaling[j];
 }
 
 SampleImplementation & SampleImplementation::operator *= (const Scalar scaling)
