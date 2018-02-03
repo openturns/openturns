@@ -1,9 +1,7 @@
-Default 1D mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[0]] simplices=[]
-1D mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 data=[[0.5],[1.5],[2.1],[2.7]] simplices=[[0,1],[1,2],[2,3]]
-Is empty? false
+Default 1D mesh=class=Mesh name=Unnamed implementation=class=MeshImplementation name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[0]] simplices=[]
+1D mesh=class=Mesh name=Unnamed implementation=class=MeshImplementation name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 data=[[0.5],[1.5],[2.1],[2.7]] simplices=[[0,1],[1,2],[2,3]]
 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 data=[[0.5],[1.5],[2.1],[2.7]]
 simplices=[[0,1],[1,2],[2,3]]
-volume=2.2
 First simplex volume=1
 is p=class=Point name=Unnamed dimension=1 values=[1.3] in mesh? true
 Nearest index(class=Point name=Unnamed dimension=1 values=[1.8])=1
@@ -12,11 +10,11 @@ Nearest index(class=Point name=Unnamed dimension=1 values=[-1.8])=0
 Nearest index(class=Point name=Unnamed dimension=1 values=[-1.8]), simplex and coordinates=[0], class=Point name=Unnamed dimension=0 values=[]
 Nearest index(class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=1 data=[[-0.25],[2.25]])=[0,2]
 P1 Gram=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.333333,0.166667,0,0,0.166667,0.533333,0.1,0,0,0.1,0.4,0.1,0,0,0.1,0.2]
-2D mesh=class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=2 data=[[0,0],[1,0],[1,1],[1.5,1],[2,1.5],[0.5,1.5]] simplices=[[0,1,2],[1,2,3],[2,3,4],[2,4,5],[0,2,5]]
+2D mesh=class=Mesh name=Unnamed implementation=class=MeshImplementation name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=2 data=[[0,0],[1,0],[1,1],[1.5,1],[2,1.5],[0.5,1.5]] simplices=[[0,1,2],[1,2,3],[2,3,4],[2,4,5],[0,2,5]]
 Nearest index(class=Point name=Unnamed dimension=2 values=[1.8,1.8])=4
 Nearest index(class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=2 data=[[-0.25,-0.25],[2.25,2.25]])=[0,4]
 P1 Gram=class=CovarianceMatrix dimension=6 implementation=class=MatrixImplementation name=Unnamed rows=6 columns=6 values=[0.125,0.0208333,0.0625,0,0,0.0416667,0.0208333,0.0625,0.03125,0.0104167,0,0,0.0625,0.03125,0.166667,0.015625,0.0104167,0.046875,0,0.0104167,0.015625,0.03125,0.00520833,0,0,0,0.0104167,0.00520833,0.0208333,0.00520833,0.0416667,0,0.046875,0,0.00520833,0.09375]
-3D mesh=class=Mesh name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=3 data=[[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]] simplices=[[0,1,2,4],[3,5,6,7],[1,2,3,6],[1,2,4,6],[1,3,5,6],[1,4,5,6]]
+3D mesh=class=Mesh name=Unnamed implementation=class=MeshImplementation name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=3 data=[[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]] simplices=[[0,1,2,4],[3,5,6,7],[1,2,3,6],[1,2,4,6],[1,3,5,6],[1,4,5,6]]
 Nearest index(class=Point name=Unnamed dimension=3 values=[1.8,1.8,1.8])=7
 Nearest index(class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=3 data=[[-0.25,-0.25,-0.25],[2.25,2.25,2.25]])=[0,7]
 P1 Gram=class=CovarianceMatrix dimension=8 implementation=class=MatrixImplementation name=Unnamed rows=8 columns=8 values=[0.00277778,0.00138889,0.00138889,0,0.00138889,0,0,0,0.00138889,0.0138889,0.00416667,0.00277778,0.00416667,0.00277778,0.00555556,0,0.00138889,0.00416667,0.00833333,0.00138889,0.00277778,0,0.00277778,0,0,0.00277778,0.00138889,0.00833333,0,0.00277778,0.00416667,0.00138889,0.00138889,0.00416667,0.00277778,0,0.00833333,0.00138889,0.00277778,0,0,0.00277778,0,0.00277778,0.00138889,0.00833333,0.00416667,0.00138889,0,0.00555556,0.00277778,0.00416667,0.00277778,0.00416667,0.0138889,0.00138889,0,0,0,0.00138889,0,0.00138889,0.00138889,0.00277778]

@@ -122,7 +122,7 @@ String ARMA::__repr__() const
 {
   OSS oss;
   oss << "class= " << ARMA::GetClassName()
-      << " timeGrid=" << RegularGrid(mesh_)
+      << " timeGrid=" << RegularGrid(*mesh_.getImplementation())
       << " coefficients AR=" << ARCoefficients_
       << " coefficients MA=" << MACoefficients_
       << " noiseDistribution= " << noiseDistribution_
@@ -287,7 +287,7 @@ Field ARMA::getRealization() const
   thermalize();
 
   // Get the size of the realization
-  const UnsignedInteger size = RegularGrid(mesh_).getN();
+  const UnsignedInteger size = RegularGrid(*mesh_.getImplementation()).getN();
 
   // Go size steps further: newState contains (size + p_) X values and (q_ + size) epsilon values
   const ARMAState newState(computeReccurence(size));
@@ -307,9 +307,10 @@ TimeSeries ARMA::getFuture(const UnsignedInteger stepNumber) const
 {
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
   /* TimeGrid associated with the possible future */
-  const Scalar timeStep = RegularGrid(mesh_).getStep();
+  const RegularGrid regularGrid(*mesh_.getImplementation());
+  const Scalar timeStep = regularGrid.getStep();
   // The EndTime is not considered to be included in the TimeGrid
-  const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
+  const RegularGrid futurTimeGrid(regularGrid.getEnd(), timeStep, stepNumber);
 
   // Run the computation
   const ARMAState newState(computeReccurence(stepNumber));

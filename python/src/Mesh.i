@@ -10,6 +10,8 @@
 
 %include Mesh_doc.i
 
+OTTypedInterfaceObjectHelper(Mesh)
+
 %include openturns/Mesh.hxx
 
 namespace OT { %extend Mesh { Mesh(const Mesh & other) { return new OT::Mesh(other); } } }

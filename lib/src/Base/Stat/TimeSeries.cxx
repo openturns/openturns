@@ -97,7 +97,7 @@ TimeSeries::TimeSeries(const Field & field)
   , timeStep_( 0 )
   , n_( 0 )
 {
-  const RegularGrid timeGrid(field.getMesh());
+  const RegularGrid timeGrid(*field.getMesh().getImplementation());
   start_ = timeGrid.getStart();
   timeStep_ = timeGrid.getStep();
   n_ = timeGrid.getN();

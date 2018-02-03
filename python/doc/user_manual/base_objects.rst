@@ -40,6 +40,7 @@ Domains
     :template: classWithPlot.rst_t
 
     Mesh
+    MeshDomain
 
 Matrices
 ========

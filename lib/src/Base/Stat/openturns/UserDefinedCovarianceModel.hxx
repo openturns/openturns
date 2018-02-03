@@ -95,7 +95,7 @@ private:
   CovarianceMatrixPersistentCollection covarianceCollection_;
 
   /** Mesh of evaluation */
-  Pointer<Mesh> p_mesh_;
+  Mesh mesh_;
 
 } ; /* class UserDefinedCovarianceModel */
 
