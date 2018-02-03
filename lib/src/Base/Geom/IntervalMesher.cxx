@@ -89,9 +89,7 @@ Mesh IntervalMesher::build(const Interval & interval,
 {
   const UnsignedInteger dimension = interval.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for intervals of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
-  if (dimension > 3) throw NotYetImplementedException(HERE) << "In IntervalMesher::build(const Interval & interval, const Bool diamond) const";
 
-  Mesh result;
   // Waiting for a generic implementation in higher dimension
   if (dimension == 1)
   {
@@ -101,9 +99,9 @@ Mesh IntervalMesher::build(const Interval & interval,
     // First the vertices
     const Scalar a = interval.getLowerBound()[0];
     const Scalar b = interval.getUpperBound()[0];
-    vertices[0][0] = a;
-    vertices[n][0] = b;
-    for (UnsignedInteger i = 1; i < n; ++i) vertices[i][0] = (i * b + (n - i) * a) / n;
+    vertices(0, 0) = a;
+    vertices(n, 0) = b;
+    for (UnsignedInteger i = 1; i < n; ++i) vertices(i, 0) = (i * b + (n - i) * a) / n;
     // Second the simplices
     Mesh::IndicesCollection simplices(n);
     Indices simplex(2);
@@ -113,28 +111,36 @@ Mesh IntervalMesher::build(const Interval & interval,
       simplex[1] = i + 1;
       simplices[i] = simplex;
     } // i
-    result = Mesh(vertices, simplices);
+    return Mesh(vertices, simplices);
   } // dimension == 1
   if (dimension == 2)
   {
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
     // First the vertices
-    Sample vertices(0, 2);
-    Point point(2);
+    Sample vertices((m + 1) * (n + 1) + (diamond ? 4 * m * n: 0), 2);
+    const Point lowerBound(interval.getLowerBound());
+    const Point upperBound(interval.getUpperBound());
+    Point discretizedX(m + 1);
+    for (UnsignedInteger i = 0; i <= m; ++i)
+      discretizedX[i] = ((m - i) * lowerBound[0] + i * upperBound[0]) / m;
+    Point discretizedY(n + 1);
+    for (UnsignedInteger j = 0; j <= n; ++j)
+      discretizedY[j] = ((n - j) * lowerBound[1] + j * upperBound[1]) / n;
+
+    UnsignedInteger vertexIndex = 0;
     for (UnsignedInteger j = 0; j <= n; ++j)
     {
-      point[1] = ((n - j) * interval.getLowerBound()[1] + j * interval.getUpperBound()[1]) / n;
-      for (UnsignedInteger i = 0; i <= m; ++i)
+      for (UnsignedInteger i = 0; i <= m; ++i, ++vertexIndex)
       {
-        point[0] = ((m - i) * interval.getLowerBound()[0] + i * interval.getUpperBound()[0]) / m;
-        vertices.add(point);
+        vertices(vertexIndex, 0) = discretizedX[i];
+        vertices(vertexIndex, 1) = discretizedY[j];
       } // i
     } // j
     // Second the simplices
-    Mesh::IndicesCollection simplices(0, Indices(3));
+    Mesh::IndicesCollection simplices((diamond ? 4 : 2 ) * m * n, Indices(3));
     UnsignedInteger cellIndex = 0;
-    Indices index(3);
+    UnsignedInteger simplexIndex = 0;
     for (UnsignedInteger j = 0; j < n; ++j)
     {
       for (UnsignedInteger i = 0; i < m; ++i)
@@ -149,38 +155,42 @@ Mesh IntervalMesher::build(const Interval & interval,
         const UnsignedInteger d = cellIndex + 2 + m;
         if (diamond)
         {
-          const Point center((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
-          const UnsignedInteger centerIndex = vertices.getSize();
-          vertices.add(center);
-          index[0] = a;
-          index[1] = b;
-          index[2] = centerIndex;
-          simplices.add(index);
-          index[0] = b;
-          index[1] = d;
-          simplices.add(index);
-          index[0] = d;
-          index[1] = c;
-          simplices.add(index);
-          index[0] = c;
-          index[1] = a;
-          simplices.add(index);
+          vertices(vertexIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(c, 0) + vertices(d, 0)) * 0.25;
+          vertices(vertexIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1)) * 0.25;
+          simplices[simplexIndex][0] = a;
+          simplices[simplexIndex][1] = b;
+          simplices[simplexIndex][2] = vertexIndex;
+          ++simplexIndex;
+          simplices[simplexIndex][0] = b;
+          simplices[simplexIndex][1] = d;
+          simplices[simplexIndex][2] = vertexIndex;
+          ++simplexIndex;
+          simplices[simplexIndex][0] = d;
+          simplices[simplexIndex][1] = c;
+          simplices[simplexIndex][2] = vertexIndex;
+          ++simplexIndex;
+          simplices[simplexIndex][0] = c;
+          simplices[simplexIndex][1] = a;
+          simplices[simplexIndex][2] = vertexIndex;
+          ++simplexIndex;
+          ++vertexIndex;
         }
         else
         {
-          index[0] = a;
-          index[1] = b;
-          index[2] = c;
-          simplices.add(index);
-          index[0] = b;
-          index[1] = d;
-          simplices.add(index);
+          simplices[simplexIndex][0] = a;
+          simplices[simplexIndex][1] = b;
+          simplices[simplexIndex][2] = c;
+          ++simplexIndex;
+          simplices[simplexIndex][0] = b;
+          simplices[simplexIndex][1] = d;
+          simplices[simplexIndex][2] = c;
+          ++simplexIndex;
         }
         ++cellIndex;
       } // i
       ++cellIndex;
     } // j
-    result = Mesh(vertices, simplices);
+    return Mesh(vertices, simplices);
   } // dimension == 2
   if (dimension == 3)
   {
@@ -188,28 +198,39 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger n = discretization_[1];
     const UnsignedInteger p = discretization_[2];
     // First the vertices
-    Sample vertices(0, 3);
-    Point point(3);
+    Sample vertices((m + 1) * (n + 1) * (p + 1) + (diamond ? 7 * m * n * p: 0), 3);
+    const Point lowerBound(interval.getLowerBound());
+    const Point upperBound(interval.getUpperBound());
+    Point discretizedX(m + 1);
+    for (UnsignedInteger i = 0; i <= m; ++i)
+      discretizedX[i] = ((m - i) * lowerBound[0] + i * upperBound[0]) / m;
+    Point discretizedY(n + 1);
+    for (UnsignedInteger j = 0; j <= n; ++j)
+      discretizedY[j] = ((n - j) * lowerBound[1] + j * upperBound[1]) / n;
+    Point discretizedZ(p + 1);
+    for (UnsignedInteger k = 0; k <= p; ++k)
+      discretizedZ[k] = ((p - k) * lowerBound[2] + k * upperBound[2]) / p;
+
+    UnsignedInteger vertexIndex = 0;
     for (UnsignedInteger k = 0; k <= p; ++k)
     {
-      point[2] = ((p - k) * interval.getLowerBound()[2] + k * interval.getUpperBound()[2]) / p;
       for (UnsignedInteger j = 0; j <= n; ++j)
       {
-        point[1] = ((n - j) * interval.getLowerBound()[1] + j * interval.getUpperBound()[1]) / n;
-        for (UnsignedInteger i = 0; i <= m; ++i)
+        for (UnsignedInteger i = 0; i <= m; ++i, ++vertexIndex)
         {
-          point[0] = ((m - i) * interval.getLowerBound()[0] + i * interval.getUpperBound()[0]) / m;
-          vertices.add(point);
+          vertices(vertexIndex, 0) = discretizedX[i];
+          vertices(vertexIndex, 1) = discretizedY[j];
+          vertices(vertexIndex, 2) = discretizedZ[k];
         } // i
       } // j
     } // k
     // Second the simplices
-    Mesh::IndicesCollection simplices(0, Indices(4));
-    UnsignedInteger cellIndex = 0;
+    Mesh::IndicesCollection simplices( (diamond ? 24 : 6) * m * n * p, Indices(4));
     const UnsignedInteger mp1 = m + 1;
     const UnsignedInteger np1 = n + 1;
     const UnsignedInteger mp1np1 = mp1 * np1;
-    Indices index(4);
+    UnsignedInteger simplexIndex = 0;
+    UnsignedInteger cellIndex = 0;
     for (UnsignedInteger k = 0; k < p; ++k)
     {
       for (UnsignedInteger j = 0; j < n; ++j)
@@ -243,150 +264,209 @@ Mesh IntervalMesher::build(const Interval & interval,
           const UnsignedInteger h = cellIndex + 1 + mp1 + mp1np1;
           if (diamond)
           {
-            // Center is the center of the cube (shortcut I)
-            const Point center((vertices[a] + vertices[b] + vertices[c] + vertices[d] + vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.125);
-            const UnsignedInteger centerIndex = vertices.getSize();
-            vertices.add(center);
-            // c* is the center of the current face
-            const Point centerABDC((vertices[a] + vertices[b] + vertices[c] + vertices[d]) * 0.25);
-            const UnsignedInteger centerABDCIndex = vertices.getSize();
-            vertices.add(centerABDC);
+            // Center of the cube (shortcut I)
+            const UnsignedInteger centerIndex = vertexIndex;
+            vertices(centerIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(c, 0) + vertices(d, 0) + vertices(e, 0) + vertices(f, 0) + vertices(g, 0) + vertices(h, 0)) * 0.125;
+            vertices(centerIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1) + vertices(e, 1) + vertices(f, 1) + vertices(g, 1) + vertices(h, 1)) * 0.125;
+            vertices(centerIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(c, 2) + vertices(d, 2) + vertices(e, 2) + vertices(f, 2) + vertices(g, 2) + vertices(h, 2)) * 0.125;
+
+            const UnsignedInteger centerABDCIndex = vertexIndex + 1;
+            vertices(centerABDCIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(c, 0) + vertices(d, 0)) * 0.25;
+            vertices(centerABDCIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1)) * 0.25;
+            vertices(centerABDCIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(c, 2) + vertices(d, 2)) * 0.25;
             // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
-            index[0] = centerABDCIndex;
-            index[1] = b;
-            index[2] = a;
-            index[3] = centerIndex;
-            simplices.add(index);
-            index[1] = d;
-            index[2] = b;
-            simplices.add(index);
-            index[1] = c;
-            index[2] = d;
-            simplices.add(index);
-            index[1] = a;
-            index[2] = c;
-            simplices.add(index);
-            // c* is the center of the current face
-            const Point centerEFHG((vertices[e] + vertices[f] + vertices[g] + vertices[h]) * 0.25);
-            const UnsignedInteger centerEFHGIndex = vertices.getSize();
-            vertices.add(centerEFHG);
+            simplices[simplexIndex][0] = centerABDCIndex;
+            simplices[simplexIndex][1] = b;
+            simplices[simplexIndex][2] = a;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerABDCIndex;
+            simplices[simplexIndex][1] = d;
+            simplices[simplexIndex][2] = b;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerABDCIndex;
+            simplices[simplexIndex][1] = c;
+            simplices[simplexIndex][2] = d;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerABDCIndex;
+            simplices[simplexIndex][1] = a;
+            simplices[simplexIndex][2] = c;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+
+            const UnsignedInteger centerEFHGIndex = vertexIndex + 2;
+            vertices(centerEFHGIndex, 0) = (vertices(e, 0) + vertices(f, 0) + vertices(g, 0) + vertices(h, 0)) * 0.25;
+            vertices(centerEFHGIndex, 1) = (vertices(e, 1) + vertices(f, 1) + vertices(g, 1) + vertices(h, 1)) * 0.25;
+            vertices(centerEFHGIndex, 2) = (vertices(e, 2) + vertices(f, 2) + vertices(g, 2) + vertices(h, 2)) * 0.25;
             // EFHG->c*EFI/c*FHI/c*HGI/c*GEI
-            index[0] = centerEFHGIndex;
-            index[1] = e;
-            index[2] = f;
-            simplices.add(index);
-            index[1] = f;
-            index[2] = h;
-            simplices.add(index);
-            index[1] = h;
-            index[2] = g;
-            simplices.add(index);
-            index[1] = g;
-            index[2] = e;
-            simplices.add(index);
-            // c* is the center of the current face
-            const Point centerACGE((vertices[a] + vertices[c] + vertices[e] + vertices[g]) * 0.25);
-            const UnsignedInteger centerACGEIndex = vertices.getSize();
-            vertices.add(centerACGE);
+            simplices[simplexIndex][0] = centerEFHGIndex;
+            simplices[simplexIndex][1] = e;
+            simplices[simplexIndex][2] = f;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerEFHGIndex;
+            simplices[simplexIndex][1] = f;
+            simplices[simplexIndex][2] = h;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerEFHGIndex;
+            simplices[simplexIndex][1] = h;
+            simplices[simplexIndex][2] = g;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerEFHGIndex;
+            simplices[simplexIndex][1] = g;
+            simplices[simplexIndex][2] = e;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+
+            const UnsignedInteger centerACGEIndex = vertexIndex + 3;
+            vertices(centerACGEIndex, 0) = (vertices(a, 0) + vertices(c, 0) + vertices(e, 0) + vertices(g, 0)) * 0.25;
+            vertices(centerACGEIndex, 1) = (vertices(a, 1) + vertices(c, 1) + vertices(e, 1) + vertices(g, 1)) * 0.25;
+            vertices(centerACGEIndex, 2) = (vertices(a, 2) + vertices(c, 2) + vertices(e, 2) + vertices(g, 2)) * 0.25;
             // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
-            index[0] = centerACGEIndex;
-            index[1] = c;
-            index[2] = a;
-            simplices.add(index);
-            index[1] = g;
-            index[2] = c;
-            simplices.add(index);
-            index[1] = e;
-            index[2] = g;
-            simplices.add(index);
-            index[1] = a;
-            index[2] = e;
-            simplices.add(index);
-            // c* is the center of the current face
-            const Point centerBDHF((vertices[b] + vertices[d] + vertices[f] + vertices[h]) * 0.25);
-            const UnsignedInteger centerBDHFIndex = vertices.getSize();
-            vertices.add(centerBDHF);
+            simplices[simplexIndex][0] = centerACGEIndex;
+            simplices[simplexIndex][1] = c;
+            simplices[simplexIndex][2] = a;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerACGEIndex;
+            simplices[simplexIndex][1] = g;
+            simplices[simplexIndex][2] = c;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerACGEIndex;
+            simplices[simplexIndex][1] = e;
+            simplices[simplexIndex][2] = g;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerACGEIndex;
+            simplices[simplexIndex][1] = a;
+            simplices[simplexIndex][2] = e;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+
+            const UnsignedInteger centerBDHFIndex = vertexIndex + 4;
+            vertices(centerBDHFIndex, 0) = (vertices(b, 0) + vertices(d, 0) + vertices(f, 0) + vertices(h, 0)) * 0.25;
+            vertices(centerBDHFIndex, 1) = (vertices(b, 1) + vertices(d, 1) + vertices(f, 1) + vertices(h, 1)) * 0.25;
+            vertices(centerBDHFIndex, 2) = (vertices(b, 2) + vertices(d, 2) + vertices(f, 2) + vertices(h, 2)) * 0.25;
             // BDHF->c*BDI/c*DHI/c*HFI/c*FBI
-            index[0] = centerBDHFIndex;
-            index[1] = b;
-            index[2] = d;
-            simplices.add(index);
-            index[1] = d;
-            index[2] = h;
-            simplices.add(index);
-            index[1] = h;
-            index[2] = f;
-            simplices.add(index);
-            index[1] = f;
-            index[2] = b;
-            simplices.add(index);
-            // c* is the center of the current face
-            const Point centerABFE((vertices[a] + vertices[b] + vertices[e] + vertices[f]) * 0.25);
-            const UnsignedInteger centerABFEIndex = vertices.getSize();
-            vertices.add(centerABFE);
+            simplices[simplexIndex][0] = centerBDHFIndex;
+            simplices[simplexIndex][1] = b;
+            simplices[simplexIndex][2] = d;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerBDHFIndex;
+            simplices[simplexIndex][1] = d;
+            simplices[simplexIndex][2] = h;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerBDHFIndex;
+            simplices[simplexIndex][1] = h;
+            simplices[simplexIndex][2] = f;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerBDHFIndex;
+            simplices[simplexIndex][1] = f;
+            simplices[simplexIndex][2] = b;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+
+            const UnsignedInteger centerABFEIndex = vertexIndex + 5;
+            vertices(centerABFEIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(e, 0) + vertices(f, 0)) * 0.25;
+            vertices(centerABFEIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(e, 1) + vertices(f, 1)) * 0.25;
+            vertices(centerABFEIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(e, 2) + vertices(f, 2)) * 0.25;
             // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
-            index[0] = centerABFEIndex;
-            index[1] = a;
-            index[2] = b;
-            simplices.add(index);
-            index[1] = b;
-            index[2] = f;
-            simplices.add(index);
-            index[1] = f;
-            index[2] = e;
-            simplices.add(index);
-            index[1] = e;
-            index[2] = a;
-            simplices.add(index);
-            // c* is the center of the current face
-            const Point centerCDHG((vertices[c] + vertices[d] + vertices[g] + vertices[h]) * 0.25);
-            const UnsignedInteger centerCDHGIndex = vertices.getSize();
-            vertices.add(centerCDHG);
+            simplices[simplexIndex][0] = centerABFEIndex;
+            simplices[simplexIndex][1] = a;
+            simplices[simplexIndex][2] = b;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerABFEIndex;
+            simplices[simplexIndex][1] = b;
+            simplices[simplexIndex][2] = f;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerABFEIndex;
+            simplices[simplexIndex][1] = f;
+            simplices[simplexIndex][2] = e;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerABFEIndex;
+            simplices[simplexIndex][1] = e;
+            simplices[simplexIndex][2] = a;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+
+            const UnsignedInteger centerCDHGIndex = vertexIndex + 6;
+            vertices(centerCDHGIndex, 0) = (vertices(c, 0) + vertices(d, 0) + vertices(g, 0) + vertices(h, 0)) * 0.25;
+            vertices(centerCDHGIndex, 1) = (vertices(c, 1) + vertices(d, 1) + vertices(g, 1) + vertices(h, 1)) * 0.25;
+            vertices(centerCDHGIndex, 2) = (vertices(c, 2) + vertices(d, 2) + vertices(g, 2) + vertices(h, 2)) * 0.25;
             // CDHG->c*DCI/c*HDI/c*GHI/c*CGI
-            index[0] = centerCDHGIndex;
-            index[1] = d;
-            index[2] = c;
-            simplices.add(index);
-            index[1] = h;
-            index[2] = d;
-            simplices.add(index);
-            index[1] = g;
-            index[2] = h;
-            simplices.add(index);
-            index[1] = c;
-            index[2] = g;
-            simplices.add(index);
+            simplices[simplexIndex][0] = centerCDHGIndex;
+            simplices[simplexIndex][1] = d;
+            simplices[simplexIndex][2] = c;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerCDHGIndex;
+            simplices[simplexIndex][1] = h;
+            simplices[simplexIndex][2] = d;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerCDHGIndex;
+            simplices[simplexIndex][1] = g;
+            simplices[simplexIndex][2] = h;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            simplices[simplexIndex][0] = centerCDHGIndex;
+            simplices[simplexIndex][1] = c;
+            simplices[simplexIndex][2] = g;
+            simplices[simplexIndex][3] = centerIndex;
+            ++simplexIndex;
+            vertexIndex += 7;
           }
           else
           {
             // The 6 simplices of the Kuhn triangulation are the shortest paths
             // from A to H
             // 1: ABFH
-            index[0] = a;
-            index[1] = b;
-            index[2] = f;
-            index[3] = h;
-            simplices.add(index);
+            simplices[simplexIndex][0] = a;
+            simplices[simplexIndex][1] = b;
+            simplices[simplexIndex][2] = f;
+            simplices[simplexIndex][3] = h;
+            ++simplexIndex;
             // 2: ADBH
-            index[1] = d;
-            index[2] = b;
-            simplices.add(index);
+            simplices[simplexIndex][0] = a;
+            simplices[simplexIndex][1] = d;
+            simplices[simplexIndex][2] = b;
+            simplices[simplexIndex][3] = h;
+            ++simplexIndex;
             // 3: AFEH
-            index[1] = f;
-            index[2] = e;
-            simplices.add(index);
+            simplices[simplexIndex][0] = a;
+            simplices[simplexIndex][1] = f;
+            simplices[simplexIndex][2] = e;
+            simplices[simplexIndex][3] = h;
+            ++simplexIndex;
             // 4: AEGH
-            index[1] = e;
-            index[2] = g;
-            simplices.add(index);
+            simplices[simplexIndex][0] = a;
+            simplices[simplexIndex][1] = e;
+            simplices[simplexIndex][2] = g;
+            simplices[simplexIndex][3] = h;
+            ++simplexIndex;
             // 5: AGCH
-            index[1] = g;
-            index[2] = c;
-            simplices.add(index);
+            simplices[simplexIndex][0] = a;
+            simplices[simplexIndex][1] = g;
+            simplices[simplexIndex][2] = c;
+            simplices[simplexIndex][3] = h;
+            ++simplexIndex;
             // 6: ACDH
-            index[1] = c;
-            index[2] = d;
-            simplices.add(index);
+            simplices[simplexIndex][0] = a;
+            simplices[simplexIndex][1] = c;
+            simplices[simplexIndex][2] = d;
+            simplices[simplexIndex][3] = h;
+            ++simplexIndex;
           }
           ++cellIndex;
         } // i
@@ -394,9 +474,9 @@ Mesh IntervalMesher::build(const Interval & interval,
       } // j
       cellIndex += mp1;
     } // k
-    result = Mesh(vertices, simplices);
+    return Mesh(vertices, simplices);
   } // dimension == 3
-  return result;
+  throw NotYetImplementedException(HERE) << "In IntervalMesher::build(const Interval & interval, const Bool diamond) const";
 }
 
 END_NAMESPACE_OPENTURNS
