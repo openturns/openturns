@@ -8,3 +8,7 @@ Remove deprecated TruncatedDistribution single bound accessors in favor of setBo
 Remove deprecated Function ctors in 1.12
 Remove deprecated Sample,SampleImplementation::operator*(SquareMatrix) and operator/(SquareMatrix) (and in-place operators) in 1.12
 Remove deprecated SampleImplementation::scale(SquareMatrix) in 1.12
+Remove deprecated Domain(a, b) constructor in 1.12
+Remove deprecated Domain,DomainImplementation::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume in 1.12
+Remove deprecated DomainImplementation::volumeOld_, isAlreadyComputedVolumeOld_ members in 1.12
+Change Interval,Mesh::computeVolume to return void in 1.12

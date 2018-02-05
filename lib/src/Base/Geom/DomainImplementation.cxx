@@ -34,8 +34,8 @@ static const Factory<DomainImplementation> Factory_DomainImplementation;
 DomainImplementation::DomainImplementation(UnsignedInteger dimension)
   : PersistentObject()
   , dimension_(dimension)
-  , volume_(0.0)
-  , isAlreadyComputedVolume_(false)
+  , volumeOld_(0.0)
+  , isAlreadyComputedVolumeOld_(false)
 {
   // Nothing to do
 }
@@ -69,37 +69,43 @@ Bool DomainImplementation::contains(const Point & point) const
 /* Check if the given point is inside of the discretization of the domain */
 Bool DomainImplementation::numericallyContains(const Point & point) const
 {
+  LOGWARN(OSS() << "DomainImplementation::numericallyContains is deprecated in favor of derived classes.");
   return contains(point);
 }
 
 /* Check if the domain is empty, i.e if its numerical volume is zero */
 Bool DomainImplementation::isEmpty() const
 {
+  LOGWARN(OSS() << "DomainImplementation::isEmpty is deprecated in favor of derived classes.");
   return isNumericallyEmpty();
 }
 
 /* Check if the domain is numerically empty, i.e if its numerical volume is zero */
 Bool DomainImplementation::isNumericallyEmpty() const
 {
+  LOGWARN(OSS() << "DomainImplementation::isNumericallyEmpty is deprecated in favor of derived classes.");
   return getNumericalVolume() <= ResourceMap::GetAsScalar("Domain-SmallVolume");
 }
 
 /* Get the volume of the domain */
 Scalar DomainImplementation::getVolume() const
 {
+  LOGWARN(OSS() << "DomainImplementation::getVolume is deprecated in favor of derived classes.");
   return getNumericalVolume();
 }
 
 /* Get the numerical volume of the domain */
 Scalar DomainImplementation::getNumericalVolume() const
 {
-  if (!isAlreadyComputedVolume_) computeVolume();
-  return volume_;
+  LOGWARN(OSS() << "DomainImplementation::getNumericalVolume is deprecated in favor of getVolume method in derived classes.");
+  if (!isAlreadyComputedVolumeOld_) volumeOld_ = computeVolume();
+  return volumeOld_;
 }
 
 /* Compute the volume of the mesh */
-void DomainImplementation::computeVolume() const
+Scalar DomainImplementation::computeVolume() const
 {
+  LOGWARN(OSS() << "DomainImplementation::computeVolume is deprecated in favor of derived classes.");
   throw NotYetImplementedException(HERE);
 }
 
@@ -126,6 +132,8 @@ void DomainImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("dimension_", dimension_);
+  adv.saveAttribute("volumeOld_", volumeOld_);
+  adv.saveAttribute("isAlreadyComputedVolumeOld_", isAlreadyComputedVolumeOld_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -133,6 +141,8 @@ void DomainImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("dimension_", dimension_);
+  adv.loadAttribute("volumeOld_", volumeOld_);
+  adv.loadAttribute("isAlreadyComputedVolumeOld_", isAlreadyComputedVolumeOld_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -53,6 +53,30 @@ mesh : :class:`~openturns.Mesh`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Mesh::isNumericallyEmpty
+"Check if the mesh is numerically empty.
+
+Returns
+-------
+isEmpty : bool
+    Flag telling whether the mesh is numerically empty, i.e. if its numerical
+    volume is inferior or equal to :math:`\epsilon` (defined in the
+    :class:`~openturns.ResourceMap`:
+    :math:`\epsilon` = Domain-SmallVolume).
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> print(mesh2d.isNumericallyEmpty())
+False"
+
+// ---------------------------------------------------------------------
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Mesh::checkPointInSimplex
 "Check if a point is inside a simplex.
 

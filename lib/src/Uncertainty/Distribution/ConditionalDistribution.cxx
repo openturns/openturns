@@ -284,7 +284,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
     // Normalization factor for the weights
     // Not needed as the Mixture will be automatically normalized
-    // const Scalar normalizationFactor(Interval(continuousLowerBounds, continuousUpperBounds).getNumericalVolume());
+    // const Scalar normalizationFactor(Interval(continuousLowerBounds, continuousUpperBounds).getVolume());
     continuousAtomsNumber = continuousNodes_.getSize();
   } // continuousDimension > 0
 
@@ -530,7 +530,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
       // Current contribution to the CDF
       result += (thetaPDF(i, 0) * continuousWeights_[i]) * fTheta[i];
     } // Continuous measure
-    result *= Interval(continuousLowerBounds_, subPoint).getNumericalVolume();
+    result *= Interval(continuousLowerBounds_, subPoint).getVolume();
     return result;
   } // No discrete marginal
 
@@ -586,7 +586,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
       result += continuousWeights_[i % continuousAtomsNumber] * q;
     }
   }
-  result *= Interval(continuousLowerBounds_, subPoint).getNumericalVolume();
+  result *= Interval(continuousLowerBounds_, subPoint).getVolume();
   return result;
 }
 

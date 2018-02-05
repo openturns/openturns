@@ -1,17 +1,5 @@
 %define OT_Domain_doc
-"Domain.
-
-Available constructors:
-    Domain(*lowerBound, upperBound*)
-
-Parameters
-----------
-lowerBound, upperBound : sequence of float of dimension *dim*
-    Define a finite :class:`interval <openturns.Interval>`
-    :math:`[lowerBound_0, upperBound_0]\times \dots \times [lowerBound_{dim-1}, upperBound_{dim-1}]`.
-    It is allowed to have :math:`lowerBound_i \geq upperBound_i` for some
-    :math:`i`: it simply defines an empty interval.
-    By default, an empty interval is created.
+"Base class for domain objects.
 
 Notes
 -----
@@ -23,18 +11,7 @@ A Domain object can be created through its derived classes:
 
 - :class:`~openturns.Interval`
 
-- :class:`~openturns.LevelSet`
-
-Examples
---------
->>> import openturns as ot
->>> # Create the interval [a, b]
->>> a = 1
->>> b = 3
->>> print(ot.Domain([a], [b]))
-[1, 3]
->>> print(ot.Domain(ot.Interval(a, b)))
-[1, 3]"
+- :class:`~openturns.LevelSet`"
 %enddef
 %feature("docstring") OT::DomainImplementation
 OT_Domain_doc
@@ -85,20 +62,6 @@ OT_Domain_getLowerBound_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Domain_getNumericalVolume_doc
-"Get the volume of the domain.
-
-Returns
--------
-volume : float
-    Volume of the underlying mesh which is the discretization of the domain.
-    For now, by default, it is equal to the geometrical volume."
-%enddef
-%feature("docstring") OT::DomainImplementation::getNumericalVolume
-OT_Domain_getNumericalVolume_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Domain_getUpperBound_doc
 "Get the upper bound of the domain.
 
@@ -110,71 +73,3 @@ upper : :class:`~openturns.Point`
 %feature("docstring") OT::DomainImplementation::getUpperBound
 OT_Domain_getUpperBound_doc
 
-// ---------------------------------------------------------------------
-
-%define OT_Domain_getVolume_doc
-"Get the geometric volume of the domain.
-
-Returns
--------
-volume : float
-    Geometrical volume of the domain."
-%enddef
-%feature("docstring") OT::DomainImplementation::getVolume
-OT_Domain_getVolume_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Domain_isEmpty_doc
-"Test whether the domain is empty or not.
-
-Returns
--------
-isInside : bool
-    *True* if the interior of the geometric domain is empty."
-%enddef
-%feature("docstring") OT::DomainImplementation::isEmpty
-OT_Domain_isEmpty_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Domain_isNumericallyEmpty_doc
-"Check if the domain is numerically empty.
-
-Returns
--------
-isInside : bool
-    Flag telling whether the domain is numerically empty, i.e. if its numerical
-    volume is inferior or equal to :math:`\epsilon` (defined in the
-    :class:`~openturns.ResourceMap`:
-    :math:`\epsilon` = DomainImplementation-SmallVolume).
-
-Examples
---------
->>> import openturns as ot
->>> domain = ot.Domain([1.0, 2.0], [1.0, 2.0]) 
->>> print(domain.isNumericallyEmpty())
-True"
-%enddef
-%feature("docstring") OT::DomainImplementation::isNumericallyEmpty
-OT_Domain_isNumericallyEmpty_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Domain_numericallyContains_doc
-"Check if the given point is inside of the discretization of the domain.
-
-Parameters
-----------
-point : sequence of float
-    Point with the same dimension as the current domain's dimension.
-
-Returns
--------
-isInside : bool
-    Flag telling whether the point is inside the discretized domain associated
-    to the domain. For now, by default, the discretized domain is equal to the
-    geometrical domain."
-%enddef
-%feature("docstring") OT::DomainImplementation::numericallyContains
-OT_Domain_numericallyContains_doc

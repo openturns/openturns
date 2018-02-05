@@ -65,6 +65,12 @@ public:
   /** Check if the given point is inside of the closed mesh */
   Bool contains(const Point & point) const;
 
+  /** Get the numerical volume of the domain */
+  Scalar getVolume() const;
+
+  /** Check if the domain is empty, i.e if its volume is zero */
+  Bool isNumericallyEmpty() const;
+
   /** Get the description of the vertices */
   Description getDescription() const;
 
@@ -188,7 +194,7 @@ protected:
   SquareMatrix buildSimplexMatrix(const UnsignedInteger index) const;
 
   // Compute the total volume of the mesh
-  void computeVolume() const;
+  Scalar computeVolume() const;
 
   void checkValidity() const;
 
@@ -204,6 +210,12 @@ protected:
 
   // The vertices to simplices map
   mutable IndicesPersistentCollection verticesToSimplices_;
+
+  // Flag to tell if the global volume has already been computed
+  mutable Bool isAlreadyComputedVolume_;
+
+  // The global volume
+  mutable Scalar volume_;
 }; /* class Mesh */
 
 END_NAMESPACE_OPENTURNS

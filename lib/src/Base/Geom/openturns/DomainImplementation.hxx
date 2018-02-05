@@ -45,23 +45,23 @@ public:
   /** Virtual constructor method */
   virtual DomainImplementation * clone() const;
 
-  /** Check if the domain is empty, ie if its volume is zero */
-  Bool isEmpty() const;
+  /** @deprecated */
+  virtual Bool isEmpty() const;
 
-  /** Check if the mesh is numerically empty, i.e. if the volume of its discretization is zero */
-  Bool isNumericallyEmpty() const;
+  /** @deprecated */
+  virtual Bool isNumericallyEmpty() const;
 
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
 
-  /** Check if the given point is numerically inside of the domain, i.e. in its discretization */
-  Bool numericallyContains(const Point & point) const;
+  /** @deprecated */
+  virtual Bool numericallyContains(const Point & point) const;
 
-  /** Get the numerical volume of the discretization of the domain */
-  Scalar getNumericalVolume() const;
+  /** @deprecated */
+  virtual Scalar getNumericalVolume() const;
 
-  /** Get the volume of the domain */
-  Scalar getVolume() const;
+  /** @deprecated */
+  virtual Scalar getVolume() const;
 
   /** String converter */
   String __repr__() const;
@@ -83,17 +83,17 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  // Compute the total volume of the domain
-  virtual void computeVolume() const;
+  // @deprecated
+  virtual Scalar computeVolume() const;
 
   /** The dimension of the DomainImplementation */
   UnsignedInteger dimension_;
 
-  // The global volume
-  mutable Scalar volume_;
+  // @deprecated
+  mutable Scalar volumeOld_;
 
-  // Flag to tell if the global volume has already been computed
-  mutable Bool isAlreadyComputedVolume_;
+  // @deprecated
+  mutable Bool isAlreadyComputedVolumeOld_;
 
 }; /* class DomainImplementation */
 
