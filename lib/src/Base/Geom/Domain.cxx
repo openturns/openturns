@@ -60,6 +60,12 @@ Bool Domain::contains(const Point & point) const
   return getImplementation()->contains(point);
 }
 
+/* Check if the given points are inside of the domain */
+Domain::BoolCollection Domain::contains(const Sample & sample) const
+{
+  return getImplementation()->contains(sample);
+}
+
 /* Check if the given point is inside of the closed interval */
 Bool Domain::numericallyContains(const Point & point) const
 {

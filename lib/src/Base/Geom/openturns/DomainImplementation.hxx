@@ -23,6 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,6 +38,7 @@ class OT_API DomainImplementation
   CLASSNAME
 
 public:
+  typedef Collection<UnsignedInteger>   BoolCollection;
   typedef Pointer<DomainImplementation> Implementation;
 
   /** Default constructor */
@@ -53,6 +55,9 @@ public:
 
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
+
+  /** Check if the closed domain contains given points */
+  virtual BoolCollection contains(const Sample & sample) const;
 
   /** @deprecated */
   virtual Bool numericallyContains(const Point & point) const;

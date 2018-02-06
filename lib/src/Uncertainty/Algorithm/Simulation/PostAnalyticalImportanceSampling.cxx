@@ -68,17 +68,25 @@ Sample PostAnalyticalImportanceSampling::computeBlockSample()
   Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
   // realizedEventSample = Sample(blockSize_, inputSample.getDimension());
   // Then, modify in place this sample to take into account the change in the input distribution
+  const DomainImplementation::BoolCollection isRealized(getEvent().getDomain().contains(blockSample));
+  Indices realizedIndices(0);
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
-    const Bool isRealized = getEvent().getDomain().contains(blockSample[i]);
+    blockSample(i, 0) = 0.0;
     // If the event has occured
-    if (isRealized)
+    if (isRealized[i])
     {
-      // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
-      const Scalar weight = standardDistribution_.computePDF(inputSample[i]) / standardDistribution_.computePDF(inputSample[i] - standardSpaceDesignPoint);
-      blockSample[i][0] = weight;
+      realizedIndices.add(i);
     }
-    else blockSample[i][0] = 0.0;
+  }
+  const Sample realizedInputSample(inputSample.select(realizedIndices));
+  // If the event occured, the value is p_initial(x[i]) / p_importance(x[i])
+  const Sample p_initial(standardDistribution_.computePDF(realizedInputSample));
+  const Sample p_importance(standardDistribution_.computePDF(realizedInputSample - standardSpaceDesignPoint));
+
+  for (UnsignedInteger i = 0; i < realizedIndices.getSize(); ++i)
+  {
+    blockSample(realizedIndices[i], 0) = p_initial(i, 0) / p_importance(i, 0);
   }
   return blockSample;
 }

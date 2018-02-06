@@ -38,6 +38,7 @@ class OT_API Domain
   CLASSNAME
 
 public:
+  typedef DomainImplementation::BoolCollection BoolCollection;
 
   /** Default constructor */
   Domain();
@@ -57,6 +58,9 @@ public:
 
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
+
+  /** Check if the closed domain contains given points */
+  virtual BoolCollection contains(const Sample & sample) const;
 
   /** @deprecated */
   Bool numericallyContains(const Point & point) const;
