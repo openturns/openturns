@@ -35,6 +35,13 @@ Domains
     :template: classWithPlot.rst_t
     IntervalMesher
 
+    :template: class.rst_t
+    DomainComplement
+    DomainIntersection
+    DomainUnion
+    DomainDisjunctiveUnion
+    DomainDifference
+
 .. autosummary::
     :toctree: _generated/
     :template: classWithPlot.rst_t

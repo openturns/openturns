@@ -29,5 +29,10 @@
 #include "openturns/LevelSetMesher.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/RegularGrid.hxx"
+#include "openturns/DomainComplement.hxx"
+#include "openturns/DomainIntersection.hxx"
+#include "openturns/DomainUnion.hxx"
+#include "openturns/DomainDisjunctiveUnion.hxx"
+#include "openturns/DomainDifference.hxx"
 
 #endif /* OPENTURNS_OTGEOM_HXX */

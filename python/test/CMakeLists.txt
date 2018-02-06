@@ -235,6 +235,11 @@ ot_pyinstallcheck_test (IntervalMesher_std)
 ot_pyinstallcheck_test (LevelSet_std)
 ot_pyinstallcheck_test (LevelSetMesher_std)
 ot_pyinstallcheck_test (Mesh_std)
+ot_pyinstallcheck_test (DomainComplement_std)
+ot_pyinstallcheck_test (DomainDifference_std)
+ot_pyinstallcheck_test (DomainIntersection_std)
+ot_pyinstallcheck_test (DomainUnion_std)
+ot_pyinstallcheck_test (DomainDisjunctiveUnion_std)
 
 ## Graph
 if (R_base_FOUND)
