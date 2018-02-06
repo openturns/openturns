@@ -2,14 +2,16 @@
 "Computation of Karhunen-Loeve decomposition using Quadrature approximation.
 
 Available constructors:
-    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, experiment, basis, basisSize, mustScale, s*)
+    KarhunenLoeveQuadratureAlgorithm(*domain, bounds, covariance, experiment, basis, basisSize, mustScale, s*)
 
-    KarhunenLoeveQuadratureAlgorithm(*domain, covariance, marginalDegree, s*)
+    KarhunenLoeveQuadratureAlgorithm(*domain, bounds, covariance, marginalDegree, s*)
 
 Parameters
 ----------
 domain : :class:`~openturns.Domain`
     The domain on which the covariance model and the Karhunen-Loeve eigenfunctions (modes) are discretized.
+bounds : :class:`~openturns.Interval`
+    Numerical bounds of the domain.
 covariance : :class:`~openturns.CovarianceModel`
     The covariance function to decompose.
 experiment : :class:`~openturns.WeightedExperiment`
@@ -81,7 +83,8 @@ Examples
 Discretize the domain :math:`\cD` and create a covariance model:
 
 >>> import openturns as ot
->>> domain = ot.IntervalMesher([10]*2).build(ot.Interval([-1.0]*2, [1.0]*2))
+>>> bounds = ot.Interval([-1.0]*2, [1.0]*2)
+>>> domain = ot.IntervalMesher([10]*2).build(bounds)
 >>> s = 0.01
 >>> model = ot.AbsoluteExponential([1.0]*2)
 
@@ -98,7 +101,7 @@ Create the weighted experiment of the quadrature approximation: here, a Monte Ca
 
 Create the Karhunen-Loeve Quadrature algorithm:
 
->>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, model, experiment, basis, basisSize, True, s)
+>>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, bounds, model, experiment, basis, basisSize, True, s)
 
 Run it!
 

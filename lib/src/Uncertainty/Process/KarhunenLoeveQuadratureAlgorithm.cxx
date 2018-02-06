@@ -63,6 +63,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm()
 
 /* Constructor with parameters */
 KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
+    const Interval & domainBounds,
     const CovarianceModel & covariance,
     const WeightedExperiment & experiment,
     const Basis & basis,
@@ -71,6 +72,8 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
     const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , domain_(domain)
+  , domainLowerBound_(domainBounds.getLowerBound())
+  , domainUpperBound_(domainBounds.getUpperBound())
   , experiment_(experiment)
   , basis_(basis)
   , basisSize_(basisSize)
@@ -80,18 +83,19 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   const UnsignedInteger dimension = domain.getDimension();
   const Distribution distribution(experiment.getDistribution());
   if (dimension != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the domain dimension=" << dimension << " does not match the distribution dimension=" << distribution.getDimension() << " of the weighted experiment";
-  const Point domainLowerBound(domain.getLowerBound());
-  const Point domainUpperBound(domain.getUpperBound());
-  if (Interval(domainLowerBound, domainUpperBound).isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
+  if (domainBounds.isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
 }
 
 /* Constructor with parameters specialized to the case of Legendre polynomials and Gauss product quadrature */
 KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
+    const Interval & domainBounds,
     const CovarianceModel & covariance,
     const UnsignedInteger marginalDegree,
     const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , domain_(domain)
+  , domainLowerBound_(domainBounds.getLowerBound())
+  , domainUpperBound_(domainBounds.getUpperBound())
   , experiment_(GaussProductExperiment(ComposedDistribution(Collection<Distribution>(domain.getDimension(), Uniform())), Indices(domain.getDimension(), marginalDegree + 1)))
     // Here we have to use the double/double version of std::pow to make VC++ happy. Grrr.
   , basis_(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(domain.getDimension(), LegendreFactory()), EnumerateFunction(domain.getDimension(), SpecFunc::MaxScalar))), basisSize_(static_cast<UnsignedInteger>(std::floor(0.5 + std::pow(1.0 * marginalDegree, 1.0 * domain.getDimension()))))
@@ -101,9 +105,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   const UnsignedInteger dimension = domain.getDimension();
   const Distribution distribution(experiment_.getDistribution());
   if (dimension != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the domain dimension=" << dimension << " does not match the distribution dimension=" << distribution.getDimension() << " of the weighted experiment";
-  const Point domainLowerBound(domain.getLowerBound());
-  const Point domainUpperBound(domain.getUpperBound());
-  if (Interval(domainLowerBound, domainUpperBound).isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
+  if (domainBounds.isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
 }
 
 /* Virtual constructor */
@@ -139,11 +141,9 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   const UnsignedInteger domainDimension = domain_.getDimension();
   const Distribution distribution(experiment_.getDistribution());
   // First thing to do: build a linear transformation that maps the range of the distribution associated with the weighted experiment to the bounding box of the domain
-  const Point domainLowerBound(domain_.getLowerBound());
-  const Point domainUpperBound(domain_.getUpperBound());
   const Point distributionLowerBound(distribution.getRange().getLowerBound());
   const Point distributionUpperBound(distribution.getRange().getUpperBound());
-  const Bool hasSameBounds = (domainLowerBound == distributionLowerBound) && (domainUpperBound == distributionUpperBound);
+  const Bool hasSameBounds = (domainLowerBound_ == distributionLowerBound) && (domainUpperBound_ == distributionUpperBound);
   // The function scaling maps points in the range of the distribution into the domain
   Function scaling;
   Function inverseScaling;
@@ -153,11 +153,11 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   {
     TriangularMatrix T(domainDimension);
     TriangularMatrix inverseT(domainDimension);
-    Point center((distributionUpperBound + distributionLowerBound) * 0.5);
-    Point constant((domainUpperBound + domainLowerBound) * 0.5);
+    const Point center((distributionUpperBound + distributionLowerBound) * 0.5);
+    const Point constant((domainUpperBound_ + domainLowerBound_) * 0.5);
     for (UnsignedInteger i = 0; i < domainDimension; ++i)
     {
-      T(i, i) = (domainUpperBound[i] - domainLowerBound[i]) / (distributionUpperBound[i] - distributionLowerBound[i]);
+      T(i, i) = (domainUpperBound_[i] - domainLowerBound_[i]) / (distributionUpperBound[i] - distributionLowerBound[i]);
       normalizationFactor *= T(i, i);
       inverseT(i, i) = 1.0 / T(i, i);
     }
@@ -421,7 +421,9 @@ String KarhunenLoeveQuadratureAlgorithm::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << KarhunenLoeveQuadratureAlgorithm::GetClassName()
-      << ", domain=" << domain_;
+      << ", domain=" << domain_
+      << ", domainLowerBound=" << domainLowerBound_
+      << ", domainUpperBound=" << domainUpperBound_;
   return oss;
 }
 
@@ -430,7 +432,9 @@ String KarhunenLoeveQuadratureAlgorithm::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << "class=" << KarhunenLoeveQuadratureAlgorithm::GetClassName()
-      << ", domain=" << domain_;
+      << ", domain=" << domain_
+      << ", domainLowerBound=" << domainLowerBound_
+      << ", domainUpperBound=" << domainUpperBound_;
   return oss;
 }
 
@@ -439,6 +443,8 @@ void KarhunenLoeveQuadratureAlgorithm::save(Advocate & adv) const
 {
   KarhunenLoeveAlgorithmImplementation::save(adv);
   adv.saveAttribute( "domain_", domain_ );
+  adv.saveAttribute( "domainLowerBound_", domainLowerBound_ );
+  adv.saveAttribute( "domainUpperBound_", domainUpperBound_ );
   adv.saveAttribute( "experiment_", experiment_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "basisSize_", basisSize_ );
@@ -450,6 +456,8 @@ void KarhunenLoeveQuadratureAlgorithm::load(Advocate & adv)
 {
   KarhunenLoeveAlgorithmImplementation::load(adv);
   adv.loadAttribute( "domain_", domain_ );
+  adv.loadAttribute( "domainLowerBound_", domainLowerBound_ );
+  adv.loadAttribute( "domainUpperBound_", domainUpperBound_ );
   adv.loadAttribute( "experiment_", experiment_ );
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "basisSize_", basisSize_ );

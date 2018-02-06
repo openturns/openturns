@@ -14,7 +14,7 @@ try:
     threshold = 0.0001
     model = ot.AbsoluteExponential([1.0])
     algo = ot.KarhunenLoeveQuadratureAlgorithm(
-        domain, model, experiment, basis, basisSize, mustScale, threshold)
+        domain, domain, model, experiment, basis, basisSize, mustScale, threshold)
     algo.run()
     result = algo.getResult()
     lambd = result.getEigenValues()
@@ -32,7 +32,7 @@ try:
     # Now using Legendre/Gauss quadrature
     marginalDegree = 5
     algo = ot.KarhunenLoeveQuadratureAlgorithm(
-        domain, model, marginalDegree, threshold)
+        domain, domain, model, marginalDegree, threshold)
     algo.run()
     result = algo.getResult()
     lambd = result.getEigenValues()

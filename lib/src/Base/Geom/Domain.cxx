@@ -98,12 +98,14 @@ Scalar Domain::getNumericalVolume() const
 /* Lower bound of the bounding box */
 Point Domain::getLowerBound() const
 {
+  LOGWARN(OSS() << "Domain::getLowerBound is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->getLowerBound();
 }
 
 /* Upper bound of the bounding box */
 Point Domain::getUpperBound() const
 {
+  LOGWARN(OSS() << "Domain::getUpperBound is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->getUpperBound();
 }
 

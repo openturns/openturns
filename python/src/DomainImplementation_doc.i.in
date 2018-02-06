@@ -48,28 +48,3 @@ dim : int
 OT_Domain_getDimension_doc
 
 // ---------------------------------------------------------------------
-
-%define OT_Domain_getLowerBound_doc
-"Get the lower bound of the domain.
-
-Returns
--------
-lower : :class:`~openturns.Point`
-    The lower bound of an axes-aligned bounding box of the domain."
-%enddef
-%feature("docstring") OT::DomainImplementation::getLowerBound
-OT_Domain_getLowerBound_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Domain_getUpperBound_doc
-"Get the upper bound of the domain.
-
-Returns
--------
-upper : :class:`~openturns.Point`
-    The upper bound of an axes-aligned bounding box of the domain."
-%enddef
-%feature("docstring") OT::DomainImplementation::getUpperBound
-OT_Domain_getUpperBound_doc
-

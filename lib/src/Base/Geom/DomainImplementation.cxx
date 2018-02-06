@@ -112,12 +112,14 @@ Scalar DomainImplementation::computeVolume() const
 /* Lower bound of the bounding box */
 Point DomainImplementation::getLowerBound() const
 {
+  LOGWARN(OSS() << "DomainImplementation::getLowerBound is deprecated in favor of derived classes.");
   throw NotYetImplementedException(HERE) << "In DomainImplementation::getLowerBound()";
 }
 
 /* Upper bound of the bounding box */
 Point DomainImplementation::getUpperBound() const
 {
+  LOGWARN(OSS() << "DomainImplementation::getUpperBound is deprecated in favor of derived classes.");
   throw NotYetImplementedException(HERE) << "In DomainImplementation::getUpperBound()";
 }
 

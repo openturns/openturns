@@ -70,10 +70,10 @@ public:
   /** Dimension accessors */
   UnsignedInteger getDimension() const;
 
-  /** Lower bound of the bounding box */
+  /** @deprecated */
   virtual Point getLowerBound() const;
 
-  /** Upper bound of the bounding box */
+  /** @deprecated */
   virtual Point getUpperBound() const;
 
   /** Method save() stores the object through the StorageManager */

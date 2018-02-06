@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     Bool mustScale = false;
     Scalar threshold = 0.0001;
     AbsoluteExponential model(Point(dim, 1.0));
-    KarhunenLoeveQuadratureAlgorithm algo(domain, model, experiment, basis, basisSize, mustScale, threshold);
+    KarhunenLoeveQuadratureAlgorithm algo(domain, domain, model, experiment, basis, basisSize, mustScale, threshold);
     algo.run();
     KarhunenLoeveResult result(algo.getResult());
     Point lambda(result.getEigenValues());
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     // Now using Legendre/Gauss quadrature
     {
       UnsignedInteger marginalDegree = 5;
-      KarhunenLoeveQuadratureAlgorithm algo2(domain, model, marginalDegree, threshold);
+      KarhunenLoeveQuadratureAlgorithm algo2(domain, domain, model, marginalDegree, threshold);
       algo2.run();
       KarhunenLoeveResult result(algo2.getResult());
       Point lambda(result.getEigenValues());
