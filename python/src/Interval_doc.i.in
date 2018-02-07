@@ -69,6 +69,77 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Interval::isEmpty
+"Check if the interval is empty.
+
+Returns
+-------
+isEmpty : bool
+    *True* if the interior of the interval is empty.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([1.0, 2.0], [1.0, 2.0])
+>>> interval.setFiniteLowerBound([True, False])
+>>> print(interval.isEmpty())
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::isNumericallyEmpty
+"Check if the interval is numerically empty.
+
+Returns
+-------
+isEmpty : bool
+    Flag telling whether the interval is numerically empty, i.e. if its numerical
+    volume is inferior or equal to :math:`\epsilon` (defined in the
+    :class:`~openturns.ResourceMap`:
+    :math:`\epsilon` = Domain-SmallVolume).
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([1.0, 2.0], [1.0, 2.0])
+>>> print(interval.isNumericallyEmpty())
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::numericallyContains
+"Check if the given point is inside of the discretization of the interval.
+
+Parameters
+----------
+point : sequence of float
+    Point with the same dimension as the current domain's dimension.
+
+Returns
+-------
+isInside : bool
+    Flag telling whether the point is inside the interval bounds, not taking
+    into account whether bounds are finite or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Interval::getVolume
+"Get the volume of the interval.
+
+Returns
+-------
+volume : float
+    Volume contained within interval bounds.
+
+Examples
+--------
+>>> import openturns as ot
+>>> interval = ot.Interval([2.0, 3.0], [4.0, 5.0], [True, False], [True, True])
+>>> print(interval.getVolume())
+4.0"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Interval::getFiniteLowerBound
 "Tell for each component of the lower bound whether it is finite or not.
 

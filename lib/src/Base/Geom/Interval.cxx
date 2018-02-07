@@ -34,6 +34,8 @@ static const Factory<Interval> Factory_Interval;
 /* Default constructor */
 Interval::Interval(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
   , lowerBound_(dimension, 0.0)
   , upperBound_(dimension, 1.0)
   , finiteLowerBound_(dimension, true)
@@ -46,6 +48,8 @@ Interval::Interval(const UnsignedInteger dimension)
 Interval::Interval(const Scalar lowerBound,
                    const Scalar upperBound)
   : DomainImplementation(1)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
   , lowerBound_(1, lowerBound)
   , upperBound_(1, upperBound)
   , finiteLowerBound_(1, true)
@@ -58,6 +62,8 @@ Interval::Interval(const Scalar lowerBound,
 Interval::Interval(const Point & lowerBound,
                    const Point & upperBound)
   : DomainImplementation(lowerBound.getDimension())
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
   , lowerBound_(lowerBound)
   , upperBound_(upperBound)
   , finiteLowerBound_(getDimension(), true)
@@ -72,6 +78,8 @@ Interval::Interval(const Point & lowerBound,
                    const BoolCollection & finiteLowerBound,
                    const BoolCollection & finiteUpperBound)
   : DomainImplementation(lowerBound.getDimension())
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
   , lowerBound_(lowerBound)
   , upperBound_(upperBound)
   , finiteLowerBound_(finiteLowerBound)
@@ -148,6 +156,12 @@ Bool Interval::isEmpty() const
   return false;
 }
 
+/* Check if the interval is numerically empty, i.e. its volume is zero */
+Bool Interval::isNumericallyEmpty() const
+{
+  return getVolume() <= ResourceMap::GetAsScalar("Domain-SmallVolume");
+}
+
 /* Check if the given point is inside of the closed interval */
 Bool Interval::contains(const Point & point) const
 {
@@ -163,25 +177,32 @@ Bool Interval::contains(const Point & point) const
   return true;
 }
 
+/* Get the numerical volume of the domain */
+Scalar Interval::getVolume() const
+{
+  if (!isAlreadyComputedVolume_) volume_ = computeVolume();
+  return volume_;
+}
+
 /* Compute the numerical volume of the interval */
-void Interval::computeVolume() const
+Scalar Interval::computeVolume() const
 {
   const UnsignedInteger dimension = getDimension();
+  isAlreadyComputedVolume_ = true;
   if (dimension == 0)
   {
-    volume_ = 0.0;
-    return;
+    return 0.0;
   }
-  volume_ = 1.0;
+  Scalar volume = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    volume_ *= upperBound_[i] - lowerBound_[i];
-    if (volume_ <= 0.0)
+    volume *= upperBound_[i] - lowerBound_[i];
+    if (volume <= 0.0)
     {
-      volume_ = 0.0;
-      return;
+      return 0.0;
     }
   }
+  return volume;
 }
 
 /* Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
@@ -380,6 +401,7 @@ void Interval::setLowerBound(const Point & lowerBound)
 {
   if (lowerBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given lower bound has a dimension incompatible with the interval dimension.";
   lowerBound_ = lowerBound;
+  isAlreadyComputedVolume_ = false;
 }
 
 /* Upper bound accessor */
@@ -392,6 +414,7 @@ void Interval::setUpperBound(const Point & upperBound)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given upper bound has a dimension incompatible with the interval dimension.";
   upperBound_ = upperBound;
+  isAlreadyComputedVolume_ = false;
 }
 
 /* Lower bound flag accessor */
@@ -449,6 +472,8 @@ String Interval::__str__(const String & offset) const
 void Interval::save(Advocate & adv) const
 {
   DomainImplementation::save(adv);
+  adv.saveAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
+  adv.saveAttribute("volume_", volume_);
   adv.saveAttribute("lowerBound_", lowerBound_);
   adv.saveAttribute("upperBound_", upperBound_);
   adv.saveAttribute("finiteLowerBound_", finiteLowerBound_);
@@ -459,6 +484,8 @@ void Interval::save(Advocate & adv) const
 void Interval::load(Advocate & adv)
 {
   DomainImplementation::load(adv);
+  adv.loadAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
+  adv.loadAttribute("volume_", volume_);
   adv.loadAttribute("lowerBound_", lowerBound_);
   adv.loadAttribute("upperBound_", upperBound_);
   adv.loadAttribute("finiteLowerBound_", finiteLowerBound_);

@@ -67,6 +67,9 @@ public:
   /** Check if the interval is empty, i.e. if we have lowerBound >= upperBound for at least one component */
   Bool isEmpty() const;
 
+  /** Check if the interval is numerically empty, i.e. its volume is zero */
+  Bool isNumericallyEmpty() const;
+
   /** Check if the given point is inside of the closed interval */
   Bool contains(const Point & point) const;
 
@@ -107,6 +110,9 @@ public:
   using DomainImplementation::operator ==;
   using DomainImplementation::operator !=;
 
+  /** Volume accessor */
+  Scalar getVolume() const;
+
   /** Lower bound accessor */
   Point getLowerBound() const;
   void setLowerBound(const Point & lowerBound);
@@ -136,7 +142,7 @@ public:
 private:
 
   /** Get the numerical volume of the interval */
-  void computeVolume() const;
+  Scalar computeVolume() const;
 
   // An n-D intervall is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
   Point lowerBound_;
@@ -147,6 +153,11 @@ private:
   BoolPersistentCollection finiteLowerBound_;
   BoolPersistentCollection finiteUpperBound_;
 
+  // Flag to tell if the global volume has already been computed
+  mutable Bool isAlreadyComputedVolume_;
+
+  // The global volume
+  mutable Scalar volume_;
 }; /* class Interval */
 
 END_NAMESPACE_OPENTURNS

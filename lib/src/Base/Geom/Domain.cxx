@@ -21,6 +21,7 @@
 #include "openturns/Domain.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Interval.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +38,7 @@ Domain::Domain(const Point & a,
                const Point & b):
   TypedInterfaceObject<DomainImplementation>(new Interval(a, b))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "Domain::Domain(const Point & a, const Point & b) is deprecated in favor of Interval constructor.");
 }
 
 /* Default constructor */
@@ -62,30 +63,35 @@ Bool Domain::contains(const Point & point) const
 /* Check if the given point is inside of the closed interval */
 Bool Domain::numericallyContains(const Point & point) const
 {
+  LOGWARN(OSS() << "Domain::numericallyContains is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->numericallyContains(point);
 }
 
 /* Check if the domain is empty, i.e if its numerical volume is zero */
 Bool Domain::isEmpty() const
 {
+  LOGWARN(OSS() << "Domain::isEmpty is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->isEmpty();
 }
 
 /* Check if the domain is numerically empty, i.e if its numerical volume is zero */
 Bool Domain::isNumericallyEmpty() const
 {
+  LOGWARN(OSS() << "Domain::isNumericallyEmpty is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->isNumericallyEmpty();
 }
 
 /* Get the volume of the domain */
 Scalar Domain::getVolume() const
 {
+  LOGWARN(OSS() << "Domain::getVolume is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->getVolume();
 }
 
 /* Get the numerical volume of the domain */
 Scalar Domain::getNumericalVolume() const
 {
+  LOGWARN(OSS() << "Domain::getNumericalVolume is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->getNumericalVolume();
 }
 

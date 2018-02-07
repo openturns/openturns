@@ -41,6 +41,8 @@ static const Factory<Mesh> Factory_Mesh;
 /* Default constructor */
 Mesh::Mesh(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
   , vertices_(1, dimension) // At least one point
   , simplices_()
   , tree_()
@@ -53,6 +55,8 @@ Mesh::Mesh(const UnsignedInteger dimension)
 /* Parameters constructor, simplified interface for 1D case */
 Mesh::Mesh(const Sample & vertices)
   : DomainImplementation(vertices.getDimension())
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
   , vertices_(0, vertices.getDimension())
   , simplices_(0)
   , tree_()
@@ -66,6 +70,8 @@ Mesh::Mesh(const Sample & vertices)
 Mesh::Mesh(const Sample & vertices,
            const IndicesCollection & simplices)
   : DomainImplementation(vertices.getDimension())
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
   , tree_()
@@ -435,12 +441,25 @@ struct VolumeFunctor
 }; /* end struct VolumeFunctor */
 
 /* Compute the volume of the mesh */
-void Mesh::computeVolume() const
+Scalar Mesh::computeVolume() const
 {
   VolumeFunctor functor( *this );
   TBB::ParallelReduce( 0, getSimplicesNumber(), functor );
-  volume_ = functor.accumulator_;
   isAlreadyComputedVolume_ = true;
+  return functor.accumulator_;
+}
+
+/* Get the numerical volume of the domain */
+Scalar Mesh::getVolume() const
+{
+  if (!isAlreadyComputedVolume_) volume_ = computeVolume();
+  return volume_;
+}
+
+/* Check if the domain is empty, i.e if its numerical volume is zero */
+Bool Mesh::isNumericallyEmpty() const
+{
+  return getVolume() <= ResourceMap::GetAsScalar("Domain-SmallVolume");
 }
 
 /* Tells if the mesh is regular */
@@ -904,6 +923,8 @@ void Mesh::exportToVTKFile(const String & fileName) const
 void Mesh::save(Advocate & adv) const
 {
   DomainImplementation::save(adv);
+  adv.saveAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
+  adv.saveAttribute("volume_", volume_);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
   adv.saveAttribute("tree_", tree_);
@@ -914,6 +935,8 @@ void Mesh::save(Advocate & adv) const
 void Mesh::load(Advocate & adv)
 {
   DomainImplementation::load(adv);
+  adv.loadAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
+  adv.loadAttribute("volume_", volume_);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
   adv.loadAttribute("tree_", tree_);

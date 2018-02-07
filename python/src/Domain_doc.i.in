@@ -8,15 +8,5 @@ OT_Domain_contains_doc
 OT_Domain_getDimension_doc
 %feature("docstring") OT::Domain::getLowerBound
 OT_Domain_getLowerBound_doc
-%feature("docstring") OT::Domain::getNumericalVolume
-OT_Domain_getNumericalVolume_doc
 %feature("docstring") OT::Domain::getUpperBound
 OT_Domain_getUpperBound_doc
-%feature("docstring") OT::Domain::getVolume
-OT_Domain_getVolume_doc
-%feature("docstring") OT::Domain::isEmpty
-OT_Domain_isEmpty_doc
-%feature("docstring") OT::Domain::isNumericallyEmpty
-OT_Domain_isNumericallyEmpty_doc
-%feature("docstring") OT::Domain::numericallyContains
-OT_Domain_numericallyContains_doc

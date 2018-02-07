@@ -45,26 +45,26 @@ public:
   /** Copy-Standard constructors */
   Domain(const DomainImplementation & implementation);
 
-  /** Standard constructor based on Interval(a,b) */
+  /** @deprecated */
   Domain(const Point & a,
          const Point & b);
 
-  /** Check if the domain is empty, ie if its volume is zero */
+  /** @deprecated */
   Bool isEmpty() const;
 
-  /** Check if the mesh is numerically empty, i.e. if the volume of its discretization is zero */
+  /** @deprecated */
   Bool isNumericallyEmpty() const;
 
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
 
-  /** Check if the given point is numerically inside of the domain, i.e. in its discretization */
+  /** @deprecated */
   Bool numericallyContains(const Point & point) const;
 
-  /** Get the numerical volume of the discretization of the domain */
+  /** @deprecated */
   Scalar getNumericalVolume() const;
 
-  /** Get the volume of the domain */
+  /** @deprecated */
   Scalar getVolume() const;
 
   /** Dimension accessors */
