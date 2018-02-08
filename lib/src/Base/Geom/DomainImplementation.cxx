@@ -66,6 +66,15 @@ Bool DomainImplementation::contains(const Point & point) const
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }
 
+/* Check if the given points are inside of the domain */
+DomainImplementation::BoolCollection DomainImplementation::contains(const Sample & sample) const
+{
+  BoolCollection result(sample.getSize());
+  for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
+    result[i] = contains(sample[i]);
+  return result;
+}
+
 /* Check if the given point is inside of the discretization of the domain */
 Bool DomainImplementation::numericallyContains(const Point & point) const
 {
@@ -112,12 +121,14 @@ Scalar DomainImplementation::computeVolume() const
 /* Lower bound of the bounding box */
 Point DomainImplementation::getLowerBound() const
 {
+  LOGWARN(OSS() << "DomainImplementation::getLowerBound is deprecated in favor of derived classes.");
   throw NotYetImplementedException(HERE) << "In DomainImplementation::getLowerBound()";
 }
 
 /* Upper bound of the bounding box */
 Point DomainImplementation::getUpperBound() const
 {
+  LOGWARN(OSS() << "DomainImplementation::getUpperBound is deprecated in favor of derived classes.");
   throw NotYetImplementedException(HERE) << "In DomainImplementation::getUpperBound()";
 }
 

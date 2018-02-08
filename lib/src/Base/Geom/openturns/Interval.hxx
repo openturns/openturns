@@ -72,6 +72,7 @@ public:
 
   /** Check if the given point is inside of the closed interval */
   Bool contains(const Point & point) const;
+  using DomainImplementation::contains;
 
   /** Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
   Bool numericallyContains(const Point & point) const;

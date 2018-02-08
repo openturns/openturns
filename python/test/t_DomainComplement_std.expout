@@ -1,0 +1,7 @@
+Domain= [-1, 2]
+[-1, 2]
+Complement= class=DomainComplement name=Unnamed domain=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1,-1] upper bound=class=Point name=Unnamed dimension=2 values=[2,2] finite lower bound=[1,1] finite upper bound=[1,1]
+Dimension= 2
+is point  [0.5,0.5]  inside complement?  False
+is point  [4,4]  inside complement?  True
+is sample  [class=Point name=Unnamed dimension=2 values=[0.5,0.5], class=Point name=Unnamed dimension=2 values=[4,4]]  inside?  [0,1]

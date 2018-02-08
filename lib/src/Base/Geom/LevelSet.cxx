@@ -127,6 +127,38 @@ Bool LevelSet::contains(const Point & point) const
   return function_(point)[0] <= level_;
 }
 
+/* Check if the given points are inside of the closed levelSet */
+LevelSet::BoolCollection LevelSet::contains(const Sample & sample) const
+{
+  if (sample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << dimension_ << ", got dimension=" << sample.getDimension();
+  const UnsignedInteger size(sample.getSize());
+  BoolCollection result(size);
+  // If a bounding box has been computed/provided, only check points inside this bounding box
+  if ((lowerBound_.getDimension() == dimension_) && (upperBound_.getDimension() == dimension_))
+  {
+    Indices insideIndices(0);
+    const DomainImplementation::BoolCollection isInsideBoundingBox(Interval(lowerBound_, upperBound_).contains(sample));
+    for(UnsignedInteger i = 0; i < size; ++i)
+    {
+       if (isInsideBoundingBox[i])
+       {
+         insideIndices.add(i);
+       }
+    }
+    const Sample insidePoints(sample.select(insideIndices));
+    const Sample values(function_(insidePoints));
+    for(UnsignedInteger i = 0; i < insideIndices.getSize(); ++i)
+      result[insideIndices[i]] = values(i, 0) <= level_;
+  }
+  else
+  {
+    const Sample values(function_(sample));
+    for(UnsignedInteger i = 0; i < size; ++i)
+      result[i] = values(i, 0) <= level_;
+  }
+  return result;
+}
+
 /* Comparison operator */
 Bool LevelSet::operator == (const LevelSet & other) const
 {

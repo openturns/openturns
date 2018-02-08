@@ -41,6 +41,7 @@ class OT_API LevelSet
   CLASSNAME
 
 public:
+  typedef DomainImplementation::BoolCollection BoolCollection;
 
   /** Default constructor */
   explicit LevelSet(const UnsignedInteger dimension = 1);
@@ -54,6 +55,10 @@ public:
 
   /** Check if the given point is inside of the closed levelSet */
   Bool contains(const Point & point) const;
+
+  /** Check if the given points are inside of the closed levelSet */
+  BoolCollection contains(const Sample & sample) const;
+  using DomainImplementation::contains;
 
   /** Returns the levelSet equals to the intersection between the levelSet and another one */
   LevelSet intersect(const LevelSet & other) const;

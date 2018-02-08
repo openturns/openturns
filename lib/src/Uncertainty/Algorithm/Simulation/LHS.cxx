@@ -88,7 +88,8 @@ Sample LHS::computeBlockSample()
   }
   // Then, evaluate the function on this sample
   Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
-  for (UnsignedInteger i = 0; i < blockSize; ++i) blockSample[i][0] = getEvent().getDomain().contains(blockSample[i]);
+  const DomainImplementation::BoolCollection realized(getEvent().getDomain().contains(blockSample));
+  for (UnsignedInteger i = 0; i < blockSize; ++i) blockSample(i, 0) = realized[i];
   // Update the block index
   ++blockIndex_;
   return blockSample;

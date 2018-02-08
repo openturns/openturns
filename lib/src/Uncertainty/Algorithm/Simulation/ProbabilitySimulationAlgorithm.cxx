@@ -110,11 +110,12 @@ Sample ProbabilitySimulationAlgorithm::computeBlockSampleComposite()
   Point weights;
   const Sample inputSample(experiment_.generateWithWeights(weights));
   Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  const DomainImplementation::BoolCollection isRealized(getEvent().getDomain().contains(blockSample));
   for (UnsignedInteger i = 0; i < blockSize_; ++ i)
-    blockSample[i][0] = getEvent().getDomain().contains(blockSample[i]);
+    blockSample(i, 0) = isRealized[i];
   if (!experiment_.hasUniformWeights())
     for (UnsignedInteger i = 0; i < blockSize_; ++ i)
-      blockSample[i][0] *= weights[i];
+      blockSample(i, 0) *= weights[i];
   return blockSample;
 }
 

@@ -25,6 +25,7 @@
 
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
 #include "openturns/Domain.hxx"
+#include "openturns/Interval.hxx"
 #include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -46,6 +47,7 @@ public:
 
   /** Parameter constructor */
   KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
+                                   const Interval & domainBounds,
                                    const CovarianceModel & covariance,
                                    const WeightedExperiment & experiment,
                                    const Basis & basis,
@@ -55,6 +57,7 @@ public:
 
   /** Parameter constructor for the Legendre/GaussProduct case */
   KarhunenLoeveQuadratureAlgorithm(const Domain & domain,
+                                   const Interval & domainBounds,
                                    const CovarianceModel & covariance,
                                    const UnsignedInteger basisSize,
                                    const Scalar threshold = 0.0);
@@ -99,6 +102,12 @@ public:
 private:
   /** Underlying domain */
   Domain domain_;
+
+  /** Domain lower bound*/
+  Point domainLowerBound_;
+
+  /** Domain upper bound*/
+  Point domainUpperBound_;
 
   /** Experiment */
   WeightedExperiment experiment_;

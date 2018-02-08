@@ -290,6 +290,11 @@ if (R_base_FOUND)
 ot_check_test (Mesh_draw)
 endif ()
 ot_check_test (RegularGrid_std)
+ot_check_test (DomainComplement_std)
+ot_check_test (DomainDifference_std)
+ot_check_test (DomainIntersection_std)
+ot_check_test (DomainUnion_std)
+ot_check_test (DomainDisjunctiveUnion_std)
 
 # Graph
 if (R_base_FOUND)

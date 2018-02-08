@@ -33,3 +33,8 @@
 %include Mesh.i
 %include RegularGrid.i
 %include IntervalMesher.i
+%include DomainComplement.i
+%include DomainIntersection.i
+%include DomainUnion.i
+%include DomainDisjunctiveUnion.i
+%include DomainDifference.i

@@ -1,0 +1,21 @@
+interval contains class=Point name=Unnamed dimension=2 values=[0.5,0.5]? true
+complement contains class=Point name=Unnamed dimension=2 values=[0.5,0.5]? false
+interval contains class=Point name=Unnamed dimension=2 values=[4,4]? false
+complement contains class=Point name=Unnamed dimension=2 values=[4,4]? true
+interval contains class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=2 data=[[0.5,0.5],[4,4]]? [1,0]
+complement contains class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=2 data=[[0.5,0.5],[4,4]]? [0,1]
+mesh contains class=Point name=Unnamed dimension=2 values=[-0.25,-0.25]? false
+complement contains class=Point name=Unnamed dimension=2 values=[-0.25,-0.25]? true
+mesh contains class=Point name=Unnamed dimension=2 values=[1.25,1.25]? true
+complement contains class=Point name=Unnamed dimension=2 values=[1.25,1.25]? false
+mesh contains class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=2 data=[[-0.25,-0.25],[1.25,1.25]]? [0,1]
+complement contains class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=2 dimension=2 data=[[-0.25,-0.25],[1.25,1.25]]? [1,0]
+levelSet=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x,y,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^4 + y^4] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^4 + y^4] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x,y] outputVariablesNames=[y0] formulas=[x^4 + y^4] level=1
+levelSet contains class=Point name=Unnamed dimension=2 values=[-0.5,-0.5]? true
+complement contains class=Point name=Unnamed dimension=2 values=[-0.5,-0.5]? false
+levelSet contains class=Point name=Unnamed dimension=2 values=[0.5,0]? true
+complement contains class=Point name=Unnamed dimension=2 values=[0.5,0]? false
+levelSet contains class=Point name=Unnamed dimension=2 values=[1.5,0]? false
+complement contains class=Point name=Unnamed dimension=2 values=[1.5,0]? true
+levelSet contains class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[-0.5,-0.5],[0.5,0],[1.5,0]]? [1,1,0]
+complement contains class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[-0.5,-0.5],[0.5,0],[1.5,0]]? [0,0,1]

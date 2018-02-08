@@ -11,7 +11,7 @@ mustScale = False
 threshold = 0.001
 model = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveQuadratureAlgorithm(
-    domain, model, experiment, basis, basisSize, mustScale, threshold)
+    domain, domain, model, experiment, basis, basisSize, mustScale, threshold)
 algo.run()
 ev = algo.getResult().getEigenValues()
 functions = algo.getResult().getScaledModes()

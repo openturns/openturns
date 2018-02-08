@@ -60,6 +60,12 @@ Bool Domain::contains(const Point & point) const
   return getImplementation()->contains(point);
 }
 
+/* Check if the given points are inside of the domain */
+Domain::BoolCollection Domain::contains(const Sample & sample) const
+{
+  return getImplementation()->contains(sample);
+}
+
 /* Check if the given point is inside of the closed interval */
 Bool Domain::numericallyContains(const Point & point) const
 {
@@ -98,12 +104,14 @@ Scalar Domain::getNumericalVolume() const
 /* Lower bound of the bounding box */
 Point Domain::getLowerBound() const
 {
+  LOGWARN(OSS() << "Domain::getLowerBound is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->getLowerBound();
 }
 
 /* Upper bound of the bounding box */
 Point Domain::getUpperBound() const
 {
+  LOGWARN(OSS() << "Domain::getUpperBound is deprecated in favor of specific method in classes derived from DomainImplementation.");
   return getImplementation()->getUpperBound();
 }
 

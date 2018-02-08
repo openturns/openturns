@@ -64,6 +64,7 @@ public:
 
   /** Check if the given point is inside of the closed mesh */
   Bool contains(const Point & point) const;
+  using DomainImplementation::contains;
 
   /** Get the numerical volume of the domain */
   Scalar getVolume() const;

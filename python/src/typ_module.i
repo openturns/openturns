@@ -59,8 +59,6 @@ def getCorrelationMatrixFromMap(Vars, Map):
 %include Indices.i
 %include Point.i
 %include PointWithDescription.i
-%include DomainImplementation.i
-%include Interval.i
 %include MatrixImplementation.i
 %include Matrix.i
 %include SquareMatrix.i
@@ -80,7 +78,9 @@ def getCorrelationMatrixFromMap(Vars, Map):
 %include CovarianceMatrix.i
 %include CorrelationMatrix.i 
 %include IdentityMatrix.i 
-%include Sample.i 
+%include Sample.i
+%include DomainImplementation.i
+%include Interval.i
 %include HistoryStrategyImplementation.i 
 %include HistoryStrategy.i
 

@@ -6,7 +6,3 @@ OT_Domain_doc
 OT_Domain_contains_doc
 %feature("docstring") OT::Domain::getDimension
 OT_Domain_getDimension_doc
-%feature("docstring") OT::Domain::getLowerBound
-OT_Domain_getLowerBound_doc
-%feature("docstring") OT::Domain::getUpperBound
-OT_Domain_getUpperBound_doc
