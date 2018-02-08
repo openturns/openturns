@@ -15,11 +15,11 @@ function = ot.SymbolicFunction(["x","y"], ["x^2 + y^2"])
 sphere = ot.LevelSet(function, 1.0)
 
 # Inside sphere but not cube
-p0 = [-0.2, 0.2]
+p0 = [-0.25, 0.25]
 # Inside cube and sphere
-p1 = [0.2, 0.2]
+p1 = [0.25, 0.25]
 # Inside cube but not sphere
-p2 = [0.8, 0.8]
+p2 = [1.8, 1.8]
 # Outside
 p3 = [4.0, 4.0]
 
