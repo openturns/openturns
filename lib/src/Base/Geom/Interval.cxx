@@ -34,12 +34,12 @@ static const Factory<Interval> Factory_Interval;
 /* Default constructor */
 Interval::Interval(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
   , lowerBound_(dimension, 0.0)
   , upperBound_(dimension, 1.0)
   , finiteLowerBound_(dimension, true)
   , finiteUpperBound_(dimension, true)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
 {
   // Nothing to do
 }
@@ -48,12 +48,12 @@ Interval::Interval(const UnsignedInteger dimension)
 Interval::Interval(const Scalar lowerBound,
                    const Scalar upperBound)
   : DomainImplementation(1)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
   , lowerBound_(1, lowerBound)
   , upperBound_(1, upperBound)
   , finiteLowerBound_(1, true)
   , finiteUpperBound_(1, true)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
 {
   // Nothing to do
 }
@@ -62,12 +62,12 @@ Interval::Interval(const Scalar lowerBound,
 Interval::Interval(const Point & lowerBound,
                    const Point & upperBound)
   : DomainImplementation(lowerBound.getDimension())
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
   , lowerBound_(lowerBound)
   , upperBound_(upperBound)
   , finiteLowerBound_(getDimension(), true)
   , finiteUpperBound_(getDimension(), true)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
 }
@@ -78,12 +78,12 @@ Interval::Interval(const Point & lowerBound,
                    const BoolCollection & finiteLowerBound,
                    const BoolCollection & finiteUpperBound)
   : DomainImplementation(lowerBound.getDimension())
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
   , lowerBound_(lowerBound)
   , upperBound_(upperBound)
   , finiteLowerBound_(finiteLowerBound)
   , finiteUpperBound_(finiteUpperBound)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
   if ((finiteLowerBound.getSize() != getDimension()) || (finiteUpperBound.getSize() != getDimension())) throw InvalidArgumentException(HERE) << "Error: cannot build an interval with lower bound flags or upper bound flags of improper dimension";
