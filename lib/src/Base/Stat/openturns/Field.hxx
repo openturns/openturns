@@ -77,10 +77,6 @@ public:
   void setValueAtIndex(const UnsignedInteger index,
                        const Point & val);
 
-  Point getValueAtNearestPosition(const Point & position) const;
-  void setValueAtNearestPosition(const Point & position,
-                                 const Point & val);
-
   /** Get the i-th marginal sample */
   Field getMarginal(const UnsignedInteger index) const;
 

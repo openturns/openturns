@@ -31,7 +31,6 @@
 #include "openturns/DomainImplementation.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/TBB.hxx"
-#include "openturns/KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -81,25 +80,6 @@ public:
   /** Get the number of simplices */
   UnsignedInteger getSimplicesNumber() const;
 
-  /** Add a KDTree to speed-up nearest vertex searches */
-  virtual void computeKDTree();
-
-  /** Get the index of the nearest vertex */
-  virtual UnsignedInteger getNearestVertexIndex(const Point & point) const;
-
-  /** Get the index of the nearest vertex and the index of the containing simplex if any */
-  Indices getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,
-      Point & coordinatesOut) const;
-
-  /** Get the nearest vertex */
-  Point getNearestVertex(const Point & point) const;
-
-  /** Get the index of the nearest vertex for a set of points */
-  Indices getNearestVertexIndex(const Sample & points) const;
-
-  /** Get the nearest vertex for a set of points */
-  Sample getNearestVertex(const Sample & points) const;
-
   /** Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
   IndicesCollection getVerticesToSimplicesMap() const;
 
@@ -126,6 +106,12 @@ public:
   Bool checkPointInSimplexWithCoordinates(const Point & point,
                                           const UnsignedInteger index,
                                           Point & coordinatesOut) const;
+
+  /** Check if the given point is in a simplex containing nearestIndex and returns simplex index and barycentric coordinates */
+  Bool checkPointInNeighbourhoodWithCoordinates(const Point & point,
+                                                const UnsignedInteger nearestIndex,
+                                                UnsignedInteger & simplexIndexOut,
+                                                Point & coordinatesOut) const;
 
   /** Vertices accessor */
   Sample getVertices() const;
@@ -205,9 +191,6 @@ protected:
 
   // The simplices
   IndicesPersistentCollection simplices_;
-
-  // The kd-tree associated to the vertices
-  KDTree tree_;
 
   // The vertices to simplices map
   mutable IndicesPersistentCollection verticesToSimplices_;

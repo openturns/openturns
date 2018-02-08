@@ -43,17 +43,18 @@ print('modified values of the second element=',
       values2, ' should be ', newValues)
 
 # We get the values of the second element of the ts
-values3 = ts1.getValueAtNearestTime(-1.0)
+tree = ot.KDTree(ts1.getMesh().getVertices())
+values3 = ts1.getValueAtIndex(tree.getNearestNeighbourIndex([-1.0]))
 print('values at t=-1.0 =', values3)
-values4 = ts1.getValueAtNearestTime(1.45)
+values4 = ts1.getValueAtIndex(tree.getNearestNeighbourIndex([1.45]))
 print('values at t=1.45 =', values4)
-values5 = ts1.getValueAtNearestTime(1.54)
+values5 = ts1.getValueAtIndex(tree.getNearestNeighbourIndex([1.54]))
 print('values at t=1.54 =', values5)
-values6 = ts1.getValueAtNearestTime(14.5)
+values6 = ts1.getValueAtIndex(tree.getNearestNeighbourIndex([14.5]))
 print('values at t=14.5 =', values6)
 
 # We set new values for the third element of the ts
-ts1.setValueAtNearestTime(1.54, values6 * -1.0)
+ts1.setValueAtIndex(tree.getNearestNeighbourIndex([1.54]), values6 * -1.0)
 print('ts1=', ts1)
 
 ts2 = ot.TimeSeries(10, dim)

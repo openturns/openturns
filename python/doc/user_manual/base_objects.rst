@@ -141,4 +141,6 @@ K-d tree
     :toctree: _generated/
     :template: class.rst_t
 
+    NearestNeighbour
+    RegularGridNearestNeighbour
     KDTree

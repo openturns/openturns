@@ -147,18 +147,6 @@ void Field::setValueAtIndex(const UnsignedInteger index,
   getImplementation()->setValueAtIndex(index, val);
 }
 
-Point Field::getValueAtNearestPosition(const Point & position) const
-{
-  return getImplementation()->getValueAtNearestPosition(position);
-}
-
-void Field::setValueAtNearestPosition(const Point & position,
-                                      const Point & val)
-{
-  copyOnWrite();
-  getImplementation()->setValueAtNearestPosition(position, val);
-}
-
 Mesh Field::getMesh() const
 {
   return getImplementation()->getMesh();

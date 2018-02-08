@@ -40,7 +40,10 @@
 %include Classifier.i
 %include FittingAlgorithmImplementation.i
 %include FittingAlgorithm.i
+%include NearestNeighbourImplementation.i
+%include NearestNeighbour.i
 %include KDTree.i
+%include RegularGridNearestNeighbour.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
 %include DesignProxy.i

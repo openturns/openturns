@@ -1,0 +1,12 @@
+// NearestNeighbour docstrings are defined in NearestNeighbourImplementation_doc.i.in
+
+%feature("docstring") OT::NearestNeighbour
+OT_NearestNeighbour_doc
+%feature("docstring") OT::NearestNeighbour::getNearestNeighbourIndex
+OT_NearestNeighbour_getNearestNeighbourIndex_doc
+%feature("docstring") OT::NearestNeighbour::getNearestNeighbour
+OT_NearestNeighbour_getNearestNeighbour_doc
+%feature("docstring") OT::NearestNeighbour::getNearestNeighboursIndices
+OT_NearestNeighbour_getNearestNeighboursIndices_doc
+%feature("docstring") OT::NearestNeighbour::getNearestNeighbours
+OT_NearestNeighbour_getNearestNeighbours_doc

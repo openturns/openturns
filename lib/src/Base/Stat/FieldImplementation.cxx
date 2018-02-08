@@ -69,7 +69,6 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , inputMean_(dim)
   , isAlreadyComputedInputMean_(false)
 {
-  mesh_.computeKDTree();
   // Build the default description
   Description description(mesh_.getVertices().getDescription());
   description.add(values_.getDescription());
@@ -87,7 +86,6 @@ FieldImplementation::FieldImplementation(const Mesh & mesh,
   , isAlreadyComputedInputMean_(false)
 {
   if (mesh.getVerticesNumber() != values.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a Field with a number of values=" << values.getSize() << " different from the number of vertices=" << mesh.getVerticesNumber();
-  mesh_.computeKDTree();
   Description description(mesh_.getVertices().getDescription());
   description.add(values_.getDescription());
   setDescription(description);
@@ -216,31 +214,6 @@ void FieldImplementation::setValueAtIndex(const UnsignedInteger index,
   isAlreadyComputedInputMean_ = false;
   values_[index] = val;
 }
-
-Point FieldImplementation::getValueAtNearestPosition(const Point & position) const
-{
-  return values_[mesh_.getNearestVertexIndex(position)];
-}
-
-void FieldImplementation::setValueAtNearestPosition(const Point & position,
-    const Point & val)
-{
-  isAlreadyComputedInputMean_ = false;
-  values_[mesh_.getNearestVertexIndex(position)] = val;
-}
-
-
-Point FieldImplementation::getValueAtNearestTime(const Scalar timestamp) const
-{
-  return getValueAtNearestPosition(Point(1, timestamp));
-}
-
-void FieldImplementation::setValueAtNearestTime(const Scalar timestamp, const Point & val)
-{
-  isAlreadyComputedInputMean_ = false;
-  setValueAtNearestPosition(Point(1, timestamp), val);
-}
-
 
 /* Get the i-th marginal field */
 FieldImplementation FieldImplementation::getMarginal(const UnsignedInteger index) const

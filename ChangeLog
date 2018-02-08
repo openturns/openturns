@@ -37,9 +37,10 @@
  * Deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation
  * Deprecated TruncatedDistribution single bound accessors in favor of setBounds/getBounds
  * Deprecated remaining analytical & database Function ctors
- * Mesh constructor no longer builds a KDTree, new method Mesh::computeKDTree must be called explicitly
  * Deprecated Domain::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume, getLowerBound, getUpperBound
  * Add an argument to KarhunenLoeveQuadratureAlgorithm to pass domain bounds
+ * Removed all KDTree services from Mesh,RegularGrid,Field::getNearestVertex, getNearestVertexIndex, etc, client code must use KDTree if needed
+ * New NearestNeighbour interface and NearestNeighbourImplementation base class to implement these services, derived from KDTree and RegularGridNearestNeighbour
 
 === Python module ===
 

@@ -15,3 +15,8 @@ for i in range(len(test)):
     index = tree.getNearestNeighbourIndex(test[i])
     neighbour = tree.getNearestNeighbour(test[i])
     print('Nearest neighbour of', test[i], '=', neighbour, 'index=', index)
+
+k = 4
+for i in range(len(test)):
+    indices = tree.getNearestNeighboursIndices(test[i], k, True)
+    print(k, 'nearest neighbours of', test[i], '(indices=', indices)

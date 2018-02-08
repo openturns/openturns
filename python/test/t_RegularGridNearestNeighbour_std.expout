@@ -1,0 +1,41 @@
+regularGridNearestNeighbour= class=NearestNeighbourImplementation
+Nearest neighbour of [0.608202] = [0.6] index= 16
+Nearest neighbour of [-1.26617] = [-1] index= 0
+Nearest neighbour of [-0.438266] = [-0.4] index= 6
+Nearest neighbour of [1.20548] = [1] index= 20
+Nearest neighbour of [-2.18139] = [-1] index= 0
+Nearest neighbour of [0.350042] = [0.4] index= 14
+Nearest neighbour of [-0.355007] = [-0.4] index= 6
+Nearest neighbour of [1.43725] = [1] index= 20
+Nearest neighbour of [0.810668] = [0.8] index= 18
+Nearest neighbour of [0.793156] = [0.8] index= 18
+Nearest neighbour of [-0.470526] = [-0.5] index= 5
+Nearest neighbour of [0.261018] = [0.3] index= 13
+Nearest neighbour of [-2.29006] = [-1] index= 0
+Nearest neighbour of [-1.28289] = [-1] index= 0
+Nearest neighbour of [-1.31178] = [-1] index= 0
+Nearest neighbour of [-0.0907838] = [-0.1] index= 9
+Nearest neighbour of [0.995793] = [1] index= 20
+Nearest neighbour of [-0.139453] = [-0.1] index= 9
+Nearest neighbour of [-0.560206] = [-0.6] index= 4
+Nearest neighbour of [0.44549] = [0.4] index= 14
+4 nearest neighbours of [0.608202] (indices= [16,17,15,18]
+4 nearest neighbours of [-1.26617] (indices= [0,1,2,3]
+4 nearest neighbours of [-0.438266] (indices= [6,5,7,4]
+4 nearest neighbours of [1.20548] (indices= [20,19,18,17]
+4 nearest neighbours of [-2.18139] (indices= [0,1,2,3]
+4 nearest neighbours of [0.350042] (indices= [14,13,15,12]
+4 nearest neighbours of [-0.355007] (indices= [6,7,5,8]
+4 nearest neighbours of [1.43725] (indices= [20,19,18,17]
+4 nearest neighbours of [0.810668] (indices= [18,19,17,20]
+4 nearest neighbours of [0.793156] (indices= [18,17,19,16]
+4 nearest neighbours of [-0.470526] (indices= [5,6,4,7]
+4 nearest neighbours of [0.261018] (indices= [13,12,14,11]
+4 nearest neighbours of [-2.29006] (indices= [0,1,2,3]
+4 nearest neighbours of [-1.28289] (indices= [0,1,2,3]
+4 nearest neighbours of [-1.31178] (indices= [0,1,2,3]
+4 nearest neighbours of [-0.0907838] (indices= [9,10,8,11]
+4 nearest neighbours of [0.995793] (indices= [20,19,18,17]
+4 nearest neighbours of [-0.139453] (indices= [9,8,10,7]
+4 nearest neighbours of [-0.560206] (indices= [4,5,3,6]
+4 nearest neighbours of [0.44549] (indices= [14,15,13,16]

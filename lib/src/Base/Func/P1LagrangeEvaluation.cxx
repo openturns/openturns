@@ -99,12 +99,14 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
 {
   if (mesh.getVerticesNumber() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << mesh_.getVerticesNumber() << " vertices";
   mesh_ = mesh;
-  mesh_.computeKDTree();
+  // Build map (vertices -> simplices)
+  verticesToSimplices_ = mesh_.getVerticesToSimplicesMap();
+  // Build KDTree
+  tree_ = KDTree(mesh_.getVertices());
   // Check for pending vertices
-  Mesh::IndicesCollection verticesToSimplices(mesh_.getVerticesToSimplicesMap());
   Indices pendingVertices(0);
-  for (UnsignedInteger i = 0; i < verticesToSimplices.getSize(); ++i)
-    if (verticesToSimplices[i].getSize() == 0) pendingVertices.add(i);
+  for (UnsignedInteger i = 0; i < verticesToSimplices_.getSize(); ++i)
+    if (verticesToSimplices_[i].getSize() == 0) pendingVertices.add(i);
   if (pendingVertices.getSize() > 0)
   {
     LOGWARN(OSS() << "There are " << pendingVertices.getSize() << " pending vertices. Check the simplices of the mesh");
@@ -121,7 +123,7 @@ Mesh P1LagrangeEvaluation::getMesh() const
 void P1LagrangeEvaluation::setVertices(const Sample & vertices)
 {
   mesh_.setVertices(vertices);
-  mesh_.computeKDTree();
+  tree_ = KDTree(vertices);
 }
 
 Sample P1LagrangeEvaluation::getVertices() const
@@ -182,20 +184,26 @@ Point P1LagrangeEvaluation::operator()( const Point & inP ) const
 /* Evaluation method */
 Point P1LagrangeEvaluation::evaluate( const Point & inP ) const
 {
-  Point coordinates(0);
-  const Indices vertexAndSimplexIndices(mesh_.getNearestVertexAndSimplexIndicesWithCoordinates(inP, coordinates));
-  // Here, perform the P1 interpolation
-  // First get the index of the nearest vertex
-  const UnsignedInteger nearestIndex = vertexAndSimplexIndices[0];
+  const UnsignedInteger nearestIndex = tree_.getNearestNeighbourIndex(inP);
   // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
   Point result(values_[nearestIndex]);
-  if (coordinates.getSize() > 0)
+
+  // Loop over all simplices containing the nearest vertex
+  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
+  Point coordinates(0);
+  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
   {
-    const Indices simplex(mesh_.getSimplex(vertexAndSimplexIndices[1]));
-    result = values_[simplex[0]] * coordinates[0];
-    for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
-      result += values_[simplex[j]] * coordinates[j];
-  }
+    const UnsignedInteger simplexIndex = simplicesCandidates[i];
+    if (mesh_.checkPointInSimplexWithCoordinates(inP, simplexIndex, coordinates))
+    {
+      // Here, perform the P1 interpolation
+      const Indices simplex(mesh_.getSimplex(simplexIndex));
+      result = values_[simplex[0]] * coordinates[0];
+      for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
+        result += values_[simplex[j]] * coordinates[j];
+      break;
+    }
+  } // Loop over the simplices candidates
   return result;
 }
 
@@ -241,6 +249,7 @@ void P1LagrangeEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute("mesh_", mesh_);
   adv.saveAttribute("values_", values_);
+  adv.saveAttribute("tree_", tree_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -249,6 +258,7 @@ void P1LagrangeEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute("mesh_", mesh_);
   adv.loadAttribute("values_", values_);
+  adv.loadAttribute("tree_", tree_);
 }
 
 END_NAMESPACE_OPENTURNS

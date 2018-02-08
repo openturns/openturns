@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief KDTree structure to speed-up queries on large samples
+ *  @brief Nearest neighbour index search on RegularGrid
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,48 +18,38 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_KDTREE_HXX
-#define OPENTURNS_KDTREE_HXX
+#ifndef OPENTURNS_REGULARGRIDNEARESTNEIGHBOUR_HXX
+#define OPENTURNS_REGULARGRIDNEARESTNEIGHBOUR_HXX
 
 #include "openturns/NearestNeighbourImplementation.hxx"
+#include "openturns/RegularGrid.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class KDNearestNeighboursFinder;
-
 /**
- * @class KDTree
+ * @class RegularGridNearestNeighbour
  *
  * Organize d-dimensional points into a hierarchical tree-like structure
  */
-class OT_API KDTree
+class OT_API RegularGridNearestNeighbour
   : public NearestNeighbourImplementation
 {
   CLASSNAME
 
-  friend class KDNearestNeighboursFinder;
-
 public:
 
   /** Default constructor */
-  KDTree();
+  RegularGridNearestNeighbour();
 
   /** Parameter constructor */
-  explicit KDTree(const Sample & sample);
+  explicit RegularGridNearestNeighbour(const RegularGrid & grid);
 
   /** Virtual constructor */
-  virtual KDTree * clone() const;
+  virtual RegularGridNearestNeighbour * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
-  virtual String __str__() const;
-
-  /** Check if the tree is empty */
-  virtual Bool isEmpty() const;
-
-  /** Insert a point */
-  virtual void insert(const Point & point);
 
   /** Get the index of the nearest neighbour of the given point */
   UnsignedInteger getNearestNeighbourIndex(const Point & x) const;
@@ -79,76 +69,47 @@ public:
                               const UnsignedInteger k,
                               const Bool sorted = false) const;
 
-  /** Points accessor */
-  Sample getPoints() const;
+  /** Get the index of the nearest neighbour of the given scalar */
+  UnsignedInteger getNearestScalarNeighbourIndex(const Scalar & x) const;
+
+  /** Get the index of the nearest neighbour of the given scalars */
+  Indices getNearestScalarNeighbourIndex(const Point & x) const;
+
+  /** Get the nearest neighbour of the given scalar */
+  Scalar getNearestScalarNeighbour(const Scalar & x) const;
+
+  /** Get the nearest neighbour of the given scalars */
+  Point getNearestScalarNeighbour(const Point & x) const;
+
+  /** Get the indices of the k nearest neighbours of the given scalar */
+  Indices getNearestScalarNeighboursIndices(const Scalar & x,
+                                            const UnsignedInteger k,
+                                            const Bool sorted  = false) const;
+
+  /** Get the k nearest neighbours of the given scalar */
+  Point getNearestScalarNeighbours(const Scalar & x,
+                                   const UnsignedInteger k,
+                                   const Bool sorted = false) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
+
 protected:
-#ifndef SWIG
-  /**
-   * @class KDNode
-   *
-   * A node in a KDTree
-   */
-  struct KDNode
-  {
-    typedef Pointer< KDNode> KDNodePointer;
-
-    /** Parameter constructor */
-    explicit KDNode(const UnsignedInteger index)
-      : index_(index)
-      , p_left_(0)
-      , p_right_(0)
-    {
-      // Nothing to do
-    }
-
-    /** String converter */
-    String __repr__() const
-    {
-      return OSS() << "class=KDNode"
-             << " index=" << index_
-             << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
-             << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
-    }
-
-    /* Index of the nodal point */
-    UnsignedInteger index_;
-
-    /* Children */
-    KDNodePointer p_left_;
-    KDNodePointer p_right_;
-
-  }; /* class KDNode */
-#endif
-
-  /** Insert the point of the database at index i in the tree */
-  void insert(KDNode::KDNodePointer & p_node,
-              const UnsignedInteger index,
-              const UnsignedInteger activeDimension);
-
-  /** Get the index of the nearest neighbour of the given point */
-  virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
-      const Point & x,
-      Scalar & bestSquaredDistance,
-      const UnsignedInteger activeDimension) const;
-
-  /** Build the tree */
-  void initialize();
-
   /** The data organized by the tree */
-  Sample points_;
+  RegularGrid grid_;
 
-  /** The root of the tree */
-  KDNode::KDNodePointer p_root_;
+  /** Cached values taken from grid_ */
+  Scalar start_;
+  UnsignedInteger N_;
+  Scalar step_;
+  Point values_;
 
-}; /* class KDTree */
+}; /* class RegularGridNearestNeighbour */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_KDTREE_HXX */
+#endif /* OPENTURNS_REGULARGRIDNEARESTNEIGHBOUR_HXX */

@@ -144,6 +144,44 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Mesh::checkPointInNeighbourhoodWithCoordinates
+"Check if a point is inside a simplex and returns its barycentric coordinates.
+
+Parameters
+----------
+point : sequence of float
+    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
+index : int
+    Integer characterizes a vertex of the mesh.
+
+Returns
+-------
+isInside : bool
+    Flag telling whether *point* is inside a simplex containg vertex *index*.
+simplex : int
+    Index of the simplex containing this point.
+coordinates : :class:`~openturns.Point`
+    The barycentric coordinates of the given point with respect to the vertices
+    of the simplex.
+.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> # Create a point A inside the simplex
+>>> pointA = [0.6, 0.3]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointA, 0))
+[True, class=Point name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
+>>> # Create a point B outside the simplex
+>>> pointB = [1.1, 0.6]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointB, 0))
+[False, class=Point name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Mesh::computeSimplexVolume
 "Compute the volume of a given simplex.
 
@@ -359,97 +397,6 @@ Examples
 >>> print(mesh.getDescription())
 [X,Y]"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Mesh::computeKDTree
-"Compute a KDTree to speed-up nearest vertex searches."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Mesh::getNearestVertex
-"Get the nearest vertex of a given point.
-
-Parameters
-----------
-point : sequence of float
-    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
-
-Returns
--------
-vertex : :class:`~openturns.Point`
-    Coordinates of the nearest vertex of *point*.
-
-Examples
---------
->>> import openturns as ot
->>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
->>> simplices = [[0, 1, 2]]
->>> mesh2d = ot.Mesh(vertices, simplices)
->>> mesh2d.computeKDTree()
->>> point = [0.9, 0.4]
->>> print(mesh2d.getNearestVertex(point))
-[1,0]"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Mesh::getNearestVertexIndex
-"Get the index of the nearest vertex of a given point.
-
-Parameters
-----------
-point : sequence of float
-    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
-
-Returns
--------
-index : int
-    Index of the simplex the nearest of *point* according to the Euclidean
-    norm.
-
-Examples
---------
->>> import openturns as ot
->>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
->>> simplices = [[0, 1, 2]]
->>> mesh2d = ot.Mesh(vertices, simplices)
->>> mesh2d.computeKDTree()
->>> point = [0.9, 0.4]
->>> print(mesh2d.getNearestVertexIndex(point))
-1"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Mesh::getNearestVertexAndSimplexIndicesWithCoordinates
-"Get the index of the nearest vertex of a given point and the containing simplex if any, and returns its barycentric coordinates.
-
-Parameters
-----------
-point : sequence of float
-    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
-
-Returns
--------
-indices : :class:`~openturns.Indices`
-    Collecton of 1 or 2 integers, the first one being the index of the vertex the closest to the given point and the second one the index of the containing simplex if the given point is inside of the mesh.
-coordinates : :class:`~openturns.Point`
-    The barycentric coordinates of the given point wrt the vertices of the containing simplex. It is of dimension 0 if the point is not contained into the mesh.
-
-Examples
---------
->>> import openturns as ot
->>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
->>> simplex = [[0, 1, 2]]
->>> mesh2d = ot.Mesh(vertices, simplex)
->>> mesh2d.computeKDTree()
->>> # Create a point A inside the simplex
->>> pointA = [0.6, 0.3]
->>> print(mesh2d.getNearestVertexAndSimplexIndicesWithCoordinates(pointA))
-[[1,0], class=Point name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
->>> # Create a point B outside the simplex
->>> pointB = [1.1, 0.6]
->>> print(mesh2d.getNearestVertexAndSimplexIndicesWithCoordinates(pointB))
-[[2], class=Point name=Unnamed dimension=0 values=[]]
-"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Mesh::getSimplex

@@ -19,3 +19,23 @@ Nearest neighbour of [-0.510764,-0.633066,-0.957072] = [0.445785,-1.03808,-0.856
 Nearest neighbour of [0.544047,0.814561,-0.734708] = [-0.0907838,0.995793,-0.139453] index= 5
 Nearest neighbour of [-0.111461,0.994482,-0.160625] = [-0.0907838,0.995793,-0.139453] index= 5
 Nearest neighbour of [-0.938771,-1.96869,-0.657603] = [-2.29006,-1.28289,-1.31178] index= 4
+4 nearest neighbours of [-0.721533,-0.241223,-1.78796] (indices= [7,4,0,5]
+4 nearest neighbours of [0.40136,1.36783,1.00434] (indices= [2,5,6,8]
+4 nearest neighbours of [0.741548,-0.0436123,0.539345] (indices= [8,3,6,5]
+4 nearest neighbours of [0.29995,0.407717,-0.485112] (indices= [5,8,6,3]
+4 nearest neighbours of [-0.382992,-0.752817,0.257926] (indices= [8,3,6,0]
+4 nearest neighbours of [1.96876,-0.671291,1.85579] (indices= [3,8,1,0]
+4 nearest neighbours of [0.0521593,0.790446,0.716353] (indices= [2,6,5,8]
+4 nearest neighbours of [-0.743622,0.184356,-1.53073] (indices= [5,7,6,4]
+4 nearest neighbours of [0.655027,0.538071,1.73821] (indices= [8,2,3,6]
+4 nearest neighbours of [-0.958722,0.377922,-0.181004] (indices= [6,5,2,8]
+4 nearest neighbours of [1.67297,-1.03896,-0.353552] (indices= [0,9,3,7]
+4 nearest neighbours of [1.21381,-0.777033,-1.36853] (indices= [7,9,0,3]
+4 nearest neighbours of [0.103474,-0.89182,0.905602] (indices= [8,3,0,6]
+4 nearest neighbours of [0.334794,-0.483642,0.677958] (indices= [8,3,6,0]
+4 nearest neighbours of [1.70938,1.07062,-0.506925] (indices= [9,5,8,3]
+4 nearest neighbours of [-1.66086,2.24623,0.759602] (indices= [2,6,5,8]
+4 nearest neighbours of [-0.510764,-0.633066,-0.957072] (indices= [7,0,6,8]
+4 nearest neighbours of [0.544047,0.814561,-0.734708] (indices= [5,8,9,6]
+4 nearest neighbours of [-0.111461,0.994482,-0.160625] (indices= [5,6,2,8]
+4 nearest neighbours of [-0.938771,-1.96869,-0.657603] (indices= [4,7,0,1]
