@@ -41,12 +41,12 @@ static const Factory<Mesh> Factory_Mesh;
 /* Default constructor */
 Mesh::Mesh(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
   , vertices_(1, dimension) // At least one point
   , simplices_()
   , tree_()
   , verticesToSimplices_(0)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
 {
   // Nothing to do
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
@@ -55,12 +55,12 @@ Mesh::Mesh(const UnsignedInteger dimension)
 /* Parameters constructor, simplified interface for 1D case */
 Mesh::Mesh(const Sample & vertices)
   : DomainImplementation(vertices.getDimension())
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
   , vertices_(0, vertices.getDimension())
   , simplices_(0)
   , tree_()
   , verticesToSimplices_(0)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -70,12 +70,12 @@ Mesh::Mesh(const Sample & vertices)
 Mesh::Mesh(const Sample & vertices,
            const IndicesCollection & simplices)
   : DomainImplementation(vertices.getDimension())
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
   , tree_()
   , verticesToSimplices_(0)
+  , isAlreadyComputedVolume_(false)
+  , volume_(0.0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
