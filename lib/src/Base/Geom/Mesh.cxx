@@ -45,6 +45,8 @@ Mesh::Mesh(const UnsignedInteger dimension)
   , simplices_()
   , tree_()
   , verticesToSimplices_(0)
+  , lowerBoundingBoxSimplices_(0, dimension)
+  , upperBoundingBoxSimplices_(0, dimension)
   , isAlreadyComputedVolume_(false)
   , volume_(0.0)
 {
@@ -59,6 +61,8 @@ Mesh::Mesh(const Sample & vertices)
   , simplices_(0)
   , tree_()
   , verticesToSimplices_(0)
+  , lowerBoundingBoxSimplices_(0, vertices.getDimension())
+  , upperBoundingBoxSimplices_(0, vertices.getDimension())
   , isAlreadyComputedVolume_(false)
   , volume_(0.0)
 {
@@ -74,6 +78,8 @@ Mesh::Mesh(const Sample & vertices,
   , simplices_(simplices)
   , tree_()
   , verticesToSimplices_(0)
+  , lowerBoundingBoxSimplices_(0, vertices.getDimension())
+  , upperBoundingBoxSimplices_(0, vertices.getDimension())
   , isAlreadyComputedVolume_(false)
   , volume_(0.0)
 {
@@ -104,6 +110,9 @@ void Mesh::setVertices(const Sample & vertices)
   isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
+  verticesToSimplices_ = IndicesCollection(0);
+  lowerBoundingBoxSimplices_ = Sample(0, dimension_);
+  upperBoundingBoxSimplices_ = Sample(0, dimension_);
 }
 
 /* Compute KDTree to speed-up searches */
@@ -138,6 +147,8 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
   {
     simplices_ = simplices;
     verticesToSimplices_ = IndicesCollection(0);
+    lowerBoundingBoxSimplices_ = Sample(0, dimension_);
+    upperBoundingBoxSimplices_ = Sample(0, dimension_);
   }
 }
 
@@ -182,6 +193,16 @@ Bool Mesh::isValid() const
 /* Check if the given point is in the mesh */
 Bool Mesh::contains(const Point & point) const
 {
+  // First, check against the bounding box
+  if (!Interval(getLowerBound(), getUpperBound()).contains(point)) return false;
+  // Second, check the simplices containing the nearest vertex
+  const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
+  // To be sure that the vertices to simplices map is up to date
+  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
+  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
+  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
+    if (checkPointInSimplex(point, simplicesCandidates[i])) return true;
+  // Third, a full loop to deal with points not inside of a simplex associated to the nearest vertex
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   for (UnsignedInteger i = 0; i < simplicesSize; ++i) if (checkPointInSimplex(point, i)) return true;
   return false;
@@ -216,6 +237,17 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const UnsignedInteger index,
     Point & coordinates) const
 {
+  // Exit early if bounding boxes have been computed and point is outside bounding box
+  if (lowerBoundingBoxSimplices_.getSize() > 0)
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      if(point[i] < lowerBoundingBoxSimplices_(index, i))
+        return false;
+      if(point[i] > upperBoundingBoxSimplices_(index, i))
+        return false;
+    }
+  }
   SquareMatrix matrix(buildSimplexMatrix(index));
   Point v(point);
   v.add(1.0);
@@ -500,12 +532,21 @@ Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
   const UnsignedInteger numSimplices = getSimplicesNumber();
   const UnsignedInteger numVertices = getVerticesNumber();
   verticesToSimplices_ = IndicesCollection(numVertices, Indices(0));
+  lowerBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension_, SpecFunc::MaxScalar));
+  upperBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension_, - SpecFunc::MaxScalar));
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     const Indices simplex(simplices_[i]);
     for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
     {
       const UnsignedInteger index = simplex[j];
+      for(UnsignedInteger k = 0; k < dimension_; ++k)
+      {
+        if (vertices_(index, k) < lowerBoundingBoxSimplices_(i, k))
+          lowerBoundingBoxSimplices_(i, k) = vertices_(index, k);
+        if (vertices_(index, k) > upperBoundingBoxSimplices_(i, k))
+          upperBoundingBoxSimplices_(i, k) = vertices_(index, k);
+      }
       verticesToSimplices_[index].add(i);
     }
   } // Loop over simplices
@@ -929,6 +970,8 @@ void Mesh::save(Advocate & adv) const
   adv.saveAttribute("simplices_", simplices_);
   adv.saveAttribute("tree_", tree_);
   adv.saveAttribute("verticesToSimplices_", verticesToSimplices_);
+  adv.saveAttribute("lowerBoundingBoxSimplices_", lowerBoundingBoxSimplices_);
+  adv.saveAttribute("upperBoundingBoxSimplices_", upperBoundingBoxSimplices_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -941,6 +984,8 @@ void Mesh::load(Advocate & adv)
   adv.loadAttribute("simplices_", simplices_);
   adv.loadAttribute("tree_", tree_);
   adv.loadAttribute("verticesToSimplices_", verticesToSimplices_);
+  adv.loadAttribute("lowerBoundingBoxSimplices_", lowerBoundingBoxSimplices_);
+  adv.loadAttribute("upperBoundingBoxSimplices_", upperBoundingBoxSimplices_);
 }
 
 END_NAMESPACE_OPENTURNS

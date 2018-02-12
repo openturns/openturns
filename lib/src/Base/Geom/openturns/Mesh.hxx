@@ -212,6 +212,10 @@ protected:
   // The vertices to simplices map
   mutable IndicesPersistentCollection verticesToSimplices_;
 
+  // The bounding boxes of simplices
+  mutable Sample lowerBoundingBoxSimplices_;
+  mutable Sample upperBoundingBoxSimplices_;
+
   // Flag to tell if the global volume has already been computed
   mutable Bool isAlreadyComputedVolume_;
 
