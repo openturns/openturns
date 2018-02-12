@@ -20,6 +20,7 @@
 %import BaseCommonTemplateDefs.i
 
 /* Base/Type */
+%include BaseTypCollection.i
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
@@ -44,6 +45,10 @@
 %include NearestNeighbour.i
 %include KDTree.i
 %include RegularGridNearestNeighbour.i
+%include EnclosingSimplexImplementation.i
+%include EnclosingSimplex.i
+%include NaiveEnclosingSimplex.i
+%include BoundingVolumeHierarchy.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
 %include DesignProxy.i

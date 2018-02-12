@@ -240,6 +240,10 @@
   <Mesh-LargeSize     value="5000" />
   <Mesh-UseKDTree     value="1" />
   
+  <!-- OT::BoundingVolumeHierarchy parameters -->
+  <BoundingVolumeHierarchy-BinNumber value="50" />
+  <BoundingVolumeHierarchy-Strategy  value="Mean" />
+
   <!-- OT::Matrix parameters -->
   <Matrix-size-visible-in-str-from value="5"                 />
 

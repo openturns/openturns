@@ -1,0 +1,6 @@
+// EnclosingSimplex docstrings are defined in EnclosingSimplexImplementation_doc.i.in
+
+%feature("docstring") OT::EnclosingSimplex
+OT_EnclosingSimplex_doc
+%feature("docstring") OT::EnclosingSimplex::getEnclosingSimplexIndex
+OT_EnclosingSimplex_getEnclosingSimplexIndex_doc

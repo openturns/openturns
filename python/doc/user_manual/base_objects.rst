@@ -144,3 +144,6 @@ K-d tree
     NearestNeighbour
     RegularGridNearestNeighbour
     KDTree
+    EnclosingSimplex
+    NaiveEnclosingSimplex
+    BoundingVolumeHierarchy

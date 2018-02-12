@@ -1,0 +1,81 @@
+%define OT_EnclosingSimplex_doc
+"Base class to define an algorithm to find simplices containing
+a list of points.
+
+Available constructors:
+    EnclosingSimplex()
+
+    EnclosingSimplex(*vertices, simplices*)
+
+Parameters
+----------
+vertices : :class:`~openturns.Sample`
+    Vertices.
+
+simplices : sequence of :class:`~openturns.Indices`
+    Simplices.
+
+See also
+--------
+NaiveEnclosingSimplex, BoundingVolumeHierarchy
+
+>>> import openturns as ot
+>>> mesher = ot.IntervalMesher([5, 10])
+>>> lowerbound = [0.0, 0.0]
+>>> upperBound = [2.0, 4.0]
+>>> interval = ot.Interval(lowerbound, upperBound)
+>>> mesh = mesher.build(interval)
+>>> locator = ot.EnclosingSimplex(mesh.getVertices(), mesh.getSimplices())
+>>> simplex = locator.getEnclosingSimplexIndex([0.1, 0.2])"
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexImplementation
+OT_EnclosingSimplex_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnclosingSimplex_getEnclosingSimplexIndex_doc
+"Get the index of the enclosing simplex of the given point.
+
+Parameters
+----------
+point : sequence of float
+    Given point.
+
+Returns
+-------
+index : int
+    If point is enclosed in a simplex, return its index; otherwise return an
+    int which is at least greater than the number of simplices."
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexImplementation::getEnclosingSimplexIndex
+OT_EnclosingSimplex_getEnclosingSimplexIndex_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnclosingSimplex_getVertices_doc
+"Collection of vertices accessor.
+
+Returns
+-------
+vertices : :class:`~openturns.Sample`
+    Collection of points."
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexImplementation::getVertices
+OT_EnclosingSimplex_getVertices_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnclosingSimplex_getSimplices_doc
+"Collection of simplex accessor.
+
+Returns
+-------
+simplices : sequence of :class:`~openturns.Indices`
+    Collection of simplices."
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexImplementation::getSimplices
+OT_EnclosingSimplex_getSimplices_doc

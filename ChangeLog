@@ -12,6 +12,7 @@
  * TranslationFunction
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
  * NearestNeighbour, NearestNeighbourImplementation, RegularGridNearestNeighbour
+ * EnclosingSimplex, EnclosingSimplexImplementation, NaiveEnclosingSimplex, BoundingVolumeHierarchy
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
