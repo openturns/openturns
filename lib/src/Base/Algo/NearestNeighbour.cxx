@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief
+ *  @brief  This class provides fast search of neighbours.
+ *  This is the interface class
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *

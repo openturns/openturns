@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Nearest neighbour index search on RegularGrid
+ *  @brief Nearest neighbour index search on a RegularGrid
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *

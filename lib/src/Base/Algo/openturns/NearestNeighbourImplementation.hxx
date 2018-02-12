@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief  This class provides fast search of neighbours.
+ *  This is an abstract class
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
