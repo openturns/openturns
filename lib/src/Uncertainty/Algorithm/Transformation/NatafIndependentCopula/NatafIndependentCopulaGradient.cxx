@@ -39,7 +39,7 @@ static const Factory<NatafIndependentCopulaGradient> Factory_NatafIndependentCop
 /* Default constructor */
 NatafIndependentCopulaGradient::NatafIndependentCopulaGradient()
   : GradientImplementation()
-  , dimension_()
+  , dimension_(1)
 {
   // Nothing to do
 }

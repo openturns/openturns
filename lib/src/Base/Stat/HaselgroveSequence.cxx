@@ -18,16 +18,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-#include <cmath>
-
 #include "openturns/HaselgroveSequence.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HaselgroveSequence)
+
+static const Factory<HaselgroveSequence> Factory_HaselgroveSequence;
 
 /* Constructor with parameters */
 HaselgroveSequence::HaselgroveSequence(const UnsignedInteger dimension) :
@@ -93,6 +92,23 @@ String HaselgroveSequence::__str__(const String & offset) const
       << " base=" << base_
       << " seed=" << seed_;
   return oss;
+}
+
+void HaselgroveSequence::save(Advocate & adv) const
+{
+  LowDiscrepancySequenceImplementation::save(adv);
+  adv.saveAttribute( "base_", base_);
+  adv.saveAttribute( "seed_", seed_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void HaselgroveSequence::load(Advocate & adv)
+{
+  LowDiscrepancySequenceImplementation::load(adv);
+  initialize(dimension_);
+  adv.loadAttribute( "base_", base_);
+  adv.loadAttribute( "seed_", seed_);
 }
 
 END_NAMESPACE_OPENTURNS

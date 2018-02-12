@@ -18,32 +18,14 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <limits>        // std::numeric_limits
-#include <map>
-#include <cmath>
-#include <fstream>
-#include <iomanip>
-#include <algorithm>
-#include <iterator>
-#include <cstdlib>
-#include <cstdio>        // std::fopen, std::errno
-#include <cstring>       // std::strerror
-
-#include "openturns/OTconfig.hxx"
 #include "openturns/TimeSeries.hxx"
-#include "openturns/StorageManager.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Log.hxx"
-#include "openturns/Exception.hxx"
-#include "openturns/ResourceMap.hxx"
-#include "openturns/Path.hxx"
-#include "openturns/Curve.hxx"
-#include "openturns/Os.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(TimeSeries)
+
+static const Factory<TimeSeries> Factory_TimeSeries;
 
 /* Default constructor */
 TimeSeries::TimeSeries()

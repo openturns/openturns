@@ -38,7 +38,7 @@ static const Factory<NatafIndependentCopulaEvaluation> Factory_NatafIndependentC
 /* Default constructor */
 NatafIndependentCopulaEvaluation::NatafIndependentCopulaEvaluation()
   : EvaluationImplementation()
-  , dimension_()
+  , dimension_(1)
 {
   // Nothing to do
 }

@@ -20,6 +20,7 @@
  */
 #include "openturns/InverseNatafIndependentCopulaEvaluation.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,6 +32,8 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 CLASSNAMEINIT(InverseNatafIndependentCopulaEvaluation)
+
+static const Factory<InverseNatafIndependentCopulaEvaluation> Factory_InverseNatafIndependentCopulaEvaluation;
 
 /* Parameter constructor */
 InverseNatafIndependentCopulaEvaluation::InverseNatafIndependentCopulaEvaluation(const UnsignedInteger dimension)

@@ -18,16 +18,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-
 #include "openturns/ReverseHaltonSequence.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ReverseHaltonSequence)
 
+static const Factory<ReverseHaltonSequence> Factory_ReverseHaltonSequence;
 
 /* Constructor with parameters */
 ReverseHaltonSequence::ReverseHaltonSequence(const UnsignedInteger dimension) :

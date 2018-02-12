@@ -18,16 +18,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cstdlib>
-
 #include "openturns/HaltonSequence.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HaltonSequence)
 
+static const Factory<HaltonSequence> Factory_HaltonSequence;
 
 /* Constructor with parameters */
 HaltonSequence::HaltonSequence(const UnsignedInteger dimension) :

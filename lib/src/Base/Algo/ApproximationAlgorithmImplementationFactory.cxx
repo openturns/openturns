@@ -20,8 +20,9 @@
  */
 
 #include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
-#include "openturns/Exception.hxx"
 #include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ApproximationAlgorithmImplementationFactory)
 
-
+static const Factory<ApproximationAlgorithmImplementationFactory> Factory_ApproximationAlgorithmImplementationFactory;
 
 
 /* Default constructor */

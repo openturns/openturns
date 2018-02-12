@@ -56,6 +56,12 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
 private:
 
   /** Base for the generation of the sequence */
