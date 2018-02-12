@@ -50,7 +50,7 @@ distribution is defined by:
     \underbrace{~\prod_{i=1}^n f(\vect{y}^i|\vect{\theta})~}_{\mbox{likelihood}}
 
 
-In the first usage, it creates a sampler based on a MCMC algorithm whose target
+In the second usage, it creates a sampler based on a MCMC algorithm whose target
 distribution is defined by:
 
 .. _second_PDF_target_formula:
