@@ -79,7 +79,7 @@ UnsignedInteger RegularGridNearestNeighbour::getNearestNeighbourIndex(const Poin
 }
 
 /* Get the index of the nearest neighbour of the given scalar */
-UnsignedInteger RegularGridNearestNeighbour::getNearestScalarNeighbourIndex(const Scalar & x) const
+UnsignedInteger RegularGridNearestNeighbour::getNearestScalarNeighbourIndex(const Scalar x) const
 {
   if (x <= start_) return 0;
   if (x >= start_ + (N_ - 1) * step_) return N_ - 1;
@@ -104,7 +104,7 @@ Point RegularGridNearestNeighbour::getNearestNeighbour(const Point & x) const
 }
 
 /** Get the nearest neighbour of the given scalar */
-Scalar RegularGridNearestNeighbour::getNearestScalarNeighbour(const Scalar & x) const
+Scalar RegularGridNearestNeighbour::getNearestScalarNeighbour(const Scalar x) const
 {
   return values_[getNearestScalarNeighbourIndex(x)];
 }
@@ -130,7 +130,7 @@ Indices RegularGridNearestNeighbour::getNearestNeighboursIndices(const Point & x
 }
 
 /* Get the indices of the k nearest neighbours of the given scalar */
-Indices RegularGridNearestNeighbour::getNearestScalarNeighboursIndices(const Scalar & x,
+Indices RegularGridNearestNeighbour::getNearestScalarNeighboursIndices(const Scalar x,
                                                                        const UnsignedInteger k,
                                                                        const Bool sorted) const
 {
@@ -192,7 +192,7 @@ Sample RegularGridNearestNeighbour::getNearestNeighbours(const Point & x,
 }
 
 /* Get the k nearest neighbours of the given scalar */
-Point RegularGridNearestNeighbour::getNearestScalarNeighbours(const Scalar & x,
+Point RegularGridNearestNeighbour::getNearestScalarNeighbours(const Scalar x,
                                                               const UnsignedInteger k,
                                                               const Bool sorted) const
 {

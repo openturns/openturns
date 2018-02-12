@@ -11,6 +11,7 @@
  * Fehlberg
  * TranslationFunction
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
+ * NearestNeighbour, NearestNeighbourImplementation, RegularGridNearestNeighbour
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
@@ -40,7 +41,6 @@
  * Deprecated Domain::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume, getLowerBound, getUpperBound
  * Add an argument to KarhunenLoeveQuadratureAlgorithm to pass domain bounds
  * Removed all KDTree services from Mesh,RegularGrid,Field::getNearestVertex, getNearestVertexIndex, etc, client code must use KDTree if needed
- * New NearestNeighbour interface and NearestNeighbourImplementation base class to implement these services, derived from KDTree and RegularGridNearestNeighbour
 
 === Python module ===
 

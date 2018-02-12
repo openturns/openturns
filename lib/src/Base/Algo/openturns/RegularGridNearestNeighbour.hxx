@@ -70,24 +70,24 @@ public:
                               const Bool sorted = false) const;
 
   /** Get the index of the nearest neighbour of the given scalar */
-  UnsignedInteger getNearestScalarNeighbourIndex(const Scalar & x) const;
+  UnsignedInteger getNearestScalarNeighbourIndex(const Scalar x) const;
 
   /** Get the index of the nearest neighbour of the given scalars */
   Indices getNearestScalarNeighbourIndex(const Point & x) const;
 
   /** Get the nearest neighbour of the given scalar */
-  Scalar getNearestScalarNeighbour(const Scalar & x) const;
+  Scalar getNearestScalarNeighbour(const Scalar x) const;
 
   /** Get the nearest neighbour of the given scalars */
   Point getNearestScalarNeighbour(const Point & x) const;
 
   /** Get the indices of the k nearest neighbours of the given scalar */
-  Indices getNearestScalarNeighboursIndices(const Scalar & x,
+  Indices getNearestScalarNeighboursIndices(const Scalar x,
                                             const UnsignedInteger k,
                                             const Bool sorted  = false) const;
 
   /** Get the k nearest neighbours of the given scalar */
-  Point getNearestScalarNeighbours(const Scalar & x,
+  Point getNearestScalarNeighbours(const Scalar x,
                                    const UnsignedInteger k,
                                    const Bool sorted = false) const;
 
