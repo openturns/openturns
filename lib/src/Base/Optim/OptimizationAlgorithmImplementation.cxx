@@ -20,10 +20,13 @@
  */
 
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(OptimizationAlgorithmImplementation)
+
+static const Factory<OptimizationAlgorithmImplementation> Factory_OptimizationAlgorithmImplementation;
 
 /* Default constructor */
 OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()

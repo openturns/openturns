@@ -37,10 +37,8 @@ class OT_API InverseNatafIndependentCopulaEvaluation
   CLASSNAME
 public:
 
-
   /** Parameter constructor */
-  explicit InverseNatafIndependentCopulaEvaluation(const UnsignedInteger dimension);
-
+  explicit InverseNatafIndependentCopulaEvaluation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
   virtual InverseNatafIndependentCopulaEvaluation * clone() const;

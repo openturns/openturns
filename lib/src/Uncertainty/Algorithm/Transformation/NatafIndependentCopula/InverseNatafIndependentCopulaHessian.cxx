@@ -37,7 +37,7 @@ static const Factory<InverseNatafIndependentCopulaHessian> Factory_InverseNatafI
 /* Default constructor */
 InverseNatafIndependentCopulaHessian::InverseNatafIndependentCopulaHessian()
   : HessianImplementation()
-  , dimension_()
+  , dimension_(1)
 {
   // Nothing to do
 }

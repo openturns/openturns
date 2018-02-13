@@ -46,7 +46,7 @@ static int modifiedCholeskyDecomposition(SquareMatrix &matrix,
 /* Default constructor */
 ARMALikelihoodFactory::ARMALikelihoodFactory()
   : ARMAFactoryImplementation()
-  , currentG_()
+  , currentG_(0)
   , w_()
   , dimension_(1)
   , covarianceMatrix_()
@@ -70,9 +70,9 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
     const UnsignedInteger dimension,
     const Bool invertible)
   : ARMAFactoryImplementation(p, q, invertible)
-  , currentG_()
+  , currentG_(0)
   , w_()
-  , dimension_()
+  , dimension_(dimension)
   , covarianceMatrix_()
   , autoCovariance_()
   , crossCovariance_()
@@ -86,7 +86,6 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const UnsignedInteger p,
 {
   if (dimension == 0)
     throw InvalidArgumentException(HERE) << "Error : dimension could not be zero" ;
-  dimension_ = dimension;
   // Create the optimization solver parameters using the parameters in the ResourceMap
   initializeCobylaSolverParameter();
   if ((p != 0) || (q != 0))
@@ -108,9 +107,9 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
     const UnsignedInteger dimension,
     const Bool invertible)
   : ARMAFactoryImplementation(p, q, invertible)
-  , currentG_()
+  , currentG_(0)
   , w_()
-  , dimension_()
+  , dimension_(dimension)
   , covarianceMatrix_()
   , autoCovariance_()
   , crossCovariance_()
@@ -124,7 +123,6 @@ ARMALikelihoodFactory::ARMALikelihoodFactory(const Indices & p,
 {
   if (dimension == 0)
     throw InvalidArgumentException(HERE) << "Error : dimension could not be zero" ;
-  dimension_ = dimension;
   // Create the optimization solver parameters using the parameters in the ResourceMap
   initializeCobylaSolverParameter();
 }

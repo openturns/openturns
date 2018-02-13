@@ -39,7 +39,7 @@ static const Factory<NatafIndependentCopulaHessian> Factory_NatafIndependentCopu
 /* Default constructor */
 NatafIndependentCopulaHessian::NatafIndependentCopulaHessian()
   : HessianImplementation()
-  , dimension_()
+  , dimension_(1)
 {
   // Nothing to do
 }
