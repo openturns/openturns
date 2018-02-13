@@ -43,7 +43,7 @@ supremum is taken over the set :math:`J^*` of intervals of the form:
 where :math:`u_i` is in the half-open interval :math:`[0, 1)`.
 
 A low-discrepancy sequence can be generated only through the derived classes of
-LowDiscrepancySequence. OpenTURNS proposes the
+LowDiscrepancySequence. The sequences implemented are
 :class:`Faure <openturns.FaureSequence>`,
 :class:`Halton <openturns.HaltonSequence>`,
 :class:`Reverse Halton <openturns.ReverseHaltonSequence>`,

@@ -92,10 +92,9 @@ Expectation:
 
 Variance:
 
-The decomposition of the variance at the order 2 is not implemented in the
-standard version of OpenTURNS. It requires both the knowledge of higher order
-derivatives of the model and the knowledge of moments of order strictly greater
-than 2 of the PDF.
+The decomposition of the variance at the order 2 is not implemented.
+It requires both the knowledge of higher order derivatives of the model and the
+knowledge of moments of order strictly greater than 2 of the PDF.
 
 Examples
 --------

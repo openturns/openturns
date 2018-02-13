@@ -416,7 +416,7 @@ Draws graph of the given 1D *outputMarg* marginal
 marginal with respect to the variation of :math:`x_i` in the interval
 :math:`[x_i^{min}, x_i^{max}]`, when all the other components of
 :math:`\vect{x}` are fixed to the corresponding ones of the central point *CP*.
-Then OpenTURNS draws the graph:
+Then it draws the graph:
 :math:`t\in [x_i^{min}, x_i^{max}] \mapsto f_k(CP_1, \dots, CP_{i-1}, t,  CP_{i+1} \dots, CP_n)`.
 
 - In the second usage:
@@ -426,7 +426,7 @@ function of the given 2D *firstInputMarg* and *secondInputMarg* marginals
 with respect to the variation of :math:`(x_i, x_j)` in the interval
 :math:`[x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]`, when all the
 other components of :math:`\vect{x}` are fixed to the corresponding ones of the
-central point *CP*. Then OpenTURNS draws the graph:
+central point *CP*. Then it draws the graph:
 :math:`(t,u) \in [x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}] \mapsto f_k(CP_1, \dots, CP_{i-1}, t, CP_{i+1}, \dots, CP_{j-1}, u,  CP_{j+1} \dots, CP_n)`.
 
 - In the third usage:

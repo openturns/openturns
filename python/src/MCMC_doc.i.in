@@ -76,7 +76,7 @@ where the :math:`g^i: \Rset^{d_{\theta}} \rightarrow\Rset^{d_w}`
 In fact, the first usage is a particular case of the second.
 
 
-The MCMC method implemented in OpenTURNS is the Random Walk Metropolis-Hastings
+The MCMC method implemented is the Random Walk Metropolis-Hastings
 algorithm. A sample can be generated only through the MCMC's derived class:
 :class:`~openturns.RandomWalkMetropolisHastings`."
 

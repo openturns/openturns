@@ -260,11 +260,16 @@ OT_SimulationResult_setProbabilityEstimate_doc
 // ---------------------------------------------------------------------
 
 %define OT_SimulationResult_drawImportanceFactors_doc
-"Draw the importance factors as an OpenTURNS :class:`~openturns.Graph`.
+"Draw the importance factors.
 
 .. warning::
     It is necessary to enable the history of the model to perform this analysis
     (see :meth:`~openturns.Function.enableHistory`).
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Importance factor graph.
 
 See also
 --------

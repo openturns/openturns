@@ -17,8 +17,8 @@ Notes
 -----
 FixedExperiment is a deterministic weighted design of experiments.
 It enables to take into account a random sample which has been obtained outside
-the OpenTURNS study or at another step of the OpenTURNS study. The
-:meth:`generate` method always gives the same sample, *aSample*, if it is
+the study or at another step of the study.
+The :meth:`generate` method always gives the same sample, *aSample*, if it is
 recalled. When not specified, the weights associated to the points are all
 equal to :math:`1/cardI`. Then the sample *aSample* is considered as generated
 from the limit distribution

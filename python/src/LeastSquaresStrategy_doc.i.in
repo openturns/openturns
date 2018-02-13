@@ -17,16 +17,15 @@ Available constructors:
 Parameters
 ----------
 weightedExp : :class:`~openturns.WeightedExperiment`
-    Experimental design used for the transformed input data. When not precised,
-    OpenTURNS uses a :class:`~openturns.MonteCarloExperiment`.
+    Experimental design used for the transformed input data.
+    By default the class :class:`~openturns.MonteCarloExperiment` is used.
 approxAlgoImpFact : ApproximationAlgorithmImplementationFactory
     The factory that builds the desired :class:`~openturns.ApproximationAlgorithm`.
-    When not precised, OpenTURNS uses the 
-    :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory`.
+    By default the class :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` is used.
 measure : :class:`~openturns.Distribution`
     Distribution :math:`\mu` with respect to which the basis is orthonormal.
-    When not precised, OpenTURNS uses the limit measure defined within the
-    :class:`~openturns.WeightedExperiment`.
+    By default, the limit measure defined within the class
+    :class:`~openturns.WeightedExperiment` is used.
 inputSample, outputSample : 2-d sequence of float
     The input random variables :math:`\vect{X}=(X_1, \dots, X_{n_X})^T`
     and the output samples :math:`\vect{Y}` that describe the model.

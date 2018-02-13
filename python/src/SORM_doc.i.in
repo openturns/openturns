@@ -29,10 +29,10 @@ and :math:`(\kappa_i)_{1 \leq i \leq n-1}` the :math:`n-1` main curvatures of
 the limit state function at the design point in the standard space.
 
 Several approximations of the failure probability :math:`P_f` are available in
-the standard version of OpenTURNS, detailed here in the case where the origin
-of the standard space does not belong to the failure domain :
+the library, and detailed here in the case where the origin
+of the standard space does not belong to the failure domain:
 
-- Breitung's formula :
+- Breitung's formula:
 
   .. _Breitung_formula:
 
@@ -45,7 +45,7 @@ of the standard space does not belong to the failure domain :
   reliability index, defined as the distance of the design point
   :math:`\vect{u}^*` to the origin of the standard space.
 
-- Hohen Bichler's formula is an approximation of the previous equation :
+- Hohen Bichler's formula is an approximation of the previous equation:
 
   .. _Hohenbichler_formula:
 
@@ -60,7 +60,7 @@ of the standard space does not belong to the failure domain :
   standard 1D normal distribution and :math:`\phi` is the standard Gaussian
   probability density function.
 
-- Tvedt's formula :
+- Tvedt's formula:
 
   .. _Tvedt_formula:
 

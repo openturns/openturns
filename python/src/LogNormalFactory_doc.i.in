@@ -10,8 +10,8 @@ DistributionFactory, LogNormal
 
 Notes
 -----
-OpenTURNS proposes several estimators to build a LogNormal distribution
-from a scalar sample.
+Several estimators to build a LogNormal distribution from a scalar sample
+are proposed.
 
 **Moments based estimator:**
 
@@ -170,10 +170,10 @@ In the first usage, the default :class:`~openturns.LogNormal` distribution is bu
 
 In the second usage, the parameters are evaluated according the following strategy:
 
-- OpenTURNS first uses the local likelihood maximum based estimator. 
-- OpenTURNS uses the modified moments based estimator if the resolution of
+- It first uses the local likelihood maximum based estimator. 
+- It uses the modified moments based estimator if the resolution of
   :eq:`mll_relation` is not possible.
-- OpenTURNS uses the moments based estimator, which are always defined, if
+- It uses the moments based estimator, which are always defined, if
   the resolution of :eq:`omega_modified_moment_relation` is not possible.
 
 In the third usage, the parameters of the :class:`~openturns.LogNormal` are estimated using the given method.

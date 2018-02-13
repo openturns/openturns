@@ -27,7 +27,7 @@ A strategy must be chosen for the selection of the different terms of the
 multivariate basis in which the response surface by functional chaos is expressed.
 The selected terms are regrouped in the finite subset :math:`K` of :math:`\Nset`.
 
-There are three different strategies in OpenTURNS :
+There are three different strategies available:
 
 - :class:`~openturns.FixedStrategy`,
 - :class:`~openturns.SequentialStrategy`,

@@ -3,7 +3,7 @@
 
 Notes
 -----
-In OpenTURNS a Drawable is a drawable element described by:
+A drawable element is described by:
 
 - its data,
 - its attributes: color, line stype, point style, fill style, legend ...
@@ -113,7 +113,7 @@ n : int :math:`n > 0`
 Returns
 -------
 listColors : :class:`~openturns.Description`
-    List of n color codes defined according to the default OpenTURNS palette.
+    List of n color codes defined according to the default palette.
 
 Examples
 --------

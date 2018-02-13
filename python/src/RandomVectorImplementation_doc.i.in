@@ -37,10 +37,11 @@ functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
 
 Notes
 -----
-A :class:`~openturns.RandomVector` provides at least a way to generate realizations. OpenTURNS provides two kinds of  :class:`~openturns.RandomVector` :
+A :class:`~openturns.RandomVector` provides at least a way to generate realizations.
+Two kinds of :class:`~openturns.RandomVector` are provided:
 
     - those described by their :class:`~openturns.Distribution`: :class:`~openturns.UsualRandomVector` which provide some extra probbilistic methods.
-    - those described as the image through a function of a :class:`~openturns.UsualRandomVector`: :math:`Y=f(X)`: :class:`~openturns.CompositeRandomVector` whcih can only generate realizations.
+    - those described as the image through a function of a :class:`~openturns.UsualRandomVector`: :math:`Y=f(X)`: :class:`~openturns.CompositeRandomVector` which can only generate realizations.
 
 See also
 --------

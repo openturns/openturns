@@ -15,7 +15,7 @@ n_rows : int, :math:`n_r > 0`
 n_sheets : int, :math:`n_s > 0`
     Number of sheets.
 values : sequence of float with size :math:`n_r \times n_r \times n_s`, optional
-    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    Values. **column-major** ordering is used (like Fortran) for
     reshaping the flat list of values.
     If not mentioned, a zero tensor is created.
 sequence : sequence of float
