@@ -22,7 +22,7 @@
 #define OPENTURNS_COVARIANCEMODELFACTORYIMPLEMENTATION_HXX
 
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PersistentObject.hxx"
@@ -54,7 +54,7 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a spectral model based on a sample */
-  virtual CovarianceModelImplementation::Implementation build(const ProcessSample & sample) const;
+  virtual CovarianceModelImplementation::Implementation build(const FieldSample & sample) const;
 
   /** Build a spectral model based on a Field */
   virtual CovarianceModelImplementation::Implementation build(const Field & timeSerie) const;

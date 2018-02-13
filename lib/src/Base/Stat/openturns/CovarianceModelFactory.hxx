@@ -64,7 +64,7 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */
-  virtual CovarianceModel build(const ProcessSample & sample) const;
+  virtual CovarianceModel build(const FieldSample & sample) const;
 
   /** Build a a spectral model based on a Field */
   virtual CovarianceModel build(const Field & timeSerie) const;

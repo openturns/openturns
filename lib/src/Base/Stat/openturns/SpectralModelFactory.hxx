@@ -70,7 +70,7 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */
-  virtual SpectralModel build(const ProcessSample & sample) const;
+  virtual SpectralModel build(const FieldSample & sample) const;
 
   /** Build a a spectral model based on a Field */
   virtual SpectralModel build(const Field & timeSerie) const;

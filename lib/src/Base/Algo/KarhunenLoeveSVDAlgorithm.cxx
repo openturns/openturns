@@ -50,7 +50,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm()
 }
 
 /* Constructor with parameters */
-KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
+KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const FieldSample & sample,
     const Scalar threshold,
     const Bool centeredSample)
   : KarhunenLoeveAlgorithmImplementation(CovarianceModel(), threshold)
@@ -66,7 +66,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
 }
 
 /* Constructor with parameters */
-KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
+KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const FieldSample & sample,
     const Point & verticesWeights,
     const Scalar threshold,
     const Bool centeredSample)
@@ -83,7 +83,7 @@ KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sampl
 }
 
 /* Constructor with parameters */
-KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
+KarhunenLoeveSVDAlgorithm::KarhunenLoeveSVDAlgorithm(const FieldSample & sample,
     const Point & verticesWeights,
     const Point & sampleWeights,
     const Scalar threshold,
@@ -215,7 +215,7 @@ void KarhunenLoeveSVDAlgorithm::run()
   MatrixImplementation transposedProjection(augmentedDimension, K);
   Point selectedEV(K);
   Basis modes(0);
-  ProcessSample modesAsProcessSample(sample_.getMesh(), 0, dimension);
+  FieldSample modesAsProcessSample(sample_.getMesh(), 0, dimension);
   const UnsignedInteger meshDimension = sample_.getMesh().getDimension();
   SampleImplementation values(verticesNumber, dimension);
   UnsignedInteger index = 0;
@@ -264,7 +264,7 @@ void KarhunenLoeveSVDAlgorithm::run()
 }
 
 /* Sample accessor */
-ProcessSample KarhunenLoeveSVDAlgorithm::getSample() const
+FieldSample KarhunenLoeveSVDAlgorithm::getSample() const
 {
   return sample_;
 }

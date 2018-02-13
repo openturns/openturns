@@ -156,9 +156,9 @@ ARMA ARMAFactoryImplementation::build(const TimeSeries & timeSeries) const
 }
 
 /* Build method */
-ARMA ARMAFactoryImplementation::build(const ProcessSample & sample) const
+ARMA ARMAFactoryImplementation::build(const FieldSample & sample) const
 {
-  throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const ProcessSample & sample) const";
+  throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const FieldSample & sample) const";
 }
 
 /* Method save() stores the object through the StorageManager */

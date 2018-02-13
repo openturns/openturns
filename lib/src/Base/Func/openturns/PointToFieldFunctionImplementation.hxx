@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -61,7 +61,7 @@ public:
 
   /** Operator () */
   virtual Field operator() (const Point & inP) const;
-  virtual ProcessSample operator() (const Sample & inS) const;
+  virtual FieldSample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

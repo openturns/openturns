@@ -52,7 +52,7 @@ KarhunenLoeveResultImplementation::KarhunenLoeveResultImplementation(const Covar
     const Scalar threshold,
     const Point & eigenvalues,
     const Basis & modes,
-    const ProcessSample & modesAsProcessSample,
+    const FieldSample & modesAsProcessSample,
     const Matrix & projection)
   : PersistentObject()
   , covariance_(covariance)
@@ -95,7 +95,7 @@ Basis KarhunenLoeveResultImplementation::getModes() const
   return modes_;
 }
 
-ProcessSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
+FieldSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
 {
   return modesAsProcessSample_;
 }
@@ -116,9 +116,9 @@ Basis KarhunenLoeveResultImplementation::getScaledModes() const
   return scaledModes;
 }
 
-ProcessSample KarhunenLoeveResultImplementation::getScaledModesAsProcessSample() const
+FieldSample KarhunenLoeveResultImplementation::getScaledModesAsProcessSample() const
 {
-  ProcessSample scaledModesAsProcessSample(modesAsProcessSample_.getMesh(), modesAsProcessSample_.getSize(), modesAsProcessSample_.getDimension());
+  FieldSample scaledModesAsProcessSample(modesAsProcessSample_.getMesh(), modesAsProcessSample_.getSize(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < modesAsProcessSample_.getSize(); ++i)
     scaledModesAsProcessSample[i] = modesAsProcessSample_[i] * std::sqrt(eigenvalues_[i]);
   return scaledModesAsProcessSample;
@@ -177,11 +177,11 @@ Sample KarhunenLoeveResultImplementation::project(const Basis & basis) const
 
 struct ProjectSamplePolicy
 {
-  const ProcessSample & sample_;
+  const FieldSample & sample_;
   Sample & output_;
   const KarhunenLoeveResultImplementation & result_;
 
-  ProjectSamplePolicy( const ProcessSample & sample,
+  ProjectSamplePolicy( const FieldSample & sample,
                        Sample & output,
                        const KarhunenLoeveResultImplementation & result)
     : sample_(sample)
@@ -197,7 +197,7 @@ struct ProjectSamplePolicy
 
 }; /* end struct ProjectSamplePolicy */
 
-Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
+Sample KarhunenLoeveResultImplementation::project(const FieldSample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   Sample result(size, projection_.getNbRows());

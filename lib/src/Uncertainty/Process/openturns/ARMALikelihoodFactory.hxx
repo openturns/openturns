@@ -75,7 +75,7 @@ public:
 
   /** Build method ==> estimating the coefficients */
   ARMA build(const TimeSeries & timeSeries) const;
-  ARMA build(const ProcessSample & sample) const;
+  ARMA build(const FieldSample & sample) const;
 
   /** Verbosity accessor */
   Bool getVerbose() const;

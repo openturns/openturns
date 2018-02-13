@@ -134,7 +134,7 @@ Point FieldToPointConnection::operator() (const Field & inF) const
 }
 
 /* Operator () */
-Sample FieldToPointConnection::operator() (const ProcessSample & inSample) const
+Sample FieldToPointConnection::operator() (const FieldSample & inSample) const
 {
   if (inSample.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToPointConnection with an argument of invalid dimension";
   callsNumber_ += inSample.getSize();
@@ -150,7 +150,7 @@ Sample FieldToPointConnection::operator() (const ProcessSample & inSample) const
     while (remaining > 0)
     {
       const UnsignedInteger currentBlockSize = std::min(blockSize, remaining);
-      ProcessSample inBlock(inSample.getMesh(), currentBlockSize, inSample.getDimension());
+      FieldSample inBlock(inSample.getMesh(), currentBlockSize, inSample.getDimension());
       for (UnsignedInteger i = 0; i < currentBlockSize; ++i)
         inBlock[i] = inSample[remaining - i - 1];
       const Sample outBlock(fieldToPointFunction_(fieldFunction_(inBlock)));

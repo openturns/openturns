@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
     // Create a Process sample of size N
     UnsignedInteger N = 10000;
-    ProcessSample sample(myProcess.getSample(N));
+    FieldSample sample(myProcess.getSample(N));
 
     // Factory initiate - No arguments
     NonStationaryCovarianceModelFactory myFactory;

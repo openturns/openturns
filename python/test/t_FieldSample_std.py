@@ -22,15 +22,15 @@ try:
     # TimeSeries
     timeSeries = TimeSeries(timeGrid, sample)
 
-    # We create an empty ProcessSample with default constructor
-    psample0 = ProcessSample()
+    # We create an empty FieldSample with default constructor
+    psample0 = FieldSample()
     psample0.setName("PSample0")
     print("Default constructor")
     print("psample0=", psample0)
 
-    # We create an empty ProcessSample with timeGrid, size and dimension
+    # We create an empty FieldSample with timeGrid, size and dimension
     # arguments
-    psample1 = ProcessSample(timeGrid, 4, dimension)
+    psample1 = FieldSample(timeGrid, 4, dimension)
     psample1.setName("PSample1")
     print("Constructor based on size, dimension and timeGrid")
     print("psample1=", psample1)
@@ -40,8 +40,8 @@ try:
     print("changing psample1[0] with []")
     print("psample1[0]=", (psample1[0]))
 
-    # We create a ProcessSample with size and timeSeries arguments
-    psample2 = ProcessSample(3, timeSeries)
+    # We create a FieldSample with size and timeSeries arguments
+    psample2 = FieldSample(3, timeSeries)
     psample2.setName("PSample2")
     print("Constructor based on size / timeSeries")
     print("psample2=", psample2)
@@ -54,8 +54,8 @@ try:
     # newtimeSeries = TimeSeries(timeGrid, sample)
     # collection.add(newtimeSeries)
 
-    # We create a ProcessSample with collection arguments arguments
-    # psample3 = ProcessSample(collection)
+    # We create a FieldSample with collection arguments arguments
+    # psample3 = FieldSample(collection)
 
     # psample3.setName("PSample3")
     # print "Constructor based on collection "

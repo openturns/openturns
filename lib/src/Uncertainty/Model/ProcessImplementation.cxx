@@ -185,9 +185,9 @@ Function ProcessImplementation::getContinuousRealization() const
   return P1LagrangeEvaluation(field);
 }
 
-ProcessSample ProcessImplementation::getSample(const UnsignedInteger size) const
+FieldSample ProcessImplementation::getSample(const UnsignedInteger size) const
 {
-  ProcessSample result(size, getRealization());
+  FieldSample result(size, getRealization());
   for (UnsignedInteger i = 1; i < size; ++i) result[i] = getRealization().getValues();
   return result;
 }
@@ -198,12 +198,12 @@ TimeSeries ProcessImplementation::getFuture(const UnsignedInteger stepNumber) co
   throw NotYetImplementedException(HERE) << "In ProcessImplementation::getFuture(const UnsignedInteger stepNumber) const";
 }
 
-ProcessSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
+FieldSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
     const UnsignedInteger size) const
 {
   if (getInputDimension() != 1) throw NotDefinedException(HERE) << "Error: can extend the realization of a process only if defined on a 1D mesh.";
-  if (size == 0) return ProcessSample(mesh_, 0, getOutputDimension());
-  ProcessSample result(size, getFuture(stepNumber));
+  if (size == 0) return FieldSample(mesh_, 0, getOutputDimension());
+  FieldSample result(size, getFuture(stepNumber));
   for (UnsignedInteger i = 1; i < size; ++i) result[i] = getFuture(stepNumber).getValues();
   return result;
 }

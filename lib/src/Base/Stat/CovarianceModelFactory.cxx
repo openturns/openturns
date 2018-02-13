@@ -75,7 +75,7 @@ String CovarianceModelFactory::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
-CovarianceModel CovarianceModelFactory::build(const ProcessSample & sample) const
+CovarianceModel CovarianceModelFactory::build(const FieldSample & sample) const
 {
   return getImplementation()->build(sample);
 }

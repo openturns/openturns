@@ -71,7 +71,7 @@ Parameters
 ----------
 myTimeSeries : :class:`~openturns.TimeSeries`
     One realization of the  process.
-myProcessSample : :class:`~openturns.ProcessSample`
+myProcessSample : :class:`~openturns.FieldSample`
     Several realizations of the  process.
 
 Returns

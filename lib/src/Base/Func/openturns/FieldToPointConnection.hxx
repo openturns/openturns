@@ -60,7 +60,7 @@ public:
   using FieldToPointFunctionImplementation::operator();
   Point operator() (const Field & inF) const;
 
-  Sample operator() (const ProcessSample & inS) const;
+  Sample operator() (const FieldSample & inS) const;
 
   /** String converter */
   virtual String __repr__() const;

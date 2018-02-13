@@ -103,7 +103,7 @@ Point KarhunenLoeveProjection::operator() (const Field & inFld) const
 }
 
 /* Operator () */
-Sample KarhunenLoeveProjection::operator() (const ProcessSample & inPS) const
+Sample KarhunenLoeveProjection::operator() (const FieldSample & inPS) const
 {
   const Sample outSample(result_.project(inPS));
   callsNumber_ += outSample.getSize();

@@ -19,7 +19,7 @@ try:
 
     # Create a Process sample
     N = 100
-    sample = ProcessSample(myProcess.getSample(N))
+    sample = FieldSample(myProcess.getSample(N))
 
     # Filtering Windows
     myFactory = WelchFactory()

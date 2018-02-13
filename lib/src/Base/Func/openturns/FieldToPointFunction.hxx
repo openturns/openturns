@@ -70,7 +70,7 @@ public:
 
   /** Operator () */
   Point operator() (const Field & inFld) const;
-  Sample operator() (const ProcessSample & inPS) const;
+  Sample operator() (const FieldSample & inPS) const;
 
   /** Get the i-th marginal function */
   FieldToPointFunction getMarginal(const UnsignedInteger i) const;

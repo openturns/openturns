@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
       Point lambda(result.getEigenValues());
-      ProcessSample KLModes(result.getModesAsProcessSample());
+      FieldSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       GaussianProcess process(cov1D, KLModes.getMesh());
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
       Point lambda(result.getEigenValues());
-      ProcessSample KLModes(result.getModesAsProcessSample());
+      FieldSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       GaussianProcess process(cov2D, KLModes.getMesh());

@@ -24,7 +24,7 @@ print(('in_dim=' + str(F.getInputDimension())
 X = ot.Field(ot.RegularGrid(0.0, 0.1, 11), ot.Normal(2).getSample(11))
 print(F(X))
 
-Xsample = ot.ProcessSample(5, X)
+Xsample = ot.FieldSample(5, X)
 print(F(Xsample))
 
 # Instance creation
@@ -80,7 +80,7 @@ print('myFunc output dimension=', myFunc.getOutputDimension())
 print('myFunc spatial dimension=', myFunc.getSpatialDimension())
 print('called ', myFunc.getCallsNumber(), ' times')
 # Evaluation over a process sample
-X = ot.ProcessSample(5, X)
+X = ot.FieldSample(5, X)
 print('X=', X)
 Y = myFunc(X)
 print('Y=', Y)

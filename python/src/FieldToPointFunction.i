@@ -171,9 +171,9 @@ class OpenTURNSPythonFieldToPointFunction(object):
             fld = openturns.func.Field(X)
         except:
             try:
-                ps = openturns.func.ProcessSample(X)
+                ps = openturns.func.FieldSample(X)
             except:
-                raise TypeError('Expect a Field or a ProcessSample as argument')
+                raise TypeError('Expect a Field or a FieldSample as argument')
             else:
                 Y = self._exec_sample(ps)
         else:

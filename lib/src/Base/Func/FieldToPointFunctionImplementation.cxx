@@ -133,7 +133,7 @@ Point FieldToPointFunctionImplementation::operator() (const Field & inFld) const
 }
 
 /* Operator () */
-Sample FieldToPointFunctionImplementation::operator() (const ProcessSample & inPS) const
+Sample FieldToPointFunctionImplementation::operator() (const FieldSample & inPS) const
 {
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
   if (inPS.getMesh().getDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getSpatialDimension() << ", got " << inPS.getMesh().getDimension();

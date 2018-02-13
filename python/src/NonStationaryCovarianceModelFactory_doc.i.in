@@ -51,7 +51,7 @@ where *k* is such that :math:`\vect{t}_k` is the vertex of :math:`\cM` the neare
 
 Parameters
 ----------
-sampleFields : :class:`~openturns.ProcessSample`
+sampleFields : :class:`~openturns.FieldSample`
     The fields used to estimate the covariance model which is not supposed to be stationary.
 
 Returns
@@ -84,7 +84,7 @@ Estimate the covariance model without supposing the stationarity:
 
 Parameters
 ----------
-sampleFields : :class:`~openturns.ProcessSample`
+sampleFields : :class:`~openturns.FieldSample`
     The fields used to estimate the covariance model which is not supposed to be stationary.
 
 Returns

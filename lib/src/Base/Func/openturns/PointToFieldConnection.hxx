@@ -62,7 +62,7 @@ public:
   using PointToFieldFunctionImplementation::operator();
   Field operator() (const Point & inP) const;
 
-  ProcessSample operator() (const Sample & inS) const;
+  FieldSample operator() (const Sample & inS) const;
 
   /** Get the i-th marginal function */
   Implementation getMarginal(const UnsignedInteger i) const;

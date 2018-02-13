@@ -24,7 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/ARMA.hxx"
 #include "openturns/TimeSeries.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 #include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -81,7 +81,7 @@ public:
   virtual ARMA build(const TimeSeries & timeSeries) const;
 
   /** Build method */
-  virtual ARMA build(const ProcessSample & sample) const;
+  virtual ARMA build(const FieldSample & sample) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

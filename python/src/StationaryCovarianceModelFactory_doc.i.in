@@ -145,7 +145,7 @@ Available usages:
 
 Parameters
 ----------
-processSample : :class:`~openturns.ProcessSample`
+processSample : :class:`~openturns.FieldSample`
     The collection of fields used to estimate the covariance model.
 field : :class:`~openturns.Field`
     The field used to estimate the covariance model. 
@@ -196,7 +196,7 @@ Available usages:
 
 Parameters
 ----------
-processSample : :class:`~openturns.ProcessSample`
+processSample : :class:`~openturns.FieldSample`
     The collection fields used to estimate the covariance model which is  supposed to be stationary.
 field : :class:`~openturns.Field`
     The field used to estimate the covariance model. 

@@ -67,13 +67,13 @@ public:
   void setOverlap(const Scalar overlap);
 
   /** Build a spectral model based on a sample */
-  Implementation build(const ProcessSample & sample) const;
+  Implementation build(const FieldSample & sample) const;
 
   /** Build a spectral model based on a Field */
   Implementation build(const Field & timeSerie) const;
 
   /** Build a spectral model based on a sample */
-  UserDefinedSpectralModel buildAsUserDefinedSpectralModel(const ProcessSample & sample) const;
+  UserDefinedSpectralModel buildAsUserDefinedSpectralModel(const FieldSample & sample) const;
 
   /** Build a spectral model based on a sample */
   UserDefinedSpectralModel buildAsUserDefinedSpectralModel(const Field & timeSeries) const;

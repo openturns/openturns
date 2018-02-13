@@ -1,20 +1,20 @@
 // SWIG file ProcessSamples.i
 
 %{
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 %}
 
-%include ProcessSample_doc.i
+%include FieldSample_doc.i
 
-%include openturns/ProcessSample.hxx
+%include openturns/FieldSample.hxx
 
 
 namespace OT {
-%extend ProcessSample {
+%extend FieldSample {
 
-ProcessSample(const ProcessSample & other)
+FieldSample(const FieldSample & other)
 {
-  return new OT::ProcessSample(other);
+  return new OT::FieldSample(other);
 }
 
 Field __getitem__ (SignedInteger index) const
@@ -47,7 +47,7 @@ UnsignedInteger __len__() const
   return self->getSize();
 }
 
-} // ProcessSample
+} // FieldSample
 
 } // OT
 

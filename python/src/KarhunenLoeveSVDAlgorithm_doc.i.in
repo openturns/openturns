@@ -10,7 +10,7 @@ Available constructors:
 
 Parameters
 ----------
-sample : :class:`~openturns.ProcessSample`
+sample : :class:`~openturns.FieldSample`
     The sample containing the observations.
 verticesWeights : sequence of float
     The weights associated to the vertices of the mesh defining the sample.
@@ -114,7 +114,7 @@ Runs the algorithm and creates the result structure :class:`~openturns.KarhunenL
 
 Returns
 -------
-sample : :class:`~openturns.ProcessSample`
+sample : :class:`~openturns.FieldSample`
     The process sample containing the observations of the process.
 "
 

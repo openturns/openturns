@@ -139,7 +139,7 @@ Field FieldFunction::operator() (const Field & inFld) const
 }
 
 /* Operator () */
-ProcessSample FieldFunction::operator() (const ProcessSample & inPS) const
+FieldSample FieldFunction::operator() (const FieldSample & inPS) const
 {
   return getImplementation()->operator()(inPS);
 }

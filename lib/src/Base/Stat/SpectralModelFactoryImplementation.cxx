@@ -71,9 +71,9 @@ String SpectralModelFactoryImplementation::__str__(const String & offset) const
 
 /* Here is the interface that all derived class must implement */
 
-SpectralModelFactoryImplementation::Implementation SpectralModelFactoryImplementation::build(const ProcessSample & sample) const
+SpectralModelFactoryImplementation::Implementation SpectralModelFactoryImplementation::build(const FieldSample & sample) const
 {
-  throw NotYetImplementedException(HERE) << "In SpectralModelFactoryImplementation::build(const ProcessSample & sample) const";
+  throw NotYetImplementedException(HERE) << "In SpectralModelFactoryImplementation::build(const FieldSample & sample) const";
 }
 
 SpectralModelFactoryImplementation::Implementation SpectralModelFactoryImplementation::build(const Field & timeSeries) const

@@ -124,7 +124,7 @@ Point FieldToPointFunction::operator() (const Field & inFld) const
 }
 
 /* Operator () */
-Sample FieldToPointFunction::operator() (const ProcessSample & inPS) const
+Sample FieldToPointFunction::operator() (const FieldSample & inPS) const
 {
   return getImplementation()->operator()(inPS);
 }

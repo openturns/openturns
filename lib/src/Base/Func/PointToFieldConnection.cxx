@@ -133,11 +133,11 @@ Field PointToFieldConnection::operator() (const Point & inP) const
 }
 
 /* Operator () */
-ProcessSample PointToFieldConnection::operator() (const Sample & inSample) const
+FieldSample PointToFieldConnection::operator() (const Sample & inSample) const
 {
   if (inSample.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a PointToFieldConnection with an argument of invalid dimension";
   callsNumber_ += inSample.getSize();
-  const ProcessSample outValue(startByPointToFieldFunction_ ? fieldFunction_(pointToFieldFunction_(inSample)) : pointToFieldFunction_(function_(inSample)));
+  const FieldSample outValue(startByPointToFieldFunction_ ? fieldFunction_(pointToFieldFunction_(inSample)) : pointToFieldFunction_(function_(inSample)));
   return outValue;
 }
 

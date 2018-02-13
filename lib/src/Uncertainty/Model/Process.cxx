@@ -175,7 +175,7 @@ void Process::setMesh(const Mesh & mesh)
   return getImplementation()->setMesh(mesh);
 }
 
-ProcessSample Process::getSample(const UnsignedInteger size) const
+FieldSample Process::getSample(const UnsignedInteger size) const
 {
   return getImplementation()->getSample(size);
 }
@@ -185,7 +185,7 @@ TimeSeries Process::getFuture(const UnsignedInteger stepNumber) const
   return getImplementation()->getFuture(stepNumber);
 }
 
-ProcessSample Process::getFuture(const UnsignedInteger stepNumber,
+FieldSample Process::getFuture(const UnsignedInteger stepNumber,
                                  const UnsignedInteger size) const
 {
   return getImplementation()->getFuture(stepNumber, size);

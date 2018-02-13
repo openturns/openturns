@@ -28,7 +28,7 @@
 #include "openturns/Indices.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/TimeSeries.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/Pointer.hxx"
@@ -101,11 +101,11 @@ public:
   virtual Function getContinuousRealization() const;
 
   /** Process sample accessors */
-  virtual ProcessSample getSample(const UnsignedInteger size) const;
+  virtual FieldSample getSample(const UnsignedInteger size) const;
 
   /** Continuation of the last realization on a given number of steps */
   virtual TimeSeries getFuture(const UnsignedInteger stepNumber) const;
-  virtual ProcessSample getFuture(const UnsignedInteger stepNumber,
+  virtual FieldSample getFuture(const UnsignedInteger stepNumber,
                                   const UnsignedInteger size) const;
 
   /** Get the marginal process corresponding to the i-th marginal component */

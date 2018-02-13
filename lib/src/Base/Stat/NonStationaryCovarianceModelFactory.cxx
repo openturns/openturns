@@ -62,14 +62,14 @@ String NonStationaryCovarianceModelFactory::__str__(const String & offset) const
 }
 
 
-CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample) const
+CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const FieldSample & sample) const
 {
   return buildAsUserDefinedCovarianceModel(sample, false).clone();
 }
 
 
 
-CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample, const Bool isCentered) const
+CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const FieldSample & sample, const Bool isCentered) const
 {
   return buildAsUserDefinedCovarianceModel(sample, isCentered).clone();
 }
@@ -77,7 +77,7 @@ CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactor
 
 struct ComputeCovariancePolicy
 {
-  const ProcessSample & input_;
+  const FieldSample & input_;
   const Bool isCentered_;
   CovarianceMatrixCollection & output_;
   Field mean_;
@@ -85,7 +85,7 @@ struct ComputeCovariancePolicy
   UnsignedInteger size_;
   Scalar alpha_;
 
-  ComputeCovariancePolicy(const ProcessSample & input,
+  ComputeCovariancePolicy(const FieldSample & input,
                           const Bool isCentered,
                           CovarianceMatrixCollection & output)
     : input_(input)
@@ -154,7 +154,7 @@ struct ComputeCovariancePolicy
   }
 }; /* end struct ComputeCovariancePolicy */
 
-UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const ProcessSample & sample, const Bool isCentered) const
+UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const FieldSample & sample, const Bool isCentered) const
 {
   const Mesh & mesh(sample.getMesh());
   const UnsignedInteger N = mesh.getVerticesNumber();

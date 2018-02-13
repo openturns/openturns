@@ -73,7 +73,7 @@ Basis KarhunenLoeveResult::getModes() const
   return getImplementation()->getModes();
 }
 
-ProcessSample KarhunenLoeveResult::getModesAsProcessSample() const
+FieldSample KarhunenLoeveResult::getModesAsProcessSample() const
 {
   return getImplementation()->getModesAsProcessSample();
 }
@@ -84,7 +84,7 @@ Basis KarhunenLoeveResult::getScaledModes() const
   return getImplementation()->getScaledModes();
 }
 
-ProcessSample KarhunenLoeveResult::getScaledModesAsProcessSample() const
+FieldSample KarhunenLoeveResult::getScaledModesAsProcessSample() const
 {
   return getImplementation()->getScaledModesAsProcessSample();
 }
@@ -111,7 +111,7 @@ Sample KarhunenLoeveResult::project(const Basis & basis) const
   return getImplementation()->project(basis);
 }
 
-Sample KarhunenLoeveResult::project(const ProcessSample & sample) const
+Sample KarhunenLoeveResult::project(const FieldSample & sample) const
 {
   return getImplementation()->project(sample);
 }

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ProcessSample class
+ *  @brief FieldSample class
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_PROCESSSAMPLE_HXX
-#define OPENTURNS_PROCESSSAMPLE_HXX
+#ifndef OPENTURNS_FIELDSAMPLE_HXX
+#define OPENTURNS_FIELDSAMPLE_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
@@ -32,11 +32,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ProcessSample
+ * @class FieldSample
  *
  * An interface for time series
  */
-class OT_API ProcessSample
+class OT_API FieldSample
   : public PersistentObject
 {
   CLASSNAME
@@ -48,13 +48,13 @@ public:
   typedef PersistentCollection<Sample> SamplePersistentCollection;
 
   /** Default constructor */
-  ProcessSample();
+  FieldSample();
 
   /** Constructors */
-  ProcessSample(const UnsignedInteger size,
+  FieldSample(const UnsignedInteger size,
                 const Field & field);
 
-  ProcessSample(const Mesh & mesh,
+  FieldSample(const Mesh & mesh,
                 const UnsignedInteger size,
                 const UnsignedInteger dimension);
 
@@ -74,7 +74,7 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual ProcessSample * clone() const;
+  virtual FieldSample * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -105,10 +105,10 @@ public:
   Field computeQuantilePerComponent(const Scalar prob) const;
 
   /** Get the i-th marginal sample */
-  ProcessSample getMarginal(const UnsignedInteger index) const;
+  FieldSample getMarginal(const UnsignedInteger index) const;
 
   /** Get the marginal sample corresponding to indices dimensions */
-  ProcessSample getMarginal(const Indices & indices) const;
+  FieldSample getMarginal(const Indices & indices) const;
 
   /** Draw a marginal of the timeSerie */
   Graph drawMarginal(const UnsignedInteger index = 0) const;
@@ -121,15 +121,15 @@ public:
 
 private:
 
-  /** Mesh on which the ProcessSample focuses */
+  /** Mesh on which the FieldSample focuses */
   Mesh mesh_;
 
   /** Sample collection of all the fields */
   SamplePersistentCollection data_;
 
-}; /* class ProcessSample */
+}; /* class FieldSample */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_PROCESSSAMPLE_HXX */
+#endif /* OPENTURNS_FIELDSAMPLE_HXX */

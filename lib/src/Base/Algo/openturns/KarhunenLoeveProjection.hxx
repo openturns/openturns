@@ -57,7 +57,7 @@ public:
 
   /** Operator () */
   virtual Point operator() (const Field & inFld) const;
-  virtual Sample operator() (const ProcessSample & inPS) const;
+  virtual Sample operator() (const FieldSample & inPS) const;
 
   /** Get the i-th marginal function */
   virtual Implementation getMarginal(const UnsignedInteger i) const;

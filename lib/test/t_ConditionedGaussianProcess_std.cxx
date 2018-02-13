@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
   fullprint << "realization = " << realization << std::endl;
 
   //  Get a sample & compare it to expectation
-  ProcessSample sample(process.getSample(5000));
+  FieldSample sample(process.getSample(5000));
   fullprint << "Mean over 5000 realizations = " << sample.computeMean() << std::endl;
 
   return ExitCode::Success;

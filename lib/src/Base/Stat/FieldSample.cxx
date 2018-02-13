@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ProcessSample Class
+ *  @brief FieldSample Class
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -29,17 +29,17 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<ProcessSample>)
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<FieldSample>)
 
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Field>)
 
 static const Factory<PersistentCollection<Field> > Factory_PersistentCollection_Field;
 
-CLASSNAMEINIT(ProcessSample)
+CLASSNAMEINIT(FieldSample)
 
-static const Factory<ProcessSample> Factory_ProcessSample;
+static const Factory<FieldSample> Factory_FieldSample;
 
-ProcessSample::ProcessSample()
+FieldSample::FieldSample()
   : PersistentObject()
   , mesh_()
   , data_(0)
@@ -48,7 +48,7 @@ ProcessSample::ProcessSample()
 }
 
 /* Default constructor */
-ProcessSample::ProcessSample(const UnsignedInteger size,
+FieldSample::FieldSample(const UnsignedInteger size,
                              const Field & field)
   : PersistentObject()
   , mesh_(field.getMesh())
@@ -57,7 +57,7 @@ ProcessSample::ProcessSample(const UnsignedInteger size,
   // Nothing to do
 }
 
-ProcessSample::ProcessSample(const Mesh & mesh,
+FieldSample::FieldSample(const Mesh & mesh,
                              const UnsignedInteger size,
                              const UnsignedInteger dimension)
   : PersistentObject()
@@ -68,22 +68,22 @@ ProcessSample::ProcessSample(const Mesh & mesh,
 }
 
 /* Virtual constructor */
-ProcessSample * ProcessSample::clone() const
+FieldSample * FieldSample::clone() const
 {
-  return new ProcessSample(*this);
+  return new FieldSample(*this);
 }
 
 /* String converter */
-String ProcessSample::__repr__() const
+String FieldSample::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << ProcessSample::GetClassName()
+  oss << "class=" << FieldSample::GetClassName()
       << " mesh=" << mesh_
       << " values=" << data_;
   return oss;
 }
 
-String ProcessSample::__str__(const String & offset) const
+String FieldSample::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset << "[";
@@ -94,7 +94,7 @@ String ProcessSample::__str__(const String & offset) const
 }
 
 /* Partial copy constructor */
-void ProcessSample::add(const Field & field)
+void FieldSample::add(const Field & field)
 {
   if (getSize() == 0)
   {
@@ -105,7 +105,7 @@ void ProcessSample::add(const Field & field)
   else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimenson or its mesh are incompatible.";
 }
 
-void ProcessSample::add(const Sample & values)
+void FieldSample::add(const Sample & values)
 {
   if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their size=" << values.getSize() << " does not match the number of vertices=" << mesh_.getVerticesNumber() << " of the mesh.";
   if ((getSize() > 0) && (data_[0].getDimension() != values.getDimension())) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their dimension=" << values.getDimension() << " does not match the process sample dimension=" << data_[0].getDimension();
@@ -114,13 +114,13 @@ void ProcessSample::add(const Sample & values)
 
 
 /* Operators accessors */
-Field ProcessSample::getField(const UnsignedInteger index) const
+Field FieldSample::getField(const UnsignedInteger index) const
 {
   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return Field(mesh_, data_[index]);
 }
 
-void ProcessSample::setField(const Field & field,
+void FieldSample::setField(const Field & field,
                              const UnsignedInteger index)
 {
   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
@@ -128,44 +128,44 @@ void ProcessSample::setField(const Field & field,
   data_[index] = field.getValues();
 }
 
-Sample & ProcessSample::operator[] (const UnsignedInteger index)
+Sample & FieldSample::operator[] (const UnsignedInteger index)
 {
   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
-const Sample & ProcessSample::operator[] (const UnsignedInteger index) const
+const Sample & FieldSample::operator[] (const UnsignedInteger index) const
 {
   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
 /* Time grid accessors */
-RegularGrid ProcessSample::getTimeGrid() const
+RegularGrid FieldSample::getTimeGrid() const
 {
   return RegularGrid(mesh_);
 }
 
 /* Mesh accessors */
-Mesh ProcessSample::getMesh() const
+Mesh FieldSample::getMesh() const
 {
   return mesh_;
 }
 
 /* Dimension accessors */
-UnsignedInteger ProcessSample::getDimension() const
+UnsignedInteger FieldSample::getDimension() const
 {
   if (data_.getSize() == 0) return 0;
   return data_[0].getDimension();
 }
 
 /* Dimension accessors */
-UnsignedInteger ProcessSample::getSize() const
+UnsignedInteger FieldSample::getSize() const
 {
   return data_.getSize();
 }
 
-Field ProcessSample::computeMean() const
+Field FieldSample::computeMean() const
 {
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
@@ -177,14 +177,14 @@ Field ProcessSample::computeMean() const
 }
 
 /* Compute the sample of spatial means of each field */
-Sample ProcessSample::computeTemporalMean() const
+Sample FieldSample::computeTemporalMean() const
 {
   if (!mesh_.isRegular() || (mesh_.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the temporal mean is defined only when the mesh is regular and of dimension 1.";
   return computeSpatialMean();
 }
 
 /* Compute the sample of spatial means of each field */
-Sample ProcessSample::computeSpatialMean() const
+Sample FieldSample::computeSpatialMean() const
 {
   const UnsignedInteger size = getSize();
   const UnsignedInteger dimension = getDimension();
@@ -196,7 +196,7 @@ Sample ProcessSample::computeSpatialMean() const
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
-Field ProcessSample::computeQuantilePerComponent(const Scalar prob) const
+Field FieldSample::computeQuantilePerComponent(const Scalar prob) const
 {
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
@@ -217,25 +217,25 @@ Field ProcessSample::computeQuantilePerComponent(const Scalar prob) const
 }
 
 /* Get the i-th marginal process sample */
-ProcessSample ProcessSample::getMarginal(const UnsignedInteger index) const
+FieldSample FieldSample::getMarginal(const UnsignedInteger index) const
 {
   const UnsignedInteger size = data_.getSize();
-  ProcessSample result(mesh_, size, 1);
+  FieldSample result(mesh_, size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].getMarginal(index);
   return result;
 }
 
 /* Get the marginal field corresponding to indices dimensions */
-ProcessSample ProcessSample::getMarginal(const Indices & indices) const
+FieldSample FieldSample::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger size = data_.getSize();
-  ProcessSample result(mesh_, size, indices.getSize());
+  FieldSample result(mesh_, size, indices.getSize());
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].getMarginal(indices);
   return result;
 }
 
-/* Draw a marginal of the ProcessSample, ie the collection of all the Field marginals */
-Graph ProcessSample::drawMarginal(const UnsignedInteger index) const
+/* Draw a marginal of the FieldSample, ie the collection of all the Field marginals */
+Graph FieldSample::drawMarginal(const UnsignedInteger index) const
 {
   if (mesh_.getDimension() != 1) throw NotDefinedException(HERE) << "Error: cannot draw a marginal sample if the mesh is of dimension greater than one. Here dimension=" << mesh_.getDimension();
   if (index > getDimension() - 1 ) throw InvalidArgumentException(HERE) << "Error : indice should be in {0,...," << getDimension() - 1 << "}";
@@ -255,7 +255,7 @@ Graph ProcessSample::drawMarginal(const UnsignedInteger index) const
 }
 
 /* Method save() stores the object through the StorageManager */
-void ProcessSample::save(Advocate & adv) const
+void FieldSample::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "mesh_", mesh_);
@@ -263,7 +263,7 @@ void ProcessSample::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ProcessSample::load(Advocate & adv)
+void FieldSample::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "mesh_", mesh_);

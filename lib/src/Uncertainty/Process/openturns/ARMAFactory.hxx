@@ -70,7 +70,7 @@ public:
   ARMA build(const TimeSeries & timeSeries) const;
 
   /** Build method */
-  ARMA build(const ProcessSample & sample) const;
+  ARMA build(const FieldSample & sample) const;
 
 
 }; /* class ARMAFactory */

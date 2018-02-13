@@ -27,7 +27,7 @@ myOverlapSize = 0.3
 # Build a spectral model factory
 myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber, myOverlapSize)
 
-# Estimation on a TimeSeries or on a ProcessSample
+# Estimation on a TimeSeries or on a FieldSample
 # myEstimatedModel_TS = myFactory.build(myTimeSeries)
 myEstimatedModel_PS = myFactory.buildAsUserDefinedSpectralModel(mySample)
 

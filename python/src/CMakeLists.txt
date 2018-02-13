@@ -140,7 +140,7 @@ ot_add_python_module(typ typ_module.i
                       Sample.i Sample_doc.i.in
                       FieldImplementation.i FieldImplementation_doc.i.in
                       Field.i Field_doc.i.in
-                      ProcessSample.i ProcessSample_doc.i.in
+                      FieldSample.i FieldSample_doc.i.in
                       TimeSeries.i TimeSeries_doc.i.in
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in
                       HistoryStrategy.i HistoryStrategy_doc.i.in

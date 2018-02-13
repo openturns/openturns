@@ -166,13 +166,13 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
 }
 
 /* Build a covariance model based on a process sample */
-CovarianceModelImplementation::Implementation StationaryCovarianceModelFactory::build(const ProcessSample & sample) const
+CovarianceModelImplementation::Implementation StationaryCovarianceModelFactory::build(const FieldSample & sample) const
 {
   return buildAsUserDefinedStationaryCovarianceModel(sample).clone();
 }
 
 /* Build a user defined covariance model based on a process sample */
-UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const ProcessSample & sample) const
+UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUserDefinedStationaryCovarianceModel(const FieldSample & sample) const
 {
   return buildAsUserDefinedStationaryCovarianceModel(spectralFactory_.buildAsUserDefinedSpectralModel(sample));
 }
