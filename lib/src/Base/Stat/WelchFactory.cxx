@@ -116,7 +116,7 @@ void WelchFactory::setOverlap(const Scalar overlap)
   overlap_ = overlap;
 }
 
-WelchFactory::Implementation WelchFactory::build(const ProcessSample & sample) const
+WelchFactory::Implementation WelchFactory::build(const FieldSample & sample) const
 {
   return buildAsUserDefinedSpectralModel(sample).clone();
 }
@@ -126,7 +126,7 @@ WelchFactory::Implementation WelchFactory::build(const Field & timeSeries) const
   return buildAsUserDefinedSpectralModel(timeSeries).clone();
 }
 
-UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const ProcessSample & sample) const
+UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const FieldSample & sample) const
 {
   const UnsignedInteger dimension = sample.getDimension();
   const UnsignedInteger sampleSize = sample.getSize();
@@ -192,7 +192,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
 
 UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Field & timeSeries) const
 {
-  // We split the time series into overlaping blockNumbers that are used as a ProcessSample
+  // We split the time series into overlaping blockNumbers that are used as a FieldSample
   const UnsignedInteger size = timeSeries.getSize();
   const UnsignedInteger dimension = timeSeries.getOutputDimension();
   // First, compute the block size
@@ -202,7 +202,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Fie
   const UnsignedInteger hopSize = blockNumber_ == 1 ? 0 : (size - blockSize) / (blockNumber_ - 1);
   const RegularGrid timeGrid(timeSeries.getTimeGrid());
   // Initialize the equivalent process sample with the correct time grid
-  ProcessSample sample(blockNumber_, Field(RegularGrid(timeGrid.getStart(), timeGrid.getStep(), blockSize), dimension));
+  FieldSample sample(blockNumber_, Field(RegularGrid(timeGrid.getStart(), timeGrid.getStep(), blockSize), dimension));
   for (UnsignedInteger blockIndex = 0; blockIndex < blockNumber_; ++blockIndex)
   {
     for (UnsignedInteger timeIndex = 0; timeIndex < blockSize; ++timeIndex)

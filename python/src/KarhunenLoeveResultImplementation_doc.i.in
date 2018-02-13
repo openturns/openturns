@@ -18,7 +18,7 @@ lambda : :class:`~openturns.Point`
     The first eigenvalues of the Fredholm problem.
 modes : :class:`~openturns.Basis`
     The first modes  of the Fredholm problem.
-modesAsProcessSample : :class:`~openturns.ProcessSample`
+modesAsProcessSample : :class:`~openturns.FieldSample`
     The values of the modes on the mesh associated to the KarhunenLoeve algorithm.
 projection : :class:`~openturns.Matrix`
     The projection matrix.
@@ -142,7 +142,7 @@ OT_KarhunenLoeveResult_getEigenValues_doc
 
 Returns
 -------
-modesAsProcessSample : :class:`~openturns.ProcessSample`
+modesAsProcessSample : :class:`~openturns.FieldSample`
     The values of each mode on a mesh whose vertices were used to discretize the
     Fredholm equation.
 
@@ -162,7 +162,7 @@ OT_KarhunenLoeveResult_getModesAsProcessSample_doc
 
 Returns
 -------
-modesAsProcessSample : :class:`~openturns.ProcessSample`
+modesAsProcessSample : :class:`~openturns.FieldSample`
     The values of each scaled mode on a mesh whose vertices were used to
     discretize the Fredholm equation.
 
@@ -213,7 +213,7 @@ field :  :class:`~openturns.Field`
     A field.
 basis :  :class:`~openturns.Basis`
     A collection f functions.
-fieldSample :  :class:`~openturns.ProcessSample`
+fieldSample :  :class:`~openturns.FieldSample`
     A collection f fields.
 
 
@@ -230,7 +230,7 @@ Notes
 The *project* method calculates the projection :eq:`projection` on a function  or a field where only the first :math:`K` elements of the sequences are calculated.
 :math:`K` is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`.
 
-Lets note :math:`\cM_{KL}` the mesh coming from the :class:`~openturns.KarhunenLoeveResult` (ie the one contained in the *modesAsSample* :class:`~openturns.ProcessSample`).
+Lets note :math:`\cM_{KL}` the mesh coming from the :class:`~openturns.KarhunenLoeveResult` (ie the one contained in the *modesAsSample* :class:`~openturns.FieldSample`).
 
 If the given field is defined on :math:`\cM_{KL}`, the associated values  are directly used for the projection. Otherwise, a :class:`~openturns.P1LagrangeEvaluation`  function is built using this field and then used to interpolate the values of the field on :math:`\cM_{KL}`.
 

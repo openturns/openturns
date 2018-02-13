@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     // Create a sample of time series
     const UnsignedInteger N = 1000;
-    ProcessSample sample(myProcess.getSample(N));
+    FieldSample sample(myProcess.getSample(N));
 
     // Create the spectral density factory
     WelchFactory spectralFactory;

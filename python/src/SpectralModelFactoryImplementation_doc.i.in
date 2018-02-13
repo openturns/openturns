@@ -78,7 +78,7 @@ Parameters
 ----------
 myTimeSeries : :class:`~openturns.TimeSeries` 
     The time series from which the spectral model is estimated.
-myProcessSample : :class:`~openturns.ProcessSample` 
+myProcessSample : :class:`~openturns.FieldSample` 
     The sample of time series from which the spectral model is estimated.
 
 Returns

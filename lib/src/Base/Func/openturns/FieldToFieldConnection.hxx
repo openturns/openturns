@@ -61,7 +61,7 @@ public:
   using FieldFunctionImplementation::operator();
   Field operator() (const Field & inF) const;
 
-  ProcessSample operator() (const ProcessSample & inS) const;
+  FieldSample operator() (const FieldSample & inS) const;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;

@@ -16,7 +16,7 @@ General objects
     :template: classWithPlot.rst_t
     Field
     TimeSeries
-    ProcessSample
+    FieldSample
 
 Temporal information
 ====================

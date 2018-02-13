@@ -105,11 +105,11 @@ public:
   void setMesh (const Mesh & mesh);
 
   /** Process sample accessors */
-  ProcessSample getSample(const UnsignedInteger size) const;
+  FieldSample getSample(const UnsignedInteger size) const;
 
   /** Continuation of the last realization on a given number of steps */
   TimeSeries getFuture(const UnsignedInteger stepNumber) const;
-  ProcessSample getFuture(const UnsignedInteger stepNumber,
+  FieldSample getFuture(const UnsignedInteger stepNumber,
                           const UnsignedInteger size) const;
 
   /** Get the process corresponding to the i-th marginal component */

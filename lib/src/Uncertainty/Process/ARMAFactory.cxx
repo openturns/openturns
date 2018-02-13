@@ -83,7 +83,7 @@ ARMA ARMAFactory::build(const TimeSeries & timeSeries) const
 }
 
 /* Build method */
-ARMA ARMAFactory::build(const ProcessSample & sample) const
+ARMA ARMAFactory::build(const FieldSample & sample) const
 {
   return getImplementation()->build(sample);
 }

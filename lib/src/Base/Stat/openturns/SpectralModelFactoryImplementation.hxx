@@ -22,7 +22,7 @@
 #define OPENTURNS_SPECTRALMODELFACTORYIMPLEMENTATION_HXX
 
 #include "openturns/SpectralModel.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PersistentObject.hxx"
@@ -61,7 +61,7 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */
-  virtual Implementation build(const ProcessSample & sample) const;
+  virtual Implementation build(const FieldSample & sample) const;
 
   /** Build a a spectral model based on a Field */
   virtual Implementation build(const Field & timeSerie) const;

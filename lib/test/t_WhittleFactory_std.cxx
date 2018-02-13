@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     TimeSeries timeSeries(myARMA.getRealization());
 
     /* Create a sample */
-    ProcessSample sample(myARMA.getSample(100));
+    FieldSample sample(myARMA.getSample(100));
 
     /* First, build an ARMA based on a given order using the WhittleFactory */
     {

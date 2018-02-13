@@ -84,7 +84,7 @@ public:
   Point operator() (const Point & location,
                     const Point & inP) const;
   Field operator() (const Field & inFld) const;
-  ProcessSample operator() (const ProcessSample & inPS) const;
+  FieldSample operator() (const FieldSample & inPS) const;
 
   /** Get the i-th marginal function */
   FieldFunction getMarginal(const UnsignedInteger i) const;

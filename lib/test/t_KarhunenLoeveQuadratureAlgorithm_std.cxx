@@ -46,11 +46,11 @@ int main(int argc, char *argv[])
     algo.run();
     KarhunenLoeveResult result(algo.getResult());
     Point lambda(result.getEigenValues());
-    ProcessSample KLModes(result.getModesAsProcessSample());
+    FieldSample KLModes(result.getModesAsProcessSample());
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
     GaussianProcess process(model, KLModes.getMesh());
-    ProcessSample sample(process.getSample(10));
+    FieldSample sample(process.getSample(10));
     Sample coefficients(result.project(sample));
     fullprint << "KL coefficients=" << coefficients << std::endl;
     Basis KLFunctions(result.getModes());
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
       algo2.run();
       KarhunenLoeveResult result(algo2.getResult());
       Point lambda(result.getEigenValues());
-      ProcessSample KLModes(result.getModesAsProcessSample());
+      FieldSample KLModes(result.getModesAsProcessSample());
       // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
       // fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;

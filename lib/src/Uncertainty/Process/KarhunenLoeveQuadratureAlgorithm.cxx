@@ -339,7 +339,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   MatrixImplementation transposedProjection(nodesNumber * dimension, K);
   Point selectedEV(K);
   Basis modes(0);
-  ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
+  FieldSample modesAsProcessSample(Mesh(nodes), 0, dimension);
   SampleImplementation values(nodesNumber, dimension);
   UnsignedInteger indexProjection = 0;
   for (UnsignedInteger k = 0; k < K; ++k)

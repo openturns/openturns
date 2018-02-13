@@ -88,7 +88,7 @@ String SpectralModelFactory::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
-SpectralModel SpectralModelFactory::build(const ProcessSample & sample) const
+SpectralModel SpectralModelFactory::build(const FieldSample & sample) const
 {
   return getImplementation()->build(sample);
 }

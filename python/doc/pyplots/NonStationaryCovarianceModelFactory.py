@@ -68,7 +68,7 @@ myFieldSample = myProcess.getSample(size)
 # Build a covariance model factory
 myFactory = ot.NonStationaryCovarianceModelFactory()
 
-# Estimation on a the ProcessSample
+# Estimation on a the FieldSample
 myEstimatedModel = myFactory.build(myFieldSample)
 
 # Define the python function associated to myCovarianceModel

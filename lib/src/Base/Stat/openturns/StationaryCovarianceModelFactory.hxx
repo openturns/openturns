@@ -54,10 +54,10 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Build a covariance model based on a process sample */
-  CovarianceModelImplementation::Implementation build(const ProcessSample & sample) const;
+  CovarianceModelImplementation::Implementation build(const FieldSample & sample) const;
 
   /** Build a user defined covariance model based on a process sample */
-  UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const ProcessSample & sample) const;
+  UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const FieldSample & sample) const;
 
   /** Build a user defined covariance model based on a spectral model and a frequency grid */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const SpectralModel & mySpectralModel,

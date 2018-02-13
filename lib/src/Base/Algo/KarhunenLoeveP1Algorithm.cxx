@@ -145,7 +145,7 @@ void KarhunenLoeveP1Algorithm::run()
   MatrixImplementation transposedProjection(augmentedDimension, K);
   Point selectedEV(K);
   Basis modes(0);
-  ProcessSample modesAsProcessSample(mesh_, 0, dimension);
+  FieldSample modesAsProcessSample(mesh_, 0, dimension);
   const UnsignedInteger meshDimension = mesh_.getDimension();
   SampleImplementation values(numVertices, dimension);
   UnsignedInteger index = 0;

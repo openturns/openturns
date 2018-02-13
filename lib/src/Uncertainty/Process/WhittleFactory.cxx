@@ -120,7 +120,7 @@ void WhittleFactory::buildSpectralDensity(const TimeSeries & timeSeries) const
 }
 
 /* Estimate the spectral density */
-void WhittleFactory::buildSpectralDensity(const ProcessSample & sample) const
+void WhittleFactory::buildSpectralDensity(const FieldSample & sample) const
 {
   timeGrid_ = sample.getTimeGrid();
   // Estimate a spectral model
@@ -373,18 +373,18 @@ ARMA WhittleFactory::build(const TimeSeries & timeSeries) const
 }
 
 /* Build method */
-ARMA WhittleFactory::buildWithCriteria(const ProcessSample & sample,
+ARMA WhittleFactory::buildWithCriteria(const FieldSample & sample,
                                        Point & informationCriteria) const
 {
   if (sample.getDimension() != 1)
-    throw NotYetImplementedException(HERE) << "In WhittleFactory::build(const ProcessSample & sample, Point & informationCriteria) const: currently implemented for 1 d case only";
+    throw NotYetImplementedException(HERE) << "In WhittleFactory::build(const FieldSample & sample, Point & informationCriteria) const: currently implemented for 1 d case only";
 
   // Compute the tapered periodogramme for the process sample using the Welch method
   buildSpectralDensity(sample);
   return maximizeLogLikelihood(informationCriteria);
 }
 
-ARMA WhittleFactory::build(const ProcessSample & sample) const
+ARMA WhittleFactory::build(const FieldSample & sample) const
 {
   Point informationCriteria;
   return buildWithCriteria(sample, informationCriteria);

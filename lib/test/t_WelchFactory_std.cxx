@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
     // Create a Process sample
     UnsignedInteger N = 100;
-    ProcessSample sample(myProcess.getSample(N));
+    FieldSample sample(myProcess.getSample(N));
 
     // Filtering Windows
     WelchFactory myFactory;

@@ -60,11 +60,11 @@ public:
 
   /** Modes accessors */
   Basis getModes() const;
-  ProcessSample getModesAsProcessSample() const;
+  FieldSample getModesAsProcessSample() const;
 
   /** Scaled modes accessors */
   Basis getScaledModes() const;
-  ProcessSample getScaledModesAsProcessSample() const;
+  FieldSample getScaledModesAsProcessSample() const;
 
   /** Projection matrix accessor */
   Matrix getProjectionMatrix() const;
@@ -73,7 +73,7 @@ public:
   Point project(const Function & function) const;
   Point project(const Field & field) const;
   Sample project(const Basis & basis) const;
-  Sample project(const ProcessSample & sample) const;
+  Sample project(const FieldSample & sample) const;
 
   /** Lift method */
   Function lift(const Point & coefficients) const;

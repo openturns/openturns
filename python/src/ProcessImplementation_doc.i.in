@@ -117,10 +117,10 @@ size : int, :math:`size \geq 0`, optional
 
 Returns
 -------
-prediction : :class:`~openturns.ProcessSample` or :class:`~openturns.TimeSeries`
+prediction : :class:`~openturns.FieldSample` or :class:`~openturns.TimeSeries`
     :math:`N` future iterations of the process.
     If :math:`size = 1`, *prediction* is a :class:`~openturns.TimeSeries`.
-    Otherwise, it is a :class:`~openturns.ProcessSample`."
+    Otherwise, it is a :class:`~openturns.FieldSample`."
 %enddef
 %feature("docstring") OT::ProcessImplementation::getFuture
 OT_Process_getFuture_doc
@@ -208,7 +208,7 @@ n : int, :math:`n \geq 0`
 
 Returns
 -------
-processSample : :class:`~openturns.ProcessSample`
+processSample : :class:`~openturns.FieldSample`
     :math:`n` realizations of the random process. A process sample is a
     collection of fields which share the same mesh :math:`\cM \in \Rset^n`."
 %enddef

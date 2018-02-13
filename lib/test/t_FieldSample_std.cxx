@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class ProcessSample for standard methods
+ *  @brief The test file of class FieldSample for standard methods
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -48,14 +48,14 @@ int main(int argc, char *argv[])
     // TimeSeries
     TimeSeries timeSerie(timeGrid, sample);
 
-    // We create an empty ProcessSample with default constructor
-    ProcessSample psample0;
+    // We create an empty FieldSample with default constructor
+    FieldSample psample0;
     psample0.setName("PSample0");
     fullprint << "Default constructor" << std::endl;
     fullprint << "psample0=" << psample0 << std::endl;
 
-    // We create an empty ProcessSample with timeGrid, size and dimension arguments
-    ProcessSample psample1(timeGrid, 4, dimension);
+    // We create an empty FieldSample with timeGrid, size and dimension arguments
+    FieldSample psample1(timeGrid, 4, dimension);
     fullprint << "Constructor based on size, dimension and timeGrid" << std::endl;
     fullprint << "psample1=" << psample1 << std::endl;
 
@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
     fullprint << "changing psample1[0] with []" << std::endl;
     fullprint << "psample1[0]=" << psample1[0] << std::endl;
 
-    // We create a ProcessSample with size and timeSerie arguments
-    ProcessSample psample2(3, timeSerie);
+    // We create a FieldSample with size and timeSerie arguments
+    FieldSample psample2(3, timeSerie);
     psample2.setName("PSample2");
     fullprint << "Constructor based on size / timeSerie" << std::endl;
     fullprint << "psample2=" << psample2 << std::endl;
@@ -79,8 +79,8 @@ int main(int argc, char *argv[])
     //    TimeSeries newtimeSeries(timeGrid, sample);
     //    collection.add( newtimeSeries );
 
-    // We create a ProcessSample with collection arguments arguments
-    //    ProcessSample psample3( collection );
+    // We create a FieldSample with collection arguments arguments
+    //    FieldSample psample3( collection );
 
     //    psample3.setName("PSample3");
     //    fullprint << "Constructor based on collection " << std::endl;

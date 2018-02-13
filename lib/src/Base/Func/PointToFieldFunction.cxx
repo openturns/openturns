@@ -129,7 +129,7 @@ Field PointToFieldFunction::operator() (const Point & inP) const
 }
 
 /* Operator () */
-ProcessSample PointToFieldFunction::operator() (const Sample & inS) const
+FieldSample PointToFieldFunction::operator() (const Sample & inS) const
 {
   return getImplementation()->operator()(inS);
 }

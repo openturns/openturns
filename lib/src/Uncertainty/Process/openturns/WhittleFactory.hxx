@@ -68,8 +68,8 @@ public:
   virtual ARMA build(const TimeSeries & timeSeries) const;
   ARMA buildWithCriteria(const TimeSeries & timeSeries,
                          Point & informationCriteriaOut) const;
-  virtual ARMA build(const ProcessSample & sample) const;
-  ARMA buildWithCriteria(const ProcessSample & sample,
+  virtual ARMA build(const FieldSample & sample) const;
+  ARMA buildWithCriteria(const FieldSample & sample,
                          Point & informationCriteriaOut) const;
 
   /** Verbosity accessor */
@@ -106,7 +106,7 @@ private :
 
   /** Estimate the periodogram */
   void buildSpectralDensity(const TimeSeries & timeSeries) const;
-  void buildSpectralDensity(const ProcessSample & sample) const;
+  void buildSpectralDensity(const FieldSample & sample) const;
 
   /** Initialize the starting points using the ResourceMap */
   void initializeStartingPoints();

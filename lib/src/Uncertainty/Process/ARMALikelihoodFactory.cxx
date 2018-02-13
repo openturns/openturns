@@ -682,9 +682,9 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 }
 
 /* Build method */
-ARMA ARMALikelihoodFactory::build(const ProcessSample & sample) const
+ARMA ARMALikelihoodFactory::build(const FieldSample & sample) const
 {
-  throw NotYetImplementedException(HERE) << "In ARMALikelihoodFactory::build(const ProcessSample & sample) const";
+  throw NotYetImplementedException(HERE) << "In ARMALikelihoodFactory::build(const FieldSample & sample) const";
 }
 
 // Set accessor for starting point of the optimization

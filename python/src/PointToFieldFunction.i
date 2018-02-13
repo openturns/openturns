@@ -187,8 +187,8 @@ class OpenTURNSPythonPointToFieldFunction(object):
 
     def _exec_sample(self, X):
         if len(X) == 0:
-            return ProcessSample(Mesh(), 0, self.getOutputDimension())
-        res = ProcessSample(1, self._exec(X[0]))
+            return FieldSample(Mesh(), 0, self.getOutputDimension())
+        res = FieldSample(1, self._exec(X[0]))
         for i in range(1, len(X)):
             res.add(self._exec(X[i]))
         return res

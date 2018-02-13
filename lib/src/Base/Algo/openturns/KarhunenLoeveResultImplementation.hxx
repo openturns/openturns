@@ -26,7 +26,7 @@
 #include "openturns/Point.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Field.hxx"
 
@@ -53,7 +53,7 @@ public:
       const Scalar threshold,
       const Point & eigenvalues,
       const Basis & modes,
-      const ProcessSample & modesAsProcessSample,
+      const FieldSample & modesAsProcessSample,
       const Matrix & projection);
 
   /** Virtual constructor */
@@ -70,11 +70,11 @@ public:
 
   /** Modes accessors */
   Basis getModes() const;
-  ProcessSample getModesAsProcessSample() const;
+  FieldSample getModesAsProcessSample() const;
 
   /** Scaled modes accessors */
   Basis getScaledModes() const;
-  ProcessSample getScaledModesAsProcessSample() const;
+  FieldSample getScaledModesAsProcessSample() const;
 
   /** Projection matrix accessor */
   Matrix getProjectionMatrix() const;
@@ -83,7 +83,7 @@ public:
   Point project(const Function & function) const;
   Point project(const Field & field) const;
   Sample project(const Basis & basis) const;
-  Sample project(const ProcessSample & sample) const;
+  Sample project(const FieldSample & sample) const;
 
   /** Lift method */
   Function lift(const Point & coefficients) const;
@@ -113,7 +113,7 @@ protected:
   Basis modes_;
 
   /** Modes as process sample */
-  ProcessSample modesAsProcessSample_;
+  FieldSample modesAsProcessSample_;
 
   /** Projection matrix */
   Matrix projection_;

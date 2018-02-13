@@ -24,7 +24,7 @@
 #define OPENTURNS_KARHUNENLOEVESVDALGORITHM_HXX
 
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,16 +44,16 @@ public:
   KarhunenLoeveSVDAlgorithm();
 
   /** Parameters constructor */
-  KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
+  KarhunenLoeveSVDAlgorithm(const FieldSample & sample,
                             const Scalar threshold = 0.0,
                             const Bool centeredSample = false);
 
-  KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
+  KarhunenLoeveSVDAlgorithm(const FieldSample & sample,
                             const Point & verticesWeights,
                             const Scalar threshold = 0.0,
                             const Bool centeredSample = false);
 
-  KarhunenLoeveSVDAlgorithm(const ProcessSample & sample,
+  KarhunenLoeveSVDAlgorithm(const FieldSample & sample,
                             const Point & verticesWeights,
                             const Point & sampleWeights,
                             const Scalar threshold = 0.0,
@@ -70,7 +70,7 @@ public:
   void run();
 
   /** Process sample accessor */
-  ProcessSample getSample() const;
+  FieldSample getSample() const;
 
   /** Vertices weights accessor */
   Point getVerticesWeights() const;
@@ -105,7 +105,7 @@ public:
 
 private:
   /** Underlying sample */
-  ProcessSample sample_;
+  FieldSample sample_;
 
   /** Flag to tell if the sample is centered */
   Bool centeredSample_;

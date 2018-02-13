@@ -40,7 +40,7 @@
 %include FieldImplementation.i
 %include Field.i
 %include TimeSeries.i 
-%include ProcessSample.i 
+%include FieldSample.i 
 %include SpecFunc.i
 %include EvaluationImplementation.i
 %include GradientImplementation.i

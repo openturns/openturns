@@ -45,7 +45,7 @@
 #include "openturns/FieldImplementation.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/ProcessSample.hxx"
+#include "openturns/FieldSample.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SecondOrderModelImplementation.hxx"
 #include "openturns/SecondOrderModel.hxx"
