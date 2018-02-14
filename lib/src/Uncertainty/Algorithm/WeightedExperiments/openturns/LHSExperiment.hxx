@@ -24,6 +24,7 @@
 #include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -66,6 +67,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
+  Sample generateStandard() const;
   Sample generateWithWeights(Point & weightsOut) const;
 
   /** Shuffle the cells. */
@@ -108,6 +110,9 @@ private:
   // Random shift flag
   Bool randomShift_;
 
+  // Transformation from uniform space to distribution space
+  MarginalTransformationEvaluation transformation_;
+  
 }; /* class LHSExperiment */
 
 

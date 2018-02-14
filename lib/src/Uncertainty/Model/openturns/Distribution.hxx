@@ -227,6 +227,9 @@ public:
                          const Scalar qMax,
                          const UnsignedInteger pointNumber,
                          const Bool tail = false) const;
+  /** Quantile computation for dimension=1 */
+  Scalar computeScalarQuantile(const Scalar prob,
+			       const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeInterval(const Scalar prob) const;

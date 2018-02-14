@@ -25,6 +25,7 @@
 #include <openturns/StorageManager.hxx>
 #include <openturns/LHSExperiment.hxx>
 #include <openturns/ComposedDistribution.hxx>
+#include "openturns/MarginalTransformationEvaluation.hxx"
 
 #include "openturns/SpaceFilling.hxx"
 #include "openturns/LHSResult.hxx"
@@ -77,18 +78,14 @@ protected:
 
   SpaceFilling spaceFilling_;
 
-  // marginal extraction can be costly
-  mutable ComposedDistribution::DistributionCollection marginals_;
-
-  /** Rank transformation */
-  Sample rankTransform(const Sample design) const;
-  Sample inverseRankTransform(const Sample design) const;
-
   OptimalLHSExperiment() {};
   friend class Factory<OptimalLHSExperiment>;
 
   mutable LHSResult result_;
 
+  // Transformation from uniform space to distribution space
+  MarginalTransformationEvaluation transformation_;
+  
 }; /* class OptimalLHSExperiment */
 
 } /* namespace OT */

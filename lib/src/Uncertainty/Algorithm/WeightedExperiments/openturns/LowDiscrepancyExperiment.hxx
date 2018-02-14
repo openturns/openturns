@@ -24,6 +24,7 @@
 #include "openturns/WeightedExperimentImplementation.hxx"
 #include "openturns/LowDiscrepancySequence.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/MarginalTransformationEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -95,9 +96,7 @@ public:
 protected:
 
 private:
-  // Marginal distributions
-  mutable DistributionCollection marginals_;
-
+  
   // Low discrepancy sequence
   LowDiscrepancySequence sequence_;
 
@@ -107,6 +106,9 @@ private:
   // Randomization flag
   Bool randomize_;
 
+  // Transformation from uniform space to distribution space
+  MarginalTransformationEvaluation transformation_;
+  
 }; /* class LowDiscrepancyExperiment */
 
 

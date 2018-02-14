@@ -48,14 +48,14 @@ of distribution:
 
 >>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, True)
 >>> print(myPlane.generate())
-    [ X0    X1    ]
+    [ y0    y1    ]
 0 : [ 0.5   0.5   ]
 1 : [ 0.75  0.25  ]
 2 : [ 0.25  0.75  ]
 3 : [ 0.375 0.375 ]
 4 : [ 0.875 0.875 ]
 >>> print(myPlane.generate())
-    [ X0     X1     ]
+    [ y0     y1     ]
 0 : [ 0.625  0.125  ]
 1 : [ 0.125  0.625  ]
 2 : [ 0.1875 0.3125 ]
@@ -63,7 +63,7 @@ of distribution:
 4 : [ 0.9375 0.0625 ]
 >>> myPlane.setDistribution(distribution)
 >>> print(myPlane.generate())
-    [ X0    X1    ]
+    [ y0    y1    ]
 0 : [ 0.5   0.5   ]
 1 : [ 0.75  0.25  ]
 2 : [ 0.25  0.75  ]
@@ -75,14 +75,14 @@ of distribution:
 
 >>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, False)
 >>> print(myPlane.generate())
-    [ X0    X1    ]
+    [ y0    y1    ]
 0 : [ 0.5   0.5   ]
 1 : [ 0.75  0.25  ]
 2 : [ 0.25  0.75  ]
 3 : [ 0.375 0.375 ]
 4 : [ 0.875 0.875 ]
 >>> print(myPlane.generate())
-    [ X0     X1     ]
+    [ y0     y1     ]
 0 : [ 0.625  0.125  ]
 1 : [ 0.125  0.625  ]
 2 : [ 0.1875 0.3125 ]
@@ -90,7 +90,7 @@ of distribution:
 4 : [ 0.9375 0.0625 ]
 >>> myPlane.setDistribution(distribution)
 >>> print(myPlane.generate())
-    [ X0     X1     ]
+    [ y0     y1     ]
 0 : [ 0.4375 0.5625 ]
 1 : [ 0.3125 0.1875 ]
 2 : [ 0.8125 0.6875 ]
@@ -149,6 +149,7 @@ randomize : bool
 Parameters
 ----------
 randomize : bool
-    Use a cyclic scrambling of the low discrepancy sequence.
+    Use a cyclic scrambling of the low discrepancy sequence. See [Lecuyer2005]_ for
+    the interest of such a scrambling.
     Default is false.
 "

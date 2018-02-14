@@ -316,7 +316,8 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
       if (upperTail) inputCDF = inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
       // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
       // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
-      const Scalar q = outputDistributionCollection_[i].computeQuantile(inputCDF, upperTail)[0];
+      // Avoid to create useless Point
+      const Scalar q = outputDistributionCollection_[i].getImplementation()->computeScalarQuantile(inputCDF, upperTail);
       result[i] = q;
     }
   }
@@ -386,6 +387,8 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Point x(1, inP[j]);
           const Distribution inputMarginal(inputDistributionCollection_[j]);
           const Distribution outputMarginal(outputDistributionCollection_[j]);
+	  // Here it is useless to call computeScalarQuantile() as the result will
+	  // be promoted into a Point in computePDF()
           const Scalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
           if (denominator > 0.0)
           {
@@ -409,6 +412,8 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Point x(1, inP[j]);
           const Distribution inputMarginal(inputDistributionCollection_[j]);
           const Distribution outputMarginal(outputDistributionCollection_[j]);
+	  // Here it is useless to call computeScalarQuantile() as the result will
+	  // be promoted into a Point in computePDF()
           const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
           const Scalar denominator = outputMarginal.computePDF(q);
           if (denominator > 0.0)

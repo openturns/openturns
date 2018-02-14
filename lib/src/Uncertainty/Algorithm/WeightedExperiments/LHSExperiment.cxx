@@ -42,7 +42,8 @@ LHSExperiment::LHSExperiment()
   , alwaysShuffle_(false)
   , randomShift_(true)
 {
-  // Nothing to do
+  // Check if the distribution has an independent copula and build the transformation
+  setDistribution(distribution_);
 }
 
 /* Constructor with parameters */
@@ -56,7 +57,8 @@ LHSExperiment::LHSExperiment(const UnsignedInteger size,
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
-  // Nothing to do
+  // Check if the distribution has an independent copula and build the transformation
+  setDistribution(distribution_);
 }
 
 /* Constructor with parameters */
@@ -71,7 +73,7 @@ LHSExperiment::LHSExperiment(const Distribution & distribution,
   , alwaysShuffle_(alwaysShuffle)
   , randomShift_(randomShift)
 {
-  // Check if the distribution has an independent copula
+  // Check if the distribution has an independent copula and build the transformation
   setDistribution(distribution);
 }
 
@@ -106,23 +108,23 @@ String LHSExperiment::__str__(const String & offset) const
 }
 
 /* Sample generation */
-Sample LHSExperiment::generateWithWeights(Point & weights) const
+Sample LHSExperiment::generateStandard() const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   // To insure that the shuffle has been initialized
   (void) getShuffle();
-  Sample sample(size_, dimension);
+  SampleImplementation sample(size_, dimension);
+  const Point u(randomShift_ ? RandomGenerator::Generate(size_ * dimension) : Point(size_ * dimension, 0.5));
+  sample.setData((Point(*shuffle_.getImplementation()) + u) / size_);
+  return sample;
+}
+
+Sample LHSExperiment::generateWithWeights(Point & weights) const
+{
+  Sample sample(generateStandard());
+  // In-place transformation
+  sample = transformation_(sample);
   sample.setDescription(distribution_.getDescription());
-  Point u(dimension, 0.5);
-  for(UnsignedInteger index = 0; index < size_; ++index)
-  {
-    if (randomShift_) u = RandomGenerator::Generate(dimension);
-    for(UnsignedInteger component = 0; component < dimension; ++component)
-    {
-      const Scalar xi = (shuffle_(component, index) + u[component]) / size_;
-      sample[index][component] = marginals_[component].computeQuantile(xi)[0];
-    }
-  }
   weights = Point(size_, 1.0 / size_);
   return sample;
 }
@@ -170,11 +172,13 @@ void LHSExperiment::setDistribution(const Distribution & distribution)
 {
   if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: cannot use the LHS experiment with a non-independent copula.";
   const UnsignedInteger dimension = distribution.getDimension();
-  marginals_ = DistributionCollection(dimension);
+  DistributionCollection marginals(dimension);
   // Get the marginal distributions
-  for (UnsignedInteger i = 0; i < dimension; ++ i) marginals_[i] = distribution.getMarginal(i);
+  for (UnsignedInteger i = 0; i < dimension; ++ i) marginals[i] = distribution.getMarginal(i);
   if (dimension != getDistribution().getDimension())
     isAlreadyComputedShuffle_ = false;
+  // Build the iso-probabilistic transformation
+  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
   WeightedExperimentImplementation::setDistribution(distribution);
 }
 
@@ -218,4 +222,3 @@ void LHSExperiment::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
-
