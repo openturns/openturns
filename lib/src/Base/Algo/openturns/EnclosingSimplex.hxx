@@ -51,6 +51,9 @@ public:
   /** Parameter constructor */
   EnclosingSimplex(const Sample & vertices, const IndicesCollection & simplices);
 
+  /** Parameter constructor */
+  EnclosingSimplex(const Sample & vertices, const Indices & flatSimplexIndices, const Indices & offsetSimplexIndices);
+
   /** Copy constructors */
   EnclosingSimplex(const EnclosingSimplexImplementation & implementation);
 

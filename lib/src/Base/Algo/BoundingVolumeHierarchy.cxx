@@ -61,6 +61,23 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(const Sample & vertices,
   initialize();
 }
 
+/* Parameter constructor */
+BoundingVolumeHierarchy::BoundingVolumeHierarchy(const Sample & vertices,
+                                                 const Indices & flatSimplexIndices,
+                                                 const Indices & offsetSimplexIndices,
+                                                 const UnsignedInteger binNumber,
+                                                 const String strategy)
+  : EnclosingSimplexImplementation(vertices, offsetSimplexIndices, flatSimplexIndices)
+  , p_root_(0)
+  , binNumber_(binNumber)
+  , strategy_(strategy)
+  , sortedSimplices_(0)
+{
+  if (binNumber_ < 1) throw InvalidArgumentException(HERE) << "Error: binNumber must not be null";
+  if (strategy_ != "Mean" && strategy_ != "Median") throw InvalidArgumentException(HERE) << "Error: strategy " << strategy << "not available, valid values are either Mean or Median";
+  initialize();
+}
+
 /* Virtual constructor */
 BoundingVolumeHierarchy * BoundingVolumeHierarchy::clone() const
 {
@@ -70,13 +87,13 @@ BoundingVolumeHierarchy * BoundingVolumeHierarchy::clone() const
 /* Initialize BVH */
 void BoundingVolumeHierarchy::initialize()
 {
-  if (simplices_.getSize() == 0) return;
+  if (offsetSimplexIndices_.getSize() <= 1) return;
 
   const UnsignedInteger dimension = vertices_.getDimension();
-  const UnsignedInteger nrSimplices = simplices_.getSize();
+  const UnsignedInteger nrSimplices = offsetSimplexIndices_.getSize() - 1;
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
-    if (simplices_[i].getSize() != dimension + 1) throw InvalidArgumentException(HERE) << "All simplices must have " << (dimension + 1) << " vertices";
+    if (offsetSimplexIndices_[i + 1] != offsetSimplexIndices_[i] + dimension + 1) throw InvalidArgumentException(HERE) << "All simplices must have " << (dimension + 1) << " vertices";
   }
 
   centerBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
@@ -257,7 +274,8 @@ UnsignedInteger BoundingVolumeHierarchy::getEnclosingSimplexIndex(const Point & 
   if (point.getDimension() != vertices_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << vertices_.getDimension() << ", got dimension=" << point.getDimension();
 
   // First, check against the bounding box
-  if (!boundingBox_.contains(point)) return simplices_.getSize();
+  const UnsignedInteger notFound = offsetSimplexIndices_.getSize() - 1;
+  if (!boundingBox_.contains(point)) return notFound;
 
   const UnsignedInteger dimension = point.getDimension();
   std::stack<Node::NodePointer> toVisit;
@@ -313,7 +331,7 @@ UnsignedInteger BoundingVolumeHierarchy::getEnclosingSimplexIndex(const Point & 
       }
     }
   }
-  return simplices_.getSize();
+  return notFound;
 }
 
 /* String converter */

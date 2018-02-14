@@ -50,6 +50,9 @@ public:
   /** Parameter constructor */
   EnclosingSimplexImplementation(const Sample & vertices, const IndicesCollection & simplices);
 
+  /** Parameter constructor */
+  EnclosingSimplexImplementation(const Sample & vertices, const Indices & flatSimplexIndices, const Indices & offsetSimplexIndices);
+
   /** Virtual copy constructor */
   virtual EnclosingSimplexImplementation * clone() const;
 
@@ -90,8 +93,12 @@ protected:
   /** The vertices */
   Sample vertices_;
 
-  /** The simplices */
-  IndicesPersistentCollection simplices_;
+  /** The simplices:
+      + flatSimplexIndices_ is a flattened list of vertex indices
+      + offsetSimplexIndices_ is of size (nrSimplices+1) and gives the position
+                              of the first vertex index in flatSimplexIndices_ */
+  Indices flatSimplexIndices_;
+  Indices offsetSimplexIndices_;
 
   // Global bounding box
   Interval boundingBox_;

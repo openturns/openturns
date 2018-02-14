@@ -7,6 +7,8 @@ Available constructors:
 
     EnclosingSimplex(*vertices, simplices*)
 
+    EnclosingSimplex(*vertices, flattenedSimplices, offsetSimplices*)
+
 Parameters
 ----------
 vertices : :class:`~openturns.Sample`
@@ -14,6 +16,14 @@ vertices : :class:`~openturns.Sample`
 
 simplices : sequence of :class:`~openturns.Indices`
     Simplices.
+
+flattenedSimplices : sequence of int
+    Flattened list of vertex indices.
+
+offsetSimplices : sequence of int
+    Sequence of size one plus the number of simplices.
+    For each simplex, it gives the position of the first vertex
+    index in flattenedSimplices
 
 See also
 --------

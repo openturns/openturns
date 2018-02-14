@@ -47,7 +47,32 @@ EnclosingSimplexImplementation::EnclosingSimplexImplementation()
 EnclosingSimplexImplementation::EnclosingSimplexImplementation(const Sample & vertices, const IndicesCollection & simplices)
   : PersistentObject()
   , vertices_(vertices)
-  , simplices_(simplices)
+  , lowerBoundingBoxSimplices_()
+  , upperBoundingBoxSimplices_()
+{
+  const UnsignedInteger nrSimplices = simplices.getSize();
+  offsetSimplexIndices_ = Indices(nrSimplices + 1);
+  flatSimplexIndices_ = Indices(0);
+  offsetSimplexIndices_[0] = 0;
+  for(UnsignedInteger i = 0; i < nrSimplices; ++i)
+  {
+    const Indices simplex = simplices[i];
+    const UnsignedInteger simplexSize = simplex.getSize();
+    offsetSimplexIndices_[i + 1] = offsetSimplexIndices_[i] + simplexSize;
+    for(UnsignedInteger j = 0; j < simplexSize; ++j)
+      flatSimplexIndices_.add(simplex[j]);
+  }
+  initialize();
+}
+
+/* Parameter constructor */
+EnclosingSimplexImplementation::EnclosingSimplexImplementation(const Sample & vertices,
+                                                               const Indices & flatSimplexIndices,
+                                                               const Indices & offsetSimplexIndices)
+  : PersistentObject()
+  , vertices_(vertices)
+  , flatSimplexIndices_(flatSimplexIndices)
+  , offsetSimplexIndices_(offsetSimplexIndices)
   , lowerBoundingBoxSimplices_()
   , upperBoundingBoxSimplices_()
 {
@@ -66,15 +91,14 @@ void EnclosingSimplexImplementation::initialize()
   boundingBox_ = Interval(vertices_.getMin(), vertices_.getMax());
   // Local bounding box of each simplex
   const UnsignedInteger dimension = vertices_.getDimension();
-  const UnsignedInteger nrSimplices = simplices_.getSize();
+  const UnsignedInteger nrSimplices = offsetSimplexIndices_.getSize() - 1;
   lowerBoundingBoxSimplices_ = Sample(nrSimplices, Point(dimension, SpecFunc::MaxScalar));
   upperBoundingBoxSimplices_ = Sample(nrSimplices, Point(dimension, - SpecFunc::MaxScalar));
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
-    const Indices simplex(simplices_[i]);
-    for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
+    for (UnsignedInteger j = offsetSimplexIndices_[i]; j < offsetSimplexIndices_[i + 1]; ++j)
     {
-      const UnsignedInteger index = simplex[j];
+      const UnsignedInteger index = flatSimplexIndices_[j];
       for(UnsignedInteger k = 0; k < dimension; ++k)
       {
         if (vertices_(index, k) < lowerBoundingBoxSimplices_(i, k))
@@ -95,7 +119,20 @@ Sample EnclosingSimplexImplementation::getVertices() const
 /* Simplices accessor */
 EnclosingSimplexImplementation::IndicesCollection EnclosingSimplexImplementation::getSimplices() const
 {
-  return simplices_;
+  const UnsignedInteger nrSimplices = offsetSimplexIndices_.getSize() - 1;
+  Collection<Indices> simplices;
+  UnsignedInteger offset = 0;
+  for (UnsignedInteger i = 0; i < nrSimplices; ++i)
+  {
+    const UnsignedInteger simplexSize = offsetSimplexIndices_[i + 1] - offsetSimplexIndices_[i];
+    Indices simplex(simplexSize);
+    for(UnsignedInteger j = 0; j < simplexSize; ++j)
+    {
+      simplex[j] = flatSimplexIndices_[offsetSimplexIndices_[i] + j];
+    }
+    simplices.add(simplex);
+  }
+  return simplices;
 }
 
 /* Get the index of the enclosing simplex of the given point */
@@ -133,10 +170,9 @@ Bool EnclosingSimplexImplementation::checkPointInSimplex(const Point & point, co
   }
 
   // Build the affine matrix associated with this simplex
-  const Indices vertexIndices(simplices_[index]);
   for (UnsignedInteger j = 0; j <= dimension; ++j)
   {
-    const Point vertexJ(vertices_[vertexIndices[j]]);
+    const Point vertexJ(vertices_[flatSimplexIndices_[offsetSimplexIndices_[index] + j]]);
     for (UnsignedInteger i = 0; i < dimension; ++i)
       simplexMatrix(i, j) = vertexJ[i];
     simplexMatrix(dimension, j) = 1.0;
@@ -172,7 +208,8 @@ void EnclosingSimplexImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("vertices_", vertices_);
-  adv.saveAttribute("simplices_", simplices_);
+  adv.saveAttribute("offsetSimplexIndices_", offsetSimplexIndices_);
+  adv.saveAttribute("flatSimplexIndices_", flatSimplexIndices_);
 }
 
 
@@ -181,7 +218,8 @@ void EnclosingSimplexImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("vertices_", vertices_);
-  adv.loadAttribute("simplices_", simplices_);
+  adv.loadAttribute("offsetSimplexIndices_", offsetSimplexIndices_);
+  adv.loadAttribute("flatSimplexIndices_", flatSimplexIndices_);
   initialize();
 }
 

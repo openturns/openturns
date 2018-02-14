@@ -41,6 +41,15 @@ EnclosingSimplex::EnclosingSimplex(const Sample & vertices, const IndicesCollect
   // Nothing to do
 }
 
+/* Constructor with parameters */
+EnclosingSimplex::EnclosingSimplex(const Sample & vertices,
+                                   const Indices & flatSimplexIndices,
+                                   const Indices & offsetSimplexIndices)
+  : TypedInterfaceObject<EnclosingSimplexImplementation>(new BoundingVolumeHierarchy(vertices, flatSimplexIndices, offsetSimplexIndices))
+{
+  // Nothing to do
+}
+
 /* Parameters constructor */
 EnclosingSimplex::EnclosingSimplex(const EnclosingSimplexImplementation & implementation)
   : TypedInterfaceObject<EnclosingSimplexImplementation>(implementation.clone())

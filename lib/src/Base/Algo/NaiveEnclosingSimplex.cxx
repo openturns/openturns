@@ -50,6 +50,14 @@ NaiveEnclosingSimplex::NaiveEnclosingSimplex(const Sample & vertices,
   initialize();
 }
 
+NaiveEnclosingSimplex::NaiveEnclosingSimplex(const Sample & vertices,
+                                             const Indices & offsetSimplexIndices,
+                                             const Indices & flatSimplexIndices)
+  : EnclosingSimplexImplementation(vertices, offsetSimplexIndices, flatSimplexIndices)
+{
+  initialize();
+}
+
 /* Virtual constructor */
 NaiveEnclosingSimplex * NaiveEnclosingSimplex::clone() const
 {
@@ -60,7 +68,7 @@ NaiveEnclosingSimplex * NaiveEnclosingSimplex::clone() const
 UnsignedInteger NaiveEnclosingSimplex::getEnclosingSimplexIndex(const Point & point) const
 {
   if (point.getDimension() != vertices_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << vertices_.getDimension() << ", got dimension=" << point.getDimension();
-  const UnsignedInteger nrSimplices = simplices_.getSize();
+  const UnsignedInteger nrSimplices = offsetSimplexIndices_.getSize() - 1;
 
   // First, check against the bounding box
   if (!boundingBox_.contains(point)) return nrSimplices;
@@ -94,7 +102,7 @@ void NaiveEnclosingSimplex::initialize()
 {
   nearestNeighbour_ = KDTree(vertices_);
 
-  const UnsignedInteger numSimplices = simplices_.getSize();
+  const UnsignedInteger numSimplices = offsetSimplexIndices_.getSize() - 1;
   const UnsignedInteger numVertices = vertices_.getSize();
   const UnsignedInteger dimension = vertices_.getDimension();
   verticesToSimplices_ = IndicesCollection(numVertices, Indices(0));
@@ -102,10 +110,9 @@ void NaiveEnclosingSimplex::initialize()
   upperBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension, - SpecFunc::MaxScalar));
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
-    const Indices simplex(simplices_[i]);
-    for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
+    for (UnsignedInteger j = offsetSimplexIndices_[i]; j < offsetSimplexIndices_[i + 1]; ++j)
     {
-      const UnsignedInteger index = simplex[j];
+      const UnsignedInteger index = flatSimplexIndices_[j];
       for(UnsignedInteger k = 0; k < dimension; ++k)
       {
         if (vertices_(index, k) < lowerBoundingBoxSimplices_(i, k))
