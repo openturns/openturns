@@ -37,6 +37,7 @@ static const Factory<EnclosingSimplexImplementation> Factory_EnclosingSimplexImp
 /* Constructor without parameters */
 EnclosingSimplexImplementation::EnclosingSimplexImplementation()
   : PersistentObject()
+  , offsetSimplexIndices_(1)
   , lowerBoundingBoxSimplices_()
   , upperBoundingBoxSimplices_()
 {
