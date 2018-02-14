@@ -12,6 +12,10 @@ Parameters
 sample : :class:`~openturns.Sample`
     Input points.
 
+See also
+--------
+KDTree, RegularGridNearestNeighbour
+
 >>> import openturns as ot
 >>> sample = ot.Normal(2).getSample(10)
 >>> finder = ot.NearestNeighbour(sample)

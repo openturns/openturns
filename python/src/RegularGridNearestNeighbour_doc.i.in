@@ -8,6 +8,10 @@ Parameters
 grid : :class:`~openturns.RegularGrid`
     Regular grid
 
+See also
+--------
+NearestNeighbour, KDTree
+
 Examples
 --------
 >>> import openturns as ot
