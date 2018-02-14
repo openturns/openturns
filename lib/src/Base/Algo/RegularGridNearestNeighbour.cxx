@@ -21,9 +21,7 @@
 
 #include "openturns/RegularGridNearestNeighbour.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/Indices.hxx"
-#include "openturns/SobolSequence.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
