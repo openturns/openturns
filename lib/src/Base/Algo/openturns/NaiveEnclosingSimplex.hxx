@@ -52,9 +52,6 @@ public:
   /** Parameter constructor */
   NaiveEnclosingSimplex(const Sample & vertices, const IndicesCollection & simplices);
 
-  /** Parameter constructor */
-  NaiveEnclosingSimplex(const Sample & vertices, const Indices & flatSimplexIndices, const Indices & offsetSimplexIndices);
-
   /** Virtual copy constructor */
   virtual NaiveEnclosingSimplex * clone() const;
 

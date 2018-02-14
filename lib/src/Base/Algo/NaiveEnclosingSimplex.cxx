@@ -50,14 +50,6 @@ NaiveEnclosingSimplex::NaiveEnclosingSimplex(const Sample & vertices,
   initialize();
 }
 
-NaiveEnclosingSimplex::NaiveEnclosingSimplex(const Sample & vertices,
-                                             const Indices & offsetSimplexIndices,
-                                             const Indices & flatSimplexIndices)
-  : EnclosingSimplexImplementation(vertices, offsetSimplexIndices, flatSimplexIndices)
-{
-  initialize();
-}
-
 /* Virtual constructor */
 NaiveEnclosingSimplex * NaiveEnclosingSimplex::clone() const
 {

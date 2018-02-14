@@ -50,32 +50,34 @@ EnclosingSimplexImplementation::EnclosingSimplexImplementation(const Sample & ve
   , lowerBoundingBoxSimplices_()
   , upperBoundingBoxSimplices_()
 {
-  const UnsignedInteger nrSimplices = simplices.getSize();
-  offsetSimplexIndices_ = Indices(nrSimplices + 1);
-  flatSimplexIndices_ = Indices(0);
-  offsetSimplexIndices_[0] = 0;
-  for(UnsignedInteger i = 0; i < nrSimplices; ++i)
+  // There are 2 different ways to pass simplices:
+  //   1. As a list of indices; for each simplex, simplices[i] gives its vertex indices
+  //   2. As a flattened list with offsets; simplices contains 3 elements:
+  //      + simplices[0] is empty (in order to distinguish from the first case)
+  //      + simplices[1] contains the flattened list of indices
+  //      + simplices[2] contains the offsets
+  if (simplices.getSize() == 3 && simplices[0].isEmpty())
   {
-    const Indices simplex = simplices[i];
-    const UnsignedInteger simplexSize = simplex.getSize();
-    offsetSimplexIndices_[i + 1] = offsetSimplexIndices_[i] + simplexSize;
-    for(UnsignedInteger j = 0; j < simplexSize; ++j)
-      flatSimplexIndices_.add(simplex[j]);
+    // 2nd case
+    flatSimplexIndices_ = simplices[1];
+    offsetSimplexIndices_ = simplices[2];
   }
-  initialize();
-}
-
-/* Parameter constructor */
-EnclosingSimplexImplementation::EnclosingSimplexImplementation(const Sample & vertices,
-                                                               const Indices & flatSimplexIndices,
-                                                               const Indices & offsetSimplexIndices)
-  : PersistentObject()
-  , vertices_(vertices)
-  , flatSimplexIndices_(flatSimplexIndices)
-  , offsetSimplexIndices_(offsetSimplexIndices)
-  , lowerBoundingBoxSimplices_()
-  , upperBoundingBoxSimplices_()
-{
+  else
+  {
+    // 1st case
+    const UnsignedInteger nrSimplices = simplices.getSize();
+    offsetSimplexIndices_ = Indices(nrSimplices + 1);
+    flatSimplexIndices_ = Indices(0);
+    offsetSimplexIndices_[0] = 0;
+    for(UnsignedInteger i = 0; i < nrSimplices; ++i)
+    {
+      const Indices simplex = simplices[i];
+      const UnsignedInteger simplexSize = simplex.getSize();
+      offsetSimplexIndices_[i + 1] = offsetSimplexIndices_[i] + simplexSize;
+      for(UnsignedInteger j = 0; j < simplexSize; ++j)
+        flatSimplexIndices_.add(simplex[j]);
+    }
+  }
   initialize();
 }
 

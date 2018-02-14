@@ -49,13 +49,6 @@ public:
                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber"),
                           const String strategy = ResourceMap::Get("BoundingVolumeHierarchy-Strategy"));
 
-  /** Parameter constructor */
-  BoundingVolumeHierarchy(const Sample & vertices,
-                          const Indices & flatSimplexIndices,
-                          const Indices & offsetSimplexIndices,
-                          const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber"),
-                          const String strategy = ResourceMap::Get("BoundingVolumeHierarchy-Strategy"));
-
   /** Virtual copy constructor */
   virtual BoundingVolumeHierarchy * clone() const;
 

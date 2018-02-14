@@ -50,9 +50,6 @@ public:
   /** Parameter constructor */
   EnclosingSimplexImplementation(const Sample & vertices, const IndicesCollection & simplices);
 
-  /** Parameter constructor */
-  EnclosingSimplexImplementation(const Sample & vertices, const Indices & flatSimplexIndices, const Indices & offsetSimplexIndices);
-
   /** Virtual copy constructor */
   virtual EnclosingSimplexImplementation * clone() const;
 
