@@ -10,7 +10,7 @@ n_columns : int, :math:`n_c > 0`, optional
     Number of columns.
     Default is 1.
 values : sequence of float with size :math:`n_r \times n_c`, optional
-    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
+    Values. **column-major** ordering is used (like Fortran) for
     reshaping the flat list of values.
     Default creates a zero matrix.
 

@@ -240,7 +240,7 @@ sample : 2-d sequence of float
     Sample to draw.
 barsNumber : positive int
     Number of barplots used to draw the histogram. If not specified, it is
-    automatically determined by OpenTURNS according to the Silverman rule.
+    automatically determined according to the Silverman rule.
 
 Returns
 -------

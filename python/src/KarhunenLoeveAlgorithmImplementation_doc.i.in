@@ -34,7 +34,7 @@ The Mercer theorem shows that the covariance function  :math:`C` writes:
     \mat{C}(\vect{s},\vect{t}) = \sum_{k=1}^{+\infty} \lambda_k \vect{\varphi}_k(\vect{s}) \Tr{\vect{\varphi}}_k(\vect{t}) \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
 
-OpenTURNS uses the threshold :math:`s` in order to select the most significant eigenvalues, ie all the eigenvalues such that: 
+The threshold :math:`s` is used in order to select the most significant eigenvalues, ie all the eigenvalues such that: 
 
 .. math::
     :label: thresholdK

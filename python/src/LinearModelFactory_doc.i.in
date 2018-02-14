@@ -31,7 +31,7 @@ tests. If :math:`X` is scalar, a graphical validation test exists, that draws
 the residual couples :math:`(\epsilon_i, \epsilon_{i+1})`, where the residual
 :math:`\epsilon_i` is evaluated on the samples :math:`(Xsample, Ysample)`:
 :math:`\epsilon_i  = Ysample_i - \tilde{Y}_i` with
-:math:`\tilde{Y}_i = a_0 + a_1 + Xsample_i`. The OpenTURNS method is 
+:math:`\tilde{Y}_i = a_0 + a_1 + Xsample_i`. The method is
 :class:`~openturns.VisualTest_DrawLinearModelResidual`.
 "
 

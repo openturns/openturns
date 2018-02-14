@@ -20,7 +20,7 @@ Compact, Full, Last, Null
 Notes
 -----
 In order to prevent a memory problem, the User has the possibility to choose the 
-storage strategy used to save the numerical samples. Four strategies are proposed :
+storage strategy used to save the numerical samples. Four strategies are proposed:
 
 - the :class:`~openturns.Null` strategy where nothing is stored. This class
   does not require to specify arguments.
@@ -32,9 +32,9 @@ storage strategy used to save the numerical samples. Four strategies are propose
   specify the number of points to store.
 - the :class:`~openturns.Compact` strategy where a regularly spaced sub-sample
   is stored. The minimum size :math:`N` of the stored numerical sample is
-  specified by the User. OpenTURNS proceeds as follows :
+  specified by the User. It proceeds as follows:
 
-  1. it stores the first :math:`2N` simulations : the size of the stored
+  1. it stores the first :math:`2N` simulations: the size of the stored
      sample is :math:`2N`,
   2. it selects only 1 out of 2 of the stored simulations : then the size of
      the stored sample decreases to :math:`N` (this is the *compact* step),

@@ -73,7 +73,7 @@ where *f* is a function in :math:`L^1(\mu)`.
 
 In the approximation :eq:`approxEsp`, the set *I*, the points :math:`(\Xi_i)_{i \in I}` 
 and the weights :math:`(\omega_i)_{i \in I}` are evaluated from different methods 
-implemented in OpenTURNS in the :class:`~openturns.WeightedExperiment`.
+implemented in the :class:`~openturns.WeightedExperiment`.
 
 The convergence criterion used to evaluate the coefficients is based on the residual value 
 defined in the :class:`~openturns.FunctionalChaosAlgorithm`."

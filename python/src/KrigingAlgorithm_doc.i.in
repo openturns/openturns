@@ -29,7 +29,7 @@ basisCollection : sequence of :class:`~openturns.Basis`
 normalize : bool, optional
     Indicates whether the input sample has to be normalized.
 
-    OpenTURNS uses the transformation fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
+    The transformation used is fixed by the User in *inputTransformation* or the empirical mean and variance of the input sample.
     Default is set in resource map key `GeneralLinearModelAlgorithm-NormalizeData`
 
 Notes

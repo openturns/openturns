@@ -7,7 +7,7 @@ The class :class:`~openturns.BoxCoxFactory` enables to build a Box Cox transform
 
 The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` maps a sample into a new sample following a normal distribution with independent components. That sample may be the realization of a process as well as the realization of a distribution.
 
-In the multivariate case, OpenTURNS proceeds component by component: :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset` which writes :
+In the multivariate case, we proceed component by component: :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset` which writes:
 
 .. math::
 
@@ -56,7 +56,8 @@ myTimeSeries : :class:`~openturns.TimeSeries`
 mySample : :class:`~openturns.Sample`
     A set of *iid* values.
 shift : :class:`~openturns.Point`
-    It ensures that when shifted, the data are all positive. If not precised, OpenTURNS uses the opposite of the min vector of the data if some data are negative.
+    It ensures that when shifted, the data are all positive.
+    By default the opposite of the min vector of the data is used if some data are negative.
 likelihoodGraph : :class:`~openturns.Graph`
     An empty graph that is fulfilled later with the log-likelihood of the mapped variables with respect to the :math:`lambda` parameter for each component.
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array

@@ -92,7 +92,7 @@ Examples
 Returns
 -------
 list_functions : :class:`~openturns.Description`
-    List of the functions we can use within OpenTURNS.
+    List of the available functions.
 
 Examples
 --------
@@ -108,7 +108,7 @@ sin(arg) -> sine function"
 Returns
 -------
 list_constants : :class:`~openturns.Description`
-    List of the constants we can use within OpenTURNS.
+    List of the available constants.
 
 Examples
 --------
@@ -124,7 +124,7 @@ _e -> Euler's constant (2.71828...)"
 Returns
 -------
 list_operators : :class:`~openturns.Description`
-    List of the operators we can use within OpenTURNS.
+    List of the available operators.
 
 Examples
 --------

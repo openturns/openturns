@@ -15,8 +15,8 @@ Parameters
 secondOrderModel : :class:`~openturns.SecondOrderModel`
 
 timeGrid : :class:`~openturns.RegularGrid`
-    The time grid associated to the process. OpenTURNS has only implemented
-    the algorithm when the mesh is a regular grid.
+    The time grid associated to the process.
+    The algorithm is only implemented when the mesh is a regular grid.
 spectralModel : :class:`~openturns.SpectralModel`
 maxFreq : float
     Equal to the maximal frequency minus :math:`\Delta f`.
@@ -90,9 +90,8 @@ Parameters
 ----------
 fftAlgo : :class:`~openturns.FFT`
     FFT algorithm that will be used to generate realizations of the spectral
-    Gaussian process. OpenTURNS provides the :class:`~openturns.KissFFT`
-    algorithm. More efficient implementations are provided by the
-    *openturns-fftw* module.
+    Gaussian process. The :class:`~openturns.KissFFT` is provided.
+    More efficient implementations are provided by the *openturns-fftw* module.
 "
 // ---------------------------------------------------------------------
 
