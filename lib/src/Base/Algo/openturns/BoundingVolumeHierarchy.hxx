@@ -132,7 +132,9 @@ private:
   }; /* struct Node */
 
   void initialize();
-  Node::NodePointer build(Indices & simplexIndices,
+
+  /** Recursively build tree */
+  Node::NodePointer build(UnsignedInteger & sorted,
            const UnsignedInteger firstIndex,
            const UnsignedInteger lastIndex);
 

@@ -104,10 +104,11 @@ void BoundingVolumeHierarchy::initialize()
   }
 
   // Recursively build tree
-  Indices simplexIndices(nrSimplices);
-  simplexIndices.fill();
+  UnsignedInteger sorted = 0;
+  sortedSimplices_.resize(nrSimplices);
+  sortedSimplices_.fill();
 
-  p_root_ = build(simplexIndices, 0, nrSimplices);
+  p_root_ = build(sorted, 0, nrSimplices);
 }
 
 namespace {
@@ -164,11 +165,14 @@ void update_upper_bounds(Collection<Scalar>::iterator begin, Collection<Scalar>:
 
 } // anonymous namespace
 
+/* Recursively build tree  */
 BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
-    Indices & simplexIndices,
+    UnsignedInteger & sorted,
     const UnsignedInteger firstIndex,
     const UnsignedInteger lastIndex)
 {
+  // This node contains all simplices from sortedSimplices_[firstIndex] to sortedSimplices_[lastIndex-1]
+  // First compute its bounding box.
   const UnsignedInteger dimension = vertices_.getDimension();
   Point lowerBounds(dimension, SpecFunc::MaxScalar);
   Point upperBounds(dimension, - SpecFunc::MaxScalar);
@@ -177,18 +181,14 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   const Collection<Scalar>::const_iterator upperData = upperBoundingBoxSimplices_.getImplementation()->data_begin();
   for(UnsignedInteger i = firstIndex; i < lastIndex; ++i)
   {
-    update_lower_bounds(lowerBounds.begin(), lowerBounds.end(), lowerData + dimension * simplexIndices[i]);
-    update_upper_bounds(upperBounds.begin(), upperBounds.end(), upperData + dimension * simplexIndices[i]);
+    update_lower_bounds(lowerBounds.begin(), lowerBounds.end(), lowerData + dimension * sortedSimplices_[i]);
+    update_upper_bounds(upperBounds.begin(), upperBounds.end(), upperData + dimension * sortedSimplices_[i]);
   }
   // Create a leaf if there are few simplices
   if (lastIndex - firstIndex <= binNumber_)
   {
-    const UnsignedInteger offset = sortedSimplices_.getSize();
-    for (UnsignedInteger i = firstIndex; i < lastIndex; ++i)
-    {
-      sortedSimplices_.add(simplexIndices[i]);
-    }
-    return new Node(offset, lastIndex - firstIndex, lowerBounds, upperBounds);
+    sorted = lastIndex;
+    return new Node(firstIndex, lastIndex - firstIndex, lowerBounds, upperBounds);
   }
   // Otherwise, we will split this node.
   // First search the minimum and maximum center.
@@ -197,10 +197,11 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   const Collection<Scalar>::const_iterator centerData = centerBoundingBoxSimplices_.getImplementation()->data_begin();
   for(UnsignedInteger i = firstIndex; i < lastIndex; ++i)
   {
-    update_lower_bounds(lowerMiddle.begin(), lowerMiddle.end(), centerData + dimension * simplexIndices[i]);
-    update_upper_bounds(upperMiddle.begin(), upperMiddle.end(), centerData + dimension * simplexIndices[i]);
+    update_lower_bounds(lowerMiddle.begin(), lowerMiddle.end(), centerData + dimension * sortedSimplices_[i]);
+    update_upper_bounds(upperMiddle.begin(), upperMiddle.end(), centerData + dimension * sortedSimplices_[i]);
   }
 
+  // We split in the largest dimension
   UnsignedInteger activeDimension = 0;
   Scalar maxDelta = upperMiddle[0] - lowerMiddle[0];
   for(UnsignedInteger k = 1; k < dimension; ++k)
@@ -216,36 +217,36 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   {
     // All centers are at the same location; they cannot be distinguished,
     // thus there is no reason to split nodes
-    const UnsignedInteger offset = sortedSimplices_.getSize();
-    for (UnsignedInteger i = firstIndex; i < lastIndex; ++i)
-    {
-      sortedSimplices_.add(simplexIndices[i]);
-    }
-    return new Node(offset, lastIndex - firstIndex, lowerBounds, upperBounds);
+    sorted = lastIndex;
+    return new Node(firstIndex, lastIndex - firstIndex, lowerBounds, upperBounds);
   }
   UnsignedInteger middleIndex = (firstIndex + lastIndex) / 2;
   Scalar valueSplit = 0.5 * (lowerMiddle[activeDimension] + upperMiddle[activeDimension]);
   if (strategy_ == "Mean")
   {
+    // Sort sortedSimplices_[firstIndex]..sortedSimplices_[lastIndex-1] such that
+    // all simplices from sortedSimplices_[firstIndex]..sortedSimplices_[middleIndex-1] are at
+    // the left of simplices from sortedSimplices_[middleIndex]..sortedSimplices_[lastIndex-1]
+    // along axis activeDimension.
     const Indices::iterator mid_ptr =
-      std::partition(simplexIndices.begin() + firstIndex,
-                     simplexIndices.begin() + lastIndex,
+      std::partition(sortedSimplices_.begin() + firstIndex,
+                     sortedSimplices_.begin() + lastIndex,
                      partitionSimplexBounds(centerBoundingBoxSimplices_, activeDimension, valueSplit));
-    middleIndex = mid_ptr - simplexIndices.begin();
+    middleIndex = mid_ptr - sortedSimplices_.begin();
   }
-  if (middleIndex == firstIndex || middleIndex == lastIndex || strategy_ == "median")
+  if (middleIndex == firstIndex || middleIndex == lastIndex || strategy_ != "Mean")
   {
     middleIndex = (firstIndex + lastIndex) / 2;
-    // Mean partition failed, fall back to median
-    // Sort elements in 2 parts of equal size
-    std::nth_element(simplexIndices.begin() + firstIndex,
-                     simplexIndices.begin() + middleIndex,
-                     simplexIndices.begin() + lastIndex,
+    // Mean partition failed, fall back to median.
+    // Sort elements in 2 parts of equal size.
+    std::nth_element(sortedSimplices_.begin() + firstIndex,
+                     sortedSimplices_.begin() + middleIndex,
+                     sortedSimplices_.begin() + lastIndex,
                      compareSimplexBounds(centerBoundingBoxSimplices_, activeDimension));
-    valueSplit = centerBoundingBoxSimplices_(simplexIndices[middleIndex], activeDimension);
+    valueSplit = centerBoundingBoxSimplices_(sortedSimplices_[middleIndex], activeDimension);
   }
-  Node::NodePointer leftChild = build(simplexIndices, firstIndex, middleIndex);
-  Node::NodePointer rightChild = build(simplexIndices, middleIndex, lastIndex);
+  Node::NodePointer leftChild = build(sorted, firstIndex, middleIndex);
+  Node::NodePointer rightChild = build(sorted, middleIndex, lastIndex);
 
   lowerBounds = leftChild->lowerBounds_;
   upperBounds = leftChild->upperBounds_;
