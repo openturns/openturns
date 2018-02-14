@@ -1,8 +1,8 @@
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.00183731]
-relativeErrors= [6.16204e-05]
+residuals= [0.0290505]
+relativeErrors= [0.0154051]
 mean=3.52113827 absolute error=0.0211382679
 variance=13.62209540 absolute error=0.2224925455
 Sobol index 0 = 0.31794192 absolute error=0.0040367337
@@ -22,7 +22,7 @@ Sobol total index  [0,1,2] =0.00171843 absolute error=0.0017184293
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.00197231]
+residuals= [0.031185]
 relativeErrors= [8.89613e-05]
 mean=3.51972123 absolute error=0.0197212272
 variance=13.59298523 absolute error=0.2516027058
@@ -64,8 +64,8 @@ Sobol total index  [0,1,2] =0.02263050 absolute error=0.0226305044
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.0015633]
-relativeErrors= [4.46114e-05]
+residuals= [0.024718]
+relativeErrors= [0.0111528]
 mean=3.52947075 absolute error=0.0294707509
 variance=13.72885940 absolute error=0.1157285436
 Sobol index 0 = 0.31135035 absolute error=0.0025548383
@@ -85,7 +85,7 @@ Sobol total index  [0,1,2] =0.00548925 absolute error=0.0054892488
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.00186978]
+residuals= [0.0295638]
 relativeErrors= [8.25367e-05]
 mean=3.52361492 absolute error=0.0236149151
 variance=13.62089732 absolute error=0.2236906178
@@ -127,8 +127,8 @@ Sobol total index  [0,1,2] =0.03025517 absolute error=0.0302551663
 ###################################
 class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=20
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.0107385]
-relativeErrors= [0.00210498]
+residuals= [0.169791]
+relativeErrors= [0.526246]
 mean=3.54673436 absolute error=0.0467343609
 variance=6.36939443 absolute error=7.4751935072
 Sobol index 0 = 0.66794880 absolute error=0.3540436052
@@ -148,7 +148,7 @@ Sobol total index  [0,1,2] =0.00071391 absolute error=0.0007139144
 ###################################
 class=AdaptiveStrategy implementation=class=SequentialStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=20
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=MonteCarloExperiment name=Unnamed distribution=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=100
-residuals= [0.0107763]
+residuals= [0.170389]
 relativeErrors= [0.00230957]
 mean=3.53848004 absolute error=0.0384800409
 variance=6.35015933 absolute error=7.4944286102
