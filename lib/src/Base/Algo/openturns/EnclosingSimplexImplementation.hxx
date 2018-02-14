@@ -59,6 +59,9 @@ public:
   /** Simplices accessor */
   IndicesCollection getSimplices() const;
 
+  /** Simplices accessor (flattened view) */
+  IndicesCollection getFlattenedSimplices() const;
+
   /** Get the index of the enclosing simlex of the given point */
   virtual UnsignedInteger getEnclosingSimplexIndex(const Point & x) const;
 

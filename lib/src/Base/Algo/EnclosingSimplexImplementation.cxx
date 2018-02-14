@@ -137,6 +137,16 @@ EnclosingSimplexImplementation::IndicesCollection EnclosingSimplexImplementation
   return simplices;
 }
 
+/* Simplices accessor */
+EnclosingSimplexImplementation::IndicesCollection EnclosingSimplexImplementation::getFlattenedSimplices() const
+{
+  Collection<Indices> flattenedSimplices(3);
+  flattenedSimplices[0] = Indices(0);
+  flattenedSimplices[1] = flatSimplexIndices_;
+  flattenedSimplices[2] = offsetSimplexIndices_;
+  return flattenedSimplices;
+}
+
 /* Get the index of the enclosing simplex of the given point */
 UnsignedInteger EnclosingSimplexImplementation::getEnclosingSimplexIndex(const Point & x) const
 {

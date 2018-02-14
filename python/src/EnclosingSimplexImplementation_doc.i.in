@@ -79,3 +79,23 @@ simplices : sequence of :class:`~openturns.Indices`
 
 %feature("docstring") OT::EnclosingSimplexImplementation::getSimplices
 OT_EnclosingSimplex_getSimplices_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_EnclosingSimplex_getFlattenedSimplices_doc
+"Flattened representation of simplices.
+
+The returned list contains three elements.  First element is empty
+(this is a convention to distinguish this representation from the usual
+one), second element is the flattened list of vertex indices, and the
+third element gives for each simplex the position of its first vertex
+index in the flattened list.
+
+Returns
+-------
+flattened : sequence of :class:`~openturns.Indices`
+    Collection of three :class:`~openturns.Indices`."
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexImplementation::getFlattenedSimplices
+OT_EnclosingSimplex_getFlattenedSimplices_doc
