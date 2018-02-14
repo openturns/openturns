@@ -119,10 +119,24 @@ DistributionFactoryResult DistributionFactoryImplementation::buildEstimator(cons
     for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
     {
       Sample bootstrapSample(experiment.generate());
-      Distribution estimatedDistribution(build(bootstrapSample));
-      Point newEstimatedParameter(parameters.inverse(estimatedDistribution.getParameter()));
-      parameterSample.add(newEstimatedParameter);
+      try
+      {
+        Distribution estimatedDistribution(build(bootstrapSample));
+        Point newEstimatedParameter(parameters.inverse(estimatedDistribution.getParameter()));
+        parameterSample.add(newEstimatedParameter);
+      }
+      catch (Exception &)
+      {
+        // pass
+      }
     }
+    const Scalar error = (1.0 * bootstrapSize - parameterSample.getSize()) / bootstrapSize;
+    if (error > ResourceMap::GetAsScalar("DistributionFactory-BootstrapErrorTolerance"))
+    {
+      throw NotDefinedException(HERE) << "Too much bootstrap samples errored (" << error << ") in buildEstimator.";
+    }
+    else if (error > 0.0)
+      LOGWARN(OSS() << "Some bootstrap samples errored (" << error << ") in buildEstimator");
     KernelSmoothing factory;
     parameterDistribution = factory.build(parameterSample);
   }
@@ -140,9 +154,23 @@ DistributionFactoryResult DistributionFactoryImplementation::buildBootStrapEstim
   for (UnsignedInteger i = 0; i < bootstrapSize; ++ i)
   {
     Sample bootstrapSample(experiment.generate());
-    Distribution estimatedDistribution(build(bootstrapSample));
-    parameterSample.add(estimatedDistribution.getParameter());
+    try
+    {
+      Distribution estimatedDistribution(build(bootstrapSample));
+      parameterSample.add(estimatedDistribution.getParameter());
+    }
+    catch (Exception &)
+    {
+      // pass
+    }
   }
+  const Scalar error = (1.0 * bootstrapSize - parameterSample.getSize()) / bootstrapSize;
+  if (error > ResourceMap::GetAsScalar("DistributionFactory-BootstrapErrorTolerance"))
+  {
+    throw NotDefinedException(HERE) << "Too much bootstrap samples errored (" << error << ") in buildEstimator.";
+  }
+  else if (error > 0.0)
+    LOGWARN(OSS() << "Some bootstrap samples errored (" << error << ") in buildEstimator");
   Distribution parameterDistribution;
   if (isGaussian)
   {
