@@ -24,6 +24,7 @@
 #include "openturns/EnclosingSimplexImplementation.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
+#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,6 +47,11 @@ public:
   /** Parameter constructor */
   BoundingVolumeHierarchy(const Sample & vertices,
                           const IndicesCollection & simplices,
+                          const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber"),
+                          const String strategy = ResourceMap::Get("BoundingVolumeHierarchy-Strategy"));
+
+  /** Parameter constructor */
+  BoundingVolumeHierarchy(const Mesh & mesh,
                           const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber"),
                           const String strategy = ResourceMap::Get("BoundingVolumeHierarchy-Strategy"));
 

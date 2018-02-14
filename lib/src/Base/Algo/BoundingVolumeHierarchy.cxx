@@ -61,6 +61,21 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(const Sample & vertices,
   initialize();
 }
 
+/* Parameter constructor */
+BoundingVolumeHierarchy::BoundingVolumeHierarchy(const Mesh & mesh,
+                                                 const UnsignedInteger binNumber,
+                                                 const String strategy)
+  : EnclosingSimplexImplementation(mesh.getVertices(), mesh.getSimplices())
+  , p_root_(0)
+  , binNumber_(binNumber)
+  , strategy_(strategy)
+  , sortedSimplices_(0)
+{
+  if (binNumber_ < 1) throw InvalidArgumentException(HERE) << "Error: binNumber must not be null";
+  if (strategy_ != "Mean" && strategy_ != "Median") throw InvalidArgumentException(HERE) << "Error: strategy " << strategy << "not available, valid values are either Mean or Median";
+  initialize();
+}
+
 /* Virtual constructor */
 BoundingVolumeHierarchy * BoundingVolumeHierarchy::clone() const
 {
