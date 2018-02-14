@@ -237,7 +237,6 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
     setCoefficients(basisMatrix.solveLinearSystemRect(rightHandSide));
   }
   Scalar quadraticResidual = (basisMatrix.genVectProd(getCoefficients()) - rightHandSide).normSquare();
-  if (hasUniformWeight_) quadraticResidual *= weight_[0];
   // The residual is the mean L2 norm of the fitting
   setResidual(std::sqrt(quadraticResidual) / sampleSize);
 

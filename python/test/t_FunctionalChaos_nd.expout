@@ -1,8 +1,8 @@
 ###################################
 class=AdaptiveStrategy implementation=class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250 alwaysShuffle=false random shift=true
-residuals= [0.000333364,0.00205131]
-relative errors= [4.30584e-05,7.8601e-05]
+residuals= [0.00527094,0.032434]
+relative errors= [0.0107646,0.0196503]
 output= 0
 mean= 0.99922 absolute error=7.78430e-04
 variance=0.64968 absolute error=8.75764e-03
@@ -46,8 +46,8 @@ Sobol total index  [0,1,2]  =0.00014 absolute error=1.42405e-04
 ###################################
 class=AdaptiveStrategy implementation=class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDimension=84
 class=ProjectionStrategy implementation=class=LeastSquaresStrategy experiment=class=LHSExperiment name=Unnamed distribution=class=ComposedDistribution name=ComposedDistribution dimension=3 copula=class=IndependentCopula name=IndependentCopula dimension=3 marginal[0]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[1]=class=Uniform name=Uniform dimension=1 a=-1 b=1 marginal[2]=class=Uniform name=Uniform dimension=1 a=-1 b=1 size=250 alwaysShuffle=false random shift=true
-residuals= [0.000270407,0.00156941]
-relative errors= [2.83306e-05,4.60089e-05]
+residuals= [0.0042755,0.0248146]
+relative errors= [0.00708265,0.0115022]
 output= 0
 mean= 0.99342 absolute error=6.57762e-03
 variance=0.63987 absolute error=1.85655e-02
