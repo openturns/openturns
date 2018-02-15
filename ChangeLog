@@ -53,6 +53,7 @@
  * #933 (Compilation failed when Muparser is missing)
  * #938 (DistributionFactory::buildEstimator to handle Exception)
  * #939 (The help of the getMaximumDegreeStrataIndex method is wrong.)
+ * #937 (Small bugs in FunctionalChaosResult::get{Residuals, RelativeErrors})
 
 == 1.10 release (2017-11-13) == #release-1.10
 
