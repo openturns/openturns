@@ -67,16 +67,21 @@ EnclosingSimplexImplementation::EnclosingSimplexImplementation(const Sample & ve
   {
     // 1st case
     const UnsignedInteger nrSimplices = simplices.getSize();
-    offsetSimplexIndices_ = Indices(nrSimplices + 1);
-    flatSimplexIndices_ = Indices(0);
+    offsetSimplexIndices_.resize(nrSimplices + 1);
     offsetSimplexIndices_[0] = 0;
-    for(UnsignedInteger i = 0; i < nrSimplices; ++i)
+    // Compute position in flatSimplexIndices_ of the first vertex of each simplex
+    Indices::iterator offsetIterator = offsetSimplexIndices_.begin();
+    for(IndicesCollection::const_iterator it = simplices.begin(), guard = simplices.end(); it != guard; ++it, ++offsetIterator)
     {
-      const Indices simplex = simplices[i];
-      const UnsignedInteger simplexSize = simplex.getSize();
-      offsetSimplexIndices_[i + 1] = offsetSimplexIndices_[i] + simplexSize;
-      for(UnsignedInteger j = 0; j < simplexSize; ++j)
-        flatSimplexIndices_.add(simplex[j]);
+      *(offsetIterator + 1) = (*offsetIterator) + it->getSize();
+    }
+    // Now we know the total number of indices; this could be speed up by assuming it is nrSimplices*(dimension+1)
+    flatSimplexIndices_.resize(offsetSimplexIndices_[nrSimplices]);
+    Indices::iterator flatIterator = flatSimplexIndices_.begin();
+    for(IndicesCollection::const_iterator it = simplices.begin(), guard = simplices.end(); it != guard; ++it)
+    {
+      for(Indices::const_iterator simplexIndicesIterator = it->begin(), simplexGuard = it->end(); simplexIndicesIterator != simplexGuard; ++simplexIndicesIterator, ++flatIterator)
+        *flatIterator = *simplexIndicesIterator;
     }
   }
   initialize();
@@ -95,20 +100,31 @@ void EnclosingSimplexImplementation::initialize()
   // Local bounding box of each simplex
   const UnsignedInteger dimension = vertices_.getDimension();
   const UnsignedInteger nrSimplices = offsetSimplexIndices_.getSize() - 1;
-  lowerBoundingBoxSimplices_ = Sample(nrSimplices, Point(dimension, SpecFunc::MaxScalar));
-  upperBoundingBoxSimplices_ = Sample(nrSimplices, Point(dimension, - SpecFunc::MaxScalar));
+  lowerBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
+  upperBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
+  Point lower(dimension, SpecFunc::MaxScalar);
+  Point upper(dimension, - SpecFunc::MaxScalar);
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
+    for(UnsignedInteger k = 0; k < dimension; ++k)
+    {
+      lower[k] = SpecFunc::MaxScalar;
+      upper[k] = - SpecFunc::MaxScalar;
+    }
     for (UnsignedInteger j = offsetSimplexIndices_[i]; j < offsetSimplexIndices_[i + 1]; ++j)
     {
-      const UnsignedInteger index = flatSimplexIndices_[j];
+      const UnsignedInteger indexVertex = flatSimplexIndices_[j];
       for(UnsignedInteger k = 0; k < dimension; ++k)
       {
-        if (vertices_(index, k) < lowerBoundingBoxSimplices_(i, k))
-          lowerBoundingBoxSimplices_(i, k) = vertices_(index, k);
-        if (vertices_(index, k) > upperBoundingBoxSimplices_(i, k))
-          upperBoundingBoxSimplices_(i, k) = vertices_(index, k);
+        const Scalar coordinate = vertices_(indexVertex, k);
+        lower[k] = std::min(lower[k], coordinate);
+        upper[k] = std::max(upper[k], coordinate);
       }
+    }
+    for(UnsignedInteger k = 0; k < dimension; ++k)
+    {
+      lowerBoundingBoxSimplices_(i, k) = lower[k];
+      upperBoundingBoxSimplices_(i, k) = upper[k];
     }
   }
 }

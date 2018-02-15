@@ -40,7 +40,10 @@ static const Factory<BoundingVolumeHierarchy> Factory_BoundingVolumeHierarchy;
 BoundingVolumeHierarchy::BoundingVolumeHierarchy()
   : EnclosingSimplexImplementation()
   , p_root_(0)
+  , binNumber_(0)
+  , strategy_()
   , sortedSimplices_(0)
+  , centerBoundingBoxSimplices_()
 {
   // Nothing to do
 }
@@ -55,6 +58,7 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(const Sample & vertices,
   , binNumber_(binNumber)
   , strategy_(strategy)
   , sortedSimplices_(0)
+  , centerBoundingBoxSimplices_()
 {
   if (binNumber_ < 1) throw InvalidArgumentException(HERE) << "Error: binNumber must not be null";
   if (strategy_ != "Mean" && strategy_ != "Median") throw InvalidArgumentException(HERE) << "Error: strategy " << strategy << "not available, valid values are either Mean or Median";
@@ -70,6 +74,7 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(const Mesh & mesh,
   , binNumber_(binNumber)
   , strategy_(strategy)
   , sortedSimplices_(0)
+  , centerBoundingBoxSimplices_()
 {
   if (binNumber_ < 1) throw InvalidArgumentException(HERE) << "Error: binNumber must not be null";
   if (strategy_ != "Mean" && strategy_ != "Median") throw InvalidArgumentException(HERE) << "Error: strategy " << strategy << "not available, valid values are either Mean or Median";
@@ -113,10 +118,10 @@ void BoundingVolumeHierarchy::initialize()
 
 namespace {
 
-class partitionSimplexBounds
+class PartitionSimplexBounds
 {
 public:
-    partitionSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension, const Scalar threshold)
+    PartitionSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension, const Scalar threshold)
       : centerBoundingBoxSimplices_(centerBoundingBoxSimplices)
       , activeDimension_(activeDimension)
       , threshold_(threshold)
@@ -126,22 +131,22 @@ public:
       return centerBoundingBoxSimplices_(index, activeDimension_) < threshold_;
     }
 private:
-    const Sample centerBoundingBoxSimplices_;
+    const Sample & centerBoundingBoxSimplices_;
     const UnsignedInteger activeDimension_;
     const Scalar threshold_;
 };
 
-class compareSimplexBounds
+class CompareSimplexBounds
 {
 public:
-    compareSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension)
+    CompareSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension)
       : centerBoundingBoxSimplices_(centerBoundingBoxSimplices), activeDimension_(activeDimension) {}
     bool operator() (const UnsignedInteger lhs, const UnsignedInteger rhs) const
     {
       return centerBoundingBoxSimplices_(lhs, activeDimension_) < centerBoundingBoxSimplices_(rhs, activeDimension_);
     }
 private:
-    const Sample centerBoundingBoxSimplices_;
+    const Sample & centerBoundingBoxSimplices_;
     const UnsignedInteger activeDimension_;
 };
 
@@ -149,8 +154,7 @@ void update_lower_bounds(Collection<Scalar>::iterator begin, Collection<Scalar>:
 {
   for(Collection<Scalar>::iterator it = begin; it != end; ++it, ++otherLower)
   {
-    if (*it > *otherLower)
-      *it = *otherLower;
+    *it = std::min(*it, *otherLower);
   }
 }
 
@@ -158,8 +162,7 @@ void update_upper_bounds(Collection<Scalar>::iterator begin, Collection<Scalar>:
 {
   for(Collection<Scalar>::iterator it = begin; it != end; ++it, ++otherUpper)
   {
-    if (*it < *otherUpper)
-      *it = *otherUpper;
+    *it = std::max(*it, *otherUpper);
   }
 }
 
@@ -231,7 +234,7 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
     const Indices::iterator mid_ptr =
       std::partition(sortedSimplices_.begin() + firstIndex,
                      sortedSimplices_.begin() + lastIndex,
-                     partitionSimplexBounds(centerBoundingBoxSimplices_, activeDimension, valueSplit));
+                     PartitionSimplexBounds(centerBoundingBoxSimplices_, activeDimension, valueSplit));
     middleIndex = mid_ptr - sortedSimplices_.begin();
   }
   if (middleIndex == firstIndex || middleIndex == lastIndex || strategy_ != "Mean")
@@ -242,7 +245,7 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
     std::nth_element(sortedSimplices_.begin() + firstIndex,
                      sortedSimplices_.begin() + middleIndex,
                      sortedSimplices_.begin() + lastIndex,
-                     compareSimplexBounds(centerBoundingBoxSimplices_, activeDimension));
+                     CompareSimplexBounds(centerBoundingBoxSimplices_, activeDimension));
     valueSplit = centerBoundingBoxSimplices_(sortedSimplices_[middleIndex], activeDimension);
   }
   Node::NodePointer leftChild = build(sorted, firstIndex, middleIndex);
