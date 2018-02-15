@@ -94,24 +94,14 @@ void NaiveEnclosingSimplex::initialize()
 {
   nearestNeighbour_ = KDTree(vertices_);
 
-  const UnsignedInteger numSimplices = offsetSimplexIndices_.getSize() - 1;
-  const UnsignedInteger numVertices = vertices_.getSize();
-  const UnsignedInteger dimension = vertices_.getDimension();
-  verticesToSimplices_ = IndicesCollection(numVertices, Indices(0));
-  lowerBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension, SpecFunc::MaxScalar));
-  upperBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension, - SpecFunc::MaxScalar));
-  for (UnsignedInteger i = 0; i < numSimplices; ++i)
+  const UnsignedInteger nrSimplices = offsetSimplexIndices_.getSize() - 1;
+  const UnsignedInteger nrVertices = vertices_.getSize();
+  verticesToSimplices_ = IndicesCollection(nrVertices, Indices(0));
+  for (UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
     for (UnsignedInteger j = offsetSimplexIndices_[i]; j < offsetSimplexIndices_[i + 1]; ++j)
     {
       const UnsignedInteger index = flatSimplexIndices_[j];
-      for(UnsignedInteger k = 0; k < dimension; ++k)
-      {
-        if (vertices_(index, k) < lowerBoundingBoxSimplices_(i, k))
-          lowerBoundingBoxSimplices_(i, k) = vertices_(index, k);
-        if (vertices_(index, k) > upperBoundingBoxSimplices_(i, k))
-          upperBoundingBoxSimplices_(i, k) = vertices_(index, k);
-      }
       verticesToSimplices_[index].add(i);
     }
   } // Loop over simplices
