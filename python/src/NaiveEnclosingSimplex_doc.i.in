@@ -1,0 +1,54 @@
+%feature("docstring") OT::NaiveEnclosingSimplex
+"Naive implementation of point location.
+
+This class implements a naive implementation of point location,
+by looking into all its simplices.  It works well for convex
+domains, but may be slow otherwise.
+
+Available constructors:
+    NaiveEnclosingSimplex(*mesh*)
+
+    NaiveEnclosingSimplex(*points, simplices*)
+
+Parameters
+----------
+mesh : :class:`~openturns.Mesh`
+    Mesh.
+
+sample : 2-d sequence of float
+    Points.
+
+simplices : sequence of :class:`~openturns.Indices`
+    Simplices.
+
+See also
+--------
+EnclosingSimplex, BoundingVolumeHierarchy
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesher = ot.IntervalMesher([5, 10])
+>>> lowerbound = [0.0, 0.0]
+>>> upperBound = [2.0, 4.0]
+>>> interval = ot.Interval(lowerbound, upperBound)
+>>> mesh = mesher.build(interval)
+>>> locator = ot.NaiveEnclosingSimplex(mesh)
+>>> simplex = locator.getEnclosingSimplexIndex([0.1, 0.2])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NaiveEnclosingSimplex::getEnclosingSimplexIndex
+"Accessor to the enclosing simplex index.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+
+Returns
+-------
+index : int
+    If point is enclosed in a simplex, return its index; otherwise return an
+    int which is at least greater than the number of simplices."
+

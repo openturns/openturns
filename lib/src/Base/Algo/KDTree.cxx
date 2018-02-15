@@ -19,8 +19,8 @@
  *
  */
 
-#include "openturns/Exception.hxx"
 #include "openturns/KDTree.hxx"
+#include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/SobolSequence.hxx"
@@ -54,7 +54,7 @@ public:
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
-  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const Point & x, const bool sorted)
+  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const Point & x, const Bool sorted)
   {
     if (size_ != 0)
     {
@@ -100,7 +100,7 @@ private:
                                 const Point & x,
                                 const UnsignedInteger activeDimension)
   {
-    const Scalar delta = x[activeDimension] - sample_[p_node->index_][activeDimension];
+    const Scalar delta = x[activeDimension] - sample_(p_node->index_, activeDimension);
     const KDTree::KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
     const KDTree::KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
     const UnsignedInteger dimension = sample_.getDimension();
@@ -195,7 +195,7 @@ private:
 
 /* Default constructor */
 KDTree::KDTree()
-  : PersistentObject()
+  : NearestNeighbourImplementation()
   , points_(0, 0)
   , p_root_(0)
 {
@@ -204,7 +204,7 @@ KDTree::KDTree()
 
 /* Parameters constructor */
 KDTree::KDTree(const Sample & points)
-  : PersistentObject()
+  : NearestNeighbourImplementation()
   , points_(points)
   , p_root_(0)
 {
@@ -236,7 +236,13 @@ KDTree * KDTree::clone() const
 /* String converter */
 String KDTree::__repr__() const
 {
-  return OSS() << "class=" << GetClassName()
+  return OSS(true) << "class=" << GetClassName()
+         << " root=" << p_root_->__repr__();
+}
+
+String KDTree::__str__() const
+{
+  return OSS(false) << "class=" << GetClassName()
          << " root=" << p_root_->__repr__();
 }
 
@@ -262,14 +268,14 @@ void KDTree::insert(KDNode::KDNodePointer & p_node,
   if (index >= points_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected an index less than " << points_.getSize() << ", got " << index;
   // We are on a leaf
   if (p_node == 0) p_node = new KDNode(index);
-  else if (points_[index][activeDimension] < points_[p_node->index_][activeDimension]) insert(p_node->p_left_, index, (activeDimension + 1) % points_.getDimension());
+  else if (points_(index, activeDimension) < points_(p_node->index_, activeDimension)) insert(p_node->p_left_, index, (activeDimension + 1) % points_.getDimension());
   else insert(p_node->p_right_, index, (activeDimension + 1) % points_.getDimension());
 }
 
 /* Get the indices of the k nearest neighbours of the given point */
 Indices KDTree::getNearestNeighboursIndices(const Point & x,
-    const UnsignedInteger k,
-    const bool sorted) const
+                                            const UnsignedInteger k,
+                                            const Bool sorted) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
   Indices result(k);
@@ -288,10 +294,11 @@ Indices KDTree::getNearestNeighboursIndices(const Point & x,
 
 /* Get the k nearest neighbours of the given point */
 Sample KDTree::getNearestNeighbours(const Point & x,
-                                    const UnsignedInteger k) const
+                                    const UnsignedInteger k,
+                                    const Bool sorted) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
-  const Indices indices(getNearestNeighboursIndices(x, k));
+  const Indices indices(getNearestNeighboursIndices(x, k, sorted));
   Sample result(k, points_.getDimension());
   for (UnsignedInteger i = 0; i < k; ++i) result[i] = points_[indices[i]];
   return result;
@@ -315,7 +322,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
     const UnsignedInteger activeDimension) const
 {
   if (p_node == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an emty tree";
-  // Set delta = x[activeDimension] - points_[p_node->index_]
+  // Set delta = x[activeDimension] - points_[p_node->index_][activeDimension]
   // sameSide = p_node->p_left_ if delta < 0, p_node->p_right_ else
   // oppositeSide = p_node->p_right_ if delta < 0, p_node->p_left_ else
   // Possibilities:
@@ -328,7 +335,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   // 2.4) Go on the opposite side. On return, check if the returned squared distance is less than the current best squared distance and update the current best index and the associated squared distance.
   // 3*) Return the current best index and the associated squared distance to the upper level
 
-  const Scalar delta = x[activeDimension] - points_[p_node->index_][activeDimension];
+  const Scalar delta = x[activeDimension] - points_(p_node->index_, activeDimension);
   const KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
   const KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
   UnsignedInteger currentBestIndex = points_.getSize();
@@ -386,7 +393,7 @@ Sample KDTree::getPoints() const
 /* Method save() stores the object through the StorageManager */
 void KDTree::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  NearestNeighbourImplementation::save(adv);
   adv.saveAttribute("points_", points_);
 }
 
@@ -394,7 +401,7 @@ void KDTree::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void KDTree::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  NearestNeighbourImplementation::load(adv);
   adv.loadAttribute("points_", points_);
   initialize();
 }

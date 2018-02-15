@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_KDTREE_HXX
 #define OPENTURNS_KDTREE_HXX
 
-#include "openturns/PersistentObject.hxx"
+#include "openturns/NearestNeighbourImplementation.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,7 +34,7 @@ class KDNearestNeighboursFinder;
  * Organize d-dimensional points into a hierarchical tree-like structure
  */
 class OT_API KDTree
-  : public PersistentObject
+  : public NearestNeighbourImplementation
 {
   CLASSNAME
 
@@ -53,6 +53,7 @@ public:
 
   /** String converter */
   virtual String __repr__() const;
+  virtual String __str__() const;
 
   /** Check if the tree is empty */
   virtual Bool isEmpty() const;
@@ -60,20 +61,23 @@ public:
   /** Insert a point */
   virtual void insert(const Point & point);
 
-  /** Get the indices of the k nearest neighbours of the given point */
-  virtual Indices getNearestNeighboursIndices(const Point & x,
-      const UnsignedInteger k,
-      const bool sorted  = false) const;
-
-  /** Get the k nearest neighbours of the given point */
-  virtual Sample getNearestNeighbours(const Point & x,
-                                      const UnsignedInteger k) const;
-
   /** Get the index of the nearest neighbour of the given point */
-  virtual UnsignedInteger getNearestNeighbourIndex(const Point & x) const;
+  UnsignedInteger getNearestNeighbourIndex(const Point & x) const;
+  using NearestNeighbourImplementation::getNearestNeighbourIndex;
 
   /** Get the nearest neighbour of the given point */
-  virtual Point getNearestNeighbour(const Point & x) const;
+  Point getNearestNeighbour(const Point & x) const;
+  using NearestNeighbourImplementation::getNearestNeighbour;
+
+  /** Get the indices of the k nearest neighbours of the given point */
+  Indices getNearestNeighboursIndices(const Point & x,
+                                      const UnsignedInteger k,
+                                      const Bool sorted  = false) const;
+
+  /** Get the k nearest neighbours of the given point */
+  Sample getNearestNeighbours(const Point & x,
+                              const UnsignedInteger k,
+                              const Bool sorted = false) const;
 
   /** Points accessor */
   Sample getPoints() const;

@@ -8,6 +8,10 @@ Parameters
 sample : 2-d sequence of float
     Points.
 
+See also
+--------
+NearestNeighbour, RegularGridNearestNeighbour
+
 Examples
 --------
 >>> import openturns as ot

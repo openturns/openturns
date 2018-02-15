@@ -58,15 +58,6 @@ public:
   void setValueAtIndex(const UnsignedInteger index,
                        const Point & val);
 
-  Point getValueAtNearestPosition(const Point & position) const;
-  void setValueAtNearestPosition(const Point & position,
-                                 const Point & val);
-
-  /** Accessor to values */
-  Point getValueAtNearestTime(const Scalar timestamp) const;
-  void setValueAtNearestTime(const Scalar timestamp,
-                             const Point & val);
-
   /** Virtual constructor */
   virtual FieldImplementation * clone() const;
 

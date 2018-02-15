@@ -24,6 +24,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Field.hxx"
+#include "openturns/KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -109,6 +110,11 @@ protected:
 
   /* Values of the field defining the P1 Lagrange interpolation */
   Sample values_;
+
+  /* KDTree to speed-up nearest-neighbour search */
+  KDTree tree_;
+
+  IndicesCollection verticesToSimplices_;
 
 private:
 

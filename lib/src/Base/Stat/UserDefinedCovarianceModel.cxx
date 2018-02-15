@@ -22,6 +22,7 @@
 #include "openturns/UserDefinedCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/KDTree.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,9 +39,9 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel()
   : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , p_mesh_(RegularGrid().clone())
+  , tree_()
 {
   outputDimension_ = 0;
-  p_mesh_->computeKDTree();
 }
 
 // For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
@@ -49,6 +50,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , p_mesh_(0)
+  , tree_(new KDTree(mesh.getVertices()))
 {
   const UnsignedInteger N = mesh.getVerticesNumber();
   const UnsignedInteger size = (N * (N + 1)) / 2;
@@ -57,7 +59,6 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
                                          << " mesh size=" << N << " and covariance function size=" << covarianceFunction.getSize() << " instead of " << size;
   p_mesh_ = mesh.clone();
-  p_mesh_->computeKDTree();
   inputDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
@@ -91,7 +92,7 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
   if (N == 1) return covarianceCollection_[0];
 
   // Use the evaluation based on indices
-  return operator()(p_mesh_->getNearestVertexIndex(s), p_mesh_->getNearestVertexIndex(t));
+  return operator()(tree_.getNearestNeighbourIndex(s), tree_.getNearestNeighbourIndex(t));
 }
 
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
@@ -138,7 +139,7 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
   Indices nearestIndex(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
+    nearestIndex[i] = tree_.getNearestNeighbourIndex(vertices[i]);
     LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
   }
   // Now, we use a set of loops similar to the default algorithm
@@ -192,7 +193,7 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
   Indices nearestIndex(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
+    nearestIndex[i] = tree_.getNearestNeighbourIndex(vertices[i]);
     LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
   }
   for (UnsignedInteger i = 0; i < size; ++i) result[i][0] = operator()(nearestIndex[p], nearestIndex[i])(0, 0);
@@ -251,6 +252,7 @@ void UserDefinedCovarianceModel::load(Advocate & adv)
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "mesh_", mesh);
   p_mesh_ = mesh.getImplementation();
+  tree_ = new KDTree(p_mesh_->getVertices());
   adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
 }
 

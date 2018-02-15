@@ -24,20 +24,65 @@
 using namespace OT;
 using namespace OT::Test;
 
+namespace
+{
+Scalar debug_squared_minimum_distance(const Point & point, const Sample & sample)
+{
+  Scalar result = SpecFunc::MaxScalar;
+  for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
+  {
+    const Scalar distance2 = Point(sample[i] - point).normSquare();
+    if (distance2 < result) result = distance2;
+  }
+  return result;
+}
+}
+
 int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  Sample sample(Normal(3).getSample(10));
-  KDTree tree(sample);
+  const Sample sample(Normal(3).getSample(10));
+  const KDTree tree(sample);
   fullprint << "tree=" << tree << std::endl;
-  Sample test(Normal(3).getSample(20));
+  const Sample test(Normal(3).getSample(20));
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {
+    const Scalar expected = debug_squared_minimum_distance(test[i], sample);
     UnsignedInteger index = tree.getNearestNeighbourIndex(test[i]);
     Point neighbour(tree.getNearestNeighbour(test[i]));
     fullprint << "Nearest neighbour of " << test[i] << "=" << neighbour << " (index=" << index << ")" << std::endl;
+    if (std::abs(Point(test[i] - sample[index]).normSquare() - expected) > 1.e-5)
+    {
+      fullprint << "Wrong nearest neighbour of " << test[i] << " (index=" << index << ")" << std::endl;
+      return ExitCode::Error;
+    }
+    if (std::abs(Point(test[i] - neighbour).normSquare() - expected) > 1.e-5)
+    {
+      fullprint << "Wrong nearest neighbour of " << test[i] << "=" << neighbour << std::endl;
+      return ExitCode::Error;
+    }
   }
+
+  const UnsignedInteger k = 4;
+  for (UnsignedInteger i = 0; i < test.getSize(); ++i)
+  {
+    Indices indices = tree.getNearestNeighboursIndices(test[i], k, true);
+    fullprint << k << " nearest neighbours of " << test[i] << "=" << " (indices=" << indices << ")" << std::endl;
+    // Check that returned neighbours are sorted
+    Scalar last = 0.0;
+    for(UnsignedInteger j = 0; j < indices.getSize(); ++j)
+    {
+      const Scalar current = Point(test[i] - sample[indices[j]]).normSquare();
+      if (last > current)
+      {
+        fullprint << "Wrong nearest neighbour of " << test[i] << " (indices=" << indices << ")" << std::endl;
+        return ExitCode::Error;
+      }
+      last = current;
+    }
+  }
+
   return ExitCode::Success;
 }

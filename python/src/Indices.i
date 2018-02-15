@@ -4,7 +4,7 @@
 #include "openturns/Indices.hxx"
 %}
 
-%include Indices_doc.i
+%include BaseTypCollection.i
 
 %typemap(in) const Indices & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
@@ -23,6 +23,11 @@
 }
 
 %apply const Indices & { const OT::Indices & };
+
+%template(IndicesCollection) OT::Collection<OT::Indices>;
+%template(IndicesPersistentCollection) OT::PersistentCollection<OT::Indices>;
+
+%include Indices_doc.i
 
 %include openturns/Indices.hxx
 namespace OT {

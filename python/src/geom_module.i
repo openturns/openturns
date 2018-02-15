@@ -20,6 +20,7 @@
 %import common_module.i
 
 /* Base/Type */
+%include BaseTypCollection.i
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 

@@ -1,0 +1,92 @@
+%feature("docstring") OT::RegularGridNearestNeighbour
+"Partition tree data structure.
+
+Allows to store and search points fast.
+
+Parameters
+----------
+grid : :class:`~openturns.RegularGrid`
+    Regular grid
+
+See also
+--------
+NearestNeighbour, KDTree
+
+Examples
+--------
+>>> import openturns as ot
+>>> myRegularGrid = ot.RegularGrid(0.0, 0.1, 100)
+>>> tree = ot.RegularGridNearestNeighbour(myRegularGrid)
+>>> neighbour = tree.getNearestScalarNeighbour(0.1)"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RegularGridNearestNeighbour::getNearestScalarNeighbourIndex
+"Accessor to the nearest neighbour index.
+
+Parameters
+----------
+x : float
+    Given point.
+
+Returns
+-------
+index : int
+    Index of the nearest neighbour."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RegularGridNearestNeighbour::getNearestScalarNeighbour
+"Accessor to the nearest neighbour.
+
+Parameters
+----------
+x : float
+    Given point.
+
+Returns
+-------
+neighbour : float
+    Nearest neighbour."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RegularGridNearestNeighbour::getNearestScalarNeighboursIndices
+"Accessor to the nearest neighbours indices.
+
+Parameters
+----------
+x : float
+    Given point.
+k : int
+    Number of indices to return.
+sorted : bool
+    Boolean to tell whether returned indices are sorted according to
+    the distance to the given point.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Indices of the k nearest neighbours."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RegularGridNearestNeighbour::getNearestScalarNeighbours
+"Accessor to the nearest neighbours.
+
+Parameters
+----------
+x : float
+    Given point.
+k : int
+    Number of points to return.
+sorted : bool
+    Boolean to tell whether returned points are sorted according to
+    their distance to the given point.
+
+Returns
+-------
+neighbours : :class:`~openturns.Point`
+    Nearest neighbours."
+

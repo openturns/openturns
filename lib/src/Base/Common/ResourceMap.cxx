@@ -503,6 +503,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Mesh-LargeSize", 5000 );
   setAsUnsignedInteger( "Mesh-UseKDTree", 1 );
 
+  // BoundingVolumeHierarchy parameters
+  setAsUnsignedInteger( "BoundingVolumeHierarchy-BinNumber", 50 );
+  set( "BoundingVolumeHierarchy-Strategy", "Mean" );
+
   // Matrix parameters
   setAsUnsignedInteger( "Matrix-size-visible-in-str-from", 5 );
 
