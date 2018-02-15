@@ -138,6 +138,7 @@
 #include "openturns/RiceFactory.hxx"
 #include "openturns/Skellam.hxx"
 #include "openturns/SkellamFactory.hxx"
+#include "openturns/SmoothedUniform.hxx"
 #include "openturns/Student.hxx"
 #include "openturns/StudentFunctions.hxx"
 #include "openturns/StudentFactory.hxx"

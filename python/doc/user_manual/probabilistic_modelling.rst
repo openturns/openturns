@@ -53,6 +53,7 @@ Continuous parametric distributions
     NormalGamma
     Rayleigh
     Rice
+    SmoothedUniform
     Student
     Trapezoidal
     Triangular

@@ -628,6 +628,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       RiceFactory.i RiceFactory_doc.i.in
                       Skellam.i Skellam_doc.i.in
                       SkellamFactory.i SkellamFactory_doc.i.in
+                      SmoothedUniform.i SmoothedUniform_doc.i.in
                       Student.i Student_doc.i.in
                       StudentFactory.i StudentFactory_doc.i.in
                       Trapezoidal.i Trapezoidal_doc.i.in

@@ -1,0 +1,52 @@
+Distribution  class=SmoothedUniform name=SmoothedUniform dimension=1 a=-0.5 b=1.5 sigma=0.5
+Distribution  SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5)
+Mean=  class=Point name=Unnamed dimension=1 values=[0.5]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.583333]
+Elliptical =  True
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.15307]
+oneSample first= class=Point name=Unnamed dimension=1 values=[-0.654127]  last= class=Point name=Unnamed dimension=1 values=[1.11705]
+mean= class=Point name=Unnamed dimension=1 values=[0.500267]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.582611]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[1]
+ddf     = class=Point name=Unnamed dimension=1 values=[0]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.237539]
+log pdf=-0.867507
+pdf     =0.419997
+pdf (FD)=0.419997
+cdf=0.729267
+ccdf=0.270733
+characteristic function= (0.65168889443+0.356019265631j)
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.205567,0.031972,-0.255266]
+pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.205567,0.031972,-0.255266]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.134692,-0.285306,-0.118769]
+cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.134692,-0.285306,-0.118769]
+quantile= class=Point name=Unnamed dimension=1 values=[1.74644]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.746443]
+Survival(inverseSurvival)=0.950000
+Minimum volume interval= [-0.951173, 1.95117]
+threshold= 0.95
+Minimum volume level set= {x | f(x) <= 4.15266} with f=
+MinimumVolumeLevelSetEvaluation(SmoothedUniform(a = -0.5, b = 1.5, sigma = 0.5))
+beta=0.015723
+Bilateral confidence interval= [-0.951173, 1.95117]
+beta=0.95
+Unilateral confidence interval (lower tail)= [-4.32531, 1.74644]
+beta=0.95
+Unilateral confidence interval (upper tail)= [-0.746443, 5.32531]
+beta=0.95
+mean= class=Point name=Unnamed dimension=1 values=[0.5]
+standard deviation= class=Point name=Unnamed dimension=1 values=[0.763763]
+skewness= class=Point name=Unnamed dimension=1 values=[0]
+kurtosis= class=Point name=Unnamed dimension=1 values=[2.60816]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.583333]
+parameters= [class=PointWithDescription name=SmoothedUniform dimension=4 description=[Uniform_a,Uniform_b,Normal_mean_0,Normal_standard_deviation_0] values=[-0.5,1.5,0,0.5]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [0]
+standard moment n= 2  value= [0.333333]
+standard moment n= 3  value= [0]
+standard moment n= 4  value= [0.2]
+standard moment n= 5  value= [0]
+Standard representative= SmoothedUniform(a = -1, b = 1, sigma = 1)
