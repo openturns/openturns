@@ -52,3 +52,45 @@ void setStopCallback(PyObject * callBack) {
 
 } // Simulation
 } // OT
+
+
+%pythoncode %{
+def TimerCallback(duration):
+    """
+    Time stopping criterion.
+
+    Usable as stopping callback for simulation, optimization algorithms.
+
+    Parameters
+    ----------
+    duration : float
+        Maximum duration in seconds of the algorithm.
+
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> model = ot.SymbolicFunction(['R', 'S'], ['R-S'])
+    >>> distribution = ot.Normal(2)
+    >>> vect = ot.RandomVector(distribution)
+    >>> output = ot.RandomVector(model, vect)
+    >>> event = ot.Event(output, ot.Less(), 0.0)
+    >>> experiment = ot.MonteCarloExperiment()
+    >>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+    >>> algo.setMaximumOuterSampling(int(1e9))
+    >>> algo.setMaximumCoefficientOfVariation(-1.0)
+    >>> algo.setStopCallback(TimerCallback(1.5))
+    >>> algo.run()
+    """
+    from time import time
+    try:
+        float(duration)
+    except ValueError:
+        raise ValueError('duration must be a float')
+    tmax = time() + duration
+    def inner():
+        if not hasattr(inner, 'tmax'):
+            inner.tmax = tmax
+        stop = time() > inner.tmax
+        return stop
+    return inner
+%}

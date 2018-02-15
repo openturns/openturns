@@ -267,6 +267,7 @@ as Python functions.
     SpecFunc_RegularizedIncompleteGamma
     SpecFunc_RegularizedIncompleteGammaInverse
     SpecFunc_TriGamma
+    TimerCallback
 
 .. _coupling_tools:
 
