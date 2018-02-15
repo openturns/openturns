@@ -40,6 +40,7 @@
  * Mesh constructor no longer builds a KDTree, new method Mesh::computeKDTree must be called explicitly
  * Deprecated Domain::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume, getLowerBound, getUpperBound
  * Add an argument to KarhunenLoeveQuadratureAlgorithm to pass domain bounds
+ * Add an argument to Mesh::streamToVTKFile() and Mesh::exportToVTKFile() to pass custom simplices
 
 === Python module ===
 
