@@ -29,6 +29,7 @@
 #include "openturns/NearestNeighbour.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/SquareMatrix.hxx"
+#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,6 +49,9 @@ public:
 
   /** Default constructor without parameters */
   NaiveEnclosingSimplex();
+
+  /** Parameter constructor */
+  explicit NaiveEnclosingSimplex(const Mesh & mesh);
 
   /** Parameter constructor */
   NaiveEnclosingSimplex(const Sample & vertices, const IndicesCollection & simplices);

@@ -43,6 +43,13 @@ NaiveEnclosingSimplex::NaiveEnclosingSimplex()
 }
 
 /* Parameter constructor */
+NaiveEnclosingSimplex::NaiveEnclosingSimplex(const Mesh & mesh)
+  : EnclosingSimplexImplementation(mesh.getVertices(), mesh.getSimplices())
+{
+  initialize();
+}
+
+/* Parameter constructor */
 NaiveEnclosingSimplex::NaiveEnclosingSimplex(const Sample & vertices,
                                              const IndicesCollection & simplices)
   : EnclosingSimplexImplementation(vertices, simplices)

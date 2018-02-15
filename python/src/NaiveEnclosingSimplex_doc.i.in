@@ -5,8 +5,16 @@ This class implements a naive implementation of point location,
 by looking into all its simplices.  It works well for convex
 domains, but may be slow otherwise.
 
+Available constructors:
+    NaiveEnclosingSimplex(*mesh*)
+
+    NaiveEnclosingSimplex(*points, simplices*)
+
 Parameters
 ----------
+mesh : :class:`~openturns.Mesh`
+    Mesh.
+
 sample : 2-d sequence of float
     Points.
 
@@ -25,7 +33,7 @@ Examples
 >>> upperBound = [2.0, 4.0]
 >>> interval = ot.Interval(lowerbound, upperBound)
 >>> mesh = mesher.build(interval)
->>> locator = ot.NaiveEnclosingSimplex(mesh.getVertices(), mesh.getSimplices())
+>>> locator = ot.NaiveEnclosingSimplex(mesh)
 >>> simplex = locator.getEnclosingSimplexIndex([0.1, 0.2])"
 
 // ---------------------------------------------------------------------

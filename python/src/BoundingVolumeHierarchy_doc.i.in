@@ -5,6 +5,8 @@ This spatial data structure helps to find the simplex
 containing a given point.
 
 Available constructors:
+    BoundingVolumeHierarchy(*mesh*)
+
     BoundingVolumeHierarchy(*points, simplices*)
 
     BoundingVolumeHierarchy(*points, simplices, binNumber*)
@@ -13,6 +15,9 @@ Available constructors:
 
 Parameters
 ----------
+mesh : :class:`~openturns.Mesh`
+    Mesh.
+
 sample : 2-d sequence of float
     Points.
 
@@ -43,7 +48,7 @@ Examples
 >>> upperBound = [2.0, 4.0]
 >>> interval = ot.Interval(lowerbound, upperBound)
 >>> mesh = mesher.build(interval)
->>> locator = ot.BoundingVolumeHierarchy(mesh.getVertices(), mesh.getSimplices())
+>>> locator = ot.BoundingVolumeHierarchy(mesh)
 >>> simplex = locator.getEnclosingSimplexIndex([0.1, 0.2])"
 
 // ---------------------------------------------------------------------
