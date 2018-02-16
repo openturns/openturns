@@ -734,8 +734,8 @@ Graph Mesh::draw3D(const Bool drawEdge,
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
   const Bool noRotation = rotation.isDiagonal();
-  const Point center(noRotation ? Point(3) : vertices_.computeMean());
-  const Sample visuVertices(noRotation ? vertices_ : rotation.getImplementation()->genSampleProd(vertices_ - center, true, false, 'R') + center);
+  const Point verticesCenter(noRotation ? Point(3) : vertices_.computeMean());
+  const Sample visuVertices(noRotation ? vertices_ : rotation.getImplementation()->genSampleProd(vertices_ - verticesCenter, true, false, 'R') + verticesCenter);
 
   // Third, split all the simplices into triangles and compute their mean depth
   Collection< std::pair<Scalar, Indices> > trianglesAndDepth(4 * simplicesSize);
@@ -856,21 +856,21 @@ Graph Mesh::draw3D(const Bool drawEdge,
     const UnsignedInteger i2 = trianglesAndDepth[i - 1].second[2];
     if (clippedRho < 1.0)
     {
-      const Point center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
-      face(0, 0) = center[0];
-      face(0, 1) = center[1];
-      face(1, 0) = center[0];
-      face(1, 1) = center[1];
-      face(2, 0) = center[0];
-      face(2, 1) = center[1];
+      const Point faceCenter((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
+      face(0, 0) = faceCenter[0];
+      face(0, 1) = faceCenter[1];
+      face(1, 0) = faceCenter[0];
+      face(1, 1) = faceCenter[1];
+      face(2, 0) = faceCenter[0];
+      face(2, 1) = faceCenter[1];
       if (clippedRho > 0.0)
       {
-        face(0, 0) += clippedRho * (visuVertices(i0, 0) - center[0]);
-        face(0, 1) += clippedRho * (visuVertices(i0, 1) - center[1]);
-        face(1, 0) += clippedRho * (visuVertices(i1, 0) - center[0]);
-        face(1, 1) += clippedRho * (visuVertices(i1, 1) - center[1]);
-        face(2, 0) += clippedRho * (visuVertices(i2, 0) - center[0]);
-        face(2, 1) += clippedRho * (visuVertices(i2, 1) - center[1]);
+        face(0, 0) += clippedRho * (visuVertices(i0, 0) - faceCenter[0]);
+        face(0, 1) += clippedRho * (visuVertices(i0, 1) - faceCenter[1]);
+        face(1, 0) += clippedRho * (visuVertices(i1, 0) - faceCenter[0]);
+        face(1, 1) += clippedRho * (visuVertices(i1, 1) - faceCenter[1]);
+        face(2, 0) += clippedRho * (visuVertices(i2, 0) - faceCenter[0]);
+        face(2, 1) += clippedRho * (visuVertices(i2, 1) - faceCenter[1]);
       }
     }
     else
@@ -903,7 +903,6 @@ Graph Mesh::draw3D(const Bool drawEdge,
       const Scalar cosPhi = std::abs(R[2]);
       const Scalar Idiffuse = kDiffuse * cosTheta;
       const Scalar Ispecular = kSpecular * pow(cosPhi, shininess);
-      Point Ilight(3);
       Ilight[0] = Ispecular * redLight;
       Ilight[1] = Ispecular * greenLight;
       Ilight[2] = Ispecular * blueLight;
@@ -913,10 +912,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
     } // shading
     if (drawEdge)
     {
-      Polygon triangle(face);
-      triangle.setColor(faceColor);
-      triangle.setEdgeColor(edgeColor);
-      graph.add(triangle);
+      Polygon faceAndEdge(face);
+      faceAndEdge.setColor(faceColor);
+      faceAndEdge.setEdgeColor(edgeColor);
+      graph.add(faceAndEdge);
     } // drawEdge
     else
     {
