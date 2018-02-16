@@ -23,6 +23,7 @@
 
 #include "openturns/NearestNeighbourImplementation.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -135,6 +136,8 @@ protected:
   virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
       const Point & x,
       Scalar & bestSquaredDistance,
+      Point & lowerBoundingBox,
+      Point & upperBoundingBox,
       const UnsignedInteger activeDimension) const;
 
   /** Build the tree */
@@ -142,6 +145,9 @@ protected:
 
   /** The data organized by the tree */
   Sample points_;
+
+  /** Global bounding box */
+  Interval boundingBox_;
 
   /** The root of the tree */
   KDNode::KDNodePointer p_root_;
