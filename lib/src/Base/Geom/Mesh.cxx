@@ -19,6 +19,7 @@
  *
  */
 #include <fstream>
+#include <algorithm>
 
 #include "openturns/Mesh.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -29,6 +30,8 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Polygon.hxx"
+#include "openturns/PolygonArray.hxx"
+#include "openturns/Collection.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PlatformInfo.hxx"
 
@@ -400,19 +403,19 @@ Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
   // First special case: 1D simplex
   if (getDimension() == 1)
   {
-    const Scalar x0 = vertices_[simplices_[index][0]][0];
-    const Scalar x1 = vertices_[simplices_[index][1]][0];
+    const Scalar x0 = vertices_(simplices_[index][0], 0);
+    const Scalar x1 = vertices_(simplices_[index][1], 0);
     return std::abs(x1 - x0);
   }
   // Second special case: 2D simplex
   if (getDimension() == 2)
   {
-    const Scalar x0 = vertices_[simplices_[index][0]][0];
-    const Scalar y0 = vertices_[simplices_[index][0]][1];
-    const Scalar x1 = vertices_[simplices_[index][1]][0];
-    const Scalar y1 = vertices_[simplices_[index][1]][1];
-    const Scalar x2 = vertices_[simplices_[index][2]][0];
-    const Scalar y2 = vertices_[simplices_[index][2]][1];
+    const Scalar x0 = vertices_(simplices_[index][0], 0);
+    const Scalar y0 = vertices_(simplices_[index][0], 1);
+    const Scalar x1 = vertices_(simplices_[index][1], 0);
+    const Scalar y1 = vertices_(simplices_[index][1], 1);
+    const Scalar x2 = vertices_(simplices_[index][2], 0);
+    const Scalar y2 = vertices_(simplices_[index][2], 1);
     return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
   }
   SquareMatrix matrix(buildSimplexMatrix(index));
@@ -503,10 +506,10 @@ Bool Mesh::isRegular() const
   if (size <= 1) return true;
   Bool regular = true;
   const Scalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
-  const Scalar step = vertices_[simplices_[0][1]][0] - vertices_[simplices_[0][0]][0];
+  const Scalar step = vertices_(simplices_[0][1], 0) - vertices_(simplices_[0][0], 0);
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    regular = regular && (std::abs(vertices_[simplices_[i][1]][0] - vertices_[simplices_[i][0]][0] - step) < epsilon);
+    regular = regular && (std::abs(vertices_(simplices_[i][1], 0) - vertices_(simplices_[i][0], 0) - step) < epsilon);
     if (!regular) break;
   }
   return regular;
@@ -630,8 +633,8 @@ Graph Mesh::draw1D() const
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     Sample data(2, 2);
-    data[0][0] = vertices_[simplices_[i][0]][0];
-    data[1][0] = vertices_[simplices_[i][1]][0];
+    data(0, 0) = vertices_(simplices_[i][0], 0);
+    data(1, 0) = vertices_(simplices_[i][1], 0);
     Curve simplex(data);
     simplex.setColor("blue");
     if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
@@ -696,6 +699,26 @@ Graph Mesh::draw3D(const Bool drawEdge,
   return draw3D(drawEdge, R, shading, rho);
 }
 
+namespace
+{
+// Check whether a face of a simplex is inner or on a boundary.  Arguments must be sorted.
+Bool isInnerFace(const Indices & simplices0, const Indices & simplices1, const Indices & simplices2)
+{
+  std::vector<UnsignedInteger> common01;
+  std::set_intersection(simplices0.begin(), simplices0.end(), simplices1.begin(), simplices1.end(), std::back_inserter(common01));
+  if (common01.size() < 2) return false;
+  std::vector<UnsignedInteger> common012;
+  std::set_intersection(simplices2.begin(), simplices2.end(), common01.begin(), common01.end(), std::back_inserter(common012));
+  return common012.size() > 1;
+}
+
+// Check whether a face of a simplex is oriented toward the front or back
+Bool isVisible(const Point & visuVertex0, const Point & visuVertex1, const Point & visuVertex2)
+{
+  return (visuVertex1[0] - visuVertex0[0]) * (visuVertex2[1] - visuVertex0[1]) <= (visuVertex1[1] - visuVertex0[1]) * (visuVertex2[0] - visuVertex0[0]);
+}
+} // anonymous namespace
+
 Graph Mesh::draw3D(const Bool drawEdge,
                    const SquareMatrix & rotation,
                    const Bool shading,
@@ -710,122 +733,208 @@ Graph Mesh::draw3D(const Bool drawEdge,
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex or no simplex.";
   // We use a basic Painter algorithm for the visualization
   // Second, transform the vertices if needed
-  const Sample visuVertices(rotation.isDiagonal() ? vertices_ : rotation.getImplementation()->genSampleProd(vertices_, true, false, 'R'));
+  const Bool noRotation = rotation.isDiagonal();
+  const Point center(noRotation ? Point(3) : vertices_.computeMean());
+  const Sample visuVertices(noRotation ? vertices_ : rotation.getImplementation()->genSampleProd(vertices_ - center, true, false, 'R') + center);
 
   // Third, split all the simplices into triangles and compute their mean depth
-  Sample trianglesAndDepth(0, 4);
-  Point triWithDepth(4);
+  Collection< std::pair<Scalar, Indices> > trianglesAndDepth(4 * simplicesSize);
+  UnsignedInteger triangleIndex = 0;
+  Indices triangle(3);
+  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const UnsignedInteger i0 = simplices_[i][0];
     const UnsignedInteger i1 = simplices_[i][1];
     const UnsignedInteger i2 = simplices_[i][2];
     const UnsignedInteger i3 = simplices_[i][3];
+    const Indices simplicesVertex0(verticesToSimplices_[i0]);
+    const Indices simplicesVertex1(verticesToSimplices_[i1]);
+    const Indices simplicesVertex2(verticesToSimplices_[i2]);
+    const Indices simplicesVertex3(verticesToSimplices_[i3]);
+    const Point visuVertex0(visuVertices[i0]);
+    const Point visuVertex1(visuVertices[i1]);
+    const Point visuVertex2(visuVertices[i2]);
+    const Point visuVertex3(visuVertices[i3]);
     // First face: AB=p0p1, AC=p0p2.
-    triWithDepth[0] = i0;
-    triWithDepth[1] = i1;
-    triWithDepth[2] = i2;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i1][2] + vertices_[i2][2];
-    trianglesAndDepth.add(triWithDepth);
+    // if (isVisible(visuVertex0, visuVertex1, visuVertex2) && !isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2))
+    if (!isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2))
+    {
+      triangle[0] = i0;
+      triangle[1] = i1;
+      triangle[2] = i2;
+      trianglesAndDepth[triangleIndex].first = visuVertices(i0, 2) + visuVertices(i1, 2) + visuVertices(i2, 2);
+      trianglesAndDepth[triangleIndex].second = triangle;
+      ++triangleIndex;
+    }
 
     // Second face: AB=p0p2, AC=p0p3.
-    triWithDepth[0] = i0;
-    triWithDepth[1] = i2;
-    triWithDepth[2] = i3;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i2][2] + vertices_[i3][2];
-    trianglesAndDepth.add(triWithDepth);
+    // if (isVisible(visuVertex0, visuVertex2, visuVertex3) && !isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3))
+    if (!isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3))
+    {
+      triangle[0] = i0;
+      triangle[1] = i2;
+      triangle[2] = i3;
+      trianglesAndDepth[triangleIndex].first = visuVertices(i0, 2) + visuVertices(i2, 2) + visuVertices(i3, 2);
+      trianglesAndDepth[triangleIndex].second = triangle;
+      ++triangleIndex;
+    }
 
     // Third face: AB=p0p3, AC=p0p1.
-    triWithDepth[0] = i0;
-    triWithDepth[1] = i3;
-    triWithDepth[2] = i1;
-    triWithDepth[3] = vertices_[i0][2] + vertices_[i3][2] + vertices_[i1][2];
-    trianglesAndDepth.add(triWithDepth);
+    // if (isVisible(visuVertex0, visuVertex3, visuVertex1) && !isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1))
+    if (!isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1))
+    {
+      triangle[0] = i0;
+      triangle[1] = i3;
+      triangle[2] = i1;
+      trianglesAndDepth[triangleIndex].first = visuVertices(i0, 2) + visuVertices(i3, 2) + visuVertices(i1, 2);
+      trianglesAndDepth[triangleIndex].second = triangle;
+      ++triangleIndex;
+    }
 
     // Fourth face: AB=p1p3, AC=p1p2.
-    triWithDepth[0] = i1;
-    triWithDepth[1] = i3;
-    triWithDepth[2] = i2;
-    triWithDepth[3] = vertices_[i1][2] + vertices_[i3][2] + vertices_[i2][2];
-    trianglesAndDepth.add(triWithDepth);
+    // if (isVisible(visuVertex1, visuVertex3, visuVertex2) && !isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2))
+    if (!isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2))
+    {
+      triangle[0] = i1;
+      triangle[1] = i3;
+      triangle[2] = i2;
+      trianglesAndDepth[triangleIndex].first = visuVertices(i1, 2) + visuVertices(i3, 2) + visuVertices(i2, 2);
+      trianglesAndDepth[triangleIndex].second = triangle;
+      ++triangleIndex;
+    }
   }
+  trianglesAndDepth.resize(triangleIndex);
+
   // Fourth, draw the triangles in decreasing depth
   Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
-  trianglesAndDepth = trianglesAndDepth.sortAccordingToAComponent(3);
+  std::sort(trianglesAndDepth.begin(), trianglesAndDepth.end());
   Scalar clippedRho = std::min(1.0, std::max(0.0, rho));
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
+  Sample face(3, 2);
+  Sample data;
+  Description palette;
+  if (!drawEdge)
+  {
+    data = Sample(3 * trianglesAndDepth.getSize(), 2);
+    palette = Description(trianglesAndDepth.getSize());
+  }
+  UnsignedInteger base = 0;
+  UnsignedInteger index = 0;
+
+  const Scalar kSpecular = ResourceMap::GetAsScalar("Mesh-SpecularFactor");
+  const Scalar kDiffuse = ResourceMap::GetAsScalar("Mesh-DiffuseFactor");
+  const Scalar kAmbient = ResourceMap::GetAsScalar("Mesh-AmbientFactor");
+  const Scalar shininess = ResourceMap::GetAsScalar("Mesh-Shininess");
+
+  const Scalar redAmbient = 1.0;
+  const Scalar greenAmbient = 1.0;
+  const Scalar blueAmbient = 0.0;
+  Point Iambient(3);
+  Iambient[0] = kAmbient * redAmbient;
+  Iambient[1] = kAmbient * greenAmbient;
+  Iambient[2] = kAmbient * blueAmbient;
+
+  const Scalar redFace = 0.0;
+  const Scalar greenFace = 0.0;
+  const Scalar blueFace = 1.0;
+
+  const Scalar redEdge = 1.0;
+  const Scalar greenEdge = 0.0;
+  const Scalar blueEdge = 0.0;
+
+  const Scalar redLight = 1.0;
+  const Scalar greenLight = 1.0;
+  const Scalar blueLight = 1.0;
+  Point Ilight(3);
+
+  // Will be modified if shading == true
+  String faceColor = Drawable::ConvertFromRGB(redFace, greenFace, blueFace);
+  String edgeColor = Drawable::ConvertFromRGB(redEdge, greenEdge, blueEdge);
+
   for (UnsignedInteger i = trianglesAndDepth.getSize(); i > 0; --i)
   {
-    const UnsignedInteger i0 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][0]);
-    const UnsignedInteger i1 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][1]);
-    const UnsignedInteger i2 = static_cast<UnsignedInteger>(trianglesAndDepth[i - 1][2]);
-    Sample data(3, 2);
+    const UnsignedInteger i0 = trianglesAndDepth[i - 1].second[0];
+    const UnsignedInteger i1 = trianglesAndDepth[i - 1].second[1];
+    const UnsignedInteger i2 = trianglesAndDepth[i - 1].second[2];
     if (clippedRho < 1.0)
     {
       const Point center((visuVertices[i0] + visuVertices[i1] + visuVertices[i2]) / 3.0);
-      data[0][0] = center[0];
-      data[0][1] = center[1];
-      data[1][0] = center[0];
-      data[1][1] = center[1];
-      data[2][0] = center[0];
-      data[2][1] = center[1];
+      face(0, 0) = center[0];
+      face(0, 1) = center[1];
+      face(1, 0) = center[0];
+      face(1, 1) = center[1];
+      face(2, 0) = center[0];
+      face(2, 1) = center[1];
       if (clippedRho > 0.0)
       {
-        data[0][0] += clippedRho * (visuVertices[i0][0] - center[0]);
-        data[0][1] += clippedRho * (visuVertices[i0][1] - center[1]);
-        data[1][0] += clippedRho * (visuVertices[i1][0] - center[0]);
-        data[1][1] += clippedRho * (visuVertices[i1][1] - center[1]);
-        data[2][0] += clippedRho * (visuVertices[i2][0] - center[0]);
-        data[2][1] += clippedRho * (visuVertices[i2][1] - center[1]);
+        face(0, 0) += clippedRho * (visuVertices(i0, 0) - center[0]);
+        face(0, 1) += clippedRho * (visuVertices(i0, 1) - center[1]);
+        face(1, 0) += clippedRho * (visuVertices(i1, 0) - center[0]);
+        face(1, 1) += clippedRho * (visuVertices(i1, 1) - center[1]);
+        face(2, 0) += clippedRho * (visuVertices(i2, 0) - center[0]);
+        face(2, 1) += clippedRho * (visuVertices(i2, 1) - center[1]);
       }
     }
     else
     {
-      data[0][0] = visuVertices[i0][0];
-      data[0][1] = visuVertices[i0][1];
-      data[1][0] = visuVertices[i1][0];
-      data[1][1] = visuVertices[i1][1];
-      data[2][0] = visuVertices[i2][0];
-      data[2][1] = visuVertices[i2][1];
+      face(0, 0) = visuVertices(i0, 0);
+      face(0, 1) = visuVertices(i0, 1);
+      face(1, 0) = visuVertices(i1, 0);
+      face(1, 1) = visuVertices(i1, 1);
+      face(2, 0) = visuVertices(i2, 0);
+      face(2, 1) = visuVertices(i2, 1);
     }
-    Polygon triangle(data);
-
-    Scalar redFace = 0.0;
-    Scalar greenFace = 0.0;
-    Scalar blueFace = 1.0;
-
-    Scalar redEdge = 1.0;
-    Scalar greenEdge = 0.0;
-    Scalar blueEdge = 0.0;
-
-    Scalar redLight = 1.0;
-    Scalar greenLight = 1.0;
-    Scalar blueLight = 1.0;
 
     if (shading)
     {
+      // The light source is behind the observer
       const Point ab(visuVertices[i1] - visuVertices[i0]);
       const Point ac(visuVertices[i2] - visuVertices[i0]);
       Point N(3);
+      // The normal is vect(ab, ac)
       N[0] = ab[1] * ac[2] - ab[2] * ac[1];
       N[1] = ab[2] * ac[0] - ab[0] * ac[2];
       N[2] = ab[0] * ac[1] - ab[1] * ac[0];
-      const Scalar cosTheta = std::abs(N[2]) / N.norm();
+      N /= N.norm();
+      // Flip the normal if it is pointing backward
+      if (N[2] < 0.0) N *= -1.0;
+      const Scalar cosTheta = N[2];
+      // R is a unit vector by construction
       Point R(N * (2.0 * cosTheta));
       R[2] -= 1.0;
-      const Scalar cosPhi = std::abs(R[2] / R.norm());
-      redFace     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
-      greenFace   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
-      blueFace    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;
-      redEdge     *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * redLight;
-      greenEdge   *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * greenLight;
-      blueEdge    *= 0.1 + 0.7 * cosTheta + 0.2 * pow(cosPhi, 50) * blueLight;
-    }
-    triangle.setColor(triangle.ConvertFromRGB(redFace, greenFace, blueFace));
-    if (drawEdge) triangle.setEdgeColor(triangle.ConvertFromRGB(redEdge, greenEdge, blueEdge));
-    else triangle.setEdgeColor(triangle.ConvertFromRGB(redFace, greenFace, blueFace));
-    graph.add(triangle);
+      const Scalar cosPhi = std::abs(R[2]);
+      const Scalar Idiffuse = kDiffuse * cosTheta;
+      const Scalar Ispecular = kSpecular * pow(cosPhi, shininess);
+      Point Ilight(3);
+      Ilight[0] = Ispecular * redLight;
+      Ilight[1] = Ispecular * greenLight;
+      Ilight[2] = Ispecular * blueLight;
+      // Face color using Phong model
+      faceColor = Drawable::ConvertFromRGB(Iambient[0] + Idiffuse * redFace + Ilight[0], Iambient[1] + Idiffuse * greenFace + Ilight[1], Iambient[2] + Idiffuse * blueFace + Ilight[2]);
+      edgeColor = Drawable::ConvertFromRGB(Iambient[0] + Idiffuse * redEdge + Ilight[0], Iambient[1] + Idiffuse * greenEdge + Ilight[1], Iambient[2] + Idiffuse * blueEdge + Ilight[2]);
+    } // shading
+    if (drawEdge)
+    {
+      Polygon triangle(face);
+      triangle.setColor(faceColor);
+      triangle.setEdgeColor(edgeColor);
+      graph.add(triangle);
+    } // drawEdge
+    else
+    {
+      data(base, 0) = face(0, 0);
+      data(base, 1) = face(0, 1);
+      data(base + 1, 0) = face(1, 0);
+      data(base + 1, 1) = face(1, 1);
+      data(base + 2, 0) = face(2, 0);
+      data(base + 2, 1) = face(2, 1);
+      base += 3;
+      palette[index] = faceColor;
+      ++index;
+    } // !drawEdge
   }
+  if (!drawEdge) graph.add(PolygonArray(data, 3, palette));
   return graph;
 }
 
@@ -852,8 +961,8 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
   Sample vertices(verticesNumber, 2);
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
   {
-    file >> vertices[i][0];
-    file >> vertices[i][1];
+    file >> vertices(i, 0);
+    file >> vertices(i, 1);
     file >> scratch;
     LOGINFO(OSS() << "vertex " << i << "=" << vertices[i]);
   }
@@ -877,6 +986,11 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
 /* VTK export */
 String Mesh::streamToVTKFormat() const
 {
+  return streamToVTKFormat(simplices_);
+}
+
+String Mesh::streamToVTKFormat(const IndicesCollection & simplices) const
+{
   if (dimension_ > 3) throw InvalidDimensionException(HERE) << "Error: cannot export a mesh of dimension=" << dimension_ << " into the VTK format. Maximum dimension is 3.";
   const UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
@@ -898,14 +1012,14 @@ String Mesh::streamToVTKFormat() const
   {
     String separator("");
     for (UnsignedInteger j = 0; j < dimension_; ++j, separator = " ")
-      oss << separator << vertices_[i][j];
+      oss << separator << vertices_(i, j);
     for (UnsignedInteger j = dimension_; j < 3; ++j)
       oss << separator << "0.0";
     oss << "\n";
   }
   // The simplices
   oss << "\n";
-  const UnsignedInteger numSimplices = getSimplicesNumber();
+  const UnsignedInteger numSimplices = simplices.getSize();
   // If no simplex, assume that it is a cloud of points
   if (numSimplices == 0)
   {
@@ -920,17 +1034,17 @@ String Mesh::streamToVTKFormat() const
   // There is at least on simplex. Assume homogeneous simplices,
   // ie all the simplices are of the same kind as the first one
   UnsignedInteger verticesPerSimplex = 1;
-  UnsignedInteger lastIndex = simplices_[0][0];
-  while ((verticesPerSimplex <= dimension_) && (simplices_[0][verticesPerSimplex] != lastIndex))
+  UnsignedInteger lastIndex = simplices[0][0];
+  while ((verticesPerSimplex <= dimension_) && (simplices[0][verticesPerSimplex] != lastIndex))
   {
-    lastIndex = simplices_[0][verticesPerSimplex];
+    lastIndex = simplices[0][verticesPerSimplex];
     ++verticesPerSimplex;
   }
   oss << "CELLS " << numSimplices << " " << (verticesPerSimplex + 1) * numSimplices << "\n";
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     oss << verticesPerSimplex;
-    for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j) oss << " " << simplices_[i][j];
+    for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j) oss << " " << simplices[i][j];
     oss << "\n";
   }
   oss << "\n";
@@ -953,9 +1067,15 @@ String Mesh::streamToVTKFormat() const
 
 void Mesh::exportToVTKFile(const String & fileName) const
 {
+  exportToVTKFile(fileName, simplices_);
+}
+
+void Mesh::exportToVTKFile(const String & fileName,
+			   const IndicesCollection & simplices) const
+{
   std::ofstream file(fileName.c_str(), std::ios::out);
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;
-  const String content(streamToVTKFormat());
+  const String content(streamToVTKFormat(simplices));
   file << content;
   file.close();
 }
