@@ -232,12 +232,13 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
-  /** Weights distribution accessor */
 protected:
-  void setWeights(const Matrix & weights);
-  void setDistributionCollection(const DistributionCollection & coll);
+  void setDistributionCollectionAndWeights(const DistributionCollection & coll,
+					   const Matrix & weights,
+					   const Bool simplifyAtom);
 
 public:
+  /** Weights distribution accessor */
   Matrix getWeights() const;
 
   /** Get a positon indicator for a 1D distribution */
