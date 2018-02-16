@@ -1,5 +1,5 @@
 Method of evaluation= Saltelli
-First order indices =  [0.293134,0.451208,-0.00292283]
+First order indices =  [0.302751,0.460825,0.00669407]
 Total order indices =  [0.57499,0.427147,0.256687]
 Method of evaluation= Jansen
 First order indices =  [0.322419,0.457314,0.0260925]
@@ -27,4 +27,4 @@ First order indices interval =  [0.308335, 0.309469]
 Total order indices interval =  [0.567276, 0.568296]
 [0.43033, 0.431178]
 [0.244024, 0.244562]
-[0.0101493,0.60453,0.304954]
+[0.081853,0.676234,0.376658]

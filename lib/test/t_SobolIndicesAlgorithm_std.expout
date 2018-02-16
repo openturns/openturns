@@ -1,8 +1,8 @@
 Method = SaltelliSensitivityAlgorithm
-First order Sobol indice of Y|X1 = 0.293134
+First order Sobol indice of Y|X1 = 0.302751
 Total order Sobol indice of Y|X3 = 0.256687
-Second order Sobol indice of Y|X1,X3 = 0.24049
-Confidence interval of first order Y|X1 = [0.272983, 0.309189]
+Second order Sobol indice of Y|X1,X3 = 0.221256
+Confidence interval of first order Y|X1 = [0.283606, 0.320897]
 Confidence interval of total order Y|X3 = [0.227016, 0.281488]
 Method = JansenSensitivityAlgorithm
 First order Sobol indice of Y|X1 = 0.322419

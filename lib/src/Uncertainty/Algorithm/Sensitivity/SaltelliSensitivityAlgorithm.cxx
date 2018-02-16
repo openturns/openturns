@@ -78,8 +78,9 @@ Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
   const Sample yA(sample, 0, size);
   const Point muA(yA.computeMean());
 
-  // Compute cross mean term
-  const Point crossSquareMean(computeSumDotSamples(sample, size_, 0, size_) / size_);
+  // Compute muB
+  const Sample yB(sample, size, 2 * size);
+  const Point muB(yB.computeMean());
 
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
@@ -91,7 +92,7 @@ Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {
-      varianceI[q][p] +=  yEDotyB[q]  / (size - 1.0) -  crossSquareMean[q];
+      varianceI[q][p] +=  yEDotyB[q]  / (size - 1.0) -  muA[q] * muB[q];
       // Vti = Var - V_{-i}
       VTi[q][p] += muA[q] * muA[q] + referenceVariance_[q] - yEDotyA[q]  / (size - 1.0);
     }
