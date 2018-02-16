@@ -742,6 +742,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
   UnsignedInteger triangleIndex = 0;
   Indices triangle(3);
   if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
+  const Bool backfaceCulling = ResourceMap::GetAsBool("Mesh-BackfaceCulling");
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const UnsignedInteger i0 = simplices_[i][0];
@@ -757,8 +758,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     const Point visuVertex2(visuVertices[i2]);
     const Point visuVertex3(visuVertices[i3]);
     // First face: AB=p0p1, AC=p0p2.
-    // if (isVisible(visuVertex0, visuVertex1, visuVertex2) && !isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2))
-    if (!isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2))
+    if (((!backfaceCulling) || isVisible(visuVertex0, visuVertex1, visuVertex2)) && (!isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2)))
     {
       triangle[0] = i0;
       triangle[1] = i1;
@@ -769,8 +769,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
 
     // Second face: AB=p0p2, AC=p0p3.
-    // if (isVisible(visuVertex0, visuVertex2, visuVertex3) && !isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3))
-    if (!isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3))
+    if (((!backfaceCulling) || isVisible(visuVertex0, visuVertex2, visuVertex3)) && (!isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3)))
     {
       triangle[0] = i0;
       triangle[1] = i2;
@@ -781,8 +780,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
 
     // Third face: AB=p0p3, AC=p0p1.
-    // if (isVisible(visuVertex0, visuVertex3, visuVertex1) && !isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1))
-    if (!isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1))
+    if (((!backfaceCulling) || isVisible(visuVertex0, visuVertex3, visuVertex1)) && (!isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1)))
     {
       triangle[0] = i0;
       triangle[1] = i3;
@@ -793,8 +791,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
 
     // Fourth face: AB=p1p3, AC=p1p2.
-    // if (isVisible(visuVertex1, visuVertex3, visuVertex2) && !isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2))
-    if (!isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2))
+    if (((!backfaceCulling) || isVisible(visuVertex1, visuVertex3, visuVertex2)) && (!isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2)))
     {
       triangle[0] = i1;
       triangle[1] = i3;

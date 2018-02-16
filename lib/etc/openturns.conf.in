@@ -238,6 +238,7 @@
   <!-- OT::Mesh parameters -->
   <Mesh-VertexEpsilon   value="1.0e-12" />
   <Mesh-LargeSize       value="5000"    />
+  <Mesh-BackfaceCulling value="false"   />
   <Mesh-DiffuseFactor   value="0.7"     />
   <Mesh-AmbientFactor   value="0.1"     />
   <Mesh-SpecularFactor  value="0.2"     />
