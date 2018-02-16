@@ -140,7 +140,10 @@ private:
     }
     if (size_ == capacity_ && currentGreatestValidSquaredDistance < delta * delta) return;
     const UnsignedInteger localIndex = p_node->index_;
-    const Scalar localSquaredDistance = (x - sample_[localIndex]).normSquare();
+    // Similar to (x - sample_[localIndex]).normSquare() but it is better to avoid Point creation
+    Scalar localSquaredDistance = 0.0;
+    for(UnsignedInteger i = 0; i < dimension; ++i)
+      localSquaredDistance += (x[i] - sample_(localIndex, i)) * (x[i] - sample_(localIndex, i));
     if (size_ != capacity_)
     {
       // Put index/value at the first free node and move it up to a valid location
@@ -443,7 +446,10 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   }
   // 2.2)
   const UnsignedInteger localIndex = p_node->index_;
-  const Scalar localSquaredDistance = (x - points_[localIndex]).normSquare();
+  // Similar to (x - points_[localIndex]).normSquare() but it is better to avoid Point creation
+  Scalar localSquaredDistance = 0.0;
+  for(UnsignedInteger i = 0; i < dimension; ++i)
+    localSquaredDistance += (x[i] - points_(localIndex, i)) * (x[i] - points_(localIndex, i));
   if (localSquaredDistance < currentBestSquaredDistance)
   {
     currentBestSquaredDistance = localSquaredDistance;
