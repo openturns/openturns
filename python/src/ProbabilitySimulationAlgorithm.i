@@ -54,5 +54,4 @@ def RandomizedLHS(event):
     experiment = openturns.weightedexperiment.LHSExperiment()
     experiment.setAlwaysShuffle(True)
     return openturns.simulation.ProbabilitySimulationAlgorithm(event, experiment)
-
 %}
