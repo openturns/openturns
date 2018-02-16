@@ -42,8 +42,9 @@ class KDNearestNeighboursFinder
 public:
 
   /** Constructor */
-  KDNearestNeighboursFinder(const Sample & sample, const UnsignedInteger size)
+  KDNearestNeighboursFinder(const Sample & sample, const Interval & boundingBox, const UnsignedInteger size)
     : sample_(sample)
+    , boundingBox_(boundingBox)
     , capacity_(size)
     , size_(0)
     , values_(size)
@@ -64,7 +65,9 @@ public:
       size_ = 0;
       values_[0] = SpecFunc::MaxScalar;
     }
-    collectNearestNeighbours(p_node, x, 0);
+    Point lowerBoundingBox(boundingBox_.getLowerBound());
+    Point upperBoundingBox(boundingBox_.getUpperBound());
+    collectNearestNeighbours(p_node, x, lowerBoundingBox, upperBoundingBox, 0);
     if (sorted)
     {
       /* Sort heap in-place in ascending order.
@@ -98,21 +101,49 @@ private:
   */
   void collectNearestNeighbours(const KDTree::KDNode::KDNodePointer & p_node,
                                 const Point & x,
+                                Point & lowerBoundingBox, Point & upperBoundingBox,
                                 const UnsignedInteger activeDimension)
   {
-    const Scalar delta = x[activeDimension] - sample_[p_node->index_][activeDimension];
+    const Scalar splitValue = sample_(p_node->index_, activeDimension);
+    const Scalar delta = x[activeDimension] - splitValue;
     const KDTree::KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
     const KDTree::KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
     const UnsignedInteger dimension = sample_.getDimension();
+    const UnsignedInteger nextActiveDimension = (activeDimension + 1) % dimension;
+    const Scalar saveLower = lowerBoundingBox[activeDimension];
+    const Scalar saveUpper = upperBoundingBox[activeDimension];
     Scalar currentGreatestValidSquaredDistance = values_[0];
     if (sameSide != 0)
     {
-      collectNearestNeighbours(sameSide, x, (activeDimension + 1) % dimension);
-      currentGreatestValidSquaredDistance = values_[0];
+      // Update bounding box to match sameSide bounding box
+      if (delta < 0.0)
+        upperBoundingBox[activeDimension] = splitValue;
+      else
+        lowerBoundingBox[activeDimension] = splitValue;
+      // Compute distance between x and sameSide
+      Scalar squaredDistanceBoundingBox = 0.0;
+      for(UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
+        squaredDistanceBoundingBox += difference * difference;
+      }
+      if (squaredDistanceBoundingBox < values_[0])
+      {
+        collectNearestNeighbours(sameSide, x, lowerBoundingBox, upperBoundingBox, nextActiveDimension);
+        currentGreatestValidSquaredDistance = values_[0];
+      }
+      // Restore bounding box
+      if (delta < 0.0)
+        upperBoundingBox[activeDimension] = saveUpper;
+      else
+        lowerBoundingBox[activeDimension] = saveLower;
     }
     if (size_ == capacity_ && currentGreatestValidSquaredDistance < delta * delta) return;
     const UnsignedInteger localIndex = p_node->index_;
-    const Scalar localSquaredDistance = (x - sample_[localIndex]).normSquare();
+    // Similar to (x - sample_[localIndex]).normSquare() but it is better to avoid Point creation
+    Scalar localSquaredDistance = 0.0;
+    for(UnsignedInteger i = 0; i < dimension; ++i)
+      localSquaredDistance += (x[i] - sample_(localIndex, i)) * (x[i] - sample_(localIndex, i));
     if (size_ != capacity_)
     {
       // Put index/value at the first free node and move it up to a valid location
@@ -135,7 +166,25 @@ private:
     }
     if (oppositeSide != 0)
     {
-      collectNearestNeighbours(oppositeSide, x, (activeDimension + 1) % dimension);
+      // Update bounding box to match oppositeSide bounding box
+      if (delta < 0.0)
+        lowerBoundingBox[activeDimension] = splitValue;
+      else
+        upperBoundingBox[activeDimension] = splitValue;
+      // Compute distance between x and oppositeSide
+      Scalar squaredDistanceBoundingBox = 0.0;
+      for(UnsignedInteger i = 0; i < dimension; ++i)
+      {
+        Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
+        squaredDistanceBoundingBox += difference * difference;
+      }
+      if (squaredDistanceBoundingBox < values_[0])
+        collectNearestNeighbours(oppositeSide, x, lowerBoundingBox, upperBoundingBox, nextActiveDimension);
+      // Restore bounding box
+      if (delta < 0.0)
+        lowerBoundingBox[activeDimension] = saveLower;
+      else
+        upperBoundingBox[activeDimension] = saveUpper;
     }
   }
 
@@ -176,6 +225,8 @@ private:
 
   // Points contained in the tree
   const Sample sample_;
+  // Points bounding box
+  const Interval boundingBox_;
   // Maximum heap size
   const UnsignedInteger capacity_;
   // Number of used buckets
@@ -197,6 +248,7 @@ private:
 KDTree::KDTree()
   : PersistentObject()
   , points_(0, 0)
+  , boundingBox_()
   , p_root_(0)
 {
   // Nothing to do
@@ -206,6 +258,7 @@ KDTree::KDTree()
 KDTree::KDTree(const Sample & points)
   : PersistentObject()
   , points_(points)
+  , boundingBox_()
   , p_root_(0)
 {
   // Build the tree
@@ -214,6 +267,8 @@ KDTree::KDTree(const Sample & points)
 
 void KDTree::initialize()
 {
+  boundingBox_ = Interval(points_.getDimension());
+
   // Scramble the order in which the points are inserted in the tree in order to improve its balancing
   const UnsignedInteger size = points_.getSize();
   Indices buffer(size);
@@ -225,6 +280,8 @@ void KDTree::initialize()
     insert(p_root_, buffer[index], 0);
     buffer[index] = buffer[i];
   }
+  boundingBox_.setLowerBound(points_.getMin());
+  boundingBox_.setUpperBound(points_.getMax());
 }
 
 /* Virtual constructor */
@@ -254,7 +311,7 @@ void KDTree::insert(KDNode::KDNodePointer & p_node,
   if (index >= points_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected an index less than " << points_.getSize() << ", got " << index;
   // We are on a leaf
   if (p_node == 0) p_node = new KDNode(index);
-  else if (points_[index][activeDimension] < points_[p_node->index_][activeDimension]) insert(p_node->p_left_, index, (activeDimension + 1) % points_.getDimension());
+  else if (points_(index, activeDimension) < points_(p_node->index_, activeDimension)) insert(p_node->p_left_, index, (activeDimension + 1) % points_.getDimension());
   else insert(p_node->p_right_, index, (activeDimension + 1) % points_.getDimension());
 }
 
@@ -272,7 +329,7 @@ Indices KDTree::getNearestNeighboursIndices(const Point & x,
   }
   else
   {
-    KDNearestNeighboursFinder heap(points_, k);
+    KDNearestNeighboursFinder heap(points_, boundingBox_, k);
     result = heap.getNearestNeighboursIndices(p_root_, x, sorted);
   }
   return result;
@@ -290,7 +347,9 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const Point & x) const
 {
   if (points_.getSize() == 1) return 0;
   Scalar smallestDistance = SpecFunc::MaxScalar;
-  return getNearestNeighbourIndex(p_root_, x, smallestDistance, 0);
+  Point lowerBoundingBox(boundingBox_.getLowerBound());
+  Point upperBoundingBox(boundingBox_.getUpperBound());
+  return getNearestNeighbourIndex(p_root_, x, smallestDistance, lowerBoundingBox, upperBoundingBox, 0);
 }
 
 Point KDTree::getNearestNeighbour(const Point & x) const
@@ -317,6 +376,8 @@ Sample KDTree::getNearestNeighbour(const Sample & sample) const
 UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
     const Point & x,
     Scalar & bestSquaredDistance,
+    Point & lowerBoundingBox,
+    Point & upperBoundingBox,
     const UnsignedInteger activeDimension) const
 {
   if (p_node == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an emty tree";
@@ -333,21 +394,46 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   // 2.4) Go on the opposite side. On return, check if the returned squared distance is less than the current best squared distance and update the current best index and the associated squared distance.
   // 3*) Return the current best index and the associated squared distance to the upper level
 
-  const Scalar delta = x[activeDimension] - points_[p_node->index_][activeDimension];
+  const Scalar splitValue = points_(p_node->index_, activeDimension);
+  const Scalar delta = x[activeDimension] - splitValue;
   const KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
   const KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
   UnsignedInteger currentBestIndex = points_.getSize();
   Scalar currentBestSquaredDistance = bestSquaredDistance;
+  const UnsignedInteger dimension = points_.getDimension();
+  const UnsignedInteger nextActiveDimension = (activeDimension + 1) % dimension;
+  const Scalar saveLower = lowerBoundingBox[activeDimension];
+  const Scalar saveUpper = upperBoundingBox[activeDimension];
   // 1)
   if (sameSide != 0)
   {
     // 1.1)
-    UnsignedInteger candidateBestIndex = getNearestNeighbourIndex(sameSide, x, bestSquaredDistance, (activeDimension + 1) % points_.getDimension());
-    if (bestSquaredDistance < currentBestSquaredDistance)
+    // Update bounding box to match sameSide bounding box
+    if (delta < 0.0)
+      upperBoundingBox[activeDimension] = splitValue;
+    else
+      lowerBoundingBox[activeDimension] = splitValue;
+    // Compute distance between x and sameSide
+    Scalar squaredDistanceBoundingBox = 0.0;
+    for(UnsignedInteger i = 0; i < dimension; ++i)
     {
-      currentBestSquaredDistance = bestSquaredDistance;
-      currentBestIndex = candidateBestIndex;
+      Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
+      squaredDistanceBoundingBox += difference * difference;
     }
+    if (squaredDistanceBoundingBox < currentBestSquaredDistance)
+    {
+      UnsignedInteger candidateBestIndex = getNearestNeighbourIndex(sameSide, x, bestSquaredDistance, lowerBoundingBox, upperBoundingBox, nextActiveDimension);
+      if (bestSquaredDistance < currentBestSquaredDistance)
+      {
+        currentBestSquaredDistance = bestSquaredDistance;
+        currentBestIndex = candidateBestIndex;
+      }
+    }
+    // Restore bounding box
+    if (delta < 0.0)
+      upperBoundingBox[activeDimension] = saveUpper;
+    else
+      lowerBoundingBox[activeDimension] = saveLower;
   } // sameSide != 0
   // 2)
   if (currentBestSquaredDistance < delta * delta)
@@ -358,7 +444,10 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   }
   // 2.2)
   const UnsignedInteger localIndex = p_node->index_;
-  const Scalar localSquaredDistance = (x - points_[localIndex]).normSquare();
+  // Similar to (x - points_[localIndex]).normSquare() but it is better to avoid Point creation
+  Scalar localSquaredDistance = 0.0;
+  for(UnsignedInteger i = 0; i < dimension; ++i)
+    localSquaredDistance += (x[i] - points_(localIndex, i)) * (x[i] - points_(localIndex, i));
   if (localSquaredDistance < currentBestSquaredDistance)
   {
     currentBestSquaredDistance = localSquaredDistance;
@@ -369,13 +458,33 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   // 2.3)
   if (oppositeSide != 0)
   {
-    // 2.4)
-    UnsignedInteger candidateBestIndex = getNearestNeighbourIndex(oppositeSide, x, bestSquaredDistance, (activeDimension + 1) % points_.getDimension());
-    if (bestSquaredDistance < currentBestSquaredDistance)
+    // Update bounding box to match oppositeSide bounding box
+    if (delta < 0.0)
+      lowerBoundingBox[activeDimension] = splitValue;
+    else
+      upperBoundingBox[activeDimension] = splitValue;
+    // Compute distance between x and oppositeSide
+    Scalar squaredDistanceBoundingBox = 0.0;
+    for(UnsignedInteger i = 0; i < dimension; ++i)
     {
-      currentBestSquaredDistance = bestSquaredDistance;
-      currentBestIndex = candidateBestIndex;
+      Scalar difference = std::max(0.0, std::max(x[i] - upperBoundingBox[i], lowerBoundingBox[i] - x[i]));
+      squaredDistanceBoundingBox += difference * difference;
     }
+    // 2.4)
+    if (squaredDistanceBoundingBox < currentBestSquaredDistance)
+    {
+      UnsignedInteger candidateBestIndex = getNearestNeighbourIndex(oppositeSide, x, bestSquaredDistance, lowerBoundingBox, upperBoundingBox, nextActiveDimension);
+      if (bestSquaredDistance < currentBestSquaredDistance)
+      {
+        currentBestSquaredDistance = bestSquaredDistance;
+        currentBestIndex = candidateBestIndex;
+      }
+    }
+    // Restore bounding box
+    if (delta < 0.0)
+      lowerBoundingBox[activeDimension] = saveLower;
+    else
+      upperBoundingBox[activeDimension] = saveUpper;
   } // oppositeSide != 0
   // 3)
   bestSquaredDistance = currentBestSquaredDistance;
