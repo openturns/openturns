@@ -236,9 +236,13 @@
   <Domain-SmallVolume   value="1.0e-12" />
 
   <!-- OT::Mesh parameters -->
-  <Mesh-VertexEpsilon value="1.0e-12" />
-  <Mesh-LargeSize     value="5000" />
-  
+  <Mesh-VertexEpsilon   value="1.0e-12" />
+  <Mesh-LargeSize       value="5000"    />
+  <Mesh-DiffuseFactor   value="0.7"     />
+  <Mesh-AmbientFactor   value="0.1"     />
+  <Mesh-SpecularFactor  value="0.2"     />
+  <Mesh-Shininess       value="100.0"   />
+
   <!-- OT::Matrix parameters -->
   <Matrix-size-visible-in-str-from value="5"                 />
 
