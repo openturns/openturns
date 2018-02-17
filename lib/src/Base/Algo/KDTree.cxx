@@ -54,7 +54,7 @@ public:
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
-  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const Point & x, const bool sorted)
+  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const Point & x, const Bool sorted)
   {
     if (size_ != 0)
     {
@@ -268,8 +268,8 @@ void KDTree::insert(KDNode::KDNodePointer & p_node,
 
 /* Get the indices of the k nearest neighbours of the given point */
 Indices KDTree::getNearestNeighboursIndices(const Point & x,
-    const UnsignedInteger k,
-    const bool sorted) const
+                                            const UnsignedInteger k,
+                                            const Bool sorted) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
   Indices result(k);
@@ -288,13 +288,10 @@ Indices KDTree::getNearestNeighboursIndices(const Point & x,
 
 /* Get the k nearest neighbours of the given point */
 Sample KDTree::getNearestNeighbours(const Point & x,
-                                    const UnsignedInteger k) const
+                                    const UnsignedInteger k,
+                                    const Bool sorted) const
 {
-  if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
-  const Indices indices(getNearestNeighboursIndices(x, k));
-  Sample result(k, points_.getDimension());
-  for (UnsignedInteger i = 0; i < k; ++i) result[i] = points_[indices[i]];
-  return result;
+  return points_.select(getNearestNeighboursIndices(x, k, sorted));
 }
 
 UnsignedInteger KDTree::getNearestNeighbourIndex(const Point & x) const
@@ -307,6 +304,22 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const Point & x) const
 Point KDTree::getNearestNeighbour(const Point & x) const
 {
   return points_[getNearestNeighbourIndex(x)];
+}
+
+/* Get the index of the nearest neighbour of the given points */
+Indices KDTree::getNearestNeighbourIndex(const Sample & sample) const
+{
+  const UnsignedInteger size = sample.getSize();
+  Indices result(size);
+  for(UnsignedInteger i = 0; i < size; ++i)
+    result[i] = getNearestNeighbourIndex(sample[i]);
+  return result;
+}
+
+/* Get the nearest neighbour of the given points */
+Sample KDTree::getNearestNeighbour(const Sample & sample) const
+{
+  return points_.select(getNearestNeighbourIndex(sample));
 }
 
 UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,

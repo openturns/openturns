@@ -62,18 +62,25 @@ public:
 
   /** Get the indices of the k nearest neighbours of the given point */
   virtual Indices getNearestNeighboursIndices(const Point & x,
-      const UnsignedInteger k,
-      const bool sorted  = false) const;
+                                              const UnsignedInteger k,
+                                              const Bool sorted  = false) const;
 
   /** Get the k nearest neighbours of the given point */
   virtual Sample getNearestNeighbours(const Point & x,
-                                      const UnsignedInteger k) const;
+                                      const UnsignedInteger k,
+                                      const Bool sorted  = false) const;
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const Point & x) const;
 
+  /** Get the index of the nearest neighbour of the given points */
+  virtual Indices getNearestNeighbourIndex(const Sample & sample) const;
+
   /** Get the nearest neighbour of the given point */
   virtual Point getNearestNeighbour(const Point & x) const;
+
+  /** Get the nearest neighbour of the given points */
+  virtual Sample getNearestNeighbour(const Sample & sample) const;
 
   /** Points accessor */
   Sample getPoints() const;
