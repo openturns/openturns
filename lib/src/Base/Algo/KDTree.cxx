@@ -246,14 +246,6 @@ Bool KDTree::isEmpty() const
   return points_.getSize() == 0;
 }
 
-/* Insert the given point into the tree */
-void KDTree::insert(const Point & point)
-{
-  if (point.getDimension() != points_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << points_.getDimension() << ", got dimension=" << point.getDimension();
-  points_.add(point);
-  insert(p_root_, points_.getSize(), 0);
-}
-
 /* Insert the point at given index into the tree */
 void KDTree::insert(KDNode::KDNodePointer & p_node,
                     const UnsignedInteger index,

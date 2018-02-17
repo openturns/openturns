@@ -57,9 +57,6 @@ public:
   /** Check if the tree is empty */
   virtual Bool isEmpty() const;
 
-  /** Insert a point */
-  virtual void insert(const Point & point);
-
   /** Get the indices of the k nearest neighbours of the given point */
   virtual Indices getNearestNeighboursIndices(const Point & x,
                                               const UnsignedInteger k,
@@ -90,8 +87,8 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
-protected:
-#ifndef SWIG
+
+private:
   /**
    * @class KDNode
    *
@@ -127,7 +124,6 @@ protected:
     KDNodePointer p_right_;
 
   }; /* class KDNode */
-#endif
 
   /** Insert the point of the database at index i in the tree */
   void insert(KDNode::KDNodePointer & p_node,
