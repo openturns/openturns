@@ -510,7 +510,7 @@ void KDTree::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("points_", points_);
-  initialize();
+  if (points_.getSize() > 0) initialize();
 }
 
 END_NAMESPACE_OPENTURNS
