@@ -345,12 +345,21 @@ class View(object):
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
                 colors = drawable.getPalette()
-                colorsRGBA = []
-                for i in range(polygonsNumber):
-                    hex_code = ot.Drawable.ConvertFromName(colors[i])
-                    rgba = ot.Drawable.ConvertToRGBA(hex_code)
-                    colorsRGBA.append(
-                        (rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
+                def convRGB(c):
+                    return (int(c[1:3], 16) / 255.0, int(c[3:5], 16) / 255.0, int(c[5:7], 16) / 255.0, 1.0)
+                def convRGBA(c):
+                    return (int(c[1:3], 16) / 255.0, int(c[3:5], 16) / 255.0, int(c[5:7], 16) / 255.0, int(c[7:9], 16) / 255.0)
+                if colors[0][0] == '#' and len(colors[0]) == 7:
+                    colorsRGBA = map(convRGB, colors)
+                elif colors[0][0] == '#' and len(colors[0]) == 9:
+                    colorsRGBA = map(convRGBA, colors)
+                else:
+                    colorsRGBA = []
+                    for i in range(polygonsNumber):
+                        hex_code = ot.Drawable.ConvertFromName(colors[i])
+                        rgba = ot.Drawable.ConvertToRGBA(hex_code)
+                        colorsRGBA.append(
+                            (rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
                 if 'facecolors' not in polygoncollection_kwargs_default:
                     polygoncollection_kwargs['facecolors'] = colorsRGBA
 
