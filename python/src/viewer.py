@@ -350,9 +350,9 @@ class View(object):
                 def convRGBA(c):
                     return (int(c[1:3], 16) / 255.0, int(c[3:5], 16) / 255.0, int(c[5:7], 16) / 255.0, int(c[7:9], 16) / 255.0)
                 if colors[0][0] == '#' and len(colors[0]) == 7:
-                    colorsRGBA = map(convRGB, colors)
+                    colorsRGBA = [convRGB(color) for color in colors]
                 elif colors[0][0] == '#' and len(colors[0]) == 9:
-                    colorsRGBA = map(convRGBA, colors)
+                    colorsRGBA = [convRGBA(color) for color in colors]
                 else:
                     colorsRGBA = []
                     for i in range(polygonsNumber):
