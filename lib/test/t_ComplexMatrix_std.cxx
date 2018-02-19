@@ -139,10 +139,10 @@ int main(int argc, char *argv[])
   fullprint << "sum1 equals sum2 = " << (sum1 == sum2) << std::endl;
 
 
-  /** TEST TEN : SUBSTRACTION METHOD */
-  fullprint << "test 10: substraction method" << std::endl;
+  /** TEST TEN : SUBTRACTION METHOD */
+  fullprint << "test 10: subtraction method" << std::endl;
 
-  /* Check substraction method */
+  /* Check subtraction method */
   ComplexMatrix diff = matrix1.operator - ( matrix4 ) ;
   fullprint << "diff = " << diff << std::endl;
 

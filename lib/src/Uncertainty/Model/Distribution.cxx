@@ -83,7 +83,7 @@ Distribution Distribution::operator + (const Scalar value) const
   return getImplementation()->operator +(value);
 }
 
-/* Substraction operator */
+/* Subtraction operator */
 Distribution Distribution::operator - (const Distribution & other) const
 {
   return getImplementation()->operator -(other.getImplementation());

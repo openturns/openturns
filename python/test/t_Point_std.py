@@ -69,7 +69,7 @@ try:
             "OT::Base::Type::Point.operator == does NOT return the correct value. Says that point2 and point3 are EQUAL though they are different.")
         raise RuntimeError()
 
-    # Addition/Substraction/Product operators
+    # Addition/Subtraction/Product operators
     point5 = ref_point1 + ref_point2
     ref_point5 = point5
     print("point5 = ", repr(ref_point5))

@@ -568,7 +568,7 @@ void Dirichlet::setParametersCollection(const PointCollection & parametersCollec
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     theta[i] = parametersCollection[i][0];
-    lastTheta -= theta[i]; // substract each theta except the last one
+    lastTheta -= theta[i]; // subtract each theta except the last one
   }
   theta[dimension] = lastTheta;
   setTheta(theta);

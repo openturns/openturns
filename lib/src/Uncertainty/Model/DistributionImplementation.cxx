@@ -168,7 +168,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
   return new RandomMixture(coll);
 }
 
-/* Substraction operator */
+/* Subtraction operator */
 DistributionImplementation::Implementation DistributionImplementation::operator - (const DistributionImplementation & other) const
 {
   return operator - (other.clone());
@@ -176,7 +176,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
 
 DistributionImplementation::Implementation DistributionImplementation::operator - (const Implementation & other) const
 {
-  if ((dimension_ != 1) || (other->dimension_ != 1)) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator - (const Implementation & other) const: can substract 1D distributions only.";
+  if ((dimension_ != 1) || (other->dimension_ != 1)) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator - (const Implementation & other) const: can subtract 1D distributions only.";
   Collection< Distribution > coll(2);
   coll[0] = *this;
   coll[1] = *other;
@@ -188,7 +188,7 @@ DistributionImplementation::Implementation DistributionImplementation::operator 
 
 DistributionImplementation::Implementation DistributionImplementation::operator - (const Scalar value) const
 {
-  if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator - (const Scalar value) const: can substract a constant to 1D distributions only.";
+  if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator - (const Scalar value) const: can subtract a constant to 1D distributions only.";
   if (value == 0.0) return clone();
   Collection< Distribution > coll(2);
   coll[0] = *this;
@@ -301,7 +301,7 @@ DistributionImplementation::Implementation operator + (const Scalar scalar,
   return (*p_distribution) + scalar;
 }
 
-/* Substraction operator */
+/* Subtraction operator */
 DistributionImplementation::Implementation operator - (const Scalar scalar,
     const DistributionImplementation & distribution)
 {

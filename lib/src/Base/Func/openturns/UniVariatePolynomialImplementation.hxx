@@ -86,7 +86,7 @@ public:
   /** Sum of two polynomials of any degree */
   UniVariatePolynomialImplementation operator + (const UniVariatePolynomialImplementation & uniVariatePolynomial) const;
 
-  /** Substraction of two polynomials of any degree */
+  /** Subtraction of two polynomials of any degree */
   UniVariatePolynomialImplementation operator - (const UniVariatePolynomialImplementation & uniVariatePolynomial) const;
 
   /** Coefficients accessor */

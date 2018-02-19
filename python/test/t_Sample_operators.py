@@ -24,9 +24,9 @@ print('sample2=', repr(sample2))
 
 # Operator +|-
 summation = ot.Sample(sample1 + sample2)
-substraction = ot.Sample(sample2 - sample1)
+subtraction = ot.Sample(sample2 - sample1)
 print('sample1 + sample2=', repr(summation))
-print('sample2 - sample1=', repr(substraction))
+print('sample2 - sample1=', repr(subtraction))
 
 # Operator +=|-=
 sample3 = ot.Sample(sample2)

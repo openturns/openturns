@@ -13,7 +13,7 @@ test : addition method
 sum1 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(6,0),(0,0),(8,0)]
 sum2 =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,0),(6,0),(0,0),(8,0)]
 sum1 equals sum2 =  True
-test : substraction method
+test : subtraction method
 diff =  class=HermitianMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,0),(0,2),(0,0),(0,0)]
 test : matrix multiplication method
 prod =  class=SquareComplexMatrix dimension=2 implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(9,-6),(15,-3),(15,-3),(24,6)]

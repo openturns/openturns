@@ -49,7 +49,7 @@ try:
     print("P2=", P2)
     print("P1+P2=", P1 + P2)
 
-    # Substraction of two polynomials
+    # Subtraction of two polynomials
     print("P1-P2=", P1 - P2)
 
     # Multiplication of two polynomials

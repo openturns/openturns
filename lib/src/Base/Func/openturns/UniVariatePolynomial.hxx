@@ -90,7 +90,7 @@ public:
   /** Realize the summation of two polynomials of any degree */
   UniVariatePolynomial operator + (const UniVariatePolynomial & uniVariatePolynomial) const;
 
-  /** Realize the substraction of two polynomials of any degree */
+  /** Realize the subtraction of two polynomials of any degree */
   UniVariatePolynomial operator - (const UniVariatePolynomial & uniVariatePolynomial) const;
 
   /** Coefficients accessor */

@@ -90,13 +90,13 @@ public:
   /** Addition operator */
   Interval operator +(const Interval & rhs) const;
 
-  /** Substraction operator */
+  /** Subtraction operator */
   Interval operator -(const Interval & rhs) const;
 
   /** In-place addition operator */
   Interval & operator +=(const Interval & other);
 
-  /** In-place substraction operator */
+  /** In-place subtraction operator */
   Interval & operator -=(const Interval & other);
 
   /** Product operator */

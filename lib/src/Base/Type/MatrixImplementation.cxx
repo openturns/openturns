@@ -245,10 +245,10 @@ MatrixImplementation & MatrixImplementation::operator+= (const MatrixImplementat
   return *this;
 }
 
-/* MatrixImplementation substraction (must have the same dimensions) */
+/* MatrixImplementation subtraction (must have the same dimensions) */
 MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation & matrix) const
 {
-  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot substract matrices with incompatible dimensions";
+  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot subtract matrices with incompatible dimensions";
   // Must copy as add will be overwritten by the operation
   MatrixImplementation result(*this);
   int size(nbRows_ * nbColumns_);
@@ -259,10 +259,10 @@ MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation
   return result;
 }
 
-/* In-place MatrixImplementation substraction (must have the same dimensions) */
+/* In-place MatrixImplementation subtraction (must have the same dimensions) */
 MatrixImplementation & MatrixImplementation::operator-= (const MatrixImplementation & matrix)
 {
-  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot substract matrices with incompatible dimensions";
+  if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot subtract matrices with incompatible dimensions";
   // Must copy as add will be overwritten by the operation
   MatrixImplementation result(*this);
   int size(nbRows_ * nbColumns_);

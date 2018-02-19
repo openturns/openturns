@@ -19,7 +19,7 @@ test 6 : addition method
 sum1 =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,2),(5,3),(5,3),(8,0)]
 sum2 =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(2,2),(5,3),(5,3),(8,0)]
 sum1 equals sum2 =  True
-test 7 : substraction method
+test 7 : subtraction method
 diff =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(0,0),(-1,5),(1,-5),(0,0)]
 test 8 : matrix multiplication method
 prod =  class=ComplexMatrix implementation=class=ComplexMatrixImplementation name=Unnamed rows=2 columns=2 values=[(8,-4),(10,2),(10,2),(4,16)]

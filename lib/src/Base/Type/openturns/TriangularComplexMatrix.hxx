@@ -101,10 +101,10 @@ public:
   /** Addition operator with ComplexMatrix */
   SquareComplexMatrix operator + (const SquareComplexMatrix & m) const;
 
-  /** Substraction operator with TriangularComplexMatrix */
+  /** Subtraction operator with TriangularComplexMatrix */
   SquareComplexMatrix operator - (const TriangularComplexMatrix & m) const;
 
-  /** Substraction operator with ComplexMatrix */
+  /** Subtraction operator with ComplexMatrix */
   SquareComplexMatrix operator - (const SquareComplexMatrix & m) const;
 
   /** Multiplication with a Complex */

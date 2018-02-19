@@ -649,9 +649,9 @@
  * DrawHenryLine now works for any Normal sample/distribution.
  * Added a DrawHenryLine prototype with given Normal distribution.
  * Added a add_legend=True kwarg to openturns.viewer.View.
- * New arithmetic on Distribution (can add/substract/multiply/divide/transform by an elementary function)
- * New arithmetic on NumericalMathFunction (can add/substract/multiply)
- * New arithmetic on NumericalSample (can add/substract a scalar, a point or a sample, can multiply/divide by a scalar, a point or a square matrix)
+ * New arithmetic on Distribution (can add/subtract/multiply/divide/transform by an elementary function)
+ * New arithmetic on NumericalMathFunction (can add/subtract/multiply)
+ * New arithmetic on NumericalSample (can add/subtract a scalar, a point or a sample, can multiply/divide by a scalar, a point or a square matrix)
 
 === Bug fixes ===
  * #693 (Distribution.computeCDFGradient(NumericalSample) segfaults)

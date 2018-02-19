@@ -153,9 +153,9 @@ public:
   /** ComplexMatrixImplementation addition with MatrixImplementation */
   ComplexMatrixImplementation operator + (const MatrixImplementation & matrix) const;
 
-  /** ComplexMatrixImplementation substraction (must have the same dimensions) */
+  /** ComplexMatrixImplementation subtraction (must have the same dimensions) */
   ComplexMatrixImplementation operator - (const ComplexMatrixImplementation & matrix) const;
-  /** ComplexMatrixImplementation substraction with MatrixImplementation  */
+  /** ComplexMatrixImplementation subtraction with MatrixImplementation  */
   ComplexMatrixImplementation operator - (const MatrixImplementation & matrix) const;
 
   /** Multiplication with a Complex */

@@ -147,13 +147,13 @@ SquareComplexMatrix TriangularComplexMatrix::operator+ (const SquareComplexMatri
   return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
 }
 
-/* ComplexMatrix substractions */
+/* ComplexMatrix subtractions */
 SquareComplexMatrix TriangularComplexMatrix::operator- (const SquareComplexMatrix & m) const
 {
   return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());
 }
 
-/* TriangularComplexMatrix substractions */
+/* TriangularComplexMatrix subtractions */
 SquareComplexMatrix TriangularComplexMatrix::operator- (const TriangularComplexMatrix & m) const
 {
   return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());

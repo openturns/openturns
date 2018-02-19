@@ -124,7 +124,7 @@ public:
   Matrix operator + (const Matrix & m) const;
   Matrix operator + (const SymmetricMatrix & m) const;
 
-  /** Matrix substractions (must have the same dimensions) */
+  /** Matrix subtractions (must have the same dimensions) */
   Matrix operator - (const Matrix & m) const;
   Matrix operator - (const SymmetricMatrix & m) const;
 
