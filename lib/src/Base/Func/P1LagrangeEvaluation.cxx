@@ -97,14 +97,28 @@ Field P1LagrangeEvaluation::getField() const
 /* Mesh accessor */
 void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
 {
-  if (mesh.getVerticesNumber() != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << mesh_.getVerticesNumber() << " vertices";
+  const UnsignedInteger nrVertices = mesh.getVerticesNumber();
+  if (nrVertices != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << nrVertices << " vertices";
   mesh_ = mesh;
   mesh_.computeKDTree();
   // Check for pending vertices
-  Mesh::IndicesCollection verticesToSimplices(mesh_.getVerticesToSimplicesMap());
-  Indices pendingVertices(0);
-  for (UnsignedInteger i = 0; i < verticesToSimplices.getSize(); ++i)
-    if (verticesToSimplices[i].getSize() == 0) pendingVertices.add(i);
+  Interval::BoolCollection seenVertices(nrVertices);
+  const IndicesCollection simplices(getSimplices());
+  // Iterate over simplices
+  for(IndicesCollection::const_iterator simplexIt = simplices.begin(), guard = simplices.end(); simplexIt != guard; ++simplexIt)
+  {
+     // Iterate over vertices
+     for(Indices::const_iterator vertexIt = simplexIt->begin(), vertexGuard = simplexIt->end(); vertexIt != vertexGuard; ++vertexIt)
+     {
+        const UnsignedInteger vertexIndex = (*vertexIt);
+        if (vertexIndex >= nrVertices) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex;
+        seenVertices[vertexIndex] = 1;
+     }
+  }
+  Indices pendingVertices;
+  for (UnsignedInteger i = 0; i < nrVertices; ++i)
+    if (seenVertices[i] == 0)
+      pendingVertices.add(i);
   if (pendingVertices.getSize() > 0)
   {
     LOGWARN(OSS() << "There are " << pendingVertices.getSize() << " pending vertices. Check the simplices of the mesh");
