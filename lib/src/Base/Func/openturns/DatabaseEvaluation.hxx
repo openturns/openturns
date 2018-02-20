@@ -24,7 +24,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/KDTree.hxx"
+#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -67,6 +67,10 @@ public:
   void setOutputSample(const Sample & outputSample);
   Sample getOutputSample() const;
 
+  /** Nearest neighbour algorithm accessor */
+  NearestNeighbourAlgorithm getNearestNeighbourAlgorithm() const;
+  void setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & tree);
+
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
@@ -89,12 +93,12 @@ public:
 protected:
   /** Set cached sample */
   void setSample(const Sample & inputSample,
-                 const Sample & outputSample,
-                 const Bool activateCache = true);
+                 const Sample & outputSample);
 
   Sample inputSample_;
   Sample outputSample_;
-  KDTree tree_;
+  NearestNeighbourAlgorithm nearestNeighbour_;
+  Bool activateCache_;
 
 private:
 

@@ -144,6 +144,44 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Mesh::checkPointInNeighbourhoodWithCoordinates
+"Check if a point is inside a simplex and returns its barycentric coordinates.
+
+Parameters
+----------
+point : sequence of float
+    Point of dimension :math:`dim`, the dimension of the vertices of the mesh.
+index : int
+    Integer characterizes a vertex of the mesh.
+
+Returns
+-------
+isInside : bool
+    Flag telling whether *point* is inside a simplex containg vertex *index*.
+simplex : int
+    Index of the simplex containing this point.
+coordinates : :class:`~openturns.Point`
+    The barycentric coordinates of the given point with respect to the vertices
+    of the simplex.
+.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 1, 2]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> # Create a point A inside the simplex
+>>> pointA = [0.6, 0.3]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointA, 0))
+[True, class=Point name=Unnamed dimension=3 values=[0.4,0.3,0.3]]
+>>> # Create a point B outside the simplex
+>>> pointB = [1.1, 0.6]
+>>> print(mesh2d.checkPointInSimplexWithCoordinates(pointB, 0))
+[False, class=Point name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Mesh::computeSimplexVolume
 "Compute the volume of a given simplex.
 
@@ -361,8 +399,13 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Mesh::computeKDTree
-"Compute a KDTree to speed-up nearest vertex searches."
+%feature("docstring") OT::Mesh::setNearestNeighbourAlgorithm
+"Set a nearest neighbour algorithm to speed-up nearest-neighbour lookups."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getNearestNeighbourAlgorithm
+"Get the current nearest neighbour algorithm."
 
 // ---------------------------------------------------------------------
 
@@ -385,7 +428,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplices = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
->>> mesh2d.computeKDTree()
+>>> mesh2d.setNearestNeighbourAlgorithm(ot.KDTree())
 >>> point = [0.9, 0.4]
 >>> print(mesh2d.getNearestVertex(point))
 [1,0]"
@@ -412,7 +455,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplices = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
->>> mesh2d.computeKDTree()
+>>> mesh2d.setNearestNeighbourAlgorithm(ot.KDTree())
 >>> point = [0.9, 0.4]
 >>> print(mesh2d.getNearestVertexIndex(point))
 1"
@@ -440,7 +483,7 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplex = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplex)
->>> mesh2d.computeKDTree()
+>>> mesh2d.setNearestNeighbourAlgorithm(ot.KDTree())
 >>> # Create a point A inside the simplex
 >>> pointA = [0.6, 0.3]
 >>> print(mesh2d.getNearestVertexAndSimplexIndicesWithCoordinates(pointA))

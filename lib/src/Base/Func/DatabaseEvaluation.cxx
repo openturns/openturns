@@ -48,8 +48,9 @@ DatabaseEvaluation::DatabaseEvaluation(const Sample & inputSample,
                                        const Sample & outputSample,
                                        const Bool activateCache)
   : EvaluationImplementation()
+  , activateCache_(activateCache)
 {
-  setSample(inputSample, outputSample, activateCache);
+  setSample(inputSample, outputSample);
 }
 
 
@@ -113,8 +114,7 @@ Sample DatabaseEvaluation::getOutputSample() const
 
 
 void DatabaseEvaluation::setSample(const Sample & inputSample,
-                                   const Sample & outputSample,
-                                   const Bool activateCache)
+                                   const Sample & outputSample)
 {
   const UnsignedInteger size = inputSample.getSize();
 
@@ -127,13 +127,23 @@ void DatabaseEvaluation::setSample(const Sample & inputSample,
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidDimensionException(HERE) << "Input and output samples have different sizes (in=" << inputSample.getSize() << " out=" << outputSample.getSize() << ")";
 
-  inputSample_ = inputSample;
-  outputSample_ = outputSample;
-  setInputDescription(inputSample.getDescription());
-  setOutputDescription(outputSample.getDescription());
-  tree_ = KDTree(inputSample);
+  if (inputSample_ != inputSample)
+  {
+    inputSample_ = inputSample;
+    setInputDescription(inputSample.getDescription());
+  }
+  if (outputSample_ != outputSample)
+  {
+    outputSample_ = outputSample;
+    setOutputDescription(outputSample.getDescription());
+  }
+
+  // Build nearest neighbor algorithm
+  if (nearestNeighbour_.getSample() != inputSample_)
+    nearestNeighbour_.setSample(inputSample_);
+
   // Don't activate the cache systematically as it can take a significant amount of time for large samples
-  if (activateCache)
+  if (activateCache_)
   {
     addCacheContent( inputSample, outputSample );
     enableCache();
@@ -141,6 +151,17 @@ void DatabaseEvaluation::setSample(const Sample & inputSample,
   else disableCache();
 }
 
+NearestNeighbourAlgorithm DatabaseEvaluation::getNearestNeighbourAlgorithm() const
+{
+  return nearestNeighbour_;
+}
+
+void DatabaseEvaluation::setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & tree)
+{
+  NearestNeighbourAlgorithm emptyClone(tree.getImplementation()->emptyClone());
+  nearestNeighbour_.swap(emptyClone);
+  nearestNeighbour_.setSample(inputSample_);
+}
 
 /* Here is the interface that all derived class must implement */
 
@@ -158,7 +179,7 @@ Point DatabaseEvaluation::operator()( const Point & inP ) const
   }
   else
   {
-    result = outputSample_[tree_.getNearestNeighbourIndex(inP)];
+    result = outputSample_[nearestNeighbour_.query(inP)];
   }
   ++ callsNumber_;
   if (isHistoryEnabled_)
@@ -205,6 +226,8 @@ void DatabaseEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("outputSample_", outputSample_);
+  adv.saveAttribute("nearestNeighbour_", nearestNeighbour_);
+  adv.saveAttribute("activateCache_", activateCache_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -213,6 +236,9 @@ void DatabaseEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("outputSample_", outputSample_);
+  adv.loadAttribute("nearestNeighbour_", nearestNeighbour_);
+  adv.loadAttribute("activateCache_", activateCache_);
+  setSample(inputSample_, outputSample_);
 }
 
 END_NAMESPACE_OPENTURNS

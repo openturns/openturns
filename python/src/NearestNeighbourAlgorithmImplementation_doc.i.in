@@ -1,0 +1,98 @@
+%define OT_NearestNeighbourAlgorithm_doc
+"Base class to define an algorithm to search for nearest neighbours of
+a list of points.
+
+Available constructors:
+    NearestNeighbourAlgorithm()
+
+    NearestNeighbourAlgorithm(*sample*)
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Input points.
+
+See also
+--------
+KDTree, RegularGridNearestNeighbour, NaiveNearestNeighbour
+
+>>> import openturns as ot
+>>> sample = ot.Normal(2).getSample(10)
+>>> finder = ot.NearestNeighbourAlgorithm(sample)
+>>> neighbour = sample[finder.query([0.1, 0.2])]"
+%enddef
+
+%feature("docstring") OT::NearestNeighbourAlgorithmImplementation
+OT_NearestNeighbourAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_NearestNeighbourAlgorithm_setSample_doc
+"Build a NearestNeighbourAlgorithm from these points.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Input points."
+%enddef
+
+%feature("docstring") OT::NearestNeighbourAlgorithmImplementation::setSample
+OT_NearestNeighbourAlgorithm_setSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_NearestNeighbourAlgorithm_getSample_doc
+"Get the points which have been used to build this nearest neighbour algorithm.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Input points."
+%enddef
+
+%feature("docstring") OT::NearestNeighbourAlgorithmImplementation::getSample
+OT_NearestNeighbourAlgorithm_getSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_NearestNeighbourAlgorithm_query_doc
+"Get the index of the nearest neighbour of the given point.
+
+Parameters
+----------
+point : sequence of float
+    Given point.
+
+Returns
+-------
+index : int
+    Index of the nearest neighbour of the given point."
+%enddef
+
+%feature("docstring") OT::NearestNeighbourAlgorithmImplementation::query
+OT_NearestNeighbourAlgorithm_query_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_NearestNeighbourAlgorithm_query_k_doc
+"Get the indices of nearest neighbours of the given point.
+
+Parameters
+----------
+point : sequence of float
+    Given point.
+k : int
+    Number of indices to return.
+sorted : bool, optional
+    Boolean to tell whether returned indices are sorted according to
+    the distance to the given point.
+
+Returns
+-------
+indices : sequence of int
+    Indices of the `k` nearest neighbours of the given point."
+%enddef
+
+%feature("docstring") OT::NearestNeighbourAlgorithmImplementation::query_k
+OT_NearestNeighbourAlgorithm_query_k_doc
+

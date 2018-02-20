@@ -139,11 +139,6 @@ Bool RegularGrid::isRegular() const
   return true;
 }
 
-void RegularGrid::computeKDTree()
-{
-  // Do nothing, RegularGrid::getNearestVertexIndex does not need a KDTree
-}
-
 /* Get the index of the nearest vertex */
 UnsignedInteger RegularGrid::getNearestVertexIndex(const Point & point) const
 {

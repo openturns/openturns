@@ -79,17 +79,18 @@ int main(int argc, char *argv[])
     fullprint << "modified values of the second element=" << values2 << " should be " << newValues << std::endl;
 
     // We get the values of the second element of the ts
-    Point values3 = ts1.getValueAtNearestTime( -1.0 );
+    KDTree tree(ts1.getMesh().getVertices());
+    Point values3 = ts1.getValueAtIndex(tree.query( Point(1, -1.0) ));
     fullprint << "values at t=-1.0 =" << values3 << std::endl;
-    Point values4 = ts1.getValueAtNearestTime( 1.45 );
+    Point values4 = ts1.getValueAtIndex(tree.query( Point(1, 1.45) ));
     fullprint << "values at t=1.45 =" << values4 << std::endl;
-    Point values5 = ts1.getValueAtNearestTime( 1.54 );
+    Point values5 = ts1.getValueAtIndex(tree.query( Point(1, 1.54) ));
     fullprint << "values at t=1.54 =" << values5 << std::endl;
-    Point values6 = ts1.getValueAtNearestTime( 14.5 );
+    Point values6 = ts1.getValueAtIndex(tree.query( Point(1, 14.5) ));
     fullprint << "values at t=14.5 =" << values6 << std::endl;
 
     // We set new values for the third element of the ts
-    ts1.setValueAtNearestTime( 1.54, values6 * -1.0 );
+    ts1.setValueAtIndex(tree.query( Point(1, 1.54) ), values6 * -1.0 );
     fullprint << "ts1=" << ts1 << std::endl;
 
     TimeSeries ts2(10, DIM);

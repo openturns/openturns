@@ -25,8 +25,13 @@
 %import BaseCommonTemplateDefs.i
 
 /* Base/Type */
+%include BaseTypCollection.i
 %import typ_module.i
 %import BaseTypTemplateDefs.i
+
+/* Base/Algo */
+%include NearestNeighbourAlgorithmImplementation.i
+%include NearestNeighbourAlgorithm.i
 
 /* Base/Geom */
 %import geom_module.i

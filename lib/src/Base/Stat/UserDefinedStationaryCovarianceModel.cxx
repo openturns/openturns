@@ -36,6 +36,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
   , mesh_()
+  , nearestNeighbour_()
 {
   inputDimension_ = 1;
   outputDimension_ = 0;
@@ -48,6 +49,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
   , mesh_(mesh)
+  , nearestNeighbour_(mesh)
 {
   const UnsignedInteger size = mesh.getVerticesNumber();
   if (size != covarianceFunction.getSize())
@@ -81,8 +83,8 @@ CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & 
   // else find in the grid the nearest instant values with nonnegative first component
   if (mesh_.getN() == 1) return covarianceCollection_[0];
 
-  if (tau[0] < 0.0) return covarianceCollection_[mesh_.getNearestVertexIndex(tau * (-1.0))];
-  return covarianceCollection_[mesh_.getNearestVertexIndex(tau)];
+  if (tau[0] < 0.0) return covarianceCollection_[nearestNeighbour_.query(tau * (-1.0))];
+  return covarianceCollection_[nearestNeighbour_.query(tau)];
 }
 
 CovarianceMatrix UserDefinedStationaryCovarianceModel::discretize(const Mesh & mesh) const

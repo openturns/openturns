@@ -19,7 +19,7 @@ simplicies[0] = [0, 1]
 simplicies[1] = [1, 2]
 simplicies[2] = [2, 3]
 mesh1D = ot.Mesh(vertices, simplicies)
-mesh1D.computeKDTree()
+tree = ot.KDTree(vertices)
 print("1D mesh=", mesh1D)
 print("Is empty? ", mesh1D.isEmpty())
 print("vertices=", mesh1D.getVertices())
@@ -29,14 +29,16 @@ print("First simplex volume=", mesh1D.computeSimplexVolume(0))
 p = [1.3]
 print("is p=", p, " in mesh? ", mesh1D.contains(p))
 point = [1.8]
-print("Nearest index(", point, ")=", mesh1D.getNearestVertexIndex(point))
+print("Nearest index(", point, ")=", tree.query(point))
+nearestIndex = tree.query(point)
 print("Nearest index(", point, "), simplex and coordinates=",
-      mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point))
+      mesh1D.checkPointInNeighbourhoodWithCoordinates(point, nearestIndex))
 point = [-1.8]
+nearestIndex = tree.query(point)
 print("Nearest index(", point, "), simplex and coordinates=",
-      mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point))
+      mesh1D.checkPointInNeighbourhoodWithCoordinates(point, nearestIndex))
 points = [[-0.25], [2.25]]
-print("Nearest index(", points, ")=", mesh1D.getNearestVertexIndex(points))
+print("Nearest index(", points, ")=", tree.query(points))
 print("P1 gram=\n", mesh1D.computeP1Gram())
 # 2D case
 vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
@@ -44,12 +46,12 @@ vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
 simplicies = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]]
 
 mesh2D = ot.Mesh(vertices, simplicies)
-mesh2D.computeKDTree()
+tree = ot.KDTree(vertices)
 print("2D mesh=", mesh2D)
 point = [1.8] * 2
-print("Nearest index(", point, ")=", mesh2D.getNearestVertexIndex(point))
+print("Nearest index(", point, ")=", tree.query(point))
 points = [[-0.25] * 2, [2.25] * 2]
-print("Nearest index(", points, ")=", mesh2D.getNearestVertexIndex(points))
+print("Nearest index(", points, ")=", tree.query(points))
 print("P1 gram=\n", mesh2D.computeP1Gram())
 # 3D case
 
@@ -73,12 +75,12 @@ simplicies[4] = [1, 3, 5, 6]
 simplicies[5] = [1, 4, 5, 6]
 
 mesh3D = ot.Mesh(vertices, simplicies)
-mesh3D.computeKDTree()
+tree = ot.KDTree(vertices)
 print("3D mesh=", mesh3D)
 point = [1.8] * 3
-print("Nearest index(", point, ")=", mesh3D.getNearestVertexIndex(point))
+print("Nearest index(", point, ")=", tree.query(point))
 points = [[-0.25] * 3, [2.25] * 3]
-print("Nearest index(", points, ")=", mesh3D.getNearestVertexIndex(points))
+print("Nearest index(", points, ")=", tree.query(points))
 print("P3 gram=\n", mesh3D.computeP1Gram())
 rotation = ot.SquareMatrix(3)
 rotation[0, 0] = m.cos(m.pi / 3.0)

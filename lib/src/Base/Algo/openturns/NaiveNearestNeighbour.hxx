@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief KDTree structure to speed-up queries on large samples
+ *  @brief Brute force algorithm for nearest-neighbour lookup
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,43 +18,42 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_KDTREE_HXX
-#define OPENTURNS_KDTREE_HXX
+#ifndef OPENTURNS_NAIVENEARESTNEIGHBOUR_HXX
+#define OPENTURNS_NAIVENEARESTNEIGHBOUR_HXX
 
 #include "openturns/NearestNeighbourAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class KDNearestNeighboursFinder;
+class NaiveNearestNeighboursFinder;
 
 /**
- * @class KDTree
+ * @class NaiveNearestNeighbour
  *
- * Organize d-dimensional points into a hierarchical tree-like structure
+ * Brute force algorithm for nearest-neighbour lookup.
  */
-class OT_API KDTree
+class OT_API NaiveNearestNeighbour
   : public NearestNeighbourAlgorithmImplementation
 {
   CLASSNAME
 
-  friend class KDNearestNeighboursFinder;
+  friend class NaiveNearestNeighboursFinder;
 
 public:
 
   /** Default constructor */
-  KDTree();
+  NaiveNearestNeighbour();
 
   /** Parameters constructor */
-  explicit KDTree(const Sample & sample);
+  explicit NaiveNearestNeighbour(const Sample & sample);
 
   /** Virtual constructor */
-  virtual KDTree * clone() const;
+  virtual NaiveNearestNeighbour * clone() const;
 
 #ifndef SWIG
   /** Virtual default constructor */
-  virtual KDTree * emptyClone() const;
+  virtual NaiveNearestNeighbour * emptyClone() const;
 #endif
 
   /** Sample accessor */
@@ -79,67 +78,13 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-  /**
-   * @class KDNode
-   *
-   * A node in a KDTree
-   */
-  struct KDNode
-  {
-    typedef Pointer< KDNode> KDNodePointer;
 
-    /** Parameter constructor */
-    explicit KDNode(const UnsignedInteger index)
-      : index_(index)
-      , p_left_(0)
-      , p_right_(0)
-    {
-      // Nothing to do
-    }
-
-    /** String converter */
-    String __repr__() const
-    {
-      return OSS() << "class=KDNode"
-             << " index=" << index_
-             << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
-             << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
-    }
-
-    /* Index of the nodal point */
-    UnsignedInteger index_;
-
-    /* Children */
-    KDNodePointer p_left_;
-    KDNodePointer p_right_;
-
-  }; /* class KDNode */
-
-  /** Insert the point of the database at index i in the tree */
-  void insert(KDNode::KDNodePointer & p_node,
-              const UnsignedInteger index,
-              const UnsignedInteger activeDimension);
-
-  /** Get the index of the nearest neighbour of the given point */
-  virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
-      const Point & x,
-      Scalar & bestSquaredDistance,
-      Point & lowerBoundingBox,
-      Point & upperBoundingBox,
-      const UnsignedInteger activeDimension) const;
-
-  /** The data organized by the tree */
+  /** Input sample */
   Sample points_;
 
-  /** Global bounding box */
-  Interval boundingBox_;
-
-  /** The root of the tree */
-  KDNode::KDNodePointer p_root_;
-
-}; /* class KDTree */
+}; /* class NaiveNearestNeighbour */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_KDTREE_HXX */
+#endif /* OPENTURNS_NAIVENEARESTNEIGHBOUR_HXX */

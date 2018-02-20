@@ -24,6 +24,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Field.hxx"
+#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -79,6 +80,10 @@ public:
   void setValues(const Sample & values);
   Sample getValues() const;
 
+  /** Nearest neighbour algorithm accessor */
+  void setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & nearestNeighbour);
+  NearestNeighbourAlgorithm getNearestNeighbourAlgorithm() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
@@ -109,6 +114,9 @@ protected:
 
   /* Values of the field defining the P1 Lagrange interpolation */
   Sample values_;
+
+  /* NearestNeighbourAlgorithm to speed-up nearest-neighbour search */
+  NearestNeighbourAlgorithm nearestNeighbour_;
 
 private:
 

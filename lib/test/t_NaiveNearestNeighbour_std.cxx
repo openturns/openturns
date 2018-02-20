@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class KDTree for standard methods
+ *  @brief The test file of class NaiveNearestNeighbour for standard methods
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -26,15 +26,20 @@ using namespace OT::Test;
 
 namespace
 {
-Scalar debug_squared_minimum_distance(const Point & point, const Sample & sample)
+UnsignedInteger debug_squared_minimum_distance(const Point & point, const Sample & sample)
 {
   Scalar result = SpecFunc::MaxScalar;
+  UnsignedInteger bestIndex = sample.getSize();
   for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
   {
     const Scalar distance2 = Point(sample[i] - point).normSquare();
-    if (distance2 < result) result = distance2;
+    if (distance2 < result)
+    {
+      result = distance2;
+      bestIndex = i;
+    }
   }
-  return result;
+  return bestIndex;
 }
 }
 
@@ -44,23 +49,18 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
 
   const Sample sample(Normal(3).getSample(10));
-  const KDTree tree(sample);
+  const NaiveNearestNeighbour tree(sample);
   fullprint << "tree=" << tree << std::endl;
   const Sample test(Normal(3).getSample(20));
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {
-    const Scalar expected = debug_squared_minimum_distance(test[i], sample);
-    UnsignedInteger index = tree.query(test[i]);
-    Point neighbour(sample[tree.query(test[i])]);
+    const UnsignedInteger expected = debug_squared_minimum_distance(test[i], sample);
+    const UnsignedInteger index = tree.query(test[i]);
+    const Point neighbour(sample[tree.query(test[i])]);
     fullprint << "Nearest neighbour of " << test[i] << "=" << neighbour << " (index=" << index << ")" << std::endl;
-    if (std::abs(Point(test[i] - sample[index]).normSquare() - expected) > 1.e-5)
+    if (index != expected)
     {
-      fullprint << "Wrong nearest neighbour of " << test[i] << " (index=" << index << ")" << std::endl;
-      return ExitCode::Error;
-    }
-    if (std::abs(Point(test[i] - neighbour).normSquare() - expected) > 1.e-5)
-    {
-      fullprint << "Wrong nearest neighbour of " << test[i] << "=" << neighbour << std::endl;
+      fullprint << "Wrong nearest neighbour of " << test[i] << " (index=" << index << ", expected=" << expected << ")" << std::endl;
       return ExitCode::Error;
     }
   }

@@ -27,6 +27,7 @@
 #include "openturns/Collection.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/Mesh.hxx"
+#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -96,6 +97,9 @@ private:
 
   /** Mesh of evaluation */
   Pointer<Mesh> p_mesh_;
+
+  /** NearestNeighbourAlgorithm to speed-up nearest neighbour search */
+  NearestNeighbourAlgorithm nearestNeighbour_;
 
 } ; /* class UserDefinedCovarianceModel */
 
