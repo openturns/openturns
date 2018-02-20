@@ -39,7 +39,7 @@ These last ones are respectively given as follows:
 .. math::
 
    \begin{array}{ccc}
-   \hat{V_i} & = & \frac{1}{n}\sum_{k=1}^{n} G(B_k)  G(E_k) - G_0^2 \\
+   \hat{V_i} & = & \frac{1}{n}\sum_{k=1}^{n} G(B_k)  G(E_k) - (\frac{1}{n} \sum_{k=1}^{n} G(A_k)) (\frac{1}{n} \sum_{k=1}^{n} G(B_k)) \\
    \hat{V_{-i}} & = & \frac{1}{n}\sum_{k=1}^{n} G(A_k)  G(E_k) - G_0^2
    \end{array}
 
@@ -63,5 +63,5 @@ Examples
 >>> # sensitivity analysis algorithm
 >>> sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
-[0.182857,0.357745,-0.128457]"
+[0.249402,0.42429,-0.0619125]"
 

@@ -2,10 +2,8 @@
 
 from __future__ import print_function
 import openturns as ot
-# from openturns.viewer import PlotSensitivity
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
 
 try:
     input_dimension = 3
