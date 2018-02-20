@@ -757,14 +757,11 @@ void handleException()
     // try to get error msg, value and traceback can be NULL
     if(value)
     {
-      try
+      ScopedPyObjectPointer valueObj(PyObject_Str(value));
+      if (valueObj.get())
       {
-        String valueString = checkAndConvert< _PyString_, String >(value);
+        String valueString = checkAndConvert< _PyString_, String >(valueObj.get());
         exceptionMessage += ": " + valueString;
-      }
-      catch (InvalidArgumentException &)
-      {
-        // could not get msg from strings
       }
     }
 
