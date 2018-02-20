@@ -29,7 +29,7 @@ def nearest_debug_indices(x):
 
 neighbourIndices = tree.getNearestNeighbourIndex(test)
 
-neighbourIndices_np = [nearest_debug(x) for x in test]
+neighbourIndices_np = ot.Indices([nearest_debug(x) for x in test])
 
 if neighbourIndices != neighbourIndices_np:
     print("Errors found in getNearestNeighbourIndex")
