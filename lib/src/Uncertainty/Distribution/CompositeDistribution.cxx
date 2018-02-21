@@ -97,7 +97,9 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the size of the bounds=" << bounds.getSize() << " is not equal to the size of the values=" << values.getSize();
   probabilities_ = Point(size, 0.0);
   // Compute the probabilities
-  for (UnsignedInteger i = 0; i < size; ++i) probabilities_[i] = antecedent.computeCDF(bounds[i]);
+  // We start at i=1 because the first bound is the lower bound of the range, where CDF == 0.0
+  for (UnsignedInteger i = 1; i < size-1; ++i) probabilities_[i] = antecedent.computeCDF(bounds[i]);
+  probabilities_[size - 1] = 1.0;
   increasing_ = Indices(size - 1);
   // Compute the variations
   for (UnsignedInteger i = 0; i < size - 1; ++i) increasing_[i] = values_[i + 1] > values[i];

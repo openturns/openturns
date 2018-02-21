@@ -32,8 +32,8 @@ dist1*dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * Normal(mu = -2, s
 dist1/dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * CompositeDistribution=f(Normal(mu = -2, sigma = 1)) with f=[x]->[1.0 / x])
 logn*logn: LogNormal(muLog = 0, sigmaLog = 1.41421, gamma = 0)
 logu*logu: CompositeDistribution=f(RandomMixture(Triangular(a = -2, m = 0, b = 2))) with f=[x]->[exp(x)]
-logu*logn: CompositeDistribution=f(RandomMixture(Normal(mu = 0, sigma = 1) + Uniform(a = -1, b = 1))) with f=[x]->[exp(x)]
-logn*logu: CompositeDistribution=f(RandomMixture(Normal(mu = 0, sigma = 1) + Uniform(a = -1, b = 1))) with f=[x]->[exp(x)]
+logu*logn: CompositeDistribution=f(RandomMixture(SmoothedUniform(a = -1, b = 1, sigma = 1))) with f=[x]->[exp(x)]
+logn*logu: CompositeDistribution=f(RandomMixture(SmoothedUniform(a = -1, b = 1, sigma = 1))) with f=[x]->[exp(x)]
 Weibull+Exponential: RandomMixture(Weibull(alpha = 1, beta = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
 result.CDF(1.0)=0.264241
 -Weibull+Exponential: RandomMixture(-Weibull(alpha = 1, beta = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))

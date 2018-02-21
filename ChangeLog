@@ -11,6 +11,7 @@
  * Fehlberg
  * TranslationFunction
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
+ * SmoothedUniform
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class

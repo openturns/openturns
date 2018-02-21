@@ -37,6 +37,7 @@
 #include "openturns/Exponential.hxx"
 #include "openturns/Gamma.hxx"
 #include "openturns/Mixture.hxx"
+#include "openturns/SmoothedUniform.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Bernoulli.hxx"
 #include "openturns/Binomial.hxx"
@@ -66,7 +67,31 @@ static const Factory<RandomMixture> Factory_RandomMixture;
 /* Default constructor */
 RandomMixture::RandomMixture()
   : DistributionImplementation()
-{}
+  , distributionCollection_()
+  , constant_(Point(1))
+  , weights_()
+  , inverseWeights_()
+  , detWeightsInverse_()
+  , fftAlgorithm_()
+  , isAnalytical_(false)
+  , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
+  , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
+  , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
+  , storedSize_(0)
+  , characteristicValuesCache_(0)
+  , alpha_(ResourceMap::GetAsScalar( "RandomMixture-DefaultAlpha" ))
+  , beta_(ResourceMap::GetAsScalar( "RandomMixture-DefaultBeta" ))
+  , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
+  , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
+  , equivalentNormal_()
+{
+  setName("RandomMixture");
+  setDimension(1);
+  DistributionCollection coll(1);
+  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0)), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
+  cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
+  pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
+}
 
 
 /* Default constructor */
@@ -93,13 +118,12 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 {
   setName("RandomMixture");
   setDimension(1);
-  weights_ = Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0));
   // We could NOT set distributionCollection_ in the member area of the constructor
   // because we must check before if the collection is valid (ie, if all the
   // distributions of the collection have the same dimension). We do this by calling
   // the setDistributionCollection() method that do it for us.
   // This call set also the range.
-  setDistributionCollection( coll );
+  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), Point(coll.getSize(), 1.0)), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
   cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
   pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
@@ -134,9 +158,8 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   // distributions of the collection have the same dimension). We do this by calling
   // the setDistributionCollection() method that do it for us.
   if (weights.getDimension() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weights collection must have the same size as the distribution collection";
-  weights_ = Matrix(1, coll.getSize(), weights);
   // This call set also the range.
-  setDistributionCollection(coll);
+  setDistributionCollectionAndWeights(coll, Matrix(1, coll.getSize(), weights), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
   cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
   pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
@@ -174,8 +197,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   if (weights.getNbColumns() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
   if (weights.getNbRows() != constant.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same row numbers as the distribution dimension";
   // This call set also the range.
-  weights_ = weights;
-  setDistributionCollection(coll);
+  setDistributionCollectionAndWeights(coll, weights, ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
   cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
   pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
@@ -208,8 +230,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   constant_ = Point(dimension, 0.0);
   setDimension(dimension);
   if (weights.getNbColumns() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight matrix must have the same column numbers as the distribution collection's size";
-  weights_ = weights;
-  setDistributionCollection(coll);
+  setDistributionCollectionAndWeights(coll, weights, ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
   cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
   pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
@@ -243,8 +264,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   setDimension(dimension);
   if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
   if (weights.getDimension() != constant.getDimension()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same dimension as the distribution dimension";
-  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
-  setDistributionCollection(coll);
+  setDistributionCollectionAndWeights(coll, Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
   cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
   pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
@@ -276,11 +296,11 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   constant_ = Point(dimension, 0.0);
   setDimension(dimension);
   if (weights.getSize() != coll.getSize()) throw InvalidArgumentException(HERE) << "Error: the weight sample must have the same size as the distribution collection's size";
-  weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
-  setDistributionCollection(coll);
+  setDistributionCollectionAndWeights(coll, Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData()), ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"));
   cdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultCDFEpsilon");
   pdfEpsilon_ = ResourceMap::GetAsScalar("RandomMixture-DefaultPDFEpsilon");
 }
+
 /* Compute the numerical range of the distribution given the parameters values */
 void RandomMixture::computeRange()
 {
@@ -387,18 +407,6 @@ String RandomMixture::__str__(const String & offset) const
 }
 
 /* Weights distribution accessor */
-void RandomMixture::setWeights(const Matrix & weights)
-{
-  weights_ = weights;
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
-  computePositionIndicator();
-  computeDispersionIndicator();
-  computeRange();
-  computeReferenceBandwidth();
-  computeEquivalentNormal();
-}
-
 Matrix RandomMixture::getWeights() const
 {
   return weights_;
@@ -406,8 +414,11 @@ Matrix RandomMixture::getWeights() const
 
 
 /* Distribution collection accessor */
-void RandomMixture::setDistributionCollection(const DistributionCollection & coll)
+void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollection & coll,
+							const Matrix & weights,
+							const Bool simplifyAtom)
 {
+  weights_ = weights;
   // Size will be updated during the several treatments of the collection
   UnsignedInteger size = coll.getSize();
   const UnsignedInteger dimension = getDimension();
@@ -426,7 +437,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
     if (w.computeGram()(0, 0) == 0.0) continue;
     const String atomKind(atom.getImplementation()->getClassName());
     if (atom.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: a RandomMixture cannot be built from a collection of distributions of dimension not equal to 1, here distribution " << i << " has a dimension=" << atom.getDimension();
-    if (atomKind == "RandomMixture")
+    if (atomKind == "RandomMixture" || atomKind == "SmoothedUniform")
     {
       // Here we know that the atom is 1D, so we merge a 1D RandomMixture
       // Get the weight of the atom
@@ -450,7 +461,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
   } // Flatten the atoms of RandomMixture type
   // Update the size
   size = atomCandidates.getSize();
-  if (ResourceMap::GetAsBool("RandomMixture-SimplifyAtoms"))
+  if (simplifyAtom)
   {
     // Second, split the atoms between the discrete ones, the continuous ones and the others
     // The Dirac atoms are optimized during this step
@@ -504,6 +515,7 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
     // + The Uniform atoms can be merged two by two into a Trapezoidal or Triangular
     // + The Exponential, ChiSquare and Gamma atoms can be merged into a Gamma atom if there scale parameters are all equal after standardization (so we must group these atoms by scale*weight parameter). The possible translation has to be accumulated into the constant.
     // + The Normal atoms can be merged into a unique Normal
+    // + If it remains a Uniform atom and a Normal atom, they can be merged into a SmoothedUniform atom
     //
     // Discrete optimizations:
     // + The Bernoulli and Binomial atoms can be merged into a unique Binomial as soon as they share the same value for p and the same weight
@@ -613,10 +625,22 @@ void RandomMixture::setDistributionCollection(const DistributionCollection & col
       // Set the aggregated normal if any. Note that this atom absorbs the constant.
       if (hasNormalAtom)
       {
-        distributionCollection_.add(Normal(aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
-        constant_[0] = 0.0;
-        // Add a unit weight as its initial weight has been merged into the parameters
-        weights.add(Point(1, 1.0));
+	if (hasPendingUniform)
+	  {
+	    distributionCollection_.add(SmoothedUniform(pendingUniform.getA() + aggregatedMean + constant_[0], pendingUniform.getB() + aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
+	    constant_[0] = 0.0;
+	    // Add a unit weight as its initial weight has been merged into the parameters
+	    weights.add(Point(1, 1.0));	    
+	    // No more pending uniform
+	    hasPendingUniform = false;
+	  } // hasPendingNormal && hasPendingUniform
+	else
+	  {
+	    distributionCollection_.add(Normal(aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
+	    constant_[0] = 0.0;
+	    // Add a unit weight as its initial weight has been merged into the parameters
+	    weights.add(Point(1, 1.0));
+	  } // hasPendingNormal && !hasPendingUniform
       } // hasNormalAtom
       // Set the pending Uniform if any. Note that this atom absorbs the constant if not yet absorbed.
       if (hasPendingUniform)
@@ -2336,7 +2360,32 @@ Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     const Scalar q = distributionCollection_[0].computeQuantile(prob, tail != (alpha <= 0.0))[0];
     return q * alpha + constant_[0];
   }
-  // General case
+  if (isContinuous())
+    {
+      // General continuous case
+      // Try a Newton method to benefit from the additive nature of Poisson's summation formula:
+      // F(x_n+dx_n)~F(x_n)+p(x_n)dx_n
+      // so F(x_n+dx_n)=q gives dx_n = (q - F(x_n)) / p(x_n)
+      // and at the next step we have to compute F(x_n+dx_n), p(x_n+dx_n)
+      // but F(x_n+dx_n)=F(x_n)+P(X\in[x_n,x_n+dx_n])
+      const Scalar q = (tail ? 1.0 - prob : prob);
+      Scalar x = equivalentNormal_.computeQuantile(q)[0];
+      Scalar sigma = equivalentNormal_.getStandardDeviation()[0];
+      Scalar epsilon = cdfEpsilon_ * sigma;
+      Scalar dx = sigma;
+      Scalar cdf = computeCDF(x);
+      for (UnsignedInteger i = 0; i < 16 && std::abs(dx) > epsilon; ++i)
+	{
+	  const Scalar pdf = computePDF(x);
+	  dx = (q - cdf) / pdf;
+	  Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x, x + dx)) : computeProbability(Interval(x + dx, x)));
+	  cdf += (dx > 0.0 ? dcdf : -dcdf);
+	  x += dx;
+	}
+      // Has the Newton iteration converged?
+      if (std::abs(dx) <= epsilon) return x;
+    }
+  // If no convergence of Newton's iteration of if non continuous and non analytical
   return DistributionImplementation::computeScalarQuantile(prob, tail);
 }
 

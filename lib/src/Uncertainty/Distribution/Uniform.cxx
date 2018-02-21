@@ -50,7 +50,7 @@ Uniform::Uniform(const Scalar a,
   , b_(b)
 {
   setName( "Uniform" );
-  setB(b);
+  if (b <= a) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a << " b=" << b;
   setDimension( 1 );
   computeRange();
 }
@@ -345,7 +345,7 @@ Scalar Uniform::getA() const
 /* B accessor */
 void Uniform::setB(const Scalar b)
 {
-  if (b <= a_) throw InvalidArgumentException(HERE) << "Error the lower bound a of a Uniform distribution must be less than its upper bound b, here a=" << a_ << " b=" << b;
+  if (b <= a_) throw InvalidArgumentException(HERE) << "Error the upper bound b of a Uniform distribution must be greater than its lower bound a, here b=" << b << " a=" << a_;
   if (b != b_)
   {
     b_ = b;

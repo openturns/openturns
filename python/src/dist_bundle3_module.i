@@ -33,6 +33,7 @@
 %include RiceFactory.i
 %include Skellam.i
 %include SkellamFactory.i
+%include SmoothedUniform.i
 %include Student.i
 %include StudentFactory.i
 %include Trapezoidal.i
