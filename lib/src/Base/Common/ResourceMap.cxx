@@ -507,6 +507,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "Mesh-SpecularFactor", 0.2 );
   setAsScalar( "Mesh-Shininess", 100.0 );
 
+  // BoundingVolumeHierarchy parameters
+  setAsUnsignedInteger( "BoundingVolumeHierarchy-BinNumber", 50 );
+  set( "BoundingVolumeHierarchy-Strategy", "Mean" );
+
   // Matrix parameters
   setAsUnsignedInteger( "Matrix-size-visible-in-str-from", 5 );
 

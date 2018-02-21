@@ -1,0 +1,6 @@
+// EnclosingSimplexAlgorithm docstrings are defined in EnclosingSimplexAlgorithmImplementation_doc.i.in
+
+%feature("docstring") OT::EnclosingSimplexAlgorithm
+OT_EnclosingSimplexAlgorithm_doc
+%feature("docstring") OT::EnclosingSimplexAlgorithm::query
+OT_EnclosingSimplexAlgorithm_query_doc

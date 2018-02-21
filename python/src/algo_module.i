@@ -46,6 +46,10 @@
 %include KDTree.i
 %include RegularGridNearestNeighbour.i
 %include NaiveNearestNeighbour.i
+%include EnclosingSimplexAlgorithmImplementation.i
+%include EnclosingSimplexAlgorithm.i
+%include NaiveEnclosingSimplex.i
+%include BoundingVolumeHierarchy.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
 %include DesignProxy.i

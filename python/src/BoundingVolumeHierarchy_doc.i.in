@@ -1,0 +1,64 @@
+%feature("docstring") OT::BoundingVolumeHierarchy
+"Bounding Volume Hierarchy to speed-up point location.
+
+This spatial data structure helps to find the simplex
+containing a given point.
+
+Available constructors:
+    BoundingVolumeHierarchy(*points, simplices*)
+
+    BoundingVolumeHierarchy(*points, simplices, binNumber*)
+
+    BoundingVolumeHierarchy(*points, simplices, binNumber, strategy*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Points.
+
+simplices : :class:`~openturns.IndicesCollection`
+    Simplices.
+
+binNumber : int
+    Maximum number of simplices stored in tree leaves.
+    By default, it is equal to the value defined through the key
+    BoundingVolumeHierarchy-BinNumber of the
+    :class:`~openturns.ResourceMap`.
+
+strategy : str
+    Node splitting strategy.  Valid values are: `Mean` and `Median`.
+    By default, it is equal to the value defined through the key
+    BoundingVolumeHierarchy-Strategy of the
+    :class:`~openturns.ResourceMap` (`Mean`).
+
+See also
+--------
+EnclosingSimplexAlgorithm, NaiveEnclosingSimplex
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesher = ot.IntervalMesher([5, 10])
+>>> lowerbound = [0.0, 0.0]
+>>> upperBound = [2.0, 4.0]
+>>> interval = ot.Interval(lowerbound, upperBound)
+>>> mesh = mesher.build(interval)
+>>> locator = ot.BoundingVolumeHierarchy(mesh.getVertices(), mesh.getSimplices())
+>>> simplex = locator.query([0.1, 0.2])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoundingVolumeHierarchy::query
+"Accessor to the enclosing simplex index.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+
+Returns
+-------
+index : int
+    If point is enclosed in a simplex, return its index; otherwise return an
+    int which is at least greater than the number of simplices."
+

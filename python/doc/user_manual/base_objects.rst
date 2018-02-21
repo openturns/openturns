@@ -145,3 +145,6 @@ Spatial lookup
     KDTree
     NaiveNearestNeighbour
     RegularGridNearestNeighbour
+    EnclosingSimplexAlgorithm
+    NaiveEnclosingSimplex
+    BoundingVolumeHierarchy

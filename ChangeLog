@@ -13,6 +13,7 @@
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
  * SmoothedUniform
  * NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour
+ * EnclosingSimplex, EnclosingSimplexImplementation, NaiveEnclosingSimplex, BoundingVolumeHierarchy
  * IndicesCollection
 
 ==== API changes ====
