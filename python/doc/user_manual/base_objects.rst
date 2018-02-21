@@ -134,13 +134,14 @@ History strategy
     Last
     Null
 
-K-d tree
-========
+Spatial lookup
+==============
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
     NearestNeighbourAlgorithm
-    RegularGridNearestNeighbour
     KDTree
+    NaiveNearestNeighbour
+    RegularGridNearestNeighbour
