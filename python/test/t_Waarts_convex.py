@@ -23,9 +23,9 @@ try:
     formulas = Description(outputFunction.getSize())
     formulas[0] = "2.5 + 0.1*(X1-X2)^2.0 - (X1+X2)/sqrt(2.0)"
 
-    EtatLimite = Function(inputFunction, outputFunction, formulas)
+    limitState = SymbolicFunction(inputFunction, outputFunction, formulas)
 
-    dim = EtatLimite.getInputDimension()
+    dim = limitState.getInputDimension()
     print(dim)
 
     #
@@ -53,7 +53,7 @@ try:
 
     vect = RandomVector(myDistribution)
 
-    output = RandomVector(EtatLimite, vect)
+    output = RandomVector(limitState, vect)
 
     myEvent = Event(output, Less(), 0.0)
 

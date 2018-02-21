@@ -25,7 +25,7 @@ try:
     # print(basis[1])
     # print(basis[0:2])
 
-    # basis[1] = ot.Function(['x'], ['z'], ['x^42'])
+    # basis[1] = ot.SymbolicFunction(['x'], ['z'], ['x^42'])
     # print('basis =', basis)
     # basis[0:2] = basis[1:3]
     # print('basis =', basis)

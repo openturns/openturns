@@ -28,9 +28,9 @@ try:
     formula = Description(outputFunction.getSize())
     formula[0] = "if( x2 <= x1,-0.5+sqrt(x1-x2),-0.5 )"
 
-    EtatLimite = Function(inputFunction, outputFunction, formula)
+    limitState = SymbolicFunction(inputFunction, outputFunction, formula)
 
-    dim = EtatLimite.getInputDimension()
+    dim = limitState.getInputDimension()
     print(dim)
 
     #
@@ -58,7 +58,7 @@ try:
 
     vect = RandomVector(myDistribution)
 
-    output = RandomVector(EtatLimite, vect)
+    output = RandomVector(limitState, vect)
 
     myEvent = Event(output, Less(), 0.0)
 

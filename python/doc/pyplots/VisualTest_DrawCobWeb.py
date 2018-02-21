@@ -19,7 +19,7 @@ for i in range(inputDimension):
 formula[0] = expression
 outputVar = ot.Description(1)
 outputVar[0] = 'y'
-model = ot.Function(inputVar, outputVar, formula)
+model = ot.SymbolicFunction(inputVar, outputVar, formula)
 outputSample = model(inputSample)
 
 cobweb = ot.VisualTest_DrawCobWeb(
