@@ -8,5 +8,5 @@ OT_NearestNeighbourAlgorithm_getSample_doc
 OT_NearestNeighbourAlgorithm_setSample_doc
 %feature("docstring") OT::NearestNeighbourAlgorithm::query
 OT_NearestNeighbourAlgorithm_query_doc
-%feature("docstring") OT::NearestNeighbourAlgorithm::query_k
-OT_NearestNeighbourAlgorithm_query_k_doc
+%feature("docstring") OT::NearestNeighbourAlgorithm::queryK
+OT_NearestNeighbourAlgorithm_queryK_doc

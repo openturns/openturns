@@ -82,11 +82,11 @@ Indices NearestNeighbourAlgorithmImplementation::query(const Sample & sample) co
 }
 
 /* Get the indices of the k nearest neighbours of the given point */
-Indices NearestNeighbourAlgorithmImplementation::query_k(const Point & x,
-                                                         const UnsignedInteger k,
-                                                         const Bool sorted) const
+Indices NearestNeighbourAlgorithmImplementation::queryK(const Point & x,
+                                                        const UnsignedInteger k,
+                                                        const Bool sorted) const
 {
-  throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::query_k(const Point & x, const UnsignedInteger k, const Bool sorted) const";
+  throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const";
 }
 
 /* String converter */

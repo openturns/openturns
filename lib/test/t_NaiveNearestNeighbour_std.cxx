@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
   const UnsignedInteger k = 4;
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {
-    Indices indices = tree.query_k(test[i], k, true);
+    Indices indices = tree.queryK(test[i], k, true);
     fullprint << k << " nearest neighbours of " << test[i] << "=" << " (indices=" << indices << ")" << std::endl;
     // Check that returned neighbours are sorted
     Scalar last = 0.0;

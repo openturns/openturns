@@ -62,10 +62,10 @@ public:
   Indices queryScalar(const Point & x) const;
 
   /** Get the indices of the k nearest neighbours of the given point */
-  Indices query_k(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const;
+  Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const;
 
   /** Get the indices of the k nearest neighbours of the given scalar */
-  Indices queryScalar_k(const Scalar x, const UnsignedInteger k, const Bool sorted  = false) const;
+  Indices queryScalarK(const Scalar x, const UnsignedInteger k, const Bool sorted  = false) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

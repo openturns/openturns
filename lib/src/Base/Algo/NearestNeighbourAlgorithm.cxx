@@ -86,11 +86,11 @@ Indices NearestNeighbourAlgorithm::query(const Sample & sample) const
 }
 
 /* Get the indices of the k nearest neighbours of the given point */
-Indices NearestNeighbourAlgorithm::query_k(const Point & x,
-                                           const UnsignedInteger k,
-                                           const Bool sorted) const
+Indices NearestNeighbourAlgorithm::queryK(const Point & x,
+                                          const UnsignedInteger k,
+                                          const Bool sorted) const
 {
-  return getImplementation()->query_k(x, k, sorted);
+  return getImplementation()->queryK(x, k, sorted);
 }
 
 /* String converter */

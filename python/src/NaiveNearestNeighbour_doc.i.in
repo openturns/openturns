@@ -61,7 +61,7 @@ index : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NaiveNearestNeighbour::query_k
+%feature("docstring") OT::NaiveNearestNeighbour::queryK
 "Accessor to the nearest neighbours indices.
 
 Parameters

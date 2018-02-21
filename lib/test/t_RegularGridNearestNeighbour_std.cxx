@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
   const Point values(regularGrid.getValues());
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {
-    const Indices indices = regularGridNearestNeighbourAlgorithm.query_k(test[i], k, true);
+    const Indices indices = regularGridNearestNeighbourAlgorithm.queryK(test[i], k, true);
     fullprint << k << " nearest neighbours of " << test[i] << "=" << " (indices=" << indices << ")" << std::endl;
     // Check that returned neighbours are sorted
     Scalar last = 0.0;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
       last = current;
     }
   }
-  Indices indices = regularGridNearestNeighbourAlgorithm.query_k(test[0], n, true);
+  Indices indices = regularGridNearestNeighbourAlgorithm.queryK(test[0], n, true);
   fullprint << n << " nearest neighbours of " << test[0] << "=" << " (indices=" << indices << ")" << std::endl;
 
   return ExitCode::Success;

@@ -70,7 +70,7 @@ public:
   using NearestNeighbourAlgorithmImplementation::query;
 
   /** Get the indices of the k nearest neighbours of the given point */
-  virtual Indices query_k(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const;
+  virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

@@ -61,7 +61,7 @@ public:
   virtual Indices query(const Sample & sample) const;
 
   /* Get the indices of the k nearest neighbours of the given point */
-  virtual Indices query_k(const Point & x, const UnsignedInteger k, const Bool sorted = false) const;
+  virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted = false) const;
 
   /** String converter */
   virtual String __repr__() const;

@@ -56,7 +56,7 @@ index : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KDTree::query_k
+%feature("docstring") OT::KDTree::queryK
 "Accessor to the nearest neighbours indices.
 
 Parameters

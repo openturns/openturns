@@ -95,14 +95,14 @@ Indices RegularGridNearestNeighbour::queryScalar(const Point & x) const
 }
 
 /* Get the indices of the k nearest neighbours of the given point */
-Indices RegularGridNearestNeighbour::query_k(const Point & x, const UnsignedInteger k, const Bool sorted) const
+Indices RegularGridNearestNeighbour::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const
 {
   if (x.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension 1, got a point of dimension " << x.getDimension();
-  return queryScalar_k(x[0], k, sorted);
+  return queryScalarK(x[0], k, sorted);
 }
 
 /* Get the indices of the k nearest neighbours of the given scalar */
-Indices RegularGridNearestNeighbour::queryScalar_k(const Scalar x, const UnsignedInteger k, const Bool sorted) const
+Indices RegularGridNearestNeighbour::queryScalarK(const Scalar x, const UnsignedInteger k, const Bool sorted) const
 {
   if (k > N_) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the grid!";
   Indices result(k);

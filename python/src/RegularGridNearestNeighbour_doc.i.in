@@ -37,7 +37,7 @@ index : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RegularGridNearestNeighbour::queryScalar_k
+%feature("docstring") OT::RegularGridNearestNeighbour::queryScalarK
 "Accessor to the nearest neighbours indices.
 
 Parameters

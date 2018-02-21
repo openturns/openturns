@@ -17,5 +17,5 @@ for i in range(len(test)):
 
 k = 4
 for i in range(len(test)):
-    indices = regularGridNearestNeighbourAlgorithm.query_k(test[i], k, True)
+    indices = regularGridNearestNeighbourAlgorithm.queryK(test[i], k, True)
     print(k, 'nearest neighbours of', test[i], '(indices=', indices)

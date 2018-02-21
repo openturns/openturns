@@ -36,6 +36,6 @@ if neighbourIndices != neighbourIndices_np:
     os.exit(1)
 
 for x in test:
-    if np.any(nearest_debug_indices(x)[:10] != tree.query_k(x, 10, True)):
-        print("Errors found in query_k")
+    if np.any(nearest_debug_indices(x)[:10] != tree.queryK(x, 10, True)):
+        print("Errors found in queryK")
         os.exit(1)

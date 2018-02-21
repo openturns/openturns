@@ -245,7 +245,7 @@ UnsignedInteger NaiveNearestNeighbour::query(const Point & x) const
 }
 
 /* Get the indices of the k nearest neighbours of the given point */
-Indices NaiveNearestNeighbour::query_k(const Point & x, const UnsignedInteger k, const Bool sorted) const
+Indices NaiveNearestNeighbour::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const
 {
   if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
   Indices result(k);
