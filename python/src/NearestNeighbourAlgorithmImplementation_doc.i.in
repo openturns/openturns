@@ -1,5 +1,7 @@
 %define OT_NearestNeighbourAlgorithm_doc
-"Base class to define an algorithm to search for nearest neighbours of
+"Nearest neighbour lookup.
+
+Base class to define an algorithm to search for nearest neighbours of
 a list of points.
 
 Available constructors:
@@ -16,6 +18,8 @@ See also
 --------
 KDTree, RegularGridNearestNeighbour, NaiveNearestNeighbour
 
+Examples
+--------
 >>> import openturns as ot
 >>> sample = ot.Normal(2).getSample(10)
 >>> finder = ot.NearestNeighbourAlgorithm(sample)
