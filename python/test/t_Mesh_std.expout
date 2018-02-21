@@ -10,8 +10,8 @@ volume= 2.2
 First simplex volume= 1.0
 is p= [1.3]  in mesh?  True
 Nearest index( [1.8] )= 1
-Nearest index( [1.8] ), simplex and coordinates= [True, 1L, class=Point name=Unnamed dimension=2 values=[0.5,0.5]]
-Nearest index( [-1.8] ), simplex and coordinates= [False, 0L, class=Point name=Unnamed dimension=0 values=[]]
+Nearest index( [1.8] ), found= True simplex= 1 coordinates= [0.5,0.5]
+Nearest index( [-1.8] ), found= False simplex= 0 coordinates= []
 Nearest index( [[-0.25], [2.25]] )= [0,2]
 P1 gram=
  [[ 0.333333 0.166667 0        0        ]
