@@ -17,7 +17,7 @@ def stop():
     return False
 
 # We create a numerical math function
-myFunction = ot.Function(
+myFunction = ot.SymbolicFunction(
     ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])
 
 dim = myFunction.getInputDimension()

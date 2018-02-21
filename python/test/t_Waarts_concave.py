@@ -12,10 +12,10 @@ try:
     # Physical model
     #
 
-    EtatLimite = Function(
+    limitState = SymbolicFunction(
         ['X1', 'X2'], ['G'], ["-0.5*(X1-X2)*(X1-X2) - (X1+X2)/(sqrt(2)) + 3"])
 
-    dim = EtatLimite.getInputDimension()
+    dim = limitState.getInputDimension()
     print(dim)
 
     #
@@ -37,7 +37,7 @@ try:
 
     vect = RandomVector(myDistribution)
 
-    output = RandomVector(EtatLimite, vect)
+    output = RandomVector(limitState, vect)
 
     myEvent = Event(output, Less(), 0.0)
 

@@ -5,7 +5,7 @@ Helper class for defining the push-forward distribution of a given univariate
 distribution by a given scalar function.
 
 Available constructors:
-    CompositeDistribution(*g=Function('x', 'x'), distX=Uniform(0.0,1.0)*)
+    CompositeDistribution(*g=SymbolicFunction('x', 'x'), distX=Uniform(0.0,1.0)*)
 
     CompositeDistribution(*g, distX, a, v*)
 

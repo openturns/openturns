@@ -28,9 +28,9 @@ try:
     formulas[
         0] = "X1 + 2*X2 + 2*X3 + X4 - 5*X5 - 5*X6 +0.001*(sin(100*X1)+sin(100*X2)+sin(100*X3)+sin(100*X4)+sin(100*X5)+sin(100*X6))"
 
-    EtatLimite = Function(inputFunction, outputFunction, formulas)
+    limitState = SymbolicFunction(inputFunction, outputFunction, formulas)
 
-    d * dimim = EtatLimite.getInputDimension()
+    d * dimim = limitState.getInputDimension()
     print(dim)
 
     #
@@ -123,7 +123,7 @@ try:
 
     vect = RandomVector(myDistribution)
 
-    output = RandomVector(EtatLimite, vect)
+    output = RandomVector(limitState, vect)
 
     myEvent = Event(output, Less(), 0.0)
 
