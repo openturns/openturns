@@ -28,16 +28,6 @@ empty : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KDTree::insert
-"Insert a point in the tree.
-
-Parameters
-----------
-x : sequence of float
-    Given point."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::KDTree::getNearestNeighboursIndices
 "Accessor to the nearest neighbours indices.
 

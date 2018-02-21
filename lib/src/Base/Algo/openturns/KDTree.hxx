@@ -23,6 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Interval.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,23 +58,27 @@ public:
   /** Check if the tree is empty */
   virtual Bool isEmpty() const;
 
-  /** Insert a point */
-  virtual void insert(const Point & point);
-
   /** Get the indices of the k nearest neighbours of the given point */
   virtual Indices getNearestNeighboursIndices(const Point & x,
-      const UnsignedInteger k,
-      const bool sorted  = false) const;
+                                              const UnsignedInteger k,
+                                              const Bool sorted  = false) const;
 
   /** Get the k nearest neighbours of the given point */
   virtual Sample getNearestNeighbours(const Point & x,
-                                      const UnsignedInteger k) const;
+                                      const UnsignedInteger k,
+                                      const Bool sorted  = false) const;
 
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const Point & x) const;
 
+  /** Get the index of the nearest neighbour of the given points */
+  virtual Indices getNearestNeighbourIndex(const Sample & sample) const;
+
   /** Get the nearest neighbour of the given point */
   virtual Point getNearestNeighbour(const Point & x) const;
+
+  /** Get the nearest neighbour of the given points */
+  virtual Sample getNearestNeighbour(const Sample & sample) const;
 
   /** Points accessor */
   Sample getPoints() const;
@@ -83,8 +88,8 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
-protected:
-#ifndef SWIG
+
+private:
   /**
    * @class KDNode
    *
@@ -120,7 +125,6 @@ protected:
     KDNodePointer p_right_;
 
   }; /* class KDNode */
-#endif
 
   /** Insert the point of the database at index i in the tree */
   void insert(KDNode::KDNodePointer & p_node,
@@ -131,6 +135,8 @@ protected:
   virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
       const Point & x,
       Scalar & bestSquaredDistance,
+      Point & lowerBoundingBox,
+      Point & upperBoundingBox,
       const UnsignedInteger activeDimension) const;
 
   /** Build the tree */
@@ -138,6 +144,9 @@ protected:
 
   /** The data organized by the tree */
   Sample points_;
+
+  /** Global bounding box */
+  Interval boundingBox_;
 
   /** The root of the tree */
   KDNode::KDNodePointer p_root_;

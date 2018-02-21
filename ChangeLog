@@ -41,6 +41,7 @@
  * Deprecated Domain::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume, getLowerBound, getUpperBound
  * Add an argument to KarhunenLoeveQuadratureAlgorithm to pass domain bounds
  * Add an argument to Mesh::streamToVTKFile() and Mesh::exportToVTKFile() to pass custom simplices
+ * Removed KDTree::insert
 
 === Python module ===
 
