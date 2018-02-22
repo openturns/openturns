@@ -102,6 +102,10 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   mesh_ = mesh;
   // Build KDTree
   nearestNeighbour_.setSample(mesh_.getVertices());
+  // In evaluate(), mesh_.getNearestVertexAndSimplexIndicesWithCoordinates() builds mesh_::verticesToSimplices_ if not
+  // already done.  But evaluate() may be called from several threads at the same time, thus ensure now that
+  // mesh_::verticesToSimplices_ is built.
+  (void) mesh_.getVerticesToSimplicesMap();
   // Check for pending vertices
   Interval::BoolCollection seenVertices(nrVertices);
   const IndicesCollection simplices(getSimplices());
@@ -137,6 +141,10 @@ void P1LagrangeEvaluation::setVertices(const Sample & vertices)
 {
   mesh_.setVertices(vertices);
   nearestNeighbour_.setSample(vertices);
+  // In evaluate(), mesh_.getNearestVertexAndSimplexIndicesWithCoordinates() builds mesh_::verticesToSimplices_ if not
+  // already done.  But evaluate() may be called from several threads at the same time, thus ensure now that
+  // mesh_::verticesToSimplices_ is built.
+  (void) mesh_.getVerticesToSimplicesMap();
 }
 
 Sample P1LagrangeEvaluation::getVertices() const
