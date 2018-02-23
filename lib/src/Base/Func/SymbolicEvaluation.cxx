@@ -112,13 +112,13 @@ Point SymbolicEvaluation::operator() (const Point & inP) const
 Sample SymbolicEvaluation::operator() (const Sample & inS) const
 {
   Sample result(parser_(inS));
-  result.setDescription(getOutputDescription());
   callsNumber_ += inS.getSize();
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inS);
     outputStrategy_.store(result);
   }
+  result.setDescription(getOutputDescription());
   return result;
 }
 
