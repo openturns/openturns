@@ -74,7 +74,7 @@ only if :math:`\alpha_\textrm{lim}` is greater than the value
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/independence_test.ipynb`
+    - See :doc:`/examples/data_analysis/independence_test`
 
 .. topic:: References:
 

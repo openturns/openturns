@@ -167,7 +167,7 @@ coefficient.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/estimate_spearman.ipynb`
+    - See :doc:`/examples/data_analysis/estimate_spearman`
 
 .. topic:: References:
 

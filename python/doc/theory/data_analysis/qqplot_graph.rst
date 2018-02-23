@@ -100,7 +100,7 @@ distributions.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/qqplot_graph.ipynb`
+    - See :doc:`/examples/data_analysis/qqplot_graph`
 
 .. topic:: References:
 

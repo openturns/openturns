@@ -202,7 +202,7 @@ pseudo-random sequences.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/low_discrepancy_sequence.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/low_discrepancy_sequence`
 
 .. topic:: References:
 

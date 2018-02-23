@@ -326,7 +326,7 @@ according to the mirroring technique:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/estimate_non_parametric_distribution.ipynb`
+    - See :doc:`/examples/data_analysis/estimate_non_parametric_distribution`
 
 .. topic:: References:
 

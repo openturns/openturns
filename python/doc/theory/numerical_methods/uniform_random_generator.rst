@@ -49,5 +49,5 @@ Each character is detailed of the acronym is detailed :
 
 .. topic:: Examples:
 
-    - See :ref:`examples/numerical_methods/random_generator.ipynb`
+    - See :doc:`/examples/numerical_methods/random_generator`
 

@@ -205,7 +205,7 @@ The techniques implemented in each distribution are:
 
 .. topic:: Examples:
 
-    - See :ref:`examples/probabilistic_modeling/distribution_manipulation.ipynb`
+    - See :doc:`/examples/probabilistic_modeling/distribution_manipulation`
 
 .. topic:: References:
 

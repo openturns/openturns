@@ -142,7 +142,7 @@ coefficient is sometimes denoted by :math:`r`.
 
 .. topic:: Examples:
 
-    - See :ref:`examples/data_analysis/estimate_pcc.ipynb`
+    - See :doc:`/examples/data_analysis/estimate_pcc`
 
 .. topic:: References:
 

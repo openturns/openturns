@@ -49,7 +49,7 @@ For the :math:`n_X` total order indices :math:`T_i`, we only swap the variable :
 
 .. topic:: Examples:
 
-    - See :ref:`examples/reliability_sensitivity/estimate_sobol.ipynb`
+    - See :doc:`/examples/reliability_sensitivity/estimate_sobol`
 
 .. topic:: References:
 
