@@ -111,11 +111,15 @@ Point SymbolicEvaluation::operator() (const Point & inP) const
 /* Operator () */
 Sample SymbolicEvaluation::operator() (const Sample & inS) const
 {
-  UnsignedInteger size = inS.getSize();
-  Sample outSample(size, getOutputDimension());
-  for (UnsignedInteger i = 0; i < size; ++ i) outSample[i] = operator()(inS[i]);
-  outSample.setDescription(getOutputDescription());
-  return outSample;
+  Sample result(parser_(inS));
+  result.setDescription(getOutputDescription());
+  callsNumber_ += inS.getSize();
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.store(inS);
+    outputStrategy_.store(result);
+  }
+  return result;
 }
 
 /* Accessor for input point dimension */
