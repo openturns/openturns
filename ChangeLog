@@ -13,6 +13,7 @@
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
  * SmoothedUniform
  * NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour
+ * IndicesFixedSizeCollection
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class

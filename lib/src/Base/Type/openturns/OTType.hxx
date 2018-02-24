@@ -28,6 +28,8 @@
 #include "openturns/Description.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Indices.hxx"
+#include "openturns/IndicesFixedSizeCollectionImplementation.hxx"
+#include "openturns/IndicesFixedSizeCollection.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/Mesh.hxx"

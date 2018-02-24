@@ -119,6 +119,8 @@ ot_add_python_module(typ typ_module.i
                       DomainImplementation.i DomainImplementation_doc.i.in
                       Interval.i Interval_doc.i.in
                       Indices.i Indices_doc.i.in
+                      IndicesFixedSizeCollection.i IndicesFixedSizeCollection_doc.i.in
+                      IndicesFixedSizeCollectionImplementation.i
                       MatrixImplementation.i
                       Matrix.i Matrix_doc.i.in
                       SquareMatrix.i SquareMatrix_doc.i.in

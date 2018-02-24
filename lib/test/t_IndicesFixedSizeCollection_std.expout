@@ -1,0 +1,7 @@
+flat1=class=IndicesFixedSizeCollection implementation=class=IndicesFixedSizeCollectionImplementation name=Unnamed size=0 offsets=[0] values=[]
+flat2=class=IndicesFixedSizeCollection implementation=class=IndicesFixedSizeCollectionImplementation name=Unnamed size=3 offsets=[0,1,5,8] values=[0,8,9,10,11,3,4,5]
+flat3=class=IndicesFixedSizeCollection implementation=class=IndicesFixedSizeCollectionImplementation name=Unnamed size=3 offsets=[0,3,6,9] values=[3,4,5,3,4,5,3,4,5]
+flat4=class=IndicesFixedSizeCollection implementation=class=IndicesFixedSizeCollectionImplementation name=Unnamed size=8 offsets=[0,2,4,6,8,10,12,14,16] values=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+flat5=class=IndicesFixedSizeCollection implementation=class=IndicesFixedSizeCollectionImplementation name=Unnamed size=3 offsets=[0,1,5,8] values=[0,8,9,10,11,3,4,5]
+flat4[3]=[6,7]
+flat5[1]=[8,9,10,11]
