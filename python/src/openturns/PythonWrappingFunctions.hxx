@@ -833,25 +833,18 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
       ScopedPyObjectPointer askObj(PyTuple_New(2));
       ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
       Sample sample( size, dimension );
-      try
+      for ( UnsignedInteger i = 0; i < size; ++ i )
       {
-        for ( UnsignedInteger i = 0; i < size; ++ i )
+        PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
+        for ( UnsignedInteger j = 0; j < dimension; ++ j )
         {
-          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
-          for ( UnsignedInteger j = 0; j < dimension; ++ j )
+          PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
+          ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
+          if (elt.get())
           {
-            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
-            ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
-            if (elt.get())
-            {
-              sample( i, j ) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
-            }
+            sample( i, j ) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
           }
         }
-      }
-      catch (InvalidArgumentException &)
-      {
-        throw;
       }
       return sample;
     }
@@ -866,14 +859,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
 
   // Get dimension of first point
   PyObject * firstPoint = PySequence_Fast_GET_ITEM( newPyObj.get(), 0 );
-  try
-  {
-    check<_PySequence_>( firstPoint );
-  }
-  catch (InvalidArgumentException &)
-  {
-    throw;
-  }
+  check<_PySequence_>( firstPoint );
   ScopedPyObjectPointer newPyFirstObj(PySequence_Fast( firstPoint, "" ));
   const UnsignedInteger dimension = PySequence_Fast_GET_SIZE( newPyFirstObj.get() );
   // Allocate result Sample
@@ -885,14 +871,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
     if (i > 0)
     {
       // Check that object is a sequence, and has the right size
-      try
-      {
-        check<_PySequence_>( pointObj );
-      }
-      catch (InvalidArgumentException &)
-      {
-        throw;
-      }
+      check<_PySequence_>( pointObj );
       if (static_cast<UnsignedInteger>(PySequence_Fast_GET_SIZE( newPyPointObj.get() )) != dimension) throw;
     }
     for(UnsignedInteger j = 0; j < dimension; ++j)
