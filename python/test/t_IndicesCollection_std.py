@@ -4,38 +4,38 @@ from __future__ import print_function
 import openturns as ot
 
 # Default constructor
-flat1 = ot.IndicesFixedSizeCollection()
+flat1 = ot.IndicesCollection()
 print('flat1=', flat1)
 
 # Constructor with Collection<Indices>
-coll2 = ot.IndicesCollection()
+coll2 = []
 ind1 = ot.Indices(1)
 ind4 = ot.Indices(4)
 ind4.fill(8)
 ind3 = ot.Indices(3)
 ind3.fill(3)
-coll2.add(ind1)
-coll2.add(ind4)
-coll2.add(ind3)
-flat2 =  ot.IndicesFixedSizeCollection(coll2);
+coll2.append(ind1)
+coll2.append(ind4)
+coll2.append(ind3)
+flat2 =  ot.IndicesCollection(coll2);
 print('flat2=', flat2)
 
 # Copy constructor
-flat3 = ot.IndicesFixedSizeCollection(flat2);
+flat3 = ot.IndicesCollection(flat2);
 print('flat3=', flat3)
 
 # Strided
-coll4 = ot.IndicesCollection()
-coll4.add(ind4)
-coll4.add(ind4)
-coll4.add(ind4)
-strided1 =  ot.IndicesFixedSizeCollection(coll4);
+coll4 = []
+coll4.append(ind4)
+coll4.append(ind4)
+coll4.append(ind4)
+strided1 =  ot.IndicesCollection(coll4);
 print('strided1=', strided1)
 
 # Constructor with dimensions and values
 full = ot.Indices(16);
 full.fill();
-strided2 = ot.IndicesFixedSizeCollection(8, 2, full)
+strided2 = ot.IndicesCollection(8, 2, full)
 print('strided2=', strided2)
 
 # slicing

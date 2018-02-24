@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
       vertices.add(Point(1, 1.5));
       vertices.add(Point(1, 2.1));
       vertices.add(Point(1, 2.7));
-      Mesh::IndicesCollection simplicies(3, Indices(2));
-      simplicies[0][0] = 0;
-      simplicies[0][1] = 1;
-      simplicies[1][0] = 1;
-      simplicies[1][1] = 2;
-      simplicies[2][0] = 2;
-      simplicies[2][1] = 3;
-      Mesh mesh1D(vertices, simplicies);
+      IndicesCollection simplices(3, 2);
+      simplices(0, 0) = 0;
+      simplices(0, 1) = 1;
+      simplices(1, 0) = 1;
+      simplices(1, 1) = 2;
+      simplices(2, 0) = 2;
+      simplices(2, 1) = 3;
+      Mesh mesh1D(vertices, simplices);
       KDTree tree(vertices);
       fullprint << "1D mesh=" << mesh1D << std::endl;
       fullprint << "Is empty? " << mesh1D.isEmpty() << std::endl;
@@ -114,27 +114,27 @@ int main(int argc, char *argv[])
       p[0] = 0.5;
       p[1] = 1.5;
       vertices.add(p);
-      Mesh::IndicesCollection simplicies(5, Indices(3));
-      simplicies[0][0] = 0;
-      simplicies[0][1] = 1;
-      simplicies[0][2] = 2;
+      IndicesCollection simplices(5, 3);
+      simplices(0, 0) = 0;
+      simplices(0, 1) = 1;
+      simplices(0, 2) = 2;
 
-      simplicies[1][0] = 1;
-      simplicies[1][1] = 2;
-      simplicies[1][2] = 3;
+      simplices(1, 0) = 1;
+      simplices(1, 1) = 2;
+      simplices(1, 2) = 3;
 
-      simplicies[2][0] = 2;
-      simplicies[2][1] = 3;
-      simplicies[2][2] = 4;
+      simplices(2, 0) = 2;
+      simplices(2, 1) = 3;
+      simplices(2, 2) = 4;
 
-      simplicies[3][0] = 2;
-      simplicies[3][1] = 4;
-      simplicies[3][2] = 5;
+      simplices(3, 0) = 2;
+      simplices(3, 1) = 4;
+      simplices(3, 2) = 5;
 
-      simplicies[4][0] = 0;
-      simplicies[4][1] = 2;
-      simplicies[4][2] = 5;
-      Mesh mesh2D(vertices, simplicies);
+      simplices(4, 0) = 0;
+      simplices(4, 1) = 2;
+      simplices(4, 2) = 5;
+      Mesh mesh2D(vertices, simplices);
       KDTree tree(vertices);
       fullprint << "2D mesh=" << mesh2D << std::endl;
       Point point(2, 1.8);
@@ -189,38 +189,38 @@ int main(int argc, char *argv[])
       p[2] = 1.0;
       vertices.add(p);
 
-      Mesh::IndicesCollection simplicies(6, Indices(4));
-      simplicies[0][0] = 0;
-      simplicies[0][1] = 1;
-      simplicies[0][2] = 2;
-      simplicies[0][3] = 4;
+      IndicesCollection simplices(6, 4);
+      simplices(0, 0) = 0;
+      simplices(0, 1) = 1;
+      simplices(0, 2) = 2;
+      simplices(0, 3) = 4;
 
-      simplicies[1][0] = 3;
-      simplicies[1][1] = 5;
-      simplicies[1][2] = 6;
-      simplicies[1][3] = 7;
+      simplices(1, 0) = 3;
+      simplices(1, 1) = 5;
+      simplices(1, 2) = 6;
+      simplices(1, 3) = 7;
 
-      simplicies[2][0] = 1;
-      simplicies[2][1] = 2;
-      simplicies[2][2] = 3;
-      simplicies[2][3] = 6;
+      simplices(2, 0) = 1;
+      simplices(2, 1) = 2;
+      simplices(2, 2) = 3;
+      simplices(2, 3) = 6;
 
-      simplicies[3][0] = 1;
-      simplicies[3][1] = 2;
-      simplicies[3][2] = 4;
-      simplicies[3][3] = 6;
+      simplices(3, 0) = 1;
+      simplices(3, 1) = 2;
+      simplices(3, 2) = 4;
+      simplices(3, 3) = 6;
 
-      simplicies[4][0] = 1;
-      simplicies[4][1] = 3;
-      simplicies[4][2] = 5;
-      simplicies[4][3] = 6;
+      simplices(4, 0) = 1;
+      simplices(4, 1) = 3;
+      simplices(4, 2) = 5;
+      simplices(4, 3) = 6;
 
-      simplicies[5][0] = 1;
-      simplicies[5][1] = 4;
-      simplicies[5][2] = 5;
-      simplicies[5][3] = 6;
+      simplices(5, 0) = 1;
+      simplices(5, 1) = 4;
+      simplices(5, 2) = 5;
+      simplices(5, 3) = 6;
 
-      Mesh mesh3D(vertices, simplicies);
+      Mesh mesh3D(vertices, simplices);
       KDTree tree(vertices);
       fullprint << "3D mesh=" << mesh3D << std::endl;
       Point point(3, 1.8);

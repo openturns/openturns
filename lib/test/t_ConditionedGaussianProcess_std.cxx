@@ -100,24 +100,24 @@ int main(int argc, char *argv[])
   vertices.add(p);
 
 
-  Mesh::IndicesCollection simplicies(4, Indices(3));
-  simplicies[0][0] = 0;
-  simplicies[0][1] = 1;
-  simplicies[0][2] = 4;
+  IndicesCollection simplices(4, 3);
+  simplices(0, 0) = 0;
+  simplices(0, 1) = 1;
+  simplices(0, 2) = 4;
 
-  simplicies[1][0] = 1;
-  simplicies[1][1] = 2;
-  simplicies[1][2] = 4;
+  simplices(1, 0) = 1;
+  simplices(1, 1) = 2;
+  simplices(1, 2) = 4;
 
-  simplicies[2][0] = 2;
-  simplicies[2][1] = 3;
-  simplicies[2][2] = 4;
+  simplices(2, 0) = 2;
+  simplices(2, 1) = 3;
+  simplices(2, 2) = 4;
 
-  simplicies[3][0] = 3;
-  simplicies[3][1] = 0;
-  simplicies[3][2] = 4;
+  simplices(3, 0) = 3;
+  simplices(3, 1) = 0;
+  simplices(3, 2) = 4;
 
-  Mesh mesh2D(vertices, simplicies);
+  Mesh mesh2D(vertices, simplices);
 
 
   // Conditioned process

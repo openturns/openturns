@@ -91,7 +91,6 @@ Vectors
     BoolCollection
     Description
     Indices
-    IndicesFixedSizeCollection
     Point
     PointWithDescription
     ComplexCollection

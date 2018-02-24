@@ -103,13 +103,11 @@ Mesh IntervalMesher::build(const Interval & interval,
     vertices(n, 0) = b;
     for (UnsignedInteger i = 1; i < n; ++i) vertices(i, 0) = (i * b + (n - i) * a) / n;
     // Second the simplices
-    Mesh::IndicesCollection simplices(n);
-    Indices simplex(2);
+    IndicesCollection simplices(n, 2);
     for (UnsignedInteger i = 0; i < n; ++i)
     {
-      simplex[0] = i;
-      simplex[1] = i + 1;
-      simplices[i] = simplex;
+      simplices(i, 0) = i;
+      simplices(i, 1) = i + 1;
     } // i
     return Mesh(vertices, simplices);
   } // dimension == 1
@@ -138,7 +136,7 @@ Mesh IntervalMesher::build(const Interval & interval,
       } // i
     } // j
     // Second the simplices
-    Mesh::IndicesCollection simplices((diamond ? 4 : 2 ) * m * n, Indices(3));
+    IndicesCollection simplices((diamond ? 4 : 2 ) * m * n, 3);
     UnsignedInteger cellIndex = 0;
     UnsignedInteger simplexIndex = 0;
     for (UnsignedInteger j = 0; j < n; ++j)
@@ -157,33 +155,33 @@ Mesh IntervalMesher::build(const Interval & interval,
         {
           vertices(vertexIndex, 0) = (vertices(a, 0) + vertices(b, 0) + vertices(c, 0) + vertices(d, 0)) * 0.25;
           vertices(vertexIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1)) * 0.25;
-          simplices[simplexIndex][0] = a;
-          simplices[simplexIndex][1] = b;
-          simplices[simplexIndex][2] = vertexIndex;
+          simplices(simplexIndex, 0) = a;
+          simplices(simplexIndex, 1) = b;
+          simplices(simplexIndex, 2) = vertexIndex;
           ++simplexIndex;
-          simplices[simplexIndex][0] = b;
-          simplices[simplexIndex][1] = d;
-          simplices[simplexIndex][2] = vertexIndex;
+          simplices(simplexIndex, 0) = b;
+          simplices(simplexIndex, 1) = d;
+          simplices(simplexIndex, 2) = vertexIndex;
           ++simplexIndex;
-          simplices[simplexIndex][0] = d;
-          simplices[simplexIndex][1] = c;
-          simplices[simplexIndex][2] = vertexIndex;
+          simplices(simplexIndex, 0) = d;
+          simplices(simplexIndex, 1) = c;
+          simplices(simplexIndex, 2) = vertexIndex;
           ++simplexIndex;
-          simplices[simplexIndex][0] = c;
-          simplices[simplexIndex][1] = a;
-          simplices[simplexIndex][2] = vertexIndex;
+          simplices(simplexIndex, 0) = c;
+          simplices(simplexIndex, 1) = a;
+          simplices(simplexIndex, 2) = vertexIndex;
           ++simplexIndex;
           ++vertexIndex;
         }
         else
         {
-          simplices[simplexIndex][0] = a;
-          simplices[simplexIndex][1] = b;
-          simplices[simplexIndex][2] = c;
+          simplices(simplexIndex, 0) = a;
+          simplices(simplexIndex, 1) = b;
+          simplices(simplexIndex, 2) = c;
           ++simplexIndex;
-          simplices[simplexIndex][0] = b;
-          simplices[simplexIndex][1] = d;
-          simplices[simplexIndex][2] = c;
+          simplices(simplexIndex, 0) = b;
+          simplices(simplexIndex, 1) = d;
+          simplices(simplexIndex, 2) = c;
           ++simplexIndex;
         }
         ++cellIndex;
@@ -225,7 +223,7 @@ Mesh IntervalMesher::build(const Interval & interval,
       } // j
     } // k
     // Second the simplices
-    Mesh::IndicesCollection simplices( (diamond ? 24 : 6) * m * n * p, Indices(4));
+    IndicesCollection simplices( (diamond ? 24 : 6) * m * n * p, 4);
     const UnsignedInteger mp1 = m + 1;
     const UnsignedInteger np1 = n + 1;
     const UnsignedInteger mp1np1 = mp1 * np1;
@@ -275,25 +273,25 @@ Mesh IntervalMesher::build(const Interval & interval,
             vertices(centerABDCIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(c, 1) + vertices(d, 1)) * 0.25;
             vertices(centerABDCIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(c, 2) + vertices(d, 2)) * 0.25;
             // ABDC->c*BAI/c*DBI/c*CDI/c*ACI
-            simplices[simplexIndex][0] = centerABDCIndex;
-            simplices[simplexIndex][1] = b;
-            simplices[simplexIndex][2] = a;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABDCIndex;
+            simplices(simplexIndex, 1) = b;
+            simplices(simplexIndex, 2) = a;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerABDCIndex;
-            simplices[simplexIndex][1] = d;
-            simplices[simplexIndex][2] = b;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABDCIndex;
+            simplices(simplexIndex, 1) = d;
+            simplices(simplexIndex, 2) = b;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerABDCIndex;
-            simplices[simplexIndex][1] = c;
-            simplices[simplexIndex][2] = d;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABDCIndex;
+            simplices(simplexIndex, 1) = c;
+            simplices(simplexIndex, 2) = d;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerABDCIndex;
-            simplices[simplexIndex][1] = a;
-            simplices[simplexIndex][2] = c;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABDCIndex;
+            simplices(simplexIndex, 1) = a;
+            simplices(simplexIndex, 2) = c;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
             const UnsignedInteger centerEFHGIndex = vertexIndex + 2;
@@ -301,25 +299,25 @@ Mesh IntervalMesher::build(const Interval & interval,
             vertices(centerEFHGIndex, 1) = (vertices(e, 1) + vertices(f, 1) + vertices(g, 1) + vertices(h, 1)) * 0.25;
             vertices(centerEFHGIndex, 2) = (vertices(e, 2) + vertices(f, 2) + vertices(g, 2) + vertices(h, 2)) * 0.25;
             // EFHG->c*EFI/c*FHI/c*HGI/c*GEI
-            simplices[simplexIndex][0] = centerEFHGIndex;
-            simplices[simplexIndex][1] = e;
-            simplices[simplexIndex][2] = f;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerEFHGIndex;
+            simplices(simplexIndex, 1) = e;
+            simplices(simplexIndex, 2) = f;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerEFHGIndex;
-            simplices[simplexIndex][1] = f;
-            simplices[simplexIndex][2] = h;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerEFHGIndex;
+            simplices(simplexIndex, 1) = f;
+            simplices(simplexIndex, 2) = h;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerEFHGIndex;
-            simplices[simplexIndex][1] = h;
-            simplices[simplexIndex][2] = g;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerEFHGIndex;
+            simplices(simplexIndex, 1) = h;
+            simplices(simplexIndex, 2) = g;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerEFHGIndex;
-            simplices[simplexIndex][1] = g;
-            simplices[simplexIndex][2] = e;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerEFHGIndex;
+            simplices(simplexIndex, 1) = g;
+            simplices(simplexIndex, 2) = e;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
             const UnsignedInteger centerACGEIndex = vertexIndex + 3;
@@ -327,25 +325,25 @@ Mesh IntervalMesher::build(const Interval & interval,
             vertices(centerACGEIndex, 1) = (vertices(a, 1) + vertices(c, 1) + vertices(e, 1) + vertices(g, 1)) * 0.25;
             vertices(centerACGEIndex, 2) = (vertices(a, 2) + vertices(c, 2) + vertices(e, 2) + vertices(g, 2)) * 0.25;
             // ACGE->c*CAI/c*GCI/c*EGI/c*AEI
-            simplices[simplexIndex][0] = centerACGEIndex;
-            simplices[simplexIndex][1] = c;
-            simplices[simplexIndex][2] = a;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerACGEIndex;
+            simplices(simplexIndex, 1) = c;
+            simplices(simplexIndex, 2) = a;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerACGEIndex;
-            simplices[simplexIndex][1] = g;
-            simplices[simplexIndex][2] = c;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerACGEIndex;
+            simplices(simplexIndex, 1) = g;
+            simplices(simplexIndex, 2) = c;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerACGEIndex;
-            simplices[simplexIndex][1] = e;
-            simplices[simplexIndex][2] = g;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerACGEIndex;
+            simplices(simplexIndex, 1) = e;
+            simplices(simplexIndex, 2) = g;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerACGEIndex;
-            simplices[simplexIndex][1] = a;
-            simplices[simplexIndex][2] = e;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerACGEIndex;
+            simplices(simplexIndex, 1) = a;
+            simplices(simplexIndex, 2) = e;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
             const UnsignedInteger centerBDHFIndex = vertexIndex + 4;
@@ -353,25 +351,25 @@ Mesh IntervalMesher::build(const Interval & interval,
             vertices(centerBDHFIndex, 1) = (vertices(b, 1) + vertices(d, 1) + vertices(f, 1) + vertices(h, 1)) * 0.25;
             vertices(centerBDHFIndex, 2) = (vertices(b, 2) + vertices(d, 2) + vertices(f, 2) + vertices(h, 2)) * 0.25;
             // BDHF->c*BDI/c*DHI/c*HFI/c*FBI
-            simplices[simplexIndex][0] = centerBDHFIndex;
-            simplices[simplexIndex][1] = b;
-            simplices[simplexIndex][2] = d;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerBDHFIndex;
+            simplices(simplexIndex, 1) = b;
+            simplices(simplexIndex, 2) = d;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerBDHFIndex;
-            simplices[simplexIndex][1] = d;
-            simplices[simplexIndex][2] = h;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerBDHFIndex;
+            simplices(simplexIndex, 1) = d;
+            simplices(simplexIndex, 2) = h;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerBDHFIndex;
-            simplices[simplexIndex][1] = h;
-            simplices[simplexIndex][2] = f;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerBDHFIndex;
+            simplices(simplexIndex, 1) = h;
+            simplices(simplexIndex, 2) = f;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerBDHFIndex;
-            simplices[simplexIndex][1] = f;
-            simplices[simplexIndex][2] = b;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerBDHFIndex;
+            simplices(simplexIndex, 1) = f;
+            simplices(simplexIndex, 2) = b;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
             const UnsignedInteger centerABFEIndex = vertexIndex + 5;
@@ -379,25 +377,25 @@ Mesh IntervalMesher::build(const Interval & interval,
             vertices(centerABFEIndex, 1) = (vertices(a, 1) + vertices(b, 1) + vertices(e, 1) + vertices(f, 1)) * 0.25;
             vertices(centerABFEIndex, 2) = (vertices(a, 2) + vertices(b, 2) + vertices(e, 2) + vertices(f, 2)) * 0.25;
             // ABFE->c*ABI/c*BFI/c*FEI/c*EAI
-            simplices[simplexIndex][0] = centerABFEIndex;
-            simplices[simplexIndex][1] = a;
-            simplices[simplexIndex][2] = b;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABFEIndex;
+            simplices(simplexIndex, 1) = a;
+            simplices(simplexIndex, 2) = b;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerABFEIndex;
-            simplices[simplexIndex][1] = b;
-            simplices[simplexIndex][2] = f;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABFEIndex;
+            simplices(simplexIndex, 1) = b;
+            simplices(simplexIndex, 2) = f;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerABFEIndex;
-            simplices[simplexIndex][1] = f;
-            simplices[simplexIndex][2] = e;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABFEIndex;
+            simplices(simplexIndex, 1) = f;
+            simplices(simplexIndex, 2) = e;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerABFEIndex;
-            simplices[simplexIndex][1] = e;
-            simplices[simplexIndex][2] = a;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerABFEIndex;
+            simplices(simplexIndex, 1) = e;
+            simplices(simplexIndex, 2) = a;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
 
             const UnsignedInteger centerCDHGIndex = vertexIndex + 6;
@@ -405,25 +403,25 @@ Mesh IntervalMesher::build(const Interval & interval,
             vertices(centerCDHGIndex, 1) = (vertices(c, 1) + vertices(d, 1) + vertices(g, 1) + vertices(h, 1)) * 0.25;
             vertices(centerCDHGIndex, 2) = (vertices(c, 2) + vertices(d, 2) + vertices(g, 2) + vertices(h, 2)) * 0.25;
             // CDHG->c*DCI/c*HDI/c*GHI/c*CGI
-            simplices[simplexIndex][0] = centerCDHGIndex;
-            simplices[simplexIndex][1] = d;
-            simplices[simplexIndex][2] = c;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerCDHGIndex;
+            simplices(simplexIndex, 1) = d;
+            simplices(simplexIndex, 2) = c;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerCDHGIndex;
-            simplices[simplexIndex][1] = h;
-            simplices[simplexIndex][2] = d;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerCDHGIndex;
+            simplices(simplexIndex, 1) = h;
+            simplices(simplexIndex, 2) = d;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerCDHGIndex;
-            simplices[simplexIndex][1] = g;
-            simplices[simplexIndex][2] = h;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerCDHGIndex;
+            simplices(simplexIndex, 1) = g;
+            simplices(simplexIndex, 2) = h;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
-            simplices[simplexIndex][0] = centerCDHGIndex;
-            simplices[simplexIndex][1] = c;
-            simplices[simplexIndex][2] = g;
-            simplices[simplexIndex][3] = centerIndex;
+            simplices(simplexIndex, 0) = centerCDHGIndex;
+            simplices(simplexIndex, 1) = c;
+            simplices(simplexIndex, 2) = g;
+            simplices(simplexIndex, 3) = centerIndex;
             ++simplexIndex;
             vertexIndex += 7;
           }
@@ -432,40 +430,40 @@ Mesh IntervalMesher::build(const Interval & interval,
             // The 6 simplices of the Kuhn triangulation are the shortest paths
             // from A to H
             // 1: ABFH
-            simplices[simplexIndex][0] = a;
-            simplices[simplexIndex][1] = b;
-            simplices[simplexIndex][2] = f;
-            simplices[simplexIndex][3] = h;
+            simplices(simplexIndex, 0) = a;
+            simplices(simplexIndex, 1) = b;
+            simplices(simplexIndex, 2) = f;
+            simplices(simplexIndex, 3) = h;
             ++simplexIndex;
             // 2: ADBH
-            simplices[simplexIndex][0] = a;
-            simplices[simplexIndex][1] = d;
-            simplices[simplexIndex][2] = b;
-            simplices[simplexIndex][3] = h;
+            simplices(simplexIndex, 0) = a;
+            simplices(simplexIndex, 1) = d;
+            simplices(simplexIndex, 2) = b;
+            simplices(simplexIndex, 3) = h;
             ++simplexIndex;
             // 3: AFEH
-            simplices[simplexIndex][0] = a;
-            simplices[simplexIndex][1] = f;
-            simplices[simplexIndex][2] = e;
-            simplices[simplexIndex][3] = h;
+            simplices(simplexIndex, 0) = a;
+            simplices(simplexIndex, 1) = f;
+            simplices(simplexIndex, 2) = e;
+            simplices(simplexIndex, 3) = h;
             ++simplexIndex;
             // 4: AEGH
-            simplices[simplexIndex][0] = a;
-            simplices[simplexIndex][1] = e;
-            simplices[simplexIndex][2] = g;
-            simplices[simplexIndex][3] = h;
+            simplices(simplexIndex, 0) = a;
+            simplices(simplexIndex, 1) = e;
+            simplices(simplexIndex, 2) = g;
+            simplices(simplexIndex, 3) = h;
             ++simplexIndex;
             // 5: AGCH
-            simplices[simplexIndex][0] = a;
-            simplices[simplexIndex][1] = g;
-            simplices[simplexIndex][2] = c;
-            simplices[simplexIndex][3] = h;
+            simplices(simplexIndex, 0) = a;
+            simplices(simplexIndex, 1) = g;
+            simplices(simplexIndex, 2) = c;
+            simplices(simplexIndex, 3) = h;
             ++simplexIndex;
             // 6: ACDH
-            simplices[simplexIndex][0] = a;
-            simplices[simplexIndex][1] = c;
-            simplices[simplexIndex][2] = d;
-            simplices[simplexIndex][3] = h;
+            simplices(simplexIndex, 0) = a;
+            simplices(simplexIndex, 1) = c;
+            simplices(simplexIndex, 2) = d;
+            simplices(simplexIndex, 3) = h;
             ++simplexIndex;
           }
           ++cellIndex;

@@ -13,7 +13,7 @@
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
  * SmoothedUniform
  * NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour
- * IndicesFixedSizeCollection
+ * IndicesCollection
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
@@ -45,6 +45,8 @@
  * Add an argument to KarhunenLoeveQuadratureAlgorithm to pass domain bounds
  * Add an argument to Mesh::streamToVTKFile() and Mesh::exportToVTKFile() to pass custom simplices
  * All KDTree methods are modified
+ * IndicesCollection is no more an alias to Collection<Indices>, it has its own class and has a fixed size
+ * Removed BipartiteGraph::add method
 
 === Python module ===
 

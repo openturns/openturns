@@ -47,7 +47,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
   , tree_()
-  , verticesToSimplices_(0)
+  , verticesToSimplices_()
   , lowerBoundingBoxSimplices_(0, dimension)
   , upperBoundingBoxSimplices_(0, dimension)
   , isAlreadyComputedVolume_(false)
@@ -61,9 +61,9 @@ Mesh::Mesh(const UnsignedInteger dimension)
 Mesh::Mesh(const Sample & vertices)
   : DomainImplementation(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
-  , simplices_(0)
+  , simplices_()
   , tree_()
-  , verticesToSimplices_(0)
+  , verticesToSimplices_()
   , lowerBoundingBoxSimplices_(0, vertices.getDimension())
   , upperBoundingBoxSimplices_(0, vertices.getDimension())
   , isAlreadyComputedVolume_(false)
@@ -80,7 +80,7 @@ Mesh::Mesh(const Sample & vertices,
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
   , tree_()
-  , verticesToSimplices_(0)
+  , verticesToSimplices_()
   , lowerBoundingBoxSimplices_(0, vertices.getDimension())
   , upperBoundingBoxSimplices_(0, vertices.getDimension())
   , isAlreadyComputedVolume_(false)
@@ -113,7 +113,7 @@ void Mesh::setVertices(const Sample & vertices)
   isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
-  verticesToSimplices_ = IndicesCollection(0);
+  verticesToSimplices_ = IndicesCollection();
   lowerBoundingBoxSimplices_ = Sample(0, dimension_);
   upperBoundingBoxSimplices_ = Sample(0, dimension_);
 }
@@ -140,11 +140,10 @@ Bool Mesh::checkPointInNeighbourhoodWithCoordinates(const Point & point,
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
   // To be sure that the vertices to simplices map is up to date
   if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
   coordinates = Point(0);
-  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
+  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
   {
-    simplexIndex = simplicesCandidates[i];
+    simplexIndex = *cit;
     if (checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates))
     {
       return true;
@@ -171,7 +170,7 @@ void Mesh::setVertex(const UnsignedInteger index,
 }
 
 /* Simplices accessor */
-Mesh::IndicesCollection Mesh::getSimplices() const
+IndicesCollection Mesh::getSimplices() const
 {
   return simplices_;
 }
@@ -181,7 +180,7 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
   if (!(simplices == simplices_))
   {
     simplices_ = simplices;
-    verticesToSimplices_ = IndicesCollection(0);
+    verticesToSimplices_ = IndicesCollection();
     lowerBoundingBoxSimplices_ = Sample(0, dimension_);
     upperBoundingBoxSimplices_ = Sample(0, dimension_);
   }
@@ -191,7 +190,7 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
 Indices Mesh::getSimplex(const UnsignedInteger index) const
 {
   if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
-  return simplices_[index];
+  return Indices(simplices_.cbegin_at(index), simplices_.cend_at(index));
 }
 
 /* Check the mesh validity */
@@ -201,7 +200,7 @@ void Mesh::checkValidity() const
   // Check the simplices: no simplex with duplicate vertices, no simplex with unknown vertex, no simplex with a number of vertices different from dimension+1
   for (UnsignedInteger i = 0; i < getSimplicesNumber(); ++ i)
   {
-    Indices simplex(simplices_[i]);
+    Indices simplex(getSimplex(i));
     if (simplex.getSize() != getDimension() + 1)
       throw InvalidArgumentException(HERE) << "Error: mesh has dimension " << getDimension() << " but simplex #" << i << " has size" << simplex.getSize();
 
@@ -234,9 +233,8 @@ Bool Mesh::contains(const Point & point) const
   const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
   // To be sure that the vertices to simplices map is up to date
   if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
-  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
-    if (checkPointInSimplex(point, simplicesCandidates[i])) return true;
+  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
+    if (checkPointInSimplex(point, *cit)) return true;
   // Third, a full loop to deal with points not inside of a simplex associated to the nearest vertex
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   for (UnsignedInteger i = 0; i < simplicesSize; ++i) if (checkPointInSimplex(point, i)) return true;
@@ -248,12 +246,11 @@ SquareMatrix Mesh::buildSimplexMatrix(const UnsignedInteger index) const
 {
   if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
   SquareMatrix matrix(dimension_ + 1);
-  const Indices vertexIndices(simplices_[index]);
   // Loop over the vertices of the simplex
   for (UnsignedInteger j = 0; j <= dimension_; ++j)
   {
-    const Point vertexJ(vertices_[vertexIndices[j]]);
-    for (UnsignedInteger i = 0; i < dimension_; ++i) matrix(i, j) = vertexJ[i];
+    const UnsignedInteger vertexJ = simplices_(index, j);
+    for (UnsignedInteger i = 0; i < dimension_; ++i) matrix(i, j) = vertices_(vertexJ, i);
     matrix(dimension_, j) = 1.0;
   }
   return matrix;
@@ -360,11 +357,10 @@ Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const Point & poi
   Indices result(1, nearestIndex);
   // To be sure that the vertices to simplices map is up to date
   if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
   coordinates = Point(0);
-  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
+  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
   {
-    const UnsignedInteger simplexIndex = simplicesCandidates[i];
+    const UnsignedInteger simplexIndex = *cit;
     if (checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates))
     {
       result.add(simplexIndex);
@@ -435,19 +431,19 @@ Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
   // First special case: 1D simplex
   if (getDimension() == 1)
   {
-    const Scalar x0 = vertices_(simplices_[index][0], 0);
-    const Scalar x1 = vertices_(simplices_[index][1], 0);
+    const Scalar x0 = vertices_(simplices_(index, 0), 0);
+    const Scalar x1 = vertices_(simplices_(index, 1), 0);
     return std::abs(x1 - x0);
   }
   // Second special case: 2D simplex
   if (getDimension() == 2)
   {
-    const Scalar x0 = vertices_(simplices_[index][0], 0);
-    const Scalar y0 = vertices_(simplices_[index][0], 1);
-    const Scalar x1 = vertices_(simplices_[index][1], 0);
-    const Scalar y1 = vertices_(simplices_[index][1], 1);
-    const Scalar x2 = vertices_(simplices_[index][2], 0);
-    const Scalar y2 = vertices_(simplices_[index][2], 1);
+    const Scalar x0 = vertices_(simplices_(index, 0), 0);
+    const Scalar y0 = vertices_(simplices_(index, 0), 1);
+    const Scalar x1 = vertices_(simplices_(index, 1), 0);
+    const Scalar y1 = vertices_(simplices_(index, 1), 1);
+    const Scalar x2 = vertices_(simplices_(index, 2), 0);
+    const Scalar y2 = vertices_(simplices_(index, 2), 1);
     return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
   }
   SquareMatrix matrix(buildSimplexMatrix(index));
@@ -538,10 +534,10 @@ Bool Mesh::isRegular() const
   if (size <= 1) return true;
   Bool regular = true;
   const Scalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
-  const Scalar step = vertices_(simplices_[0][1], 0) - vertices_(simplices_[0][0], 0);
+  const Scalar step = vertices_(simplices_(0, 1), 0) - vertices_(simplices_(0, 0), 0);
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    regular = regular && (std::abs(vertices_(simplices_[i][1], 0) - vertices_(simplices_[i][0], 0) - step) < epsilon);
+    regular = regular && (std::abs(vertices_(simplices_(i, 1), 0) - vertices_(simplices_(i, 0), 0) - step) < epsilon);
     if (!regular) break;
   }
   return regular;
@@ -561,20 +557,19 @@ Point Mesh::getUpperBound() const
 
 
 /* Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
-Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
+IndicesCollection Mesh::getVerticesToSimplicesMap() const
 {
   if (verticesToSimplices_.getSize() > 0) return verticesToSimplices_;
   const UnsignedInteger numSimplices = getSimplicesNumber();
   const UnsignedInteger numVertices = getVerticesNumber();
-  verticesToSimplices_ = IndicesCollection(numVertices, Indices(0));
+  Collection<Indices> mapVerticesToSimplices(numVertices, Indices(0));
   lowerBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension_, SpecFunc::MaxScalar));
   upperBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension_, - SpecFunc::MaxScalar));
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
-    const Indices simplex(simplices_[i]);
-    for (UnsignedInteger j = 0; j < simplex.getSize(); ++j)
+    for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
     {
-      const UnsignedInteger index = simplex[j];
+      const UnsignedInteger index = *cit;
       for(UnsignedInteger k = 0; k < dimension_; ++k)
       {
         if (vertices_(index, k) < lowerBoundingBoxSimplices_(i, k))
@@ -582,9 +577,10 @@ Mesh::IndicesCollection Mesh::getVerticesToSimplicesMap() const
         if (vertices_(index, k) > upperBoundingBoxSimplices_(i, k))
           upperBoundingBoxSimplices_(i, k) = vertices_(index, k);
       }
-      verticesToSimplices_[index].add(i);
+      mapVerticesToSimplices[index].add(i);
     }
   } // Loop over simplices
+  verticesToSimplices_ = IndicesCollection(mapVerticesToSimplices);
   return verticesToSimplices_;
 }
 
@@ -599,16 +595,15 @@ Point Mesh::computeWeights() const
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
     simplicesVolume[i] = computeSimplexVolume(i);
   // Second compute the map between vertices and simplices
-  const IndicesCollection verticesToSimplices(getVerticesToSimplicesMap());
+  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
   // Then compute the weights of the vertices by distributing the volume of each simplex among its vertices
   const UnsignedInteger numVertices = getVerticesNumber();
   Point weights(numVertices, 0.0);
   for (UnsignedInteger i = 0; i < numVertices; ++i)
   {
-    const Indices vertexSimplices(verticesToSimplices[i]);
     Scalar weight = 0.0;
-    for (UnsignedInteger j = 0; j < vertexSimplices.getSize(); ++j)
-      weight += simplicesVolume[vertexSimplices[j]];
+    for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(i); cit != verticesToSimplices_.cend_at(i); ++cit)
+      weight += simplicesVolume[*cit];
     weights[i] = weight;
   } // i
   // Normalize the weights: each simplex has dim+1 vertices, so each vertex
@@ -665,8 +660,8 @@ Graph Mesh::draw1D() const
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     Sample data(2, 2);
-    data(0, 0) = vertices_(simplices_[i][0], 0);
-    data(1, 0) = vertices_(simplices_[i][1], 0);
+    data(0, 0) = vertices_(simplices_(i, 0), 0);
+    data(1, 0) = vertices_(simplices_(i, 1), 0);
     Curve simplex(data);
     simplex.setColor("blue");
     if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
@@ -692,10 +687,10 @@ Graph Mesh::draw2D() const
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     Sample data(4, 2);
-    data[0] = vertices_[simplices_[i][0]];
-    data[1] = vertices_[simplices_[i][1]];
-    data[2] = vertices_[simplices_[i][2]];
-    data[3] = vertices_[simplices_[i][0]];
+    data[0] = vertices_[simplices_(i, 0)];
+    data[1] = vertices_[simplices_(i, 1)];
+    data[2] = vertices_[simplices_(i, 2)];
+    data[3] = vertices_[simplices_(i, 0)];
     Curve simplex(data);
     simplex.setColor("blue");
     if (i == 0) simplex.setLegend(String(OSS() << simplicesSize << " element" << (simplicesSize > 1 ? "s" : "")));
@@ -777,14 +772,14 @@ Graph Mesh::draw3D(const Bool drawEdge,
   const Bool backfaceCulling = ResourceMap::GetAsBool("Mesh-BackfaceCulling");
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
-    const UnsignedInteger i0 = simplices_[i][0];
-    const UnsignedInteger i1 = simplices_[i][1];
-    const UnsignedInteger i2 = simplices_[i][2];
-    const UnsignedInteger i3 = simplices_[i][3];
-    const Indices simplicesVertex0(verticesToSimplices_[i0]);
-    const Indices simplicesVertex1(verticesToSimplices_[i1]);
-    const Indices simplicesVertex2(verticesToSimplices_[i2]);
-    const Indices simplicesVertex3(verticesToSimplices_[i3]);
+    const UnsignedInteger i0 = simplices_(i, 0);
+    const UnsignedInteger i1 = simplices_(i, 1);
+    const UnsignedInteger i2 = simplices_(i, 2);
+    const UnsignedInteger i3 = simplices_(i, 3);
+    const Indices simplicesVertex0(verticesToSimplices_.cbegin_at(i0), verticesToSimplices_.cend_at(i0));
+    const Indices simplicesVertex1(verticesToSimplices_.cbegin_at(i1), verticesToSimplices_.cend_at(i1));
+    const Indices simplicesVertex2(verticesToSimplices_.cbegin_at(i2), verticesToSimplices_.cend_at(i2));
+    const Indices simplicesVertex3(verticesToSimplices_.cbegin_at(i3), verticesToSimplices_.cend_at(i3));
     const Point visuVertex0(visuVertices[i0]);
     const Point visuVertex1(visuVertices[i1]);
     const Point visuVertex2(visuVertices[i2]);
@@ -995,17 +990,17 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
     LOGINFO(OSS() << "vertex " << i << "=" << vertices[i]);
   }
   // Parse the simplices
-  IndicesCollection simplices(simplicesNumber, Indices(3));
+  IndicesCollection simplices(simplicesNumber, 3);
   for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
   {
-    file >> simplices[i][0];
-    file >> simplices[i][1];
-    file >> simplices[i][2];
-    --simplices[i][0];
-    --simplices[i][1];
-    --simplices[i][2];
+    file >> simplices(i, 0);
+    file >> simplices(i, 1);
+    file >> simplices(i, 2);
+    --simplices(i, 0);
+    --simplices(i, 1);
+    --simplices(i, 2);
     file >> scratch;
-    LOGINFO(OSS() << "simplex " << i << "=" << simplices[i]);
+    LOGINFO(OSS() << "simplex " << i << "=" << simplices(i, 0) << " " << simplices(i, 1) << " " << simplices(i, 2));
   }
   file.close();
   return Mesh(vertices, simplices);
@@ -1059,20 +1054,20 @@ String Mesh::streamToVTKFormat(const IndicesCollection & simplices) const
     PlatformInfo::SetNumericalPrecision(oldPrecision);
     return oss;
   }
-  // There is at least on simplex. Assume homogeneous simplices,
+  // There is at least one simplex. Assume homogeneous simplices,
   // ie all the simplices are of the same kind as the first one
   UnsignedInteger verticesPerSimplex = 1;
-  UnsignedInteger lastIndex = simplices[0][0];
-  while ((verticesPerSimplex <= dimension_) && (simplices[0][verticesPerSimplex] != lastIndex))
+  UnsignedInteger lastIndex = simplices(0, 0);
+  while ((verticesPerSimplex <= dimension_) && (simplices(0, verticesPerSimplex) != lastIndex))
   {
-    lastIndex = simplices[0][verticesPerSimplex];
+    lastIndex = simplices(0, verticesPerSimplex);
     ++verticesPerSimplex;
   }
   oss << "CELLS " << numSimplices << " " << (verticesPerSimplex + 1) * numSimplices << "\n";
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     oss << verticesPerSimplex;
-    for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j) oss << " " << simplices[i][j];
+    for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j) oss << " " << simplices(i, j);
     oss << "\n";
   }
   oss << "\n";

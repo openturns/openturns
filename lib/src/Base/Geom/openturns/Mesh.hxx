@@ -26,6 +26,7 @@
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Indices.hxx"
+#include "openturns/IndicesCollection.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/DomainImplementation.hxx"
@@ -46,9 +47,6 @@ class OT_API Mesh
   CLASSNAME
 
 public:
-  typedef Collection< Indices >           IndicesCollection;
-  typedef PersistentCollection< Indices > IndicesPersistentCollection;
-
   /** Default constructor */
   explicit Mesh(const UnsignedInteger dimension = 1);
 
@@ -214,13 +212,13 @@ protected:
   Sample vertices_;
 
   // The simplices
-  IndicesPersistentCollection simplices_;
+  IndicesCollection simplices_;
 
   // The kd-tree associated to the vertices
   NearestNeighbourAlgorithm tree_;
 
   // The vertices to simplices map
-  mutable IndicesPersistentCollection verticesToSimplices_;
+  mutable IndicesCollection verticesToSimplices_;
 
   // The bounding boxes of simplices
   mutable Sample lowerBoundingBoxSimplices_;

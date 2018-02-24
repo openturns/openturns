@@ -43,15 +43,11 @@ int main(int argc, char *argv[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    BipartiteGraph graph(0);
-    Indices first(0);
-    first.add(0);
-    first.add(1);
-    graph.add(first);
-    Indices second(0);
-    second.add(0);
-    second.add(1);
-    graph.add(second);
+    BipartiteGraph graph(2, 2);
+    graph(0, 0) = 0;
+    graph(0, 1) = 1;
+    graph(1, 0) = 0;
+    graph(1, 1) = 1;
     CumulativeDistributionNetwork distribution(CumulativeDistributionNetwork::DistributionCollection(2, Normal(2)), graph);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;

@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 
   UnsignedInteger first = 20;
   if ( seq.getSize() >= first )
-    fullprint << "first " << first << " indices = " << seq[first - 1] << std::endl;
+    fullprint << "first " << first << " indices = " << seq.getIndices(first - 1) << std::endl;
   else
     fullprint << " size=" << seq.getSize() << std::endl;
   return ExitCode::Success;

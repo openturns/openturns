@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief IndicesFixedSizeCollectionImplementation stores a Collection of Indices contiguously.
+ *  @brief IndicesCollectionImplementation stores a Collection of Indices contiguously.
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,48 +18,53 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_INDICESFROZENCOLLECTION_HXX
-#define OPENTURNS_INDICESFROZENCOLLECTION_HXX
+#ifndef OPENTURNS_INDICESCOLLECTION_HXX
+#define OPENTURNS_INDICESCOLLECTION_HXX
 
-#include "openturns/IndicesFixedSizeCollectionImplementation.hxx"
+#include "openturns/IndicesCollectionImplementation.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class IndicesFixedSizeCollection
+ * @class IndicesCollection
  *
- * IndicesFixedSizeCollection stores a Collection of Indices contiguously.
+ * IndicesCollection stores a Collection of Indices contiguously.
  */
 
-class OT_API IndicesFixedSizeCollection :
-  public TypedInterfaceObject<IndicesFixedSizeCollectionImplementation>
+class OT_API IndicesCollection :
+  public TypedInterfaceObject<IndicesCollectionImplementation>
 {
   CLASSNAME
 
 public:
 
-  typedef IndicesFixedSizeCollectionImplementation::iterator        iterator;
-  typedef IndicesFixedSizeCollectionImplementation::const_iterator  const_iterator;
+#ifndef SWIG
+  typedef IndicesCollectionImplementation::iterator        iterator;
+  typedef IndicesCollectionImplementation::const_iterator  const_iterator;
+#endif
 
   /** Default constructor */
-  IndicesFixedSizeCollection();
+  IndicesCollection();
 
   /** Constructor from size and stride */
-  IndicesFixedSizeCollection(const UnsignedInteger size, const UnsignedInteger stride);
+  IndicesCollection(const UnsignedInteger size, const UnsignedInteger stride);
 
   /** Constructor from size, stride and values */
-  IndicesFixedSizeCollection(const UnsignedInteger size, const UnsignedInteger stride, const Indices & values);
+  IndicesCollection(const UnsignedInteger size, const UnsignedInteger stride, const Indices & values);
 
+#ifndef SWIG
   /** Constructor from external collection */
-  explicit IndicesFixedSizeCollection(const Collection<Indices> & coll);
+  explicit IndicesCollection(const Collection<Indices> & coll);
 
   /** Constructor with implementation */
-  IndicesFixedSizeCollection(const Implementation & i);
+  IndicesCollection(const Implementation & i);
 
   /** Constructor with implementation */
-  IndicesFixedSizeCollection(const IndicesFixedSizeCollectionImplementation & i);
+  IndicesCollection(const IndicesCollectionImplementation & i);
+#endif
 
   /** String converter */
   virtual String __repr__() const;
@@ -82,8 +87,25 @@ public:
   UnsignedInteger & operator()(const UnsignedInteger index, const UnsignedInteger pos);
 #endif
 
-}; /* class IndicesFixedSizeCollection */
+}; /* class IndicesCollection */
+
+#ifndef SWIG
+/** Stream operator, to mimic Collection<UnsignedInteger> */
+inline
+std::ostream & operator << (std::ostream & os, const IndicesCollection & collection)
+{
+  return os << collection.__repr__();
+}
+
+inline
+OStream & operator << (OStream & OS, const IndicesCollection & collection)
+{
+  return OS << collection.__str__();
+}
+#endif
+
+
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_INDICESFROZENCOLLECTION_HXX */
+#endif /* OPENTURNS_INDICESCOLLECTION_HXX */

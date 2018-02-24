@@ -51,19 +51,19 @@ Tuples * Tuples::clone() const
 /* Experiment plane generation :
  *  all the tuples taking values in {0,...,bounds[0]-1}x...x{0,...,bounds[n-1]-1}
  */
-CombinatorialGeneratorImplementation::IndicesCollection Tuples::generate()
+IndicesCollection Tuples::generate()
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = bounds_.getSize();
   /* Size of the sample to be generated: levels[0] * ... * levels[dimension-1] */
   UnsignedInteger size = bounds_[0];
   for (UnsignedInteger i = 1; i < dimension; ++i) size *= bounds_[i];
-  IndicesCollection allTuples(size, Indices(dimension));
+  IndicesCollection allTuples(size, dimension);
   /* Indices would have stored the indices of the nested loops if we were able to code "dimension" nested loops dynamically */
   Indices indices(dimension);
   for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
   {
-    allTuples[flatIndex] = indices;
+    std::copy(indices.begin(), indices.end(), allTuples.begin_at(flatIndex));
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */

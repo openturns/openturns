@@ -42,7 +42,7 @@ Indices BipartiteGraph::getBlackNodes() const
 {
   Indices blackNodes(0);
   for (UnsignedInteger i = 0; i < getSize(); ++i)
-    blackNodes.add((*this)[i]);
+    blackNodes.add(Collection<UnsignedInteger>(cbegin_at(i), cend_at(i)));
   std::sort(blackNodes.begin(), blackNodes.end());
   Indices::iterator it = std::unique(blackNodes.begin(), blackNodes.end());
   blackNodes.resize(std::distance(blackNodes.begin(), it));
@@ -58,10 +58,10 @@ Graph BipartiteGraph::draw() const
     Point redPoint(2);
     redPoint[0] = i;
     redPoint[1] = 2.0;
-    for (UnsignedInteger j = 0; j < (*this)[i].getSize(); ++j)
+    for (const_iterator cit = cbegin_at(i); cit != cend_at(i); ++cit)
     {
       Point blackPoint(2);
-      blackPoint[0] = (*this)[i][j];
+      blackPoint[0] = *cit;
       blackPoint[1] = 1.0;
       // First, the link
       Sample data(2, 2);

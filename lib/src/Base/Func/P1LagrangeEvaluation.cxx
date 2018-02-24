@@ -106,14 +106,16 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   // already done.  But evaluate() may be called from several threads at the same time, thus ensure now that
   // mesh_::verticesToSimplices_ is built.
   (void) mesh_.getVerticesToSimplicesMap();
+
   // Check for pending vertices
   Interval::BoolCollection seenVertices(nrVertices);
+  const UnsignedInteger nrSimplices = mesh.getSimplicesNumber();
   const IndicesCollection simplices(getSimplices());
   // Iterate over simplices
-  for(IndicesCollection::const_iterator simplexIt = simplices.begin(), guard = simplices.end(); simplexIt != guard; ++simplexIt)
+  for(UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
      // Iterate over vertices
-     for(Indices::const_iterator vertexIt = simplexIt->begin(), vertexGuard = simplexIt->end(); vertexIt != vertexGuard; ++vertexIt)
+     for(IndicesCollection::const_iterator vertexIt = simplices.cbegin_at(i), vertexGuard = simplices.cend_at(i); vertexIt != vertexGuard; ++vertexIt)
      {
         const UnsignedInteger vertexIndex = (*vertexIt);
         if (vertexIndex >= nrVertices) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex;
@@ -158,7 +160,7 @@ void P1LagrangeEvaluation::setSimplices(const IndicesCollection & simplices)
   mesh_.setSimplices(simplices);
 }
 
-P1LagrangeEvaluation::IndicesCollection P1LagrangeEvaluation::getSimplices() const
+IndicesCollection P1LagrangeEvaluation::getSimplices() const
 {
   return mesh_.getSimplices();
 }

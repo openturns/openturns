@@ -25,6 +25,8 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/Indices.hxx"
+#include "openturns/IndicesCollection.hxx"
+#include "openturns/IndicesCollectionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,29 +36,27 @@ BEGIN_NAMESPACE_OPENTURNS
  * A class that represents bipartite graphs
  */
 class OT_API BipartiteGraph :
-  public PersistentCollection<Indices>
+  public IndicesCollectionImplementation
 {
   CLASSNAME
 
 public:
-  typedef PersistentCollection<Indices> InternalType;
-  typedef Collection<Indices>           IndicesCollection;
-
   /** Default constructor */
   BipartiteGraph()
-    : InternalType(1, Indices(1))
+    : IndicesCollectionImplementation(1, 1)
   {
     // Nothing to do
   }
 
   /** Constructor that pre-allocate size elements */
-  BipartiteGraph(const UnsignedInteger size) : InternalType(size)
+  BipartiteGraph(const UnsignedInteger size, const UnsignedInteger stride)
+    : IndicesCollectionImplementation(size, stride)
   {
     // Nothing to do
   }
 
   /** Constructor from a base object */
-  BipartiteGraph(const IndicesCollection & coll) : InternalType(coll)
+  BipartiteGraph(const IndicesCollection & coll) : IndicesCollectionImplementation(*coll.getImplementation())
   {
     // Nothing to do
   }

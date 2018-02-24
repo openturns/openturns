@@ -77,27 +77,27 @@ int main(int argc, char *argv[])
       p[0] = 0.5;
       p[1] = 1.5;
       vertices.add(p);
-      Mesh::IndicesCollection simplicies(5, Indices(3));
-      simplicies[0][0] = 0;
-      simplicies[0][1] = 1;
-      simplicies[0][2] = 2;
+      IndicesCollection simplices(5, 3);
+      simplices(0, 0) = 0;
+      simplices(0, 1) = 1;
+      simplices(0, 2) = 2;
 
-      simplicies[1][0] = 1;
-      simplicies[1][1] = 2;
-      simplicies[1][2] = 3;
+      simplices(1, 0) = 1;
+      simplices(1, 1) = 2;
+      simplices(1, 2) = 3;
 
-      simplicies[2][0] = 2;
-      simplicies[2][1] = 3;
-      simplicies[2][2] = 4;
+      simplices(2, 0) = 2;
+      simplices(2, 1) = 3;
+      simplices(2, 2) = 4;
 
-      simplicies[3][0] = 2;
-      simplicies[3][1] = 4;
-      simplicies[3][2] = 5;
+      simplices(3, 0) = 2;
+      simplices(3, 1) = 4;
+      simplices(3, 2) = 5;
 
-      simplicies[4][0] = 0;
-      simplicies[4][1] = 2;
-      simplicies[4][2] = 5;
-      Mesh mesh2D(vertices, simplicies);
+      simplices(4, 0) = 0;
+      simplices(4, 1) = 2;
+      simplices(4, 2) = 5;
+      Mesh mesh2D(vertices, simplices);
       const Point p0(2, -0.25);
       const Point p1(2, 1.25);
       DomainComplement complement(mesh2D);

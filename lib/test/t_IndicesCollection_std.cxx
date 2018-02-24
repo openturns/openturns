@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   OStream fullprint(std::cout);
 
   /* Default constructor */
-  IndicesFixedSizeCollection flat1;
+  IndicesCollection flat1;
   fullprint << "flat1=" << flat1 << std::endl;
 
   /* Constructor with Collection<Indices> */
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   coll2.add(ind1);
   coll2.add(ind4);
   coll2.add(ind3);
-  IndicesFixedSizeCollection flat2(coll2);
+  IndicesCollection flat2(coll2);
 
   fullprint << "flat2=" << flat2 << std::endl;
 
@@ -52,32 +52,32 @@ int main(int argc, char *argv[])
   coll3.add(ind3);
   coll3.add(ind3);
   coll3.add(ind3);
-  IndicesFixedSizeCollection flat3(coll3);
+  IndicesCollection flat3(coll3);
 
   fullprint << "flat3=" << flat3 << std::endl;
 
   /* Constructor with dimensions and values */
   Indices full(16);
   full.fill();
-  IndicesFixedSizeCollection flat4(8, 2, full);
+  IndicesCollection flat4(8, 2, full);
 
   fullprint << "flat4=" << flat4 << std::endl;
 
   /* Copy constructor */
-  IndicesFixedSizeCollection flat5(flat2);
+  IndicesCollection flat5(flat2);
 
   fullprint << "flat5=" << flat5 << std::endl;
 
   /* Iterator */
   Indices x4;
-  for (IndicesFixedSizeCollection::const_iterator cit = flat4.cbegin_at(3), guard = flat4.cend_at(3); cit != guard; ++cit)
+  for (IndicesCollection::const_iterator cit = flat4.cbegin_at(3), guard = flat4.cend_at(3); cit != guard; ++cit)
   {
     x4.add(*cit);
   }
   fullprint << "flat4[3]=" << x4 << std::endl;
 
   Indices x5;
-  for (IndicesFixedSizeCollection::const_iterator cit = flat5.cbegin_at(1), guard = flat5.cend_at(1); cit != guard; ++cit)
+  for (IndicesCollection::const_iterator cit = flat5.cbegin_at(1), guard = flat5.cend_at(1); cit != guard; ++cit)
   {
     x5.add(*cit);
   }

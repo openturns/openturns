@@ -37,14 +37,14 @@ int main(int argc, char *argv[])
       // Classical permutations
       KPermutations myGenerator(k);
       fullprint << "myGenerator = " << myGenerator << std::endl;
-      KPermutations::IndicesCollection kPermutations(myGenerator.generate());
+      IndicesCollection kPermutations(myGenerator.generate());
       fullprint << "kPermutations = " << kPermutations << std::endl;
     }
     {
       // K permutations
       KPermutations myGenerator(k, n);
       fullprint << "myGenerator = " << myGenerator << std::endl;
-      KPermutations::IndicesCollection kPermutations(myGenerator.generate());
+      IndicesCollection kPermutations(myGenerator.generate());
       fullprint << "kPermutations = " << kPermutations << std::endl;
     }
   }

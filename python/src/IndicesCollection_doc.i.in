@@ -1,13 +1,13 @@
-%feature("docstring") OT::IndicesFixedSizeCollection
+%feature("docstring") OT::IndicesCollection
 "Fixed size collection of Indices.
 
 This class is a container for a fixed size list of Indices.
 Lists cannot be shrunk or extended, but values can be modified.
 
 Available constructors:
-    IndicesFixedSizeCollection(*size, stride, indices*)
+    IndicesCollection(*size, stride, indices*)
 
-    IndicesFixedSizeCollection(*sequence*)
+    IndicesCollection(*sequence*)
 
 Parameters
 ----------
@@ -24,21 +24,19 @@ sequence : :class:`~openturns.IndicesCollection`
 
 Examples
 --------
-Create a IndicesFixedSizeCollection
+Create a IndicesCollection
 
 >>> import openturns as ot
 >>> indices = ot.Indices(12)
 >>> indices.fill()
->>> listIndices = ot.IndicesFixedSizeCollection(3, 4, indices)
+>>> listIndices = ot.IndicesCollection(3, 4, indices)
 >>> print(listIndices)
-0 : [0 1 2 3]
-1 : [4 5 6 7]
-2 : [8 9 10 11]
+[[0,1,2,3],[4,5,6,7],[8,9,10,11]]
 
-Create a IndicesFixedSizeCollection from a (2d) array, list or tuple
+Create a IndicesCollection from a (2d) array, list or tuple
 
 >>> import numpy as np
->>> listIndices = ot.IndicesFixedSizeCollection(np.array([(1, 2), (3, 4), (5, 6)]))
+>>> listIndices = ot.IndicesCollection(np.array([(1, 2), (3, 4), (5, 6)]))
 
 and back
 
@@ -51,16 +49,10 @@ Get an Indices.  Note that a copy is returned, modifying it does not alter origi
 >>> print(first)
 [0,2]
 >>> print(listIndices)
-0 : [1 2]
-1 : [3 4]
-2 : [5 6]
+[[1,2],[3,4],[5,6]]
 
 To mdify values, one has to change the whole element.
 
 >>> listIndices[0] = [7, 8]
 >>> print(listIndices)
-0 : [7 8]
-1 : [3 4]
-2 : [5 6]
-"
-
+[[7,8],[3,4],[5,6]]"

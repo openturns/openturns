@@ -23,6 +23,3 @@ print(ul5)
 
 del ul5[6]
 print(ul5)
-
-ic4 = ot.IndicesCollection([[4, 8, 15, 16, 23, 42]])
-print(ic4)

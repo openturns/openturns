@@ -140,7 +140,7 @@ Point FieldFunctionImplementation::operator() (const Scalar timeStamp,
 Point FieldFunctionImplementation::operator() (const Point & location,
     const Point & inP) const
 {
-  return (*this)(Field(Mesh(Sample(1, location), Collection<Indices>(0)), Sample(1, inP))).getValues()[0];
+  return (*this)(Field(Mesh(Sample(1, location), IndicesCollection()), Sample(1, inP))).getValues()[0];
 }
 
 Field FieldFunctionImplementation::operator() (const Field & inFld) const

@@ -955,15 +955,15 @@ convert< Indices, _PySequence_ >(Indices inP)
 }
 
 template <>
-struct traitsPythonType< IndicesFixedSizeCollection >
+struct traitsPythonType< IndicesCollection >
 {
   typedef _PySequence_ Type;
 };
 
 template <>
 inline
-IndicesFixedSizeCollection
-convert< _PySequence_, IndicesFixedSizeCollection >(PyObject * pyObj)
+IndicesCollection
+convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
 {
   // Check whether pyObj follows the buffer protocol
   if (PyObject_CheckBuffer(pyObj))
@@ -979,7 +979,7 @@ convert< _PySequence_, IndicesFixedSizeCollection >(PyObject * pyObj)
         const UnsignedInteger* data = static_cast<const UnsignedInteger*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         const UnsignedInteger dimension = view.shape[1];
-        IndicesFixedSizeCollection indices( size, dimension );
+        IndicesCollection indices( size, dimension );
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
@@ -1013,7 +1013,7 @@ convert< _PySequence_, IndicesFixedSizeCollection >(PyObject * pyObj)
       UnsignedInteger dimension = shape[1];
       ScopedPyObjectPointer askObj(PyTuple_New(2));
       ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
-      IndicesFixedSizeCollection indices( size, dimension );
+      IndicesCollection indices( size, dimension );
       for ( UnsignedInteger i = 0; i < size; ++ i )
       {
         PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
@@ -1037,7 +1037,7 @@ convert< _PySequence_, IndicesFixedSizeCollection >(PyObject * pyObj)
   ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
   if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
   const UnsignedInteger size = PySequence_Fast_GET_SIZE( newPyObj.get() );
-  if (size == 0) return IndicesFixedSizeCollection();
+  if (size == 0) return IndicesCollection();
   // Allocate a Collection of Indices
   Collection<Indices> coll(size);
   for(UnsignedInteger i = 0; i < size; ++i)
@@ -1056,7 +1056,7 @@ convert< _PySequence_, IndicesFixedSizeCollection >(PyObject * pyObj)
     }
     coll[i] = newIndices;
   }
-  return IndicesFixedSizeCollection(coll);
+  return IndicesCollection(coll);
 }
 
 

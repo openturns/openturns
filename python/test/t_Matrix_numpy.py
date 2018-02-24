@@ -156,15 +156,15 @@ try:
     marginal = sample.getMarginal([0, 2])
     print(marginal.getDescription())
 
-    # check array / IndicesFixedSizeCollection conversion
+    # check array / IndicesCollection conversion
     a0 = np.array(((1,3,5), (2,4,6)))
-    i0 = IndicesFixedSizeCollection(a0)
-    print("array", a0, "=> IndicesFixedSizeCollection", i0)
+    i0 = IndicesCollection(a0)
+    print("array", a0, "=> IndicesCollection", i0)
 
     a1 = np.array(i0)
-    print("IndicesFixedSizeCollection", i0, "=> array", a1)
+    print("IndicesCollection", i0, "=> array", a1)
 
-    # Check sequence protocol for IndicesFixedSizeCollection
+    # Check sequence protocol for IndicesCollection
     for x in i0:
         print("value", x)
 

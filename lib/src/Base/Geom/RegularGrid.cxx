@@ -56,13 +56,11 @@ RegularGrid::RegularGrid(const Scalar start,
     vertices_ = Sample(n, 1);
     for (UnsignedInteger i = 0; i < n; ++i) vertices_[i][0] = start_ + i * step_;
     // Here we know that n > 0
-    simplices_ = IndicesCollection(n - 1);
+    simplices_ = IndicesCollection(n - 1, 2);
     for (UnsignedInteger i = 0; i < n - 1; ++i)
     {
-      Indices element(2);
-      element[0] = i;
-      element[1] = i + 1;
-      simplices_[i] = element;
+      simplices_(i, 0) = i;
+      simplices_(i, 1) = i + 1;
     }
   }
   vertices_.setDescription(Description(1, "t"));

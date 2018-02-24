@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
   fullprint << "sequence = " << seq << std::endl;
   for ( UnsignedInteger j = 0; j < dimension; ++ j )
   {
-    fullprint << "indices of subBasis[" << j << "] = " << seq[j] << std::endl;
+    fullprint << "indices of subBasis[" << j << "] = " << seq.getIndices(j) << std::endl;
   }
 
   return ExitCode::Success;

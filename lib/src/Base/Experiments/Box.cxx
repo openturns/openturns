@@ -86,12 +86,12 @@ Sample Box::generate() const
   const UnsignedInteger dimension = levels_.getDimension();
   Indices bounds(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) bounds[i] = static_cast< UnsignedInteger > (round(levels_[i] + 2.0));
-  Tuples::IndicesCollection tuples(Tuples(bounds).generate());
+  IndicesCollection tuples(Tuples(bounds).generate());
   const UnsignedInteger size = tuples.getSize();
   Sample boxPlane(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension; ++j)
-      boxPlane[i][j] = tuples[i][j] / (levels_[j] + 1.0);
+      boxPlane(i, j) = tuples(i, j) / (levels_[j] + 1.0);
 
   // scale sample
   if (bounds_ != Interval(dimension))

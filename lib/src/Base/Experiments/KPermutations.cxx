@@ -67,22 +67,23 @@ KPermutations * KPermutations::clone() const
 /* Experiment plane generation :
  *  all the kPermutations of k elements amongst {0, ..., n-1}
  */
-CombinatorialGeneratorImplementation::IndicesCollection KPermutations::generate()
+IndicesCollection KPermutations::generate()
 {
   /* Quick return for trivial cases */
-  if (k_ > n_) return IndicesCollection(0, Indices(k_));
-  if (k_ == 0) return IndicesCollection(1, Indices(0));
+  if (k_ > n_) return IndicesCollection(0, k_);
+  if (k_ == 0) return IndicesCollection(1, 0);
   Indices indices(k_);
   indices.fill();
   /* Size of the sample to be generated: A(k, n) */
   const UnsignedInteger size = static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1))));
-  IndicesCollection allKPermutations(size, indices);
+  IndicesCollection allKPermutations(size, k_);
   /* First, generate all the permutations of k integers */
-  IndicesCollection allPermutations(static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(k_ + 1)))), indices);
+  IndicesCollection allPermutations(static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(k_ + 1)))), k_);
+  std::copy(indices.begin(), indices.end(), allPermutations.begin_at(0));
   UnsignedInteger flatIndex = 1;
   while (std::next_permutation(indices.begin(), indices.end()))
   {
-    std::copy(indices.begin(), indices.end(), allPermutations[flatIndex].begin());
+    std::copy(indices.begin(), indices.end(), allPermutations.begin_at(flatIndex));
     ++flatIndex;
   }
   /* Quick return if k == n */
@@ -94,14 +95,10 @@ CombinatorialGeneratorImplementation::IndicesCollection KPermutations::generate(
   const UnsignedInteger permutationSize = allPermutations.getSize();
   for (UnsignedInteger i = 0; i < combinationSize; ++i)
   {
-    /* Base combination */
-    const Indices & combination(allCombinations[i]);
     /* Generate all the permutations of the base combination */
     for (UnsignedInteger j = 0; j < permutationSize; ++j)
     {
-      /* Current permutation */
-      const Indices & permutation(allPermutations[j]);
-      for (UnsignedInteger k = 0; k < k_; ++k) allKPermutations[flatIndex][k] = combination[permutation[k]];
+      for (UnsignedInteger k = 0; k < k_; ++k) allKPermutations(flatIndex, k) = allCombinations(i, allPermutations(j, k));
       ++flatIndex;
     }
   }

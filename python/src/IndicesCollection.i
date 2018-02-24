@@ -1,40 +1,41 @@
-// SWIG file IndicesFixedSizeCollection.i
+// SWIG file IndicesCollection.i
 
 %{
-#include "openturns/IndicesFixedSizeCollection.hxx"
+#include "openturns/IndicesCollection.hxx"
 %}
 
-OTTypedInterfaceObjectHelper(IndicesFixedSizeCollection)
+OTTypedInterfaceObjectHelper(IndicesCollection)
 
-%typemap(in) const IndicesFixedSizeCollection & ($1_basetype temp) {
+%typemap(in) const IndicesCollection & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     try {
-      temp = OT::convert<OT::_PySequence_, OT::IndicesFixedSizeCollection>( $input );
+      temp = OT::convert<OT::_PySequence_, OT::IndicesCollection>( $input );
       $1 = &temp;
     } catch (OT::InvalidArgumentException &) {
-      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to an IndicesFixedSizeCollection");
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to an IndicesCollection");
     }
   }
 }
 
-%typemap(typecheck,precedence=5) const IndicesFixedSizeCollection & {
+%typemap(typecheck,precedence=5) const IndicesCollection & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
        OT::isAPythonBufferOf<OT::UnsignedInteger, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>( $input );
 }
 
-%apply const IndicesFixedSizeCollection & { const OT::IndicesFixedSizeCollection & };
+%apply const IndicesCollection & { const OT::IndicesCollection & };
 
-%include openturns/IndicesFixedSizeCollection.hxx
+%include openturns/IndicesCollection.hxx
 
 namespace OT {
-%extend IndicesFixedSizeCollection {
+%extend IndicesCollection {
 
 Indices __getitem__(SignedInteger index) const {
   OT::UnsignedInteger size = self->getSize();
+  if (size == 0) throw OT::OutOfBoundException(HERE) << "collection is empty.";
   if (index < 0) {
     index += self->getSize();
   }
-  if (index < 0) {
+  if (index < 0 || index >= size) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   return OT::Indices(self->cbegin_at(index), self->cend_at(index));
@@ -43,6 +44,13 @@ Indices __getitem__(SignedInteger index) const {
 void __setitem__ (SignedInteger index,
                   const Indices & val) {
   OT::UnsignedInteger size = self->getSize();
+  if (size == 0) throw OT::OutOfBoundException(HERE) << "collection is empty.";
+  if (index < 0) {
+    index += self->getSize();
+  }
+  if (index < 0 || index >= size) {
+    throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
+  }
   OT::UnsignedInteger thisSize = self->cend_at(index) - self->cbegin_at(index);
   if (val.getSize() != thisSize)
     throw OT::InvalidArgumentException(HERE) << "element at position " << index << " is of size " << thisSize << " whereas value size is " << val.getSize();
@@ -54,14 +62,14 @@ UnsignedInteger __len__() const
   return self->getSize();
 }
 
-IndicesFixedSizeCollection(const IndicesFixedSizeCollection & other)
+IndicesCollection(const IndicesCollection & other)
 {
-  return new OT::IndicesFixedSizeCollection(other);
+  return new OT::IndicesCollection(other);
 }
 
-IndicesFixedSizeCollection(PyObject * pyObj)
+IndicesCollection(PyObject * pyObj)
 {
-  return new OT::IndicesFixedSizeCollection( OT::convert< OT::_PySequence_, OT::IndicesFixedSizeCollection >(pyObj) );
+  return new OT::IndicesCollection( OT::convert< OT::_PySequence_, OT::IndicesCollection >(pyObj) );
 }
 
 }

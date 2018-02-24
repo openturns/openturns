@@ -55,20 +55,20 @@ Combinations * Combinations::clone() const
 /* Experiment plane generation :
  *  all the combinations of k elements amongst {0, ..., n-1}
  */
-CombinatorialGeneratorImplementation::IndicesCollection Combinations::generate()
+IndicesCollection Combinations::generate()
 {
   /* Quick return for trivial cases */
-  if (k_ > n_) return IndicesCollection(0, Indices(k_));
-  if (k_ == 0) return IndicesCollection(1, Indices(0));
+  if (k_ > n_) return IndicesCollection(0, k_);
+  if (k_ == 0) return IndicesCollection(1, 0);
   Indices indices(k_);
   indices.fill();
-  if (k_ == n_) return IndicesCollection(1, indices);
+  if (k_ == n_) return IndicesCollection(1, k_, indices);
   /* Size of the sample to be generated: C(k, n) */
   const UnsignedInteger size = SpecFunc::BinomialCoefficient(n_, k_);
-  IndicesCollection allCombinations(size, indices);
+  IndicesCollection allCombinations(size, k_);
   for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
   {
-    allCombinations[flatIndex] = indices;
+    std::copy(indices.begin(), indices.end(), allCombinations.begin_at(flatIndex));
     /* Update the indices */
     UnsignedInteger t = k_ - 1;
     while ((t != 0) && (indices[t] == n_ + t - k_)) --t;

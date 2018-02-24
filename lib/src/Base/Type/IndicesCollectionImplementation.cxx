@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief IndicesFixedSizeCollectionImplementation stores a Collection of Indices contiguously.
+ *  @brief IndicesCollectionImplementation stores a Collection of Indices contiguously.
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/IndicesFixedSizeCollectionImplementation.hxx"
+#include "openturns/IndicesCollectionImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 
@@ -26,13 +26,13 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(IndicesFixedSizeCollectionImplementation)
+CLASSNAMEINIT(IndicesCollectionImplementation)
 
 
-static const Factory<IndicesFixedSizeCollectionImplementation> Factory_IndicesFixedSizeCollectionImplementation;
+static const Factory<IndicesCollectionImplementation> Factory_IndicesCollectionImplementation;
 
 /* Default constructor */
-IndicesFixedSizeCollectionImplementation::IndicesFixedSizeCollectionImplementation()
+IndicesCollectionImplementation::IndicesCollectionImplementation()
   : PersistentObject()
   , size_(0)
   , values_(0)
@@ -42,7 +42,7 @@ IndicesFixedSizeCollectionImplementation::IndicesFixedSizeCollectionImplementati
 }
 
 /* Constructor from size and stride */
-IndicesFixedSizeCollectionImplementation::IndicesFixedSizeCollectionImplementation(const UnsignedInteger size,
+IndicesCollectionImplementation::IndicesCollectionImplementation(const UnsignedInteger size,
    const UnsignedInteger stride)
   : PersistentObject()
   , size_(size)
@@ -54,20 +54,20 @@ IndicesFixedSizeCollectionImplementation::IndicesFixedSizeCollectionImplementati
 }
 
 /* Constructor from size, stride and values */
-IndicesFixedSizeCollectionImplementation::IndicesFixedSizeCollectionImplementation(const UnsignedInteger size,
+IndicesCollectionImplementation::IndicesCollectionImplementation(const UnsignedInteger size,
    const UnsignedInteger stride, const Indices & values)
   : PersistentObject()
   , size_(size)
   , values_(values)
   , offsets_(size + 1)
 {
-  if (values.getSize() != size * stride) throw InvalidArgumentException(HERE) << "collection size is " << values.getSize() << " instead of " << (size * stride);
+  if (values.getSize() != size * stride) throw InvalidArgumentException(HERE);
   for(UnsignedInteger i = 0; i <= size; ++i)
     offsets_[i] = i * stride;
 }
 
 /* Constructor from external Collection<Indices> */
-IndicesFixedSizeCollectionImplementation::IndicesFixedSizeCollectionImplementation(const Collection<Indices> & values)
+IndicesCollectionImplementation::IndicesCollectionImplementation(const Collection<Indices> & values)
   : PersistentObject()
   , size_(values.getSize())
   , values_()
@@ -88,93 +88,97 @@ IndicesFixedSizeCollectionImplementation::IndicesFixedSizeCollectionImplementati
 }
 
 /* Virtual constructor */
-IndicesFixedSizeCollectionImplementation * IndicesFixedSizeCollectionImplementation::clone() const
+IndicesCollectionImplementation * IndicesCollectionImplementation::clone() const
 {
-  return new IndicesFixedSizeCollectionImplementation(*this);
+  return new IndicesCollectionImplementation(*this);
 }
-
 
 /* String converter */
-String IndicesFixedSizeCollectionImplementation::__repr__() const
+String IndicesCollectionImplementation::toString(Bool full) const
 {
-  return OSS(true) << "class=" << getClassName()
-         << " name=" << getName()
-         << " size=" << size_
-         << " offsets=" << offsets_
-         << " values=" << values_;
-}
-
-String IndicesFixedSizeCollectionImplementation::__str__(const String & offset) const
-{
-  OSS oss(false);
+  OSS oss(full);
+  oss << "[";
   Bool firstLine = true;
-  for (UnsignedInteger i = 0; i < size_; ++ i)
+  for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    if (!firstLine) oss << "\n";
+    if (!firstLine) oss << ",";
     firstLine = false;
 
-    oss << i << " : [";
-    const char * sep = "";
     // This method may be used by derived classes, so only use virtual methods
-    const UnsignedInteger indicesSize = this->cend_at(i) - this->cbegin_at(i);
-    for(UnsignedInteger j = 0; j < indicesSize; ++j, sep=" ")
-    {
-      oss << sep << operator()(i, j);
-    }
+    oss << "[";
+    std::copy( this->cbegin_at(i), this->cend_at(i), OSS_iterator<UnsignedInteger>(oss, ",") );
     oss << "]";
+    const UnsignedInteger indicesSize = this->cend_at(i) - this->cbegin_at(i);
+    if (!full && indicesSize >= ResourceMap::GetAsUnsignedInteger("Collection-size-visible-in-str-from"))
+      oss << "#" << getSize();
   }
+  oss << "]";
+  return oss;
+}
+
+String IndicesCollectionImplementation::__repr__() const
+{
+  return toString(true);
+}
+
+String IndicesCollectionImplementation::__str__(const String & offset) const
+{
+  OSS oss;
+  oss << toString(false);
+  if (size_ >= ResourceMap::GetAsUnsignedInteger("Collection-size-visible-in-str-from"))
+    oss << "#" << size_;
   return oss;
 }
 
 /* Get the number of Indices */
-UnsignedInteger IndicesFixedSizeCollectionImplementation::getSize() const
+UnsignedInteger IndicesCollectionImplementation::getSize() const
 {
   return size_;
 }
 
-IndicesFixedSizeCollectionImplementation::iterator IndicesFixedSizeCollectionImplementation::begin_at(const UnsignedInteger index)
+IndicesCollectionImplementation::iterator IndicesCollectionImplementation::begin_at(const UnsignedInteger index)
 {
   if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index];
 }
 
-IndicesFixedSizeCollectionImplementation::iterator IndicesFixedSizeCollectionImplementation::end_at(const UnsignedInteger index)
+IndicesCollectionImplementation::iterator IndicesCollectionImplementation::end_at(const UnsignedInteger index)
 {
   if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index + 1];
 }
 
-IndicesFixedSizeCollectionImplementation::const_iterator IndicesFixedSizeCollectionImplementation::cbegin_at(const UnsignedInteger index) const
+IndicesCollectionImplementation::const_iterator IndicesCollectionImplementation::cbegin_at(const UnsignedInteger index) const
 {
   if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index];
 }
 
-IndicesFixedSizeCollectionImplementation::const_iterator IndicesFixedSizeCollectionImplementation::cend_at(const UnsignedInteger index) const
+IndicesCollectionImplementation::const_iterator IndicesCollectionImplementation::cend_at(const UnsignedInteger index) const
 {
   if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index + 1];
 }
 
 // Accessors to values_[index][pos]
-const UnsignedInteger & IndicesFixedSizeCollectionImplementation::operator()(const UnsignedInteger index, const UnsignedInteger pos) const
+const UnsignedInteger & IndicesCollectionImplementation::operator()(const UnsignedInteger index, const UnsignedInteger pos) const
 {
   return values_[offsets_[index] + pos];
 }
 
-UnsignedInteger & IndicesFixedSizeCollectionImplementation::operator()(const UnsignedInteger index, const UnsignedInteger pos)
+UnsignedInteger & IndicesCollectionImplementation::operator()(const UnsignedInteger index, const UnsignedInteger pos)
 {
   return values_[offsets_[index] + pos];
 }
 
-Bool IndicesFixedSizeCollectionImplementation::operator ==(const IndicesFixedSizeCollectionImplementation & rhs) const
+Bool IndicesCollectionImplementation::operator ==(const IndicesCollectionImplementation & rhs) const
 {
   if (this == &rhs) return true;
   return size_ == rhs.size_ && offsets_ == rhs.offsets_ && values_ == rhs.values_;
 }
 
 /* Method save() stores the object through the StorageManager */
-void IndicesFixedSizeCollectionImplementation::save(Advocate & adv) const
+void IndicesCollectionImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "size_", size_);
@@ -183,7 +187,7 @@ void IndicesFixedSizeCollectionImplementation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void IndicesFixedSizeCollectionImplementation::load(Advocate & adv)
+void IndicesCollectionImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "size_", size_);

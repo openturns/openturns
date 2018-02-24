@@ -21,8 +21,10 @@
 #ifndef OPENTURNS_BASISSEQUENCEIMPLEMENTATION_HXX
 #define OPENTURNS_BASISSEQUENCEIMPLEMENTATION_HXX
 
-#include "openturns/PersistentCollection.hxx"
+#include "openturns/PersistentObject.hxx"
 #include "openturns/Indices.hxx"
+#include "openturns/IndicesCollectionImplementation.hxx"
+#include "openturns/PersistentCollection.hxx"
 #include "openturns/Basis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * A sequence of numerical math function collection.
  */
 class OT_API BasisSequenceImplementation
-  : public PersistentCollection<Indices>
+  : public PersistentObject
 {
   CLASSNAME
 
@@ -54,6 +56,9 @@ public:
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
 
+  /** Size accessor */
+  UnsignedInteger getSize() const;
+
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
 
@@ -63,8 +68,14 @@ public:
   /** Basis accessor */
   Basis getBasis(const UnsignedInteger index) const;
 
+  /** IndicesCollection accessor */
+  IndicesCollection getIndicesCollection() const;
+
   /** Indices accessor */
   Indices getIndices(const UnsignedInteger index) const;
+
+  /** Extend basis */
+  void add(const Indices & indices);
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -76,6 +87,9 @@ private:
 
   /** The internal basis of the sequence */
   Basis masterBasis_;
+
+  /** The indices */
+  PersistentCollection<Indices> indices_;
 
 }; /* class BasisSequenceImplementation */
 

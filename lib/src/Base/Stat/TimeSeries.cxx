@@ -141,16 +141,17 @@ TimeSeries & TimeSeries::add(const Sample & sample)
   // If there is currently no point in the TimeSeries the new points create (size-1) elements
   UnsignedInteger iStart = 0;
   if (n_ == 0) iStart = 1;
-  Collection<Indices> simplices(mesh_.getSimplices());
+  const UnsignedInteger nrSimplices = mesh_.getSimplicesNumber();
+  IndicesCollection simplices(mesh_.getSimplices());
+  Indices values;
+  if (nrSimplices > 0) values.add(Collection<UnsignedInteger>(simplices.cbegin_at(0), simplices.cend_at(nrSimplices - 1)));
   for (UnsignedInteger i = iStart; i < size; ++i)
   {
-    Indices element(2);
-    element[1] = n_ + i;
     // Cannot underflow because either n_>0 or i>0
-    element[0] = (n_ + i) - 1;
-    simplices.add(element);
+    values.add((n_ + i) - 1);
+    values.add(n_ + i);
   }
-  mesh_ = Mesh(vertices, simplices);
+  mesh_ = Mesh(vertices, IndicesCollection(nrSimplices + size - iStart, 2, values));
   n_ += size;
   return *this;
 }
