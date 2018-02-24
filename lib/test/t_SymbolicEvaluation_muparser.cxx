@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief The test file of class SymbolicGradient for standard methods
+ * @brief The test file of class SymbolicEvaluation for standard methods
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -31,23 +31,26 @@ int main(int argc, char *argv[])
 
   try
   {
-    ResourceMap::Set("SymbolicParser-Engine", "ExprTk");
+    ResourceMap::Set("SymbolicParser-Engine", "MuParser");
     Description inputNames(3);
     inputNames[0] = "x0";
     inputNames[1] = "x1";
     inputNames[2] = "x2";
-    Description outputNames(1);
+    Description outputNames(2);
     outputNames[0] = "y0";
-    Description formulas(1);
+    outputNames[1] = "y1";
+    Description formulas(2);
     formulas[0] = "x0^2+2*x1+3*x2^3";
+    formulas[1] = "cos(x0-sin(x1 * x2))";
     SymbolicEvaluation evaluation(inputNames, outputNames, formulas);
-    SymbolicGradient gradient(evaluation);
-    fullprint << "gradient=" << gradient << std::endl;
+    fullprint << "evaluation=" << evaluation << std::endl;
     Point point(3);
     point[0] = -1.0;
-    point[0] =  4.0;
-    point[1] = -4.0;
-    fullprint << "value at " << point << "=" << gradient.gradient(point) << std::endl;
+    point[1] =  4.0;
+    point[2] = -4.0;
+    fullprint << "value at " << point << "=" << evaluation(point) << std::endl;
+    for (UnsignedInteger i = 0; i < evaluation.getOutputDimension(); ++i)
+      fullprint << "Marginal " << i << "=" << evaluation.getMarginal(i)->__repr__() << std::endl;
   }
   catch (TestFailed & ex)
   {

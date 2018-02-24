@@ -54,7 +54,8 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
 
 void SymbolicEvaluation::initialize()
 {
-  parser_.setVariablesFormulas(inputVariablesNames_, formulas_);
+  parser_.setVariables(inputVariablesNames_);
+  parser_.setFormulas(formulas_);
   setInputDescription(inputVariablesNames_);
   setOutputDescription(outputVariablesNames_);
 }

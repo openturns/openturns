@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
-ot.ResourceMap.Set("SymbolicParser-Engine", "ExprTk")
+ot.ResourceMap.Set("SymbolicParser-Engine", "MuParser")
 
 elementaryFunctions = ['sin', 'cos', 'tan']
 elementaryFunctions.append('asin')
@@ -135,9 +135,32 @@ print(f, ", pi_=", f([0.0]))
 # Check unary operators
 f = ot.SymbolicFunction("x", "-x")
 print(f, ", f([1])=", f([1.0]))
-f = ot.SymbolicFunction("x", "(x:=2.0)*x")
+f = ot.SymbolicFunction("x", "(x=2.0)*x")
 print(f, ", f([1])=", f([1.0]))
+f = ot.SymbolicFunction("x", "!x")
+print(f, ", f([0])=", f([0.0]))
+print(f, ", f([1])=", f([1.0]))
+print(f, ", f([1.5])=", f([1.5]))
+print(f, ", f([-0.5])=", f([-0.5]))
 # Check binary operators
+f = ot.SymbolicFunction(["x", "y"], ["x && y"])
+print(f, ", f([0, 0])=", f([0.0, 0.0]))
+print(f, ", f([1, 0])=", f([1.0, 0.0]))
+print(f, ", f([1, 1])=", f([1.0, 1.0]))
+print(f, ", f([0, 1])=", f([0.0, 1.0]))
+print(f, ", f([1.5, -0.5])=", f([1.5, -0.5]))
+f = ot.SymbolicFunction(["x", "y"], ["x || y"])
+print(f, ", f([0, 0])=", f([0.0, 0.0]))
+print(f, ", f([1, 0])=", f([1.0, 0.0]))
+print(f, ", f([1, 1])=", f([1.0, 1.0]))
+print(f, ", f([0, 1])=", f([0.0, 1.0]))
+print(f, ", f([1.5, -0.5])=", f([1.5, -0.5]))
+f = ot.SymbolicFunction(["x", "y"], ["x ^^ y"])
+print(f, ", f([0, 0])=", f([0.0, 0.0]))
+print(f, ", f([1, 0])=", f([1.0, 0.0]))
+print(f, ", f([1, 1])=", f([1.0, 1.0]))
+print(f, ", f([0, 1])=", f([0.0, 1.0]))
+print(f, ", f([1.5, -0.5])=", f([1.5, -0.5]))
 f = ot.SymbolicFunction(["x", "y"], ["x <= y"])
 print(f, ", f([1, 2])=", f([1.0, 2.0]))
 print(f, ", f([1, 1])=", f([1.0, 1.0]))

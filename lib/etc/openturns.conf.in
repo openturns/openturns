@@ -36,6 +36,9 @@
   <SpecFunc-MaximumIteration value="1000" />
   <SpecFunc-Precision value="2.0e-16" />
 
+  <!-- OT::SymbolicParser parameters -->
+  <SymbolicParser-Engine value="MuParser" />
+
   <!-- OT::DesignProxy parameters -->
   <DesignProxy-DefaultCacheSize value="16777216" />
 

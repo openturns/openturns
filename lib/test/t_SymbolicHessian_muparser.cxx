@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief The test file of class SymbolicGradient for standard methods
+ * @brief The test file of class SymbolicHessian for standard methods
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    ResourceMap::Set("SymbolicParser-Engine", "ExprTk");
+    ResourceMap::Set("SymbolicParser-Engine", "MuParser");
     Description inputNames(3);
     inputNames[0] = "x0";
     inputNames[1] = "x1";
@@ -41,13 +41,13 @@ int main(int argc, char *argv[])
     Description formulas(1);
     formulas[0] = "x0^2+2*x1+3*x2^3";
     SymbolicEvaluation evaluation(inputNames, outputNames, formulas);
-    SymbolicGradient gradient(evaluation);
-    fullprint << "gradient=" << gradient << std::endl;
+    SymbolicHessian hessian(evaluation);
+    fullprint << "hessian=" << hessian << std::endl;
     Point point(3);
     point[0] = -1.0;
-    point[0] =  4.0;
-    point[1] = -4.0;
-    fullprint << "value at " << point << "=" << gradient.gradient(point) << std::endl;
+    point[1] =  4.0;
+    point[2] = -4.0;
+    fullprint << "value at " << point << "=" << hessian.hessian(point) << std::endl;
   }
   catch (TestFailed & ex)
   {

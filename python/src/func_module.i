@@ -106,11 +106,9 @@
 %include AggregatedEvaluation.i
 %include PiecewiseLinearEvaluation.i
 %include PiecewiseHermiteEvaluation.i
-#ifdef OPENTURNS_HAVE_MUPARSER
 %include SymbolicEvaluation.i
 %include SymbolicGradient.i
 %include SymbolicHessian.i
-#endif
 %include DatabaseFunction.i
 %include DatabaseEvaluation.i
 %include IndicatorEvaluation.i

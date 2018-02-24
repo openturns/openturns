@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    ResourceMap::Set("SymbolicParser-Engine", "ExprTk");
+    ResourceMap::Set("SymbolicParser-Engine", "MuParser");
     /* Check the elementary functions */
     Collection<String> elementaryFunctions(0);
     elementaryFunctions.add("sin");
@@ -164,10 +164,68 @@ int main(int argc, char *argv[])
       fullprint << f.__str__() << ", f([1])=" << f(Point(1, 1.0)) << std::endl;
     }
     {
-      SymbolicFunction f("x", "(x:=2.0)*x");
+      SymbolicFunction f("x", "(x=2.0)*x");
       fullprint << f.__str__() << ", f([1])=" << f(Point(1, 1.0)) << std::endl;
     }
+    {
+      SymbolicFunction f("x", "!x");
+      fullprint << f.__str__() << ", f([0])=" << f(Point(1, 0.0)) << std::endl;
+      fullprint << f.__str__() << ", f([1])=" << f(Point(1, 1.0)) << std::endl;
+      fullprint << f.__str__() << ", f([1.5])=" << f(Point(1, 1.5)) << std::endl;
+      fullprint << f.__str__() << ", f([-0.5])=" << f(Point(1, -0.5)) << std::endl;
+    }
     // Check binary operators
+    {
+      Description input(2);
+      input[0] = "x";
+      input[1] = "y";
+      SymbolicFunction f(input, Description(1, "x && y"));
+      Point x(2);
+      fullprint << f.__str__() << ", f([0, 0])=" << f(x) << std::endl;
+      x[0] = 1.0;
+      fullprint << f.__str__() << ", f([1, 0])=" << f(x) << std::endl;
+      x[1] = 1.0;
+      fullprint << f.__str__() << ", f([1, 1])=" << f(x) << std::endl;
+      x[0] = 0.0;
+      fullprint << f.__str__() << ", f([0, 1])=" << f(x) << std::endl;
+      x[0] = 1.5;
+      x[1] = -0.5;
+      fullprint << f.__str__() << ", f([1.5, -0.5])=" << f(x) << std::endl;
+    }
+    {
+      Description input(2);
+      input[0] = "x";
+      input[1] = "y";
+      SymbolicFunction f(input, Description(1, "x || y"));
+      Point x(2);
+      fullprint << f.__str__() << ", f([0, 0])=" << f(x) << std::endl;
+      x[0] = 1.0;
+      fullprint << f.__str__() << ", f([1, 0])=" << f(x) << std::endl;
+      x[1] = 1.0;
+      fullprint << f.__str__() << ", f([1, 1])=" << f(x) << std::endl;
+      x[0] = 0.0;
+      fullprint << f.__str__() << ", f([0, 1])=" << f(x) << std::endl;
+      x[0] = 1.5;
+      x[1] = -0.5;
+      fullprint << f.__str__() << ", f([1.5, -0.5])=" << f(x) << std::endl;
+    }
+    {
+      Description input(2);
+      input[0] = "x";
+      input[1] = "y";
+      SymbolicFunction f(input, Description(1, "x ^^ y"));
+      Point x(2);
+      fullprint << f.__str__() << ", f([0, 0])=" << f(x) << std::endl;
+      x[0] = 1.0;
+      fullprint << f.__str__() << ", f([1, 0])=" << f(x) << std::endl;
+      x[1] = 1.0;
+      fullprint << f.__str__() << ", f([1, 1])=" << f(x) << std::endl;
+      x[0] = 0.0;
+      fullprint << f.__str__() << ", f([0, 1])=" << f(x) << std::endl;
+      x[0] = 1.5;
+      x[1] = -0.5;
+      fullprint << f.__str__() << ", f([1.5, -0.5])=" << f(x) << std::endl;
+    }
     {
       Description input(2);
       input[0] = "x";

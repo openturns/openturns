@@ -23,11 +23,9 @@
 #include "openturns/NoEvaluation.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
-#ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/SymbolicGradient.hxx"
 #include "openturns/SymbolicHessian.hxx"
-#endif
 #include "openturns/DatabaseEvaluation.hxx"
 #include "openturns/ProductFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
@@ -70,7 +68,6 @@ FunctionImplementation::FunctionImplementation(const Description & inputVariable
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
 {
-#ifdef OPENTURNS_HAVE_MUPARSER
   // Try to build an analytical gradient
   SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, formulas);
   p_evaluationImplementation_ = evaluation.clone();
@@ -94,9 +91,6 @@ FunctionImplementation::FunctionImplementation(const Description & inputVariable
     LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
     p_hessianImplementation_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
   }
-#else
-  throw NotYetImplementedException(HERE) << "In FunctionImplementation::FunctionImplementation(const Description & inputVariablesNames, const Description & outputVariablesNames, const Description & formulas): Analytical function requires muParser";
-#endif
 }
 
 

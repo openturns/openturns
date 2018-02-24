@@ -32,7 +32,6 @@
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/DatabaseFunction.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
@@ -643,11 +642,7 @@ void GeneralLinearModelAlgorithm::run()
   else
   {
     // If no basis ==> zero function
-#ifdef OPENTURNS_HAVE_MUPARSER
     metaModel = SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(covarianceModel_.getOutputDimension(), "0.0"));
-#else
-    metaModel = DatabaseFunction(Sample(1, reducedCovarianceModel_.getInputDimension()), Sample(1, reducedCovarianceModel_.getOutputDimension()));
-#endif
   }
 
   // Add transformation if needed

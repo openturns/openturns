@@ -15,6 +15,7 @@
  * NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour
  * EnclosingSimplex, EnclosingSimplexImplementation, NaiveEnclosingSimplex, BoundingVolumeHierarchy
  * IndicesCollection
+ * SymbolicParserExprTk
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
@@ -48,6 +49,7 @@
  * All KDTree methods are modified
  * IndicesCollection is no more an alias to Collection<Indices>, it has its own class and has a fixed size
  * Removed BipartiteGraph::add method
+ * Deprecated usage of _e and _pi constants when defining analytical functions, e_ and pi_ must be used instead.
 
 === Python module ===
 

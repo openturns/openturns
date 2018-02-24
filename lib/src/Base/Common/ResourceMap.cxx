@@ -299,6 +299,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "SpecFunc-MaximumIteration", 1000 );
   setAsScalar( "SpecFunc-Precision", 2.0e-16 );
 
+  // SymbolicParser parameters
+  set( "SymbolicParser-Engine", "MuParser" );
+
   // GramProxy parameters
   setAsUnsignedInteger( "DesignProxy-DefaultCacheSize", 16777216 );// 2^24=16777216=128 Mio
 

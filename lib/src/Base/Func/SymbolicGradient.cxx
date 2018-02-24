@@ -160,7 +160,8 @@ void SymbolicGradient::initialize() const
       }
     }
   }
-  parser_.setVariablesFormulas(evaluation_.inputVariablesNames_, gradientFormulas);
+  parser_.setVariables(evaluation_.inputVariablesNames_);
+  parser_.setFormulas(gradientFormulas);
   // Everything is ok (no exception)
   isAnalytical_ = true;
   isInitialized_ = true;

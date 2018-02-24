@@ -6,15 +6,15 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
-    ResourceMap.Set("SymbolicParser-Engine", "ExprTk")
+    ResourceMap.Set("SymbolicParser-Engine", "MuParser")
     evaluation = SymbolicEvaluation(
         ["x0", "x1", "x2"], ["y0"], ["x0^2+2*x1+3*x2^3"])
-    gradient = SymbolicGradient(evaluation)
+    hessian = SymbolicHessian(evaluation)
     point = [-1.0, 4.0, -4.0]
-    print("gradient=", gradient)
-    print("value at point", point, "=", gradient.gradient(point))
+    print("hessian=", hessian)
+    print("value at", point, "=", hessian.hessian(point))
 
 except:
     import sys
-    print("t_SymbolicGradient_std.py",
+    print("t_SymbolicHessian_std.py",
           sys.exc_info()[0], sys.exc_info()[1])

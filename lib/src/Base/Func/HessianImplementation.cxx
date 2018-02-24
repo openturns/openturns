@@ -22,11 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicEvaluation.hxx"
-#else
-#include "openturns/LinearEvaluation.hxx"
-#endif
 #include "openturns/ConstantGradient.hxx"
 #include "openturns/ConstantHessian.hxx"
 #include "openturns/ComposedHessian.hxx"
@@ -142,14 +138,7 @@ HessianImplementation::Implementation HessianImplementation::getMarginal(const I
   // Fake f
   const UnsignedInteger inputDimension = getInputDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
-#ifdef OPENTURNS_HAVE_MUPARSER
   const SymbolicEvaluation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
-#else
-  Point center(inputDimension);
-  Matrix linear(inputDimension, outputDimension);
-  Point constant(outputDimension);
-  const LinearEvaluation right(center, constant, linear);
-#endif
   // Fake DF
   const ConstantGradient rightGradient(Matrix(inputDimension, outputDimension));
   // Dg = A

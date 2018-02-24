@@ -19,49 +19,43 @@
  *
  */
 
-#ifndef OPENTURNS_SYMBOLICPARSER_HXX
-#define OPENTURNS_SYMBOLICPARSER_HXX
+#ifndef OPENTURNS_SYMBOLICPARSEREXPRTK_HXX
+#define OPENTURNS_SYMBOLICPARSEREXPRTK_HXX
 
 #include "openturns/SymbolicParserImplementation.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
 
+// Forward declaration
+namespace exprtk {
+template<typename T> class expression;
+}
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-class OT_API SymbolicParser
-  : public TypedInterfaceObject<SymbolicParserImplementation>
+class SymbolicParserExprTk
+  : public SymbolicParserImplementation
 {
+
   CLASSNAME
 
 public:
-  typedef Pointer<SymbolicParserImplementation> Implementation;
-
   /** Default constructor */
-  SymbolicParser();
+  SymbolicParserExprTk();
 
-  /** Constructor with parameters */
-  SymbolicParser(const SymbolicParserImplementation & implementation);
-
-  /** Constructor with parameters */
-  SymbolicParser(Implementation & p_implementation);
-
-  /** Variables accessors */
-  Description getVariables() const;
-  void setVariables(const Description & inputVariablesNames);
-
-  /** Formulas accessors */
-  Description getFormulas() const;
-  void setFormulas(const Description & formulas);
+  /** Virtual copy constructor */
+  virtual SymbolicParserExprTk * clone() const;
 
   Point operator()(const Point & inP) const;
   Sample operator()(const Sample & inS) const;
+
+private:
+  void initialize() const;
+
+  mutable Collection< Pointer< exprtk::expression<Scalar> > > expressions_;
+  mutable Point inputStack_;
 
 };
 
 END_NAMESPACE_OPENTURNS
 
-#endif // OPENTURNS_SYMBOLICPARSER_HXX
+#endif // OPENTURNS_SYMBOLICPARSERMUPARSER_HXX

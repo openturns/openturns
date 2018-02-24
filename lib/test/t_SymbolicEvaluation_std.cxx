@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
   try
   {
+    ResourceMap::Set("SymbolicParser-Engine", "ExprTk");
     Description inputNames(3);
     inputNames[0] = "x0";
     inputNames[1] = "x1";

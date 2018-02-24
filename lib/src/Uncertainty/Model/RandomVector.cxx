@@ -127,7 +127,6 @@ RandomVector::RandomVector(const RandomVector & antecedent,
                            const Interval & interval)
   : TypedInterfaceObject<RandomVectorImplementation>(new EventDomain(*antecedent.getImplementation(), interval))
 {
-#ifdef OPENTURNS_HAVE_MUPARSER
   UnsignedInteger dimension = interval.getDimension();
   UnsignedInteger inputDimension = antecedent.getFunction().getInputDimension();
   Interval::BoolCollection finiteLowerBound(interval.getFiniteLowerBound());
@@ -197,7 +196,6 @@ RandomVector::RandomVector(const RandomVector & antecedent,
       *this = RandomVector(newVector, Greater(), 0.0);
     }
   }
-#endif
 }
 
 /* Constructor from domain event */
