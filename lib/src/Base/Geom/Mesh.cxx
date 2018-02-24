@@ -734,7 +734,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
 namespace
 {
 // Check whether a face of a simplex is inner or on a boundary.  Arguments must be sorted.
-Bool isInnerFace(const Indices & simplices0, const Indices & simplices1, const Indices & simplices2)
+Bool Mesh_isInnerFace(const Indices & simplices0, const Indices & simplices1, const Indices & simplices2)
 {
   std::vector<UnsignedInteger> common01;
   std::set_intersection(simplices0.begin(), simplices0.end(), simplices1.begin(), simplices1.end(), std::back_inserter(common01));
@@ -745,7 +745,7 @@ Bool isInnerFace(const Indices & simplices0, const Indices & simplices1, const I
 }
 
 // Check whether a face of a simplex is oriented toward the front or back
-Bool isVisible(const Point & visuVertex0, const Point & visuVertex1, const Point & visuVertex2)
+Bool Mesh_isVisible(const Point & visuVertex0, const Point & visuVertex1, const Point & visuVertex2)
 {
   return (visuVertex1[0] - visuVertex0[0]) * (visuVertex2[1] - visuVertex0[1]) <= (visuVertex1[1] - visuVertex0[1]) * (visuVertex2[0] - visuVertex0[0]);
 }
@@ -790,7 +790,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     const Point visuVertex2(visuVertices[i2]);
     const Point visuVertex3(visuVertices[i3]);
     // First face: AB=p0p1, AC=p0p2.
-    if (((!backfaceCulling) || isVisible(visuVertex0, visuVertex1, visuVertex2)) && (!isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2)))
+    if (((!backfaceCulling) || Mesh_isVisible(visuVertex0, visuVertex1, visuVertex2)) && (!Mesh_isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2)))
     {
       triangle[0] = i0;
       triangle[1] = i1;
@@ -801,7 +801,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
 
     // Second face: AB=p0p2, AC=p0p3.
-    if (((!backfaceCulling) || isVisible(visuVertex0, visuVertex2, visuVertex3)) && (!isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3)))
+    if (((!backfaceCulling) || Mesh_isVisible(visuVertex0, visuVertex2, visuVertex3)) && (!Mesh_isInnerFace(simplicesVertex0, simplicesVertex2, simplicesVertex3)))
     {
       triangle[0] = i0;
       triangle[1] = i2;
@@ -812,7 +812,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
 
     // Third face: AB=p0p3, AC=p0p1.
-    if (((!backfaceCulling) || isVisible(visuVertex0, visuVertex3, visuVertex1)) && (!isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1)))
+    if (((!backfaceCulling) || Mesh_isVisible(visuVertex0, visuVertex3, visuVertex1)) && (!Mesh_isInnerFace(simplicesVertex0, simplicesVertex3, simplicesVertex1)))
     {
       triangle[0] = i0;
       triangle[1] = i3;
@@ -823,7 +823,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     }
 
     // Fourth face: AB=p1p3, AC=p1p2.
-    if (((!backfaceCulling) || isVisible(visuVertex1, visuVertex3, visuVertex2)) && (!isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2)))
+    if (((!backfaceCulling) || Mesh_isVisible(visuVertex1, visuVertex3, visuVertex2)) && (!Mesh_isInnerFace(simplicesVertex1, simplicesVertex3, simplicesVertex2)))
     {
       triangle[0] = i1;
       triangle[1] = i3;
