@@ -74,8 +74,8 @@ Available functions:
 
     Available constants:
 
-    - _e (Euler's constant)
-    - _pi (Pi)
+    - e\_ (Euler's constant)
+    - pi\_ (Pi)
 
 Examples
 --------
@@ -114,7 +114,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.SymbolicFunction.GetValidConstants()[0])
-_e -> Euler's constant (2.71828...)"
+e_ -> Euler's constant (2.71828...)"
 
 // ---------------------------------------------------------------------
 

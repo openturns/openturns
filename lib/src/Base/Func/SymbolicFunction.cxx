@@ -112,6 +112,8 @@ void SymbolicFunction::InitializeDocumentation()
 
   // First, the constants
   ValidConstants_.setName("Valid constants");
+  ValidConstants_.add("e_ -> Euler's constant (2.71828...)");
+  ValidConstants_.add("pi_ -> Pi constant (3.14159...)");
   ValidConstants_.add("_e -> Euler's constant (2.71828...)");
   ValidConstants_.add("_pi -> Pi constant (3.14159...)");
 
