@@ -736,18 +736,18 @@ void handleException()
 {
   PyObject * exception = PyErr_Occurred();
 
-  if ( exception )
+  if (exception)
   {
     PyObject *type = NULL, *value = NULL, *traceback = NULL;
-    PyErr_Fetch( &type, &value, &traceback );
+    PyErr_Fetch(&type, &value, &traceback);
 
     String exceptionMessage("Python exception");
 
     // get the name of the exception
-    if ( type )
+    if (type)
     {
-      ScopedPyObjectPointer nameObj(PyObject_GetAttrString( type, "__name__" ));
-      if ( nameObj.get() )
+      ScopedPyObjectPointer nameObj(PyObject_GetAttrString(type, "__name__"));
+      if (nameObj.get())
       {
         String typeString = checkAndConvert< _PyString_, String >(nameObj.get());
         exceptionMessage += ": " + typeString;
@@ -755,20 +755,17 @@ void handleException()
     }
 
     // try to get error msg, value and traceback can be NULL
-    if(value)
+    if (value)
     {
-      try
+      ScopedPyObjectPointer valueObj(PyObject_Str(value));
+      if (valueObj.get())
       {
-        String valueString = checkAndConvert< _PyString_, String >(value);
+        String valueString = checkAndConvert< _PyString_, String >(valueObj.get());
         exceptionMessage += ": " + valueString;
-      }
-      catch (InvalidArgumentException &)
-      {
-        // could not get msg from strings
       }
     }
 
-    PyErr_Restore( type, value, traceback );
+    PyErr_Restore(type, value, traceback);
     PyErr_Print();
     throw InternalException(HERE) << exceptionMessage;
   }
