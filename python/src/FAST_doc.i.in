@@ -95,7 +95,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> formulaIshigami = ['sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)']
+>>> formulaIshigami = ['sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)']
 >>> modelIshigami = ot.SymbolicFunction(['X1', 'X2', 'X3'], formulaIshigami)
 >>> distributions = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
 >>> sensitivityAnalysis = ot.FAST(modelIshigami, distributions, 101)

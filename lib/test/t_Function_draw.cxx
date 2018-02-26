@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     // Simplified interfaces
     // First, try 1D drawing
     {
-      SymbolicFunction f("x", "sin(2*_pi*x)*exp(-x^2/2)");
+      SymbolicFunction f("x", "sin(2*pi_*x)*exp(-x^2/2)");
       fullprint << "f=" << f << std::endl;
       Graph graph(f.draw(-1.2, 1.2, 32));
       fullprint << "graph=" << graph << std::endl;

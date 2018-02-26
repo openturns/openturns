@@ -56,10 +56,6 @@ Available functions:
     Available operators:
 
     - = (assignment)
-    - && (logical and)
-    - || (logical or)
-    - ^^ (logical xor)
-    - !  (logical negation)
     - <= (less or equal)
     - >= (greater or equal)
     - != (not equal)

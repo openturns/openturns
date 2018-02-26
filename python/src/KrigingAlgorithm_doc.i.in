@@ -133,7 +133,7 @@ Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
 >>> input_data = ot.Uniform(-1.0, 2.0).getSample(10)
->>> model = ot.SymbolicFunction(['x'], ['x-1+sin(_pi*x/(1+0.25*x^2))'])
+>>> model = ot.SymbolicFunction(['x'], ['x-1+sin(pi_*x/(1+0.25*x^2))'])
 >>> output_data = model(input_data)
 
 Create the Kriging algorithm with the optimizer option:

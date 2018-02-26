@@ -17,7 +17,7 @@ try:
     # Test with Ishigami function
     formulaIshigami = Description(outputDimension)
     formulaIshigami[
-        0] = "sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)"
+        0] = "sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)"
 
     modelIshigami = SymbolicFunction(inputName, formulaIshigami)
 

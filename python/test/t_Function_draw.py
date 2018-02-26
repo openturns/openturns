@@ -8,7 +8,7 @@ TESTPREAMBLE()
 try:
     # Simplified interfaces
     # First, try 1D drawing
-    f = SymbolicFunction("x", "sin(2*_pi*x)*exp(-x^2/2)")
+    f = SymbolicFunction("x", "sin(2*pi_*x)*exp(-x^2/2)")
     print("f=", f)
     graph = f.draw(-1.2, 1.2, 32)
     print("graph=", graph)

@@ -122,8 +122,8 @@ marginal 0=[x0,x1]->[x0+x1]
 marginal 1=[x0,x1]->[x0-x1]
 First reference value : 2.8794e+00
 First result calculated : 2.8794e+00
-[x]->[_e], _e=class=Point name=Unnamed dimension=1 values=[2.71828]
-[x]->[_pi], _pi=class=Point name=Unnamed dimension=1 values=[3.14159]
+[x]->[e_], e_=class=Point name=Unnamed dimension=1 values=[2.71828]
+[x]->[pi_], pi_=class=Point name=Unnamed dimension=1 values=[3.14159]
 [x]->[-x], f([1])=class=Point name=Unnamed dimension=1 values=[-1]
 [x]->[(x=2.0)*x], f([1])=class=Point name=Unnamed dimension=1 values=[4]
 [x]->[!x], f([0])=class=Point name=Unnamed dimension=1 values=[1]

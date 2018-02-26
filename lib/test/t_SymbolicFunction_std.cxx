@@ -150,12 +150,12 @@ int main(int argc, char *argv[])
     fullprint << "First result calculated : " << resultSample[0][0] << std::endl;
     // Check constants
     {
-      SymbolicFunction f("x", "_e");
-      fullprint << f.__str__() << ", _e=" << f(Point(1)) << std::endl;
+      SymbolicFunction f("x", "e_");
+      fullprint << f.__str__() << ", e_=" << f(Point(1)) << std::endl;
     }
     {
-      SymbolicFunction f("x", "_pi");
-      fullprint << f.__str__() << ", _pi=" << f(Point(1)) << std::endl;
+      SymbolicFunction f("x", "pi_");
+      fullprint << f.__str__() << ", pi_=" << f(Point(1)) << std::endl;
     }
     // Check unary operators
     {

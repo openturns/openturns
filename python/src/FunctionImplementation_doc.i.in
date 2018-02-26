@@ -846,7 +846,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> from openturns.viewer import View
->>> f = ot.SymbolicFunction('x', 'sin(2*_pi*x)*exp(-x^2/2)')
+>>> f = ot.SymbolicFunction('x', 'sin(2*pi_*x)*exp(-x^2/2)')
 >>> graph = f.draw(-1.2, 1.2, 100)
 >>> View(graph).show()"
 %enddef
