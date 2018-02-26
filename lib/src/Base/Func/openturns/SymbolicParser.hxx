@@ -37,6 +37,7 @@ public:
   SymbolicParser();
 
   Point operator()(const Point & inP) const;
+  Sample operator()(const Sample & inS) const;
 
   void setVariablesFormulas(const Description & inputVariablesNames,
                             const Description & formulas);
