@@ -100,7 +100,12 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   const UnsignedInteger nrVertices = mesh.getVerticesNumber();
   if (nrVertices != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << nrVertices << " vertices";
   mesh_ = mesh;
-  mesh_.computeKDTree();
+  // Build KDTree
+  nearestNeighbour_.setSample(mesh_.getVertices());
+  // In evaluate(), mesh_.getNearestVertexAndSimplexIndicesWithCoordinates() builds mesh_::verticesToSimplices_ if not
+  // already done.  But evaluate() may be called from several threads at the same time, thus ensure now that
+  // mesh_::verticesToSimplices_ is built.
+  (void) mesh_.getVerticesToSimplicesMap();
   // Check for pending vertices
   Interval::BoolCollection seenVertices(nrVertices);
   const IndicesCollection simplices(getSimplices());
@@ -135,7 +140,11 @@ Mesh P1LagrangeEvaluation::getMesh() const
 void P1LagrangeEvaluation::setVertices(const Sample & vertices)
 {
   mesh_.setVertices(vertices);
-  mesh_.computeKDTree();
+  nearestNeighbour_.setSample(vertices);
+  // In evaluate(), mesh_.getNearestVertexAndSimplexIndicesWithCoordinates() builds mesh_::verticesToSimplices_ if not
+  // already done.  But evaluate() may be called from several threads at the same time, thus ensure now that
+  // mesh_::verticesToSimplices_ is built.
+  (void) mesh_.getVerticesToSimplicesMap();
 }
 
 Sample P1LagrangeEvaluation::getVertices() const
@@ -164,6 +173,19 @@ void P1LagrangeEvaluation::setValues(const Sample & values)
 Sample P1LagrangeEvaluation::getValues() const
 {
   return values_;
+}
+
+/** Nearest neighbour algorithm accessor */
+void P1LagrangeEvaluation::setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & nearestNeighbour)
+{
+  NearestNeighbourAlgorithm emptyClone(nearestNeighbour.getImplementation()->emptyClone());
+  nearestNeighbour_.swap(emptyClone);
+  nearestNeighbour_.setSample(mesh_.getVertices());
+}
+
+NearestNeighbourAlgorithm P1LagrangeEvaluation::getNearestNeighbourAlgorithm() const
+{
+  return nearestNeighbour_;
 }
 
 /* Here is the interface that all derived class must implement */
@@ -255,6 +277,7 @@ void P1LagrangeEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute("mesh_", mesh_);
   adv.saveAttribute("values_", values_);
+  adv.saveAttribute("nearestNeighbour_", nearestNeighbour_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -263,6 +286,7 @@ void P1LagrangeEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute("mesh_", mesh_);
   adv.loadAttribute("values_", values_);
+  adv.loadAttribute("nearestNeighbour_", nearestNeighbour_);
 }
 
 END_NAMESPACE_OPENTURNS

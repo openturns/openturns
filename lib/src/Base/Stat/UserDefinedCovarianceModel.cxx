@@ -22,6 +22,7 @@
 #include "openturns/UserDefinedCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,9 +39,9 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel()
   : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , p_mesh_(RegularGrid().clone())
+  , nearestNeighbour_()
 {
   outputDimension_ = 0;
-  p_mesh_->computeKDTree();
 }
 
 // For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
@@ -49,6 +50,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , p_mesh_(0)
+  , nearestNeighbour_()
 {
   const UnsignedInteger N = mesh.getVerticesNumber();
   const UnsignedInteger size = (N * (N + 1)) / 2;
@@ -57,7 +59,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
                                          << " mesh size=" << N << " and covariance function size=" << covarianceFunction.getSize() << " instead of " << size;
   p_mesh_ = mesh.clone();
-  p_mesh_->computeKDTree();
+  nearestNeighbour_.setSample(p_mesh_->getVertices());
   inputDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
@@ -91,7 +93,7 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
   if (N == 1) return covarianceCollection_[0];
 
   // Use the evaluation based on indices
-  return operator()(p_mesh_->getNearestVertexIndex(s), p_mesh_->getNearestVertexIndex(t));
+  return operator()(nearestNeighbour_.query(s), nearestNeighbour_.query(t));
 }
 
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
@@ -133,14 +135,10 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
     return covariance;
   }
   // Here we have to project the given vertices on the underlying mesh
-  // We try to call the getNearestVertexIndex() method a minimum number
-  // of time as it is the most costly part of the discretization
-  Indices nearestIndex(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
-    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
-  }
+  // We try to call the query() method a minimum number of time as it
+  // is the most costly part of the discretization
+  const Indices nearestIndex(nearestNeighbour_.query(vertices));
+
   // Now, we use a set of loops similar to the default algorithm
   // Fill-in the matrix by blocks
   for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
@@ -177,25 +175,20 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
     UnsignedInteger index = (p * (p + 1)) / 2;
     for (UnsignedInteger i = 0; i < p; ++i)
     {
-      result[i][0] = covarianceCollection_[index](0, 0);
+      result(i, 0) = covarianceCollection_[index](0, 0);
       ++index;
     }
     UnsignedInteger shift = p;
     for (UnsignedInteger i = p; i < size; ++i)
     {
-      result[i][0] = covarianceCollection_[index](0, 0);
+      result(i, 0) = covarianceCollection_[index](0, 0);
       ++shift;
       index += shift;
     }
     return result;
   }
-  Indices nearestIndex(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    nearestIndex[i] = p_mesh_->getNearestVertexIndex(vertices[i]);
-    LOGINFO(OSS() << "The vertex " << i << " over " << size - 1 << " in the given sample corresponds to the vertex " << nearestIndex[i] << " in the underlying mesh (" << Point(vertices[i]).__str__() << "->" << p_mesh_->getVertex(nearestIndex[i]).__str__() << ")");
-  }
-  for (UnsignedInteger i = 0; i < size; ++i) result[i][0] = operator()(nearestIndex[p], nearestIndex[i])(0, 0);
+  const Indices nearestIndex(nearestNeighbour_.query(vertices));
+  for (UnsignedInteger i = 0; i < size; ++i) result(i, 0) = operator()(nearestIndex[p], nearestIndex[i])(0, 0);
   return result;
 }
 
@@ -241,6 +234,7 @@ void UserDefinedCovarianceModel::save(Advocate & adv) const
 {
   CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "mesh_", *p_mesh_);
+  adv.saveAttribute("nearestNeighbour_", nearestNeighbour_);
   adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
 }
 
@@ -251,6 +245,7 @@ void UserDefinedCovarianceModel::load(Advocate & adv)
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "mesh_", mesh);
   p_mesh_ = mesh.getImplementation();
+  adv.loadAttribute( "nearestNeighbour_", nearestNeighbour_);
   adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
 }
 

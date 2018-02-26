@@ -9,6 +9,7 @@
 #include "openturns/OTGeom.hxx"
 #include "openturns/OTStat.hxx"
 #include "openturns/OTType.hxx"
+#include "openturns/OTAlgo.hxx"
 %}
 
 %include typemaps.i
@@ -20,8 +21,13 @@
 %import common_module.i
 
 /* Base/Type */
+%include BaseTypCollection.i
 %import typ_module.i
 %import BaseTypTemplateDefs.i
+
+/* Base/Algo */
+%include NearestNeighbourAlgorithmImplementation.i
+%include NearestNeighbourAlgorithm.i
 
 /* Base/Graph */
 %import graph_module.i

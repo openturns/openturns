@@ -144,6 +144,7 @@ ot_add_python_module(typ typ_module.i
                       TimeSeries.i TimeSeries_doc.i.in
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in
                       HistoryStrategy.i HistoryStrategy_doc.i.in
+                      BaseTypCollection.i
                       BaseTypTemplateDefs.i
                    )
 
@@ -413,7 +414,11 @@ ot_add_python_module(algo algo_module.i
                       FittingAlgorithmImplementation.i FittingAlgorithmImplementation_doc.i.in
                       FittingAlgorithm.i FittingAlgorithm_doc.i.in
                       CorrectedLeaveOneOut.i CorrectedLeaveOneOut_doc.i.in
+                      NearestNeighbourAlgorithmImplementation.i NearestNeighbourAlgorithmImplementation_doc.i.in
+                      NearestNeighbourAlgorithm.i NearestNeighbourAlgorithm_doc.i.in
                       KDTree.i KDTree_doc.i.in
+                      RegularGridNearestNeighbour.i RegularGridNearestNeighbour_doc.i.in
+                      NaiveNearestNeighbour.i NaiveNearestNeighbour_doc.i.in
                       KFold.i KFold_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in

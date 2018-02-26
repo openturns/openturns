@@ -25,6 +25,7 @@
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/RegularGrid.hxx"
+#include "openturns/RegularGridNearestNeighbour.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -84,6 +85,9 @@ private:
 
   /** Mesh of evaluation */
   RegularGrid mesh_;
+
+  /** Evaluation of nearest neighbour on a RegularGrid */
+  RegularGridNearestNeighbour nearestNeighbour_;
 
 } ; /* class UserDefinedStationaryCovarianceModel */
 

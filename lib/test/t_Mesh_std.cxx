@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
       simplicies[2][0] = 2;
       simplicies[2][1] = 3;
       Mesh mesh1D(vertices, simplicies);
-      mesh1D.computeKDTree();
+      KDTree tree(vertices);
       fullprint << "1D mesh=" << mesh1D << std::endl;
       fullprint << "Is empty? " << mesh1D.isEmpty() << std::endl;
       fullprint << "vertices=" << mesh1D.getVertices() << std::endl;
@@ -61,22 +61,30 @@ int main(int argc, char *argv[])
       fullprint << "is p=" << p << " in mesh? " << mesh1D.contains(p) << std::endl;
       {
         Point point(1, 1.8);
-        fullprint << "Nearest index(" << point << ")=" << mesh1D.getNearestVertexIndex(point) << std::endl;
+        UnsignedInteger nearestIndex = tree.query(point);
+        fullprint << "Nearest index(" << point << ")=" << nearestIndex << std::endl;
         Point coordinates;
-        Indices vertexSimplexIndices = mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point, coordinates);
+        UnsignedInteger simplexIndex;
+        Bool found = mesh1D.checkPointInNeighbourhoodWithCoordinates(point, nearestIndex, simplexIndex, coordinates);
+        Indices vertexSimplexIndices(1, nearestIndex);
+        if (found) vertexSimplexIndices.add(simplexIndex);
         fullprint << "Nearest index(" << point << "), simplex and coordinates=" << vertexSimplexIndices << ", " << coordinates << std::endl;
       }
       {
         Point point(1, -1.8);
-        fullprint << "Nearest index(" << point << ")=" << mesh1D.getNearestVertexIndex(point) << std::endl;
+        UnsignedInteger nearestIndex = tree.query(point);
+        fullprint << "Nearest index(" << point << ")=" << nearestIndex << std::endl;
         Point coordinates;
-        Indices vertexSimplexIndices = mesh1D.getNearestVertexAndSimplexIndicesWithCoordinates(point, coordinates);
+        UnsignedInteger simplexIndex;
+        Bool found = mesh1D.checkPointInNeighbourhoodWithCoordinates(point, nearestIndex, simplexIndex, coordinates);
+        Indices vertexSimplexIndices(1, nearestIndex);
+        if (found) vertexSimplexIndices.add(simplexIndex);
         fullprint << "Nearest index(" << point << "), simplex and coordinates=" << vertexSimplexIndices << ", " << coordinates << std::endl;
       }
       Sample points(2, 1);
       points[0] = Point(1, -0.25);
       points[1] = Point(1, 2.25);
-      fullprint << "Nearest index(" << points << ")=" << mesh1D.getNearestVertexIndex(points) << std::endl;
+      fullprint << "Nearest index(" << points << ")=" << tree.query(points) << std::endl;
       fullprint << "P1 Gram=" << mesh1D.computeP1Gram() << std::endl;
     }
     {
@@ -127,14 +135,14 @@ int main(int argc, char *argv[])
       simplicies[4][1] = 2;
       simplicies[4][2] = 5;
       Mesh mesh2D(vertices, simplicies);
-      mesh2D.computeKDTree();
+      KDTree tree(vertices);
       fullprint << "2D mesh=" << mesh2D << std::endl;
       Point point(2, 1.8);
-      fullprint << "Nearest index(" << point << ")=" << mesh2D.getNearestVertexIndex(point) << std::endl;
+      fullprint << "Nearest index(" << point << ")=" << tree.query(point) << std::endl;
       Sample points(2, 2);
       points[0] = Point(2, -0.25);
       points[1] = Point(2, 2.25);
-      fullprint << "Nearest index(" << points << ")=" << mesh2D.getNearestVertexIndex(points) << std::endl;
+      fullprint << "Nearest index(" << points << ")=" << tree.query(points) << std::endl;
       fullprint << "P1 Gram=" << mesh2D.computeP1Gram() << std::endl;
     }
     {
@@ -213,14 +221,14 @@ int main(int argc, char *argv[])
       simplicies[5][3] = 6;
 
       Mesh mesh3D(vertices, simplicies);
-      mesh3D.computeKDTree();
+      KDTree tree(vertices);
       fullprint << "3D mesh=" << mesh3D << std::endl;
       Point point(3, 1.8);
-      fullprint << "Nearest index(" << point << ")=" << mesh3D.getNearestVertexIndex(point) << std::endl;
+      fullprint << "Nearest index(" << point << ")=" << tree.query(point) << std::endl;
       Sample points(2, 3);
       points[0] = Point(3, -0.25);
       points[1] = Point(3, 2.25);
-      fullprint << "Nearest index(" << points << ")=" << mesh3D.getNearestVertexIndex(points) << std::endl;
+      fullprint << "Nearest index(" << points << ")=" << tree.query(points) << std::endl;
       fullprint << "P1 Gram=" << mesh3D.computeP1Gram() << std::endl;
     }
   }

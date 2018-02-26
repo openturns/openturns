@@ -19,8 +19,8 @@
  *
  */
 
-#include "openturns/Exception.hxx"
 #include "openturns/KDTree.hxx"
+#include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/SobolSequence.hxx"
@@ -246,7 +246,7 @@ private:
 
 /* Default constructor */
 KDTree::KDTree()
-  : PersistentObject()
+  : NearestNeighbourAlgorithmImplementation()
   , points_(0, 0)
   , boundingBox_()
   , p_root_(0)
@@ -256,17 +256,32 @@ KDTree::KDTree()
 
 /* Parameters constructor */
 KDTree::KDTree(const Sample & points)
-  : PersistentObject()
-  , points_(points)
+  : NearestNeighbourAlgorithmImplementation()
+  , points_(0, 0)
   , boundingBox_()
   , p_root_(0)
 {
   // Build the tree
-  initialize();
+  setSample(points);
 }
 
-void KDTree::initialize()
+/* Sample accessor */
+Sample KDTree::getSample() const
 {
+  return points_;
+}
+
+void KDTree::setSample(const Sample & points)
+{
+  if (points == points_) return;
+
+  // Reset tree if it contains old points
+  if (!p_root_.isNull())
+  {
+    p_root_.reset();
+  }
+
+  points_ = points;
   boundingBox_ = Interval(points_.getDimension());
 
   // Scramble the order in which the points are inserted in the tree in order to improve its balancing
@@ -290,17 +305,23 @@ KDTree * KDTree::clone() const
   return new KDTree( *this );
 }
 
+/* Virtual default constructor */
+KDTree * KDTree::emptyClone() const
+{
+  return new KDTree();
+}
+
 /* String converter */
 String KDTree::__repr__() const
 {
-  return OSS() << "class=" << GetClassName()
-         << " root=" << p_root_->__repr__();
+  return OSS(true) << "class=" << GetClassName()
+         << " root=" << (p_root_ ? p_root_->__repr__() : "NULL");
 }
 
-/* Check if the tree is empty */
-Bool KDTree::isEmpty() const
+String KDTree::__str__() const
 {
-  return points_.getSize() == 0;
+  return OSS(false) << "class=" << GetClassName()
+         << " root=" << (p_root_ ? p_root_->__repr__() : "NULL");
 }
 
 /* Insert the point at given index into the tree */
@@ -315,62 +336,14 @@ void KDTree::insert(KDNode::KDNodePointer & p_node,
   else insert(p_node->p_right_, index, (activeDimension + 1) % points_.getDimension());
 }
 
-/* Get the indices of the k nearest neighbours of the given point */
-Indices KDTree::getNearestNeighboursIndices(const Point & x,
-                                            const UnsignedInteger k,
-                                            const Bool sorted) const
-{
-  if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
-  Indices result(k);
-  // If we need as many neighbours as points in the sample, just return all the possible indices
-  if (k == points_.getSize() && !sorted)
-  {
-    result.fill();
-  }
-  else
-  {
-    KDNearestNeighboursFinder heap(points_, boundingBox_, k);
-    result = heap.getNearestNeighboursIndices(p_root_, x, sorted);
-  }
-  return result;
-}
-
-/* Get the k nearest neighbours of the given point */
-Sample KDTree::getNearestNeighbours(const Point & x,
-                                    const UnsignedInteger k,
-                                    const Bool sorted) const
-{
-  return points_.select(getNearestNeighboursIndices(x, k, sorted));
-}
-
-UnsignedInteger KDTree::getNearestNeighbourIndex(const Point & x) const
+/* Get the index of the nearest neighbour of the given point */
+UnsignedInteger KDTree::query(const Point & x) const
 {
   if (points_.getSize() == 1) return 0;
   Scalar smallestDistance = SpecFunc::MaxScalar;
   Point lowerBoundingBox(boundingBox_.getLowerBound());
   Point upperBoundingBox(boundingBox_.getUpperBound());
   return getNearestNeighbourIndex(p_root_, x, smallestDistance, lowerBoundingBox, upperBoundingBox, 0);
-}
-
-Point KDTree::getNearestNeighbour(const Point & x) const
-{
-  return points_[getNearestNeighbourIndex(x)];
-}
-
-/* Get the index of the nearest neighbour of the given points */
-Indices KDTree::getNearestNeighbourIndex(const Sample & sample) const
-{
-  const UnsignedInteger size = sample.getSize();
-  Indices result(size);
-  for(UnsignedInteger i = 0; i < size; ++i)
-    result[i] = getNearestNeighbourIndex(sample[i]);
-  return result;
-}
-
-/* Get the nearest neighbour of the given points */
-Sample KDTree::getNearestNeighbour(const Sample & sample) const
-{
-  return points_.select(getNearestNeighbourIndex(sample));
 }
 
 UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
@@ -381,7 +354,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
     const UnsignedInteger activeDimension) const
 {
   if (p_node == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an emty tree";
-  // Set delta = x[activeDimension] - points_[p_node->index_]
+  // Set delta = x[activeDimension] - points_(p_node->index_, activeDimension)
   // sameSide = p_node->p_left_ if delta < 0, p_node->p_right_ else
   // oppositeSide = p_node->p_right_ if delta < 0, p_node->p_left_ else
   // Possibilities:
@@ -491,26 +464,39 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
   return currentBestIndex;
 }
 
-/* Points accessor */
-Sample KDTree::getPoints() const
+/* Get the indices of the k nearest neighbours of the given point */
+Indices KDTree::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const
 {
-  return points_;
+  if (k > points_.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the database!";
+  Indices result(k);
+  // If we need as many neighbours as points in the sample, just return all the possible indices
+  if (k == points_.getSize() && !sorted)
+  {
+    result.fill();
+  }
+  else
+  {
+    KDNearestNeighboursFinder heap(points_, boundingBox_, k);
+    result = heap.getNearestNeighboursIndices(p_root_, x, sorted);
+  }
+  return result;
 }
 
-/* Method save() stores the object through the StorageManager */
+/** Method save() stores the object through the StorageManager */
 void KDTree::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  NearestNeighbourAlgorithmImplementation::save(adv);
   adv.saveAttribute("points_", points_);
 }
 
-
-/* Method load() reloads the object from the StorageManager */
+/** Method load() reloads the object from the StorageManager */
 void KDTree::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute("points_", points_);
-  if (points_.getSize() > 0) initialize();
+  NearestNeighbourAlgorithmImplementation::load(adv);
+  Sample points;
+  adv.loadAttribute("points_", points);
+  if (points.getSize() > 0) setSample(points);
+
 }
 
 END_NAMESPACE_OPENTURNS

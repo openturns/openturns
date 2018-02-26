@@ -20,6 +20,7 @@
 %import BaseCommonTemplateDefs.i
 
 /* Base/Type */
+%include BaseTypCollection.i
 %import typ_module.i
 %import BaseTypTemplateDefs.i
 
@@ -40,7 +41,11 @@
 %include Classifier.i
 %include FittingAlgorithmImplementation.i
 %include FittingAlgorithm.i
+%include NearestNeighbourAlgorithmImplementation.i
+%include NearestNeighbourAlgorithm.i
 %include KDTree.i
+%include RegularGridNearestNeighbour.i
+%include NaiveNearestNeighbour.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
 %include DesignProxy.i

@@ -118,11 +118,43 @@ void Mesh::setVertices(const Sample & vertices)
   upperBoundingBoxSimplices_ = Sample(0, dimension_);
 }
 
-/* Compute KDTree to speed-up searches */
-void Mesh::computeKDTree()
+/* Nearest neighbour algorithm accessor */
+NearestNeighbourAlgorithm Mesh::getNearestNeighbourAlgorithm() const
 {
-  tree_ = KDTree(vertices_);
+  return tree_;
 }
+
+void Mesh::setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & tree)
+{
+  NearestNeighbourAlgorithm emptyClone(tree.getImplementation()->emptyClone());
+  tree_.swap(emptyClone);
+  tree_.setSample(vertices_);
+}
+
+/* Check if the given point is in a simplex containing nearestIndex and returns simplex index and barycentric coordinates */
+Bool Mesh::checkPointInNeighbourhoodWithCoordinates(const Point & point,
+    const UnsignedInteger nearestIndex,
+    UnsignedInteger & simplexIndex,
+    Point & coordinates) const
+{
+  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
+  // To be sure that the vertices to simplices map is up to date
+  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
+  const Indices simplicesCandidates(verticesToSimplices_[nearestIndex]);
+  coordinates = Point(0);
+  for (UnsignedInteger i = 0; i < simplicesCandidates.getSize(); ++i)
+  {
+    simplexIndex = simplicesCandidates[i];
+    if (checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates))
+    {
+      return true;
+    }
+  } // Loop over the simplices candidates
+  // If no simplex contains the given point, reset the coordinates vector
+  coordinates = Point(0);
+  return false;
+}
+
 
 /* Vertex accessor */
 Point Mesh::getVertex(const UnsignedInteger index) const
@@ -313,7 +345,7 @@ struct NearestFunctor
 UnsignedInteger Mesh::getNearestVertexIndex(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-  if (!tree_.isEmpty()) return tree_.getNearestNeighbourIndex(point);
+  if (tree_.getSample().getSize() > 0) return tree_.query(point);
   NearestFunctor functor( *this, point );
   TBB::ParallelReduce( 0, getVerticesNumber(), functor );
   return functor.minIndex_;

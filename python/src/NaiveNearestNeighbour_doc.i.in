@@ -1,7 +1,5 @@
-%feature("docstring") OT::KDTree
-"Partition tree data structure.
-
-Allows to store and search points fast.
+%feature("docstring") OT::NaiveNearestNeighbour
+"Brute force algorithm for nearest-neighbour lookup.
 
 Parameters
 ----------
@@ -10,19 +8,26 @@ sample : 2-d sequence of float
 
 See also
 --------
-NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour
+NearestNeighbourAlgorithm, RegularGridNearestNeighbour, KDTree
+
+Notes
+-----
+
+This algorithm compares distance to all points in input sample.
+It can be used when sample size is very small, or in high dimension.
+In other cases, KDTree is much faster.
 
 Examples
 --------
 >>> import openturns as ot
 >>> sample = ot.Normal(2).getSample(10)
->>> tree = ot.KDTree(sample)
+>>> tree = ot.NaiveNearestNeighbour(sample)
 >>> neighbour = sample[tree.query([0.1, 0.2])]"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KDTree::setSample
-"Build a kd-tree from these points.
+%feature("docstring") OT::NaiveNearestNeighbour::setSample
+"Collection of points accessor.
 
 Parameters
 ----------
@@ -31,7 +36,7 @@ sample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KDTree::getSample
+%feature("docstring") OT::NaiveNearestNeighbour::getSample
 "Collection of points accessor.
 
 Returns
@@ -41,7 +46,7 @@ points : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KDTree::query
+%feature("docstring") OT::NaiveNearestNeighbour::query
 "Accessor to the nearest neighbour index.
 
 Parameters
@@ -56,7 +61,7 @@ index : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KDTree::queryK
+%feature("docstring") OT::NaiveNearestNeighbour::queryK
 "Accessor to the nearest neighbours indices.
 
 Parameters

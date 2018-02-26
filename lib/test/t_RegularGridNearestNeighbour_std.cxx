@@ -24,57 +24,38 @@
 using namespace OT;
 using namespace OT::Test;
 
-namespace
-{
-Scalar debug_squared_minimum_distance(const Point & point, const Sample & sample)
-{
-  Scalar result = SpecFunc::MaxScalar;
-  for(UnsignedInteger i = 0; i < sample.getSize(); ++i)
-  {
-    const Scalar distance2 = Point(sample[i] - point).normSquare();
-    if (distance2 < result) result = distance2;
-  }
-  return result;
-}
-}
-
 int main(int argc, char *argv[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  const Sample sample(Normal(3).getSample(10));
-  const KDTree tree(sample);
-  fullprint << "tree=" << tree << std::endl;
-  const Sample test(Normal(3).getSample(20));
+  /*Using deltaT constructor */
+  const Scalar start = -1.0;
+  const Scalar step = 0.1;
+  const UnsignedInteger n = 21;
+  const RegularGrid regularGrid(start, step, n);
+  fullprint << "regularGrid = " << regularGrid << std::endl;
+  const RegularGridNearestNeighbour regularGridNearestNeighbourAlgorithm(regularGrid);
+  fullprint << "regularGridNearestNeighbourAlgorithm=" << regularGridNearestNeighbourAlgorithm << std::endl;
+  const Sample test(Normal(1).getSample(20));
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {
-    const Scalar expected = debug_squared_minimum_distance(test[i], sample);
-    UnsignedInteger index = tree.query(test[i]);
-    Point neighbour(sample[tree.query(test[i])]);
+    const UnsignedInteger index = regularGridNearestNeighbourAlgorithm.query(test[i]);
+    const Point neighbour(1, regularGrid.getValue(index));
     fullprint << "Nearest neighbour of " << test[i] << "=" << neighbour << " (index=" << index << ")" << std::endl;
-    if (std::abs(Point(test[i] - sample[index]).normSquare() - expected) > 1.e-5)
-    {
-      fullprint << "Wrong nearest neighbour of " << test[i] << " (index=" << index << ")" << std::endl;
-      return ExitCode::Error;
-    }
-    if (std::abs(Point(test[i] - neighbour).normSquare() - expected) > 1.e-5)
-    {
-      fullprint << "Wrong nearest neighbour of " << test[i] << "=" << neighbour << std::endl;
-      return ExitCode::Error;
-    }
   }
 
   const UnsignedInteger k = 4;
+  const Point values(regularGrid.getValues());
   for (UnsignedInteger i = 0; i < test.getSize(); ++i)
   {
-    Indices indices = tree.queryK(test[i], k, true);
+    const Indices indices = regularGridNearestNeighbourAlgorithm.queryK(test[i], k, true);
     fullprint << k << " nearest neighbours of " << test[i] << "=" << " (indices=" << indices << ")" << std::endl;
     // Check that returned neighbours are sorted
     Scalar last = 0.0;
     for(UnsignedInteger j = 0; j < indices.getSize(); ++j)
     {
-      const Scalar current = Point(test[i] - sample[indices[j]]).normSquare();
+      const Scalar current = (test(i, 0) - values[indices[j]]) * (test(i, 0) - values[indices[j]]);
       if (last > current)
       {
         fullprint << "Wrong nearest neighbour of " << test[i] << " (indices=" << indices << ")" << std::endl;
@@ -83,6 +64,8 @@ int main(int argc, char *argv[])
       last = current;
     }
   }
+  Indices indices = regularGridNearestNeighbourAlgorithm.queryK(test[0], n, true);
+  fullprint << n << " nearest neighbours of " << test[0] << "=" << " (indices=" << indices << ")" << std::endl;
 
   return ExitCode::Success;
 }
