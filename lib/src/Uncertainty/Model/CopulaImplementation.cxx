@@ -88,12 +88,13 @@ Scalar CopulaImplementation::computeSurvivalFunction(const Point & point) const
   for (UnsignedInteger i = 2; i < dimension - 1; ++i)
   {
     Scalar contribution = 0.0;
-    Combinations::IndicesCollection indices(Combinations(i, dimension).generate());
+    IndicesCollection indices(Combinations(i, dimension).generate());
     Point subPoint(i);
     for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
     {
-      for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[indices[j][k]];
-      contribution += getMarginal(indices[j])->computeCDF(subPoint);
+      const Indices marginalJ(indices.cbegin_at(j), indices.cend_at(j));
+      for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[marginalJ[k]];
+      contribution += getMarginal(marginalJ)->computeCDF(subPoint);
     }
     value += sign * contribution;
     sign = -sign;

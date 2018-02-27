@@ -43,7 +43,6 @@ public:
 
   typedef std::pair< Indices , Scalar > ValueType;
   typedef std::list<ValueType>                   IndiceCache;
-  typedef Collection<Indices>                    IndicesCollection;
 
   /** Default constructor */
   HyperbolicAnisotropicEnumerateFunction();
@@ -113,7 +112,7 @@ private:
   mutable IndiceCache candidates_;
 
   /** Candidate indices */
-  mutable IndicesCollection cache_;
+  mutable Collection<Indices> cache_;
 
   /** Cumulated strata cardinals */
   mutable Indices strataCumulatedCardinal_;

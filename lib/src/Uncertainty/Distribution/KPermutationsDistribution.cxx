@@ -214,7 +214,16 @@ KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal
 Sample KPermutationsDistribution::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  return KPermutations(k_, n_).generate();
+  // Convert int values into float
+  const IndicesCollection intResult(KPermutations(k_, n_).generate());
+  const UnsignedInteger size = intResult.getSize();
+  if (size == 0) return Sample();
+  const UnsignedInteger dimension = intResult.cend_at(0) - intResult.cbegin_at(0);
+  Sample result(size, dimension);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      result(i, j) = intResult(i, j);
+  return result;
 }
 
 /* Compute the mean of the distribution */

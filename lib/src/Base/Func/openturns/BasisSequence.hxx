@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_BASISSEQUENCE_HXX
 #define OPENTURNS_BASISSEQUENCE_HXX
 
-#include "openturns/TypedCollectionInterfaceObject.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/BasisSequenceImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * A sequence of numerical math function collection.
  */
 class OT_API BasisSequence
-  : public TypedCollectionInterfaceObject<BasisSequenceImplementation>
+  : public TypedInterfaceObject<BasisSequenceImplementation>
 {
   CLASSNAME
 
@@ -62,8 +62,16 @@ public:
   /** Indices accessor */
   Indices getIndices(const UnsignedInteger index) const;
 
+  /** Size accessor */
+  UnsignedInteger getSize() const;
+
+  /** Extend basis */
+  void add(const Indices & indices);
+
+#ifndef SWIG
   /** Converter to Basis collection */
-  operator PersistentCollection< Indices > () const;
+  operator IndicesCollection() const;
+#endif
 
   /** String converter */
   virtual String __repr__() const;

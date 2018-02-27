@@ -1272,7 +1272,7 @@ Sample RandomMixture::computePDF(const Point & xMin,
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: xMin & xMax should be different to define a grid";
   if (isAnalytical_ && (dimension_ == 1)) return DistributionImplementation::computePDF(xMin, xMax, pointNumber, grid);
-  Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
+  IndicesCollection indices(Tuples(pointNumber).generate());
 
   if (dimension_ < 1 || dimension_ > 3) throw InvalidArgumentException(HERE) << "Error: dimension must be 1, 2 or 3; here dimension=" << dimension_;
   // Special case for 1D distributions with exactly 2 atoms
@@ -1316,7 +1316,7 @@ Sample RandomMixture::computePDF(const Point & xMin,
   grid = Sample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
-      grid[i][j] = mu[j] + ((2.0 * indices[i][j] + 1.0) / pointNumber[j] - 1.0) * b_sigma[j];
+      grid(i, j) = mu[j] + ((2.0 * indices(i, j) + 1.0) / pointNumber[j] - 1.0) * b_sigma[j];
 
   LOGWARN(OSS() << "Warning! Grid is modified: xMin=" << grid[0] << " xMax=" << grid[size - 1] << " instead of xMin=" << xMin << ", xMax=" << xMax);
 

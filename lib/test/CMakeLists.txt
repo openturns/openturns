@@ -127,6 +127,7 @@ ot_check_test (AtomicFunctions_std IGNOREOUT)
 # Type
 ot_check_test (Collection_std)
 ot_check_test (Indices_std)
+ot_check_test (IndicesCollection_std)
 ot_check_test (Description_std)
 ot_check_test (Point_std)
 ot_check_test (Point_description)

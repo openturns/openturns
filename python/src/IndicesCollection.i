@@ -1,15 +1,33 @@
-// SWIG file BipartiteGraph.i
+// SWIG file IndicesCollection.i
 
 %{
-#include "openturns/BipartiteGraph.hxx"
+#include "openturns/IndicesCollection.hxx"
 %}
 
-%include BipartiteGraph_doc.i
+OTTypedInterfaceObjectHelper(IndicesCollection)
 
-%include openturns/BipartiteGraph.hxx
+%typemap(in) const IndicesCollection & ($1_basetype temp) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+    try {
+      temp = OT::convert<OT::_PySequence_, OT::IndicesCollection>( $input );
+      $1 = &temp;
+    } catch (OT::InvalidArgumentException &) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to an IndicesCollection");
+    }
+  }
+}
+
+%typemap(typecheck,precedence=5) const IndicesCollection & {
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
+       OT::isAPythonBufferOf<OT::UnsignedInteger, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>( $input );
+}
+
+%apply const IndicesCollection & { const OT::IndicesCollection & };
+
+%include openturns/IndicesCollection.hxx
 
 namespace OT {
-%extend BipartiteGraph {
+%extend IndicesCollection {
 
 Indices __getitem__(SignedInteger index) const {
   OT::UnsignedInteger size = self->getSize();
@@ -44,9 +62,14 @@ UnsignedInteger __len__() const
   return self->getSize();
 }
 
-BipartiteGraph(const BipartiteGraph & other)
+IndicesCollection(const IndicesCollection & other)
 {
-  return new OT::BipartiteGraph(other);
+  return new OT::IndicesCollection(other);
+}
+
+IndicesCollection(PyObject * pyObj)
+{
+  return new OT::IndicesCollection( OT::convert< OT::_PySequence_, OT::IndicesCollection >(pyObj) );
 }
 
 }

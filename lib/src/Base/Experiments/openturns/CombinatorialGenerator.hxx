@@ -37,8 +37,6 @@ class OT_API CombinatorialGenerator
   CLASSNAME
 public:
 
-  typedef CombinatorialGeneratorImplementation::IndicesCollection IndicesCollection;
-
   /** Default constructor */
   CombinatorialGenerator();
 

@@ -111,10 +111,10 @@ void CumulativeDistributionNetwork::computeRange()
     Interval::BoolCollection lowerBoundsFlags(infiniteLowerBoundsFlags);
     Interval::BoolCollection upperBoundsFlags(infiniteUpperBoundsFlags);
     Interval cdfRange(distributionCollection_[i].getRange());
-    const Indices indices(graph_[i]);
-    for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
+    const UnsignedInteger nodeSize = graph_.cend_at(i) - graph_.cbegin_at(i);
+    for (UnsignedInteger j = 0; j < nodeSize; ++j)
     {
-      const UnsignedInteger index = indices[j];
+      const UnsignedInteger index = graph_(i, j);
       lowerBounds[index] = cdfRange.getLowerBound()[j];
       upperBounds[index] = cdfRange.getUpperBound()[j];
       lowerBoundsFlags[index] = cdfRange.getFiniteLowerBound()[j];
@@ -135,7 +135,8 @@ void CumulativeDistributionNetwork::setDistributionCollection(const Distribution
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    if (coll[i].getDimension() != graph_[i].getSize()) throw InvalidArgumentException(HERE) << "Error: the distribution " << i << " has a dimension=" << size << " which is different from the number of links=" << graph_[i].getSize() << " starting from red node " << i;
+    const UnsignedInteger nodeSize = graph_.cend_at(i) - graph_.cbegin_at(i);
+    if (coll[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the distribution " << i << " has a dimension=" << size << " which is different from the number of links=" << nodeSize << " starting from red node " << i;
     parallel = parallel && coll[i].getImplementation()->isParallel();
   }
   setParallel(parallel);
@@ -158,7 +159,11 @@ void CumulativeDistributionNetwork::setGraph(const BipartiteGraph & graph)
   // Check the number of distributions
   if (size != graph.getRedNodes().getSize()) throw InvalidArgumentException(HERE) << "Error: the given graph has a number of red nodes=" << graph_.getRedNodes().getSize() << " different from the collection of distributions size=" << size;
   // Check the dimension of the distributions
-  for (UnsignedInteger i = 0; i < size; ++i) if (distributionCollection_[i].getDimension() != graph_[i].getSize()) throw InvalidArgumentException(HERE) << "Error: the number of links=" << graph[i].getSize() << " starting from red node " << i << " is different from distribution " << i << " dimension=" << size;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const UnsignedInteger nodeSize = graph.cend_at(i) - graph.cbegin_at(i);
+    if (distributionCollection_[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the number of links=" << nodeSize << " starting from red node " << i << " is different from distribution " << i << " dimension=" << size;
+    }
   graph_ = graph;
 }
 
@@ -191,10 +196,9 @@ Sample CumulativeDistributionNetwork::getSample(const UnsignedInteger size) cons
 Point CumulativeDistributionNetwork::reducePoint(const Point & point,
     const UnsignedInteger index) const
 {
-  const Indices indices(graph_[index]);
-  const UnsignedInteger size = indices.getSize();
+  const UnsignedInteger size = graph_.cend_at(index) - graph_.cbegin_at(index);
   Point reducedPoint(size);
-  for (UnsignedInteger i = 0; i < size; ++i) reducedPoint[i] = point[indices[i]];
+  for (UnsignedInteger i = 0; i < size; ++i) reducedPoint[i] = point[graph_(index, i)];
   return reducedPoint;
 }
 
@@ -228,14 +232,14 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
   if (dimension == 1) return clone();
   // General case
   DistributionCollection contributors(0);
-  BipartiteGraph marginalGraph(0);
+  Collection<Indices> marginalGraph(0);
   for (UnsignedInteger j = 0; j < distributionCollection_.getSize(); ++j)
   {
     // Check if the current contributor contains k
     UnsignedInteger localIndex = dimension;
-    Indices currentIndices(graph_[j]);
-    for (UnsignedInteger k = 0; k < currentIndices.getSize(); ++k)
-      if (i == currentIndices[k])
+    UnsignedInteger k = 0;
+    for (IndicesCollection::const_iterator cit = graph_.cbegin_at(j); cit != graph_.cend_at(j); ++cit, ++k)
+      if (i == (*cit))
       {
         localIndex = k;
         break;
@@ -248,7 +252,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
     }
   } // Loop over the CDFs
   if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
-  return new CumulativeDistributionNetwork(contributors, marginalGraph);
+  return new CumulativeDistributionNetwork(contributors, BipartiteGraph(IndicesCollectionImplementation(marginalGraph)));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */

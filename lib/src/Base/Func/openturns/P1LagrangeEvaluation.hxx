@@ -42,8 +42,6 @@ class OT_API P1LagrangeEvaluation
 
 public:
 
-  typedef Mesh::IndicesCollection IndicesCollection;
-
   /** Default constructor */
   P1LagrangeEvaluation();
 

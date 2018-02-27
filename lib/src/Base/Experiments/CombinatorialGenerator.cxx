@@ -63,7 +63,7 @@ void CombinatorialGenerator::setImplementation(const Implementation & p_implemen
 }
 
 /* Sample generation */
-CombinatorialGenerator::IndicesCollection CombinatorialGenerator::generate()
+IndicesCollection CombinatorialGenerator::generate()
 {
   return getImplementation()->generate();
 }

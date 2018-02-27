@@ -833,25 +833,18 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
       ScopedPyObjectPointer askObj(PyTuple_New(2));
       ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
       Sample sample( size, dimension );
-      try
+      for ( UnsignedInteger i = 0; i < size; ++ i )
       {
-        for ( UnsignedInteger i = 0; i < size; ++ i )
+        PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
+        for ( UnsignedInteger j = 0; j < dimension; ++ j )
         {
-          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
-          for ( UnsignedInteger j = 0; j < dimension; ++ j )
+          PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
+          ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
+          if (elt.get())
           {
-            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
-            ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
-            if (elt.get())
-            {
-              sample( i, j ) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
-            }
+            sample( i, j ) = checkAndConvert<_PyFloat_, Scalar>(elt.get());
           }
         }
-      }
-      catch (InvalidArgumentException &)
-      {
-        throw;
       }
       return sample;
     }
@@ -866,14 +859,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
 
   // Get dimension of first point
   PyObject * firstPoint = PySequence_Fast_GET_ITEM( newPyObj.get(), 0 );
-  try
-  {
-    check<_PySequence_>( firstPoint );
-  }
-  catch (InvalidArgumentException &)
-  {
-    throw;
-  }
+  check<_PySequence_>( firstPoint );
   ScopedPyObjectPointer newPyFirstObj(PySequence_Fast( firstPoint, "" ));
   const UnsignedInteger dimension = PySequence_Fast_GET_SIZE( newPyFirstObj.get() );
   // Allocate result Sample
@@ -885,14 +871,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
     if (i > 0)
     {
       // Check that object is a sequence, and has the right size
-      try
-      {
-        check<_PySequence_>( pointObj );
-      }
-      catch (InvalidArgumentException &)
-      {
-        throw;
-      }
+      check<_PySequence_>( pointObj );
       if (static_cast<UnsignedInteger>(PySequence_Fast_GET_SIZE( newPyPointObj.get() )) != dimension) throw;
     }
     for(UnsignedInteger j = 0; j < dimension; ++j)
@@ -973,6 +952,111 @@ convert< Indices, _PySequence_ >(Indices inP)
     PyTuple_SetItem( point, i, convert< UnsignedInteger, _PyInt_ >(inP[i]));
   }
   return point;
+}
+
+template <>
+struct traitsPythonType< IndicesCollection >
+{
+  typedef _PySequence_ Type;
+};
+
+template <>
+inline
+IndicesCollection
+convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
+{
+  // Check whether pyObj follows the buffer protocol
+  if (PyObject_CheckBuffer(pyObj))
+  {
+    Py_buffer view;
+    if (PyObject_GetBuffer(pyObj, &view, PyBUF_FORMAT | PyBUF_ND | PyBUF_ANY_CONTIGUOUS) >= 0)
+    {
+      if (view.ndim == 2 &&
+          view.itemsize == traitsPythonType<UnsignedInteger>::buf_itemsize &&
+          view.format != NULL &&
+          strcmp(view.format, pyBuf_formats[traitsPythonType<UnsignedInteger>::buf_format_idx]) == 0)
+      {
+        const UnsignedInteger* data = static_cast<const UnsignedInteger*>(view.buf);
+        const UnsignedInteger size = view.shape[0];
+        const UnsignedInteger dimension = view.shape[1];
+        IndicesCollection indices( size, dimension );
+        if (PyBuffer_IsContiguous(&view, 'C'))
+        {
+          // 2-d contiguous array in C notation, we can directly copy memory chunk
+          std::copy(data, data + size * dimension, &indices(0,0));
+        }
+        else
+        {
+          for (UnsignedInteger j = 0; j < dimension; ++j)
+            for(UnsignedInteger i = 0; i < size; ++i, ++data)
+              indices(i, j) = *data;
+        }
+        PyBuffer_Release(&view);
+        return indices;
+      }
+      PyBuffer_Release(&view);
+    }
+    else
+      PyErr_Clear();
+  }
+
+  // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
+  if ( PyObject_HasAttrString(pyObj, const_cast<char *>("shape")) )
+  {
+    ScopedPyObjectPointer shapeObj(PyObject_GetAttrString( pyObj, "shape" ));
+    if ( !shapeObj.get() ) throw;
+
+    Indices shape( checkAndConvert< _PySequence_, Indices >( shapeObj.get() ) );
+    if ( shape.getSize() == 2 )
+    {
+      UnsignedInteger size = shape[0];
+      UnsignedInteger dimension = shape[1];
+      ScopedPyObjectPointer askObj(PyTuple_New(2));
+      ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
+      IndicesCollection indices( size, dimension );
+      for ( UnsignedInteger i = 0; i < size; ++ i )
+      {
+        PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
+        for ( UnsignedInteger j = 0; j < dimension; ++ j )
+        {
+          PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
+          ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
+          if (elt.get())
+          {
+            indices( i, j ) = checkAndConvert<_PyInt_, UnsignedInteger>(elt.get());
+          }
+        }
+      }
+      return indices;
+    }
+    else
+      throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
+  }
+  // This object is a sequence; unlike Matrix and Sample, dimension is not constant.
+  check<_PySequence_>(pyObj);
+  ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
+  if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
+  const UnsignedInteger size = PySequence_Fast_GET_SIZE( newPyObj.get() );
+  if (size == 0) return IndicesCollection();
+  // Allocate a Collection of Indices
+  Collection<Indices> coll(size);
+  for(UnsignedInteger i = 0; i < size; ++i)
+  {
+    PyObject * indicesObj = PySequence_Fast_GET_ITEM( newPyObj.get(), i );
+    ScopedPyObjectPointer newPyIndicesObj(PySequence_Fast( indicesObj, "" ));
+    // Check that object is a sequence
+    check<_PySequence_>( indicesObj );
+    const UnsignedInteger dimension = PySequence_Fast_GET_SIZE( newPyIndicesObj.get() );
+    Indices newIndices(dimension);
+    for(UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      PyObject * value = PySequence_Fast_GET_ITEM( newPyIndicesObj.get(), j );
+      newIndices[j] = PyLong_AsUnsignedLong(value);
+      handleException();
+    }
+    coll[i] = newIndices;
+  }
+  return IndicesCollection(coll);
 }
 
 

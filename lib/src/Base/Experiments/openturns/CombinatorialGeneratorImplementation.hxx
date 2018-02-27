@@ -24,6 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/IndicesCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,7 +42,6 @@ class OT_API CombinatorialGeneratorImplementation
 public:
 
   typedef Pointer<CombinatorialGeneratorImplementation> Implementation;
-  typedef Collection< Indices >                         IndicesCollection;
 
   /** Default constructor */
   CombinatorialGeneratorImplementation();

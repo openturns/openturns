@@ -147,17 +147,16 @@ void GaussLegendre::generateNodesAndWeights()
     } // No match found
   } // For i
   // Now, generate the nD rule over [0, 1]^n
-  Tuples::IndicesCollection allTuples(Tuples(discretization_).generate());
+  IndicesCollection allTuples(Tuples(discretization_).generate());
   const UnsignedInteger size = allTuples.getSize();
   nodes_ = Sample(size, dimension);
   weights_ = Point(size, 1.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Indices indices(allTuples[i]);
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      nodes_[i][j] = marginalNodes[j][indices[j]];
-      weights_[i] *= marginalWeights[j][indices[j]];
+      nodes_[i][j] = marginalNodes[j][allTuples(i, j)];
+      weights_[i] *= marginalWeights[j][allTuples(i, j)];
     }
   } // tuples
 }

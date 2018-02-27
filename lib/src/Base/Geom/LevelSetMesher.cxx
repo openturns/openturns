@@ -128,13 +128,13 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));
   Sample boundingVertices(boundingMesh.getVertices());
   const UnsignedInteger numVertices = boundingVertices.getSize();
-  const Mesh::IndicesCollection boundingSimplices(boundingMesh.getSimplices());
+  const IndicesCollection boundingSimplices(boundingMesh.getSimplices());
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
   // Second, keep only the simplices with a majority of vertices in the level set
   const Function function(levelSet.getFunction());
   const Point values(function(boundingVertices).asPoint());
   const Scalar level = levelSet.getLevel();
-  Mesh::IndicesCollection goodSimplices(0);
+  Indices goodSimplices(0);
   Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
   Indices flagGoodVertices(numVertices, 0);
@@ -151,12 +151,11 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   Point localValues(dimension + 1);
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
-    const Indices currentSimplex(boundingSimplices[i]);
     UnsignedInteger numGood = 0;
     // Count the vertices in the level set
     for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
-      const UnsignedInteger globalVertexIndex = currentSimplex[j];
+      const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
       if (values[globalVertexIndex] <= level)
       {
         ++numGood;
@@ -166,13 +165,13 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     // If enough vertices, keep the simplex and flag all the vertices
     if (numGood > 0)
     {
-      goodSimplices.add(currentSimplex);
+      goodSimplices.add(Collection<UnsignedInteger>(boundingSimplices.cbegin_at(i), boundingSimplices.cend_at(i)));
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
-          const UnsignedInteger index = currentSimplex[j];
+          const UnsignedInteger index = boundingSimplices(i, j);
           localVertices[j] = boundingVertices[index];
           localValues[j] = values[index];
         }
@@ -191,7 +190,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         // using a linear interpolation between the center and the vertex
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
-          const UnsignedInteger globalVertexIndex = currentSimplex[j];
+          const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
           // If the vertex has to be moved
           if ((flagGoodVertices[globalVertexIndex] == 0) && (localValues[j] > level))
           {
@@ -263,9 +262,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   }
   // Shift the vertices indices into the good simplices
   for (UnsignedInteger i = 0; i < goodSimplices.getSize(); ++i)
-    for (UnsignedInteger j = 0; j <= dimension; ++j)
-      goodSimplices[i][j] -= flagGoodVertices[goodSimplices[i][j]];
-  return Mesh(goodVertices, goodSimplices);
+    goodSimplices[i] -= flagGoodVertices[goodSimplices[i]];
+  return Mesh(goodVertices, IndicesCollection(goodSimplices.getSize() / (dimension + 1), dimension + 1, goodSimplices));
 }
 
 END_NAMESPACE_OPENTURNS

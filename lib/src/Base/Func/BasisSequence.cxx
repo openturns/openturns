@@ -29,21 +29,21 @@ CLASSNAMEINIT(BasisSequence)
 
 /* Default constructor */
 BasisSequence::BasisSequence()
-  : TypedCollectionInterfaceObject<BasisSequenceImplementation>( new BasisSequenceImplementation )
+  : TypedInterfaceObject<BasisSequenceImplementation>( new BasisSequenceImplementation )
 {
   // Nothing to do
 }
 
 /* Default constructor */
 BasisSequence::BasisSequence(const Basis & psi)
-  : TypedCollectionInterfaceObject<BasisSequenceImplementation>( new BasisSequenceImplementation(psi) )
+  : TypedInterfaceObject<BasisSequenceImplementation>( new BasisSequenceImplementation(psi) )
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
 BasisSequence::BasisSequence(const BasisSequenceImplementation & implementation)
-  : TypedCollectionInterfaceObject<BasisSequenceImplementation>( implementation.clone() )
+  : TypedInterfaceObject<BasisSequenceImplementation>( implementation.clone() )
 {
   // Nothing to do
 }
@@ -72,10 +72,22 @@ Indices BasisSequence::getIndices(const UnsignedInteger index) const
   return getImplementation()->getIndices( index );
 }
 
-/* Converter to Basis collection */
-BasisSequence::operator PersistentCollection<Indices> () const
+/* Size accessor */
+UnsignedInteger BasisSequence::getSize() const
 {
-  return *getImplementation();
+  return getImplementation()->getSize();
+}
+
+/** Extend basis */
+void BasisSequence::add(const Indices & indices)
+{
+  getImplementation()->add( indices );
+}
+
+/* Converter to Basis collection */
+BasisSequence::operator IndicesCollection () const
+{
+  return getImplementation()->getIndicesCollection();
 }
 
 /* String converter */

@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
     Combinations myGenerator(3, 5);
     fullprint << "myGenerator = " << myGenerator << std::endl;
-    Combinations::IndicesCollection combinations(myGenerator.generate());
+    IndicesCollection combinations(myGenerator.generate());
     fullprint << "combinations = " << combinations << std::endl;
   }
   catch (TestFailed & ex)

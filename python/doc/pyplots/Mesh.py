@@ -6,10 +6,9 @@ from openturns.viewer import View
 vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
             [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
 # Define the simplices of the mesh
-simplicies = ot.IndicesCollection(
-    [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]])
+simplices = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]]
 # Create the Mesh
-mesh2D = ot.Mesh(vertices, simplicies)
+mesh2D = ot.Mesh(vertices, simplices)
 # Create a Graph
 graph = ot.Graph('Mesh 2D', '', '', True, 'bottomright')
 graph.add(mesh2D.draw())

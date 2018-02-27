@@ -1,15 +1,12 @@
-// SWIG file BipartiteGraph.i
+// SWIG file IndicesCollectionImplementation.i
 
 %{
-#include "openturns/BipartiteGraph.hxx"
+#include "openturns/IndicesCollectionImplementation.hxx"
 %}
 
-%include BipartiteGraph_doc.i
-
-%include openturns/BipartiteGraph.hxx
-
-namespace OT {
-%extend BipartiteGraph {
+%include openturns/IndicesCollectionImplementation.hxx
+namespace OT{
+%extend IndicesCollectionImplementation {
 
 Indices __getitem__(SignedInteger index) const {
   OT::UnsignedInteger size = self->getSize();
@@ -44,9 +41,9 @@ UnsignedInteger __len__() const
   return self->getSize();
 }
 
-BipartiteGraph(const BipartiteGraph & other)
+IndicesCollectionImplementation(const IndicesCollectionImplementation & other)
 {
-  return new OT::BipartiteGraph(other);
+  return new OT::IndicesCollectionImplementation(other);
 }
 
 }

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     bounds[1] = 10;
     Tuples myGenerator(bounds);
     fullprint << "myGenerator = " << myGenerator << std::endl;
-    Tuples::IndicesCollection tuples(myGenerator.generate());
+    IndicesCollection tuples(myGenerator.generate());
     fullprint << "tuples = " << tuples << std::endl;
   }
   catch (TestFailed & ex)

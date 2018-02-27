@@ -24,9 +24,6 @@
 
 %apply const Indices & { const OT::Indices & };
 
-%template(IndicesCollection) OT::Collection<OT::Indices>;
-%template(IndicesPersistentCollection) OT::PersistentCollection<OT::Indices>;
-
 %include Indices_doc.i
 
 %include openturns/Indices.hxx

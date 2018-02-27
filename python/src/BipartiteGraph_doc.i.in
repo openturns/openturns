@@ -2,14 +2,10 @@
 "Bipartite red/black graph.
 
 Available constructors:
-    BipartiteGraph(*size=0*)
-
     BipartiteGraph(*sequence*)
 
 Parameters
 ----------
-size : int, :math:`size \geq 0`
-    Size of the collection.
 sequence : sequence of :class:`~openturns.Indices`
     Cliques of the red nodes.
 
@@ -21,12 +17,7 @@ Examples
 --------
 >>> import openturns as ot
 
-Use the first constructor:
-
->>> ot.BipartiteGraph(3)
-[[],[],[]]
-
-Use the second constructor:
+Create a bipartite graph:
 
 >>> graph = ot.BipartiteGraph([[1, 3], [2, 0], [5, 4]])
 >>> graph
@@ -36,11 +27,7 @@ Use some functionalities:
 
 >>> graph[1] = [3, 4]
 >>> graph
-[[1,3],[3,4],[5,4]]
-
->>> graph.add([1, 6])
->>> graph
-[[1,3],[3,4],[5,4],[1,6]]"
+[[1,3],[3,4],[5,4]]"
 
 // ---------------------------------------------------------------------
 

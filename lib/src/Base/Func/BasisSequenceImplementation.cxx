@@ -25,12 +25,8 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 TEMPLATE_CLASSNAMEINIT( PersistentCollection<Indices> )
 static const Factory<PersistentCollection<Indices> > Factory_PersistentCollection_Indices;
-
-
 
 CLASSNAMEINIT(BasisSequenceImplementation)
 
@@ -38,15 +34,17 @@ static const Factory<BasisSequenceImplementation> Factory_BasisSequenceImplement
 
 /* Default constructor */
 BasisSequenceImplementation::BasisSequenceImplementation()
-  : PersistentCollection<Indices>()
+  : PersistentObject()
+  , indices_()
 {
   // Nothing to do
 }
 
 /* Default constructor */
 BasisSequenceImplementation::BasisSequenceImplementation(const Basis & masterBasis)
-  : PersistentCollection<Indices>(),
-    masterBasis_(masterBasis)
+  : PersistentObject()
+  , masterBasis_(masterBasis)
+  , indices_()
 {
   // Nothing to do
 }
@@ -62,7 +60,7 @@ BasisSequenceImplementation * BasisSequenceImplementation::clone() const
 String BasisSequenceImplementation::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-         << " collection=" << PersistentCollection<Indices>::__repr__()
+         << " collection=" << indices_
          << " masterBasis=" << masterBasis_;
 }
 
@@ -78,6 +76,12 @@ UnsignedInteger BasisSequenceImplementation::getDimension() const
   return masterBasis_.getDimension();
 }
 
+/* Size accessor */
+UnsignedInteger BasisSequenceImplementation::getSize() const
+{
+  return indices_.getSize();
+}
+
 /* Returns the master basis */
 Basis BasisSequenceImplementation::getMasterBasis() const
 {
@@ -87,29 +91,43 @@ Basis BasisSequenceImplementation::getMasterBasis() const
 Basis BasisSequenceImplementation::getBasis(const UnsignedInteger index) const
 {
   Basis result;
-  Indices subBasisIndices(operator[](index));
+  Indices subBasisIndices(getIndices(index));
   for (UnsignedInteger i = 0; i < subBasisIndices.getSize(); ++ i) result.add(masterBasis_[subBasisIndices[i]]);
   return result;
 }
 
+/* IndicesCollection accessor */
+IndicesCollection BasisSequenceImplementation::getIndicesCollection() const
+{
+  return IndicesCollection(indices_);
+}
+
 Indices BasisSequenceImplementation::getIndices(const UnsignedInteger index) const
 {
-  return operator[](index);
+  return indices_[index];
+}
+
+/** Extend basis */
+void BasisSequenceImplementation::add(const Indices & indices)
+{
+  indices_.add(indices);
 }
 
 /* Method save() stores the object through the StorageManager */
 void BasisSequenceImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<Indices>::save( adv );
+  PersistentObject::save( adv );
   adv.saveAttribute( "masterBasis_", masterBasis_ );
+  adv.saveAttribute( "indices_", indices_ );
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void BasisSequenceImplementation::load(Advocate & adv)
 {
-  PersistentCollection<Indices>::load( adv );
+  PersistentObject::load( adv );
   adv.loadAttribute( "masterBasis_", masterBasis_ );
+  adv.loadAttribute( "indices_", indices_ );
 }
 
 

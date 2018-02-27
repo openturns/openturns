@@ -591,12 +591,13 @@ Scalar DistributionImplementation::computeSurvivalFunction(const Point & point) 
   for (UnsignedInteger i = 1; i < dimension_; ++ i)
   {
     Scalar contribution = 0.0;
-    Combinations::IndicesCollection indices(Combinations(i, dimension_).generate());
+    IndicesCollection indices(Combinations(i, dimension_).generate());
     Point subPoint(i);
     for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
     {
-      for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[indices[j][k]];
-      contribution += getMarginal(indices[j])->computeCDF(subPoint);
+      const Indices marginalJ(indices.cbegin_at(j), indices.cend_at(j));
+      for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[marginalJ[k]];
+      contribution += getMarginal(marginalJ)->computeCDF(subPoint);
     }
     value += sign * contribution;
     sign = -sign;
@@ -1343,11 +1344,11 @@ Sample DistributionImplementation::computePDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
-  Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
+  IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + indices(i, j) * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
   grid = inputSample;
   return computePDF(inputSample);
 }
@@ -1370,11 +1371,11 @@ Sample DistributionImplementation::computeLogPDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
-  Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
+  IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + indices(i, j) * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
   grid = inputSample;
   return computeLogPDF(inputSample);
 }
@@ -1397,11 +1398,11 @@ Sample DistributionImplementation::computeCDF(const Point & xMin,
   if (xMin.getDimension() != xMax.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two corner points must have the same dimension. Here, dim(xMin)=" << xMin.getDimension() << " and dim(xMax)=" << xMax.getDimension();
   if (xMin.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the corner points must have the same dimension as the distribution. Here, dim(xMin)=" << xMin.getDimension() << " and distribution dimension=" << dimension_;
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
-  Tuples::IndicesCollection indices(Tuples(pointNumber).generate());
+  IndicesCollection indices(Tuples(pointNumber).generate());
   const UnsignedInteger size = indices.getSize();
   Sample inputSample(indices.getSize(), dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample[i][j] = xMin[j] + indices[i][j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + indices(i, j) * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
   grid = inputSample;
   return computeCDF(inputSample);
 }
