@@ -527,7 +527,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     //
     // + A continuous atom can be merged with a discrete atom to form a Mixture. This simplification can be done for each pair (continuous,discrete). It is not clear if some pairings are to prefer to others.
     distributionCollection_ = DistributionCollection(0);
-    Sample weights(0, dimension);
+    Sample reducedWeights(0, dimension);
     if (dimension == 1)
     {
       // Optimization of continuous atoms
@@ -567,7 +567,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
             // A degenerated Trapezoidal, ie a Triangular
             else distributionCollection_.add(Triangular(alpha, center, delta));
             // Add a unit weight as its initial weight has been merged into the parameters
-            weights.add(Point(1, 1.0));
+            reducedWeights.add(Point(1, 1.0));
             hasPendingUniform = false;
           } // hasPendingUniform
           else
@@ -619,7 +619,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         else
         {
           distributionCollection_.add(atom);
-          weights.add(Point(1, w));
+          reducedWeights.add(Point(1, w));
         } // no simplification known
       } // Loop over continuous atoms
       // Set the aggregated normal if any. Note that this atom absorbs the constant.
@@ -630,7 +630,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
 	    distributionCollection_.add(SmoothedUniform(pendingUniform.getA() + aggregatedMean + constant_[0], pendingUniform.getB() + aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
 	    constant_[0] = 0.0;
 	    // Add a unit weight as its initial weight has been merged into the parameters
-	    weights.add(Point(1, 1.0));	    
+	    reducedWeights.add(Point(1, 1.0));	    
 	    // No more pending uniform
 	    hasPendingUniform = false;
 	  } // hasPendingNormal && hasPendingUniform
@@ -639,7 +639,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
 	    distributionCollection_.add(Normal(aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
 	    constant_[0] = 0.0;
 	    // Add a unit weight as its initial weight has been merged into the parameters
-	    weights.add(Point(1, 1.0));
+	    reducedWeights.add(Point(1, 1.0));
 	  } // hasPendingNormal && !hasPendingUniform
       } // hasNormalAtom
       // Set the pending Uniform if any. Note that this atom absorbs the constant if not yet absorbed.
@@ -652,7 +652,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         }
         distributionCollection_.add(pendingUniform);
         // Add a unit weight as its initial weight has been merged into the parameters
-        weights.add(Point(1, 1.0));
+        reducedWeights.add(Point(1, 1.0));
       } // hasPendingUniform
       // Add the aggregated Gamma if any
       while (!gammaMap.empty())
@@ -661,7 +661,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         const Scalar k = gammaMap.begin()->second;
         if (k == 1.0) distributionCollection_.add(Exponential(std::abs(lambda)));
         else distributionCollection_.add(Gamma(k, std::abs(lambda)));
-        weights.add(Point(1, lambda > 0.0 ? 1.0 : -1.0));
+        reducedWeights.add(Point(1, lambda > 0.0 ? 1.0 : -1.0));
         gammaMap.erase(gammaMap.begin());
       } // while Gamma atoms to insert
       // Remember the index of the first non-continuous atom in order to
@@ -716,7 +716,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         else
         {
           distributionCollection_.add(atom);
-          weights.add(Point(1, w));
+          reducedWeights.add(Point(1, w));
         }
       } // discreteAtoms
       // Add the aggregated Poisson if any
@@ -725,7 +725,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         const Scalar w = poissonMap.begin()->first;
         const Scalar theta = poissonMap.begin()->second;
         distributionCollection_.add(Poisson(theta));
-        weights.add(Point(1, w));
+        reducedWeights.add(Point(1, w));
         poissonMap.erase(poissonMap.begin());
       } // while Poisson atoms to insert
       // Add the aggregated Binomial if any
@@ -736,7 +736,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         const UnsignedInteger n = binomialMap.begin()->second;
         if (n == 1) distributionCollection_.add(Bernoulli(p));
         else distributionCollection_.add(Binomial(n, p));
-        weights.add(Point(1, w));
+        reducedWeights.add(Point(1, w));
         binomialMap.erase(binomialMap.begin());
       } // while Binomial atoms to insert
       LOGDEBUG(OSS() << "After simplification of discrete atoms, distributionCollection_=" << distributionCollection_.__str__());
@@ -751,13 +751,13 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         UnsignedInteger indexAggregated = firstNonContinuousAtom;
         UnsignedInteger firstDiscreteIndex = firstNonContinuousAtom;
         Distribution firstDiscrete(distributionCollection_[firstDiscreteIndex]);
-        Sample aggregatedSupport(firstDiscrete.getSupport() * weights[firstDiscreteIndex]);
+        Sample aggregatedSupport(firstDiscrete.getSupport() * reducedWeights[firstDiscreteIndex]);
         Point aggregatedProbabilities(firstDiscrete.getProbabilities());
         UnsignedInteger aggregatedSupportSize = aggregatedSupport.getSize();
         for (UnsignedInteger secondDiscreteIndex = firstNonContinuousAtom + 1; secondDiscreteIndex < firstOtherAtom; ++secondDiscreteIndex)
         {
           const Distribution secondDiscrete(distributionCollection_[secondDiscreteIndex]);
-          const Sample secondSupport(secondDiscrete.getSupport() * weights[secondDiscreteIndex]);
+          const Sample secondSupport(secondDiscrete.getSupport() * reducedWeights[secondDiscreteIndex]);
           const Point secondProbabilities(secondDiscrete.getProbabilities());
           const UnsignedInteger secondSupportSize = secondSupport.getSize();
           const UnsignedInteger newAggregatedSupportSize = aggregatedSupportSize * secondSupportSize;
@@ -769,7 +769,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
             if (secondDiscreteIndex > firstDiscreteIndex + 1)
             {
               distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
-              weights[indexAggregated] = Point(1, 1.0);
+              reducedWeights[indexAggregated] = Point(1, 1.0);
             }
             else
               distributionCollection_[indexAggregated] = firstDiscrete;
@@ -830,13 +830,13 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         else
         {
           distributionCollection_[indexAggregated] = UserDefined(aggregatedSupport, aggregatedProbabilities);
-          weights[indexAggregated] = Point(1, 1.0);
+          reducedWeights[indexAggregated] = Point(1, 1.0);
         }
         // To identify the first discrete atom to remove
         ++indexAggregated;
         // Now remove the discrete atoms that have been merged from the list of distributions
         distributionCollection_.erase(distributionCollection_.begin() + indexAggregated, distributionCollection_.end());
-        weights.erase(indexAggregated, weights.getSize());
+        reducedWeights.erase(indexAggregated, reducedWeights.getSize());
         firstOtherAtom = distributionCollection_.getSize();
       } // If there are discrete atoms to merge
 
@@ -851,9 +851,9 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         while (currentContinuous >= firstContinuous && currentDiscrete >= firstDiscrete)
         {
           const Distribution continuousAtom(distributionCollection_[currentContinuous]);
-          const Scalar continuousWeight = weights[currentContinuous][0];
+          const Scalar continuousWeight = reducedWeights[currentContinuous][0];
           Distribution discreteAtom(distributionCollection_[currentDiscrete]);
-          Scalar discreteWeight = weights[currentDiscrete][0];
+          Scalar discreteWeight = reducedWeights[currentDiscrete][0];
           const Sample support(discreteAtom.getSupport());
           DistributionCollection mixtureAtoms;
           for (UnsignedInteger i = 0; i < support.getSize(); ++i)
@@ -863,26 +863,26 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
           distributionCollection_[currentContinuous] = Mixture(mixtureAtoms, probabilities);
           // Remove the current discrete atom
           distributionCollection_.erase(distributionCollection_.begin() + currentDiscrete);
-          weights.erase(currentDiscrete);
+          reducedWeights.erase(currentDiscrete);
           --currentContinuous;
           --currentDiscrete;
         } // loop over (continuous, discrete) pairs
       } // continuous and discrete atoms to merge?
       // No simplification for other atoms
       distributionCollection_.add(otherAtoms);
-      weights.add(otherWeights);
+      reducedWeights.add(otherWeights);
     } // dimension == 1
     else
     {
       distributionCollection_.add(continuousAtoms);
-      weights.add(continuousWeights);
+      reducedWeights.add(continuousWeights);
       distributionCollection_.add(discreteAtoms);
-      weights.add(discreteWeights);
+      reducedWeights.add(discreteWeights);
       distributionCollection_.add(otherAtoms);
-      weights.add(otherWeights);
+      reducedWeights.add(otherWeights);
     } // dimension > 1
     // Store the weights in a Matrix format
-    weights_ = Matrix(weights.getDimension(), weights.getSize(), weights.getImplementation()->getData());
+    weights_ = Matrix(reducedWeights.getDimension(), reducedWeights.getSize(), reducedWeights.getImplementation()->getData());
   } // simplify atoms=true
   else
   {
