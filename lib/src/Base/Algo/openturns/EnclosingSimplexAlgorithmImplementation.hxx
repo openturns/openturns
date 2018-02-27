@@ -88,7 +88,7 @@ protected:
   Sample vertices_;
 
   /** The simplices */
-  IndicesCollection flatSimplexIndices_;
+  IndicesCollection simplices_;
 
   // Global bounding box
   Interval boundingBox_;

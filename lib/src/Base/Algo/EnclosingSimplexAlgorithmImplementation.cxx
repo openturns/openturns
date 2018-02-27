@@ -38,7 +38,7 @@ static const Factory<EnclosingSimplexAlgorithmImplementation> Factory_EnclosingS
 EnclosingSimplexAlgorithmImplementation::EnclosingSimplexAlgorithmImplementation()
   : PersistentObject()
   , vertices_()
-  , flatSimplexIndices_()
+  , simplices_()
   , lowerBoundingBoxSimplices_()
   , upperBoundingBoxSimplices_()
 {
@@ -49,7 +49,7 @@ EnclosingSimplexAlgorithmImplementation::EnclosingSimplexAlgorithmImplementation
 EnclosingSimplexAlgorithmImplementation::EnclosingSimplexAlgorithmImplementation(const Sample & vertices, const IndicesCollection & simplices)
   : PersistentObject()
   , vertices_(vertices)
-  , flatSimplexIndices_()
+  , simplices_()
   , lowerBoundingBoxSimplices_()
   , upperBoundingBoxSimplices_()
 {
@@ -71,21 +71,21 @@ Sample EnclosingSimplexAlgorithmImplementation::getVertices() const
 /* Simplices accessor */
 IndicesCollection EnclosingSimplexAlgorithmImplementation::getSimplices() const
 {
-  return flatSimplexIndices_;
+  return simplices_;
 }
 
 void EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices)
 {
-  if (vertices == vertices_ && simplices == flatSimplexIndices_) return;
+  if (vertices == vertices_ && simplices == simplices_) return;
 
   vertices_ = vertices;
-  flatSimplexIndices_ = simplices;
+  simplices_ = simplices;
 
   // Global bounding box
   boundingBox_ = Interval(vertices_.getMin(), vertices_.getMax());
   // Local bounding box of each simplex
   const UnsignedInteger dimension = vertices_.getDimension();
-  const UnsignedInteger nrSimplices = flatSimplexIndices_.getSize();
+  const UnsignedInteger nrSimplices = simplices_.getSize();
   lowerBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
   upperBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
   Point lower(dimension, SpecFunc::MaxScalar);
@@ -97,7 +97,7 @@ void EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(const Samp
       lower[k] = SpecFunc::MaxScalar;
       upper[k] = - SpecFunc::MaxScalar;
     }
-    for (IndicesCollection::const_iterator cit = flatSimplexIndices_.cbegin_at(i), guard = flatSimplexIndices_.cend_at(i); cit != guard; ++cit)
+    for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
     {
       for(UnsignedInteger k = 0; k < dimension; ++k)
       {
@@ -149,7 +149,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
   }
 
   // Build the affine matrix associated with this simplex
-  IndicesCollection::const_iterator cit = flatSimplexIndices_.cbegin_at(index);
+  IndicesCollection::const_iterator cit = simplices_.cbegin_at(index);
   for (UnsignedInteger j = 0; j <= dimension; ++j, ++cit)
   {
     for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -187,7 +187,7 @@ void EnclosingSimplexAlgorithmImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("vertices_", vertices_);
-  adv.saveAttribute("flatSimplexIndices_", flatSimplexIndices_);
+  adv.saveAttribute("simplices_", simplices_);
 }
 
 
@@ -198,7 +198,7 @@ void EnclosingSimplexAlgorithmImplementation::load(Advocate & adv)
   Sample vertices;
   adv.loadAttribute("vertices_", vertices);
   IndicesCollection simplices;
-  adv.loadAttribute("flatSimplexIndices_", simplices);
+  adv.loadAttribute("simplices_", simplices);
   setVerticesAndSimplices(vertices, simplices);
 }
 

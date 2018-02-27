@@ -76,13 +76,13 @@ void BoundingVolumeHierarchy::setVerticesAndSimplices(const Sample & vertices, c
 {
   EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(vertices, simplices);
 
-  const UnsignedInteger nrSimplices = flatSimplexIndices_.getSize();
+  const UnsignedInteger nrSimplices = simplices_.getSize();
   if (nrSimplices <= 1) return;
 
   const UnsignedInteger dimension = vertices_.getDimension();
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
-    if (flatSimplexIndices_.cend_at(i) != flatSimplexIndices_.cbegin_at(i) + dimension + 1) throw InvalidArgumentException(HERE) << "All simplices must have " << (dimension + 1) << " vertices";
+    if (simplices_.cend_at(i) != simplices_.cbegin_at(i) + dimension + 1) throw InvalidArgumentException(HERE) << "All simplices must have " << (dimension + 1) << " vertices";
   }
 
   centerBoundingBoxSimplices_ = Sample(nrSimplices, dimension);
@@ -262,7 +262,7 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
   if (point.getDimension() != vertices_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << vertices_.getDimension() << ", got dimension=" << point.getDimension();
 
   // First, check against the bounding box
-  const UnsignedInteger notFound = flatSimplexIndices_.getSize();
+  const UnsignedInteger notFound = simplices_.getSize();
   if (!boundingBox_.contains(point)) return notFound;
 
   const UnsignedInteger dimension = point.getDimension();
@@ -357,7 +357,7 @@ void BoundingVolumeHierarchy::load(Advocate & adv)
   EnclosingSimplexAlgorithmImplementation::load(adv);
   adv.loadAttribute("binNumber_", binNumber_);
   adv.loadAttribute("strategy_", strategy_);
-  setVerticesAndSimplices(vertices_, flatSimplexIndices_);
+  setVerticesAndSimplices(vertices_, simplices_);
 }
 
 END_NAMESPACE_OPENTURNS

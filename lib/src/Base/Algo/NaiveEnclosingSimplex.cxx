@@ -62,12 +62,12 @@ void NaiveEnclosingSimplex::setVerticesAndSimplices(const Sample & vertices, con
 
   nearestNeighbour_.setSample(vertices_);
 
-  const UnsignedInteger nrSimplices = flatSimplexIndices_.getSize();
+  const UnsignedInteger nrSimplices = simplices_.getSize();
   const UnsignedInteger nrVertices = vertices_.getSize();
   Collection<Indices> mapVerticesToSimplices(nrVertices, Indices(0));
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
-    for (IndicesCollection::const_iterator cit = flatSimplexIndices_.cbegin_at(i), guard = flatSimplexIndices_.cend_at(i); cit != guard; ++cit)
+    for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
       mapVerticesToSimplices[*cit].add(i);
   }
   verticesToSimplices_ = IndicesCollection(mapVerticesToSimplices);
@@ -90,7 +90,7 @@ void NaiveEnclosingSimplex::setNearestNeighbourAlgorithm(const NearestNeighbourA
 UnsignedInteger NaiveEnclosingSimplex::query(const Point & point) const
 {
   if (point.getDimension() != vertices_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << vertices_.getDimension() << ", got dimension=" << point.getDimension();
-  const UnsignedInteger nrSimplices = flatSimplexIndices_.getSize();
+  const UnsignedInteger nrSimplices = simplices_.getSize();
 
   // First, check against the bounding box
   if (!boundingBox_.contains(point)) return nrSimplices;
@@ -152,7 +152,7 @@ void NaiveEnclosingSimplex::load(Advocate & adv)
 {
   EnclosingSimplexAlgorithmImplementation::load(adv);
   adv.loadAttribute("nearestNeighbour_", nearestNeighbour_);
-  setVerticesAndSimplices(vertices_, flatSimplexIndices_);
+  setVerticesAndSimplices(vertices_, simplices_);
 }
 
 END_NAMESPACE_OPENTURNS
