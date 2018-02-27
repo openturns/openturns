@@ -78,7 +78,8 @@ String InverseWishart::__repr__() const
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " cholesky=" << cholesky_
-      << " nu=" << nu_;
+      << " nu=" << nu_
+      << " inverseCholeskyInverse=" << inverseCholeskyInverse_;
   return oss;
 }
 
@@ -144,8 +145,7 @@ CovarianceMatrix InverseWishart::getRealizationAsMatrix() const
     // The off-diagonal elements are normaly distributed
     for (UnsignedInteger j = 0; j < i; ++j) A(i, j) = DistFunc::rNormal();
   }
-  const TriangularMatrix M((A.solveLinearSystem(inverseCholeskyInverse_)).getImplementation());
-  return (M.computeGram()).getImplementation();
+  return A.solveLinearSystem(inverseCholeskyInverse_).computeGram(true).getImplementation();
 }
 
 /* Get the PDF of the distribution */
@@ -153,7 +153,7 @@ Scalar InverseWishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const Scalar logPDF = computeLogPDF(m);
-  const Scalar pdf = (logPDF == SpecFunc::LogMinScalar) ? 0.0 : std::exp(logPDF);
+  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar) ? 0.0 : std::exp(logPDF);
   return pdf;
 }
 
@@ -161,7 +161,7 @@ Scalar InverseWishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const Scalar logPDF = computeLogPDF(point);
-  const Scalar pdf = (logPDF == SpecFunc::LogMinScalar) ? 0.0 : std::exp(logPDF);
+  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar) ? 0.0 : std::exp(logPDF);
   return pdf;
 }
 
@@ -198,13 +198,13 @@ Scalar InverseWishart::computeLogPDF(const CovarianceMatrix & m) const
     logPDF += logNormalizationFactor_;
     // Trace(V M^{-1}) = Trace(C C' X'^{-1} X^{-1}) = Trace(C'X'^{-1} X^{-1}C)
     //                 = Trace(A'A) with A = X^{-1}C
-    TriangularMatrix A(X.solveLinearSystem(cholesky_).getImplementation());
-    logPDF -= 0.5 * A.computeGram().computeTrace();
+    const TriangularMatrix A(X.solveLinearSystem(cholesky_, false).getImplementation());
+    logPDF -= 0.5 * A.computeGram(true).computeTrace();
     return logPDF;
   }
   catch (...)
   {
-    return SpecFunc::LogMinScalar;
+    return -SpecFunc::LogMaxScalar;
   }
 }
 
@@ -218,7 +218,7 @@ Scalar InverseWishart::computeCDF(const Point & point) const
 /* Compute the mean of the distribution */
 void InverseWishart::computeMean() const
 {
-  const CovarianceMatrix V((cholesky_ * cholesky_.transpose()).getImplementation());
+  const CovarianceMatrix V(getV());
   const UnsignedInteger p = cholesky_.getDimension();
   mean_ = Point(getDimension());
   UnsignedInteger index = 0;
@@ -340,16 +340,20 @@ void InverseWishart::setV(const CovarianceMatrix & v)
   const UnsignedInteger p = v.getDimension();
   try
   {
+    // Copy of v because v is const and not computeCholesky()
     cholesky_ = CovarianceMatrix(v).computeCholesky();
   }
   catch(...)
   {
     throw InvalidArgumentException(HERE) << "Error: V must be positive definite";
   }
-  TriangularMatrix T((cholesky_.solveLinearSystem(IdentityMatrix(p))).getImplementation());
-  CovarianceMatrix vInverse((cholesky_.transpose().solveLinearSystem(T)).getImplementation());
-  TriangularMatrix vInverseCholesky((CovarianceMatrix(vInverse).computeCholesky()).getImplementation());
-  inverseCholeskyInverse_ = TriangularMatrix((vInverseCholesky.solveLinearSystem(IdentityMatrix(p))).getImplementation());
+  const TriangularMatrix T(cholesky_.solveLinearSystem(IdentityMatrix(p)).getImplementation());
+  // vInverse = T'.T, non const because we compute its Cholesky factor
+  CovarianceMatrix vInverse(T.computeGram(true));
+  // Flag false means that vInverse is not preserved, non const because we solve a linear system with this matrix
+  TriangularMatrix vInverseCholesky(vInverse.computeCholesky(false));
+  // Flag false means that vInverse is not preserved
+  inverseCholeskyInverse_ = vInverseCholesky.solveLinearSystem(IdentityMatrix(p), false).getImplementation();
   setDimension((p * (p + 1)) / 2);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -358,7 +362,7 @@ void InverseWishart::setV(const CovarianceMatrix & v)
 
 CovarianceMatrix InverseWishart::getV() const
 {
-  return (cholesky_ * cholesky_.transpose()).getImplementation();
+  return cholesky_.computeGram(false).getImplementation();
 }
 
 
