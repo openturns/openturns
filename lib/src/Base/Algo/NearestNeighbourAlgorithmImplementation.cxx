@@ -100,6 +100,7 @@ String NearestNeighbourAlgorithmImplementation::__repr__() const
 /* String converter */
 String NearestNeighbourAlgorithmImplementation::__str__(const String & offset) const
 {
+  (void)offset;
   OSS oss(false);
   oss << "class=" << NearestNeighbourAlgorithmImplementation::GetClassName();
   return oss;
