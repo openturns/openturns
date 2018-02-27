@@ -274,7 +274,7 @@ public:
                                          const Bool fullQR = false,
                                          const Bool keepIntact = true);
 
-  /** Compute the Gram matrix associated to the matrix */
+  /** Compute the Gram matrix associated to the matrix. If transpose == true, compute M^T.M, else M.M^T. */
   virtual MatrixImplementation computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
