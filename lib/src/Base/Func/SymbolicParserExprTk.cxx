@@ -21,6 +21,7 @@
 
 #include "openturns/SymbolicParserExprTk.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/exprtk.hpp"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -120,7 +121,7 @@ void SymbolicParserExprTk::initialize() const
   symbol_table.add_function("rint", ExprTk_rint);
   symbol_table.add_function("ln", std::log);
   symbol_table.add_function("lngamma", lgamma);
-  symbol_table.add_function("gamma", tgamma);
+  symbol_table.add_function("gamma", SpecFunc::Gamma);
   symbol_table.add_function("cbrt", cbrt);
   symbol_table.add_function("besselJ0", j0);
   symbol_table.add_function("besselJ1", j1);
