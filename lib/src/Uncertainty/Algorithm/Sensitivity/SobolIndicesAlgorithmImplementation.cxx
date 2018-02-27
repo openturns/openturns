@@ -29,6 +29,7 @@
 #include "openturns/Pie.hxx"
 #include "openturns/Text.hxx"
 #include "openturns/SobolIndicesExperiment.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +53,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
   , totalOrderIndiceInterval_()
+  , useAsymptoticInterval_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticInterval"))
 {
   // Nothing to do
 }
@@ -74,6 +76,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const S
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
   , totalOrderIndiceInterval_()
+  , useAsymptoticInterval_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticInterval"))
 {
   if (outputDesign.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
@@ -117,6 +120,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
   , totalOrderIndiceInterval_()
+  , useAsymptoticInterval_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticInterval"))
 {
   const UnsignedInteger inputDimension = model.getInputDimension();
   if (inputDimension != distribution.getDimension())
@@ -154,6 +158,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   , secondOrderIndices_()
   , firstOrderIndiceInterval_()
   , totalOrderIndiceInterval_()
+  , useAsymptoticInterval_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticInterval"))
 {
   const UnsignedInteger inputDimension = model.getInputDimension();
   if (inputDimension != experiment.getDistribution().getDimension())
@@ -321,11 +326,51 @@ void SobolIndicesAlgorithmImplementation::computeIndicesInterval() const
   }
 }
 
+
+void SobolIndicesAlgorithmImplementation::computeAsymptoticInterval() const
+{
+  throw NotYetImplementedException(HERE) << "SobolIndicesAlgorithmImplementation::computeAsymptoticInterval";
+}
+
+
+Scalar SobolIndicesAlgorithmImplementation::computeVariance(const Sample & u, const Function & psi) const
+{
+  Point gradient(*psi.gradient(u.computeMean()).getImplementation());
+  return dot(gradient, u.computeCovariance() * gradient) / size_;
+}
+
+void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & varianceFO,
+                                                                const Point & varianceTO) const
+{
+  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  Point stdandardDeviationFO(inputDimension);
+  Point stdandardDeviationTO(inputDimension);
+  for (UnsignedInteger p = 0; p < inputDimension; ++ p)
+  {
+    stdandardDeviationFO[p] = sqrt(varianceFO[p]);
+    stdandardDeviationTO[p] = sqrt(varianceTO[p]);
+  }
+  const Point aggregatedFO(getAggregatedFirstOrderIndices());
+  const Point aggregatedTO(getAggregatedTotalOrderIndices());
+  Normal distributionFO(aggregatedFO, stdandardDeviationFO, CorrelationMatrix(inputDimension));
+  Normal distributionTO(aggregatedTO, stdandardDeviationTO, CorrelationMatrix(inputDimension));
+  firstOrderIndiceInterval_ = distributionFO.computeMinimumVolumeInterval(confidenceLevel_);
+  totalOrderIndiceInterval_ = distributionTO.computeMinimumVolumeInterval(confidenceLevel_);
+}
+
+
 /* Interval for the first order indices accessor */
 Interval SobolIndicesAlgorithmImplementation::getFirstOrderIndicesInterval() const
 {
-  // Interval evaluation using Bootstrap
-  computeIndicesInterval();
+  if (useAsymptoticInterval_)
+  {
+    computeAsymptoticInterval();
+  }
+  else
+  {
+    // Interval evaluation using Bootstrap
+    computeIndicesInterval();
+  }
   return firstOrderIndiceInterval_;
 }
 
@@ -395,8 +440,15 @@ Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedIn
 /* Interval for the total order indices accessor */
 Interval SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval() const
 {
-  // Interval evaluation using Bootstrap
-  computeIndicesInterval();
+  if (useAsymptoticInterval_)
+  {
+    computeAsymptoticInterval();
+  }
+  else
+  {
+    // Interval evaluation using Bootstrap
+    computeIndicesInterval();
+  }
   return totalOrderIndiceInterval_;
 }
 
@@ -451,19 +503,33 @@ void SobolIndicesAlgorithmImplementation::setBootstrapSize(const UnsignedInteger
 }
 
 // Getter for bootstrap confidence level
-Scalar SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel() const
+Scalar SobolIndicesAlgorithmImplementation::getConfidenceLevel() const
 {
   return confidenceLevel_;
 }
 
 // Setter for bootstrap confidence level
-void SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel(const Scalar confidenceLevel)
+void SobolIndicesAlgorithmImplementation::setConfidenceLevel(const Scalar confidenceLevel)
 {
   if ((confidenceLevel < 0.0) || (confidenceLevel >= 1.0))
     throw InvalidArgumentException(HERE) << "Confidence level value should be in ]0,1[. Here, confidence level=" << confidenceLevel;
   confidenceLevel_ = confidenceLevel;
   firstOrderIndiceInterval_ = Interval();
   totalOrderIndiceInterval_ = Interval();
+}
+
+// Getter for bootstrap confidence level
+Scalar SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel() const
+{
+  LOGWARN("SobolIndicesAlgorithm::getBootstrapConfidenceLevel is deprecated, use getConfidenceLevel.");
+  return getConfidenceLevel();
+}
+
+// Setter for bootstrap confidence level
+void SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel(const Scalar confidenceLevel)
+{
+  LOGWARN("SobolIndicesAlgorithm::setBootstrapConfidenceLevel is deprecated, use setConfidenceLevel.");
+  setConfidenceLevel(confidenceLevel);
 }
 
 /* String converter */
@@ -515,6 +581,19 @@ Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & s
     for (UnsignedInteger j = 0; j < dimension; ++j, ++xptr, ++yptr)
       value[j] += (*xptr) * (*yptr);
   return value;
+}
+
+/* Multiplication of two sub-samples */
+Sample SobolIndicesAlgorithmImplementation::ComputeProdSample(const Sample & sample,
+                                                              const UnsignedInteger marginalIndex,
+                                                              const UnsignedInteger size,
+                                                              const UnsignedInteger indexX,
+                                                              const UnsignedInteger indexY)
+{
+  Sample prod(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    prod(i, 0) = sample(i + indexX, marginalIndex) * sample(i + indexY, marginalIndex);
+  return prod;
 }
 
 /* String converter */
@@ -733,6 +812,22 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
   return importanceFactorsGraph;
 }
 
+void SobolIndicesAlgorithmImplementation::setUseAsymptoticInterval(Bool useAsymptoticInterval)
+{
+  if (useAsymptoticInterval_ != useAsymptoticInterval)
+  {
+    // reset already computed intervals by the other method if any
+    firstOrderIndiceInterval_ = Interval();
+    totalOrderIndiceInterval_ = Interval();
+
+    useAsymptoticInterval_ = useAsymptoticInterval;
+  }
+}
+
+Bool SobolIndicesAlgorithmImplementation::getUseAsymptoticInterval() const
+{
+  return useAsymptoticInterval_;
+}
 
 /* Method save() stores the object through the StorageManager */
 void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
@@ -751,6 +846,7 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.saveAttribute( "firstOrderIndiceInterval_", firstOrderIndiceInterval_);
   adv.saveAttribute( "totalOrderIndiceInterval_", totalOrderIndiceInterval_);
+  adv.saveAttribute( "useAsymptoticInterval_" , useAsymptoticInterval_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -770,6 +866,7 @@ void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.loadAttribute( "firstOrderIndiceInterval_", firstOrderIndiceInterval_);
   adv.loadAttribute( "totalOrderIndiceInterval_", totalOrderIndiceInterval_);
+  adv.loadAttribute( "useAsymptoticInterval_" , useAsymptoticInterval_);
 }
 
 END_NAMESPACE_OPENTURNS

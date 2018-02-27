@@ -13,3 +13,4 @@ Remove deprecated Domain,DomainImplementation::numericallyContains, isEmpty, isN
 Remove deprecated DomainImplementation::volumeOld_, isAlreadyComputedVolumeOld_ members in 1.12
 Change Interval,Mesh::computeVolume to return void in 1.12
 Remove deprecated Domain,DomainImplementation::getLowerBound, getUpperBound in 1.12
+Remove deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel in 1.12

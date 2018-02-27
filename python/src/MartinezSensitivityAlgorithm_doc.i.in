@@ -5,7 +5,7 @@ Available constructors:
     MartinezSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
 
     MartinezSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
-    
+
     MartinezSensitivityAlgorithm(*experiment, model, computeSecondOrder*)
 
 Parameters
@@ -49,12 +49,22 @@ where :math:`\rho_n` is the empirical correlation defined by:
 
    \rho_n(X, Y) = \frac{\Cov{X,Y}}{\sqrt{\Var{X} \Var{Y}}}
 
-The class provides also the evaluation of asymptotic confidence interval for first
-and total order indices, relying on the Fisher transformation.
 
-This could be performed for gaussian output data. The
-`MartinezSensitivityAlgorithm-UseAsmpytoticInterval` resource map key should
-be fixed to True in that case.
+The variance of the estimator is computed using:
+
+.. math::
+
+    \begin{array}{ccc}
+    U_i = \left(\left(\textsuperscript{c}Y_i^B \textsuperscript{c}Y_i^E \right), \left(\textsuperscript{c}Y_i^B\right)^2, \left(\textsuperscript{c}Y_i^E \right)^2 \right)^T \\
+    \Psi_i(x, y, z) = \frac{x}{\sqrt{y\times z}}
+    \end{array}
+
+.. math::
+
+    \begin{array}{ccc}
+    U_{-i} = \left(\textsuperscript{c}Y_i^A \textsuperscript{c}Y_i^E, \left(\textsuperscript{c}Y_i^A\right)^2, \left(\textsuperscript{c}Y_i^E\right)^2 \right)^T \\
+    \Psi_{-i}(x, y, z) = 1 - \frac{x}{\sqrt{y\times z}}
+    \end{array}
 
 See also
 --------

@@ -23,5 +23,5 @@ Second order Sobol indice of Y|X1,X3 = 0.214961
 Confidence interval of first order Y|X1 = [0.289644, 0.326722]
 Confidence interval of total order Y|X3 = [0.211387, 0.272784]
 Asymptotic estimate
-Confidence interval of first order Y|X1 = [0.308335, 0.309469]
-Confidence interval of total order Y|X3 = [0.244024, 0.244562]
+Confidence interval of first order Y|X1 = [0.288725, 0.329079]
+Confidence interval of total order Y|X3 = [0.234262, 0.254324]

@@ -75,6 +75,9 @@ protected:
   Sample computeIndices(const Sample & sample,
                         Sample & VTi) const;
 
+  /** void method that computes asymptotic confidence interval */
+  virtual void computeAsymptoticInterval() const;
+
 }; /* class MauntzKucherenkoSensitivityAlgorithm */
 
 END_NAMESPACE_OPENTURNS

@@ -90,9 +90,17 @@ public:
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
-  // Setters for bootstrap confidence level
+  /** Setters for confidence level */
+  Scalar getConfidenceLevel() const;
+  void setConfidenceLevel(const Scalar confidenceLevel);
+
+  /** @deprecated Setters for bootstrap confidence level */
   Scalar getBootstrapConfidenceLevel() const;
   void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
+
+  /** Whether to use bootstrap or asymptotic intervals */
+  void setUseAsymptoticInterval(Bool useAsymptoticInterval);
+  Bool getUseAsymptoticInterval() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -135,8 +143,18 @@ protected:
                                  const Point & variance,
                                  Point & mergedTotal) const;
 
-  /** void method that computes confidence interval */
+  /** void method that computes bootstrap confidence interval */
   void computeIndicesInterval() const;
+
+  /** void method that computes asymptotic confidence interval */
+  virtual void computeAsymptoticInterval() const;
+
+  /** Helper function to compute variance of the estimators */
+  Scalar computeVariance(const Sample & u, const Function & psi) const;
+
+  /** Set asymptotic confidence interval from variance */
+  void setConfidenceInterval(const Point & varianceFO,
+                             const Point & varianceTO) const;
 
   /** Multiplication and sum of two Samples */
   Point computeSumDotSamples(const Sample & x,
@@ -148,6 +166,12 @@ protected:
                              const UnsignedInteger indexX,
                              const UnsignedInteger indexY) const;
 
+  /** Multiplication of two 1d sub-samples */
+  static Sample ComputeProdSample(const Sample & sample,
+                                  const UnsignedInteger marginalIndex,
+                                  const UnsignedInteger size,
+                                  const UnsignedInteger indexX,
+                                  const UnsignedInteger indexY);
 
   /** Designs : input & output designs */
   Sample inputDesign_;
@@ -188,6 +212,8 @@ protected:
   /** Confidence interval for total order indices (merged indices) */
   mutable Interval totalOrderIndiceInterval_;
 
+  /** Whether to use bootstrap or asymptotic intervals */
+  Bool useAsymptoticInterval_;
 }; /* class SobolIndicesAlgorithmImplementation */
 
 END_NAMESPACE_OPENTURNS

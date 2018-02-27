@@ -133,11 +133,20 @@ Aggregated second order indices have not been implemented.
 
 |
 
-Note finally that evaluation of intervals for indices might be done for first and total order thanks to
-the `getFirstOrderIndicesInterval` and `getTotalOrderIndicesInterval` methods. Default bootstrap size 
-and confidence level values are parametrized thanks to the resource map keys `SobolIndicesAlgorithm-BootstrapSize`
-and `SobolIndicesAlgorithm-BootstrapConfidenceLevel`. Appropriate setters
-might be called to change their values.
+Note finally that evaluation of intervals for indices might be done for first
+and total order thanks to the `getFirstOrderIndicesInterval` and
+`getTotalOrderIndicesInterval` methods. The confidence level is set by `setConfidenceLevel`
+and is initialized by the `SobolIndicesAlgorithm-DefaultConfidenceLevel` resourcemap key.
+
+This can be done by either bootstrap or by using an asymptotic estimator,
+this behavior can be changed using `setUseAsymptoticInterval`. Its value in initilized by the
+`SobolIndicesAlgorithm-DefaultUseAsymptoticInterval` resourcemap key.
+
+For the bootstrap method the size is set by `setBootstrapSize`
+values and initialized by `SobolIndicesAlgorithm-DefaultBootstrapSize` resourcemap key.
+
+The asymptotic estimators are computed using the [Janon2014]_ delta method,
+refer to the documentation of each estimator's class.
 
 Also note that for numerical stability reasons the ouputs are centered before indices estimation:
 
@@ -259,29 +268,29 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_getBootstrapConfidenceLevel_doc
-"Get the confidence interval level for bootstrap sampling.
+%define OT_SobolIndicesAlgorithm_getConfidenceLevel_doc
+"Get the confidence interval level for confidence intervals.
 
 Returns
 -------
 confidenceLevel : float
-    Confidence level for boostrap sampling"
+    Confidence level for confidence intervals"
 %enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel
-OT_SobolIndicesAlgorithm_getBootstrapConfidenceLevel_doc
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getConfidenceLevel
+OT_SobolIndicesAlgorithm_getConfidenceLevel_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_setBootstrapConfidenceLevel_doc
-"Set the confidence interval level for bootstrap sampling.
+%define OT_SobolIndicesAlgorithm_setConfidenceLevel_doc
+"Set the confidence interval level for confidence intervals.
 
 Parameters
 ----------
 confidenceLevel : float
-    Confidence level for boostrap sampling"
+    Confidence level for confidence intervals"
 %enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel
-OT_SobolIndicesAlgorithm_setBootstrapConfidenceLevel_doc
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::setConfidenceLevel
+OT_SobolIndicesAlgorithm_setConfidenceLevel_doc
 
 // ---------------------------------------------------------------------
 
@@ -372,4 +381,31 @@ Graph : :class:`~openturns.Graph`
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawImportanceFactors
 OT_SobolIndicesAlgorithm_DrawImportanceFactors_doc
+
 // ---------------------------------------------------------------------
+
+%define OT_SobolIndicesAlgorithm_getUseAsymptoticInterval_doc
+"Select asymptotic or bootstrap confidence intervals.
+
+Returns
+-------
+useAsymptoticInterval : bool
+    Whether to use bootstrap or asymptotic intervals"
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getUseAsymptoticInterval
+OT_SobolIndicesAlgorithm_getUseAsymptoticInterval_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SobolIndicesAlgorithm_setUseAsymptoticInterval_doc
+"Select asymptotic or bootstrap confidence intervals.
+
+Default value is set by the `SobolIndicesAlgorithm-DefaultUseAsymptoticInterval` key.
+
+Parameters
+----------
+useAsymptoticInterval : bool
+    Whether to use bootstrap or asymptotic intervals"
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::setUseAsymptoticInterval
+OT_SobolIndicesAlgorithm_setUseAsymptoticInterval_doc

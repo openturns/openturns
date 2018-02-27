@@ -72,8 +72,11 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  Sample computeIndices(const Sample & sample,
-                        Sample & VTi) const;
+  virtual Sample computeIndices(const Sample & sample,
+                                Sample & VTi) const;
+
+  /** void method that computes asymptotic confidence interval */
+  virtual void computeAsymptoticInterval() const;
 
 }; /* class SaltelliSensitivityAlgorithm */
 

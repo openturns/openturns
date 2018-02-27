@@ -20,9 +20,8 @@
  */
 
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
-#include "openturns/SobolIndicesAlgorithmImplementation.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +32,6 @@ static const Factory<MartinezSensitivityAlgorithm> Factory_MartinezSensitivityAl
 /* Default constructor */
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm()
   : SobolIndicesAlgorithmImplementation()
-  , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
 {
   // Nothing to do
 }
@@ -43,7 +41,6 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Sample & inputD
     const Sample & outputDesign,
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
-  , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
 {
   // Nothing to do
 }
@@ -54,7 +51,6 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Distribution & 
     const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
-  , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
 {
   // Nothing to do
 }
@@ -64,7 +60,6 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const WeightedExperim
     const Function & model,
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
-  , useAsymptoticInterval_(ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
 {
   // Nothing to do
 }
@@ -133,118 +128,84 @@ String MartinezSensitivityAlgorithm::__repr__() const
   return oss;
 }
 
-// Compute the fisher transform
 void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
 {
   // Do nothing if already computed
   if (0 != firstOrderIndiceInterval_.getDimension()) return;
 
-  // Compute Fisher transform
-  // Build interval using sample variance
-  // Mean reference is the Sensitivity values
-  const Point aggregatedFirstOrder(getAggregatedFirstOrderIndices());
-  const Point aggregatedTotalOrder(getAggregatedTotalOrderIndices());
-  const Scalar t = DistFunc::qNormal(1.0 - 0.5 * confidenceLevel_);
-  const UnsignedInteger size = size_;
-  if (size <= 3)
-    throw InvalidArgumentException(HERE) << "Could not compute asymptotic confidence interval for sensitivity indices with size=" << size
-                                         << ", sample's size should be at least 4";
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
-  // First order interval
-  Point firstOrderLowerBound(inputDimension, 0.0);
-  Point firstOrderUpperBound(inputDimension, 0.0);
-  // Total order interval
-  Point totalOrderLowerBound(inputDimension, 0.0);
-  Point totalOrderUpperBound(inputDimension, 0.0);
-  // Numerical scalar that will be used
-  Scalar z, rho;
-  for (UnsignedInteger p = 0; p < inputDimension; ++p)
-  {
-    // Correlation indices evaluation
-    // first order
-    // We get Si which is a correlation coefficient
-    // Even if multidimensional, linear combination is still gaussian
-    rho = aggregatedFirstOrder[p];
-    // Fisher transform
-    z = 0.5 * std::log((1.0 + rho) / (1.0 - rho));
-    // zmin/zmax
-    Scalar zmin = std::tanh(z - t / std::sqrt(size - 3.0));
-    Scalar zmax = std::tanh(z + t / std::sqrt(size - 3.0));
-    // TODO if interval is outside [0,1], how to procede?
-    firstOrderLowerBound[p] = zmin;
-    firstOrderUpperBound[p] = zmax;
-    // total order
-    // We compute STi which is a correlation coefficient
-    // Even if multidimensional, linear combination is still gaussian
-    rho = 1.0 - aggregatedTotalOrder[p];
-    // Fisher transform
-    z = 0.5 * std::log((1.0 + rho) / (1.0 - rho));
-    // zmin/zmax
-    zmin = std::tanh(z - t / std::sqrt(size - 3.0));
-    zmax = std::tanh(z + t / std::sqrt(size - 3.0));
-    totalOrderLowerBound[p] = 1.0 - zmax;
-    totalOrderUpperBound[p] = 1.0 - zmin;
-  }
-  // Compute confidence interval
-  firstOrderIndiceInterval_ = Interval(firstOrderLowerBound, firstOrderUpperBound);
-  totalOrderIndiceInterval_ = Interval(totalOrderLowerBound, totalOrderUpperBound);
-}
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
 
+  // psi
+  Description X(Description::BuildDefault(outputDimension, "X"));
+  Description Y(Description::BuildDefault(outputDimension, "Y"));
+  Description Z(Description::BuildDefault(outputDimension, "Z"));
+  Description XYZ(3 * outputDimension);
+  String sumX;
+  String sumSqrtYZ;
+  for (UnsignedInteger q = 0; q < outputDimension; ++ q)
+  {
+    XYZ[3 * q] = X[q];
+    XYZ[3 * q + 1] = Y[q];
+    XYZ[3 * q + 2] = Z[q];
+    sumX += X[q];
+    sumSqrtYZ += "sqrt("+Y[q]+"*"+Z[q]+")";
+    if (q < outputDimension - 1)
+    {
+      sumX += "+";
+      sumSqrtYZ += "+";
+    }
+  }
+  sumX = "(" + sumX + ")";
+  sumSqrtYZ = "(" + sumSqrtYZ + ")";
+  Function psiFO = SymbolicFunction(XYZ, Description(1, sumX + "/" + sumSqrtYZ));
+  Function psiTO = SymbolicFunction(XYZ, Description(1, "1 - " + sumX + "/" + sumSqrtYZ));
 
-/** Interval for the first order indices accessor */
-Interval MartinezSensitivityAlgorithm::getFirstOrderIndicesInterval() const
-{
-  if (useAsymptoticInterval_ != ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
-  {
-    useAsymptoticInterval_ = ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval");
-    firstOrderIndiceInterval_ = Interval();
-    totalOrderIndiceInterval_ = Interval();
-  }
-  if (useAsymptoticInterval_)
-  {
-    computeAsymptoticInterval();
-  }
-  else
-  {
-    // Interval evaluation using Bootstrap
-    computeIndicesInterval();
-  }
-  return firstOrderIndiceInterval_;
-}
+  Point varianceFO(inputDimension);
+  Point varianceTO(inputDimension);
 
-/** Interval for the total order indices accessor */
-Interval MartinezSensitivityAlgorithm::getTotalOrderIndicesInterval() const
-{
-  if (useAsymptoticInterval_ != ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval"))
+  for (UnsignedInteger p = 0; p < inputDimension; ++ p)
   {
-    useAsymptoticInterval_ = ResourceMap::GetAsBool("MartinezSensitivityAlgorithm-UseAsymptoticInterval");
-    firstOrderIndiceInterval_ = Interval();
-    totalOrderIndiceInterval_ = Interval();
+    Sample uFO(size_, 0);
+    Sample uTO(size_, 0);
+    for (UnsignedInteger q = 0; q < outputDimension; ++ q)
+    {
+      // yE^2
+      const Sample yEc2(ComputeProdSample(outputDesign_, q, size_, (2 + p) * size_, (2 + p) * size_));
+
+      // yB * yE
+      Sample yByE(ComputeProdSample(outputDesign_, q, size_, size_, (2 + p) * size_));
+      uFO.stack(yByE);
+      // yB^2
+      const Sample yBc2(ComputeProdSample(outputDesign_, q, size_, size_, size_));
+      uFO.stack(yBc2);
+      uFO.stack(yEc2);
+
+      // yA * yE
+      Sample yAyE(ComputeProdSample(outputDesign_, q, size_, 0, (2 + p) * size_));
+      uTO.stack(yAyE);
+      // yA^2
+      const Sample yAc2(ComputeProdSample(outputDesign_, q, size_, 0, 0));
+      uTO.stack(yAc2);
+      // yE^2
+      uTO.stack(yEc2);
+    }
+    varianceFO[p] = computeVariance(uFO, psiFO);
+    varianceTO[p] = computeVariance(uTO, psiTO);
   }
-  if (useAsymptoticInterval_)
-  {
-    computeAsymptoticInterval();
-  }
-  else
-  {
-    // Interval evaluation using Bootstrap
-    computeIndicesInterval();
-  }
-  return totalOrderIndiceInterval_;
+  setConfidenceInterval(varianceFO, varianceTO);
 }
 
 /* Method save() stores the object through the StorageManager */
 void MartinezSensitivityAlgorithm::save(Advocate & adv) const
 {
   SobolIndicesAlgorithmImplementation::save(adv);
-  adv.saveAttribute("useAsymptoticInterval_", useAsymptoticInterval_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MartinezSensitivityAlgorithm::load(Advocate & adv)
 {
   SobolIndicesAlgorithmImplementation::load(adv);
-  adv.loadAttribute("useAsymptoticInterval_", useAsymptoticInterval_);
 }
 
 END_NAMESPACE_OPENTURNS

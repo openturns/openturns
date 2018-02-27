@@ -144,6 +144,18 @@ void SobolIndicesAlgorithm::setBootstrapSize(const UnsignedInteger bootstrapSize
 }
 
 // Getter for bootstrap confidence level
+Scalar SobolIndicesAlgorithm::getConfidenceLevel() const
+{
+  return getImplementation()->getConfidenceLevel();
+}
+
+// Setter for bootstrap confidence level
+void SobolIndicesAlgorithm::setConfidenceLevel(const Scalar confidenceLevel)
+{
+  copyOnWrite();
+  getImplementation()->setConfidenceLevel(confidenceLevel);
+}
+
 Scalar SobolIndicesAlgorithm::getBootstrapConfidenceLevel() const
 {
   return getImplementation()->getBootstrapConfidenceLevel();
@@ -154,6 +166,17 @@ void SobolIndicesAlgorithm::setBootstrapConfidenceLevel(const Scalar confidenceL
 {
   copyOnWrite();
   getImplementation()->setBootstrapConfidenceLevel(confidenceLevel);
+}
+
+void SobolIndicesAlgorithm::setUseAsymptoticInterval(Bool useAsymptoticInterval)
+{
+  copyOnWrite();
+  getImplementation()->setUseAsymptoticInterval(useAsymptoticInterval);
+}
+
+Bool SobolIndicesAlgorithm::getUseAsymptoticInterval() const
+{
+  return getImplementation()->getUseAsymptoticInterval();
 }
 
 /* String converter */
