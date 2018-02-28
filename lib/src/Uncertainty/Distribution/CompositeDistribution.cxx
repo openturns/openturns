@@ -430,6 +430,19 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
+/* Get the PDF singularities inside of the range - 1D only */
+Point CompositeDistribution::getSingularities() const
+{
+  if (values_.getSize() == 2) return Point(1, 0);
+  // The singularities are at the extrema of f
+  Point singularities(values_);
+  std::sort(singularities.begin(), singularities.end());
+  // Remove the end points
+  singularities.erase(0);
+  singularities.erase(singularities.getSize() - 1);
+  return singularities;
+}
+
 /* Parameters value and description accessor */
 CompositeDistribution::PointWithDescriptionCollection CompositeDistribution::getParametersCollection() const
 {
