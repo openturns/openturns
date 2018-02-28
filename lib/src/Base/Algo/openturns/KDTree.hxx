@@ -63,7 +63,7 @@ public:
 
   /** String converter */
   virtual String __repr__() const;
-  virtual String __str__() const;
+  virtual String __str__(const String & offset = "") const;
 
   /** Get the index of the nearest neighbour of the given point */
   UnsignedInteger query(const Point & x) const;

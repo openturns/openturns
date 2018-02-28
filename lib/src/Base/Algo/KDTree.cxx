@@ -318,8 +318,9 @@ String KDTree::__repr__() const
          << " root=" << (p_root_ ? p_root_->__repr__() : "NULL");
 }
 
-String KDTree::__str__() const
+String KDTree::__str__(const String & offset) const
 {
+  (void)offset;
   return OSS(false) << "class=" << GetClassName()
          << " root=" << (p_root_ ? p_root_->__repr__() : "NULL");
 }
