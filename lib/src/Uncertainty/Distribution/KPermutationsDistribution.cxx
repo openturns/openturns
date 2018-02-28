@@ -58,7 +58,7 @@ KPermutationsDistribution::KPermutationsDistribution(const UnsignedInteger k,
   , n_(0)
 {
   setName("KPermutationsDistribution");
-  // This method compute the range also
+  // This method compute also the range
   setK(k);
   setN(n);
 }
@@ -137,7 +137,7 @@ Scalar KPermutationsDistribution::computeLogPDF(const Point & point) const
     const Scalar k = point[i];
     if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LogMinScalar;
     const UnsignedInteger ik = static_cast< UnsignedInteger > (round(k));
-    if (std::abs(k - ik) > supportEpsilon_) return SpecFunc::LogMinScalar;
+    if (std::abs(k - ik) > supportEpsilon_) return -SpecFunc::LogMaxScalar;
     x[i] = ik;
   }
   if (!x.check(n_)) return 0.0;
@@ -147,7 +147,7 @@ Scalar KPermutationsDistribution::computeLogPDF(const Point & point) const
 Scalar KPermutationsDistribution::computePDF(const Point & point) const
 {
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == SpecFunc::LogMinScalar) return 0.0;
+  if (logPDF == -SpecFunc::LogMaxScalar) return 0.0;
   return std::exp(logPDF);
 }
 
@@ -280,7 +280,7 @@ void KPermutationsDistribution::setK(const UnsignedInteger k)
   if (k != k_)
   {
     k_ = k;
-    logPDFValue_ = SpecFunc::LnGamma(k_ + 1) - SpecFunc::LnGamma(n_ + 1);
+    logPDFValue_ = SpecFunc::LnGamma(n_ - k_ + 1) - SpecFunc::LnGamma(n_ + 1);
     setDimension(k);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
@@ -301,7 +301,7 @@ void KPermutationsDistribution::setN(const UnsignedInteger n)
   if (n != n_)
   {
     n_ = n;
-    logPDFValue_ = SpecFunc::LnGamma(k_ + 1) - SpecFunc::LnGamma(n_ + 1);
+    logPDFValue_ = SpecFunc::LnGamma(n_ - k_ + 1) - SpecFunc::LnGamma(n_ + 1);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
