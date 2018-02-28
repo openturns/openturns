@@ -222,6 +222,8 @@ class View(object):
             self._ax = [self._fig.add_subplot(111, **axes_kwargs)]
         else:
             self._ax = axes
+        # activate axes only if wanted
+        self._ax[0].axison = graph.getAxes()
 
         has_labels = False
         self._ax[0].grid(b=graph.getGrid())
@@ -527,8 +529,13 @@ class View(object):
             legend_kwargs.setdefault('prop', {'size': 10})
 
             self._ax[0].legend(**legend_kwargs)
+        # Make squares look like squares
         if square_axes:
-            self._ax[0].axis('square')
+            try:
+                self._ax[0].axis('square')
+            except ValueError:
+                warnings.warn('axis square keyword not supported')
+                plt.gca().set_aspect('equal', adjustable='box')
 
     def show(self, **kwargs):
         """

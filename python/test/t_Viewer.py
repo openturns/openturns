@@ -7,7 +7,7 @@ try:
 
     # use non-interactive backend
     import matplotlib
-    #matplotlib.use('Agg')
+    matplotlib.use('Agg')
 
     from openturns.viewer import View
     import openturns as ot
@@ -256,6 +256,12 @@ try:
     # Square axes
     graph = ot.ClaytonCopula(5.0).drawPDF()
     view = View(graph, square_axes=True)
+    view.ShowAll(block=True)
+
+    # Show axes as prescribed by getAxes()
+    graph = ot.Normal().drawPDF()
+    graph.setAxes(False)
+    view = View(graph)
     view.ShowAll(block=True)
 
 except:
