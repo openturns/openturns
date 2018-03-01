@@ -421,6 +421,10 @@ ot_add_python_module(algo algo_module.i
                       KDTree.i KDTree_doc.i.in
                       RegularGridNearestNeighbour.i RegularGridNearestNeighbour_doc.i.in
                       NaiveNearestNeighbour.i NaiveNearestNeighbour_doc.i.in
+                      EnclosingSimplexAlgorithmImplementation.i EnclosingSimplexAlgorithmImplementation_doc.i.in
+                      EnclosingSimplexAlgorithm.i EnclosingSimplexAlgorithm_doc.i.in
+                      NaiveEnclosingSimplex.i  NaiveEnclosingSimplex_doc.i.in
+                      BoundingVolumeHierarchy.i BoundingVolumeHierarchy_doc.i.in
                       KFold.i KFold_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in
                       PenalizedLeastSquaresAlgorithmFactory.i PenalizedLeastSquaresAlgorithmFactory_doc.i.in
