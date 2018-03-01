@@ -46,8 +46,7 @@ KPermutationsDistribution::KPermutationsDistribution()
   , n_(0)
 {
   setName("KPermutationsDistribution");
-  setK(1);
-  setN(1);
+  setKN(1, 1);
 }
 
 /* Parameters constructor */
@@ -58,9 +57,7 @@ KPermutationsDistribution::KPermutationsDistribution(const UnsignedInteger k,
   , n_(0)
 {
   setName("KPermutationsDistribution");
-  // This method compute also the range
-  setK(k);
-  setN(n);
+  setKN(k, n);
 }
 
 /* Comparison operator */
@@ -179,6 +176,37 @@ Scalar KPermutationsDistribution::computeScalarQuantile(const Scalar prob,
   return (tail ? n_ - 1.0 - i : i);
 } // computeScalarQuantile
 
+/* Compute the quantile of the KPermutationsDistribution distribution */
+Point KPermutationsDistribution::computeQuantile(const Scalar prob,
+    const Bool tail,
+    Scalar & marginalProb) const
+{
+  const Scalar p = (tail ? 1.0 - prob : prob);
+  if (p <= 0.0) return Point(k_, 0.0);
+  if (p >= 1.0) return Point(k_, n_);
+  UnsignedInteger iMin = 0;
+  UnsignedInteger iMax = n_;
+  Scalar cdfMin = 0.0;
+  Scalar cdfMax = 1.0;
+  while (iMax > iMin + 1)
+  {
+    const UnsignedInteger iMiddle = (iMax + iMin) / 2;
+    const Scalar cdfMiddle = computeCDF(Point(k_, iMiddle));
+    if (cdfMiddle < p)
+    {
+      iMin = iMiddle;
+      cdfMin = cdfMiddle;
+    }
+    else
+    {
+      iMax = iMiddle;
+      cdfMax = cdfMiddle;
+    }
+  } // while
+  marginalProb = computeScalarQuantile(prob, tail);
+  return Point(k_, iMax);
+} // computeQuantile
+
 /* Get the i-th marginal distribution */
 KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal(const UnsignedInteger i) const
 {
@@ -277,6 +305,7 @@ KPermutationsDistribution::PointWithDescriptionCollection KPermutationsDistribut
 void KPermutationsDistribution::setK(const UnsignedInteger k)
 {
   if (k == 0) throw InvalidArgumentException(HERE) << "Error: k must be > 0.";
+  if (k > n_) throw InvalidArgumentException(HERE) << "Error: k must be less or equal to n, here k=" << k << " and n=" << n_;
   if (k != k_)
   {
     k_ = k;
@@ -298,6 +327,7 @@ UnsignedInteger KPermutationsDistribution::getK() const
 void KPermutationsDistribution::setN(const UnsignedInteger n)
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0.";
+  if (n < k_) throw InvalidArgumentException(HERE) << "Error: n must be greater or equal to k, here n=" << n << " and k=" << k_;
   if (n != n_)
   {
     n_ = n;
@@ -311,6 +341,22 @@ void KPermutationsDistribution::setN(const UnsignedInteger n)
 UnsignedInteger KPermutationsDistribution::getN() const
 {
   return n_;
+}
+
+/* K/N accessor */
+void KPermutationsDistribution::setKN(const UnsignedInteger k,
+                                      const UnsignedInteger n)
+{
+  if (k == 0) throw InvalidArgumentException(HERE) << "Error: k must be > 0.";
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be > 0.";
+  if (k > n) throw InvalidArgumentException(HERE) << "Error: k must be less or equal to n, here k=" << k << " and n=" << n;
+  k_ = k;
+  setDimension(k);
+  n_ = n;
+  logPDFValue_ = SpecFunc::LnGamma(n_ - k_ + 1) - SpecFunc::LnGamma(n_ + 1);
+  isAlreadyComputedMean_ = false;
+  isAlreadyComputedCovariance_ = false;
+  computeRange();
 }
 
 /* Method save() stores the object through the StorageManager */
