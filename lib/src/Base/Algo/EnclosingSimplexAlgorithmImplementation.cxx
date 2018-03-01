@@ -132,13 +132,115 @@ Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) co
   return result;
 }
 
+namespace
+{
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const pt, const UnsignedInteger index)
+{
+  const Scalar x = *pt;
+  const Scalar y = *(pt + 1);
+  const Scalar v1x = *v1;
+  const Scalar v1y = *(v1 + 1);
+  const Scalar v2x = *v2;
+  const Scalar v2y = *(v2 + 1);
+  const Scalar v3x = *v3;
+  const Scalar v3y = *(v3 + 1);
+  const Scalar totalVolume = (v3x - v2x) * (v1y - v2y) - (v1x - v2x) * (v3y - v2y);
+  const Scalar volume1 = (x - v2x) * (v1y - v2y) - (v1x - v2x) * (y - v2y);
+  const Scalar volume2 = (x - v3x) * (v2y - v3y) - (v2x - v3x) * (y - v3y);
+  const Scalar volume3 = (x - v1x) * (v3y - v1y) - (v3x - v1x) * (y - v1y);
+  if (totalVolume > SpecFunc::ScalarEpsilon)
+  {
+    return volume1 > - SpecFunc::ScalarEpsilon && volume2 > - SpecFunc::ScalarEpsilon && volume3 > - SpecFunc::ScalarEpsilon;
+  }
+  else if (totalVolume < - SpecFunc::ScalarEpsilon)
+  {
+    return volume1 < SpecFunc::ScalarEpsilon && volume2 < SpecFunc::ScalarEpsilon && volume3 < SpecFunc::ScalarEpsilon;
+  }
+  else
+  {
+    // Degenerate case
+    if (volume1 > SpecFunc::ScalarEpsilon || volume1 < - SpecFunc::ScalarEpsilon ||
+        volume2 > SpecFunc::ScalarEpsilon || volume2 < - SpecFunc::ScalarEpsilon ||
+        volume3 > SpecFunc::ScalarEpsilon || volume3 < - SpecFunc::ScalarEpsilon)
+      return false;
+    // Point is on the same line
+    return x <= std::max(std::max(v1x, v2x), v3x) && x >= std::min(std::min(v1x, v2x), v3x) &&
+           y <= std::max(std::max(v1y, v2y), v3y) && y >= std::min(std::min(v1y, v2y), v3y);
+  }
+} // EnclosingSimplexAlgorithm_checkPointInSimplex2D
+
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const v4, const Scalar * const pt, const UnsignedInteger index)
+{
+  const Scalar x = *pt;
+  const Scalar y = *(pt + 1);
+  const Scalar z = *(pt + 2);
+  const Scalar v1x = *v1;
+  const Scalar v1y = *(v1 + 1);
+  const Scalar v1z = *(v1 + 2);
+  const Scalar v2x = *v2;
+  const Scalar v2y = *(v2 + 1);
+  const Scalar v2z = *(v2 + 2);
+  const Scalar v3x = *v3;
+  const Scalar v3y = *(v3 + 1);
+  const Scalar v3z = *(v3 + 2);
+  const Scalar v4x = *v4;
+  const Scalar v4y = *(v4 + 1);
+  const Scalar v4z = *(v4 + 2);
+  const Scalar totalVolume = (v1x - v4x) * ((v2y - v4y) * (v3z - v4z) - (v3y - v4y) * (v2z - v4z)) - (v2x - v4x) * ((v1y - v4y) * (v3z - v4z) - (v3y - v4y) * (v1z - v4z)) + (v3x - v4x) * ((v1y - v4y) * (v2z - v4z) - (v2y - v4y) * (v1z - v4z));
+  const Scalar volume1 = (x - v4x) * ((v2y - v4y) * (v3z - v4z) - (v3y - v4y) * (v2z - v4z)) - (v2x - v4x) * ((y - v4y) * (v3z - v4z) - (v3y - v4y) * (z - v4z)) + (v3x - v4x) * ((y - v4y) * (v2z - v4z) - (v2y - v4y) * (z - v4z));
+  const Scalar volume2 = (v1x - v4x) * ((y - v4y) * (v3z - v4z) - (v3y - v4y) * (z - v4z)) - (x - v4x) * ((v1y - v4y) * (v3z - v4z) - (v3y - v4y) * (v1z - v4z)) + (v3x - v4x) * ((v1y - v4y) * (z - v4z) - (y - v4y) * (v1z - v4z));
+  const Scalar volume3 = (v1x - v4x) * ((v2y - v4y) * (z - v4z) - (y - v4y) * (v2z - v4z)) - (v2x - v4x) * ((v1y - v4y) * (z - v4z) - (y - v4y) * (v1z - v4z)) + (x - v4x) * ((v1y - v4y) * (v2z - v4z) - (v2y - v4y) * (v1z - v4z));
+  const Scalar volume4 = (v1x - x) * ((v2y - y) * (v3z - z) - (v3y - y) * (v2z - z)) - (v2x - x) * ((v1y - y) * (v3z - z) - (v3y - y) * (v1z - z)) + (v3x - x) * ((v1y - y) * (v2z - z) - (v2y - y) * (v1z - z));
+  if (totalVolume > SpecFunc::ScalarEpsilon)
+  {
+    return volume1 > - SpecFunc::ScalarEpsilon && volume2 > - SpecFunc::ScalarEpsilon && volume3 > - SpecFunc::ScalarEpsilon && volume4 > - SpecFunc::ScalarEpsilon;
+  }
+  else if (totalVolume < - SpecFunc::ScalarEpsilon)
+  {
+    return volume1 < SpecFunc::ScalarEpsilon && volume2 < SpecFunc::ScalarEpsilon && volume3 < SpecFunc::ScalarEpsilon && volume4 < SpecFunc::ScalarEpsilon;
+  }
+  else
+  {
+    // Degenerate case
+    if (volume1 > SpecFunc::ScalarEpsilon || volume1 < - SpecFunc::ScalarEpsilon ||
+        volume2 > SpecFunc::ScalarEpsilon || volume2 < - SpecFunc::ScalarEpsilon ||
+        volume3 > SpecFunc::ScalarEpsilon || volume3 < - SpecFunc::ScalarEpsilon ||
+        volume4 > SpecFunc::ScalarEpsilon || volume4 < - SpecFunc::ScalarEpsilon)
+      return false;
+    // Point is on the same line
+    return x <= std::max(std::max(std::max(v1x, v2x), v3x), v4x) && x >= std::min(std::min(std::min(v1x, v2x), v3x), v4x) &&
+           y <= std::max(std::max(std::max(v1y, v2y), v3y), v4y) && y >= std::min(std::min(std::min(v1y, v2y), v3y), v4y) &&
+           z <= std::max(std::max(std::max(v1z, v2z), v3z), v4z) && z >= std::min(std::min(std::min(v1z, v2z), v3z), v4z);
+  }
+} // EnclosingSimplexAlgorithm_checkPointInSimplex3D
+
+} // namespace
+
 /* Check if the given point is in the given simplex */
 Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & point, const UnsignedInteger index, SquareMatrix & simplexMatrix) const
 {
+  const UnsignedInteger dimension = vertices_.getDimension();
+  // Special case for dimension==2
+  // It is more efficient to skip the tests against both the global bounding box
+  // and the triangle bounding box
+  if (dimension == 2)
+  {
+    IndicesCollection::const_iterator cit2d = simplices_.cbegin_at(index);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex2D(&vertices_(*cit2d, 0), &vertices_(*(cit2d + 1), 0), &vertices_(*(cit2d + 2), 0), &point[0], index);
+  }
+
+  // Special case for dimension==3
+  // It is more efficient to skip the tests against both the global bounding box
+  // and the triangle bounding box
+  if (dimension == 3)
+  {
+    IndicesCollection::const_iterator cit3d = simplices_.cbegin_at(index);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex3D(&vertices_(*cit3d, 0), &vertices_(*(cit3d + 1), 0), &vertices_(*(cit3d + 2), 0), &vertices_(*(cit3d + 3), 0), &point[0], index);
+  }
+
   // Exit if point is outside global bounding box
   if (!boundingBox_.contains(point)) return false;
 
-  const UnsignedInteger dimension = vertices_.getDimension();
   // Exit if point is outside simplex bounding box
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
