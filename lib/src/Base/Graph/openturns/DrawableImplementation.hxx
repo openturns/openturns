@@ -112,6 +112,7 @@ public:
   /** Accessor for color palette */
   virtual Description getPalette() const;
   virtual void setPalette(const Description & palette);
+  virtual Sample getPaletteAsNormalizedRGBA() const;
 
   /** Accessor for origin */
   virtual Scalar getOrigin() const;

@@ -1324,6 +1324,23 @@ void DrawableImplementation::setPalette(const Description & palette)
   throw NotDefinedException(HERE) << "Error: no palette in " << getClassName();
 }
 
+Sample DrawableImplementation::getPaletteAsNormalizedRGBA() const
+{
+  const Description palette(getPalette());
+  const UnsignedInteger size = palette.getSize();
+  Sample normalizedRGBA(size, 4);
+  Indices rgba(4);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      (void) ScanColorCode(palette[i], rgba);
+      normalizedRGBA(i, 0) = rgba[0] / 255.0;
+      normalizedRGBA(i, 1) = rgba[1] / 255.0;
+      normalizedRGBA(i, 2) = rgba[2] / 255.0;
+      normalizedRGBA(i, 3) = rgba[3] / 255.0;
+    }
+  return normalizedRGBA;
+}
+
 /* Accessor for origin */
 Scalar DrawableImplementation::getOrigin() const
 {
