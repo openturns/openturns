@@ -338,29 +338,43 @@ Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
 Point TruncatedDistribution::getParameter() const
 {
   Point point(distribution_.getParameter());
-  point.add(finiteLowerBound_ ? 1.0 : 0.0);
-  point.add(lowerBound_);
-  point.add(finiteUpperBound_ ? 1.0 : 0.0);
-  point.add(upperBound_);
+  if (finiteLowerBound_)
+    point.add(lowerBound_);
+  if (finiteUpperBound_)
+    point.add(upperBound_);
   return point;
 }
 
 void TruncatedDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger parametersSize = distribution_.getParameterDimension();
-  if (parameter.getSize() != parametersSize + 4) throw InvalidArgumentException(HERE) << "Error: expected " << parametersSize + 4 << " values, got " << parameter.getSize();
+  UnsignedInteger finiteBoundCount = 0;
+  if (finiteLowerBound_)
+    ++ finiteBoundCount;
+  if (finiteUpperBound_)
+    ++ finiteBoundCount;
+  if (parameter.getSize() != parametersSize + finiteBoundCount) throw InvalidArgumentException(HERE) << "Error: expected " << parametersSize + finiteBoundCount << " values, got " << parameter.getSize();
   Point newParameters(parametersSize);
   std::copy(parameter.begin(), parameter.begin() + parametersSize, newParameters.begin());
   Distribution newDistribution(distribution_);
   newDistribution.setParameter(newParameters);
-  const Bool finiteLowerBound = parameter[parametersSize] == 1.0;
-  const Scalar lowerBound = parameter[parametersSize + 1];
-  const Bool finiteUpperBound = parameter[parametersSize + 2] == 1.0;
-  const Scalar upperBound = parameter[parametersSize + 3];
   const Scalar w = getWeight();
-  if (finiteLowerBound && finiteUpperBound) *this = TruncatedDistribution(newDistribution, lowerBound, upperBound);
-  else if (finiteLowerBound) *this = TruncatedDistribution(newDistribution, lowerBound, LOWER);
-  else if (finiteUpperBound) *this = TruncatedDistribution(newDistribution, upperBound, UPPER);
+  if (finiteLowerBound_ && finiteUpperBound_)
+  {
+    const Scalar lowerBound = parameter[parametersSize];
+    const Scalar upperBound = parameter[parametersSize + 1];
+    *this = TruncatedDistribution(newDistribution, lowerBound, upperBound);
+  }
+  else if (finiteLowerBound_)
+  {
+    const Scalar lowerBound = parameter[parametersSize];
+    *this = TruncatedDistribution(newDistribution, lowerBound, LOWER);
+  }
+  else if (finiteUpperBound_)
+  {
+    const Scalar upperBound = parameter[parametersSize];
+    *this = TruncatedDistribution(newDistribution, upperBound, UPPER);
+  }
   else throw InvalidArgumentException(HERE) << "Error: no bound";
   setWeight(w);
 }
@@ -369,9 +383,9 @@ void TruncatedDistribution::setParameter(const Point & parameter)
 Description TruncatedDistribution::getParameterDescription() const
 {
   Description description(distribution_.getParameterDescription());
-  description.add("finiteLowerBound");
-  description.add("lowerBound");
-  description.add("finiteUpperBound");
+  if (finiteLowerBound_)
+    description.add("lowerBound");
+  if (finiteUpperBound_) 
   description.add("upperBound");
   return description;
 }
