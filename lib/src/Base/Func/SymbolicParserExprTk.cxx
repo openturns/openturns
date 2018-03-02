@@ -58,7 +58,11 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
   {
     for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
     {
-      result[outputIndex] = expressions_[outputIndex]->value();
+      const Scalar value = expressions_[outputIndex]->value();
+      // ExprTk does not throw on domain/division errors
+      if (!SpecFunc::IsNormal(value))
+        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      result[outputIndex] = value;
     }
   }
   catch (...)
@@ -85,7 +89,11 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
       std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
-        result(i, outputIndex) = expressions_[outputIndex]->value();
+        const Scalar value = expressions_[outputIndex]->value();
+        // ExprTk does not throw on domain/division errors
+        if (!SpecFunc::IsNormal(value))
+          throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
+        result(i, outputIndex) = value;
       }
     }
   }
