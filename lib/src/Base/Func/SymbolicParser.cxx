@@ -35,7 +35,7 @@ CLASSNAMEINIT(SymbolicParser)
 SymbolicParser::SymbolicParser()
   : TypedInterfaceObject<SymbolicParserImplementation>(new SymbolicParserImplementation())
 {
-  String name = ResourceMap::Get("SymbolicParser-Engine");
+  String name = ResourceMap::Get("SymbolicParser-Backend");
   if (name == "ExprTk")
     p_implementation_ = new SymbolicParserExprTk();
 #ifdef OPENTURNS_HAVE_MUPARSER

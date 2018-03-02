@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
   try
   {
-    ResourceMap::Set("SymbolicParser-Engine", "MuParser");
+    ResourceMap::Set("SymbolicParser-Backend", "MuParser");
     /* Check the elementary functions */
     Collection<String> elementaryFunctions(0);
     elementaryFunctions.add("sin");

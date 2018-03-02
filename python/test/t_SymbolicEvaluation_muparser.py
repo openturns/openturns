@@ -6,7 +6,7 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
-    ResourceMap.Set("SymbolicParser-Engine", "MuParser")
+    ResourceMap.Set("SymbolicParser-Backend", "MuParser")
     evaluation = SymbolicEvaluation(
         ["x0", "x1", "x2"], ["y0", "y1"], ["x0^2+2*x1+3*x2^3", "cos(x0-sin(x1 * x2))"])
     point = [-1.0, 4.0, -4.0]

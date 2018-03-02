@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
-ot.ResourceMap.Set("SymbolicParser-Engine", "ExprTk")
+ot.ResourceMap.Set("SymbolicParser-Backend", "ExprTk")
 
 elementaryFunctions = ['sin', 'cos', 'tan']
 elementaryFunctions.append('asin')

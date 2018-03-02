@@ -172,6 +172,9 @@
 /* The path to the R executable */
 #define R_EXECUTABLE "@R_EXECUTABLE@"
 
+/* Default symbolic parser backend (MuParser if found, ExprTk otherwise) */
+#define SYMBOLICPARSER_DEFAULT_BACKEND "@SYMBOLICPARSER_DEFAULT_BACKEND@"
+
 /* Define to 1 if you have the ANSI C header files. */
 #cmakedefine STDC_HEADERS
 
