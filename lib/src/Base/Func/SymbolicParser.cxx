@@ -46,6 +46,21 @@ SymbolicParser::SymbolicParser()
     throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
 }
 
+/* Constructor with parameter */
+SymbolicParser::SymbolicParser(const UnsignedInteger numberOutputs)
+  : TypedInterfaceObject<SymbolicParserImplementation>()
+{
+  String name = ResourceMap::Get("SymbolicParser-Backend");
+  if (name == "ExprTk")
+    p_implementation_ = new SymbolicParserExprTk(numberOutputs);
+#ifdef OPENTURNS_HAVE_MUPARSER
+  else if (name == "MuParser")
+    p_implementation_ = new SymbolicParserMuParser(numberOutputs);
+#endif
+  else
+    throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
+}
+
 /* Constructor with parameters */
 SymbolicParser::SymbolicParser(const SymbolicParserImplementation & implementation)
   : TypedInterfaceObject<SymbolicParserImplementation>(implementation.clone())

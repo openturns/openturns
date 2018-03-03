@@ -149,3 +149,4 @@ First result calculated : 2.8794e+00
 [x,y]->[x * y], f([2, 3])=class=Point name=Unnamed dimension=1 values=[6]
 [x,y]->[x / y], f([2, 3])=class=Point name=Unnamed dimension=1 values=[0.666667]
 [x,y]->[x ^ y], f([2, 3])=class=Point name=Unnamed dimension=1 values=[8]
+[x,y,z,t]->[return [t,z-y,x]], f([2, 3, 4, 5])=class=Point name=Unnamed dimension=3 values=[5,1,2]

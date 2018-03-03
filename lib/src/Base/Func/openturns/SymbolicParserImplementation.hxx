@@ -39,6 +39,9 @@ public:
   /** Default constructor */
   SymbolicParserImplementation();
 
+  /** Constructor with parameter */
+  explicit SymbolicParserImplementation(const UnsignedInteger numberOutputs);
+
   /** Virtual copy constructor */
   virtual SymbolicParserImplementation * clone() const;
 
@@ -62,6 +65,7 @@ public:
 protected:
   Description inputVariablesNames_;
   Description formulas_;
+  UnsignedInteger numberOutputs_;
 
 }; /* class SymbolicParserImplementation */
 

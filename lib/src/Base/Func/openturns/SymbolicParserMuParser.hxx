@@ -39,6 +39,9 @@ public:
   /** Default constructor */
   SymbolicParserMuParser();
 
+  /** Constructor with parameter */
+  explicit SymbolicParserMuParser(const UnsignedInteger numberOutputs);
+
   /** Virtual copy constructor */
   virtual SymbolicParserMuParser * clone() const;
 

@@ -42,6 +42,9 @@ public:
   /** Default constructor */
   SymbolicParserExprTk();
 
+  /** Constructor with parameter */
+  explicit SymbolicParserExprTk(const UnsignedInteger numberOutputs);
+
   /** Virtual copy constructor */
   virtual SymbolicParserExprTk * clone() const;
 

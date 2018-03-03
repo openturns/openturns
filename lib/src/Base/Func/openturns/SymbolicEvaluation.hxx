@@ -40,6 +40,12 @@ public:
                      const Description & outputVariablesNames,
                      const Description & formulas);
 
+  /** Constructor with a single formula and multiple ouutputs */
+  SymbolicEvaluation(const Description & inputVariablesNames,
+                     const Description & outputVariablesNames,
+                     const String & formula,
+                     const UnsignedInteger numberOutputs);
+
   /** Virtual constructor */
   virtual SymbolicEvaluation * clone() const;
 

@@ -43,6 +43,9 @@ public:
   /** Default constructor */
   SymbolicParser();
 
+  /** Constructor with parameter */
+  explicit SymbolicParser(const UnsignedInteger numberOutputs);
+
   /** Constructor with parameters */
   SymbolicParser(const SymbolicParserImplementation & implementation);
 

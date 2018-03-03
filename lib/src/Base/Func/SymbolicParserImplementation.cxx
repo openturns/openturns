@@ -33,6 +33,19 @@ static const Factory<SymbolicParserImplementation> Factory_SymbolicParserImpleme
 /* Default constructor */
 SymbolicParserImplementation::SymbolicParserImplementation()
   : PersistentObject()
+  , inputVariablesNames_()
+  , formulas_()
+  , numberOutputs_(0)
+{
+  // Nothing to do
+}
+
+/** Constructor with parameter */
+SymbolicParserImplementation::SymbolicParserImplementation(const UnsignedInteger numberOutputs)
+  : PersistentObject()
+  , inputVariablesNames_()
+  , formulas_()
+  , numberOutputs_(numberOutputs)
 {
   // Nothing to do
 }
@@ -87,6 +100,7 @@ void SymbolicParserImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.saveAttribute( "formulas_", formulas_ );
+  adv.saveAttribute( "numberOutputs_", numberOutputs_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -95,6 +109,7 @@ void SymbolicParserImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "formulas_", formulas_ );
+  adv.loadAttribute( "numberOutputs_", numberOutputs_ );
 }
 
 

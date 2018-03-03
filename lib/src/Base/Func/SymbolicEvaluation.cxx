@@ -53,6 +53,23 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
   initialize();
 } // SymbolicEvaluation
 
+/* Constructor with a single formula and multiple ouutputs */
+SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
+                                       const Description & outputVariablesNames,
+                                       const String & formula,
+                                       const UnsignedInteger numberOutputs)
+  : EvaluationImplementation()
+  , inputVariablesNames_(inputVariablesNames)
+  , outputVariablesNames_(outputVariablesNames)
+  , formulas_(Description(1, formula))
+  , parser_(numberOutputs)
+{
+  if (outputVariablesNames.getSize() != numberOutputs)
+    throw InvalidDimensionException(HERE) << "The number of outputVariablesNames (" << outputVariablesNames.getSize()
+                                          << ") does not match the number of outputs (" << numberOutputs << ")";
+
+  initialize();
+}
 
 void SymbolicEvaluation::initialize()
 {

@@ -50,6 +50,11 @@ public:
   SymbolicFunction (const Description & inputVariablesNames,
                     const Description & formulas);
 
+  /** Parameter constructor */
+  SymbolicFunction (const Description & inputVariablesNames,
+                    const String & formula,
+                    const UnsignedInteger numberOutputs);
+
   /** String converter */
   virtual String __repr__() const;
   virtual String __str__(const String & offset = "") const;
