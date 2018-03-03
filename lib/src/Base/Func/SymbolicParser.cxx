@@ -47,15 +47,15 @@ SymbolicParser::SymbolicParser()
 }
 
 /* Constructor with parameter */
-SymbolicParser::SymbolicParser(const UnsignedInteger numberOutputs)
+SymbolicParser::SymbolicParser(const Description & outputVariablesNames)
   : TypedInterfaceObject<SymbolicParserImplementation>()
 {
   String name = ResourceMap::Get("SymbolicParser-Backend");
   if (name == "ExprTk")
-    p_implementation_ = new SymbolicParserExprTk(numberOutputs);
+    p_implementation_ = new SymbolicParserExprTk(outputVariablesNames);
 #ifdef OPENTURNS_HAVE_MUPARSER
   else if (name == "MuParser")
-    p_implementation_ = new SymbolicParserMuParser(numberOutputs);
+    p_implementation_ = new SymbolicParserMuParser(outputVariablesNames);
 #endif
   else
     throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
@@ -71,7 +71,7 @@ SymbolicParser::SymbolicParser(const SymbolicParserImplementation & implementati
 /* Constructor with parameters */
 SymbolicParser::SymbolicParser(Implementation & p_implementation)
   : TypedInterfaceObject<SymbolicParserImplementation>(p_implementation)
-{
+  {
   // Nothing to do
 }
 
@@ -83,6 +83,11 @@ Description SymbolicParser::getVariables() const
 void SymbolicParser::setVariables(const Description & inputVariablesNames)
 {
   getImplementation()->setVariables(inputVariablesNames);
+}
+
+void SymbolicParser::setImplicitOutputVariables(const Bool implicitOutputVariables)
+{
+  getImplementation()->setImplicitOutputVariables(implicitOutputVariables);
 }
 
 Description SymbolicParser::getFormulas() const

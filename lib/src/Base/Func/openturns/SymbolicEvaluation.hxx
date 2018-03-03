@@ -43,8 +43,8 @@ public:
   /** Constructor with a single formula and multiple ouutputs */
   SymbolicEvaluation(const Description & inputVariablesNames,
                      const Description & outputVariablesNames,
-                     const String & formula,
-                     const UnsignedInteger numberOutputs);
+                     const Bool implicitOutputVariables,
+                     const String & formula);
 
   /** Virtual constructor */
   virtual SymbolicEvaluation * clone() const;
@@ -99,6 +99,7 @@ private:
 
   Description inputVariablesNames_;
   Description outputVariablesNames_;
+  Bool implicitOutputVariables_;
   Description formulas_;
 
   /** A mathematical expression parser from the muParser library */

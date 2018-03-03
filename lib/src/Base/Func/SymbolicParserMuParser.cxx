@@ -75,8 +75,8 @@ SymbolicParserMuParser::SymbolicParserMuParser()
 }
 
 /* Constructor with parameter */
-SymbolicParserMuParser::SymbolicParserMuParser(const UnsignedInteger numberOutputs)
-   : SymbolicParserImplementation(numberOutputs)
+SymbolicParserMuParser::SymbolicParserMuParser(const Description & outputVariablesNames)
+   : SymbolicParserImplementation(outputVariablesNames)
 {
   // Nothing to do
 }
@@ -115,11 +115,18 @@ void SymbolicParserMuParser::initialize() const
   }
 }
 
+void SymbolicParserMuParser::setImplicitOutputVariables(const Bool implicitOutputVariables)
+{
+  SymbolicParserImplementation::setImplicitOutputVariables(implicitOutputVariables);
+  if (!implicitOutputVariables)
+    throw NotYetImplementedException(HERE) << "MuParser does not support explicit output variables, use ExprTk instead.";
+}
+
 
 Point SymbolicParserMuParser::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
-  const UnsignedInteger outputDimension(numberOutputs_ > 0 ? numberOutputs_ : formulas_.getSize());
+  const UnsignedInteger outputDimension(outputVariablesNames_.getSize() > 0 ? outputVariablesNames_.getSize() : formulas_.getSize());
   if (inP.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
   if (outputDimension == 0) return Point();
@@ -128,7 +135,7 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
   Point result(outputDimension);
   try
   {
-    if (numberOutputs_ == 0)
+    if (outputVariablesNames_.getSize() == 0)
     {
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
@@ -141,10 +148,10 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
     }
     else
     {
-      int nResults = numberOutputs_;
+      int nResults = outputVariablesNames_.getSize();
       Scalar * stack = parsers_[0].get()->Eval(nResults);
-        if (nResults != numberOutputs_)
-          throw InvalidArgumentException(HERE) << "Error in analytical function defined with " << numberOutputs_ << " return values, muParser found " << nResults << " return values";
+      if (nResults != outputVariablesNames_.getSize())
+        throw InvalidArgumentException(HERE) << "Error in analytical function defined with " << outputVariablesNames_.getSize() << " return values, muParser found " << nResults << " return values";
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
         // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors
@@ -164,7 +171,7 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
 Sample SymbolicParserMuParser::operator() (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
-  const UnsignedInteger outputDimension(numberOutputs_ > 0 ? numberOutputs_ : formulas_.getSize());
+  const UnsignedInteger outputDimension(outputVariablesNames_.getSize() > 0 ? outputVariablesNames_.getSize() : formulas_.getSize());
   if (inS.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inS.getDimension() << ") expected " << inputDimension;
   if (outputDimension == 0) return Sample(inS.getSize(), 0);
@@ -173,7 +180,7 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
   Sample result(size, outputDimension);
   try
   {
-    if (numberOutputs_ == 0)
+    if (outputVariablesNames_.getSize() == 0)
     {
       for (UnsignedInteger i = 0; i < size; ++i)
       {
@@ -190,13 +197,13 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
     }
     else
     {
-      int nResults = numberOutputs_;
+      int nResults = outputVariablesNames_.getSize();
       for (UnsignedInteger i = 0; i < size; ++i)
       {
         std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
         Scalar * stack = parsers_[0].get()->Eval(nResults);
-        if (nResults != numberOutputs_)
-          throw InvalidArgumentException(HERE) << "Error in analytical function defined with " << numberOutputs_ << " return values, muParser found " << nResults << " return values";
+        if (nResults != outputVariablesNames_.getSize())
+          throw InvalidArgumentException(HERE) << "Error in analytical function defined with " << outputVariablesNames_.getSize() << " return values, muParser found " << nResults << " return values";
         for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
         {
           // By default muParser is not compiled with MUP_MATH_EXCEPTIONS enabled and does not throw on domain/division errors

@@ -88,14 +88,45 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
 
 /* Parameter constructor */
 SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
-                                    const String & formula,
-                                    const UnsignedInteger numberOutputs)
+                                    const UnsignedInteger numberOutputs,
+                                    const String & formula)
   : Function()
 {
   const Description outputVariablesNames(Description::BuildDefault(numberOutputs, "y"));
 
   // Try to build an analytical gradient
-  SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, formula, numberOutputs);
+  SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, true, formula);
+  setEvaluation(evaluation.clone());
+  try
+  {
+    setGradient(new SymbolicGradient(evaluation));
+  }
+  catch(...)
+  {
+    LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
+    setGradient(new CenteredFiniteDifferenceGradient(epsilon, getEvaluation()));
+  }
+  try
+  {
+    setHessian(new SymbolicHessian(evaluation));
+  }
+  catch(...)
+  {
+    LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
+    setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
+  }
+}
+
+/* Parameter constructor */
+SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
+                                    const Description & outputVariablesNames,
+                                    const String & formula)
+  : Function()
+{
+  // Try to build an analytical gradient
+  SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, false, formula);
   setEvaluation(evaluation.clone());
   try
   {

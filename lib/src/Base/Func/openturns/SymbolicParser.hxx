@@ -44,7 +44,7 @@ public:
   SymbolicParser();
 
   /** Constructor with parameter */
-  explicit SymbolicParser(const UnsignedInteger numberOutputs);
+  explicit SymbolicParser(const Description & outputVariablesNames);
 
   /** Constructor with parameters */
   SymbolicParser(const SymbolicParserImplementation & implementation);
@@ -55,6 +55,7 @@ public:
   /** Variables accessors */
   Description getVariables() const;
   void setVariables(const Description & inputVariablesNames);
+  void setImplicitOutputVariables(const Bool implicitOutputVariables);
 
   /** Formulas accessors */
   Description getFormulas() const;
@@ -62,7 +63,6 @@ public:
 
   Point operator()(const Point & inP) const;
   Sample operator()(const Sample & inS) const;
-
 };
 
 END_NAMESPACE_OPENTURNS

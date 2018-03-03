@@ -43,7 +43,7 @@ public:
   SymbolicParserExprTk();
 
   /** Constructor with parameter */
-  explicit SymbolicParserExprTk(const UnsignedInteger numberOutputs);
+  explicit SymbolicParserExprTk(const Description & outputVariablesNames);
 
   /** Virtual copy constructor */
   virtual SymbolicParserExprTk * clone() const;

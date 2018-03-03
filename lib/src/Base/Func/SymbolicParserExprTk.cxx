@@ -41,8 +41,8 @@ SymbolicParserExprTk::SymbolicParserExprTk()
 }
 
 /* Constructor with parameter */
-SymbolicParserExprTk::SymbolicParserExprTk(const UnsignedInteger numberOutputs)
-  : SymbolicParserImplementation(numberOutputs)
+SymbolicParserExprTk::SymbolicParserExprTk(const Description & outputVariablesNames)
+  : SymbolicParserImplementation(outputVariablesNames)
 {
   // Nothing to do
 }
@@ -59,13 +59,14 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
   const UnsignedInteger inputDimension(inputVariablesNames_.getSize());
   if (inP.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
-  const UnsignedInteger outputDimension(numberOutputs_ > 0 ? numberOutputs_ : formulas_.getSize());
+  const UnsignedInteger outputDimension(outputVariablesNames_.getSize() > 0 ? outputVariablesNames_.getSize() : formulas_.getSize());
   if (outputDimension == 0) return Point();
   initialize();
   std::copy(inP.begin(), inP.end(), inputStack_.begin());
   Point result(outputDimension);
-  if (numberOutputs_ == 0)
+  if (outputVariablesNames_.getSize() == 0)
   {
+    // One formula by marginal
     for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
     {
       const Scalar value = expressions_[outputIndex]->value();
@@ -77,21 +78,33 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
   }
   else
   {
-    // Evaluate expression
+    // Single formula, evaluate expression
     (void) expressions_[0]->value();
 
-    const results_context_t & results = expressions_[0]->results();
-    if (!(results.count() == numberOutputs_))
-      throw InternalException(HERE) << "Expected " << numberOutputs_ << " outputs, got " << results.count() << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-    for (UnsignedInteger outputIndex = 0; outputIndex < results.count(); ++ outputIndex)
+    if (implicitOutputVariables_)
     {
-      if (!(results[outputIndex].type == type_t::e_scalar))
-        throw InternalException(HERE) << "Expected scalar output, got type " << results[outputIndex].type;
-      const Scalar value = type_t::scalar_view(results[outputIndex])();
-      // ExprTk does not throw on domain/division errors
-      if (!SpecFunc::IsNormal(value))
-        throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-      result[outputIndex] = value;
+      const results_context_t & results = expressions_[0]->results();
+      if (!(results.count() == outputVariablesNames_.getSize()))
+        throw InternalException(HERE) << "Expected " << outputVariablesNames_.getSize() << " outputs, got " << results.count() << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      for (UnsignedInteger outputIndex = 0; outputIndex < results.count(); ++ outputIndex)
+      {
+        if (!(results[outputIndex].type == type_t::e_scalar))
+          throw InternalException(HERE) << "Expected scalar output, got type " << results[outputIndex].type;
+        const Scalar value = type_t::scalar_view(results[outputIndex])();
+        // ExprTk does not throw on domain/division errors
+        if (!SpecFunc::IsNormal(value))
+          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+        result[outputIndex] = value;
+      }
+    }
+    else
+    {
+      std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), result.begin());
+      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+      {
+        if (!SpecFunc::IsNormal(result[outputIndex]))
+          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      }
     }
   }
   return result;
@@ -102,13 +115,14 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   if (inS.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inS.getDimension() << ") expected " << inputDimension;
-  const UnsignedInteger outputDimension(numberOutputs_ > 0 ? numberOutputs_ : formulas_.getSize());
+  const UnsignedInteger outputDimension(outputVariablesNames_.getSize() > 0 ? outputVariablesNames_.getSize() : formulas_.getSize());
   if (outputDimension == 0) return Sample(inS.getSize(), 0);
   initialize();
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension);
-  if (numberOutputs_ == 0)
+  if (outputVariablesNames_.getSize() == 0)
   {
+    // One formula by marginal
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
@@ -125,24 +139,37 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   }
   else
   {
+    // Single formula
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
       // Evaluate expression
       (void) expressions_[0]->value();
 
-      const results_context_t & results = expressions_[0]->results();
-      if (!(results.count() == numberOutputs_))
-        throw InternalException(HERE) << "Expected " << numberOutputs_ << " outputs, got " << results.count() << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
-      for (UnsignedInteger outputIndex = 0; outputIndex < results.count(); ++ outputIndex)
+      if (implicitOutputVariables_)
       {
-        if (!(results[outputIndex].type == type_t::e_scalar))
-          throw InternalException(HERE) << "Expected scalar output, got type " << results[outputIndex].type;
-        const Scalar value = type_t::scalar_view(results[outputIndex])();
-        // ExprTk does not throw on domain/division errors
-        if (!SpecFunc::IsNormal(value))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
-        result(i, outputIndex) = value;
+        const results_context_t & results = expressions_[0]->results();
+        if (!(results.count() == outputVariablesNames_.getSize()))
+          throw InternalException(HERE) << "Expected " << outputVariablesNames_.getSize() << " outputs, got " << results.count() << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
+        for (UnsignedInteger outputIndex = 0; outputIndex < results.count(); ++ outputIndex)
+        {
+          if (!(results[outputIndex].type == type_t::e_scalar))
+            throw InternalException(HERE) << "Expected scalar output, got type " << results[outputIndex].type;
+          const Scalar value = type_t::scalar_view(results[outputIndex])();
+          // ExprTk does not throw on domain/division errors
+          if (!SpecFunc::IsNormal(value))
+            throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
+          result(i, outputIndex) = value;
+        }
+      }
+      else
+      {
+        std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), &result(i, 0));
+        for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+        {
+          if (!SpecFunc::IsNormal(result(i, outputIndex)))
+            throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
+        }
       }
     }
   }
@@ -165,7 +192,9 @@ void SymbolicParserExprTk::initialize() const
   if (expressions_.getSize() == numberOfParsers) return;
   expressions_ = Collection<Pointer<exprtk::expression<Scalar> > >(numberOfParsers);
   const UnsignedInteger inputDimension(inputVariablesNames_.getSize());
-  inputStack_ = Point(inputDimension);
+  // outputDimension is non-zero only if implicitOutputVariables_ is false
+  const UnsignedInteger outputDimension(outputVariablesNames_.getSize());
+  inputStack_ = Point(inputDimension + outputDimension);
   exprtk::symbol_table<Scalar> symbol_table;
   symbol_table.add_constants();
   symbol_table.add_constant("e_", 2.71828182845904523536028747135266249775724709369996);
@@ -183,6 +212,13 @@ void SymbolicParserExprTk::initialize() const
   for (UnsignedInteger inputIndex = 0; inputIndex < inputDimension; ++ inputIndex)
   {
     symbol_table.add_variable(inputVariablesNames_[inputIndex], inputStack_[inputIndex]);
+  }
+  if (!implicitOutputVariables_)
+  {
+    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+    {
+      symbol_table.add_variable(outputVariablesNames_[outputIndex], inputStack_[inputDimension + outputIndex]);
+    }
   }
   exprtk::parser<Scalar> parser;
   // For each parser of a formula, do

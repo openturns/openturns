@@ -52,8 +52,13 @@ public:
 
   /** Parameter constructor */
   SymbolicFunction (const Description & inputVariablesNames,
-                    const String & formula,
-                    const UnsignedInteger numberOutputs);
+                    const UnsignedInteger numberOutputs,
+                    const String & formula);
+
+  /** Parameter constructor */
+  SymbolicFunction (const Description & inputVariablesNames,
+                    const Description & outputVariablesNames,
+                    const String & formula);
 
   /** String converter */
   virtual String __repr__() const;

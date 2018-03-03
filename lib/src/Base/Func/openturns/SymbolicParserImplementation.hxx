@@ -40,7 +40,7 @@ public:
   SymbolicParserImplementation();
 
   /** Constructor with parameter */
-  explicit SymbolicParserImplementation(const UnsignedInteger numberOutputs);
+  explicit SymbolicParserImplementation(const Description & outputVariablesNames);
 
   /** Virtual copy constructor */
   virtual SymbolicParserImplementation * clone() const;
@@ -48,6 +48,7 @@ public:
   /** Variables accessor */
   virtual Description getVariables() const;
   virtual void setVariables(const Description & inputVariablesNames);
+  virtual void setImplicitOutputVariables(const Bool implicitOutputVariables);
 
   /** Formulas accessor */
   virtual Description getFormulas() const;
@@ -64,8 +65,9 @@ public:
  
 protected:
   Description inputVariablesNames_;
+  Description outputVariablesNames_;
   Description formulas_;
-  UnsignedInteger numberOutputs_;
+  Bool implicitOutputVariables_;
 
 }; /* class SymbolicParserImplementation */
 

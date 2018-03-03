@@ -30,6 +30,7 @@ SymbolicEvaluation::SymbolicEvaluation()
   : EvaluationImplementation()
   , inputVariablesNames_()
   , outputVariablesNames_()
+  , implicitOutputVariables_(true)
   , formulas_()
   , parser_()
 {
@@ -43,6 +44,7 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
   : EvaluationImplementation()
   , inputVariablesNames_(inputVariablesNames)
   , outputVariablesNames_(outputVariablesNames)
+  , implicitOutputVariables_(true)
   , formulas_(formulas)
   , parser_()
 {
@@ -56,24 +58,22 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
 /* Constructor with a single formula and multiple ouutputs */
 SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
                                        const Description & outputVariablesNames,
-                                       const String & formula,
-                                       const UnsignedInteger numberOutputs)
+                                       const Bool implicitOutputVariables,
+                                       const String & formula)
   : EvaluationImplementation()
   , inputVariablesNames_(inputVariablesNames)
   , outputVariablesNames_(outputVariablesNames)
+  , implicitOutputVariables_(implicitOutputVariables)
   , formulas_(Description(1, formula))
-  , parser_(numberOutputs)
+  , parser_(outputVariablesNames)
 {
-  if (outputVariablesNames.getSize() != numberOutputs)
-    throw InvalidDimensionException(HERE) << "The number of outputVariablesNames (" << outputVariablesNames.getSize()
-                                          << ") does not match the number of outputs (" << numberOutputs << ")";
-
   initialize();
 }
 
 void SymbolicEvaluation::initialize()
 {
   parser_.setVariables(inputVariablesNames_);
+  parser_.setImplicitOutputVariables(implicitOutputVariables_);
   parser_.setFormulas(formulas_);
   setInputDescription(inputVariablesNames_);
   setOutputDescription(outputVariablesNames_);
@@ -90,7 +90,8 @@ SymbolicEvaluation * SymbolicEvaluation::clone() const
 Bool SymbolicEvaluation::operator ==(const SymbolicEvaluation & other) const
 {
   if (this == &other) return true;
-  return inputVariablesNames_ == other.inputVariablesNames_ && outputVariablesNames_ == other.outputVariablesNames_ && formulas_ == other.formulas_;
+  return inputVariablesNames_ == other.inputVariablesNames_ && outputVariablesNames_ == other.outputVariablesNames_ &&
+         implicitOutputVariables_ == other.implicitOutputVariables_ && formulas_ == other.formulas_;
 }
 
 /* String converter */
@@ -201,6 +202,7 @@ void SymbolicEvaluation::save(Advocate & adv) const
   EvaluationImplementation::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.saveAttribute( "outputVariablesNames_", outputVariablesNames_ );
+  adv.saveAttribute( "implicitOutputVariables_", implicitOutputVariables_ );
   adv.saveAttribute( "formulas_", formulas_ );
 }
 
@@ -210,6 +212,7 @@ void SymbolicEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "outputVariablesNames_", outputVariablesNames_ );
+  adv.loadAttribute( "implicitOutputVariables_", implicitOutputVariables_ );
   adv.loadAttribute( "formulas_", formulas_ );
   initialize();
 }

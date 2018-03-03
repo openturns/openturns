@@ -34,18 +34,17 @@ static const Factory<SymbolicParserImplementation> Factory_SymbolicParserImpleme
 SymbolicParserImplementation::SymbolicParserImplementation()
   : PersistentObject()
   , inputVariablesNames_()
+  , outputVariablesNames_()
   , formulas_()
-  , numberOutputs_(0)
 {
   // Nothing to do
 }
 
 /** Constructor with parameter */
-SymbolicParserImplementation::SymbolicParserImplementation(const UnsignedInteger numberOutputs)
+SymbolicParserImplementation::SymbolicParserImplementation(const Description & outputVariablesNames)
   : PersistentObject()
   , inputVariablesNames_()
-  , formulas_()
-  , numberOutputs_(numberOutputs)
+  , outputVariablesNames_(outputVariablesNames)
 {
   // Nothing to do
 }
@@ -65,6 +64,11 @@ Description SymbolicParserImplementation::getVariables() const
 void SymbolicParserImplementation::setVariables(const Description & inputVariablesNames)
 {
   inputVariablesNames_ = inputVariablesNames;
+}
+
+void SymbolicParserImplementation::setImplicitOutputVariables(const Bool implicitOutputVariables)
+{
+  implicitOutputVariables_ = implicitOutputVariables;
 }
 
 /* Formulas accessor */
@@ -99,8 +103,9 @@ void SymbolicParserImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
+  adv.saveAttribute( "outputVariablesNames", outputVariablesNames_ );
+  adv.saveAttribute( "implicitOutputVariables_", implicitOutputVariables_ );
   adv.saveAttribute( "formulas_", formulas_ );
-  adv.saveAttribute( "numberOutputs_", numberOutputs_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -108,8 +113,9 @@ void SymbolicParserImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
+  adv.loadAttribute( "outputVariablesNames", outputVariablesNames_ );
+  adv.loadAttribute( "implicitOutputVariables_", implicitOutputVariables_ );
   adv.loadAttribute( "formulas_", formulas_ );
-  adv.loadAttribute( "numberOutputs_", numberOutputs_ );
 }
 
 
