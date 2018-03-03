@@ -31,6 +31,7 @@ SymbolicEvaluation::SymbolicEvaluation()
   , inputVariablesNames_()
   , outputVariablesNames_()
   , formulas_()
+  , parser_()
 {
   // Nothing to do
 } // SymbolicEvaluation
@@ -43,6 +44,7 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
   , inputVariablesNames_(inputVariablesNames)
   , outputVariablesNames_(outputVariablesNames)
   , formulas_(formulas)
+  , parser_()
 {
   if (outputVariablesNames.getSize() != formulas.getSize())
     throw InvalidDimensionException(HERE) << "The number of outputVariablesNames (" << outputVariablesNames.getSize()

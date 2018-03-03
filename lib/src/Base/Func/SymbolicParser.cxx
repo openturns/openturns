@@ -33,7 +33,7 @@ CLASSNAMEINIT(SymbolicParser)
 
 /* Default constructor */
 SymbolicParser::SymbolicParser()
-  : TypedInterfaceObject<SymbolicParserImplementation>(new SymbolicParserImplementation())
+  : TypedInterfaceObject<SymbolicParserImplementation>()
 {
   String name = ResourceMap::Get("SymbolicParser-Backend");
   if (name == "ExprTk")

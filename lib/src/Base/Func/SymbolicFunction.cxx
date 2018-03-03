@@ -59,7 +59,6 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
                                     const Description & formulas)
   : Function()
 {
-#ifdef OPENTURNS_HAVE_MUPARSER
   const Description outputVariablesNames(Description::BuildDefault(formulas.getSize(), "y"));
 
   // Try to build an analytical gradient
@@ -85,9 +84,6 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
-#else
-  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser";
-#endif
 }
 
 /* String converter */
