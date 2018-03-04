@@ -31,6 +31,7 @@ CLASSNAMEINIT(SymbolicFunction)
 
 // Inline documentation for analytical functions
 Bool SymbolicFunction::IsDocumentationInitialized_ = false;
+Description SymbolicFunction::ValidParsers_;
 Description SymbolicFunction::ValidConstants_;
 Description SymbolicFunction::ValidFunctions_;
 Description SymbolicFunction::ValidOperators_;
@@ -139,8 +140,6 @@ void SymbolicFunction::InitializeDocumentation()
   ValidConstants_.setName("Valid constants");
   ValidConstants_.add("e_ -> Euler's constant (2.71828...)");
   ValidConstants_.add("pi_ -> Pi constant (3.14159...)");
-  ValidConstants_.add("_e -> Euler's constant (2.71828...)");
-  ValidConstants_.add("_pi -> Pi constant (3.14159...)");
 
   // Second, the functions
   ValidFunctions_.setName("Valid functions");
@@ -206,10 +205,26 @@ void SymbolicFunction::InitializeDocumentation()
   ValidOperators_.add("/  -> division (priority 4)");
   ValidOperators_.add("-  -> sign change (priority 4)");
   ValidOperators_.add("^  -> x to the power of y (priority 5)");
+
+  // Fourth, the parsers
+  ValidParsers_.setName("Valid parsers");
+#ifdef OPENTURNS_HAVE_EXPRTK
+  ValidParsers_.add("ExprTk");
+#endif
+#ifdef OPENTURNS_HAVE_MUPARSER
+  ValidParsers_.add("MuParser");
+#endif
+
   IsDocumentationInitialized_ = true;
 }
 
 /* Static methods for documentation of analytical fonctions */
+Description SymbolicFunction::GetValidParsers()
+{
+  if (!IsDocumentationInitialized_) InitializeDocumentation();
+  return ValidParsers_;
+}
+
 Description SymbolicFunction::GetValidConstants()
 {
   if (!IsDocumentationInitialized_) InitializeDocumentation();

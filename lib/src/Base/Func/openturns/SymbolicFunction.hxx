@@ -60,18 +60,22 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Static methods for documentation of analytical fnctions */
+  static Description GetValidParsers();
   static Description GetValidConstants();
   static Description GetValidFunctions();
   static Description GetValidOperators();
 
 private:
-  /** List of muParser valid constants */
+  /** List of valid parsers */
+  static Description ValidParsers_;
+
+  /** List of valid constants */
   static Description ValidConstants_;
 
-  /** List of muParser valid functions */
+  /** List of valid functions */
   static Description ValidFunctions_;
 
-  /** List of muParser valid operators */
+  /** List of valid operators */
   static Description ValidOperators_;
 
   /** Flag to tell if the documentation has been initialized */

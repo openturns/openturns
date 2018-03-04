@@ -6,6 +6,9 @@ import math as m
 
 ot.ResourceMap.Set("SymbolicParser-Backend", "ExprTk")
 
+parsers = ot.SymbolicFunction.GetValidParsers()
+assert "ExprTk" in parsers, 'ExprTk not found'
+
 elementaryFunctions = ['sin', 'cos', 'tan']
 elementaryFunctions.append('asin')
 elementaryFunctions.append('acos')

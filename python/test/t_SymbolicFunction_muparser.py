@@ -6,6 +6,9 @@ import math as m
 
 ot.ResourceMap.Set("SymbolicParser-Backend", "MuParser")
 
+parsers = ot.SymbolicFunction.GetValidParsers()
+assert "MuParser" in parsers, 'MuParser not found'
+
 elementaryFunctions = ['sin', 'cos', 'tan']
 elementaryFunctions.append('asin')
 elementaryFunctions.append('acos')
