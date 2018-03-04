@@ -74,9 +74,6 @@ install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 if (LIBXML2_FOUND)
   list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_LIBXML2=1)
 endif ()
-if (MUPARSER_FOUND)
-  list (APPEND SWIG_MODULE_func_EXTRA_FLAGS -DOPENTURNS_HAVE_MUPARSER=1)
-endif ()
 
 ot_add_python_module(common common_module.i
                       OTtypes.i

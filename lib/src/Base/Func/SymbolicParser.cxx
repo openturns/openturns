@@ -20,7 +20,9 @@
  */
 
 #include "openturns/SymbolicParser.hxx"
+#ifdef OPENTURNS_HAVE_EXPRTK
 #include "openturns/SymbolicParserExprTk.hxx"
+#endif
 #ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicParserMuParser.hxx"
 #endif
@@ -36,14 +38,21 @@ SymbolicParser::SymbolicParser()
   : TypedInterfaceObject<SymbolicParserImplementation>()
 {
   String name = ResourceMap::Get("SymbolicParser-Backend");
+#ifdef OPENTURNS_HAVE_EXPRTK
   if (name == "ExprTk")
+  {
     p_implementation_ = new SymbolicParserExprTk();
-#ifdef OPENTURNS_HAVE_MUPARSER
-  else if (name == "MuParser")
-    p_implementation_ = new SymbolicParserMuParser();
+    return;
+  }
 #endif
-  else
-    throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
+#ifdef OPENTURNS_HAVE_MUPARSER
+  if (name == "MuParser")
+  {
+    p_implementation_ = new SymbolicParserMuParser();
+    return;
+  }
+#endif
+  throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
 }
 
 /* Constructor with parameter */
@@ -51,14 +60,18 @@ SymbolicParser::SymbolicParser(const Description & outputVariablesNames)
   : TypedInterfaceObject<SymbolicParserImplementation>()
 {
   String name = ResourceMap::Get("SymbolicParser-Backend");
+#ifdef OPENTURNS_HAVE_EXPRTK
   if (name == "ExprTk")
+  {
     p_implementation_ = new SymbolicParserExprTk(outputVariablesNames);
+    return;
+  }
+#endif
 #ifdef OPENTURNS_HAVE_MUPARSER
-  else if (name == "MuParser")
+  if (name == "MuParser")
     throw NotYetImplementedException(HERE) << "MuParser does not support explicit output variables, use ExprTk instead.";
 #endif
-  else
-    throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
+  throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
 }
 
 /* Constructor with parameters */
