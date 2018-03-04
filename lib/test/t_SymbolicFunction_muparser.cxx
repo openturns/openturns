@@ -361,20 +361,6 @@ int main(int argc, char *argv[])
       fullprint << f.__str__() << ", f([2, 3])=" << f(x) << std::endl;
     }
     // Check functions with multiple return values
-    {
-      Description input(4);
-      input[0] = "x";
-      input[1] = "y";
-      input[2] = "z";
-      input[3] = "t";
-      SymbolicFunction f(input, 3, "t,z-y,x");
-      Point x(4);
-      x[0] = 2.0;
-      x[1] = 3.0;
-      x[2] = 4.0;
-      x[3] = 5.0;
-      fullprint << f.__str__() << ", f([2, 3, 4, 5])=" << f(x) << std::endl;
-    }
     try
     {
       Description input(4);

@@ -55,7 +55,6 @@ public:
   /** Variables accessors */
   Description getVariables() const;
   void setVariables(const Description & inputVariablesNames);
-  void setImplicitOutputVariables(const Bool implicitOutputVariables);
 
   /** Formulas accessors */
   Description getFormulas() const;

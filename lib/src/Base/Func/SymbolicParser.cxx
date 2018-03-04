@@ -55,7 +55,7 @@ SymbolicParser::SymbolicParser(const Description & outputVariablesNames)
     p_implementation_ = new SymbolicParserExprTk(outputVariablesNames);
 #ifdef OPENTURNS_HAVE_MUPARSER
   else if (name == "MuParser")
-    p_implementation_ = new SymbolicParserMuParser(outputVariablesNames);
+    throw NotYetImplementedException(HERE) << "MuParser does not support explicit output variables, use ExprTk instead.";
 #endif
   else
     throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
@@ -83,11 +83,6 @@ Description SymbolicParser::getVariables() const
 void SymbolicParser::setVariables(const Description & inputVariablesNames)
 {
   getImplementation()->setVariables(inputVariablesNames);
-}
-
-void SymbolicParser::setImplicitOutputVariables(const Bool implicitOutputVariables)
-{
-  getImplementation()->setImplicitOutputVariables(implicitOutputVariables);
 }
 
 Description SymbolicParser::getFormulas() const

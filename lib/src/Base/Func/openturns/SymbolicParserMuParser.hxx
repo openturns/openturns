@@ -39,13 +39,8 @@ public:
   /** Default constructor */
   SymbolicParserMuParser();
 
-  /** Constructor with parameter */
-  explicit SymbolicParserMuParser(const Description & outputVariablesNames);
-
   /** Virtual copy constructor */
   virtual SymbolicParserMuParser * clone() const;
-
-  virtual void setImplicitOutputVariables(const Bool implicitOutputVariables);
 
   Point operator()(const Point & inP) const;
   Sample operator()(const Sample & inS) const;

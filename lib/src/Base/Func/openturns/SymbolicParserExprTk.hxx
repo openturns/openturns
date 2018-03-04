@@ -51,11 +51,18 @@ public:
   Point operator()(const Point & inP) const;
   Sample operator()(const Sample & inS) const;
 
+  /* Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /* Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
 private:
   void initialize() const;
 
   mutable Collection< Pointer< exprtk::expression<Scalar> > > expressions_;
   mutable Point inputStack_;
+  Description outputVariablesNames_;
 
 };
 

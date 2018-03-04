@@ -34,17 +34,7 @@ static const Factory<SymbolicParserImplementation> Factory_SymbolicParserImpleme
 SymbolicParserImplementation::SymbolicParserImplementation()
   : PersistentObject()
   , inputVariablesNames_()
-  , outputVariablesNames_()
   , formulas_()
-{
-  // Nothing to do
-}
-
-/** Constructor with parameter */
-SymbolicParserImplementation::SymbolicParserImplementation(const Description & outputVariablesNames)
-  : PersistentObject()
-  , inputVariablesNames_()
-  , outputVariablesNames_(outputVariablesNames)
 {
   // Nothing to do
 }
@@ -64,11 +54,6 @@ Description SymbolicParserImplementation::getVariables() const
 void SymbolicParserImplementation::setVariables(const Description & inputVariablesNames)
 {
   inputVariablesNames_ = inputVariablesNames;
-}
-
-void SymbolicParserImplementation::setImplicitOutputVariables(const Bool implicitOutputVariables)
-{
-  implicitOutputVariables_ = implicitOutputVariables;
 }
 
 /* Formulas accessor */
@@ -103,8 +88,6 @@ void SymbolicParserImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
-  adv.saveAttribute( "outputVariablesNames", outputVariablesNames_ );
-  adv.saveAttribute( "implicitOutputVariables_", implicitOutputVariables_ );
   adv.saveAttribute( "formulas_", formulas_ );
 }
 
@@ -113,8 +96,6 @@ void SymbolicParserImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
-  adv.loadAttribute( "outputVariablesNames", outputVariablesNames_ );
-  adv.loadAttribute( "implicitOutputVariables_", implicitOutputVariables_ );
   adv.loadAttribute( "formulas_", formulas_ );
 }
 

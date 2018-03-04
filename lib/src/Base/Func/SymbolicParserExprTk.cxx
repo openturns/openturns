@@ -42,7 +42,8 @@ SymbolicParserExprTk::SymbolicParserExprTk()
 
 /* Constructor with parameter */
 SymbolicParserExprTk::SymbolicParserExprTk(const Description & outputVariablesNames)
-  : SymbolicParserImplementation(outputVariablesNames)
+  : SymbolicParserImplementation()
+  , outputVariablesNames_(outputVariablesNames)
 {
   // Nothing to do
 }
@@ -81,30 +82,11 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
     // Single formula, evaluate expression
     (void) expressions_[0]->value();
 
-    if (implicitOutputVariables_)
+    std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), result.begin());
+    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
     {
-      const results_context_t & results = expressions_[0]->results();
-      if (!(results.count() == outputVariablesNames_.getSize()))
-        throw InternalException(HERE) << "Expected " << outputVariablesNames_.getSize() << " outputs, got " << results.count() << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-      for (UnsignedInteger outputIndex = 0; outputIndex < results.count(); ++ outputIndex)
-      {
-        if (!(results[outputIndex].type == type_t::e_scalar))
-          throw InternalException(HERE) << "Expected scalar output, got type " << results[outputIndex].type;
-        const Scalar value = type_t::scalar_view(results[outputIndex])();
-        // ExprTk does not throw on domain/division errors
-        if (!SpecFunc::IsNormal(value))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-        result[outputIndex] = value;
-      }
-    }
-    else
-    {
-      std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), result.begin());
-      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
-      {
-        if (!SpecFunc::IsNormal(result[outputIndex]))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-      }
+      if (!SpecFunc::IsNormal(result[outputIndex]))
+        throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
     }
   }
   return result;
@@ -146,30 +128,11 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
       // Evaluate expression
       (void) expressions_[0]->value();
 
-      if (implicitOutputVariables_)
+      std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), &result(i, 0));
+      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
-        const results_context_t & results = expressions_[0]->results();
-        if (!(results.count() == outputVariablesNames_.getSize()))
-          throw InternalException(HERE) << "Expected " << outputVariablesNames_.getSize() << " outputs, got " << results.count() << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
-        for (UnsignedInteger outputIndex = 0; outputIndex < results.count(); ++ outputIndex)
-        {
-          if (!(results[outputIndex].type == type_t::e_scalar))
-            throw InternalException(HERE) << "Expected scalar output, got type " << results[outputIndex].type;
-          const Scalar value = type_t::scalar_view(results[outputIndex])();
-          // ExprTk does not throw on domain/division errors
-          if (!SpecFunc::IsNormal(value))
-            throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
-          result(i, outputIndex) = value;
-        }
-      }
-      else
-      {
-        std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), &result(i, 0));
-        for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
-        {
-          if (!SpecFunc::IsNormal(result(i, outputIndex)))
-            throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
-        }
+        if (!SpecFunc::IsNormal(result(i, outputIndex)))
+          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
       }
     }
   }
@@ -192,9 +155,8 @@ void SymbolicParserExprTk::initialize() const
   if (expressions_.getSize() == numberOfParsers) return;
   expressions_ = Collection<Pointer<exprtk::expression<Scalar> > >(numberOfParsers);
   const UnsignedInteger inputDimension(inputVariablesNames_.getSize());
-  // outputDimension is non-zero only if implicitOutputVariables_ is false
-  const UnsignedInteger outputDimension(outputVariablesNames_.getSize());
-  inputStack_ = Point(inputDimension + outputDimension);
+  const UnsignedInteger numberOutputVariables(outputVariablesNames_.getSize());
+  inputStack_ = Point(inputDimension + numberOutputVariables);
   exprtk::symbol_table<Scalar> symbol_table;
   symbol_table.add_constants();
   symbol_table.add_constant("e_", 2.71828182845904523536028747135266249775724709369996);
@@ -213,12 +175,9 @@ void SymbolicParserExprTk::initialize() const
   {
     symbol_table.add_variable(inputVariablesNames_[inputIndex], inputStack_[inputIndex]);
   }
-  if (!implicitOutputVariables_)
+  for (UnsignedInteger outputIndex = 0; outputIndex < numberOutputVariables; ++ outputIndex)
   {
-    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
-    {
-      symbol_table.add_variable(outputVariablesNames_[outputIndex], inputStack_[inputDimension + outputIndex]);
-    }
+    symbol_table.add_variable(outputVariablesNames_[outputIndex], inputStack_[inputDimension + outputIndex]);
   }
   exprtk::parser<Scalar> parser;
   // For each parser of a formula, do
@@ -232,6 +191,20 @@ void SymbolicParserExprTk::initialize() const
     }
     expressions_[outputIndex] = new exprtk::expression<Scalar>(expression);
   }
+}
+
+/* Method save() stores the object through the StorageManager */
+void SymbolicParserExprTk::save(Advocate & adv) const
+{
+  SymbolicParserImplementation::save(adv);
+  adv.saveAttribute( "outputVariablesNames_", outputVariablesNames_ );
+}
+
+/* Method load() reloads the object from the StorageManager */
+void SymbolicParserExprTk::load(Advocate & adv)
+{
+  SymbolicParserImplementation::load(adv);
+  adv.loadAttribute( "outputVariablesNames_", outputVariablesNames_ );
 }
 
 END_NAMESPACE_OPENTURNS

@@ -39,16 +39,12 @@ public:
   /** Default constructor */
   SymbolicParserImplementation();
 
-  /** Constructor with parameter */
-  explicit SymbolicParserImplementation(const Description & outputVariablesNames);
-
   /** Virtual copy constructor */
   virtual SymbolicParserImplementation * clone() const;
 
   /** Variables accessor */
   virtual Description getVariables() const;
   virtual void setVariables(const Description & inputVariablesNames);
-  virtual void setImplicitOutputVariables(const Bool implicitOutputVariables);
 
   /** Formulas accessor */
   virtual Description getFormulas() const;
@@ -62,12 +58,10 @@ public:
 
   /* Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
- 
+
 protected:
   Description inputVariablesNames_;
-  Description outputVariablesNames_;
   Description formulas_;
-  Bool implicitOutputVariables_;
 
 }; /* class SymbolicParserImplementation */
 

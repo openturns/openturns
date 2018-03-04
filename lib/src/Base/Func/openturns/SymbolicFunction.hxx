@@ -52,11 +52,6 @@ public:
 
   /** Parameter constructor */
   SymbolicFunction (const Description & inputVariablesNames,
-                    const UnsignedInteger numberOutputs,
-                    const String & formula);
-
-  /** Parameter constructor */
-  SymbolicFunction (const Description & inputVariablesNames,
                     const Description & outputVariablesNames,
                     const String & formula);
 
