@@ -24,9 +24,6 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/exprtk.hpp"
 
-typedef exprtk::results_context<OT::Scalar> results_context_t;
-typedef typename results_context_t::type_store_t type_t;
-
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SymbolicParserExprTk);
