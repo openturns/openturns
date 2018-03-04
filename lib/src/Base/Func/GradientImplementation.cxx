@@ -21,7 +21,11 @@
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicEvaluation.hxx"
+#else
+#include "openturns/LinearEvaluation.hxx"
+#endif
 #include "openturns/ConstantGradient.hxx"
 #include "openturns/ComposedGradient.hxx"
 
@@ -138,6 +142,7 @@ GradientImplementation::Implementation GradientImplementation::getMarginal(const
   // Fake f
   const UnsignedInteger inputDimension = getInputDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   Description input(inputDimension);
   for (UnsignedInteger index = 0; index < inputDimension; ++index)
     input[index] = OSS() << "x" << index;
@@ -146,6 +151,12 @@ GradientImplementation::Implementation GradientImplementation::getMarginal(const
     output[index] = OSS() << "y" << index;
   const Description formulas(outputDimension, "0.0");
   const SymbolicEvaluation right(input, output, formulas);
+#else
+  Point center(inputDimension);
+  Matrix linear(inputDimension, outputDimension);
+  Point constant(outputDimension);
+  const LinearEvaluation right(center, constant, linear);
+#endif
   // A
   const UnsignedInteger marginalOutputDimension = indices.getSize();
   Matrix gradientExtraction(outputDimension, marginalOutputDimension);

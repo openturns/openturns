@@ -19,9 +19,11 @@
  *
  */
 #include "openturns/SymbolicFunction.hxx"
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/SymbolicGradient.hxx"
 #include "openturns/SymbolicHessian.hxx"
+#endif
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 
@@ -58,6 +60,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
                                     const Description & formulas)
   : Function()
 {
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   const Description outputVariablesNames(Description::BuildDefault(formulas.getSize(), "y"));
 
   // Try to build an analytical gradient
@@ -83,6 +86,9 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
+#else
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
+#endif
 }
 
 /* Parameter constructor */
@@ -91,6 +97,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
                                     const String & formula)
   : Function()
 {
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   // Try to build an analytical gradient
   SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, formula);
   setEvaluation(evaluation.clone());
@@ -114,6 +121,9 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
+#else
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
+#endif
 }
 
 /* String converter */

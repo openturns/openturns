@@ -31,7 +31,9 @@
 #include "openturns/ConditionalRandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/Greater.hxx"
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicFunction.hxx"
+#endif
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -127,6 +129,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
                            const Interval & interval)
   : TypedInterfaceObject<RandomVectorImplementation>(new EventDomain(*antecedent.getImplementation(), interval))
 {
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   UnsignedInteger dimension = interval.getDimension();
   UnsignedInteger inputDimension = antecedent.getFunction().getInputDimension();
   Interval::BoolCollection finiteLowerBound(interval.getFiniteLowerBound());
@@ -196,6 +199,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
       *this = RandomVector(newVector, Greater(), 0.0);
     }
   }
+#endif
 }
 
 /* Constructor from domain event */

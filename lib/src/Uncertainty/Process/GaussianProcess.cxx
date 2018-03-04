@@ -29,7 +29,11 @@
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicFunction.hxx"
+#else
+#include "openturns/DatabaseFunction.hxx"
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +53,11 @@ GaussianProcess::GaussianProcess()
   , stationaryTrendValue_(0.0)
   , samplingMethod_(0)
 {
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
+#else
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, covarianceModel_.getInputDimension()), Sample(1, getOutputDimension())));
+#endif
   setDescription(trend_.getOutputDescription());
 }
 
@@ -114,7 +122,11 @@ GaussianProcess::GaussianProcess(const SecondOrderModel & model,
   // We use the upper class accessor to prevent the reinitialization of the flags
   ProcessImplementation::setMesh(mesh);
   setOutputDimension(model.getOutputDimension());
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
+#else
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
+#endif
   setDescription(trend_.getOutputDescription());
 }
 
@@ -135,7 +147,11 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
   // We use the upper class accessor to prevent the reinitialization of the flags
   ProcessImplementation::setMesh(mesh);
   setOutputDimension(covarianceModel.getOutputDimension());
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
+#else
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
+#endif
   setDescription(trend_.getOutputDescription());
 }
 
