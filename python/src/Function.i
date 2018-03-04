@@ -87,6 +87,10 @@ class OpenTURNSPythonFunction(object):
         Dimension of the input vector
     outputDim : positive int
         Dimension of the output vector
+    copy : bool, optional
+        If True, input sample is converted into a Python 2-d sequence before calling
+        _exec_sample.  Otherwise, it is passed directy to _exec_sample.
+        Default is False.
 
     Notes
     -----
@@ -121,7 +125,7 @@ class OpenTURNSPythonFunction(object):
 
     >>> myFunc = Function(F)
     """
-    def __init__(self, n=0, p=0):
+    def __init__(self, n=0, p=0, copy=False):
         try:
             self.__n = int(n)
         except:
@@ -132,6 +136,7 @@ class OpenTURNSPythonFunction(object):
             raise TypeError('outputDim argument is not an integer.')
         self.__descIn = ['x' + str(i) for i in range(n)]
         self.__descOut = ['y' + str(i) for i in range(p)]
+        self._copy = copy
 
     def setInputDescription(self, descIn):
         if (len(descIn) != self.__n):
@@ -233,17 +238,17 @@ class PythonFunction(Function):
         Dimension of the input vector
     outputDim : positive int
         Dimension of the output vector
-    func : a callable python object
-        called on a single point.
+    func : a callable python object, optional
+        Called when evaluated on a single point.
         Default is None.
-    func_sample : a callable python object
-        called on multiple points at once.
+    func_sample : a callable python object, optional
+        Called when evaluated on multiple points at once.
         Default is None.
-    gradient : a callable python objects
-        returns the gradient as a 2-d sequence of float.
+    gradient : a callable python objects, optional
+        Returns the gradient as a 2-d sequence of float.
         Default is None (uses finite-difference).
-    hessian : a callable python object
-        returns the hessian as a 3-d sequence of float.
+    hessian : a callable python object, optional
+        Returns the hessian as a 3-d sequence of float.
         Default is None (uses finite-difference).
     n_cpus : integer
         Number of cpus on which func should be distributed using multiprocessing.
@@ -251,6 +256,10 @@ class PythonFunction(Function):
         and func_sample are both given as arguments, n_cpus will be ignored and
         samples will be handled by func_sample.
         Default is None.
+    copy : bool, optional
+        If True, input sample is converted into a Python 2-d sequence before calling
+        func_sample.  Otherwise, it is passed directy to func_sample.
+        Default is False.
 
     Notes
     -----
@@ -282,10 +291,10 @@ class PythonFunction(Function):
     [[  3 ]
      [ -1 ]]
     """
-    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None):
+    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False):
         if func == None and func_sample == None:
             raise RuntimeError('no func nor func_sample given.')
-        instance = OpenTURNSPythonFunction(n, p)
+        instance = OpenTURNSPythonFunction(n, p, copy)
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):

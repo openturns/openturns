@@ -20,11 +20,14 @@
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     try {
       temp = OT::convert<OT::_PySequence_,OT::Sample>( $input );
+      temp.pyObjSample_ = $input;
       $1 = &temp;
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a Sample");
     }
   }
+  else
+    $1->pyObjSample_ = $input;
 }
 
 %typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALSAMPLE) const Sample & {
@@ -438,7 +441,9 @@ Sample(const Sample & other)
 
 Sample(PyObject * pyObj)
 {
-  return new OT::Sample( OT::convert< OT::_PySequence_, OT::Sample>(pyObj) );  
+  OT::Sample newSample( OT::convert< OT::_PySequence_, OT::Sample>(pyObj) );
+  newSample.pyObjSample_ = pyObj;
+  return new OT::Sample(newSample);
 }
 
 Sample(PyObject * pyObj, UnsignedInteger dimension)
@@ -451,11 +456,12 @@ Sample(PyObject * pyObj, UnsignedInteger dimension)
   for ( OT::UnsignedInteger i = 0; i < size; ++ i ) {
     for ( OT::UnsignedInteger j = 0; j < dimension; ++ j ) {
       if ( k < pointSize ) {
-        sample[i][j] = point[k];
+        sample(i, j) = point[k];
         ++ k;
       }
     }
   }
+  sample.pyObjSample_ = pyObj;
   return new OT::Sample( sample );
 }
 

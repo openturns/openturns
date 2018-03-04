@@ -9,17 +9,6 @@ class=Point name=Unnamed dimension=1 values=[21]
 class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 data=[[0,0],[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9]]
 class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[T] data=[[0],[2],[4],[6],[8],[10],[12],[14],[16],[18]]
 class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=1 description=[T] data=[[200],[202],[204]]
-calls = 15 hits = 0
-T = class=Point name=Unnamed dimension=1 values=[4]
-calls = 16 hits = 0
-T = class=Point name=Unnamed dimension=1 values=[4]
-calls = 16 hits = 1
-T = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[T] data=[[0],[2],[4],[6],[10],[10],[12],[14],[16],[18]]
-calls = 24 hits = 2
-T = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[T] data=[[0],[2],[4],[6],[10],[10],[12],[14],[16],[18]]
-calls = 24 hits = 12
-T = class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[T] data=[[0],[2],[4],[6],[10],[10],[12],[14],[16],[18]]
-calls = 33 hits = 0
 exec
     [ y0  ]
 0 : [ 200 ]
