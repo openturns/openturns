@@ -34,10 +34,12 @@ cdf gradient     =class=Point name=Unnamed dimension=3 values=[0.0041357,-0.2465
 cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[0.0041357,-0.246592,-0.244242]
 quantile=class=Point name=Unnamed dimension=1 values=[5.47724]
 cdf(quantile)=0.95
+entropy=2.01
+entropy (MC)=2.01
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.61544] upper bound=class=Point name=Unnamed dimension=1 values=[5.7747] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
 Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(NonCentralStudent(nu = 7.2, delta = 4.8, gamma = -3.7)) gradientImplementation=MinimumVolumeLevelSetGradient(NonCentralStudent(nu = 7.2, delta = 4.8, gamma = -3.7)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(NonCentralStudent(nu = 7.2, delta = 4.8, gamma = -3.7)) level=3.75705
-beta=0.0233525
+beta=0.0234
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.17995] upper bound=class=Point name=Unnamed dimension=1 values=[6.75359] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 mean=class=Point name=Unnamed dimension=1 values=[1.68455]

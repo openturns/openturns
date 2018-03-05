@@ -117,6 +117,9 @@ int main(int argc, char *argv[])
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    fullprint << "entropy=" << std::setprecision(3) << distribution.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
+
     // Confidence regions
     Scalar threshold;
     fullprint << "Minimum volume interval=" << distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95, threshold) << std::endl;
