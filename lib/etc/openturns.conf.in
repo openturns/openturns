@@ -201,7 +201,7 @@
   <SobolSequence-InitialSeed value="1" />
 
   <!-- OT::SensitivityAlgorithm parameters -->
-  <SobolIndicesAlgorithm-DefaultUseAsymptoticInterval value="0" />
+  <SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution value="0" />
   <SobolIndicesAlgorithm-DefaultBlockSize value="1" />
   <SobolIndicesAlgorithm-DefaultBootstrapSize value="100" />
   <SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel value="0.95" />

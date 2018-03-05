@@ -76,8 +76,8 @@ protected:
   Sample computeIndices(const Sample & sample,
                         Sample & VTi) const;
 
-  // Compute the fisher transform
-  virtual void computeAsymptoticInterval() const;
+  /** void method that computes asymptotic distribution */
+  virtual void computeAsymptoticDistribution() const;
 
 private:
 

@@ -98,9 +98,13 @@ public:
   Scalar getBootstrapConfidenceLevel() const;
   void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
 
-  /** Whether to use bootstrap or asymptotic intervals */
-  void setUseAsymptoticInterval(Bool useAsymptoticInterval);
-  Bool getUseAsymptoticInterval() const;
+  /** Whether to use bootstrap or asymptotic distribution */
+  void setUseAsymptoticDistribution(Bool useAsymptoticDistribution);
+  Bool getUseAsymptoticDistribution() const;
+
+  /** Estimator distribution accessor */
+  Distribution getFirstOrderIndicesDistribution() const;
+  Distribution getTotalOrderIndicesDistribution() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -144,10 +148,12 @@ protected:
                                  Point & mergedTotal) const;
 
   /** void method that computes bootstrap confidence interval */
-  void computeIndicesInterval() const;
+  void computeBootstrapDistribution() const;
 
   /** void method that computes asymptotic confidence interval */
-  virtual void computeAsymptoticInterval() const;
+  virtual void computeAsymptoticDistribution() const;
+
+  void computeIndicesDistribution() const;
 
   /** Helper function to compute variance of the estimators */
   Scalar computeVariance(const Sample & u, const Function & psi) const;
@@ -206,14 +212,18 @@ protected:
   /** Second order indices */
   mutable SymmetricTensor secondOrderIndices_;
 
-  /** Confidence interval for first order indices (merged indices) */
-  mutable Interval firstOrderIndiceInterval_;
+  /** Distribution of the first order indices (aggregated indices) */
+  mutable Distribution firstOrderIndiceDistribution_;
 
-  /** Confidence interval for total order indices (merged indices) */
-  mutable Interval totalOrderIndiceInterval_;
+  /** Distribution of the total order indices (aggregated indices) */
+  mutable Distribution totalOrderIndiceDistribution_;
 
-  /** Whether to use bootstrap or asymptotic intervals */
-  Bool useAsymptoticInterval_;
+  /** Whether the indices distribution is computed already */
+  mutable Bool alreadyComputedIndicesDistribution_;
+
+  /** Whether to use bootstrap or asymptotic distribution */
+  Bool useAsymptoticDistribution_;
+
 }; /* class SobolIndicesAlgorithmImplementation */
 
 END_NAMESPACE_OPENTURNS

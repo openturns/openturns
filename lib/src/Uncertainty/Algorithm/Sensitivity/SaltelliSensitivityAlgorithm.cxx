@@ -100,11 +100,8 @@ Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
   return varianceI;
 }
 
-void SaltelliSensitivityAlgorithm::computeAsymptoticInterval() const
+void SaltelliSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  // Do nothing if already computed
-  if (0 != firstOrderIndiceInterval_.getDimension()) return;
-
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 

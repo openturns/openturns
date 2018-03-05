@@ -102,8 +102,12 @@ public:
   void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
 
   /** Whether to use bootstrap or asymptotic intervals */
-  void setUseAsymptoticInterval(Bool useAsymptoticInterval);
-  Bool getUseAsymptoticInterval() const;
+  void setUseAsymptoticDistribution(Bool useAsymptoticDistribution);
+  Bool getUseAsymptoticDistribution() const;
+
+  /** Estimator distribution accessor */
+  Distribution getFirstOrderIndicesDistribution() const;
+  Distribution getTotalOrderIndicesDistribution() const;
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;

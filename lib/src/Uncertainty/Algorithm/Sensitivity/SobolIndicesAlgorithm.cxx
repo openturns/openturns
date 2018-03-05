@@ -168,15 +168,25 @@ void SobolIndicesAlgorithm::setBootstrapConfidenceLevel(const Scalar confidenceL
   getImplementation()->setBootstrapConfidenceLevel(confidenceLevel);
 }
 
-void SobolIndicesAlgorithm::setUseAsymptoticInterval(Bool useAsymptoticInterval)
+void SobolIndicesAlgorithm::setUseAsymptoticDistribution(Bool useAsymptoticDistribution)
 {
   copyOnWrite();
-  getImplementation()->setUseAsymptoticInterval(useAsymptoticInterval);
+  getImplementation()->setUseAsymptoticDistribution(useAsymptoticDistribution);
 }
 
-Bool SobolIndicesAlgorithm::getUseAsymptoticInterval() const
+Bool SobolIndicesAlgorithm::getUseAsymptoticDistribution() const
 {
-  return getImplementation()->getUseAsymptoticInterval();
+  return getImplementation()->getUseAsymptoticDistribution();
+}
+
+Distribution SobolIndicesAlgorithm::getFirstOrderIndicesDistribution() const
+{
+  return getImplementation()->getFirstOrderIndicesDistribution();
+}
+
+Distribution SobolIndicesAlgorithm::getTotalOrderIndicesDistribution() const
+{
+  return getImplementation()->getTotalOrderIndicesDistribution();
 }
 
 /* String converter */

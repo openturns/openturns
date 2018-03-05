@@ -133,20 +133,24 @@ Aggregated second order indices have not been implemented.
 
 |
 
-Note finally that evaluation of intervals for indices might be done for first
-and total order thanks to the `getFirstOrderIndicesInterval` and
-`getTotalOrderIndicesInterval` methods. The confidence level is set by `setConfidenceLevel`
-and is initialized by the `SobolIndicesAlgorithm-DefaultConfidenceLevel` resourcemap key.
+Note finally that the distribution of indices can be computed for first
+and total order thanks to the :meth:`getFirstOrderIndicesDistribution` and
+:meth:`getTotalOrderIndicesDistribution` methods.
 
 This can be done by either bootstrap or by using an asymptotic estimator,
-this behavior can be changed using `setUseAsymptoticInterval`. Its value in initilized by the
-`SobolIndicesAlgorithm-DefaultUseAsymptoticInterval` resourcemap key.
+this behavior can be changed using :meth:`setUseAsymptoticDistribution`. Its value in initialized by the
+`SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution` resourcemap key.
 
-For the bootstrap method the size is set by `setBootstrapSize`
+For the bootstrap method the size is set by :meth:`setBootstrapSize`
 values and initialized by `SobolIndicesAlgorithm-DefaultBootstrapSize` resourcemap key.
 
 The asymptotic estimators are computed using the [Janon2014]_ delta method,
 refer to the documentation of each estimator's class.
+
+The corresponding confidence interval is also provided using
+:meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.
+The confidence level is set by `setConfidenceLevel`
+and is initialized by the `SobolIndicesAlgorithm-DefaultConfidenceLevel` resourcemap key.
 
 Also note that for numerical stability reasons the ouputs are centered before indices estimation:
 
@@ -179,7 +183,7 @@ OT_SobolIndicesAlgorithm_getFirstOrderIndices_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_getFirstOrderIndicesInterval_doc
-"Get interval for the merged first order Sobol indices.
+"Get interval for the aggregated first order Sobol indices.
 
 Returns
 -------
@@ -192,12 +196,12 @@ OT_SobolIndicesAlgorithm_getFirstOrderIndicesInterval_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_getAggregatedFirstOrderIndices_doc
-"Get the evaluation of merged first order Sobol indices.
+"Get the evaluation of aggregated first order Sobol indices.
 
 Returns
 -------
 indices : :class:`~openturns.Point`
-    Sequence containing merged first order Sobol indices."
+    Sequence containing aggregated first order Sobol indices."
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndices
 OT_SobolIndicesAlgorithm_getAggregatedFirstOrderIndices_doc
@@ -205,12 +209,12 @@ OT_SobolIndicesAlgorithm_getAggregatedFirstOrderIndices_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
-"Get the evaluation of merged total order Sobol indices.
+"Get the evaluation of aggregated total order Sobol indices.
 
 Returns
 -------
 indices : :class:`~openturns.Point`
-    Sequence containing merged total order Sobol indices."
+    Sequence containing aggregated total order Sobol indices."
 
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices
@@ -256,7 +260,7 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndices_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
-"Get interval for the merged total order Sobol indices.
+"Get interval for the aggregated total order Sobol indices.
 
 Returns
 -------
@@ -384,28 +388,54 @@ OT_SobolIndicesAlgorithm_DrawImportanceFactors_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_getUseAsymptoticInterval_doc
+%define OT_SobolIndicesAlgorithm_getUseAsymptoticDistribution_doc
 "Select asymptotic or bootstrap confidence intervals.
 
 Returns
 -------
-useAsymptoticInterval : bool
+useAsymptoticDistribution : bool
     Whether to use bootstrap or asymptotic intervals"
 %enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getUseAsymptoticInterval
-OT_SobolIndicesAlgorithm_getUseAsymptoticInterval_doc
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getUseAsymptoticDistribution
+OT_SobolIndicesAlgorithm_getUseAsymptoticDistribution_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_SobolIndicesAlgorithm_setUseAsymptoticInterval_doc
+%define OT_SobolIndicesAlgorithm_setUseAsymptoticDistribution_doc
 "Select asymptotic or bootstrap confidence intervals.
 
-Default value is set by the `SobolIndicesAlgorithm-DefaultUseAsymptoticInterval` key.
+Default value is set by the `SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution` key.
 
 Parameters
 ----------
-useAsymptoticInterval : bool
+useAsymptoticDistribution : bool
     Whether to use bootstrap or asymptotic intervals"
 %enddef
-%feature("docstring") OT::SobolIndicesAlgorithmImplementation::setUseAsymptoticInterval
-OT_SobolIndicesAlgorithm_setUseAsymptoticInterval_doc
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::setUseAsymptoticDistribution
+OT_SobolIndicesAlgorithm_setUseAsymptoticDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SobolIndicesAlgorithm_getFirstOrderIndicesDistribution_doc
+"Get the distribution of the aggregated first order Sobol indices.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution for first order Sobol indices for each component."
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getFirstOrderIndicesDistribution
+OT_SobolIndicesAlgorithm_getFirstOrderIndicesDistribution_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc
+"Get the distribution of the aggregated total order Sobol indices.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution for total order Sobol indices for each component."
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::getTotalOrderIndicesDistribution
+OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc

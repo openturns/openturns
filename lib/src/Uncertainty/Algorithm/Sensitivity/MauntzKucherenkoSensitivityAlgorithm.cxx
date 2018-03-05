@@ -110,11 +110,8 @@ Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sampl
   return varianceI;
 }
 
-void MauntzKucherenkoSensitivityAlgorithm::computeAsymptoticInterval() const
+void MauntzKucherenkoSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  // Do nothing if already computed
-  if (0 != firstOrderIndiceInterval_.getDimension()) return;
-
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 

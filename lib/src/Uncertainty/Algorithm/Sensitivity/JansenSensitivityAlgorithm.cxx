@@ -115,11 +115,8 @@ Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
   return varianceI;
 }
 
-void JansenSensitivityAlgorithm::computeAsymptoticInterval() const
+void JansenSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  // Do nothing if already computed
-  if (0 != firstOrderIndiceInterval_.getDimension()) return;
-
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 

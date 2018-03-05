@@ -47,7 +47,7 @@ for method in methods:
         #inputDesign, outputDesign, size)
     sensitivity_algorithm.setBootstrapSize(nr_bootstrap)
     sensitivity_algorithm.setConfidenceLevel(confidence_level)
-    sensitivity_algorithm.setUseAsymptoticInterval(False)
+    sensitivity_algorithm.setUseAsymptoticDistribution(False)
     interval_fo = sensitivity_algorithm.getFirstOrderIndicesInterval()
     interval_to = sensitivity_algorithm.getTotalOrderIndicesInterval()
     print("bootstrap intervals")
@@ -55,7 +55,7 @@ for method in methods:
     print("Total order indices interval = ", interval_to)
 
     # Asymptotic confidence interval
-    sensitivity_algorithm.setUseAsymptoticInterval(True)
+    sensitivity_algorithm.setUseAsymptoticDistribution(True)
     interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval()
     interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval()
     print("asymptotic intervals:")
@@ -96,7 +96,7 @@ for method in methods:
         #inputDesign, outputDesign, size)
     sensitivity_algorithm.setBootstrapSize(nr_bootstrap)
     sensitivity_algorithm.setConfidenceLevel(confidence_level)
-    sensitivity_algorithm.setUseAsymptoticInterval(False)
+    sensitivity_algorithm.setUseAsymptoticDistribution(False)
     interval_fo = sensitivity_algorithm.getFirstOrderIndicesInterval()
     interval_to = sensitivity_algorithm.getTotalOrderIndicesInterval()
     print("bootstrap intervals")
@@ -104,7 +104,7 @@ for method in methods:
     print("Aggregated total order indices interval = ", interval_to)
 
     # Asymptotic confidence interval
-    sensitivity_algorithm.setUseAsymptoticInterval(True)
+    sensitivity_algorithm.setUseAsymptoticDistribution(True)
     interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval()
     interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval()
     print("asymptotic intervals:")

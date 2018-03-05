@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
 
 
       fullprint << "Asymptotic estimate" << std::endl;
-      sensitivitySobol.setUseAsymptoticInterval(true);
+      sensitivitySobol.setUseAsymptoticDistribution(true);
       const Interval asymptoticConfidenceIntervalFirstOrder(sensitivitySobol.getFirstOrderIndicesInterval());
       const Interval asymptoticConfidenceIntervalTotalOrder(sensitivitySobol.getTotalOrderIndicesInterval());
       fullprint << "Confidence interval of first order Y|X1 = [" << asymptoticConfidenceIntervalFirstOrder.getLowerBound()[0]

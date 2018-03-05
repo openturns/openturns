@@ -70,8 +70,8 @@ protected:
   Sample computeIndices(const Sample & sample,
                         Sample & VTi) const;
 
-  /** void method that computes asymptotic confidence interval */
-  virtual void computeAsymptoticInterval() const;
+  /** void method that computes asymptotic distribution */
+  virtual void computeAsymptoticDistribution() const;
 
 }; /* class JansenSensitivityAlgorithm */
 

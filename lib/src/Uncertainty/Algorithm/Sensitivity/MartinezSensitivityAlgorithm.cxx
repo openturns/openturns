@@ -128,11 +128,8 @@ String MartinezSensitivityAlgorithm::__repr__() const
   return oss;
 }
 
-void MartinezSensitivityAlgorithm::computeAsymptoticInterval() const
+void MartinezSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  // Do nothing if already computed
-  if (0 != firstOrderIndiceInterval_.getDimension()) return;
-
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 
