@@ -530,6 +530,7 @@ install (FILES COPYING
                 COPYING.cobyla
                 COPYING.dsfmt
                 COPYING.ev3
+                COPYING.exprtk
                 COPYING.faddeeva
                 COPYING.hmat
                 COPYING.kendall
