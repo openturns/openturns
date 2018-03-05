@@ -91,6 +91,11 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) inputDescription.add(functionInputDescription[inputPositions_[i]]);
   setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.setDimension(inputDimension);
+    outputStrategy_.setDimension(getOutputDimension());
+  }
 }
 
 /* Parameter constructor */
@@ -134,6 +139,11 @@ ParametricEvaluation::ParametricEvaluation(const ParametricEvaluation & evaluati
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) newInputDescription.add(inputDescription[inputPositions_[i]]);
   setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
+  if (isHistoryEnabled_)
+  {
+    inputStrategy_.setDimension(inputDimension);
+    outputStrategy_.setDimension(getOutputDimension());
+  }
 }
 
 /* Virtual constructor method */
@@ -209,6 +219,14 @@ Sample ParametricEvaluation::operator() (const Point & point,
   }
   callsNumber_ += size;
   return output;
+}
+
+/* Enable the input/output history */
+void ParametricEvaluation::enableHistory() const
+{
+  EvaluationImplementation::enableHistory();
+  inputStrategy_.setDimension(inputPositions_.getSize() + parametersPositions_.getSize());
+  outputStrategy_.setDimension(getOutputDimension());
 }
 
 /* Parameters accessor */

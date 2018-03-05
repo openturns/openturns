@@ -80,6 +80,24 @@ OT_HistoryStrategy_clear_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_HistoryStrategy_setDimension_doc
+"Set the dimension of points to store.  This method must be called before
+calling the store method.
+
+Notes
+-----
+It erases the previously stored points
+
+Parameters
+----------
+dimension: int
+    Dimension of points to store"
+%enddef
+%feature("docstring") OT::HistoryStrategyImplementation::setDimension
+OT_HistoryStrategy_setDimension_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_HistoryStrategy_store_doc
 "Store points or samples.
 

@@ -36,7 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Last)
 static const Factory<Last> Factory_Last;
 
-/*Constructor with parameters */
+/* Default constructor */
 Last::Last()
   : HistoryStrategyImplementation(),
     maximumSize_(ResourceMap::GetAsUnsignedInteger( "Last-DefaultMaximumSize" )),
@@ -46,7 +46,7 @@ Last::Last()
   // Nothing to do
 }
 
-/*Constructor with parameters */
+/* Constructor with parameters */
 Last::Last(const UnsignedInteger maximumSize)
   : HistoryStrategyImplementation(),
     maximumSize_(maximumSize),
@@ -65,14 +65,7 @@ Last * Last::clone() const
 /*Store the point according to the strategy */
 void Last::store(const Point & point)
 {
-  if (!isInitialized_)
-  {
-    sample_ = Sample(maximumSize_, point.getDimension());
-    index_ = 0;
-    hasWrapped_ = false;
-    isInitialized_ = true;
-  }
-  sample_[index_] = point;
+  sample_.at(index_) = point;
   ++index_;
   if (index_ == maximumSize_)
   {
@@ -81,11 +74,17 @@ void Last::store(const Point & point)
   }
 }
 
+/* Clear the history storage and change dimension of Point stored */
+void Last::setDimension(const UnsignedInteger dimension)
+{
+  sample_ = Sample(maximumSize_, dimension);
+  index_ = 0;
+  hasWrapped_ = false;
+}
+
 /*Sample accessor */
 Sample Last::getSample() const
 {
-  // If nothing has been stored
-  if (!isInitialized_) return sample_;
   // If we don't have exhausted the maximum size, return just the stored data
   if (!hasWrapped_)
   {

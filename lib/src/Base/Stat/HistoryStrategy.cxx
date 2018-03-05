@@ -65,6 +65,13 @@ void HistoryStrategy::store(const Sample & sample)
   getImplementation()->store(sample);
 }
 
+/* Clear the history storage and change dimension of Point stored */
+void HistoryStrategy::setDimension(const UnsignedInteger dimension)
+{
+  copyOnWrite();
+  getImplementation()->setDimension(dimension);
+}
+
 /* Clear the history storage */
 void HistoryStrategy::clear()
 {

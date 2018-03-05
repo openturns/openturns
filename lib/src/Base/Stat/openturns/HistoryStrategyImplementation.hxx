@@ -53,8 +53,11 @@ public:
   virtual void store(const Point & point);
   virtual void store(const Sample & sample);
 
+  /** Declare dimension of Point stored */
+  virtual void setDimension(const UnsignedInteger dimension);
+
   /** Clear the history storage */
-  void clear();
+  virtual void clear();
 
   /** History sample accessor */
   virtual Sample getSample() const;

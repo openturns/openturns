@@ -79,6 +79,9 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
+  /** Enable the input/output history */
+  void enableHistory() const;
+
   /** Input point / parameter history accessor */
   Sample getInputPointHistory() const;
   Sample getInputParameterHistory() const;

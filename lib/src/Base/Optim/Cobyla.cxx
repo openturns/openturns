@@ -122,7 +122,7 @@ void Cobyla::run()
    */
   int returnCode(ot_cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this));
 
-  result_ = OptimizationResult();
+  result_ = OptimizationResult(dimension, 2);
   result_.setProblem(getProblem());
 
   // Update the result

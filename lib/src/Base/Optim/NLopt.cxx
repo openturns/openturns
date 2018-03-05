@@ -325,7 +325,7 @@ void NLopt::run()
 
   Point optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  OptimizationResult result;
+  OptimizationResult result(dimension, 1);
   result.setProblem(getProblem());
 
   UnsignedInteger size = evaluationInputHistory_.getSize();

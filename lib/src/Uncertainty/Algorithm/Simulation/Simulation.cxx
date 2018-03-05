@@ -183,7 +183,7 @@ void Simulation::run()
    * a sample size > 2^32 by a combination of blockSize and outerSampling
    */
   // First, reset the convergence history
-  convergenceStrategy_.clear();
+  convergenceStrategy_.setDimension(2);
   UnsignedInteger outerSampling = 0;
   Scalar coefficientOfVariation = -1.0;
   Scalar standardDeviation = -1.0;

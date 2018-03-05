@@ -257,6 +257,8 @@ void EvaluationImplementation::clearCache() const
 void EvaluationImplementation::enableHistory() const
 {
   isHistoryEnabled_ = true;
+  inputStrategy_.setDimension(getInputDimension());
+  outputStrategy_.setDimension(getOutputDimension());
 }
 
 void EvaluationImplementation::disableHistory() const
@@ -271,8 +273,8 @@ Bool EvaluationImplementation::isHistoryEnabled() const
 
 void EvaluationImplementation::clearHistory() const
 {
-  inputStrategy_ = Full();
-  outputStrategy_ = Full();
+  inputStrategy_.clear();
+  outputStrategy_.clear();
 }
 
 HistoryStrategy EvaluationImplementation::getHistoryInput() const

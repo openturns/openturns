@@ -33,7 +33,7 @@ CLASSNAMEINIT(Full)
 
 static const Factory<Full> Factory_Full;
 
-/* Constructor with parameters */
+/* Default constructor */
 Full::Full()
   : HistoryStrategyImplementation()
 {
@@ -49,23 +49,13 @@ Full * Full::clone() const
 /* Store the point according to the strategy */
 void Full::store(const Point & point)
 {
-  if (!isInitialized_)
-  {
-    sample_ = Sample(0, point.getDimension());
-    isInitialized_ = true;
-  }
   sample_.add(point);
 }
 
 /* Store the sample according to the strategy */
 void Full::store(const Sample & sample)
 {
-  if (!isInitialized_)
-  {
-    sample_ = sample;
-    isInitialized_ = true;
-  }
-  else sample_.add(sample);
+  sample_.add(sample);
 }
 
 /* String converter */

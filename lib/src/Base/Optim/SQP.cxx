@@ -169,7 +169,7 @@ void SQP::run()
   currentLevelValue_ = levelFunction(currentPoint_)[0];
 
   // reset result
-  result_ = OptimizationResult();
+  result_ = OptimizationResult(dimension, 1);
   result_.setProblem(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 

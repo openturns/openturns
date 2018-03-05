@@ -48,6 +48,9 @@ public:
   /** Default constructor */
   OptimizationResult();
 
+  /** Default constructor */
+  OptimizationResult(const UnsignedInteger inputDimension, const UnsignedInteger outputDimension);
+
 
   /** Standard constructor */
   OptimizationResult(const Point & optimalPoint,

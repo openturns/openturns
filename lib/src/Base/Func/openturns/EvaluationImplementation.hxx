@@ -84,7 +84,7 @@ public:
   void setOutputDescription(const Description & outputDescription);
 
   /** Enable or disable the input/output history */
-  void enableHistory() const;
+  virtual void enableHistory() const;
   void disableHistory() const;
 
   /** @brief Test the history mechanism activity

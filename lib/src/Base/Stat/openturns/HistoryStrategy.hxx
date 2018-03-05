@@ -56,6 +56,9 @@ public:
   void store(const Point & point);
   void store(const Sample & sample);
 
+  /** Clear the history storage and change dimension of Point stored */
+  void setDimension(const UnsignedInteger dimension);
+
   /** Clear the history storage */
   void clear();
 

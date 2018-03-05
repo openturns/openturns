@@ -54,6 +54,9 @@ public:
   using HistoryStrategyImplementation::store;
   void store(const Point & point);
 
+  /** Clear the history storage and change dimension of Point stored */
+  void setDimension(const UnsignedInteger dimension);
+
   /** Sample accessor */
   Sample getSample() const;
 
