@@ -108,20 +108,24 @@ void TNC::checkProblem(const OptimizationProblem & problem) const
 void TNC::run()
 {
   const UnsignedInteger dimension = getProblem().getDimension();
-  Interval boundConstraints(getProblem().getBounds());
-  if (!getProblem().hasBounds())
-  {
-    boundConstraints = Interval(Point(dimension, 0.0), Point(dimension, 1.0), Interval::BoolCollection(dimension, false), Interval::BoolCollection(dimension, false));
-  }
 
   Point x(getStartingPoint());
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
 
-  Point low(boundConstraints.getLowerBound());
-  Point up(boundConstraints.getUpperBound());
-  Interval::BoolCollection finiteLow(boundConstraints.getFiniteLowerBound());
-  Interval::BoolCollection finiteUp(boundConstraints.getFiniteUpperBound());
+  Interval bounds(getProblem().getBounds());
+  if (!getProblem().hasBounds())
+  {
+    bounds = Interval(Point(dimension, 0.0), Point(dimension, 1.0), Interval::BoolCollection(dimension, false), Interval::BoolCollection(dimension, false));
+  }
+  if (!bounds.contains(x))
+  {
+    LOGWARN(OSS() << "Starting point is not inside bounds x=" << x.__str__() <<" bounds=" << bounds);
+  }
+  Point low(bounds.getLowerBound());
+  Point up(bounds.getUpperBound());
+  Interval::BoolCollection finiteLow(bounds.getFiniteLowerBound());
+  Interval::BoolCollection finiteUp(bounds.getFiniteUpperBound());
   /* Set the infinite bounds to HUGE_VAL (defined in cmath) with the correct signs */
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
