@@ -168,8 +168,8 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
   Sample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameter_[j];
-    for (UnsignedInteger j = 0; j < sampleDimension; ++j) input[i][inputPositions_[j]] = inSample[i][j];
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input(i, parametersPositions_[j]) = parameter_[j];
+    for (UnsignedInteger j = 0; j < sampleDimension; ++j) input(i, inputPositions_[j]) = inSample(i, j);
   }
   const Sample output(function_(input));
   callsNumber_ += size;
@@ -188,8 +188,8 @@ Sample ParametricEvaluation::operator() (const Point & point,
   Sample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameters[i][j];
-    for (UnsignedInteger j = 0; j < pointDimension; ++j) input[i][inputPositions_[j]] = point[j];
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input(i, parametersPositions_[j]) = parameters(i, j);
+    for (UnsignedInteger j = 0; j < pointDimension; ++j) input(i, inputPositions_[j]) = point[j];
   }
   const Sample output(function_(input));
   callsNumber_ += size;

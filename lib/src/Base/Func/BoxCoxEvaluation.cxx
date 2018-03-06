@@ -120,9 +120,9 @@ struct BoxCoxEvaluationComputeSamplePolicy
       for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
       {
         const Scalar lambda_j = evaluation_.getLambda()[j];
-        const Scalar logX = log(input_[i][j] + evaluation_.getShift()[j]);
-        if (std::abs(lambda_j * logX) < 1e-8) output_[i][j] = logX * (1.0 + 0.5 * lambda_j * logX);
-        else output_[i][j] = expm1(lambda_j * logX) / lambda_j;
+        const Scalar logX = log(input_(i, j) + evaluation_.getShift()[j]);
+        if (std::abs(lambda_j * logX) < 1e-8) output_(i, j) = logX * (1.0 + 0.5 * lambda_j * logX);
+        else output_(i, j) = expm1(lambda_j * logX) / lambda_j;
       } // j
     } // i
   } // operator ()

@@ -98,7 +98,7 @@ Sample ProductEvaluation::operator() (const Sample & inSample) const
   callsNumber_ += size;
   const Sample leftSample(p_leftEvaluation_->operator()(inSample));
   Sample rightSample(p_rightEvaluation_->operator()(inSample));
-  for (UnsignedInteger i = 0; i < size; ++i) rightSample[i] *= leftSample[i][0];
+  for (UnsignedInteger i = 0; i < size; ++i) rightSample[i] *= leftSample(i, 0);
   rightSample.setDescription(getOutputDescription());
   return rightSample;
 }

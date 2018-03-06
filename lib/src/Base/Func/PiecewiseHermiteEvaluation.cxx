@@ -55,10 +55,10 @@ PiecewiseHermiteEvaluation::PiecewiseHermiteEvaluation(const Point & locations,
 {
   const UnsignedInteger sizeValues = values.getSize();
   Sample sampleValues(sizeValues, 1);
-  for (UnsignedInteger i = 0; i < sizeValues; ++i) sampleValues[i][0] = values[i];
+  for (UnsignedInteger i = 0; i < sizeValues; ++i) sampleValues(i, 0) = values[i];
   const UnsignedInteger sizeDerivatives = derivatives.getSize();
   Sample sampleDerivatives(sizeDerivatives, 1);
-  for (UnsignedInteger i = 0; i < sizeDerivatives; ++i) sampleDerivatives[i][0] = derivatives[i];
+  for (UnsignedInteger i = 0; i < sizeDerivatives; ++i) sampleDerivatives(i, 0) = derivatives[i];
   // Check the input
   setLocationsValuesAndDerivatives(locations, sampleValues, sampleDerivatives);
 }

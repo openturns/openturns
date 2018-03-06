@@ -106,10 +106,10 @@ struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
     {
-      Scalar value = functions_[0](input_[i][0]);
+      Scalar value = functions_[0](input_(i, 0));
       for (UnsignedInteger j = 1; j < functions_.getSize(); ++j)
-        value *= functions_[j](input_[i][j]);
-      output_[i][0] = value;
+        value *= functions_[j](input_(i, j));
+      output_(i, 0) = value;
     } // i
   } // operator ()
 };  // struct ProductUniVariateFunctionEvaluationComputeSamplePolicy

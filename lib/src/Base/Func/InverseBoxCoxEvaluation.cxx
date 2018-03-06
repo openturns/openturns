@@ -117,9 +117,9 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
       for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
       {
         const Scalar lambda_j = evaluation_.getLambda()[j];
-        const Scalar x = input_[i][j] - evaluation_.getShift()[j];
-        if (std::abs(lambda_j * x * x) < 1e-8) output_[i][j] = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
-        else output_[i][j] = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
+        const Scalar x = input_(i, j) - evaluation_.getShift()[j];
+        if (std::abs(lambda_j * x * x) < 1e-8) output_(i, j) = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
+        else output_(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
       } // j
     } // i
   } // operator ()
