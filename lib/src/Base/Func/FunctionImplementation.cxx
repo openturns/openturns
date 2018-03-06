@@ -303,6 +303,11 @@ const FunctionImplementation::EvaluationPointer & FunctionImplementation::getEva
 }
 
 /* Gradient implementation accessors */
+void FunctionImplementation::setGradient(const GradientImplementation & gradientImplementation)
+{
+  setGradient(GradientPointer(gradientImplementation.clone()));
+}
+
 void FunctionImplementation::setGradient(const GradientPointer & gradientImplementation)
 {
   p_gradientImplementation_ = gradientImplementation;
@@ -315,6 +320,11 @@ const FunctionImplementation::GradientPointer & FunctionImplementation::getGradi
 }
 
 /* Hessian implementation accessors */
+void FunctionImplementation::setHessian(const HessianImplementation & hessianImplementation)
+{
+  setHessian(HessianPointer(hessianImplementation.clone()));
+}
+
 void FunctionImplementation::setHessian(const HessianPointer & hessianImplementation)
 {
   p_hessianImplementation_ = hessianImplementation;

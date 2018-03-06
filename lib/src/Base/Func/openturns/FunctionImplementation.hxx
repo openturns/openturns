@@ -175,11 +175,17 @@ public:
   const EvaluationPointer & getEvaluation() const;
 
   /** Gradient implementation accessors */
+  void setGradient(const GradientImplementation & gradient);
+#ifndef SWIG
   void setGradient(const GradientPointer & gradient);
+#endif
   const GradientPointer & getGradient() const;
 
   /** Hessian implementation accessors */
+  void setHessian(const HessianImplementation & hessian);
+#ifndef SWIG
   void setHessian(const HessianPointer & hessian);
+#endif
   const HessianPointer & getHessian() const;
 
   /** Flag for default gradient accessors */
