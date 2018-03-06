@@ -143,6 +143,12 @@ Scalar GeneralizedExtremeValue::computeComplementaryCDF(const Point & point) con
   return actualDistribution_.computeComplementaryCDF(point);
 }
 
+/* Compute the entropy of the distribution */
+Scalar GeneralizedExtremeValue::computeEntropy() const
+{
+  return std::log(sigma_) + SpecFunc::EulerConstant * (1.0 + xi_) + 1.0;
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex GeneralizedExtremeValue::computeCharacteristicFunction(const Scalar x) const
 {

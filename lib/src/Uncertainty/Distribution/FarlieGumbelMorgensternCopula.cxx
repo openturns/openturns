@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/FarlieGumbelMorgensternCopula.hxx"
 #include "openturns/RandomGenerator.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 
@@ -298,6 +299,17 @@ FarlieGumbelMorgensternCopula::Implementation FarlieGumbelMorgensternCopula::get
     result->setDescription(description);
   }
   return result;
+}
+
+/* Compute the entropy of the distribution */
+Scalar FarlieGumbelMorgensternCopula::computeEntropy() const
+{
+  if (std::abs(theta_) <= 0.024604263883779147)
+    {
+      const Scalar theta2 = theta_ * theta_;
+      return -theta2 * (1.0 / 18.0 + theta2 * (1.0 / 300.0 + theta2 * (1.0 / 1470.0 + theta2 / 4536.0)));
+    }
+  return -((3.0 + theta_ * (4.0 + theta_)) * log1p(theta_) + (-3.0 + theta_ * (4.0 - theta_)) * log1p(-theta_)) / (8.0 * theta_) + (5.0 - (SpecFunc::DiLog(theta_) - SpecFunc::DiLog(-theta_)) / theta_) / 4.0;
 }
 
 /* Method save() stores the object through the StorageManager */

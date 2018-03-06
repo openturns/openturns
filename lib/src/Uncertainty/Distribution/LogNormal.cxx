@@ -188,6 +188,12 @@ Scalar LogNormal::computeComplementaryCDF(const Point & point) const
 }
 
 
+/* Compute the entropy of the distribution */
+Scalar LogNormal::computeEntropy() const
+{
+  return 0.5 + muLog_ - std::log(normalizationFactor_);
+}
+
 /* Compute the integrand that is involved in the computation of the characteristic function */
 Complex LogNormal::characteristicIntegrand(const Scalar eta,
     const Scalar sStar) const

@@ -2,14 +2,16 @@ Copula class=NormalCopula name=a normal copula dimension=3 correlation=class=Cor
 Copula NormalCopula(R = [[ 1    0.25 0    ]
  [ 0.25 1    0.25 ]
  [ 0    0.25 1    ]])
+entropy=-0.0667657
+entropy (MC)=-0.0665626
 Mean class=Point name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 Elliptical distribution= false
 Elliptical copula= true
 Independent copula= false
-oneRealization=class=Point name=Unnamed dimension=3 values=[0.728473,0.14143,0.226528]
-oneSample=class=Sample name=a normal copula implementation=class=SampleImplementation name=a normal copula size=10 dimension=3 description=[X0,X1,X2] data=[[0.885991,0.03509,0.410967],[0.361292,0.903689,0.875806],[0.786157,0.398475,0.551985],[0.0110089,0.0347878,0.0549614],[0.463832,0.82677,0.548704],[0.28767,0.614586,0.66531],[0.672124,0.18575,0.136607],[0.682113,0.49876,0.620616],[0.962655,0.696223,0.230639],[0.235291,0.339456,0.0367574]]
-anotherSample mean=class=Point name=Unnamed dimension=3 values=[0.495928,0.496401,0.501236]
-anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0829368,0.0183885,-0.000208548,0.0183885,0.0838067,0.0195431,-0.000208548,0.0195431,0.0843107]
+oneRealization=class=Point name=Unnamed dimension=3 values=[0.560293,0.294447,0.00941523]
+oneSample=class=Sample name=a normal copula implementation=class=SampleImplementation name=a normal copula size=10 dimension=3 description=[X0,X1,X2] data=[[0.283215,0.23385,0.739488],[0.175774,0.470873,0.474457],[0.201697,0.581717,0.407644],[0.822044,0.684334,0.635931],[0.28611,0.557649,0.360772],[0.804988,0.21667,0.417567],[0.535135,0.0173161,0.207455],[0.546094,0.064576,0.899701],[0.806116,0.475671,0.781548],[0.731846,0.311895,0.178739]]
+anotherSample mean=class=Point name=Unnamed dimension=3 values=[0.499876,0.496002,0.50161]
+anotherSample covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.0833662,0.0198071,0.000782833,0.0198071,0.0840874,0.02066,0.000782833,0.02066,0.0826861]
 point= class=Point name=Unnamed dimension=3 values=[0.2,0.2,0.2] ddf=class=Point name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] ddf (FD)=class=Point name=Unnamed dimension=3 values=[-0.591263,-1.77379,-0.591263] pdf=1.37677 cdf=0.0176157
 Survival      =0.545177
 Survival (ref)=0.545177
@@ -25,22 +27,22 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.98013]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.582433]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.248011]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.579549]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.272373]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.220317]
 indices=[1,0]
 margins=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
 margins PDF=1.13117
 margins CDF=0.0893097
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.97395,0.97395]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.265472,0.397787]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.614953,0.464715]
 Normal copula correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.261052,0,0.261052,1,0.261052,0,0.261052,1] from the Spearman correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1]

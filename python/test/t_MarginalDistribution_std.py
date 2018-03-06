@@ -67,6 +67,7 @@ inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
 print("InverseSurvival=", repr(inverseSurvival))
 print("Survival(inverseSurvival)=%.6f" %
       distribution.computeSurvivalFunction(inverseSurvival))
+print("entropy=%.6f" % distribution.computeEntropy())
 # Confidence regions
 threshold = Point()
 print("Minimum volume interval=",

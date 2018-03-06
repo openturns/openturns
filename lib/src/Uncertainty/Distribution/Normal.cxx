@@ -353,6 +353,14 @@ Scalar Normal::computeCDF(const Point & point) const
   return value;
 } // computeCDF
 
+/* Compute the entropy of the distribution */
+Scalar Normal::computeEntropy() const
+{
+  // EllipticalDistribution::normalizationFactor_ == 1/sqrt(det(Sigma))
+  // normalizationFactor_ == 1/sqrt(2*Pi)^dim
+  return 0.5 * getDimension() - std::log(EllipticalDistribution::normalizationFactor_) - std::log(normalizationFactor_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Normal::computeCharacteristicFunction(const Scalar x) const
 {

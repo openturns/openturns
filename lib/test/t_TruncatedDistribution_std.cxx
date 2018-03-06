@@ -40,88 +40,92 @@ int main(int argc, char *argv[])
 
   try
   {
-    Collection<TruncatedNormal> referenceDistribution(3);
-    referenceDistribution[0] = TruncatedNormal(2.0, 1.5, 1.0, 4.0);
-    referenceDistribution[1] = TruncatedNormal(2.0, 1.5, 1.0, 200.0);
-    referenceDistribution[2] = TruncatedNormal(2.0, 1.5, -200.0, 4.0);
-    Collection<TruncatedDistribution> distribution(3);
-    distribution[0] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, 4.0);
-    distribution[1] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, TruncatedDistribution::LOWER);
-    distribution[2] = TruncatedDistribution(Normal(2.0, 1.5), 4.0, TruncatedDistribution::UPPER);
+    Collection<TruncatedNormal> referenceDistributionCollection(3);
+    referenceDistributionCollection[0] = TruncatedNormal(2.0, 1.5, 1.0, 4.0);
+    referenceDistributionCollection[1] = TruncatedNormal(2.0, 1.5, 1.0, 200.0);
+    referenceDistributionCollection[2] = TruncatedNormal(2.0, 1.5, -200.0, 4.0);
+    Collection<TruncatedDistribution> distributionCollection(3);
+    distributionCollection[0] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, 4.0);
+    distributionCollection[1] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, TruncatedDistribution::LOWER);
+    distributionCollection[2] = TruncatedDistribution(Normal(2.0, 1.5), 4.0, TruncatedDistribution::UPPER);
     for (UnsignedInteger testCase = 0; testCase < 3; ++testCase)
     {
-      TruncatedDistribution distributionTestCase(distribution[testCase]);
-      fullprint << "Distribution " << distributionTestCase << std::endl;
-      std::cout << "Distribution " << distributionTestCase << std::endl;
+      TruncatedDistribution distribution(distributionCollection[testCase]);
+      Distribution referenceDistribution(distributionCollection[testCase]);
+      fullprint << "Distribution " << distribution << std::endl;
+      std::cout << "Distribution " << distribution << std::endl;
 
       // Is this distribution elliptical ?
-      fullprint << "Elliptical = " << (distributionTestCase.isElliptical() ? "true" : "false") << std::endl;
+      fullprint << "Elliptical = " << (distribution.isElliptical() ? "true" : "false") << std::endl;
 
       // Is this distribution continuous ?
-      fullprint << "Continuous = " << (distributionTestCase.isContinuous() ? "true" : "false") << std::endl;
+      fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
       // Test for realization of distribution
-      Point oneRealization = distributionTestCase.getRealization();
+      Point oneRealization = distribution.getRealization();
       fullprint << "oneRealization=" << oneRealization << std::endl;
 
       // Test for sampling
       UnsignedInteger size = 10000;
-      Sample oneSample = distributionTestCase.getSample( size );
+      Sample oneSample = distribution.getSample( size );
       fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
       fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
 
       // Define a point
-      Point point( distributionTestCase.getDimension(), 2.5 );
+      Point point( distribution.getDimension(), 2.5 );
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
-      Point DDF = distributionTestCase.computeDDF( point );
+      Point DDF = distribution.computeDDF( point );
       fullprint << "ddf      =" << DDF << std::endl;
-      fullprint << "ddf (ref)=" << referenceDistribution[testCase].computeDDF(point) << std::endl;
-      Scalar PDF = distributionTestCase.computePDF( point );
+      fullprint << "ddf (ref)=" << referenceDistribution.computeDDF(point) << std::endl;
+      Scalar PDF = distribution.computePDF( point );
       fullprint << "pdf      =" << PDF << std::endl;
-      fullprint << "pdf (ref)=" << referenceDistribution[testCase].computePDF(point) << std::endl;
-      Scalar CDF = distributionTestCase.computeCDF( point );
+      fullprint << "pdf (ref)=" << referenceDistribution.computePDF(point) << std::endl;
+      Scalar CDF = distribution.computeCDF( point );
       fullprint << "cdf      =" << CDF << std::endl;
-      fullprint << "cdf (ref)=" << referenceDistribution[testCase].computeCDF(point) << std::endl;
-      Point PDFgr = distributionTestCase.computePDFGradient( point );
+      fullprint << "cdf (ref)=" << referenceDistribution.computeCDF(point) << std::endl;
+      Point PDFgr = distribution.computePDFGradient( point );
       fullprint << "pdf gradient      =" << clean(PDFgr) << std::endl;
-      fullprint << "pdf gradient (ref)=" << clean(referenceDistribution[testCase].computePDFGradient(point)) << std::endl;
-      Point CDFgr = distributionTestCase.computeCDFGradient( point );
+      fullprint << "pdf gradient (ref)=" << clean(referenceDistribution.computePDFGradient(point)) << std::endl;
+      Point CDFgr = distribution.computeCDFGradient( point );
       fullprint << "cdf gradient      =" << clean(CDFgr) << std::endl;
-      fullprint << "cdf gradient (ref)=" << clean(referenceDistribution[testCase].computeCDFGradient(point)) << std::endl;
-      Point quantile = distributionTestCase.computeQuantile( 0.95 );
+      fullprint << "cdf gradient (ref)=" << clean(referenceDistribution.computeCDFGradient(point)) << std::endl;
+      Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "quantile      =" << quantile << std::endl;
-      fullprint << "quantile (ref)=" << referenceDistribution[testCase].computeQuantile( 0.95 ) << std::endl;
-      fullprint << "cdf(quantile)=" << distributionTestCase.computeCDF(quantile) << std::endl;
-      Point mean = distributionTestCase.getMean();
+      fullprint << "quantile (ref)=" << referenceDistribution.computeQuantile( 0.95 ) << std::endl;
+      fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+      fullprint << "entropy      =" << distribution.computeEntropy() << std::endl;
+      fullprint << "entropy (ref)=" << referenceDistribution.computeEntropy() << std::endl;
+      fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
+      Point mean = distribution.getMean();
       fullprint << "mean      =" << mean << std::endl;
-      fullprint << "mean (ref)=" << referenceDistribution[testCase].getMean() << std::endl;
-      Point standardDeviation = distributionTestCase.getStandardDeviation();
+      fullprint << "mean (ref)=" << referenceDistribution.getMean() << std::endl;
+      Point standardDeviation = distribution.getStandardDeviation();
       fullprint << "standard deviation      =" << standardDeviation << std::endl;
-      fullprint << "standard deviation (ref)=" << referenceDistribution[testCase].getStandardDeviation() << std::endl;
-      Point skewness = distributionTestCase.getSkewness();
+      fullprint << "standard deviation (ref)=" << referenceDistribution.getStandardDeviation() << std::endl;
+      Point skewness = distribution.getSkewness();
       fullprint << "skewness      =" << skewness << std::endl;
-      fullprint << "skewness (ref)=" << referenceDistribution[testCase].getSkewness() << std::endl;
-      Point kurtosis = distributionTestCase.getKurtosis();
+      fullprint << "skewness (ref)=" << referenceDistribution.getSkewness() << std::endl;
+      Point kurtosis = distribution.getKurtosis();
       fullprint << "kurtosis      =" << kurtosis << std::endl;
-      fullprint << "kurtosis (ref)=" << referenceDistribution[testCase].getKurtosis() << std::endl;
-      CovarianceMatrix covariance = distributionTestCase.getCovariance();
+      fullprint << "kurtosis (ref)=" << referenceDistribution.getKurtosis() << std::endl;
+      CovarianceMatrix covariance = distribution.getCovariance();
       fullprint << "covariance      =" << covariance << std::endl;
-      fullprint << "covariance (ref)=" << referenceDistribution[testCase].getCovariance() << std::endl;
-      TruncatedDistribution::PointWithDescriptionCollection parameters = distributionTestCase.getParametersCollection();
+      fullprint << "covariance (ref)=" << referenceDistribution.getCovariance() << std::endl;
+      TruncatedDistribution::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters      =" << parameters << std::endl;
-      fullprint << "parameters (ref)=" << referenceDistribution[testCase].getParametersCollection() << std::endl;
-      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distributionTestCase.getStandardMoment(i) << std::endl;
-      fullprint << "Standard representative=" << distributionTestCase.getStandardRepresentative()->__str__() << std::endl;
+      fullprint << "parameters (ref)=" << referenceDistribution.getParametersCollection() << std::endl;
+      for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+      fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
 
       // Get/Set parameter
-      Point parameter(distributionTestCase.getParameter());
+      Point parameter(distribution.getParameter());
       fullprint << "Distribution parameters      =" << parameter.__str__() << std::endl;
       parameter[0] = 1.0;
-      distributionTestCase.setParameter(parameter);
-      fullprint << "Distribution after setParameter =" << distributionTestCase.getParameter().__str__() << std::endl;
+      distribution.setParameter(parameter);
+      fullprint << "Distribution after setParameter =" << distribution.getParameter().__str__() << std::endl;
 
     }
   }

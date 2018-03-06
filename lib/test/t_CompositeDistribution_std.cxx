@@ -101,6 +101,9 @@ int main(int argc, char *argv[])
     fullprint << "quantile (tail)=" << quantileTail << std::endl;
     Scalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
+    // Takes too much time
+    // fullprint << "entropy=" << distribution.computeEntropy() << std::endl;    
+    // fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Complex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;
     Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );

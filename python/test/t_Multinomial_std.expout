@@ -83,6 +83,7 @@ pdf     =0.058594
 cdf=0.13281
 quantile= class=Point name=Unnamed dimension=3 values=[3,3,3]
 cdf(quantile)= 0.953125
+entropy=3.709864
 mean= class=Point name=Unnamed dimension=3 values=[1.25,1.25,1.25]
 covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.9375,-0.3125,-0.3125,-0.3125,0.9375,-0.3125,-0.3125,-0.3125,0.9375]
 parameters= [class=PointWithDescription name=X0 dimension=2 description=[n,p_0] values=[5,0.25],class=PointWithDescription name=X1 dimension=2 description=[n,p_1] values=[5,0.25],class=PointWithDescription name=X2 dimension=2 description=[n,p_2] values=[5,0.25],class=PointWithDescription name=dependence dimension=4 description=[n,p_0,p_1,p_2] values=[5,0.25,0.25,0.25]]

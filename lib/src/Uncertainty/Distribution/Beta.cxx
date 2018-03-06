@@ -240,6 +240,12 @@ Scalar Beta::getRoughness() const
   return SpecFunc::Beta(2.0 * r_ - 1.0, 2.0 * (t_ - r_) - 1.0) / (den * den * (b_ - a_));
 }
 
+/* Compute the entropy of the distribution */
+Scalar Beta::computeEntropy() const
+{
+  return SpecFunc::LogBeta(r_, t_ - r_) - (r_ - 1.0) * SpecFunc::Psi(r_) - (t_ - r_ - 1.0) * SpecFunc::Psi(t_ - r_) + (t_ - 2.0) * SpecFunc::Psi(t_) + std::log(b_ - a_);
+}
+
 /* Compute the mean of the distribution */
 void Beta::computeMean() const
 {

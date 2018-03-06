@@ -156,6 +156,12 @@ Scalar Rayleigh::computeCDF(const Point & point) const
   return 1.0 - std::exp(-0.5 * y * y);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Rayleigh::computeEntropy() const
+{
+  return 1.0 + 0.5 * (SpecFunc::EulerConstant - M_LN2) + std::log(sigma_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X))
    phi(x) = (1 - sigma * x * exp(-sigma^2 * x^2 / 2) * sqrt(pi / 2) * (erfi(sigma * x / sqrt(2)) - i)) * exp(i * gamma * x)
    erfi(t) = -i * erf(i * t) = 2 / sqrt(pi) * int(exp(u^2), u=0..t)

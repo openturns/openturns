@@ -30,6 +30,7 @@
 #include "openturns/Normal.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 
@@ -235,6 +236,32 @@ Scalar ComposedCopula::computePDF(const Point & point) const
     productPDF *= copulaCollection_[i].computePDF(component);
   }
   return productPDF;
+}
+
+/* Get the log-PDF of the ComposedCopula */
+Scalar ComposedCopula::computeLogPDF(const Point & point) const
+{
+  /* PDF = PDF_copula1x...xPDF_copula_n */
+  const UnsignedInteger dimension = getDimension();
+  if (isIndependent_) return IndependentCopula(dimension).computePDF(point);
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  const UnsignedInteger size = copulaCollection_.getSize();
+  Scalar sumLogPDF = 0.0;
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // If one component is outside of the support, the PDF is null
+    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return -SpecFunc::LogMaxScalar;
+    const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
+    Point component(copulaDimension);
+    for (UnsignedInteger j = 0; j < copulaDimension; ++j)
+    {
+      component[j] = point[index];
+      ++index;
+    }
+    sumLogPDF += copulaCollection_[i].computeLogPDF(component);
+  }
+  return sumLogPDF;
 }
 
 /* Get the CDF of the ComposedCopula */
@@ -648,6 +675,17 @@ void ComposedCopula::computeCovariance() const
     shift += localDimension;
   } // i
   isAlreadyComputedCovariance_ = true;
+}
+
+/* Compute the entropy of the distribution */
+Scalar ComposedCopula::computeEntropy() const
+{
+  Scalar entropy = 0.0;
+  if (isIndependent_) return entropy;
+  const UnsignedInteger size = copulaCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    entropy += copulaCollection_[i].computeEntropy();
+  return entropy;
 }
 
 /* Method save() stores the object through the StorageManager */

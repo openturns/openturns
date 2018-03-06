@@ -273,6 +273,9 @@ public:
   virtual Complex computeGeneratingFunction(const Complex & z) const;
   virtual Complex computeLogGeneratingFunction(const Complex & z) const;
 
+  /** Compute the entropy of the distribution */
+  virtual Scalar computeEntropy() const;
+  
   /** Get the PDF gradient of the distribution */
   virtual Point computePDFGradient(const Point & point) const;
   virtual Sample computePDFGradient(const Sample & inSample) const;
@@ -1333,6 +1336,79 @@ protected:
     Point y_;
     const DistributionImplementation * p_distribution_;
   }; // class ConditionalCDFWrapper
+
+  // Class used to compute entropy
+  class EntropyKernel: public FunctionImplementation
+  {
+  public:
+    EntropyKernel(const DistributionImplementation * p_distribution)
+      : FunctionImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    EntropyKernel * clone() const
+    {
+      return new EntropyKernel(*this);
+    }
+
+    Point operator() (const Point & point) const
+    {
+      const Scalar logPDF = p_distribution_->computeLogPDF(point);
+      return Point(1, -std::exp(logPDF) * logPDF);
+    }
+
+    Sample operator() (const Sample & sample) const
+    {
+      const UnsignedInteger size = sample.getSize();
+      const Point logPDF(p_distribution_->computeLogPDF(sample).asPoint());
+      Sample result(size, 1);
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const Scalar logPDFI = logPDF[i];
+	  result(i, 0) = -std::exp(logPDFI) * logPDFI;
+	}
+      return result;
+    };
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "entropyKernel");
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "EntropyKernel(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & offset) const
+    {
+      OSS oss;
+      oss << offset << "EntropyKernel(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation * p_distribution_;
+  };  // class EntropyKernel
 
 #endif
 

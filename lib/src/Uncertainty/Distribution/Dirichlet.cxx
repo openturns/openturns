@@ -352,6 +352,16 @@ void Dirichlet::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the entropy of the distribution */
+Scalar Dirichlet::computeEntropy() const
+{
+  const UnsignedInteger dimension = getDimension();
+  Scalar entropy = -normalizationFactor_ - (dimension + 1 - sumTheta_) * SpecFunc::Psi(sumTheta_);
+  for (UnsignedInteger i = 0; i <= dimension; ++i)
+    entropy -= (theta_[i] - 1.0) * SpecFunc::Psi(theta_[i]);
+  return entropy;
+}
+
 /* Get the standard deviation of the distribution */
 Point Dirichlet::getStandardDeviation() const
 {

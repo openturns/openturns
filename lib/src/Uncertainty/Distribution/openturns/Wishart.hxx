@@ -79,6 +79,9 @@ public:
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
 

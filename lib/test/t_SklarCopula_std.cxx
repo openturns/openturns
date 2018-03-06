@@ -50,6 +50,10 @@ int main(int argc, char *argv[])
     copula.setName("a normal copula");
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;
+    // Takes too much time. Exact result is -0.0667656
+    // fullprint << "entropy      =" << copula.computeEntropy() << std::endl;
+    // fullprint << "entropy (ref)=" << copulaRef.computeEntropy() << std::endl;
+    // fullprint << "entropy (MC)=" << -copula.computeLogPDF(copula.getSample(1000)).computeMean()[0] << std::endl;
     fullprint << "Mean      =" << copula.getMean() << std::endl;
     fullprint << "Mean (ref)=" << copulaRef.getMean() << std::endl;
     // Is this copula an elliptical distribution?

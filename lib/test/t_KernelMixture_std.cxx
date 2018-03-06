@@ -160,6 +160,10 @@ int main(int argc, char *argv[])
     Point condQuantiles(distribution.computeConditionalQuantile(q, y));
     fullprint << "cond. quantile (vect)=" << condQuantiles << std::endl;
     fullprint << "cond. cdf(cond. quantile)=" << distribution.computeConditionalCDF(condQuantiles, y) << std::endl;
+    // Takes too much time. Result is 6.36788
+    // fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    // fullprint << "entropy (ref)=" << distributionRef.computeEntropy() << std::endl;
+    // fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
 
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;

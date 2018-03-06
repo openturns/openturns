@@ -78,6 +78,9 @@ public:
   using CopulaImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProbOut) const;
 

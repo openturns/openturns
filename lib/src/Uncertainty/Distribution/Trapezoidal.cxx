@@ -296,6 +296,12 @@ Scalar Trapezoidal::computeScalarQuantile(const Scalar prob,
   return d_ - std::sqrt(2.0 * (d_ - c_) * (1.0 - q) / h_);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Trapezoidal::computeEntropy() const
+{
+  return 0.25 * h_ * ((b_ - a_) + (d_ - c_)) - std::log(h_);
+}
+
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar Trapezoidal::getRoughness() const
 {

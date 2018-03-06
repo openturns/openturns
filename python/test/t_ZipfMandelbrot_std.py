@@ -62,6 +62,7 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    print("entropy=%.6f" % distribution.computeEntropy())
     mean = distribution.getMean()
     print("mean=", repr(mean))
     standardDeviation = distribution.getStandardDeviation()

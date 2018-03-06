@@ -149,6 +149,12 @@ Scalar Exponential::computeComplementaryCDF(const Point & point) const
   return std::exp(-lambda_ * x);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Exponential::computeEntropy() const
+{
+  return 1.0 - std::log(lambda_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Exponential::computeCharacteristicFunction(const Scalar x) const
 {

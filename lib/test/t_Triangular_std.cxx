@@ -169,6 +169,8 @@ int main(int argc, char *argv[])
     quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     // Moments
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;

@@ -78,6 +78,7 @@ try:
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", quantile)
     print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    print("entropy=%.6f" % distribution.computeEntropy())
     # Confidence regions
     probability, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
         0.95)

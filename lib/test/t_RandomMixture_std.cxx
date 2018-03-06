@@ -115,6 +115,9 @@ int main(int argc, char *argv[])
       Point quantileComp = distribution.computeQuantile( 0.95, true );
       fullprint << "quantile comp.=" << quantileComp << std::endl;
       fullprint << "cdfComp(quantileComp)=" << distribution.computeComplementaryCDF(quantileComp) << std::endl;
+      fullprint << "entropy      =" << distribution.computeEntropy() << std::endl;
+      fullprint << "entropy (ref)=" << distributionReference.computeEntropy() << std::endl;
+      fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
       Point mean = distribution.getMean();
       fullprint << "mean      =" << mean << std::endl;
       fullprint << "mean (ref)=" << distributionReference.getMean() << std::endl;
@@ -209,6 +212,7 @@ int main(int argc, char *argv[])
     fullprint << "mean = " <<  distribution2D.getMean() << std::endl;
     fullprint << "cov = " << distribution2D.getCovariance() << std::endl;
     fullprint << "sigma = " << distribution2D.getStandardDeviation() << std::endl;
+    fullprint << "entropy      =" << distribution.computeEntropy() << std::endl;
     distribution2D.setBlockMin(3);
     distribution2D.setBlockMax(10);
 
@@ -316,6 +320,7 @@ int main(int argc, char *argv[])
     fullprint << "mean = " <<  dist_3D.getMean() << std::endl;
     fullprint << "cov = " << dist_3D.getCovariance() << std::endl;
     fullprint << "sigma = " << dist_3D.getStandardDeviation() << std::endl;
+    fullprint << "entropy      =" << distribution.computeEntropy() << std::endl;
 
     // Total number of points (is (2+2)**3)
     // Test is CPU consuming

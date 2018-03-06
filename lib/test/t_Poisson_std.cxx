@@ -116,6 +116,8 @@ int main(int argc, char *argv[])
     fullprint << "quantile (tail)=" << quantileTail << std::endl;
     Scalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
     fullprint << "cdf (tail)=" << CDFTail << std::endl;
+    fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();

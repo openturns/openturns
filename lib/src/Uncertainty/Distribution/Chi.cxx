@@ -237,6 +237,12 @@ Scalar Chi::computeScalarQuantile(const Scalar prob,
 }
 
 
+/* Compute the entropy of the distribution */
+Scalar Chi::computeEntropy() const
+{
+  return SpecFunc::LogGamma(0.5 * nu_) + 0.5 * (nu_ - M_LN2 - (nu_ - 1.0) * SpecFunc::Psi(0.5 * nu_));
+}
+
 void Chi::computeMean() const
 {
   mean_ = Point(1, M_SQRT2 * std::exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));

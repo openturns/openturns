@@ -112,6 +112,9 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
   Point getParameter() const;

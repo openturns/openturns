@@ -125,6 +125,9 @@ public:
   void setTheta(const Scalar theta);
   Scalar getTheta() const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

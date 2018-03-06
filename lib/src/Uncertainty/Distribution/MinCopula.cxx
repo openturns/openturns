@@ -24,6 +24,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Description.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -130,6 +131,12 @@ Point MinCopula::computeQuantile(const Scalar prob,
   if (q == 0.0) return getRange().getLowerBound();
   if (q == 1.0) return getRange().getUpperBound();
   return Point(getDimension(), q);
+}
+
+/* Compute the entropy of the distribution */
+Scalar MinCopula::computeEntropy() const
+{
+  return 1.0;
 }
 
 /* Compute the covariance of the distribution */

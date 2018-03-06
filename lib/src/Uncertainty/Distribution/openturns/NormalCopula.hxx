@@ -87,6 +87,9 @@ public:
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the shape matrix of the copula */
   CorrelationMatrix getShapeMatrix() const;
 

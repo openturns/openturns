@@ -336,6 +336,12 @@ Scalar NormalGamma::computeProbability(const Interval & interval) const
   return probability;
 }
 
+/* Compute the entropy of the distribution */
+Scalar NormalGamma::computeEntropy() const
+{
+  return alpha_ + (0.5 - alpha_) * SpecFunc::Psi(alpha_) + SpecFunc::LogGamma(alpha_) - 0.5 * (std::log(beta_) - M_LN2 + std::log(kappa_) - 1.0 - std::log(M_PI));
+}
+
 /* Parameters value and description accessor */
 Point NormalGamma::getParameter() const
 {

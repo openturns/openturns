@@ -13,6 +13,7 @@ pdf (FD)=0.050704
 cdf=0.826308
 quantile= class=Point name=Unnamed dimension=1 values=[10]
 cdf(quantile)=0.950190
+entropy=1.946805
 mean= class=Point name=Unnamed dimension=1 values=[3.22681]
 standard deviation= class=Point name=Unnamed dimension=1 values=[3.10469]
 skewness= class=Point name=Unnamed dimension=1 values=[1.81133]

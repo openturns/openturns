@@ -30,6 +30,8 @@ characteristic function=(0.0107296,-0.0674204)
 log characteristic function=(-2.6843,-13.9793)
 generating function=(0.00258535,-0.00490073)
 log generating function=(-5.1956,11.481)
+entropy=1.98682
+entropy (MC)=1.98687
 mean=class=Point name=Unnamed dimension=1 values=[10.5]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.77482]
 skewness=class=Point name=Unnamed dimension=1 values=[-0.225374]

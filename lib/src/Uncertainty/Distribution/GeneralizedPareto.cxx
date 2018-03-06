@@ -196,6 +196,12 @@ LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const Scal
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
+/* Compute the entropy of the distribution */
+Scalar GeneralizedPareto::computeEntropy() const
+{
+  return std::log(sigma_) + xi_ + 1.0;
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex GeneralizedPareto::computeCharacteristicFunction(const Scalar x) const
 {

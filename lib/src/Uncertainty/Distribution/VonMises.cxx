@@ -149,7 +149,7 @@ VonMises * VonMises::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void VonMises::computeRange()
 {
-  setRange(Interval(-M_PI, M_PI));
+  setRange(Interval(mu_ - M_PI, mu_ + M_PI));
 }
 
 /** Update the derivative attributes */
@@ -175,17 +175,12 @@ Point VonMises::getRealization() const
     // Quick rejection
     if (std::abs(theta) > M_PI) continue;
     // Quick acceptance
-    if (kappa_ * theta * theta  < 4.0 - 4.0 * r1)
-    {
-      const Scalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
-      return Point(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
-    }
+    if (kappa_ * theta * theta  < 4.0 - 4.0 * r1) return Point(1, theta + mu_);
     // Slow rejection
     if (kappa_ * std::cos(theta) < 2.0 * std::log(r1) + kappa_) continue;
-    // Acceptance
-    const Scalar y = theta + fmod(mu_ + M_PI, 2.0 * M_PI) - M_PI;
-    return Point(1, (y > M_PI ? y - M_PI : (y < -M_PI ? y + M_PI : y)));
+    return Point(1, theta + mu_);
   }
+  // Should never go there
   return Point(1, 0.0);
 }
 
@@ -206,7 +201,7 @@ Scalar VonMises::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (std::abs(x) > M_PI) return 0.0;
+  if (std::abs(x - mu_) > M_PI) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -215,7 +210,7 @@ Scalar VonMises::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (std::abs(x) > M_PI) return SpecFunc::LogMinScalar;
+  if (std::abs(x - mu_) > M_PI) return -SpecFunc::LogMaxScalar;
   return normalizationFactor_ + kappa_ * std::cos(x - mu_);
 }
 
@@ -226,6 +221,14 @@ Point VonMises::getParameter() const
   point[0] = mu_;
   point[1] = kappa_;
   return point;
+}
+
+/* Compute the entropy of the distribution */
+Scalar VonMises::computeEntropy() const
+{
+  const Scalar logI0 = SpecFunc::LogBesselI0(kappa_);
+  const Scalar logI1 = SpecFunc::LogBesselI1(kappa_);
+  return -kappa_ * std::exp(logI1 - logI0) + 2.0 * SpecFunc::LOGSQRT2PI + logI0;
 }
 
 void VonMises::setParameter(const Point & parameter)

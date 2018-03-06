@@ -572,9 +572,11 @@
   <Distribution-Parallel                          value="true"    />
   <Distribution-CharacteristicFunctionBlockMax    value="20"      />
   <Distribution-CharacteristicFunctionNMax        value="1000000" />
-  <Distribution-MinimumVolumeLevelSetSamplingSize value="1000000" />
+  <Distribution-MinimumVolumeLevelSetSamplingSize value="1048576" />
   <Distribution-MinimumVolumeLevelSetBySampling   value="false"   />
   <Distribution-UseCovarianceAdaptiveAlgorithm    value="true"    />
+  <Distribution-SmallDimensionEntropy             value="3"       />
+  <Distribution-EntropySamplingSize               value="1048576" />
   
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value="256" />

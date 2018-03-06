@@ -85,6 +85,9 @@ public:
   /** Get the minimum volume level set containing a given probability of the distribution */
   virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
+  /** Get the PDF singularities inside of the range - 1D only */
+  Point getSingularities() const;
+
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
   using DistributionImplementation::setParametersCollection;

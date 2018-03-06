@@ -22,6 +22,8 @@ cdf=0
 ccdf=1
 quantile=class=Point name=Unnamed dimension=5 values=[11,11,11,11,11]
 cdf(quantile)=1
+entropy=11.4621
+entropy (MC)=11.4621
 mean=class=Point name=Unnamed dimension=5 values=[5.5,5.5,5.5,5.5,5.5]
 covariance=class=CovarianceMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[11.9167,-1.08333,-1.08333,-1.08333,-1.08333,-1.08333,11.9167,-1.08333,-1.08333,-1.08333,-1.08333,-1.08333,11.9167,-1.08333,-1.08333,-1.08333,-1.08333,-1.08333,11.9167,-1.08333,-1.08333,-1.08333,-1.08333,-1.08333,11.9167]
 correlation=class=CovarianceMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,-0.0909091,-0.0909091,-0.0909091,-0.0909091,-0.0909091,1,-0.0909091,-0.0909091,-0.0909091,-0.0909091,-0.0909091,1,-0.0909091,-0.0909091,-0.0909091,-0.0909091,-0.0909091,1,-0.0909091,-0.0909091,-0.0909091,-0.0909091,-0.0909091,1]

@@ -154,6 +154,8 @@ int main(int argc, char *argv[])
     fullprint << "beta=" << beta << std::endl;
     fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
     fullprint << "beta=" << beta << std::endl;
+    fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();

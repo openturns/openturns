@@ -149,6 +149,12 @@ Scalar Laplace::computeComplementaryCDF(const Point & point) const
   return 0.5 * std::exp(-u);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Laplace::computeEntropy() const
+{
+  return 1.0 + M_LN2 - std::log(lambda_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Laplace::computeCharacteristicFunction(const Scalar x) const
 {

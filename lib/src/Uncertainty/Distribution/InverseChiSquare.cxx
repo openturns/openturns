@@ -203,6 +203,12 @@ Scalar InverseChiSquare::computeComplementaryCDF(const Point & point) const
   return DistFunc::pGamma(0.5 * nu_, 0.5 / x);
 }
 
+/* Compute the entropy of the distribution */
+Scalar InverseChiSquare::computeEntropy() const
+{
+  return 0.5 * nu_ - M_LN2 + SpecFunc::LogGamma(0.5 * nu_) - (1.0 + 0.5 * nu_) * SpecFunc::Psi(0.5 * nu_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex InverseChiSquare::computeCharacteristicFunction(const Scalar x) const
 {

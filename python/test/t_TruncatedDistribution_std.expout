@@ -22,6 +22,7 @@ quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.14928]
 Survival(inverseSurvival)=0.950000
+entropy=1.074411
 Minimum volume interval= [1, 3.73264]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.57038} with f=
@@ -79,6 +80,7 @@ quantile= class=Point name=Unnamed dimension=1 values=[4.67299]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.16934]
 Survival(inverseSurvival)=0.950000
+entropy=1.390942
 Minimum volume interval= [1, 4.67299]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.62114} with f=
@@ -136,6 +138,7 @@ quantile= class=Point name=Unnamed dimension=1 values=[3.64324]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.53617]
 Survival(inverseSurvival)=0.950000
+entropy=1.608447
 Minimum volume interval= [4, 4]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.65813} with f=
@@ -193,6 +196,7 @@ quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.14928]
 Survival(inverseSurvival)=0.950000
+entropy=1.074411
 Minimum volume interval= [1, 3.73264]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 1.57038} with f=
@@ -318,6 +322,7 @@ quantile= class=Point name=Unnamed dimension=2 values=[3.95451,3.95451]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.07724,1.0519]
 Survival(inverseSurvival)=0.950000
+entropy=1.374775
 mean      = class=Point name=Unnamed dimension=2 values=[2.02215,1.97088]
 mean (ref)= class=Point name=Unnamed dimension=2 values=[2,2]
 standard deviation      = class=Point name=Unnamed dimension=2 values=[0.538498,0.565823]

@@ -77,6 +77,8 @@ int main(int argc, char *argv[])
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
     fullprint << "Parameters " << distribution.getParametersCollection() << std::endl;
+    fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
+    fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     fullprint << "Mean " << distribution.getMean() << std::endl;
     UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(2);

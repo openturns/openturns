@@ -15,12 +15,13 @@ CDF(quantile)=0.500000
 Quantile= class=Point name=Unnamed dimension=2 values=[0.182457,0.182457]
 InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.025625,0.025625]
 Survival(inverseSurvival)=0.950000
+entropy=-0.019288
 Minimum volume interval= [0.0126791, 0.987321]
 [0.0126791, 0.987321]
 threshold= [0.974642]
-Minimum volume level set= {x | f(x) <= 0.339383} with f=
+Minimum volume level set= {x | f(x) <= 0.339428} with f=
 MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5))
-beta= [0.71221]
+beta= [0.712177]
 Bilateral confidence interval= [0.0126791, 0.987321]
 [0.0126791, 0.987321]
 beta= [0.974642]
@@ -34,16 +35,16 @@ margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.294088]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.782625]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.47206]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.132158]
 indices= [1,0]
 margins= class=AliMikhailHaqCopula name=AliMikhailHaqCopula dimension=2 theta=0.5
 margins PDF=1.136188
 margins CDF=0.086957
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.974521,0.974521]
 margins CDF(qantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=2 values=[0.196586,0.527995]
+margins realization= class=Point name=Unnamed dimension=2 values=[0.454536,0.477676]

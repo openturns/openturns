@@ -144,6 +144,12 @@ Scalar Epanechnikov::computeScalarQuantile(const Scalar prob,
   return 2.0 * std::cos(0.3333333333333333333333333 * std::acos(1.0 - 2.0 * prob) - 2.094395102393195492308429);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Epanechnikov::computeEntropy() const
+{
+  return 5.0 / 3.0 - std::log(3.0);
+}
+
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar Epanechnikov::getRoughness() const
 {

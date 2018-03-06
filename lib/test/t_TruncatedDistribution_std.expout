@@ -20,6 +20,9 @@ cdf gradient (ref)=class=Point name=Unnamed dimension=4 values=[-0.149807,-0.091
 quantile      =class=Point name=Unnamed dimension=1 values=[3.73264]
 quantile (ref)=class=Point name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.95
+entropy      =1.07441
+entropy (ref)=1.07441
+entropy (MC)=1.0749
 mean      =class=Point name=Unnamed dimension=1 values=[2.35526]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[2.35526]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[0.802475]
@@ -31,7 +34,7 @@ kurtosis (ref)=class=Point name=Unnamed dimension=1 values=[1.9933]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
 covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643966]
 parameters      =[[mean_0 : 2, standard_deviation_0 : 1.5, lowerBound : 1, upperBound : 4]]
-parameters (ref)=[[mu : 2, sigma : 1.5, a : 1, b : 4]]
+parameters (ref)=[[mean_0 : 2, standard_deviation_0 : 1.5, lowerBound : 1, upperBound : 4]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[2.35526]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[6.19122]
@@ -45,10 +48,10 @@ Distribution class=TruncatedDistribution name=TruncatedDistribution distribution
 Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = [1, (13.4759) +inf[)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[2.69199]
-oneSample first=class=Point name=Unnamed dimension=1 values=[2.79367] last=class=Point name=Unnamed dimension=1 values=[1.76978]
-mean=class=Point name=Unnamed dimension=1 values=[2.64435]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.23607]
+oneRealization=class=Point name=Unnamed dimension=1 values=[3.42785]
+oneSample first=class=Point name=Unnamed dimension=1 values=[1.81339] last=class=Point name=Unnamed dimension=1 values=[4.903]
+mean=class=Point name=Unnamed dimension=1 values=[2.62457]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.18503]
 Point= class=Point name=Unnamed dimension=1 values=[2.5]
 ddf      =class=Point name=Unnamed dimension=1 values=[-0.0747934]
 ddf (ref)=class=Point name=Unnamed dimension=1 values=[-0.0747934]
@@ -57,12 +60,15 @@ pdf (ref)=0.33657
 cdf      =0.505769
 cdf (ref)=0.505769
 pdf gradient      =class=Point name=Unnamed dimension=3 values=[-0.0210957,-0.135523,0.0958891]
-pdf gradient (ref)=class=Point name=Unnamed dimension=4 values=[-0.0210957,-0.135523,0.0958891,0]
+pdf gradient (ref)=class=Point name=Unnamed dimension=3 values=[-0.0210957,-0.135523,0.0958891]
 cdf gradient      =class=Point name=Unnamed dimension=3 values=[-0.195764,-0.206061,-0.140807]
-cdf gradient (ref)=class=Point name=Unnamed dimension=4 values=[-0.195764,-0.206061,-0.140807,0]
+cdf gradient (ref)=class=Point name=Unnamed dimension=3 values=[-0.195764,-0.206061,-0.140807]
 quantile      =class=Point name=Unnamed dimension=1 values=[4.67299]
 quantile (ref)=class=Point name=Unnamed dimension=1 values=[4.67299]
 cdf(quantile)=0.95
+entropy      =1.39094
+entropy (ref)=1.39094
+entropy (MC)=1.39194
 mean      =class=Point name=Unnamed dimension=1 values=[2.64103]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[2.64103]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[1.09456]
@@ -74,7 +80,7 @@ kurtosis (ref)=class=Point name=Unnamed dimension=1 values=[3.23251]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19806]
 covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.19806]
 parameters      =[[mean_0 : 2, standard_deviation_0 : 1.5, lowerBound : 1]]
-parameters (ref)=[[mu : 2, sigma : 1.5, a : 1, b : 200]]
+parameters (ref)=[[mean_0 : 2, standard_deviation_0 : 1.5, lowerBound : 1]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[2.64103]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[8.17308]
@@ -88,10 +94,10 @@ Distribution class=TruncatedDistribution name=TruncatedDistribution distribution
 Distribution TruncatedDistribution(Normal(mu = 2, sigma = 1.5), bounds = ]-inf (-9.47594), 4])
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[2.38239]
-oneSample first=class=Point name=Unnamed dimension=1 values=[1.09659] last=class=Point name=Unnamed dimension=1 values=[0.440643]
-mean=class=Point name=Unnamed dimension=1 values=[1.72507]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.64216]
+oneRealization=class=Point name=Unnamed dimension=1 values=[2.39788]
+oneSample first=class=Point name=Unnamed dimension=1 values=[3.14852] last=class=Point name=Unnamed dimension=1 values=[3.06064]
+mean=class=Point name=Unnamed dimension=1 values=[1.71784]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.65073]
 Point= class=Point name=Unnamed dimension=1 values=[2.5]
 ddf      =class=Point name=Unnamed dimension=1 values=[-0.0615199]
 ddf (ref)=class=Point name=Unnamed dimension=1 values=[-0.0615199]
@@ -100,12 +106,15 @@ pdf (ref)=0.27684
 cdf      =0.693845
 cdf (ref)=0.693845
 pdf gradient      =class=Point name=Unnamed dimension=3 values=[0.0948276,-0.119643,-0.0333077]
-pdf gradient (ref)=class=Point name=Unnamed dimension=4 values=[0.0948276,-0.119643,0,-0.0333077]
+pdf gradient (ref)=class=Point name=Unnamed dimension=3 values=[0.0948276,-0.119643,-0.0333077]
 cdf gradient      =class=Point name=Unnamed dimension=3 values=[-0.19336,0.0190258,-0.0834793]
-cdf gradient (ref)=class=Point name=Unnamed dimension=4 values=[-0.19336,0.0190258,0,-0.0834793]
+cdf gradient (ref)=class=Point name=Unnamed dimension=3 values=[-0.19336,0.0190258,-0.0834793]
 quantile      =class=Point name=Unnamed dimension=1 values=[3.64324]
 quantile (ref)=class=Point name=Unnamed dimension=1 values=[3.64324]
 cdf(quantile)=0.95
+entropy      =1.60845
+entropy (ref)=1.60845
+entropy (MC)=1.60757
 mean      =class=Point name=Unnamed dimension=1 values=[1.72929]
 mean (ref)=class=Point name=Unnamed dimension=1 values=[1.72929]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[1.27879]
@@ -117,7 +126,7 @@ kurtosis (ref)=class=Point name=Unnamed dimension=1 values=[2.84601]
 covariance      =class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.6353]
 covariance (ref)=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.6353]
 parameters      =[[mean_0 : 2, standard_deviation_0 : 1.5, upperBound : 4]]
-parameters (ref)=[[mu : 2, sigma : 1.5, a : -200, b : 4]]
+parameters (ref)=[[mean_0 : 2, standard_deviation_0 : 1.5, upperBound : 4]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.72929]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[4.62576]

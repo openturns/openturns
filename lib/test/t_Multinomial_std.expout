@@ -24,6 +24,8 @@ cdf=0.13281
 ccdf=0.86719
 quantile=class=Point name=Unnamed dimension=3 values=[3,3,3]
 cdf(quantile)=0.953125
+entropy=3.70986
+entropy (MC)=3.70999
 mean=class=Point name=Unnamed dimension=3 values=[1.25,1.25,1.25]
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.9375,-0.3125,-0.3125,-0.3125,0.9375,-0.3125,-0.3125,-0.3125,0.9375]
 correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.333333,-0.333333,-0.333333,1,-0.333333,-0.333333,-0.333333,1]

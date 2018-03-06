@@ -144,6 +144,18 @@ Scalar ZipfMandelbrot::computeCDF(const Point & point) const
   return value;
 }
 
+/* Compute the entropy of the distribution */
+Scalar ZipfMandelbrot::computeEntropy() const
+{
+  const Scalar hN = getHarmonicNumbers(n_);
+  Scalar entropy = 0.0;
+  for (UnsignedInteger i = 1; i <= n_; ++i)
+    entropy += std::log(i + q_) / std::pow(i + q_, s_);
+  entropy *= s_ / hN;
+  entropy += std::log(hN);
+  return entropy;
+}
+
 /* Compute the mean of the distribution */
 void ZipfMandelbrot::computeMean() const
 {

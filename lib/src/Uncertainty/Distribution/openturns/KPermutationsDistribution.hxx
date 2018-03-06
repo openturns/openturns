@@ -76,6 +76,12 @@ public:
   using DiscreteDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const;
 
+  /** Get the quantile of the distribution */
+  using DiscreteDistribution::computeQuantile;
+  Point computeQuantile(const Scalar prob,
+                        const Bool tail,
+                        Scalar & marginalProb) const;
+
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
   Implementation getMarginal(const UnsignedInteger i) const;
@@ -100,6 +106,12 @@ public:
   void setN(const UnsignedInteger n);
   UnsignedInteger getN() const;
 
+private:
+  /** K/N accessor */
+  void setKN(const UnsignedInteger k,
+             const UnsignedInteger n);
+
+public:
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

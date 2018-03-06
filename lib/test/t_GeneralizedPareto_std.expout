@@ -37,6 +37,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0765466] upper bound=class=Point name=Unnamed dimension=1 values=[7.5] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=1.20547
+entropy (MC)=1.20644
 mean=class=Point name=Unnamed dimension=1 values=[1.25]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.11607]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -59,10 +61,10 @@ Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.
 Distribution GeneralizedPareto(sigma = 1.5, xi=0)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.115607]
-oneSample first=class=Point name=Unnamed dimension=1 values=[2.83459] last=class=Point name=Unnamed dimension=1 values=[5.88096]
-mean=class=Point name=Unnamed dimension=1 values=[1.4961]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.26942]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.666455]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.439697] last=class=Point name=Unnamed dimension=1 values=[3.10647]
+mean=class=Point name=Unnamed dimension=1 values=[1.46893]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.14338]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
@@ -94,6 +96,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0769399] upper bound=class=Point name=Unnamed dimension=1 values=[54.0655] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=1.40547
+entropy (MC)=1.40668
 mean=class=Point name=Unnamed dimension=1 values=[1.5]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.25]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -116,10 +120,10 @@ Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.
 Distribution GeneralizedPareto(sigma = 1.5, xi=0.2)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.116502]
-oneSample first=class=Point name=Unnamed dimension=1 values=[3.44463] last=class=Point name=Unnamed dimension=1 values=[8.92872]
-mean=class=Point name=Unnamed dimension=1 values=[1.87267]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[6.01684]
+oneRealization=class=Point name=Unnamed dimension=1 values=[0.696963]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.452841] last=class=Point name=Unnamed dimension=1 values=[3.84865]
+mean=class=Point name=Unnamed dimension=1 values=[1.82357]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.21249]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[1]
@@ -151,6 +155,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0773359] upper bound=class=Point name=Unnamed dimension=1 values=[10126.3] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=1.60547
+entropy (MC)=1.60693
 mean=class=Point name=Unnamed dimension=1 values=[1.875]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.85938]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

@@ -47,6 +47,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.64485] upper bound=class=Point name=Unnamed dimension=1 values=[7.65063] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
+entropy=1.4189
+entropy (MC)=1.4188
 mean=class=Point name=Unnamed dimension=1 values=[0]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1]
 skewness=class=Point name=Unnamed dimension=1 values=[0]
@@ -74,7 +76,7 @@ margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimens
 margin PDF=0.35207
 margin CDF=0.69146
 margin quantile=class=Point name=Unnamed dimension=1 values=[1.64485]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.123969]
+margin realization=class=Point name=Unnamed dimension=1 values=[-0.147003]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
@@ -100,10 +102,10 @@ Distribution Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])
 Elliptical = true
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=2 values=[1.08522,-1.04268]
-oneSample first=class=Point name=Unnamed dimension=2 values=[1.11121,-0.713628] last=class=Point name=Unnamed dimension=2 values=[-0.878534,-0.77061]
-mean=class=Point name=Unnamed dimension=2 values=[-0.00563385,0.027977]
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1.03867,1.02294,1.02294,3.97641]
+oneRealization=class=Point name=Unnamed dimension=2 values=[1.10883,-1.07312]
+oneSample first=class=Point name=Unnamed dimension=2 values=[-0.667474,-0.628346] last=class=Point name=Unnamed dimension=2 values=[-0.054982,-0.48522]
+mean=class=Point name=Unnamed dimension=2 values=[-0.00303261,0.0232072]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1.00407,1.01388,1.01388,4.10035]
 Point= class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=2 values=[-0.0405455,0]
 ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.0405455,0]
@@ -133,6 +135,8 @@ Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimensio
 beta=0.97234
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.91633,-3.83266] upper bound=class=Point name=Unnamed dimension=2 values=[7.65063,15.3013] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.97234
+entropy=3.3872
+entropy (MC)=3.386
 mean=class=Point name=Unnamed dimension=2 values=[0,0]
 standard deviation=class=Point name=Unnamed dimension=2 values=[1,2]
 skewness=class=Point name=Unnamed dimension=2 values=[0,0]
@@ -160,19 +164,19 @@ margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimens
 margin PDF=0.35207
 margin CDF=0.69146
 margin quantile=class=Point name=Unnamed dimension=1 values=[1.64485]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.7298]
+margin realization=class=Point name=Unnamed dimension=1 values=[-1.62343]
 margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margin PDF=0.19333
 margin CDF=0.59871
 margin quantile=class=Point name=Unnamed dimension=1 values=[3.28971]
-margin realization=class=Point name=Unnamed dimension=1 values=[1.53929]
+margin realization=class=Point name=Unnamed dimension=1 values=[-2.18704]
 indices=[1,0]
 margins=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[2,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 margins PDF=0.081091
 margins CDF=0.48677
 margins quantile=class=Point name=Unnamed dimension=2 values=[3.83266,1.91633]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[1.61626,0.404768]
+margins realization=class=Point name=Unnamed dimension=2 values=[-0.422897,0.902554]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,0,1.73205]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,-0.57735,0,0.57735]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,1,1,4]
@@ -199,10 +203,10 @@ Distribution Normal(mu = [0,0,0], sigma = [1,2,3], R = [[ 1   0.5 0   ]
  [ 0   0.5 1   ]])
 Elliptical = true
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=3 values=[0.44941,1.98808,3.74507]
-oneSample first=class=Point name=Unnamed dimension=3 values=[-3.14211,-1.712,3.59688] last=class=Point name=Unnamed dimension=3 values=[-1.05624,1.82582,2.28642]
-mean=class=Point name=Unnamed dimension=3 values=[-0.0130959,-0.00581536,0.0113697]
-covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.987829,0.982678,-0.0196036,0.982678,3.95061,2.96383,-0.0196036,2.96383,9.01984]
+oneRealization=class=Point name=Unnamed dimension=3 values=[-0.245183,0.945252,3.56944]
+oneSample first=class=Point name=Unnamed dimension=3 values=[-0.0267208,-1.04332,3.85504] last=class=Point name=Unnamed dimension=3 values=[-0.613991,0.279132,0.114201]
+mean=class=Point name=Unnamed dimension=3 values=[-0.000853476,0.00793713,0.00692681]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.994158,1.00338,0.0219978,1.00338,4.02393,3.09495,0.0219978,3.09495,9.24621]
 Point= class=Point name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=3 values=[-0.00754529,0.0010779,-0.0010779]
 ddf (FD)=class=Point name=Unnamed dimension=3 values=[-0.00754529,0.0010779,-0.0010779]
@@ -219,6 +223,8 @@ pdf gradient (FD)=class=Point name=Unnamed dimension=6 values=[0.00754529,-0.001
 cdf gradient     =class=Point name=Unnamed dimension=6 values=[0,0,0,0,0,0]
 quantile=class=Point name=Unnamed dimension=3 values=[2.08,4.16,6.239]
 cdf(quantile)=0.95
+entropy=5.702
+entropy (MC)=5.7023
 mean=class=Point name=Unnamed dimension=3 values=[0,0,0]
 standard deviation=class=Point name=Unnamed dimension=3 values=[1,2,3]
 skewness=class=Point name=Unnamed dimension=3 values=[0,0,0]
@@ -246,24 +252,24 @@ margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimens
 margin PDF=0.35207
 margin CDF=0.69146
 margin quantile=class=Point name=Unnamed dimension=1 values=[1.64485]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.217088]
+margin realization=class=Point name=Unnamed dimension=1 values=[-0.0359499]
 margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margin PDF=0.19333
 margin CDF=0.59871
 margin quantile=class=Point name=Unnamed dimension=1 values=[3.28971]
-margin realization=class=Point name=Unnamed dimension=1 values=[2.28236]
+margin realization=class=Point name=Unnamed dimension=1 values=[-2.53725]
 margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margin PDF=0.13115
 margin CDF=0.56618
 margin quantile=class=Point name=Unnamed dimension=1 values=[4.93456]
-margin realization=class=Point name=Unnamed dimension=1 values=[-0.22004]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.822214]
 indices=[1,0]
 margins=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[2,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 margins PDF=0.081091
 margins CDF=0.48677
 margins quantile=class=Point name=Unnamed dimension=2 values=[3.83266,1.91633]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[3.20622,0.887826]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.979474,1.35901]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,0,1.73205,1.73205,0,0,2.44949]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.57735,0.408248,0,0.57735,-0.408248,0,0,0.408248]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,1,0,1,4,3,0,3,9]
@@ -291,10 +297,10 @@ Distribution Normal(mu = [0,0,0,0], sigma = [1,2,3,4], R = [[ 1   0.5 0   0   ]
  [ 0   0   0.5 1   ]])
 Elliptical = true
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=4 values=[1.51193,4.01795,5.56609,5.09529]
-oneSample first=class=Point name=Unnamed dimension=4 values=[-0.0306902,-0.814045,-3.73544,-2.08147] last=class=Point name=Unnamed dimension=4 values=[2.01573,1.43862,-4.03567,-7.64326]
-mean=class=Point name=Unnamed dimension=4 values=[-0.0117286,-0.0185541,-0.0100932,0.05681]
-covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1.01522,1.00619,-0.0305626,-0.0841489,1.00619,3.9588,3.02894,-0.0262725,-0.0305626,3.02894,9.28878,6.14816,-0.0841489,-0.0262725,6.14816,16.0325]
+oneRealization=class=Point name=Unnamed dimension=4 values=[1.29008,-0.0404617,0.42494,4.2962]
+oneSample first=class=Point name=Unnamed dimension=4 values=[1.17224,1.62957,-1.99989,-6.8291] last=class=Point name=Unnamed dimension=4 values=[0.367599,2.58853,-0.289899,4.99267]
+mean=class=Point name=Unnamed dimension=4 values=[0.0138666,0.0180498,0.0221654,0.0162702]
+covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.970503,0.951581,-0.0277311,-0.0130839,0.951581,3.89801,2.90873,-0.0330447,-0.0277311,2.90873,8.89229,5.93811,-0.0130839,-0.0330447,5.93811,15.6673]
 Point= class=Point name=Unnamed dimension=4 values=[0.5,0.5,0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=4 values=[-0.000951889,0.000135984,-0.000135984,0]
 ddf (FD)=class=Point name=Unnamed dimension=4 values=[-0.000951889,0.000135984,-0.000135984,0]
@@ -311,6 +317,8 @@ pdf gradient (FD)=class=Point name=Unnamed dimension=8 values=[0.000951889,-0.00
 cdf gradient     =class=Point name=Unnamed dimension=8 values=[0,0,0,0,0,0,0,0]
 quantile=class=Point name=Unnamed dimension=4 values=[2.193,4.387,6.58,8.774]
 cdf(quantile)=0.95
+entropy=8.2722
+entropy (MC)=8.2708
 mean=class=Point name=Unnamed dimension=4 values=[0,0,0,0]
 standard deviation=class=Point name=Unnamed dimension=4 values=[1,2,3,4]
 skewness=class=Point name=Unnamed dimension=4 values=[0,0,0,0]
@@ -338,29 +346,29 @@ margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimens
 margin PDF=0.35207
 margin CDF=0.69146
 margin quantile=class=Point name=Unnamed dimension=1 values=[1.64485]
-margin realization=class=Point name=Unnamed dimension=1 values=[1.1002]
+margin realization=class=Point name=Unnamed dimension=1 values=[-0.989426]
 margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margin PDF=0.19333
 margin CDF=0.59871
 margin quantile=class=Point name=Unnamed dimension=1 values=[3.28971]
-margin realization=class=Point name=Unnamed dimension=1 values=[1.68814]
+margin realization=class=Point name=Unnamed dimension=1 values=[-2.65983]
 margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margin PDF=0.13115
 margin CDF=0.56618
 margin quantile=class=Point name=Unnamed dimension=1 values=[4.93456]
-margin realization=class=Point name=Unnamed dimension=1 values=[-5.45695]
+margin realization=class=Point name=Unnamed dimension=1 values=[1.40108]
 margin=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 margin PDF=0.098959
 margin CDF=0.54974
 margin quantile=class=Point name=Unnamed dimension=1 values=[6.57941]
-margin realization=class=Point name=Unnamed dimension=1 values=[2.64638]
+margin realization=class=Point name=Unnamed dimension=1 values=[7.03462]
 indices=[1,0]
 margins=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[2,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 margins PDF=0.081091
 margins CDF=0.48677
 margins quantile=class=Point name=Unnamed dimension=2 values=[3.83266,1.91633]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[1.01367,-1.06112]
+margins realization=class=Point name=Unnamed dimension=2 values=[-3.30128,-0.645538]
 chol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,0,1.73205,1.73205,0,0,0,2.44949,2.44949,0,0,0,3.16228]
 invchol=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,-0.57735,0.408248,-0.316228,0,0.57735,-0.408248,0.316228,0,0,0.408248,-0.316228,0,0,0,0.316228]
 chol*t(chol)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,1,0,0,1,4,3,0,0,3,9,6,0,0,6,16]

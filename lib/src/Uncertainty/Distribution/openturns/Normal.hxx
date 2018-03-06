@@ -85,6 +85,9 @@ public:
   using EllipticalDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const;
   Complex computeCharacteristicFunction(const Point & x) const;

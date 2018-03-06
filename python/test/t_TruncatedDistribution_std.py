@@ -109,6 +109,7 @@ for testCase in range(len(distribution)):
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" %
           distribution[testCase].computeSurvivalFunction(inverseSurvival))
+    print("entropy=%.6f" % distribution[testCase].computeEntropy())
 
     # Confidence regions
     if distribution[testCase].getDimension() == 1:

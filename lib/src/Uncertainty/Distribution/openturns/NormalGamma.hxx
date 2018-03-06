@@ -70,6 +70,9 @@ public:
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
 
+  /** Compute the entropy of the distribution */
+  Scalar computeEntropy() const;
+  
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;

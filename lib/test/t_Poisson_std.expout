@@ -34,6 +34,8 @@ quantile=class=Point name=Unnamed dimension=1 values=[15]
 cdf(quantile)=0.95126
 quantile (tail)=class=Point name=Unnamed dimension=1 values=[5]
 cdf (tail)=0.932914
+entropy=2.56141
+entropy (MC)=2.56197
 mean=class=Point name=Unnamed dimension=1 values=[10]
 standard deviation=class=Point name=Unnamed dimension=1 values=[3.16228]
 skewness=class=Point name=Unnamed dimension=1 values=[0.316228]

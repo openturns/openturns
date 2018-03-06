@@ -14,6 +14,8 @@ pdf gradient      =class=Point name=Unnamed dimension=4 values=[0.00830329,0.010
 cdf gradient      =class=Point name=Unnamed dimension=4 values=[-0.034449,-0.102285,-0.0746378,-0.0477418]
 quantile     =class=Point name=Unnamed dimension=1 values=[4.65046]
 cdf(quantile)=0.95
+entropy=2.04312
+entropy (MC)=2.04103
 mean      =class=Point name=Unnamed dimension=1 values=[0.5]
 standard deviation      =class=Point name=Unnamed dimension=1 values=[2.17945]
 skewness      =class=Point name=Unnamed dimension=1 values=[0.869365]

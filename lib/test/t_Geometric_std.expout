@@ -35,6 +35,8 @@ cdf gradient     =class=Point name=Unnamed dimension=1 values=[0.27]
 cdf gradient (FD)=class=Point name=Unnamed dimension=1 values=[0.27]
 quantile=class=Point name=Unnamed dimension=1 values=[3]
 cdf(quantile)=0.973
+entropy=0.872663
+entropy (MC)=0.873474
 mean=class=Point name=Unnamed dimension=1 values=[1.42857]
 standard deviation=class=Point name=Unnamed dimension=1 values=[0.782461]
 skewness=class=Point name=Unnamed dimension=1 values=[2.37346]

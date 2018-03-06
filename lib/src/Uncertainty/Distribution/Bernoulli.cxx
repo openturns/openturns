@@ -154,6 +154,13 @@ Scalar Bernoulli::computeScalarQuantile(const Scalar prob,
   return (tail ? 0.0 : 1.0);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Bernoulli::computeEntropy() const
+{
+  if (p_ == 0.0 || p_ == 1.0) return 0.0;
+  return -p_ * std::log(p_) - (1.0 - p_) * log1p(-p_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Bernoulli::computeCharacteristicFunction(const Scalar x) const
 {

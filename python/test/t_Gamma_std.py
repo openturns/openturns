@@ -90,6 +90,7 @@ for distribution in [Gamma(1.5, 2.5, -0.5), Gamma(15.0, 2.5)]:
     print("InverseSurvival=", repr(inverseSurvival))
     print("Survival(inverseSurvival)=%.6f" %
           distribution.computeSurvivalFunction(inverseSurvival))
+    print("entropy=%.6f" % distribution.computeEntropy())
 
     # Confidence regions
     interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(

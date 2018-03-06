@@ -259,6 +259,12 @@ Scalar Gamma::computeComplementaryCDF(const Point & point) const
   return DistFunc::pGamma(k_, lambda_ * x, true);
 }
 
+/* Compute the entropy of the distribution */
+Scalar Gamma::computeEntropy() const
+{
+  return k_ - std::log(lambda_) + SpecFunc::LogGamma(k_) + (1.0 - k_) * SpecFunc::Psi(k_);
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Gamma::computeCharacteristicFunction(const Scalar x) const
 {

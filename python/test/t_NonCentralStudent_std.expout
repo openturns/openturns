@@ -24,6 +24,7 @@ quantile= class=Point name=Unnamed dimension=1 values=[5.47724]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.864277]
 Survival(inverseSurvival)=0.950000
+entropy=2.01
 Minimum volume interval= [-1.61544, 5.7747]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 3.75705} with f=

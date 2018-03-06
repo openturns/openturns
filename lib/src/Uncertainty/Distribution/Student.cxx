@@ -283,6 +283,15 @@ Scalar Student::computeProbability(const Interval & interval) const
   return value;
 }
 
+/* Compute the entropy of the distribution */
+Scalar Student::computeEntropy() const
+{
+  const UnsignedInteger dimension = getDimension();
+  // normalizationFactor_ == 1/\sqrt{|Det(\Sigma)|}
+  // studentNormalizationFactor_ = SpecFunc::LnGamma(0.5 * (nu + dimension)) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * dimension * std::log(nu * M_PI);
+  return 0.5 * (nu_ + dimension) * (SpecFunc::Psi(0.5 * (nu_ + dimension)) - SpecFunc::Psi(0.5 * nu_)) - std::log(normalizationFactor_) - studentNormalizationFactor_;
+}
+
 /* Get the PDFGradient of the distribution */
 Point Student::computePDFGradient(const Point & point) const
 {
