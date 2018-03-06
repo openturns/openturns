@@ -321,19 +321,17 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     eigenPairs[i][augmentedDimension] = -eigenValues[i];
   }
   eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
+  Scalar cumulatedVariance = 0.0;
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
     eigenValues[i] = -eigenPairs[i][augmentedDimension];
+    cumulatedVariance += eigenValues[i];
   }
+  // Start at 0 if the given threshold is large (ie greater than 0)
   UnsignedInteger K = 0;
-  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-  {
-    cumulatedVariance += eigenValues[K];
-    ++K;
-  }
+  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
   LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(nodesNumber * dimension, K);

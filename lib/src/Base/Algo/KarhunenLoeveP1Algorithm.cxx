@@ -126,21 +126,20 @@ void KarhunenLoeveP1Algorithm::run()
   eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
   SquareMatrix eigenVectors(augmentedDimension);
   Point eigenValues(augmentedDimension);
+  Scalar cumulatedVariance = 0.0;
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
     for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
     eigenValues[i] = -eigenPairs[i][augmentedDimension];
+    cumulatedVariance += eigenValues[i];
   }
   LOGDEBUG(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
   LOGINFO("Extract the relevant eigenpairs");
+  // Start at 0 if the given threshold is large (ie greater than 0)
   UnsignedInteger K = 0;
-  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-  {
-    cumulatedVariance += eigenValues[K];
-    ++K;
-  }
+  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   // Reduce and rescale the eigenvectors
   MatrixImplementation transposedProjection(augmentedDimension, K);
   Point selectedEV(K);

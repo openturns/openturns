@@ -179,18 +179,19 @@ void KarhunenLoeveSVDAlgorithm::run()
   MatrixImplementation Vt;
   const Point svd(designMatrix.computeSVD(U, Vt));
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
+  Scalar cumulatedVariance = 0.0;
   Point eigenValues(svd.getDimension());
   for (UnsignedInteger i = 0; i < svd.getDimension(); ++i)
-    eigenValues[i] = svd[i] * svd[i];
+    {
+      eigenValues[i] = svd[i] * svd[i];
+      cumulatedVariance += eigenValues[i];
+    }
   LOGINFO("Extract the relevant eigenpairs");
+  // Start at 0 if the given threshold is large (ie greater than 0)
   UnsignedInteger K = 0;
-  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-  {
-    cumulatedVariance += eigenValues[K];
-    ++K;
-  }
+  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   LOGINFO("Create eigenmodes values");
   // Stores the eigenmodes values in-place to avoid wasting memory
   MatrixImplementation & eigenModesValues = U;
