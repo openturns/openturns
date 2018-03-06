@@ -96,11 +96,6 @@ Point InverseNatafEllipticalCopulaEvaluation::operator () (const Point & inP) co
   // Second, apply the commmon marginal distribution
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeCDF(Point(1, result[i]));
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

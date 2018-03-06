@@ -204,11 +204,6 @@ Point PythonEvaluation::operator() (const Point & inP) const
       p_cache_->add(inKey, outValue);
     }
   }
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(outP);
-  }
   return outP;
 }
 
@@ -342,11 +337,6 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
       }
     }
     p_cache_->merge(tempCache);
-  }
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(outS);
   }
   outS.setDescription(getOutputDescription());
   return outS;

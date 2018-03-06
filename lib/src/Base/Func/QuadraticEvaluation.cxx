@@ -130,11 +130,6 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
   for(UnsignedInteger index = 0; index < sheetNumber; ++index)
     result[index] += 0.5 * dot(delta, quadratic_.getSheet(index) * delta);
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

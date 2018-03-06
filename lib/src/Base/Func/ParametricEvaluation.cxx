@@ -91,11 +91,6 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) inputDescription.add(functionInputDescription[inputPositions_[i]]);
   setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.setDimension(inputDimension);
-    outputStrategy_.setDimension(getOutputDimension());
-  }
 }
 
 /* Parameter constructor */
@@ -139,11 +134,6 @@ ParametricEvaluation::ParametricEvaluation(const ParametricEvaluation & evaluati
   for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) newInputDescription.add(inputDescription[inputPositions_[i]]);
   setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.setDimension(inputDimension);
-    outputStrategy_.setDimension(getOutputDimension());
-  }
 }
 
 /* Virtual constructor method */
@@ -163,11 +153,6 @@ Point ParametricEvaluation::operator() (const Point & point) const
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameter_[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[inputPositions_[i]] = point[i];
   const Point value(function_(x));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(x);
-    outputStrategy_.store(value);
-  }
   ++callsNumber_;
   return value;
 }
@@ -187,11 +172,6 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
     for (UnsignedInteger j = 0; j < sampleDimension; ++j) input[i][inputPositions_[j]] = inSample[i][j];
   }
   const Sample output(function_(input));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(input);
-    outputStrategy_.store(output);
-  }
   callsNumber_ += size;
   return output;
 }
@@ -212,21 +192,8 @@ Sample ParametricEvaluation::operator() (const Point & point,
     for (UnsignedInteger j = 0; j < pointDimension; ++j) input[i][inputPositions_[j]] = point[j];
   }
   const Sample output(function_(input));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(input);
-    outputStrategy_.store(output);
-  }
   callsNumber_ += size;
   return output;
-}
-
-/* Enable the input/output history */
-void ParametricEvaluation::enableHistory() const
-{
-  EvaluationImplementation::enableHistory();
-  inputStrategy_.setDimension(inputPositions_.getSize() + parametersPositions_.getSize());
-  outputStrategy_.setDimension(getOutputDimension());
 }
 
 /* Parameters accessor */
@@ -269,19 +236,6 @@ UnsignedInteger ParametricEvaluation::getParameterDimension() const
 UnsignedInteger ParametricEvaluation::getOutputDimension() const
 {
   return function_.getOutputDimension();
-}
-
-/* Input point / parameter history accessor */
-Sample ParametricEvaluation::getInputPointHistory() const
-{
-  Sample sample(inputStrategy_.getSample());
-  return sample.getSize() > 0 ? sample.getMarginal(inputPositions_) : Sample(0, getInputDimension());
-}
-
-Sample ParametricEvaluation::getInputParameterHistory() const
-{
-  Sample sample(inputStrategy_.getSample());
-  return sample.getSize() > 0 ? sample.getMarginal(parametersPositions_) : Sample(0, getParameterDimension());
 }
 
 /* String converter */

@@ -89,11 +89,6 @@ Point ComposedEvaluation::operator() (const Point & inP) const
   ++callsNumber_;
   const Point rightValue(p_rightFunction_->operator()(inP));
   const Point leftValue(p_leftFunction_->operator()(rightValue));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(leftValue);
-  }
   return leftValue;
 }
 
@@ -104,11 +99,6 @@ Sample ComposedEvaluation::operator() (const Sample & inSample) const
   const Sample rightSample(p_rightFunction_->operator()(inSample));
   Sample leftSample(p_leftFunction_->operator()(rightSample));
   leftSample.setDescription(getOutputDescription());
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inSample);
-    outputStrategy_.store(leftSample);
-  }
   return leftSample;
 }
 

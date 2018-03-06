@@ -139,42 +139,6 @@ public:
    */
   void clearCache() const;
 
-  /** Enable or disable the input/output history
-   * The input and output strategies store input and output values of the function,
-   * in order to allow to retrieve these values e.g. after the execution of an algorithm
-   * for which the user has no access to the generated inputs and the corresponding output.
-   */
-  void enableHistory() const;
-
-  /** @brief Disable the history mechanism
-   * @see enableHistory()
-   */
-  void disableHistory() const;
-
-  /** @brief Test the history mechanism activity
-   * @see enableHistory()
-   */
-  Bool isHistoryEnabled() const;
-
-  /** @brief Clear the history mechanism
-   * @see enableHistory()
-   */
-  void clearHistory() const;
-
-  /** @brief Retrieve the history of the input values
-   * @see enableHistory()
-   */
-  HistoryStrategy getHistoryInput() const;
-
-  /** @brief Retrieve the history of the output values
-   * @see enableHistory()
-   */
-  HistoryStrategy getHistoryOutput() const;
-
-  /** Input point / parameter history accessor */
-  Sample getInputPointHistory() const;
-  Sample getInputParameterHistory() const;
-
   /** Function implementation accessors */
   void setEvaluation(const EvaluationPointer & evaluation);
   const EvaluationPointer & getEvaluation() const;

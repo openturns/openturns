@@ -177,11 +177,6 @@ public:
       ++callsNumber_;
       result = ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) );
     } // Cache disabled
-    if (isHistoryEnabled_)
-    {
-      inputStrategy_.store(inP);
-      outputStrategy_.store(result);
-    }
     return result;
   }
 

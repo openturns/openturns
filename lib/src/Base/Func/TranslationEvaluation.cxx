@@ -96,11 +96,6 @@ Point TranslationEvaluation::operator() (const Point & inP) const
   if (inP.getDimension() != constant_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   const Point result(inP + constant_);
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 /* Operator () */
@@ -109,11 +104,6 @@ Sample TranslationEvaluation::operator() (const Sample & inS) const
   if (inS.getDimension() != constant_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   const Sample result((*inS.getImplementation()) + constant_);
   callsNumber_ += inS.getSize();
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

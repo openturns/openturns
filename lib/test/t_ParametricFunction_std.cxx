@@ -45,14 +45,18 @@ int main(int argc, char *argv[])
     x[0] = 1.0;
     x[1] = 2.0;
     Point referencePoint(2, 0.85);
-    ParametricFunction g2(f, set, referencePoint, parametersSet);
-    g2.enableHistory();
+    MemoizeFunction fh(f);
+    ParametricFunction g2(fh, set, referencePoint, parametersSet);
     fullprint << "g2=" << g2 << std::endl;
     fullprint << "g2(x)=" << g2(x) << std::endl;
 
     // point / parameter history
-    fullprint << "point history=" << g2.getInputPointHistory() << std::endl;
-    fullprint << "parameter history=" << g2.getInputParameterHistory() << std::endl;
+    Sample inputHistory(fh.getInputHistory());
+    Indices xSet(2);
+    xSet[0] = 0;
+    xSet[1] = 2;
+    fullprint << "point history=" << inputHistory.getMarginal(xSet) << std::endl;
+    fullprint << "parameter history=" << inputHistory.getMarginal(set) << std::endl;
 
     // marginal extraction
     Function g2_0(g2.getMarginal(0));

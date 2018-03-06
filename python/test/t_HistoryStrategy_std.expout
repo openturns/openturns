@@ -1,5 +1,5 @@
 sample= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 data=[[0,0.5],[1,1.5],[2,2.5],[3,3.5],[4,4.5],[5,5.5],[6,6.5],[7,7.5],[8,8.5],[9,9.5]]
-Null strategy sample= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=2 data=[]
+Null strategy sample= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
 Full strategy sample= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 data=[[0,0.5],[1,1.5],[2,2.5],[3,3.5],[4,4.5],[5,5.5],[6,6.5],[7,7.5],[8,8.5],[9,9.5]]
 Last strategy sample (large storage)= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 data=[[0,0.5],[1,1.5],[2,2.5],[3,3.5],[4,4.5],[5,5.5],[6,6.5],[7,7.5],[8,8.5],[9,9.5]]
 Last strategy sample (small storage)= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[7,7.5],[8,8.5],[9,9.5]]

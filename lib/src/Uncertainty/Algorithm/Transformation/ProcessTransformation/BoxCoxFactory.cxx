@@ -34,6 +34,7 @@
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
+#include "openturns/MemoizeFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -188,9 +189,9 @@ public:
     // Define optimization problem
     OptimizationProblem problem;
     Function objectiveFunction(getLogLikelihoodFunction());
-    objectiveFunction.enableCache();
-    objectiveFunction.enableHistory();
-    problem.setObjective(objectiveFunction);
+    MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
+    objectiveMemoizeFunction.enableCache();
+    problem.setObjective(objectiveMemoizeFunction);
     problem.setMinimization(false);
     solver_.setProblem(problem);
     solver_.setStartingPoint(Point(1, 1.0));

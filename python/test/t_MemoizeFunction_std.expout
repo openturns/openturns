@@ -1,0 +1,32 @@
+class=MemoizeEvaluation evaluation=[x]->[x^2] isHistoryEnabled=false inputStrategy=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[] outputStrategy=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
+Is history enabled for f?  False
+input history= 
+output history= 
+Is history enabled for f?  True
+input history= 0 : [ 0 ]
+1 : [ 1 ]
+2 : [ 2 ]
+3 : [ 3 ]
+output history= 0 : [ 0 ]
+1 : [ 1 ]
+2 : [ 4 ]
+3 : [ 9 ]
+Is history enabled for f?  True
+input history= 
+output history= 
+input history= 0 : [ 0 ]
+1 : [ 1 ]
+2 : [ 2 ]
+3 : [ 3 ]
+4 : [ 0 ]
+5 : [ 1 ]
+6 : [ 2 ]
+7 : [ 3 ]
+output history= 0 : [ 0 ]
+1 : [ 1 ]
+2 : [ 4 ]
+3 : [ 9 ]
+4 : [ 0 ]
+5 : [ 1 ]
+6 : [ 4 ]
+7 : [ 9 ]

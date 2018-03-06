@@ -238,47 +238,6 @@ void FunctionImplementation::clearCache() const
   p_evaluationImplementation_->clearCache();
 }
 
-/* Enable or disable the input/output history */
-void FunctionImplementation::enableHistory() const
-{
-  p_evaluationImplementation_->enableHistory();
-}
-
-void FunctionImplementation::disableHistory() const
-{
-  p_evaluationImplementation_->disableHistory();
-}
-
-Bool FunctionImplementation::isHistoryEnabled() const
-{
-  return p_evaluationImplementation_->isHistoryEnabled();
-}
-
-void FunctionImplementation::clearHistory() const
-{
-  p_evaluationImplementation_->clearHistory();
-}
-
-HistoryStrategy FunctionImplementation::getHistoryInput() const
-{
-  return p_evaluationImplementation_->getHistoryInput();
-}
-
-HistoryStrategy FunctionImplementation::getHistoryOutput() const
-{
-  return p_evaluationImplementation_->getHistoryOutput();
-}
-
-Sample FunctionImplementation::getInputPointHistory() const
-{
-  return p_evaluationImplementation_->getInputPointHistory();
-}
-
-Sample FunctionImplementation::getInputParameterHistory() const
-{
-  return p_evaluationImplementation_->getInputParameterHistory();
-}
-
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 FunctionImplementation FunctionImplementation::operator * (const FunctionImplementation & right) const
 {

@@ -86,11 +86,6 @@ Point ProductEvaluation::operator() (const Point & inP) const
   const Point right(p_rightEvaluation_->operator()(inP));
   const Point result(left[0] * right);
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

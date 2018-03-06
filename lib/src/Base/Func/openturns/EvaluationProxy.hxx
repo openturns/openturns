@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief Abstract top-level class for all numerical math function implementations
+ * @brief Proxy class for EvaluationImplementation
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,51 +19,39 @@
  *
  */
 
-#ifndef OPENTURNS_EVALUATIONIMPLEMENTATION_HXX
-#define OPENTURNS_EVALUATIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_EVALUATIONPROXY_HXX
+#define OPENTURNS_EVALUATIONPROXY_HXX
 
-#include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/PointWithDescription.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Field.hxx"
-#include "openturns/Description.hxx"
-#include "openturns/Indices.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/Collection.hxx"
+#include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/StorageManager.hxx"
-#include "openturns/Cache.hxx"
-#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class EvaluationImplementation
+ * @class EvaluationProxy
  *
  * This class offers an abstract interface for the implementation
  * of an real numerical mathematical function into the platform.
  */
-class OT_API EvaluationImplementation
-  : public PersistentObject
+class OT_API EvaluationProxy
+  : public EvaluationImplementation
 {
   CLASSNAME
 public:
 
   typedef Pointer<EvaluationImplementation>      Implementation;
-  typedef PersistentCollection<Scalar>               CacheKeyType;
-  typedef PersistentCollection<Scalar>               CacheValueType;
-  typedef Cache<CacheKeyType, CacheValueType>                 CacheType;
-  typedef Pointer<CacheType>                                  CacheImplementation;
 
   /** Default constructor */
-  EvaluationImplementation();
+  EvaluationProxy();
+
+  /** Parameter constructor */
+  explicit EvaluationProxy(const Implementation & p_evaluation);
 
   /** Virtual constructor */
-  virtual EvaluationImplementation * clone() const;
+  virtual EvaluationProxy * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const EvaluationImplementation & other) const;
+  Bool operator ==(const EvaluationProxy & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -198,29 +186,12 @@ public:
 
 protected:
 
-  /** Number of calls since the construction */
-  mutable UnsignedInteger callsNumber_;
+  /** The proxied instance */
+  Pointer<EvaluationImplementation> p_evaluationImplementation_;
 
-  /** A cache to store already computed points */
-  mutable CacheImplementation p_cache_;
-
-  /** The value of the parameters */
-  Point parameter_;
-
-  /** The description of the parameters */
-  Description parameterDescription_;
-
-private:
-
-  /** The description of the input components */
-  Description inputDescription_;
-
-  /** The description of the input components */
-  Description outputDescription_;
-
-}; /* class EvaluationImplementation */
+}; /* class EvaluationProxy */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_EVALUATIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_EVALUATIONPROXY_HXX */

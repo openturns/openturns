@@ -196,11 +196,6 @@ Point DualLinearCombinationEvaluation::operator () (const Point & inP) const
   TBB::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 
@@ -221,11 +216,6 @@ Sample DualLinearCombinationEvaluation::operator () (const Sample & inS) const
     for (UnsignedInteger j = 0; j < sampleSize; ++j) result[j] += coefficients_[i] * basisSample[j][0];
   }
   callsNumber_ += sampleSize;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

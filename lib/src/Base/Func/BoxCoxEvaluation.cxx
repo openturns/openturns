@@ -139,11 +139,6 @@ Sample BoxCoxEvaluation::operator() (const Sample & inS) const
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   result.setDescription(getOutputDescription());
   return result;
 }
@@ -170,11 +165,6 @@ Point BoxCoxEvaluation::operator() (const Point & inP) const
     else result[index] = expm1(lambda_i * logX) / lambda_i;
   }
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

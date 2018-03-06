@@ -91,11 +91,6 @@ Point AggregatedEvaluation::operator () (const Point & inP) const
     }
 
   }
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 
@@ -119,11 +114,6 @@ Sample AggregatedEvaluation::operator () (const Sample & inS) const
     outputIndex += atomDimension;
   }
   result.setDescription(getOutputDescription());
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

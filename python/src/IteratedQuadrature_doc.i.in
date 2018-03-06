@@ -47,11 +47,12 @@ Evaluate the integral with high precision:
 
 >>> Iref = ot.IteratedQuadrature(ot.GaussKronrod(100000, 1e-13, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))).integrate(f, a, b, l, u)
 
-Evaluate the integral with the default GaussKronrod algorithm:
+Evaluate the integral with the default GaussKronrod algorithm, and get
+evaluation points:
 
->>> f.enableHistory()
+>>> f = ot.MemoizeFunction(f)
 >>> I1 = ot.IteratedQuadrature(ot.GaussKronrod()).integrate(f, a, b, l, u)
->>> sample1 = f.getHistoryInput().getSample()
+>>> sample1 = f.getInputHistory()
 >>> print(I1)
 [-25.132...]
 >>> n_evals = sample1.getSize()
@@ -69,7 +70,7 @@ Evaluate the integral with the default GaussKronrod algorithm:
 Evaluate the integral with the default IteratedQuadrature algorithm:
 
 >>> I2 = ot.IteratedQuadrature().integrate(f, a, b, l, u)
->>> sample2 = f.getHistoryInput().getSample()
+>>> sample2 = f.getInputHistory()
 >>> print(I2)
 [-25.132...]
 >>> n_evals = sample2.getSize()

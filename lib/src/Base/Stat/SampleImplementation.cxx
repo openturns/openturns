@@ -2139,7 +2139,7 @@ SampleImplementation SampleImplementation::select(const UnsignedIntegerCollectio
   for (UnsignedInteger i = 0; i < size; ++i)
     {
       const UnsignedInteger index = indices[i];
-      if (index >= size_) throw InvalidArgumentException(HERE) << "Error: exected indices less than " << size_ << ", here indices[" << i << "]=" << index;
+      if (index >= size_) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
       std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result.data_.begin() + i * dimension_);
     }
   result.setDescription(getDescription());

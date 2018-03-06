@@ -275,6 +275,9 @@ ot_add_python_module(func func_module.i
                       FunctionImplementation.i FunctionImplementation_doc.i.in
                       ProductFunction.i ProductFunction_doc.i.in
                       Function.i Function_doc.i.in
+                      EvaluationProxy.i
+                      MemoizeEvaluation.i
+                      MemoizeFunction.i MemoizeFunction_doc.i.in
                       TensorizedUniVariateFunctionFactory.i TensorizedUniVariateFunctionFactory_doc.i.in
                       UniVariateFunctionFactory.i UniVariateFunctionFactory_doc.i.in
                       MonomialFunctionFactory.i MonomialFunctionFactory_doc.i.in

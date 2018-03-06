@@ -17,7 +17,7 @@ try:
     f = SymbolicFunction(inputVar, formulas)
     # Must activate the history mechanism if one want to perform sensitivity
     # analysis
-    f.enableHistory()
+    f = MemoizeFunction(f)
     # Sampling
     size = 100
     inputSample = distribution.getSample(size)

@@ -183,7 +183,7 @@ ot_check_test (LinearCombinationFunction_std)
 ot_check_test (Function_operations)
 ot_check_test (ParametricFunction_std)
 ot_check_test (DatabaseFunction_std)
-ot_check_test (Function_history)
+ot_check_test (MemoizeFunction_std)
 
 if (R_base_FOUND)
 ot_check_test (Function_draw)

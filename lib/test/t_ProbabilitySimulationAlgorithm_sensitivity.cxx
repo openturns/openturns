@@ -40,7 +40,6 @@ int main(int argc, char *argv[])
     input[2] = "L";
     input[3] = "I";
     SymbolicFunction myFunction(input, Description(1, "-F*L^3/(3*E*I)"));
-    myFunction.enableHistory();
     UnsignedInteger dim = myFunction.getInputDimension();
     /* We create a normal distribution point of dimension 1 */
     Point mean(dim, 0.0);
@@ -56,7 +55,8 @@ int main(int argc, char *argv[])
     RandomVector vect(myDistribution);
 
     /* We create a composite random vector */
-    RandomVector output(myFunction, vect);
+    MemoizeFunction fh(myFunction);
+    RandomVector output(fh, vect);
 
     /* We create an Event from this RandomVector */
     Event myEvent(output, Less(), -3.0);

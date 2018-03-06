@@ -31,7 +31,6 @@
 #endif
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Full.hxx"
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Indices.hxx"
@@ -64,9 +63,6 @@ EvaluationImplementation::EvaluationImplementation()
   : PersistentObject()
   , callsNumber_(0)
   , p_cache_(new CacheType)
-  , inputStrategy_(Full())
-  , outputStrategy_(Full())
-  , isHistoryEnabled_(false)
   , parameter_(0)
   , inputDescription_(0)
   , outputDescription_(0)
@@ -253,53 +249,6 @@ void EvaluationImplementation::clearCache() const
   p_cache_->clear();
 }
 
-/* Enable or disable the input/output history */
-void EvaluationImplementation::enableHistory() const
-{
-  isHistoryEnabled_ = true;
-  inputStrategy_.setDimension(getInputDimension());
-  outputStrategy_.setDimension(getOutputDimension());
-}
-
-void EvaluationImplementation::disableHistory() const
-{
-  isHistoryEnabled_ = false;
-}
-
-Bool EvaluationImplementation::isHistoryEnabled() const
-{
-  return isHistoryEnabled_;
-}
-
-void EvaluationImplementation::clearHistory() const
-{
-  inputStrategy_.clear();
-  outputStrategy_.clear();
-}
-
-HistoryStrategy EvaluationImplementation::getHistoryInput() const
-{
-  return inputStrategy_;
-}
-
-HistoryStrategy EvaluationImplementation::getHistoryOutput() const
-{
-  return outputStrategy_;
-}
-
-/* Input point / parameter history accessor */
-Sample EvaluationImplementation::getInputPointHistory() const
-{
-  if (getParameterDimension() == 0) return inputStrategy_.getSample();
-  throw NotYetImplementedException(HERE) << "in EvaluationImplementation::getInputPointHistory";
-}
-
-Sample EvaluationImplementation::getInputParameterHistory() const
-{
-  throw NotYetImplementedException(HERE) << "in EvaluationImplementation::getInputParameterHistory";
-}
-
-
 /* Gradient according to the marginal parameters */
 Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
 {
@@ -436,10 +385,6 @@ EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(c
   const LinearEvaluation left(center, constant, linear);
 #endif
   EvaluationImplementation::Implementation marginal(new ComposedEvaluation(left.clone(), clone()));
-  if (isHistoryEnabled())
-  {
-    marginal->enableHistory();
-  }
   return marginal;
 }
 

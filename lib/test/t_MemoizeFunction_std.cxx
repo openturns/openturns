@@ -31,28 +31,54 @@ int main(int argc, char *argv[])
 
   try
   {
-    SymbolicFunction f("x", "x^2");
+    SymbolicFunction g("x", "x^2");
+    MemoizeFunction f(g);
+    f.disableHistory();
+    fullprint << f << std::endl;
     UnsignedInteger size = 4;
     Sample input(size, 1);
-    for (UnsignedInteger i = 0; i < size; ++i) input[i][0] = i;
+    for (UnsignedInteger i = 0; i < size; ++i) input(i, 0) = i;
     Sample output(f(input));
     fullprint << "Is history enabled for f? " << (f.isHistoryEnabled() ? "true" : "false") << std::endl;
-    fullprint << "input history=" << f.getHistoryInput() << std::endl;
-    fullprint << "output history=" << f.getHistoryOutput() << std::endl;
+    fullprint << "input history=" << f.getInputHistory() << std::endl;
+    fullprint << "output history=" << f.getOutputHistory() << std::endl;
     f.enableHistory();
     output = f(input);
     fullprint << "Is history enabled for f? " << (f.isHistoryEnabled() ? "true" : "false") << std::endl;
-    fullprint << "input history=" << f.getHistoryInput() << std::endl;
-    fullprint << "output history=" << f.getHistoryOutput() << std::endl;
+    fullprint << "input history=" << f.getInputHistory() << std::endl;
+    fullprint << "output history=" << f.getOutputHistory() << std::endl;
     f.clearHistory();
     fullprint << "Is history enabled for f? " << (f.isHistoryEnabled() ? "true" : "false") << std::endl;
-    fullprint << "input history=" << f.getHistoryInput() << std::endl;
-    fullprint << "output history=" << f.getHistoryOutput() << std::endl;
+    fullprint << "input history=" << f.getInputHistory() << std::endl;
+    fullprint << "output history=" << f.getOutputHistory() << std::endl;
     // Perform the computation twice
     output = f(input);
     output = f(input);
-    fullprint << "input history=" << f.getHistoryInput() << std::endl;
-    fullprint << "output history=" << f.getHistoryOutput() << std::endl;
+    fullprint << "input history=" << f.getInputHistory() << std::endl;
+    fullprint << "output history=" << f.getOutputHistory() << std::endl;
+    // Marginal
+    Description inputVariables;
+    inputVariables.add("x");
+    Description formulas;
+    formulas.add("x");
+    formulas.add("x^2");
+    formulas.add("x^3");
+    formulas.add("x^4");
+    formulas.add("x^5");
+    SymbolicFunction multi(inputVariables, formulas);
+    MemoizeFunction memoMulti(multi);
+    Sample output5(memoMulti(input));
+    Indices indices;
+    indices.add(3);
+    indices.add(1);
+    Function marginal(memoMulti.getMarginal(indices));
+    fullprint << "memoized marginal=" << marginal << std::endl;
+    // marginal is in fact a MemoizeFunction; to access its history, it
+    // must be wrapped.
+    Sample output2(marginal(input));
+    MemoizeFunction memoMarginal(marginal);
+    fullprint << "input history=" << memoMarginal.getInputHistory() << std::endl;
+    fullprint << "output history=" << memoMarginal.getOutputHistory() << std::endl;
   }
   catch (TestFailed & ex)
   {

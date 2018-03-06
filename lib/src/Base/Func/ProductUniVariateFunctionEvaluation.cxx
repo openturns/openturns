@@ -83,11 +83,6 @@ Point ProductUniVariateFunctionEvaluation::operator() (const Point & inP) const
   Scalar productEvaluation(1.0) ;
   for (UnsignedInteger i = 0; i < inDimension; ++ i) productEvaluation *= functions_[i](inP[i]);
   const Point result(1, productEvaluation);
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 
@@ -130,11 +125,6 @@ Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) cons
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

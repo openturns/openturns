@@ -134,11 +134,6 @@ Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
   const InverseBoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
   TBB::ParallelFor( 0, size, policy );
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   result.setDescription(getOutputDescription());
   return result;
 }
@@ -166,11 +161,6 @@ Point InverseBoxCoxEvaluation::operator() (const Point & inP) const
     }
   }
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

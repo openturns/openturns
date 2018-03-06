@@ -77,11 +77,6 @@ Point IdentityEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(inP);
-  }
   return inP;
 }
 /* Operator () */
@@ -89,11 +84,6 @@ Sample IdentityEvaluation::operator() (const Sample & inS) const
 {
   if (inS.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   callsNumber_ += inS.getSize();
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(inS);
-  }
   return inS;
 }
 

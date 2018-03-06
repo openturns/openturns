@@ -16,6 +16,8 @@
  * EnclosingSimplex, EnclosingSimplexImplementation, NaiveEnclosingSimplex, BoundingVolumeHierarchy
  * IndicesCollection
  * SymbolicParserExprTk
+ * EvaluationProxy
+ * MemoizeFunction, MemoizeEvaluation
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
@@ -50,6 +52,7 @@
  * IndicesCollection is no more an alias to Collection<Indices>, it has its own class and has a fixed size
  * Removed BipartiteGraph::add method
  * Deprecated usage of _e and _pi constants when defining analytical functions, e_ and pi_ must be used instead.
+ * Removed Function::enableHistory,disableHistory,isHistoryEnabled,clearHistory,getHistoryInput,getHistoryOutput,getInputPointHistory,getInputParameterHistory
 
 === Python module ===
 

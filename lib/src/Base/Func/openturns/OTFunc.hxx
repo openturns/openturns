@@ -142,5 +142,8 @@
 #include "openturns/ConstantBasisFactory.hxx"
 #include "openturns/LinearBasisFactory.hxx"
 #include "openturns/QuadraticBasisFactory.hxx"
+#include "openturns/EvaluationProxy.hxx"
+#include "openturns/MemoizeEvaluation.hxx"
+#include "openturns/MemoizeFunction.hxx"
 
 #endif /* OPENTURNS_OTFUNC_HXX */
