@@ -186,8 +186,6 @@ Point KPermutationsDistribution::computeQuantile(const Scalar prob,
   if (p >= 1.0) return Point(k_, n_);
   UnsignedInteger iMin = 0;
   UnsignedInteger iMax = n_;
-  Scalar cdfMin = 0.0;
-  Scalar cdfMax = 1.0;
   while (iMax > iMin + 1)
   {
     const UnsignedInteger iMiddle = (iMax + iMin) / 2;
@@ -195,12 +193,10 @@ Point KPermutationsDistribution::computeQuantile(const Scalar prob,
     if (cdfMiddle < p)
     {
       iMin = iMiddle;
-      cdfMin = cdfMiddle;
     }
     else
     {
       iMax = iMiddle;
-      cdfMax = cdfMiddle;
     }
   } // while
   marginalProb = computeScalarQuantile(prob, tail);
