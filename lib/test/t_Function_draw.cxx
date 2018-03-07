@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
       inputVars[1] = "x1";
       inputVars[2] = "x2";
       Description formulas(2);
-      formulas[0] = "x0 * sin(x1 + 2.0 * x2) - 2.0 * x1 * cos(3.0 * x0 - x2)";
-      formulas[1] = "x1 * cos(abs(x2 + 2.0 * x1)) + 2.0 * x0 * cos(abs(3.0 * x1 - x0))";
+      formulas[0] = "x0 * sin(x1 + 2.4 * x2) - 2.0 * x1 * cos(3.2 * x0 - x2)";
+      formulas[1] = "x1 * cos(x2 + 2.4 * x1) + 2.0 * x0 * cos(3.2 * x1 - x0)";
       SymbolicFunction f(inputVars, formulas);
       Point centralPoint(3);
       centralPoint[0] = 1.0;

@@ -25,8 +25,7 @@ try:
 
     # Full interfaces
     f = SymbolicFunction(["x0", "x1", "x2"], [
-        "x0 * sin(x1 + 2.0 * x2) - 2.0 * x1 * cos(3.0 * x0 - x2)", "x1 * cos(abs(x2 + 2.0 * x1)) + 2.0 * x0 * cos(abs(3.0 * x1 - x0))"])
-    f.enableHistory()
+        "x0 * sin(x1 + 2.4 * x2) - 2.0 * x1 * cos(3.2 * x0 - x2)", "x1 * cos(x2 + 2.4 * x1) + 2.0 * x0 * cos(3.2 * x1 - x0)"])
     centralPoint = Point([1.0, -0.5, 1.5])
     # First output as a function of first input around central point
     graph1D = f.draw(0, 0, centralPoint, -5.0, 5.0, 32)
