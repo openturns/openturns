@@ -59,22 +59,28 @@ for algoName in algoNames:
                     # x4 = 2
                     problem.setEqualityConstraint(ot.SymbolicFunction(
                         ['x1', 'x2', 'x3', 'x4'], ['x4-2']))
+                ot.NLopt.SetSeed(0)
                 try:
-                    ot.NLopt.SetSeed(0)
                     algo.setProblem(problem)
-                    algo.setMaximumEvaluationNumber(5000)
-                    algo.setStartingPoint(startingPoint)
-                    # algo.setInitialStep([0.1] * dim)
-                    localAlgo = ot.NLopt('LD_MMA')
-                    algo.setLocalSolver(localAlgo)
-                    print('algo=', algo)
-                    algo.run()
-                    result = algo.getResult()
-                    print('x^=', printPoint(
-                        result.getOptimalPoint(), 3))
                 except:
                     print('-- Not supported: algo=', algoName,
                           'inequality=', inequality, 'equality=', equality)
+                    continue
+                algo.setMaximumEvaluationNumber(5000)
+                algo.setStartingPoint(startingPoint)
+                # algo.setInitialStep([0.1] * dim)
+                localAlgo = ot.NLopt('LD_MMA')
+                algo.setLocalSolver(localAlgo)
+                print('algo=', algo)
+                try:
+                    algo.run()
+                except Exception as e:
+                    print('-- ', e)
+                    continue
+                result = algo.getResult()
+                print('x^=', printPoint(
+                result.getOptimalPoint(), 3))
+
 
 # FORM
 f = ot.SymbolicFunction(

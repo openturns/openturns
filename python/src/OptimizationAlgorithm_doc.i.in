@@ -62,3 +62,13 @@ name : str
     Name of the algorithm.
     Use `TNC`, `Cobyla` or one of the :class:`~openturns.NLopt` solver names."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationAlgorithm::GetAlgorithmNames
+"Get the list of available solver names.
+
+Returns
+-------
+names : :class:`~openturns.Description`
+    List of available solver names."
+

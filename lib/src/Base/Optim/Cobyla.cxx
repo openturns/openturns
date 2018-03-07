@@ -82,6 +82,10 @@ void Cobyla::run()
   if (getProblem().hasBounds())
   {
     Interval bounds(getProblem().getBounds());
+    if (!bounds.contains(x))
+    {
+      LOGWARN(OSS() << "Starting point is not inside bounds x=" << x.__str__() <<" bounds=" << bounds);
+    }
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       if (bounds.getFiniteLowerBound()[i]) ++m;

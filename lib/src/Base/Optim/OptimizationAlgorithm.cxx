@@ -216,18 +216,24 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = TNC();
   }
-  else
+  else if (NLopt::IsAvailable() && NLopt::GetAlgorithmNames().contains(solverName))
   {
-    try
-    {
-      solver = NLopt(solverName);
-    }
-    catch (InvalidArgumentException &)
-    {
-      throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
-    }
+    solver = NLopt(solverName);
   }
+  else
+    throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
   return solver;
+}
+
+
+Description OptimizationAlgorithm::GetAlgorithmNames()
+{
+  Description names;
+  names.add("Cobyla");
+  names.add("TNC");
+  if (NLopt::IsAvailable())
+    names.add(NLopt::GetAlgorithmNames());
+  return names;
 }
 
 

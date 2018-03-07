@@ -71,15 +71,16 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sampl
   const UnsignedInteger dimension = build()->getParameterDimension();
   MaximumLikelihoodFactory factory(buildAsFisherSnedecor());
 
-  // override starting point
-  OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
-  solver.setStartingPoint(Point(dimension, 0.0));
-  factory.setOptimizationAlgorithm(solver);
-
-  // override bounds
   Point parametersLowerBound;
   parametersLowerBound.add(ResourceMap::GetAsScalar("FisherSnedecorFactory-D1LowerBound"));
   parametersLowerBound.add(ResourceMap::GetAsScalar("FisherSnedecorFactory-D2LowerBound"));
+
+  // override starting point
+  OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
+  solver.setStartingPoint(parametersLowerBound);
+  factory.setOptimizationAlgorithm(solver);
+
+  // override bounds
   Interval bounds(parametersLowerBound, Point(dimension, SpecFunc::MaxScalar), Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, false));
   factory.setOptimizationBounds(bounds);
 

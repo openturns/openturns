@@ -261,12 +261,12 @@ x^= [5.000,5.000,-3.000,5.000]
 -- Not supported: algo= LD_LBFGS_NOCEDAL inequality= True equality= False
 -- Not supported: algo= LD_LBFGS_NOCEDAL inequality= False equality= True
 algo= class=NLopt algorithm=LD_LBFGS_NOCEDAL
--- Not supported: algo= LD_LBFGS_NOCEDAL inequality= False equality= False
+--  InternalException : NLopt raised an exception: nlopt invalid argument
 -- Not supported: algo= LD_LBFGS_NOCEDAL inequality= True equality= True
 -- Not supported: algo= LD_LBFGS_NOCEDAL inequality= True equality= False
 -- Not supported: algo= LD_LBFGS_NOCEDAL inequality= False equality= True
 algo= class=NLopt algorithm=LD_LBFGS_NOCEDAL
--- Not supported: algo= LD_LBFGS_NOCEDAL inequality= False equality= False
+--  InternalException : NLopt raised an exception: nlopt invalid argument
 -- Not supported: algo= LD_MMA inequality= True equality= True
 algo= class=NLopt algorithm=LD_MMA
 x^= [5.000,-3.000,5.000,-3.000]
@@ -414,12 +414,12 @@ x^= [5.000,5.000,-3.000,5.000]
 -- Not supported: algo= LN_PRAXIS inequality= True equality= False
 -- Not supported: algo= LN_PRAXIS inequality= False equality= True
 algo= class=NLopt algorithm=LN_PRAXIS
--- Not supported: algo= LN_PRAXIS inequality= False equality= False
+--  InternalException : NLopt raised an exception: nlopt failure
 -- Not supported: algo= LN_PRAXIS inequality= True equality= True
 -- Not supported: algo= LN_PRAXIS inequality= True equality= False
 -- Not supported: algo= LN_PRAXIS inequality= False equality= True
 algo= class=NLopt algorithm=LN_PRAXIS
--- Not supported: algo= LN_PRAXIS inequality= False equality= False
+--  InternalException : NLopt raised an exception: nlopt failure
 -- Not supported: algo= LN_SBPLX inequality= True equality= True
 -- Not supported: algo= LN_SBPLX inequality= True equality= False
 -- Not supported: algo= LN_SBPLX inequality= False equality= True
