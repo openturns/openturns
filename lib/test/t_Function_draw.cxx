@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     // Simplified interfaces
     // First, try 1D drawing
     {
-      SymbolicFunction f("x", "sin(2*_pi*x)*exp(-x^2/2)");
+      SymbolicFunction f("x", "sin(2*pi_*x)*exp(-x^2/2)");
       fullprint << "f=" << f << std::endl;
       Graph graph(f.draw(-1.2, 1.2, 32));
       fullprint << "graph=" << graph << std::endl;
@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
       inputVars[1] = "x1";
       inputVars[2] = "x2";
       Description formulas(2);
-      formulas[0] = "x0 * sin(x1 + 2.0 * x2) - 2.0 * x1 * cos(3.0 * x0 - x2)";
-      formulas[1] = "x1 * cos(x2 + 2.0 * x1) + 2.0 * x0 * cos(3.0 * x1 - x0)";
+      formulas[0] = "x0 * sin(x1 + 2.4 * x2) - 2.0 * x1 * cos(3.2 * x0 - x2)";
+      formulas[1] = "x1 * cos(x2 + 2.4 * x1) + 2.0 * x0 * cos(3.2 * x1 - x0)";
       SymbolicFunction f(inputVars, formulas);
       Point centralPoint(3);
       centralPoint[0] = 1.0;
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
       graph1D.draw("NMFDraw1DFull.png");
       // Second output as a function of second and third inputs around central point
       Graph graph2D(f.draw(1, 2, 1, centralPoint, Point(2, -5.0), Point(2, 5.0), Indices(2, 21)));
-      fullprint << "graph1D=" << graph2D << std::endl;
+      fullprint << "graph2D=" << graph2D << std::endl;
       graph2D.draw("NMFDraw2DFull.png");
     }
   }

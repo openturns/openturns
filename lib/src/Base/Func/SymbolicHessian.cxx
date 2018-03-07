@@ -187,7 +187,8 @@ void SymbolicHessian::initialize() const
     } // rowIndex
   } // sheetIndex
 
-  parser_.setVariablesFormulas(evaluation_.inputVariablesNames_, hessianFormulas);
+  parser_.setVariables(evaluation_.inputVariablesNames_);
+  parser_.setFormulas(hessianFormulas);
   // Everything is ok (no exception)
   isAnalytical_ = true;
   isInitialized_ = true;

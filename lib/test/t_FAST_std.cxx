@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     // // Test with Ishigami function
     Description formulaIshigami(1);
-    formulaIshigami[0] = "sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)";
+    formulaIshigami[0] = "sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)";
 
     SymbolicFunction modelIshigami(inputName, formulaIshigami);
 

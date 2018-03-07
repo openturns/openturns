@@ -24,10 +24,11 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/ComposedEvaluation.hxx"
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicEvaluation.hxx"
-#endif
+#else
 #include "openturns/LinearEvaluation.hxx"
+#endif
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Full.hxx"
@@ -410,7 +411,7 @@ EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(c
   // Build non-ambigous names for the inputs. We cannot simply use the output description, as it must be valid muParser identifiers
   const UnsignedInteger inputDimension = getOutputDimension();
   const UnsignedInteger outputDimension = indices.getSize();
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   Description input(inputDimension);
   for (UnsignedInteger index = 0; index < inputDimension; ++index)
     input[index] = OSS() << "x" << index;

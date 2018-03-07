@@ -16,7 +16,8 @@ option (USE_BISON                    "Looks for Bison if true and then build par
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
 option (USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ON)
 option (USE_HMAT                     "Use HMat library"                                                      ON)
-option (USE_MUPARSER                 "Use muParser libraries"                                                ON)
+option (USE_MUPARSER                 "Use muParser library"                                                  ON)
+option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
 option (USE_R                        "Use R for graph output support"                                        ON)
 option (USE_OPENMP                   "Use OpenMP for multithreading"                                         OFF)
@@ -189,6 +190,11 @@ if (MUPARSER_FOUND)
   set (OPENTURNS_HAVE_MUPARSER TRUE)
   list (APPEND OPENTURNS_LIBRARIES ${MUPARSER_LIBRARIES})
   list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${MUPARSER_INCLUDE_DIRS})
+  set (SYMBOLICPARSER_DEFAULT_BACKEND MuParser)
+endif ()
+if (USE_EXPRTK)
+  set (OPENTURNS_HAVE_EXPRTK TRUE)
+  set (SYMBOLICPARSER_DEFAULT_BACKEND ExprTk)
 endif ()
 
 if (USE_HMAT)
@@ -524,6 +530,7 @@ install (FILES COPYING
                 COPYING.cobyla
                 COPYING.dsfmt
                 COPYING.ev3
+                COPYING.exprtk
                 COPYING.faddeeva
                 COPYING.hmat
                 COPYING.kendall

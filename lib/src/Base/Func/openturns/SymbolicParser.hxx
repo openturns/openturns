@@ -22,36 +22,46 @@
 #ifndef OPENTURNS_SYMBOLICPARSER_HXX
 #define OPENTURNS_SYMBOLICPARSER_HXX
 
+#include "openturns/SymbolicParserImplementation.hxx"
+#include "openturns/Pointer.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
-class MuParser;
-
-class SymbolicParser : public Object
+class OT_API SymbolicParser
+  : public TypedInterfaceObject<SymbolicParserImplementation>
 {
+  CLASSNAME
+
 public:
+  typedef Pointer<SymbolicParserImplementation> Implementation;
+
   /** Default constructor */
   SymbolicParser();
 
+  /** Constructor with parameter */
+  explicit SymbolicParser(const Description & outputVariablesNames);
+
+  /** Constructor with parameters */
+  SymbolicParser(const SymbolicParserImplementation & implementation);
+
+  /** Constructor with parameters */
+  SymbolicParser(Implementation & p_implementation);
+
+  /** Variables accessors */
+  Description getVariables() const;
+  void setVariables(const Description & inputVariablesNames);
+
+  /** Formulas accessors */
+  Description getFormulas() const;
+  void setFormulas(const Description & formulas);
+
   Point operator()(const Point & inP) const;
   Sample operator()(const Sample & inS) const;
-
-  void setVariablesFormulas(const Description & inputVariablesNames,
-                            const Description & formulas);
-
-  Description getFormulas() const;
-
-protected:
-  void initialize() const;
-
-  Description inputVariablesNames_;
-  Description formulas_;
-  mutable Collection<Pointer<MuParser> > parsers_;
-  mutable Point inputStack_;
-
 };
 
 END_NAMESPACE_OPENTURNS

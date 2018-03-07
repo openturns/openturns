@@ -21,7 +21,7 @@
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #else
 #include "openturns/LinearEvaluation.hxx"
@@ -142,7 +142,7 @@ GradientImplementation::Implementation GradientImplementation::getMarginal(const
   // Fake f
   const UnsignedInteger inputDimension = getInputDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   Description input(inputDimension);
   for (UnsignedInteger index = 0; index < inputDimension; ++index)
     input[index] = OSS() << "x" << index;

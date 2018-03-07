@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     inputName[1] = "X2";
     inputName[2] = "X3";
     Description formula(1);
-    formula[0] = "sin(_pi*X1)+7*sin(_pi*X2)*sin(_pi*X2)+0.1*((_pi*X3)*(_pi*X3)*(_pi*X3)*(_pi*X3))*sin(_pi*X1)";
+    formula[0] = "sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)";
 
     SymbolicFunction model(inputName, formula);
 

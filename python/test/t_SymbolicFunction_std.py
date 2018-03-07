@@ -4,6 +4,11 @@ from __future__ import print_function
 import openturns as ot
 import math as m
 
+ot.ResourceMap.Set("SymbolicParser-Backend", "ExprTk")
+
+parsers = ot.SymbolicFunction.GetValidParsers()
+assert "ExprTk" in parsers, 'ExprTk not found'
+
 elementaryFunctions = ['sin', 'cos', 'tan']
 elementaryFunctions.append('asin')
 elementaryFunctions.append('acos')
@@ -105,7 +110,7 @@ refResultValues = [m.sin(inSample[i][0]) + 7.0 * (m.sin(inSample[i][1])) **
 print('First reference value : %.4e' % refResultValues[0])
 print('First result calculated : %.4e' % resultSample[0][0])
 
-model = ot.SymbolicFunction(['x'], ['_pi', '_e'])
+model = ot.SymbolicFunction(['x'], ['pi_', 'e_'])
 print('Constants:', model([0]))
 
 empty = model.getMarginal([])
@@ -126,39 +131,16 @@ model = ot.SymbolicFunction('x', '3*x')
 assert model(x)[0] == 3.0 * x[0], 'str ctor eval'
 
 # Check constants
-f = ot.SymbolicFunction("x", "_e");
-print(f, ", _e=", f([0.0]))
-f = ot.SymbolicFunction("x", "_pi")
-print(f, ", _pi=", f([0.0]))
+f = ot.SymbolicFunction("x", "e_");
+print(f, ", e_=", f([0.0]))
+f = ot.SymbolicFunction("x", "pi_")
+print(f, ", pi_=", f([0.0]))
 # Check unary operators
 f = ot.SymbolicFunction("x", "-x")
 print(f, ", f([1])=", f([1.0]))
-f = ot.SymbolicFunction("x", "(x=2.0)*x")
+f = ot.SymbolicFunction("x", "(x:=2.0)*x")
 print(f, ", f([1])=", f([1.0]))
-f = ot.SymbolicFunction("x", "!x")
-print(f, ", f([0])=", f([0.0]))
-print(f, ", f([1])=", f([1.0]))
-print(f, ", f([1.5])=", f([1.5]))
-print(f, ", f([-0.5])=", f([-0.5]))
 # Check binary operators
-f = ot.SymbolicFunction(["x", "y"], ["x && y"])
-print(f, ", f([0, 0])=", f([0.0, 0.0]))
-print(f, ", f([1, 0])=", f([1.0, 0.0]))
-print(f, ", f([1, 1])=", f([1.0, 1.0]))
-print(f, ", f([0, 1])=", f([0.0, 1.0]))
-print(f, ", f([1.5, -0.5])=", f([1.5, -0.5]))
-f = ot.SymbolicFunction(["x", "y"], ["x || y"])
-print(f, ", f([0, 0])=", f([0.0, 0.0]))
-print(f, ", f([1, 0])=", f([1.0, 0.0]))
-print(f, ", f([1, 1])=", f([1.0, 1.0]))
-print(f, ", f([0, 1])=", f([0.0, 1.0]))
-print(f, ", f([1.5, -0.5])=", f([1.5, -0.5]))
-f = ot.SymbolicFunction(["x", "y"], ["x ^^ y"])
-print(f, ", f([0, 0])=", f([0.0, 0.0]))
-print(f, ", f([1, 0])=", f([1.0, 0.0]))
-print(f, ", f([1, 1])=", f([1.0, 1.0]))
-print(f, ", f([0, 1])=", f([0.0, 1.0]))
-print(f, ", f([1.5, -0.5])=", f([1.5, -0.5]))
 f = ot.SymbolicFunction(["x", "y"], ["x <= y"])
 print(f, ", f([1, 2])=", f([1.0, 2.0]))
 print(f, ", f([1, 1])=", f([1.0, 1.0]))

@@ -31,6 +31,7 @@ SymbolicEvaluation::SymbolicEvaluation()
   , inputVariablesNames_()
   , outputVariablesNames_()
   , formulas_()
+  , parser_()
 {
   // Nothing to do
 } // SymbolicEvaluation
@@ -43,6 +44,7 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
   , inputVariablesNames_(inputVariablesNames)
   , outputVariablesNames_(outputVariablesNames)
   , formulas_(formulas)
+  , parser_()
 {
   if (outputVariablesNames.getSize() != formulas.getSize())
     throw InvalidDimensionException(HERE) << "The number of outputVariablesNames (" << outputVariablesNames.getSize()
@@ -51,10 +53,23 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
   initialize();
 } // SymbolicEvaluation
 
+/* Constructor with a single formula which computes output variables */
+SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
+                                       const Description & outputVariablesNames,
+                                       const String & formula)
+  : EvaluationImplementation()
+  , inputVariablesNames_(inputVariablesNames)
+  , outputVariablesNames_(outputVariablesNames)
+  , formulas_(Description(1, formula))
+  , parser_(outputVariablesNames)
+{
+  initialize();
+}
 
 void SymbolicEvaluation::initialize()
 {
-  parser_.setVariablesFormulas(inputVariablesNames_, formulas_);
+  parser_.setVariables(inputVariablesNames_);
+  parser_.setFormulas(formulas_);
   setInputDescription(inputVariablesNames_);
   setOutputDescription(outputVariablesNames_);
 }

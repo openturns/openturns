@@ -107,6 +107,8 @@ Expression ExpressionParser::Parse(const char* buf,
 
   table_["_pi"] = PEV3PI;
   table_["_e"] = PEV3E;
+  table_["pi_"] = PEV3PI;
+  table_["e_"] = PEV3E;
 
   while (*input_)
   {

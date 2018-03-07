@@ -6,6 +6,7 @@ from openturns import *
 TESTPREAMBLE()
 
 try:
+    ResourceMap.Set("SymbolicParser-Backend", "ExprTk")
     evaluation = SymbolicEvaluation(
         ["x0", "x1", "x2"], ["y0"], ["x0^2+2*x1+3*x2^3"])
     gradient = SymbolicGradient(evaluation)

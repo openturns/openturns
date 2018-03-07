@@ -26,11 +26,13 @@
 #include "openturns/AggregatedEvaluation.hxx"
 #include "openturns/AggregatedGradient.hxx"
 #include "openturns/AggregatedHessian.hxx"
-#ifdef OPENTURNS_HAVE_MUPARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/SymbolicGradient.hxx"
 #include "openturns/SymbolicHessian.hxx"
-#endif
+#include "openturns/SymbolicParser.hxx"
+#include "openturns/SymbolicParserImplementation.hxx"
+// #include "openturns/SymbolicParserExprTk.hxx"     Internal header file
+// #include "openturns/SymbolicParserMuParser.hxx"   Internal header file
 #include "openturns/Basis.hxx"
 #include "openturns/BasisSequence.hxx"
 #include "openturns/BasisSequenceImplementation.hxx"

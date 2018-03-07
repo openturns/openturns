@@ -56,10 +56,6 @@ Available functions:
     Available operators:
 
     - = (assignment)
-    - && (logical and)
-    - || (logical or)
-    - ^^ (logical xor)
-    - !  (logical negation)
     - <= (less or equal)
     - >= (greater or equal)
     - != (not equal)
@@ -74,8 +70,8 @@ Available functions:
 
     Available constants:
 
-    - _e (Euler's constant)
-    - _pi (Pi)
+    - e\_ (Euler's constant)
+    - pi\_ (Pi)
 
 Examples
 --------
@@ -102,6 +98,22 @@ sin(arg) -> sine function"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SymbolicFunction::GetValidParsers
+"Return the list of built-in parsers.
+
+Analytical formulas can be parsed by 'MuParser' or 'ExprTk'
+parsers, but this support may be disabled at build-time.
+This method returns the list of parsers available at run-time.
+Parser can be switched can be changing 'SymbolicParser-Backend'
+ResourceMap entry.
+
+Returns
+-------
+list_constants : :class:`~openturns.Description`
+    List of the available parsers."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SymbolicFunction::GetValidConstants
 "Return the list of valid constants.
 
@@ -114,7 +126,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.SymbolicFunction.GetValidConstants()[0])
-_e -> Euler's constant (2.71828...)"
+e_ -> Euler's constant (2.71828...)"
 
 // ---------------------------------------------------------------------
 

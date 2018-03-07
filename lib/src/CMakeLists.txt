@@ -9,6 +9,17 @@ ot_add_source_file (openturns_library_ok.c)
 add_subdirectory (Base)
 add_subdirectory (Uncertainty)
 
+# SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
+# It also causes problems on Windows
+if (OPENTURNS_HAVE_EXPRTK)
+  set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COTIRE_EXCLUDED ON)
+  if (MINGW)
+    set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "-Wa,-mbig-obj -g0")
+  elseif (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC|Intel")
+    set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "/bigobj")
+  endif ()
+endif()
+
 # Build main library
 foreach (built_source ${BUILT_SOURCEFILES})
   set_source_files_properties (${built_source} PROPERTIES GENERATED TRUE)

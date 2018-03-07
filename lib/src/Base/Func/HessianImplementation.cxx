@@ -22,7 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #else
 #include "openturns/LinearEvaluation.hxx"
@@ -142,7 +142,7 @@ HessianImplementation::Implementation HessianImplementation::getMarginal(const I
   // Fake f
   const UnsignedInteger inputDimension = getInputDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   const SymbolicEvaluation right(Description::BuildDefault(inputDimension, "x"), Description::BuildDefault(outputDimension, "y"), Description(outputDimension, "0.0"));
 #else
   Point center(inputDimension);

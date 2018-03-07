@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/SymbolicFunction.hxx"
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicEvaluation.hxx"
 #include "openturns/SymbolicGradient.hxx"
 #include "openturns/SymbolicHessian.hxx"
@@ -33,6 +33,7 @@ CLASSNAMEINIT(SymbolicFunction)
 
 // Inline documentation for analytical functions
 Bool SymbolicFunction::IsDocumentationInitialized_ = false;
+Description SymbolicFunction::ValidParsers_;
 Description SymbolicFunction::ValidConstants_;
 Description SymbolicFunction::ValidFunctions_;
 Description SymbolicFunction::ValidOperators_;
@@ -59,7 +60,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
                                     const Description & formulas)
   : Function()
 {
-#ifdef OPENTURNS_HAVE_MUPARSER
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   const Description outputVariablesNames(Description::BuildDefault(formulas.getSize(), "y"));
 
   // Try to build an analytical gradient
@@ -86,7 +87,42 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else
-  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser";
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
+#endif
+}
+
+/* Parameter constructor */
+SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
+                                    const Description & outputVariablesNames,
+                                    const String & formula)
+  : Function()
+{
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
+  // Try to build an analytical gradient
+  SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, formula);
+  setEvaluation(evaluation.clone());
+  try
+  {
+    setGradient(new SymbolicGradient(evaluation));
+  }
+  catch(...)
+  {
+    LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon");
+    setGradient(new CenteredFiniteDifferenceGradient(epsilon, getEvaluation()));
+  }
+  try
+  {
+    setHessian(new SymbolicHessian(evaluation));
+  }
+  catch(...)
+  {
+    LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
+    const Scalar epsilon = ResourceMap::GetAsScalar("CenteredFiniteDifferenceHessian-DefaultEpsilon");
+    setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
+  }
+#else
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
 #endif
 }
 
@@ -112,8 +148,8 @@ void SymbolicFunction::InitializeDocumentation()
 
   // First, the constants
   ValidConstants_.setName("Valid constants");
-  ValidConstants_.add("_e -> Euler's constant (2.71828...)");
-  ValidConstants_.add("_pi -> Pi constant (3.14159...)");
+  ValidConstants_.add("e_ -> Euler's constant (2.71828...)");
+  ValidConstants_.add("pi_ -> Pi constant (3.14159...)");
 
   // Second, the functions
   ValidFunctions_.setName("Valid functions");
@@ -179,10 +215,26 @@ void SymbolicFunction::InitializeDocumentation()
   ValidOperators_.add("/  -> division (priority 4)");
   ValidOperators_.add("-  -> sign change (priority 4)");
   ValidOperators_.add("^  -> x to the power of y (priority 5)");
+
+  // Fourth, the parsers
+  ValidParsers_.setName("Valid parsers");
+#ifdef OPENTURNS_HAVE_EXPRTK
+  ValidParsers_.add("ExprTk");
+#endif
+#ifdef OPENTURNS_HAVE_MUPARSER
+  ValidParsers_.add("MuParser");
+#endif
+
   IsDocumentationInitialized_ = true;
 }
 
 /* Static methods for documentation of analytical fonctions */
+Description SymbolicFunction::GetValidParsers()
+{
+  if (!IsDocumentationInitialized_) InitializeDocumentation();
+  return ValidParsers_;
+}
+
 Description SymbolicFunction::GetValidConstants()
 {
   if (!IsDocumentationInitialized_) InitializeDocumentation();

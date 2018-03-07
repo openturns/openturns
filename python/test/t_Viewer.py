@@ -165,7 +165,7 @@ try:
     myDistribution = ot.ComposedDistribution(aCollection)
     vect = ot.RandomVector(myDistribution)
     LimitState = ot.SymbolicFunction(
-        ('R', 'F'), ('R-F/(_pi*100.0)',))
+        ('R', 'F'), ('R-F/(pi_*100.0)',))
     G = ot.RandomVector(LimitState, vect)
     myEvent = ot.Event(G, ot.Less(), 0.0)
     experiment = ot.MonteCarloExperiment()
