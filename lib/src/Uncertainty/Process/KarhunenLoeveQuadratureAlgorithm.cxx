@@ -313,22 +313,21 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Last time we need cholesky, so we can overwrite it by eigenVectors
   LOGINFO("Get the generalized eigenvectors");
   eigenVectors = choleskyBlock.transpose().solveLinearSystem(eigenVectors, false).getImplementation();
-  LOGINFO("Sort the eigenvectors by decreasing eigenvalues");
-  Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  LOGINFO("Post-process the eigenvalue problem");
+  Collection< std::pair<Scalar, UnsignedInteger> > eigenPairs(augmentedDimension);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
-  {
-    for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectors(j, i);
-    eigenPairs[i][augmentedDimension] = -eigenValues[i];
-  }
-  eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
+    eigenPairs[i] = std::pair<Scalar, UnsignedInteger>(-eigenValues[i], i);
+  // Sort the eigenvalues in decreasing order
+  std::sort(eigenPairs.begin(), eigenPairs.end());
   Scalar cumulatedVariance = 0.0;
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
-    for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
-    eigenValues[i] = -eigenPairs[i][augmentedDimension];
+    eigenValues[i] = -eigenPairs[i].first;
     cumulatedVariance += eigenValues[i];
   }
-  // Start at 0 if the given threshold is large (ie greater than 0)
+  LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
+  LOGINFO("Extract the relevant eigenpairs");
+  // Start at 0 if the given threshold is large (eg greater than 1)
   UnsignedInteger K = 0;
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
@@ -340,26 +339,23 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
   SampleImplementation values(nodesNumber, dimension);
   UnsignedInteger indexProjection = 0;
+  MatrixImplementation a(augmentedDimension, 1);
+  const UnsignedInteger omegaASize = nodesNumber * dimension;
+  Point modeValues(omegaASize);
   for (UnsignedInteger k = 0; k < K; ++k)
   {
     selectedEV[k] = eigenValues[k];
-    const MatrixImplementation a(*eigenVectors.getColumn(k).getImplementation());
-    const Scalar norm = (omega * Point(a)).norm();
+    const UnsignedInteger initialColumn = eigenPairs[k].second;
+    std::copy(eigenVectors.getImplementation()->begin() + initialColumn * augmentedDimension, eigenVectors.getImplementation()->begin() + (initialColumn + 1) * augmentedDimension, a.begin());
     // Store the eigen modes in two forms
-    Point modeValues(omega.getImplementation()->genProd(a));
-    const Scalar factor = modeValues[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
-    // Unscale the values
-    for (UnsignedInteger i = 0; i < nodesNumber; ++i) modeValues[i] *= factor / weights[i];
-    values.setData(modeValues);
-    modesAsProcessSample.add(values);
-    if (dimension == 1)
-      modes.add(LinearCombinationFunction(coll, a * factor));
-    else
-    {
-      SampleImplementation aSample(basisSize_, dimension);
-      aSample.setData(a * factor);
-      modes.add(DualLinearCombinationFunction(coll, aSample));
-    }
+    // modeValues = omega.a
+    Point omegaA(omega.getImplementation()->genProd(a));
+    const Scalar norm = omegaA.norm();
+    const Scalar factor = omegaA[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
+    // Scale a
+    a *= factor;
+    // Compute the values of the mode
+    // modeValues = \epsilon diag(1/w) omega.a / ||omega.a||
     // Build the relevant column of the transposed projection matrix
     // For k=1,...,K K is the number of selected modes
     // M_{k,:}[f(\xi_j)]=1/\sqrt{\lambda_k}\int_{\Omega}f(x)\phi_k(x)dx
@@ -367,19 +363,32 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     //                =1/\sqrt{\lambda_k}\sum_{j=1}^N w_jf(\xi_j)\sum_{i=1}^P a_i^k\theta_i(\xi_j)
     // So M is KxNd, \omega is NdxPd, eigenVectors is PdxK
     // M^t=\omega * eigenVectors
-    MatrixImplementation b(omega.getImplementation()->genProd(a * (factor / sqrt(selectedEV[k]))));
-    UnsignedInteger indexB = 0;
+    // b = \epsilon diag(1/\sqrt{\lambda}) omega.a / ||omega.a||
+    UnsignedInteger index = 0;
+    const Scalar alphaK = factor / std::sqrt(selectedEV[k]);
     for (UnsignedInteger i = 0; i < nodesNumber; ++i)
-    {
-      const Scalar wI = weights[i];
-      for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        b[indexB] *= wI;
-        ++indexB;
-      } // for j
-    } // for i
-    std::copy(b.begin(), b.end(), transposedProjection.begin() + indexProjection);
-    indexProjection += b.getSize();
+	const Scalar wA = factor / weights[i];
+	const Scalar wB = weights[i] * alphaK;
+	for (UnsignedInteger j = 0; j < dimension; ++j)
+	  {
+	    modeValues[index] = omegaA[index] * wA;
+	    transposedProjection[indexProjection + index] = omegaA[index] * wB;
+	    ++index;
+	  } // for j
+      } // for i
+    indexProjection += omegaASize;
+    values.setData(modeValues);
+    modesAsProcessSample.add(values);
+    if (dimension == 1)
+      modes.add(LinearCombinationFunction(coll, a));
+    else
+    {
+      SampleImplementation aSample(basisSize_, dimension);
+      // aSample = diag(1/w) omega.a / ||omega.a||^2
+      aSample.setData(a);
+      modes.add(DualLinearCombinationFunction(coll, aSample));
+    }
   }
   result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, transposedProjection.transpose());
 }

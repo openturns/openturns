@@ -117,25 +117,21 @@ void KarhunenLoeveP1Algorithm::run()
   SquareComplexMatrix eigenVectorsComplex;
   SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
   LOGINFO("Post-process the eigenvalue problem");
-  Sample eigenPairs(augmentedDimension, augmentedDimension + 1);
+  Collection< std::pair<Scalar, UnsignedInteger> > eigenPairs(augmentedDimension);
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
-  {
-    for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenPairs[i][j] = eigenVectorsComplex(j, i).real();
-    eigenPairs[i][augmentedDimension] = -eigenValuesComplex[i].real();
-  }
-  eigenPairs = eigenPairs.sortAccordingToAComponent(augmentedDimension);
-  SquareMatrix eigenVectors(augmentedDimension);
+    eigenPairs[i] = std::pair<Scalar, UnsignedInteger>(-eigenValuesComplex[i].real(), i);
+  // Sort the eigenvalues in decreasing order
+  std::sort(eigenPairs.begin(), eigenPairs.end());
   Point eigenValues(augmentedDimension);
   Scalar cumulatedVariance = 0.0;
   for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
   {
-    for (UnsignedInteger j = 0; j < augmentedDimension; ++j) eigenVectors(i, j) = eigenPairs[j][i];
-    eigenValues[i] = -eigenPairs[i][augmentedDimension];
+    eigenValues[i] = -eigenPairs[i].first;
     cumulatedVariance += eigenValues[i];
   }
-  LOGDEBUG(OSS(false) << "eigenVectors=\n" << eigenVectors << ", eigenValues=" << eigenValues);
+  LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
   LOGINFO("Extract the relevant eigenpairs");
-  // Start at 0 if the given threshold is large (ie greater than 0)
+  // Start at 0 if the given threshold is large (eg greater than 1)
   UnsignedInteger K = 0;
   // Find the cut-off in the eigenvalues
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
@@ -147,11 +143,14 @@ void KarhunenLoeveP1Algorithm::run()
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
   const UnsignedInteger meshDimension = mesh_.getDimension();
   SampleImplementation values(numVertices, dimension);
-  UnsignedInteger index = 0;
+  UnsignedInteger indexProjection = 0;
+  MatrixImplementation a(augmentedDimension, 1);
   for (UnsignedInteger k = 0; k < K; ++k)
   {
     selectedEV[k] = eigenValues[k];
-    const MatrixImplementation a(*eigenVectors.getColumn(k).getImplementation());
+    const UnsignedInteger initialColumn = eigenPairs[k].second;
+    for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
+      a(i, 0) = eigenVectorsComplex(i, initialColumn).real();
     const MatrixImplementation Ga(G.getImplementation()->genProd(a));
     const Scalar norm = std::sqrt(a.genProd(Ga, true, false)[0]);
     const Scalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
@@ -164,8 +163,8 @@ void KarhunenLoeveP1Algorithm::run()
       modes.add(P1LagrangeEvaluation(modesAsProcessSample.getField(k)));
     // Build the relevant column of the transposed projection matrix
     const MatrixImplementation b(Ga * (factor / sqrt(selectedEV[k])));
-    std::copy(b.begin(), b.end(), transposedProjection.begin() + index);
-    index += augmentedDimension;
+    std::copy(b.begin(), b.end(), transposedProjection.begin() + indexProjection);
+    indexProjection += augmentedDimension;
   }
   result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, transposedProjection.transpose());
 }
