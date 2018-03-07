@@ -67,6 +67,7 @@ String Sample::streamToRFormat() const
 /* Default constructor */
 Sample::Sample()
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(0, 1))
+  , pyObjSample_(0)
 {
   // Nothing to do
 }
@@ -75,6 +76,7 @@ Sample::Sample()
 Sample::Sample(const UnsignedInteger size,
                const UnsignedInteger dim)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(size, dim))
+  , pyObjSample_(0)
 {
   // Nothing to do
 }
@@ -82,6 +84,7 @@ Sample::Sample(const UnsignedInteger size,
 /* Constructor from implementation */
 Sample::Sample(const SampleImplementation & implementation)
   : TypedInterfaceObject<SampleImplementation>(implementation.clone())
+  , pyObjSample_(0)
 {
   // Nothing to do
 }
@@ -89,6 +92,7 @@ Sample::Sample(const SampleImplementation & implementation)
 /* Constructor from implementation */
 Sample::Sample(const Implementation & implementation)
   : TypedInterfaceObject<SampleImplementation>(implementation)
+  , pyObjSample_(0)
 {
   // Nothing to do
 }
@@ -97,6 +101,7 @@ Sample::Sample(const Implementation & implementation)
 Sample::Sample(const UnsignedInteger size,
                const Point & point)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(size, point))
+  , pyObjSample_(0)
 {
   // Nothing to do
 }
@@ -106,6 +111,7 @@ Sample::Sample(const Sample other,
                const UnsignedInteger first,
                const UnsignedInteger last)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(*other.getImplementation(), other.getImplementation()->begin() + first, other.getImplementation()->begin() + last))
+  , pyObjSample_(0)
 {
   // Nothing to do
 }
@@ -113,6 +119,7 @@ Sample::Sample(const Sample other,
 /* Constructor from a collection of Point */
 Sample::Sample(const Collection<Point> & coll)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(coll))
+  , pyObjSample_(0)
 {
   // Nothing to do
 }
@@ -120,6 +127,7 @@ Sample::Sample(const Collection<Point> & coll)
 /* Constructor from a collection of Indices */
 Sample::Sample(const Collection<Indices> & coll)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(coll))
+  , pyObjSample_(0)
 {
   // Nothing to do
 }

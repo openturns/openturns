@@ -177,7 +177,8 @@ Point PythonEvaluation::operator() (const Point & inP) const
     ++ callsNumber_;
 
     ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
-    ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, point.get(), NULL));
+    ScopedPyObjectPointer execName(convert< String, _PyString_ >("_exec"));
+    ScopedPyObjectPointer result(PyObject_CallMethodObjArgs(pyObj_, execName.get(), point.get(), NULL));
 
     if (result.isNull())
     {
@@ -223,126 +224,59 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
 
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger outDim = getOutputDimension();
-  const bool useCache = p_cache_->isEnabled();
 
-  Sample outS(size, outDim);
-  Sample toDo(0, inDim);
-  if (useCache)
+  Sample outS(0, outDim);
+  if (size > 0)
   {
-    std::set<Point> uniqueValues;
-    for (UnsignedInteger i = 0; i < size; ++ i)
+    callsNumber_ += size;
+
+    ScopedPyObjectPointer result;
+    ScopedPyObjectPointer execSampleName(convert< String, _PyString_ >("_exec_sample"));
+    Bool copy = true;
+    ScopedPyObjectPointer copyObj(PyObject_GetAttrString( pyObj_, "_copy" ));
+    if ( copyObj.get() )
     {
-      CacheKeyType inKey(inS[i].getCollection());
-      if (p_cache_->hasKey(inKey))
+      copy = convert< _PyBool_, Bool >(copyObj.get());
+    }
+    if (inS.pyObjSample_ != NULL && (!copy))
+    {
+      result = PyObject_CallMethodObjArgs(pyObj_, execSampleName.get(), inS.pyObjSample_, NULL);
+    }
+    else
+    {
+      ScopedPyObjectPointer inTuple(PyTuple_New(size));
+
+      for (UnsignedInteger i = 0; i < size; ++ i)
       {
-        outS[i] = Point::ImplementationType(p_cache_->find(inKey));
+        PyObject * eltTuple = PyTuple_New(inDim);
+        for (UnsignedInteger j = 0; j < inDim; ++ j) PyTuple_SetItem(eltTuple, j, convert< Scalar, _PyFloat_ > (inS(i, j)));
+        PyTuple_SetItem(inTuple.get(), i, eltTuple);
       }
-      else
-      {
-        uniqueValues.insert(inS[i]);
-      }
+
+      result = PyObject_CallMethodObjArgs(pyObj_, execSampleName.get(), inTuple.get(), NULL);
     }
-    for(std::set<Point>::const_iterator it = uniqueValues.begin(); it != uniqueValues.end(); ++ it)
-    {
-      // store unique values
-      toDo.add(*it);
-    }
-  }
-  else
-  {
-    // compute all values, including duplicates
-    toDo = inS;
-  }
-
-  UnsignedInteger toDoSize = toDo.getSize();
-  CacheType tempCache(toDoSize);
-  if (useCache) tempCache.enable();
-
-  if (toDoSize > 0)
-  {
-    callsNumber_ += toDoSize;
-
-    ScopedPyObjectPointer inTuple(PyTuple_New(toDoSize));
-
-    for (UnsignedInteger i = 0; i < toDoSize; ++ i)
-    {
-      PyObject * eltTuple = PyTuple_New(inDim);
-      for (UnsignedInteger j = 0; j < inDim; ++ j) PyTuple_SetItem(eltTuple, j, convert< Scalar, _PyFloat_ > (toDo[i][j]));
-      PyTuple_SetItem(inTuple.get(), i, eltTuple);
-    }
-    ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, inTuple.get(), NULL));
 
     if (result.isNull())
     {
       handleException();
     }
 
-    if (PySequence_Check(result.get()))
+    try
     {
-      const UnsignedInteger lengthResult = PySequence_Size(result.get());
-      if (lengthResult == toDoSize)
-      {
-        for (UnsignedInteger i = 0; i < toDoSize; ++ i)
-        {
-          ScopedPyObjectPointer elt(PySequence_GetItem(result.get(), i));
-          if (PySequence_Check(elt.get()))
-          {
-            const UnsignedInteger lengthElt = PySequence_Size(elt.get());
-            if (lengthElt == outDim)
-            {
-              if (useCache)
-              {
-                Point outP(outDim);
-                for (UnsignedInteger j = 0; j < outDim; ++ j)
-                {
-                  ScopedPyObjectPointer val(PySequence_GetItem(elt.get(), j));
-                  outP[j] = convert< _PyFloat_, Scalar >(val.get());
-                }
-                tempCache.add(toDo[i].getCollection(), outP.getCollection());
-              }
-              else
-              {
-                for (UnsignedInteger j = 0; j < outDim; ++j)
-                {
-                  ScopedPyObjectPointer val(PySequence_GetItem(elt.get(), j));
-                  outS[i][j] = convert< _PyFloat_, Scalar >(val.get());
-                }
-              }
-            }
-            else
-            {
-              throw InvalidArgumentException(HERE) << "Python Function returned an sequence object with incorrect dimension (at position "
-                                                   << i << ")";
-            }
-          }
-          else
-          {
-            throw InvalidArgumentException(HERE) << "Python Function returned an object which is NOT a sequence (at position "
-                                                 << i << ")";
-          }
-        }
-      }
-      else
-      {
-        throw InvalidArgumentException(HERE) << "Python Function returned an sequence object with incorrect size (got "
-                                             << lengthResult << ", expected " << toDoSize << ")";
-      }
+      outS = convert< _PySequence_, Sample >(result.get());
     }
+    catch (InvalidArgumentException &)
+    {
+      throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec_sample() method is not a 2d-sequence object";
+    }
+    if (outS.getSize() != size)
+      throw InvalidArgumentException(HERE) << "Python Function returned a sequence object with incorrect size (got "
+                                           << outS.getSize() << ", expected " << size << ")";
+    if (outS.getDimension() != outDim)
+      throw InvalidArgumentException(HERE) << "Python Function returned a sequence object with incorrect dimension (got "
+                                           << outS.getDimension() << ", expected " << outDim << ")";
   }
 
-  if (useCache)
-  {
-    // fill all the output values
-    for(UnsignedInteger i = 0; i < size; ++ i)
-    {
-      CacheKeyType inKey(inS[i].getCollection());
-      if (tempCache.hasKey(inKey))
-      {
-        outS[i] = Point::ImplementationType(tempCache.find(inKey));
-      }
-    }
-    p_cache_->merge(tempCache);
-  }
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inS);

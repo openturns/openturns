@@ -354,6 +354,9 @@ public:
   /** Sets the pointer to the underlying implementation object */
   virtual void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj);
 
+  // This member is only intended to be used by SWIG, DO NOT use!
+  // INTENTIONALY NOT DOCUMENTED
+  void * pyObjSample_;
 }; /* class Sample */
 
 #ifndef SWIG
