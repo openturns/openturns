@@ -34,12 +34,12 @@ The Mercer theorem shows that the covariance function  :math:`C` writes:
     \mat{C}(\vect{s},\vect{t}) = \sum_{k=1}^{+\infty} \lambda_k \vect{\varphi}_k(\vect{s}) \Tr{\vect{\varphi}}_k(\vect{t}) \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
 
-The threshold :math:`s` is used in order to select the most significant eigenvalues, ie all the eigenvalues such that: 
+The threshold :math:`s` is used in order to select the most significant eigenvalues, ie all the eigenvalues such that (the infinite sum on the right being replaced by the sum of all computed eigenvalues in numerical algoritms): 
 
 .. math::
     :label: thresholdK
 
-    K = \max \{k \in \Nset \, | \, \lambda_k < s \sum_{i=1}^{k-1} \}
+    K = \max \left\{k \in \Nset \, | \, \lambda_k \leq s \sum_{i\geq 1}\lambda_i \right\}
 
 
 To solve :eq:`fredholm`, we use the functional basis :math:`(\theta_p)_{1 \leq p \leq P}` of :math:`L^2(\cD, \Rset)` with :math:`P` elements defined on :math:`\cD`. We search the solutions of type:
