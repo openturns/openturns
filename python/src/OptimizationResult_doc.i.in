@@ -4,7 +4,7 @@
 Returned by optimization solvers, see :class:`~openturns.OptimizationAlgorithm`.
 
 Available constructors:
-    OptimizationResult(*optimalPoint, optimalValue, iterationNumber, absoluteError, relativeError, residualError, constraintError*)
+    OptimizationResult(*optimalPoint, optimalValue, evaluationNumber, absoluteError, relativeError, residualError, constraintError*)
 
 Parameters
 ----------
@@ -12,8 +12,8 @@ optimalPoint : sequence of float
     Optimal point.
 optimalValue : sequence of float
     Value at optimal point.
-iterationNumber : int
-    Number of iterations.
+evaluationNumber : int
+    Number of evaluations.
 absoluteError : float
     Parameters for this solver.
 relativeError : float
@@ -67,13 +67,33 @@ constraintErrorHistory : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setEvaluationNumber
+"Accessor to the number of evaluation.
+
+Parameters
+----------
+evaluationNumber : int
+    Number of evaluations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getEvaluationNumber
+"Accessor to the number of evaluations.
+
+Returns
+-------
+evaluationNumber : int
+    Number of evaluations."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::setIterationNumber
 "Accessor to the number of iterations.
 
 Parameters
 ----------
 iterationNumber : int
-    Number of evaluations."
+    Number of iterations."
 
 // ---------------------------------------------------------------------
 
@@ -83,7 +103,7 @@ iterationNumber : int
 Returns
 -------
 iterationNumber : int
-    Number of evaluations."
+    Number of iterations."
 
 // ---------------------------------------------------------------------
 

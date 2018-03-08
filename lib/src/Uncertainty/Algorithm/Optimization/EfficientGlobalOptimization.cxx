@@ -400,7 +400,7 @@ void EfficientGlobalOptimization::run()
   }
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setIterationNumber(evaluationNumber);
+  result.setEvaluationNumber(evaluationNumber);
   setResult(result);
 }
 
