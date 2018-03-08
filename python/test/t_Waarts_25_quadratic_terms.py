@@ -63,7 +63,7 @@ try:
     #
     # FORM/SORM Cobyla
     myCobyla = Cobyla()
-    myCobyla.setMaximumIterationNumber(100 * dim)
+    myCobyla.setMaximumEvaluationNumber(100 * dim)
     myCobyla.setMaximumAbsoluteError(1.0e-10)
     myCobyla.setMaximumRelativeError(1.0e-10)
     myCobyla.setMaximumResidualError(1.0e-10)

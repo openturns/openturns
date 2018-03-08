@@ -74,6 +74,10 @@ public:
   UnsignedInteger getMaximumIterationNumber() const;
   void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
 
+  /** Maximum evaluations number accessor */
+  void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
+  UnsignedInteger getMaximumEvaluationNumber() const;
+
   /** Maximum absolute error accessor */
   Scalar getMaximumAbsoluteError() const;
   void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);

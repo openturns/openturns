@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     //   #########################################################################################################;
     //   # FORM/SORM Cobyla;
     Cobyla myCobyla;
-    myCobyla.setMaximumIterationNumber(100 * dim);
+    myCobyla.setMaximumEvaluationNumber(100 * dim);
     myCobyla.setMaximumAbsoluteError(1.0e-10);
     myCobyla.setMaximumRelativeError(1.0e-10);
     myCobyla.setMaximumResidualError(1.0e-10);

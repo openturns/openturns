@@ -165,7 +165,7 @@ void EfficientGlobalOptimization::run()
     if (noiseModel_.getOutputDimension() != 1)
       noiseModel_ = model.getMarginal(1);
   }
-  UnsignedInteger iterationNumber = 0;
+  UnsignedInteger evaluationNumber = 0;
   Bool exitLoop = false;
 
   // select the best feasible point
@@ -228,15 +228,15 @@ void EfficientGlobalOptimization::run()
   OptimizationResult result(dimension, 1);
   result.setProblem(getProblem());
 
-  while ((!exitLoop) && (iterationNumber < getMaximumIterationNumber()))
+  while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
   {
     // use the provided kriging result at first iteration
     KrigingResult metaModelResult(krigingResult_);
-    if (iterationNumber > 0)
+    if (evaluationNumber > 0)
     {
       KrigingAlgorithm algo(inputSample, outputSample, krigingResult_.getCovarianceModel(), krigingResult_.getBasisCollection());
       LOGINFO(OSS() << "Rebuilding kriging ...");
-      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((iterationNumber % parameterEstimationPeriod_) == 0));
+      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
       if (hasNoise)
         algo.setNoise(noise);
       algo.run();
@@ -312,9 +312,10 @@ void EfficientGlobalOptimization::run()
 
     const Point newPoint(improvementResult.getOptimalPoint());
     const Point newOutput(model(newPoint));
+    ++ evaluationNumber;
     const Point newValue(Point(1, newOutput[0]));// noise can be provided on the 2nd marginal
 
-    LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << "iteration=" << iterationNumber + 1);
+    LOGINFO(OSS() << "New point x=" << newPoint << " f(x)=" << newValue << " evaluations=" << evaluationNumber);
 
     // is the new point better ?
     if ((problem.isMinimization() && (newValue[0] < optimalValue))
@@ -382,12 +383,10 @@ void EfficientGlobalOptimization::run()
       noise.add(newOutput[1]);
     }
 
-    ++ iterationNumber;
-
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * iterationNumber) / getMaximumIterationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {
@@ -401,7 +400,7 @@ void EfficientGlobalOptimization::run()
   }
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setIterationNumber(iterationNumber);
+  result.setIterationNumber(evaluationNumber);
   setResult(result);
 }
 

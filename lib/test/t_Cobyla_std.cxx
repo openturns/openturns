@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     Point startingPoint(4, 0.0);
     Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
-    myAlgorithm.setMaximumIterationNumber(400);
+    myAlgorithm.setMaximumEvaluationNumber(400);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);
     myAlgorithm.setMaximumRelativeError(1.0e-10);
     myAlgorithm.setMaximumResidualError(1.0e-10);

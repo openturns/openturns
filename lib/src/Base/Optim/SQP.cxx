@@ -148,18 +148,14 @@ void SQP::run()
   currentSecondMember_ = Point(dimension + 1);
   currentDirection_ = Point(dimension);
 
-
   /* Get a local copy of the level function */
   const Function levelFunction(getProblem().getLevelFunction());
   /* Get a local copy of the level value */
   const Scalar levelValue = getProblem().getLevelValue();
 
-  //Initialize the hessian
-  currentHessian_ = levelFunction.hessian(currentPoint_).getSheet(0);
-
-
   Bool exitLoop = false;
   UnsignedInteger iterationNumber = 0;
+  const UnsignedInteger initialEvaluationNumber = levelFunction.getEvaluationCallsNumber();
   Scalar absoluteError = -1.0;
   Scalar constraintError = -1.0;
   Scalar relativeError = -1.0;
@@ -168,15 +164,20 @@ void SQP::run()
   /* Compute the level function at the current point -> G */
   currentLevelValue_ = levelFunction(currentPoint_)[0];
 
+  // Compute the hessian
+  currentHessian_ = levelFunction.hessian(currentPoint_).getSheet(0);
+
+  UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
+
   // reset result
   result_ = OptimizationResult(dimension, 1);
   result_.setProblem(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-  while ( (!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) )
+  while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumEvaluationNumber()))
   {
     /* Go to next iteration */
-    ++iterationNumber;
+    ++ iterationNumber;
 
     /* Compute the level function gradient at the current point -> Grad(G) */
     currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
@@ -222,6 +223,9 @@ void SQP::run()
     /* Perform a line search in the given direction */
     const Scalar alpha = computeLineSearch();
 
+    // update number of evaluations
+    evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
+
     /* Check if convergence has been achieved */
     absoluteError = std::abs(alpha) * currentDirection_.norm();
     constraintError = std::abs(currentLevelValue_ - levelValue);
@@ -231,7 +235,6 @@ void SQP::run()
     {
       relativeError = absoluteError / pointNorm;
     }
-
     else
     {
       relativeError = -1.0;
@@ -268,7 +271,7 @@ void SQP::run()
 
   if (!exitLoop)
   {
-    LOGWARN(OSS() << "Warning! The SQP algorithm failed to converge after " << getMaximumIterationNumber() << " iterations");
+    LOGWARN(OSS() << "Warning! The AbdoRackwitz algorithm failed to converge after " << iterationNumber << " iterations, " << evaluationNumber << " evaluations." );
   }
 
 } // run()

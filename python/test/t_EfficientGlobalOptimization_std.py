@@ -46,7 +46,7 @@ kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setNoiseModel(ot.SymbolicFunction(
     ['x1', 'x2'], ['0.96']))  # assume constant noise var
-algo.setMaximumIterationNumber(20)
+algo.setMaximumEvaluationNumber(20)
 algo.setImprovementFactor(
     0.05)  # stop whe improvement is < a% the current optimum
 algo.setAEITradeoff(0.66744898)
@@ -123,7 +123,7 @@ kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 # solver = ot.NLopt('GN_ESCH')
 # solver = ot.NLopt('GN_MLSL')
-algo.setMaximumIterationNumber(15)
+algo.setMaximumEvaluationNumber(15)
 algo.setMaximumAbsoluteError(1e-10)
 algo.setMaximumRelativeError(1e-10)
 algo.setMaximumResidualError(1e-10)

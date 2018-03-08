@@ -42,7 +42,7 @@ try:
     # The second parameter is an event
     # The third parameter is a starting point for the design point research
     myCobyla = Cobyla()
-    myCobyla.setMaximumIterationNumber(400)
+    myCobyla.setMaximumEvaluationNumber(400)
     myAlgo = FORM(myCobyla, myEvent, mean)
 
     # Perform the simulation

@@ -235,7 +235,7 @@ try:
     output = ot.RandomVector(f, vect)
     event = ot.Event(output, ot.Less(), -3.0)
     solver = ot.Cobyla()
-    solver.setMaximumIterationNumber(400)
+    solver.setMaximumEvaluationNumber(400)
     solver.setMaximumAbsoluteError(1.0e-10)
     solver.setMaximumRelativeError(1.0e-10)
     solver.setMaximumResidualError(1.0e-10)

@@ -202,7 +202,7 @@ void TNC::run()
    *
    */
 
-  int returnCode(tnc(int(dimension), &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumIterationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval));
+  int returnCode = tnc((int)dimension, &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = 0;
 
   result_ = OptimizationResult(dimension, 1);
@@ -447,7 +447,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     int *p_nfeval = static_cast<int*>(algorithm->p_nfeval_);
     if (p_nfeval)
     {
-      if (stop) *p_nfeval = algorithm->getMaximumIterationNumber();
+      if (stop) *p_nfeval = algorithm->getMaximumEvaluationNumber();
     }
     else
       throw InternalException(HERE) << "Null p_nfeval";

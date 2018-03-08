@@ -756,7 +756,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   const OptimizationAlgorithm::Result result(solver_.getResult());
   const Scalar optimalLogLikelihood = result.getOptimalValue()[0];
   const Point optimalParameters = result.getOptimalPoint();
-  const UnsignedInteger iterationNumber = result.getIterationNumber();
+  const UnsignedInteger evaluationNumber = result.getEvaluationNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
   if (lastReducedLogLikelihood_ != optimalLogLikelihood)
@@ -766,7 +766,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   }
   // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
   // No additional cost since the cache mechanism is activated
-  LOGINFO(OSS() << iterationNumber << " iterations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
+  LOGINFO(OSS() << evaluationNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
   return optimalLogLikelihood;
 }
 

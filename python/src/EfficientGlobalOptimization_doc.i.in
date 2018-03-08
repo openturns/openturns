@@ -101,7 +101,7 @@ Examples
 >>> kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> kriging.run()
 >>> algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
->>> algo.setMaximumIterationNumber(2)
+>>> algo.setMaximumEvaluationNumber(2)
 >>> algo.run()
 >>> result = algo.getResult()"
 
