@@ -5,8 +5,8 @@
 \usepackage{amssymb}
 
 % For matrixes and vectors
-\newcommand{\vect}[1]{{\underline{#1}}}
-\newcommand{\mat}[1]{{\underline{\underline{#1}}}}
+\newcommand{\vect}[1]{{\mathbf{\boldsymbol{{#1}}}}}
+\newcommand{\mat}[1]{{\vect{\vect{#1}}}}
 \newcommand{\Tr}[1]{{#1}^\top}
 
 % Bold letters 
@@ -100,17 +100,17 @@
 \newcommand{\Diff}{{\mathrm{d}}}
 
 % short commands
-\newcommand{\un}[1]{\underline{#1}}
+\newcommand{\un}[1]{\vect{#1}}
 \newcommand{\dpl}[1]{\displaystyle{#1}}
-\newcommand{\uw}{\underline{w}}
-\newcommand{\uW}{\underline{W}}
-\newcommand{\ux}{\underline{x}}
-\newcommand{\uX}{\underline{X}}
-\newcommand{\uy}{\underline{y}}
-\newcommand{\uY}{\underline{Y}}
-\newcommand{\uz}{\underline{z}}
-\newcommand{\uZ}{\underline{Z}}
-\newcommand{\muX}{\underline{\mu}_{\:X}}
+\newcommand{\uw}{\vect{w}}
+\newcommand{\uW}{\vect{W}}
+\newcommand{\ux}{\vect{x}}
+\newcommand{\uX}{\vect{X}}
+\newcommand{\uy}{\vect{y}}
+\newcommand{\uY}{\vect{Y}}
+\newcommand{\uz}{\vect{z}}
+\newcommand{\uZ}{\vect{Z}}
+\newcommand{\muX}{\vect{\mu}_{\:X}}
 \newcommand{\Var}[1]{{\rm Var}\left[ #1 \right]}
 \newcommand{\Cov}[1]{{\rm Cov}\left[ #1 \right]}
 \newcommand{\Expect}[1]{{\mathbb E}\left[ #1 \right]}
@@ -126,7 +126,7 @@
 \newcommand{\di}[1] {{\,\mathrm{d}#1}}
 \newcommand{\norm}[1] {\left\|#1\right\|}
 \newcommand{\tendto}[2]{\xrightarrow[#1\rightarrow#2]{}}
-\newcommand{\matr}[1]{\underline{\underline{#1}}}
+\newcommand{\matr}[1]{\vect{\vect{#1}}}
 \newcommand{\idx}{\vect{\alpha}}
 \newcommand{\NM}{\Nset^{n_X}}
 
