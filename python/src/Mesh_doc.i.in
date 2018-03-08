@@ -764,3 +764,21 @@ Returns
 weights : :class:`~openturns.Point`
     Weights such that an integral of a function over the mesh
     is a weighted sum of its values at the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::fixOrientation()
+"Make all the simplices positively oriented.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
+>>> simplex = [[0, 2, 1]]
+>>> mesh2d = ot.Mesh(vertices, simplex)
+>>> print(mesh2d)
+class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[0,0],[1,0],[1,1]] simplices=[[0,2,1]]
+>>> mesh2d.fixOrientation()
+>>> print(mesh2d)
+class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[0,0],[1,0],[1,1]] simplices=[[2,0,1]]"
+
