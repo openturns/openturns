@@ -98,6 +98,7 @@ public:
   /** Accessor for color palette */
   Description getPalette() const;
   void setPalette(const Description & palette);
+  Sample getPaletteAsNormalizedRGBA() const;
 
   /** Accessor for origin */
   Scalar getOrigin() const;

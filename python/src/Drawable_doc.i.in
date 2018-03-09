@@ -10,6 +10,8 @@ OT_Drawable_setLegend_doc
 OT_Drawable_getPalette_doc
 %feature("docstring") OT::Drawable::setPalette
 OT_Drawable_setPalette_doc
+%feature("docstring") OT::Drawable::getPaletteAsNormalizedRGBA
+OT_Drawable_getPaletteAsNormalizedRGBA_doc
 %feature("docstring") OT::Drawable::BuildDefaultPalette
 OT_Drawable_BuildDefaultPalette_doc
 %feature("docstring") OT::Drawable::getColor

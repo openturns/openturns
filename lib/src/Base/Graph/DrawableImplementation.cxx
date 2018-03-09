@@ -816,37 +816,20 @@ String DrawableImplementation::ConvertFromName(const String & name)
 /* Convert an hexadecimal code into an RGB triplet */
 Indices DrawableImplementation::ConvertToRGB(const String & key)
 {
-  Indices rgb(3, 0);
-  UnsignedInteger code = 0;
-  if (ScanColorCode(key, code))
-  {
-    code = code >> 8;
-    rgb[2] = code % 256;
-    code = code >> 8;
-    rgb[1] = code % 256;
-    code = code >> 8;
-    rgb[0] = code;
-  }
-  else LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
-  return rgb;
+  Indices rgba;
+  if (!ScanColorCode(key, rgba))
+    LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
+  // Drop the a component
+  rgba.resize(3);
+  return rgba;
 }
 
 /* Convert an hexadecimal code into an RGBA quadruplet */
 Indices DrawableImplementation::ConvertToRGBA(const String & key)
 {
-  Indices rgba(4, 0);
-  UnsignedInteger code = 0;
-  if (ScanColorCode(key, code))
-  {
-    rgba[3] = code % 256;
-    code = code >> 8;
-    rgba[2] = code % 256;
-    code = code >> 8;
-    rgba[1] = code % 256;
-    code = code >> 8;
-    rgba[0] = code;
-  }
-  else LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
+  Indices rgba;
+  if (!ScanColorCode(key, rgba))
+    LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
   return rgba;
 }
 
@@ -898,7 +881,8 @@ Point DrawableImplementation::ConvertFromHSVIntoRGB(const Scalar hue,
     const Scalar saturation,
     const Scalar value)
 {
-  const UnsignedInteger i = static_cast<UnsignedInteger>(hue / 60.0) % 6;
+  const UnsignedInteger h = static_cast<UnsignedInteger>(hue);
+  const UnsignedInteger i = static_cast<UnsignedInteger>((h % 360 + hue - h) / 60.0) % 6;
   const Scalar f = hue / 60.0 - i;
   const Scalar l = value * (1.0 - saturation);
   const Scalar m = value * (1.0 - f * saturation);
@@ -1074,40 +1058,41 @@ Bool DrawableImplementation::IsValidColorName(const String & key)
 }
 
 Bool DrawableImplementation::ScanColorCode(const String & key,
-    UnsignedInteger & code)
+    Indices & rgba)
 {
-  code = 255;
+  rgba = Indices(4, 0);
   // First, check if the color is given in RGB format
   const UnsignedInteger keySize = key.size();
   if (keySize == 0) return false;
-  // Check if it is a #RRGGBB[AA] code
+  // Check if it is a #RRGGBB[AA] rgba
   if (key[0] != '#') return false;
   // First, check the key length:
   // 7 for #RRGGBB
   // 9 for #RRGGBBAA
   if ((keySize != 7) && (keySize != 9)) return false;
   // Second, check that the values are ok
-  UnsignedInteger shift = 1 << 28;
-  for (UnsignedInteger i = 1; i < keySize; ++i)
+  for (UnsignedInteger i = 0; i < keySize - 1; ++i)
   {
-    const char c(key[i]);
+    const UnsignedInteger shift(i % 2 == 0 ? 16 : 1);
+    const char c(key[i + 1]);
     // If the current character is not a valid hexadecimal figure
     const Bool isNum = (c >= '0') && (c <= '9');
     const Bool isValidLower = (c >= 'a') && (c <= 'f');
     const Bool isValidUpper = (c >= 'A') && (c <= 'F');
     if ((!isNum) && !(isValidLower) && !(isValidUpper)) return false;
-    if (isNum) code += (c - '0') * shift;
-    if (isValidLower) code += (c - 'a' + 10) * shift;
-    if (isValidUpper) code += (c - 'A' + 10) * shift;
-    shift = shift >> 4;
+    if (isNum)        rgba[i / 2] += (c - '0'     ) * shift;
+    if (isValidLower) rgba[i / 2] += (c - 'a' + 10) * shift;
+    if (isValidUpper) rgba[i / 2] += (c - 'A' + 10) * shift;
   }
+  // If no A value, set it to 255
+  if (keySize == 7) rgba[3] = 255;
   return true;
 }
 
 Bool DrawableImplementation::IsValidColorCode(const String & key)
 {
-  UnsignedInteger code = 0;
-  return ScanColorCode(key, code);
+  Indices rgba;
+  return ScanColorCode(key, rgba);
 }
 
 Bool DrawableImplementation::IsValidColor(const String & key)
@@ -1337,6 +1322,23 @@ Description DrawableImplementation::getPalette() const
 void DrawableImplementation::setPalette(const Description & palette)
 {
   throw NotDefinedException(HERE) << "Error: no palette in " << getClassName();
+}
+
+Sample DrawableImplementation::getPaletteAsNormalizedRGBA() const
+{
+  const Description palette(getPalette());
+  const UnsignedInteger size = palette.getSize();
+  Sample normalizedRGBA(size, 4);
+  Indices rgba(4);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      (void) ScanColorCode(palette[i], rgba);
+      normalizedRGBA(i, 0) = rgba[0] / 255.0;
+      normalizedRGBA(i, 1) = rgba[1] / 255.0;
+      normalizedRGBA(i, 2) = rgba[2] / 255.0;
+      normalizedRGBA(i, 3) = rgba[3] / 255.0;
+    }
+  return normalizedRGBA;
 }
 
 /* Accessor for origin */

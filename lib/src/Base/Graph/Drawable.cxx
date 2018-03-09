@@ -205,6 +205,11 @@ void Drawable::setPalette(const Description & palette)
   getImplementation()->setPalette(palette);
 }
 
+Sample Drawable::getPaletteAsNormalizedRGBA() const
+{
+  return getImplementation()->getPaletteAsNormalizedRGBA();
+}
+
 /* Accessor for origin */
 Scalar Drawable::getOrigin() const
 {

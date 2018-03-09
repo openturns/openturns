@@ -68,12 +68,12 @@ OT_Drawable_setLegend_doc
 // ---------------------------------------------------------------------
 
 %define OT_Drawable_getPalette_doc
-"Accessor to the names of the colors used for the Pie.
+"Accessor to the names of the colors used for the Drawable.
 
 Returns
 -------
 palette : :class:`~openturns.Description`
-    Names of the colors used for the :class:`~openturns.Pie`. It can be
+    Names of the colors used for the :class:`~openturns.Drawable`. It can be
     either the name of a color (e.g. 'red') or an hexadecimal code
     corresponding to the RGB (Red, Green, Blue) components of the color
     (e.g. '#A1B2C3') or the RGBA (Red, Green, Blue, Alpha) components of the
@@ -81,6 +81,19 @@ palette : :class:`~openturns.Description`
 %enddef
 %feature("docstring") OT::DrawableImplementation::getPalette
 OT_Drawable_getPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_getPaletteAsNormalizedRGBA_doc
+"Accessor to the Red, Green, Blue, Alpha components of the palette on a unit scale.
+
+Returns
+-------
+normalizedRGBAPalette : :class:`~openturns.Sample`
+    Sample of the four components of each color of the palette on a unit :math:`[0,1]` scale."
+%enddef
+%feature("docstring") OT::DrawableImplementation::getPaletteAsNormalizedRGBA
+OT_Drawable_getPaletteAsNormalizedRGBA_doc
 
 // ---------------------------------------------------------------------
 

@@ -253,6 +253,17 @@ try:
     view = View(graph)
     view.ShowAll(block=True)
 
+    # Square axes
+    graph = ot.ClaytonCopula(5.0).drawPDF()
+    view = View(graph, square_axes=True)
+    view.ShowAll(block=True)
+
+    # Show axes as prescribed by getAxes()
+    graph = ot.Normal().drawPDF()
+    graph.setAxes(False)
+    view = View(graph)
+    view.ShowAll(block=True)
+
 except:
     traceback.print_exc()
     os._exit(1)

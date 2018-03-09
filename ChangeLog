@@ -53,6 +53,7 @@
  * Removed BipartiteGraph::add method
  * Deprecated usage of _e and _pi constants when defining analytical functions, e_ and pi_ must be used instead.
  * Removed Function::enableHistory,disableHistory,isHistoryEnabled,clearHistory,getHistoryInput,getHistoryOutput,getInputPointHistory,getInputParameterHistory
+ * Added Drawable::getPaletteAsNormalizedRGBA() to get the palette into a native matplotlib format.
 
 === Python module ===
 

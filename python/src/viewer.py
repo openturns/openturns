@@ -91,6 +91,8 @@ class View(object):
 
     add_legend : bool, optional
         Adds a legend if True. Default is True.
+    square_axes : bool, optional
+        Forces the axes to share the same scale if True. Default is False.
     """
 
     @staticmethod
@@ -128,6 +130,7 @@ class View(object):
                  text_kwargs=None,
                  legend_kwargs=None,
                  add_legend=True,
+                 square_axes=False,
                  **kwargs):
 
         # prevent Qt from stopping the interpreter, see matplotlib PR #1905
@@ -219,6 +222,8 @@ class View(object):
             self._ax = [self._fig.add_subplot(111, **axes_kwargs)]
         else:
             self._ax = axes
+        # activate axes only if wanted
+        self._ax[0].axison = graph.getAxes()
 
         has_labels = False
         self._ax[0].grid(b=graph.getGrid())
@@ -344,22 +349,7 @@ class View(object):
 
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
-                colors = drawable.getPalette()
-                def convRGB(c):
-                    return (int(c[1:3], 16) / 255.0, int(c[3:5], 16) / 255.0, int(c[5:7], 16) / 255.0, 1.0)
-                def convRGBA(c):
-                    return (int(c[1:3], 16) / 255.0, int(c[3:5], 16) / 255.0, int(c[5:7], 16) / 255.0, int(c[7:9], 16) / 255.0)
-                if colors[0][0] == '#' and len(colors[0]) == 7:
-                    colorsRGBA = [convRGB(color) for color in colors]
-                elif colors[0][0] == '#' and len(colors[0]) == 9:
-                    colorsRGBA = [convRGBA(color) for color in colors]
-                else:
-                    colorsRGBA = []
-                    for i in range(polygonsNumber):
-                        hex_code = ot.Drawable.ConvertFromName(colors[i])
-                        rgba = ot.Drawable.ConvertToRGBA(hex_code)
-                        colorsRGBA.append(
-                            (rgba[0] / 255.0, rgba[1] / 255.0, rgba[2] / 255.0, rgba[3] / 255.0))
+                colorsRGBA = drawable.getPaletteAsNormalizedRGBA()
                 if 'facecolors' not in polygoncollection_kwargs_default:
                     polygoncollection_kwargs['facecolors'] = colorsRGBA
 
@@ -524,6 +514,13 @@ class View(object):
             legend_kwargs.setdefault('prop', {'size': 10})
 
             self._ax[0].legend(**legend_kwargs)
+        # Make squares look like squares
+        if square_axes:
+            try:
+                self._ax[0].axis('square')
+            except ValueError:
+                warnings.warn('axis square keyword not supported')
+                plt.gca().set_aspect('equal', adjustable='box')
 
     def show(self, **kwargs):
         """
