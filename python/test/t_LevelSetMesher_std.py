@@ -28,10 +28,6 @@ try:
     function1D = ot.SymbolicFunction("x", "cos(x)/(1+0.1*x^2)")
     levelSet1D = ot.LevelSet(function1D, level)
 
-    # Automatic bounding box
-    mesh1D = mesher1D.build(levelSet1D)
-    print("mesh1D=", mesh1D)
-
     # Manual bounding box
     mesh1D = mesher1D.build(levelSet1D, ot.Interval(-10.0, 10.0))
     print("mesh1D=", mesh1D)
@@ -44,10 +40,6 @@ try:
         ["x0", "x1"], ["cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"])
     levelSet2D = ot.LevelSet(function2D, level)
 
-    # Automatic bounding box
-    mesh2D = ot.Mesh(mesher2D.build(levelSet2D))
-    print("mesh2D=", mesh2D)
-
     # Manual bounding box
     mesh2D = mesher2D.build(levelSet2D, ot.Interval([-10.0] * 2, [10.0] * 2))
     print("mesh2D=", mesh2D)
@@ -59,11 +51,6 @@ try:
     function3D = ot.SymbolicFunction(
         ["x0", "x1", "x2"], ["cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"])
     levelSet3D = ot.LevelSet(function3D, level)
-
-    # Automatic bounding box
-    mesh3D = ot.Mesh(mesher3D.build(levelSet3D))
-
-    print("mesh3D=", mesh3D)
 
     # Manual bounding box
     mesh3D = mesher3D.build(levelSet3D, ot.Interval([-10.0] * 3, [10.0] * 3))
