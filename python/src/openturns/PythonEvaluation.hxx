@@ -92,8 +92,19 @@ private:
   /** Default constructor */
   PythonEvaluation();
 
+  /** Set pyBufferClass_ and pyObj_*_ members */
+  void initializePythonState();
+
   /** The underlying Python callable object */
   PyObject * pyObj_;
+
+  /** Tell whether Python callable object define these members */
+  Bool pyObj_has_exec_;
+  Bool pyObj_has_exec_sample_;
+  Bool pyObj_discard_openturns_memoryview_;
+
+  /** Python openturns.memoryview.Buffer class */
+  PyObject * pyBufferClass_;
 
 }; /* class PythonEvaluation */
 
