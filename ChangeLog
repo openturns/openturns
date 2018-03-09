@@ -62,6 +62,7 @@
  * Changed all {get,set}{Evaluation,Gradient,Hessian} methods to work on Evaluation/Gradient/Hessian instead of Pointer
  * Removed Field::[gs]etValueAtNearestPosition
  * Deprecated SobolIndicesAlgorithm::setBootstrapConfidenceLevel, getBootstrapConfidenceLevel
+ * TNC, Cobyla, EGO are parametrized by setMaximumEvaluationNumber instead of setMaximumIterationNumber
 
 === Python module ===
 
@@ -73,10 +74,11 @@
  * #870 (Problem with TensorizedCovarianceModel with spatial dim > 1)
  * #926 (Covariance model active parameter set behavior)
  * #928 (Covariance model/ Field/Process properties naming)
+ * #932 (Optim algo iteration/evaluation number)
  * #933 (Compilation failed when Muparser is missing)
+ * #937 (Small bugs in FunctionalChaosResult::get{Residuals, RelativeErrors})
  * #938 (DistributionFactory::buildEstimator to handle Exception)
  * #939 (The help of the getMaximumDegreeStrataIndex method is wrong.)
- * #937 (Small bugs in FunctionalChaosResult::get{Residuals, RelativeErrors})
  * #941 (Duplicate with SobolIndicesExperiment)
 
 == 1.10 release (2017-11-13) == #release-1.10
