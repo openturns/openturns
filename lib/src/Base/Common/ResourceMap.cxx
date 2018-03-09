@@ -367,6 +367,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "SQP-DefaultTau", 0.5 );
   setAsScalar( "SQP-DefaultOmega", 1.0e-4 );
   setAsScalar( "SQP-DefaultSmooth", 1.2 );
+  setAsUnsignedInteger ("SQP-DefaultMaximumEvaluationNumber", 100000);
 
   // TNC parameters //
   setAsUnsignedInteger( "TNC-DefaultMaxCGit", 50 );
@@ -380,11 +381,12 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "AbdoRackwitz-DefaultTau", 0.5 );
   setAsScalar( "AbdoRackwitz-DefaultOmega", 1.0e-4 );
   setAsScalar( "AbdoRackwitz-DefaultSmooth", 1.2 );
+  setAsUnsignedInteger ("AbdoRackwitz-DefaultMaximumEvaluationNumber", 100000);
 
   // OptimizationAlgorithm parameters //
   setAsScalar( "OptimizationAlgorithm-DefaultLevelValue", 0.0 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIteration", 100 );
-  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000);
+  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100);
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5 );
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );

@@ -88,6 +88,7 @@ void SQP::checkProblem(const OptimizationProblem & problem) const
 
 void SQP::initialize()
 {
+  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("SQP-DefaultMaximumEvaluationNumber"));
   currentSigma_ = 0.0;
   currentLevelValue_ = 0.0;
   currentLambda_ = 0.0;

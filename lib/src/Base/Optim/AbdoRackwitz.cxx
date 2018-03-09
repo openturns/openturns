@@ -72,6 +72,7 @@ AbdoRackwitz * AbdoRackwitz::clone() const
 
 void AbdoRackwitz::initialize()
 {
+  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   currentSigma_ = 0.0;
   currentLevelValue_ = 0.0;
   currentLambda_ = 0.0;

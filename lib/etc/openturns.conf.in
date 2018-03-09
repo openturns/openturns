@@ -104,6 +104,7 @@
   <SQP-DefaultTau    value="0.5"    />
   <SQP-DefaultOmega  value="1.0e-4" />
   <SQP-DefaultSmooth value="1.2"    />
+  <SQP-DefaultMaximumEvaluationNumber value="100000" />
 
   <!-- OT::TNC parameters -->
   <TNC-DefaultMaxCGit  value="50"     />
@@ -117,11 +118,12 @@
   <AbdoRackwitz-DefaultTau    value="0.5"    />
   <AbdoRackwitz-DefaultOmega  value="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth value="1.2"    />
+  <AbdoRackwitz-DefaultMaximumEvaluationNumber value="100000" />
 
   <!-- OT::OptimizationAlgorithm parameters -->
   <OptimizationAlgorithm-DefaultLevelValue              value="0.0"    />
   <OptimizationAlgorithm-DefaultMaximumIteration        value="100"    />
-  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value="100000" />
+  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value="100" />
   <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value="1.0e-5" />
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value="1.0e-5" />
   <OptimizationAlgorithm-DefaultMaximumResidualError    value="1.0e-5" />
