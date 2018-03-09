@@ -385,7 +385,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // OptimizationAlgorithm parameters //
   setAsScalar( "OptimizationAlgorithm-DefaultLevelValue", 0.0 );
-  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIteration", 100 );
+  setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIterationNumber", 100 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100);
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5 );
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5 );

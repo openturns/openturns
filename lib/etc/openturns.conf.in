@@ -122,7 +122,7 @@
 
   <!-- OT::OptimizationAlgorithm parameters -->
   <OptimizationAlgorithm-DefaultLevelValue              value="0.0"    />
-  <OptimizationAlgorithm-DefaultMaximumIteration        value="100"    />
+  <OptimizationAlgorithm-DefaultMaximumIterationNumber  value="100"    />
   <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value="100" />
   <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value="1.0e-5" />
   <OptimizationAlgorithm-DefaultMaximumRelativeError    value="1.0e-5" />

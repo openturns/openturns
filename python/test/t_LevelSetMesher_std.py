@@ -7,7 +7,7 @@ ot.TESTPREAMBLE()
 
 try:
     ot.ResourceMap.SetAsUnsignedInteger(
-        "OptimizationAlgorithm-DefaultMaximumIteration", 1000)
+        "OptimizationAlgorithm-DefaultMaximumIterationNumber", 1000)
     ot.ResourceMap.SetAsUnsignedInteger(
         "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100000)
     ot.ResourceMap.SetAsScalar(
