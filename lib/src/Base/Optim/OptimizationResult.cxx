@@ -48,7 +48,37 @@ OptimizationResult::OptimizationResult()
   , outputHistory_()
   , problem_()
 {
-  // Nothing to do
+  absoluteErrorHistory_.setDimension(1);
+  relativeErrorHistory_.setDimension(1);
+  residualErrorHistory_.setDimension(1);
+  constraintErrorHistory_.setDimension(1);
+}
+
+/* Default constructor */
+OptimizationResult::OptimizationResult(const UnsignedInteger inputDimension, const UnsignedInteger outputDimension)
+  : PersistentObject()
+  , optimalPoint_(0)
+  , optimalValue_(0)
+  , iterationNumber_(0)
+  , absoluteError_(-1.0)
+  , relativeError_(-1.0)
+  , residualError_(-1.0)
+  , constraintError_(-1.0)
+  , lagrangeMultipliers_(0)
+  , absoluteErrorHistory_()
+  , relativeErrorHistory_()
+  , residualErrorHistory_()
+  , constraintErrorHistory_()
+  , inputHistory_()
+  , outputHistory_()
+  , problem_()
+{
+  absoluteErrorHistory_.setDimension(1);
+  relativeErrorHistory_.setDimension(1);
+  residualErrorHistory_.setDimension(1);
+  constraintErrorHistory_.setDimension(1);
+  inputHistory_.setDimension(inputDimension);
+  outputHistory_.setDimension(outputDimension);
 }
 
 /* Standard constructor */
@@ -77,7 +107,12 @@ OptimizationResult::OptimizationResult(const Point & optimalPoint,
   , outputHistory_()
   , problem_(problem)
 {
-  // Nothing to do
+  absoluteErrorHistory_.setDimension(1);
+  relativeErrorHistory_.setDimension(1);
+  residualErrorHistory_.setDimension(1);
+  constraintErrorHistory_.setDimension(1);
+  inputHistory_.setDimension(optimalPoint.getDimension());
+  outputHistory_.setDimension(optimalValue.getDimension());
 }
 
 /* Virtual constructor */

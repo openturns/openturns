@@ -91,11 +91,6 @@ Point AggregatedEvaluation::operator () (const Point & inP) const
     }
 
   }
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 
@@ -115,15 +110,10 @@ Sample AggregatedEvaluation::operator () (const Sample & inS) const
     const UnsignedInteger atomDimension = atomValue.getDimension();
     for ( UnsignedInteger i = 0; i < size; ++ i )
       for ( UnsignedInteger j = 0; j < atomDimension; ++ j )
-        result[i][outputIndex + j] = atomValue[i][j];
+        result(i, outputIndex + j) = atomValue(i, j);
     outputIndex += atomDimension;
   }
   result.setDescription(getOutputDescription());
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

@@ -193,11 +193,6 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
   }
 
   const Point outP(1, sumR);
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(outP);
-  }
   ++ callsNumber_;
   return outP;
 }

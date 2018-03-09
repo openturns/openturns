@@ -225,7 +225,7 @@ void EfficientGlobalOptimization::run()
     }
   }
 
-  OptimizationResult result;
+  OptimizationResult result(dimension, 1);
   result.setProblem(getProblem());
 
   while ((!exitLoop) && (iterationNumber < getMaximumIterationNumber()))

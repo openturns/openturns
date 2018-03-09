@@ -190,47 +190,6 @@ void Function::clearCache() const
   return getImplementation()->clearCache();
 }
 
-/* Enable or disable the input/output history */
-void Function::enableHistory() const
-{
-  return getImplementation()->enableHistory();
-}
-
-void Function::disableHistory() const
-{
-  return getImplementation()->disableHistory();
-}
-
-Bool Function::isHistoryEnabled() const
-{
-  return getImplementation()->isHistoryEnabled();
-}
-
-void Function::clearHistory() const
-{
-  return getImplementation()->clearHistory();
-}
-
-HistoryStrategy Function::getHistoryInput() const
-{
-  return getImplementation()->getHistoryInput();
-}
-
-HistoryStrategy Function::getHistoryOutput() const
-{
-  return getImplementation()->getHistoryOutput();
-}
-
-Sample Function::getInputPointHistory() const
-{
-  return getImplementation()->getInputPointHistory();
-}
-
-Sample Function::getInputParameterHistory() const
-{
-  return getImplementation()->getInputParameterHistory();
-}
-
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 ProductFunction Function::operator * (const Function & right) const
 {

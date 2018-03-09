@@ -80,7 +80,7 @@ DualLinearCombinationEvaluation::Implementation DualLinearCombinationEvaluation:
   // We use a LinearCombinationEvaluation instead of a DualLinearCombinationEvaluation as it is more efficient and more easy to read
   const UnsignedInteger size = coefficients_.getSize();
   Point marginalCoefficients(size);
-  for (UnsignedInteger marginalIndex = 0; marginalIndex < size; ++marginalIndex) marginalCoefficients[marginalIndex] = coefficients_[marginalIndex][i];
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < size; ++marginalIndex) marginalCoefficients[marginalIndex] = coefficients_(marginalIndex, i);
   return new LinearCombinationEvaluation(functionsCollection_, marginalCoefficients);
 }
 
@@ -113,7 +113,7 @@ String DualLinearCombinationEvaluation::__str__(const String & offset) const
   {
     if (outputDimension == 1)
     {
-      const Scalar value = coefficients_[i][0];
+      const Scalar value = coefficients_(i, 0);
       if (value != 0.0)
       {
         if (first) oss << value;
@@ -196,11 +196,6 @@ Point DualLinearCombinationEvaluation::operator () (const Point & inP) const
   TBB::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 
@@ -218,14 +213,9 @@ Sample DualLinearCombinationEvaluation::operator () (const Sample & inS) const
     // Exploit possible parallelism in the basis functions
     const Sample basisSample(functionsCollection_[i](inS));
     // Should be parallelized
-    for (UnsignedInteger j = 0; j < sampleSize; ++j) result[j] += coefficients_[i] * basisSample[j][0];
+    for (UnsignedInteger j = 0; j < sampleSize; ++j) result[j] += coefficients_[i] * basisSample(j, 0);
   }
   callsNumber_ += sampleSize;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

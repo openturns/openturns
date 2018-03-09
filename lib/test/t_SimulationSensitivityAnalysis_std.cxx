@@ -43,8 +43,6 @@ int main(int argc, char *argv[])
     Description formulas(1);
     formulas[0] = "x-1.5*y+2*z";
     SymbolicFunction f(input, formulas);
-    /* Must activate the history mechanism if one want to perform sensitivity analysis */
-    f.enableHistory();
     /* Sampling */
     UnsignedInteger size = 100;
     Sample inputSample(distribution.getSample(size));
@@ -77,12 +75,12 @@ int main(int argc, char *argv[])
         fullprint << "importanceFactorsRangeGraphThreshold=" << importanceFactorsRangeGraphThreshold << std::endl;
       }
 
-      /* Clear the history of the model */
-      f.clearHistory();
+      /* Must activate the history mechanism if one want to perform sensitivity analysis */
+      MemoizeFunction fh(f);
 
       /* Analysis based on an event */
       RandomVector X(distribution);
-      RandomVector Y(f, X);
+      RandomVector Y(fh, X);
       Event event(Y, comparisonOperators[i], threshold);
       /* Get a sample of the event to simulate a Monte Carlo analysis. We don't care
          of the result as the interesting values are stored in the model history */

@@ -118,11 +118,6 @@ Point LinearEvaluation::operator() (const Point & inP) const
   if (inP.getDimension() != center_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   const Point result(constant_ + linear_ * (inP - center_));
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 /* Operator () */
@@ -134,11 +129,6 @@ Sample LinearEvaluation::operator() (const Sample & inS) const
   const Sample centered(inS - center_);
   const Sample result(linear_.getImplementation()->genSampleProd(centered, true, false, 'R') + constant_);
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

@@ -153,11 +153,6 @@ Point ParametricEvaluation::operator() (const Point & point) const
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameter_[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[inputPositions_[i]] = point[i];
   const Point value(function_(x));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(x);
-    outputStrategy_.store(value);
-  }
   ++callsNumber_;
   return value;
 }
@@ -173,15 +168,10 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
   Sample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameter_[j];
-    for (UnsignedInteger j = 0; j < sampleDimension; ++j) input[i][inputPositions_[j]] = inSample[i][j];
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input(i, parametersPositions_[j]) = parameter_[j];
+    for (UnsignedInteger j = 0; j < sampleDimension; ++j) input(i, inputPositions_[j]) = inSample(i, j);
   }
   const Sample output(function_(input));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(input);
-    outputStrategy_.store(output);
-  }
   callsNumber_ += size;
   return output;
 }
@@ -198,15 +188,10 @@ Sample ParametricEvaluation::operator() (const Point & point,
   Sample input(size, inputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input[i][parametersPositions_[j]] = parameters[i][j];
-    for (UnsignedInteger j = 0; j < pointDimension; ++j) input[i][inputPositions_[j]] = point[j];
+    for (UnsignedInteger j = 0; j < parametersDimension; ++j) input(i, parametersPositions_[j]) = parameters(i, j);
+    for (UnsignedInteger j = 0; j < pointDimension; ++j) input(i, inputPositions_[j]) = point[j];
   }
   const Sample output(function_(input));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(input);
-    outputStrategy_.store(output);
-  }
   callsNumber_ += size;
   return output;
 }
@@ -251,19 +236,6 @@ UnsignedInteger ParametricEvaluation::getParameterDimension() const
 UnsignedInteger ParametricEvaluation::getOutputDimension() const
 {
   return function_.getOutputDimension();
-}
-
-/* Input point / parameter history accessor */
-Sample ParametricEvaluation::getInputPointHistory() const
-{
-  Sample sample(inputStrategy_.getSample());
-  return sample.getSize() > 0 ? sample.getMarginal(inputPositions_) : Sample(0, getInputDimension());
-}
-
-Sample ParametricEvaluation::getInputParameterHistory() const
-{
-  Sample sample(inputStrategy_.getSample());
-  return sample.getSize() > 0 ? sample.getMarginal(parametersPositions_) : Sample(0, getParameterDimension());
 }
 
 /* String converter */

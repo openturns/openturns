@@ -68,6 +68,9 @@
 %include FunctionImplementation.i
 %include ProductFunction.i
 %include Function.i
+%include EvaluationProxy.i
+%include MemoizeEvaluation.i
+%include MemoizeFunction.i
 %include AggregatedFunction.i
 %include SymbolicFunction.i
 %include LinearCombinationFunction.i

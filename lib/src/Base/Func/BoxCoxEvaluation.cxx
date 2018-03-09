@@ -120,9 +120,9 @@ struct BoxCoxEvaluationComputeSamplePolicy
       for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
       {
         const Scalar lambda_j = evaluation_.getLambda()[j];
-        const Scalar logX = log(input_[i][j] + evaluation_.getShift()[j]);
-        if (std::abs(lambda_j * logX) < 1e-8) output_[i][j] = logX * (1.0 + 0.5 * lambda_j * logX);
-        else output_[i][j] = expm1(lambda_j * logX) / lambda_j;
+        const Scalar logX = log(input_(i, j) + evaluation_.getShift()[j]);
+        if (std::abs(lambda_j * logX) < 1e-8) output_(i, j) = logX * (1.0 + 0.5 * lambda_j * logX);
+        else output_(i, j) = expm1(lambda_j * logX) / lambda_j;
       } // j
     } // i
   } // operator ()
@@ -139,11 +139,6 @@ Sample BoxCoxEvaluation::operator() (const Sample & inS) const
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   result.setDescription(getOutputDescription());
   return result;
 }
@@ -170,11 +165,6 @@ Point BoxCoxEvaluation::operator() (const Point & inP) const
     else result[index] = expm1(lambda_i * logX) / lambda_i;
   }
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

@@ -36,11 +36,10 @@ CLASSNAMEINIT(HistoryStrategyImplementation)
 
 static const Factory<HistoryStrategyImplementation> Factory_HistoryStrategyImplementation;
 
-/* Constructor with parameters */
+/* Default constructor */
 HistoryStrategyImplementation::HistoryStrategyImplementation()
-  : PersistentObject(),
-    sample_(),
-    isInitialized_(false)
+  : PersistentObject()
+  , sample_()
 {
   // Nothing to do
 }
@@ -63,11 +62,16 @@ void HistoryStrategyImplementation::store(const Sample & sample)
   for (UnsignedInteger i = 0; i < sample.getSize(); ++i) store(sample[i]);
 }
 
+/* Clear the history storage and change dimension of Point stored */
+void HistoryStrategyImplementation::setDimension(const UnsignedInteger dimension)
+{
+  sample_ = Sample(0, dimension);
+}
+
 /* Clear the history storage */
 void HistoryStrategyImplementation::clear()
 {
-  isInitialized_ = false;
-  sample_ = Sample();
+  setDimension(sample_.getDimension());
 }
 
 /* History sample accessor */
@@ -90,7 +94,6 @@ void HistoryStrategyImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
 
   adv.saveAttribute("sample_", sample_);
-  adv.saveAttribute("isInitialized_", isInitialized_);
 }
 
 /** Method load() reloads the object from the StorageManager */
@@ -99,7 +102,6 @@ void HistoryStrategyImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
 
   adv.loadAttribute("sample_", sample_);
-  adv.loadAttribute("isInitialized_", isInitialized_);
 }
 
 

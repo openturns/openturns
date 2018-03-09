@@ -69,11 +69,6 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
     y.add(inP[i]);
   }
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

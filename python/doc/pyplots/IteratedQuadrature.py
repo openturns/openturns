@@ -32,9 +32,9 @@ Iref = ot.IteratedQuadrature(ot.GaussKronrod(100000, 1e-13,
 
 # Evaluate the integral with the default GaussKronrod algorithm:
 
-f.enableHistory()
+f = ot.MemoizeFunction(f)
 I1 = ot.IteratedQuadrature(ot.GaussKronrod()).integrate(f, a, b, l, u)
-sample1 = f.getHistoryInput().getSample()
+sample1 = f.getInputHistory()
 print('I1=', I1, '#evals=', sample1.getSize(),
       'err=', abs(100.0 * (1.0 - I1[0] / Iref[0])), '%')
 cloud = ot.Cloud(sample1)
@@ -46,7 +46,7 @@ f.clearHistory()
 # Evaluate the integral with the default IteratedQuadrature algorithm:
 
 I2 = ot.IteratedQuadrature().integrate(f, a, b, l, u)
-sample2 = f.getHistoryInput().getSample()
+sample2 = f.getInputHistory()
 # print('I2=', I2, '#evals=', sample2.getSize(), \
 #        'err=', abs(100.0*(1.0-I2[0]/Iref[0])), '%')
 cloud = ot.Cloud(sample2)

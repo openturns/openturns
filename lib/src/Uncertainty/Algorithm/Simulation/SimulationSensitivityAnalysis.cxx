@@ -21,6 +21,7 @@
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/MemoizeFunction.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Collection.hxx"
@@ -94,13 +95,12 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Event & event
   // Inspect the event to see if it is a composite random vector based event
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "Error: cannot perform a sensitivity analysis based on the given event. Check if it is based on a composite random vector.";
   // Get the input/output sample from the model
-  Function model(event.getFunction());
-  if (!model.isHistoryEnabled()) throw InvalidArgumentException(HERE) << "Error: cannot perform analysis if the history of the underlying model is disabled.";
-  inputSample_  = model.getHistoryInput().getSample();
+  MemoizeFunction model(event.getFunction());
+  inputSample_  = model.getInputHistory();
   // Check if the samples are not empty
   if (inputSample_.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform analysis based on empty samples.";
   // We are sure that the output sample has the same size as the input sample
-  outputSample_ = model.getHistoryOutput().getSample();
+  outputSample_ = model.getOutputHistory();
   // Get the transformation from the input distribution
   transformation_ = event.getImplementation()->getAntecedent()->getDistribution().getIsoProbabilisticTransformation();
   inputSample_.setDescription(event.getImplementation()->getAntecedent()->getDistribution().getDescription());

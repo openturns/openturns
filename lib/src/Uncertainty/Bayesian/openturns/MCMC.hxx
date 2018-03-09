@@ -25,6 +25,7 @@
 #include "openturns/RandomVectorImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/HistoryStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

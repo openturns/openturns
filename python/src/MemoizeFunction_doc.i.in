@@ -1,0 +1,119 @@
+%feature("docstring") OT::MemoizeFunction
+"Function which keep tracks of input and output.
+
+When this function is evaluated, it calls the
+:class:`~openturns.Function` passed as argument, and store
+input and output :class:`~openturns.Sample`.
+
+Available constructors:
+    MemoizeFunction(*function, historyStrategy*)
+
+Parameters
+----------
+function : :class:`~openturns.Function`
+    Delegate function
+historyStrategy : :class:`~openturns.HistoryStrategy` (optional)
+    Strategy used to store points, default is :class:`~openturns.Full`.
+
+Notes
+-----
+
+When the function passed as argument is a :class:`~openturns.MemoizeFunction`,
+its input and output history are copied into current instance.  This allows
+to retrieve this history from a :class:`~openturns.Function` object which
+is in fact a :class:`~openturns.MemoizeFunction`.
+Thus, if you create a :class:`~openturns.MemoizeFunction` from an unknown
+:class:`~openturns.Function`, it is better to call :meth:`clearHistory`.
+
+See also
+--------
+Function, HistoryStrategy, Full, Last, Compact, Null
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction('x', 'x^2')
+>>> inputSample = ot.Sample([[1], [2], [3], [4]])
+>>> f = ot.MemoizeFunction(f)
+>>> outputSample = f(inputSample)
+
+Retrieve input sample:
+
+>>> print(f.getInputHistory())
+0 : [ 1 ]
+1 : [ 2 ]
+2 : [ 3 ]
+3 : [ 4 ]
+
+Retrieve output sample:
+
+>>> print(f.getOutputHistory())
+0 : [  1 ]
+1 : [  4 ]
+2 : [  9 ]
+3 : [ 16 ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::getInputHistory
+"Get the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input points which have been evaluated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::getOutputHistory
+"Get the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    Output points which have been evaluated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::enableHistory
+"Enable the history mechanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::disableHistory
+"Disable the history mechanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::isHistoryEnabled
+"Test whether the history mechanism is enabled or not.
+
+Returns
+-------
+isHistoryEnabled : bool
+    Flag telling whether the history mechanism is enabled."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::clearHistory
+"Clear input and output history."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::MemoizeFunction::getMarginal
+"Accessor to marginal.
+
+Parameters
+----------
+indices : int or list of ints
+    Set of indices for which the marginal is extracted.
+
+Returns
+-------
+marginal : :class:`~openturns.Function`
+    Function corresponding to either :math:`f_i` or
+    :math:`(f_i)_{i \in indices}`, with :math:`f:\Rset^n \rightarrow \Rset^p`
+    and :math:`f=(f_0 , \dots, f_{p-1})`.
+    Marginal is wrapped into a :class:`~openturns.MemoizeFunction` object,
+    and history is activated with the same :class:`~openturns.HistoryStrategy`
+    class which had been used for this function."

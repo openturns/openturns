@@ -99,11 +99,6 @@ Point NatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
   // Second, decorrelate the components
   result = cholesky_.solveLinearSystem(result);
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

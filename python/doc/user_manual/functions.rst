@@ -19,6 +19,7 @@ General mathematical functions
     DatabaseFunction
     PythonFunction
     OpenTURNSPythonFunction
+    MemoizeFunction
 
 Algebra of functions
 ====================

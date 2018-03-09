@@ -68,11 +68,6 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
     y.add(result[i]);
   }
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

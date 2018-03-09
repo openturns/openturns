@@ -71,7 +71,7 @@ MCMC::MCMC( const Distribution & prior,
   setObservations(observations);
   if (conditional.getParameterDimension() != model_.getOutputDimension()) throw InvalidDimensionException(HERE) << "The parameter dimension" << conditional.getParameterDimension() << " does not match the output dimension of the model (" << model_.getOutputDimension() << ").";
   if (initialState.getDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The initialState state dimension (" << initialState.getDimension() << ") does not match the prior dimension (" << prior.getDimension() << ").";
-
+  history_.setDimension(initialState.getDimension());
 }
 
 
@@ -98,6 +98,7 @@ MCMC::MCMC( const Distribution & prior,
   setObservations(observations);
   if (model_.getInputDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The model input dimension (" << model_.getInputDimension() << ") does not match the dimension of the prior (" << prior.getDimension() << ").";
   if (initialState.getDimension() != prior.getDimension()) throw InvalidDimensionException(HERE) << "The initialState state dimension (" << initialState.getDimension() << ") does not match the prior dimension (" << prior.getDimension() << ").";
+  history_.setDimension(initialState.getDimension());
 }
 
 
@@ -228,6 +229,7 @@ UnsignedInteger MCMC::getThinning() const
 void MCMC::setHistory(const HistoryStrategy & history)
 {
   history_ = history;
+  history_.setDimension(initialState_.getDimension());
 }
 
 

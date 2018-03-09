@@ -129,11 +129,6 @@ Point ProductPolynomialEvaluation::operator() (const Point & inP) const
   Scalar productEvaluation(1.0) ;
   for (UnsignedInteger i = 0; i < inDimension; ++i) productEvaluation *= polynomials_[i](inP[i]);
   const Point result(1, productEvaluation);
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 
@@ -157,10 +152,10 @@ struct ProductPolynomialEvaluationComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      Scalar value = polynomials_[0](input_[i][0]);
+      Scalar value = polynomials_[0](input_(i, 0));
       for (UnsignedInteger j = 1; j < polynomials_.getSize(); ++j)
-        value *= polynomials_[j](input_[i][j]);
-      output_[i][0] = value;
+        value *= polynomials_[j](input_(i, j));
+      output_(i, 0) = value;
     } // i
   } // operator ()
 };  // struct ProductPolynomialEvaluationComputeSamplePolicy
@@ -176,11 +171,6 @@ Sample ProductPolynomialEvaluation::operator() (const Sample & inS) const
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

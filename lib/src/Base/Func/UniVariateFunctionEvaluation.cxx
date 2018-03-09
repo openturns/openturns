@@ -76,11 +76,6 @@ Point UniVariateFunctionEvaluation::operator() (const Point & inP) const
   const UnsignedInteger inDimension(inP.getDimension());
   if (inDimension != 1) throw InvalidArgumentException(HERE) << "Error: trying to evaluate an UniVariateFunction with an argument of invalid dimension";
   const Point result(1, function_(inP[0]));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

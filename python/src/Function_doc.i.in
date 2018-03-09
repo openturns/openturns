@@ -18,22 +18,6 @@ OT_Function_getCacheInput_doc
 OT_Function_getCacheOutput_doc
 %feature("docstring") OT::Function::addCacheContent
 OT_Function_addCacheContent_doc
-%feature("docstring") OT::Function::enableHistory
-OT_Function_enableHistory_doc
-%feature("docstring") OT::Function::disableHistory
-OT_Function_disableHistory_doc
-%feature("docstring") OT::Function::clearHistory
-OT_Function_clearHistory_doc
-%feature("docstring") OT::Function::isHistoryEnabled
-OT_Function_isHistoryEnabled_doc
-%feature("docstring") OT::Function::getHistoryInput
-OT_Function_getHistoryInput_doc
-%feature("docstring") OT::Function::getHistoryOutput
-OT_Function_getHistoryOutput_doc
-%feature("docstring") OT::Function::getInputPointHistory
-OT_Function_getInputPointHistory_doc
-%feature("docstring") OT::Function::getInputParameterHistory
-OT_Function_getInputParameterHistory_doc
 %feature("docstring") OT::Function::getCallsNumber
 OT_Function_getCallsNumber_doc
 %feature("docstring") OT::Function::getEvaluationCallsNumber

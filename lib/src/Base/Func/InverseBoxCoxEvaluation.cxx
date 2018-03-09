@@ -117,9 +117,9 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
       for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
       {
         const Scalar lambda_j = evaluation_.getLambda()[j];
-        const Scalar x = input_[i][j] - evaluation_.getShift()[j];
-        if (std::abs(lambda_j * x * x) < 1e-8) output_[i][j] = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
-        else output_[i][j] = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
+        const Scalar x = input_(i, j) - evaluation_.getShift()[j];
+        if (std::abs(lambda_j * x * x) < 1e-8) output_(i, j) = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
+        else output_(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
       } // j
     } // i
   } // operator ()
@@ -134,11 +134,6 @@ Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
   const InverseBoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
   TBB::ParallelFor( 0, size, policy );
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   result.setDescription(getOutputDescription());
   return result;
 }
@@ -166,11 +161,6 @@ Point InverseBoxCoxEvaluation::operator() (const Point & inP) const
     }
   }
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

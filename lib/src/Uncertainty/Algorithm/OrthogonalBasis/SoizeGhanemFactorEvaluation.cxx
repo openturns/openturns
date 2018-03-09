@@ -104,11 +104,6 @@ Point SoizeGhanemFactorEvaluation::operator() (const Point & inP) const
     result[0] = std::exp(0.5 * (logFactor - measure_.computeLogPDF(inP)));
   }
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 
@@ -139,11 +134,6 @@ Sample SoizeGhanemFactorEvaluation::operator() (const Sample & inS) const
       result[i][0] = std::exp(0.5 * logResult[i][0]);
   }
   callsNumber_ += size;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inS);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

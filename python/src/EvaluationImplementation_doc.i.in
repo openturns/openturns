@@ -31,28 +31,13 @@ output_sample : 2-d sequence of float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::clearHistory
-"Empty the content of the history."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::EvaluationImplementation::disableCache
 "Disable the cache mechanism."
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::disableHistory
-"Disable the history mechanism."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::EvaluationImplementation::enableCache
 "Enable the cache mechanism."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EvaluationImplementation::enableHistory
-"Enable the history mechanism."
 
 // ---------------------------------------------------------------------
 
@@ -113,46 +98,6 @@ Examples
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getDescription())
 [x1,x2,y0]"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EvaluationImplementation::getHistoryInput
-"Accessor to the history of the input values.
-
-Returns
--------
-input_history : :class:`~openturns.Sample`
-    All the input numerical points stored in the history mecanism."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EvaluationImplementation::getHistoryOutput
-"Accessor to the history of the output values.
-
-Returns
--------
-output_history : :class:`~openturns.Sample`
-    All the output numerical points stored in the history mecanism."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EvaluationImplementation::getInputPointHistory 
-"Accessor to the history of the input points values.
-
-Returns
--------
-history : :class:`~openturns.Sample`
-    All the input points stored in the history mecanism."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EvaluationImplementation::getInputParameterHistory 
-"Accessor to the history of the input parameter values.
-
-Returns
--------
-history : :class:`~openturns.Sample`
-    All the input parameters stored in the history mecanism."
 
 // ---------------------------------------------------------------------
 
@@ -262,17 +207,6 @@ Returns
 -------
 isCacheEnabled : bool
     Flag telling whether the cache mechanism is enabled.
-    It is disabled by default."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EvaluationImplementation::isHistoryEnabled
-"Test whether the history mechanism is enabled or not.
-
-Returns
--------
-isHistoryEnabled : bool
-    Flag telling whether the history mechanism is enabled.
     It is disabled by default."
 
 // ---------------------------------------------------------------------

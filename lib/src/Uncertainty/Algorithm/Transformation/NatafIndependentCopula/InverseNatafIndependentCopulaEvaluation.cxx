@@ -81,11 +81,6 @@ Point InverseNatafIndependentCopulaEvaluation::operator () (const Point & inP) c
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = DistFunc::pNormal(inP[i]);
   ++callsNumber_;
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(result);
-  }
   return result;
 }
 

@@ -34,7 +34,7 @@ CLASSNAMEINIT(Compact)
 
 static const Factory<Compact> Factory_Compact;
 
-/* Constructor with parameters */
+/* Default constructor */
 Compact::Compact()
   : HistoryStrategyImplementation()
   , halfMaximumSize_(ResourceMap::GetAsUnsignedInteger( "Compact-DefaultHalfMaximumSize" ))
@@ -56,6 +56,15 @@ Compact::Compact(const UnsignedInteger halfMaximumSize)
   // Nothing to do
 }
 
+/* Clear the history storage and change dimension of Point stored */
+void Compact::setDimension(const UnsignedInteger dimension)
+{
+  sample_ = Sample(2 * halfMaximumSize_, dimension);
+  index_ = 0;
+  step_ = 1;
+  throwingCounter_ = 0;
+}
+
 /* Virtual constructor */
 Compact * Compact::clone() const
 {
@@ -65,18 +74,10 @@ Compact * Compact::clone() const
 /* Store the point according to the strategy */
 void Compact::store(const Point & point)
 {
-  if (!isInitialized_)
-  {
-    sample_ = Sample(2 * halfMaximumSize_, point.getDimension());
-    index_ = 0;
-    step_ = 1;
-    throwingCounter_ = 0;
-    isInitialized_ = true;
-  }
   // If we don't throw this point
   if (throwingCounter_ == 0)
   {
-    sample_[index_] = point;
+    sample_.at(index_) = point;
     ++index_;
     // Reinitialize the counter
     throwingCounter_ = step_;
@@ -96,7 +97,6 @@ void Compact::store(const Point & point)
 Sample Compact::getSample() const
 {
   // If nothing has been stored
-  if (!isInitialized_) return sample_;
   Sample outSample(index_, sample_.getDimension());
   for (UnsignedInteger i = 0; i < index_; ++i) outSample[i] = sample_[i];
   return outSample;

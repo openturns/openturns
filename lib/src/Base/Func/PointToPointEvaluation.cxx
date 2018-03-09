@@ -133,11 +133,6 @@ Point PointToPointEvaluation::operator() (const Point & inP) const
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   ++callsNumber_;
   const Point leftValue(isFunctionComposition_ ? leftFunction_.operator()(rightFunction_.operator()(inP)) : fieldToPointFunction_.operator()(pointToFieldFunction_.operator()(inP)));
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inP);
-    outputStrategy_.store(leftValue);
-  }
   return leftValue;
 }
 
@@ -167,11 +162,6 @@ Sample PointToPointEvaluation::operator() (const Sample & inSample) const
     } // while (ramaining > 0)
   } // isFunctionComposition_
   outSample.setDescription(getOutputDescription());
-  if (isHistoryEnabled_)
-  {
-    inputStrategy_.store(inSample);
-    outputStrategy_.store(outSample);
-  }
   return outSample;
 }
 

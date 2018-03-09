@@ -27,7 +27,6 @@
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Field.hxx"
-#include "openturns/HistoryStrategy.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Matrix.hxx"
@@ -82,34 +81,6 @@ public:
   /** Output description Accessor, i.e. the names of the Output parameters */
   Description getOutputDescription() const;
   void setOutputDescription(const Description & outputDescription);
-
-  /** Enable or disable the input/output history */
-  void enableHistory() const;
-  void disableHistory() const;
-
-  /** @brief Test the history mechanism activity
-   * @see enableHistory()
-   */
-  Bool isHistoryEnabled() const;
-
-  /** @brief Clear the history mechanism
-   * @see enableHistory()
-   */
-  void clearHistory() const;
-
-  /** @brief Retrieve the history of the input values
-   * @see enableHistory()
-   */
-  HistoryStrategy getHistoryInput() const;
-
-  /** @brief Retrieve the history of the output values
-   * @see enableHistory()
-   */
-  HistoryStrategy getHistoryOutput() const;
-
-  /** Input point / parameter history accessor */
-  virtual Sample getInputPointHistory() const;
-  virtual Sample getInputParameterHistory() const;
 
   /** Enable or disable the internal cache */
   void enableCache() const;
@@ -232,14 +203,6 @@ protected:
 
   /** A cache to store already computed points */
   mutable CacheImplementation p_cache_;
-
-  /** An history mechanism that allows to remember all the input/output associations including duplicate calls */
-  mutable HistoryStrategy inputStrategy_;
-
-  mutable HistoryStrategy outputStrategy_;
-
-  /** Flag to activate or deactivate the history mechanism */
-  mutable Bool isHistoryEnabled_;
 
   /** The value of the parameters */
   Point parameter_;

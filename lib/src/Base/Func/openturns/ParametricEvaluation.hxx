@@ -79,10 +79,6 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
-  /** Input point / parameter history accessor */
-  Sample getInputPointHistory() const;
-  Sample getInputParameterHistory() const;
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
