@@ -71,6 +71,10 @@
 #error "OPENTURNS_HOME_ENV_VAR is NOT defined. Check configuration."
 #endif
 
+#ifdef OPENTURNS_HAVE_DLFCN_H
+#include <dlfcn.h>                // for dladdr
+#endif
+
 BEGIN_NAMESPACE_OPENTURNS
 
 /* The environment variable name */
@@ -121,42 +125,50 @@ FileName Path::GetInstallationDirectory()
 }
 
 
-FileName Path::GetExecutableDirectory()
+FileName Path::GetParentDirectory(const FileName & file)
 {
-  // get executable absolute path
-#ifdef _WIN32
-  TCHAR szPath[MAX_PATH];
-  GetModuleFileName(NULL, szPath, MAX_PATH);
-#else
-  const UnsignedInteger MAX_PATH = 512;
-  char path[MAX_PATH];
-  char szPath[MAX_PATH];
-  pid_t pid = getpid();
-  sprintf(path, "/proc/%d/exe", pid);
-  if (readlink(path, szPath, MAX_PATH) == -1)
-    perror("readlink");
-#endif
-
-  // get parent dir
+  FileName parent;
 #ifdef OPENTURNS_HAVE_LIBGEN_H
-  String pythonDir(dirname(szPath));
+  char * szPath = strdup(file.c_str());
+  parent = FileName(dirname(szPath));
+  free(szPath);
 #else
-  String pythonDir(szPath);
-  if (pythonDir.empty()) return pythonDir;
-  for(SignedInteger i = pythonDir.size() - 1; i >= 0; -- i)
+  parent = file;
+  if (parent.empty()) return parent;
+  for(SignedInteger i = parent.size() - 1; i >= 0; -- i)
   {
     /* We do not care about escaped backslashes */
-    if(pythonDir.at(i) == '\\')
+    if(parent.at(i) == Os::GetDirectorySeparator()[0])
     {
-      pythonDir.resize(i);
+      parent.resize(i);
       break;
     }
   }
 #endif
-
-  return pythonDir;
+  return parent;
 }
 
+
+FileName Path::GetLibraryDirectory()
+{
+  FileName libraryLocation;
+#ifdef OPENTURNS_HAVE_DLADDR
+  Dl_info di;
+  const int ret = dladdr(reinterpret_cast<const void *>(&GetInstallationDirectory), &di);
+  if (ret == 0 || di.dli_fname == 0)
+    throw InternalException(HERE) << "call to dladdr failed";
+  libraryLocation = FileName(di.dli_fname);
+#elif defined(_WIN32)
+  MEMORY_BASIC_INFORMATION mbi;
+  if (!VirtualQuery(reinterpret_cast<const void *>(&GetInstallationDirectory), &mbi, sizeof(mbi)))
+    throw InternalException(HERE) << "call to VirtualQuery failed";
+  char pathBuf[16384];
+  if (!GetModuleFileName(static_cast<HMODULE>(mbi.AllocationBase), pathBuf, sizeof(pathBuf)))
+    throw InternalException(HERE) << "call to GetModuleFileName failed";
+  libraryLocation = FileName(pathBuf);
+#endif
+  return GetParentDirectory(libraryLocation);
+}
 
 
 /**
@@ -228,13 +240,17 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   directoryList.push_back(directory);
 
   // When the compile-time prefix is not the actual installation prefix,
-  // guess from the Python location, happens with the Windows installer
-#ifdef _WIN32
-  directoryList.push_back(GetExecutableDirectory() + "\\Lib\\site-packages\\openturns");
-#endif
-
+  // fallback to the location of the shared lib (windows, wheels, ...)
+  try
+  {
+    directoryList.push_back(GetLibraryDirectory());
+  }
+  catch (InternalException & ex)
+  {
+    // we cannot throw here as this method is called in the initialization
+    LOGWARN(OSS() << "Could not get library directory: " << ex.what());
+  }
   return directoryList;
-
 }
 
 

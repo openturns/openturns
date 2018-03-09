@@ -107,6 +107,9 @@ public:
   static void DoubleslashFileName(FileName & filename);
 #endif
 
+  /** Get the location of the OT shared library (at runtime) */
+  static FileName GetLibraryDirectory();
+
 protected:
 
   /**
@@ -130,9 +133,10 @@ protected:
    */
   static const char * PrefixConfigSubdirectory_;
 
+
 private:
-  /** Get the executable directory */
-  static FileName GetExecutableDirectory();
+  /** Get the parent directory */
+  static FileName GetParentDirectory(const FileName & fileName);
 
   /** Default constructor */
   Path();
