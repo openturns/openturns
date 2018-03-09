@@ -370,15 +370,14 @@ FileName Path::GetTemporaryDirectory()
 /* Build a temporary file name given a pattern */
 FileName Path::BuildTemporaryFileName(const FileName & pattern)
 {
-#ifndef WIN32
+#ifndef _WIN32
   String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + pattern);
-  UnsignedInteger size = fullPattern.size();
-  char temporaryFileName[size + 1];
-  strcpy(temporaryFileName, fullPattern.c_str());
-  temporaryFileName[size] = 0;
+  char * temporaryFileName = strdup(fullPattern.c_str());
   int fileDescriptor(mkstemp(temporaryFileName));
   close(fileDescriptor);
-  return temporaryFileName;
+  FileName result(temporaryFileName);
+  free(temporaryFileName);
+  return result;
 #else
   // get uniq name
   char temporaryFileName[MAX_PATH];
