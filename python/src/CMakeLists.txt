@@ -885,6 +885,19 @@ foreach (module ${OPENTURNS_PYTHON_MODULES})
          )
 endforeach ()
 
+
+# Build and install openturns.memoryview
+add_library( memoryview MODULE PythonReadOnlyBuffer.c )
+if (LINK_PYTHON_LIBRARY)
+  target_link_libraries (memoryview ${PYTHON_LIBRARIES})
+endif ()
+set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
+if(WIN32 AND NOT CYGWIN)
+  set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
+endif()
+install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
+
+
 set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns

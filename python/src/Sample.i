@@ -451,7 +451,7 @@ Sample(PyObject * pyObj, UnsignedInteger dimension)
   for ( OT::UnsignedInteger i = 0; i < size; ++ i ) {
     for ( OT::UnsignedInteger j = 0; j < dimension; ++ j ) {
       if ( k < pointSize ) {
-        sample[i][j] = point[k];
+        sample(i, j) = point[k];
         ++ k;
       }
     }

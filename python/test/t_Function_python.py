@@ -57,37 +57,6 @@ print((repr(outSample)))
 outSample = myFunc(((100., 100.), (101., 101.), (102., 102.)))
 print((repr(outSample)))
 
-# Test cache behavior
-myFunc.enableCache()
-print(('calls = ' + str(myFunc.getEvaluationCallsNumber())
-       + ' hits = ' + str(myFunc.getCacheHits())))
-outPt = myFunc(inPt)
-print(('T = ' + repr(outPt)))
-print(('calls = ' + str(myFunc.getEvaluationCallsNumber())
-       + ' hits = ' + str(myFunc.getCacheHits())))
-outPt = myFunc(inPt)
-print(('T = ' + repr(outPt)))
-print(('calls = ' + str(myFunc.getEvaluationCallsNumber())
-       + ' hits = ' + str(myFunc.getCacheHits())))
-
-# duplicate one value
-inSample[4] = inSample[5]
-
-outSample = myFunc(inSample)
-print(('T = ' + repr(outSample)))
-print(('calls = ' + str(myFunc.getEvaluationCallsNumber())
-       + ' hits = ' + str(myFunc.getCacheHits())))
-outSample = myFunc(inSample)
-print(('T = ' + repr(outSample)))
-print(('calls = ' + str(myFunc.getEvaluationCallsNumber())
-       + ' hits = ' + str(myFunc.getCacheHits())))
-
-myFunc.clearCache()
-outSample = myFunc(inSample)
-print(('T = ' + repr(outSample)))
-print(('calls = ' + str(myFunc.getEvaluationCallsNumber())
-       + ' hits = ' + str(myFunc.getCacheHits())))
-
 # test PythonFunction
 
 

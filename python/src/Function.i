@@ -87,6 +87,12 @@ class OpenTURNSPythonFunction(object):
         Dimension of the input vector
     outputDim : positive int
         Dimension of the output vector
+    copy : bool, optional
+        If True, input sample is converted into a Python 2-d sequence before calling
+        _exec_sample.  Otherwise, argument passed to _exec_sample is a
+        :class:`~openturns.memoryview.Buffer` object, which is a wrapper
+        around :class:`~openturns.Sample`.
+        Default is False.
 
     Notes
     -----
@@ -121,7 +127,7 @@ class OpenTURNSPythonFunction(object):
 
     >>> myFunc = Function(F)
     """
-    def __init__(self, n=0, p=0):
+    def __init__(self, n=0, p=0, copy=False):
         try:
             self.__n = int(n)
         except:
@@ -132,6 +138,7 @@ class OpenTURNSPythonFunction(object):
             raise TypeError('outputDim argument is not an integer.')
         self.__descIn = ['x' + str(i) for i in range(n)]
         self.__descOut = ['y' + str(i) for i in range(p)]
+        self.__discard_openturns_memoryview = copy
 
     def setInputDescription(self, descIn):
         if (len(descIn) != self.__n):
@@ -180,10 +187,8 @@ class OpenTURNSPythonFunction(object):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X and Y are 1-d sequence of float')
 
     def _exec_sample(self, X):
-        res = list()
-        for point in X:
-            res.append(self._exec(point))
-        return res
+        """Implement exec_sample from exec."""
+        return [self._exec(point) for point in X]
 
     def _exec_point_on_exec_sample(self, X):
         """Implement exec from exec_sample."""
@@ -195,7 +200,7 @@ def _exec_sample_multiprocessing(func, n_cpus):
 
     Parameters
     ----------
-    func : Function or calable
+    func : Function or callable
         A callable python object, usually a function. The function should take
         an input vector as argument and return an output vector.
 
@@ -233,17 +238,17 @@ class PythonFunction(Function):
         Dimension of the input vector
     outputDim : positive int
         Dimension of the output vector
-    func : a callable python object
-        called on a single point.
+    func : a callable python object, optional
+        Called when evaluated on a single point.
         Default is None.
-    func_sample : a callable python object
-        called on multiple points at once.
+    func_sample : a callable python object, optional
+        Called when evaluated on multiple points at once.
         Default is None.
-    gradient : a callable python objects
-        returns the gradient as a 2-d sequence of float.
+    gradient : a callable python objects, optional
+        Returns the gradient as a 2-d sequence of float.
         Default is None (uses finite-difference).
-    hessian : a callable python object
-        returns the hessian as a 3-d sequence of float.
+    hessian : a callable python object, optional
+        Returns the hessian as a 3-d sequence of float.
         Default is None (uses finite-difference).
     n_cpus : integer
         Number of cpus on which func should be distributed using multiprocessing.
@@ -251,6 +256,10 @@ class PythonFunction(Function):
         and func_sample are both given as arguments, n_cpus will be ignored and
         samples will be handled by func_sample.
         Default is None.
+    copy : bool, optional
+        If True, input sample is converted into a Python 2-d sequence before calling
+        func_sample.  Otherwise, it is passed directy to func_sample.
+        Default is False.
 
     Notes
     -----
@@ -282,22 +291,24 @@ class PythonFunction(Function):
     [[  3 ]
      [ -1 ]]
     """
-    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None):
+    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False):
         if func == None and func_sample == None:
             raise RuntimeError('no func nor func_sample given.')
-        instance = OpenTURNSPythonFunction(n, p)
+        instance = OpenTURNSPythonFunction(n, p, copy)
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
+            instance.__has_exec = True
         if func_sample != None:
             if not isinstance(func_sample, collections.Callable):
                 raise RuntimeError('func_sample argument is not callable.')
             instance._exec_sample = func_sample
+            instance.__has_exec_sample = True
             if func == None:
                 instance._exec = instance._exec_point_on_exec_sample
-        elif n_cpus != None and n_cpus != 1 and func != None:
+        elif n_cpus != None and n_cpus != 1:
             if not isinstance(n_cpus, int):
                 raise RuntimeError('n_cpus is not an integer')
             if n_cpus == -1:
