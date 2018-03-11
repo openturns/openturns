@@ -577,7 +577,7 @@ static struct module_state _state;
 
 #define INITERROR return
 
-void
+PyMODINIT_FUNC
 initmemoryview(void)
 #endif
 {
