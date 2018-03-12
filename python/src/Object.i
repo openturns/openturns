@@ -55,10 +55,6 @@ Object.__setstate__ = Object___setstate__
 
 def Object__repr_html_(self):
     lines = str(self).splitlines()
-    html = '<p>'
-    for i in range(len(lines)):
-            html += lines[i]+'<br>'+'\n'
-    html += '</p>'
-    return html
+    return '<p>' + '<br>\n'.join(lines) + '</p>'
 Object._repr_html_ = Object__repr_html_
 %}
