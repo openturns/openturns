@@ -3,8 +3,8 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 # Create a function
-f = ot.Function(
-    ["x", "y"], ["z"], ["exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))"])
+f = ot.SymbolicFunction(
+    ["x", "y"], ["exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))"])
 
 # Generate the data for the curves to be drawn
 nX = 75

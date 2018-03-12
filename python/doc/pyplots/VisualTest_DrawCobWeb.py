@@ -6,20 +6,14 @@ ot.RandomGenerator.SetSeed(0)
 size = 100
 inputDimension = 6
 inputSample = ot.Normal(inputDimension).getSample(size)
-inputVar = ot.Description(inputDimension)
-for i in range(inputDimension):
-    inputVar[i] = 'X' + str(i)
+inputVar = ['X' + str(i) for i in range(inputDimension)]
 inputSample.setDescription(inputVar)
-formula = ot.Description(1)
 expression = ''
 for i in range(inputDimension):
     if i > 0:
         expression += '+'
     expression += 'cos(' + str(i + 1) + '*' + inputVar[i] + ')'
-formula[0] = expression
-outputVar = ot.Description(1)
-outputVar[0] = 'y'
-model = ot.Function(inputVar, outputVar, formula)
+model = ot.SymbolicFunction(inputVar, [expression])
 outputSample = model(inputSample)
 
 cobweb = ot.VisualTest_DrawCobWeb(
