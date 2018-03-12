@@ -389,7 +389,9 @@ static PyTypeObject BufferType = {
     0,                            /* tp_getattro */
     0,                            /* tp_setattro */
     &Buffer_as_buffer,            /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,           /* tp_flags */
+/* In Python 2.7, PyBuffer_Check() checks whether Py_TPFLAGS_HAVE_NEWBUFFER is set, so it must be
+   defined; Python 3 direcly checks tp_as_buffer.getbufferproc != NULL  */
+    Py_TPFLAGS_HAVE_CLASS | Py_TPFLAGS_HAVE_GETCHARBUFFER | Py_TPFLAGS_HAVE_NEWBUFFER, /* tp_flags */
     Buffer_doc,                   /* tp_doc */
     0,                            /* tp_traverse */
     0,                            /* tp_clear */
