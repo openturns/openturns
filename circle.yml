@@ -6,7 +6,7 @@ dependencies:
     - sudo apt-get install -y python3-pip python3-dev python3-scipy python3-matplotlib texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra pandoc
     - sudo rm -r /opt/circleci/.pyenv
     - sudo pip3 install setuptools --upgrade
-    - pip3 install matplotlib git+https://github.com/sphinx-doc/sphinx.git numpydoc nbsphinx jupyter_client ipython --user --upgrade
+    - pip3 install matplotlib git+https://github.com/sphinx-doc/sphinx.git numpydoc nbsphinx jupyter_client ipython tornado==4.5.3 --user --upgrade
     # keep an eye on swig
     - git clone https://github.com/swig/swig.git
     - cd swig && ./autogen.sh && ./configure --prefix=$HOME/.local --without-alllang && make -j2 && make install
