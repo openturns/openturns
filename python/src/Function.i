@@ -87,12 +87,6 @@ class OpenTURNSPythonFunction(object):
         Dimension of the input vector
     outputDim : positive int
         Dimension of the output vector
-    copy : bool, optional
-        If True, input sample is converted into a Python 2-d sequence before calling
-        _exec_sample.  Otherwise, argument passed to _exec_sample is a
-        :class:`~openturns.memoryview.Buffer` object, which is a wrapper
-        around :class:`~openturns.Sample`.
-        Default is False.
 
     Notes
     -----
@@ -127,7 +121,7 @@ class OpenTURNSPythonFunction(object):
 
     >>> myFunc = Function(F)
     """
-    def __init__(self, n=0, p=0, copy=False):
+    def __init__(self, n=0, p=0):
         try:
             self.__n = int(n)
         except:
@@ -138,7 +132,6 @@ class OpenTURNSPythonFunction(object):
             raise TypeError('outputDim argument is not an integer.')
         self.__descIn = ['x' + str(i) for i in range(n)]
         self.__descOut = ['y' + str(i) for i in range(p)]
-        self.__discard_openturns_memoryview = copy
 
     def setInputDescription(self, descIn):
         if (len(descIn) != self.__n):
@@ -291,18 +284,20 @@ class PythonFunction(Function):
     def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False):
         if func == None and func_sample == None:
             raise RuntimeError('no func nor func_sample given.')
-        instance = OpenTURNSPythonFunction(n, p, copy)
+        instance = OpenTURNSPythonFunction(n, p)
+        if copy:
+            instance._discard_openturns_memoryview = True
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
-            instance.__has_exec = True
+            instance._has_exec = True
         if func_sample != None:
             if not isinstance(func_sample, collections.Callable):
                 raise RuntimeError('func_sample argument is not callable.')
             instance._exec_sample = func_sample
-            instance.__has_exec_sample = True
+            instance._has_exec_sample = True
             if func == None:
                 instance._exec = instance._exec_point_on_exec_sample
         elif n_cpus != None and n_cpus != 1:

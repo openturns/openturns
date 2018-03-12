@@ -46,7 +46,7 @@ PythonEvaluation::PythonEvaluation()
   , pyBufferClass_(NULL)
   , pyObj_has_exec_(false)
   , pyObj_has_exec_sample_(false)
-  , pyObj_discard_openturns_memoryview_(false)
+  , pyObj_discard_openturns_memoryview_(true)
 {
   // Nothing to do
 }
@@ -59,7 +59,7 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   , pyBufferClass_(NULL)
   , pyObj_has_exec_(false)
   , pyObj_has_exec_sample_(false)
-  , pyObj_discard_openturns_memoryview_(false)
+  , pyObj_discard_openturns_memoryview_(true)
 {
   Py_XINCREF(pyCallable);
 
@@ -364,9 +364,9 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
 void PythonEvaluation::initializePythonState()
 {
   // Check whether PythonFunction object define these members
-  pyObj_has_exec_ = PyObject_HasAttrString( pyObj_, "__has_exec" );
-  pyObj_has_exec_sample_ = PyObject_HasAttrString( pyObj_, "__has_exec_sample" );
-  pyObj_discard_openturns_memoryview_ = PyObject_HasAttrString( pyObj_, "__discard_openturns_memoryview" );
+  pyObj_has_exec_ = PyObject_HasAttrString( pyObj_, "_has_exec" );
+  pyObj_has_exec_sample_ = PyObject_HasAttrString( pyObj_, "_has_exec_sample" );
+  pyObj_discard_openturns_memoryview_ = PyObject_HasAttrString( pyObj_, "_discard_openturns_memoryview" );
 
   // We do not copy, get a reference to openturns.memoryview.Buffer class
   if (! pyObj_discard_openturns_memoryview_)
