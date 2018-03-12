@@ -241,11 +241,13 @@ Bool Mesh::contains(const Point & point) const
   return false;
 }
 
-/* Check if the given point is in the given simplex */
-SquareMatrix Mesh::buildSimplexMatrix(const UnsignedInteger index) const
+/* Build the affine matrix associated to the simplex at the given index*/
+void Mesh::buildSimplexMatrix(const UnsignedInteger index,
+			      SquareMatrix & matrix) const
 {
   if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
-  SquareMatrix matrix(dimension_ + 1);
+  if (matrix.getDimension() != dimension_ + 1)
+    matrix = SquareMatrix(dimension_ + 1);
   // Loop over the vertices of the simplex
   for (UnsignedInteger j = 0; j <= dimension_; ++j)
   {
@@ -253,7 +255,6 @@ SquareMatrix Mesh::buildSimplexMatrix(const UnsignedInteger index) const
     for (UnsignedInteger i = 0; i < dimension_; ++i) matrix(i, j) = vertices_(vertexJ, i);
     matrix(dimension_, j) = 1.0;
   }
-  return matrix;
 }
 
 /* Check if the given point is in the given simplex */
@@ -280,7 +281,8 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
         return false;
     }
   }
-  SquareMatrix matrix(buildSimplexMatrix(index));
+  SquareMatrix matrix(dimension_ + 1);
+  buildSimplexMatrix(index, matrix);
   Point v(point);
   v.add(1.0);
   coordinates = matrix.solveLinearSystem(v, false);
@@ -446,7 +448,8 @@ Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
     const Scalar y2 = vertices_(simplices_(index, 2), 1);
     return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
   }
-  SquareMatrix matrix(buildSimplexMatrix(index));
+  SquareMatrix matrix(dimension_ + 1);
+  buildSimplexMatrix(index, matrix);
   Scalar sign = 0.0;
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
 }
@@ -555,6 +558,63 @@ Point Mesh::getUpperBound() const
   return vertices_.getMax();
 }
 
+/* Orientation management */
+void Mesh::fixOrientation()
+{
+  SquareMatrix matrix(dimension_ + 1);
+  const UnsignedInteger size = getSimplicesNumber();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    fixOrientation(i, matrix);
+}
+
+void Mesh::fixOrientation(const UnsignedInteger & index,
+			  SquareMatrix & matrix)
+{
+  if (getDimension() == 1)
+    {
+      IndicesCollection::iterator cit = simplices_.begin_at(index);
+      if (vertices_(*(cit + 1), 0) < vertices_(*cit, 0)) std::swap(*cit, *(cit + 1));
+      return;
+    }
+  if (getDimension() == 2)
+    {
+      IndicesCollection::iterator cit = simplices_.begin_at(index);
+      const Scalar v1x = vertices_(*cit, 0);
+      const Scalar v1y = vertices_(*cit, 1);
+      const Scalar v2x = vertices_(*(cit + 1), 0);
+      const Scalar v2y = vertices_(*(cit + 1), 1);
+      const Scalar v3x = vertices_(*(cit + 2), 0);
+      const Scalar v3y = vertices_(*(cit + 2), 1);
+      if ((v3x - v2x) * (v1y - v2y) < (v1x - v2x) * (v3y - v2y)) std::swap(*cit, *(cit + 1));
+      return;
+    }
+  if (getDimension() == 3)
+    {
+      IndicesCollection::iterator cit = simplices_.begin_at(index);
+      const Scalar v1x = vertices_(*cit, 0);
+      const Scalar v1y = vertices_(*cit, 1);
+      const Scalar v1z = vertices_(*cit, 2);
+      const Scalar v2x = vertices_(*(cit + 1), 0);
+      const Scalar v2y = vertices_(*(cit + 1), 1);
+      const Scalar v2z = vertices_(*(cit + 1), 2);
+      const Scalar v3x = vertices_(*(cit + 2), 0);
+      const Scalar v3y = vertices_(*(cit + 2), 1);
+      const Scalar v3z = vertices_(*(cit + 2), 2);
+      const Scalar v4x = vertices_(*(cit + 3), 0);
+      const Scalar v4y = vertices_(*(cit + 3), 1);
+      const Scalar v4z = vertices_(*(cit + 3), 2);
+      if ((v1x - v4x) * ((v2y - v4y) * (v3z - v4z) - (v3y - v4y) * (v2z - v4z)) + (v3x - v4x) * ((v1y - v4y) * (v2z - v4z) - (v2y - v4y) * (v1z - v4z)) < (v2x - v4x) * ((v1y - v4y) * (v3z - v4z) - (v3y - v4y) * (v1z - v4z)) ) std::swap(*cit, *(cit + 1));
+      return;
+    }
+  buildSimplexMatrix(index, matrix);
+  Scalar sign = 0.0;
+  (void) matrix.computeLogAbsoluteDeterminant(sign, false);
+  // In odd dimension the positive orientation is for a negative determinant of
+  // the simplex matrix
+  if ((sign > 0.0) == (dimension_ % 2 == 1)) return;
+  IndicesCollection::iterator cit = simplices_.begin_at(index);
+  std::swap(*cit, *(cit + 1));
+}
 
 /* Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
 IndicesCollection Mesh::getVerticesToSimplicesMap() const
@@ -1003,7 +1063,9 @@ Mesh Mesh::ImportFromMSHFile(const String & fileName)
     LOGINFO(OSS() << "simplex " << i << "=" << simplices(i, 0) << " " << simplices(i, 1) << " " << simplices(i, 2));
   }
   file.close();
-  return Mesh(vertices, simplices);
+  Mesh result(vertices, simplices);
+  result.fixOrientation();
+  return result;
 }
 
 /* VTK export */

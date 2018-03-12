@@ -198,27 +198,7 @@ void LevelSet::setLowerBound(const Point & bound)
 
 Point LevelSet::getLowerBound() const
 {
-  if (lowerBound_.getDimension() != dimension_) computeLowerBound();
   return lowerBound_;
-}
-
-void LevelSet::computeLowerBound() const
-{
-  lowerBound_ = Point(dimension_);
-  LinearFunction translate(Point(1, level_), Point(1), IdentityMatrix(1));
-  ComposedFunction equality(translate, function_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    Matrix m(1, dimension_);
-    m(0, i) = 1.0;
-    LinearFunction coordinate(Point(dimension_), Point(1), m);
-    OptimizationProblem problem(coordinate, equality, Function(), Interval());
-    problem.setMinimization(true);
-    Cobyla solver(problem);
-    solver.setStartingPoint(Point(dimension_));
-    solver.run();
-    lowerBound_[i] = solver.getResult().getOptimalPoint()[i];
-  }
 }
 
 /* Upper bound of the bounding box */
@@ -230,27 +210,7 @@ void LevelSet::setUpperBound(const Point & bound)
 
 Point LevelSet::getUpperBound() const
 {
-  if (upperBound_.getDimension() != dimension_) computeUpperBound();
   return upperBound_;
-}
-
-void LevelSet::computeUpperBound() const
-{
-  upperBound_ = Point(dimension_);
-  LinearFunction translate(Point(1, level_), Point(1), IdentityMatrix(1));
-  ComposedFunction equality(translate, function_);
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    Matrix m(1, dimension_);
-    m(0, i) = 1.0;
-    LinearFunction coordinate(Point(dimension_), Point(1), m);
-    OptimizationProblem problem(coordinate, equality, Function(), Interval());
-    problem.setMinimization(false);
-    Cobyla solver(problem);
-    solver.setStartingPoint(Point(dimension_));
-    solver.run();
-    upperBound_[i] = solver.getResult().getOptimalPoint()[i];
-  }
 }
 
 /* String converter */

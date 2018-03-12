@@ -163,6 +163,13 @@ public:
   /** Upper bound of the bounding box */
   Point getUpperBound() const;
 
+  /** Orientation management */
+  void fixOrientation();
+#ifndef SWIG
+  void fixOrientation(const UnsignedInteger & index,
+		      SquareMatrix & simplexMatrix);
+#endif
+  
   /** Drawing method */
   Graph draw() const;
   Graph draw1D() const;
@@ -200,7 +207,8 @@ public:
 
 protected:
   // Build the affine matrix associated with a given simplex
-  SquareMatrix buildSimplexMatrix(const UnsignedInteger index) const;
+  void buildSimplexMatrix(const UnsignedInteger index,
+			  SquareMatrix & matrix) const;
 
   // Compute the total volume of the mesh
   Scalar computeVolume() const;

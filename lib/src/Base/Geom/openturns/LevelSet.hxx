@@ -97,12 +97,6 @@ public:
 
 private:
 
-  /** Compute the lower bound using optimization */
-  void computeLowerBound() const;
-
-  /** Compute the upper bound using optimization */
-  void computeUpperBound() const;
-
   /** Function defining the level set*/
   Function function_;
 
@@ -110,10 +104,10 @@ private:
   Scalar level_;
 
   /** Lower bound of the bounding box */
-  mutable Point lowerBound_;
+  Point lowerBound_;
 
   /** Upper bound of the bounding box */
-  mutable Point upperBound_;
+  Point upperBound_;
 }; /* class LevelSet */
 
 END_NAMESPACE_OPENTURNS

@@ -123,7 +123,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (dimension > 3) throw NotYetImplementedException(HERE) << "In LevelSetMesher::build(const LevelSet & levelSet, const Interval & boundingBox, const Bool project) const";
-
+  if (boundingBox.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the bounding box is of dimension=" << boundingBox.getDimension() << ", expected dimension=" << dimension;
   // First, mesh the bounding box
   const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));
   Sample boundingVertices(boundingMesh.getVertices());
@@ -149,6 +149,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   // Create once some objects that will be reused a lot
   Sample localVertices(dimension + 1, dimension);
   Point localValues(dimension + 1);
+  Indices simplicesToCheck(0);
+  UnsignedInteger goodSimplicesNumber = 0;
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     UnsignedInteger numGood = 0;
@@ -166,9 +168,12 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     if (numGood > 0)
     {
       goodSimplices.add(Collection<UnsignedInteger>(boundingSimplices.cbegin_at(i), boundingSimplices.cend_at(i)));
+      ++goodSimplicesNumber;
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
+	// If at least one vertex moves, the orientation can change
+	simplicesToCheck.add(goodSimplicesNumber - 1);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
           const UnsignedInteger index = boundingSimplices(i, j);
@@ -263,7 +268,12 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   // Shift the vertices indices into the good simplices
   for (UnsignedInteger i = 0; i < goodSimplices.getSize(); ++i)
     goodSimplices[i] -= flagGoodVertices[goodSimplices[i]];
-  return Mesh(goodVertices, IndicesCollection(goodSimplices.getSize() / (dimension + 1), dimension + 1, goodSimplices));
+  Mesh result(goodVertices, IndicesCollection(goodSimplices.getSize() / (dimension + 1), dimension + 1, goodSimplices));
+  // Fix the orientation of the simplices with moved vertices
+  SquareMatrix matrix(dimension + 1);
+  for (UnsignedInteger i = 0; i < simplicesToCheck.getSize(); ++i)
+    result.fixOrientation(simplicesToCheck[i], matrix);
+  return result;
 }
 
 END_NAMESPACE_OPENTURNS
