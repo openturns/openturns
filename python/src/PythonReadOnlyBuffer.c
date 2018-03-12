@@ -150,7 +150,7 @@ Buffer_repr(Buffer * self)
   char * s = malloc(100 + strlen(r));
   PyObject * result = NULL;
 
-  sprintf(s, "<read-only buffer at 0x%x shape=(%s)>", self->bufferview.data, r);
+  sprintf(s, "<read-only buffer at %p shape=(%s)>", self->bufferview.data, r);
   free(r);
 
 #if PY_VERSION_HEX >= 0x03010000
