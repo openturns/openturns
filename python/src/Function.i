@@ -251,28 +251,57 @@ class PythonFunction(Function):
         func_sample.  Otherwise, it is passed directy to func_sample.
         Default is False.
 
+    You must provide at least func or func_sample arguments.  For efficiency
+    reasons, these functions do not receive a :class:`~openturns.Point` or
+    :class:`~openturns.Sample` as arguments, but a proxy object which gives
+    access to internal object data.  This object supports indexing, but nothing
+    more.  It must be wrapped into anoter object, for instance
+    :class:`~openturns.Point` in func and :class:`~openturns.Sample` in
+    func_sample, or in a Numpy array, for vectorized operations.
+
     Notes
     -----
-    You must provide at least func or func_sample arguments. Notice that if
-    func_sample is provided, n_cpus is ignored. Note also that if PythonFunction
-    is distributed (n_cpus > 1), the traceback of a raised exception by a func
-    call is lost due to the way multiprocessing dispatches and handles func
-    calls. This can be solved by temporarily deactivating n_cpus during the
-    development of the wrapper or by manually handling the distribution of the
-    wrapper with external libraries like joblib that keep track of a raised
-    exception and shows the traceback to the user.
+    Notice that if func_sample is provided, n_cpus is ignored. Note also that
+    if PythonFunction is distributed (n_cpus > 1), the traceback of a raised
+    exception by a func call is lost due to the way multiprocessing dispatches
+    and handles func calls. This can be solved by temporarily deactivating
+    n_cpus during the development of the wrapper or by manually handling the
+    distribution of the wrapper with external libraries like joblib that keep
+    track of a raised exception and shows the traceback to the user.
 
     Examples
     --------
     >>> import openturns as ot
     >>> def a_exec(X):
-    ...     Y = [3.*X[0] - X[1]]
+    ...     Y = [3.0 * X[0] - X[1]]
     ...     return Y
     >>> def a_grad(X):
-    ...     dY = [[3.], [-1.]]
+    ...     dY = [[3.0], [-1.0]]
     ...     return dY
     >>> f = ot.PythonFunction(2, 1, a_exec, gradient=a_grad)
-    >>> X = [100., 100.]
+    >>> X = [100.0, 100.0]
+    >>> Y = f(X)
+    >>> print(Y)
+    [200]
+    >>> dY = f.gradient(X)
+    >>> print(dY)
+    [[  3 ]
+     [ -1 ]]
+
+    Same example, but optimized for best performance with Numpy when function
+    is going to be evaluated on large samples.
+
+    >>> import openturns as ot
+    >>> import numpy as np
+    >>> def a_exec_sample(X):
+    ...     Xarray = np.array(X, copy=False)
+    ...     Y = 3.0 * Xarray[:,0] - Xarray[:,1]
+    ...     return np.expand_dims(Y, axis=1)
+    >>> def a_grad(X):
+    ...     dY = [[3.0], [-1.0]]
+    ...     return dY
+    >>> f = ot.PythonFunction(2, 1, func_sample=a_exec_sample, gradient=a_grad)
+    >>> X = [100.0, 100.0]
     >>> Y = f(X)
     >>> print(Y)
     [200]
