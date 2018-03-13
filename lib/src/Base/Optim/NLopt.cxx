@@ -277,8 +277,21 @@ void NLopt::run()
     opt.set_default_initial_step(dx);
   }
 
-  if (!p_localSolver_.isNull())
+  // some algorithms require a local solver (AUGLAG, MLSL)
+  if (p_localSolver_.isNull())
   {
+    // use a default local solver
+    const nlopt::algorithm local_algo = static_cast<nlopt::algorithm>(GetAlgorithmCode("LD_MMA"));
+    nlopt::opt local_opt(local_algo, dimension);
+    local_opt.set_xtol_abs(getMaximumAbsoluteError());
+    local_opt.set_xtol_rel(getMaximumRelativeError());
+    local_opt.set_ftol_abs(getMaximumResidualError());
+    local_opt.set_maxeval(getMaximumEvaluationNumber());
+    opt.set_local_optimizer(local_opt);
+  }
+  else
+  {
+    // use the specified local solver
     const nlopt::algorithm local_algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(p_localSolver_->getAlgorithmName()));
     nlopt::opt local_opt(local_algo, dimension);
     local_opt.set_xtol_abs(p_localSolver_->getMaximumAbsoluteError());
