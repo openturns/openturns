@@ -38,45 +38,45 @@ namespace OT {
 DistributionImplementation(const DistributionImplementation & other) { return new OT::DistributionImplementation(other); } 
 
 #if SWIG_VERSION < 0x030011
-Pointer<DistributionImplementation> __truediv__(const Scalar s) { return (*self) / s; }
+Distribution __truediv__(const Scalar s) { return (*self) / s; }
 
-Pointer<DistributionImplementation> __truediv__(const DistributionImplementation & d) { return (*self) / d; }
+Distribution __truediv__(const DistributionImplementation & d) { return (*self) / d; }
 #endif
 
-Pointer<DistributionImplementation> __rtruediv__(const Scalar s) { return s / (*self); }
+Distribution __rtruediv__(const Scalar s) { return s / (*self); }
 
-Pointer<DistributionImplementation> __rdiv__(const Scalar s) { return s / (*self); }
+Distribution __rdiv__(const Scalar s) { return s / (*self); }
 
-Pointer<DistributionImplementation> __pow__(const Scalar s) { return self->pow(s); }
+Distribution __pow__(const Scalar s) { return self->pow(s); }
 
-Pointer<DistributionImplementation> __pow__(const SignedInteger s) { return self->pow(s); }
+Distribution __pow__(const SignedInteger s) { return self->pow(s); }
 
-Pointer<DistributionImplementation> __sub__(const Scalar s)
+Distribution __sub__(const Scalar s)
 {
  return *self - s;
 }
 
-Pointer<DistributionImplementation> __rsub__(const Scalar s)
+Distribution __rsub__(const Scalar s)
 {
-  return *(*self * (-1.0)) + s;
+  return (*self * (-1.0)) + s;
 }
 
-Pointer<DistributionImplementation> __add__(const Scalar s)
+Distribution __add__(const Scalar s)
 {
  return *self + s;
 }
 
-Pointer<DistributionImplementation> __radd__(const Scalar s)
+Distribution __radd__(const Scalar s)
 {
   return *self + s;
 }
 
-Pointer<DistributionImplementation> __mul__(Scalar s)
+Distribution __mul__(Scalar s)
 {
   return (*self) * s;
 }
 
-Pointer<DistributionImplementation> __rmul__(Scalar s)
+Distribution __rmul__(Scalar s)
 {
   return (*self) * s;
 }
