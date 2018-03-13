@@ -30,7 +30,7 @@ try:
     print('Temporary file name=', fileName)
     ot.Path.DeleteTemporaryDirectory(directory1)
     ot.Path.DeleteTemporaryDirectory(directory2)
-
+    print('Library dir=', ot.Path.GetLibraryDirectory())
 except:
     import os
     import traceback
