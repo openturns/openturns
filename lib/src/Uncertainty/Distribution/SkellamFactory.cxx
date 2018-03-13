@@ -44,17 +44,17 @@ SkellamFactory * SkellamFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-SkellamFactory::Implementation SkellamFactory::build(const Sample & sample) const
+Distribution SkellamFactory::build(const Sample & sample) const
 {
   return buildAsSkellam(sample).clone();
 }
 
-SkellamFactory::Implementation SkellamFactory::build(const Point & parameters) const
+Distribution SkellamFactory::build(const Point & parameters) const
 {
   return buildAsSkellam(parameters).clone();
 }
 
-SkellamFactory::Implementation SkellamFactory::build() const
+Distribution SkellamFactory::build() const
 {
   return buildAsSkellam().clone();
 }

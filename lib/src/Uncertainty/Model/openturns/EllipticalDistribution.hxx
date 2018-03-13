@@ -146,7 +146,7 @@ public:
 
   /** Get the standard distribution, i.e. a distribution of the same kind but with zero mean,
    * unit marginal standard distribution and identity correlation */
-  Implementation getStandardDistribution() const;
+  Distribution getStandardDistribution() const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;

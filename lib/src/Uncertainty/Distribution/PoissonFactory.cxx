@@ -44,17 +44,17 @@ PoissonFactory * PoissonFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-PoissonFactory::Implementation PoissonFactory::build(const Sample & sample) const
+Distribution PoissonFactory::build(const Sample & sample) const
 {
   return buildAsPoisson(sample).clone();
 }
 
-PoissonFactory::Implementation PoissonFactory::build(const Point & parameters) const
+Distribution PoissonFactory::build(const Point & parameters) const
 {
   return buildAsPoisson(parameters).clone();
 }
 
-PoissonFactory::Implementation PoissonFactory::build() const
+Distribution PoissonFactory::build() const
 {
   return buildAsPoisson().clone();
 }

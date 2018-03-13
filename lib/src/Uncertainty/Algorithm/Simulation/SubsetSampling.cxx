@@ -91,7 +91,7 @@ void SubsetSampling::run()
   probabilityEstimatePerStep_.clear();
   eventInputSample_.clear();
   eventOutputSample_.clear();
-  dimension_ = getEvent().getAntecedent()->getDimension();
+  dimension_ = getEvent().getAntecedent().getDimension();
 
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
@@ -122,7 +122,7 @@ void SubsetSampling::run()
     if (!iSubset_)
     {
       // crude MC
-      inputSample = standardEvent_.getAntecedent()->getDistribution().getSample(blockSize);
+      inputSample = standardEvent_.getAntecedent().getDistribution().getSample(blockSize);
     }
     else
     {
@@ -167,7 +167,7 @@ void SubsetSampling::run()
 
   if (iSubset_)
   {
-    Scalar correction = ChiSquare(standardEvent_.getImplementation()->getAntecedent()->getDistribution().getDimension()).computeComplementaryCDF(betaMin_ * betaMin_);
+    Scalar correction = ChiSquare(standardEvent_.getImplementation()->getAntecedent().getDistribution().getDimension()).computeComplementaryCDF(betaMin_ * betaMin_);
     probabilityEstimate *= correction;
   }
 
@@ -245,7 +245,7 @@ void SubsetSampling::run()
     {
       if (getEvent().getOperator()(currentLevelSample_[i][0], getEvent().getThreshold()))
       {
-        eventInputSample_.add(standardEvent_.getAntecedent()->getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
+        eventInputSample_.add(standardEvent_.getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
         eventOutputSample_.add(currentLevelSample_[i]);
       }
     }

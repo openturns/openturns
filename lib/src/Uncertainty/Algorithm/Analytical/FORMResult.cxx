@@ -73,7 +73,7 @@ void FORMResult::computeEventProbability() const
   /* evaluate the event probability */
   /* Be careful! computeCDF method takes an Point as an input argument */
   /* in the standard space all marginals of the standard distribution are identical */
-  eventProbability_ = getLimitStateVariable().getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getMarginal(0).computeCDF(Point(1, -getHasoferReliabilityIndex()));
+  eventProbability_ = getLimitStateVariable().getImplementation()->getAntecedent().getDistribution().getStandardDistribution().getMarginal(0).computeCDF(Point(1, -getHasoferReliabilityIndex()));
 
   if (getIsStandardPointOriginInFailureSpace())
   {
@@ -99,7 +99,7 @@ void  FORMResult::computeGeneralisedReliabilityIndex() const
 {
   /* GeneralisedReliabilityIndex is defined by : - Inverse standard marginal CDF (eventProbability). It
      will thus be negative if the eventProbability is > 0.5. */
-  generalisedReliabilityIndex_ = -getLimitStateVariable().getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getMarginal(0).computeQuantile(eventProbability_)[0];
+  generalisedReliabilityIndex_ = -getLimitStateVariable().getImplementation()->getAntecedent().getDistribution().getStandardDistribution().getMarginal(0).computeQuantile(eventProbability_)[0];
 }
 
 
@@ -119,7 +119,7 @@ void FORMResult::setGeneralisedReliabilityIndex(const Scalar & generalisedReliab
 void FORMResult::computeEventProbabilitySensitivity() const
 {
   Point correctedReliabilityIndex(1, (getIsStandardPointOriginInFailureSpace() ? getHasoferReliabilityIndex() : -getHasoferReliabilityIndex()));
-  Distribution antecedent(getLimitStateVariable().getImplementation()->getAntecedent()->getDistribution());
+  Distribution antecedent(getLimitStateVariable().getImplementation()->getAntecedent().getDistribution());
   UnsignedInteger dimension = antecedent.getDimension();
 
   /* Be carefull! computeCDF method takes an Point as an input argument */

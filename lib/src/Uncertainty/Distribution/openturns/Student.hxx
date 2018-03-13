@@ -38,8 +38,6 @@ class OT_API Student
   CLASSNAME
 public:
 
-  typedef Pointer<DistributionImplementation> Implementation;
-
   /** Default constructor */
   explicit Student(const Scalar nu = 3.0,
                    const UnsignedInteger dimension = 1);
@@ -111,10 +109,10 @@ public:
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Get the mean of the distribution */
   Point getMean() const;
@@ -135,7 +133,7 @@ public:
   Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Implementation getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;

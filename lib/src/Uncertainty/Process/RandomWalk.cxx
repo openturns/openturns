@@ -140,14 +140,14 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-RandomWalk::Implementation RandomWalk::getMarginal(const UnsignedInteger i) const
+Process RandomWalk::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
   return new RandomWalk(Point(1, origin_[i]), distribution_.getMarginal(i), mesh_);
 }
 
 /* Get the marginal process corresponding to indices components */
-RandomWalk::Implementation RandomWalk::getMarginal(const Indices & indices) const
+Process RandomWalk::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = indices.getSize();

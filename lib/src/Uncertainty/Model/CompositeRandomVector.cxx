@@ -31,21 +31,9 @@ static const Factory<CompositeRandomVector> Factory_CompositeRandomVector;
 CompositeRandomVector::CompositeRandomVector()
   : RandomVectorImplementation()
   , function_()
-  , p_antecedent_()
+  , antecedent_()
 {
   // Nothing to do
-}
-
-/* Standard constructor */
-CompositeRandomVector::CompositeRandomVector(const Function & function,
-    const Antecedent & p_antecedent)
-  : RandomVectorImplementation()
-  , function_(function)
-  , p_antecedent_(p_antecedent)
-{
-  if (function.getInputDimension() != p_antecedent->getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a Function with incompatible dimensions, here RandomVector dimension=" << p_antecedent->getDimension() << " and Function input dimension=" << function.getInputDimension();
-  // Get the description from the underlying function
-  setDescription(function.getOutputDescription());
 }
 
 /* Standard constructor */
@@ -53,9 +41,9 @@ CompositeRandomVector::CompositeRandomVector(const Function & function,
     const RandomVector & antecedent)
   : RandomVectorImplementation()
   , function_(function)
-  , p_antecedent_(antecedent.getImplementation())
+  , antecedent_(antecedent)
 {
-  if (function.getInputDimension() != p_antecedent_->getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a Function with incompatible dimensions, here RandomVector dimension=" << p_antecedent_->getDimension() << " and Function input dimension=" << function.getInputDimension();
+  if (function.getInputDimension() != antecedent_.getDimension()) throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeRandomVector from a RandomVector and a Function with incompatible dimensions, here RandomVector dimension=" << antecedent_.getDimension() << " and Function input dimension=" << function.getInputDimension();
   // Get the description from the underlying function
   setDescription(function.getOutputDescription());
 }
@@ -72,7 +60,7 @@ String CompositeRandomVector::__repr__() const
   OSS oss;
   oss << "class=" << CompositeRandomVector::GetClassName()
       << " function=" << function_
-      << " antecedent=" << (p_antecedent_ ? p_antecedent_->__repr__() : "");
+      << " antecedent=" << (antecedent_.getImplementation().get() ? antecedent_.getImplementation()->__repr__() : "");
   return oss;
 }
 
@@ -98,13 +86,13 @@ UnsignedInteger CompositeRandomVector::getDimension() const
 /* Realization accessor */
 Point CompositeRandomVector::getRealization() const
 {
-  return function_(p_antecedent_->getRealization());
+  return function_(antecedent_.getRealization());
 }
 
 /* Numerical sample accessor */
 Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
 {
-  Sample sample(function_(p_antecedent_->getSample(size)));
+  Sample sample(function_(antecedent_.getSample(size)));
   const Description description(getDescription());
   // It may append that the description has been overloaded by a child class
   // FIXME: change this ugly hack to something reasonable
@@ -114,23 +102,23 @@ Sample CompositeRandomVector::getSample(const UnsignedInteger size) const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-CompositeRandomVector::Implementation CompositeRandomVector::getMarginal(const UnsignedInteger i) const
+RandomVector CompositeRandomVector::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal random vector must be in the range [0, dim-1]";
-  return new CompositeRandomVector(function_.getMarginal(i), p_antecedent_);
+  return new CompositeRandomVector(function_.getMarginal(i), antecedent_);
 }
 
 /* Get the marginal random vector corresponding to indices components */
-CompositeRandomVector::Implementation CompositeRandomVector::getMarginal(const Indices & indices) const
+RandomVector CompositeRandomVector::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and must be different";
-  return new CompositeRandomVector(function_.getMarginal(indices), p_antecedent_);
+  return new CompositeRandomVector(function_.getMarginal(indices), antecedent_);
 }
 
 /* Antecedent accessor */
-CompositeRandomVector::Antecedent CompositeRandomVector::getAntecedent() const
+RandomVector CompositeRandomVector::getAntecedent() const
 {
-  return p_antecedent_;
+  return antecedent_;
 }
 
 /* Function accessor */
@@ -142,14 +130,14 @@ Function CompositeRandomVector::getFunction() const
 Point CompositeRandomVector::getParameter() const
 {
   Point parameter(function_.getParameter());
-  parameter.add(p_antecedent_->getParameter());
+  parameter.add(antecedent_.getParameter());
   return parameter;
 }
 
 void CompositeRandomVector::setParameter(const Point & parameter)
 {
   const UnsignedInteger functionParameterDimension = function_.getParameter().getDimension();
-  const UnsignedInteger antecedentParameterDimension = p_antecedent_->getParameter().getDimension();
+  const UnsignedInteger antecedentParameterDimension = antecedent_.getParameter().getDimension();
   if (parameter.getDimension() != (functionParameterDimension + antecedentParameterDimension))
     throw InvalidArgumentException(HERE) << "Wrong composite random vector parameter size";
   Point functionParameter(functionParameterDimension);
@@ -157,13 +145,13 @@ void CompositeRandomVector::setParameter(const Point & parameter)
   function_.setParameter(functionParameter);
   Point antecedentParameter(antecedentParameterDimension);
   std::copy(parameter.begin() + functionParameterDimension, parameter.end(), antecedentParameter.begin());
-  p_antecedent_->setParameter(antecedentParameter);
+  antecedent_.setParameter(antecedentParameter);
 }
 
 Description CompositeRandomVector::getParameterDescription() const
 {
   Description description(function_.getParameterDescription());
-  description.add(p_antecedent_->getParameterDescription());
+  description.add(antecedent_.getParameterDescription());
   return description;
 }
 
@@ -172,7 +160,7 @@ void CompositeRandomVector::save(Advocate & adv) const
 {
   RandomVectorImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
-  adv.saveAttribute( "antecedent_", *p_antecedent_ );
+  adv.saveAttribute( "antecedent_", antecedent_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -180,9 +168,7 @@ void CompositeRandomVector::load(Advocate & adv)
 {
   RandomVectorImplementation::load(adv);
   adv.loadAttribute( "function_", function_ );
-  TypedInterfaceObject<RandomVectorImplementation> antecedent;
-  adv.loadAttribute( "antecedent_", antecedent );
-  p_antecedent_ = antecedent.getImplementation();
+  adv.loadAttribute( "antecedent_", antecedent_ );
 }
 
 END_NAMESPACE_OPENTURNS

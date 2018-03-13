@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
           fullprint << ex << std::endl;
         }
       }
-      fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
+      fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
       // Specific to this distribution
       Point standardDeviation = distribution.getStandardDeviation();

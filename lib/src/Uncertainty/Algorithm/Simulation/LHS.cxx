@@ -48,14 +48,14 @@ LHS::LHS()
 /* Constructor with parameters */
 LHS::LHS(const Event & event)
   : Simulation(event)
-  , dimension_(event.getImplementation()->getAntecedent()->getDimension())
+  , dimension_(event.getImplementation()->getAntecedent().getDimension())
   , blockIndex_(0)
 {
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "LHS requires a composite event";
   // Check if the distribution associated to the antecedent of the antecedent of the event has independent components
-  if(!event.getImplementation()->getAntecedent()->getDistribution().hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error the LHS simulation method requires independent components for the event second antecedent";
+  if(!event.getImplementation()->getAntecedent().getDistribution().hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error the LHS simulation method requires independent components for the event second antecedent";
   // Get the marginals
-  for (UnsignedInteger index = 0; index < dimension_; index++) marginals_.add(event.getImplementation()->getAntecedent()->getDistribution().getMarginal(index));
+  for (UnsignedInteger index = 0; index < dimension_; index++) marginals_.add(event.getImplementation()->getAntecedent().getDistribution().getMarginal(index));
 }
 
 /* Virtual constructor */

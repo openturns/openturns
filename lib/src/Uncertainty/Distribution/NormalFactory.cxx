@@ -45,17 +45,17 @@ NormalFactory * NormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-NormalFactory::Implementation NormalFactory::build(const Sample & sample) const
+Distribution NormalFactory::build(const Sample & sample) const
 {
   return buildAsNormal(sample).clone();
 }
 
-NormalFactory::Implementation NormalFactory::build() const
+Distribution NormalFactory::build() const
 {
   return buildAsNormal().clone();
 }
 
-NormalFactory::Implementation NormalFactory::build(const Point & parameters) const
+Distribution NormalFactory::build(const Point & parameters) const
 {
   return buildAsNormal(parameters).clone();
 }

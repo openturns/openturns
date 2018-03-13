@@ -45,9 +45,9 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build(const Point & parameters) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build(const Point & parameters) const;
+  Distribution build() const;
   NegativeBinomial buildAsNegativeBinomial(const Sample & sample) const;
   NegativeBinomial buildAsNegativeBinomial(const Point & parameters) const;
   NegativeBinomial buildAsNegativeBinomial() const;

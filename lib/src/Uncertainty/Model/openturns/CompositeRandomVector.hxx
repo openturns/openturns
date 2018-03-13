@@ -48,10 +48,6 @@ public:
 
   /** Standard constructor */
   CompositeRandomVector(const Function & function,
-                        const Antecedent & p_antecedent);
-
-  /** Standard constructor */
-  CompositeRandomVector(const Function & function,
                         const RandomVector & antecedent);
 
 
@@ -79,13 +75,13 @@ public:
   Sample getSample(const UnsignedInteger size) const;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  RandomVector getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  RandomVector getMarginal(const Indices & indices) const;
 
   /** Antecedent accessor */
-  Antecedent getAntecedent() const;
+  RandomVector getAntecedent() const;
 
   /** Function accessor */
   Function getFunction() const;
@@ -108,7 +104,7 @@ protected:
   Function function_;
 
   /** The antecedent of the vector through the numerical math function */
-  Antecedent p_antecedent_;
+  RandomVector antecedent_;
 
 private:
 

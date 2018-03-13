@@ -44,17 +44,17 @@ DiracFactory * DiracFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-DiracFactory::Implementation DiracFactory::build(const Sample & sample) const
+Distribution DiracFactory::build(const Sample & sample) const
 {
   return buildAsDirac(sample).clone();
 }
 
-DiracFactory::Implementation DiracFactory::build(const Point & parameters) const
+Distribution DiracFactory::build(const Point & parameters) const
 {
   return buildAsDirac(parameters).clone();
 }
 
-DiracFactory::Implementation DiracFactory::build() const
+Distribution DiracFactory::build() const
 {
   return buildAsDirac().clone();
 }

@@ -41,6 +41,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration
+class Distribution;
+
 /**
  * @class DistributionImplementation
  *
@@ -72,57 +75,57 @@ public:
   Bool operator !=(const DistributionImplementation & other) const;
 
   /** Addition operator */
-  Implementation operator + (const DistributionImplementation & other) const;
-  Implementation operator + (const Implementation & other) const;
+  Distribution operator + (const DistributionImplementation & other) const;
+  Distribution operator + (const Distribution & other) const;
 
-  Implementation operator + (const Scalar value) const;
+  Distribution operator + (const Scalar value) const;
 
   /** Subtraction operator */
-  Implementation operator - (const DistributionImplementation & other) const;
-  Implementation operator - (const Implementation & other) const;
+  Distribution operator - (const DistributionImplementation & other) const;
+  Distribution operator - (const Distribution & other) const;
 
-  Implementation operator - (const Scalar value) const;
+  Distribution operator - (const Scalar value) const;
 
   /** Multiplication operator */
-  Implementation operator * (const DistributionImplementation & other) const;
-  Implementation operator * (const Implementation & other) const;
+  Distribution operator * (const DistributionImplementation & other) const;
+  Distribution operator * (const Distribution & other) const;
 
-  Implementation operator * (const Scalar value) const;
+  Distribution operator * (const Scalar value) const;
 
   /** Division operator */
-  Implementation operator / (const DistributionImplementation & other) const;
-  Implementation operator / (const Implementation & other) const;
+  Distribution operator / (const DistributionImplementation & other) const;
+  Distribution operator / (const Distribution & other) const;
 
-  Implementation operator / (const Scalar value) const;
+  Distribution operator / (const Scalar value) const;
 
   /** Methods to transform distributions by usual functions */
-  Implementation cos() const;
-  Implementation sin() const;
-  Implementation tan() const;
+  Distribution cos() const;
+  Distribution sin() const;
+  Distribution tan() const;
 
-  Implementation acos() const;
-  Implementation asin() const;
-  Implementation atan() const;
+  Distribution acos() const;
+  Distribution asin() const;
+  Distribution atan() const;
 
-  Implementation cosh() const;
-  Implementation sinh() const;
-  Implementation tanh() const;
+  Distribution cosh() const;
+  Distribution sinh() const;
+  Distribution tanh() const;
 
-  Implementation acosh() const;
-  Implementation asinh() const;
-  Implementation atanh() const;
+  Distribution acosh() const;
+  Distribution asinh() const;
+  Distribution atanh() const;
 
-  Implementation exp() const;
-  Implementation log() const;
-  Implementation ln() const;
+  Distribution exp() const;
+  Distribution log() const;
+  Distribution ln() const;
 
-  Implementation pow(const SignedInteger exponent) const;
-  Implementation pow(const Scalar exponent) const;
-  Implementation inverse() const;
-  Implementation sqr() const;
-  Implementation sqrt() const;
-  Implementation cbrt() const;
-  Implementation abs() const;
+  Distribution pow(const SignedInteger exponent) const;
+  Distribution pow(const Scalar exponent) const;
+  Distribution inverse() const;
+  Distribution sqr() const;
+  Distribution sqrt() const;
+  Distribution cbrt() const;
+  Distribution abs() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -474,13 +477,13 @@ public:
       const Bool tail = false) const;
 
   /** Get the i-th marginal distribution */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Distribution getMarginal(const Indices & indices) const;
 
   /** Get the copula of a distribution */
-  virtual Implementation getCopula() const;
+  virtual Distribution getCopula() const;
 
   /** Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual Scalar computeConditionalDDF(const Scalar x,
@@ -514,10 +517,10 @@ public:
   virtual InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
 
   /** Get the standard distribution */
-  virtual Implementation getStandardDistribution() const;
+  virtual Distribution getStandardDistribution() const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  virtual Implementation getStandardRepresentative() const;
+  virtual Distribution getStandardRepresentative() const;
 
   /** integrationNodesNumber accessors */
   UnsignedInteger getIntegrationNodesNumber() const;
@@ -771,6 +774,8 @@ protected:
 
   /** Standard distribution */
   mutable Bool isAlreadyComputedStandardDistribution_;
+  // We cannot have a Distribution member in DistributionImplementation, there would
+  // be circular dependency.  Hence this Pointer<DistributionImplementation>
   mutable Implementation p_standardDistribution_;
 
   /** Optimization for the generating function evaluation */
@@ -1446,50 +1451,50 @@ protected:
 #ifndef SWIG
 
 /** Product operator */
-OT_API DistributionImplementation::Implementation operator * (const Scalar,
+OT_API Distribution operator * (const Scalar,
     const DistributionImplementation & distribution);
 
-OT_API DistributionImplementation::Implementation operator * (const Scalar,
+OT_API Distribution operator * (const Scalar,
     const DistributionImplementation::Implementation & p_distribution);
 
 /** Division operator */
-OT_API DistributionImplementation::Implementation operator / (const Scalar,
+OT_API Distribution operator / (const Scalar,
     const DistributionImplementation & distribution);
 
-OT_API DistributionImplementation::Implementation operator / (const Scalar,
+OT_API Distribution operator / (const Scalar,
     const DistributionImplementation::Implementation & p_distribution);
 
 /** Addition operator */
-OT_API DistributionImplementation::Implementation operator + (const Scalar,
+OT_API Distribution operator + (const Scalar,
     const DistributionImplementation & distribution);
 
-OT_API DistributionImplementation::Implementation operator + (const Scalar,
+OT_API Distribution operator + (const Scalar,
     const DistributionImplementation::Implementation & p_distribution);
 
 /** Subtraction operator */
-OT_API DistributionImplementation::Implementation operator - (const Scalar,
+OT_API Distribution operator - (const Scalar,
     const DistributionImplementation & distribution);
 
-OT_API DistributionImplementation::Implementation operator - (const Scalar,
+OT_API Distribution operator - (const Scalar,
     const DistributionImplementation::Implementation & p_distribution);
 
-OT_API DistributionImplementation::Implementation operator - (const DistributionImplementation & distribution);
+OT_API Distribution operator - (const DistributionImplementation & distribution);
 
-OT_API DistributionImplementation::Implementation operator - (const DistributionImplementation::Implementation & p_distribution);
+OT_API Distribution operator - (const DistributionImplementation::Implementation & p_distribution);
 
 
 #endif
 
-OT_API DistributionImplementation::Implementation maximum(const DistributionImplementation::Implementation & p_left,
+OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
     const DistributionImplementation::Implementation & p_right);
 
-OT_API DistributionImplementation::Implementation maximum(const DistributionImplementation & left,
+OT_API Distribution maximum(const DistributionImplementation & left,
     const DistributionImplementation::Implementation & p_right);
 
-OT_API DistributionImplementation::Implementation maximum(const DistributionImplementation::Implementation & p_left,
+OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
     const DistributionImplementation & right);
 
-OT_API DistributionImplementation::Implementation maximum(const DistributionImplementation & left,
+OT_API Distribution maximum(const DistributionImplementation & left,
     const DistributionImplementation & right);
 
 

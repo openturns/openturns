@@ -104,7 +104,7 @@ PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsCopula::getApproximation
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-MaximumEntropyOrderStatisticsCopula::Implementation MaximumEntropyOrderStatisticsCopula::getMarginal(const Indices & indices) const
+Distribution MaximumEntropyOrderStatisticsCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger size = indices.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "indices is empty";
@@ -113,7 +113,7 @@ MaximumEntropyOrderStatisticsCopula::Implementation MaximumEntropyOrderStatistic
   if (dimension == 1) return clone();
   if (size == 1)
   {
-    Implementation marginal(getMarginal(indices[0]));
+    Implementation marginal(getMarginal(indices[0]).getImplementation());
     marginal->setDescription(Description(1, getDescription()[indices[0]]));
     return marginal;
   }

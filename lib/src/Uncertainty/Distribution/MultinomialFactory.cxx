@@ -45,12 +45,12 @@ MultinomialFactory * MultinomialFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-MultinomialFactory::Implementation MultinomialFactory::build(const Sample & sample) const
+Distribution MultinomialFactory::build(const Sample & sample) const
 {
   return buildAsMultinomial(sample).clone();
 }
 
-MultinomialFactory::Implementation MultinomialFactory::build() const
+Distribution MultinomialFactory::build() const
 {
   return buildAsMultinomial().clone();
 }

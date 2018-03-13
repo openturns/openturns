@@ -50,7 +50,7 @@ EventDomain::EventDomain(const RandomVectorImplementation & antecedent,
                                          << antecedent << ") passed as first argument of EventDomain "
                                          << " has incorrect type";
   function_ = antecedent.getFunction();
-  p_antecedent_ = antecedent.getAntecedent();
+  antecedent_ = antecedent.getAntecedent();
   setName(antecedent.getName());
   setDescription(Description(1, OSS() << antecedent.getName() << " in " << domain.getName()));
 }

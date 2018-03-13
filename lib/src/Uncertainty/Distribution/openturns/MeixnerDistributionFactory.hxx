@@ -45,9 +45,9 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build(const Point & parameters) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build(const Point & parameters) const;
+  Distribution build() const;
   MeixnerDistribution buildAsMeixnerDistribution(const Sample & sample) const;
   MeixnerDistribution buildAsMeixnerDistribution(const Point & parameters) const;
   MeixnerDistribution buildAsMeixnerDistribution() const;

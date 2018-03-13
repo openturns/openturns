@@ -111,10 +111,10 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;

@@ -402,7 +402,7 @@ Point Mixture::computeCDFGradient(const Point & point) const
 }
 
 /* Get the i-th marginal distribution */
-Mixture::Implementation Mixture::getMarginal(const UnsignedInteger i) const
+Distribution Mixture::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -423,7 +423,7 @@ Mixture::Implementation Mixture::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Mixture::Implementation Mixture::getMarginal(const Indices & indices) const
+Distribution Mixture::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

@@ -363,7 +363,7 @@ void ARMA::setWhiteNoise(const WhiteNoise & whiteNoise)
 
 
 /* Get the random vector corresponding to the i-th marginal component */
-ARMA::Implementation ARMA::getMarginal(const UnsignedInteger i) const
+Process ARMA::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
   if (getOutputDimension() == 1) return clone();
@@ -371,7 +371,7 @@ ARMA::Implementation ARMA::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the marginal random vector corresponding to indices components */
-ARMA::Implementation ARMA::getMarginal(const Indices & indices) const
+Process ARMA::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   throw NotYetImplementedException(HERE) << "In ARMA::getMarginal(const Indices & indices) const";

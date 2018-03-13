@@ -25,6 +25,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -427,7 +428,7 @@ Point TruncatedNormal::getKurtosis() const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-TruncatedNormal::Implementation TruncatedNormal::getStandardRepresentative() const
+Distribution TruncatedNormal::getStandardRepresentative() const
 {
   return new TruncatedNormal((2.0 * mu_ - (b_ + a_)) / (b_ - a_), 2.0 * sigma_ / (b_ - a_), -1.0, 1.0);
 }

@@ -160,7 +160,7 @@ void TaylorExpansionMoments::computeMeanFirstOrder() const
 {
   if (!isAlreadyComputedValue_)
   {
-    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent()->getMean();
+    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent().getMean();
     valueAtMean_ = limitStateVariable_.getImplementation()->getFunction().operator()(meanInputVector_);
     isAlreadyComputedValue_ = true;
   }
@@ -173,10 +173,10 @@ void TaylorExpansionMoments::computeMeanFirstOrder() const
 /* the function that computes the first order evaluation of the mean vector and the matrix covariance */
 void TaylorExpansionMoments::computeCovariance() const
 {
-  inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent()->getCovariance();
+  inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent().getCovariance();
   if (!isAlreadyComputedGradient_)
   {
-    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent()->getMean();
+    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent().getMean();
     gradientAtMean_ = limitStateVariable_.getImplementation()->getFunction().gradient(meanInputVector_);
     isAlreadyComputedGradient_ = true;
   }
@@ -228,23 +228,23 @@ void TaylorExpansionMoments::computeImportanceFactors() const
     for (UnsignedInteger j = 0; j < dimension; ++j) importanceFactors_[i] += inputCovariance_(i, j) * gradientAtMean_(j, 0);
     importanceFactors_[i] *= gradientAtMean_(i, 0) / covariance_(0, 0);
   }
-  importanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent()->getDescription());
+  importanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent().getDescription());
   isAlreadyComputedImportanceFactors_ = true;
 } // TaylorExpansionMoments::computeImportanceFactors()
 
 /* the function that computes the second order evaluation of the mean vector */
 void TaylorExpansionMoments::computeMeanSecondOrder() const
 {
-  inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent()->getCovariance();
+  inputCovariance_ = limitStateVariable_.getImplementation()->getAntecedent().getCovariance();
   if (!isAlreadyComputedValue_)
   {
-    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent()->getMean();
+    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent().getMean();
     valueAtMean_ = limitStateVariable_.getImplementation()->getFunction().operator()(meanInputVector_);
     isAlreadyComputedValue_ = true;
   }
   if (!isAlreadyComputedHessian_)
   {
-    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent()->getMean();
+    meanInputVector_ = limitStateVariable_.getImplementation()->getAntecedent().getMean();
     hessianAtMean_ = limitStateVariable_.getImplementation()->getFunction().hessian(meanInputVector_);
     isAlreadyComputedHessian_ = true;
   }

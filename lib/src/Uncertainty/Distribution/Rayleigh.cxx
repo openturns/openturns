@@ -23,6 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -251,7 +252,7 @@ Point Rayleigh::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Rayleigh::Implementation Rayleigh::getStandardRepresentative() const
+Distribution Rayleigh::getStandardRepresentative() const
 {
   return new Rayleigh(1.0, 0.0);
 }

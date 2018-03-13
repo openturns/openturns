@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/Distribution.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -290,7 +291,7 @@ Point Uniform::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Uniform::Implementation Uniform::getStandardRepresentative() const
+Distribution Uniform::getStandardRepresentative() const
 {
   return new Uniform(-1.0, 1.0);
 }

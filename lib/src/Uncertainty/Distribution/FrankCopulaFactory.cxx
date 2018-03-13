@@ -49,17 +49,17 @@ FrankCopulaFactory * FrankCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-FrankCopulaFactory::Implementation FrankCopulaFactory::build(const Sample & sample) const
+Distribution FrankCopulaFactory::build(const Sample & sample) const
 {
   return buildAsFrankCopula(sample).clone();
 }
 
-FrankCopulaFactory::Implementation FrankCopulaFactory::build(const Point & parameters) const
+Distribution FrankCopulaFactory::build(const Point & parameters) const
 {
   return buildAsFrankCopula(parameters).clone();
 }
 
-FrankCopulaFactory::Implementation FrankCopulaFactory::build() const
+Distribution FrankCopulaFactory::build() const
 {
   return buildAsFrankCopula().clone();
 }

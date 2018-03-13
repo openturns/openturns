@@ -232,23 +232,23 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) 
   return LogNormal(mu, sigma, gamma);
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build(const Sample & sample) const
+Distribution LogNormalFactory::build(const Sample & sample) const
 {
   return build(sample, ResourceMap::GetAsUnsignedInteger("LogNormalFactory-EstimationMethod"));
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build(const Sample & sample,
+Distribution LogNormalFactory::build(const Sample & sample,
     const UnsignedInteger method) const
 {
   return buildAsLogNormal(sample, method).clone();
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build() const
+Distribution LogNormalFactory::build() const
 {
   return buildAsLogNormal().clone();
 }
 
-LogNormalFactory::Implementation LogNormalFactory::build(const Point & parameters) const
+Distribution LogNormalFactory::build(const Point & parameters) const
 {
   return buildAsLogNormal(parameters).clone();
 }

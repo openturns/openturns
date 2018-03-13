@@ -45,8 +45,8 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build() const;
   Multinomial buildAsMultinomial(const Sample & sample) const;
   Multinomial buildAsMultinomial() const;
 

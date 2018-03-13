@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -266,7 +267,7 @@ Point Arcsine::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Arcsine::Implementation Arcsine::getStandardRepresentative() const
+Distribution Arcsine::getStandardRepresentative() const
 {
   return new Arcsine(-1.0, 1.0);
 }

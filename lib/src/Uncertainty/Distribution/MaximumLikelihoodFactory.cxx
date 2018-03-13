@@ -337,7 +337,7 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
 }
 
 
-DistributionFactoryImplementation::Implementation MaximumLikelihoodFactory::build(const Sample & sample) const
+Distribution MaximumLikelihoodFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));

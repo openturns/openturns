@@ -54,6 +54,10 @@
  * Deprecated usage of _e and _pi constants when defining analytical functions, e_ and pi_ must be used instead.
  * Removed Function::enableHistory,disableHistory,isHistoryEnabled,clearHistory,getHistoryInput,getHistoryOutput,getInputPointHistory,getInputParameterHistory
  * Added Drawable::getPaletteAsNormalizedRGBA() to get the palette into a native matplotlib format.
+ * Changed DistributionImplementation::getCopula,getMarginal,getStandardRepresentative,getStandardDistribution to return a Distribution instead of Pointer<DistributionImplementation>
+ * Changed DistributionFactoryImplementation::build to return a Distribution instead of Pointer<DistributionImplementation>
+ * Changed ProcessImplementation::getMarginal to return a Process instead of Pointer<ProcessImplementation>
+ * Changed RandomVector::getAntecedent,getMarginal to return a RandomVector instead of Pointer<RandomVectorImplementation>
 
 === Python module ===
 

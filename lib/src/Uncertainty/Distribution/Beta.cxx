@@ -24,6 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -290,7 +291,7 @@ Point Beta::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Beta::Implementation Beta::getStandardRepresentative() const
+Distribution Beta::getStandardRepresentative() const
 {
   return new Beta(r_, t_, -1.0, 1.0);
 }

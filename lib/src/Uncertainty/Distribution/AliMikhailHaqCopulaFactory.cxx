@@ -47,17 +47,17 @@ AliMikhailHaqCopulaFactory * AliMikhailHaqCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const Sample & sample) const
+Distribution AliMikhailHaqCopulaFactory::build(const Sample & sample) const
 {
   return buildAsAliMikhailHaqCopula(sample).clone();
 }
 
-AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build(const Point & parameters) const
+Distribution AliMikhailHaqCopulaFactory::build(const Point & parameters) const
 {
   return buildAsAliMikhailHaqCopula(parameters).clone();
 }
 
-AliMikhailHaqCopulaFactory::Implementation AliMikhailHaqCopulaFactory::build() const
+Distribution AliMikhailHaqCopulaFactory::build() const
 {
   return buildAsAliMikhailHaqCopula().clone();
 }

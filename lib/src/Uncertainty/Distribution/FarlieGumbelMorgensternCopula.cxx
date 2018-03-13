@@ -24,6 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -279,7 +280,7 @@ Scalar FarlieGumbelMorgensternCopula::getTheta() const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-FarlieGumbelMorgensternCopula::Implementation FarlieGumbelMorgensternCopula::getMarginal(const Indices & indices) const
+Distribution FarlieGumbelMorgensternCopula::getMarginal(const Indices & indices) const
 {
   if (!indices.check(2)) throw InvalidArgumentException(HERE) << "The indices of an archimedean copula must be in the range [0, 1] and must be different";
   // General case

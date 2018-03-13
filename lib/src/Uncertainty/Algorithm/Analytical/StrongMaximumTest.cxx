@@ -405,15 +405,15 @@ Scalar StrongMaximumTest::computeDeltaEpsilon()
   const Scalar betaSquare = standardSpaceDesignPoint_.normSquare();
 
   /* get the input distribution in the standard space */
-  const DistributionImplementation::Implementation p_inputStandardDistribution(event_.getImplementation()->getAntecedent()->getDistribution().getImplementation());
+  const Distribution inputStandardDistribution(event_.getImplementation()->getAntecedent().getDistribution().getImplementation());
 
   /* evaluate the generator at beta square */
-  const Scalar pdfMin = importanceLevel_ * p_inputStandardDistribution->computeDensityGenerator(betaSquare);
+  const Scalar pdfMin = importanceLevel_ * inputStandardDistribution.computeDensityGenerator(betaSquare);
 
   /* research the interval [deltaMin deltaMax] including the solution */
   Scalar deltaMax = 1.0;
 
-  while ( p_inputStandardDistribution->computeDensityGenerator(betaSquare * pow(1.0 + deltaMax, 2)) > pdfMin ) ++deltaMax;
+  while ( inputStandardDistribution.computeDensityGenerator(betaSquare * pow(1.0 + deltaMax, 2)) > pdfMin ) ++deltaMax;
   Scalar deltaMin = deltaMax - 1.0;
 
   /* we proceed to the dichotomie on [deltaMin deltaMax] */
@@ -423,7 +423,7 @@ Scalar StrongMaximumTest::computeDeltaEpsilon()
   {
     /* we evaluate the middle of  [deltaMin deltaMax] */
     deltaMiddle = 0.5 * (deltaMax + deltaMin);
-    if(  p_inputStandardDistribution->computeDensityGenerator(betaSquare * pow(1.0 + deltaMiddle, 2)) > pdfMin )
+    if(  inputStandardDistribution.computeDensityGenerator(betaSquare * pow(1.0 + deltaMiddle, 2)) > pdfMin )
     {
       deltaMin = deltaMiddle;
     }
@@ -455,7 +455,7 @@ void StrongMaximumTest::run()
   /* create a nearestPointChecker, in charge of the evaluation of the level function over the sample and to classify the points according to the operator and the threshold */
   NearestPointChecker nearestPointChecker(event_.getImplementation()->getFunction(), event_.getOperator(), event_.getThreshold(), sample);
   /* access to the inverse isoprobabilistic transformation */
-  InverseIsoProbabilisticTransformation inverseIsoProbabilisticTransformation(event_.getImplementation()->getAntecedent()->getDistribution().getInverseIsoProbabilisticTransformation());
+  InverseIsoProbabilisticTransformation inverseIsoProbabilisticTransformation(event_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
   /* run test */
   try
   {

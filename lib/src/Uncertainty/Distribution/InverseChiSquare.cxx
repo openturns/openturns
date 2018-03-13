@@ -24,6 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -294,7 +295,7 @@ Point InverseChiSquare::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-InverseChiSquare::Implementation InverseChiSquare::getStandardRepresentative() const
+Distribution InverseChiSquare::getStandardRepresentative() const
 {
   return new InverseChiSquare(nu_);
 }

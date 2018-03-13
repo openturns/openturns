@@ -44,17 +44,17 @@ LogisticFactory * LogisticFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-LogisticFactory::Implementation LogisticFactory::build(const Sample & sample) const
+Distribution LogisticFactory::build(const Sample & sample) const
 {
   return buildAsLogistic(sample).clone();
 }
 
-LogisticFactory::Implementation LogisticFactory::build(const Point & parameters) const
+Distribution LogisticFactory::build(const Point & parameters) const
 {
   return buildAsLogistic(parameters).clone();
 }
 
-LogisticFactory::Implementation LogisticFactory::build() const
+Distribution LogisticFactory::build() const
 {
   return buildAsLogistic().clone();
 }

@@ -25,6 +25,7 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/UserDefined.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -113,10 +114,10 @@ public:
   Point computeCDFGradient(const Point & point) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;

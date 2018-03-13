@@ -45,17 +45,17 @@ TruncatedNormalFactory * TruncatedNormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Sample & sample) const
+Distribution TruncatedNormalFactory::build(const Sample & sample) const
 {
   return buildAsTruncatedNormal(sample).clone();
 }
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build(const Point & parameters) const
+Distribution TruncatedNormalFactory::build(const Point & parameters) const
 {
   return buildAsTruncatedNormal(parameters).clone();
 }
 
-TruncatedNormalFactory::Implementation TruncatedNormalFactory::build() const
+Distribution TruncatedNormalFactory::build() const
 {
   return buildAsTruncatedNormal().clone();
 }

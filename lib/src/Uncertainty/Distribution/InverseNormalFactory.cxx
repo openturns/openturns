@@ -44,17 +44,17 @@ InverseNormalFactory * InverseNormalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-InverseNormalFactory::Implementation InverseNormalFactory::build(const Sample & sample) const
+Distribution InverseNormalFactory::build(const Sample & sample) const
 {
   return buildAsInverseNormal(sample).clone();
 }
 
-InverseNormalFactory::Implementation InverseNormalFactory::build(const Point & parameters) const
+Distribution InverseNormalFactory::build(const Point & parameters) const
 {
   return buildAsInverseNormal(parameters).clone();
 }
 
-InverseNormalFactory::Implementation InverseNormalFactory::build() const
+Distribution InverseNormalFactory::build() const
 {
   return buildAsInverseNormal().clone();
 }

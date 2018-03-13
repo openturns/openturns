@@ -311,7 +311,7 @@ Scalar SklarCopula::computeConditionalQuantile(const Scalar q,
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-SklarCopula::Implementation SklarCopula::getMarginal(const Indices & indices) const
+Distribution SklarCopula::getMarginal(const Indices & indices) const
 {
   // This call will check that indices are correct
   return new SklarCopula(distribution_.getMarginal(indices));
@@ -364,9 +364,9 @@ SklarCopula::InverseIsoProbabilisticTransformation SklarCopula::getInverseIsoPro
 }
 
 /* Get the standard distribution */
-SklarCopula::Implementation SklarCopula::getStandardDistribution() const
+Distribution SklarCopula::getStandardDistribution() const
 {
-  return distribution_.getStandardDistribution().getImplementation();
+  return distribution_.getStandardDistribution();
 }
 
 /* Parameters value and description accessor */

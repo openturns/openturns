@@ -118,10 +118,10 @@ public:
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
   Scalar getRoughness() const;
@@ -136,13 +136,13 @@ public:
   Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Implementation getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const;
 
   /** Correlation matrix accessor */
   void setCorrelation(const CorrelationMatrix & R);
 
   /** Get the copula of a distribution */
-  Implementation getCopula() const;
+  Distribution getCopula() const;
 
   /* Interface specific to Implementation */
 

@@ -79,7 +79,7 @@ public:
   DistributionCollection getDistributionCollection() const;
 
   /** Get the copula of a distribution */
-  Implementation getCopula() const;
+  Distribution getCopula() const;
 
   /* Interface inherited from Distribution */
 
@@ -113,10 +113,10 @@ public:
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 private:
   MaximumEntropyOrderStatisticsDistribution getMarginalAsMaximumEntropyOrderStatisticsDistribution(const Indices & indices) const;
 public:

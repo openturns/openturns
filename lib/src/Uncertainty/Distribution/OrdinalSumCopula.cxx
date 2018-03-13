@@ -428,7 +428,7 @@ Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point 
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-OrdinalSumCopula::Implementation OrdinalSumCopula::getMarginal(const Indices & indices) const
+Distribution OrdinalSumCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";

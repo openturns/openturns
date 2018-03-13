@@ -46,24 +46,24 @@ HistogramFactory * HistogramFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-HistogramFactory::Implementation HistogramFactory::build(const Sample & sample) const
+Distribution HistogramFactory::build(const Sample & sample) const
 {
   return buildAsHistogram(sample).clone();
 }
 
-HistogramFactory::Implementation HistogramFactory::build(const Sample & sample,
+Distribution HistogramFactory::build(const Sample & sample,
     const Scalar bandwidth) const
 {
   return buildAsHistogram(sample, bandwidth).clone();
 }
 
-HistogramFactory::Implementation HistogramFactory::build(const Sample & sample,
+Distribution HistogramFactory::build(const Sample & sample,
     const UnsignedInteger binNumber) const
 {
   return buildAsHistogram(sample, binNumber).clone();
 }
 
-HistogramFactory::Implementation HistogramFactory::build() const
+Distribution HistogramFactory::build() const
 {
   return buildAsHistogram().clone();
 }

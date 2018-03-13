@@ -76,17 +76,17 @@ struct NegativeBinomialFactoryParameterConstraint
   Scalar mean_;
 };
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Sample & sample) const
+Distribution NegativeBinomialFactory::build(const Sample & sample) const
 {
   return buildAsNegativeBinomial(sample).clone();
 }
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build(const Point & parameters) const
+Distribution NegativeBinomialFactory::build(const Point & parameters) const
 {
   return buildAsNegativeBinomial(parameters).clone();
 }
 
-NegativeBinomialFactory::Implementation NegativeBinomialFactory::build() const
+Distribution NegativeBinomialFactory::build() const
 {
   return buildAsNegativeBinomial().clone();
 }

@@ -102,8 +102,8 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Event & event
   // We are sure that the output sample has the same size as the input sample
   outputSample_ = model.getOutputHistory();
   // Get the transformation from the input distribution
-  transformation_ = event.getImplementation()->getAntecedent()->getDistribution().getIsoProbabilisticTransformation();
-  inputSample_.setDescription(event.getImplementation()->getAntecedent()->getDistribution().getDescription());
+  transformation_ = event.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation();
+  inputSample_.setDescription(event.getImplementation()->getAntecedent().getDistribution().getDescription());
   // Get the comparison operator
   comparisonOperator_ = event.getOperator();
   // Get the threshold

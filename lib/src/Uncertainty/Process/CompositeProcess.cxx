@@ -34,18 +34,10 @@ static const Factory<CompositeProcess> Factory_CompositeProcess;
 CompositeProcess::CompositeProcess()
   : ProcessImplementation()
   , function_(SymbolicFunction("x", "x^2"))
-  , p_antecedent_(WhiteNoise().clone())
+  , antecedent_(new WhiteNoise())
 {
   // Set the mesh
-  setMesh(function_.getOutputMesh(p_antecedent_->getMesh()));
-}
-
-/* Standard constructor */
-CompositeProcess::CompositeProcess(const FieldFunction & function,
-                                   const Antecedent & p_antecedent)
-  : ProcessImplementation()
-{
-  *this = CompositeProcess(function, *p_antecedent);
+  setMesh(function_.getOutputMesh(antecedent_.getMesh()));
 }
 
 /* Standard constructor */
@@ -53,17 +45,17 @@ CompositeProcess::CompositeProcess(const FieldFunction & function,
                                    const Process & antecedent)
   : ProcessImplementation()
   , function_(function)
-  , p_antecedent_(antecedent.getImplementation())
+  , antecedent_(antecedent)
 {
-  if (function.getInputDimension() != p_antecedent_->getOutputDimension())
+  if (function.getInputDimension() != antecedent_.getOutputDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible dimensions "
-                                         << "here Process dimension=" << p_antecedent_->getOutputDimension()
+                                         << "here Process dimension=" << antecedent_.getOutputDimension()
                                          << " and FieldFunction input dimension=" << function.getInputDimension();
-  if (function.getSpatialDimension() != p_antecedent_->getInputDimension())
+  if (function.getSpatialDimension() != antecedent_.getInputDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible mesh dimensions "
-                                         << "here Process mesh dimension=" << p_antecedent_->getInputDimension()
+                                         << "here Process mesh dimension=" << antecedent_.getInputDimension()
                                          << " and FieldFunction mesh dimension=" << function.getSpatialDimension();
-  setMesh(function.getOutputMesh(p_antecedent_->getMesh()));
+  setMesh(function.getOutputMesh(antecedent_.getMesh()));
   setOutputDimension(function.getOutputDimension());
   setDescription(function.getOutputDescription());
 }
@@ -80,7 +72,7 @@ String CompositeProcess::__repr__() const
   OSS oss(true);
   oss << "class=" << CompositeProcess::GetClassName()
       << " function=" << function_.__repr__()
-      << " antecedent=" << p_antecedent_->__repr__();
+      << " antecedent=" << antecedent_.getImplementation()->__repr__();
   return oss;
 }
 
@@ -88,7 +80,7 @@ String CompositeProcess::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << getClassName() << "(" << function_.__str__()
-      << "(" << p_antecedent_->__str__() << ")";
+      << "(" << antecedent_.__str__() << ")";
   return oss;
 }
 
@@ -99,9 +91,9 @@ Bool CompositeProcess::isComposite() const
 }
 
 /* Antecedent accessor */
-CompositeProcess::Antecedent CompositeProcess::getAntecedent() const
+Process CompositeProcess::getAntecedent() const
 {
-  return p_antecedent_;
+  return antecedent_;
 }
 
 /* Function accessor */
@@ -113,7 +105,7 @@ FieldFunction CompositeProcess::getFunction() const
 /* Realization accessor */
 Field CompositeProcess::getRealization() const
 {
-  Field result(function_(p_antecedent_->getRealization()));
+  Field result(function_(antecedent_.getRealization()));
   Sample values(result.getValues());
   values.setDescription(getDescription());
   result.setValues(values);
@@ -137,19 +129,19 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   /* TimeGrid associated with the possible future */
   const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  return TimeSeries(futurTimeGrid, function_(p_antecedent_->getFuture(stepNumber)).getValues());
+  return TimeSeries(futurTimeGrid, function_(antecedent_.getFuture(stepNumber)).getValues());
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-CompositeProcess::Implementation CompositeProcess::getMarginal(const UnsignedInteger i) const
+Process CompositeProcess::getMarginal(const UnsignedInteger i) const
 {
-  return new CompositeProcess(function_.getMarginal(i), Pointer<ProcessImplementation>(p_antecedent_->getMarginal(i)));
+  return new CompositeProcess(function_.getMarginal(i), antecedent_.getMarginal(i));
 }
 
 /* Get the marginal random vector corresponding to indices components */
-CompositeProcess::Implementation CompositeProcess::getMarginal(const Indices & indices) const
+Process CompositeProcess::getMarginal(const Indices & indices) const
 {
-  return new CompositeProcess(function_.getMarginal(indices), Pointer<ProcessImplementation>(p_antecedent_->getMarginal(indices)));
+  return new CompositeProcess(function_.getMarginal(indices), antecedent_.getMarginal(indices));
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -157,7 +149,7 @@ void CompositeProcess::save(Advocate & adv) const
 {
   ProcessImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
-  adv.saveAttribute( "antecedent_", *p_antecedent_ );
+  adv.saveAttribute( "antecedent_", antecedent_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -165,9 +157,7 @@ void CompositeProcess::load(Advocate & adv)
 {
   ProcessImplementation::load(adv);
   adv.loadAttribute( "function_", function_ );
-  TypedInterfaceObject<ProcessImplementation> antecedent;
-  adv.loadAttribute( "antecedent_", antecedent );
-  p_antecedent_ = antecedent.getImplementation();
+  adv.loadAttribute( "antecedent_", antecedent_ );
 }
 
 END_NAMESPACE_OPENTURNS

@@ -44,7 +44,7 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
 {
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
   if (physicalStartingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
-  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent()->getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
+  result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
   /* set the level function of the algorithm */
   nearestPointAlgorithm_.setProblem(OptimizationProblem(event.getImplementation()->getFunction(), event.getThreshold()));
 }
@@ -114,7 +114,7 @@ void Analytical::run()
   nearestPointAlgorithm_.setProblem(OptimizationProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
   /* set the starting point of the algorithm in the standard space  */
-  nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent()->getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
+  nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));
 
   /* solve the nearest point problem */
   nearestPointAlgorithm_.run();

@@ -77,7 +77,7 @@ void ProbabilitySimulationAlgorithm::setExperiment(const WeightedExperiment & ex
 {
   experiment_ = experiment;
   experiment_.setSize(blockSize_);
-  experiment_.setDistribution(getEvent().getAntecedent()->getDistribution());
+  experiment_.setDistribution(getEvent().getAntecedent().getDistribution());
 }
 
 

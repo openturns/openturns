@@ -61,7 +61,7 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[9.81725]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[42.4963]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[209.086]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[1135.1]
-Standard representative=true
+Standard representative=class=RandomMixture name=RandomMixture distribution collection=[class=Weibull name=Weibull dimension=1 alpha=10 beta=6.66667 gamma=-12] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[-1] constant=class=Point name=Unnamed dimension=1 values=[0]
 mu=2
 sigma=1.5
 xi=-0.15
@@ -120,7 +120,7 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.97811]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[5.44487]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[23.5615]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[117.839]
-Standard representative=true
+Standard representative=class=Gumbel name=Gumbel dimension=1 alpha=1 beta=0
 mu=2
 sigma=1.5
 xi=0
@@ -179,7 +179,7 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.29806]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[1.61612]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[2.21815]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[3.62435]
-Standard representative=true
+Standard representative=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=1 gamma=0
 mu=2
 sigma=1.5
 xi=0.15

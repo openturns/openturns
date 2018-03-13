@@ -488,7 +488,7 @@ Point KernelMixture::computeCDFGradient(const Point & point) const
 }
 
 /* Get the i-th marginal distribution */
-KernelMixture::Implementation KernelMixture::getMarginal(const UnsignedInteger i) const
+Distribution KernelMixture::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -501,7 +501,7 @@ KernelMixture::Implementation KernelMixture::getMarginal(const UnsignedInteger i
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-KernelMixture::Implementation KernelMixture::getMarginal(const Indices & indices) const
+Distribution KernelMixture::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

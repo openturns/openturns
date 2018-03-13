@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
 
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
-    fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
+    fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     // To prevent automatic compaction
     ResourceMap::SetAsUnsignedInteger("UserDefined-SmallSize", 5);
     Sample sample(40, 3);

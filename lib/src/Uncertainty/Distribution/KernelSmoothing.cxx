@@ -222,7 +222,7 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
 }
 
 /* Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
-KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample) const
+Distribution KernelSmoothing::build(const Sample & sample) const
 {
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
   if (sample.getDimension() == 1) return build(sample, computeMixedBandwidth(sample));
@@ -235,7 +235,7 @@ KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample) co
  * If boundary correction: mirroring on the two sides, followed by truncation
  * If binning: condensation on a regular grid
  */
-KernelSmoothing::Implementation KernelSmoothing::build(const Sample & sample,
+Distribution KernelSmoothing::build(const Sample & sample,
     const Point & bandwidth) const
 {
   const UnsignedInteger dimension = sample.getDimension();

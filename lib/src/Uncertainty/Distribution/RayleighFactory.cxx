@@ -44,17 +44,17 @@ RayleighFactory * RayleighFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-RayleighFactory::Implementation RayleighFactory::build(const Sample & sample) const
+Distribution RayleighFactory::build(const Sample & sample) const
 {
   return buildAsRayleigh(sample).clone();
 }
 
-RayleighFactory::Implementation RayleighFactory::build(const Point & parameters) const
+Distribution RayleighFactory::build(const Point & parameters) const
 {
   return buildAsRayleigh(parameters).clone();
 }
 
-RayleighFactory::Implementation RayleighFactory::build() const
+Distribution RayleighFactory::build() const
 {
   return buildAsRayleigh().clone();
 }

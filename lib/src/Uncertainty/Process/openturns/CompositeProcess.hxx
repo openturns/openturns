@@ -45,10 +45,6 @@ public:
 
   /** Standard constructor */
   CompositeProcess(const FieldFunction & function,
-                   const Antecedent & p_antecedent);
-
-  /** Standard constructor */
-  CompositeProcess(const FieldFunction & function,
                    const Process & antecedent);
 
   /** Virtual constructor */
@@ -71,16 +67,16 @@ public:
   TimeSeries getFuture(const UnsignedInteger stepNumber) const;
 
   /** Antecedent accessor */
-  Antecedent getAntecedent() const;
+  Process getAntecedent() const;
 
   /** Function accessor */
   FieldFunction getFunction() const;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Process getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Process getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -94,7 +90,7 @@ protected:
   FieldFunction function_;
 
   /** The antecedent of the process through the function */
-  Antecedent p_antecedent_;
+  Process antecedent_;
 
 }; /* class CompositeProcess */
 

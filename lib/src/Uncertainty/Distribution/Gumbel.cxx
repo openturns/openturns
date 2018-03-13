@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -239,7 +240,7 @@ Point Gumbel::getKurtosis() const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Gumbel::Implementation Gumbel::getStandardRepresentative() const
+Distribution Gumbel::getStandardRepresentative() const
 {
   return new Gumbel(1.0, 0.0);
 }

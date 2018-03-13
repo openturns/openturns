@@ -24,6 +24,7 @@
 #include "openturns/DistributionFactoryResult.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/DistributionParameters.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,13 +55,13 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Implementation build(const Sample & sample) const;
+  virtual Distribution build(const Sample & sample) const;
 
   /** Build a distribution based on a set of parameters */
-  virtual Implementation build(const Point & parameters) const;
+  virtual Distribution build(const Point & parameters) const;
 
   /** Build a distribution using its default constructor */
-  virtual Implementation build() const;
+  virtual Distribution build() const;
 
   /** Build the distribution and the parameter distribution */
   virtual DistributionFactoryResult buildEstimator(const Sample & sample) const;

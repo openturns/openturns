@@ -42,17 +42,17 @@ ChiFactory * ChiFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ChiFactory::Implementation ChiFactory::build(const Sample & sample) const
+Distribution ChiFactory::build(const Sample & sample) const
 {
   return buildAsChi(sample).clone();
 }
 
-ChiFactory::Implementation ChiFactory::build(const Point & parameters) const
+Distribution ChiFactory::build(const Point & parameters) const
 {
   return buildAsChi(parameters).clone();
 }
 
-ChiFactory::Implementation ChiFactory::build() const
+Distribution ChiFactory::build() const
 {
   return buildAsChi().clone();
 }

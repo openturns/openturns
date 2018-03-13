@@ -23,6 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -236,7 +237,7 @@ Point Laplace::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Laplace::Implementation Laplace::getStandardRepresentative() const
+Distribution Laplace::getStandardRepresentative() const
 {
   return new Laplace(1.0, 0.0);
 }

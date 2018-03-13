@@ -110,7 +110,7 @@ public:
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Get the isoprobabilist transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
@@ -119,7 +119,7 @@ public:
   InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
 
   /** Get the standard distribution */
-  Implementation getStandardDistribution() const;
+  Distribution getStandardDistribution() const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;

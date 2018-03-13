@@ -89,13 +89,13 @@ struct BernsteinCopulaFactoryPolicy
 }; /* end struct BernsteinCopulaFactoryPolicy */
 
 /* Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
-BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::build(const Sample & sample)
+Distribution BernsteinCopulaFactory::build(const Sample & sample)
 {
   return build(sample, computeBinNumber(sample));
 }
 
 /* Build a Bernstein copula based on the given sample */
-BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildParallel(const Sample & empiricalCopulaSample,
+Distribution BernsteinCopulaFactory::buildParallel(const Sample & empiricalCopulaSample,
     const UnsignedInteger binNumber)
 {
   const UnsignedInteger size = empiricalCopulaSample.getSize();
@@ -108,7 +108,7 @@ BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildParallel(con
   return result;
 }
 
-BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildSequential(const Sample & empiricalCopulaSample,
+Distribution BernsteinCopulaFactory::buildSequential(const Sample & empiricalCopulaSample,
     const UnsignedInteger binNumber)
 {
   const UnsignedInteger size = empiricalCopulaSample.getSize();
@@ -128,7 +128,7 @@ BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::buildSequential(c
   return result;
 }
 
-BernsteinCopulaFactory::Implementation BernsteinCopulaFactory::build(const Sample & sample,
+Distribution BernsteinCopulaFactory::build(const Sample & sample,
     const UnsignedInteger binNumber)
 {
   if (binNumber == 0) throw InvalidDimensionException(HERE) << "Error: the bin number must be positive for the BernsteinCopulaFactory";

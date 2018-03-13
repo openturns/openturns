@@ -36,8 +36,6 @@ class OT_API Beta
   CLASSNAME
 public:
 
-  typedef Pointer<DistributionImplementation> Implementation;
-
   /** Default constructor */
   Beta();
 
@@ -110,7 +108,7 @@ public:
   Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Implementation getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);

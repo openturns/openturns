@@ -399,7 +399,7 @@ Scalar Multinomial::computeConditionalQuantile(const Scalar q,
 }
 
 /* Get the i-th marginal distribution */
-Multinomial::Implementation Multinomial::getMarginal(const UnsignedInteger i) const
+Distribution Multinomial::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -412,7 +412,7 @@ Multinomial::Implementation Multinomial::getMarginal(const UnsignedInteger i) co
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Multinomial::Implementation Multinomial::getMarginal(const Indices & indices) const
+Distribution Multinomial::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

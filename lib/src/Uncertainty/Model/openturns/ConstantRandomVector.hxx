@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -85,10 +86,10 @@ public:
   CovarianceMatrix getCovariance() const;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  RandomVector getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  RandomVector getMarginal(const Indices & indices) const;
 
   /** Distribution accessor */
   Distribution getDistribution() const;

@@ -182,14 +182,14 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
 }
 
 /* Get the marginal process corresponding to the i-th marginal component */
-FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const UnsignedInteger i) const
+Process FunctionalBasisProcess::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the marginal random vector corresponding to indices components */
-FunctionalBasisProcess::Implementation FunctionalBasisProcess::getMarginal(const Indices & indices) const
+Process FunctionalBasisProcess::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal process must be in the range [0, dim-1] and must be different";
   // First the marginal distribution

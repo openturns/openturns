@@ -104,7 +104,7 @@ public:
   Point getKurtosis() const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Implementation getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);

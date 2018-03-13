@@ -100,7 +100,7 @@ void FunctionalChaosRandomVector::computeCovariance() const
 Scalar FunctionalChaosRandomVector::getSobolIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger inputDimension = getAntecedent()->getDimension();
+  const UnsignedInteger inputDimension = getAntecedent().getDimension();
   if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
@@ -164,7 +164,7 @@ Scalar FunctionalChaosRandomVector::getSobolIndex(const UnsignedInteger variable
 Scalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger inputDimension = getAntecedent()->getDimension();
+  const UnsignedInteger inputDimension = getAntecedent().getDimension();
   if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else
@@ -220,7 +220,7 @@ Scalar FunctionalChaosRandomVector::getSobolTotalIndex(const UnsignedInteger var
 Scalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
-  const UnsignedInteger inputDimension = getAntecedent()->getDimension();
+  const UnsignedInteger inputDimension = getAntecedent().getDimension();
   if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
   if (marginalIndex >= getDimension()) throw InvalidArgumentException(HERE) << "The marginal index must be in the range [0, dim-1].";
   // Check if the measure defining the basis has an independent copula else

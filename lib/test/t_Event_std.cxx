@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
     /* We compute one realization of the event */
     fullprint << "myEvent realization=" << myEvent.getRealization() << std::endl;
-    fullprint << "myEvent antecedent realization=" << myEvent.getImplementation()->getAntecedent()->getRealization() << std::endl;
+    fullprint << "myEvent antecedent realization=" << myEvent.getImplementation()->getAntecedent().getRealization() << std::endl;
 
     /* We compute a sample of the event */
     fullprint << "myEvent sample=" << myEvent.getSample(10) << std::endl;

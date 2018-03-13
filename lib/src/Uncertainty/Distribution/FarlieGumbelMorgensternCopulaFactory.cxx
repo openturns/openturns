@@ -47,17 +47,17 @@ FarlieGumbelMorgensternCopulaFactory * FarlieGumbelMorgensternCopulaFactory::clo
 
 /* Here is the interface that all derived class must implement */
 
-FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const Sample & sample) const
+Distribution FarlieGumbelMorgensternCopulaFactory::build(const Sample & sample) const
 {
   return buildAsFarlieGumbelMorgensternCopula(sample).clone();
 }
 
-FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build(const Point & parameters) const
+Distribution FarlieGumbelMorgensternCopulaFactory::build(const Point & parameters) const
 {
   return buildAsFarlieGumbelMorgensternCopula(parameters).clone();
 }
 
-FarlieGumbelMorgensternCopulaFactory::Implementation FarlieGumbelMorgensternCopulaFactory::build() const
+Distribution FarlieGumbelMorgensternCopulaFactory::build() const
 {
   return buildAsFarlieGumbelMorgensternCopula().clone();
 }

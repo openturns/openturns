@@ -66,19 +66,19 @@ String DistributionFactoryImplementation::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Build a distribution based on a sample */
-DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const Sample & sample) const
+Distribution DistributionFactoryImplementation::build(const Sample & sample) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const Sample & sample) const";
 }
 
 /* Build a distribution based on a set of parameters */
-DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build(const Point & parameters) const
+Distribution DistributionFactoryImplementation::build(const Point & parameters) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const PointCollection & parameters) const";
 }
 
 /* Build a distribution using its default constructor */
-DistributionFactoryImplementation::Implementation DistributionFactoryImplementation::build() const
+Distribution DistributionFactoryImplementation::build() const
 {
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build() const";
 }

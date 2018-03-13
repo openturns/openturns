@@ -101,7 +101,7 @@ Bool ComposedDistribution::operator ==(const ComposedDistribution & other) const
   if (this == &other) return true;
   // The copula...
   if (!(hasIndependentCopula() && other.hasIndependentCopula())) return false;
-  if (!(copula_ == *other.getCopula())) return false;
+  if (!(copula_ == other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -123,12 +123,12 @@ Bool ComposedDistribution::equals(const DistributionImplementation & other) cons
   // We coud go there eg. when comparing a ComposedDistribution([Normal()]*2) with a Normal(2)
   // The copula...
   if (!(hasIndependentCopula() && other.hasIndependentCopula())) return false;
-  if (!(copula_ == *other.getCopula())) return false;
+  if (!(copula_ == other.getCopula())) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const Distribution left(distributionCollection_[i]);
-    const Distribution right(*other.getMarginal(i));
+    const Distribution right(other.getMarginal(i));
     if (!(left == right)) return false;
   }
   return true;
@@ -234,9 +234,9 @@ void ComposedDistribution::setCopula(const Distribution & copula)
 
 
 /* Copula accessor */
-ComposedDistribution::Implementation ComposedDistribution::getCopula() const
+Distribution ComposedDistribution::getCopula() const
 {
-  return copula_.getImplementation();
+  return copula_;
 }
 
 /* Virtual constructor */
@@ -740,7 +740,7 @@ Point ComposedDistribution::getKurtosis() const
 }
 
 /* Get the i-th marginal distribution */
-ComposedDistribution::Implementation ComposedDistribution::getMarginal(const UnsignedInteger i) const
+Distribution ComposedDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   ComposedDistribution::Implementation marginal(distributionCollection_[i].getImplementation()->clone());
@@ -749,7 +749,7 @@ ComposedDistribution::Implementation ComposedDistribution::getMarginal(const Uns
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-ComposedDistribution::Implementation ComposedDistribution::getMarginal(const Indices & indices) const
+Distribution ComposedDistribution::getMarginal(const Indices & indices) const
 {
   // This call will check that indices are correct
   const Copula marginalCopula(copula_.getMarginal(indices));
@@ -914,9 +914,9 @@ ComposedDistribution::InverseIsoProbabilisticTransformation ComposedDistribution
 }
 
 /* Get the standard distribution */
-ComposedDistribution::Implementation ComposedDistribution::getStandardDistribution() const
+Distribution ComposedDistribution::getStandardDistribution() const
 {
-  return copula_.getStandardDistribution().getImplementation();
+  return copula_.getStandardDistribution();
 }
 
 /* Parameters value and description accessor */

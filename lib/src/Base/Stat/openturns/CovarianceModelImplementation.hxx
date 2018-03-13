@@ -31,6 +31,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 class HMatrix;
+class CovarianceModel;
 
 /**
  * @class CovarianceModelImplementation
@@ -186,7 +187,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Marginal accessor */
-  virtual Implementation getMarginal(const UnsignedInteger index) const;
+  virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
 
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,

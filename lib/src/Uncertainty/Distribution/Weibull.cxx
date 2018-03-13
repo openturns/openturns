@@ -24,6 +24,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -304,7 +305,7 @@ Point Weibull::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Weibull::Implementation Weibull::getStandardRepresentative() const
+Distribution Weibull::getStandardRepresentative() const
 {
   return new Weibull(1.0, beta_, 0.0);
 }

@@ -45,17 +45,17 @@ FrechetFactory * FrechetFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-FrechetFactory::Implementation FrechetFactory::build(const Sample & sample) const
+Distribution FrechetFactory::build(const Sample & sample) const
 {
   return buildAsFrechet(sample).clone();
 }
 
-FrechetFactory::Implementation FrechetFactory::build(const Point & parameters) const
+Distribution FrechetFactory::build(const Point & parameters) const
 {
   return buildAsFrechet(parameters).clone();
 }
 
-FrechetFactory::Implementation FrechetFactory::build() const
+Distribution FrechetFactory::build() const
 {
   return buildAsFrechet().clone();
 }

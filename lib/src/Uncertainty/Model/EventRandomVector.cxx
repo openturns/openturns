@@ -61,7 +61,7 @@ EventRandomVector::EventRandomVector(const RandomVectorImplementation & antecede
                                          << antecedent << ") passed as first argument of EventRandomVector "
                                          << " has incorrect dimension";
   function_ = antecedent.getFunction();
-  p_antecedent_ = antecedent.getAntecedent();
+  antecedent_ = antecedent.getAntecedent();
   setName(antecedent.getName());
   setDescription(antecedent.getDescription());
 }

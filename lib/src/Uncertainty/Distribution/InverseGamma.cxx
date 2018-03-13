@@ -24,6 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -329,7 +330,7 @@ Point InverseGamma::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-InverseGamma::Implementation InverseGamma::getStandardRepresentative() const
+Distribution InverseGamma::getStandardRepresentative() const
 {
   return new InverseGamma(k_, 1.0);
 }

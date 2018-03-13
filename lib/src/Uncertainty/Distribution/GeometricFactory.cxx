@@ -45,17 +45,17 @@ GeometricFactory * GeometricFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GeometricFactory::Implementation GeometricFactory::build(const Sample & sample) const
+Distribution GeometricFactory::build(const Sample & sample) const
 {
   return buildAsGeometric(sample).clone();
 }
 
-GeometricFactory::Implementation GeometricFactory::build(const Point & parameters) const
+Distribution GeometricFactory::build(const Point & parameters) const
 {
   return buildAsGeometric(parameters).clone();
 }
 
-GeometricFactory::Implementation GeometricFactory::build() const
+Distribution GeometricFactory::build() const
 {
   return buildAsGeometric().clone();
 }

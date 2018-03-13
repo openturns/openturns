@@ -20,6 +20,7 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/RandomVectorImplementation.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -110,19 +111,19 @@ CovarianceMatrix RandomVectorImplementation::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-RandomVectorImplementation::Implementation RandomVectorImplementation::getMarginal(const UnsignedInteger i) const
+RandomVector RandomVectorImplementation::getMarginal(const UnsignedInteger i) const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getMarginal(const UnsignedInteger i) const";
 }
 
 /* Get the marginal random vector corresponding to indices components */
-RandomVectorImplementation::Implementation RandomVectorImplementation::getMarginal(const Indices & indices) const
+RandomVector RandomVectorImplementation::getMarginal(const Indices & indices) const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getMarginal(const Indices & indices) const";
 }
 
 /* Fake method due to pbs with dynamic_cast and Pointer */
-RandomVectorImplementation::Antecedent RandomVectorImplementation::getAntecedent() const
+RandomVector RandomVectorImplementation::getAntecedent() const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getAntecedent() const";
 }

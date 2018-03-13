@@ -43,17 +43,17 @@ NormalCopulaFactory * NormalCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-NormalCopulaFactory::Implementation NormalCopulaFactory::build(const Sample & sample) const
+Distribution NormalCopulaFactory::build(const Sample & sample) const
 {
   return buildAsNormalCopula(sample).clone();
 }
 
-NormalCopulaFactory::Implementation NormalCopulaFactory::build(const Point & parameters) const
+Distribution NormalCopulaFactory::build(const Point & parameters) const
 {
   return buildAsNormalCopula(parameters).clone();
 }
 
-NormalCopulaFactory::Implementation NormalCopulaFactory::build() const
+Distribution NormalCopulaFactory::build() const
 {
   return buildAsNormalCopula().clone();
 }

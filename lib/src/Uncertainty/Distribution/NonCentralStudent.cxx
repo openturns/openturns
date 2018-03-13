@@ -26,6 +26,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -177,7 +178,7 @@ Point NonCentralStudent::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-NonCentralStudent::Implementation NonCentralStudent::getStandardRepresentative() const
+Distribution NonCentralStudent::getStandardRepresentative() const
 {
   return new NonCentralStudent(nu_, delta_, 0.0);
 }

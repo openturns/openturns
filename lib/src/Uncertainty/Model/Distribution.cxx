@@ -75,7 +75,7 @@ Bool Distribution::operator !=(const Distribution & other) const
 /* Addition operator */
 Distribution Distribution::operator + (const Distribution & other) const
 {
-  return getImplementation()->operator +(other.getImplementation());
+  return getImplementation()->operator +(other);
 }
 
 Distribution Distribution::operator + (const Scalar value) const
@@ -86,7 +86,7 @@ Distribution Distribution::operator + (const Scalar value) const
 /* Subtraction operator */
 Distribution Distribution::operator - (const Distribution & other) const
 {
-  return getImplementation()->operator -(other.getImplementation());
+  return getImplementation()->operator -(other);
 }
 
 Distribution Distribution::operator - (const Scalar value) const
@@ -97,7 +97,7 @@ Distribution Distribution::operator - (const Scalar value) const
 /* Multiplication operator */
 Distribution Distribution::operator * (const Distribution & other) const
 {
-  return getImplementation()->operator *(other.getImplementation());
+  return getImplementation()->operator *(other);
 }
 
 Distribution Distribution::operator * (const Scalar value) const
@@ -108,7 +108,7 @@ Distribution Distribution::operator * (const Scalar value) const
 /* Division operator */
 Distribution Distribution::operator / (const Distribution & other) const
 {
-  return getImplementation()->operator /(other.getImplementation());
+  return getImplementation()->operator /(other);
 }
 
 Distribution Distribution::operator / (const Scalar value) const
@@ -814,13 +814,13 @@ Scalar Distribution::computeRadialDistributionCDF (const Scalar radius,
 /* Get the i-th marginal distribution */
 Distribution Distribution::getMarginal(const UnsignedInteger i) const
 {
-  return *(getImplementation()->getMarginal(i));
+  return getImplementation()->getMarginal(i);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution Distribution::getMarginal(const Indices & indices) const
 {
-  return *(getImplementation()->getMarginal(indices));
+  return getImplementation()->getMarginal(indices);
 }
 
 /* Get the copula of a distribution */

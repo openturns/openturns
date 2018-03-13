@@ -44,17 +44,17 @@ LogUniformFactory * LogUniformFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-LogUniformFactory::Implementation LogUniformFactory::build(const Sample & sample) const
+Distribution LogUniformFactory::build(const Sample & sample) const
 {
   return buildAsLogUniform(sample).clone();
 }
 
-LogUniformFactory::Implementation LogUniformFactory::build(const Point & parameters) const
+Distribution LogUniformFactory::build(const Point & parameters) const
 {
   return buildAsLogUniform(parameters).clone();
 }
 
-LogUniformFactory::Implementation LogUniformFactory::build() const
+Distribution LogUniformFactory::build() const
 {
   return buildAsLogUniform().clone();
 }

@@ -94,7 +94,7 @@ Scalar CopulaImplementation::computeSurvivalFunction(const Point & point) const
     {
       const Indices marginalJ(indices.cbegin_at(j), indices.cend_at(j));
       for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[marginalJ[k]];
-      contribution += getMarginal(marginalJ)->computeCDF(subPoint);
+      contribution += getMarginal(marginalJ).computeCDF(subPoint);
     }
     value += sign * contribution;
     sign = -sign;
@@ -190,7 +190,7 @@ CorrelationMatrix CopulaImplementation::getKendallTau() const
     for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
     {
       indices[1] = columnIndex;
-      const Implementation marginalDistribution(getMarginal(indices));
+      const Implementation marginalDistribution(getMarginal(indices).getImplementation());
       if (!marginalDistribution->hasIndependentCopula())
       {
         // Build the integrand
@@ -279,14 +279,14 @@ void CopulaImplementation::computeCovariance() const
 } // computeCovariance
 
 /* Get the i-th marginal distribution */
-CopulaImplementation::Implementation CopulaImplementation::getMarginal(const UnsignedInteger i) const
+Distribution CopulaImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   return new IndependentCopula(1);
 }
 
 /* Get the copula of a distribution */
-CopulaImplementation::Implementation CopulaImplementation::getCopula() const
+Distribution CopulaImplementation::getCopula() const
 {
   return clone();
 }

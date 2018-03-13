@@ -39,9 +39,6 @@ class OT_API RandomVector
 
 public:
 
-  /* Some typedefs for easy reading */
-  typedef RandomVectorImplementation::Antecedent Antecedent;
-
   /** Default constructor */
   RandomVector();
 
@@ -110,7 +107,7 @@ public:
   CovarianceMatrix getCovariance() const;
 
   /** This method allows to access the antecedent RandomVector in case of a composite RandomVector */
-  Antecedent getAntecedent() const;
+  RandomVector getAntecedent() const;
 
   /** This method allows to access the Function in case of a composite RandomVector */
   Function getFunction() const;
