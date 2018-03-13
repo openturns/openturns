@@ -49,8 +49,9 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["GN_DIRECT_L_RAND_NOSCAL"] = nlopt::GN_DIRECT_L_RAND_NOSCAL;
   AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
   AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
-  AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
-  AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
+  // stogo is optional
+//   AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
+//   AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
   AlgorithmNames_["LD_LBFGS_NOCEDAL"] = nlopt::LD_LBFGS_NOCEDAL;
   AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
   AlgorithmNames_["LN_PRAXIS"] = nlopt::LN_PRAXIS;
