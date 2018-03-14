@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_TENSORIZEDUNIVARIATEFUNCTIONFACTORY_HXX
 #define OPENTURNS_TENSORIZEDUNIVARIATEFUNCTIONFACTORY_HXX
 
-#include "openturns/FunctionalBasisImplementation.hxx"
+#include "openturns/BasisImplementation.hxx"
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API TensorizedUniVariateFunctionFactory
-  : public FunctionalBasisImplementation
+  : public BasisImplementation
 {
   CLASSNAME
 public:
@@ -76,6 +76,8 @@ public:
 
   /** String converter */
   virtual String __repr__() const;
+
+  virtual Bool isFinite() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

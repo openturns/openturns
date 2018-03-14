@@ -74,7 +74,7 @@ Examples
 >>> for i in range(dimension):
 ...     functions.append(ot.SymbolicFunction(input, [input[i]]))
 >>> basis = ot.Basis(functions)
->>> print(basis.build(0).getEvaluation())
+>>> print(basis[0].getEvaluation())
 [x0,x1,x2]->[x0]"
 %enddef
 %feature("docstring") OT::BasisImplementation::build
@@ -101,10 +101,23 @@ OT_Basis_getDimension_doc
 Returns
 -------
 size : int
-    Size of the Basis."
+    Size of the Basis, not available if infinite."
 %enddef
 %feature("docstring") OT::BasisImplementation::getSize
 OT_Basis_getSize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Basis_getCurrentSize_doc
+"Get the current size of the Basis.
+
+Returns
+-------
+size : int
+    Size of the stored Basis, even if infinite."
+%enddef
+%feature("docstring") OT::BasisImplementation::getCurrentSize
+OT_Basis_getCurrentSize_doc
 
 // ---------------------------------------------------------------------
 
@@ -139,17 +152,16 @@ OT_Basis_getSubBasis_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Basis_isFunctional_doc
-"Tell whether the basis is functional.
+%define OT_Basis_isFinite_doc
+"Tell whether the basis is finite.
 
 Returns
 -------
-isOrthogonal : bool
-    `True` if the basis is functional i.e. if its terms are a solution
-    to an equation (e.g. a basis made up of Legendre functions)."
+isFinite : bool
+    `True` if the basis is finite."
 %enddef
-%feature("docstring") OT::BasisImplementation::isFunctional
-OT_Basis_isFunctional_doc
+%feature("docstring") OT::BasisImplementation::isFinite
+OT_Basis_isFinite_doc
 
 // ---------------------------------------------------------------------
 

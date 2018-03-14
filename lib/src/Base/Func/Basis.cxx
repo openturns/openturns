@@ -21,7 +21,6 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Basis.hxx"
-#include "openturns/FiniteBasis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,21 +28,21 @@ CLASSNAMEINIT(Basis)
 
 /* Default constructor */
 Basis::Basis()
-  : TypedInterfaceObject<BasisImplementation>(new FiniteBasis(0))
+  : TypedInterfaceObject<BasisImplementation>(new BasisImplementation)
 {
   // Nothing to do
 }
 
 /* Constructor from a collection */
 Basis::Basis(const Collection<Function> & coll)
-  : TypedInterfaceObject<BasisImplementation>(new FiniteBasis(coll))
+  : TypedInterfaceObject<BasisImplementation>(new BasisImplementation(coll))
 {
   // Nothing to do
 }
 
 /* Constructor from a collection */
 Basis::Basis(const UnsignedInteger size)
-  : TypedInterfaceObject<BasisImplementation>(new FiniteBasis(size))
+  : TypedInterfaceObject<BasisImplementation>(new BasisImplementation(size))
 {
   // Nothing to do
 }
@@ -59,9 +58,9 @@ Basis::Basis(const BasisImplementation & implementation)
 Basis::operator FunctionCollection() const
 {
   FunctionCollection coll;
-  for (UnsignedInteger i = 0; i < getSize(); ++ i)
+  for (UnsignedInteger i = 0; i < getCurrentSize(); ++ i)
   {
-    coll.add(build(i));
+    coll.add(operator[](i));
   }
   return coll;
 }
@@ -126,14 +125,20 @@ UnsignedInteger Basis::getSize() const
 }
 
 
+UnsignedInteger Basis::getCurrentSize() const
+{
+  return getImplementation()->getCurrentSize();
+}
+
+
 Bool Basis::isOrthogonal() const
 {
   return getImplementation()->isOrthogonal();
 }
 
-Bool Basis::isFunctional() const
+Bool Basis::isFinite() const
 {
-  return getImplementation()->isFunctional();
+  return getImplementation()->isFinite();
 }
 
 END_NAMESPACE_OPENTURNS

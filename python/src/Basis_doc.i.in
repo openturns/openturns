@@ -10,9 +10,11 @@ OT_Basis_build_doc
 OT_Basis_getDimension_doc
 %feature("docstring") OT::Basis::getSize
 OT_Basis_getSize_doc
+%feature("docstring") OT::Basis::getCurrentSize
+OT_Basis_getCurrentSize_doc
 %feature("docstring") OT::Basis::getSubBasis
 OT_Basis_getSubBasis_doc
-%feature("docstring") OT::Basis::isFunctional
-OT_Basis_isFunctional_doc
+%feature("docstring") OT::Basis::isFinite
+OT_Basis_isFinite_doc
 %feature("docstring") OT::Basis::isOrthogonal
 OT_Basis_isOrthogonal_doc

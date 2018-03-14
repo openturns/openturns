@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_ORTHOGONALFUNCTIONFACTORY_HXX
 #define OPENTURNS_ORTHOGONALFUNCTIONFACTORY_HXX
 
-#include "openturns/FunctionalBasisImplementation.hxx"
+#include "openturns/BasisImplementation.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/EnumerateFunction.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API OrthogonalFunctionFactory
-  : public FunctionalBasisImplementation
+  : public BasisImplementation
 {
   CLASSNAME
 public:
@@ -61,6 +61,8 @@ public:
   virtual OrthogonalFunctionFactory * clone() const;
 
   virtual Bool isOrthogonal() const;
+
+  virtual Bool isFinite() const;
 
   /** String converter */
   virtual String __repr__() const;

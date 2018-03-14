@@ -40,13 +40,20 @@ public:
   typedef Collection<Function> FunctionCollection;
   typedef PersistentCollection<Function> FunctionPersistentCollection;
 
-  /** Default constructor */
+  /** Size constructor */
   BasisImplementation();
 
-  /** Build the Function of the given index */
+  /** Size constructor */
+  explicit BasisImplementation(const UnsignedInteger size);
+
+  /** Collection constructor */
+  explicit BasisImplementation(const FunctionCollection & collection);
+
+
+  /** Build the function of the given index */
   virtual Function build(const UnsignedInteger index) const;
 
-  /** Build the Function of the given index */
+  /** Get the function of the given index */
   virtual Function operator[](const UnsignedInteger index) const;
   virtual Function & operator[](const UnsignedInteger index);
 
@@ -58,17 +65,22 @@ public:
 
   /** String converter */
   virtual String __repr__() const;
-//   virtual String __str__(const String & offset = "") const;
+  virtual String __str__(const String & offset = "") const;
 
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
+
+  /** Size accessor */
   virtual UnsignedInteger getSize() const;
+  virtual UnsignedInteger getCurrentSize() const;
 
   /** Tells whether the basis is orthogonal */
   virtual Bool isOrthogonal() const;
-  virtual Bool isFunctional() const;
 
-  virtual void add(const Function & elt);
+  /** Tells whether the basis is finite */
+  virtual Bool isFinite() const;
+
+  virtual void add(const Function & elt) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -80,6 +92,7 @@ public:
 protected:
 
 private:
+  mutable FunctionPersistentCollection collection_;
 
 } ; /* class BasisImplementation */
 

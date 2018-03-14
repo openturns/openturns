@@ -55,10 +55,10 @@ public:
   Basis(const BasisImplementation & implementation);
 //   Basis(BasisImplementation * p_implementation);
 
-  /** Build the Function of the given index */
+  /** Build the function of the given index */
   Function build(const UnsignedInteger index) const;
 
-  /** Build the Function of the given index */
+  /** Get the function of the given index */
   Function operator[](const UnsignedInteger index) const;
 
   Function  & operator[](const UnsignedInteger index);
@@ -68,13 +68,19 @@ public:
 
   /** Dimension accessor */
   virtual UnsignedInteger getDimension() const;
+
+  /** Size accessor */
   virtual UnsignedInteger getSize() const;
+  virtual UnsignedInteger getCurrentSize() const;
 
   /** add an element */
   void add(const Function & elt);
 
-  Bool isFunctional() const;
+  /** Tells whether the basis is orthogonal */
   Bool isOrthogonal() const;
+
+  /** Tells whether the basis is finite */
+  Bool isFinite() const;
 
   /** String converter */
   String __repr__() const;

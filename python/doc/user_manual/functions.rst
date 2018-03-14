@@ -70,7 +70,6 @@ Collection of functions
     :template: class.rst_t
 
     Basis
-    FunctionalBasis
     OrthogonalBasis
     BasisSequence
 

@@ -45,7 +45,7 @@ typedef ProductUniVariateFunctionEvaluation::UniVariateFunctionCollection UniVar
 
 /* Default constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
-  : FunctionalBasisImplementation()
+  : BasisImplementation()
   , coll_()
   , phi_()
 {
@@ -55,7 +55,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
 
 /* Constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll)
-  : FunctionalBasisImplementation()
+  : BasisImplementation()
   , coll_(coll)
   , phi_(coll.getSize())
 {
@@ -66,7 +66,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const F
 /* Constructor */
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll,
     const EnumerateFunction & phi)
-  : FunctionalBasisImplementation(),
+  : BasisImplementation(),
     coll_(coll),
     phi_(phi)
 {
@@ -112,6 +112,9 @@ TensorizedUniVariateFunctionFactory::FunctionFamilyCollection TensorizedUniVaria
 /* Build the Function of the given index */
 Function TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index) const
 {
+  if (index < getCurrentSize())
+    return BasisImplementation::operator[](index);
+
   // Compute the multi-indices using the EnumerateFunction
   const Indices indices(phi_(index));
   const UnsignedInteger size = indices.getSize();
@@ -122,9 +125,12 @@ Function TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index)
     functions[i] = coll_[i].build(indices[i]);
   }
   const Pointer<ProductUniVariateFunctionEvaluation> p_evaluation(ProductUniVariateFunctionEvaluation(functions).clone());
-  return FunctionImplementation(p_evaluation,
+  FunctionImplementation result(p_evaluation,
                                 ProductUniVariateFunctionGradient(p_evaluation).clone(),
                                 ProductUniVariateFunctionHessian(p_evaluation).clone());
+  if (index == getCurrentSize())
+    BasisImplementation::add(result);
+  return result;
 }
 
 
@@ -137,10 +143,16 @@ String TensorizedUniVariateFunctionFactory::__repr__() const
 }
 
 
+Bool TensorizedUniVariateFunctionFactory::isFinite() const
+{
+  return false;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void TensorizedUniVariateFunctionFactory::save(Advocate & adv) const
 {
-  FunctionalBasisImplementation::save(adv);
+  BasisImplementation::save(adv);
   adv.saveAttribute( "coll_", coll_ );
   adv.saveAttribute( "phi_", phi_ );
 }
@@ -149,7 +161,7 @@ void TensorizedUniVariateFunctionFactory::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void TensorizedUniVariateFunctionFactory::load(Advocate & adv)
 {
-  FunctionalBasisImplementation::load(adv);
+  BasisImplementation::load(adv);
   adv.loadAttribute( "coll_", coll_ );
   adv.loadAttribute( "phi_", phi_ );
 }

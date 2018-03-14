@@ -20,13 +20,13 @@ try:
 
     print(basis.getSize())
     print(basis.getSubBasis([1, 2]))
-    print(basis.isFunctional())
+    print(basis.isFinite())
     print(basis.isOrthogonal())
-    # print(basis[1])
+    print(basis[1])
     # print(basis[0:2])
 
-    # basis[1] = ot.Function(['x'], ['z'], ['x^42'])
-    # print('basis =', basis)
+    basis[1] = ot.Function(['x'], ['z'], ['x^42'])
+    print('basis =', basis)
     # basis[0:2] = basis[1:3]
     # print('basis =', basis)
 except:

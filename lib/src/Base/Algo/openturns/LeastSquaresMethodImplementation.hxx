@@ -23,7 +23,6 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/FunctionalBasis.hxx"
 #include "openturns/DesignProxy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
