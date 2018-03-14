@@ -37,7 +37,7 @@ The SVD approach is used when the covariance function is not explicitely known b
 
 It consists in :
 
-    - approximating :math:`\mat{C}` by its empirical estimator  :math:`\dfrac{1}{\tilde{K}} \mat{X}\, \Tr{\mat{X}}` where :math:`\mat{X}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\tilde{K}=K` if the process is centered and :math:`\tilde{K}=K-1` otherwise;
+    - approximating :math:`\mat{C}` by its empirical estimator  :math:`\dfrac{1}{\tilde{K}} \tilde{\mat{X}}\, \Tr{\tilde{\mat{X}}}` where :math:`\tilde{\mat{X}}~=~(\vect{X}_1 | \dots | \vect{X}_K)` and :math:`\tilde{K}=K` if the process is centered and :math:`\tilde{\mat{X}}~=~(\vect{X}_1 - \vect{\mu} | \dots | \vect{X}_K - \vect{\mu})`:math:`\tilde{K}=K-1` otherwise, where :math:`\vect{\mu}=\dfrac{1}{K}\sum_{k=1}^K\vect{X}_k`;
     - taking the :math:`L` vertices of the mesh of :math:`\vect{X}` as the :math:`L` quadrature points.
 
 We suppose now that :math:`K < dL`, and we note :math:`\mat{Y} = \sqrt{\mat{W}} \,\mat{X}`.

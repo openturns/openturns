@@ -177,20 +177,22 @@ void KarhunenLoeveSVDAlgorithm::run()
   // Compute the SVD decomposition of the design matrix
   MatrixImplementation U;
   MatrixImplementation Vt;
+  // The singular values are given in decreasing order
   const Point svd(designMatrix.computeSVD(U, Vt));
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
+  Scalar cumulatedVariance = 0.0;
   Point eigenValues(svd.getDimension());
   for (UnsignedInteger i = 0; i < svd.getDimension(); ++i)
-    eigenValues[i] = svd[i] * svd[i];
+    {
+      eigenValues[i] = svd[i] * svd[i];
+      cumulatedVariance += eigenValues[i];
+    }
   LOGINFO("Extract the relevant eigenpairs");
+  // Start at 0 if the given threshold is large (eg greater than 1)
   UnsignedInteger K = 0;
-  Scalar cumulatedVariance = std::abs(eigenValues[0]);
   // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance))
-  {
-    cumulatedVariance += eigenValues[K];
-    ++K;
-  }
+  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   LOGINFO("Create eigenmodes values");
   // Stores the eigenmodes values in-place to avoid wasting memory
   MatrixImplementation & eigenModesValues = U;
@@ -224,9 +226,9 @@ void KarhunenLoeveSVDAlgorithm::run()
   {
     selectedEV[k] = eigenValues[k];
     MatrixImplementation a(eigenModesValues.getColumn(k));
-    const Scalar factor = a[0] < 0.0 ? -1.0 : 1.0;
+    if (a[0] < 0.0) a *= -1.0;
     // Store the eigen modes in two forms
-    values.setData(a * factor);
+    values.setData(a);
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
       modes.add(PiecewiseLinearEvaluation(sample_.getMesh().getVertices().getImplementation()->getData(), values));
@@ -238,13 +240,13 @@ void KarhunenLoeveSVDAlgorithm::run()
     // so M^t=[W.eigenModesValues.\diag{1/\sqrt{\lambda}}]^t
     if (uniformVerticesWeights_)
     {
-      a *= (factor * verticesWeights_[0] / sqrt(selectedEV[k]));
+      a *= verticesWeights_[0] / sqrt(selectedEV[k]);
       std::copy(a.begin(), a.end(), transposedProjection.begin() + index);
       index += augmentedDimension;
     } // uniformVerticesWeights_
     else
     {
-      const Scalar inverseSqrtLambda = factor / sqrt(selectedEV[k]);
+      const Scalar inverseSqrtLambda = 1.0 / sqrt(selectedEV[k]);
       UnsignedInteger shift = 0;
       for (UnsignedInteger i = 0; i < verticesNumber; ++i)
       {
