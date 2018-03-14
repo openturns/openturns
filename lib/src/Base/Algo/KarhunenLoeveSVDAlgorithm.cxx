@@ -220,6 +220,12 @@ void KarhunenLoeveSVDAlgorithm::run()
   ProcessSample modesAsProcessSample(sample_.getMesh(), 0, dimension);
   const UnsignedInteger meshDimension = sample_.getMesh().getDimension();
   SampleImplementation values(verticesNumber, dimension);
+  Pointer<PiecewiseLinearEvaluation> evaluation1D;
+  Pointer<P1LagrangeEvaluation> evaluationXD;
+  if (meshDimension == 1)
+    evaluation1D = new PiecewiseLinearEvaluation(sample_.getMesh().getVertices().getImplementation()->getData(), values);
+  else
+    evaluationXD = new P1LagrangeEvaluation(Field(sample_.getMesh(), dimension));
   UnsignedInteger index = 0;
   LOGINFO("Create modes and projection");
   for (UnsignedInteger k = 0; k < K; ++k)
@@ -231,9 +237,15 @@ void KarhunenLoeveSVDAlgorithm::run()
     values.setData(a);
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
-      modes.add(PiecewiseLinearEvaluation(sample_.getMesh().getVertices().getImplementation()->getData(), values));
+    {
+      evaluation1D->setValues(values);
+      modes.add(*evaluation1D);
+    }
     else
-      modes.add(P1LagrangeEvaluation(modesAsProcessSample.getField(k)));
+    {
+      evaluationXD->setValues(values);
+      modes.add(*evaluationXD);
+    }
     // Build the relevant column of the transposed projection matrix
     // \vect{\alpha}=\diag{1/\sqrt{\lambda}}[(\sqrt{W}^{-1}U)^tW]F
     //              =\diag{1/\sqrt{\lambda}}[(W.eigenModesValues)^t]F
