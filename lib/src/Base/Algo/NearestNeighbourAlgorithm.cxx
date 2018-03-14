@@ -21,7 +21,9 @@
  */
 #include "openturns/NearestNeighbourAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Mesh.hxx"
 #include "openturns/KDTree.hxx"
+#include "openturns/RegularGridNearestNeighbour.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,9 +38,18 @@ NearestNeighbourAlgorithm::NearestNeighbourAlgorithm()
 
   /** Constructor with parameter */
 NearestNeighbourAlgorithm::NearestNeighbourAlgorithm(const Sample & sample)
-  : TypedInterfaceObject<NearestNeighbourAlgorithmImplementation>(new KDTree())
+  : TypedInterfaceObject<NearestNeighbourAlgorithmImplementation>()
 {
-  setSample(sample);
+  if (sample.getDimension() == 1)
+  {
+    Mesh mesh(sample);
+    if (mesh.isRegular())
+      p_implementation_ = new RegularGridNearestNeighbour(sample);
+    else
+      p_implementation_ = new KDTree(sample);
+  }
+  else
+    p_implementation_ = new KDTree(sample);
 }
 
 /* Copy constructors */

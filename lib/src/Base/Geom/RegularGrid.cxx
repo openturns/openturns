@@ -54,7 +54,7 @@ RegularGrid::RegularGrid(const Scalar start,
   {
     // The mesh is the description by extension of the grid
     vertices_ = Sample(n, 1);
-    for (UnsignedInteger i = 0; i < n; ++i) vertices_[i][0] = start_ + i * step_;
+    for (UnsignedInteger i = 0; i < n; ++i) vertices_(i, 0) = start_ + i * step_;
     // Here we know that n > 0
     simplices_ = IndicesCollection(n - 1, 2);
     for (UnsignedInteger i = 0; i < n - 1; ++i)
@@ -123,7 +123,7 @@ UnsignedInteger RegularGrid::getN() const
 Scalar RegularGrid::getValue(const UnsignedInteger i) const
 {
   if (i >= n_) throw OutOfBoundException(HERE) << "Error: the given index i=" << i << " must be less than the number of ticks n=" << n_;
-  return vertices_[i][0];
+  return vertices_(i, 0);
 }
 
 Point RegularGrid::getValues() const
