@@ -48,9 +48,9 @@ VertexFunction::VertexFunction(const Function & function)
 }
 
 /* Parameter constructor */
-VertexFunction::VertexFunction(const EvaluationPointer & p_evaluation)
-  : FieldFunctionImplementation(p_evaluation->getInputDimension(), 0, p_evaluation->getOutputDimension())
-  , function_(p_evaluation)
+VertexFunction::VertexFunction(const Evaluation & evaluation)
+  : FieldFunctionImplementation(evaluation.getInputDimension(), 0, evaluation.getOutputDimension())
+  , function_(evaluation)
 {
   // Set the description
   setInputDescription(function_.getInputDescription());

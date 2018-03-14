@@ -40,7 +40,7 @@ QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
     linear_(Matrix(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension())),
     quadratic_(SymmetricTensor(inputFunction_.getInputDimension(), inputFunction_.getOutputDimension()))
 {
-  if (!inputFunction_.getEvaluation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the given function must have an actual implementation";
+  if (!inputFunction_.getEvaluation().getImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: the given function must have an actual implementation";
   if (inputFunction.getInputDimension() != dataIn.getDimension()) throw InvalidArgumentException(HERE) << "Error: the input data dimension and the input dimension of the function must be the same, here input dimension=" << dataIn.getDimension() << " and input dimension of the function=" << inputFunction.getInputDimension();
 }
 
@@ -172,13 +172,13 @@ Sample QuadraticLeastSquares::getDataIn() const
 Sample QuadraticLeastSquares::getDataOut()
 {
   // If the response surface has been defined with an input function and the output data have not already been computed, compute them
-  if (inputFunction_.getEvaluation()->isActualImplementation() && (dataOut_.getSize() == 0)) dataOut_ = inputFunction_(dataIn_);
+  if (inputFunction_.getEvaluation().getImplementation()->isActualImplementation() && (dataOut_.getSize() == 0)) dataOut_ = inputFunction_(dataIn_);
   return dataOut_;
 }
 
 void QuadraticLeastSquares::setDataOut(const Sample & dataOut)
 {
-  if (inputFunction_.getEvaluation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: cannot set the output data in a response surface defined with a function, here function=" << inputFunction_;
+  if (inputFunction_.getEvaluation().getImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Error: cannot set the output data in a response surface defined with a function, here function=" << inputFunction_;
   if (dataOut.getSize() != dataIn_.getSize()) throw InvalidArgumentException(HERE) << "Error: the output data must have the same size than the input data, here output size=" << dataOut.getSize() << " and input size=" << dataIn_.getSize();
   dataOut_ = dataOut;
 }

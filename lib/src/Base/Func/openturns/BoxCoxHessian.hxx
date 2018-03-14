@@ -15,7 +15,8 @@
 #ifndef OPENTURNS_BOXCOXHESSIAN_HXX
 #define OPENTURNS_BOXCOXHESSIAN_HXX
 
-#include "openturns/HessianImplementation.hxx"
+#include "openturns/Hessian.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/BoxCoxEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,6 +42,11 @@ public:
   /** Parameter constructor */
   explicit BoxCoxHessian(const BoxCoxEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit BoxCoxHessian(const Pointer<BoxCoxEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual BoxCoxHessian * clone() const;
 
@@ -55,6 +61,9 @@ public:
   using HessianImplementation::hessian;
   SymmetricTensor hessian(const Point & inP) const;
 
+  /** Accessor for evaluation */
+  Evaluation getEvaluation() const;
+
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
 
@@ -67,9 +76,6 @@ public:
   /** Accessor for the shift */
   Point getShift() const;
 
-  /** Accessor for the evaluation */
-  BoxCoxEvaluation getEvaluation() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -78,7 +84,7 @@ public:
 
 protected:
   /** The underlying evaluation */
-  BoxCoxEvaluation evaluation_;
+  Pointer<BoxCoxEvaluation> p_evaluation_;
 
 }; /* class BoxCoxHessian */
 

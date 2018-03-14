@@ -37,7 +37,15 @@ ParametricGradient::ParametricGradient()
 }
 
 /* Parameter constructor */
-ParametricGradient::ParametricGradient(const EvaluationPointer & p_evaluation)
+ParametricGradient::ParametricGradient(const ParametricEvaluation & evaluation)
+  : GradientImplementation()
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+ParametricGradient::ParametricGradient(const Pointer<ParametricEvaluation> & p_evaluation)
   : GradientImplementation()
   , p_evaluation_(p_evaluation)
 {
@@ -80,12 +88,6 @@ Matrix ParametricGradient::gradient(const OT::Point & point) const
 {
   // Use the current parameters value
   return gradient(point, p_evaluation_->getParameter());
-}
-
-/* Evaluation accessor */
-ParametricEvaluation ParametricGradient::getEvaluation() const
-{
-  return *p_evaluation_;
 }
 
 /* Dimension accessors */

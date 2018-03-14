@@ -38,10 +38,10 @@ InverseBoxCoxTransform::InverseBoxCoxTransform()
 InverseBoxCoxTransform::InverseBoxCoxTransform(const Point & lambda)
   : Function()
 {
-  const InverseBoxCoxEvaluation evaluation(lambda);
-  setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradient(evaluation).clone());
-  setHessian(InverseBoxCoxHessian(evaluation).clone());
+  const Pointer<InverseBoxCoxEvaluation> p_evaluation = new InverseBoxCoxEvaluation(lambda);
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new InverseBoxCoxGradient(p_evaluation));
+  setHessian(new InverseBoxCoxHessian(p_evaluation));
 }
 
 /* ScalarCollection parameter constructor */
@@ -49,30 +49,30 @@ InverseBoxCoxTransform::InverseBoxCoxTransform(const Point & lambda,
     const Point & shift)
   : Function()
 {
-  const InverseBoxCoxEvaluation evaluation(lambda, shift);
-  setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradient(evaluation).clone());
-  setHessian(InverseBoxCoxHessian(evaluation).clone());
+  const Pointer<InverseBoxCoxEvaluation> p_evaluation = new InverseBoxCoxEvaluation(lambda, shift);
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new InverseBoxCoxGradient(p_evaluation));
+  setHessian(new InverseBoxCoxHessian(p_evaluation));
 }
 
 /* 1D Scalar parameter constructor */
 InverseBoxCoxTransform::InverseBoxCoxTransform(const Scalar & lambda)
   : Function()
 {
-  const InverseBoxCoxEvaluation evaluation(Point(1, lambda));
-  setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradient(evaluation).clone());
-  setHessian(InverseBoxCoxHessian(evaluation).clone());
+  const Pointer<InverseBoxCoxEvaluation> p_evaluation = new InverseBoxCoxEvaluation(Point(1, lambda));
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new InverseBoxCoxGradient(p_evaluation));
+  setHessian(new InverseBoxCoxHessian(p_evaluation));
 }
 
 InverseBoxCoxTransform::InverseBoxCoxTransform(const Scalar & lambda,
     const Scalar & shift)
   : Function()
 {
-  const InverseBoxCoxEvaluation evaluation(Point(1, lambda), Point(1, shift));
-  setEvaluation(evaluation.clone());
-  setGradient(InverseBoxCoxGradient(evaluation).clone());
-  setHessian(InverseBoxCoxHessian(evaluation).clone());
+  const Pointer<InverseBoxCoxEvaluation> p_evaluation = new InverseBoxCoxEvaluation(Point(1, lambda), Point(1, shift));
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new InverseBoxCoxGradient(p_evaluation));
+  setHessian(new InverseBoxCoxHessian(p_evaluation));
 }
 
 /* Virtual constructor */
@@ -84,13 +84,13 @@ InverseBoxCoxTransform * InverseBoxCoxTransform::clone() const
 /* Lambda accessor */
 Point InverseBoxCoxTransform::getLambda() const
 {
-  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getLambda();
+  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().getImplementation().get())->getLambda();
 }
 
 /* Shift accessor */
 Point InverseBoxCoxTransform::getShift() const
 {
-  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().get())->getShift();
+  return dynamic_cast<InverseBoxCoxEvaluation *>(getEvaluation().getImplementation().get())->getShift();
 }
 
 /* Inverse accessor */

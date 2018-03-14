@@ -33,7 +33,6 @@ class OT_API FiniteDifferenceStepImplementation
 
   CLASSNAME
 public:
-  typedef Pointer<FiniteDifferenceStepImplementation> Implementation;
 
   /** Default constructor */
   FiniteDifferenceStepImplementation();

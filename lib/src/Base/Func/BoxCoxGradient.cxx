@@ -25,6 +25,7 @@ static const Factory<BoxCoxGradient> Factory_BoxCoxGradient;
 /* Default constructor */
 BoxCoxGradient::BoxCoxGradient()
   : GradientImplementation()
+  , p_evaluation_()
 {
   // Nothing to do
 }
@@ -32,7 +33,15 @@ BoxCoxGradient::BoxCoxGradient()
 /* Parameter constructor */
 BoxCoxGradient::BoxCoxGradient(const BoxCoxEvaluation & evaluation)
   : GradientImplementation()
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+BoxCoxGradient::BoxCoxGradient(const Pointer<BoxCoxEvaluation> & p_evaluation)
+  : GradientImplementation()
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -47,7 +56,7 @@ BoxCoxGradient * BoxCoxGradient::clone() const
 Bool BoxCoxGradient::operator ==(const BoxCoxGradient & other) const
 {
   if (this == &other) return true;
-  return (evaluation_ == other.evaluation_);
+  return (*p_evaluation_ == *other.p_evaluation_);
 }
 
 /* String converter */
@@ -56,7 +65,7 @@ String BoxCoxGradient::__repr__() const
   OSS oss(true);
   oss << "class=" << BoxCoxGradient::GetClassName()
       << " name=" << getName()
-      << " evaluation=" << evaluation_;
+      << " evaluation=" << *p_evaluation_;
   return oss;
 }
 
@@ -68,12 +77,6 @@ String BoxCoxGradient::__str__(const String & offset) const
       << ", shift=" << getShift()
       << ")";
   return oss;
-}
-
-/* Accessor for the evaluation */
-BoxCoxEvaluation BoxCoxGradient::getEvaluation() const
-{
-  return evaluation_;
 }
 
 /* Gradient evaluation method */
@@ -103,39 +106,41 @@ Matrix BoxCoxGradient::gradient(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger BoxCoxGradient::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger BoxCoxGradient::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* Accessor for the lambda */
 Point BoxCoxGradient::getLambda() const
 {
-  return evaluation_.getLambda();
+  return p_evaluation_->getLambda();
 }
 
 /* Accessor for the shift */
 Point BoxCoxGradient::getShift() const
 {
-  return evaluation_.getShift();
+  return p_evaluation_->getShift();
 }
 
 /* Method save() stores the object through the StorageManager */
 void BoxCoxGradient::save(Advocate & adv) const
 {
   GradientImplementation::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void BoxCoxGradient::load(Advocate & adv)
 {
   GradientImplementation::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<BoxCoxEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

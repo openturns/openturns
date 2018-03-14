@@ -39,17 +39,18 @@ DualLinearCombinationFunction::DualLinearCombinationFunction (const FunctionColl
     const Sample & coefficients)
   : Function()
 {
-  const DualLinearCombinationEvaluation evaluation(functionCollection, coefficients);
-  setEvaluation(evaluation.clone());
-  setGradient(new DualLinearCombinationGradient(evaluation));
-  setHessian(new DualLinearCombinationHessian(evaluation));
+  const Pointer<DualLinearCombinationEvaluation> p_evaluation = new DualLinearCombinationEvaluation(functionCollection, coefficients);
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new DualLinearCombinationGradient(p_evaluation));
+  setHessian(new DualLinearCombinationHessian(p_evaluation));
 }
 
 
 /* Comparison operator */
 Bool DualLinearCombinationFunction::operator ==(const DualLinearCombinationFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

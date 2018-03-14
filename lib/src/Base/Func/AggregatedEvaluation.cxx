@@ -149,13 +149,13 @@ void AggregatedEvaluation::setFunctionsCollection(const FunctionCollection & fun
 }
 
 /* Get the i-th marginal function */
-AggregatedEvaluation::Implementation AggregatedEvaluation::getMarginal(const UnsignedInteger i) const
+Evaluation AggregatedEvaluation::getMarginal(const UnsignedInteger i) const
 {
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-AggregatedEvaluation::Implementation AggregatedEvaluation::getMarginal(const Indices & indices) const
+Evaluation AggregatedEvaluation::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal aggregated function must be in the range [0, dim-1] and must be different";

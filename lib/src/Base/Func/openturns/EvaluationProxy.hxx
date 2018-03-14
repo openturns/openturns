@@ -23,6 +23,7 @@
 #define OPENTURNS_EVALUATIONPROXY_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,13 +40,11 @@ class OT_API EvaluationProxy
   CLASSNAME
 public:
 
-  typedef Pointer<EvaluationImplementation>      Implementation;
-
   /** Default constructor */
   EvaluationProxy();
 
   /** Parameter constructor */
-  explicit EvaluationProxy(const Implementation & p_evaluation);
+  explicit EvaluationProxy(const Evaluation & evaluation);
 
   /** Virtual constructor */
   virtual EvaluationProxy * clone() const;
@@ -127,10 +126,10 @@ public:
   virtual UnsignedInteger getParameterDimension() const;
 
   /** Get the i-th marginal evaluation */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual Evaluation getMarginal(const UnsignedInteger i) const;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Evaluation getMarginal(const Indices & indices) const;
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const Point & inP) const;
@@ -187,7 +186,7 @@ public:
 protected:
 
   /** The proxied instance */
-  Pointer<EvaluationImplementation> p_evaluationImplementation_;
+  Evaluation evaluation_;
 
 }; /* class EvaluationProxy */
 

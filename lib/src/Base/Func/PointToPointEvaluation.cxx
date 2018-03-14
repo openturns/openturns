@@ -81,14 +81,14 @@ Bool PointToPointEvaluation::operator ==(const PointToPointEvaluation & other) c
 }
 
 /* Get the i-th marginal function */
-PointToPointEvaluation::Implementation PointToPointEvaluation::getMarginal(const UnsignedInteger i) const
+Evaluation PointToPointEvaluation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return new PointToPointEvaluation(leftFunction_.getMarginal(i), rightFunction_);
 }
 
 /* Get the function corresponding to indices components */
-PointToPointEvaluation::Implementation PointToPointEvaluation::getMarginal(const Indices & indices) const
+Evaluation PointToPointEvaluation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   if (isFunctionComposition_) return new PointToPointEvaluation(leftFunction_.getMarginal(indices), rightFunction_);

@@ -23,6 +23,7 @@
 
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/Full.hxx"
 #include "openturns/Point.hxx"
@@ -48,7 +49,7 @@ public:
   explicit MemoizeFunction(const Function & function, const HistoryStrategy & historyStrategy = Full());
 
   /** Function implementation accessors */
-  void setEvaluation(const EvaluationPointer & evaluation);
+  void setEvaluation(const Evaluation & evaluation);
 
   /** Comparison operator */
   Bool operator ==(const MemoizeFunction & other) const;

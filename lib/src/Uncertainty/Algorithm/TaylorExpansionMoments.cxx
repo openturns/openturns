@@ -66,9 +66,9 @@ TaylorExpansionMoments::TaylorExpansionMoments(const RandomVector & limitStateVa
   /* Check if the given random vector is a composite random vector, which is mandatory */
   if (!limitStateVariable.isComposite()) throw InvalidArgumentException(HERE) << "Quadratic cumul algorithm requires a composite random vector as an input";
   /** Check if the given composite random vector is based on a function with a gradient implementation */
-  if (!limitStateVariable.getImplementation()->getFunction().getGradient()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Quadratic cumul algorithm requires a composite random vector based on a function with an actual gradient implementation";
+  if (!limitStateVariable.getImplementation()->getFunction().getGradient().getImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Quadratic cumul algorithm requires a composite random vector based on a function with an actual gradient implementation";
   /** Check if the given composite random vector is based on a function with a gradient implementation */
-  if (!limitStateVariable.getImplementation()->getFunction().getHessian()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Quadratic cumul algorithm requires a composite random vector based on a function with an actual hessian implementation";
+  if (!limitStateVariable.getImplementation()->getFunction().getHessian().getImplementation()->isActualImplementation()) throw InvalidArgumentException(HERE) << "Quadratic cumul algorithm requires a composite random vector based on a function with an actual hessian implementation";
 }
 
 /* Virtual constructor */

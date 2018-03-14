@@ -45,6 +45,11 @@ public:
   /** Parameters constructor */
   explicit LinearCombinationGradient(const LinearCombinationEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit LinearCombinationGradient(const Pointer<LinearCombinationEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual LinearCombinationGradient * clone() const;
 
@@ -72,7 +77,7 @@ protected:
 
 private:
   /** The associated evaluation */
-  LinearCombinationEvaluation evaluation_;
+  Pointer<LinearCombinationEvaluation> p_evaluation_;
 
 } ; /* class LinearCombinationGradient */
 

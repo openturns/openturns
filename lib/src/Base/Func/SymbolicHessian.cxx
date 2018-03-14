@@ -34,7 +34,7 @@ SymbolicHessian::SymbolicHessian()
   : HessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
-  , evaluation_()
+  , p_evaluation_()
 {
   // Nothing to do
 } // SymbolicHessian
@@ -44,7 +44,18 @@ SymbolicHessian::SymbolicHessian(const SymbolicEvaluation & evaluation)
   : HessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+} // SymbolicHessian
+
+
+/* Constructor for implementation pointer */
+SymbolicHessian::SymbolicHessian(const Pointer<SymbolicEvaluation> & p_evaluation)
+  : HessianImplementation()
+  , isInitialized_(false)
+  , isAnalytical_(true)
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 } // SymbolicHessian
@@ -62,7 +73,8 @@ SymbolicHessian * SymbolicHessian::clone() const
 /* Comparison operator */
 Bool SymbolicHessian::operator ==(const SymbolicHessian & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return *p_evaluation_ == *other.p_evaluation_;
 }
 
 /* String converter */
@@ -71,7 +83,7 @@ String SymbolicHessian::__repr__() const
   OSS oss(true);
   oss << "class=" << SymbolicHessian::GetClassName()
       << " name=" << getName()
-      << " evaluation=" << evaluation_;
+      << " evaluation=" << *p_evaluation_;
   return oss;
 }
 
@@ -88,8 +100,8 @@ String SymbolicHessian::__str__(const String & offset) const
     {
       oss << "\n";
       // First, find the maximum length of the output variable names
-      const Description inputVariablesNames(evaluation_.getInputVariablesNames());
-      const Description outputVariablesNames(evaluation_.getOutputVariablesNames());
+      const Description inputVariablesNames(p_evaluation_->getInputVariablesNames());
+      const Description outputVariablesNames(p_evaluation_->getOutputVariablesNames());
       UnsignedInteger length = 0;
       const UnsignedInteger iMax = getInputDimension();
       const UnsignedInteger kMax = getOutputDimension();
@@ -132,8 +144,8 @@ void SymbolicHessian::initialize() const
   if (isInitialized_) return;
 
   isAnalytical_ = false;
-  const UnsignedInteger inputSize = evaluation_.inputVariablesNames_.getSize();
-  const UnsignedInteger outputSize = evaluation_.outputVariablesNames_.getSize();
+  const UnsignedInteger inputSize = p_evaluation_->inputVariablesNames_.getSize();
+  const UnsignedInteger outputSize = p_evaluation_->outputVariablesNames_.getSize();
   const UnsignedInteger hessianSize = inputSize * (inputSize + 1) * outputSize / 2;
   // For each element of the hessian, do
   UnsignedInteger hessianIndex = 0;
@@ -144,17 +156,17 @@ void SymbolicHessian::initialize() const
     int nerr(0);
     Ev3::ExpressionParser ev3Parser;
     // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
-    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(evaluation_.inputVariablesNames_[inputVariableIndex], inputVariableIndex);
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(p_evaluation_->inputVariablesNames_[inputVariableIndex], inputVariableIndex);
     Ev3::Expression ev3Expression;
     try
     {
-      ev3Expression = ev3Parser.Parse(evaluation_.formulas_[sheetIndex].c_str(), nerr);
+      ev3Expression = ev3Parser.Parse(p_evaluation_->formulas_[sheetIndex].c_str(), nerr);
     }
     catch (Ev3::ErrBase & exc)
     {
       throw InternalException(HERE) << exc.description_;
     }
-    if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << evaluation_.formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
+    if (nerr != 0) throw InvalidArgumentException(HERE) << "Error: cannot parse " << p_evaluation_->formulas_[sheetIndex] << " with Ev3. No analytical hessian.";
     //                Ev3::Simplify(&ev3Expression);
     for (UnsignedInteger rowIndex = 0; rowIndex < inputSize; ++rowIndex)
     {
@@ -163,11 +175,11 @@ void SymbolicHessian::initialize() const
       {
         firstDerivative = Ev3::Diff(ev3Expression, rowIndex);
         //                    Ev3::Simplify(&firstDerivative);
-        LOGINFO(OSS() << "First variable=" << evaluation_.inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
+        LOGINFO(OSS() << "First variable=" << p_evaluation_->inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
       }
       catch(...)
       {
-        throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << evaluation_.inputVariablesNames_[rowIndex];
+        throw InternalException(HERE) << "Error: cannot compute the derivative of " << ev3Expression->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[rowIndex];
       }
       for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
       {
@@ -175,19 +187,19 @@ void SymbolicHessian::initialize() const
         {
           Ev3::Expression secondDerivative(Ev3::Diff(firstDerivative, columnIndex));
           //                        Ev3::Simplify(&secondDerivative);
-          LOGINFO(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << evaluation_.inputVariablesNames_[rowIndex] << ")d(" << evaluation_.inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
+          LOGINFO(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")d(" << p_evaluation_->inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
           hessianFormulas[hessianIndex] = secondDerivative->ToString();
           ++ hessianIndex;
         }
         catch(...)
         {
-          throw InternalException(HERE) << "Error: cannot compute the derivative of " << firstDerivative->ToString() << " with respect to " << evaluation_.inputVariablesNames_[columnIndex];
+          throw InternalException(HERE) << "Error: cannot compute the derivative of " << firstDerivative->ToString() << " with respect to " << p_evaluation_->inputVariablesNames_[columnIndex];
         }
       } // columnIndex
     } // rowIndex
   } // sheetIndex
 
-  parser_.setVariables(evaluation_.inputVariablesNames_);
+  parser_.setVariables(p_evaluation_->inputVariablesNames_);
   parser_.setFormulas(hessianFormulas);
   // Everything is ok (no exception)
   isAnalytical_ = true;
@@ -250,51 +262,53 @@ String SymbolicHessian::getFormula(const UnsignedInteger i,
 /* Accessor for input point dimension */
 UnsignedInteger SymbolicHessian::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger SymbolicHessian::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* Get the i-th marginal function */
-SymbolicHessian::Implementation SymbolicHessian::getMarginal(const UnsignedInteger i) const
+Hessian SymbolicHessian::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal hessian must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-SymbolicHessian::Implementation SymbolicHessian::getMarginal(const Indices & indices) const
+Hessian SymbolicHessian::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal hessian must be in the range [0, dim-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();
   Description marginalFormulas(marginalDimension);
   Description marginalOutputNames(marginalDimension);
-  Description outputNames(evaluation_.getOutputVariablesNames());
-  Description formulas(evaluation_.getFormulas());
+  Description outputNames(p_evaluation_->getOutputVariablesNames());
+  Description formulas(p_evaluation_->getFormulas());
   for (UnsignedInteger i = 0; i < marginalDimension; ++i)
   {
     marginalFormulas[i] = formulas[indices[i]];
     marginalOutputNames[i] = outputNames[indices[i]];
   }
-  return new SymbolicHessian(SymbolicEvaluation(evaluation_.getInputVariablesNames(), marginalOutputNames, marginalFormulas));
+  return new SymbolicHessian(SymbolicEvaluation(p_evaluation_->getInputVariablesNames(), marginalOutputNames, marginalFormulas));
 }
 
 /* Method save() stores the object through the StorageManager */
 void SymbolicHessian::save(Advocate & adv) const
 {
   HessianImplementation::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SymbolicHessian::load(Advocate & adv)
 {
   HessianImplementation::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<SymbolicEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

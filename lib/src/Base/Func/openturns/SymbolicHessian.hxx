@@ -17,6 +17,7 @@
 
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/SymbolicEvaluation.hxx"
+#include "openturns/Hessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,6 +37,11 @@ public:
 
   /** Default constructor */
   SymbolicHessian(const SymbolicEvaluation & evaluation);
+
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit SymbolicHessian(const Pointer<SymbolicEvaluation> & evaluation);
+#endif
 
   /** Virtual constructor */
   virtual SymbolicHessian * clone() const;
@@ -63,10 +69,10 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Hessian getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Hessian getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -84,7 +90,7 @@ private:
 
   mutable Bool isInitialized_;
   mutable Bool isAnalytical_;
-  SymbolicEvaluation evaluation_;
+  Pointer<SymbolicEvaluation> p_evaluation_;
 
   /** A mathematical expression parser from the muParser library */
   mutable SymbolicParser parser_;

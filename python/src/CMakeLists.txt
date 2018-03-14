@@ -247,8 +247,11 @@ ot_add_python_module(func func_module.i
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
                       SpecFunc.i SpecFunc_doc.i.in
                       EvaluationImplementation.i EvaluationImplementation_doc.i.in
+                      Evaluation.i Evaluation_doc.i.in
                       GradientImplementation.i GradientImplementation_doc.i.in
+                      Gradient.i Gradient_doc.i.in
                       HessianImplementation.i HessianImplementation_doc.i.in
+                      Hessian.i Hessian_doc.i.in
                       NoEvaluation.i
                       NoGradient.i
                       NoHessian.i

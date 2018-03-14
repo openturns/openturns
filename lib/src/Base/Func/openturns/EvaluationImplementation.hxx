@@ -38,6 +38,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward class
+class Evaluation;
+
 /**
  * @class EvaluationImplementation
  *
@@ -50,7 +53,6 @@ class OT_API EvaluationImplementation
   CLASSNAME
 public:
 
-  typedef Pointer<EvaluationImplementation>      Implementation;
   typedef PersistentCollection<Scalar>               CacheKeyType;
   typedef PersistentCollection<Scalar>               CacheValueType;
   typedef Cache<CacheKeyType, CacheValueType>                 CacheType;
@@ -139,10 +141,10 @@ public:
   virtual UnsignedInteger getParameterDimension() const;
 
   /** Get the i-th marginal evaluation */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual Evaluation getMarginal(const UnsignedInteger i) const;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Evaluation getMarginal(const Indices & indices) const;
 
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const Point & inP) const;

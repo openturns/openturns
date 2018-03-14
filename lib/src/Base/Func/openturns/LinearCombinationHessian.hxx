@@ -45,6 +45,11 @@ public:
   /** Parameters constructor */
   explicit LinearCombinationHessian(const LinearCombinationEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit LinearCombinationHessian(const Pointer<LinearCombinationEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual LinearCombinationHessian * clone() const;
 
@@ -72,7 +77,7 @@ protected:
 
 private:
   /** The associated evaluation */
-  LinearCombinationEvaluation evaluation_;
+  Pointer<LinearCombinationEvaluation> p_evaluation_;
 
 } ; /* class LinearCombinationHessian */
 

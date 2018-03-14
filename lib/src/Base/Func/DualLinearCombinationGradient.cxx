@@ -34,7 +34,7 @@ static const Factory<DualLinearCombinationGradient> Factory_DualLinearCombinatio
 /* Default constructor */
 DualLinearCombinationGradient::DualLinearCombinationGradient()
   : GradientImplementation()
-  , evaluation_()
+  , p_evaluation_()
 {
   // Nothing to do
 }
@@ -43,7 +43,15 @@ DualLinearCombinationGradient::DualLinearCombinationGradient()
 /* Parameters constructor */
 DualLinearCombinationGradient::DualLinearCombinationGradient(const DualLinearCombinationEvaluation & evaluation)
   : GradientImplementation()
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+DualLinearCombinationGradient::DualLinearCombinationGradient(const Pointer<DualLinearCombinationEvaluation> & p_evaluation)
+  : GradientImplementation()
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -60,13 +68,13 @@ Matrix DualLinearCombinationGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
+  const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
   Matrix result(inputDimension, outputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Matrix gradientI(evaluation_.functionsCollection_[i].gradient(inP));
-    const Point coefficientI(evaluation_.coefficients_[i]);
+    const Matrix gradientI(p_evaluation_->functionsCollection_[i].gradient(inP));
+    const Point coefficientI(p_evaluation_->coefficients_[i]);
     for (UnsignedInteger j = 0; j < inputDimension; ++j)
       for (UnsignedInteger k = 0; k < outputDimension; ++k)
         result(j, k) += gradientI(j, 0) * coefficientI[k];
@@ -77,20 +85,20 @@ Matrix DualLinearCombinationGradient::gradient(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger DualLinearCombinationGradient::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger DualLinearCombinationGradient::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* String converter */
 String DualLinearCombinationGradient::__repr__() const
 {
   return OSS() << "class=" << GetClassName()
-         << " evaluation=" << evaluation_;
+         << " evaluation=" << *p_evaluation_;
 }
 
 
@@ -98,7 +106,7 @@ String DualLinearCombinationGradient::__repr__() const
 void DualLinearCombinationGradient::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 
@@ -106,7 +114,9 @@ void DualLinearCombinationGradient::save(Advocate & adv) const
 void DualLinearCombinationGradient::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<DualLinearCombinationEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

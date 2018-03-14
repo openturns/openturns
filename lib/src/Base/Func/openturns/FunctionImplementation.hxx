@@ -28,13 +28,16 @@
 #include "openturns/Field.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/EvaluationImplementation.hxx"
-#include "openturns/GradientImplementation.hxx"
-#include "openturns/HessianImplementation.hxx"
+#include "openturns/Evaluation.hxx"
+#include "openturns/Gradient.hxx"
+#include "openturns/Hessian.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
+// Forward declaration
+class Function;
 
 /**
  * @class FunctionImplementation
@@ -53,9 +56,6 @@ public:
 
   /* Some typedefs for easy reading */
   typedef Pointer<FunctionImplementation>           Implementation;
-  typedef EvaluationImplementation::Implementation  EvaluationPointer;
-  typedef GradientImplementation::Implementation    GradientPointer;
-  typedef HessianImplementation::Implementation     HessianPointer;
 
 public:
 
@@ -72,12 +72,12 @@ public:
                          const Sample & outputSample);
 
   /** Constructor from implementations */
-  FunctionImplementation(const EvaluationPointer & funcImpl,
-                         const GradientPointer & gradImpl,
-                         const HessianPointer  & hessImpl);
+  FunctionImplementation(const Evaluation & funcImpl,
+                         const Gradient & gradImpl,
+                         const Hessian  & hessImpl);
 
   /** Single function implementation constructor */
-  FunctionImplementation(const EvaluationPointer & evaluationImplementation);
+  FunctionImplementation(const Evaluation & evaluation);
 
   /** Multiplication of two 1D output functions with the same input dimension */
   virtual FunctionImplementation operator * (const FunctionImplementation & right) const;
@@ -135,22 +135,16 @@ public:
   void clearCache() const;
 
   /** Function implementation accessors */
-  virtual void setEvaluation(const EvaluationPointer & evaluation);
-  const EvaluationPointer & getEvaluation() const;
+  virtual void setEvaluation(const Evaluation & evaluation);
+  Evaluation getEvaluation() const;
 
   /** Gradient implementation accessors */
-  void setGradient(const GradientImplementation & gradient);
-#ifndef SWIG
-  void setGradient(const GradientPointer & gradient);
-#endif
-  const GradientPointer & getGradient() const;
+  void setGradient(const Gradient & gradient);
+  Gradient getGradient() const;
 
   /** Hessian implementation accessors */
-  void setHessian(const HessianImplementation & hessian);
-#ifndef SWIG
-  void setHessian(const HessianPointer & hessian);
-#endif
-  const HessianPointer & getHessian() const;
+  void setHessian(const Hessian & hessian);
+  Hessian getHessian() const;
 
   /** Flag for default gradient accessors */
   Bool getUseDefaultGradientImplementation() const;
@@ -216,10 +210,10 @@ public:
   virtual Description getOutputDescription() const;
 
   /** Get the i-th marginal function */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual Function getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Function getMarginal(const Indices & indices) const;
 
   /** Number of calls to the evaluation */
   virtual UnsignedInteger getCallsNumber() const;
@@ -270,13 +264,13 @@ public:
 
 private:
   /** A pointer on the actual numerical math function implementation */
-  EvaluationPointer p_evaluationImplementation_;
+  Evaluation evaluation_;
 
   /** A pointer on the actual numerical math gradient implementation */
-  GradientPointer p_gradientImplementation_;
+  Gradient gradient_;
 
   /** A pointer on the actual numerical math hessian implementation */
-  HessianPointer p_hessianImplementation_;
+  Hessian hessian_;
 
 protected:
 

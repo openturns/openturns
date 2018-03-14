@@ -41,6 +41,11 @@ public:
   /** Parameter constructor */
   explicit BoxCoxGradient(const BoxCoxEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit BoxCoxGradient(const Pointer<BoxCoxEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual BoxCoxGradient * clone() const;
 
@@ -67,9 +72,6 @@ public:
   /** Accessor for the shift */
   Point getShift() const;
 
-  /** Accessor for the evaluation */
-  BoxCoxEvaluation getEvaluation() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -78,7 +80,7 @@ public:
 
 protected:
   /** The underlying evaluation */
-  BoxCoxEvaluation evaluation_;
+  Pointer<BoxCoxEvaluation> p_evaluation_;
 
 }; /* class BoxCoxGradient */
 

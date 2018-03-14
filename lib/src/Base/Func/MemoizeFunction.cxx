@@ -47,40 +47,40 @@ MemoizeFunction::MemoizeFunction (const Function & function, const HistoryStrate
 /** Operator () */
 Point MemoizeFunction::operator() (const Point & inPoint) const
 {
-  return getEvaluation()->operator()(inPoint);
+  return getEvaluation().operator()(inPoint);
 }
 
 /** Operator () */
 Sample MemoizeFunction::operator() (const Sample & inSample) const
 {
-  return getEvaluation()->operator()(inSample);
+  return getEvaluation().operator()(inSample);
 }
 
 /* Function implementation accessors */
-void MemoizeFunction::setEvaluation(const EvaluationPointer & evaluation)
+void MemoizeFunction::setEvaluation(const Evaluation & evaluation)
 {
   // Ensure that p_evaluation_ always points to an MemoizeEvaluation
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().get());
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->setEvaluation(evaluation);
 }
 
 /* Enable or disable the input/output history */
 void MemoizeFunction::enableHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().get());
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->enableHistory();
 }
 
 void MemoizeFunction::disableHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().get());
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->disableHistory();
 }
 
 /* Test the history mechanism activity */
 Bool MemoizeFunction::isHistoryEnabled() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().get());
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->isHistoryEnabled();
 }
 
@@ -88,27 +88,28 @@ Bool MemoizeFunction::isHistoryEnabled() const
 /** Clear history of the input and output values */
 void MemoizeFunction::clearHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().get());
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->clearHistory();
 }
 
 /** Retrieve the history of the input values */
 Sample MemoizeFunction::getInputHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().get());
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getInputHistory();
 }
 
 /** Retrieve the history of the output values */
 Sample MemoizeFunction::getOutputHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().get());
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getOutputHistory();
 }
 
 /* Comparison operator */
 Bool MemoizeFunction::operator ==(const MemoizeFunction & other) const
 {
+  if (this == &other) return true;
   return getEvaluation() == other.getEvaluation();
 }
 

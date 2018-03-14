@@ -45,6 +45,11 @@ public:
   /** Parameters constructor */
   explicit DualLinearCombinationHessian(const DualLinearCombinationEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit DualLinearCombinationHessian(const Pointer<DualLinearCombinationEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual DualLinearCombinationHessian * clone() const;
 
@@ -71,7 +76,7 @@ protected:
 
 private:
   /** The associated evaluation */
-  DualLinearCombinationEvaluation evaluation_;
+  Pointer<DualLinearCombinationEvaluation> p_evaluation_;
 
 } ; /* class DualLinearCombinationHessian */
 

@@ -37,7 +37,15 @@ ParametricHessian::ParametricHessian()
 }
 
 /* Parameter constructor */
-ParametricHessian::ParametricHessian(const EvaluationPointer & p_evaluation)
+ParametricHessian::ParametricHessian(const ParametricEvaluation & evaluation)
+  : HessianImplementation()
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+ParametricHessian::ParametricHessian(const Pointer<ParametricEvaluation> & p_evaluation)
   : HessianImplementation()
   , p_evaluation_(p_evaluation)
 {
@@ -89,9 +97,9 @@ SymmetricTensor ParametricHessian::hessian(const OT::Point & point) const
 }
 
 /* Evaluation accessors */
-ParametricEvaluation ParametricHessian::getEvaluation() const
+Evaluation ParametricHessian::getEvaluation() const
 {
-  return *p_evaluation_;
+  return p_evaluation_->clone();
 }
 
 /* Dimension accessors */

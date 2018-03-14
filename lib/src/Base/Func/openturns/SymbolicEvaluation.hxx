@@ -18,6 +18,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/SymbolicParser.hxx"
 #include "openturns/Pointer.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -67,10 +68,10 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Evaluation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const;
 
   /** Accessor to the input variables names */
   Description getInputVariablesNames() const;

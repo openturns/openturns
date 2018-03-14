@@ -24,6 +24,7 @@
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/ParametricEvaluation.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,13 +39,17 @@ class OT_API ParametricHessian
   CLASSNAME
 
 public:
-  typedef Pointer<ParametricEvaluation>                EvaluationPointer;
 
   /** Default constructor */
   ParametricHessian();
 
   /** Parameters constructor */
-  ParametricHessian(const EvaluationPointer & p_evaluation);
+  ParametricHessian(const ParametricEvaluation & evaluation);
+
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit ParametricHessian(const Pointer<ParametricEvaluation> & p_evaluation);
+#endif
 
   /** Virtual constructor method */
   ParametricHessian * clone() const;
@@ -56,7 +61,7 @@ public:
                           const Point & parameters) const;
 
   /** Evaluation accessor */
-  ParametricEvaluation getEvaluation() const;
+  Evaluation getEvaluation() const;
 
   /** Dimension accessor */
   UnsignedInteger getInputDimension() const;
@@ -76,7 +81,7 @@ public:
 private:
 
   /** The underlying function */
-  EvaluationPointer p_evaluation_;
+  Pointer<ParametricEvaluation> p_evaluation_;
 
 }; /* class ParametricHessian */
 

@@ -26,9 +26,6 @@ namespace OT {
     } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, 0))) {
       OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return p_impl != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::FunctionImplementation> *"), 0))) {
-      OT::Pointer<OT::FunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::FunctionImplementation> * >(ptr);
-      return p_impl != NULL && !p_impl->isNull();
     } else {
       return PyCallable_Check(pyObj);
     }
@@ -47,9 +44,6 @@ namespace OT {
     } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, 0))) {
       OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return *p_impl;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::FunctionImplementation> *"), 0))) {
-      OT::Pointer<OT::FunctionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::FunctionImplementation> * >(ptr);
-      return **p_impl;
     } else if (!PyCallable_Check(pyObj)) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a Function";
     }
@@ -84,9 +78,6 @@ namespace OT {
     } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__BasisImplementation, 0 ))) {
       OT::BasisImplementation * p_impl = reinterpret_cast< OT::BasisImplementation * >(ptr);
       return p_impl != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::BasisImplementation> *"), 0))) {
-      OT::Pointer<OT::BasisImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::BasisImplementation> * >(ptr);
-      return p_impl != NULL && !p_impl->isNull();
     }
     // Case of Collection<NMF>?
     return false;
@@ -107,11 +98,6 @@ namespace OT {
     {
       OT::BasisImplementation * p_impl = reinterpret_cast< OT::BasisImplementation * >(ptr);
       return *p_impl;
-    }
-    else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::BasisImplementation> *"), 0)))
-    {
-      OT::Pointer<OT::BasisImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::BasisImplementation> * >(ptr);
-      return **p_impl;
     }
     // Case of Collection<NMF>?
     throw OT::NotYetImplementedException(HERE) << "convert< _PyObject_, OT::Basis >"; 

@@ -24,8 +24,7 @@
 #define OPENTURNS_FINITEDIFFERENCE_HXX
 
 #include "openturns/HessianImplementation.hxx"
-#include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Pointer.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
 
 
@@ -44,22 +43,20 @@ class OT_API FiniteDifferenceHessian
   CLASSNAME
 public:
 
-  typedef Pointer<EvaluationImplementation>                          EvaluationPointer;
-
   /** Default constructor */
   FiniteDifferenceHessian();
 
   /** First Parameter constructor  */
   FiniteDifferenceHessian(const Point & epsilon,
-                          const EvaluationPointer & p_evaluation);
+                          const Evaluation & evaluation);
 
   /** SecondParameter constructor */
   FiniteDifferenceHessian(const Scalar epsilon,
-                          const EvaluationPointer & p_evaluation);
+                          const Evaluation & evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   FiniteDifferenceHessian(const FiniteDifferenceStep & finiteDifferenceStep,
-                          const EvaluationPointer & p_evaluation);
+                          const Evaluation & evaluation);
 
   /** Comparison operator */
   virtual Bool operator ==(const FiniteDifferenceHessian & other) const;
@@ -81,7 +78,7 @@ public:
   virtual Point getEpsilon() const;
 
   /** Accessor for the evaluation */
-  virtual EvaluationPointer getEvaluation() const;
+  virtual Evaluation getEvaluation() const;
 
   /** Accessor for the finite difference step */
   virtual void setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep);
@@ -106,7 +103,7 @@ public:
 
 protected:
   /* The underlying evaluation object */
-  EvaluationPointer p_evaluation_;
+  Evaluation evaluation_;
 
   /* The finite difference strategy */
   FiniteDifferenceStep finiteDifferenceStep_;

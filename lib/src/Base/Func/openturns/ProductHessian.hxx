@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_PRODUCTHESSIAN_HXX
 #define OPENTURNS_PRODUCTHESSIAN_HXX
 
-#include "openturns/HessianImplementation.hxx"
-#include "openturns/GradientImplementation.hxx"
-#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Hessian.hxx"
+#include "openturns/Gradient.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,18 +41,13 @@ class OT_API ProductHessian
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-  typedef Pointer<HessianImplementation>          HessianPointer;
-  typedef Pointer<GradientImplementation>         GradientPointer;
-  typedef Pointer<EvaluationImplementation>       EvaluationPointer;
-
   /** Default constructor */
-  ProductHessian(const EvaluationPointer & p_leftEvaluation,
-                 const GradientPointer & p_leftGradient,
-                 const HessianPointer & p_leftHessian,
-                 const EvaluationPointer & p_rightEvaluation,
-                 const GradientPointer & p_rightGradient,
-                 const HessianPointer & p_rightHessian);
+  ProductHessian(const Evaluation & leftEvaluation,
+                 const Gradient & leftGradient,
+                 const Hessian & leftHessian,
+                 const Evaluation & rightEvaluation,
+                 const Gradient & rightGradient,
+                 const Hessian & rightHessian);
 
   /** Virtual constructor */
   virtual ProductHessian * clone() const;
@@ -85,22 +80,22 @@ protected:
 private:
 
   /** The function of f in h = f . g */
-  EvaluationPointer p_leftEvaluation_;
+  Evaluation leftEvaluation_;
 
   /** The gradient of f in h = f . g */
-  GradientPointer p_leftGradient_;
+  Gradient leftGradient_;
 
   /** The hessian of f in h = f . g */
-  HessianPointer p_leftHessian_;
+  Hessian leftHessian_;
 
   /** The function g in h = f . g */
-  EvaluationPointer p_rightEvaluation_;
+  Evaluation rightEvaluation_;
 
   /** The gradient of g in h = f . g */
-  GradientPointer p_rightGradient_;
+  Gradient rightGradient_;
 
   /** The hessian of g in h = f . g */
-  HessianPointer p_rightHessian_;
+  Hessian rightHessian_;
 
 }; /* class ProductHessian */
 

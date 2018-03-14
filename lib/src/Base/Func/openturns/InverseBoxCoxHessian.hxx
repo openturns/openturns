@@ -41,6 +41,11 @@ public:
   /** Parameter constructor */
   explicit InverseBoxCoxHessian(const InverseBoxCoxEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameter constructor */
+  explicit InverseBoxCoxHessian(const Pointer<InverseBoxCoxEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual InverseBoxCoxHessian * clone() const;
 
@@ -68,7 +73,7 @@ public:
   Point getShift() const;
 
   /** Accessor for the evaluation */
-  InverseBoxCoxEvaluation getEvaluation() const;
+  Evaluation getEvaluation() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -78,7 +83,7 @@ public:
 
 protected:
   /** The underlying evaluation */
-  InverseBoxCoxEvaluation evaluation_;
+  Pointer<InverseBoxCoxEvaluation>  p_evaluation_;
 
 }; /* class InverseBoxCoxHessian */
 

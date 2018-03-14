@@ -45,6 +45,11 @@ public:
   /** Parameters constructor */
   AggregatedHessian(const AggregatedEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit AggregatedHessian(const Pointer<AggregatedEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual AggregatedHessian * clone() const;
 
@@ -72,7 +77,7 @@ protected:
 
 private:
   /** The associated evaluation */
-  AggregatedEvaluation evaluation_;
+  Pointer<AggregatedEvaluation> p_evaluation_;
 
 } ; /* class AggregatedHessian */
 

@@ -32,7 +32,7 @@ static const Factory<AggregatedGradient> Factory_AggregatedGradient;
 /* Default constructor */
 AggregatedGradient::AggregatedGradient()
   : GradientImplementation()
-  , evaluation_()
+  , p_evaluation_()
 {
   // Nothing to do
 }
@@ -41,7 +41,15 @@ AggregatedGradient::AggregatedGradient()
 /* Parameters constructor */
 AggregatedGradient::AggregatedGradient(const AggregatedEvaluation & evaluation)
   : GradientImplementation()
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+AggregatedGradient::AggregatedGradient(const Pointer<AggregatedEvaluation> & p_evaluation)
+  : GradientImplementation()
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -58,13 +66,13 @@ Matrix AggregatedGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
-  Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
+  const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
+  Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
   UnsignedInteger columnIndex = 0;
   // Loop over the contributors
   for (UnsignedInteger contributorIndex = 0; contributorIndex < size; ++contributorIndex)
   {
-    const Matrix contributorGradient(evaluation_.functionsCollection_[contributorIndex].gradient(inP));
+    const Matrix contributorGradient(p_evaluation_->functionsCollection_[contributorIndex].gradient(inP));
     // Copy the contributor gradient into the global matrix gradient
     // Must proceed in column order
     for (UnsignedInteger j = 0; j < contributorGradient.getNbColumns(); ++j)
@@ -80,20 +88,20 @@ Matrix AggregatedGradient::gradient(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger AggregatedGradient::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger AggregatedGradient::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* String converter */
 String AggregatedGradient::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-         << " evaluation=" << evaluation_;
+         << " evaluation=" << *p_evaluation_;
 }
 
 String AggregatedGradient::__str__(const String & offset) const
@@ -105,7 +113,7 @@ String AggregatedGradient::__str__(const String & offset) const
 void AggregatedGradient::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 
@@ -113,7 +121,9 @@ void AggregatedGradient::save(Advocate & adv) const
 void AggregatedGradient::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<AggregatedEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 

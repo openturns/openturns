@@ -42,7 +42,8 @@ QuadraticFunction::QuadraticFunction (const Point & center,
 /* Comparison operator */
 Bool QuadraticFunction::operator ==(const QuadraticFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

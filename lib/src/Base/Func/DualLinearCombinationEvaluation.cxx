@@ -74,7 +74,7 @@ void DualLinearCombinationEvaluation::setDescription(const Description & descrip
 }
 
 /* Get the i-th marginal function */
-DualLinearCombinationEvaluation::Implementation DualLinearCombinationEvaluation::getMarginal(const UnsignedInteger i) const
+Evaluation DualLinearCombinationEvaluation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   // We use a LinearCombinationEvaluation instead of a DualLinearCombinationEvaluation as it is more efficient and more easy to read
@@ -85,7 +85,7 @@ DualLinearCombinationEvaluation::Implementation DualLinearCombinationEvaluation:
 }
 
 /* Get the function corresponding to indices components */
-DualLinearCombinationEvaluation::Implementation DualLinearCombinationEvaluation::getMarginal(const Indices & indices) const
+Evaluation DualLinearCombinationEvaluation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   // Special case for 1D marginal
@@ -120,7 +120,7 @@ String DualLinearCombinationEvaluation::__str__(const String & offset) const
         else if (value > 0.0) oss << " + " << value;
         else oss << " - " << -value;
         first = false;
-        const String expr(functionsCollection_[i].getEvaluation()->__str__());
+        const String expr(functionsCollection_[i].getEvaluation().getImplementation()->__str__());
         // Print the function factor only if it is different from 1
         if (expr != "1")
         {
@@ -138,7 +138,7 @@ String DualLinearCombinationEvaluation::__str__(const String & offset) const
       if (first) oss << coefficients_[i];
       else oss << " + " << coefficients_[i];
       first = false;
-      const String expr(functionsCollection_[i].getEvaluation()->__str__());
+      const String expr(functionsCollection_[i].getEvaluation().getImplementation()->__str__());
       if (expr != "1")
       {
         oss << " * ";

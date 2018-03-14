@@ -78,7 +78,7 @@ protected:
 
 private:
   // The evaluation class associated with the hessian
-  MarginalTransformationEvaluation evaluation_;
+  Pointer<MarginalTransformationEvaluation> p_evaluation_;
 
 }; /* MarginalTransformationHessian */
 

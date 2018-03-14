@@ -86,7 +86,7 @@ String LinearCombinationEvaluation::__str__(const String & offset) const
     if (i > 0) oss << (isNegative ? " - " : " + ");
     else if (isNegative) oss << "-";
     if (absCoefficient != 1.0) oss << absCoefficient << " * ";
-    oss << "(" << functionsCollection_[i].getEvaluation()->__str__() << ")";
+    oss << "(" << functionsCollection_[i].getEvaluation().getImplementation()->__str__() << ")";
   }
   if (size > 1) oss << ")";
   if (size == 0) oss << "0.0";
@@ -298,7 +298,7 @@ Description LinearCombinationEvaluation::getParameterDescription() const
 
 
 /* Get the i-th marginal function */
-LinearCombinationEvaluation::Implementation LinearCombinationEvaluation::getMarginal(const UnsignedInteger i) const
+Evaluation LinearCombinationEvaluation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   const UnsignedInteger size = functionsCollection_.getSize();
@@ -308,7 +308,7 @@ LinearCombinationEvaluation::Implementation LinearCombinationEvaluation::getMarg
 }
 
 /* Get the function corresponding to indices components */
-LinearCombinationEvaluation::Implementation LinearCombinationEvaluation::getMarginal(const Indices & indices) const
+Evaluation LinearCombinationEvaluation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = functionsCollection_.getSize();

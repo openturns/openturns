@@ -49,10 +49,10 @@ ValueFunction::ValueFunction(const Function & function,
 }
 
 /* Parameter constructor */
-ValueFunction::ValueFunction(const EvaluationPointer & p_evaluation,
+ValueFunction::ValueFunction(const Evaluation & evaluation,
                              const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, p_evaluation->getInputDimension(), p_evaluation->getOutputDimension())
-  , function_(p_evaluation)
+  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension(), evaluation.getOutputDimension())
+  , function_(evaluation)
 {
   // Set the descriptions
   setInputDescription(function_.getInputDescription());

@@ -79,9 +79,6 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DistributionImplementation)
 
-typedef FunctionImplementation::EvaluationPointer EvaluationPointer;
-typedef FunctionImplementation::GradientPointer   GradientPointer;
-typedef FunctionImplementation::HessianPointer    HessianPointer;
 typedef Collection<Distribution>                                      DistributionCollection;
 
 static const Factory<DistributionImplementation> Factory_DistributionImplementation;
@@ -3138,13 +3135,12 @@ DistributionImplementation::IsoProbabilisticTransformation DistributionImplement
   {
     DistributionCollection collection(1, *this);
     // Get the marginal transformation evaluation implementation
-    MarginalTransformationEvaluation evaluation(collection, MarginalTransformationEvaluation::FROM, Normal());
-    const EvaluationPointer p_evaluation(evaluation.clone());
+    const MarginalTransformationEvaluation evaluation(collection, MarginalTransformationEvaluation::FROM, Normal());
     // Get the marginal transformation gradient implementation
-    const GradientPointer p_gradient = new MarginalTransformationGradient(evaluation);
+    const Gradient gradient(new MarginalTransformationGradient(evaluation));
     // Get the marginal transformation hessian implementation
-    const HessianPointer p_hessian = new MarginalTransformationHessian(evaluation);
-    InverseIsoProbabilisticTransformation inverseTransformation(p_evaluation, p_gradient, p_hessian);
+    const Hessian hessian(new MarginalTransformationHessian(evaluation));
+    InverseIsoProbabilisticTransformation inverseTransformation(evaluation, gradient, hessian);
     PointWithDescription parameters(getParameter());
     const UnsignedInteger parametersDimension = parameters.getDimension();
     Description parametersDescription(parameters.getDescription());
@@ -3167,12 +3163,11 @@ DistributionImplementation::InverseIsoProbabilisticTransformation DistributionIm
     DistributionCollection collection(1, *this);
     // Get the marginal transformation evaluation implementation
     MarginalTransformationEvaluation evaluation(collection, MarginalTransformationEvaluation::TO, Normal());
-    const EvaluationPointer p_evaluation(evaluation.clone());
     // Get the marginal transformation gradient implementation
-    const GradientPointer p_gradient = new MarginalTransformationGradient(evaluation);
+    const Gradient gradient(new MarginalTransformationGradient(evaluation));
     // Get the marginal transformation hessian implementation
-    const HessianPointer p_hessian = new MarginalTransformationHessian(evaluation);
-    InverseIsoProbabilisticTransformation inverseTransformation(p_evaluation, p_gradient, p_hessian);
+    const Hessian hessian(new MarginalTransformationHessian(evaluation));
+    InverseIsoProbabilisticTransformation inverseTransformation(evaluation, gradient, hessian);
     PointWithDescription parameters(getParameter());
     const UnsignedInteger parametersDimension = parameters.getDimension();
     Description parametersDescription(parameters.getDescription());

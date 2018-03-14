@@ -35,7 +35,7 @@ static const Factory<DualLinearCombinationHessian> Factory_DualLinearCombination
 /* Default constructor */
 DualLinearCombinationHessian::DualLinearCombinationHessian()
   : HessianImplementation()
-  , evaluation_()
+  , p_evaluation_()
 {
   // Nothing to do
 }
@@ -44,7 +44,15 @@ DualLinearCombinationHessian::DualLinearCombinationHessian()
 /* Parameters constructor */
 DualLinearCombinationHessian::DualLinearCombinationHessian(const DualLinearCombinationEvaluation & evaluation)
   : HessianImplementation()
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+DualLinearCombinationHessian::DualLinearCombinationHessian(const Pointer<DualLinearCombinationEvaluation> & p_evaluation)
+  : HessianImplementation()
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -61,13 +69,13 @@ SymmetricTensor DualLinearCombinationHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
+  const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const SymmetricTensor hessianI(evaluation_.functionsCollection_[i].hessian(inP));
-    const Point coefficientI(evaluation_.coefficients_[i]);
+    const SymmetricTensor hessianI(p_evaluation_->functionsCollection_[i].hessian(inP));
+    const Point coefficientI(p_evaluation_->coefficients_[i]);
     for (UnsignedInteger j = 0; j < inputDimension; ++j)
       for (UnsignedInteger k = 0; k <= j; ++k)
         for (UnsignedInteger n = 0; n < outputDimension; ++n)
@@ -79,20 +87,20 @@ SymmetricTensor DualLinearCombinationHessian::hessian(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger DualLinearCombinationHessian::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger DualLinearCombinationHessian::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* String converter */
 String DualLinearCombinationHessian::__repr__() const
 {
   return OSS() << "class=" << GetClassName()
-         << " evaluation=" << evaluation_;
+         << " evaluation=" << *p_evaluation_;
 }
 
 
@@ -100,7 +108,7 @@ String DualLinearCombinationHessian::__repr__() const
 void DualLinearCombinationHessian::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 
@@ -108,7 +116,9 @@ void DualLinearCombinationHessian::save(Advocate & adv) const
 void DualLinearCombinationHessian::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<DualLinearCombinationEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

@@ -66,12 +66,6 @@ Bool NoHessian::isActualImplementation() const
 
 
 
-
-
-
-
-
-
 /* Here is the interface that all derived class must implement */
 
 /* Hessian method */

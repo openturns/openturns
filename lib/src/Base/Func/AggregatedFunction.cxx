@@ -38,17 +38,18 @@ AggregatedFunction::AggregatedFunction ()
 AggregatedFunction::AggregatedFunction (const FunctionCollection & functionCollection)
   : Function()
 {
-  const AggregatedEvaluation evaluation(functionCollection);
-  setEvaluation(evaluation.clone());
-  setGradient(new AggregatedGradient(evaluation));
-  setHessian(new AggregatedHessian(evaluation));
+  const Pointer<AggregatedEvaluation> p_evaluation(new AggregatedEvaluation(functionCollection));
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new AggregatedGradient(p_evaluation));
+  setHessian(new AggregatedHessian(p_evaluation));
 }
 
 
 /* Comparison operator */
 Bool AggregatedFunction::operator ==(const AggregatedFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

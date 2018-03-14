@@ -2,13 +2,13 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::Sample & gridOut ($*ltype temp) %{ temp = OT::Sample(); $1 = &temp; %}
-%typemap(argout) OT::Sample & gridOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN |  0 )); %}
+%typemap(argout) OT::Sample & gridOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN |  0 )); %}
 
 %typemap(in, numinputs=0) OT::Point & marginalProbOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+%typemap(argout) OT::Point & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN |  0 )); %}
 
 %typemap(in, numinputs=0) OT::Point & thresholdOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & thresholdOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+%typemap(argout) OT::Point & thresholdOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN |  0 )); %}
 
 %typemap(in, numinputs=0) OT::Scalar & marginalProbOut ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
 %typemap(argout) OT::Scalar & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}

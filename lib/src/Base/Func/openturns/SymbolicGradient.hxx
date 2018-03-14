@@ -16,7 +16,9 @@
 #define OPENTURNS_SYMBOLICGRADIENT_HXX
 
 #include "openturns/GradientImplementation.hxx"
+#include "openturns/Gradient.hxx"
 #include "openturns/SymbolicEvaluation.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,6 +38,11 @@ public:
 
   /** Default constructor */
   SymbolicGradient(const SymbolicEvaluation & evaluation);
+
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit SymbolicGradient(Pointer<SymbolicEvaluation> & p_evaluation);
+#endif
 
   /** Virtual constructor */
   virtual SymbolicGradient * clone() const;
@@ -62,10 +69,10 @@ public:
                     const UnsignedInteger j) const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Gradient getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Gradient getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -83,7 +90,7 @@ private:
 
   mutable Bool isInitialized_;
   mutable Bool isAnalytical_;
-  SymbolicEvaluation evaluation_;
+  Pointer<SymbolicEvaluation> p_evaluation_;
 
   /** A mathematical expression parser from the muParser library */
   mutable SymbolicParser parser_;

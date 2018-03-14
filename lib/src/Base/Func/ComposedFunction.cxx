@@ -52,8 +52,7 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
 {
   try
   {
-    GradientPointer p_gradientImplementation(new ComposedGradient(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
-    setGradient(p_gradientImplementation);
+    setGradient(new ComposedGradient(p_left->getGradient(), p_right->getEvaluation(), p_right->getGradient()));
     setUseDefaultGradientImplementation(p_left->getUseDefaultGradientImplementation() || p_right->getUseDefaultGradientImplementation());
   }
   catch(InvalidArgumentException &)
@@ -62,8 +61,7 @@ ComposedFunction::ComposedFunction(const Implementation & p_left,
   }
   try
   {
-    HessianPointer p_hessianImplementation(new ComposedHessian(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
-    setHessian(p_hessianImplementation);
+    setHessian(new ComposedHessian(p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
     setUseDefaultHessianImplementation(p_left->getUseDefaultHessianImplementation() || p_right->getUseDefaultHessianImplementation());
   }
   catch(InvalidArgumentException &)
@@ -83,8 +81,7 @@ ComposedFunction::ComposedFunction(const Function & left,
 {
   try
   {
-    GradientPointer p_gradientImplementation(new ComposedGradient(left.getGradient(), right.getEvaluation(), right.getGradient()));
-    setGradient(p_gradientImplementation);
+    setGradient(new ComposedGradient(left.getGradient(), right.getEvaluation(), right.getGradient()));
     setUseDefaultGradientImplementation(left.getUseDefaultGradientImplementation() || right.getUseDefaultGradientImplementation());
   }
   catch(InvalidArgumentException &)
@@ -93,8 +90,7 @@ ComposedFunction::ComposedFunction(const Function & left,
   }
   try
   {
-    HessianPointer p_hessianImplementation(new ComposedHessian(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
-    setHessian(p_hessianImplementation);
+    setHessian(new ComposedHessian(left.getGradient(), left.getHessian(), right.getEvaluation(), right.getGradient(), right.getHessian()));
     setUseDefaultHessianImplementation(left.getUseDefaultHessianImplementation() || right.getUseDefaultHessianImplementation());
   }
   catch(InvalidArgumentException &)

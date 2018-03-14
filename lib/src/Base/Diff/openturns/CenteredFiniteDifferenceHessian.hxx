@@ -26,7 +26,7 @@
 
 #include "openturns/FiniteDifferenceHessian.hxx"
 #include "openturns/HessianImplementation.hxx"
-#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -49,21 +49,19 @@ class OT_API CenteredFiniteDifferenceHessian
   CLASSNAME
 public:
 
-  typedef Pointer<EvaluationImplementation>               EvaluationPointer;
-
   /** Default constructor */
   CenteredFiniteDifferenceHessian();
   /** Parameter constructor */
   CenteredFiniteDifferenceHessian(const Point & epsilon,
-                                  const EvaluationPointer & p_evaluation);
+                                  const Evaluation & evaluation);
 
   /** Second parameter constructor */
   CenteredFiniteDifferenceHessian(const Scalar epsilon,
-                                  const EvaluationPointer & p_evaluation);
+                                  const Evaluation & evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   CenteredFiniteDifferenceHessian(const FiniteDifferenceStep & finiteDifferenceStep,
-                                  const EvaluationPointer & p_evaluation);
+                                  const Evaluation & evaluation);
 
   /* Virtual constructor */
   virtual CenteredFiniteDifferenceHessian * clone() const;

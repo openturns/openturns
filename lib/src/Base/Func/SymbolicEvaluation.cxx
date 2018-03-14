@@ -140,14 +140,14 @@ UnsignedInteger SymbolicEvaluation::getOutputDimension() const
 }
 
 /* Get the i-th marginal function */
-SymbolicEvaluation::Implementation SymbolicEvaluation::getMarginal(const UnsignedInteger i) const
+Evaluation SymbolicEvaluation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return new SymbolicEvaluation(inputVariablesNames_, Description(1, outputVariablesNames_[i]), Description(1, formulas_[i]));
 }
 
 /* Get the function corresponding to indices components */
-SymbolicEvaluation::Implementation SymbolicEvaluation::getMarginal(const Indices & indices) const
+Evaluation SymbolicEvaluation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = indices.getSize();

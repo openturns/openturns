@@ -35,6 +35,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Box.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -346,14 +347,14 @@ UnsignedInteger EvaluationImplementation::getParameterDimension() const
 }
 
 /* Get the i-th marginal function */
-EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
+Evaluation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(const Indices & indices) const
+Evaluation EvaluationImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // We build an analytical function that extract the needed component
@@ -384,8 +385,7 @@ EvaluationImplementation::Implementation EvaluationImplementation::getMarginal(c
   Point constant(outputDimension);
   const LinearEvaluation left(center, constant, linear);
 #endif
-  EvaluationImplementation::Implementation marginal(new ComposedEvaluation(left.clone(), clone()));
-  return marginal;
+  return new ComposedEvaluation(left.clone(), clone());
 }
 
 /* Get the number of calls to operator() */

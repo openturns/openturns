@@ -34,7 +34,7 @@ static const Factory<LinearCombinationGradient> Factory_LinearCombinationGradien
 /* Default constructor */
 LinearCombinationGradient::LinearCombinationGradient()
   : GradientImplementation()
-  , evaluation_()
+  , p_evaluation_()
 {
   // Nothing to do
 }
@@ -43,7 +43,15 @@ LinearCombinationGradient::LinearCombinationGradient()
 /* Parameters constructor */
 LinearCombinationGradient::LinearCombinationGradient(const LinearCombinationEvaluation & evaluation)
   : GradientImplementation()
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+LinearCombinationGradient::LinearCombinationGradient(const Pointer<LinearCombinationEvaluation> & p_evaluation)
+  : GradientImplementation()
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -60,37 +68,37 @@ Matrix LinearCombinationGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
-  Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
-  for (UnsignedInteger i = 0; i < size; ++i) result = result + evaluation_.coefficients_[i] * evaluation_.functionsCollection_[i].gradient(inP);
+  const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
+  Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
+  for (UnsignedInteger i = 0; i < size; ++i) result = result + p_evaluation_->coefficients_[i] * p_evaluation_->functionsCollection_[i].gradient(inP);
   return result;
 }
 
 /* Accessor for input point dimension */
 UnsignedInteger LinearCombinationGradient::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger LinearCombinationGradient::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* String converter */
 String LinearCombinationGradient::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-         << " evaluation=" << evaluation_;
+         << " evaluation=" << *p_evaluation_;
 }
 
 String LinearCombinationGradient::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << evaluation_.coefficients_[i] << ")*" << evaluation_.functionsCollection_[i].getGradient()->__str__();
+  const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << p_evaluation_->coefficients_[i] << ")*" << p_evaluation_->functionsCollection_[i].getGradient().__str__();
   return oss;
 }
 
@@ -98,7 +106,7 @@ String LinearCombinationGradient::__str__(const String & offset) const
 void LinearCombinationGradient::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 
@@ -106,7 +114,9 @@ void LinearCombinationGradient::save(Advocate & adv) const
 void LinearCombinationGradient::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<LinearCombinationEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 

@@ -1,4 +1,4 @@
-%feature("docstring") OT::EvaluationImplementation
+%define OT_Evaluation_doc
 "Numerical math evaluation implementation.
 
 Available constructors:
@@ -10,10 +10,13 @@ Function, AggregatedEvaluation,
 DatabaseEvaluation,
 DualLinearCombinationEvaluation, LinearFunction
 "
+%enddef
+%feature("docstring") OT::EvaluationImplementation
+OT_Evaluation_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::addCacheContent
+%define OT_Evaluation_addCacheContent_doc
 "Add input numerical points and associated output to the cache.
 
 Parameters
@@ -23,25 +26,37 @@ input_sample : 2-d sequence of float
 output_sample : 2-d sequence of float
     Output numerical points associated with the input_sample to be added to the
     cache."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::addCacheContent
+OT_Evaluation_addCacheContent_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::clearCache
+%define OT_Evaluation_clearCache_doc
 "Empty the content of the cache."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::clearCache
+OT_Evaluation_clearCache_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::disableCache
+%define OT_Evaluation_disableCache_doc
 "Disable the cache mechanism."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::disableCache
+OT_Evaluation_disableCache_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::enableCache
+%define OT_Evaluation_enableCache_doc
 "Enable the cache mechanism."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::enableCache
+OT_Evaluation_enableCache_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getCacheHits
+%define OT_Evaluation_getCacheHits_doc
 "Accessor to the number of computations saved thanks to the cache mecanism.
 
 Returns
@@ -49,30 +64,39 @@ Returns
 cacheHits : int
     Integer that counts the number of computations saved thanks to the cache
     mecanism."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getCacheHits
+OT_Evaluation_getCacheHits_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getCacheInput
+%define OT_Evaluation_getCacheInput_doc
 "Accessor to all the input numerical points stored in the cache mecanism.
 
 Returns
 -------
 cacheInput : :class:`~openturns.Sample`
     All the input numerical points stored in the cache mecanism."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getCacheInput
+OT_Evaluation_getCacheInput_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getCacheOutput
+%define OT_Evaluation_getCacheOutput_doc
 "Accessor to all the output numerical points stored in the cache mecanism.
 
 Returns
 -------
 cacheInput : :class:`~openturns.Sample`
     All the output numerical points stored in the cache mecanism."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getCacheOutput
+OT_Evaluation_getCacheOutput_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getCallsNumber
+%define OT_Evaluation_getCallsNumber_doc
 "Accessor to the number of times the function has been called.
 
 Returns
@@ -80,10 +104,13 @@ Returns
 calls_number : int
     Integer that counts the number of times the function has been called
     since its creation."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getCallsNumber
+OT_Evaluation_getCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getDescription
+%define OT_Evaluation_getDescription_doc
 "Accessor to the description of the inputs and outputs.
 
 Returns
@@ -98,10 +125,13 @@ Examples
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getDescription())
 [x1,x2,y0]"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getDescription
+OT_Evaluation_getDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getInputDescription
+%define OT_Evaluation_getInputDescription_doc
 "Accessor to the description of the inputs.
 
 Returns
@@ -116,10 +146,13 @@ Examples
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getInputDescription())
 [x1,x2]"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getInputDescription
+OT_Evaluation_getInputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getInputDimension
+%define OT_Evaluation_getInputDimension_doc
 "Accessor to the number of the inputs.
 
 Returns
@@ -134,10 +167,13 @@ Examples
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getInputDimension())
 2"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getInputDimension
+OT_Evaluation_getInputDimension_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getMarginal
+%define OT_Evaluation_getMarginal_doc
 "Accessor to marginal.
 
 Parameters
@@ -151,10 +187,13 @@ marginal : :class:`~openturns.Function`
     Function corresponding to either :math:`f_i` or
     :math:`(f_i)_{i \in indices}`, with :math:`f:\Rset^n \rightarrow \Rset^p`
     and :math:`f=(f_0 , \dots, f_{p-1})`."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getMarginal
+OT_Evaluation_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getOutputDescription
+%define OT_Evaluation_getOutputDescription_doc
 "Accessor to the description of the outputs.
 
 Returns
@@ -169,10 +208,13 @@ Examples
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getOutputDescription())
 [y0]"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getOutputDescription
+OT_Evaluation_getOutputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getOutputDimension
+%define OT_Evaluation_getOutputDimension_doc
 "Accessor to the number of the outputs.
 
 Returns
@@ -187,20 +229,26 @@ Examples
 ...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
 >>> print(f.getOutputDimension())
 1"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getOutputDimension
+OT_Evaluation_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getParameterDimension
+%define OT_Evaluation_getParameterDimension_doc
 "Accessor to the dimension of the parameter.
 
 Returns
 -------
 parameter_dimension : int
     Dimension of the parameter."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getParameterDimension
+OT_Evaluation_getParameterDimension_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::isCacheEnabled
+%define OT_Evaluation_isCacheEnabled_doc
 "Test whether the cache mechanism is enabled or not.
 
 Returns
@@ -208,10 +256,13 @@ Returns
 isCacheEnabled : bool
     Flag telling whether the cache mechanism is enabled.
     It is disabled by default."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::isCacheEnabled
+OT_Evaluation_isCacheEnabled_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::setDescription
+%define OT_Evaluation_setDescription_doc
 "Accessor to the description of the inputs and outputs.
 
 Parameters
@@ -229,30 +280,39 @@ Examples
 >>> f.setDescription(['a','b','y'])
 >>> print(f.getDescription())
 [a,b,y]"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setDescription
+OT_Evaluation_setDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::setInputDescription
+%define OT_Evaluation_setInputDescription_doc
 "Accessor to the description of the inputs.
 
 Returns
 -------
 description : :class:`~openturns.Description`
     Description of the inputs."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setInputDescription
+OT_Evaluation_setInputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::setOutputDescription
+%define OT_Evaluation_setOutputDescription_doc
 "Accessor to the description of the outputs.
 
 Returns
 -------
 description : :class:`~openturns.Description`
     Description of the outputs."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setOutputDescription
+OT_Evaluation_setOutputDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::parameterGradient
+%define OT_Evaluation_parameterGradient_doc
 "Gradient against the parameters.
 
 Parameters
@@ -264,50 +324,65 @@ Returns
 -------
 parameter_gradient : :class:`~openturns.Matrix`
     The parameters gradient computed at x."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::parameterGradient
+OT_Evaluation_parameterGradient_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getParameter
+%define OT_Evaluation_getParameter_doc
 "Accessor to the parameter values.
 
 Returns
 -------
 parameter : :class:`~openturns.Point`
     The parameter values."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getParameter
+OT_Evaluation_getParameter_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::setParameter
+%define OT_Evaluation_setParameter_doc
 "Accessor to the parameter values.
 
 Parameters
 ----------
 parameter : sequence of float
     The parameter values."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setParameter
+OT_Evaluation_setParameter_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::getParameterDescription
+%define OT_Evaluation_getParameterDescription_doc
 "Accessor to the parameter description.
 
 Returns
 -------
 parameter : :class:`~openturns.Description`
     The parameter description."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getParameterDescription
+OT_Evaluation_getParameterDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::setParameterDescription
+%define OT_Evaluation_setParameterDescription_doc
 "Accessor to the parameter description.
 
 Parameters
 ----------
 parameter : :class:`~openturns.Description`
     The parameter description."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setParameterDescription
+OT_Evaluation_setParameterDescription_doc
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::EvaluationImplementation::draw
+%define OT_Evaluation_draw_doc
 "Draw the output of function as a :class:`~openturns.Graph`.
 
 Available usages:
@@ -379,6 +454,9 @@ Examples
 >>> f = ot.SymbolicFunction(['x'], ['sin(2*pi_*x)*exp(-x^2/2)'])
 >>> graph = f.draw(-1.2, 1.2, 100)
 >>> View(graph).show()"
+%enddef
+%feature("docstring") OT::EvaluationImplementation::draw
+OT_Evaluation_draw_doc
 
 // ---------------------------------------------------------------------
 

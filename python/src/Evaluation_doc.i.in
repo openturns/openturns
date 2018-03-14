@@ -1,0 +1,54 @@
+// Evaluation docstrings are defined in EvaluationImplementation_doc.i.in
+
+%feature("docstring") OT::Evaluation
+OT_Evaluation_doc
+%feature("docstring") OT::Evaluation::addCacheContent
+OT_Evaluation_addCacheContent_doc
+%feature("docstring") OT::Evaluation::clearCache
+OT_Evaluation_clearCache_doc
+%feature("docstring") OT::Evaluation::disableCache
+OT_Evaluation_disableCache_doc
+%feature("docstring") OT::Evaluation::enableCache
+OT_Evaluation_enableCache_doc
+%feature("docstring") OT::Evaluation::getCacheHits
+OT_Evaluation_getCacheHits_doc
+%feature("docstring") OT::Evaluation::getCacheInput
+OT_Evaluation_getCacheInput_doc
+%feature("docstring") OT::Evaluation::getCacheOutput
+OT_Evaluation_getCacheOutput_doc
+%feature("docstring") OT::Evaluation::getCallsNumber
+OT_Evaluation_getCallsNumber_doc
+%feature("docstring") OT::Evaluation::getDescription
+OT_Evaluation_getDescription_doc
+%feature("docstring") OT::Evaluation::getInputDescription
+OT_Evaluation_getInputDescription_doc
+%feature("docstring") OT::Evaluation::getInputDimension
+OT_Evaluation_getInputDimension_doc
+%feature("docstring") OT::Evaluation::getMarginal
+OT_Evaluation_getMarginal_doc
+%feature("docstring") OT::Evaluation::getOutputDescription
+OT_Evaluation_getOutputDescription_doc
+%feature("docstring") OT::Evaluation::getOutputDimension
+OT_Evaluation_getOutputDimension_doc
+%feature("docstring") OT::Evaluation::getParameterDimension
+OT_Evaluation_getParameterDimension_doc
+%feature("docstring") OT::Evaluation::isCacheEnabled
+OT_Evaluation_isCacheEnabled_doc
+%feature("docstring") OT::Evaluation::setDescription
+OT_Evaluation_setDescription_doc
+%feature("docstring") OT::Evaluation::setInputDescription
+OT_Evaluation_setInputDescription_doc
+%feature("docstring") OT::Evaluation::setOutputDescription
+OT_Evaluation_setOutputDescription_doc
+%feature("docstring") OT::Evaluation::parameterGradient
+OT_Evaluation_parameterGradient_doc
+%feature("docstring") OT::Evaluation::getParameter
+OT_Evaluation_getParameter_doc
+%feature("docstring") OT::Evaluation::setParameter
+OT_Evaluation_setParameter_doc
+%feature("docstring") OT::Evaluation::getParameterDescription
+OT_Evaluation_getParameterDescription_doc
+%feature("docstring") OT::Evaluation::setParameterDescription
+OT_Evaluation_setParameterDescription_doc
+%feature("docstring") OT::Evaluation::draw
+OT_Evaluation_draw_doc

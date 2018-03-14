@@ -45,8 +45,8 @@ TrendTransform::TrendTransform(const Function & function)
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const EvaluationPointer & p_evaluation)
-  : VertexValueFunction(TrendEvaluation(Function(p_evaluation)), p_evaluation->getInputDimension())
+TrendTransform::TrendTransform(const Evaluation & evaluation)
+  : VertexValueFunction(TrendEvaluation(Function(evaluation)), evaluation.getInputDimension())
 {
   // Nothing to do
 }
@@ -95,7 +95,7 @@ InverseTrendTransform TrendTransform::getInverse() const
 /* Underlying trend function accessor */
 Function TrendTransform::getTrendFunction() const
 {
-  const TrendEvaluation * p_evaluation = dynamic_cast<const TrendEvaluation*>(getFunction().getEvaluation().get());
+  const TrendEvaluation * p_evaluation = dynamic_cast<const TrendEvaluation*>(getFunction().getEvaluation().getImplementation().get());
   if (p_evaluation) return p_evaluation->getFunction();
   throw InternalException(HERE) << "Error: cannot extract the evaluation of the internal function as a TrendEvaluation";
 }

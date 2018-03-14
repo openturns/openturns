@@ -16,7 +16,7 @@
 #ifndef OPENTURNS_COMPOSEDNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 #define OPENTURNS_COMPOSEDNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
-#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,12 +31,9 @@ class OT_API ComposedEvaluation
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-  typedef Pointer<EvaluationImplementation> EvaluationPointer;
-
   /** Default constructor */
-  ComposedEvaluation(const EvaluationPointer & p_leftFunction,
-                     const EvaluationPointer & p_rightFunction);
+  ComposedEvaluation(const Evaluation & leftFunction,
+                     const Evaluation & rightFunction);
 
 
   /** Virtual constructor */
@@ -70,10 +67,10 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Evaluation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -82,8 +79,8 @@ public:
   void load(Advocate & adv);
 
   /** Composed implementation accessor */
-  EvaluationPointer getLeftEvaluationImplementation() const;
-  EvaluationPointer getRightEvaluationImplementation() const;
+  Evaluation getLeftEvaluation() const;
+  Evaluation getRightEvaluation() const;
 
 protected:
 
@@ -93,10 +90,10 @@ protected:
 private:
 
   /** The function f in h = f o g */
-  EvaluationPointer p_leftFunction_;
+  Evaluation leftFunction_;
 
   /** The function g in h = f o g */
-  EvaluationPointer p_rightFunction_;
+  Evaluation rightFunction_;
 
 }; /* class ComposedEvaluation */
 

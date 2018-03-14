@@ -33,16 +33,16 @@ MemoizeEvaluation::MemoizeEvaluation()
 }
 
 /* Parameter constructor */
-MemoizeEvaluation::MemoizeEvaluation(const Implementation & p_Evaluation, const HistoryStrategy & historyStrategy)
-  : EvaluationProxy(p_Evaluation)
+MemoizeEvaluation::MemoizeEvaluation(const Evaluation & evaluation, const HistoryStrategy & historyStrategy)
+  : EvaluationProxy(evaluation)
   , inputStrategy_(historyStrategy)
   , outputStrategy_(historyStrategy)
   , isHistoryEnabled_(true)
 {
-  inputStrategy_.setDimension(p_evaluationImplementation_->getInputDimension());
-  outputStrategy_.setDimension(p_evaluationImplementation_->getOutputDimension());
+  inputStrategy_.setDimension(evaluation_.getInputDimension());
+  outputStrategy_.setDimension(evaluation_.getOutputDimension());
   // If argument is an MemoizeEvaluation, copy history
-  MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(p_Evaluation.get());
+  MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(evaluation.getImplementation().get());
   if (p_MemoizeEvaluation)
   {
     const Sample inSample(p_MemoizeEvaluation->getInputHistory());
@@ -60,13 +60,13 @@ MemoizeEvaluation * MemoizeEvaluation::clone() const
 }
 
 /** Function implementation accessors */
-void MemoizeEvaluation::setEvaluation(const Implementation & p_Evaluation)
+void MemoizeEvaluation::setEvaluation(const Evaluation & evaluation)
 {
-  p_evaluationImplementation_ = p_Evaluation;
-  inputStrategy_.setDimension(p_evaluationImplementation_->getInputDimension());
-  outputStrategy_.setDimension(p_evaluationImplementation_->getOutputDimension());
+  evaluation_ = evaluation;
+  inputStrategy_.setDimension(evaluation_.getInputDimension());
+  outputStrategy_.setDimension(evaluation_.getOutputDimension());
   // If argument is a MemoizeEvaluation, copy history
-  MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(p_Evaluation.get());
+  MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(evaluation.getImplementation().get());
   if (p_MemoizeEvaluation)
   {
     const Sample inSample(p_MemoizeEvaluation->getInputHistory());
@@ -80,7 +80,7 @@ void MemoizeEvaluation::setEvaluation(const Implementation & p_Evaluation)
 /* Operator () */
 Point MemoizeEvaluation::operator() (const Point & inPoint) const
 {
-  const Point outPoint(p_evaluationImplementation_->operator()(inPoint));
+  const Point outPoint(evaluation_.operator()(inPoint));
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inPoint);
@@ -92,8 +92,8 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
 /* Operator () */
 Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 {
-  Sample outSample(p_evaluationImplementation_->operator()(inSample));
-  outSample.setDescription(p_evaluationImplementation_->getOutputDescription());
+  Sample outSample(evaluation_.operator()(inSample));
+  outSample.setDescription(evaluation_.getOutputDescription());
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inSample);
@@ -103,10 +103,9 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 }
 
 /* Get the evaluation corresponding to indices components */
-MemoizeEvaluation::Implementation MemoizeEvaluation::getMarginal(const Indices & indices) const
+Evaluation MemoizeEvaluation::getMarginal(const Indices & indices) const
 {
-  Pointer<EvaluationImplementation> marginal = p_evaluationImplementation_->getMarginal(indices);
-  return new MemoizeEvaluation(marginal.get()->clone(), inputStrategy_);
+  return new MemoizeEvaluation(evaluation_.getMarginal(indices), inputStrategy_);
 }
 
 /* Enable or disable the input/output history */
@@ -145,15 +144,15 @@ Sample MemoizeEvaluation::getOutputHistory() const
   return outputStrategy_.getSample();
 }
 
-MemoizeEvaluation::Implementation MemoizeEvaluation::getEvaluation() const
+Evaluation MemoizeEvaluation::getEvaluation() const
 {
-  return p_evaluationImplementation_;
+  return evaluation_;
 }
 
 /* Comparison operator */
 Bool MemoizeEvaluation::operator ==(const MemoizeEvaluation & other) const
 {
-  return p_evaluationImplementation_ == other.p_evaluationImplementation_;
+  return evaluation_ == other.evaluation_;
 }
 
 /* String converter */
@@ -161,7 +160,7 @@ String MemoizeEvaluation::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << MemoizeEvaluation::GetClassName()
-      << " evaluation=" << p_evaluationImplementation_->__repr__()
+      << " evaluation=" << evaluation_.getImplementation()->__repr__()
       << " isHistoryEnabled=" << isHistoryEnabled_
       << " inputStrategy=" << inputStrategy_
       << " outputStrategy=" << outputStrategy_;
@@ -172,7 +171,7 @@ String MemoizeEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << "class=" << MemoizeEvaluation::GetClassName()
-      << " evaluation=" << p_evaluationImplementation_->__str__()
+      << " evaluation=" << evaluation_.getImplementation()->__str__()
       << " isHistoryEnabled=" << isHistoryEnabled_
       << " inputStrategy=" << inputStrategy_
       << " outputStrategy=" << outputStrategy_;

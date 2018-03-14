@@ -40,24 +40,24 @@ CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian()
 
 /* Parameter constructor */
 CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const Point & epsilon,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceHessian(epsilon, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceHessian(epsilon, evaluation)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const Scalar epsilon,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceHessian(epsilon, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceHessian(epsilon, evaluation)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 CenteredFiniteDifferenceHessian::CenteredFiniteDifferenceHessian(const FiniteDifferenceStep & finiteDifferenceStep,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceHessian(finiteDifferenceStep, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceHessian(finiteDifferenceStep, evaluation)
 {
   // Nothing to do
 }
@@ -81,7 +81,7 @@ String CenteredFiniteDifferenceHessian::__repr__() const
   oss << "class=" << CenteredFiniteDifferenceHessian::GetClassName()
       << " name=" << getName()
       << " epsilon=" << getEpsilon().__repr__()
-      << " evaluation=" << p_evaluation_->__repr__();
+      << " evaluation=" << evaluation_.getImplementation()->__repr__();
   return oss;
 }
 
@@ -128,11 +128,11 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
     ++index;
   } // For i
   /* Evaluate the evaluation */
-  Sample gridValues(p_evaluation_->operator()(gridPoints));
+  Sample gridValues(evaluation_.operator()(gridPoints));
   /* Get the center value */
   Point center(gridValues[gridValues.getSize() - 1]);
   /* Compute the hessian */
-  UnsignedInteger outputDimension = p_evaluation_->getOutputDimension();
+  UnsignedInteger outputDimension = evaluation_.getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);
   UnsignedInteger diagonalOffset = 2 * inputDimension * (inputDimension - 1);
   Scalar scale = -1.0;

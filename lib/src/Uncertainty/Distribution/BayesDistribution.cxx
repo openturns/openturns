@@ -136,7 +136,7 @@ String BayesDistribution::__repr__() const
 String BayesDistribution::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(X, Y with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation()->__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
+  oss << offset << getClassName() << "(X, Y with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
   return oss;
 }
 

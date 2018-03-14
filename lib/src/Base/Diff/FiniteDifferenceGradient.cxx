@@ -34,7 +34,7 @@ static const Factory<FiniteDifferenceGradient> Factory_FiniteDifferenceGradient;
 /* Default constructor */
 FiniteDifferenceGradient::FiniteDifferenceGradient()
   : GradientImplementation()
-  , p_evaluation_(new NoEvaluation)
+  , evaluation_(new NoEvaluation())
 {
   // Nothing to do
 }
@@ -42,13 +42,13 @@ FiniteDifferenceGradient::FiniteDifferenceGradient()
 /* First Parameter constructor  */
 FiniteDifferenceGradient::FiniteDifferenceGradient(
   const Point & epsilon,
-  const EvaluationPointer & p_evaluation)
+  const Evaluation & evaluation)
   : GradientImplementation()
-  , p_evaluation_(p_evaluation)
+  , evaluation_(evaluation)
   , finiteDifferenceStep_(epsilon)
 {
   /* Check if the dimension of the constant term is compatible with the linear and quadratic terms */
-  if (epsilon.getDimension() != p_evaluation->getInputDimension())
+  if (epsilon.getDimension() != evaluation.getInputDimension())
     throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
 
   /* Check if any epsilon component is exactly zero */
@@ -61,10 +61,10 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(
 
 /* SecondParameter constructor */
 FiniteDifferenceGradient::FiniteDifferenceGradient(const Scalar epsilon,
-    const EvaluationPointer & p_evaluation)
+    const Evaluation & evaluation)
   : GradientImplementation()
-  , p_evaluation_(p_evaluation)
-  , finiteDifferenceStep_(Point(p_evaluation->getInputDimension(), epsilon))
+  , evaluation_(evaluation)
+  , finiteDifferenceStep_(Point(evaluation.getInputDimension(), epsilon))
 {
   // Check if epsilon is exactly zero
   if (epsilon == 0.0)
@@ -74,14 +74,14 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(const Scalar epsilon,
 /*  Parameter constructor with FiniteDifferenceStep*/
 FiniteDifferenceGradient::FiniteDifferenceGradient(
   const FiniteDifferenceStep & finiteDifferenceStep,
-  const EvaluationPointer & p_evaluation)
+  const Evaluation & evaluation)
   : GradientImplementation()
-  , p_evaluation_(p_evaluation)
+  , evaluation_(evaluation)
   , finiteDifferenceStep_(finiteDifferenceStep)
 {
   Point epsilon(getEpsilon());
   //Check if the dimension of the constant term is compatible with the linear and quadratic terms
-  if (epsilon.getDimension() != p_evaluation->getInputDimension())
+  if (epsilon.getDimension() != evaluation.getInputDimension())
     throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
 
   //Check if any epsilon component is exactly zero
@@ -110,7 +110,7 @@ String FiniteDifferenceGradient:: __repr__() const
   OSS oss;
   oss << "class=" << FiniteDifferenceGradient::GetClassName()
       << " name=" << getName()
-      << " evaluation=" << p_evaluation_-> __repr__();
+      << " evaluation=" << evaluation_. __repr__();
   return oss;
 }
 
@@ -121,21 +121,21 @@ Point FiniteDifferenceGradient::getEpsilon() const
 }
 
 /* Accessor for the evaluation */
-FiniteDifferenceGradient::EvaluationPointer FiniteDifferenceGradient::getEvaluation() const
+Evaluation FiniteDifferenceGradient::getEvaluation() const
 {
-  return p_evaluation_;
+  return evaluation_;
 }
 
 /* Accessor for input point dimension */
 UnsignedInteger FiniteDifferenceGradient::getInputDimension() const
 {
-  return p_evaluation_->getInputDimension();
+  return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger FiniteDifferenceGradient::getOutputDimension() const
 {
-  return p_evaluation_->getOutputDimension();
+  return evaluation_.getOutputDimension();
 }
 
 /* Accessor for the finite difference step */
@@ -159,7 +159,7 @@ Matrix FiniteDifferenceGradient::gradient(const Point & inP) const
 void FiniteDifferenceGradient::save(Advocate & adv) const
 {
   GradientImplementation::save(adv);
-  adv.saveAttribute( "evaluation_", *p_evaluation_ );
+  adv.saveAttribute( "evaluation_", evaluation_ );
   adv.saveAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );
 }
 
@@ -167,9 +167,7 @@ void FiniteDifferenceGradient::save(Advocate & adv) const
 void FiniteDifferenceGradient::load(Advocate & adv)
 {
   GradientImplementation::load(adv);
-  TypedInterfaceObject<EvaluationImplementation> evaluation;
-  adv.loadAttribute( "evaluation_", evaluation );
-  p_evaluation_ = evaluation.getImplementation();
+  adv.loadAttribute( "evaluation_", evaluation_ );
   adv.loadAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );
 }
 

@@ -24,8 +24,7 @@
 #define OPENTURNS_NONCENTEREDFINITEDIFFERENCEGRADIENT_HXX
 
 #include "openturns/FiniteDifferenceGradient.hxx"
-#include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Pointer.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,22 +45,20 @@ class OT_API NonCenteredFiniteDifferenceGradient
   CLASSNAME
 public:
 
-  typedef Pointer<EvaluationImplementation>        EvaluationPointer;
-
   /** Default constructor */
   NonCenteredFiniteDifferenceGradient();
 
   /** Parameter constructor */
   NonCenteredFiniteDifferenceGradient(const Point & epsilon,
-                                      const EvaluationPointer & p_evaluation);
+                                      const Evaluation & evaluation);
 
   /** Second parameter constructor */
   NonCenteredFiniteDifferenceGradient(const Scalar epsilon,
-                                      const EvaluationPointer & p_evaluation);
+                                      const Evaluation & evaluation);
 
   /** Constructor from finite difference step */
   NonCenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-                                      const EvaluationPointer & p_evaluation);
+                                      const Evaluation & evaluation);
 
   /** Virtual constructor */
   virtual NonCenteredFiniteDifferenceGradient * clone() const;
