@@ -50,8 +50,6 @@ x^= [-3.000,-3.000,5.000,-3.000]
 -- Not supported: algo= GD_MLSL_LDS inequality= False equality= True
 algo= class=NLopt algorithm=GD_MLSL_LDS
 x^= [5.000,5.000,-3.000,5.000]
--- Skipped: algo= GD_STOGO
--- Skipped: algo= GD_STOGO_RAND
 -- Not supported: algo= GN_CRS2_LM inequality= True equality= True
 -- Not supported: algo= GN_CRS2_LM inequality= True equality= False
 -- Not supported: algo= GN_CRS2_LM inequality= False equality= True
