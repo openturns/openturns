@@ -73,22 +73,24 @@ print("ccdf=%.6f" % CCDF)
 PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
 # by the finite difference technique
-# PDFgrFD = Point(2)
-# PDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computePDF(point) -
-              # Arcsine(distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps)
-# PDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computePDF(point) -
-              # Arcsine(distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps)
-# print("pdf gradient (FD)=", repr(PDFgrFD))
+PDFgrFD = Point(2)
+v00 = distribution.getV()[0,0]
+nu = distribution.getNu()
+PDFgrFD[0] = (Wishart(CorrelationMatrix([[v00]]), nu).computePDF(point) -
+              Wishart(CorrelationMatrix([[v00-eps]]), nu).computePDF(point)) / (1.0 * eps)
+PDFgrFD[1] = (Wishart(CorrelationMatrix([[v00]]), nu + eps).computePDF(point) -
+              Wishart(CorrelationMatrix([[v00]]), nu - eps).computePDF(point)) / (2.0 * eps)
+print("pdf gradient (FD)=", repr(PDFgrFD))
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", repr(CDFgr))
-# CDFgrFD = Point(2)
-# CDFgrFD[0] = (Arcsine(distribution.getA() + eps, distribution.getB()).computeCDF(point) -
-              # Arcsine(distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps)
-# CDFgrFD[1] = (Arcsine(distribution.getA(), distribution.getB() + eps).computeCDF(point) -
-              # Arcsine(distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps)
-# print("cdf gradient (FD)=",  repr(CDFgrFD))
+CDFgrFD = Point(2)
+CDFgrFD[0] = (Wishart(CorrelationMatrix([[v00]]), nu).computeCDF(point) -
+              Wishart(CorrelationMatrix([[v00 - eps]]), nu).computeCDF(point)) / (1.0 * eps)
+CDFgrFD[1] = (Wishart(CorrelationMatrix([[v00]]), nu + eps).computeCDF(point) -
+              Wishart(CorrelationMatrix([[v00]]), nu - eps).computeCDF(point)) / (2.0 * eps)
+print("cdf gradient (FD)=",  repr(CDFgrFD))
 
 # quantile
 quantile = distribution.computeQuantile(0.95)

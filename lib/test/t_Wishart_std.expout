@@ -26,8 +26,8 @@ quantile=class=Point name=Unnamed dimension=1 values=[7.81473]
 cdf(quantile)=0.95
 quantile (tail)=class=Point name=Unnamed dimension=1 values=[0.351846]
 cdf (tail)=0.95
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.00474156,-0.00600548]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0581774,-0.17829]
+pdf gradient     =class=Point name=Unnamed dimension=2 values=[0.0387874,0.00940205]
+cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.115726,-0.0234707]
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.00315933] upper bound=class=Point name=Unnamed dimension=1 values=[7.81683] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
 Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Wishart(V = 

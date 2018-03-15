@@ -19,7 +19,9 @@ pdf (FD)=0.000055
 cdf=0.999795
 ccdf=0.000205
 pdf gradient     = class=Point name=Unnamed dimension=2 values=[0.000135385,-9.97944e-05]
+pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[0.000135384,-9.97944e-05]
 cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.000503875,0.000410437]
+cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.000503872,0.000410437]
 quantile= class=Point name=Unnamed dimension=1 values=[0.872999]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0903302]
