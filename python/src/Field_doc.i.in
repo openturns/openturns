@@ -28,16 +28,12 @@ OT_Field_getOutputMean_doc
 OT_Field_getTimeGrid_doc
 %feature("docstring") OT::Field::getValueAtIndex
 OT_Field_getValueAtIndex_doc
-%feature("docstring") OT::Field::getValueAtNearestPosition
-OT_Field_getValueAtNearestPosition_doc
 %feature("docstring") OT::Field::getValues
 OT_Field_getValues_doc
 %feature("docstring") OT::Field::setDescription
 OT_Field_setDescription_doc
 %feature("docstring") OT::Field::setValueAtIndex
 OT_Field_setValueAtIndex_doc
-%feature("docstring") OT::Field::setValueAtNearestPosition
-OT_Field_setValueAtNearestPosition_doc
 %feature("docstring") OT::Field::setValues
 OT_Field_setValues_doc
 %feature("docstring") OT::Field::getMarginal
