@@ -1,3 +1,5 @@
+.. _ranking_src:
+
 Uncertainty ranking: SRC
 ------------------------
 

@@ -1,3 +1,5 @@
+.. _ranking_pcc:
+
 Uncertainty ranking: PCC
 ------------------------
 
