@@ -9,7 +9,7 @@ seeks to find a type of dependency (here a linear correlation) which may
 exist between two components :math:`X^i` and :math:`X^j`.
 
 The Pearson’s correlation coefficient :math:`\rho_{U,V}`, defined in
-:ref:`Pearson’s coefficient <pcc>`,
+:ref:`Pearson’s coefficient <pearson_coefficient>`,
 measures the strength of a linear relationship between two random
 variables :math:`U` and :math:`V`. If we have a sample made up of
 :math:`N` pairs :math:`\left\{ (u_1,v_1),(u_2,v_2),(u_N,v_N) \right\}`,

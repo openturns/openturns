@@ -15,7 +15,7 @@ variables :math:`U` and :math:`V`. It is in fact equivalent to the
 Pearson’s correlation coefficient after having transformed :math:`U` and
 :math:`V` to linearize any monotonic relationship (remember that
 Pearson’s correlation coefficient may only be used to measure the
-strength of linear relationships, see :ref:`Pearson’s correlation coefficient <pcc>`):
+strength of linear relationships, see :ref:`Pearson’s correlation coefficient <pearson_coefficient>`):
 
 .. math::
 
@@ -164,6 +164,7 @@ coefficient.
 .. topic:: API:
 
     - See :class:`~openturns.CorrelationAnalysis_SpearmanCorrelation`
+    - See :py:meth:`~openturns.Sample.computeSpearmanCorrelation`
 
 .. topic:: Examples:
 
