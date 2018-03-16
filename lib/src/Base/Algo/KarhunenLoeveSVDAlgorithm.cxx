@@ -160,15 +160,17 @@ void KarhunenLoeveSVDAlgorithm::run()
     for (UnsignedInteger i = 0; i < kTilde; ++i)
     {
       const Scalar wI = std::sqrt(sampleWeights_[i]);
-      const Sample currentSample(sample_[i]);
+      Point data = sample_[i].getImplementation()->getData();
+      if (!centeredSample_) data -= mean;
+      UnsignedInteger baseIndex = 0;
       for (UnsignedInteger j = 0; j < verticesNumber; ++j)
       {
         const Scalar wJ = coeffs[j];
-        const Point currentPoint(currentSample[j]);
         for (UnsignedInteger k = 0; k < dimension; ++k)
         {
-          designMatrix[shift] = wI * wJ * currentPoint[k];
+          designMatrix[shift] = wI * wJ * data[baseIndex];
           ++shift;
+          ++baseIndex;
         } // k
       } // j
     } // i
