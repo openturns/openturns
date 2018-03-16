@@ -45,11 +45,23 @@ public:
   /** Parameter constructor */
   explicit RegularGridNearestNeighbour(const RegularGrid & grid);
 
+  /** Parameter constructor */
+  explicit RegularGridNearestNeighbour(const Sample & vertices);
+
   /** Virtual constructor */
   virtual RegularGridNearestNeighbour * clone() const;
 
+#ifndef SWIG
+  /** Virtual default constructor */
+  virtual RegularGridNearestNeighbour * emptyClone() const;
+#endif
+
   /** String converter */
   virtual String __repr__() const;
+
+  /** Sample accessor */
+  virtual Sample getSample() const;
+  virtual void setSample(const Sample & sample);
 
   /** Get the index of the nearest neighbour of the given point */
   UnsignedInteger query(const Point & x) const;

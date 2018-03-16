@@ -23,6 +23,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,6 +41,10 @@ static const Factory<RegularGridNearestNeighbour> Factory_RegularGridNearestNeig
 RegularGridNearestNeighbour::RegularGridNearestNeighbour()
   : NearestNeighbourAlgorithmImplementation()
   , grid_()
+  , start_(0.0)
+  , N_(0)
+  , step_(1.0)
+  , values_()
 {
   // Nothing to do
 }
@@ -56,10 +61,49 @@ RegularGridNearestNeighbour::RegularGridNearestNeighbour(const RegularGrid & gri
   // Nothing to do
 }
 
+/* Parameters constructor */
+RegularGridNearestNeighbour::RegularGridNearestNeighbour(const Sample & vertices)
+  : NearestNeighbourAlgorithmImplementation()
+  , grid_()
+  , start_(0.0)
+  , N_(0)
+  , step_(1.0)
+  , values_()
+{
+  Mesh mesh(vertices);
+  grid_ = RegularGrid(mesh);
+  start_ = grid_.getStart();
+  N_ = grid_.getN();
+  step_ = grid_.getStep();
+  values_ = grid_.getValues();
+}
+
 /* Virtual constructor */
 RegularGridNearestNeighbour * RegularGridNearestNeighbour::clone() const
 {
   return new RegularGridNearestNeighbour( *this );
+}
+
+/* Virtual constructor */
+RegularGridNearestNeighbour * RegularGridNearestNeighbour::emptyClone() const
+{
+  return new RegularGridNearestNeighbour();
+}
+
+/* Sample accessor */
+Sample RegularGridNearestNeighbour::getSample() const
+{
+  return grid_.getVertices();
+}
+
+void RegularGridNearestNeighbour::setSample(const Sample & sample)
+{
+  // Check that sample can be converted to a RegularGrid, and get N, start, step
+  RegularGrid newGrid = Mesh(sample);
+  grid_.setVertices(sample);
+  start_ = newGrid.getStart();
+  N_ = newGrid.getN();
+  step_ = newGrid.getStep();
 }
 
 /* String converter */

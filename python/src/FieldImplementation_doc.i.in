@@ -297,23 +297,6 @@ value : :class:`~openturns.Point`
 OT_Field_getValueAtIndex_doc
 
 // ---------------------------------------------------------------------
-%define OT_Field_getValueAtNearestPosition_doc
-"Get the value of the field at the vertex of the mesh the nearest to the given point.
-
-Parameters
-----------
-point : sequence of float in :math:`\Rset^n`.
-
-Returns
--------
-value : :class:`~openturns.Point` in :math:`\Rset^d`.
-    The value of the field associated to vertex the nearest of *point* with
-    respect to the Euclidean norm."
-%enddef
-%feature("docstring") OT::FieldImplementation::getValueAtNearestPosition
-OT_Field_getValueAtNearestPosition_doc
-
-// ---------------------------------------------------------------------
 %define OT_Field_getValues_doc
 "Get the values of the field.
 
@@ -353,20 +336,6 @@ value : :class:`~openturns.Point` in :math:`\Rset^d`.
 %enddef
 %feature("docstring") OT::FieldImplementation::setValueAtIndex
 OT_Field_setValueAtIndex_doc
-
-// ---------------------------------------------------------------------
-%define OT_Field_setValueAtNearestPosition_doc
-"Assign the value of the field to the vertex the nearest to a specified position.
-
-Parameters
-----------
-position : sequence of float in :math:`\Rset^n`.
-value : sequence of float in :math:`\Rset^d`.
-    New value assigned to the vertex the nearest to *position* with respect to
-    the Euclidean norm."
-%enddef
-%feature("docstring") OT::FieldImplementation::setValueAtNearestPosition
-OT_Field_setValueAtNearestPosition_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_setValues_doc
