@@ -61,6 +61,7 @@
  * Changed RandomVector::getAntecedent,getMarginal to return a RandomVector instead of Pointer<RandomVectorImplementation>
  * Changed all {get,set}{Evaluation,Gradient,Hessian} methods to work on Evaluation/Gradient/Hessian instead of Pointer
  * Removed Field::[gs]etValueAtNearestPosition
+ * Removed KarhunenLoeveResult::project(Basis), use project(Function) on an AggregatedFunction instead
 
 === Python module ===
 

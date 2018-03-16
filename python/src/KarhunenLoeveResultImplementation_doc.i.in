@@ -201,8 +201,6 @@ Available constructors:
 
     project(*field*)
 
-    project(*basis*)
-
     project(*fieldSample*)
 
 Parameters
@@ -211,10 +209,8 @@ function : :class:`~openturns.Function`
     A function.
 field :  :class:`~openturns.Field`
     A field.
-basis :  :class:`~openturns.Basis`
-    A collection f functions.
 fieldSample :  :class:`~openturns.ProcessSample`
-    A collection f fields.
+    A collection of fields.
 
 
 Returns

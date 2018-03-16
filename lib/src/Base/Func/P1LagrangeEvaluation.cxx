@@ -39,11 +39,33 @@ P1LagrangeEvaluation::P1LagrangeEvaluation()
   // Nothing to do
 }
 
-/* Default constructor */
+/* Parameters constructor */
 P1LagrangeEvaluation::P1LagrangeEvaluation(const Field & field)
   : EvaluationImplementation()
 {
   setField(field);
+}
+
+
+/* Parameters constructor */
+P1LagrangeEvaluation::P1LagrangeEvaluation(const ProcessSample & sample)
+  : EvaluationImplementation()
+{
+  const Mesh mesh(sample.getMesh());
+  const UnsignedInteger length = mesh.getVerticesNumber();
+  if (!(length > 0)) throw InvalidArgumentException(HERE) << "Error: expected a non-empty ProcessSample";
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger dimension = sample.getDimension();
+  // Copy values in expected order
+  values_ = Sample(length, size * dimension);
+  for(UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Sample dataI(sample[i]);
+    for(UnsignedInteger l = 0; l < length; ++l)
+      std::copy(&dataI(l, 0), &dataI(l, 0) + dimension, &values_(l, i * dimension));
+  }
+  // To check for pending vertices
+  setMesh(mesh);
 }
 
 

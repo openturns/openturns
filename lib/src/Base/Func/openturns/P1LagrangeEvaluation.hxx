@@ -25,6 +25,7 @@
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/NearestNeighbourAlgorithm.hxx"
+#include "openturns/ProcessSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,8 +46,11 @@ public:
   /** Default constructor */
   P1LagrangeEvaluation();
 
-  /** Default constructor */
+  /** Parameters constructor */
   explicit P1LagrangeEvaluation(const Field & field);
+
+  /** Parameters constructor */
+  explicit P1LagrangeEvaluation(const ProcessSample & sample);
 
   /** Virtual constructor */
   virtual P1LagrangeEvaluation * clone() const;
