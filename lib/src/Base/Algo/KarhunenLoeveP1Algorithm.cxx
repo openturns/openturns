@@ -137,7 +137,7 @@ void KarhunenLoeveP1Algorithm::run()
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
   LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   // Reduce and rescale the eigenvectors
-  MatrixImplementation transposedProjection(augmentedDimension, K);
+  MatrixImplementation projection(K, augmentedDimension);
   Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
@@ -149,7 +149,6 @@ void KarhunenLoeveP1Algorithm::run()
     evaluation1D = new PiecewiseLinearEvaluation(mesh_.getVertices().getImplementation()->getData(), values);
   else
     evaluationXD = new P1LagrangeEvaluation(Field(mesh_, dimension));
-  UnsignedInteger indexProjection = 0;
   Point a(augmentedDimension);
   for (UnsignedInteger k = 0; k < K; ++k)
   {
@@ -174,12 +173,12 @@ void KarhunenLoeveP1Algorithm::run()
       modes.add(*evaluationXD);
     }
 
-    // Build the relevant column of the transposed projection matrix
+    // Build the relevant row of the projection matrix
     const Point b(Ga * (factor / sqrt(selectedEV[k])));
-    std::copy(b.begin(), b.end(), transposedProjection.begin() + indexProjection);
-    indexProjection += augmentedDimension;
+    for(UnsignedInteger i = 0; i < augmentedDimension; ++i)
+      projection(k, i) = b[i];
   }
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, transposedProjection.transpose());
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
 }
 
 /* Mesh accessor */

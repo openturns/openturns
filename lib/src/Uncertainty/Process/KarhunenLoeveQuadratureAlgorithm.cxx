@@ -333,15 +333,13 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
   LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   // Reduce and rescale the eigenvectors
-  MatrixImplementation transposedProjection(nodesNumber * dimension, K);
+  MatrixImplementation projection(K, nodesNumber * dimension);
   Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
   SampleImplementation values(nodesNumber, dimension);
-  UnsignedInteger indexProjection = 0;
   Point a(augmentedDimension, 1);
-  const UnsignedInteger omegaASize = nodesNumber * dimension;
-  Point modeValues(omegaASize);
+  Point modeValues(nodesNumber * dimension);
   for (UnsignedInteger k = 0; k < K; ++k)
   {
     selectedEV[k] = eigenValues[k];
@@ -349,7 +347,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     std::copy(eigenVectors.getImplementation()->begin() + initialColumn * augmentedDimension, eigenVectors.getImplementation()->begin() + (initialColumn + 1) * augmentedDimension, a.begin());
     // Store the eigen modes in two forms
     // modeValues = omega.a
-    Point omegaA(omega * a);
+    const Point omegaA(omega * a);
     const Scalar norm = omegaA.norm();
     const Scalar factor = omegaA[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Scale a
@@ -373,11 +371,10 @@ void KarhunenLoeveQuadratureAlgorithm::run()
 	for (UnsignedInteger j = 0; j < dimension; ++j)
 	  {
 	    modeValues[index] = omegaA[index] * wA;
-	    transposedProjection[indexProjection + index] = omegaA[index] * wB;
+            projection(k, i * dimension + j) = omegaA[index] * wB;
 	    ++index;
 	  } // for j
       } // for i
-    indexProjection += omegaASize;
     values.setData(modeValues);
     modesAsProcessSample.add(values);
     if (dimension == 1)
@@ -390,7 +387,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
       modes.add(DualLinearCombinationFunction(coll, aSample));
     }
   }
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, transposedProjection.transpose());
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
 }
 
 /* Domain accessor */
