@@ -194,12 +194,12 @@ ProcessSample Process::getFuture(const UnsignedInteger stepNumber,
 /* Get the process corresponding to the i-th marginal component */
 Process Process::getMarginal(const UnsignedInteger i) const
 {
-  return *(getImplementation()->getMarginal(i));
+  return getImplementation()->getMarginal(i);
 }
 
 /* Get the marginal random vector corresponding to indices components */
 Process Process::getMarginal(const Indices & indices) const
 {
-  return *(getImplementation()->getMarginal(indices));
+  return getImplementation()->getMarginal(indices);
 }
 END_NAMESPACE_OPENTURNS

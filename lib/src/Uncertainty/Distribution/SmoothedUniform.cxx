@@ -314,7 +314,7 @@ Point SmoothedUniform::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-SmoothedUniform::Implementation SmoothedUniform::getStandardRepresentative() const
+Distribution SmoothedUniform::getStandardRepresentative() const
 {
   return new SmoothedUniform(-1.0, 1.0, 1.0);
 }

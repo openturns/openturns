@@ -28,6 +28,7 @@
 #include "openturns/Brent.hxx"
 #include "openturns/FunctionImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -559,7 +560,7 @@ Point MeixnerDistribution::getKurtosis() const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-MeixnerDistribution::Implementation MeixnerDistribution::getStandardRepresentative() const
+Distribution MeixnerDistribution::getStandardRepresentative() const
 {
   return new MeixnerDistribution(1.0, beta_, delta_, 0.0);
 }

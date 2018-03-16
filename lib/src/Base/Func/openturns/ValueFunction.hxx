@@ -24,6 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,8 +42,6 @@ class OT_API ValueFunction
   CLASSNAME
 public:
 
-  typedef EvaluationImplementation::Implementation EvaluationPointer;
-
   /** Default constructor */
   explicit ValueFunction(const UnsignedInteger meshDimension = 1);
 
@@ -52,7 +51,7 @@ public:
 
 #ifndef SWIG
   /** Parameter constructor */
-  explicit ValueFunction(const EvaluationPointer & p_evaluation,
+  explicit ValueFunction(const Evaluation & evaluation,
                          const UnsignedInteger meshDimension = 1);
 #endif
 

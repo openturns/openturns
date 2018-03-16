@@ -35,6 +35,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration
+class Process;
+
 /**
  * @class ProcessImplementation
  *
@@ -46,10 +49,6 @@ class OT_API ProcessImplementation
   CLASSNAME
 
 public:
-
-  /** Some typedefs to ease reading */
-  typedef Pointer<ProcessImplementation>     Antecedent;
-  typedef Antecedent                         Implementation;
 
   /** Default constructor */
   ProcessImplementation();
@@ -109,10 +108,10 @@ public:
                                   const UnsignedInteger size) const;
 
   /** Get the marginal process corresponding to the i-th marginal component */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual Process getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal process corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Process getMarginal(const Indices & indices) const;
 
   /** Description accessor */
   virtual void setDescription(const Description & description);

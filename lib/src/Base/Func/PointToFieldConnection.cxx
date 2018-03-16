@@ -16,6 +16,7 @@
 
 #include "openturns/PointToFieldConnection.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/PointToFieldFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -78,14 +79,14 @@ Bool PointToFieldConnection::operator ==(const PointToFieldConnection & other) c
 }
 
 /* Get the i-th marginal function */
-PointToFieldConnection::Implementation PointToFieldConnection::getMarginal(const UnsignedInteger i) const
+PointToFieldFunction PointToFieldConnection::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-PointToFieldConnection::Implementation PointToFieldConnection::getMarginal(const Indices & indices) const
+PointToFieldFunction PointToFieldConnection::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal function must be in the range [0, dim-1] and must be different";
   if (startByPointToFieldFunction_) return new PointToFieldConnection(pointToFieldFunction_.getMarginal(indices), function_);

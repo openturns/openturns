@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/CopulaImplementation.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -89,7 +90,7 @@ public:
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;

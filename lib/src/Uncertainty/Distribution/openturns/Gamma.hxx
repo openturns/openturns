@@ -37,8 +37,6 @@ class OT_API Gamma
   CLASSNAME
 public:
 
-  typedef Pointer<DistributionImplementation> Implementation;
-
   /** Default constructor */
   Gamma();
 
@@ -111,7 +109,7 @@ public:
   Point getStandardMoment(const UnsignedInteger n) const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Implementation getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);

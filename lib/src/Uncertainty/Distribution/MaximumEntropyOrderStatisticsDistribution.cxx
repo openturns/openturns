@@ -546,7 +546,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
   // If one or more components (but not all) are greater or equal to their marginal upper bound compute a marginal CDF
   if (toKeep.getSize() < dimension)
   {
-    const Scalar cdf = getMarginal(toKeep)->computeCDF(reducedPoint);
+    const Scalar cdf = getMarginal(toKeep).computeCDF(reducedPoint);
     return cdf;
   }
   // Else we have to do some work
@@ -565,8 +565,8 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
       reducedPoint = Point(blockSize);
       for (UnsignedInteger k = 0; k < blockSize; ++k) reducedPoint[k] = point[firstIndex + k];
       // The cdf is obtained by multiplying lower dimensional cdf, which are much more cheaper to compute than a full multidimensional integration
-      const Implementation marginal(getMarginal(dependentBlockIndices));
-      const Scalar blockCDF = marginal->computeCDF(reducedPoint);
+      const Distribution marginal(getMarginal(dependentBlockIndices));
+      const Scalar blockCDF = marginal.computeCDF(reducedPoint);
       cdf *= blockCDF;
       firstIndex = lastIndex;
     }
@@ -588,7 +588,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
   Indices marginalIndices(dimension - 1);
   marginalIndices.fill();
   const Scalar x = point[dimension - 1];
-  Implementation marginal(getMarginal(marginalIndices));
+  Distribution marginal(getMarginal(marginalIndices));
   for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
   {
     Point node(dimension - 1);
@@ -604,7 +604,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
       node[j] = aJ + deltaJ * (1.0 + gaussNodes[indexJ]);
       weight *= deltaJ * gaussWeights[indexJ];
     }
-    cdf += weight * marginal->computePDF(node) * computeConditionalCDF(x, node);
+    cdf += weight * marginal.computePDF(node) * computeConditionalCDF(x, node);
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
@@ -654,7 +654,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDFOld(const Point & po
   // If one or more components (but not all) are greater or equal to their marginal upper bound compute a marginal CDF
   if (toKeep.getSize() < dimension)
   {
-    const Scalar cdf = getMarginal(toKeep)->computeCDF(reducedPoint);
+    const Scalar cdf = getMarginal(toKeep).computeCDF(reducedPoint);
     return cdf;
   }
   // Else we have to do some work
@@ -673,8 +673,8 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDFOld(const Point & po
       reducedPoint = Point(blockSize);
       for (UnsignedInteger k = 0; k < blockSize; ++k) reducedPoint[k] = point[firstIndex + k];
       // The cdf is obtained by multiplying lower dimensional cdf, which are much more cheaper to compute than a full multidimensional integration
-      const Implementation marginal(getMarginal(dependentBlockIndices));
-      const Scalar blockCDF = marginal->computeCDF(reducedPoint);
+      const Distribution marginal(getMarginal(dependentBlockIndices));
+      const Scalar blockCDF = marginal.computeCDF(reducedPoint);
       cdf *= blockCDF;
       firstIndex = lastIndex;
     }
@@ -869,7 +869,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQuantile(con
 
 
 /* Get the i-th marginal distribution */
-MaximumEntropyOrderStatisticsDistribution::Implementation MaximumEntropyOrderStatisticsDistribution::getMarginal(const UnsignedInteger i) const
+Distribution MaximumEntropyOrderStatisticsDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   MaximumEntropyOrderStatisticsDistribution::Implementation marginal(distributionCollection_[i].getImplementation()->clone());
@@ -879,7 +879,7 @@ MaximumEntropyOrderStatisticsDistribution::Implementation MaximumEntropyOrderSta
 
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-MaximumEntropyOrderStatisticsDistribution::Implementation MaximumEntropyOrderStatisticsDistribution::getMarginal(const Indices & indices) const
+Distribution MaximumEntropyOrderStatisticsDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger size = indices.getSize();
   if (size == 1) return getMarginal(indices[0]);
@@ -1016,7 +1016,7 @@ MaximumEntropyOrderStatisticsDistribution::DistributionCollection MaximumEntropy
 }
 
 /* Get the copula of the distribution */
-MaximumEntropyOrderStatisticsDistribution::Implementation MaximumEntropyOrderStatisticsDistribution::getCopula() const
+Distribution MaximumEntropyOrderStatisticsDistribution::getCopula() const
 {
   return new MaximumEntropyOrderStatisticsCopula(*this);
 }

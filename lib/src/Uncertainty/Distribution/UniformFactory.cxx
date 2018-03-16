@@ -41,17 +41,17 @@ UniformFactory * UniformFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-UniformFactory::Implementation UniformFactory::build(const Sample & sample) const
+Distribution UniformFactory::build(const Sample & sample) const
 {
   return buildAsUniform(sample).clone();
 }
 
-UniformFactory::Implementation UniformFactory::build(const Point & parameters) const
+Distribution UniformFactory::build(const Point & parameters) const
 {
   return buildAsUniform(parameters).clone();
 }
 
-UniformFactory::Implementation UniformFactory::build() const
+Distribution UniformFactory::build() const
 {
   return buildAsUniform().clone();
 }

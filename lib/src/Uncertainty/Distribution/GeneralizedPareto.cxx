@@ -23,6 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -289,7 +290,7 @@ Point GeneralizedPareto::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-GeneralizedPareto::Implementation GeneralizedPareto::getStandardRepresentative() const
+Distribution GeneralizedPareto::getStandardRepresentative() const
 {
   return new GeneralizedPareto(1.0, xi_);
 }

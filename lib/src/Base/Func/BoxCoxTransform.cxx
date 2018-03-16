@@ -38,10 +38,10 @@ BoxCoxTransform::BoxCoxTransform()
 BoxCoxTransform::BoxCoxTransform(const Point & lambda)
   : Function()
 {
-  const BoxCoxEvaluation evaluation(lambda);
-  setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradient(evaluation).clone());
-  setHessian(BoxCoxHessian(evaluation).clone());
+  const Pointer<BoxCoxEvaluation> p_evaluation = new BoxCoxEvaluation(lambda);
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new BoxCoxGradient(p_evaluation));
+  setHessian(new BoxCoxHessian(p_evaluation));
 }
 
 /* ScalarCollection parameter constructor */
@@ -49,30 +49,30 @@ BoxCoxTransform::BoxCoxTransform(const Point & lambda,
                                  const Point & shift)
   : Function()
 {
-  const BoxCoxEvaluation evaluation(lambda, shift);
-  setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradient(evaluation).clone());
-  setHessian(BoxCoxHessian(evaluation).clone());
+  const Pointer<BoxCoxEvaluation> p_evaluation = new BoxCoxEvaluation(lambda, shift);
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new BoxCoxGradient(p_evaluation));
+  setHessian(new BoxCoxHessian(p_evaluation));
 }
 
 /* 1D Scalar parameter constructor */
 BoxCoxTransform::BoxCoxTransform(const Scalar & lambda)
   : Function()
 {
-  const BoxCoxEvaluation evaluation(Point(1, lambda));
-  setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradient(evaluation).clone());
-  setHessian(BoxCoxHessian(evaluation).clone());
+  const Pointer<BoxCoxEvaluation> p_evaluation = new BoxCoxEvaluation(Point(1, lambda));
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new BoxCoxGradient(p_evaluation));
+  setHessian(new BoxCoxHessian(p_evaluation));
 }
 
 BoxCoxTransform::BoxCoxTransform(const Scalar & lambda,
                                  const Scalar & shift)
   : Function()
 {
-  const BoxCoxEvaluation evaluation(Point(1, lambda), Point(1, shift));
-  setEvaluation(evaluation.clone());
-  setGradient(BoxCoxGradient(evaluation).clone());
-  setHessian(BoxCoxHessian(evaluation).clone());
+  const Pointer<BoxCoxEvaluation> p_evaluation = new BoxCoxEvaluation(Point(1, lambda), Point(1, shift));
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new BoxCoxGradient(p_evaluation));
+  setHessian(new BoxCoxHessian(p_evaluation));
 }
 
 /* Virtual constructor */
@@ -84,13 +84,13 @@ BoxCoxTransform * BoxCoxTransform::clone() const
 /* Lambda accessor */
 Point BoxCoxTransform::getLambda() const
 {
-  return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().get())->getLambda();
+  return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().getImplementation().get())->getLambda();
 }
 
 /* Shift accessor */
 Point BoxCoxTransform::getShift() const
 {
-  return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().get())->getShift();
+  return dynamic_cast< BoxCoxEvaluation* >(getEvaluation().getImplementation().get())->getShift();
 }
 
 /* Inverse accessor */

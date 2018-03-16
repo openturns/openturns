@@ -120,7 +120,7 @@ Scalar ContinuousDistribution::computeCDF(const Point & point) const
     // Try to reduce the dimension
     try
     {
-      return getMarginal(toKeep)->computeCDF(reducedPoint);
+      return getMarginal(toKeep).computeCDF(reducedPoint);
     }
     catch (...)
     {

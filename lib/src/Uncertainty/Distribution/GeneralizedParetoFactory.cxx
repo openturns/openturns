@@ -52,17 +52,17 @@ GeneralizedParetoFactory * GeneralizedParetoFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const Sample & sample) const
+Distribution GeneralizedParetoFactory::build(const Sample & sample) const
 {
   return buildAsGeneralizedPareto(sample).clone();
 }
 
-GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build(const Point & parameters) const
+Distribution GeneralizedParetoFactory::build(const Point & parameters) const
 {
   return buildAsGeneralizedPareto(parameters).clone();
 }
 
-GeneralizedParetoFactory::Implementation GeneralizedParetoFactory::build() const
+Distribution GeneralizedParetoFactory::build() const
 {
   return buildAsGeneralizedPareto().clone();
 }

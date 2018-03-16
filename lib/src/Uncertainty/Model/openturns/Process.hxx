@@ -40,7 +40,7 @@ class OT_API Process
 public:
 
   /* Some typedefs for easy reading */
-  typedef ProcessImplementation::Implementation Implementation;
+  typedef Pointer<ProcessImplementation> Implementation;
 
   /** Default constructor */
   Process();

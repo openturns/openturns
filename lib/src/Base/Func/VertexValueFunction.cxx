@@ -53,10 +53,10 @@ VertexValueFunction::VertexValueFunction(const Function & function,
 }
 
 /* Parameter constructor */
-VertexValueFunction::VertexValueFunction(const EvaluationPointer & p_evaluation,
+VertexValueFunction::VertexValueFunction(const Evaluation & evaluation,
     const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, p_evaluation->getInputDimension() - meshDimension, p_evaluation->getOutputDimension())
-  , function_(p_evaluation)
+  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension() - meshDimension, evaluation.getOutputDimension())
+  , function_(evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
   if (function_.getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << function_.getInputDimension();

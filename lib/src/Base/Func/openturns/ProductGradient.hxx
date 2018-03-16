@@ -22,7 +22,8 @@
 #define OPENTURNS_PRODUCTGRADIENT_HXX
 
 #include "openturns/GradientImplementation.hxx"
-#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Gradient.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,15 +42,11 @@ class OT_API ProductGradient
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-  typedef Pointer<EvaluationImplementation>         EvaluationPointer;
-  typedef Pointer<GradientImplementation>           GradientPointer;
-
   /** Default constructor */
-  ProductGradient(const EvaluationPointer & p_leftEvaluation,
-                  const GradientPointer & p_leftGradient,
-                  const EvaluationPointer & p_rightEvaluation,
-                  const GradientPointer & p_rightGradient);
+  ProductGradient(const Evaluation & leftEvaluation,
+                  const Gradient & leftGradient,
+                  const Evaluation & rightEvaluation,
+                  const Gradient & rightGradient);
 
 
   /** Virtual constructor */
@@ -84,16 +81,16 @@ protected:
 private:
 
   /** The evaluation of f in h = f . g */
-  EvaluationPointer p_leftEvaluation_;
+  Evaluation leftEvaluation_;
 
   /** The gradient of f in h = f . g */
-  GradientPointer p_leftGradient_;
+  Gradient leftGradient_;
 
   /** The evaluation of g in h = f . g */
-  EvaluationPointer p_rightEvaluation_;
+  Evaluation rightEvaluation_;
 
   /** The gradient of g in h = f . g */
-  GradientPointer p_rightGradient_;
+  Gradient rightGradient_;
 
 }; /* class ProductGradient */
 

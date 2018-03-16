@@ -40,8 +40,8 @@ IndicatorFunction::IndicatorFunction (const Function & function,
                                       const Scalar threshold)
   : Function()
 {
-  const IndicatorEvaluation evaluation(function.getEvaluation(), comparisonOperator, threshold);
-  setEvaluation(evaluation.clone());
+  const Pointer<IndicatorEvaluation> p_evaluation = new IndicatorEvaluation(function.getEvaluation(), comparisonOperator, threshold);
+  setEvaluation(Evaluation(p_evaluation));
   setGradient(NoGradient().clone());
   setHessian(NoHessian().clone());
 }
@@ -50,7 +50,8 @@ IndicatorFunction::IndicatorFunction (const Function & function,
 /* Comparison operator */
 Bool IndicatorFunction::operator ==(const IndicatorFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

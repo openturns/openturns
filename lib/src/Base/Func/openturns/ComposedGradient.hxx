@@ -22,7 +22,8 @@
 #define OPENTURNS_COMPOSEDGRADIENT_HXX
 
 #include "openturns/GradientImplementation.hxx"
-#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
+#include "openturns/Gradient.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,14 +42,10 @@ class OT_API ComposedGradient
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-  typedef Pointer<EvaluationImplementation>         EvaluationPointer;
-  typedef Pointer<GradientImplementation>           GradientPointer;
-
   /** Default constructor */
-  ComposedGradient(const GradientPointer & p_leftGradient,
-                   const EvaluationPointer & p_rightFunction,
-                   const GradientPointer & p_rightGradient);
+  ComposedGradient(const Gradient & leftGradient,
+                   const Evaluation & rightFunction,
+                   const Gradient & rightGradient);
 
 
   /** Virtual constructor */
@@ -83,13 +80,13 @@ protected:
 private:
 
   /** The gradient of f in h = f o g */
-  GradientPointer p_leftGradient_;
+  Gradient leftGradient_;
 
   /** The function g in h = f o g */
-  EvaluationPointer p_rightFunction_;
+  Evaluation rightFunction_;
 
   /** The gradient of g in h = f o g */
-  GradientPointer p_rightGradient_;
+  Gradient rightGradient_;
 
 }; /* class ComposedGradient */
 

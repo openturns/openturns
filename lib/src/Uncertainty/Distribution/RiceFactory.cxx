@@ -74,17 +74,17 @@ struct RiceFactoryParameterConstraint
 
 /* Here is the interface that all derived class must implement */
 
-RiceFactory::Implementation RiceFactory::build(const Sample & sample) const
+Distribution RiceFactory::build(const Sample & sample) const
 {
   return buildAsRice(sample).clone();
 }
 
-RiceFactory::Implementation RiceFactory::build(const Point & parameters) const
+Distribution RiceFactory::build(const Point & parameters) const
 {
   return buildAsRice(parameters).clone();
 }
 
-RiceFactory::Implementation RiceFactory::build() const
+Distribution RiceFactory::build() const
 {
   return buildAsRice().clone();
 }

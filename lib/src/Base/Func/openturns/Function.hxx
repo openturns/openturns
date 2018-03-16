@@ -48,9 +48,6 @@ public:
 
   /* Some typedefs for easy reading */
   typedef Collection<Function>                                  FunctionCollection;
-  typedef FunctionImplementation::EvaluationPointer      EvaluationPointer;
-  typedef FunctionImplementation::GradientPointer        GradientPointer;
-  typedef FunctionImplementation::HessianPointer         HessianPointer;
 
   /** Default constructor */
   Function();
@@ -76,12 +73,12 @@ public:
 
 #ifndef SWIG
   /** Constructor from evaluation */
-  explicit Function(const EvaluationPointer & evaluationImplementation);
+  explicit Function(const Evaluation & evaluation);
 
   /** Constructor from implementations */
-  Function(const EvaluationPointer & evaluationImplementation,
-           const GradientPointer & gradientImplenmentation,
-           const HessianPointer  & hessianImplementation);
+  Function(const Evaluation & evaluation,
+           const Gradient & gradient,
+           const Hessian  & hessian);
 #endif
 
   /** @deprecated */
@@ -140,22 +137,16 @@ public:
   void clearCache() const;
 
   /** Function implementation accessors */
-  void setEvaluation(const EvaluationPointer & evaluation);
-  const EvaluationPointer & getEvaluation() const;
+  void setEvaluation(const Evaluation & evaluation);
+  Evaluation getEvaluation() const;
 
   /** Gradient implementation accessors */
-  void setGradient(const GradientImplementation & gradient);
-#ifndef SWIG
-  void setGradient(const GradientPointer & gradient);
-#endif
-  const GradientPointer & getGradient() const;
+  void setGradient(const Gradient & gradient);
+  Gradient getGradient() const;
 
   /** Hessian implementation accessors */
-  void setHessian(const HessianImplementation & hessian);
-#ifndef SWIG
-  void setHessian(const HessianPointer & hessian);
-#endif
-  const HessianPointer & getHessian() const;
+  void setHessian(const Hessian & hessian);
+  Hessian getHessian() const;
 
   /** Flag for default gradient accessors */
   Bool getUseDefaultGradientImplementation() const;

@@ -30,24 +30,24 @@ CLASSNAMEINIT(ProductGradient)
 static const Factory<ProductGradient> Factory_ProductGradient;
 
 /* Default constructor */
-ProductGradient::ProductGradient(const EvaluationPointer & p_leftEvaluation,
-                                 const GradientPointer & p_leftGradient,
-                                 const EvaluationPointer & p_rightEvaluation,
-                                 const GradientPointer & p_rightGradient)
+ProductGradient::ProductGradient(const Evaluation & leftEvaluation,
+                                 const Gradient & leftGradient,
+                                 const Evaluation & rightEvaluation,
+                                 const Gradient & rightGradient)
   : GradientImplementation(),
-    p_leftEvaluation_(p_leftEvaluation),
-    p_leftGradient_(p_leftGradient),
-    p_rightEvaluation_(p_rightEvaluation),
-    p_rightGradient_(p_rightGradient)
+    leftEvaluation_(leftEvaluation),
+    leftGradient_(leftGradient),
+    rightEvaluation_(rightEvaluation),
+    rightGradient_(rightGradient)
 {
   // Check the compatibility of the evaluations
-  if (p_leftEvaluation_->getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the left function must have an output dimension equal to 1.";
-  if (p_leftEvaluation_->getInputDimension() != p_rightEvaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension.";
+  if (leftEvaluation_.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the left function must have an output dimension equal to 1.";
+  if (leftEvaluation_.getInputDimension() != rightEvaluation_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension.";
 
   // Check the compatibility of the gradients
-  if ((p_leftGradient_->getInputDimension()  != p_rightGradient_->getInputDimension()) ||
-      (p_leftGradient_->getInputDimension()  != p_leftEvaluation_->getInputDimension()) ||
-      (p_leftGradient_->getOutputDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the gradients have incompatible dimensions.";
+  if ((leftGradient_.getInputDimension()  != rightGradient_.getInputDimension()) ||
+      (leftGradient_.getInputDimension()  != leftEvaluation_.getInputDimension()) ||
+      (leftGradient_.getOutputDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the gradients have incompatible dimensions.";
 }
 
 /* Virtual constructor */
@@ -68,10 +68,10 @@ String ProductGradient::__repr__() const
   OSS oss;
   oss << "class=" << ProductGradient::GetClassName()
       << " name=" << getName()
-      << " leftEvaluation=" << p_leftEvaluation_->__repr__()
-      << " leftGradient=" << p_leftGradient_->__repr__()
-      << " rightEvaluation=" << p_rightEvaluation_->__repr__()
-      << " rightGradient=" << p_rightGradient_->__repr__();
+      << " leftEvaluation=" << leftEvaluation_.getImplementation()->__repr__()
+      << " leftGradient=" << leftGradient_.getImplementation()->__repr__()
+      << " rightEvaluation=" << rightEvaluation_.getImplementation()->__repr__()
+      << " rightGradient=" << rightGradient_.getImplementation()->__repr__();
   return oss;
 }
 
@@ -87,49 +87,43 @@ Matrix ProductGradient::gradient(const Point & inP) const
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
-  const Scalar leftValue = p_leftEvaluation_->operator()(inP)[0];
-  const Point rightValue(p_rightEvaluation_->operator()(inP));
-  const Matrix leftGradient(p_leftGradient_->gradient(inP));
-  const Matrix rightGradient(p_rightGradient_->gradient(inP));
+  const Scalar leftValue = leftEvaluation_.operator()(inP)[0];
+  const Point rightValue(rightEvaluation_.operator()(inP));
+  const Matrix leftGradient(leftGradient_.gradient(inP));
+  const Matrix rightGradient(rightGradient_.gradient(inP));
   return leftValue * rightGradient + leftGradient * Matrix(1, getOutputDimension(), rightValue);
 }
 
 /* Accessor for input point dimension */
 UnsignedInteger ProductGradient::getInputDimension() const
 {
-  return p_rightEvaluation_->getInputDimension();
+  return rightEvaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger ProductGradient::getOutputDimension() const
 {
-  return p_rightEvaluation_->getOutputDimension();
+  return rightEvaluation_.getOutputDimension();
 }
 
 /* Method save() stores the object through the StorageManager */
 void ProductGradient::save(Advocate & adv) const
 {
   GradientImplementation::save(adv);
-  adv.saveAttribute( "leftEvaluation_", *p_leftEvaluation_ );
-  adv.saveAttribute( "leftGradient_", *p_leftGradient_ );
-  adv.saveAttribute( "rightEvaluation_", *p_rightEvaluation_ );
-  adv.saveAttribute( "rightGradient_", *p_rightGradient_ );
+  adv.saveAttribute( "leftEvaluation_", leftEvaluation_ );
+  adv.saveAttribute( "leftGradient_", leftGradient_ );
+  adv.saveAttribute( "rightEvaluation_", rightEvaluation_ );
+  adv.saveAttribute( "rightGradient_", rightGradient_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductGradient::load(Advocate & adv)
 {
-  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
-  TypedInterfaceObject<GradientImplementation> gradientValue;
   GradientImplementation::load(adv);
-  adv.loadAttribute( "leftEvaluation_", evaluationValue );
-  p_leftEvaluation_ = evaluationValue.getImplementation();
-  adv.loadAttribute( "leftGradient_", gradientValue );
-  p_leftGradient_ = gradientValue.getImplementation();
-  adv.loadAttribute( "rightEvaluation_", evaluationValue );
-  p_rightEvaluation_ = evaluationValue.getImplementation();
-  adv.loadAttribute( "rightGradient_", gradientValue );
-  p_rightGradient_ = gradientValue.getImplementation();
+  adv.loadAttribute( "leftEvaluation_", leftEvaluation_ );
+  adv.loadAttribute( "leftGradient_", leftGradient_ );
+  adv.loadAttribute( "rightEvaluation_", rightEvaluation_ );
+  adv.loadAttribute( "rightGradient_", rightGradient_ );
 }
 
 END_NAMESPACE_OPENTURNS

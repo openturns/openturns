@@ -24,6 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,8 +42,6 @@ class OT_API VertexValueFunction
   CLASSNAME
 public:
 
-  typedef EvaluationImplementation::Implementation EvaluationPointer;
-
   /** Default constructor */
   explicit VertexValueFunction(const UnsignedInteger meshDimension = 1);
 
@@ -50,11 +49,9 @@ public:
   explicit VertexValueFunction(const Function & function,
                                const UnsignedInteger meshDimension = 1);
 
-#ifndef SWIG
   /** Parameter constructor */
-  explicit VertexValueFunction(const EvaluationPointer & p_evaluation,
+  explicit VertexValueFunction(const Evaluation & evaluation,
                                const UnsignedInteger meshDimension = 1);
-#endif
 
   /** Parameter constructor */
   explicit VertexValueFunction(const EvaluationImplementation & evaluation,

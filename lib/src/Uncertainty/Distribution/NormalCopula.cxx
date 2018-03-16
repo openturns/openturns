@@ -259,7 +259,7 @@ Scalar NormalCopula::computeCDF(const Point & point) const
   // use the associated normal distribution
   if (dimension == activeDimension) return normal_.computeCDF(normalPoint);
   // In the other case, we must use the appropriate marginal distribution
-  else return normal_.getMarginal(indices)->computeCDF(normalPoint);
+  else return normal_.getMarginal(indices).computeCDF(normalPoint);
 } // computeCDF
 
 /* Get the survival function of the distribution */
@@ -441,7 +441,7 @@ Scalar NormalCopula::computeConditionalQuantile(const Scalar q,
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-NormalCopula::Implementation NormalCopula::getMarginal(const Indices & indices) const
+Distribution NormalCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

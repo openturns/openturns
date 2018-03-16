@@ -42,17 +42,17 @@ StudentFactory * StudentFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-StudentFactory::Implementation StudentFactory::build(const Sample & sample) const
+Distribution StudentFactory::build(const Sample & sample) const
 {
   return buildAsStudent(sample).clone();
 }
 
-StudentFactory::Implementation StudentFactory::build(const Point & parameter) const
+Distribution StudentFactory::build(const Point & parameter) const
 {
   return buildAsStudent(parameter).clone();
 }
 
-StudentFactory::Implementation StudentFactory::build() const
+Distribution StudentFactory::build() const
 {
   return buildAsStudent().clone();
 }

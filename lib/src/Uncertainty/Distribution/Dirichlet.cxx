@@ -442,7 +442,7 @@ Point Dirichlet::getTheta() const
 }
 
 /* Get the i-th marginal distribution */
-Dirichlet::Implementation Dirichlet::getMarginal(const UnsignedInteger i) const
+Distribution Dirichlet::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -456,7 +456,7 @@ Dirichlet::Implementation Dirichlet::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Dirichlet::Implementation Dirichlet::getMarginal(const Indices & indices) const
+Distribution Dirichlet::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

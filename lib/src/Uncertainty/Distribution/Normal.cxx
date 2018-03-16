@@ -245,7 +245,7 @@ Scalar Normal::computeCDF(const Point & point) const
   LOGINFO(OSS() << "In Normal::computeCDF, point=" << point << ", toKeep=" << toKeep << ", dimension=" << dimension << ", reducedPoint=" << reducedPoint);
   if (toKeep.getSize() == 0) return 1.0;
   // The point has some components greater than the corresponding range upper bound
-  if (toKeep.getSize() != dimension) return getMarginal(toKeep)->computeCDF(reducedPoint);
+  if (toKeep.getSize() != dimension) return getMarginal(toKeep).computeCDF(reducedPoint);
   /* General case */
   // For the bidimensional case, use specialized high precision routine
   if (dimension == 2) return DistFunc::pNormal2D(u[0], u[1], R_(0, 1));
@@ -547,7 +547,7 @@ Scalar Normal::computeConditionalQuantile(const Scalar q,
 }
 
 /* Get the i-th marginal distribution */
-Normal::Implementation Normal::getMarginal(const UnsignedInteger i) const
+Distribution Normal::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -563,7 +563,7 @@ Normal::Implementation Normal::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Normal::Implementation Normal::getMarginal(const Indices & indices) const
+Distribution Normal::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -610,7 +610,7 @@ Point Normal::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Normal::Implementation Normal::getStandardRepresentative() const
+Distribution Normal::getStandardRepresentative() const
 {
   return new Normal(0.0, 1.0);
 }
@@ -629,7 +629,7 @@ Point Normal::getKurtosis() const
 }
 
 /* Get the copula of the distribution */
-Normal::Implementation Normal::getCopula() const
+Distribution Normal::getCopula() const
 {
   return new NormalCopula(R_);
 }

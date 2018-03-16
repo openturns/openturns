@@ -124,14 +124,14 @@ void HessianImplementation::setParameter(const Point & parameter)
 
 
 /* Get the i-th marginal function */
-HessianImplementation::Implementation HessianImplementation::getMarginal(const UnsignedInteger i) const
+Hessian HessianImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-HessianImplementation::Implementation HessianImplementation::getMarginal(const Indices & indices) const
+Hessian HessianImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   // Here we use the linear algebra representation of the marginal extraction operation in order to extract the marginal hessian.

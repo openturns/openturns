@@ -42,7 +42,7 @@ LinearFunction::LinearFunction(const Point & center,
 Bool LinearFunction::operator ==(const LinearFunction & other) const
 {
   if (this == &other) return true;
-  return *getImplementation() == *other.getImplementation();
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

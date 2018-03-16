@@ -47,18 +47,18 @@ public:
 
   /** Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
   using DistributionFactoryImplementation::build;
-  virtual Implementation build(const Sample & sample);
+  virtual Distribution build(const Sample & sample);
 
   /** Build a Bernstein copula based on the given sample and bin number */
-  virtual Implementation build(const Sample & sample,
-                               const UnsignedInteger binNumber);
+  virtual Distribution build(const Sample & sample,
+                             const UnsignedInteger binNumber);
 
 private:
-  virtual Implementation buildParallel(const Sample & sample,
-                                       const UnsignedInteger binNumber);
+  virtual Distribution buildParallel(const Sample & sample,
+                                     const UnsignedInteger binNumber);
 
-  virtual Implementation buildSequential(const Sample & sample,
-                                         const UnsignedInteger binNumber);
+  virtual Distribution buildSequential(const Sample & sample,
+                                       const UnsignedInteger binNumber);
 public:
 
   /** Compute the number of bins according to the inverse power rule */

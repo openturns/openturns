@@ -750,7 +750,7 @@ Bool PythonDistribution::hasIndependentCopula() const
 
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-PythonDistribution::Implementation PythonDistribution::getMarginal(const Indices & indices) const
+Distribution PythonDistribution::getMarginal(const Indices & indices) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMarginal")))
   {
@@ -782,7 +782,7 @@ PythonDistribution::Implementation PythonDistribution::getMarginal(const Indices
 }
 
 
-PythonDistribution::Implementation PythonDistribution::getMarginal(const UnsignedInteger i) const
+Distribution PythonDistribution::getMarginal(const UnsignedInteger i) const
 {
   return getMarginal(Indices(1, i));
 }

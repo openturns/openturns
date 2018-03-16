@@ -141,7 +141,7 @@ String ConditionalDistribution::__repr__() const
 String ConditionalDistribution::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(X with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation()->__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
+  oss << offset << getClassName() << "(X with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
   return oss;
 }
 
@@ -591,7 +591,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
 }
 
 /* Get the i-th marginal distribution */
-ConditionalDistribution::Implementation ConditionalDistribution::getMarginal(const UnsignedInteger i) const
+Distribution ConditionalDistribution::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -601,7 +601,7 @@ ConditionalDistribution::Implementation ConditionalDistribution::getMarginal(con
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-ConditionalDistribution::Implementation ConditionalDistribution::getMarginal(const Indices & indices) const
+Distribution ConditionalDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

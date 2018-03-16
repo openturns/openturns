@@ -44,17 +44,17 @@ GammaFactory * GammaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GammaFactory::Implementation GammaFactory::build(const Sample & sample) const
+Distribution GammaFactory::build(const Sample & sample) const
 {
   return buildAsGamma(sample).clone();
 }
 
-GammaFactory::Implementation GammaFactory::build(const Point & parameters) const
+Distribution GammaFactory::build(const Point & parameters) const
 {
   return buildAsGamma(parameters).clone();
 }
 
-GammaFactory::Implementation GammaFactory::build() const
+Distribution GammaFactory::build() const
 {
   return buildAsGamma().clone();
 }

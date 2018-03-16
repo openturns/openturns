@@ -26,6 +26,7 @@
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -92,10 +93,10 @@ public:
   virtual Description getParameterDescription() const;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Evaluation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

@@ -45,7 +45,8 @@ DatabaseFunction::DatabaseFunction (const Sample & inputSample,
 /* Comparison operator */
 Bool DatabaseFunction::operator ==(const DatabaseFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

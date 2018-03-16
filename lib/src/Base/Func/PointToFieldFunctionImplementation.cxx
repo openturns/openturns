@@ -22,6 +22,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/PointToFieldFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -85,14 +86,14 @@ String PointToFieldFunctionImplementation::__str__(const String & offset) const
 }
 
 /* Get the i-th marginal function */
-PointToFieldFunctionImplementation::Implementation PointToFieldFunctionImplementation::getMarginal(const UnsignedInteger i) const
+PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-PointToFieldFunctionImplementation::Implementation PointToFieldFunctionImplementation::getMarginal(const Indices & indices) const
+PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
   throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::getMarginal(const Indices & indices) const";

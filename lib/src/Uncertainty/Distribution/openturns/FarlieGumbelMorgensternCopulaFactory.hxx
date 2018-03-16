@@ -45,9 +45,9 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build(const Point & parameters) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build(const Point & parameters) const;
+  Distribution build() const;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const Sample & sample) const;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const Point & parameters) const;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula() const;

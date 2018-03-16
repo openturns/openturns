@@ -107,7 +107,7 @@ void OrderStatisticsMarginalChecker::check() const
   {
     const OrderStatisticsMarginalCheckerWrapper wrapper(collection_[i - 1], collection_[i]);
     Function f(bindMethod<OrderStatisticsMarginalCheckerWrapper, Point, Point>(wrapper, &OrderStatisticsMarginalCheckerWrapper::computeDelta, 1, 1));
-    f.setGradient(CenteredFiniteDifferenceGradient(step, f.getEvaluation()->clone()));
+    f.setGradient(CenteredFiniteDifferenceGradient(step, f.getEvaluation()));
 
     for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
     {

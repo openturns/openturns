@@ -224,7 +224,7 @@ Scalar CumulativeDistributionNetwork::computeCDF(const Point & point) const
 
 
 /* Get the i-th marginal distribution */
-CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::getMarginal(const UnsignedInteger i) const
+Distribution CumulativeDistributionNetwork::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -256,7 +256,7 @@ CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::get
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-CumulativeDistributionNetwork::Implementation CumulativeDistributionNetwork::getMarginal(const Indices & indices) const
+Distribution CumulativeDistributionNetwork::getMarginal(const Indices & indices) const
 {
   LOGINFO(OSS() << "in getMarginal(" << indices << "), contributors=" << distributionCollection_ << ", graph=" << graph_);
   if (indices.getSize() == 1) return getMarginal(indices[0]);

@@ -89,17 +89,17 @@ struct BurrFactoryParameterConstraint
 
 /* Here is the interface that all derived class must implement */
 
-BurrFactory::Implementation BurrFactory::build(const Sample & sample) const
+Distribution BurrFactory::build(const Sample & sample) const
 {
   return buildAsBurr(sample).clone();
 }
 
-BurrFactory::Implementation BurrFactory::build(const Point & parameters) const
+Distribution BurrFactory::build(const Point & parameters) const
 {
   return buildAsBurr(parameters).clone();
 }
 
-BurrFactory::Implementation BurrFactory::build() const
+Distribution BurrFactory::build() const
 {
   return buildAsBurr().clone();
 }

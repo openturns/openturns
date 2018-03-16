@@ -42,15 +42,13 @@ ProductFunction::ProductFunction(const Implementation & p_left,
     p_rightFunction_(p_right)
 {
   //  try{
-  GradientPointer p_gradientImplementation(new ProductGradient(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
-  setGradient(p_gradientImplementation);
+  setGradient(new ProductGradient(p_leftFunction_->getEvaluation(), p_leftFunction_->getGradient(), p_rightFunction_->getEvaluation(), p_rightFunction_->getGradient()));
   //  }
   //  catch(InvalidArgumentException &) {
   // Nothing to do
   //  }
   //  try{
-  HessianPointer p_hessianImplementation(new ProductHessian(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
-  setHessian(p_hessianImplementation);
+  setHessian(new ProductHessian(p_left->getEvaluation(), p_left->getGradient(), p_left->getHessian(), p_right->getEvaluation(), p_right->getGradient(), p_right->getHessian()));
   //  }
   //  catch(InvalidArgumentException & ex) {
   // Nothing to do

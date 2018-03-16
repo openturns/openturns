@@ -44,9 +44,9 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build(const Point & parameters) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build(const Point & parameters) const;
+  Distribution build() const;
   Rice buildAsRice(const Sample & sample) const;
   Rice buildAsRice(const Point & parameters) const;
   Rice buildAsRice() const;

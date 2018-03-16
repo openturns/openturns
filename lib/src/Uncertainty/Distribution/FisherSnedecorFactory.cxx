@@ -46,17 +46,17 @@ FisherSnedecorFactory * FisherSnedecorFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const Sample & sample) const
+Distribution FisherSnedecorFactory::build(const Sample & sample) const
 {
   return buildAsFisherSnedecor(sample).clone();
 }
 
-FisherSnedecorFactory::Implementation FisherSnedecorFactory::build(const Point & parameters) const
+Distribution FisherSnedecorFactory::build(const Point & parameters) const
 {
   return buildAsFisherSnedecor(parameters).clone();
 }
 
-FisherSnedecorFactory::Implementation FisherSnedecorFactory::build() const
+Distribution FisherSnedecorFactory::build() const
 {
   return buildAsFisherSnedecor().clone();
 }
@@ -68,7 +68,7 @@ DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const Sample & s
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sample) const
 {
-  const UnsignedInteger dimension = build()->getParameterDimension();
+  const UnsignedInteger dimension = build().getParameterDimension();
   MaximumLikelihoodFactory factory(buildAsFisherSnedecor());
 
   Point parametersLowerBound;

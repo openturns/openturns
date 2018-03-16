@@ -602,7 +602,7 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
   {
     oss << offset;
     if (inputDistributionCollection_.getSize() > 1) oss << "| " << std::setw(length) << outputDescription[i] << " = ";
-    if (simplifications_[i]) oss << expressions_[i].getEvaluation()->__str__() << "\n";
+    if (simplifications_[i]) oss << expressions_[i].getEvaluation().__str__() << "\n";
     else oss << inputDistributionCollection_[i] << " -> " << outputDescription[i] << " : " << outputDistributionCollection_[i] << "\n";
   }
   return oss;

@@ -28,6 +28,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration
+class PointToFieldFunction;
+
 /**
  * @class PointToFieldFunctionImplementation
  *
@@ -81,10 +84,10 @@ public:
   Mesh getOutputMesh() const;
 
   /** Get the i-th marginal function */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual PointToFieldFunction getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual PointToFieldFunction getMarginal(const Indices & indices) const;
 
   /** Number of calls to the dynamical function */
   virtual UnsignedInteger getCallsNumber() const;

@@ -43,17 +43,17 @@ GumbelCopulaFactory * GumbelCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const Sample & sample) const
+Distribution GumbelCopulaFactory::build(const Sample & sample) const
 {
   return buildAsGumbelCopula(sample).clone();
 }
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build(const Point & parameters) const
+Distribution GumbelCopulaFactory::build(const Point & parameters) const
 {
   return buildAsGumbelCopula(parameters).clone();
 }
 
-GumbelCopulaFactory::Implementation GumbelCopulaFactory::build() const
+Distribution GumbelCopulaFactory::build() const
 {
   return buildAsGumbelCopula().clone();
 }

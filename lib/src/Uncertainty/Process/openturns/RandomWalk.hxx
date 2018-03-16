@@ -73,10 +73,10 @@ public:
   TimeSeries getFuture(const UnsignedInteger stepNumber) const;
 
   /** Get the process corresponding to the i-th marginal component */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Process getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal process corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Process getMarginal(const Indices & indices) const;
 
   /** Distribution accessor */
   Distribution getDistribution() const;

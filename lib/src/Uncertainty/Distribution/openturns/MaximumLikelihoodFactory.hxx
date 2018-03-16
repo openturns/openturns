@@ -54,7 +54,7 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Implementation build(const Sample & sample) const;
+  virtual Distribution build(const Sample & sample) const;
 
   /** Build a distribution based on a set of parameters */
   virtual Point buildParameter(const Sample & sample) const;

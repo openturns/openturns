@@ -33,6 +33,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration
+class Gradient;
+
 /**
  * @class GradientImplementation
  *
@@ -44,9 +47,6 @@ class OT_API GradientImplementation
 {
   CLASSNAME
 public:
-
-  typedef Pointer<GradientImplementation> Implementation;
-
 
   /** Default constructor */
   GradientImplementation();
@@ -65,10 +65,10 @@ public:
 
 
   /** Get the i-th marginal evaluation */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual Gradient getMarginal(const UnsignedInteger i) const;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Gradient getMarginal(const Indices & indices) const;
 
   /** Test for actual implementation */
   virtual Bool isActualImplementation() const;

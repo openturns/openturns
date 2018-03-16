@@ -428,13 +428,13 @@ Distribution TruncatedDistribution::getDistribution() const
 }
 
 
-TruncatedDistribution::Implementation TruncatedDistribution::getMarginal(const UnsignedInteger i) const
+Distribution TruncatedDistribution::getMarginal(const UnsignedInteger i) const
 {
   return getMarginal(Indices(1, i));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-TruncatedDistribution::Implementation TruncatedDistribution::getMarginal(const Indices & indices) const
+Distribution TruncatedDistribution::getMarginal(const Indices & indices) const
 {
   Interval marginalBounds(bounds_.getMarginal(indices));
   return new TruncatedDistribution(distribution_.getMarginal(indices), marginalBounds);

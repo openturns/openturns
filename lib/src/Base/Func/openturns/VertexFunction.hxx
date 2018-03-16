@@ -24,6 +24,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/FieldFunctionImplementation.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,18 +42,14 @@ class OT_API VertexFunction
   CLASSNAME
 public:
 
-  typedef EvaluationImplementation::Implementation EvaluationPointer;
-
   /** Default constructor */
   VertexFunction();
 
   /** Parameter constructor */
   explicit VertexFunction(const Function & function);
 
-#ifndef SWIG
   /** Parameter constructor */
-  explicit VertexFunction(const EvaluationPointer & p_evaluation);
-#endif
+  explicit VertexFunction(const Evaluation & evaluation);
 
   /** Parameter constructor */
   explicit VertexFunction(const EvaluationImplementation & evaluation);

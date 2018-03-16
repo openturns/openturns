@@ -45,12 +45,12 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build(const Sample & sample,
-                       const Scalar bandwidth) const;
-  Implementation build(const Sample & sample,
-                       const UnsignedInteger binNumber) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample,
+                     const Scalar bandwidth) const;
+  Distribution build(const Sample & sample,
+                     const UnsignedInteger binNumber) const;
+  Distribution build() const;
   Histogram buildAsHistogram(const Sample & sample) const;
   Histogram buildAsHistogram(const Sample & sample,
                              const Scalar bandwidth) const;

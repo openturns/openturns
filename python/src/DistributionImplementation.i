@@ -2,13 +2,13 @@
 
 // do not pass argument by reference, return it as tuple item
 %typemap(in, numinputs=0) OT::Sample & gridOut ($*ltype temp) %{ temp = OT::Sample(); $1 = &temp; %}
-%typemap(argout) OT::Sample & gridOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN |  0 )); %}
+%typemap(argout) OT::Sample & gridOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Sample(*$1), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN |  0 )); %}
 
 %typemap(in, numinputs=0) OT::Point & marginalProbOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+%typemap(argout) OT::Point & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN |  0 )); %}
 
 %typemap(in, numinputs=0) OT::Point & thresholdOut ($*ltype temp) %{ temp = OT::Point(); $1 = &temp; %}
-%typemap(argout) OT::Point & thresholdOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN |  0 )); %}
+%typemap(argout) OT::Point & thresholdOut %{ $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(new OT::Point(*$1), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN |  0 )); %}
 
 %typemap(in, numinputs=0) OT::Scalar & marginalProbOut ($*ltype temp) %{ temp = -1.0; $1 = &temp; %}
 %typemap(argout) OT::Scalar & marginalProbOut %{ $result = SWIG_Python_AppendOutput($result, PyFloat_FromDouble(*$1)); %}
@@ -38,45 +38,45 @@ namespace OT {
 DistributionImplementation(const DistributionImplementation & other) { return new OT::DistributionImplementation(other); } 
 
 #if SWIG_VERSION < 0x030011
-Pointer<DistributionImplementation> __truediv__(const Scalar s) { return (*self) / s; }
+Distribution __truediv__(const Scalar s) { return (*self) / s; }
 
-Pointer<DistributionImplementation> __truediv__(const DistributionImplementation & d) { return (*self) / d; }
+Distribution __truediv__(const DistributionImplementation & d) { return (*self) / d; }
 #endif
 
-Pointer<DistributionImplementation> __rtruediv__(const Scalar s) { return s / (*self); }
+Distribution __rtruediv__(const Scalar s) { return s / (*self); }
 
-Pointer<DistributionImplementation> __rdiv__(const Scalar s) { return s / (*self); }
+Distribution __rdiv__(const Scalar s) { return s / (*self); }
 
-Pointer<DistributionImplementation> __pow__(const Scalar s) { return self->pow(s); }
+Distribution __pow__(const Scalar s) { return self->pow(s); }
 
-Pointer<DistributionImplementation> __pow__(const SignedInteger s) { return self->pow(s); }
+Distribution __pow__(const SignedInteger s) { return self->pow(s); }
 
-Pointer<DistributionImplementation> __sub__(const Scalar s)
+Distribution __sub__(const Scalar s)
 {
  return *self - s;
 }
 
-Pointer<DistributionImplementation> __rsub__(const Scalar s)
+Distribution __rsub__(const Scalar s)
 {
-  return *(*self * (-1.0)) + s;
+  return (*self * (-1.0)) + s;
 }
 
-Pointer<DistributionImplementation> __add__(const Scalar s)
+Distribution __add__(const Scalar s)
 {
  return *self + s;
 }
 
-Pointer<DistributionImplementation> __radd__(const Scalar s)
+Distribution __radd__(const Scalar s)
 {
   return *self + s;
 }
 
-Pointer<DistributionImplementation> __mul__(Scalar s)
+Distribution __mul__(Scalar s)
 {
   return (*self) * s;
 }
 
-Pointer<DistributionImplementation> __rmul__(Scalar s)
+Distribution __rmul__(Scalar s)
 {
   return (*self) * s;
 }

@@ -19,6 +19,7 @@
 #define OPENTURNS_PRODUCTNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,12 +34,9 @@ class OT_API ProductEvaluation
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-  typedef Pointer<EvaluationImplementation>          EvaluationPointer;
-
   /** Default constructor */
-  ProductEvaluation(const EvaluationPointer & p_leftEvaluation,
-                    const EvaluationPointer & p_rightEvaluation);
+  ProductEvaluation(const Evaluation & leftEvaluation,
+                    const Evaluation & rightEvaluation);
 
 
   /** Virtual constructor */
@@ -83,10 +81,10 @@ protected:
 private:
 
   /** The function f in h = f . g */
-  EvaluationPointer p_leftEvaluation_;
+  Evaluation leftEvaluation_;
 
   /** The function g in h = f . g */
-  EvaluationPointer p_rightEvaluation_;
+  Evaluation rightEvaluation_;
 
 }; /* class ProductEvaluation */
 

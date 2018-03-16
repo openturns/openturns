@@ -28,6 +28,7 @@
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
+#include "openturns/CovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -811,7 +812,7 @@ Bool CovarianceModelImplementation::isDiagonal() const
 }
 
 /* Marginal accessor */
-CovarianceModelImplementation::Implementation CovarianceModelImplementation::getMarginal(const UnsignedInteger index) const
+CovarianceModel CovarianceModelImplementation::getMarginal(const UnsignedInteger index) const
 {
   if (index >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
   if (outputDimension_ != 1) throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::getMarginal(const UnsignedInteger index) const";

@@ -40,23 +40,23 @@ CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient() :
 
 /* Parameter constructor */
 CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Point & epsilon,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceGradient(epsilon, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceGradient(epsilon, evaluation)
 
 {
 }
 
 /* Parameter constructor */
 CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const Scalar epsilon,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceGradient(epsilon, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceGradient(epsilon, evaluation)
 {
 }
 
 /* Parameter constructor */
 CenteredFiniteDifferenceGradient::CenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceGradient(step, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceGradient(step, evaluation)
 {
   // Nothing to do
 }
@@ -75,7 +75,7 @@ String CenteredFiniteDifferenceGradient::__repr__() const
   oss << "class=" << CenteredFiniteDifferenceGradient::GetClassName()
       << " name=" << getName()
       << " epsilon=" << getEpsilon().__repr__()
-      << " evaluation=" << p_evaluation_->__repr__();
+      << " evaluation=" << evaluation_.getImplementation()->__repr__();
   return oss;
 }
 
@@ -101,9 +101,9 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
     gridPoints[2 * i + 1][i] -= step[i];
   } // For i
   /* Evaluate the evaluation */
-  Sample gridValues(p_evaluation_->operator()(gridPoints));
+  Sample gridValues(evaluation_.operator()(gridPoints));
   /* Compute the gradient */
-  Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
+  Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
     for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
       /* result(i, j) = (f_j(x + e_i) - f_j(x - e_i)) / (2 * e_i) ~ df_j / dx_i */

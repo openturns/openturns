@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -302,7 +303,7 @@ Point Logistic::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Logistic::Implementation Logistic::getStandardRepresentative() const
+Distribution Logistic::getStandardRepresentative() const
 {
   return new Logistic(0.0, 1.0);
 }

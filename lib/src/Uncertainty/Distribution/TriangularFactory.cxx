@@ -44,17 +44,17 @@ TriangularFactory * TriangularFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-TriangularFactory::Implementation TriangularFactory::build(const Sample & sample) const
+Distribution TriangularFactory::build(const Sample & sample) const
 {
   return buildAsTriangular(sample).clone();
 }
 
-TriangularFactory::Implementation TriangularFactory::build() const
+Distribution TriangularFactory::build() const
 {
   return buildAsTriangular().clone();
 }
 
-TriangularFactory::Implementation TriangularFactory::build(const Point & parameters) const
+Distribution TriangularFactory::build(const Point & parameters) const
 {
   return buildAsTriangular(parameters).clone();
 }

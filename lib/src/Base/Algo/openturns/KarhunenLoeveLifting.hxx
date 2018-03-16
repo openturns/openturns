@@ -23,6 +23,7 @@
 #define OPENTURNS_KARHUNENLOEVELIFTING_HXX
 
 #include "openturns/PointToFieldFunctionImplementation.hxx"
+#include "openturns/PointToFieldFunction.hxx"
 #include "openturns/KarhunenLoeveResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -63,10 +64,10 @@ public:
   virtual Mesh getOutputMesh() const;
 
   /** Get the i-th marginal function */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual PointToFieldFunction getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual PointToFieldFunction getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

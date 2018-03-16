@@ -32,15 +32,15 @@ static const Factory<EvaluationProxy> Factory_EvaluationProxy;
 /* Default constructor */
 EvaluationProxy::EvaluationProxy()
   : EvaluationImplementation()
-  , p_evaluationImplementation_(0)
+  , evaluation_(0)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-EvaluationProxy::EvaluationProxy(const Implementation & p_evaluation)
+EvaluationProxy::EvaluationProxy(const Evaluation & evaluation)
   : EvaluationImplementation()
-  , p_evaluationImplementation_(p_evaluation)
+  , evaluation_(evaluation)
 {
   // Nothing to do
 }
@@ -55,198 +55,198 @@ EvaluationProxy * EvaluationProxy::clone() const
 /* Comparison operator */
 Bool EvaluationProxy::operator ==(const EvaluationProxy & other) const
 {
-  return p_evaluationImplementation_ == other.p_evaluationImplementation_;
+  return evaluation_ == other.evaluation_;
 }
 
 /* String converter */
 String EvaluationProxy::__repr__() const
 {
-  return p_evaluationImplementation_->__repr__();
+  return evaluation_.__repr__();
 }
 
 /* String converter */
 String EvaluationProxy::__str__(const String & offset) const
 {
-  return p_evaluationImplementation_->__str__(offset);
+  return evaluation_.__str__(offset);
 }
 
 /* Description Accessor */
 void EvaluationProxy::setDescription(const Description & description)
 {
-  p_evaluationImplementation_->setDescription(description);
+  evaluation_.setDescription(description);
 }
 
 
 /* Description Accessor */
 Description EvaluationProxy::getDescription() const
 {
-  return p_evaluationImplementation_->getDescription();
+  return evaluation_.getDescription();
 }
 
 /* Input description Accessor */
 void EvaluationProxy::setInputDescription(const Description & inputDescription)
 {
-  p_evaluationImplementation_->setInputDescription(inputDescription);
+  evaluation_.setInputDescription(inputDescription);
 }
 
 Description EvaluationProxy::getInputDescription() const
 {
-  return p_evaluationImplementation_->getInputDescription();
+  return evaluation_.getInputDescription();
 }
 
 /* Output description Accessor */
 void EvaluationProxy::setOutputDescription(const Description & outputDescription)
 {
-  p_evaluationImplementation_->setOutputDescription(outputDescription);
+  evaluation_.setOutputDescription(outputDescription);
 }
 
 Description EvaluationProxy::getOutputDescription() const
 {
-  return p_evaluationImplementation_->getOutputDescription();
+  return evaluation_.getOutputDescription();
 }
 
 /* Test for actual implementation */
 Bool EvaluationProxy::isActualImplementation() const
 {
-  return p_evaluationImplementation_->isActualImplementation();
+  return evaluation_.getImplementation()->isActualImplementation();
 }
 
 /* Operator () */
 Sample EvaluationProxy::operator() (const Sample & inSample) const
 {
-  return p_evaluationImplementation_->operator()(inSample);
+  return evaluation_.operator()(inSample);
 }
 
 
 /* Operator () */
 Field EvaluationProxy::operator() (const Field & inField) const
 {
-  return p_evaluationImplementation_->operator()(inField);
+  return evaluation_.operator()(inField);
 }
 
 
 /* Enable or disable the internal cache */
 void EvaluationProxy::enableCache() const
 {
-  p_evaluationImplementation_->enableCache();
+  evaluation_.enableCache();
 }
 
 void EvaluationProxy::disableCache() const
 {
-  p_evaluationImplementation_->disableCache();
+  evaluation_.disableCache();
 }
 
 Bool EvaluationProxy::isCacheEnabled() const
 {
-  return p_evaluationImplementation_->isCacheEnabled();
+  return evaluation_.isCacheEnabled();
 }
 
 UnsignedInteger EvaluationProxy::getCacheHits() const
 {
-  return p_evaluationImplementation_->getCacheHits();
+  return evaluation_.getCacheHits();
 }
 
 void EvaluationProxy::addCacheContent(const Sample& inSample, const Sample& outSample)
 {
-  p_evaluationImplementation_->addCacheContent(inSample, outSample);
+  evaluation_.addCacheContent(inSample, outSample);
 }
 
 Sample EvaluationProxy::getCacheInput() const
 {
-  return p_evaluationImplementation_->getCacheInput();
+  return evaluation_.getCacheInput();
 }
 
 Sample EvaluationProxy::getCacheOutput() const
 {
-  return p_evaluationImplementation_->getCacheOutput();
+  return evaluation_.getCacheOutput();
 }
 
 void EvaluationProxy::clearCache() const
 {
-  p_evaluationImplementation_->clearCache();
+  evaluation_.clearCache();
 }
 
 /* Gradient according to the marginal parameters */
 Matrix EvaluationProxy::parameterGradient(const Point & inP) const
 {
-  return p_evaluationImplementation_->parameterGradient(inP);
+  return evaluation_.parameterGradient(inP);
 }
 
 /* Parameters value accessor */
 Point EvaluationProxy::getParameter() const
 {
-  return p_evaluationImplementation_->getParameter();
+  return evaluation_.getParameter();
 }
 
 void EvaluationProxy::setParameter(const Point & parameter)
 {
-  p_evaluationImplementation_->setParameter(parameter);
+  evaluation_.setParameter(parameter);
 }
 
 void EvaluationProxy::setParameterDescription(const Description & description)
 {
-  p_evaluationImplementation_->setParameterDescription(description);
+  evaluation_.setParameterDescription(description);
 }
 
 /* Parameters description accessor */
 Description EvaluationProxy::getParameterDescription() const
 {
-  return p_evaluationImplementation_->getParameterDescription();
+  return evaluation_.getParameterDescription();
 }
 
 
 /* Operator () */
 Point EvaluationProxy::operator() (const Point & inP) const
 {
-  return p_evaluationImplementation_->operator()(inP);
+  return evaluation_.operator()(inP);
 }
 
 Point EvaluationProxy::operator() (const Point & inP,
     const Point & parameter)
 {
-  return p_evaluationImplementation_->operator()(inP, parameter);
+  return evaluation_.operator()(inP, parameter);
 }
 
 Sample EvaluationProxy::operator() (const Point & inP,
     const Sample & parameters)
 {
-  return p_evaluationImplementation_->operator()(inP, parameters);
+  return evaluation_.operator()(inP, parameters);
 }
 
 /* Accessor for input point dimension */
 UnsignedInteger EvaluationProxy::getInputDimension() const
 {
-  return p_evaluationImplementation_->getInputDimension();
+  return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger EvaluationProxy::getOutputDimension() const
 {
-  return p_evaluationImplementation_->getOutputDimension();
+  return evaluation_.getOutputDimension();
 }
 
 /* Accessor for input point dimension */
 UnsignedInteger EvaluationProxy::getParameterDimension() const
 {
-  return p_evaluationImplementation_->getParameterDimension();
+  return evaluation_.getParameterDimension();
 }
 
 /* Get the i-th marginal function */
-EvaluationProxy::Implementation EvaluationProxy::getMarginal(const UnsignedInteger i) const
+Evaluation EvaluationProxy::getMarginal(const UnsignedInteger i) const
 {
-  return p_evaluationImplementation_->getMarginal(i);
+  return evaluation_.getMarginal(i);
 }
 
 /* Get the function corresponding to indices components */
-EvaluationProxy::Implementation EvaluationProxy::getMarginal(const Indices & indices) const
+Evaluation EvaluationProxy::getMarginal(const Indices & indices) const
 {
-  return p_evaluationImplementation_->getMarginal(indices);
+  return evaluation_.getMarginal(indices);
 }
 
 /* Get the number of calls to operator() */
 UnsignedInteger EvaluationProxy::getCallsNumber() const
 {
-  return p_evaluationImplementation_->getCallsNumber();
+  return evaluation_.getCallsNumber();
 }
 
 
@@ -259,7 +259,7 @@ Graph EvaluationProxy::draw(const UnsignedInteger inputMarginal,
                             const UnsignedInteger pointNumber,
                             const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
@@ -272,7 +272,7 @@ Graph EvaluationProxy::draw(const UnsignedInteger firstInputMarginal,
                             const Indices & pointNumber,
                             const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
@@ -281,7 +281,7 @@ Graph EvaluationProxy::draw(const Scalar xMin,
                             const UnsignedInteger pointNumber,
                             const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
@@ -290,7 +290,7 @@ Graph EvaluationProxy::draw(const Point & xMin,
                             const Indices & pointNumber,
                             const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(xMin, xMax, pointNumber, scale);
 }
 
 
@@ -298,16 +298,14 @@ Graph EvaluationProxy::draw(const Point & xMin,
 void EvaluationProxy::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
-  adv.saveAttribute( "evaluationImplementation_", *p_evaluationImplementation_ );
+  adv.saveAttribute( "evaluation_", evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void EvaluationProxy::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
-  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
-  adv.loadAttribute( "evaluationImplementation_", evaluationValue );
-  p_evaluationImplementation_ = evaluationValue.getImplementation();
+  adv.loadAttribute( "evaluation_", evaluation_ );
 }
 
 END_NAMESPACE_OPENTURNS

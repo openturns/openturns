@@ -39,8 +39,6 @@ class OT_API MeixnerDistribution
   CLASSNAME
 public:
 
-  typedef Pointer<DistributionImplementation> Implementation;
-
   /** Default constructor */
   MeixnerDistribution();
 
@@ -95,7 +93,7 @@ public:
   Point getKurtosis() const;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Implementation getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter);

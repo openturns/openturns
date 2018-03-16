@@ -91,7 +91,7 @@ private:
 
   StandardEvent standardEvent_;
   Function standardFunction_;
-  Implementation inputDistribution_;
+  Distribution inputDistribution_;
   RootStrategy rootStrategy_;
   SamplingStrategy samplingStrategy_;
 

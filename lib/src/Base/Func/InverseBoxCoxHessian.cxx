@@ -32,7 +32,15 @@ InverseBoxCoxHessian::InverseBoxCoxHessian()
 /* Parameter constructor */
 InverseBoxCoxHessian::InverseBoxCoxHessian(const InverseBoxCoxEvaluation & evaluation)
   : HessianImplementation()
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+InverseBoxCoxHessian::InverseBoxCoxHessian(const Pointer<InverseBoxCoxEvaluation> & p_evaluation)
+  : HessianImplementation()
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -47,7 +55,7 @@ InverseBoxCoxHessian * InverseBoxCoxHessian::clone() const
 Bool InverseBoxCoxHessian::operator ==(const InverseBoxCoxHessian & other) const
 {
   if (this == &other) return true;
-  return (evaluation_ == other.evaluation_);
+  return (*p_evaluation_ == *other.p_evaluation_);
 }
 
 /* String converter */
@@ -56,7 +64,7 @@ String InverseBoxCoxHessian::__repr__() const
   OSS oss(true);
   oss << "class=" << InverseBoxCoxHessian::GetClassName()
       << " name=" << getName()
-      << " evaluation=" << evaluation_;
+      << " evaluation=" << *p_evaluation_;
   return oss;
 }
 
@@ -68,12 +76,6 @@ String InverseBoxCoxHessian::__str__(const String & offset) const
       << ", shift=" << getShift()
       << ")";
   return oss;
-}
-
-/* Accessor for the evaluation */
-InverseBoxCoxEvaluation InverseBoxCoxHessian::getEvaluation() const
-{
-  return evaluation_;
 }
 
 /* Hessian evaluation method */
@@ -102,39 +104,41 @@ SymmetricTensor InverseBoxCoxHessian::hessian(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger InverseBoxCoxHessian::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger InverseBoxCoxHessian::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* Accessor for the lambda */
 Point InverseBoxCoxHessian::getLambda() const
 {
-  return evaluation_.getLambda();
+  return p_evaluation_->getLambda();
 }
 
 /* Accessor for the shift */
 Point InverseBoxCoxHessian::getShift() const
 {
-  return evaluation_.getShift();
+  return p_evaluation_->getShift();
 }
 
 /* Method save() stores the object through the StorageManager */
 void InverseBoxCoxHessian::save(Advocate & adv) const
 {
   HessianImplementation::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseBoxCoxHessian::load(Advocate & adv)
 {
   HessianImplementation::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<InverseBoxCoxEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

@@ -105,7 +105,7 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
     // clear constraints, bounds
-    if (equalityConstraint_.getEvaluation()->isActualImplementation() || inequalityConstraint_.getEvaluation()->isActualImplementation())
+    if (equalityConstraint_.getEvaluation().getImplementation()->isActualImplementation() || inequalityConstraint_.getEvaluation().getImplementation()->isActualImplementation())
     {
       LOGWARN(OSS() << "Clearing constraints and bounds");
       equalityConstraint_ = Function();
@@ -141,7 +141,7 @@ void OptimizationProblemImplementation::setEqualityConstraint(const Function & e
 
 Bool OptimizationProblemImplementation::hasEqualityConstraint() const
 {
-  return equalityConstraint_.getEvaluation()->isActualImplementation();
+  return equalityConstraint_.getEvaluation().getImplementation()->isActualImplementation();
 }
 
 /* Inequality constraint accessor */
@@ -160,7 +160,7 @@ void OptimizationProblemImplementation::setInequalityConstraint(const Function &
 
 Bool OptimizationProblemImplementation::hasInequalityConstraint() const
 {
-  return inequalityConstraint_.getEvaluation()->isActualImplementation();
+  return inequalityConstraint_.getEvaluation().getImplementation()->isActualImplementation();
 }
 
 /* Bounds accessor */
@@ -205,7 +205,7 @@ void OptimizationProblemImplementation::setLevelFunction(const Function & levelF
 
 Bool OptimizationProblemImplementation::hasLevelFunction() const
 {
-  return levelFunction_.getEvaluation()->isActualImplementation();
+  return levelFunction_.getEvaluation().getImplementation()->isActualImplementation();
 }
 
 /* Level value accessor */
@@ -233,7 +233,7 @@ void OptimizationProblemImplementation::setNearestPointConstraints()
 
 void OptimizationProblemImplementation::clearLevelFunction()
 {
-  if (levelFunction_.getEvaluation()->isActualImplementation())
+  if (levelFunction_.getEvaluation().getImplementation()->isActualImplementation())
   {
     LOGWARN(OSS() << "Clearing level function");
     levelFunction_ = Function();

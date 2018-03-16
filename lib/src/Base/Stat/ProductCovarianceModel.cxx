@@ -255,10 +255,10 @@ String ProductCovarianceModel::__str__(const String & offset) const
 }
 
 /* Marginal accessor */
-ProductCovarianceModel::Implementation ProductCovarianceModel::getMarginal(const UnsignedInteger index) const
+CovarianceModel ProductCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
   if (index >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
-  return collection_[index].getImplementation();
+  return collection_[index];
 }
 
 /* Method save() stores the object through the StorageManager */

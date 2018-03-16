@@ -17,6 +17,7 @@
 #define OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/ComparisonOperator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -35,14 +36,11 @@ class OT_API IndicatorEvaluation
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-  typedef Pointer<EvaluationImplementation>           EvaluationPointer;
-
   /** Default constructor */
   IndicatorEvaluation();
 
   /** Default constructor */
-  IndicatorEvaluation(const EvaluationPointer & p_evaluation,
+  IndicatorEvaluation(const Evaluation & evaluation,
                       const ComparisonOperator & comparisonOperator,
                       const Scalar threshold);
 
@@ -60,8 +58,8 @@ public:
   Point operator() (const Point & inP) const;
 
   /** Accessor for the underlying evaluation */
-  EvaluationPointer getEvaluation() const;
-  void setEvaluation(const EvaluationPointer & p_evaluation);
+  Evaluation getEvaluation() const;
+  void setEvaluation(const Evaluation & evaluation);
 
   /** Accessor for the comparison operator */
   ComparisonOperator getComparisonOperator() const;
@@ -85,7 +83,7 @@ public:
 
 private:
 
-  EvaluationPointer p_evaluation_;
+  Evaluation evaluation_;
   ComparisonOperator comparisonOperator_;
   Scalar threshold_;
 

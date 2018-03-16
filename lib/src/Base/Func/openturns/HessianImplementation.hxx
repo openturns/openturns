@@ -32,6 +32,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration
+class Hessian;
+
 /**
  * @class HessianImplementation
  *
@@ -43,9 +46,6 @@ class OT_API HessianImplementation
 {
   CLASSNAME
 public:
-
-  typedef Pointer<HessianImplementation> Implementation;
-
 
   /** Default constructor */
   HessianImplementation();
@@ -65,10 +65,10 @@ public:
   virtual Bool isActualImplementation() const;
 
   /** Get the i-th marginal evaluation */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual Hessian getMarginal(const UnsignedInteger i) const;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Hessian getMarginal(const Indices & indices) const;
 
 
 

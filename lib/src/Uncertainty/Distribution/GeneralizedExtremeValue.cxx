@@ -205,7 +205,7 @@ Point GeneralizedExtremeValue::getKurtosis() const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-GeneralizedExtremeValue::Implementation GeneralizedExtremeValue::getStandardRepresentative() const
+Distribution GeneralizedExtremeValue::getStandardRepresentative() const
 {
   return actualDistribution_.getImplementation()->getStandardRepresentative();
 }

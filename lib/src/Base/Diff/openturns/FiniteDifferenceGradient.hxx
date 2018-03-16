@@ -24,8 +24,7 @@
 #define OPENTURNS_FINITEDIFFERENCEGRADIENT_HXX
 
 #include "openturns/GradientImplementation.hxx"
-#include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Pointer.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
 
 
@@ -44,22 +43,20 @@ class OT_API FiniteDifferenceGradient
   CLASSNAME
 public:
 
-  typedef Pointer<EvaluationImplementation>                          EvaluationPointer;
-
   /** Default constructor */
   FiniteDifferenceGradient();
 
   /** First Parameter constructor  */
   FiniteDifferenceGradient(const Point & epsilon,
-                           const EvaluationPointer & p_evaluation);
+                           const Evaluation & evaluation);
 
   /** SecondParameter constructor */
   FiniteDifferenceGradient(const Scalar epsilon,
-                           const EvaluationPointer & p_evaluation);
+                           const Evaluation & evaluation);
 
   /** Constructor with FiniteDifferenceStep */
   FiniteDifferenceGradient(const FiniteDifferenceStep & finiteDifferenceStep,
-                           const EvaluationPointer & p_evaluation);
+                           const Evaluation & evaluation);
 
   /** Comparison operator */
   virtual Bool operator ==(const FiniteDifferenceGradient & other) const;
@@ -81,7 +78,7 @@ public:
   virtual Point getEpsilon() const;
 
   /** Accessor for the evaluation */
-  virtual EvaluationPointer getEvaluation() const;
+  virtual Evaluation getEvaluation() const;
 
   /** Accessor for the finite difference step */
   virtual void setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep);
@@ -105,7 +102,7 @@ public:
   virtual Matrix gradient(const Point & inP) const;
 
 protected:
-  EvaluationPointer p_evaluation_;
+  Evaluation evaluation_;
   FiniteDifferenceStep finiteDifferenceStep_;
 
 

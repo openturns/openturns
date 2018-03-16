@@ -44,17 +44,17 @@ GumbelFactory * GumbelFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-GumbelFactory::Implementation GumbelFactory::build(const Sample & sample) const
+Distribution GumbelFactory::build(const Sample & sample) const
 {
   return buildAsGumbel(sample).clone();
 }
 
-GumbelFactory::Implementation GumbelFactory::build(const Point & parameters) const
+Distribution GumbelFactory::build(const Point & parameters) const
 {
   return buildAsGumbel(parameters).clone();
 }
 
-GumbelFactory::Implementation GumbelFactory::build() const
+Distribution GumbelFactory::build() const
 {
   return buildAsGumbel().clone();
 }

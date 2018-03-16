@@ -26,7 +26,7 @@ static const Factory<IndicatorEvaluation> Factory_IndicatorEvaluation;
 /* Default constructor */
 IndicatorEvaluation::IndicatorEvaluation()
   : EvaluationImplementation()
-  , p_evaluation_()
+  , evaluation_()
   , comparisonOperator_()
   , threshold_(0.0)
 {
@@ -34,16 +34,16 @@ IndicatorEvaluation::IndicatorEvaluation()
 } // IndicatorEvaluation
 
 /* Default constructor */
-IndicatorEvaluation::IndicatorEvaluation(const EvaluationPointer & p_evaluation,
+IndicatorEvaluation::IndicatorEvaluation(const Evaluation & evaluation,
     const ComparisonOperator & comparisonOperator,
     const Scalar threshold)
   : EvaluationImplementation()
-  , p_evaluation_()
+  , evaluation_()
   , comparisonOperator_(comparisonOperator)
   , threshold_(threshold)
 {
-  setEvaluation(p_evaluation);
-  setDescription(p_evaluation->getDescription());
+  setEvaluation(evaluation);
+  setDescription(evaluation.getDescription());
 } // IndicatorEvaluation
 
 /* Virtual constructor */
@@ -65,7 +65,7 @@ String IndicatorEvaluation::__repr__() const
   OSS oss;
   oss << "class=" << IndicatorEvaluation::GetClassName()
       << " name=" << getName()
-      << " evaluation=" << p_evaluation_->__repr__()
+      << " evaluation=" << evaluation_.getImplementation()->__repr__()
       << " comparisonOperator=" << comparisonOperator_
       << " threshold=" << threshold_;
   return oss;
@@ -76,7 +76,7 @@ Point IndicatorEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const Point result(1, (comparisonOperator_.compare(p_evaluation_->operator()(inP)[0], threshold_) ? 1.0 : 0.0));
+  const Point result(1, (comparisonOperator_.compare(evaluation_.operator()(inP)[0], threshold_) ? 1.0 : 0.0));
   ++callsNumber_;
   return result;
 }
@@ -84,7 +84,7 @@ Point IndicatorEvaluation::operator() (const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger IndicatorEvaluation::getInputDimension() const
 {
-  return p_evaluation_->getInputDimension();
+  return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
@@ -94,15 +94,15 @@ UnsignedInteger IndicatorEvaluation::getOutputDimension() const
 }
 
 /* Accessor for the underlying evaluation */
-IndicatorEvaluation::EvaluationPointer IndicatorEvaluation::getEvaluation() const
+Evaluation IndicatorEvaluation::getEvaluation() const
 {
-  return p_evaluation_;
+  return evaluation_;
 }
 
-void IndicatorEvaluation::setEvaluation(const EvaluationPointer & p_evaluation)
+void IndicatorEvaluation::setEvaluation(const Evaluation & evaluation)
 {
-  if (p_evaluation->getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot use an evaluation implementation with output dimension not equal to 1";
-  p_evaluation_ = p_evaluation;
+  if (evaluation.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot use an evaluation implementation with output dimension not equal to 1";
+  evaluation_ = evaluation;
 }
 
 /* Accessor for the comparison operator */
@@ -131,7 +131,7 @@ void IndicatorEvaluation::setThreshold(const Scalar threshold)
 void IndicatorEvaluation::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
-  adv.saveAttribute( "evaluation_", *p_evaluation_ );
+  adv.saveAttribute( "evaluation_", evaluation_ );
   adv.saveAttribute( "comparisonOperator_", comparisonOperator_ );
   adv.saveAttribute( "threshold_", threshold_ );
 }
@@ -139,10 +139,8 @@ void IndicatorEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IndicatorEvaluation::load(Advocate & adv)
 {
-  TypedInterfaceObject<EvaluationImplementation> evaluation;
   EvaluationImplementation::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation );
-  p_evaluation_ = evaluation.getImplementation();
+  adv.loadAttribute( "evaluation_", evaluation_ );
   adv.loadAttribute( "comparisonOperator_", comparisonOperator_ );
   adv.loadAttribute( "threshold_", threshold_ );
 }

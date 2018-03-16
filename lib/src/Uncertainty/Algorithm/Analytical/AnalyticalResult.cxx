@@ -117,9 +117,9 @@ void AnalyticalResult::setStandardSpaceDesignPoint(const Point & standardSpaceDe
 void AnalyticalResult::computePhysicalSpaceDesignPoint() const
 {
   /* Compute the physical design point */
-  physicalSpaceDesignPoint_ = limitStateVariable_.getImplementation()->getAntecedent()->getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint_);
+  physicalSpaceDesignPoint_ = limitStateVariable_.getImplementation()->getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation().operator()(standardSpaceDesignPoint_);
   /* we give to the physical space design point the description of the input random vector */
-  //physicalSpaceDesignPoint_.setDescription(limitStateVariable_.getImplementation()->getAntecedent()->getDescription());
+  //physicalSpaceDesignPoint_.setDescription(limitStateVariable_.getImplementation()->getAntecedent().getDescription());
 
   /* we give to the physical space design point the name Physical Design Point */
   physicalSpaceDesignPoint_.setName("Physical Space Design Point");
@@ -164,7 +164,7 @@ void AnalyticalResult::computeImportanceFactors() const
   if (standardSpaceDesignPoint_.norm() > 0.0)
   {
     /* get the input distribution */
-    const Distribution inputDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution());
+    const Distribution inputDistribution(limitStateVariable_.getImplementation()->getAntecedent().getDistribution());
     /* get the input standard distribution */
     const Distribution standardDistribution(inputDistribution.getStandardDistribution());
     /* get the marginal 1D from in the standard space where all marginals are identical */
@@ -184,7 +184,7 @@ void AnalyticalResult::computeImportanceFactors() const
   importanceFactors_.setName("Importance Factors");
 
   /* we give to the importance factors vector the description of the input random vector */
-  importanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent()->getDescription());
+  importanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent().getDescription());
   isAlreadyComputedImportanceFactors_ = true;
 }
 
@@ -200,7 +200,7 @@ void AnalyticalResult::computeClassicalImportanceFactors() const
   classicalImportanceFactors_.setName("Classical Importance Factors");
 
   /* we give to the importance factors vector the description of the input random vector */
-  classicalImportanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent()->getDescription());
+  classicalImportanceFactors_.setDescription(limitStateVariable_.getImplementation()->getAntecedent().getDescription());
 
   isAlreadyComputedClassicalImportanceFactors_ = true;
 }
@@ -213,14 +213,14 @@ void AnalyticalResult::computePhysicalImportanceFactors() const
   const Scalar sign = myEvent.getOperator().compare(0., 1.) ? 1.0 : -1.0;
   const Point currentStandardGradient(mystandardEvent.getImplementation()->getFunction().gradient(getStandardSpaceDesignPoint()) * Point(1, 1.0));
   const Point alpha(sign / currentStandardGradient.norm() * currentStandardGradient);
-  const Distribution physicalDistribution(myEvent.getImplementation()->getAntecedent()->getDistribution());
+  const Distribution physicalDistribution(myEvent.getImplementation()->getAntecedent().getDistribution());
   const InverseIsoProbabilisticTransformation inverseIsoProbabilisticTransformation(physicalDistribution.getInverseIsoProbabilisticTransformation());
   const Matrix isoGradient(inverseIsoProbabilisticTransformation.gradient(standardSpaceDesignPoint_));
   physicalImportanceFactors_ = (isoGradient * alpha).normalizeSquare();
   const Point currentPhysicalGradient(limitStateVariable_.getImplementation()->getFunction().gradient(getPhysicalSpaceDesignPoint()) * Point(1, 1.0));
   physicalImportanceFactors_ = currentPhysicalGradient.normalizeSquare();
   physicalImportanceFactors_.setName("Physical importance factors");
-  physicalImportanceFactors_.setDescription(myEvent.getImplementation()->getAntecedent()->getDescription());
+  physicalImportanceFactors_.setDescription(myEvent.getImplementation()->getAntecedent().getDescription());
   isAlreadyComputedPhysicalImportanceFactors_ = true;
 }
 
@@ -229,7 +229,7 @@ void AnalyticalResult::computePhysicalImportanceFactors() const
 void AnalyticalResult::computeMeanPointInStandardEventDomain() const
 {
   // We use the implementation here in order to have access to the computeRadialDistributionCDF() method
-  Distribution::Implementation p_standardDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution().getStandardDistribution().getImplementation());
+  Distribution::Implementation p_standardDistribution(limitStateVariable_.getImplementation()->getAntecedent().getDistribution().getStandardDistribution().getImplementation());
   // Perform the integration along the ray going from the origin to the infinity
   Scalar scaling = hasoferReliabilityIndex_ * p_standardDistribution->computeRadialDistributionCDF(hasoferReliabilityIndex_, true);
   Scalar a = hasoferReliabilityIndex_;
@@ -319,7 +319,7 @@ void AnalyticalResult::setHasoferReliabilityIndex(const Scalar & hasoferReliabil
 void AnalyticalResult::computeHasoferReliabilityIndexSensitivity() const
 {
   /* get Set1 : parameters of the physical distribution */
-  const Distribution physicalDistribution(limitStateVariable_.getImplementation()->getAntecedent()->getDistribution());
+  const Distribution physicalDistribution(limitStateVariable_.getImplementation()->getAntecedent().getDistribution());
   const PointWithDescriptionCollection set1(physicalDistribution.getParametersCollection());
   /* get Set2 : parameters of the physical model */
   const Function physicalModel(limitStateVariable_.getImplementation()->getFunction());

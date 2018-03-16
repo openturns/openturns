@@ -26,6 +26,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -155,7 +156,7 @@ CorrelationMatrix MinCopula::getKendallTau() const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-MinCopula::Implementation MinCopula::getMarginal(const Indices & indices) const
+Distribution MinCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

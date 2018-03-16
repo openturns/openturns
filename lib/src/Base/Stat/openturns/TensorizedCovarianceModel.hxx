@@ -21,6 +21,7 @@
 #define OPENTURNS_TENSORIZEDCOVARIANCEMODEL_HXX
 
 #include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModel.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
 
@@ -67,7 +68,7 @@ public:
   const CovarianceModelCollection & getCollection() const;
 
   /** Marginal accessor */
-  virtual Implementation getMarginal(const UnsignedInteger index) const;
+  virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
 
   /** Scale accessor */
   void setScale(const Point & scale);

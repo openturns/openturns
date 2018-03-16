@@ -261,7 +261,7 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
 }
 
 
-DistributionFactoryImplementation::Implementation MethodOfMomentsFactory::build(const Sample & sample) const
+Distribution MethodOfMomentsFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));

@@ -44,17 +44,17 @@ BetaFactory * BetaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-BetaFactory::Implementation BetaFactory::build(const Sample & sample) const
+Distribution BetaFactory::build(const Sample & sample) const
 {
   return buildAsBeta(sample).clone();
 }
 
-BetaFactory::Implementation BetaFactory::build(const Point & parameters) const
+Distribution BetaFactory::build(const Point & parameters) const
 {
   return buildAsBeta(parameters).clone();
 }
 
-BetaFactory::Implementation BetaFactory::build() const
+Distribution BetaFactory::build() const
 {
   return buildAsBeta().clone();
 }

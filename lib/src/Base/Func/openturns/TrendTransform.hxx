@@ -23,6 +23,7 @@
 
 #include "openturns/VertexValueFunction.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -49,7 +50,7 @@ public:
   explicit TrendTransform(const Function & function);
 
   /** Parameter constructor */
-  TrendTransform(const EvaluationPointer & p_evaluation);
+  TrendTransform(const Evaluation & evaluation);
 
   /** Parameter constructor */
   TrendTransform(const EvaluationImplementation & evaluation);

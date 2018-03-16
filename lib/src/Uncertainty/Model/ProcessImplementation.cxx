@@ -25,6 +25,7 @@
 #include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/RegularGrid.hxx"
+#include "openturns/Process.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -209,7 +210,7 @@ ProcessSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-ProcessImplementation::Implementation ProcessImplementation::getMarginal(const UnsignedInteger i) const
+Process ProcessImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
   if (getOutputDimension() == 1) return clone();
@@ -217,7 +218,7 @@ ProcessImplementation::Implementation ProcessImplementation::getMarginal(const U
 }
 
 /* Get the marginal random vector corresponding to indices components */
-ProcessImplementation::Implementation ProcessImplementation::getMarginal(const Indices & indices) const
+Process ProcessImplementation::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger outputDimension = getOutputDimension();
   if (!indices.check(outputDimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";

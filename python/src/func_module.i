@@ -48,8 +48,11 @@
 %include ProcessSample.i 
 %include SpecFunc.i
 %include EvaluationImplementation.i
+%include Evaluation.i
 %include GradientImplementation.i
+%include Gradient.i
 %include HessianImplementation.i
+%include Hessian.i
 %include NoEvaluation.i
 %include NoGradient.i
 %include NoHessian.i

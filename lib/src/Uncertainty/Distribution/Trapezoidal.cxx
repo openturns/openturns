@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -400,7 +401,7 @@ Point Trapezoidal::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Trapezoidal::Implementation Trapezoidal::getStandardRepresentative() const
+Distribution Trapezoidal::getStandardRepresentative() const
 {
   return new Trapezoidal(-1.0, 1.0 - 2.0 * (d_ - b_) / (d_ - a_), 1.0 - 2.0 * (d_ - c_) / (d_ - a_), 1.0);
 }

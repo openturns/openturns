@@ -45,17 +45,17 @@ BinomialFactory * BinomialFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-BinomialFactory::Implementation BinomialFactory::build(const Sample & sample) const
+Distribution BinomialFactory::build(const Sample & sample) const
 {
   return buildAsBinomial(sample).clone();
 }
 
-BinomialFactory::Implementation BinomialFactory::build(const Point & parameters) const
+Distribution BinomialFactory::build(const Point & parameters) const
 {
   return buildAsBinomial(parameters).clone();
 }
 
-BinomialFactory::Implementation BinomialFactory::build() const
+Distribution BinomialFactory::build() const
 {
   return buildAsBinomial().clone();
 }

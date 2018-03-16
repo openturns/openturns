@@ -44,17 +44,17 @@ MeixnerDistributionFactory * MeixnerDistributionFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const Sample & sample) const
+Distribution MeixnerDistributionFactory::build(const Sample & sample) const
 {
   return buildAsMeixnerDistribution(sample).clone();
 }
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build(const Point & parameters) const
+Distribution MeixnerDistributionFactory::build(const Point & parameters) const
 {
   return buildAsMeixnerDistribution(parameters).clone();
 }
 
-MeixnerDistributionFactory::Implementation MeixnerDistributionFactory::build() const
+Distribution MeixnerDistributionFactory::build() const
 {
   return buildAsMeixnerDistribution().clone();
 }

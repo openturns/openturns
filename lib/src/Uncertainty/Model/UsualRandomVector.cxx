@@ -20,6 +20,7 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/UsualRandomVector.hxx"
+#include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -87,14 +88,14 @@ CovarianceMatrix UsualRandomVector::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-UsualRandomVector::Implementation UsualRandomVector::getMarginal(const UnsignedInteger i) const
+RandomVector UsualRandomVector::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal random vector must be in the range [0, dim-1]";
   return new UsualRandomVector(distribution_.getMarginal(i));
 }
 
 /* Get the marginal random vector corresponding to indices components */
-UsualRandomVector::Implementation UsualRandomVector::getMarginal(const Indices & indices) const
+RandomVector UsualRandomVector::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and must be different";
   return new UsualRandomVector(distribution_.getMarginal(indices));

@@ -104,10 +104,10 @@ public:
   void setNThermalization(const UnsignedInteger n);
 
   /** Get the random vector corresponding to the i-th marginal component */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Process getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Process getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

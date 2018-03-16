@@ -391,7 +391,7 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
 }
 
 /* Get the i-th marginal distribution */
-Student::Implementation Student::getMarginal(const UnsignedInteger i) const
+Distribution Student::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
@@ -406,7 +406,7 @@ Student::Implementation Student::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Student::Implementation Student::getMarginal(const Indices & indices) const
+Distribution Student::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -502,7 +502,7 @@ Point Student::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Student::Implementation Student::getStandardRepresentative() const
+Distribution Student::getStandardRepresentative() const
 {
   return new Student(nu_);
 }

@@ -34,10 +34,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef FunctionImplementation::EvaluationPointer EvaluationPointer;
-typedef FunctionImplementation::GradientPointer   GradientPointer;
-typedef FunctionImplementation::HessianPointer    HessianPointer;
-
 
 CLASSNAMEINIT(SklarCopula)
 
@@ -311,7 +307,7 @@ Scalar SklarCopula::computeConditionalQuantile(const Scalar q,
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-SklarCopula::Implementation SklarCopula::getMarginal(const Indices & indices) const
+Distribution SklarCopula::getMarginal(const Indices & indices) const
 {
   // This call will check that indices are correct
   return new SklarCopula(distribution_.getMarginal(indices));
@@ -327,12 +323,11 @@ SklarCopula::IsoProbabilisticTransformation SklarCopula::getIsoProbabilisticTran
     const IsoProbabilisticTransformation isoprobabilistic(distribution_.getIsoProbabilisticTransformation());
     // Get the right function implementations
     const MarginalTransformationEvaluation rightEvaluation(marginalCollection_, MarginalTransformationEvaluation::TO);
-    const EvaluationPointer p_rightFunction(rightEvaluation.clone());
     // Get the right gradient implementations
-    const GradientPointer p_rightGradient = new MarginalTransformationGradient(rightEvaluation);
+    const Gradient rightGradient(new MarginalTransformationGradient(rightEvaluation));
     // Get the right hessian implementations
-    const HessianPointer p_rightHessian = new MarginalTransformationHessian(rightEvaluation);
-    const IsoProbabilisticTransformation right(p_rightFunction, p_rightGradient, p_rightHessian);
+    const Hessian rightHessian(new MarginalTransformationHessian(rightEvaluation));
+    const IsoProbabilisticTransformation right(rightEvaluation, rightGradient, rightHessian);
     const ComposedFunction transformation(isoprobabilistic, right);
     return transformation;
   }
@@ -350,12 +345,11 @@ SklarCopula::InverseIsoProbabilisticTransformation SklarCopula::getInverseIsoPro
     const InverseIsoProbabilisticTransformation inverseIsoprobabilistic(distribution_.getInverseIsoProbabilisticTransformation());
     // Get the left and right function implementations
     const MarginalTransformationEvaluation leftEvaluation(marginalCollection_);
-    const EvaluationPointer p_leftFunction(leftEvaluation.clone());
     // Get the left and right gradient implementations
-    const GradientPointer p_leftGradient = new MarginalTransformationGradient(leftEvaluation);
+    const Gradient leftGradient(new MarginalTransformationGradient(leftEvaluation));
     // Get the left and right hessian implementations
-    const HessianPointer p_leftHessian = new MarginalTransformationHessian(leftEvaluation);
-    const InverseIsoProbabilisticTransformation left(p_leftFunction, p_leftGradient, p_leftHessian);
+    const Hessian leftHessian(new MarginalTransformationHessian(leftEvaluation));
+    const InverseIsoProbabilisticTransformation left(leftEvaluation, leftGradient, leftHessian);
     const ComposedFunction transformation(left, inverseIsoprobabilistic);
     return transformation;
   }
@@ -364,9 +358,9 @@ SklarCopula::InverseIsoProbabilisticTransformation SklarCopula::getInverseIsoPro
 }
 
 /* Get the standard distribution */
-SklarCopula::Implementation SklarCopula::getStandardDistribution() const
+Distribution SklarCopula::getStandardDistribution() const
 {
-  return distribution_.getStandardDistribution().getImplementation();
+  return distribution_.getStandardDistribution();
 }
 
 /* Parameters value and description accessor */

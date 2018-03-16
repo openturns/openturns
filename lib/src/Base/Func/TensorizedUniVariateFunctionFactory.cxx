@@ -121,10 +121,10 @@ Function TensorizedUniVariateFunctionFactory::build(const UnsignedInteger index)
   {
     functions[i] = coll_[i].build(indices[i]);
   }
-  const Pointer<ProductUniVariateFunctionEvaluation> p_evaluation(ProductUniVariateFunctionEvaluation(functions).clone());
-  return FunctionImplementation(p_evaluation,
-                                ProductUniVariateFunctionGradient(p_evaluation).clone(),
-                                ProductUniVariateFunctionHessian(p_evaluation).clone());
+  const Pointer<ProductUniVariateFunctionEvaluation> evaluation(new ProductUniVariateFunctionEvaluation(functions));
+  return FunctionImplementation(Evaluation(evaluation),
+                                ProductUniVariateFunctionGradient(evaluation).clone(),
+                                ProductUniVariateFunctionHessian(evaluation).clone());
 }
 
 

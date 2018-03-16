@@ -38,6 +38,15 @@ ProductUniVariateFunctionHessian::ProductUniVariateFunctionHessian()
 
 
 /* Constructor */
+ProductUniVariateFunctionHessian::ProductUniVariateFunctionHessian(const ProductUniVariateFunctionEvaluation & evaluation)
+  : HessianImplementation()
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+
+/* Constructor */
 ProductUniVariateFunctionHessian::ProductUniVariateFunctionHessian(const Pointer<ProductUniVariateFunctionEvaluation> & p_evaluation)
   : HessianImplementation()
   , p_evaluation_(p_evaluation)

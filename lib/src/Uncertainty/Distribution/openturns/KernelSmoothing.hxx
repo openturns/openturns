@@ -53,11 +53,11 @@ public:
 
   /** Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
   using DistributionFactoryImplementation::build;
-  virtual Implementation build(const Sample & sample) const;
+  virtual Distribution build(const Sample & sample) const;
 
   /** Build a (possibly truncated) kernel mixture based on the given sample and bandwidth */
-  virtual Implementation build(const Sample & sample,
-                               const Point & bandwidth) const;
+  virtual Distribution build(const Sample & sample,
+                             const Point & bandwidth) const;
 
   /** Bandwidth accessor */
   Point getBandwidth() const;

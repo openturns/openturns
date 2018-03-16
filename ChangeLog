@@ -18,6 +18,7 @@
  * SymbolicParserExprTk
  * EvaluationProxy
  * MemoizeFunction, MemoizeEvaluation
+ * Evaluation, Gradient, Hessian
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
@@ -54,6 +55,11 @@
  * Deprecated usage of _e and _pi constants when defining analytical functions, e_ and pi_ must be used instead.
  * Removed Function::enableHistory,disableHistory,isHistoryEnabled,clearHistory,getHistoryInput,getHistoryOutput,getInputPointHistory,getInputParameterHistory
  * Added Drawable::getPaletteAsNormalizedRGBA() to get the palette into a native matplotlib format.
+ * Changed DistributionImplementation::getCopula,getMarginal,getStandardRepresentative,getStandardDistribution to return a Distribution instead of Pointer<DistributionImplementation>
+ * Changed DistributionFactoryImplementation::build to return a Distribution instead of Pointer<DistributionImplementation>
+ * Changed ProcessImplementation::getMarginal to return a Process instead of Pointer<ProcessImplementation>
+ * Changed RandomVector::getAntecedent,getMarginal to return a RandomVector instead of Pointer<RandomVectorImplementation>
+ * Changed all {get,set}{Evaluation,Gradient,Hessian} methods to work on Evaluation/Gradient/Hessian instead of Pointer
 
 === Python module ===
 

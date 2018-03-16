@@ -24,6 +24,7 @@
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/ParametricEvaluation.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,13 +39,16 @@ class OT_API ParametricGradient
   CLASSNAME
 
 public:
-  typedef Pointer<ParametricEvaluation>                EvaluationPointer;
-
   /** Default constructor */
   ParametricGradient();
 
   /** Parameters constructor */
-  ParametricGradient(const EvaluationPointer & p_evaluation);
+  ParametricGradient(const ParametricEvaluation & evaluation);
+
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit ParametricGradient(const Pointer<ParametricEvaluation> & p_evaluation);
+#endif
 
   /** Virtual constructor method */
   ParametricGradient * clone() const;
@@ -54,9 +58,6 @@ public:
   Matrix gradient(const Point & point) const;
   Matrix gradient(const Point & point,
                   const Point & parameters) const;
-
-  /** Evaluation accessor */
-  ParametricEvaluation getEvaluation() const;
 
   /** Dimension accessor */
   UnsignedInteger getInputDimension() const;
@@ -76,7 +77,7 @@ public:
 private:
 
   /** The underlying function */
-  EvaluationPointer p_evaluation_;
+  Pointer<ParametricEvaluation> p_evaluation_;
 
 }; /* class ParametricGradient */
 

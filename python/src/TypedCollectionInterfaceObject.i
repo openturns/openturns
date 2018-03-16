@@ -61,9 +61,6 @@ namespace OT {
     } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, 0 ))) {
       OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >( ptr );
       return p_impl != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::Implementation> *"), 0))) {
-      OT::Pointer<OT::Implementation> * p_impl = reinterpret_cast< OT::Pointer<OT::Implementation> * >( ptr );
-      return p_impl != NULL && !p_impl->isNull();
     }
     return false;
   }
@@ -80,9 +77,6 @@ namespace OT {
     } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, 0 ))) {
       OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >( ptr );
       return *p_impl;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Pointer<OT::Implementation> *"), 0))) {
-      OT::Pointer<OT::Implementation> * p_impl = reinterpret_cast< OT::Pointer<OT::Implementation> * >( ptr );
-      return **p_impl;
     }
     else {
       throw OT::InvalidArgumentException(HERE) << "Object passed as argument is not convertible to a Interface";

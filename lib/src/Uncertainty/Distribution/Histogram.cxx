@@ -25,6 +25,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -325,7 +326,7 @@ Point Histogram::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Histogram::Implementation Histogram::getStandardRepresentative() const
+Distribution Histogram::getStandardRepresentative() const
 {
   const UnsignedInteger size = width_.getSize();
   // No need to transform an histogram if its range is already [-1.0, 1.0]

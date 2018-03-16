@@ -22,6 +22,7 @@
 #include "openturns/Triangular.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -318,7 +319,7 @@ Point Triangular::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Triangular::Implementation Triangular::getStandardRepresentative() const
+Distribution Triangular::getStandardRepresentative() const
 {
   return new Triangular(-1.0, ((m_ - a_) + (m_ - b_)) / (b_ - a_), 1.0);
 }

@@ -35,6 +35,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward class
+class RandomVector;
+
 /**
  * @class RandomVectorImplementation
  *
@@ -46,10 +49,6 @@ class OT_API RandomVectorImplementation
   CLASSNAME
 
 public:
-
-  /** Some typedefs to ease reading */
-  typedef Pointer<RandomVectorImplementation> Antecedent;
-  typedef Antecedent                          Implementation;
 
   /** Default constructor */
   RandomVectorImplementation();
@@ -84,13 +83,13 @@ public:
   virtual CovarianceMatrix getCovariance() const;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  virtual RandomVector getMarginal(const UnsignedInteger i) const;
 
   /** Get the marginal random vector corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual RandomVector getMarginal(const Indices & indices) const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
-  virtual Antecedent getAntecedent() const;
+  virtual RandomVector getAntecedent() const;
 
   /** Fake method due to pbs with dynamic_cast and Pointer */
   virtual Function getFunction() const;

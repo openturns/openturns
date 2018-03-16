@@ -43,17 +43,17 @@ ClaytonCopulaFactory * ClaytonCopulaFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Sample & sample) const
+Distribution ClaytonCopulaFactory::build(const Sample & sample) const
 {
   return buildAsClaytonCopula(sample).clone();
 }
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build(const Point & parameters) const
+Distribution ClaytonCopulaFactory::build(const Point & parameters) const
 {
   return buildAsClaytonCopula(parameters).clone();
 }
 
-ClaytonCopulaFactory::Implementation ClaytonCopulaFactory::build() const
+Distribution ClaytonCopulaFactory::build() const
 {
   return buildAsClaytonCopula().clone();
 }

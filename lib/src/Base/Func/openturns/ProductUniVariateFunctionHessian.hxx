@@ -42,7 +42,12 @@ class OT_API ProductUniVariateFunctionHessian
 public:
 
   /** Constructor */
+  ProductUniVariateFunctionHessian(const ProductUniVariateFunctionEvaluation & evaluation);
+
+#ifndef SWIG
+  /** Constructor */
   ProductUniVariateFunctionHessian(const Pointer<ProductUniVariateFunctionEvaluation> & p_evaluation);
+#endif
 
   /** Virtual constructor */
   virtual ProductUniVariateFunctionHessian * clone() const;

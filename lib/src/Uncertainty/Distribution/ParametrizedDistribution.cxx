@@ -235,7 +235,7 @@ Point ParametrizedDistribution::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-ParametrizedDistribution::Implementation ParametrizedDistribution::getStandardRepresentative() const
+Distribution ParametrizedDistribution::getStandardRepresentative() const
 {
   return distribution_.getStandardRepresentative().getImplementation()->clone();
 }

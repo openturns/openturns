@@ -65,10 +65,10 @@ public:
   void setFunctionsCollection(const FunctionCollection & functionsCollection);
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Evaluation getMarginal(const UnsignedInteger i) const;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const;
 
   /** Input dimension accessor */
   UnsignedInteger getInputDimension() const;

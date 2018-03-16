@@ -45,9 +45,9 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build(const Point & parameters) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build(const Point & parameters) const;
+  Distribution build() const;
   Gamma buildAsGamma(const Sample & sample) const;
   Gamma buildAsGamma(const Point & parameters) const;
   Gamma buildAsGamma() const;

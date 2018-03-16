@@ -23,6 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -324,7 +325,7 @@ void Dirac::computeRange()
 }
 
 /* Get the i-th marginal distribution */
-Dirac::Implementation Dirac::getMarginal(const UnsignedInteger i) const
+Distribution Dirac::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -335,7 +336,7 @@ Dirac::Implementation Dirac::getMarginal(const UnsignedInteger i) const
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-Dirac::Implementation Dirac::getMarginal(const Indices & indices) const
+Distribution Dirac::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

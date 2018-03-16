@@ -204,7 +204,7 @@ Point KPermutationsDistribution::computeQuantile(const Scalar prob,
 } // computeQuantile
 
 /* Get the i-th marginal distribution */
-KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal(const UnsignedInteger i) const
+Distribution KPermutationsDistribution::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
   if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
@@ -214,7 +214,7 @@ KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-KPermutationsDistribution::Implementation KPermutationsDistribution::getMarginal(const Indices & indices) const
+Distribution KPermutationsDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";

@@ -75,10 +75,6 @@ namespace OT {
     // From Distribution*
     OT::Distribution * p_dist = reinterpret_cast< OT::Distribution * >( ptr );
     $1 = new OT::Copula( p_dist->getImplementation() );
-  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Pointer<OT::DistributionImplementation> *"), 0))) {
-    // From Pointer<DistributionImplementation>
-    OT::Pointer<OT::DistributionImplementation> * p_impl = reinterpret_cast< OT::Pointer<OT::DistributionImplementation> * >( ptr );
-    $1 = new OT::Copula( **p_impl );
   } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIGTYPE_p_OT__DistributionImplementation, 0))) {
     // From DistributionImplementation
     OT::DistributionImplementation * p_impl = reinterpret_cast< OT::DistributionImplementation * >( ptr );
@@ -92,7 +88,6 @@ namespace OT {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__CopulaImplementation, 0))
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__Distribution, 0))
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Pointer<OT::DistributionImplementation> *"), 0))
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__DistributionImplementation, 0));
 }
 

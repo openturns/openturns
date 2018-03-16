@@ -48,17 +48,17 @@ TrapezoidalFactory * TrapezoidalFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Sample & sample) const
+Distribution TrapezoidalFactory::build(const Sample & sample) const
 {
   return buildAsTrapezoidal(sample).clone();
 }
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build(const Point & parameters) const
+Distribution TrapezoidalFactory::build(const Point & parameters) const
 {
   return buildAsTrapezoidal(parameters).clone();
 }
 
-TrapezoidalFactory::Implementation TrapezoidalFactory::build() const
+Distribution TrapezoidalFactory::build() const
 {
   return buildAsTrapezoidal().clone();
 }

@@ -46,6 +46,11 @@ public:
   /** Parameters constructor */
   explicit DualLinearCombinationGradient(const DualLinearCombinationEvaluation & evaluation);
 
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit DualLinearCombinationGradient(const Pointer<DualLinearCombinationEvaluation> & p_evaluation);
+#endif
+
   /** Virtual constructor */
   virtual DualLinearCombinationGradient * clone() const;
 
@@ -72,7 +77,7 @@ protected:
 
 private:
   /** The associated evaluation */
-  DualLinearCombinationEvaluation evaluation_;
+  Pointer<DualLinearCombinationEvaluation> p_evaluation_;
 
 } ; /* class DualLinearCombinationGradient */
 

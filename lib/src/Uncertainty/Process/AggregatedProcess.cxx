@@ -114,7 +114,7 @@ TimeSeries AggregatedProcess::getFuture(const UnsignedInteger stepNumber) const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-AggregatedProcess::Implementation AggregatedProcess::getMarginal(const UnsignedInteger i) const
+Process AggregatedProcess::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
   UnsignedInteger lastBlock = 0;
@@ -136,7 +136,7 @@ AggregatedProcess::Implementation AggregatedProcess::getMarginal(const UnsignedI
    i_1^n,...,i_kn^n is a subset of {0,...,dim_n-1}+dim_1+...+dim_(n-1),
    dim_1 = dimension(copula_1) etc.
 */
-AggregatedProcess::Implementation AggregatedProcess::getMarginal(const Indices & indices) const
+Process AggregatedProcess::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger outputDimension = getOutputDimension();
   if (!indices.check(outputDimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal process must be in the range [0, dim-1] and must be different";

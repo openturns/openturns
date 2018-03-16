@@ -57,7 +57,7 @@ Matrix MarginalTransformationGradient::gradient(const Point & inP) const
   // (G^{-1} o F)' = F' . G^{-1}' o F = F' / (G' o G^{-1} o F)
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient()->getClassName() == "SymbolicGradient") result(i, i) = evaluation_.getExpressions()[i].gradient(Point(1, inP[i]))(0, 0);
+    if (evaluation_.getSimplifications()[i] && evaluation_.getExpressions()[i].getGradient().getImplementation()->getClassName() == "SymbolicGradient") result(i, i) = evaluation_.getExpressions()[i].gradient(Point(1, inP[i]))(0, 0);
     else
     {
       const Scalar inputPDF = evaluation_.inputDistributionCollection_[i].computePDF(inP[i]);

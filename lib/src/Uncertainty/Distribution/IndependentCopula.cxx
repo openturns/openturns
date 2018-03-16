@@ -31,6 +31,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -231,7 +232,7 @@ LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const Scal
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-IndependentCopula::Implementation IndependentCopula::getMarginal(const Indices & indices) const
+Distribution IndependentCopula::getMarginal(const Indices & indices) const
 {
   UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";

@@ -70,12 +70,10 @@ public:
 
   /** Get the i-th marginal copula */
   using ContinuousDistribution::getMarginal;
-#ifndef SWIG
-  Implementation getMarginal(const UnsignedInteger i) const;
-#endif
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the copula */
-  Implementation getCopula() const;
+  Distribution getCopula() const;
 
   /** String converter */
   String __repr__() const;

@@ -44,17 +44,17 @@ WeibullFactory * WeibullFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-WeibullFactory::Implementation WeibullFactory::build(const Sample & sample) const
+Distribution WeibullFactory::build(const Sample & sample) const
 {
   return buildAsWeibull(sample).clone();
 }
 
-WeibullFactory::Implementation WeibullFactory::build(const Point & parameters) const
+Distribution WeibullFactory::build(const Point & parameters) const
 {
   return buildAsWeibull(parameters).clone();
 }
 
-WeibullFactory::Implementation WeibullFactory::build() const
+Distribution WeibullFactory::build() const
 {
   return buildAsWeibull().clone();
 }

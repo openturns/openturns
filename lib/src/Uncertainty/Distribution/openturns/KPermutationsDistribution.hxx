@@ -84,10 +84,10 @@ public:
 
   /** Get the i-th marginal distribution */
   using DiscreteDistribution::getMarginal;
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;

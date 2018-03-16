@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
       fullprint << std::setprecision(5);
       fullprint << "Parameters collection=" << distribution.getParametersCollection() << std::endl;
       for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
-      fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
+      fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
 
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
       Normal::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
       for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
-      fullprint << "Standard representative=" << distribution.getStandardRepresentative()->__str__() << std::endl;
+      fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
       // Specific to this distribution
       Scalar beta = point.normSquare();

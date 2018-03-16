@@ -285,17 +285,17 @@ CovarianceMatrix RandomVector::getCovariance() const
 /* Get the random vector corresponding to the i-th marginal component */
 RandomVector RandomVector::getMarginal(const UnsignedInteger i) const
 {
-  return *(getImplementation()->getMarginal(i));
+  return getImplementation()->getMarginal(i);
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
 RandomVector RandomVector::getMarginal(const Indices & indices) const
 {
-  return *(getImplementation()->getMarginal(indices));
+  return getImplementation()->getMarginal(indices);
 }
 
 /* This method allows to access the antecedent RandomVector in case of a composite RandomVector */
-RandomVector::Antecedent RandomVector::getAntecedent() const
+RandomVector RandomVector::getAntecedent() const
 {
   return getImplementation()->getAntecedent();
 }

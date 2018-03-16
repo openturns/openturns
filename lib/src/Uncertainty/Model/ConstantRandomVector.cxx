@@ -130,14 +130,14 @@ CovarianceMatrix ConstantRandomVector::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const UnsignedInteger i) const
+RandomVector ConstantRandomVector::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal random vector must be in the range [0, dim-1]";
   return new ConstantRandomVector(Point(1, point_[i]));
 }
 
 /* Get the marginal random vector corresponding to indices components */
-ConstantRandomVector::Implementation ConstantRandomVector::getMarginal(const Indices & indices) const
+RandomVector ConstantRandomVector::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal random vector must be in the range [0, dim-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();

@@ -23,6 +23,7 @@
 
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/AggregatedEvaluation.hxx"
+#include "openturns/Pointer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,6 +46,11 @@ public:
 
   /** Parameters constructor */
   explicit AggregatedGradient(const AggregatedEvaluation & evaluation);
+
+#ifndef SWIG
+  /** Parameters constructor */
+  explicit AggregatedGradient(const Pointer<AggregatedEvaluation> & p_evaluation);
+#endif
 
   /** Virtual constructor */
   virtual AggregatedGradient * clone() const;
@@ -73,7 +79,7 @@ protected:
 
 private:
   /** The associated evaluation */
-  AggregatedEvaluation evaluation_;
+  Pointer<AggregatedEvaluation> p_evaluation_;
 
 } ; /* class AggregatedGradient */
 

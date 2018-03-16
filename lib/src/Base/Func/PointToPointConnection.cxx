@@ -69,7 +69,7 @@ String PointToPointConnection::__repr__() const
   OSS oss;
   oss << "class=" << PointToPointConnection::GetClassName()
       << " name=" << getName()
-      << " evaluation=" << getEvaluation()->__repr__();
+      << " evaluation=" << getEvaluation().getImplementation()->__repr__();
   return oss;
 }
 

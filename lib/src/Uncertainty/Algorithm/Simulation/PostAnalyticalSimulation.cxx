@@ -46,7 +46,7 @@ PostAnalyticalSimulation::PostAnalyticalSimulation(const AnalyticalResult & anal
   : Simulation(analyticalResult.getLimitStateVariable())
   , analyticalResult_(analyticalResult)
   , standardEvent_(StandardEvent(getEvent()))
-  , standardDistribution_(standardEvent_.getImplementation()->getAntecedent()->getDistribution())
+  , standardDistribution_(standardEvent_.getImplementation()->getAntecedent().getDistribution())
 {
   // Compute the probability associated to the analytical result
   controlProbability_ = standardDistribution_.getMarginal(0).computeCDF(-analyticalResult.getHasoferReliabilityIndex());
@@ -87,7 +87,7 @@ void PostAnalyticalSimulation::load(Advocate & adv)
   Simulation::load(adv);
   adv.loadAttribute("analyticalResult_", analyticalResult_);
   standardEvent_ = StandardEvent(getEvent());
-  standardDistribution_ = standardEvent_.getImplementation()->getAntecedent()->getDistribution();
+  standardDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
   controlProbability_ = standardDistribution_.getMarginal(0).computeCDF(-analyticalResult_.getHasoferReliabilityIndex());
 }
 

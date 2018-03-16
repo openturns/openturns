@@ -94,10 +94,10 @@ Bool EllipticalDistribution::equals(const DistributionImplementation & other) co
   // Are they both elliptical?
   if (!other.isElliptical()) return false;
   // The copula...
-  if ( !( (hasIndependentCopula() && other.hasIndependentCopula()) || (*getCopula() == *other.getCopula()) ) ) return false;
+  if ( !( (hasIndependentCopula() && other.hasIndependentCopula()) || (getCopula() == other.getCopula()) ) ) return false;
   // Then the marginals
   for (UnsignedInteger i = 0; i < dimension_; ++ i)
-    if (!(getMarginal(i)->operator == (*other.getMarginal(i)))) return false;
+    if (!(getMarginal(i).operator == (other.getMarginal(i)))) return false;
   return true;
 }
 
@@ -579,7 +579,7 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
 
 /* Get the standard distribution, i.e. a distribution of the same kind but with zero mean,
  * unit marginal standard distribution and identity correlation */
-EllipticalDistribution::Implementation EllipticalDistribution::getStandardDistribution() const
+Distribution EllipticalDistribution::getStandardDistribution() const
 {
   EllipticalDistribution * p_standardDistribution(clone());
   const UnsignedInteger dimension = getDimension();

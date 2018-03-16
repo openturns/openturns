@@ -108,10 +108,10 @@ public:
   CorrelationMatrix getKendallTau() const;
 
   /** Get the i-th marginal distribution */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Get the isoprobabilist transformation */
   IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
@@ -120,7 +120,7 @@ public:
   InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
 
   /** Get the standard distribution */
-  Implementation getStandardDistribution() const;
+  Distribution getStandardDistribution() const;
 
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;

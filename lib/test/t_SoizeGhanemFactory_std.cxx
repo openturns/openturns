@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
       for (UnsignedInteger k = 0; k < kMax; ++k)
       {
         functions[k] = soize.build(k);
-        fullprint << "SoizeGhanem(" << k << ")=" << functions[k].getEvaluation()->__str__() << std::endl;
+        fullprint << "SoizeGhanem(" << k << ")=" << functions[k].getEvaluation().__str__() << std::endl;
         fullprint << "SoizeGhanem(" << k << ")(" << x.__str__() << "=" << functions[k](x).__str__() << std::endl;
       }
       SymmetricMatrix M(kMax);

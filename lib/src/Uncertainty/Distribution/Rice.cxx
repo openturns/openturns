@@ -25,6 +25,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -190,7 +191,7 @@ Point Rice::getStandardMoment(const UnsignedInteger n) const
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Rice::Implementation Rice::getStandardRepresentative() const
+Distribution Rice::getStandardRepresentative() const
 {
   return clone();
 }

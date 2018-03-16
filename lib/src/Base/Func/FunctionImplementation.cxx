@@ -50,9 +50,9 @@ static const Factory<FunctionImplementation> Factory_FunctionImplementation;
 /* Default constructor */
 FunctionImplementation::FunctionImplementation()
   : PersistentObject()
-  , p_evaluationImplementation_(new NoEvaluation)
-  , p_gradientImplementation_(new NoGradient)
-  , p_hessianImplementation_(new NoHessian)
+  , evaluation_(new NoEvaluation)
+  , gradient_(new NoGradient)
+  , hessian_(new NoHessian)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
@@ -64,35 +64,35 @@ FunctionImplementation::FunctionImplementation(const Description & inputVariable
     const Description & outputVariablesNames,
     const Description & formulas)
   : PersistentObject()
-  , p_evaluationImplementation_(new NoEvaluation)
-  , p_gradientImplementation_(new NoGradient)
-  , p_hessianImplementation_(new NoHessian)
+  , evaluation_(new NoEvaluation)
+  , gradient_(new NoGradient)
+  , hessian_(new NoHessian)
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
 {
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   // Try to build an analytical gradient
-  SymbolicEvaluation evaluation(inputVariablesNames, outputVariablesNames, formulas);
-  p_evaluationImplementation_ = evaluation.clone();
+  Pointer<SymbolicEvaluation> symbolicEvaluation(new SymbolicEvaluation(inputVariablesNames, outputVariablesNames, formulas));
+  evaluation_ = symbolicEvaluation.get();
   try
   {
-    p_gradientImplementation_ = new SymbolicGradient(evaluation);
+    gradient_ = new SymbolicGradient(symbolicEvaluation);
     useDefaultGradientImplementation_ = false;
   }
   catch(...)
   {
     LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
-    p_gradientImplementation_ = new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
+    gradient_ = new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
   }
   try
   {
-    p_hessianImplementation_ = new SymbolicHessian(evaluation);
+    hessian_ = new SymbolicHessian(symbolicEvaluation);
     useDefaultHessianImplementation_ = false;
   }
   catch(...)
   {
     LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
-    p_hessianImplementation_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
+    hessian_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
   }
 #else
   throw NotYetImplementedException(HERE) << "In FunctionImplementation::FunctionImplementation(const Description & inputVariablesNames, const Description & outputVariablesNames, const Description & formulas): Analytical function requires muParser or ExprTk";
@@ -104,21 +104,21 @@ FunctionImplementation::FunctionImplementation(const Description & inputVariable
 FunctionImplementation::FunctionImplementation(const Sample & inputSample,
     const Sample & outputSample)
   : PersistentObject()
-  , p_gradientImplementation_(new NoGradient)
-  , p_hessianImplementation_(new NoHessian)
+  , gradient_(new NoGradient)
+  , hessian_(new NoHessian)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
-  p_evaluationImplementation_ = new DatabaseEvaluation( inputSample, outputSample );
+  evaluation_ = new DatabaseEvaluation( inputSample, outputSample );
 }
 
 
 /* Single function implementation constructor */
-FunctionImplementation::FunctionImplementation(const EvaluationPointer & evaluationImplementation)
+FunctionImplementation::FunctionImplementation(const Evaluation & evaluation)
   : PersistentObject()
-  , p_evaluationImplementation_(evaluationImplementation)
-  , p_gradientImplementation_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_))
-  , p_hessianImplementation_(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_))
+  , evaluation_(evaluation)
+  , gradient_(new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_))
+  , hessian_(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_))
   , useDefaultGradientImplementation_(true)
   , useDefaultHessianImplementation_(true)
 {
@@ -126,13 +126,13 @@ FunctionImplementation::FunctionImplementation(const EvaluationPointer & evaluat
 }
 
 /* Constructor from implementations */
-FunctionImplementation::FunctionImplementation(const EvaluationPointer & evaluationImplementation,
-    const GradientPointer & gradientImplementation,
-    const HessianPointer  & hessianImplementation)
+FunctionImplementation::FunctionImplementation(const Evaluation & evaluation,
+    const Gradient & gradient,
+    const Hessian  & hessian)
   : PersistentObject()
-  , p_evaluationImplementation_(evaluationImplementation)
-  , p_gradientImplementation_(gradientImplementation)
-  , p_hessianImplementation_(hessianImplementation)
+  , evaluation_(evaluation)
+  , gradient_(gradient)
+  , hessian_(hessian)
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
@@ -150,7 +150,7 @@ FunctionImplementation * FunctionImplementation::clone() const
 Bool FunctionImplementation::operator ==(const FunctionImplementation & other) const
 {
   if (this == &other) return true;
-  return (*p_evaluationImplementation_ == *other.p_evaluationImplementation_) && (*p_gradientImplementation_ == *other.p_gradientImplementation_) && (*p_hessianImplementation_ == *other.p_hessianImplementation_);
+  return (evaluation_ == other.evaluation_) && (gradient_ == other.gradient_) && (hessian_ == other.hessian_);
 }
 
 /* String converter */
@@ -160,82 +160,82 @@ String FunctionImplementation::__repr__() const
   oss << "class=" << FunctionImplementation::GetClassName()
       << " name=" << getName()
       << " description=" << getDescription()
-      << " evaluationImplementation=" << p_evaluationImplementation_->__repr__()
-      << " gradientImplementation=" << p_gradientImplementation_->__repr__()
-      << " hessianImplementation=" << p_hessianImplementation_->__repr__();
+      << " evaluationImplementation=" << evaluation_.getImplementation()->__repr__()
+      << " gradientImplementation=" << gradient_.getImplementation()->__repr__()
+      << " hessianImplementation=" << hessian_.getImplementation()->__repr__();
   return oss;
 }
 
 /* String converter */
 String FunctionImplementation::__str__(const String & offset) const
 {
-  return p_evaluationImplementation_->__str__(offset);
+  return evaluation_.__str__(offset);
 }
 
 /* Description Accessor */
 void FunctionImplementation::setDescription(const Description & description)
 {
-  p_evaluationImplementation_->setDescription(description);
+  evaluation_.setDescription(description);
 }
 
 /* Description Accessor */
 Description FunctionImplementation::getDescription() const
 {
-  return p_evaluationImplementation_->getDescription();
+  return evaluation_.getDescription();
 }
 
 /* Input description Accessor */
 Description FunctionImplementation::getInputDescription() const
 {
-  return p_evaluationImplementation_->getInputDescription();
+  return evaluation_.getInputDescription();
 }
 
 /* Output description Accessor */
 Description FunctionImplementation::getOutputDescription() const
 {
-  return p_evaluationImplementation_->getOutputDescription();
+  return evaluation_.getOutputDescription();
 }
 
 /* Enable or disable the internal cache */
 void FunctionImplementation::enableCache() const
 {
-  p_evaluationImplementation_->enableCache();
+  evaluation_.enableCache();
 }
 
 void FunctionImplementation::disableCache() const
 {
-  p_evaluationImplementation_->disableCache();
+  evaluation_.disableCache();
 }
 
 Bool FunctionImplementation::isCacheEnabled() const
 {
-  return p_evaluationImplementation_->isCacheEnabled();
+  return evaluation_.isCacheEnabled();
 }
 
 UnsignedInteger FunctionImplementation::getCacheHits() const
 {
-  return p_evaluationImplementation_->getCacheHits();
+  return evaluation_.getCacheHits();
 }
 
 void FunctionImplementation::addCacheContent(const Sample& inSample,
     const Sample& outSample)
 {
-  p_evaluationImplementation_->addCacheContent(inSample, outSample);
+  evaluation_.addCacheContent(inSample, outSample);
 }
 
 Sample FunctionImplementation::getCacheInput() const
 {
-  return p_evaluationImplementation_->getCacheInput();
+  return evaluation_.getCacheInput();
 }
 
 Sample FunctionImplementation::getCacheOutput() const
 {
-  return p_evaluationImplementation_->getCacheOutput();
+  return evaluation_.getCacheOutput();
 }
 
 void FunctionImplementation::clearCache() const
 {
-  p_evaluationImplementation_->clearCache();
+  evaluation_.clearCache();
 }
 
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
@@ -251,48 +251,38 @@ FunctionImplementation FunctionImplementation::operator * (const Implementation 
 }
 
 /* Function implementation accessors */
-void FunctionImplementation::setEvaluation(const EvaluationPointer & evaluation)
+void FunctionImplementation::setEvaluation(const Evaluation & evaluation)
 {
-  p_evaluationImplementation_ = evaluation;
+  evaluation_ = evaluation;
 }
 
-const FunctionImplementation::EvaluationPointer & FunctionImplementation::getEvaluation() const
+Evaluation FunctionImplementation::getEvaluation() const
 {
-  return p_evaluationImplementation_;
+  return evaluation_;
 }
 
 /* Gradient implementation accessors */
-void FunctionImplementation::setGradient(const GradientImplementation & gradientImplementation)
+void FunctionImplementation::setGradient(const Gradient & gradient)
 {
-  setGradient(GradientPointer(gradientImplementation.clone()));
-}
-
-void FunctionImplementation::setGradient(const GradientPointer & gradientImplementation)
-{
-  p_gradientImplementation_ = gradientImplementation;
+  gradient_ = gradient;
   useDefaultGradientImplementation_ = false;
 }
 
-const FunctionImplementation::GradientPointer & FunctionImplementation::getGradient() const
+Gradient FunctionImplementation::getGradient() const
 {
-  return p_gradientImplementation_;
+  return gradient_;
 }
 
 /* Hessian implementation accessors */
-void FunctionImplementation::setHessian(const HessianImplementation & hessianImplementation)
+void FunctionImplementation::setHessian(const Hessian & hessian)
 {
-  setHessian(HessianPointer(hessianImplementation.clone()));
-}
-
-void FunctionImplementation::setHessian(const HessianPointer & hessianImplementation)
-{
-  p_hessianImplementation_ = hessianImplementation;
+  hessian_ = hessian;
   useDefaultHessianImplementation_ = false;
 }
 
-const FunctionImplementation::HessianPointer & FunctionImplementation::getHessian() const
+Hessian FunctionImplementation::getHessian() const
 {
-  return p_hessianImplementation_;
+  return hessian_;
 }
 
 /* Flag for default gradient accessors */
@@ -321,7 +311,7 @@ void FunctionImplementation::setUseDefaultHessianImplementation(const Bool hessi
 /* Gradient according to the marginal parameters */
 Matrix FunctionImplementation::parameterGradient(const Point & inP) const
 {
-  return p_evaluationImplementation_->parameterGradient(inP);
+  return evaluation_.parameterGradient(inP);
 }
 
 /* Gradient according to the marginal parameters */
@@ -329,62 +319,62 @@ Matrix FunctionImplementation::parameterGradient(const Point & inP,
     const Point & parameter)
 {
   setParameter(parameter);
-  return p_evaluationImplementation_->parameterGradient(inP);
+  return evaluation_.parameterGradient(inP);
 }
 
 /* Parameters value accessor */
 Point FunctionImplementation::getParameter() const
 {
-  return p_evaluationImplementation_->getParameter();
+  return evaluation_.getParameter();
 }
 
 void FunctionImplementation::setParameter(const Point & parameter)
 {
-  p_evaluationImplementation_->setParameter(parameter);
-  p_gradientImplementation_->setParameter(parameter);
-  p_hessianImplementation_->setParameter(parameter);
+  evaluation_.setParameter(parameter);
+  gradient_.setParameter(parameter);
+  hessian_.setParameter(parameter);
 }
 
 /* Parameters description accessor */
 Description FunctionImplementation::getParameterDescription() const
 {
-  return p_evaluationImplementation_->getParameterDescription();
+  return evaluation_.getParameterDescription();
 }
 
 void FunctionImplementation::setParameterDescription(const Description & description)
 {
-  p_evaluationImplementation_->setParameterDescription(description);
+  evaluation_.setParameterDescription(description);
 }
 
 /* Operator () */
 Point FunctionImplementation::operator() (const Point & inP) const
 {
-  return p_evaluationImplementation_->operator()(inP);
+  return evaluation_.operator()(inP);
 }
 
 Point FunctionImplementation::operator() (const Point & inP,
     const Point & parameter)
 {
   setParameter(parameter);
-  return p_evaluationImplementation_->operator()(inP);
+  return evaluation_.operator()(inP);
 }
 
 Sample FunctionImplementation::operator() (const Point & inP,
     const Sample & parameters)
 {
-  return p_evaluationImplementation_->operator()(inP, parameters);
+  return evaluation_.operator()(inP, parameters);
 }
 
 /* Operator () */
 Sample FunctionImplementation::operator() (const Sample & inSample) const
 {
-  return p_evaluationImplementation_->operator()(inSample);
+  return evaluation_.operator()(inSample);
 }
 
 /* Operator () */
 Field FunctionImplementation::operator() (const Field & inField) const
 {
-  return p_evaluationImplementation_->operator()(inField);
+  return evaluation_.operator()(inField);
 }
 
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
@@ -394,7 +384,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
   // Here we must catch the exceptions raised by functions with no gradient
   try
   {
-    return p_gradientImplementation_->gradient(inP);
+    return gradient_.gradient(inP);
   }
   catch (...)
   {
@@ -402,7 +392,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
     try
     {
       LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP);
-      const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), p_evaluationImplementation_);
+      const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
       return gradientFD.gradient(inP);
     }
     catch (...)
@@ -417,7 +407,7 @@ Matrix FunctionImplementation::gradient(const Point & inP,
 {
   if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   setParameter(parameters);
-  return p_gradientImplementation_->gradient(inP);
+  return gradient_.gradient(inP);
 }
 
 /* Method hessian() returns the symetric tensor of the function at point */
@@ -427,7 +417,7 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
   // Here we must catch the exceptions raised by functions with no gradient
   try
   {
-    return p_hessianImplementation_->hessian(inP);
+    return hessian_.hessian(inP);
   }
   catch (...)
   {
@@ -435,7 +425,7 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
     try
     {
       LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP);
-      const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), p_evaluationImplementation_);
+      const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
       return hessianFD.hessian(inP);
     }
     catch (...)
@@ -450,39 +440,39 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP,
 {
   if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
   setParameter(parameters);
-  return p_hessianImplementation_->hessian(inP);
+  return hessian_.hessian(inP);
 }
 
 /* Accessor for parameter dimension */
 UnsignedInteger FunctionImplementation::getParameterDimension() const
 {
-  return p_evaluationImplementation_->getParameterDimension();
+  return evaluation_.getParameterDimension();
 }
 
 /* Accessor for input point dimension */
 UnsignedInteger FunctionImplementation::getInputDimension() const
 {
-  return p_evaluationImplementation_->getInputDimension();
+  return evaluation_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger FunctionImplementation::getOutputDimension() const
 {
-  return p_evaluationImplementation_->getOutputDimension();
+  return evaluation_.getOutputDimension();
 }
 
 /* Get the i-th marginal function */
-FunctionImplementation::Implementation FunctionImplementation::getMarginal(const UnsignedInteger i) const
+Function FunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
-FunctionImplementation::Implementation FunctionImplementation::getMarginal(const Indices & indices) const
+Function FunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  return new FunctionImplementation(p_evaluationImplementation_->getMarginal(indices), p_gradientImplementation_->getMarginal(indices), p_hessianImplementation_->getMarginal(indices));
+  return new FunctionImplementation(evaluation_.getMarginal(indices), gradient_.getMarginal(indices), hessian_.getMarginal(indices));
 }
 
 /* Number of calls to the evaluation */
@@ -493,19 +483,19 @@ UnsignedInteger FunctionImplementation::getEvaluationCallsNumber() const
 
 UnsignedInteger FunctionImplementation::getCallsNumber() const
 {
-  return p_evaluationImplementation_->getCallsNumber();
+  return evaluation_.getCallsNumber();
 }
 
 /* Number of calls to the gradient */
 UnsignedInteger FunctionImplementation::getGradientCallsNumber() const
 {
-  return p_gradientImplementation_->getCallsNumber();
+  return gradient_.getCallsNumber();
 }
 
 /* Number of calls to the hessian */
 UnsignedInteger FunctionImplementation::getHessianCallsNumber() const
 {
-  return p_hessianImplementation_->getCallsNumber();
+  return hessian_.getCallsNumber();
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
@@ -517,7 +507,7 @@ Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
                                    const UnsignedInteger pointNumber,
                                    const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(inputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
@@ -530,7 +520,7 @@ Graph FunctionImplementation::draw(const UnsignedInteger firstInputMarginal,
                                    const Indices & pointNumber,
                                    const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(firstInputMarginal, secondInputMarginal, outputMarginal, centralPoint, xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input and output dimensions are 1 */
@@ -539,7 +529,7 @@ Graph FunctionImplementation::draw(const Scalar xMin,
                                    const UnsignedInteger pointNumber,
                                    const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(xMin, xMax, pointNumber, scale);
 }
 
 /* Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
@@ -548,16 +538,16 @@ Graph FunctionImplementation::draw(const Point & xMin,
                                    const Indices & pointNumber,
                                    const GraphImplementation::LogScale scale) const
 {
-  return p_evaluationImplementation_->draw(xMin, xMax, pointNumber, scale);
+  return evaluation_.draw(xMin, xMax, pointNumber, scale);
 }
 
 /* Method save() stores the object through the StorageManager */
 void FunctionImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "evaluationImplementation_", *p_evaluationImplementation_ );
-  adv.saveAttribute( "gradientImplementation_", *p_gradientImplementation_ );
-  adv.saveAttribute( "hessianImplementation_", *p_hessianImplementation_ );
+  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "gradient_", gradient_ );
+  adv.saveAttribute( "hessian_", hessian_ );
   adv.saveAttribute( "useDefaultGradientImplementation_", useDefaultGradientImplementation_ );
   adv.saveAttribute( "useDefaultHessianImplementation_", useDefaultHessianImplementation_ );
 }
@@ -565,16 +555,10 @@ void FunctionImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void FunctionImplementation::load(Advocate & adv)
 {
-  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
-  TypedInterfaceObject<GradientImplementation> gradientValue;
-  TypedInterfaceObject<HessianImplementation> hessianValue;
   PersistentObject::load(adv);
-  adv.loadAttribute( "evaluationImplementation_", evaluationValue );
-  p_evaluationImplementation_ = evaluationValue.getImplementation();
-  adv.loadAttribute( "gradientImplementation_", gradientValue );
-  p_gradientImplementation_ = gradientValue.getImplementation();
-  adv.loadAttribute( "hessianImplementation_", hessianValue );
-  p_hessianImplementation_ = hessianValue.getImplementation();
+  adv.loadAttribute( "evaluation_", evaluation_ );
+  adv.loadAttribute( "gradient_", gradient_ );
+  adv.loadAttribute( "hessian_", hessian_ );
   adv.loadAttribute( "useDefaultGradientImplementation_", useDefaultGradientImplementation_ );
   adv.loadAttribute( "useDefaultHessianImplementation_", useDefaultHessianImplementation_ );
 }

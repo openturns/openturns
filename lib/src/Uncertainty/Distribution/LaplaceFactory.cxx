@@ -42,17 +42,17 @@ LaplaceFactory * LaplaceFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-LaplaceFactory::Implementation LaplaceFactory::build(const Sample & sample) const
+Distribution LaplaceFactory::build(const Sample & sample) const
 {
   return buildAsLaplace(sample).clone();
 }
 
-LaplaceFactory::Implementation LaplaceFactory::build(const Point & parameters) const
+Distribution LaplaceFactory::build(const Point & parameters) const
 {
   return buildAsLaplace(parameters).clone();
 }
 
-LaplaceFactory::Implementation LaplaceFactory::build() const
+Distribution LaplaceFactory::build() const
 {
   return buildAsLaplace().clone();
 }

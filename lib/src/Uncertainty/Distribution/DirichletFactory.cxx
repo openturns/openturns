@@ -45,17 +45,17 @@ DirichletFactory * DirichletFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-DirichletFactory::Implementation DirichletFactory::build(const Sample & sample) const
+Distribution DirichletFactory::build(const Sample & sample) const
 {
   return buildAsDirichlet(sample).clone();
 }
 
-DirichletFactory::Implementation DirichletFactory::build(const Point & parameters) const
+Distribution DirichletFactory::build(const Point & parameters) const
 {
   return buildAsDirichlet(parameters).clone();
 }
 
-DirichletFactory::Implementation DirichletFactory::build() const
+Distribution DirichletFactory::build() const
 {
   return buildAsDirichlet().clone();
 }

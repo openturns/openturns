@@ -58,10 +58,10 @@ int main(int argc, char *argv[])
     fullprint << "myStandardEvent=" << myStandardEvent << std::endl;
     /* We compute one realization of the event */
     fullprint << "myStandardEvent realization (as a RandomVector)=" << myStandardEvent.RandomVector::getRealization() << std::endl;
-    fullprint << "myStandardEvent antecedent realization (as a RandomVector)=" << myStandardEvent.RandomVector::getImplementation()->getAntecedent()->getRealization() << std::endl;
+    fullprint << "myStandardEvent antecedent realization (as a RandomVector)=" << myStandardEvent.RandomVector::getImplementation()->getAntecedent().getRealization() << std::endl;
     fullprint << "myStandardEvent realization=" << myStandardEvent.getRealization() << std::endl;
-    fullprint << "myStandardEvent antecedent realization=" << myStandardEvent.getImplementation()->getAntecedent()->getRealization() << std::endl;
-    fullprint << "myStandardEvent antecedent distribution cdf=" << myStandardEvent.getImplementation()->getAntecedent()->getDistribution().computeCDF(Point(dim, 1.0)) << std::endl;
+    fullprint << "myStandardEvent antecedent realization=" << myStandardEvent.getImplementation()->getAntecedent().getRealization() << std::endl;
+    fullprint << "myStandardEvent antecedent distribution cdf=" << myStandardEvent.getImplementation()->getAntecedent().getDistribution().computeCDF(Point(dim, 1.0)) << std::endl;
     /* We compute a sample of the event */
     fullprint << "myStandardEvent sample=" << myStandardEvent.getSample(10) << std::endl;
 
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     /* Check if the StandardEvent is really a StandardEvent */
     /* Get a sample from the second antecedent of the standard event */
     UnsignedInteger size = 2000;
-    Sample sample(stdEvent.getImplementation()->getAntecedent()->getSample(size));
+    Sample sample(stdEvent.getImplementation()->getAntecedent().getSample(size));
     /* Check if the sample mean is nearly the null vector */
     fullprint << "sample mean=" << sample.computeMean() << std::endl;
     /* Check if the sample covariance is nearly the identity matrix */

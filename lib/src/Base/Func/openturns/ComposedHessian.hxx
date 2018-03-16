@@ -21,9 +21,9 @@
 #ifndef OPENTURNS_COMPOSEDHESSIAN_HXX
 #define OPENTURNS_COMPOSEDHESSIAN_HXX
 
-#include "openturns/HessianImplementation.hxx"
-#include "openturns/GradientImplementation.hxx"
-#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Hessian.hxx"
+#include "openturns/Gradient.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,17 +41,12 @@ class OT_API ComposedHessian
   CLASSNAME
 public:
 
-  /* Some typedefs for easy reading */
-  typedef Pointer<HessianImplementation>          HessianPointer;
-  typedef Pointer<GradientImplementation>         GradientPointer;
-  typedef Pointer<EvaluationImplementation>       EvaluationPointer;
-
   /** Default constructor */
-  ComposedHessian(const GradientPointer & p_leftGradient,
-                  const HessianPointer & p_leftHessian,
-                  const EvaluationPointer & p_rightFunction,
-                  const GradientPointer & p_rightGradient,
-                  const HessianPointer & p_rightHessian);
+  ComposedHessian(const Gradient & leftGradient,
+                  const Hessian & leftHessian,
+                  const Evaluation & rightFunction,
+                  const Gradient & rightGradient,
+                  const Hessian & rightHessian);
 
 
   /** Virtual constructor */
@@ -85,19 +80,19 @@ protected:
 private:
 
   /** The gradient of f in h = f o g */
-  GradientPointer p_leftGradient_;
+  Gradient leftGradient_;
 
   /** The hessian of f in h = f o g */
-  HessianPointer p_leftHessian_;
+  Hessian leftHessian_;
 
   /** The function g in h = f o g */
-  EvaluationPointer p_rightFunction_;
+  Evaluation rightFunction_;
 
   /** The gradient of g in h = f o g */
-  GradientPointer p_rightGradient_;
+  Gradient rightGradient_;
 
   /** The hessian of g in h = f o g */
-  HessianPointer p_rightHessian_;
+  Hessian rightHessian_;
 
 }; /* class ComposedHessian */
 

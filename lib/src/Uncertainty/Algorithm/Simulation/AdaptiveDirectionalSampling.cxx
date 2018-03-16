@@ -48,7 +48,7 @@ AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const Event & event,
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
 {
-  samplingStrategy_.setDimension(getEvent().getImplementation()->getAntecedent()->getDimension());
+  samplingStrategy_.setDimension(getEvent().getImplementation()->getAntecedent().getDimension());
 }
 
 /* Virtual constructor */
@@ -231,7 +231,7 @@ RootStrategy AdaptiveDirectionalSampling::getRootStrategy() const
 /* Sampling strategy */
 void AdaptiveDirectionalSampling::setSamplingStrategy(const SamplingStrategy & samplingStrategy)
 {
-  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent()->getDistribution().getDimension();
+  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDistribution().getDimension();
   if (samplingStrategy.getDimension() != dimension)
     throw InvalidDimensionException(HERE) << "Error: the sampling strategy dimension (" << samplingStrategy.getDimension() << ") is not compatible with the antecedent dimension (" << dimension << ")";
   samplingStrategy_ = samplingStrategy;
@@ -264,7 +264,7 @@ Point AdaptiveDirectionalSampling::getGamma() const
 
 void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::Point& quadrantOrientation)
 {
-  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent()->getDimension();
+  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDimension();
   if ((quadrantOrientation.getDimension() > 0) && (quadrantOrientation.getDimension() != dimension))
     throw InvalidDimensionException(HERE) << "Error: the quadrant orientation dimension (" << quadrantOrientation.getDimension() << ") is not compatible with the antecedent dimension (" << dimension << ")";
   quadrantOrientation_ = quadrantOrientation;

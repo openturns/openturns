@@ -23,6 +23,7 @@
 #define OPENTURNS_MEMOIZEEVALUATION_HXX
 
 #include "openturns/EvaluationProxy.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/Full.hxx"
 #include "openturns/Point.hxx"
@@ -39,20 +40,19 @@ class OT_API MemoizeEvaluation
 {
   CLASSNAME
 public:
-  typedef EvaluationProxy::Implementation Implementation;
 
   /** Default constructor */
   MemoizeEvaluation();
 
   /** Parameter constructor */
-  explicit MemoizeEvaluation(const Implementation & p_Evaluation, const HistoryStrategy & historyStrategy = Full());
+  explicit MemoizeEvaluation(const Evaluation & evaluation, const HistoryStrategy & historyStrategy = Full());
 
   /** Virtual constructor */
   virtual MemoizeEvaluation * clone() const;
 
   /** Function implementation accessors */
-  void setEvaluation(const Implementation & p_Evaluation);
-  Implementation getEvaluation() const;
+  void setEvaluation(const Evaluation & evaluation);
+  Evaluation getEvaluation() const;
 
   /** Comparison operator */
   Bool operator ==(const MemoizeEvaluation & other) const;
@@ -70,7 +70,7 @@ public:
   virtual Sample operator() (const Sample & inSample) const;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  virtual Evaluation getMarginal(const Indices & indices) const;
   using EvaluationImplementation::getMarginal;
 
   /** Enable or disable the input/output history */

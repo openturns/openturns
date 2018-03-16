@@ -45,9 +45,9 @@ public:
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Implementation build(const Sample & sample) const;
-  Implementation build(const Point & parameters) const;
-  Implementation build() const;
+  Distribution build(const Sample & sample) const;
+  Distribution build(const Point & parameters) const;
+  Distribution build() const;
   Poisson buildAsPoisson(const Sample & sample) const;
   Poisson buildAsPoisson(const Point & parameters) const;
   Poisson buildAsPoisson() const;

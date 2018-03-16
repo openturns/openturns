@@ -43,17 +43,17 @@ ChiSquareFactory * ChiSquareFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ChiSquareFactory::Implementation ChiSquareFactory::build(const Sample & sample) const
+Distribution ChiSquareFactory::build(const Sample & sample) const
 {
   return buildAsChiSquare(sample).clone();
 }
 
-ChiSquareFactory::Implementation ChiSquareFactory::build(const Point & parameters) const
+Distribution ChiSquareFactory::build(const Point & parameters) const
 {
   return buildAsChiSquare(parameters).clone();
 }
 
-ChiSquareFactory::Implementation ChiSquareFactory::build() const
+Distribution ChiSquareFactory::build() const
 {
   return buildAsChiSquare().clone();
 }

@@ -39,17 +39,18 @@ LinearCombinationFunction::LinearCombinationFunction (const FunctionCollection &
     const Point & coefficients)
   : Function()
 {
-  const LinearCombinationEvaluation evaluation(functionCollection, coefficients);
-  setEvaluation(evaluation.clone());
-  setGradient(new LinearCombinationGradient(evaluation));
-  setHessian(new LinearCombinationHessian(evaluation));
+  const Pointer<LinearCombinationEvaluation> p_evaluation = new LinearCombinationEvaluation(functionCollection, coefficients);
+  setEvaluation(Evaluation(p_evaluation));
+  setGradient(new LinearCombinationGradient(p_evaluation));
+  setHessian(new LinearCombinationHessian(p_evaluation));
 }
 
 
 /* Comparison operator */
 Bool LinearCombinationFunction::operator ==(const LinearCombinationFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

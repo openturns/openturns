@@ -24,6 +24,7 @@
 
 #include "openturns/VertexValueFunction.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/Evaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -50,7 +51,7 @@ public:
   explicit InverseTrendTransform(const Function & function);
 
   /** Parameter constructor */
-  InverseTrendTransform(const EvaluationPointer & p_evaluation);
+  InverseTrendTransform(const Evaluation & evaluation);
 
   /** Parameter constructor */
   InverseTrendTransform(const EvaluationImplementation & evaluation);

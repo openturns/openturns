@@ -95,8 +95,8 @@ NormalGamma::NormalGamma(const Scalar mu,
 /* Compute the numerical range of the distribution given the parameters values */
 void NormalGamma::computeRange()
 {
-  const Interval range0(getMarginal(0)->getRange());
-  const Interval range1(getMarginal(1)->getRange());
+  const Interval range0(getMarginal(0).getRange());
+  const Interval range1(getMarginal(1).getRange());
   Point lowerBound(2, 0.0);
   lowerBound[0] = range0.getLowerBound()[0];
   lowerBound[1] = range1.getLowerBound()[0];

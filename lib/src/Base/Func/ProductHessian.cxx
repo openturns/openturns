@@ -30,32 +30,32 @@ CLASSNAMEINIT(ProductHessian)
 static const Factory<ProductHessian> Factory_ProductHessian;
 
 /* Default constructor */
-ProductHessian::ProductHessian(const EvaluationPointer & p_leftEvaluation,
-                               const GradientPointer & p_leftGradient,
-                               const HessianPointer & p_leftHessian,
-                               const EvaluationPointer & p_rightEvaluation,
-                               const GradientPointer & p_rightGradient,
-                               const HessianPointer & p_rightHessian)
+ProductHessian::ProductHessian(const Evaluation & leftEvaluation,
+                               const Gradient & leftGradient,
+                               const Hessian & leftHessian,
+                               const Evaluation & rightEvaluation,
+                               const Gradient & rightGradient,
+                               const Hessian & rightHessian)
   : HessianImplementation(),
-    p_leftEvaluation_(p_leftEvaluation),
-    p_leftGradient_(p_leftGradient),
-    p_leftHessian_(p_leftHessian),
-    p_rightEvaluation_(p_rightEvaluation),
-    p_rightGradient_(p_rightGradient),
-    p_rightHessian_(p_rightHessian)
+    leftEvaluation_(leftEvaluation),
+    leftGradient_(leftGradient),
+    leftHessian_(leftHessian),
+    rightEvaluation_(rightEvaluation),
+    rightGradient_(rightGradient),
+    rightHessian_(rightHessian)
 {
   // Check the compatibility of the evaluations
-  if (p_leftEvaluation_->getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the left function must have an output dimension equal to 1.";
-  if (p_leftEvaluation_->getInputDimension() != p_rightEvaluation_->getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension.";
+  if (leftEvaluation_.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the left function must have an output dimension equal to 1.";
+  if (leftEvaluation_.getInputDimension() != rightEvaluation_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the two functions must have the same input dimension.";
 
   // Check the compatibility of the gradients
-  if ((p_leftGradient_->getInputDimension()  != p_rightGradient_->getInputDimension()) ||
-      (p_leftGradient_->getInputDimension()  != p_leftEvaluation_->getInputDimension()) ||
-      (p_leftGradient_->getOutputDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the gradients have incompatible dimensions.";
+  if ((leftGradient_.getInputDimension()  != rightGradient_.getInputDimension()) ||
+      (leftGradient_.getInputDimension()  != leftEvaluation_.getInputDimension()) ||
+      (leftGradient_.getOutputDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the gradients have incompatible dimensions.";
   // Check the compatibility of the hessians
-  if ((p_leftHessian_->getInputDimension()  != p_rightHessian_->getInputDimension()) ||
-      (p_leftHessian_->getInputDimension()  != p_leftEvaluation_->getInputDimension()) ||
-      (p_leftHessian_->getOutputDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the hessians have incompatible dimensions.";
+  if ((leftHessian_.getInputDimension()  != rightHessian_.getInputDimension()) ||
+      (leftHessian_.getInputDimension()  != leftEvaluation_.getInputDimension()) ||
+      (leftHessian_.getOutputDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the hessians have incompatible dimensions.";
 
 }
 
@@ -68,7 +68,9 @@ ProductHessian * ProductHessian::clone() const
 /* Comparison operator */
 Bool ProductHessian::operator ==(const ProductHessian & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return leftEvaluation_ == other.leftEvaluation_ && leftGradient_ == other.leftGradient_ && leftHessian_ == other.leftHessian_ &&
+         rightEvaluation_ == other.rightEvaluation_ && rightGradient_ == other.rightGradient_ && rightHessian_ == other.rightHessian_;
 }
 
 /* String converter */
@@ -77,12 +79,12 @@ String ProductHessian::__repr__() const
   OSS oss;
   oss << "class=" << ProductHessian::GetClassName()
       << " name=" << getName()
-      << " leftEvaluation=" << p_leftEvaluation_->__repr__()
-      << " leftGradient=" << p_leftGradient_->__repr__()
-      << " leftHessian=" << p_leftHessian_->__repr__()
-      << " rightEvaluation=" << p_rightEvaluation_->__repr__()
-      << " rightGradient=" << p_rightGradient_->__repr__()
-      << " rightHessian=" << p_rightHessian_->__repr__();
+      << " leftEvaluation=" << leftEvaluation_.getImplementation()->__repr__()
+      << " leftGradient=" << leftGradient_.getImplementation()->__repr__()
+      << " leftHessian=" << leftHessian_.getImplementation()->__repr__()
+      << " rightEvaluation=" << rightEvaluation_.getImplementation()->__repr__()
+      << " rightGradient=" << rightGradient_.getImplementation()->__repr__()
+      << " rightHessian=" << rightHessian_.getImplementation()->__repr__();
   return oss;
 }
 
@@ -100,12 +102,12 @@ SymmetricTensor ProductHessian::hessian(const Point & inP) const
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   ++callsNumber_;
-  const Point leftValue(p_leftEvaluation_->operator()(inP));
-  const Point rightValue(p_rightEvaluation_->operator()(inP));
-  const Matrix leftGradient(p_leftGradient_->gradient(inP));
-  const Matrix rightGradient(p_rightGradient_->gradient(inP));
-  const SymmetricTensor leftHessian(p_leftHessian_->hessian(inP));
-  const SymmetricTensor rightHessian(p_rightHessian_->hessian(inP));
+  const Point leftValue(leftEvaluation_.operator()(inP));
+  const Point rightValue(rightEvaluation_.operator()(inP));
+  const Matrix leftGradient(leftGradient_.gradient(inP));
+  const Matrix rightGradient(rightGradient_.gradient(inP));
+  const SymmetricTensor leftHessian(leftHessian_.hessian(inP));
+  const SymmetricTensor rightHessian(rightHessian_.hessian(inP));
   const UnsignedInteger sheetDimension = getOutputDimension();
   SymmetricTensor result(inputDimension, sheetDimension);
   for (UnsignedInteger k = 0; k < sheetDimension; ++k)
@@ -129,43 +131,38 @@ SymmetricTensor ProductHessian::hessian(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger ProductHessian::getInputDimension() const
 {
-  return p_rightHessian_->getInputDimension();
+  return rightHessian_.getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger ProductHessian::getOutputDimension() const
 {
-  return p_rightHessian_->getOutputDimension();
+  return rightHessian_.getOutputDimension();
 }
 
 /* Method save() stores the object through the StorageManager */
 void ProductHessian::save(Advocate & adv) const
 {
   HessianImplementation::save(adv);
-  adv.saveAttribute( "leftGradient_", *p_leftGradient_ );
-  adv.saveAttribute( "leftHessian_", *p_leftHessian_ );
-  adv.saveAttribute( "rightEvaluation_", *p_rightEvaluation_ );
-  adv.saveAttribute( "rightGradient_", *p_rightGradient_ );
-  adv.saveAttribute( "rightHessian_", *p_rightHessian_ );
+  adv.saveAttribute( "leftEvaluation_", leftEvaluation_ );
+  adv.saveAttribute( "leftGradient_", leftGradient_ );
+  adv.saveAttribute( "leftHessian_", leftHessian_ );
+  adv.saveAttribute( "rightEvaluation_", rightEvaluation_ );
+  adv.saveAttribute( "rightGradient_", rightGradient_ );
+  adv.saveAttribute( "rightHessian_", rightHessian_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductHessian::load(Advocate & adv)
 {
-  TypedInterfaceObject<EvaluationImplementation> evaluationValue;
-  TypedInterfaceObject<GradientImplementation> gradientValue;
   TypedInterfaceObject<HessianImplementation> hessianValue;
   HessianImplementation::load(adv);
-  adv.loadAttribute( "leftGradient_", gradientValue );
-  p_leftGradient_ = gradientValue.getImplementation();
-  adv.loadAttribute( "leftHessian_", hessianValue );
-  p_leftHessian_ = hessianValue.getImplementation();
-  adv.loadAttribute( "rightEvaluation_", evaluationValue );
-  p_rightEvaluation_ = evaluationValue.getImplementation();
-  adv.loadAttribute( "rightGradient_", gradientValue );
-  p_rightGradient_ = gradientValue.getImplementation();
-  adv.loadAttribute( "rightHessian_", hessianValue );
-  p_rightHessian_ = hessianValue.getImplementation();
+  adv.loadAttribute( "leftEvaluation_", leftEvaluation_ );
+  adv.loadAttribute( "leftGradient_", leftGradient_ );
+  adv.loadAttribute( "leftHessian_", leftHessian_ );
+  adv.loadAttribute( "rightEvaluation_", rightEvaluation_ );
+  adv.loadAttribute( "rightGradient_", rightGradient_ );
+  adv.loadAttribute( "rightHessian_", rightHessian_ );
 }
 
 END_NAMESPACE_OPENTURNS

@@ -40,22 +40,22 @@ NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient() :
 
 /* Parameter constructor */
 NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const Point & epsilon,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceGradient(epsilon, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceGradient(epsilon, evaluation)
 {
 }
 
 /* Parameter constructor */
 NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const Scalar epsilon,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceGradient(epsilon, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceGradient(epsilon, evaluation)
 {
 }
 
 /* Parameter constructor */
 NonCenteredFiniteDifferenceGradient::NonCenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-    const EvaluationPointer & p_evaluation)
-  : FiniteDifferenceGradient(step, p_evaluation)
+    const Evaluation & evaluation)
+  : FiniteDifferenceGradient(step, evaluation)
 {
   // Nothing to do
 }
@@ -74,7 +74,7 @@ String NonCenteredFiniteDifferenceGradient::__repr__() const
   oss << "class=" << NonCenteredFiniteDifferenceGradient::GetClassName()
       << " name=" << getName()
       << " epsilon=" << getEpsilon()
-      << " evaluation=" << p_evaluation_->__repr__();
+      << " evaluation=" << evaluation_.__repr__();
   return oss;
 }
 
@@ -96,11 +96,11 @@ Matrix NonCenteredFiniteDifferenceGradient::gradient(const Point & inP) const
   Sample gridPoints(inputDimension + 1, inP);
   for(UnsignedInteger i = 0; i < inputDimension; ++i) gridPoints[i][i] += step[i];
   /* Evaluate the evaluation */
-  Sample gridValues(p_evaluation_->operator()(gridPoints));
+  Sample gridValues(evaluation_.operator()(gridPoints));
   /* Get the value at the center of the grid */
   Point center(gridValues[inputDimension]);
   /* Compute the gradient */
-  Matrix result(p_evaluation_->getInputDimension(), p_evaluation_->getOutputDimension());
+  Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
     for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
       /* result(i, j) = (f_j(x + e_i) - f_j(x)) / e_i ~ df_j / dx_i */

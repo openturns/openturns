@@ -43,17 +43,17 @@ ExponentialFactory * ExponentialFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ExponentialFactory::Implementation ExponentialFactory::build(const Sample & sample) const
+Distribution ExponentialFactory::build(const Sample & sample) const
 {
   return buildAsExponential(sample).clone();
 }
 
-ExponentialFactory::Implementation ExponentialFactory::build(const Point & parameters) const
+Distribution ExponentialFactory::build(const Point & parameters) const
 {
   return buildAsExponential(parameters).clone();
 }
 
-ExponentialFactory::Implementation ExponentialFactory::build() const
+Distribution ExponentialFactory::build() const
 {
   return buildAsExponential().clone();
 }

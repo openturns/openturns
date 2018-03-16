@@ -111,7 +111,7 @@ public:
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;

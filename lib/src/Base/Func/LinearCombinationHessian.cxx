@@ -35,7 +35,7 @@ static const Factory<LinearCombinationHessian> Factory_LinearCombinationHessian;
 /* Default constructor */
 LinearCombinationHessian::LinearCombinationHessian()
   : HessianImplementation(),
-    evaluation_()
+    p_evaluation_()
 {
   // Nothing to do
 }
@@ -44,7 +44,15 @@ LinearCombinationHessian::LinearCombinationHessian()
 /* Parameters constructor */
 LinearCombinationHessian::LinearCombinationHessian(const LinearCombinationEvaluation & evaluation)
   : HessianImplementation()
-  , evaluation_(evaluation)
+  , p_evaluation_(evaluation.clone())
+{
+  // Nothing to do
+}
+
+/* Parameters constructor */
+LinearCombinationHessian::LinearCombinationHessian(const Pointer<LinearCombinationEvaluation> & p_evaluation)
+  : HessianImplementation()
+  , p_evaluation_(p_evaluation)
 {
   // Nothing to do
 }
@@ -61,14 +69,14 @@ SymmetricTensor LinearCombinationHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
-  const UnsignedInteger sheetSize = evaluation_.getOutputDimension();
-  SymmetricTensor result(evaluation_.getInputDimension(), sheetSize);
+  const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
+  const UnsignedInteger sheetSize = p_evaluation_->getOutputDimension();
+  SymmetricTensor result(p_evaluation_->getInputDimension(), sheetSize);
   // We work on a sheet basis because there is no tensor arithmetic
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const SymmetricTensor currentTensor(evaluation_.functionsCollection_[i].hessian(inP));
-    const Scalar factor = evaluation_.coefficients_[i];
+    const SymmetricTensor currentTensor(p_evaluation_->functionsCollection_[i].hessian(inP));
+    const Scalar factor = p_evaluation_->coefficients_[i];
     for (UnsignedInteger k = 0; k < sheetSize; ++k)
     {
       SymmetricMatrix sheet(result.getSheet(k) + factor * currentTensor.getSheet(k));
@@ -81,28 +89,28 @@ SymmetricTensor LinearCombinationHessian::hessian(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger LinearCombinationHessian::getInputDimension() const
 {
-  return evaluation_.getInputDimension();
+  return p_evaluation_->getInputDimension();
 }
 
 /* Accessor for output point dimension */
 UnsignedInteger LinearCombinationHessian::getOutputDimension() const
 {
-  return evaluation_.getOutputDimension();
+  return p_evaluation_->getOutputDimension();
 }
 
 /* String converter */
 String LinearCombinationHessian::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-         << " evaluation=" << evaluation_;
+         << " evaluation=" << *p_evaluation_;
 }
 
 String LinearCombinationHessian::__str__(const String & offset) const
 {
   OSS oss(false);
   oss << offset;
-  const UnsignedInteger size = evaluation_.functionsCollection_.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << evaluation_.coefficients_[i] << ")*" << evaluation_.functionsCollection_[i].getGradient()->__str__();
+  const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << p_evaluation_->coefficients_[i] << ")*" << p_evaluation_->functionsCollection_[i].getGradient().__str__();
   return oss;
 }
 
@@ -110,7 +118,7 @@ String LinearCombinationHessian::__str__(const String & offset) const
 void LinearCombinationHessian::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "evaluation_", evaluation_ );
+  adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
 
@@ -118,7 +126,9 @@ void LinearCombinationHessian::save(Advocate & adv) const
 void LinearCombinationHessian::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "evaluation_", evaluation_ );
+  TypedInterfaceObject<LinearCombinationEvaluation> evaluation;
+  adv.loadAttribute( "evaluation_", evaluation );
+  p_evaluation_ = evaluation.getImplementation();
 }
 
 

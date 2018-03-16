@@ -46,17 +46,17 @@ BernoulliFactory * BernoulliFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-BernoulliFactory::Implementation BernoulliFactory::build(const Sample & sample) const
+Distribution BernoulliFactory::build(const Sample & sample) const
 {
   return buildAsBernoulli(sample).clone();
 }
 
-BernoulliFactory::Implementation BernoulliFactory::build(const Point & parameters) const
+Distribution BernoulliFactory::build(const Point & parameters) const
 {
   return buildAsBernoulli(parameters).clone();
 }
 
-BernoulliFactory::Implementation BernoulliFactory::build() const
+Distribution BernoulliFactory::build() const
 {
   return buildAsBernoulli().clone();
 }

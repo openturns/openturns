@@ -42,7 +42,7 @@ ParametricFunction::ParametricFunction (const Function & function,
   : Function()
 {
   const Pointer<ParametricEvaluation> p_evaluation = new ParametricEvaluation(function, set, referencePoint, parametersSet);
-  setEvaluation(p_evaluation);
+  setEvaluation(Evaluation(p_evaluation));
   setGradient(new ParametricGradient(p_evaluation));
   setHessian(new ParametricHessian(p_evaluation));
 }
@@ -51,7 +51,8 @@ ParametricFunction::ParametricFunction (const Function & function,
 /* Comparison operator */
 Bool ParametricFunction::operator ==(const ParametricFunction & other) const
 {
-  return true;
+  if (this == &other) return true;
+  return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */

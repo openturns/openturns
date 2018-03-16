@@ -136,7 +136,7 @@ String BayesDistribution::__repr__() const
 String BayesDistribution::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(X, Y with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation()->__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
+  oss << offset << getClassName() << "(X, Y with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
   return oss;
 }
 
@@ -231,7 +231,7 @@ void BayesDistribution::setConditionedAndConditioningDistributionsAndLinkFunctio
 }
 
 /* Get the i-th marginal distribution */
-BayesDistribution::Implementation BayesDistribution::getMarginal(const UnsignedInteger i) const
+Distribution BayesDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
   // Special case for dimension 1
@@ -240,11 +240,11 @@ BayesDistribution::Implementation BayesDistribution::getMarginal(const UnsignedI
   // If the index is in the conditioned part
   const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
   if (i < conditionedDimension) return ConditionalDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_).getMarginal(i);
-  return conditioningDistribution_.getImplementation()->getMarginal(i - conditionedDimension);
+  return conditioningDistribution_.getMarginal(i - conditionedDimension);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-BayesDistribution::Implementation BayesDistribution::getMarginal(const Indices & indices) const
+Distribution BayesDistribution::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
@@ -260,7 +260,7 @@ BayesDistribution::Implementation BayesDistribution::getMarginal(const Indices &
   for (UnsignedInteger i = 0; i < size; ++i)
     if (indices[i] >= conditionedDimension)
       conditioningIndices.add(indices[i] - conditionedDimension);
-  if (conditioningIndices.getSize() == size) return conditioningDistribution_.getImplementation()->getMarginal(conditioningIndices);
+  if (conditioningIndices.getSize() == size) return conditioningDistribution_.getMarginal(conditioningIndices);
   return DistributionImplementation::getMarginal(indices);
 } // getMarginal(Indices)
 
@@ -310,11 +310,11 @@ void BayesDistribution::computeMean() const
   const UnsignedInteger conditionedDimension = conditionedDistribution_.getDimension();
   Indices lower(conditionedDimension);
   lower.fill();
-  mean_ = getMarginal(lower)->getMean();
+  mean_ = getMarginal(lower).getMean();
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   Indices upper(conditioningDimension);
   upper.fill(conditionedDimension, 1);
-  mean_.add(getMarginal(upper)->getMean());
+  mean_.add(getMarginal(upper).getMean());
   isAlreadyComputedMean_ = true;
 }
 
@@ -422,7 +422,7 @@ void BayesDistribution::computeCovariance() const
   const UnsignedInteger conditioningDimension = conditioningDistribution_.getDimension();
   Indices upper(conditioningDimension);
   upper.fill(conditionedDimension);
-  const CovarianceMatrix conditioningCovariance(getMarginal(upper)->getCovariance());
+  const CovarianceMatrix conditioningCovariance(getMarginal(upper).getCovariance());
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
     for (UnsignedInteger j = i; j < conditioningDimension; ++j)
       covariance_(conditionedDimension + i, conditionedDimension + j) = conditioningCovariance(i, j);

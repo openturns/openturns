@@ -41,7 +41,7 @@ static const Factory<DirectionalSampling> Factory_DirectionalSampling;
 DirectionalSampling::DirectionalSampling()
   : Simulation()
   , standardFunction_(standardEvent_.getImplementation()->getFunction())
-  , inputDistribution_(standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation())
+  , inputDistribution_(standardEvent_.getImplementation()->getAntecedent().getDistribution())
 {
   // Nothing to do
 }
@@ -53,8 +53,8 @@ DirectionalSampling::DirectionalSampling(const Event & event)
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
   standardEvent_ = StandardEvent(event);
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
-  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation();
-  samplingStrategy_ = SamplingStrategy(inputDistribution_->getDimension());
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
+  samplingStrategy_ = SamplingStrategy(inputDistribution_.getDimension());
 }
 
 /* Constructor with parameters */
@@ -67,7 +67,7 @@ DirectionalSampling::DirectionalSampling(const Event & event,
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
   standardEvent_ = StandardEvent(event);
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
-  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation();
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
   setSamplingStrategy(samplingStrategy);
 }
 
@@ -91,7 +91,7 @@ Scalar DirectionalSampling::computeContribution(const ScalarCollection & roots)
   for (UnsignedInteger indexRoot = 0; indexRoot < size; ++indexRoot)
   {
     Scalar currentRoot = roots[indexRoot];
-    estimate += sign * inputDistribution_->computeRadialDistributionCDF(currentRoot, true);
+    estimate += sign * inputDistribution_.computeRadialDistributionCDF(currentRoot, true);
     sign = -sign;
   }
   // Is the origin in the failure space?
@@ -130,10 +130,10 @@ Scalar DirectionalSampling::computeMeanContribution(const ScalarCollection & roo
     const Scalar b = xK[2 * segmentIndex + 1];
     const Scalar halfLength = 0.5 * (b - a);
     // Accumulate the bracket part
-    value += a * inputDistribution_->computeRadialDistributionCDF(a, true) - b * inputDistribution_->computeRadialDistributionCDF(b, true);
+    value += a * inputDistribution_.computeRadialDistributionCDF(a, true) - b * inputDistribution_.computeRadialDistributionCDF(b, true);
     // Compute the integral part
     Scalar sum = 0.0;
-    for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k) sum += weights[k] * inputDistribution_->computeRadialDistributionCDF(a + (1.0 + nodes[k]) * halfLength, true);
+    for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k) sum += weights[k] * inputDistribution_.computeRadialDistributionCDF(a + (1.0 + nodes[k]) * halfLength, true);
     sum *= halfLength;
     // Accumulate the integral part
     value += sum;
@@ -185,7 +185,7 @@ Sample DirectionalSampling::computeBlockSample()
   const UnsignedInteger size = getBlockSize();
   Sample blockSample(size, 1);
   // For each entry of the block sample
-  // realizedEventSample = Sample(blockSize_, event_.getImplementation()->getAntecedent()->getDistribution().getDimension());
+  // realizedEventSample = Sample(blockSize_, event_.getImplementation()->getAntecedent().getDistribution().getDimension());
   for (UnsignedInteger index = 0; index < size; ++index)
   {
     const Sample directionSample(samplingStrategy_.generate());
@@ -213,7 +213,7 @@ void DirectionalSampling::setSamplingStrategy(const SamplingStrategy & samplingS
   samplingStrategy_ = samplingStrategy;
 
   // To force the sampling strategy to have the correct dimension
-  samplingStrategy_.setDimension(inputDistribution_->getDimension());
+  samplingStrategy_.setDimension(inputDistribution_.getDimension());
 }
 
 SamplingStrategy DirectionalSampling::getSamplingStrategy() const
@@ -248,7 +248,7 @@ void DirectionalSampling::load(Advocate & adv)
   adv.loadAttribute("samplingStrategy_", samplingStrategy_);
   standardEvent_ = StandardEvent(event_);
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
-  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent()->getDistribution().getImplementation();
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
 }
 
 END_NAMESPACE_OPENTURNS

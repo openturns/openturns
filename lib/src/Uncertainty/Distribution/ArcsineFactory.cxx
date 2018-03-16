@@ -45,17 +45,17 @@ ArcsineFactory * ArcsineFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
-ArcsineFactory::Implementation ArcsineFactory::build(const Sample & sample) const
+Distribution ArcsineFactory::build(const Sample & sample) const
 {
   return buildAsArcsine(sample).clone();
 }
 
-ArcsineFactory::Implementation ArcsineFactory::build(const Point & parameters) const
+Distribution ArcsineFactory::build(const Point & parameters) const
 {
   return buildAsArcsine(parameters).clone();
 }
 
-ArcsineFactory::Implementation ArcsineFactory::build() const
+Distribution ArcsineFactory::build() const
 {
   return buildAsArcsine().clone();
 }

@@ -24,7 +24,7 @@
 #define OPENTURNS_CENTEREDFINITEDIFFERENCEGRADIENT_HXX
 
 #include "openturns/FiniteDifferenceGradient.hxx"
-#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 
@@ -47,22 +47,20 @@ class OT_API CenteredFiniteDifferenceGradient
   CLASSNAME
 public:
 
-  typedef Pointer<EvaluationImplementation>                EvaluationPointer;
-
   /** Default constructor */
   CenteredFiniteDifferenceGradient();
 
   /** Parameter constructor */
   CenteredFiniteDifferenceGradient(const Point & epsilon,
-                                   const EvaluationPointer & p_evaluation);
+                                   const Evaluation & evaluation);
 
   /** Second parameter constructor */
   CenteredFiniteDifferenceGradient(const Scalar epsilon,
-                                   const EvaluationPointer & p_evaluation);
+                                   const Evaluation & evaluation);
 
   /** Constructor from finite difference step */
   CenteredFiniteDifferenceGradient(const FiniteDifferenceStep & step,
-                                   const EvaluationPointer & p_evaluation);
+                                   const Evaluation & evaluation);
 
   /* Virtual constructor */
   virtual CenteredFiniteDifferenceGradient * clone() const;

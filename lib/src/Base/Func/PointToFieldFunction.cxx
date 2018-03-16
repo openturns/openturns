@@ -83,13 +83,13 @@ String PointToFieldFunction::__str__(const String & offset) const
 /* Get the i-th marginal function */
 PointToFieldFunction PointToFieldFunction::getMarginal(const UnsignedInteger i) const
 {
-  return *(getImplementation()->getMarginal(i));
+  return getImplementation()->getMarginal(i);
 }
 
 /* Get the function corresponding to indices components */
 PointToFieldFunction PointToFieldFunction::getMarginal(const Indices & indices) const
 {
-  return *(getImplementation()->getMarginal(indices));
+  return getImplementation()->getMarginal(indices);
 }
 
 /* Input description Accessor */

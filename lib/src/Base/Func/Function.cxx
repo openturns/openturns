@@ -80,18 +80,18 @@ Function::Function(const Description & inputVariablesNames,
 }
 
 /* Constructor from evaluation */
-Function::Function(const EvaluationPointer & evaluationImplementation)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(evaluationImplementation))
+Function::Function(const Evaluation & evaluation)
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(*evaluation.getImplementation()))
 {
   // Nothing to do
 }
 
 
 /* Constructor from implementations */
-Function::Function(const EvaluationPointer & evaluationImplementation,
-                   const GradientPointer & gradientImplementation,
-                   const HessianPointer  & hessianImplementation)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(evaluationImplementation, gradientImplementation, hessianImplementation))
+Function::Function(const Evaluation & evaluation,
+                   const Gradient & gradient,
+                   const Hessian  & hessian)
+  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(evaluation, gradient, hessian))
 {
   // Nothing to do
 }
@@ -220,49 +220,37 @@ Function Function::operator - (const Function & right) const
 }
 
 /* Function implementation accessors */
-void Function::setEvaluation(const EvaluationPointer & functionImplementation)
+void Function::setEvaluation(const Evaluation & functionImplementation)
 {
   copyOnWrite();
   getImplementation()->setEvaluation(functionImplementation);
 }
 
-const Function::EvaluationPointer & Function::getEvaluation() const
+Evaluation Function::getEvaluation() const
 {
   return getImplementation()->getEvaluation();
 }
 
 /* Gradient implementation accessors */
-void Function::setGradient(const GradientImplementation & gradientImplementation)
+void Function::setGradient(const Gradient & gradient)
 {
   copyOnWrite();
-  getImplementation()->setGradient(GradientPointer(gradientImplementation.clone()));
+  getImplementation()->setGradient(gradient);
 }
 
-void Function::setGradient(const GradientPointer & gradientImplementation)
-{
-  copyOnWrite();
-  getImplementation()->setGradient(gradientImplementation);
-}
-
-const Function::GradientPointer & Function::getGradient() const
+Gradient Function::getGradient() const
 {
   return getImplementation()->getGradient();
 }
 
 /* Hessian implementation accessors */
-void Function::setHessian(const HessianImplementation & hessianImplementation)
+void Function::setHessian(const Hessian & hessian)
 {
   copyOnWrite();
-  getImplementation()->setHessian(HessianPointer(hessianImplementation.clone()));
+  getImplementation()->setHessian(hessian);
 }
 
-void Function::setHessian(const HessianPointer & hessianImplementation)
-{
-  copyOnWrite();
-  getImplementation()->setHessian(hessianImplementation);
-}
-
-const Function::HessianPointer & Function::getHessian() const
+Hessian Function::getHessian() const
 {
   return getImplementation()->getHessian();
 }
@@ -410,13 +398,13 @@ UnsignedInteger Function::getOutputDimension() const
 /* Get the i-th marginal function */
 Function Function::getMarginal(const UnsignedInteger i) const
 {
-  return *(getImplementation()->getMarginal(i));
+  return getImplementation()->getMarginal(i);
 }
 
 /* Get the function corresponding to indices components */
 Function Function::getMarginal(const Indices & indices) const
 {
-  return *(getImplementation()->getMarginal(indices));
+  return getImplementation()->getMarginal(indices);
 }
 
 /* Number of calls to the evaluation */
