@@ -1,6 +1,6 @@
-.. _pcc:
+.. _pearson_coefficient:
 
-Pearson Correlation Coefficient
+Pearson correlation coefficient
 -------------------------------
 
 This method deals with the parametric modelling of a probability
@@ -138,7 +138,8 @@ coefficient is sometimes denoted by :math:`r`.
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.CorrelationAnalysis_PCC`
+    - See :py:func:`~openturns.CorrelationAnalysis_PearsonCorrelation`
+    - See :py:meth:`~openturns.Sample.computePearsonCorrelation`
 
 .. topic:: Examples:
 

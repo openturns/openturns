@@ -1,3 +1,5 @@
+.. _ranking_prcc:
+
 Uncertainty ranking using PRCC
 ------------------------------
 

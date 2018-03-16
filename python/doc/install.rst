@@ -16,6 +16,8 @@ Install the package from `Anaconda.org <https://anaconda.org/conda-forge/opentur
     conda config --add channels conda-forge
     conda install openturns
 
+Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
+containing the library and its modules that allows for an offline installation.
 
 Windows
 -------

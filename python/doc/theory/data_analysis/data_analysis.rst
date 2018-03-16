@@ -46,7 +46,7 @@ Detection and quantification of dependencies
 .. toctree::
     :maxdepth: 1
 
-    pcc
+    pearson_coefficient
     pearson_test
     spearman_coefficient
     spearman_test

@@ -10,6 +10,7 @@ bandwidth : sequence of float
 sample : 2-d sequence of float
     The data on wich each kernel is centered,
     :math:`(\vect{X}_1, \dots, \vect{X}_N) \in \Rset^d`.
+
 Notes
 -----
 A *KernelMixture* is a particular *Mixture*: all the weights are identical and
@@ -17,7 +18,9 @@ the all the probability density functions of the combination are of the same
 family. They are centered on :math:`N` points. The treatment is optimized.
 
 The pdf of a *KernelMixture* is defined by:
-..math::
+
+.. math::
+
     f(\vect{x}) =  \sum_{i=1}^N \dfrac{1}{N} \Pi_{j=1}^d \dfrac{1}{h_j}K(\frac{x^j-X^j_i}{h})
 
 where :math:`N` is the number of points in the sample
@@ -35,6 +38,7 @@ Create a *KernelMixture*:
 >>> myKernelMixture = ot.KernelMixture(kernel, bandwith, sample)
  
 See the pdf:
+
 >>> graph = myKernelMixture.drawPDF(64)
 >>> graph.setLegends(['KernelMixture'])"
 
