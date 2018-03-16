@@ -24,6 +24,7 @@
 #include "openturns/Mesh.hxx"
 #include "openturns/KDTree.hxx"
 #include "openturns/RegularGridNearestNeighbour.hxx"
+#include "openturns/NearestNeighbour1D.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +47,7 @@ NearestNeighbourAlgorithm::NearestNeighbourAlgorithm(const Sample & sample)
     if (mesh.isRegular())
       p_implementation_ = new RegularGridNearestNeighbour(sample);
     else
-      p_implementation_ = new KDTree(sample);
+      p_implementation_ = new NearestNeighbour1D(sample);
   }
   else
     p_implementation_ = new KDTree(sample);

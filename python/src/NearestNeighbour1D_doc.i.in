@@ -1,28 +1,29 @@
-%feature("docstring") OT::RegularGridNearestNeighbour
-"Partition tree data structure.
+%feature("docstring") OT::NearestNeighbour1D
+"Partition tree data structure for 1D points.
 
-Allows to store and search points fast.
+Allows to store and search 1D points fast, by using
+dichotomy on sorted points.
 
 Parameters
 ----------
-grid : :class:`~openturns.RegularGrid`
-    Regular grid
+sample : :class:`~openturns.Sample`
+    1D points
 
 See also
 --------
-NearestNeighbourAlgorithm, NearestNeighbour1D, KDTree, NaiveNearestNeighbour
+NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour, KDTree
 
 Examples
 --------
 >>> import openturns as ot
 >>> myRegularGrid = ot.RegularGrid(0.0, 0.1, 100)
->>> tree = ot.RegularGridNearestNeighbour(myRegularGrid)
+>>> tree = ot.NearestNeighbour1D([[x] for x in myRegularGrid.getValues()])
 >>> neighbour = tree.queryScalar(0.1)"
 
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RegularGridNearestNeighbour::queryScalar
+%feature("docstring") OT::NearestNeighbour1D::queryScalar
 "Accessor to the nearest neighbour index.
 
 Parameters
@@ -37,7 +38,7 @@ index : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RegularGridNearestNeighbour::queryScalarK
+%feature("docstring") OT::NearestNeighbour1D::queryScalarK
 "Accessor to the nearest neighbours indices.
 
 Parameters

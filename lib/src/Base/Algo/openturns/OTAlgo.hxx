@@ -35,6 +35,7 @@
 #include "openturns/KDTree.hxx"
 #include "openturns/RegularGridNearestNeighbour.hxx"
 #include "openturns/NaiveNearestNeighbour.hxx"
+#include "openturns/NearestNeighbour1D.hxx"
 #include "openturns/EnclosingSimplexAlgorithm.hxx"
 #include "openturns/EnclosingSimplexAlgorithmImplementation.hxx"
 #include "openturns/NaiveEnclosingSimplex.hxx"
