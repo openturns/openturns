@@ -888,6 +888,19 @@ foreach (module ${OPENTURNS_PYTHON_MODULES})
          )
 endforeach ()
 
+
+# Build and install openturns.memoryview
+add_library( memoryview MODULE PythonReadOnlyBuffer.c )
+if (LINK_PYTHON_LIBRARY)
+  target_link_libraries (memoryview ${PYTHON_LIBRARIES})
+endif ()
+set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
+if(WIN32 AND NOT CYGWIN)
+  set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
+endif()
+install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
+
+
 set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
@@ -905,6 +918,8 @@ if (SPHINX_FOUND)
     # FIXME: get_target_property (suffix ${SWIG_MODULE_${module}_REAL_NAME} SUFFIX)
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/_${module}.so ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/_${module}.so)
   endforeach ()
+  # install memoryview.so for sphinx
+  execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/memoryview.so ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/memoryview.so)
   foreach (file ${EXTRA_PYTHON_FILES})
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/${file} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/${file})
   endforeach ()

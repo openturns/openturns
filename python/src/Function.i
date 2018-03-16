@@ -180,10 +180,8 @@ class OpenTURNSPythonFunction(object):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X and Y are 1-d sequence of float')
 
     def _exec_sample(self, X):
-        res = list()
-        for point in X:
-            res.append(self._exec(point))
-        return res
+        """Implement exec_sample from exec."""
+        return [self._exec(point) for point in X]
 
     def _exec_point_on_exec_sample(self, X):
         """Implement exec from exec_sample."""
@@ -195,7 +193,7 @@ def _exec_sample_multiprocessing(func, n_cpus):
 
     Parameters
     ----------
-    func : Function or calable
+    func : Function or callable
         A callable python object, usually a function. The function should take
         an input vector as argument and return an output vector.
 
@@ -214,10 +212,7 @@ def _exec_sample_multiprocessing(func, n_cpus):
         except:
             # multiprocessing is not working on this platform,
             # fallback to sequential computations.
-            res = list()
-            for point in X:
-                res.append(self._exec(point))
-            return res
+            return [self._exec(point) for point in X]
         rs = p.map_async(func, X)
         p.close()
         return rs.get()
@@ -233,17 +228,17 @@ class PythonFunction(Function):
         Dimension of the input vector
     outputDim : positive int
         Dimension of the output vector
-    func : a callable python object
-        called on a single point.
+    func : a callable python object, optional
+        Called when evaluated on a single point.
         Default is None.
-    func_sample : a callable python object
-        called on multiple points at once.
+    func_sample : a callable python object, optional
+        Called when evaluated on multiple points at once.
         Default is None.
-    gradient : a callable python objects
-        returns the gradient as a 2-d sequence of float.
+    gradient : a callable python objects, optional
+        Returns the gradient as a 2-d sequence of float.
         Default is None (uses finite-difference).
-    hessian : a callable python object
-        returns the hessian as a 3-d sequence of float.
+    hessian : a callable python object, optional
+        Returns the hessian as a 3-d sequence of float.
         Default is None (uses finite-difference).
     n_cpus : integer
         Number of cpus on which func should be distributed using multiprocessing.
@@ -251,29 +246,62 @@ class PythonFunction(Function):
         and func_sample are both given as arguments, n_cpus will be ignored and
         samples will be handled by func_sample.
         Default is None.
+    copy : bool, optional
+        If True, input sample is converted into a Python 2-d sequence before calling
+        func_sample.  Otherwise, it is passed directy to func_sample.
+        Default is False.
+
+    You must provide at least func or func_sample arguments.  For efficiency
+    reasons, these functions do not receive a :class:`~openturns.Point` or
+    :class:`~openturns.Sample` as arguments, but a proxy object which gives
+    access to internal object data.  This object supports indexing, but nothing
+    more.  It must be wrapped into anoter object, for instance
+    :class:`~openturns.Point` in func and :class:`~openturns.Sample` in
+    func_sample, or in a Numpy array, for vectorized operations.
 
     Notes
     -----
-    You must provide at least func or func_sample arguments. Notice that if
-    func_sample is provided, n_cpus is ignored. Note also that if PythonFunction
-    is distributed (n_cpus > 1), the traceback of a raised exception by a func
-    call is lost due to the way multiprocessing dispatches and handles func
-    calls. This can be solved by temporarily deactivating n_cpus during the
-    development of the wrapper or by manually handling the distribution of the
-    wrapper with external libraries like joblib that keep track of a raised
-    exception and shows the traceback to the user.
+    Notice that if func_sample is provided, n_cpus is ignored. Note also that
+    if PythonFunction is distributed (n_cpus > 1), the traceback of a raised
+    exception by a func call is lost due to the way multiprocessing dispatches
+    and handles func calls. This can be solved by temporarily deactivating
+    n_cpus during the development of the wrapper or by manually handling the
+    distribution of the wrapper with external libraries like joblib that keep
+    track of a raised exception and shows the traceback to the user.
 
     Examples
     --------
     >>> import openturns as ot
     >>> def a_exec(X):
-    ...     Y = [3.*X[0] - X[1]]
+    ...     Y = [3.0 * X[0] - X[1]]
     ...     return Y
     >>> def a_grad(X):
-    ...     dY = [[3.], [-1.]]
+    ...     dY = [[3.0], [-1.0]]
     ...     return dY
     >>> f = ot.PythonFunction(2, 1, a_exec, gradient=a_grad)
-    >>> X = [100., 100.]
+    >>> X = [100.0, 100.0]
+    >>> Y = f(X)
+    >>> print(Y)
+    [200]
+    >>> dY = f.gradient(X)
+    >>> print(dY)
+    [[  3 ]
+     [ -1 ]]
+
+    Same example, but optimized for best performance with Numpy when function
+    is going to be evaluated on large samples.
+
+    >>> import openturns as ot
+    >>> import numpy as np
+    >>> def a_exec_sample(X):
+    ...     Xarray = np.array(X, copy=False)
+    ...     Y = 3.0 * Xarray[:,0] - Xarray[:,1]
+    ...     return np.expand_dims(Y, axis=1)
+    >>> def a_grad(X):
+    ...     dY = [[3.0], [-1.0]]
+    ...     return dY
+    >>> f = ot.PythonFunction(2, 1, func_sample=a_exec_sample, gradient=a_grad)
+    >>> X = [100.0, 100.0]
     >>> Y = f(X)
     >>> print(Y)
     [200]
@@ -282,22 +310,26 @@ class PythonFunction(Function):
     [[  3 ]
      [ -1 ]]
     """
-    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None):
+    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False):
         if func == None and func_sample == None:
             raise RuntimeError('no func nor func_sample given.')
         instance = OpenTURNSPythonFunction(n, p)
+        if copy:
+            instance._discard_openturns_memoryview = True
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
+            instance._has_exec = True
         if func_sample != None:
             if not isinstance(func_sample, collections.Callable):
                 raise RuntimeError('func_sample argument is not callable.')
             instance._exec_sample = func_sample
+            instance._has_exec_sample = True
             if func == None:
                 instance._exec = instance._exec_point_on_exec_sample
-        elif n_cpus != None and n_cpus != 1 and func != None:
+        elif n_cpus != None and n_cpus != 1:
             if not isinstance(n_cpus, int):
                 raise RuntimeError('n_cpus is not an integer')
             if n_cpus == -1:

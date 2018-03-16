@@ -42,7 +42,11 @@ static const Factory<PythonEvaluation> Factory_PythonEvaluation;
 /* Default constructor */
 PythonEvaluation::PythonEvaluation()
   : EvaluationImplementation()
-  , pyObj_(0)
+  , pyObj_(NULL)
+  , pyBufferClass_(NULL)
+  , pyObj_has_exec_(false)
+  , pyObj_has_exec_sample_(false)
+  , pyObj_discard_openturns_memoryview_(true)
 {
   // Nothing to do
 }
@@ -52,8 +56,14 @@ PythonEvaluation::PythonEvaluation()
 PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   : EvaluationImplementation()
   , pyObj_(pyCallable)
+  , pyBufferClass_(NULL)
+  , pyObj_has_exec_(false)
+  , pyObj_has_exec_sample_(false)
+  , pyObj_discard_openturns_memoryview_(true)
 {
   Py_XINCREF(pyCallable);
+
+  initializePythonState();
 
   // Set the name of the object as its Python classname
   ScopedPyObjectPointer cls(PyObject_GetAttrString (pyObj_,
@@ -61,8 +71,6 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   ScopedPyObjectPointer name(PyObject_GetAttrString(cls.get(),
                              const_cast<char *>("__name__" )));
   setName(convert< _PyString_, String >(name.get()));
-
-
 
   const UnsignedInteger inputDimension  = getInputDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
@@ -105,6 +113,8 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
 /* Virtual constructor */
 PythonEvaluation * PythonEvaluation::clone() const
 {
+  Py_XINCREF(pyObj_);
+  Py_XINCREF(pyBufferClass_);
   return new PythonEvaluation(*this);
 }
 
@@ -112,14 +122,17 @@ PythonEvaluation * PythonEvaluation::clone() const
 PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
   : EvaluationImplementation(other)
   , pyObj_(other.pyObj_)
+  , pyBufferClass_(other.pyBufferClass_)
 {
   Py_XINCREF(pyObj_);
+  Py_XINCREF(pyBufferClass_);
 }
 
 /* Destructor */
 PythonEvaluation::~PythonEvaluation()
 {
   Py_XDECREF(pyObj_);
+  Py_XDECREF(pyBufferClass_);
 }
 
 /* Comparison operator */
@@ -167,43 +180,87 @@ Point PythonEvaluation::operator() (const Point & inP) const
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getInputDimension();
 
   Point outP;
-  CacheKeyType inKey(inP.getCollection());
-  if (p_cache_->isEnabled() && p_cache_->hasKey(inKey))
+  ++ callsNumber_;
+
+  ScopedPyObjectPointer result;
+
+  if (pyObj_discard_openturns_memoryview_)
   {
-    outP = Point::ImplementationType(p_cache_->find(inKey));
+    // Force a memory copy of inP into a Python list
+    ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
+    ScopedPyObjectPointer execName(convert< String, _PyString_ >("_exec"));
+    result = PyObject_CallMethodObjArgs(pyObj_, execName.get(), point.get(), NULL);
+    if (! result.get())
+      PyErr_SetString(PyExc_RuntimeError, "_exec did not return any value");
+    else if (! PySequence_Check(result.get()))
+      PyErr_SetString(PyExc_TypeError, "_exec return value is not a sequence");
   }
   else
   {
-    ++ callsNumber_;
+    // Wrap inP into a memoryview.Buffer object:
+    //    openturns.memoryview.Buffer((int(&inP[0]), False), (inP.getSize(),))
+    // First argument
+    ScopedPyObjectPointer ptrTuple(PyTuple_New(2));
+    PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<double*>(&inP[0]))));
+    PyTuple_SetItem(ptrTuple.get(), 1, PyBool_FromLong(0));  // We do not own memory
 
-    ScopedPyObjectPointer point(convert< Point, _PySequence_ >(inP));
-    ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, point.get(), NULL));
+    // Second argument
+    ScopedPyObjectPointer shapeTuple(PyTuple_New(1));
+    PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyInt_ > (inP.getSize()));
 
-    if (result.isNull())
+    // Call openturns.memoryview.Buffer() to create a read-only buffer
+    ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get())));
+
+    // Pass this buffer to _exec function if it has been defined by user, otherwise call _exec_sample(Buffer.augment())[0]
+    // If both pyObj_has_exec_ and pyObj_has_exec_sample_ are false, this is not a PythonFunction but a Function(OpenTURNSPythonFunction).
+    if (pyObj_has_exec_ || ! pyObj_has_exec_sample_)
     {
-      handleException();
+      ScopedPyObjectPointer execName(convert< String, _PyString_ >("_exec"));
+      result = PyObject_CallMethodObjArgs(pyObj_, execName.get(), readOnlyBufferObj.get(), NULL);
     }
-
-    try
+    else
     {
-      outP = convert< _PySequence_, Point >(result.get());
-    }
-    catch (InvalidArgumentException &)
-    {
-      throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, Point, etc.)";
-    }
-
-    if (outP.getDimension() != getOutputDimension())
-    {
-      throw InvalidDimensionException(HERE) << "Output point has incorrect dimension. Got " << outP.getDimension() << ". Expected " << getOutputDimension();
-    }
-
-    if (p_cache_->isEnabled())
-    {
-      CacheValueType outValue(outP.getCollection());
-      p_cache_->add(inKey, outValue);
+      // Only _exec_sample is defined, not _exec
+      ScopedPyObjectPointer augmentName(convert< String, _PyString_ >("augment"));
+      ScopedPyObjectPointer sampleObj(PyObject_CallMethodObjArgs(readOnlyBufferObj.get(), augmentName.get(), NULL));
+      if (sampleObj.get())
+      {
+        ScopedPyObjectPointer execSampleName(convert< String, _PyString_ >("_exec_sample"));
+        ScopedPyObjectPointer sampleResult(PyObject_CallMethodObjArgs(pyObj_, execSampleName.get(), sampleObj.get(), NULL));
+        if (sampleResult.get())
+        {
+          if (PySequence_Check(sampleResult.get()))
+            result = PySequence_ITEM(sampleResult.get(), 0);
+          else
+            PyErr_SetString(PyExc_TypeError, "_exec_sample return value is not a sequence");
+        }
+        else
+          PyErr_SetString(PyExc_RuntimeError, "_exec_sample did not return any value");
+      }
+      else
+        PyErr_SetString(PyExc_RuntimeError, "openturns.memoryview.Buffer.augment did not return any value");
     }
   }
+
+  if (result.isNull())
+  {
+    handleException();
+  }
+
+  try
+  {
+    outP = convert< _PySequence_, Point >(result.get());
+  }
+  catch (InvalidArgumentException &)
+  {
+    throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a sequence object (list, tuple, Point, etc.)";
+  }
+
+  if (outP.getDimension() != getOutputDimension())
+  {
+    throw InvalidDimensionException(HERE) << "Output point has incorrect dimension. Got " << outP.getDimension() << ". Expected " << getOutputDimension();
+  }
+
   return outP;
 }
 
@@ -218,128 +275,114 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
 
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger outDim = getOutputDimension();
-  const bool useCache = p_cache_->isEnabled();
 
-  Sample outS(size, outDim);
-  Sample toDo(0, inDim);
-  if (useCache)
+  Sample outS(0, outDim);
+  if (size > 0)
   {
-    std::set<Point> uniqueValues;
-    for (UnsignedInteger i = 0; i < size; ++ i)
+    callsNumber_ += size;
+
+    ScopedPyObjectPointer result;
+
+    if (pyObj_discard_openturns_memoryview_)
     {
-      CacheKeyType inKey(inS[i].getCollection());
-      if (p_cache_->hasKey(inKey))
+      // Force a memory copy of inS into a Python list
+      ScopedPyObjectPointer inTuple(PyTuple_New(size));
+      for (UnsignedInteger i = 0; i < size; ++ i)
       {
-        outS[i] = Point::ImplementationType(p_cache_->find(inKey));
+        PyObject * eltTuple = PyTuple_New(inDim);
+        for (UnsignedInteger j = 0; j < inDim; ++ j) PyTuple_SetItem(eltTuple, j, convert< Scalar, _PyFloat_ > (inS(i, j)));
+        PyTuple_SetItem(inTuple.get(), i, eltTuple);
+      }
+      ScopedPyObjectPointer execSampleName(convert< String, _PyString_ >("_exec_sample"));
+      result = PyObject_CallMethodObjArgs(pyObj_, execSampleName.get(), inTuple.get(), NULL);
+    }
+    else
+    {
+      // Wrap inS into a memoryview.Buffer object:
+      //    openturns.memoryview.Buffer((int(inS.__baseaddress__()), False), (inS.getSize(), inS.getDimension()))
+      // First argument
+      ScopedPyObjectPointer ptrTuple(PyTuple_New(2));
+      PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<Scalar*>(inS.__baseaddress__()))));
+      PyTuple_SetItem(ptrTuple.get(), 1, PyBool_FromLong(0));  // We do not own memory
+
+      // Second argument
+      ScopedPyObjectPointer shapeTuple(PyTuple_New(2));
+      PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyInt_ > (size));
+      PyTuple_SetItem(shapeTuple.get(), 1, convert< UnsignedInteger, _PyInt_ > (inDim));
+
+      // Call openturns.memoryview.Buffer() to create a read-only buffer
+      ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get())));
+
+      // Pass this buffer to _exec_sample function if it has been defined by user, otherwise loop on Buffer on call _exec
+      // If both pyObj_has_exec_ and pyObj_has_exec_sample_ are false, this is not a PythonFunction but a Function(OpenTURNSPythonFunction).
+      if (pyObj_has_exec_sample_ || ! pyObj_has_exec_)
+      {
+        ScopedPyObjectPointer execSampleName(convert< String, _PyString_ >("_exec_sample"));
+        result = PyObject_CallMethodObjArgs(pyObj_, execSampleName.get(), readOnlyBufferObj.get(), NULL);
       }
       else
       {
-        uniqueValues.insert(inS[i]);
+        // Only _exec is defined, not _exec_sample
+        ScopedPyObjectPointer execName(convert< String, _PyString_ >("_exec"));
+        result = PyTuple_New(size);
+        if (execName.get() && result.get())
+        {
+          for(UnsignedInteger i = 0; i < size; ++i)
+          {
+            ScopedPyObjectPointer itemObj(Py_TYPE(readOnlyBufferObj.get())->tp_as_sequence->sq_item(readOnlyBufferObj.get(), i));
+            PyTuple_SetItem(result.get(), i, PyObject_CallMethodObjArgs(pyObj_, execName.get(), itemObj.get(), NULL));
+          }
+        }
       }
     }
-    for(std::set<Point>::const_iterator it = uniqueValues.begin(); it != uniqueValues.end(); ++ it)
-    {
-      // store unique values
-      toDo.add(*it);
-    }
-  }
-  else
-  {
-    // compute all values, including duplicates
-    toDo = inS;
-  }
-
-  UnsignedInteger toDoSize = toDo.getSize();
-  CacheType tempCache(toDoSize);
-  if (useCache) tempCache.enable();
-
-  if (toDoSize > 0)
-  {
-    callsNumber_ += toDoSize;
-
-    ScopedPyObjectPointer inTuple(PyTuple_New(toDoSize));
-
-    for (UnsignedInteger i = 0; i < toDoSize; ++ i)
-    {
-      PyObject * eltTuple = PyTuple_New(inDim);
-      for (UnsignedInteger j = 0; j < inDim; ++ j) PyTuple_SetItem(eltTuple, j, convert< Scalar, _PyFloat_ > (toDo(i, j)));
-      PyTuple_SetItem(inTuple.get(), i, eltTuple);
-    }
-    ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, inTuple.get(), NULL));
 
     if (result.isNull())
     {
       handleException();
     }
 
-    if (PySequence_Check(result.get()))
+    try
     {
-      const UnsignedInteger lengthResult = PySequence_Size(result.get());
-      if (lengthResult == toDoSize)
-      {
-        for (UnsignedInteger i = 0; i < toDoSize; ++ i)
-        {
-          ScopedPyObjectPointer elt(PySequence_GetItem(result.get(), i));
-          if (PySequence_Check(elt.get()))
-          {
-            const UnsignedInteger lengthElt = PySequence_Size(elt.get());
-            if (lengthElt == outDim)
-            {
-              if (useCache)
-              {
-                Point outP(outDim);
-                for (UnsignedInteger j = 0; j < outDim; ++ j)
-                {
-                  ScopedPyObjectPointer val(PySequence_GetItem(elt.get(), j));
-                  outP[j] = convert< _PyFloat_, Scalar >(val.get());
-                }
-                tempCache.add(toDo[i].getCollection(), outP.getCollection());
-              }
-              else
-              {
-                for (UnsignedInteger j = 0; j < outDim; ++j)
-                {
-                  ScopedPyObjectPointer val(PySequence_GetItem(elt.get(), j));
-                  outS(i, j) = convert< _PyFloat_, Scalar >(val.get());
-                }
-              }
-            }
-            else
-            {
-              throw InvalidArgumentException(HERE) << "Python Function returned an sequence object with incorrect dimension (at position "
-                                                   << i << ")";
-            }
-          }
-          else
-          {
-            throw InvalidArgumentException(HERE) << "Python Function returned an object which is NOT a sequence (at position "
-                                                 << i << ")";
-          }
-        }
-      }
-      else
-      {
-        throw InvalidArgumentException(HERE) << "Python Function returned an sequence object with incorrect size (got "
-                                             << lengthResult << ", expected " << toDoSize << ")";
-      }
+      outS = convert< _PySequence_, Sample >(result.get());
     }
-  }
-
-  if (useCache)
-  {
-    // fill all the output values
-    for(UnsignedInteger i = 0; i < size; ++ i)
+    catch (InvalidArgumentException &)
     {
-      CacheKeyType inKey(inS[i].getCollection());
-      if (tempCache.hasKey(inKey))
-      {
-        outS[i] = Point::ImplementationType(tempCache.find(inKey));
-      }
+      throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec_sample() method is not a 2d-sequence object";
     }
-    p_cache_->merge(tempCache);
+    if (outS.getSize() != size)
+      throw InvalidArgumentException(HERE) << "Python Function returned a sequence object with incorrect size (got "
+                                           << outS.getSize() << ", expected " << size << ")";
+    if (outS.getDimension() != outDim)
+      throw InvalidArgumentException(HERE) << "Python Function returned a sequence object with incorrect dimension (got "
+                                           << outS.getDimension() << ", expected " << outDim << ")";
   }
   outS.setDescription(getOutputDescription());
   return outS;
+}
+
+/* Accessor for input point dimension */
+void PythonEvaluation::initializePythonState()
+{
+  // Check whether PythonFunction object define these members
+  pyObj_has_exec_ = PyObject_HasAttrString( pyObj_, "_has_exec" );
+  pyObj_has_exec_sample_ = PyObject_HasAttrString( pyObj_, "_has_exec_sample" );
+  pyObj_discard_openturns_memoryview_ = PyObject_HasAttrString( pyObj_, "_discard_openturns_memoryview" );
+
+  // We do not copy, get a reference to openturns.memoryview.Buffer class
+  if (! pyObj_discard_openturns_memoryview_)
+  {
+    ScopedPyObjectPointer memoryWrapperModule(PyImport_ImportModule("openturns.memoryview"));
+    if (memoryWrapperModule.isNull())
+    {
+      handleException();
+    }
+    pyBufferClass_ = PyObject_GetAttrString(memoryWrapperModule.get(), const_cast<char *>("Buffer"));
+    if (pyBufferClass_ == NULL)
+    {
+      handleException();
+    }
+    Py_INCREF(pyBufferClass_);
+  }
 }
 
 
@@ -380,6 +423,7 @@ void PythonEvaluation::load(Advocate & adv)
   EvaluationImplementation::load(adv);
 
   pickleLoad(adv, pyObj_);
+  initializePythonState();
 }
 
 
