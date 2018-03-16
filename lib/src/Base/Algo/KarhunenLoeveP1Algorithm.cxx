@@ -150,15 +150,15 @@ void KarhunenLoeveP1Algorithm::run()
   else
     evaluationXD = new P1LagrangeEvaluation(Field(mesh_, dimension));
   UnsignedInteger indexProjection = 0;
-  MatrixImplementation a(augmentedDimension, 1);
+  Point a(augmentedDimension);
   for (UnsignedInteger k = 0; k < K; ++k)
   {
     selectedEV[k] = eigenValues[k];
     const UnsignedInteger initialColumn = eigenPairs[k].second;
     for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
-      a(i, 0) = eigenVectorsComplex(i, initialColumn).real();
-    const MatrixImplementation Ga(G.getImplementation()->genProd(a));
-    const Scalar norm = std::sqrt(a.genProd(Ga, true, false)[0]);
+      a[i] = eigenVectorsComplex(i, initialColumn).real();
+    const Point Ga(G * a);
+    const Scalar norm = std::sqrt(dot(a, Ga));
     const Scalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Store the eigen modes in two forms
     values.setData(a * factor);
@@ -175,7 +175,7 @@ void KarhunenLoeveP1Algorithm::run()
     }
 
     // Build the relevant column of the transposed projection matrix
-    const MatrixImplementation b(Ga * (factor / sqrt(selectedEV[k])));
+    const Point b(Ga * (factor / sqrt(selectedEV[k])));
     std::copy(b.begin(), b.end(), transposedProjection.begin() + indexProjection);
     indexProjection += augmentedDimension;
   }

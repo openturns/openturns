@@ -339,7 +339,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
   SampleImplementation values(nodesNumber, dimension);
   UnsignedInteger indexProjection = 0;
-  MatrixImplementation a(augmentedDimension, 1);
+  Point a(augmentedDimension, 1);
   const UnsignedInteger omegaASize = nodesNumber * dimension;
   Point modeValues(omegaASize);
   for (UnsignedInteger k = 0; k < K; ++k)
@@ -349,7 +349,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     std::copy(eigenVectors.getImplementation()->begin() + initialColumn * augmentedDimension, eigenVectors.getImplementation()->begin() + (initialColumn + 1) * augmentedDimension, a.begin());
     // Store the eigen modes in two forms
     // modeValues = omega.a
-    Point omegaA(omega.getImplementation()->genProd(a));
+    Point omegaA(omega * a);
     const Scalar norm = omegaA.norm();
     const Scalar factor = omegaA[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Scale a
