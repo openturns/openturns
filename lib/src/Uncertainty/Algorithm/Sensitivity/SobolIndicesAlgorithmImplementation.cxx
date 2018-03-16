@@ -337,7 +337,17 @@ void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & va
 /* Interval for the first order indices accessor */
 Interval SobolIndicesAlgorithmImplementation::getFirstOrderIndicesInterval() const
 {
-  return getFirstOrderIndicesDistribution().computeMinimumVolumeInterval(confidenceLevel_);
+  const Distribution distribution = getFirstOrderIndicesDistribution();
+  const UnsignedInteger inputDimension = distribution.getDimension();
+  Point lowerBound(inputDimension);
+  Point upperBound(inputDimension);
+  for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+  {
+    Distribution marginal(distribution.getMarginal(j));
+    lowerBound[j] = marginal.computeQuantile(0.5 * (1.0 - confidenceLevel_))[0];
+    upperBound[j] = marginal.computeQuantile(0.5 * (1.0 + confidenceLevel_))[0];
+  }
+  return Interval(lowerBound, upperBound);
 }
 
 /* Second order indices accessor */
@@ -406,7 +416,17 @@ Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedIn
 /* Interval for the total order indices accessor */
 Interval SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval() const
 {
-  return getTotalOrderIndicesDistribution().computeMinimumVolumeInterval(confidenceLevel_);
+  const Distribution distribution = getTotalOrderIndicesDistribution();
+  const UnsignedInteger inputDimension = distribution.getDimension();
+  Point lowerBound(inputDimension);
+  Point upperBound(inputDimension);
+  for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+  {
+    Distribution marginal(distribution.getMarginal(j));
+    lowerBound[j] = marginal.computeQuantile(0.5 * (1.0 - confidenceLevel_))[0];
+    upperBound[j] = marginal.computeQuantile(0.5 * (1.0 + confidenceLevel_))[0];
+  }
+  return Interval(lowerBound, upperBound);
 }
 
 void SobolIndicesAlgorithmImplementation::computeIndicesDistribution() const

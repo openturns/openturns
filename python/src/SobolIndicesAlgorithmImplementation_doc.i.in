@@ -188,7 +188,8 @@ OT_SobolIndicesAlgorithm_getFirstOrderIndices_doc
 Returns
 -------
 interval : :class:`~openturns.Interval`
-    Interval for first order Sobol indices for each component."
+    Interval for first order Sobol indices for each component.
+    Computed marginal by marginal (not from the joint distribution)."
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getFirstOrderIndicesInterval
 OT_SobolIndicesAlgorithm_getFirstOrderIndicesInterval_doc
@@ -265,7 +266,8 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndices_doc
 Returns
 -------
 interval : :class:`~openturns.Interval`
-    Interval for total order Sobol indices for each component."
+    Interval for total order Sobol indices for each component.
+    Computed marginal by marginal (not from the joint distribution)."
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getTotalOrderIndicesInterval
 OT_SobolIndicesAlgorithm_getTotalOrderIndicesInterval_doc
