@@ -143,6 +143,12 @@ void KarhunenLoeveP1Algorithm::run()
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
   const UnsignedInteger meshDimension = mesh_.getDimension();
   SampleImplementation values(numVertices, dimension);
+  Pointer<PiecewiseLinearEvaluation> evaluation1D;
+  Pointer<P1LagrangeEvaluation> evaluationXD;
+  if (meshDimension == 1)
+    evaluation1D = new PiecewiseLinearEvaluation(mesh_.getVertices().getImplementation()->getData(), values);
+  else
+    evaluationXD = new P1LagrangeEvaluation(Field(mesh_, dimension));
   UnsignedInteger indexProjection = 0;
   MatrixImplementation a(augmentedDimension, 1);
   for (UnsignedInteger k = 0; k < K; ++k)
@@ -158,9 +164,16 @@ void KarhunenLoeveP1Algorithm::run()
     values.setData(a * factor);
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
-      modes.add(PiecewiseLinearEvaluation(mesh_.getVertices().getImplementation()->getData(), values));
+    {
+      evaluation1D->setValues(values);
+      modes.add(*evaluation1D);
+    }
     else
-      modes.add(P1LagrangeEvaluation(modesAsProcessSample.getField(k)));
+    {
+      evaluationXD->setValues(values);
+      modes.add(*evaluationXD);
+    }
+
     // Build the relevant column of the transposed projection matrix
     const MatrixImplementation b(Ga * (factor / sqrt(selectedEV[k])));
     std::copy(b.begin(), b.end(), transposedProjection.begin() + indexProjection);
