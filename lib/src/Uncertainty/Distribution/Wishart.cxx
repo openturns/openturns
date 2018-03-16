@@ -275,7 +275,7 @@ Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
   Description description(point.getDimension());
   const UnsignedInteger p = cholesky_.getDimension();
   UnsignedInteger index = 0;
-  const CovarianceMatrix V(getCovariance());
+  const CovarianceMatrix V(getV());
   for (UnsignedInteger i = 0; i < p; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
@@ -311,7 +311,7 @@ void Wishart::setParametersCollection(const PointCollection & parametersCollecti
 
 Point Wishart::getParameter() const
 {
-  const CovarianceMatrix V(getCovariance());
+  const CovarianceMatrix V(getV());
   const UnsignedInteger p = V.getDimension();
   Point point((p * (p + 1)) / 2 + 1);
   UnsignedInteger index = 0;
