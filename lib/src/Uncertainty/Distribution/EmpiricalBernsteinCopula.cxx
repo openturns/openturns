@@ -25,6 +25,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/Distribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,9 +38,11 @@ static const Factory<EmpiricalBernsteinCopula> Factory_EmpiricalBernsteinCopula;
 EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
   : CopulaImplementation()
   , copulaSample_(0, 1)
-  , binNumber_(0)
+  , binNumber_(1)
   , logBetaFactors_(0)
-  , logFactors_(0)
+  , logBetaMarginalFactors_(0, 0)
+  , logFactors_(0, 0)
+  , logFactorsMinus1_()
 {
   setName("EmpiricalBernsteinCopula");
   setCopulaSample(Sample(1, 1));
@@ -48,13 +51,15 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
 
 /* Default constructor */
 EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
-				 const UnsignedInteger binNumber,
-				 const Bool isEmpiricalCopulaSample)
+    const UnsignedInteger binNumber,
+    const Bool isEmpiricalCopulaSample)
   : CopulaImplementation()
   , copulaSample_(0, 1)
   , binNumber_(binNumber)
   , logBetaFactors_(0)
-  , logFactors_(0)
+  , logBetaMarginalFactors_(0, 0)
+  , logFactors_(0, 0)
+  , logFactorsMinus1_()
 {
   setName("EmpiricalBernsteinCopula");
   setCopulaSample(copulaSample, isEmpiricalCopulaSample);
@@ -63,16 +68,31 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
 
 /* Default constructor */
 EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
-				 const UnsignedInteger binNumber,
-				 const Point & logBetaFactors,
-				 const Point & logFactors)
+    const UnsignedInteger binNumber,
+    const SampleImplementation & logBetaMarginalFactors,
+    const SampleImplementation & logFactors)
   : CopulaImplementation()
   , copulaSample_(copulaSample)
   , binNumber_(binNumber)
-  , logBetaFactors_(logBetaFactors)
+  , logBetaMarginalFactors_(logBetaMarginalFactors)
   , logFactors_(logFactors)
+  , logFactorsMinus1_(logFactors.getSize(), logFactors.getDimension())
 {
+  const UnsignedInteger size = logFactors_.getSize();
+  const UnsignedInteger dimension = logFactors_.getDimension();
+  logBetaFactors_ = Point(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar sumLogBeta = 0.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      sumLogBeta += logBetaMarginalFactors_(i, j);
+      logFactorsMinus1_(i, j) = logFactors_(i, j) - 1.0;
+    }
+    logBetaFactors_[i] = sumLogBeta;
+  } // i
   setName("EmpiricalBernsteinCopula");
+  setDimension(copulaSample.getDimension());
   computeRange();
 }
 
@@ -119,27 +139,30 @@ String EmpiricalBernsteinCopula::__str__(const String & offset) const
 
 /* Copula sample accessor */
 void EmpiricalBernsteinCopula::setCopulaSample(const Sample & copulaSample,
-				      const Bool isEmpiricalCopulaSample)
+    const Bool isEmpiricalCopulaSample)
 {
   // Check the sample
   const UnsignedInteger size = copulaSample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of size>0.";
-  const UnsignedInteger dimension = copulaSample.getDimension();  
+  if (size <= 1) throw InvalidArgumentException(HERE) << "Error: expected a sample of size>1.";
+  const UnsignedInteger dimension = copulaSample.getDimension();
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension>0.";
   const UnsignedInteger remainder = size % binNumber_;
   // If the given sample is an empirical copula sample of a compatible size
   if (isEmpiricalCopulaSample && remainder == 0)
     copulaSample_ = copulaSample;
   else
+  {
+    if (remainder == 0)
+      copulaSample_ = copulaSample.rank();
+    else
     {
-      Sample localSample(copulaSample);
-      if (remainder != 0)
-	{
-	  LOGINFO(OSS() << "Must drop the last " << remainder << " to build a EmpiricalBernsteinCopula as the given sample has a size=" << size << " which is not a multiple of the bin number=" << binNumber_);
-	  (void) localSample.split(size - remainder);
-	}
-      copulaSample_ = localSample.toEmpiricalCopula();
-    } // remainder > 0 or !isEmpiricalCopulaSample
+      LOGINFO(OSS() << "Must drop the last " << remainder << " to build a EmpiricalBernsteinCopula as the given sample has a size=" << size << " which is not a multiple of the bin number=" << binNumber_);
+      copulaSample_ = Sample(copulaSample, 0, size - remainder).rank();
+    }
+    // Normalize
+    copulaSample_ += 1.0;
+    copulaSample_ /= 1.0 * (size - remainder);
+  } // !(isEmpiricalCopulaSample && remainder == 0)
   setDimension(dimension);
   // Now the sample is correct, compute the by-products
   update();
@@ -174,12 +197,10 @@ Point EmpiricalBernsteinCopula::getRealization() const
   const UnsignedInteger size = copulaSample_.getSize();
   // Select the atom
   const UnsignedInteger atomIndex(RandomGenerator::IntegerGenerate(size));
-  UnsignedInteger linearIndex = atomIndex * dimension;
   for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      realization[j] = DistFunc::rBeta(logFactors_[linearIndex], binNumber_ - logFactors_[linearIndex] + 1.0);
-      ++linearIndex;
-    }
+  {
+    realization[j] = DistFunc::rBeta(logFactors_(atomIndex, j), binNumber_ - logFactors_(atomIndex, j) + 1.0);
+  }
   return realization;
 }
 
@@ -190,16 +211,14 @@ Sample EmpiricalBernsteinCopula::getSample(const UnsignedInteger size) const
   SampleImplementation sample(size, dimension);
   const UnsignedInteger mixtureSize = copulaSample_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // Select the atom
+    const UnsignedInteger atomIndex(RandomGenerator::IntegerGenerate(mixtureSize));
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      // Select the atom
-      const UnsignedInteger atomIndex(RandomGenerator::IntegerGenerate(mixtureSize));
-      UnsignedInteger linearIndex = atomIndex * dimension;
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-	{
-	  sample(i, j) = DistFunc::rBeta(logFactors_[linearIndex], binNumber_ - logFactors_[linearIndex] + 1.0);
-	  ++linearIndex;
-	} // j
-    } // i
+      sample(i, j) = DistFunc::rBeta(logFactors_(atomIndex, j), binNumber_ - logFactors_(atomIndex, j) + 1.0);
+    } // j
+  } // i
   sample.setDescription(getDescription());
   return sample;
 }
@@ -213,24 +232,22 @@ Scalar EmpiricalBernsteinCopula::computePDF(const Point & point) const
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
   Scalar pdfValue = 0.0;
   Point logX(dimension);
-  Point log1pX(dimension);
+  Point log1mX(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      logX[i] = std::log(point[i]);
-      log1pX[i] = log1p(-point[i]);
-    }
+  {
+    logX[i] = std::log(point[i]);
+    log1mX[i] = log1p(-point[i]);
+  }
   const UnsignedInteger size = copulaSample_.getSize();
-  UnsignedInteger linearIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar logPDFAtom = - logBetaFactors_[i];
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      Scalar logPDFAtom = 0.0;
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-	{
-	  logPDFAtom += (logFactors_[linearIndex] - 1.0) * logX[j] + (binNumber_ - logFactors_[linearIndex]) * log1pX[j] - logBetaFactors_[linearIndex];
-	  ++linearIndex;
-	} // j
-      pdfValue += std::exp(logPDFAtom);
-    } // i
+      logPDFAtom += (logFactors_(i, j) - 1.0) * logX[j] + (binNumber_ - logFactors_(i, j)) * log1mX[j];
+    } // j
+    pdfValue += std::exp(logPDFAtom);
+  } // i
   return pdfValue / size;
 }
 
@@ -243,33 +260,25 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return -SpecFunc::LogMaxScalar;
   Scalar sumPDFValue = 0.0;
   Point logX(dimension);
-  Point log1pX(dimension);
+  Scalar log1mX = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      logX[i] = std::log(point[i]);
-      log1pX[i] = log1p(-point[i]);
-    }
+  {
+    const Scalar log1mXi = log1p(-point[i]);
+    logX[i] = std::log(point[i]) - log1mXi;
+    log1mX += log1mXi;
+  }
   const UnsignedInteger size = copulaSample_.getSize();
-  UnsignedInteger linearIndex = 0;
-  Scalar maxLogPDF = 0.0;
-  const Scalar logW = -std::log(size);
+  // Compute matrix-vector product (logFactors_(i, .) - 1.0) * logX[.] - logBetaFactors_[i]
+  const Point matvec(logFactorsMinus1_.genVectProd(logX) - logBetaFactors_);
+  // To avoid overflows and improve accuracy, we replace
+  //    log(sum(exp(matvec[i])))
+  // by maxValue + log(sum(exp(matvec[i] - maxValue)))
+  const Scalar maxValue = *std::max_element(matvec.begin(), matvec.end());
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      Scalar logPDFAtom = 0.0;
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-	{
-	  logPDFAtom += (logFactors_[linearIndex] - 1.0) * logX[j] + (binNumber_ - logFactors_[linearIndex]) * log1pX[j] + logW - logBetaFactors_[linearIndex];
-	  ++linearIndex;
-	} // j
-      if (logPDFAtom > maxLogPDF)
-	{
-	  sumPDFValue += std::exp(maxLogPDF);
-	  maxLogPDF = logPDFAtom;
-	}
-      else
-	sumPDFValue += std::exp(logPDFAtom);
-    } // i
-  return maxLogPDF + log1p(sumPDFValue * std::exp(-maxLogPDF));
+  {
+    sumPDFValue += std::exp(matvec[i] - maxValue);
+  } // i
+  return maxValue + std::log(sumPDFValue) + log1mX * (binNumber_ - 1) - std::log(1.0 * size);
 }
 
 /* Get the CDF of the EmpiricalBernsteinCopula */
@@ -279,17 +288,15 @@ Scalar EmpiricalBernsteinCopula::computeCDF(const Point & point) const
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
   Scalar cdfValue = 0.0;
   const UnsignedInteger size = copulaSample_.getSize();
-  UnsignedInteger linearIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar cdfAtom = 1.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      Scalar cdfAtom = 1.0;
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-	{
-	  cdfAtom *= SpecFunc::RegularizedIncompleteBeta(logFactors_[linearIndex], binNumber_ - logFactors_[linearIndex] + 1.0, point[j]);
-	  ++linearIndex;
-	} // j
-      cdfValue += cdfAtom;
-    } // i
+      cdfAtom *= SpecFunc::RegularizedIncompleteBeta(logFactors_(i, j), binNumber_ - logFactors_(i, j) + 1.0, point[j]);
+    } // j
+    cdfValue += cdfAtom;
+  } // i
   return cdfValue / size;
 }
 
@@ -300,46 +307,40 @@ Scalar EmpiricalBernsteinCopula::computeProbability(const Interval & interval) c
   const UnsignedInteger dimension = getDimension();
   Scalar probabilityValue = 0.0;
   const UnsignedInteger size = copulaSample_.getSize();
-  UnsignedInteger linearIndex = 0;
   const Point lower(interval.getLowerBound());
   const Point upper(interval.getUpperBound());
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar probabilityAtom = 1.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      Scalar probabilityAtom = 1.0;
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-	{
-	  const Scalar r = logFactors_[linearIndex];
-	  const Scalar s = binNumber_ - logFactors_[linearIndex] + 1.0;
-	  probabilityAtom *= SpecFunc::RegularizedIncompleteBeta(r, s, upper[j]) - SpecFunc::RegularizedIncompleteBeta(r, s, lower[j]);
-	  ++linearIndex;
-	} // j
-      probabilityValue += probabilityAtom;
-    } // i
+      const Scalar r = logFactors_(i, j);
+      const Scalar s = binNumber_ - logFactors_(i, j) + 1.0;
+      probabilityAtom *= SpecFunc::RegularizedIncompleteBeta(r, s, upper[j]) - SpecFunc::RegularizedIncompleteBeta(r, s, lower[j]);
+    } // j
+    probabilityValue += probabilityAtom;
+  } // i
   return probabilityValue / size;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
-EmpiricalBernsteinCopula::Implementation EmpiricalBernsteinCopula::getMarginal(const Indices & indices) const
+Distribution EmpiricalBernsteinCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = copulaSample_.getSize();
   const UnsignedInteger marginalDimension = indices.getSize();
-  Point marginalLogBetaFactors(size * marginalDimension);
-  Point marginalLogFactors(size * marginalDimension);
-  UnsignedInteger linearIndex = 0;
-  UnsignedInteger baseIndex = 0;
+  SampleImplementation marginalLogBetaFactors(size, marginalDimension);
+  SampleImplementation marginalLogFactors(size, marginalDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    for (UnsignedInteger j = 0; j < marginalDimension; ++j)
     {
-      for (UnsignedInteger j = 0; j < marginalDimension; ++j)
-	{
-	  const UnsignedInteger marginalIndex = indices[j];
-	  marginalLogBetaFactors[linearIndex] = logBetaFactors_[baseIndex + marginalIndex];
-	  marginalLogFactors[linearIndex] = logFactors_[baseIndex + marginalIndex];
-	  ++linearIndex;
-	} // j
-      baseIndex += dimension;
-    } // i
+      const UnsignedInteger marginalIndex = indices[j];
+      marginalLogBetaFactors(i, j) = logBetaMarginalFactors_(i, marginalIndex);
+      marginalLogFactors(i, j) = logFactors_(i, marginalIndex);
+    } // j
+  } // i
   return new EmpiricalBernsteinCopula(copulaSample_.getMarginal(indices), binNumber_, marginalLogBetaFactors, marginalLogFactors);
 }
 
@@ -356,12 +357,10 @@ CorrelationMatrix EmpiricalBernsteinCopula::getSpearmanCorrelation() const
     for (UnsignedInteger j = 0; j < i; ++j)
     {
       Scalar value = 0.0;
-      UnsignedInteger base = 0;
       for (UnsignedInteger k = 0; k < size; ++k)
-	{
-	  value += logFactors_[base + i] * logFactors_[base + j];
-	  base += dimension;
-	}
+      {
+        value += logFactors_(k, i) * logFactors_(k, j);
+      }
       rho(i, j) = value * normalizationFactor - 3.0;
     } // j
   } // i
@@ -385,21 +384,26 @@ void EmpiricalBernsteinCopula::update()
 {
   const UnsignedInteger size = copulaSample_.getSize();
   const UnsignedInteger dimension = copulaSample_.getDimension();
-  logBetaFactors_ = Point(size * dimension);
-  logFactors_ = Point(size * dimension);
-  UnsignedInteger linearIndex = 0;
+  logBetaMarginalFactors_ = SampleImplementation(size, dimension);
+  logBetaFactors_ = Point(size);
+  logFactors_ = SampleImplementation(size, dimension);
+  logFactorsMinus1_ = MatrixImplementation(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar sumLogBeta = 0.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-	{
-	  const Scalar xIJ = copulaSample_(i, j);
-	  const Scalar r = ceil(binNumber_ * xIJ);
-	  const Scalar s = binNumber_ - r + 1.0;
-	  logBetaFactors_[linearIndex] = SpecFunc::LogBeta(r, s);
-	  logFactors_[linearIndex] = r;
-	  ++linearIndex;
-	} // j
-    } // i
+      const Scalar xIJ = copulaSample_(i, j);
+      const Scalar r = ceil(binNumber_ * xIJ);
+      const Scalar s = binNumber_ - r + 1.0;
+      const Scalar logBeta = SpecFunc::LogBeta(r, s);
+      sumLogBeta += logBeta;
+      logBetaMarginalFactors_(i, j) = logBeta;
+      logFactors_(i, j) = r;
+      logFactorsMinus1_(i, j) = r - 1.0;
+    } // j
+    logBetaFactors_[i] = sumLogBeta;
+  } // i
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -408,8 +412,6 @@ void EmpiricalBernsteinCopula::save(Advocate & adv) const
   CopulaImplementation::save(adv);
   adv.saveAttribute( "copulaSample_", copulaSample_ );
   adv.saveAttribute( "binNumber_", binNumber_ );
-  adv.saveAttribute( "logBetaFactors_", logBetaFactors_ );
-  adv.saveAttribute( "logFactors_", logFactors_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -418,8 +420,7 @@ void EmpiricalBernsteinCopula::load(Advocate & adv)
   CopulaImplementation::load(adv);
   adv.loadAttribute( "copulaSample_", copulaSample_ );
   adv.loadAttribute( "binNumber_", binNumber_ );
-  adv.loadAttribute( "logBetaFactors_", logBetaFactors_ );
-  adv.loadAttribute( "logFactors_", logFactors_ );
+  update();
   computeRange();
 }
 

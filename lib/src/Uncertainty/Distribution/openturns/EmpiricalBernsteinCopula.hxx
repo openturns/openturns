@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements assembly distributions
+ *  @brief The class that implements the Bernstein approximation of the empirical copula
  *
  *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
  *
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class EmpiricalBernsteinCopula
  *
  * The class describes the probabilistic concept of copulas
- * made from a collection of copulas joined by an independent copula
+ * made from the empirical compula and a Bernstein approximation
  */
 class OT_API EmpiricalBernsteinCopula
   : public CopulaImplementation
@@ -93,7 +93,7 @@ public:
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
-  Implementation getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const;
 
   /** Get the Spearman correlation of the distribution */
   CorrelationMatrix getSpearmanCorrelation() const;
@@ -116,8 +116,8 @@ private:
   /** Default constructor */
   EmpiricalBernsteinCopula(const Sample & copulaSample,
 		  const UnsignedInteger binNumber,
-		  const Point & logBetaFactors,
-		  const Point & logFactors);
+		  const SampleImplementation & logBetaMarginalFactors,
+		  const SampleImplementation & logFactors);
 
   /** Compute the normalization factors */
   void update();
@@ -130,7 +130,9 @@ private:
 
   /** Normalization factors */
   Point logBetaFactors_;
-  Point logFactors_;
+  SampleImplementation logBetaMarginalFactors_;
+  SampleImplementation logFactors_;
+  MatrixImplementation logFactorsMinus1_;
   
 }; /* class EmpiricalBernsteinCopula */
 

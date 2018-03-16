@@ -61,7 +61,7 @@ public:
                              const UnsignedInteger binNumber);
 
   /** Build a Bernstein copula based on the given sample and bin number as a EmpiricalBernsteinCopula */
-  EmpiricalBernsteinCopula buildAsBernsteinCopula();
+  EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula();
 
   EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula(const Sample & sample,
       const String & method = ResourceMap::Get("BernsteinCopulaFactory-BinNumberSelectionMethod"),

@@ -318,7 +318,7 @@ UnsignedInteger BernsteinCopulaFactory::ComputePenalizedCsiszarDivergenceBinNumb
 /* Build a Bernstein copula based on the given sample. The bin number is computed according to the rule given by ResourceMap */
 Distribution BernsteinCopulaFactory::build()
 {
-  return buildAsBernsteinCopula().clone();
+  return buildAsEmpiricalBernsteinCopula().clone();
 }
 
 Distribution BernsteinCopulaFactory::build(const Sample & sample,
@@ -335,12 +335,12 @@ Distribution BernsteinCopulaFactory::build(const Sample & sample,
 }
 
 /* Build a Bernstein copula based on the given sample. */
-EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsBernsteinCopula()
+EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula()
 {
   return EmpiricalBernsteinCopula();
 }
 
-EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsBernsteinCopula(const Sample & sample,
+EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula(const Sample & sample,
     const String & method,
     const Function & objective)
 {

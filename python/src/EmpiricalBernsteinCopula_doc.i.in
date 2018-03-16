@@ -1,88 +1,83 @@
 %feature("docstring") OT::EmpiricalBernsteinCopula
-"EmpiricalBernsteinCopula copula .
+"EmpiricalBernstein copula.
 
-Available constructors:
-    EmpiricalBernsteinCopula()
-
-The copula is estimated by a mixture of products of Beta distributions,
-ie its density function :math:`\hat{c}` is given by:
-
-.. math::
-
-    \forall (u_1,\hdots,u_d)\in[0,1]^d,\quad\hat{c}(u_1,\hdots,u_d) = \frac{1}{n}\sum_{i=1}^n\prod_{j=1}^d\beta_{\nu^i_j+1, m+1}(u_j)
-
-where :math:`\nu_j=\left\lfloor \dfrac{m}{n}\mathrm{rank}(X^i_j)\right\rfloor`
-is the index of the bin to which the normalized rank of the component :math:`j`
-of the observation :math:`j` belongs and :math:`\beta_{r,t}` is the density of
-the beta distribution supported by [0,1].
-
-This estimator is called the Bernstein estimator because of the fact that, for integer shape parameters :math:`r` and :math:`t`, the density function of the beta distribution is equal to the Bernstein polynomial :math:`P_{r,t}`:
-
-.. math::
-
-    \beta_{r+1,t+1}(u)=(t+1)\binom{t}{r}u^r(1-u)^{t-r-1}=P_{r,t-r-1}(u)
-
-See also
---------
-Distribution, Beta"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EmpiricalBernsteinCopula::build
-"Build the nonparametric Bernstein copula estimator based on the empirical copula.
-
-**Available usages**:
-
-    build(*sample*)
-
-    build(*sample, m*)
+Available constructor:
+    EmpiricalBernsteinCopula(*sample=[[0.0]], binNumber=1, isEmpiricalCopulaSample=False*)
 
 Parameters
 ----------
-sample : 2-d sequence of float, of dimension *d*
-    The sample of size :math:`n>0` from which the copula is estimated.
-m : int
-    The number of sub-intervals in which all the edges of the unit cube
-    :math:`[0, 1]^d` are regularly partitioned."
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::EmpiricalBernsteinCopula::computeBinNumber
-"Compute the optimal AMISE number of bins.
-
-Parameters
-----------
-sample : 2-d sequence of float, of dimension 1
-    The sample from which the optimal AMISE bin number is computed.
+sample : :class:`~openturns.Sample`
+    The sample of size :math:`N>0` and dimension :math:`d` from which the empirical copula sample is extracted.
+binNumber : int, :math:`0<binNumber\leq N`
+    The number of cells into which each dimension of the unit cube :math:`[0, 1]^d` is divided to cluster the empirical copula sample.
+isCopulaSample : bool
+    Flag to tell if the given sample is already an empirical copula sample.
 
 Notes
 -----
-The number of bins is computed by minimizing the asymptotic mean integrated squared error (AMISE), leading to
+The empirical Bernstein copula is a copula based on the Bernstein approximation built upon a clustering of the empirical copula. It is defined by:
 
 .. math::
 
-    m = 1+\left\lfloor n^{\dfrac{2}{4+n}} \right\rfloor
+    C(\vect{u}) = \dfrac{1}{N}\sum_{i=1}^N\prod_{j=1}^d I_{r_j^i,s_j^i}(u_j)
 
-where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :math:`x`.
-"
+for :math:`\vect{u}\in[0,1]^d`, where :math:`r_j^i=\lceil binNumber U_j^i \rceil`, :math:`binNumber - r_j^i + 1`, :math:`(\vect{U}_i)_{i=1,\dots,N}` is the empirical copula sample associated to *sample* and :math:`I_{a,b}(x)` is the value of the regularized incomplete beta function of parameters :math:`a` and :math:`b` at :math:`x`, see :class:`~openturns.SpecFunc`.
+
+This construction leads to an actual copula if and only if :math:`N` is a multiple of :math:`binNumber`. If it is not the case, the last points of the sample are droped in order to fulfill this condition.
+
+See also
+--------
+BernsteincopulaFactory
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(10), 2, False)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ClassifierImplementation::setParallel
-"Accessor to the parallel flag.
-
-Parameters
-----------
-flag : bool
-    Logical value telling if the classification and grading are done in parallel.
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::ClassifierImplementation::isParallel
-"Accessor to the parallel flag.
+%feature("docstring") OT::EmpiricalBernsteinCopula::getCopulaSample
+"Get the empirical copula sample.
 
 Returns
 -------
-flag : bool
-    Logical value telling if the parallel mode has been activated.
-"
+sample : :class:`~openturns.Sample`
+    The empirical copula sample of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EmpiricalBernsteinCopula::setCopulaSample
+"Set the sample of the copula.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The sample from which the empirical copula sample is deduced.
+isEmpiricalCopulaSample : bool
+    Flag telling if the given sample is already an empirical copula sample. The default value is *False*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EmpiricalBernsteinCopula::getBinNumber
+"Get the bin number of the copula.
+
+Returns
+-------
+binNumber : int
+    The bin number of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EmpiricalBernsteinCopula::setBinNumber
+"Set the bin number of the copula.
+
+Parameters
+----------
+binNumber : int
+    The bin number of the copula. It must be positive and not greater than the copula sample size."

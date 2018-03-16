@@ -1,0 +1,74 @@
+Copula  class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X0,X1] data=[[0.833333,0.166667],[0.583333,0.916667],[0.166667,0.583333],[0.666667,1],[0.916667,0.833333],[0.5,0.5],[0.0833333,0.0833333],[0.25,0.416667],[1,0.333333],[0.416667,0.666667],[0.75,0.75],[0.333333,0.25]] binNumber=3
+Copula  EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
+ 0 : [ 0.833333  0.166667  ]
+ 1 : [ 0.583333  0.916667  ]
+ 2 : [ 0.166667  0.583333  ]
+ 3 : [ 0.666667  1         ]
+ 4 : [ 0.916667  0.833333  ]
+ 5 : [ 0.5       0.5       ]
+ 6 : [ 0.0833333 0.0833333 ]
+ 7 : [ 0.25      0.416667  ]
+ 8 : [ 1         0.333333  ]
+ 9 : [ 0.416667  0.666667  ]
+10 : [ 0.75      0.75      ]
+11 : [ 0.333333  0.25      ] binNumber=3)
+Mean  class=Point name=Unnamed dimension=2 values=[0.5,0.5]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0104167,0.0104167,0.0833333]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.556922,0.642376]
+oneSample= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 description=[X0,X1] data=[[0.95517,0.267405],[0.235812,0.588342],[0.757744,0.712473],[0.379043,0.365738],[0.487971,0.901168],[0.487185,0.68597],[0.572751,0.429834],[0.87806,0.289642],[0.315046,0.0722239],[0.376398,0.80292]]
+anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.500531,0.506247]
+anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0836941,0.0104038,0.0104038,0.0836027]
+Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.135200  cdf=0.050752
+Quantile= class=Point name=Unnamed dimension=2 values=[0.694453,0.694453]
+CDF(quantile)=0.500000
+Quantile= class=Point name=Unnamed dimension=2 values=[0.198405,0.198405]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.0254747,0.0254747]
+Survival(inverseSurvival)=0.950000
+entropy=-0.019026
+Minimum volume interval= [0.0126794, 0.987321]
+[0.0126794, 0.987321]
+threshold= [0.974641]
+Minimum volume level set= {x | f(x) <= 0.230258} with f=
+MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
+ 0 : [ 0.833333  0.166667  ]
+ 1 : [ 0.583333  0.916667  ]
+ 2 : [ 0.166667  0.583333  ]
+ 3 : [ 0.666667  1         ]
+ 4 : [ 0.916667  0.833333  ]
+ 5 : [ 0.5       0.5       ]
+ 6 : [ 0.0833333 0.0833333 ]
+ 7 : [ 0.25      0.416667  ]
+ 8 : [ 1         0.333333  ]
+ 9 : [ 0.416667  0.666667  ]
+10 : [ 0.75      0.75      ]
+11 : [ 0.333333  0.25      ] binNumber=3))
+beta= [0.794328]
+Bilateral confidence interval= [0.0126794, 0.987321]
+[0.0126794, 0.987321]
+beta= [0.974641]
+Unilateral confidence interval (lower tail)= [0, 0.974525]
+[0, 0.974525]
+beta= [0.974525]
+Unilateral confidence interval (upper tail)= [0.0254747, 1]
+[0.0254747, 1]
+beta= [0.974525]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.70259]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.268608]
+indices= [1,0]
+margins= class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X1,X0] data=[[0.166667,0.833333],[0.916667,0.583333],[0.583333,0.166667],[1,0.666667],[0.833333,0.916667],[0.5,0.5],[0.0833333,0.0833333],[0.416667,0.25],[0.333333,1],[0.666667,0.416667],[0.75,0.75],[0.25,0.333333]] binNumber=3
+margins PDF=1.095703
+margins CDF=0.076782
+margins quantile= class=Point name=Unnamed dimension=2 values=[0.974525,0.974525]
+margins CDF(qantile)=0.950000
+margins realization= class=Point name=Unnamed dimension=2 values=[0.739996,0.466049]

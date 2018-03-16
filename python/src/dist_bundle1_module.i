@@ -26,6 +26,7 @@
 %include ArcsineMuSigma.i
 %include Bernoulli.i
 %include BernoulliFactory.i
+%include EmpiricalBernsteinCopula.i
 %include BernsteinCopulaFactory.i
 %include Beta.i
 %include BetaFactory.i
@@ -43,7 +44,6 @@
 %include DiracFactory.i
 %include Dirichlet.i
 %include DirichletFactory.i
-%include EmpiricalBernsteinCopula.i
 %include Epanechnikov.i
 %include Exponential.i
 %include ExponentialFactory.i
