@@ -134,6 +134,15 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   inputDesign_ = sobolExperiment.generate();
   outputDesign_ = model(inputDesign_);
 
+  if (computeSecondOrder && (inputDimension == 2))
+  {
+    // Special case: the experiment does not contain the C=[E_2, E_1] sample
+    Sample E1(outputDesign_, size * 2, size * 3);
+    Sample E2(outputDesign_, size * 3, size * 4);
+    outputDesign_.add(E2);
+    outputDesign_.add(E1);
+  }
+
   // center Y
   Point muY(outputDesign_.computeMean());
   outputDesign_ -= muY;

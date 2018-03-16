@@ -51,7 +51,10 @@ SobolIndicesExperiment::SobolIndicesExperiment(const WeightedExperiment & experi
 
   const UnsignedInteger size = experiment.getSize();
   const UnsignedInteger dimension = experiment.getDistribution().getDimension();
-  size_ = size * (2 + dimension * (computeSecondOrder_ ? 2 : 1));
+  size_ = size * (2 + dimension);// A,B,E samples for first, total order
+  // C sample for second order, except for d=2
+  if (computeSecondOrder_ && (dimension != 2))
+    size_ += size * dimension;
 }
 
 
@@ -111,24 +114,25 @@ Bool SobolIndicesExperiment::hasUniformWeights() const
 Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
 {
   const UnsignedInteger size = experiment_.getSize();
-  Sample design(experiment_.generate());
-  design.add(experiment_.generate());
+  Sample design(experiment_.generate());// A
+  design.add(experiment_.generate());// B
   const UnsignedInteger dimension = design.getDimension();
 
   // Compute designs of type Saltelli/Martinez for 1st order
   for (UnsignedInteger p = 0; p < dimension; ++ p)
   {
-    Sample x(design, 0, size);// first chunk
-    for (UnsignedInteger k = 0; k < size; ++ k) x[k][p] = design[k + size][p];
-    design.add(x);
+    Sample E(design, 0, size);// E=A
+    for (UnsignedInteger k = 0; k < size; ++ k) E(k, p) = design(k + size, p);
+    design.add(E);
   }
-  if (computeSecondOrder_)
+  // Special case for dim=2: do not add the C sample
+  if (computeSecondOrder_ && (dimension != 2))
   {
     for (UnsignedInteger p = 0; p < dimension; ++ p)
     {
-      Sample x(design, size, 2 * size);// second chunk
-      for (UnsignedInteger k = 0; k < size; ++ k) x[k][p] = design[k][p];
-      design.add(x);
+      Sample C(design, size, 2 * size);// C=B
+      for (UnsignedInteger k = 0; k < size; ++ k) C(k, p) = design(k, p);
+      design.add(C);
     }
   }
   weights = Point(getSize(), 1.0 / getSize());
