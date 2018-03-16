@@ -131,6 +131,16 @@ Matrix KarhunenLoeveResultImplementation::getProjectionMatrix() const
 }
 
 /* Projection method */
+Sample KarhunenLoeveResultImplementation::project(const Basis & basis) const
+{
+  const UnsignedInteger size = basis.getSize();
+  const Sample vertices(modesAsProcessSample_.getMesh().getVertices());
+  Sample functionValues(size, projection_.getNbColumns());
+  for(UnsignedInteger i = 0; i < size; ++i)
+    functionValues[i] = (basis.build(i)(vertices)).getImplementation()->getData();
+  return projection_.getImplementation()->genSampleProd(functionValues, true, false, 'R');
+}
+
 Point KarhunenLoeveResultImplementation::project(const Function & function) const
 {
   // Evaluate the function over the vertices of the mesh and cast it into a Point

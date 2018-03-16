@@ -82,6 +82,7 @@ public:
   /** Projection method */
   Point project(const Function & function) const;
   Point project(const Field & field) const;
+  Sample project(const Basis & basis) const;
   Sample project(const ProcessSample & sample) const;
 
   /** Lift method */
