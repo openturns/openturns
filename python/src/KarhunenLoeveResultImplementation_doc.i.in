@@ -199,6 +199,8 @@ OT_KarhunenLoeveResult_getProjectionMatrix_doc
 Available constructors:
     project(*function*)
 
+    project(*functions*)
+
     project(*field*)
 
     project(*fieldSample*)
@@ -207,6 +209,8 @@ Parameters
 ----------
 function : :class:`~openturns.Function`
     A function.
+functions : list of :class:`~openturns.Function`
+    A list of functions.
 field :  :class:`~openturns.Field`
     A field.
 fieldSample :  :class:`~openturns.ProcessSample`

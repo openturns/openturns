@@ -131,13 +131,13 @@ Matrix KarhunenLoeveResultImplementation::getProjectionMatrix() const
 }
 
 /* Projection method */
-Sample KarhunenLoeveResultImplementation::project(const Basis & basis) const
+Sample KarhunenLoeveResultImplementation::project(const FunctionCollection & functionCollection) const
 {
-  const UnsignedInteger size = basis.getSize();
+  const UnsignedInteger size = functionCollection.getSize();
   const Sample vertices(modesAsProcessSample_.getMesh().getVertices());
   Sample functionValues(size, projection_.getNbColumns());
   for(UnsignedInteger i = 0; i < size; ++i)
-    functionValues[i] = (basis.build(i)(vertices)).getImplementation()->getData();
+    functionValues[i] = (functionCollection[i](vertices)).getImplementation()->getData();
   return projection_.getImplementation()->genSampleProd(functionValues, true, false, 'R');
 }
 
