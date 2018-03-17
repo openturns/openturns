@@ -137,16 +137,6 @@ Bool RegularGrid::isRegular() const
   return true;
 }
 
-/* Get the index of the nearest vertex */
-UnsignedInteger RegularGrid::getNearestVertexIndex(const Point & point) const
-{
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension 1, got a point of dimension " << point.getDimension();
-  const Scalar x = point[0];
-  if (x <= start_) return 0;
-  if (x >= start_ + (n_ - 1) * step_) return n_ - 1;
-  return static_cast<UnsignedInteger>(round((x - start_) / step_));
-}
-
 /* Tells if the given grid follows the current one */
 Bool RegularGrid::follows(const RegularGrid & starter) const
 {

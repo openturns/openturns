@@ -47,7 +47,6 @@ Mesh::Mesh(const UnsignedInteger dimension)
   , dimension_(dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
-  , tree_()
   , verticesToSimplices_()
   , lowerBoundingBoxSimplices_(0, dimension)
   , upperBoundingBoxSimplices_(0, dimension)
@@ -64,7 +63,6 @@ Mesh::Mesh(const Sample & vertices)
   , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_()
-  , tree_()
   , verticesToSimplices_()
   , lowerBoundingBoxSimplices_(0, vertices.getDimension())
   , upperBoundingBoxSimplices_(0, vertices.getDimension())
@@ -82,7 +80,6 @@ Mesh::Mesh(const Sample & vertices,
   , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
-  , tree_()
   , verticesToSimplices_()
   , lowerBoundingBoxSimplices_(0, vertices.getDimension())
   , upperBoundingBoxSimplices_(0, vertices.getDimension())
@@ -125,19 +122,6 @@ void Mesh::setVertices(const Sample & vertices)
   verticesToSimplices_ = IndicesCollection();
   lowerBoundingBoxSimplices_ = Sample(0, dimension_);
   upperBoundingBoxSimplices_ = Sample(0, dimension_);
-}
-
-/* Nearest neighbour algorithm accessor */
-NearestNeighbourAlgorithm Mesh::getNearestNeighbourAlgorithm() const
-{
-  return tree_;
-}
-
-void Mesh::setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & tree)
-{
-  NearestNeighbourAlgorithm emptyClone(tree.getImplementation()->emptyClone());
-  tree_.swap(emptyClone);
-  tree_.setSample(vertices_);
 }
 
 /* Check if the given point is in a simplex containing nearestIndex and returns simplex index and barycentric coordinates */
@@ -292,129 +276,6 @@ UnsignedInteger Mesh::getVerticesNumber() const
 UnsignedInteger Mesh::getSimplicesNumber() const
 {
   return simplices_.getSize();
-}
-
-/* TBB functor to speed-up nearest index computation */
-struct NearestFunctor
-{
-  const Mesh & mesh_;
-  const Point & point_;
-  Scalar minDistance_;
-  UnsignedInteger minIndex_;
-
-  NearestFunctor(const Mesh & mesh, const Point & point)
-    : mesh_(mesh), point_(point), minDistance_(SpecFunc::MaxScalar), minIndex_(0) {}
-
-  NearestFunctor(const NearestFunctor & other, TBB::Split)
-    : mesh_(other.mesh_), point_(other.point_), minDistance_(SpecFunc::MaxScalar), minIndex_(0) {}
-
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const Scalar d = (point_ - mesh_.getVertices()[i]).normSquare();
-      if (d < minDistance_)
-      {
-        minDistance_ = d;
-        minIndex_ = i;
-      } // d < minDistance_
-    } // i
-  } // operator
-
-  void join(const NearestFunctor & other)
-  {
-    if (other.minDistance_ < minDistance_)
-    {
-      minDistance_ = other.minDistance_;
-      minIndex_ = other.minIndex_;
-    } // minDistance
-  } // join
-
-}; /* end struct NearestFunctor */
-
-/* Get the index of the nearest vertex */
-UnsignedInteger Mesh::getNearestVertexIndex(const Point & point) const
-{
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-  if (tree_.getSample().getSize() > 0) return tree_.query(point);
-  NearestFunctor functor( *this, point );
-  TBB::ParallelReduce( 0, getVerticesNumber(), functor );
-  return functor.minIndex_;
-}
-
-/* Get the index of the nearest vertex and the index of the containing simplex if any */
-Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,
-    Point & coordinates) const
-{
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-  const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
-  Indices result(1, nearestIndex);
-  // To be sure that the vertices to simplices map is up to date
-  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  coordinates = Point(0);
-  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
-  {
-    const UnsignedInteger simplexIndex = *cit;
-    if (checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates))
-    {
-      result.add(simplexIndex);
-      break;
-    }
-  } // Loop over the simplices candidates
-  // If no simplex contains the given point, reset the coordinates vector
-  if (result.getSize() == 1) coordinates = Point(0);
-  return result;
-}
-
-/* Get the nearest vertex */
-Point Mesh::getNearestVertex(const Point & point) const
-{
-  return vertices_[getNearestVertexIndex(point)];
-}
-
-/* TBB policy to speed-up nearest index computation over a sample */
-struct MeshNearestPolicy
-{
-  const Sample & points_;
-  Indices & indices_;
-  const Mesh & mesh_;
-
-  MeshNearestPolicy(const Sample & points,
-                    Indices & indices,
-                    const Mesh & mesh)
-    : points_(points)
-    , indices_(indices)
-    , mesh_(mesh)
-  {}
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) indices_[i] = mesh_.getNearestVertexIndex(points_[i]);
-  }
-
-}; /* end struct MeshNearestPolicy */
-
-/* Get the index of the nearest vertex for a set of points */
-Indices Mesh::getNearestVertexIndex(const Sample & points) const
-{
-  if (points.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected points of dimension " << getDimension() << ", got points of dimension " << points.getDimension();
-  const UnsignedInteger size = points.getSize();
-  Indices indices(size);
-  if (size == 0) return indices;
-  const MeshNearestPolicy policy( points, indices, *this );
-  TBB::ParallelFor( 0, size, policy );
-  return indices;
-}
-
-/* Get the nearest vertex for a set of points */
-Sample Mesh::getNearestVertex(const Sample & points) const
-{
-  const Indices indices(getNearestVertexIndex(points));
-  const UnsignedInteger size = indices.getSize();
-  Sample neighbours(size, getDimension());
-  for (UnsignedInteger i = 0; i < size; ++i)
-    neighbours[i] = vertices_[indices[i]];
-  return neighbours;
 }
 
 /* Compute the volume of a given simplex */
@@ -1171,7 +1032,6 @@ void Mesh::save(Advocate & adv) const
   adv.saveAttribute("volume_", volume_);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
-  adv.saveAttribute("tree_", tree_);
   adv.saveAttribute("verticesToSimplices_", verticesToSimplices_);
   adv.saveAttribute("lowerBoundingBoxSimplices_", lowerBoundingBoxSimplices_);
   adv.saveAttribute("upperBoundingBoxSimplices_", upperBoundingBoxSimplices_);
@@ -1186,7 +1046,6 @@ void Mesh::load(Advocate & adv)
   adv.loadAttribute("volume_", volume_);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
-  adv.loadAttribute("tree_", tree_);
   adv.loadAttribute("verticesToSimplices_", verticesToSimplices_);
   adv.loadAttribute("lowerBoundingBoxSimplices_", lowerBoundingBoxSimplices_);
   adv.loadAttribute("upperBoundingBoxSimplices_", upperBoundingBoxSimplices_);
