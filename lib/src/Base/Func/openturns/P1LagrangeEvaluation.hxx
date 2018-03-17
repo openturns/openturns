@@ -25,6 +25,7 @@
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/NearestNeighbourAlgorithm.hxx"
+#include "openturns/EnclosingSimplexAlgorithm.hxx"
 #include "openturns/ProcessSample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -70,14 +71,6 @@ public:
   void setMesh(const Mesh & mesh);
   Mesh getMesh() const;
 
-  /** Vertices accessor */
-  void setVertices(const Sample & vertices);
-  Sample getVertices() const;
-
-  /** Simplices accessor */
-  void setSimplices(const IndicesCollection & simplices);
-  IndicesCollection getSimplices() const;
-
   /** Values accessor */
   void setValues(const Sample & values);
   Sample getValues() const;
@@ -85,6 +78,10 @@ public:
   /** Nearest neighbour algorithm accessor */
   void setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & nearestNeighbour);
   NearestNeighbourAlgorithm getNearestNeighbourAlgorithm() const;
+
+  /** Enclosing simplex algorithm accessor */
+  void setEnclosingSimplexAlgorithm(const EnclosingSimplexAlgorithm & enclosingSimplex);
+  EnclosingSimplexAlgorithm getEnclosingSimplexAlgorithm() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -120,31 +117,10 @@ protected:
   /* NearestNeighbourAlgorithm to speed-up nearest-neighbour search */
   NearestNeighbourAlgorithm nearestNeighbour_;
 
+  /* EnclosingSimplexAlgorithm to speed-up point location */
+  EnclosingSimplexAlgorithm enclosingSimplex_;
+
 private:
-
-  class P1LagrangeEvaluationComputeSamplePolicy
-  {
-    const Sample & input_;
-    Sample & output_;
-    const P1LagrangeEvaluation & lagrange_;
-
-  public:
-    P1LagrangeEvaluationComputeSamplePolicy(const Sample & input,
-                                            Sample & output,
-                                            const P1LagrangeEvaluation & lagrange)
-      : input_(input)
-      , output_(output)
-      , lagrange_(lagrange)
-    {
-      // Nothing to do
-    }
-
-    inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-    {
-      for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-        output_[i] = lagrange_.evaluate(input_[i]);
-    } // operator ()
-  };  // class P1LagrangeEvaluationComputeSamplePolicy
 
 }; /* class P1LagrangeEvaluation */
 
