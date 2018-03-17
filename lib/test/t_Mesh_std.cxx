@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
       simplices(2, 0) = 2;
       simplices(2, 1) = 3;
       Mesh mesh1D(vertices, simplices);
+      MeshDomain mesh1Ddomain(mesh1D);
       KDTree tree(vertices);
       fullprint << "1D mesh=" << mesh1D << std::endl;
       fullprint << "Is empty? " << mesh1D.isEmpty() << std::endl;
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
       fullprint << "First simplex volume=" << mesh1D.computeSimplexVolume(0) << std::endl;
       Point p(1);
       p[0] = 1.3;
-      fullprint << "is p=" << p << " in mesh? " << mesh1D.contains(p) << std::endl;
+      fullprint << "is p=" << p << " in mesh? " << mesh1Ddomain.contains(p) << std::endl;
       {
         Point point(1, 1.8);
         UnsignedInteger nearestIndex = tree.query(point);

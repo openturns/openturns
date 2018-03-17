@@ -19,6 +19,7 @@
  * EvaluationProxy
  * MemoizeFunction, MemoizeEvaluation
  * Evaluation, Gradient, Hessian
+ * MeshDomain
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class

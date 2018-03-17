@@ -51,6 +51,10 @@ public:
   /** Virtual copy constructor */
   virtual EnclosingSimplexAlgorithmImplementation * clone() const;
 
+#ifndef SWIG
+  virtual EnclosingSimplexAlgorithmImplementation * emptyClone() const;
+#endif
+
   /** Points accessor */
   Sample getVertices() const;
 

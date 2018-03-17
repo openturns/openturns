@@ -52,6 +52,9 @@ public:
 
   /** Virtual copy constructor */
   virtual NaiveEnclosingSimplex * clone() const;
+#ifndef SWIG
+  virtual NaiveEnclosingSimplex * emptyClone() const;
+#endif
 
   void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
 

@@ -19,6 +19,7 @@ simplicies[0] = [0, 1]
 simplicies[1] = [1, 2]
 simplicies[2] = [2, 3]
 mesh1D = ot.Mesh(vertices, simplicies)
+mesh1Ddomain = ot.MeshDomain(mesh1D)
 tree = ot.KDTree(vertices)
 print("1D mesh=", mesh1D)
 print("Is empty? ", mesh1D.isEmpty())
@@ -27,7 +28,7 @@ print("simplices=", mesh1D.getSimplices())
 print("volume=", mesh1D.getVolume())
 print("First simplex volume=", mesh1D.computeSimplexVolume(0))
 p = [1.3]
-print("is p=", p, " in mesh? ", mesh1D.contains(p))
+print("is p=", p, " in mesh? ", mesh1Ddomain.contains(p))
 point = [1.8]
 print("Nearest index(", point, ")=", tree.query(point))
 nearestIndex = tree.query(point)

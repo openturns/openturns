@@ -29,7 +29,6 @@
 #include "openturns/IndicesCollection.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
-#include "openturns/DomainImplementation.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/NearestNeighbourAlgorithm.hxx"
@@ -42,7 +41,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * A class that holds a mesh
  */
 class OT_API Mesh
-  : public DomainImplementation
+  : public PersistentObject
 {
   CLASSNAME
 
@@ -64,15 +63,15 @@ public:
   NearestNeighbourAlgorithm getNearestNeighbourAlgorithm() const;
   void setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & tree);
 
-  /** Check if the given point is inside of the closed mesh */
-  Bool contains(const Point & point) const;
-  using DomainImplementation::contains;
-
   /** Get the numerical volume of the domain */
   Scalar getVolume() const;
 
   /** Check if the domain is empty, i.e if its volume is zero */
+  Bool isEmpty() const;
   Bool isNumericallyEmpty() const;
+
+  /** Get the dimension */
+  UnsignedInteger getDimension() const;
 
   /** Get the description of the vertices */
   Description getDescription() const;
@@ -216,6 +215,9 @@ protected:
   void checkValidity() const;
 
   // An n-D mesh is a set of vertices with a topology described by a set of simplices
+  // Spatial dimension
+  UnsignedInteger dimension_;
+
   // The vertices
   Sample vertices_;
 

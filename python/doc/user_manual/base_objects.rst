@@ -22,6 +22,7 @@ Domains
 
     Domain
     LevelSet
+    MeshDomain
 
     :template: classWithPlot.rst_t
     LevelSetMesher

@@ -71,6 +71,11 @@ BoundingVolumeHierarchy * BoundingVolumeHierarchy::clone() const
   return new BoundingVolumeHierarchy(*this);
 }
 
+BoundingVolumeHierarchy * BoundingVolumeHierarchy::emptyClone() const
+{
+  return new BoundingVolumeHierarchy();
+}
+
 /* Initialize BVH */
 void BoundingVolumeHierarchy::setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices)
 {

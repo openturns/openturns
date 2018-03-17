@@ -43,7 +43,8 @@ static const Factory<Mesh> Factory_Mesh;
 
 /* Default constructor */
 Mesh::Mesh(const UnsignedInteger dimension)
-  : DomainImplementation(dimension)
+  : PersistentObject()
+  , dimension_(dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
   , tree_()
@@ -59,7 +60,8 @@ Mesh::Mesh(const UnsignedInteger dimension)
 
 /* Parameters constructor, simplified interface for 1D case */
 Mesh::Mesh(const Sample & vertices)
-  : DomainImplementation(vertices.getDimension())
+  : PersistentObject()
+  , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_()
   , tree_()
@@ -76,7 +78,8 @@ Mesh::Mesh(const Sample & vertices)
 /* Parameters constructor, simplified interface for 1D case */
 Mesh::Mesh(const Sample & vertices,
            const IndicesCollection & simplices)
-  : DomainImplementation(vertices.getDimension())
+  : PersistentObject()
+  , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
   , tree_()
@@ -94,6 +97,12 @@ Mesh::Mesh(const Sample & vertices,
 Mesh * Mesh::clone() const
 {
   return new Mesh(*this);
+}
+
+/* Dimension accessor */
+UnsignedInteger Mesh::getDimension() const
+{
+  return dimension_;
 }
 
 /* Description of the vertices accessor */
@@ -222,23 +231,6 @@ Bool Mesh::isValid() const
     result = false;
   }
   return result;
-}
-
-/* Check if the given point is in the mesh */
-Bool Mesh::contains(const Point & point) const
-{
-  // First, check against the bounding box
-  if (!Interval(getLowerBound(), getUpperBound()).contains(point)) return false;
-  // Second, check the simplices containing the nearest vertex
-  const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
-  // To be sure that the vertices to simplices map is up to date
-  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
-    if (checkPointInSimplex(point, *cit)) return true;
-  // Third, a full loop to deal with points not inside of a simplex associated to the nearest vertex
-  const UnsignedInteger simplicesSize = getSimplicesNumber();
-  for (UnsignedInteger i = 0; i < simplicesSize; ++i) if (checkPointInSimplex(point, i)) return true;
-  return false;
 }
 
 /* Build the affine matrix associated to the simplex at the given index*/
@@ -523,6 +515,11 @@ Scalar Mesh::getVolume() const
 }
 
 /* Check if the domain is empty, i.e if its numerical volume is zero */
+Bool Mesh::isEmpty() const
+{
+  return isNumericallyEmpty();
+}
+
 Bool Mesh::isNumericallyEmpty() const
 {
   return getVolume() <= ResourceMap::GetAsScalar("Domain-SmallVolume");
@@ -1168,7 +1165,8 @@ void Mesh::exportToVTKFile(const String & fileName,
 /* Method save() stores the object through the StorageManager */
 void Mesh::save(Advocate & adv) const
 {
-  DomainImplementation::save(adv);
+  PersistentObject::save(adv);
+  adv.saveAttribute("dimension_", dimension_);
   adv.saveAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
   adv.saveAttribute("volume_", volume_);
   adv.saveAttribute("vertices_", vertices_);
@@ -1182,7 +1180,8 @@ void Mesh::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void Mesh::load(Advocate & adv)
 {
-  DomainImplementation::load(adv);
+  PersistentObject::load(adv);
+  adv.loadAttribute("dimension_", dimension_);
   adv.loadAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
   adv.loadAttribute("volume_", volume_);
   adv.loadAttribute("vertices_", vertices_);

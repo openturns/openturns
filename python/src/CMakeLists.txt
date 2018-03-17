@@ -214,6 +214,7 @@ ot_add_python_module(geom geom_module.i
                       Mesh.i Mesh_doc.i.in
                       RegularGrid.i RegularGrid_doc.i.in
                       IntervalMesher.i IntervalMesher_doc.i.in
+                      MeshDomain.i MeshDomain_doc.i.in
                       DomainComplement.i DomainComplement_doc.i.in
                       DomainIntersection.i DomainIntersection_doc.i.in
                       DomainUnion.i DomainUnion_doc.i.in

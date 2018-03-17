@@ -56,6 +56,11 @@ NaiveEnclosingSimplex * NaiveEnclosingSimplex::clone() const
   return new NaiveEnclosingSimplex(*this);
 }
 
+NaiveEnclosingSimplex * NaiveEnclosingSimplex::emptyClone() const
+{
+  return new NaiveEnclosingSimplex();
+}
+
 void NaiveEnclosingSimplex::setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices)
 {
   EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(vertices, simplices);
