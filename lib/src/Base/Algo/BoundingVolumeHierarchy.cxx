@@ -268,6 +268,7 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
 
   // First, check against the bounding box
   const UnsignedInteger notFound = simplices_.getSize();
+  if (notFound == 0) return notFound;
   if (!boundingBox_.contains(point)) return notFound;
 
   const UnsignedInteger dimension = point.getDimension();
