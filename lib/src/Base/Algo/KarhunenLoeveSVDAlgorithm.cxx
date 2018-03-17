@@ -178,7 +178,10 @@ void KarhunenLoeveSVDAlgorithm::run()
   MatrixImplementation U;
   MatrixImplementation Vt;
   // The singular values are given in decreasing order
-  const Point svd(designMatrix.computeSVD(U, Vt));
+  // Last two arguments are:
+  //   * fullSVD = false, we only want kTilde columns of U
+  //   * keepIntact = false, designMatrix is no more used afterwards
+  const Point svd(designMatrix.computeSVD(U, Vt,  false, false));
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
   Scalar cumulatedVariance = 0.0;
   Point eigenValues(svd.getDimension());
