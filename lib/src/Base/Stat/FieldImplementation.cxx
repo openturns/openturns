@@ -269,15 +269,15 @@ String FieldImplementation::__str__(const String & offset) const
 /* TBB functor to speed-up input mean computation */
 struct FieldInputMeanFunctor
 {
+  const Point & volumes_;
   const FieldImplementation & field_;
-  Scalar volumeAccumulator_;
   Point accumulator_;
 
-  FieldInputMeanFunctor(const FieldImplementation & field)
-    : field_(field), volumeAccumulator_(0.0), accumulator_(field.getOutputDimension(), 0.0) {}
+  FieldInputMeanFunctor(const Point & volumes, const FieldImplementation & field)
+    : volumes_(volumes), field_(field), accumulator_(field.getOutputDimension(), 0.0) {}
 
   FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBB::Split)
-    : field_(other.field_), volumeAccumulator_(0.0), accumulator_(other.field_.getOutputDimension(), 0.0) {}
+    : volumes_(other.volumes_), field_(other.field_), accumulator_(other.field_.getOutputDimension(), 0.0) {}
 
   void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
   {
@@ -285,18 +285,15 @@ struct FieldInputMeanFunctor
     const UnsignedInteger dimension = field_.getOutputDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const Scalar volume = field_.mesh_.computeSimplexVolume(i);
       const Indices simplex(field_.mesh_.getSimplex(i));
       Point meanValue(dimension, 0.0);
       for (UnsignedInteger j = 0; j <= meshDimension; ++j) meanValue += field_.values_[simplex[j]];
-      volumeAccumulator_ += volume;
-      accumulator_ += (volume / dimension) * meanValue;
+      accumulator_ += (volumes_[i] / dimension) * meanValue;
     }
   }
 
   void join(const FieldInputMeanFunctor & other)
   {
-    volumeAccumulator_ += other.volumeAccumulator_;
     accumulator_ += other.accumulator_;
   }
 
@@ -305,10 +302,12 @@ struct FieldInputMeanFunctor
 /* Compute the input mean of the field */
 void FieldImplementation::computeInputMean() const
 {
-  FieldInputMeanFunctor functor( *this );
+  const Point simplicesVolume(mesh_.computeSimplicesVolume());
+  const Scalar totalVolume(simplicesVolume.norm1());
+  if (totalVolume == 0.0) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
+  FieldInputMeanFunctor functor( simplicesVolume, *this );
   TBB::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
-  if (functor.volumeAccumulator_ == 0.0) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
-  inputMean_ = functor.accumulator_ / functor.volumeAccumulator_;
+  inputMean_ = functor.accumulator_ / totalVolume;
   isAlreadyComputedInputMean_ = true;
 }
 

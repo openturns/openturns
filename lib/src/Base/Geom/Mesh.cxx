@@ -199,6 +199,7 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const UnsignedInteger index,
     Point & coordinates) const
 {
+  if (index >= getSimplicesNumber()) return false;
   SquareMatrix matrix(dimension_ + 1);
   buildSimplexMatrix(index, matrix);
   Point v(point);
@@ -223,6 +224,7 @@ UnsignedInteger Mesh::getSimplicesNumber() const
 /* Compute the volume of a given simplex */
 Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
 {
+  LOGWARN(OSS() << "Mesh::computeSimplexVolume is deprecated in favor of computeSimplicesVolume.");
   if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
 
   // First special case: 1D simplex
@@ -249,6 +251,67 @@ Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
 }
 
+Point Mesh::computeSimplicesVolume() const
+{
+  const UnsignedInteger nrSimplices = getSimplicesNumber();
+  Point result(nrSimplices);
+  if (nrSimplices == 0) return result;
+  if (getDimension() == 1)
+  {
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+      const Scalar x1 = vertices_(simplices_(index, 1), 0);
+      result[index] = std::abs(x1 - x0);
+    }
+  }
+  else if (getDimension() == 2)
+  {
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+      const Scalar y0 = vertices_(simplices_(index, 0), 1);
+      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+      result[index] = 0.5 * std::abs(x02 * y01 - x01 * y02);
+    }
+  }
+  else if (getDimension() == 3)
+  {
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+      const Scalar y0 = vertices_(simplices_(index, 0), 1);
+      const Scalar z0 = vertices_(simplices_(index, 0), 2);
+      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+      const Scalar z01 = vertices_(simplices_(index, 1), 2) - z0;
+      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+      const Scalar z02 = vertices_(simplices_(index, 2), 2) - z0;
+      const Scalar x03 = vertices_(simplices_(index, 3), 0) - x0;
+      const Scalar y03 = vertices_(simplices_(index, 3), 1) - y0;
+      const Scalar z03 = vertices_(simplices_(index, 3), 2) - z0;
+      result[index] = std::abs(x01 * (y02 * z03 - z02 * y03) + y01 * (z02 * x03 - x02 * z03) + z01 * (x02 * y03 - y02 * x03)) / 6.0;
+    }
+  }
+  else
+  {
+    // General case
+    SquareMatrix matrix(getDimension() + 1);
+    Scalar sign = 0.0;
+    const Scalar logGamma = SpecFunc::LogGamma(getDimension() + 1);
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      buildSimplexMatrix(index, matrix);
+      result[index] = exp(matrix.computeLogAbsoluteDeterminant(sign, false) - logGamma);
+    }
+  }
+  return result;
+}
+
 /* Compute P1 gram matrix */
 CovarianceMatrix Mesh::computeP1Gram() const
 {
@@ -259,11 +322,12 @@ CovarianceMatrix Mesh::computeP1Gram() const
   for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const UnsignedInteger verticesSize = vertices_.getSize();
   const UnsignedInteger simplicesSize = simplices_.getSize();
+  const Point simplexVolume(computeSimplicesVolume());
   SquareMatrix gram(verticesSize);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const Indices simplex(getSimplex(i));
-    const Scalar delta = computeSimplexVolume(i);
+    const Scalar delta = simplexVolume[i];
     for (UnsignedInteger j = 0; j < simplexSize; ++j)
     {
       const UnsignedInteger newJ = simplex[j];
@@ -277,37 +341,12 @@ CovarianceMatrix Mesh::computeP1Gram() const
   return CovarianceMatrix(gram.getImplementation());
 }
 
-/* TBB functor to speed-up volume computation */
-struct VolumeFunctor
-{
-  const Mesh & mesh_;
-  Scalar accumulator_;
-
-  VolumeFunctor(const Mesh & mesh)
-    : mesh_(mesh), accumulator_(0.0) {}
-
-  VolumeFunctor(const VolumeFunctor & other, TBB::Split)
-    : mesh_(other.mesh_), accumulator_(0.0) {}
-
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += mesh_.computeSimplexVolume(i);
-  }
-
-  void join(const VolumeFunctor & other)
-  {
-    accumulator_ += other.accumulator_;
-  }
-
-}; /* end struct VolumeFunctor */
-
 /* Compute the volume of the mesh */
 Scalar Mesh::computeVolume() const
 {
-  VolumeFunctor functor( *this );
-  TBB::ParallelReduce( 0, getSimplicesNumber(), functor );
+  const Point volumes(computeSimplicesVolume());
   isAlreadyComputedVolume_ = true;
-  return functor.accumulator_;
+  return volumes.norm1();
 }
 
 /* Get the numerical volume of the domain */
@@ -442,9 +481,10 @@ Point Mesh::computeWeights() const
   const UnsignedInteger numVertices = getVerticesNumber();
   const UnsignedInteger numSimplices = getSimplicesNumber();
   Point weights(numVertices, 0.0);
+  Point simplexVolume(computeSimplicesVolume());
   for (UnsignedInteger simplex = 0; simplex < numSimplices; ++simplex)
   {
-    const Scalar weight = computeSimplexVolume(simplex);
+    const Scalar weight = simplexVolume[simplex];
     for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(simplex); cit != simplices_.cend_at(simplex); ++cit)
     {
       weights[*cit] += weight;

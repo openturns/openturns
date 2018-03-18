@@ -14,4 +14,4 @@ Remove deprecated DomainImplementation::volumeOld_, isAlreadyComputedVolumeOld_ 
 Change Interval,Mesh::computeVolume to return void in 1.12
 Remove deprecated Domain,DomainImplementation::getLowerBound, getUpperBound in 1.12
 Remove deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel in 1.12
-Remove deprecated Mesh::getVerticesToSimplicesMap in 1.12
+Remove deprecated Mesh::getVerticesToSimplicesMap,computeSimplexVolume in 1.12

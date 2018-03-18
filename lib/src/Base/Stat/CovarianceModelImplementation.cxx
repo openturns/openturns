@@ -29,6 +29,7 @@
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/CovarianceModel.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -65,6 +65,7 @@
  * TNC, Cobyla, EGO are parametrized by setMaximumEvaluationNumber instead of setMaximumIterationNumber
  * Removed all KDTree services from Mesh,RegularGrid,Field::getNearestVertex, getNearestVertexIndex, etc, client code must use NearestNeighbourAlgorithm if needed
  * Changed Mesh to not derive from DomainImplementation
+ * Deprecated Mesh::computeSimplexVolume, use Mesh::computeSimplicesVolume instead
 
 === Python module ===
 

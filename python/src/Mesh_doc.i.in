@@ -182,18 +182,13 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Mesh::computeSimplexVolume
-"Compute the volume of a given simplex.
-
-Parameters
-----------
-index : int
-    Integer characterizes one simplex of the mesh.
+%feature("docstring") OT::Mesh::computeSimplicesVolume
+"Compute the volume of all simplices.
 
 Returns
 -------
-volume : float
-    Volume of the simplex of index *index*.
+volume : :class:`~openturns.Point`
+    Volume of all simplices.
 
 Examples
 --------
@@ -201,8 +196,8 @@ Examples
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> simplex = [[0, 1, 2]]
 >>> mesh2d = ot.Mesh(vertices, simplex)
->>> print(mesh2d.computeSimplexVolume(0))
-0.5"
+>>> print(mesh2d.computeSimplicesVolume())
+[0.5]"
 
 // ---------------------------------------------------------------------
 

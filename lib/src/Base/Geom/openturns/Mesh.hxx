@@ -30,7 +30,6 @@
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -116,8 +115,11 @@ public:
   /** Simplex accessor */
   Indices getSimplex(const UnsignedInteger index) const;
 
-  /** Compute the volume of a given simplex */
+  /* @deprecated */
   Scalar computeSimplexVolume(const UnsignedInteger index) const;
+
+  /** Compute the volume of all simplices */
+  Point computeSimplicesVolume() const;
 
   /** Compute P1 gram matrix */
   CovarianceMatrix computeP1Gram() const;

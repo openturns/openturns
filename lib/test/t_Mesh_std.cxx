@@ -51,12 +51,13 @@ int main(int argc, char *argv[])
       Mesh mesh1D(vertices, simplices);
       MeshDomain mesh1Ddomain(mesh1D);
       KDTree tree(vertices);
+      EnclosingSimplexAlgorithm enclosingSimplex(vertices, simplices);
       fullprint << "1D mesh=" << mesh1D << std::endl;
       fullprint << "Is empty? " << mesh1D.isEmpty() << std::endl;
       fullprint << "vertices=" << mesh1D.getVertices() << std::endl;
       fullprint << "simplices=" << mesh1D.getSimplices() << std::endl;
       fullprint << "volume=" << mesh1D.getVolume() << std::endl;
-      fullprint << "simplices volume = " << mesh1D.computeSimplexVolume(0) << " " << mesh1D.computeSimplexVolume(1) << " " << mesh1D.computeSimplexVolume(2) << std::endl;
+      fullprint << "simplices volume=" << mesh1D.computeSimplicesVolume() << std::endl;
       Point p(1);
       p[0] = 1.3;
       fullprint << "is p=" << p << " in mesh? " << mesh1Ddomain.contains(p) << std::endl;
@@ -65,8 +66,8 @@ int main(int argc, char *argv[])
         UnsignedInteger nearestIndex = tree.query(point);
         fullprint << "Nearest index(" << point << ")=" << nearestIndex << std::endl;
         Point coordinates;
-        UnsignedInteger simplexIndex;
-        Bool found = mesh1D.checkPointInNeighbourhoodWithCoordinates(point, nearestIndex, simplexIndex, coordinates);
+        const UnsignedInteger simplexIndex = enclosingSimplex.query(point);
+        Bool found = mesh1D.checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates);
         Indices vertexSimplexIndices(1, nearestIndex);
         if (found) vertexSimplexIndices.add(simplexIndex);
         fullprint << "Nearest index(" << point << "), simplex and coordinates=" << vertexSimplexIndices << ", " << coordinates << std::endl;
@@ -76,8 +77,8 @@ int main(int argc, char *argv[])
         UnsignedInteger nearestIndex = tree.query(point);
         fullprint << "Nearest index(" << point << ")=" << nearestIndex << std::endl;
         Point coordinates;
-        UnsignedInteger simplexIndex;
-        Bool found = mesh1D.checkPointInNeighbourhoodWithCoordinates(point, nearestIndex, simplexIndex, coordinates);
+        const UnsignedInteger simplexIndex = enclosingSimplex.query(point);
+        Bool found = mesh1D.checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates);
         Indices vertexSimplexIndices(1, nearestIndex);
         if (found) vertexSimplexIndices.add(simplexIndex);
         fullprint << "Nearest index(" << point << "), simplex and coordinates=" << vertexSimplexIndices << ", " << coordinates << std::endl;
@@ -139,7 +140,7 @@ int main(int argc, char *argv[])
       KDTree tree(vertices);
       fullprint << "2D mesh=" << mesh2D << std::endl;
       fullprint << "volume=" << mesh2D.getVolume() << std::endl;
-      fullprint << "simplices volume = " << mesh2D.computeSimplexVolume(0) << " " << mesh2D.computeSimplexVolume(1) << " " << mesh2D.computeSimplexVolume(2) << " " << mesh2D.computeSimplexVolume(3) << " " << mesh2D.computeSimplexVolume(4) << std::endl;
+      fullprint << "simplices volume=" << mesh2D.computeSimplicesVolume() << std::endl;
       Point point(2, 1.8);
       fullprint << "Nearest index(" << point << ")=" << tree.query(point) << std::endl;
       Sample points(2, 2);
@@ -227,7 +228,7 @@ int main(int argc, char *argv[])
       KDTree tree(vertices);
       fullprint << "3D mesh=" << mesh3D << std::endl;
       fullprint << "volume=" << mesh3D.getVolume() << std::endl;
-      fullprint << "simplices volume = " << mesh3D.computeSimplexVolume(0) << " " << mesh3D.computeSimplexVolume(1) << " " << mesh3D.computeSimplexVolume(2) << " " << mesh3D.computeSimplexVolume(3) << " " << mesh3D.computeSimplexVolume(4) << " " << mesh3D.computeSimplexVolume(5) << std::endl;
+      fullprint << "simplices volume=" << mesh3D.computeSimplicesVolume() << std::endl;
       Point point(3, 1.8);
       fullprint << "Nearest index(" << point << ")=" << tree.query(point) << std::endl;
       Sample points(2, 3);
