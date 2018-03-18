@@ -123,7 +123,7 @@ Matrix LinearGradient::gradient(const Point & inP) const
       }
     }
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return value;
 }
 

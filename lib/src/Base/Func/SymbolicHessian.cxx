@@ -215,7 +215,7 @@ SymmetricTensor SymbolicHessian::hessian(const Point & inP) const
   if (!isAnalytical_) throw InternalException(HERE) << "The hessian does not have an analytical expression.";
   const UnsignedInteger outputDimension = getOutputDimension();
   SymmetricTensor out(inputDimension, outputDimension);
-  ++ callsNumber_;
+  callsNumber_.increment();
   Point outP(parser_(inP));
   UnsignedInteger parserIndex = 0;
   for (UnsignedInteger sheetIndex = 0; sheetIndex < outputDimension; ++ sheetIndex)

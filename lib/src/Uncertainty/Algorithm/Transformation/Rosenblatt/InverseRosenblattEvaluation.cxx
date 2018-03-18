@@ -67,7 +67,7 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
     result[i] = distribution_.computeConditionalQuantile(DistFunc::pNormal(inP[i]), y);
     y.add(result[i]);
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

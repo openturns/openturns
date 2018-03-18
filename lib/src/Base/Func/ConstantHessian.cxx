@@ -97,7 +97,7 @@ SymmetricTensor ConstantHessian::getConstant() const
 SymmetricTensor ConstantHessian::hessian(const Point & inP) const
 {
   if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
-  ++callsNumber_;
+  callsNumber_.increment();
   return constant_;
 }
 

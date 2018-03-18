@@ -216,7 +216,7 @@ Point P1LagrangeEvaluation::operator()( const Point & inP ) const
   {
     result = evaluate(inP);
   }
-  ++ callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 
@@ -282,7 +282,7 @@ Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
     const P1LagrangeEvaluationComputeSamplePolicy policy( inS, result, *this );
     TBB::ParallelFor( 0, size, policy );
   } // The input sample is different from
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return result;
 }
 

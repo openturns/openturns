@@ -35,6 +35,7 @@
 #include "openturns/StorageManager.hxx"
 #include "openturns/Cache.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/AtomicFunctions.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -205,7 +206,7 @@ public:
 protected:
 
   /** Number of calls since the construction */
-  mutable UnsignedInteger callsNumber_;
+  mutable AtomicInt callsNumber_;
 
   /** A cache to store already computed points */
   mutable CacheImplementation p_cache_;

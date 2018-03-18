@@ -195,7 +195,7 @@ Point DualLinearCombinationEvaluation::operator () (const Point & inP) const
   DualLinearCombinationEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 
@@ -215,7 +215,7 @@ Sample DualLinearCombinationEvaluation::operator () (const Sample & inS) const
     // Should be parallelized
     for (UnsignedInteger j = 0; j < sampleSize; ++j) result[j] += coefficients_[i] * basisSample(j, 0);
   }
-  callsNumber_ += sampleSize;
+  callsNumber_.fetchAndAdd(sampleSize);
   return result;
 }
 

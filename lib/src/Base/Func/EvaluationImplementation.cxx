@@ -397,7 +397,7 @@ Evaluation EvaluationImplementation::getMarginal(const Indices & indices) const
 /* Get the number of calls to operator() */
 UnsignedInteger EvaluationImplementation::getCallsNumber() const
 {
-  return callsNumber_;
+  return callsNumber_.get();
 }
 
 
@@ -570,7 +570,7 @@ Graph EvaluationImplementation::draw(const Point & xMin,
 void EvaluationImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "callsNumber_", callsNumber_ );
+  adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
   adv.saveAttribute( "cache_", *p_cache_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
@@ -581,9 +581,11 @@ void EvaluationImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void EvaluationImplementation::load(Advocate & adv)
 {
-  TypedInterfaceObject<CacheType> cache;
   PersistentObject::load(adv);
-  adv.loadAttribute( "callsNumber_", callsNumber_ );
+  UnsignedInteger callsNumber;
+  adv.loadAttribute( "callsNumber_", callsNumber );
+  callsNumber_ = callsNumber;
+  TypedInterfaceObject<CacheType> cache;
   adv.loadAttribute( "cache_", cache );
   p_cache_ = cache.getImplementation();
   adv.loadAttribute( "inputDescription_", inputDescription_ );

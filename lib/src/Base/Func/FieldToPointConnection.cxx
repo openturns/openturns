@@ -128,7 +128,7 @@ String FieldToPointConnection::__str__(const String & offset) const
 Point FieldToPointConnection::operator() (const Field & inF) const
 {
   if (inF.getOutputDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToPointConnection with an argument of invalid dimension";
-  ++callsNumber_;
+  callsNumber_.increment();
   const Point outValue(startByFieldToPointFunction_ ? function_(fieldToPointFunction_(inF)) : fieldToPointFunction_(fieldFunction_(inF)));
   return outValue;
 }
@@ -137,7 +137,7 @@ Point FieldToPointConnection::operator() (const Field & inF) const
 Sample FieldToPointConnection::operator() (const ProcessSample & inSample) const
 {
   if (inSample.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToPointConnection with an argument of invalid dimension";
-  callsNumber_ += inSample.getSize();
+  callsNumber_.fetchAndAdd(inSample.getSize());
   // In the case of a composition of functions, compute the whole
   // intermediate sample
   Sample outSample(inSample.getSize(), getOutputDimension());

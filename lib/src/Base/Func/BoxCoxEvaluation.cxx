@@ -138,7 +138,7 @@ Sample BoxCoxEvaluation::operator() (const Sample & inS) const
   const BoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;
 }
@@ -164,7 +164,7 @@ Point BoxCoxEvaluation::operator() (const Point & inP) const
     if (std::abs(lambda_i * logX) < 1e-8) result[index] = logX * (1.0 + 0.5 * lambda_i * logX);
     else result[index] = expm1(lambda_i * logX) / lambda_i;
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

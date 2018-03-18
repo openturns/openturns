@@ -124,7 +124,7 @@ Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) cons
   const ProductUniVariateFunctionEvaluationComputeSamplePolicy policy( inS, result, functions_ );
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return result;
 }
 

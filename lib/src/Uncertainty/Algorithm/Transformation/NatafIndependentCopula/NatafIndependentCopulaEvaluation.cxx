@@ -93,7 +93,7 @@ Point NatafIndependentCopulaEvaluation::operator () (const Point & inP) const
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaEvaluation if all the components are not in [0, 1], here in=" << inP;
     result[i] = DistFunc::qNormal(x);
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

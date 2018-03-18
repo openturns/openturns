@@ -86,7 +86,7 @@ Matrix CanonicalTensorGradient::gradient(const Point & inP) const
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
   const UnsignedInteger outputDimension = getOutputDimension();
 
-  ++ callsNumber_;
+  callsNumber_.increment();
 
   const UnsignedInteger m = evaluation_.getRank();
   Point prodI(m, 1.0);

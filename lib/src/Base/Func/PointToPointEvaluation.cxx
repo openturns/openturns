@@ -131,7 +131,7 @@ String PointToPointEvaluation::__str__(const String & offset) const
 Point PointToPointEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
-  ++callsNumber_;
+  callsNumber_.increment();
   const Point leftValue(isFunctionComposition_ ? leftFunction_.operator()(rightFunction_.operator()(inP)) : fieldToPointFunction_.operator()(pointToFieldFunction_.operator()(inP)));
   return leftValue;
 }
@@ -139,7 +139,7 @@ Point PointToPointEvaluation::operator() (const Point & inP) const
 /* Operator () */
 Sample PointToPointEvaluation::operator() (const Sample & inSample) const
 {
-  callsNumber_ += inSample.getSize();
+  callsNumber_.fetchAndAdd(inSample.getSize());
   // In the case of a composition of functions, compute the whole
   // intermediate sample
   Sample outSample(inSample.getSize(), getOutputDimension());

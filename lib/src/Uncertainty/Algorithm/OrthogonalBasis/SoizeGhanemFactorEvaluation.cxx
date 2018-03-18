@@ -103,7 +103,7 @@ Point SoizeGhanemFactorEvaluation::operator() (const Point & inP) const
     // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
     result[0] = std::exp(0.5 * (logFactor - measure_.computeLogPDF(inP)));
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 
@@ -133,7 +133,7 @@ Sample SoizeGhanemFactorEvaluation::operator() (const Sample & inS) const
     for (UnsignedInteger i = 0; i < size; ++i)
       result(i, 0) = std::exp(0.5 * logResult(i, 0));
   }
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return result;
 }
 

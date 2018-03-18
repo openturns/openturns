@@ -129,7 +129,7 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
   const UnsignedInteger sheetNumber = quadratic_.getNbSheets();
   for(UnsignedInteger index = 0; index < sheetNumber; ++index)
     result[index] += 0.5 * dot(delta, quadratic_.getSheet(index) * delta);
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

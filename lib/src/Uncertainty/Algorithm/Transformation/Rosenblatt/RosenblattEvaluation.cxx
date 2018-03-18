@@ -68,7 +68,7 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
     result[i] = DistFunc::qNormal(conditionalCDF);
     y.add(inP[i]);
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

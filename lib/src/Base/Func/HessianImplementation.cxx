@@ -109,7 +109,7 @@ UnsignedInteger HessianImplementation::getOutputDimension() const
 /* Get the number of calls to operator() */
 UnsignedInteger HessianImplementation::getCallsNumber() const
 {
-  return callsNumber_;
+  return callsNumber_.get();
 }
 
 /* Parameters value and description accessor */
@@ -168,7 +168,7 @@ Hessian HessianImplementation::getMarginal(const Indices & indices) const
 void HessianImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "callsNumber_", callsNumber_ );
+  adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
   adv.saveAttribute( "parameter_", parameter_ );
 }
 
@@ -176,7 +176,9 @@ void HessianImplementation::save(Advocate & adv) const
 void HessianImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "callsNumber_", callsNumber_ );
+  UnsignedInteger callsNumber;
+  adv.loadAttribute( "callsNumber_", callsNumber );
+  callsNumber_ = callsNumber;
   adv.loadAttribute( "parameter_", parameter_ );
 }
 

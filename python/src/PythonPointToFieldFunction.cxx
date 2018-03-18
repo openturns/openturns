@@ -144,7 +144,7 @@ Field PythonPointToFieldFunction::operator() (const Point & inP) const
   if (inputDimension != inP.getDimension())
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << inP.getDimension() << ". Expected " << getInputDimension();
 
-  ++ callsNumber_;
+  callsNumber_.increment();
 
   ScopedPyObjectPointer pyInP(SWIG_NewPointerObj(new OT::Point(inP), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN | 0));
   ScopedPyObjectPointer pyOutField(PyObject_CallFunctionObjArgs( pyObj_, pyInP.get(), NULL));

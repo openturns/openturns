@@ -153,7 +153,7 @@ Point ParametricEvaluation::operator() (const Point & point) const
   for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameter_[i];
   for (UnsignedInteger i = 0; i < pointDimension; ++i) x[inputPositions_[i]] = point[i];
   const Point value(function_(x));
-  ++callsNumber_;
+  callsNumber_.increment();
   return value;
 }
 
@@ -172,7 +172,7 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
     for (UnsignedInteger j = 0; j < sampleDimension; ++j) input(i, inputPositions_[j]) = inSample(i, j);
   }
   const Sample output(function_(input));
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return output;
 }
 
@@ -193,7 +193,7 @@ Sample ParametricEvaluation::operator() (const Point & point,
     for (UnsignedInteger j = 0; j < pointDimension; ++j) input(i, inputPositions_[j]) = point[j];
   }
   const Sample output(function_(input));
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return output;
 }
 

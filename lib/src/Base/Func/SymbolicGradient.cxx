@@ -188,7 +188,7 @@ Matrix SymbolicGradient::gradient(const Point & inP) const
   const UnsignedInteger outputDimension = getOutputDimension();
   Matrix out(inputDimension, outputDimension);
   Point outP(parser_(inP));
-  ++ callsNumber_;
+  callsNumber_.increment();
   UnsignedInteger parserIndex = 0;
   for (UnsignedInteger columnIndex = 0; columnIndex < outputDimension; ++ columnIndex)
   {

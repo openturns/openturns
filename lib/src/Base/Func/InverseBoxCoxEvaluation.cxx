@@ -133,7 +133,7 @@ Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
   Sample result(size, getInputDimension());
   const InverseBoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
   TBB::ParallelFor( 0, size, policy );
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;
 }
@@ -160,7 +160,7 @@ Point InverseBoxCoxEvaluation::operator() (const Point & inP) const
       result[index] = pow(evaluation, 1.0 / lambda_i);
     }
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

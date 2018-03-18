@@ -110,7 +110,7 @@ UnsignedInteger GradientImplementation::getOutputDimension() const
 /* Get the number of calls to operator() */
 UnsignedInteger GradientImplementation::getCallsNumber() const
 {
-  return callsNumber_;
+  return callsNumber_.get();
 }
 
 /* Parameters value and description accessor */
@@ -171,7 +171,7 @@ Gradient GradientImplementation::getMarginal(const Indices & indices) const
 void GradientImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "callsNumber_", callsNumber_ );
+  adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
   adv.saveAttribute( "parameter_", parameter_ );
 }
 
@@ -179,7 +179,9 @@ void GradientImplementation::save(Advocate & adv) const
 void GradientImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "callsNumber_", callsNumber_ );
+  UnsignedInteger callsNumber;
+  adv.loadAttribute( "callsNumber_", callsNumber );
+  callsNumber_ = callsNumber;
   adv.loadAttribute( "parameter_", parameter_ );
 }
 

@@ -113,7 +113,7 @@ protected:
   Description outputDescription_;
 
   /** Counter for the number of calls */
-  mutable UnsignedInteger callsNumber_;
+  mutable AtomicInt callsNumber_;
 
 }; /* class PointToFieldFunctionImplementation */
 

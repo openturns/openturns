@@ -86,7 +86,7 @@ String ComposedEvaluation::__str__(const String & offset) const
 Point ComposedEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
-  ++callsNumber_;
+  callsNumber_.increment();
   const Point rightValue(rightFunction_.operator()(inP));
   const Point leftValue(leftFunction_.operator()(rightValue));
   return leftValue;
@@ -95,7 +95,7 @@ Point ComposedEvaluation::operator() (const Point & inP) const
 /* Operator () */
 Sample ComposedEvaluation::operator() (const Sample & inSample) const
 {
-  callsNumber_ += inSample.getSize();
+  callsNumber_.fetchAndAdd(inSample.getSize());
   const Sample rightSample(rightFunction_.operator()(inSample));
   Sample leftSample(leftFunction_.operator()(rightSample));
   leftSample.setDescription(getOutputDescription());

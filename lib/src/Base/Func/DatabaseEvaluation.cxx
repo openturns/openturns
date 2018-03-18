@@ -181,7 +181,7 @@ Point DatabaseEvaluation::operator()( const Point & inP ) const
   {
     result = outputSample_[nearestNeighbour_.query(inP)];
   }
-  ++ callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 
@@ -192,7 +192,7 @@ Sample DatabaseEvaluation::operator()( const Sample & inS ) const
   Sample result;
   if (inS == inputSample_) result = outputSample_;
   else result = EvaluationImplementation::operator()(inS);
-  callsNumber_ += inS.getSize();
+  callsNumber_.fetchAndAdd(inS.getSize());
   return result;
 }
 

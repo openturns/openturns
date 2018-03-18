@@ -77,7 +77,7 @@ Point IndicatorEvaluation::operator() (const Point & inP) const
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const Point result(1, (comparisonOperator_.compare(evaluation_.operator()(inP)[0], threshold_) ? 1.0 : 0.0));
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

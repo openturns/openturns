@@ -166,7 +166,7 @@ public:
       }
       else
       {
-        ++callsNumber_;
+        callsNumber_.increment();
         result = ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) );
         CacheValueType outValue(result.getCollection());
         p_cache_->add( inKey, outValue );
@@ -174,7 +174,7 @@ public:
     } // If cache is enabled
     else
     {
-      ++callsNumber_;
+      callsNumber_.increment();
       result = ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) );
     } // Cache disabled
     return result;

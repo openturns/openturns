@@ -25,6 +25,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/ProcessSample.hxx"
+#include "openturns/AtomicFunctions.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -124,7 +125,7 @@ protected:
   Description outputDescription_;
 
   /** Counter for the number of calls */
-  mutable UnsignedInteger callsNumber_;
+  mutable AtomicInt callsNumber_;
 
 }; /* class FieldFunctionImplementation */
 

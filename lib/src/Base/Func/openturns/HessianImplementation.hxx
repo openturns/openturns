@@ -29,6 +29,7 @@
 #include "openturns/SymmetricTensor.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/StorageManager.hxx"
+#include "openturns/AtomicFunctions.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -103,7 +104,7 @@ public:
 protected:
 
   /** Number of calls since the construction */
-  mutable UnsignedInteger callsNumber_;
+  mutable AtomicInt callsNumber_;
 
   /** The value of the parameters */
   Point parameter_;

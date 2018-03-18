@@ -98,7 +98,7 @@ String VertexFunction::__str__(const String & offset) const
 Field VertexFunction::operator() (const Field & inFld) const
 {
   if (inFld.getInputDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getSpatialDimension() << ", got mesh dimension=" << inFld.getInputDimension();
-  ++callsNumber_;
+  callsNumber_.increment();
   return Field(inFld.getMesh(), function_(inFld.getMesh().getVertices()));
 }
 

@@ -70,7 +70,7 @@ String KarhunenLoeveLifting::__repr__() const
       << " name=" << getName()
       << " input description=" << inputDescription_
       << " output description=" << outputDescription_
-      << " number of calls=" << callsNumber_;
+      << " number of calls=" << callsNumber_.get();
   return oss;
 }
 
@@ -98,7 +98,7 @@ PointToFieldFunction KarhunenLoeveLifting::getMarginal(const Indices & indices) 
 Field KarhunenLoeveLifting::operator() (const Point & inP) const
 {
   const Field outField(result_.liftAsField(inP));
-  ++callsNumber_;
+  callsNumber_.increment();
   return outField;
 }
 
