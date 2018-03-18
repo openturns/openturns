@@ -299,7 +299,7 @@ Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
     const Scalar y1 = vertices_(simplices_(index, 1), 1);
     const Scalar x2 = vertices_(simplices_(index, 2), 0);
     const Scalar y2 = vertices_(simplices_(index, 2), 1);
-    return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
+    return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x1 - x0) * (y2 - y0));
   }
   SquareMatrix matrix(dimension_ + 1);
   buildSimplexMatrix(index, matrix);

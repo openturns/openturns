@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       fullprint << "vertices=" << mesh1D.getVertices() << std::endl;
       fullprint << "simplices=" << mesh1D.getSimplices() << std::endl;
       fullprint << "volume=" << mesh1D.getVolume() << std::endl;
-      fullprint << "First simplex volume=" << mesh1D.computeSimplexVolume(0) << std::endl;
+      fullprint << "simplices volume = " << mesh1D.computeSimplexVolume(0) << " " << mesh1D.computeSimplexVolume(1) << " " << mesh1D.computeSimplexVolume(2) << std::endl;
       Point p(1);
       p[0] = 1.3;
       fullprint << "is p=" << p << " in mesh? " << mesh1Ddomain.contains(p) << std::endl;
@@ -138,6 +138,8 @@ int main(int argc, char *argv[])
       Mesh mesh2D(vertices, simplices);
       KDTree tree(vertices);
       fullprint << "2D mesh=" << mesh2D << std::endl;
+      fullprint << "volume=" << mesh2D.getVolume() << std::endl;
+      fullprint << "simplices volume = " << mesh2D.computeSimplexVolume(0) << " " << mesh2D.computeSimplexVolume(1) << " " << mesh2D.computeSimplexVolume(2) << " " << mesh2D.computeSimplexVolume(3) << " " << mesh2D.computeSimplexVolume(4) << std::endl;
       Point point(2, 1.8);
       fullprint << "Nearest index(" << point << ")=" << tree.query(point) << std::endl;
       Sample points(2, 2);
@@ -224,6 +226,8 @@ int main(int argc, char *argv[])
       Mesh mesh3D(vertices, simplices);
       KDTree tree(vertices);
       fullprint << "3D mesh=" << mesh3D << std::endl;
+      fullprint << "volume=" << mesh3D.getVolume() << std::endl;
+      fullprint << "simplices volume = " << mesh3D.computeSimplexVolume(0) << " " << mesh3D.computeSimplexVolume(1) << " " << mesh3D.computeSimplexVolume(2) << " " << mesh3D.computeSimplexVolume(3) << " " << mesh3D.computeSimplexVolume(4) << " " << mesh3D.computeSimplexVolume(5) << std::endl;
       Point point(3, 1.8);
       fullprint << "Nearest index(" << point << ")=" << tree.query(point) << std::endl;
       Sample points(2, 3);
