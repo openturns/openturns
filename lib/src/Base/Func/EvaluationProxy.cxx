@@ -125,47 +125,6 @@ Field EvaluationProxy::operator() (const Field & inField) const
 }
 
 
-/* Enable or disable the internal cache */
-void EvaluationProxy::enableCache() const
-{
-  evaluation_.enableCache();
-}
-
-void EvaluationProxy::disableCache() const
-{
-  evaluation_.disableCache();
-}
-
-Bool EvaluationProxy::isCacheEnabled() const
-{
-  return evaluation_.isCacheEnabled();
-}
-
-UnsignedInteger EvaluationProxy::getCacheHits() const
-{
-  return evaluation_.getCacheHits();
-}
-
-void EvaluationProxy::addCacheContent(const Sample& inSample, const Sample& outSample)
-{
-  evaluation_.addCacheContent(inSample, outSample);
-}
-
-Sample EvaluationProxy::getCacheInput() const
-{
-  return evaluation_.getCacheInput();
-}
-
-Sample EvaluationProxy::getCacheOutput() const
-{
-  return evaluation_.getCacheOutput();
-}
-
-void EvaluationProxy::clearCache() const
-{
-  evaluation_.clearCache();
-}
-
 /* Gradient according to the marginal parameters */
 Matrix EvaluationProxy::parameterGradient(const Point & inP) const
 {

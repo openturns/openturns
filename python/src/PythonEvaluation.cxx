@@ -28,11 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef EvaluationImplementation::CacheKeyType             CacheKeyType;
-typedef EvaluationImplementation::CacheValueType           CacheValueType;
-typedef EvaluationImplementation::CacheType                CacheType;
-
-
 CLASSNAMEINIT(PythonEvaluation)
 
 static const Factory<PythonEvaluation> Factory_PythonEvaluation;

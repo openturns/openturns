@@ -46,8 +46,7 @@ public:
 
   /** Default constructor */
   DatabaseEvaluation(const Sample & inputSample,
-                     const Sample & outputSample,
-                     const Bool activateCache = true);
+                     const Sample & outputSample);
 
   /** Virtual constructor */
   virtual DatabaseEvaluation * clone() const;
@@ -98,7 +97,6 @@ protected:
   Sample inputSample_;
   Sample outputSample_;
   NearestNeighbourAlgorithm nearestNeighbour_;
-  Bool activateCache_;
 
 private:
 

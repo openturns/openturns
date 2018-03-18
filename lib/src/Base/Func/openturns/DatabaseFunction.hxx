@@ -44,8 +44,7 @@ public:
 
   /** Parameter constructor */
   DatabaseFunction (const Sample & inputSample,
-                    const Sample & outputSample,
-                    const Bool enableCache = true);
+                    const Sample & outputSample);
 
   /** Comparison operator */
   Bool operator ==(const DatabaseFunction & other) const;

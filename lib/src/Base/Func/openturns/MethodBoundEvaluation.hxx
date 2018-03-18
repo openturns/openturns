@@ -154,29 +154,8 @@ public:
   /** Operator () */
   virtual Point operator() (const Point & inP) const
   {
-    Point result;
-    // Specific code if cache is enabled
-    if (p_cache_->isEnabled())
-    {
-      CacheKeyType inKey = inP.getCollection();
-      // Evaluate the binded method
-      if ( p_cache_->hasKey( inKey ) )
-      {
-        result = Point::ImplementationType( p_cache_->find( inKey ) );
-      }
-      else
-      {
-        callsNumber_.increment();
-        result = ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) );
-        CacheValueType outValue(result.getCollection());
-        p_cache_->add( inKey, outValue );
-      }
-    } // If cache is enabled
-    else
-    {
-      callsNumber_.increment();
-      result = ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) );
-    } // Cache disabled
+    Point result(ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) ));
+    callsNumber_.increment();
     return result;
   }
 

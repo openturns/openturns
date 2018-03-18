@@ -149,47 +149,6 @@ Description Function::getOutputDescription() const
   return getImplementation()->getOutputDescription();
 }
 
-/* Enable or disable the internal cache */
-void Function::enableCache() const
-{
-  getImplementation()->enableCache();
-}
-
-void Function::disableCache() const
-{
-  getImplementation()->disableCache();
-}
-
-Bool Function::isCacheEnabled() const
-{
-  return getImplementation()->isCacheEnabled();
-}
-
-UnsignedInteger Function::getCacheHits() const
-{
-  return getImplementation()->getCacheHits();
-}
-
-void Function::addCacheContent(const Sample & inSample, const Sample & outSample)
-{
-  getImplementation()->addCacheContent(inSample, outSample);
-}
-
-Sample Function::getCacheInput() const
-{
-  return getImplementation()->getCacheInput();
-}
-
-Sample Function::getCacheOutput() const
-{
-  return getImplementation()->getCacheOutput();
-}
-
-void Function::clearCache() const
-{
-  return getImplementation()->clearCache();
-}
-
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */
 ProductFunction Function::operator * (const Function & right) const
 {

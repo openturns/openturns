@@ -60,6 +60,47 @@ public:
   /** Operator () */
   virtual Sample operator() (const Sample & inSample) const;
 
+  /** @brief Enable the internal cache
+   *
+   * The cache stores previously computed output values, so calling the cache before processing the %Function
+   * can save much time and avoid useless computations. However, calling the cache can eat time if the computation is
+   * very short. So cache is disabled by default, except when the underlying implementation uses a wrapper.
+   *
+   * The reason is that building and linking to a wrapper is an extra burden that is valuable only if the computation
+   * code is long enough to justify it. Calling the cache in this case will save time for sure.
+   */
+  void enableCache() const;
+
+  /** @brief Disable the internal cache
+   * @see enableCache()
+   */
+  void disableCache() const;
+
+  /** @brief Test the internal cache activity
+   * @see enableCache()
+   */
+  Bool isCacheEnabled() const;
+
+  /** @brief Returns the number of successful hits in the cache
+   */
+  UnsignedInteger getCacheHits() const;
+
+  /** @brief Add some content to the cache
+   */
+  void addCacheContent(const Sample & inSample, const Sample & outSample);
+
+  /** @brief Returns the cache input
+   */
+  Sample getCacheInput() const;
+
+  /** @brief Returns the cache output
+   */
+  Sample getCacheOutput() const;
+
+  /** @brief Empty the cache
+   */
+  void clearCache() const;
+
   /** Enable or disable the input/output history */
   void enableHistory() const;
   void disableHistory() const;

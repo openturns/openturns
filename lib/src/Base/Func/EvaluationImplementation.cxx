@@ -39,21 +39,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef EvaluationImplementation::CacheType EvaluationImplementationCache;
-
-static const Factory<EvaluationImplementationCache> Factory_EvaluationImplementationCache;
-
-/* These methods are implemented here for the needs of Cache */
-/* We should be careful because they may interfere with other definitions placed elsewhere */
-static const Factory<PersistentCollection<UnsignedInteger> > Factory_PersistentCollection_UnsignedInteger;
-#ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-static const Factory<PersistentCollection<Unsigned64BitsInteger> > Factory_PersistentCollection_Unsigned64BitsInteger;
-#endif
-
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<Scalar> >)
-static const Factory<PersistentCollection<PersistentCollection<Scalar> > > Factory_PersistentCollection_PersistentCollection_Scalar;
-
-
 CLASSNAMEINIT(EvaluationImplementation)
 
 static const Factory<EvaluationImplementation> Factory_EvaluationImplementation;
@@ -63,13 +48,11 @@ static const Factory<EvaluationImplementation> Factory_EvaluationImplementation;
 EvaluationImplementation::EvaluationImplementation()
   : PersistentObject()
   , callsNumber_(0)
-  , p_cache_(new CacheType)
   , parameter_(0)
   , inputDescription_(0)
   , outputDescription_(0)
 {
-  // We disable the cache by default
-  p_cache_->disable();
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -184,71 +167,6 @@ Field EvaluationImplementation::operator() (const Field & inField) const
   return Field(inField.getMesh(), operator()(inField.getValues()));
 }
 
-
-/* Enable or disable the internal cache */
-void EvaluationImplementation::enableCache() const
-{
-  p_cache_->enable();
-}
-
-void EvaluationImplementation::disableCache() const
-{
-  p_cache_->disable();
-}
-
-Bool EvaluationImplementation::isCacheEnabled() const
-{
-  return p_cache_->isEnabled();
-}
-
-UnsignedInteger EvaluationImplementation::getCacheHits() const
-{
-  return p_cache_->getHits();
-}
-
-void EvaluationImplementation::addCacheContent(const Sample& inSample, const Sample& outSample)
-{
-  p_cache_->enable();
-  const UnsignedInteger size = inSample.getSize();
-  const UnsignedInteger cacheSize = p_cache_->getMaxSize();
-  const UnsignedInteger start = size <= cacheSize ? 0 : size - cacheSize;
-  for ( UnsignedInteger i = start; i < size; ++ i )
-  {
-    p_cache_->add( inSample[i], outSample[i] );
-  }
-}
-
-Sample EvaluationImplementation::getCacheInput() const
-{
-  Bool cacheEnabled = isCacheEnabled();
-  enableCache();
-  PersistentCollection<CacheKeyType> keyColl( p_cache_->getKeys() );
-  if ( ! cacheEnabled )
-    disableCache();
-  Sample inSample(0, getInputDimension());
-  for ( UnsignedInteger i = 0; i < keyColl.getSize(); ++ i ) inSample.add( keyColl[i] );
-  return inSample;
-}
-
-Sample EvaluationImplementation::getCacheOutput() const
-{
-  Bool cacheEnabled = isCacheEnabled();
-  enableCache();
-  PersistentCollection<CacheValueType> valuesColl( p_cache_->getValues() );
-  if ( ! cacheEnabled )
-    disableCache();
-  Sample outSample(0, getOutputDimension());
-  for ( UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i )
-  {
-    outSample.add( valuesColl[i] );
-  }
-  return outSample;
-}
-
-void EvaluationImplementation::clearCache() const
-{
-  p_cache_->clear();
-}
 
 /* Gradient according to the marginal parameters */
 Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
@@ -571,7 +489,6 @@ void EvaluationImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
-  adv.saveAttribute( "cache_", *p_cache_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "parameter_", parameter_ );
@@ -585,9 +502,6 @@ void EvaluationImplementation::load(Advocate & adv)
   UnsignedInteger callsNumber;
   adv.loadAttribute( "callsNumber_", callsNumber );
   callsNumber_ = callsNumber;
-  TypedInterfaceObject<CacheType> cache;
-  adv.loadAttribute( "cache_", cache );
-  p_cache_ = cache.getImplementation();
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   adv.loadAttribute( "parameter_", parameter_ );

@@ -18,6 +18,21 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+typedef MemoizeEvaluation::CacheType MemoizeEvaluationCache;
+
+static const Factory<MemoizeEvaluationCache> Factory_MemoizeEvaluationCache;
+
+/* These methods are implemented here for the needs of Cache */
+/* We should be careful because they may interfere with other definitions placed elsewhere */
+static const Factory<PersistentCollection<UnsignedInteger> > Factory_PersistentCollection_UnsignedInteger;
+#ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
+static const Factory<PersistentCollection<Unsigned64BitsInteger> > Factory_PersistentCollection_Unsigned64BitsInteger;
+#endif
+
+TEMPLATE_CLASSNAMEINIT(PersistentCollection<PersistentCollection<Scalar> >)
+static const Factory<PersistentCollection<PersistentCollection<Scalar> > > Factory_PersistentCollection_PersistentCollection_Scalar;
+
+
 CLASSNAMEINIT(MemoizeEvaluation)
 
 static const Factory<MemoizeEvaluation> Factory_MemoizeEvaluation;
@@ -28,8 +43,10 @@ MemoizeEvaluation::MemoizeEvaluation()
   , inputStrategy_(Full())
   , outputStrategy_(Full())
   , isHistoryEnabled_(true)
+  , p_cache_(new CacheType)
 {
-  // Nothing to do
+  // We disable the cache by default
+  p_cache_->disable();
 }
 
 /* Parameter constructor */
@@ -38,10 +55,11 @@ MemoizeEvaluation::MemoizeEvaluation(const Evaluation & evaluation, const Histor
   , inputStrategy_(historyStrategy)
   , outputStrategy_(historyStrategy)
   , isHistoryEnabled_(true)
+  , p_cache_(new CacheType)
 {
   inputStrategy_.setDimension(evaluation_.getInputDimension());
   outputStrategy_.setDimension(evaluation_.getOutputDimension());
-  // If argument is an MemoizeEvaluation, copy history
+  // If argument is an MemoizeEvaluation, copy history and cache
   MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(evaluation.getImplementation().get());
   if (p_MemoizeEvaluation)
   {
@@ -50,6 +68,7 @@ MemoizeEvaluation::MemoizeEvaluation(const Evaluation & evaluation, const Histor
     inputStrategy_.store(inSample);
     outputStrategy_.store(outSample);
     isHistoryEnabled_ = p_MemoizeEvaluation->isHistoryEnabled_;
+    p_cache_ = p_MemoizeEvaluation->p_cache_;
   }
 }
 
@@ -80,7 +99,29 @@ void MemoizeEvaluation::setEvaluation(const Evaluation & evaluation)
 /* Operator () */
 Point MemoizeEvaluation::operator() (const Point & inPoint) const
 {
-  const Point outPoint(evaluation_.operator()(inPoint));
+  Point outPoint;
+  if (p_cache_->isEnabled())
+  {
+    // If cache is enabled
+    CacheKeyType inKey = inPoint.getCollection();
+    if ( p_cache_->hasKey( inKey ) )
+    {
+      outPoint = Point::ImplementationType( p_cache_->find( inKey ) );
+    }
+    else
+    {
+      outPoint = evaluation_.operator()(inPoint);
+      callsNumber_.increment();
+      CacheValueType outValue(outPoint.getCollection());
+      p_cache_->add( inKey, outValue );
+    }
+  }
+  else
+  {
+    outPoint = evaluation_.operator()(inPoint);
+    callsNumber_.increment();
+  }
+
   if (isHistoryEnabled_)
   {
     inputStrategy_.store(inPoint);
@@ -92,7 +133,63 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
 /* Operator () */
 Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 {
-  Sample outSample(evaluation_.operator()(inSample));
+  const bool useCache = p_cache_->isEnabled();
+  const UnsignedInteger size = inSample.getSize();
+  const UnsignedInteger inDim = inSample.getDimension();
+  const UnsignedInteger outDim = getOutputDimension();
+
+  Sample outSample;
+  Sample toDo(0, inDim);
+  if (p_cache_->isEnabled())
+  {
+    outSample = Sample(size, outDim);
+    std::set<Point> uniqueValues;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      CacheKeyType inKey(inSample[i].getCollection());
+      if (p_cache_->hasKey(inKey))
+      {
+        outSample[i] = Point::ImplementationType(p_cache_->find(inKey));
+      }
+      else
+      {
+        uniqueValues.insert(inSample[i]);
+      }
+    }
+    for(std::set<Point>::const_iterator it = uniqueValues.begin(); it != uniqueValues.end(); ++ it)
+    {
+      // store unique values
+      toDo.add(*it);
+    }
+    UnsignedInteger toDoSize = toDo.getSize();
+    CacheType tempCache(toDoSize);
+    tempCache.enable();
+
+    if (toDoSize > 0)
+    {
+      const Sample result(evaluation_.operator()(toDo));
+      callsNumber_.fetchAndAdd(toDoSize);
+      for ( UnsignedInteger i = 0; i < toDoSize; ++ i )
+        tempCache.add( toDo[i], result[i] );
+    }
+    // Fill all the output values
+    for(UnsignedInteger i = 0; i < size; ++ i)
+    {
+      CacheKeyType inKey(inSample[i].getCollection());
+      if (tempCache.hasKey(inKey))
+      {
+        outSample[i] = Point::ImplementationType(tempCache.find(inKey));
+      }
+    }
+    p_cache_->merge(tempCache);
+  }
+  else
+  {
+    // Cache not enabled
+    outSample = evaluation_.operator()(inSample);
+    callsNumber_.fetchAndAdd(size);
+  }
+
   outSample.setDescription(evaluation_.getOutputDescription());
   if (isHistoryEnabled_)
   {
@@ -106,6 +203,71 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 Evaluation MemoizeEvaluation::getMarginal(const Indices & indices) const
 {
   return new MemoizeEvaluation(evaluation_.getMarginal(indices), inputStrategy_);
+}
+
+/* Enable or disable the internal cache */
+void MemoizeEvaluation::enableCache() const
+{
+  p_cache_->enable();
+}
+
+void MemoizeEvaluation::disableCache() const
+{
+  p_cache_->disable();
+}
+
+Bool MemoizeEvaluation::isCacheEnabled() const
+{
+  return p_cache_->isEnabled();
+}
+
+UnsignedInteger MemoizeEvaluation::getCacheHits() const
+{
+  return p_cache_->getHits();
+}
+
+void MemoizeEvaluation::addCacheContent(const Sample& inSample, const Sample& outSample)
+{
+  p_cache_->enable();
+  const UnsignedInteger size = inSample.getSize();
+  const UnsignedInteger cacheSize = p_cache_->getMaxSize();
+  const UnsignedInteger start = size <= cacheSize ? 0 : size - cacheSize;
+  for ( UnsignedInteger i = start; i < size; ++ i )
+  {
+    p_cache_->add( inSample[i], outSample[i] );
+  }
+}
+
+Sample MemoizeEvaluation::getCacheInput() const
+{
+  Bool cacheEnabled = isCacheEnabled();
+  enableCache();
+  PersistentCollection<CacheKeyType> keyColl( p_cache_->getKeys() );
+  if ( ! cacheEnabled )
+    disableCache();
+  Sample inSample(0, getInputDimension());
+  for ( UnsignedInteger i = 0; i < keyColl.getSize(); ++ i ) inSample.add( keyColl[i] );
+  return inSample;
+}
+
+Sample MemoizeEvaluation::getCacheOutput() const
+{
+  Bool cacheEnabled = isCacheEnabled();
+  enableCache();
+  PersistentCollection<CacheValueType> valuesColl( p_cache_->getValues() );
+  if ( ! cacheEnabled )
+    disableCache();
+  Sample outSample(0, getOutputDimension());
+  for ( UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i )
+  {
+    outSample.add( valuesColl[i] );
+  }
+  return outSample;
+}
+
+void MemoizeEvaluation::clearCache() const
+{
+  p_cache_->clear();
 }
 
 /* Enable or disable the input/output history */
@@ -185,6 +347,7 @@ void MemoizeEvaluation::save(Advocate & adv) const
   adv.saveAttribute( "inputStrategy_", inputStrategy_ );
   adv.saveAttribute( "outputStrategy_", outputStrategy_ );
   adv.saveAttribute( "isHistoryEnabled_", isHistoryEnabled_ );
+  adv.saveAttribute( "cache_", *p_cache_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -194,6 +357,9 @@ void MemoizeEvaluation::load(Advocate & adv)
   adv.loadAttribute( "inputStrategy_", inputStrategy_ );
   adv.loadAttribute( "outputStrategy_", outputStrategy_ );
   adv.loadAttribute( "isHistoryEnabled_", isHistoryEnabled_ );
+  TypedInterfaceObject<CacheType> cache;
+  adv.loadAttribute( "cache_", cache );
+  p_cache_ = cache.getImplementation();
 }
 
 END_NAMESPACE_OPENTURNS

@@ -64,6 +64,56 @@ void MemoizeFunction::setEvaluation(const Evaluation & evaluation)
   p_evaluation->setEvaluation(evaluation);
 }
 
+/* Enable or disable the internal cache */
+void MemoizeFunction::enableCache() const
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  p_evaluation->enableCache();
+}
+
+void MemoizeFunction::disableCache() const
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  p_evaluation->disableCache();
+}
+
+Bool MemoizeFunction::isCacheEnabled() const
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  return p_evaluation->isCacheEnabled();
+}
+
+UnsignedInteger MemoizeFunction::getCacheHits() const
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  return p_evaluation->getCacheHits();
+}
+
+void MemoizeFunction::addCacheContent(const Sample & inSample, const Sample & outSample)
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  p_evaluation->addCacheContent(inSample, outSample);
+}
+
+Sample MemoizeFunction::getCacheInput() const
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  return p_evaluation->getCacheInput();
+}
+
+Sample MemoizeFunction::getCacheOutput() const
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  return p_evaluation->getCacheOutput();
+}
+
+void MemoizeFunction::clearCache() const
+{
+  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  return p_evaluation->clearCache();
+}
+
+
 /* Enable or disable the input/output history */
 void MemoizeFunction::enableHistory() const
 {

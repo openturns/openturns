@@ -58,6 +58,7 @@
  * Removed BipartiteGraph::add method
  * Deprecated usage of _e and _pi constants when defining analytical functions, e_ and pi_ must be used instead.
  * Removed Function::enableHistory,disableHistory,isHistoryEnabled,clearHistory,getHistoryInput,getHistoryOutput,getInputPointHistory,getInputParameterHistory
+ * Removed Function::enableCache,disableCache,isCacheEnabled,getCacheHits,addCacheContent,getCacheInput,getCacheOutput,clearCache
  * Added Drawable::getPaletteAsNormalizedRGBA() to get the palette into a native matplotlib format.
  * Changed DistributionImplementation::getCopula,getMarginal,getStandardRepresentative,getStandardDistribution to return a Distribution instead of Pointer<DistributionImplementation>
  * Changed DistributionFactoryImplementation::build to return a Distribution instead of Pointer<DistributionImplementation>

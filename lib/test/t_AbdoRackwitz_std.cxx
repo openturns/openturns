@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     input[1] = "x2";
     input[2] = "x3";
     input[3] = "x4";
-    SymbolicFunction levelFunction(input, Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
+    MemoizeFunction levelFunction(SymbolicFunction(input, Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4")));
     // Activate the cache as we will use an analytical method
     levelFunction.enableCache();
     // Add a finite difference gradient to the function, as Abdo Rackwitz algorithm
@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
     OptimizationResult result(myAlgorithm.getResult());
     fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
+    fullprint << "evaluation cache hits=" <<   levelFunction.getCacheHits() << std::endl;
     fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;
     fullprint << "hessian    calls number=" << levelFunction.getHessianCallsNumber() << std::endl;

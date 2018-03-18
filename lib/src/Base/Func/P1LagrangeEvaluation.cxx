@@ -205,17 +205,7 @@ Point P1LagrangeEvaluation::operator()( const Point & inP ) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  Point result;
-  CacheKeyType inKey(inP.getCollection());
-
-  if ( isCacheEnabled() && p_cache_->hasKey(inKey) )
-  {
-    result = Point::ImplementationType( p_cache_->find(inKey) );
-  }
-  else
-  {
-    result = evaluate(inP);
-  }
+  Point result(evaluate(inP));
   callsNumber_.increment();
   return result;
 }

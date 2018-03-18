@@ -66,7 +66,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
     const OrthogonalProductFunctionFactory & basisFactory,
     const Indices & degrees,
     const UnsignedInteger maxRank)
-  : MetaModelAlgorithm(distribution, Function(FunctionImplementation(DatabaseEvaluation(inputSample, outputSample, false).clone())))
+  : MetaModelAlgorithm(distribution, Function(FunctionImplementation(new DatabaseEvaluation(inputSample, outputSample))))
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , maxRank_(maxRank)

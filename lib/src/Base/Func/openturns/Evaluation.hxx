@@ -79,36 +79,6 @@ public:
   Description getOutputDescription() const;
   void setOutputDescription(const Description & outputDescription);
 
-  /** Enable or disable the internal cache */
-  void enableCache() const;
-  void disableCache() const;
-
-  /** @brief Test the internal cache activity
-   * @see enableCache()
-   */
-  Bool isCacheEnabled() const;
-
-  /** @brief Returns the number of successful hits in the cache
-   */
-  UnsignedInteger getCacheHits() const;
-
-  /** @brief Add some content to the cache
-   */
-  void addCacheContent(const Sample & inSample, const Sample & outSample);
-
-  /** @brief Returns the cache input
-   */
-  Sample getCacheInput() const;
-
-  /** @brief Returns the cache output
-   */
-  Sample getCacheOutput() const;
-
-  /** @brief Empty the cache
-   */
-  void clearCache() const;
-
-
   /** Operator () */
   Point operator() (const Point & inP) const;
 

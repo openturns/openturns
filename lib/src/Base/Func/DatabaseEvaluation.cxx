@@ -27,10 +27,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef EvaluationImplementation::CacheKeyType             CacheKeyType;
-typedef EvaluationImplementation::CacheValueType           CacheValueType;
-typedef EvaluationImplementation::CacheType                CacheType;
-
 CLASSNAMEINIT(DatabaseEvaluation)
 
 static const Factory<DatabaseEvaluation> Factory_DatabaseEvaluation;
@@ -45,10 +41,8 @@ DatabaseEvaluation::DatabaseEvaluation()
 
 /* Default constructor */
 DatabaseEvaluation::DatabaseEvaluation(const Sample & inputSample,
-                                       const Sample & outputSample,
-                                       const Bool activateCache)
+                                       const Sample & outputSample)
   : EvaluationImplementation()
-  , activateCache_(activateCache)
 {
   setSample(inputSample, outputSample);
 }
@@ -141,14 +135,6 @@ void DatabaseEvaluation::setSample(const Sample & inputSample,
   // Build nearest neighbor algorithm
   if (nearestNeighbour_.getSample() != inputSample_)
     nearestNeighbour_.setSample(inputSample_);
-
-  // Don't activate the cache systematically as it can take a significant amount of time for large samples
-  if (activateCache_)
-  {
-    addCacheContent( inputSample, outputSample );
-    enableCache();
-  }
-  else disableCache();
 }
 
 NearestNeighbourAlgorithm DatabaseEvaluation::getNearestNeighbourAlgorithm() const
@@ -170,17 +156,7 @@ Point DatabaseEvaluation::operator()( const Point & inP ) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  Point result;
-  CacheKeyType inKey(inP.getCollection());
-
-  if ( isCacheEnabled() && p_cache_->hasKey(inKey) )
-  {
-    result = Point::ImplementationType( p_cache_->find(inKey) );
-  }
-  else
-  {
-    result = outputSample_[nearestNeighbour_.query(inP)];
-  }
+  Point result(outputSample_[nearestNeighbour_.query(inP)]);
   callsNumber_.increment();
   return result;
 }
@@ -217,7 +193,6 @@ void DatabaseEvaluation::save(Advocate & adv) const
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("outputSample_", outputSample_);
   adv.saveAttribute("nearestNeighbour_", nearestNeighbour_);
-  adv.saveAttribute("activateCache_", activateCache_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -227,7 +202,6 @@ void DatabaseEvaluation::load(Advocate & adv)
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("outputSample_", outputSample_);
   adv.loadAttribute("nearestNeighbour_", nearestNeighbour_);
-  adv.loadAttribute("activateCache_", activateCache_);
   setSample(inputSample_, outputSample_);
 }
 
