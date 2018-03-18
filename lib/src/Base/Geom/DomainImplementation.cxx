@@ -34,8 +34,6 @@ static const Factory<DomainImplementation> Factory_DomainImplementation;
 DomainImplementation::DomainImplementation(UnsignedInteger dimension)
   : PersistentObject()
   , dimension_(dimension)
-  , volumeOld_(0.0)
-  , isAlreadyComputedVolumeOld_(false)
 {
   // Nothing to do
 }
@@ -100,22 +98,21 @@ Bool DomainImplementation::isNumericallyEmpty() const
 Scalar DomainImplementation::getVolume() const
 {
   LOGWARN(OSS() << "DomainImplementation::getVolume is deprecated in favor of derived classes.");
-  return getNumericalVolume();
+  throw NotYetImplementedException(HERE);
 }
 
 /* Get the numerical volume of the domain */
 Scalar DomainImplementation::getNumericalVolume() const
 {
   LOGWARN(OSS() << "DomainImplementation::getNumericalVolume is deprecated in favor of getVolume method in derived classes.");
-  if (!isAlreadyComputedVolumeOld_) volumeOld_ = computeVolume();
-  return volumeOld_;
+  return getVolume();
 }
 
 /* Compute the volume of the mesh */
 Scalar DomainImplementation::computeVolume() const
 {
-  LOGWARN(OSS() << "DomainImplementation::computeVolume is deprecated in favor of derived classes.");
-  throw NotYetImplementedException(HERE);
+  LOGWARN(OSS() << "DomainImplementation::computeVolume is deprecated in favor of getVolume method in derived classes.");
+  return getVolume();
 }
 
 /* Lower bound of the bounding box */
@@ -143,8 +140,6 @@ void DomainImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("dimension_", dimension_);
-  adv.saveAttribute("volumeOld_", volumeOld_);
-  adv.saveAttribute("isAlreadyComputedVolumeOld_", isAlreadyComputedVolumeOld_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -152,8 +147,6 @@ void DomainImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("dimension_", dimension_);
-  adv.loadAttribute("volumeOld_", volumeOld_);
-  adv.loadAttribute("isAlreadyComputedVolumeOld_", isAlreadyComputedVolumeOld_);
 }
 
 END_NAMESPACE_OPENTURNS

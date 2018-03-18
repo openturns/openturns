@@ -47,8 +47,6 @@ Mesh::Mesh(const UnsignedInteger dimension)
   , dimension_(dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Nothing to do
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
@@ -60,8 +58,6 @@ Mesh::Mesh(const Sample & vertices)
   , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_()
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -74,8 +70,6 @@ Mesh::Mesh(const Sample & vertices,
   , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -107,7 +101,6 @@ Sample Mesh::getVertices() const
 
 void Mesh::setVertices(const Sample & vertices)
 {
-  isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
 }
@@ -122,7 +115,6 @@ Point Mesh::getVertex(const UnsignedInteger index) const
 void Mesh::setVertex(const UnsignedInteger index,
                      const Point & vertex)
 {
-  isAlreadyComputedVolume_ = false;
   vertices_[index] = vertex;
 }
 
@@ -344,16 +336,15 @@ CovarianceMatrix Mesh::computeP1Gram() const
 /* Compute the volume of the mesh */
 Scalar Mesh::computeVolume() const
 {
-  const Point volumes(computeSimplicesVolume());
-  isAlreadyComputedVolume_ = true;
-  return volumes.norm1();
+  LOGWARN(OSS() << "Mesh::computeVolume is deprecated in favor of getVolume.");
+  return getVolume();
 }
 
 /* Get the numerical volume of the domain */
 Scalar Mesh::getVolume() const
 {
-  if (!isAlreadyComputedVolume_) volume_ = computeVolume();
-  return volume_;
+  const Point volumes(computeSimplicesVolume());
+  return volumes.norm1();
 }
 
 /* Check if the domain is empty, i.e if its numerical volume is zero */
@@ -1004,8 +995,6 @@ void Mesh::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("dimension_", dimension_);
-  adv.saveAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
-  adv.saveAttribute("volume_", volume_);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
 }
@@ -1015,8 +1004,6 @@ void Mesh::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("dimension_", dimension_);
-  adv.loadAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
-  adv.loadAttribute("volume_", volume_);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
 }

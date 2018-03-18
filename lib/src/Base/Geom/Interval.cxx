@@ -38,8 +38,6 @@ Interval::Interval(const UnsignedInteger dimension)
   , upperBound_(dimension, 1.0)
   , finiteLowerBound_(dimension, true)
   , finiteUpperBound_(dimension, true)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Nothing to do
 }
@@ -52,8 +50,6 @@ Interval::Interval(const Scalar lowerBound,
   , upperBound_(1, upperBound)
   , finiteLowerBound_(1, true)
   , finiteUpperBound_(1, true)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Nothing to do
 }
@@ -66,8 +62,6 @@ Interval::Interval(const Point & lowerBound,
   , upperBound_(upperBound)
   , finiteLowerBound_(getDimension(), true)
   , finiteUpperBound_(getDimension(), true)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
 }
@@ -82,8 +76,6 @@ Interval::Interval(const Point & lowerBound,
   , upperBound_(upperBound)
   , finiteLowerBound_(finiteLowerBound)
   , finiteUpperBound_(finiteUpperBound)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
   if ((finiteLowerBound.getSize() != getDimension()) || (finiteUpperBound.getSize() != getDimension())) throw InvalidArgumentException(HERE) << "Error: cannot build an interval with lower bound flags or upper bound flags of improper dimension";
@@ -177,18 +169,10 @@ Bool Interval::contains(const Point & point) const
   return true;
 }
 
-/* Get the numerical volume of the domain */
+/* Compute the numerical volume of the interval */
 Scalar Interval::getVolume() const
 {
-  if (!isAlreadyComputedVolume_) volume_ = computeVolume();
-  return volume_;
-}
-
-/* Compute the numerical volume of the interval */
-Scalar Interval::computeVolume() const
-{
   const UnsignedInteger dimension = getDimension();
-  isAlreadyComputedVolume_ = true;
   if (dimension == 0)
   {
     return 0.0;
@@ -203,6 +187,13 @@ Scalar Interval::computeVolume() const
     }
   }
   return volume;
+}
+
+/* Get the numerical volume of the domain */
+Scalar Interval::computeVolume() const
+{
+  LOGWARN(OSS() << "Interval::computeVolume is deprecated in favor of getVolume.");
+  return getVolume();
 }
 
 /* Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
@@ -401,7 +392,6 @@ void Interval::setLowerBound(const Point & lowerBound)
 {
   if (lowerBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given lower bound has a dimension incompatible with the interval dimension.";
   lowerBound_ = lowerBound;
-  isAlreadyComputedVolume_ = false;
 }
 
 /* Upper bound accessor */
@@ -414,7 +404,6 @@ void Interval::setUpperBound(const Point & upperBound)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given upper bound has a dimension incompatible with the interval dimension.";
   upperBound_ = upperBound;
-  isAlreadyComputedVolume_ = false;
 }
 
 /* Lower bound flag accessor */
@@ -472,8 +461,6 @@ String Interval::__str__(const String & offset) const
 void Interval::save(Advocate & adv) const
 {
   DomainImplementation::save(adv);
-  adv.saveAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
-  adv.saveAttribute("volume_", volume_);
   adv.saveAttribute("lowerBound_", lowerBound_);
   adv.saveAttribute("upperBound_", upperBound_);
   adv.saveAttribute("finiteLowerBound_", finiteLowerBound_);
@@ -484,8 +471,6 @@ void Interval::save(Advocate & adv) const
 void Interval::load(Advocate & adv)
 {
   DomainImplementation::load(adv);
-  adv.loadAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
-  adv.loadAttribute("volume_", volume_);
   adv.loadAttribute("lowerBound_", lowerBound_);
   adv.loadAttribute("upperBound_", upperBound_);
   adv.loadAttribute("finiteLowerBound_", finiteLowerBound_);

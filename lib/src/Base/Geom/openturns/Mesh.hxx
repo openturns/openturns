@@ -180,7 +180,7 @@ protected:
   void buildSimplexMatrix(const UnsignedInteger index,
 			  SquareMatrix & matrix) const;
 
-  // Compute the total volume of the mesh
+  // @deprecated
   Scalar computeVolume() const;
 
   void checkValidity() const;
@@ -195,11 +195,6 @@ protected:
   // The simplices
   IndicesCollection simplices_;
 
-  // Flag to tell if the global volume has already been computed
-  mutable Bool isAlreadyComputedVolume_;
-
-  // The global volume
-  mutable Scalar volume_;
 }; /* class Mesh */
 
 END_NAMESPACE_OPENTURNS

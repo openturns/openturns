@@ -94,12 +94,6 @@ protected:
   /** The dimension of the DomainImplementation */
   UnsignedInteger dimension_;
 
-  // @deprecated
-  mutable Scalar volumeOld_;
-
-  // @deprecated
-  mutable Bool isAlreadyComputedVolumeOld_;
-
 }; /* class DomainImplementation */
 
 END_NAMESPACE_OPENTURNS
