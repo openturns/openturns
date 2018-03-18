@@ -650,16 +650,6 @@ stream : str
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Mesh::getVerticesToSimplicesMap
-"Accessor to the map between vertices and simplices.
-
-Returns
--------
-verticesSimplicesMap : :class:`~openturns.IndicesCollection`
-    For each vertex, list the vertices indices it belongs to."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Mesh::computeWeights
 "Compute an approximation of an integral defined over the mesh.
 

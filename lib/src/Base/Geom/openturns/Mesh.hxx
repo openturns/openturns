@@ -77,7 +77,7 @@ public:
   /** Get the number of simplices */
   UnsignedInteger getSimplicesNumber() const;
 
-  /** Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
+  /* @deprecated */
   IndicesCollection getVerticesToSimplicesMap() const;
 
   /** Compute weights such that an integral of a function over the mesh
@@ -95,20 +95,10 @@ public:
       no coincident vertices */
   Bool isValid() const;
 
-  /** Check if the given point is in the given simplex */
-  Bool checkPointInSimplex(const Point & point,
-                           const UnsignedInteger index) const;
-
   /** Check if the given point is in the given simplex and returns its barycentric coordinates */
   Bool checkPointInSimplexWithCoordinates(const Point & point,
                                           const UnsignedInteger index,
                                           Point & coordinatesOut) const;
-
-  /** Check if the given point is in a simplex containing nearestIndex and returns simplex index and barycentric coordinates */
-  Bool checkPointInNeighbourhoodWithCoordinates(const Point & point,
-                                                const UnsignedInteger nearestIndex,
-                                                UnsignedInteger & simplexIndexOut,
-                                                Point & coordinatesOut) const;
 
   /** Vertices accessor */
   Sample getVertices() const;
@@ -202,13 +192,6 @@ protected:
 
   // The simplices
   IndicesCollection simplices_;
-
-  // The vertices to simplices map
-  mutable IndicesCollection verticesToSimplices_;
-
-  // The bounding boxes of simplices
-  mutable Sample lowerBoundingBoxSimplices_;
-  mutable Sample upperBoundingBoxSimplices_;
 
   // Flag to tell if the global volume has already been computed
   mutable Bool isAlreadyComputedVolume_;
