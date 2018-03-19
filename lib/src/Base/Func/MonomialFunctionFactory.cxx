@@ -59,7 +59,7 @@ MonomialFunction MonomialFunctionFactory::buildAsMonomialFunction(const Unsigned
 /* The method to get the function of any order */
 UniVariateFunction MonomialFunctionFactory::build(const UnsignedInteger order) const
 {
-  return buildAsMonomialFunction(order).clone();
+  return new MonomialFunction(order);
 }
 
 /* Method save() stores the object through the StorageManager */
