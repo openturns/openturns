@@ -80,6 +80,12 @@ RegularGrid::RegularGrid(const Mesh & mesh)
   start_ = mesh.getVertices()[0][0];
   if (n_ > 1) step_ = (mesh.getVertices()[n_ - 1][0] - start_) / (n_ - 1);
   vertices_.setDescription(Description(1, "t"));
+  simplices_ = IndicesCollection(n_ - 1, 2);
+  for (UnsignedInteger i = 0; i < n_ - 1; ++i)
+  {
+    simplices_(i, 0) = i;
+    simplices_(i, 1) = i + 1;
+  }
 }
 
 /* Virtual constructor method */
