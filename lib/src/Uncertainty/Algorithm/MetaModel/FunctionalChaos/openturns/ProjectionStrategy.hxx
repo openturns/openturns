@@ -86,6 +86,7 @@ public:
                            const Indices & addedRanks,
                            const Indices & conservedRanks,
                            const Indices & removedRanks,
+                           const UnsignedInteger maximumDimension,
                            const UnsignedInteger marginalIndex = 0);
 
   /** String converter */

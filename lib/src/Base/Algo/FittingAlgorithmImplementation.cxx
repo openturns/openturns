@@ -21,6 +21,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/FittingAlgorithmImplementation.hxx"
+#include <algorithm>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,7 +49,8 @@ Scalar FittingAlgorithmImplementation::run(const Sample & x,
     const Basis & basis,
     const Indices & indices) const
 {
-  const DesignProxy proxy(x, basis);
+  const UnsignedInteger maximumDimension = *std::max_element(indices.begin(), indices.end());
+  const DesignProxy proxy(x, basis, maximumDimension);
   return run(y, weight, indices, proxy);
 }
 
@@ -57,7 +59,8 @@ Scalar FittingAlgorithmImplementation::run(const Sample & x,
     const Basis & basis,
     const Indices & indices) const
 {
-  const DesignProxy proxy(x, basis);
+  const UnsignedInteger maximumDimension = *std::max_element(indices.begin(), indices.end());
+  const DesignProxy proxy(x, basis, maximumDimension);
   return run(y, indices, proxy);
 }
 

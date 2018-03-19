@@ -43,7 +43,8 @@ DesignProxy::DesignProxy ()
 
 /* Parameters constructor */
 DesignProxy::DesignProxy(const Sample & x,
-                         const Basis & basis)
+                         const Basis & basis,
+                         const UnsignedInteger maximumDimension)
   : Object()
   , x_(x)
   , basis_(basis)
@@ -53,11 +54,11 @@ DesignProxy::DesignProxy(const Sample & x,
   , weight_(0)
 {
   // keep initialization in the ctor for designCache_ to be shared among DesignProxy copies
-  initialize();
+  initialize(maximumDimension);
 }
 
 
-void DesignProxy::initialize() const
+void DesignProxy::initialize(const UnsignedInteger maximumDimension) const
 {
   // allocate cache
   UnsignedInteger cacheSize = ResourceMap::GetAsUnsignedInteger("DesignProxy-DefaultCacheSize");
@@ -67,6 +68,7 @@ void DesignProxy::initialize() const
   UnsignedInteger nbCols = cacheSize / nbRows;
   // The cache stores at least the first function values
   if (nbCols <= 0) nbCols = 1;
+  if (maximumDimension > 0 && nbCols > maximumDimension) nbCols = maximumDimension;
   designCache_ = Matrix(nbRows, nbCols);
   alreadyComputed_ = Indices(nbCols, 0);
 }

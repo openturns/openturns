@@ -75,6 +75,7 @@ public:
                            const Indices & addedRanks,
                            const Indices & conservedRanks,
                            const Indices & removedRanks,
+                           const UnsignedInteger maximumDimension,
                            const UnsignedInteger marginalIndex = 0);
 
   /** Method save() stores the object through the StorageManager */

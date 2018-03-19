@@ -114,6 +114,7 @@ void LeastSquaresStrategy::computeCoefficients(const Function & function,
     const Indices & addedRanks,
     const Indices & conservedRanks,
     const Indices & removedRanks,
+    const UnsignedInteger maximumDimension,
     const UnsignedInteger marginalIndex)
 {
   // Check if the marginal index is not compatible with the function output dimension
@@ -133,7 +134,7 @@ void LeastSquaresStrategy::computeCoefficients(const Function & function,
   if (proxy_.getInputSample().getSize() == 0 || !(proxy_.getBasis() == basis))
   {
     LOGINFO(OSS() << "Initialize the proxy, reason=" << (proxy_.getInputSample().getSize() == 0 ? "empty input sample" : "new basis"));
-    proxy_ = DesignProxy(inputSample_, basis);
+    proxy_ = DesignProxy(inputSample_, basis, maximumDimension);
   }
 
   // Run the Approximation Algorithm

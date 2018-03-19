@@ -45,7 +45,8 @@ public:
 
   /** Parameters constructor */
   DesignProxy(const Sample & x,
-              const Basis & basis);
+              const Basis & basis,
+              const UnsignedInteger maximumDimension = 0);
 
   /** Virtual constructor */
   virtual DesignProxy * clone() const;
@@ -78,7 +79,7 @@ public:
   Bool hasWeight() const;
 
 protected:
-  void initialize() const;
+  void initialize(const UnsignedInteger maximumDimension) const;
 
   /** Input sample */
   Sample x_;
