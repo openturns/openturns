@@ -94,7 +94,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   Cobyla solver;
   solver.setRhoBeg(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg"));
   solver.setMaximumAbsoluteError(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd"));
-  solver.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
+  solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   solver.setStartingPoint(startingPoint);
   factory.setOptimizationAlgorithm(solver);
 

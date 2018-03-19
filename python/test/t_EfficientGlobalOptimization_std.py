@@ -46,16 +46,16 @@ kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setNoiseModel(ot.SymbolicFunction(
     ['x1', 'x2'], ['0.96']))  # assume constant noise var
-algo.setMaximumIterationNumber(20)
+algo.setMaximumEvaluationNumber(20)
 algo.setImprovementFactor(
     0.05)  # stop whe improvement is < a% the current optimum
 algo.setAEITradeoff(0.66744898)
 algo.run()
 result = algo.getResult()
 # print('1st pass result=', result)
-# print('iteration=', result.getIterationNumber())
-assert result.getIterationNumber(
-) > 3 and result.getIterationNumber() < 15, 'Too few/much iterations'
+# print('iteration=', result.getEvaluationNumber())
+assert result.getEvaluationNumber(
+) > 3 and result.getEvaluationNumber() < 15, 'Too few/much iterations'
 # print(result.getInputSample())
 # print(result.getOutputSample())
 
@@ -123,7 +123,7 @@ kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 # solver = ot.NLopt('GN_ESCH')
 # solver = ot.NLopt('GN_MLSL')
-algo.setMaximumIterationNumber(15)
+algo.setMaximumEvaluationNumber(15)
 algo.setMaximumAbsoluteError(1e-10)
 algo.setMaximumRelativeError(1e-10)
 algo.setMaximumResidualError(1e-10)
@@ -141,9 +141,9 @@ algo.run()
 result = algo.getResult()
 
 # print('1st pass result=', result)
-assert result.getIterationNumber(
-) > 0 and result.getIterationNumber() < 16, 'Too few/much iterations'
-# print('iteration=', result.getIterationNumber())
+assert result.getEvaluationNumber(
+) > 0 and result.getEvaluationNumber() < 16, 'Too few/much iterations'
+# print('iteration=', result.getEvaluationNumber())
 # print(result.getInputSample())
 # print(result.getOutputSample())
 

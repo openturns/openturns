@@ -72,6 +72,7 @@ AbdoRackwitz * AbdoRackwitz::clone() const
 
 void AbdoRackwitz::initialize()
 {
+  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   currentSigma_ = 0.0;
   currentLevelValue_ = 0.0;
   currentLambda_ = 0.0;
@@ -139,6 +140,8 @@ void AbdoRackwitz::run()
   currentPoint_ = getStartingPoint();
   Bool exitLoop = false;
   UnsignedInteger iterationNumber = 0;
+  const UnsignedInteger initialEvaluationNumber = levelFunction.getEvaluationCallsNumber();
+
   Scalar absoluteError = -1.0;
   Scalar constraintError = -1.0;
   Scalar relativeError = -1.0;
@@ -147,15 +150,17 @@ void AbdoRackwitz::run()
   /* Compute the level function at the current point -> G */
   currentLevelValue_ = levelFunction(currentPoint_)[0];
 
+  UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
+
   // reset result
   result_ = OptimizationResult(currentPoint_.getDimension(), 1);
   result_.setProblem(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
-  while ( (!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) )
+  while ((!exitLoop) && (iterationNumber <= getMaximumIterationNumber()) && (evaluationNumber <= getMaximumEvaluationNumber()))
   {
     /* Go to next iteration */
-    ++iterationNumber;
+    ++ iterationNumber;
 
     /* Compute the level function gradient at the current point -> Grad(G) */
     currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
@@ -176,6 +181,10 @@ void AbdoRackwitz::run()
     currentDirection_ = -currentLambda_ * currentGradient_ - currentPoint_;
     /* Perform a line search in the given direction */
     const Scalar alpha = computeLineSearch();
+
+    // update number of evaluations
+    evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
+
     /* Check if convergence has been achieved */
     absoluteError = std::abs(alpha) * currentDirection_.norm();
     constraintError = std::abs(currentLevelValue_ - levelValue);
@@ -192,6 +201,7 @@ void AbdoRackwitz::run()
     exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
 
     // update result
+    result_.setEvaluationNumber(evaluationNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
     result_.setLagrangeMultipliers(Point(1, currentLambda_));
@@ -217,7 +227,7 @@ void AbdoRackwitz::run()
   /* Check if we converged */
   if (!exitLoop)
   {
-    LOGWARN(OSS() << "Warning! The AbdoRackwitz algorithm failed to converge after " << getMaximumIterationNumber() << " iterations");
+    LOGWARN(OSS() << "Warning! The AbdoRackwitz algorithm failed to converge after " << iterationNumber << " iterations, " << evaluationNumber << " evaluations." );
   }
 } // run()
 

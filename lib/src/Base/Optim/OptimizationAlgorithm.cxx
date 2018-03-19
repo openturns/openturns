@@ -107,6 +107,19 @@ void OptimizationAlgorithm::setMaximumIterationNumber(const UnsignedInteger maxi
   getImplementation()->setMaximumIterationNumber(maximumIterationNumber);
 }
 
+/* Maximum evaluations number accessor */
+UnsignedInteger OptimizationAlgorithm::getMaximumEvaluationNumber() const
+{
+  return getImplementation()->getMaximumEvaluationNumber();
+}
+
+/* Maximum iterations number accessor */
+void OptimizationAlgorithm::setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber)
+{
+  copyOnWrite();
+  getImplementation()->setMaximumEvaluationNumber(maximumEvaluationNumber);
+}
+
 /* Maximum absolute error accessor */
 Scalar OptimizationAlgorithm::getMaximumAbsoluteError() const
 {

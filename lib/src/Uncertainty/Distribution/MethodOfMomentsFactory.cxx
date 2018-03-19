@@ -52,7 +52,7 @@ MethodOfMomentsFactory::MethodOfMomentsFactory(const Distribution & distribution
   , solver_(new TNC())
 {
   // Initialize optimization solver parameter using the ResourceMap
-  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MethodOfMomentsFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("MethodOfMomentsFactory-MaximumObjectiveError"));

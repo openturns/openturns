@@ -94,7 +94,7 @@ void Cobyla::run()
   }
 
   Scalar rhoEnd = getMaximumAbsoluteError();
-  int maxFun(getMaximumIterationNumber());
+  int maxFun = getMaximumEvaluationNumber();
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
   // initialize history
@@ -153,7 +153,7 @@ void Cobyla::run()
   const UnsignedInteger index = evaluationInputHistory_.find(x);
   Scalar bestValue = evaluationOutputHistory_[index][0];
   result_.setOptimalValue(Point(1, bestValue));
-  result_.setIterationNumber(maxFun);
+  result_.setEvaluationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria

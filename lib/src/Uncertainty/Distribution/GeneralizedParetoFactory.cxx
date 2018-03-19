@@ -37,7 +37,7 @@ GeneralizedParetoFactory::GeneralizedParetoFactory(const OptimizationAlgorithm &
   , solver_(solver)
 {
   // Create the optimization solver parameters using the parameters in the ResourceMap
-  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
+  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("GeneralizedParetoFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumRelativeError"));
   solver_.setMaximumResidualError(ResourceMap::GetAsScalar("GeneralizedParetoFactory-MaximumObjectiveError"));

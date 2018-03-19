@@ -55,7 +55,7 @@ public:
   /** Standard constructor */
   OptimizationResult(const Point & optimalPoint,
                      const Point & optimalValue,
-                     const UnsignedInteger iterationNumber,
+                     const UnsignedInteger evaluationNumber,
                      const Scalar absoluteError,
                      const Scalar relativeError,
                      const Scalar residualError,
@@ -72,6 +72,10 @@ public:
   /** Optimal value accessor */
   void setOptimalValue(const Point & optimalValue);
   Point getOptimalValue() const;
+
+  /** Evaluation number accessor */
+  void setEvaluationNumber(const UnsignedInteger evaluationNumber);
+  UnsignedInteger getEvaluationNumber() const;
 
   /** Iteration number accessor */
   void setIterationNumber(const UnsignedInteger iterationNumber);
@@ -149,6 +153,7 @@ private:
 
   Point  optimalPoint_;
   Point  optimalValue_;
+  UnsignedInteger evaluationNumber_; // Number of function evaluations
   UnsignedInteger    iterationNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
   Scalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
   Scalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */

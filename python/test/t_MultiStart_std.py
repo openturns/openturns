@@ -31,7 +31,6 @@ distribution = ot.Normal([0.0] * dim, [2.0] * dim, ot.CorrelationMatrix(dim))
 experiment = ot.LHSExperiment(distribution, 20)
 startingPoints = experiment.generate()
 algo = ot.MultiStart(solver, startingPoints)
-print('-- algo=', algo)
 algo.run()
 result = algo.getResult()
 print('-- multistart x*=', result.getOptimalPoint(),

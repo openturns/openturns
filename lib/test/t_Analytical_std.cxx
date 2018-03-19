@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
     /* We create an OptimizationAlgorithm algorithm */
     Cobyla myCobyla;
-    myCobyla.setMaximumIterationNumber(400);
+    myCobyla.setMaximumEvaluationNumber(400);
     myCobyla.setMaximumAbsoluteError(1.0e-10);
     myCobyla.setMaximumRelativeError(1.0e-10);
     myCobyla.setMaximumResidualError(1.0e-10);

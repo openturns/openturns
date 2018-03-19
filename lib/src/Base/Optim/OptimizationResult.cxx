@@ -34,6 +34,7 @@ OptimizationResult::OptimizationResult()
   : PersistentObject()
   , optimalPoint_(0)
   , optimalValue_(0)
+  , evaluationNumber_(0)
   , iterationNumber_(0)
   , absoluteError_(-1.0)
   , relativeError_(-1.0)
@@ -84,7 +85,7 @@ OptimizationResult::OptimizationResult(const UnsignedInteger inputDimension, con
 /* Standard constructor */
 OptimizationResult::OptimizationResult(const Point & optimalPoint,
                                        const Point &  optimalValue,
-                                       const UnsignedInteger iterationNumber,
+                                       const UnsignedInteger evaluationNumber,
                                        const Scalar absoluteError,
                                        const Scalar relativeError,
                                        const Scalar residualError,
@@ -93,7 +94,8 @@ OptimizationResult::OptimizationResult(const Point & optimalPoint,
   : PersistentObject()
   , optimalPoint_(optimalPoint)
   , optimalValue_(optimalValue)
-  , iterationNumber_(iterationNumber)
+  , evaluationNumber_(evaluationNumber)
+  , iterationNumber_(0)
   , absoluteError_(absoluteError)
   , relativeError_(relativeError)
   , residualError_(residualError)
@@ -141,6 +143,17 @@ Point OptimizationResult::getOptimalValue() const
 void OptimizationResult::setOptimalValue(const Point &  optimalValue)
 {
   optimalValue_ = optimalValue;
+}
+
+/* Evaluation number accessor */
+UnsignedInteger OptimizationResult::getEvaluationNumber() const
+{
+  return evaluationNumber_;
+}
+
+void OptimizationResult::setEvaluationNumber(const UnsignedInteger evaluationNumber)
+{
+  evaluationNumber_ = evaluationNumber;
 }
 
 /* Iteration number accessor */
@@ -260,6 +273,7 @@ String OptimizationResult::__repr__() const
   oss << "class=" << OptimizationResult::GetClassName()
       << " optimal point=" << optimalPoint_
       << " optimal value=" << optimalValue_
+      << " evaluationNumber=" << evaluationNumber_
       << " iterationNumber=" << iterationNumber_
       << " absoluteError=" << getAbsoluteError()
       << " relativeError=" << getRelativeError()
@@ -276,6 +290,7 @@ void OptimizationResult::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "optimalPoint_", optimalPoint_ );
   adv.saveAttribute( "optimalValue_", optimalValue_ );
+  adv.saveAttribute( "evaluationNumber_", evaluationNumber_ );
   adv.saveAttribute( "iterationNumber_", iterationNumber_ );
   adv.saveAttribute( "absoluteError_", absoluteError_ );
   adv.saveAttribute( "relativeError_", relativeError_ );
@@ -300,6 +315,7 @@ void OptimizationResult::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "optimalPoint_", optimalPoint_ );
   adv.loadAttribute( "optimalValue_", optimalValue_ );
+  adv.loadAttribute( "evaluationNumber_", evaluationNumber_ );
   adv.loadAttribute( "iterationNumber_", iterationNumber_ );
   adv.loadAttribute( "absoluteError_", absoluteError_ );
   adv.loadAttribute( "relativeError_", relativeError_ );

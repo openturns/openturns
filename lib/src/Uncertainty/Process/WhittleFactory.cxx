@@ -258,7 +258,7 @@ void WhittleFactory::initializeCobylaSolverParameter()
   cobyla->setRhoBeg(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoBeg"));
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoEnd"));
-  solver_.setMaximumIterationNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun"));
+  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun"));
 }
 
 /* Optimization solver accessor */
