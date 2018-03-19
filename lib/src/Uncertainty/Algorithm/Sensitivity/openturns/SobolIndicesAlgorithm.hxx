@@ -93,9 +93,21 @@ public:
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
-  // Setters for bootstrap confidence level
+  /** Setters for confidence level */
+  Scalar getConfidenceLevel() const;
+  void setConfidenceLevel(const Scalar confidenceLevel);
+
+  /** @deprecated Setters for bootstrap confidence level */
   Scalar getBootstrapConfidenceLevel() const;
   void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
+
+  /** Whether to use bootstrap or asymptotic intervals */
+  void setUseAsymptoticDistribution(Bool useAsymptoticDistribution);
+  Bool getUseAsymptoticDistribution() const;
+
+  /** Estimator distribution accessor */
+  Distribution getFirstOrderIndicesDistribution() const;
+  Distribution getTotalOrderIndicesDistribution() const;
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;

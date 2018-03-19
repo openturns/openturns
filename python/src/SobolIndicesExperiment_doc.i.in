@@ -27,10 +27,10 @@ Such designs could be used for Jansen, Martinez and MauntzKucherenko methods.
 This precomputes such input designs using distribution or experiment by
 generating two independent samples and mixing columns of these ones to define
 the huge sample (design).
-If computeSecondOrder is disabled, result design is of size :math:`N*(p+2)`
-where p is the input dimension.
-If computeSecondOrder is enabled, design's size is :math:`N*(2p+2)`, see
-[Saltelli2002]_.
+If computeSecondOrder is disabled, result design is of size :math:`N*(d+2)`
+where d is the input dimension.
+If computeSecondOrder is enabled, design's size is :math:`N*(2d+2)`, see
+[Saltelli2002]_, except in dimension 2.
 Model's answer could be evaluated outside the platform.
 
 

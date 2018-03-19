@@ -144,6 +144,18 @@ void SobolIndicesAlgorithm::setBootstrapSize(const UnsignedInteger bootstrapSize
 }
 
 // Getter for bootstrap confidence level
+Scalar SobolIndicesAlgorithm::getConfidenceLevel() const
+{
+  return getImplementation()->getConfidenceLevel();
+}
+
+// Setter for bootstrap confidence level
+void SobolIndicesAlgorithm::setConfidenceLevel(const Scalar confidenceLevel)
+{
+  copyOnWrite();
+  getImplementation()->setConfidenceLevel(confidenceLevel);
+}
+
 Scalar SobolIndicesAlgorithm::getBootstrapConfidenceLevel() const
 {
   return getImplementation()->getBootstrapConfidenceLevel();
@@ -154,6 +166,27 @@ void SobolIndicesAlgorithm::setBootstrapConfidenceLevel(const Scalar confidenceL
 {
   copyOnWrite();
   getImplementation()->setBootstrapConfidenceLevel(confidenceLevel);
+}
+
+void SobolIndicesAlgorithm::setUseAsymptoticDistribution(Bool useAsymptoticDistribution)
+{
+  copyOnWrite();
+  getImplementation()->setUseAsymptoticDistribution(useAsymptoticDistribution);
+}
+
+Bool SobolIndicesAlgorithm::getUseAsymptoticDistribution() const
+{
+  return getImplementation()->getUseAsymptoticDistribution();
+}
+
+Distribution SobolIndicesAlgorithm::getFirstOrderIndicesDistribution() const
+{
+  return getImplementation()->getFirstOrderIndicesDistribution();
+}
+
+Distribution SobolIndicesAlgorithm::getTotalOrderIndicesDistribution() const
+{
+  return getImplementation()->getTotalOrderIndicesDistribution();
 }
 
 /* String converter */

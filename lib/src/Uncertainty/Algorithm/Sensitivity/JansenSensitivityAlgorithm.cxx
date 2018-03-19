@@ -20,8 +20,8 @@
  */
 
 #include "openturns/JansenSensitivityAlgorithm.hxx"
-#include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SymbolicFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -113,6 +113,73 @@ Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
     }
   }
   return varianceI;
+}
+
+void JansenSensitivityAlgorithm::computeAsymptoticDistribution() const
+{
+  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+
+  // psi
+  Description X(Description::BuildDefault(outputDimension, "X"));
+  Description Y(Description::BuildDefault(outputDimension, "Y"));
+  Description XY(2 * outputDimension);
+  String sumX;
+  String sumY;
+  for (UnsignedInteger q = 0; q < outputDimension; ++ q)
+  {
+    XY[2 * q] = X[q];
+    XY[2 * q + 1] = Y[q];
+    sumX += X[q];
+    sumY += Y[q];
+    if (q < outputDimension - 1)
+    {
+      sumX += "+";
+      sumY += "+";
+    }
+  }
+  sumX = "(" + sumX + ")";
+  sumY = "(" + sumY + ")";
+  Function psiFO = SymbolicFunction(XY, Description(1, "1 - 0.5*" + sumX + "/" + sumY));
+  Function psiTO = SymbolicFunction(XY, Description(1, "0.5*" + sumX + "/" + sumY));
+
+  Point varianceFO(inputDimension);
+  Point varianceTO(inputDimension);
+
+  for (UnsignedInteger p = 0; p < inputDimension; ++ p)
+  {
+    Sample uFO(size_, 0);
+    Sample uTO(size_, 0);
+    for (UnsignedInteger q = 0; q < outputDimension; ++ q)
+    {
+      const Sample yAc2(ComputeProdSample(outputDesign_, q, size_, 0, 0));
+
+      // (yE - yB)**2
+      Sample yEmB(size_, 1);
+      for (UnsignedInteger i = 0; i < size_; ++ i)
+      {
+        const Scalar eMb = outputDesign_((2 + p) * size_ + i, q) - outputDesign_(size_ + i, q);
+        yEmB(i, 0) = eMb * eMb;
+      }
+
+      uFO.stack(yEmB);
+      uFO.stack(yAc2);
+
+      // (yA - yE)**2
+      Sample yAmB(size_, 1);
+      for (UnsignedInteger i = 0; i < size_; ++ i)
+      {
+        const Scalar eMb = outputDesign_(i, q) - outputDesign_((2 + p) * size_ + i, q);
+        yAmB(i, 0) = eMb * eMb;
+      }
+
+      uTO.stack(yAmB);
+      uTO.stack(yAc2);
+    }
+    varianceFO[p] = computeVariance(uFO, psiFO);
+    varianceTO[p] = computeVariance(uTO, psiTO);
+  }
+  setConfidenceInterval(varianceFO, varianceTO);
 }
 
 /* String converter */

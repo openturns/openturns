@@ -43,6 +43,22 @@ These last ones are respectively given as follows:
    \hat{V_{-i}} & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) \left( G(A_k) -  G(E_k) \right)
    \end{array}
 
+The variance of the estimator is computed using:
+
+.. math::
+
+    \begin{array}{ccc}
+    U_i = \left(\textsuperscript{c}Y_i^B \left(\textsuperscript{c}Y_i^E - \textsuperscript{c}Y_i^A \right), \left(\textsuperscript{c}Y_i^{A}\right)^2 \right)^T \\
+    \Psi_i(x, y) = \frac{x}{y}
+    \end{array}
+
+.. math::
+
+    \begin{array}{ccc}
+    U_{-i} = \left(\textsuperscript{c}Y_i^A \left(\textsuperscript{c}Y_i^A - \textsuperscript{c}Y_i^E \right), \left(\textsuperscript{c}Y_i^{A}\right)^2 \right)^T \\
+    \Psi_{-i}(x, y) = 1 - \frac{x}{y}
+    \end{array}
+
 See also
 --------
 SobolIndicesAlgorithm

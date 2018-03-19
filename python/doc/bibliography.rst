@@ -46,6 +46,10 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
 .. [Hormann1992] Hormann W., *The generation of Binomial Random Variates*
     `pdf <http://doc.openturns.org/papers/hormann1992.pdf>`__
+.. [Janon2014] Janon A., Klein T., Lagnoux-Renaudie A., Prieur C., *Asymptotic
+    normality and efficiency of two Sobol index estimators*,
+    ESAIM: Probability and Statistics, EDP Sciences, 2014, 18, pp.342-364.
+    `pdf <https://hal.inria.fr/hal-00665048/document>`__
 .. [Jansen1999] Jansen, M.J.W. *Analysis of variance designs for model output*,
     Computer Physics Communication, 1999, 117, 35-43.
     `pdf <http://doc.openturns.org/papers/jansen1999.pdf>`__

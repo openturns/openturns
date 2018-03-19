@@ -64,12 +64,6 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
-  /** Interval for the first order indices accessor */
-  virtual Interval getFirstOrderIndicesInterval() const;
-
-  /** Interval for the total order indices accessor */
-  virtual Interval getTotalOrderIndicesInterval() const;
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -82,11 +76,10 @@ protected:
   Sample computeIndices(const Sample & sample,
                         Sample & VTi) const;
 
-  // Compute the fisher transform
-  void computeAsymptoticInterval() const;
+  /** void method that computes asymptotic distribution */
+  virtual void computeAsymptoticDistribution() const;
 
 private:
-  mutable Bool useAsymptoticInterval_;
 
 }; /* class MartinezSensitivityAlgorithm */
 

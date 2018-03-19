@@ -61,11 +61,13 @@
  * Changed RandomVector::getAntecedent,getMarginal to return a RandomVector instead of Pointer<RandomVectorImplementation>
  * Changed all {get,set}{Evaluation,Gradient,Hessian} methods to work on Evaluation/Gradient/Hessian instead of Pointer
  * Removed Field::[gs]etValueAtNearestPosition
+ * Deprecated SobolIndicesAlgorithm::setBootstrapConfidenceLevel, getBootstrapConfidenceLevel
 
 === Python module ===
 
 === Miscellaneous ===
  * Multivariate TruncatedDistribution
+ * Asymptotic Sobol' variance estimators
 
 === Bug fixes ===
  * #870 (Problem with TensorizedCovarianceModel with spatial dim > 1)
@@ -75,6 +77,7 @@
  * #938 (DistributionFactory::buildEstimator to handle Exception)
  * #939 (The help of the getMaximumDegreeStrataIndex method is wrong.)
  * #937 (Small bugs in FunctionalChaosResult::get{Residuals, RelativeErrors})
+ * #941 (Duplicate with SobolIndicesExperiment)
 
 == 1.10 release (2017-11-13) == #release-1.10
 
