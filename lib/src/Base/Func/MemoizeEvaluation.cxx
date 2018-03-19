@@ -320,24 +320,12 @@ Bool MemoizeEvaluation::operator ==(const MemoizeEvaluation & other) const
 /* String converter */
 String MemoizeEvaluation::__repr__() const
 {
-  OSS oss(true);
-  oss << "class=" << MemoizeEvaluation::GetClassName()
-      << " evaluation=" << evaluation_.getImplementation()->__repr__()
-      << " isHistoryEnabled=" << isHistoryEnabled_
-      << " inputStrategy=" << inputStrategy_
-      << " outputStrategy=" << outputStrategy_;
-  return oss;
+  return OSS(true) << evaluation_.getImplementation()->__repr__();
 }
 
 String MemoizeEvaluation::__str__(const String & offset) const
 {
-  OSS oss(false);
-  oss << "class=" << MemoizeEvaluation::GetClassName()
-      << " evaluation=" << evaluation_.getImplementation()->__str__()
-      << " isHistoryEnabled=" << isHistoryEnabled_
-      << " inputStrategy=" << inputStrategy_
-      << " outputStrategy=" << outputStrategy_;
-  return oss;
+  return OSS(false) << evaluation_.getImplementation()->__str__(offset);
 }
 
 /* Method save() stores the object through the StorageManager */

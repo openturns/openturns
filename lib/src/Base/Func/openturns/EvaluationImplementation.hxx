@@ -69,15 +69,15 @@ public:
 
   /** Description Accessor, i.e. the names of the input and output parameters */
   virtual void setDescription(const Description & description);
-  Description getDescription() const;
+  virtual Description getDescription() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */
-  Description getInputDescription() const;
-  void setInputDescription(const Description & inputDescription);
+  virtual Description getInputDescription() const;
+  virtual void setInputDescription(const Description & inputDescription);
 
   /** Output description Accessor, i.e. the names of the Output parameters */
-  Description getOutputDescription() const;
-  void setOutputDescription(const Description & outputDescription);
+  virtual Description getOutputDescription() const;
+  virtual void setOutputDescription(const Description & outputDescription);
 
   /* Here is the interface that all derived class must implement */
 

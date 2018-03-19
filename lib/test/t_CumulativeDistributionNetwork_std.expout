@@ -30,7 +30,7 @@ quantile=class=Point name=Unnamed dimension=2 values=[2.234,2.234]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=Point name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=1
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]]))][[0,1],[0,1]])) gradientImplementation=MinimumVolumeLevelSetGradient(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]

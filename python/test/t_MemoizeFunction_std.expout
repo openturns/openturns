@@ -1,4 +1,4 @@
-class=MemoizeEvaluation evaluation=[x]->[x^2] isHistoryEnabled=false inputStrategy=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[] outputStrategy=class=Full sample_= class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=1 data=[]
+[x]->[x^2]
 Is history enabled for f?  False
 input history= 
 output history= 
