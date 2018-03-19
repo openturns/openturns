@@ -45,6 +45,7 @@
 %include NearestNeighbourAlgorithm.i
 %include KDTree.i
 %include RegularGridNearestNeighbour.i
+%include NearestNeighbour1D.i
 %include NaiveNearestNeighbour.i
 %include EnclosingSimplexAlgorithmImplementation.i
 %include EnclosingSimplexAlgorithm.i

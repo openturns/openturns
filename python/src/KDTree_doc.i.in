@@ -10,7 +10,7 @@ sample : 2-d sequence of float
 
 See also
 --------
-NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour
+NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NearestNeighbour1D, NaiveNearestNeighbour
 
 Examples
 --------

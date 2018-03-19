@@ -423,6 +423,7 @@ ot_add_python_module(algo algo_module.i
                       NearestNeighbourAlgorithm.i NearestNeighbourAlgorithm_doc.i.in
                       KDTree.i KDTree_doc.i.in
                       RegularGridNearestNeighbour.i RegularGridNearestNeighbour_doc.i.in
+                      NearestNeighbour1D.i NearestNeighbour1D_doc.i.in
                       NaiveNearestNeighbour.i NaiveNearestNeighbour_doc.i.in
                       EnclosingSimplexAlgorithmImplementation.i EnclosingSimplexAlgorithmImplementation_doc.i.in
                       EnclosingSimplexAlgorithm.i EnclosingSimplexAlgorithm_doc.i.in

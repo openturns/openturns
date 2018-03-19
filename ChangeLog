@@ -12,7 +12,7 @@
  * TranslationFunction
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
  * SmoothedUniform
- * NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour
+ * NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour, NearestNeighbour1D
  * EnclosingSimplex, EnclosingSimplexImplementation, NaiveEnclosingSimplex, BoundingVolumeHierarchy
  * IndicesCollection
  * SymbolicParserExprTk
