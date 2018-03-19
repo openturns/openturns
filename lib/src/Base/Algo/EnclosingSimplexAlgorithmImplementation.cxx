@@ -63,6 +63,11 @@ EnclosingSimplexAlgorithmImplementation * EnclosingSimplexAlgorithmImplementatio
   return new EnclosingSimplexAlgorithmImplementation(*this);
 }
 
+EnclosingSimplexAlgorithmImplementation * EnclosingSimplexAlgorithmImplementation::emptyClone() const
+{
+  return new EnclosingSimplexAlgorithmImplementation();
+}
+
 /* Points accessor */
 Sample EnclosingSimplexAlgorithmImplementation::getVertices() const
 {

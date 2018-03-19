@@ -19,6 +19,7 @@
  * EvaluationProxy
  * MemoizeFunction, MemoizeEvaluation
  * Evaluation, Gradient, Hessian
+ * MeshDomain
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
@@ -60,9 +61,12 @@
  * Changed ProcessImplementation::getMarginal to return a Process instead of Pointer<ProcessImplementation>
  * Changed RandomVector::getAntecedent,getMarginal to return a RandomVector instead of Pointer<RandomVectorImplementation>
  * Changed all {get,set}{Evaluation,Gradient,Hessian} methods to work on Evaluation/Gradient/Hessian instead of Pointer
- * Removed Field::[gs]etValueAtNearestPosition
  * Deprecated SobolIndicesAlgorithm::setBootstrapConfidenceLevel, getBootstrapConfidenceLevel
  * TNC, Cobyla, EGO are parametrized by setMaximumEvaluationNumber instead of setMaximumIterationNumber
+ * Removed all KDTree services from Mesh,RegularGrid,Field::getNearestVertex, getNearestVertexIndex, etc, client code must use NearestNeighbourAlgorithm if needed
+ * Changed Mesh to not derive from DomainImplementation
+ * Deprecated Mesh::computeSimplexVolume, use Mesh::computeSimplicesVolume instead
+ * Deprecated Mesh,Interval::computeVolume
 
 === Python module ===
 

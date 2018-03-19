@@ -29,10 +29,7 @@
 #include "openturns/IndicesCollection.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/IdentityMatrix.hxx"
-#include "openturns/DomainImplementation.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/TBB.hxx"
-#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,7 +39,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * A class that holds a mesh
  */
 class OT_API Mesh
-  : public DomainImplementation
+  : public PersistentObject
 {
   CLASSNAME
 
@@ -60,19 +57,15 @@ public:
   /** Virtual constructor method */
   virtual Mesh * clone() const;
 
-  /* Nearest neighbour algorithm accessor */
-  NearestNeighbourAlgorithm getNearestNeighbourAlgorithm() const;
-  void setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & tree);
-
-  /** Check if the given point is inside of the closed mesh */
-  Bool contains(const Point & point) const;
-  using DomainImplementation::contains;
-
   /** Get the numerical volume of the domain */
   Scalar getVolume() const;
 
   /** Check if the domain is empty, i.e if its volume is zero */
+  Bool isEmpty() const;
   Bool isNumericallyEmpty() const;
+
+  /** Get the dimension */
+  UnsignedInteger getDimension() const;
 
   /** Get the description of the vertices */
   Description getDescription() const;
@@ -83,23 +76,7 @@ public:
   /** Get the number of simplices */
   UnsignedInteger getSimplicesNumber() const;
 
-  /** Get the index of the nearest vertex */
-  virtual UnsignedInteger getNearestVertexIndex(const Point & point) const;
-
-  /** Get the index of the nearest vertex and the index of the containing simplex if any */
-  Indices getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,
-      Point & coordinatesOut) const;
-
-  /** Get the nearest vertex */
-  Point getNearestVertex(const Point & point) const;
-
-  /** Get the index of the nearest vertex for a set of points */
-  Indices getNearestVertexIndex(const Sample & points) const;
-
-  /** Get the nearest vertex for a set of points */
-  Sample getNearestVertex(const Sample & points) const;
-
-  /** Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
+  /* @deprecated */
   IndicesCollection getVerticesToSimplicesMap() const;
 
   /** Compute weights such that an integral of a function over the mesh
@@ -117,20 +94,10 @@ public:
       no coincident vertices */
   Bool isValid() const;
 
-  /** Check if the given point is in the given simplex */
-  Bool checkPointInSimplex(const Point & point,
-                           const UnsignedInteger index) const;
-
   /** Check if the given point is in the given simplex and returns its barycentric coordinates */
   Bool checkPointInSimplexWithCoordinates(const Point & point,
                                           const UnsignedInteger index,
                                           Point & coordinatesOut) const;
-
-  /** Check if the given point is in a simplex containing nearestIndex and returns simplex index and barycentric coordinates */
-  Bool checkPointInNeighbourhoodWithCoordinates(const Point & point,
-                                                const UnsignedInteger nearestIndex,
-                                                UnsignedInteger & simplexIndexOut,
-                                                Point & coordinatesOut) const;
 
   /** Vertices accessor */
   Sample getVertices() const;
@@ -148,8 +115,11 @@ public:
   /** Simplex accessor */
   Indices getSimplex(const UnsignedInteger index) const;
 
-  /** Compute the volume of a given simplex */
+  /* @deprecated */
   Scalar computeSimplexVolume(const UnsignedInteger index) const;
+
+  /** Compute the volume of all simplices */
+  Point computeSimplicesVolume() const;
 
   /** Compute P1 gram matrix */
   CovarianceMatrix computeP1Gram() const;
@@ -210,33 +180,21 @@ protected:
   void buildSimplexMatrix(const UnsignedInteger index,
 			  SquareMatrix & matrix) const;
 
-  // Compute the total volume of the mesh
+  // @deprecated
   Scalar computeVolume() const;
 
   void checkValidity() const;
 
   // An n-D mesh is a set of vertices with a topology described by a set of simplices
+  // Spatial dimension
+  UnsignedInteger dimension_;
+
   // The vertices
   Sample vertices_;
 
   // The simplices
   IndicesCollection simplices_;
 
-  // The kd-tree associated to the vertices
-  NearestNeighbourAlgorithm tree_;
-
-  // The vertices to simplices map
-  mutable IndicesCollection verticesToSimplices_;
-
-  // The bounding boxes of simplices
-  mutable Sample lowerBoundingBoxSimplices_;
-  mutable Sample upperBoundingBoxSimplices_;
-
-  // Flag to tell if the global volume has already been computed
-  mutable Bool isAlreadyComputedVolume_;
-
-  // The global volume
-  mutable Scalar volume_;
 }; /* class Mesh */
 
 END_NAMESPACE_OPENTURNS

@@ -88,9 +88,6 @@ public:
   /** Tells if it is regular */
   Bool isRegular() const;
 
-  /** Get the index of the nearest vertex */
-  UnsignedInteger getNearestVertexIndex(const Point & point) const;
-
   /**
    * String converter
    */

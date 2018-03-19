@@ -71,6 +71,11 @@ BoundingVolumeHierarchy * BoundingVolumeHierarchy::clone() const
   return new BoundingVolumeHierarchy(*this);
 }
 
+BoundingVolumeHierarchy * BoundingVolumeHierarchy::emptyClone() const
+{
+  return new BoundingVolumeHierarchy();
+}
+
 /* Initialize BVH */
 void BoundingVolumeHierarchy::setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices)
 {
@@ -263,6 +268,7 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
 
   // First, check against the bounding box
   const UnsignedInteger notFound = simplices_.getSize();
+  if (notFound == 0) return notFound;
   if (!boundingBox_.contains(point)) return notFound;
 
   const UnsignedInteger dimension = point.getDimension();

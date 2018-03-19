@@ -43,15 +43,10 @@ static const Factory<Mesh> Factory_Mesh;
 
 /* Default constructor */
 Mesh::Mesh(const UnsignedInteger dimension)
-  : DomainImplementation(dimension)
+  : PersistentObject()
+  , dimension_(dimension)
   , vertices_(1, dimension) // At least one point
   , simplices_()
-  , tree_()
-  , verticesToSimplices_()
-  , lowerBoundingBoxSimplices_(0, dimension)
-  , upperBoundingBoxSimplices_(0, dimension)
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Nothing to do
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(dimension, "t"));
@@ -59,15 +54,10 @@ Mesh::Mesh(const UnsignedInteger dimension)
 
 /* Parameters constructor, simplified interface for 1D case */
 Mesh::Mesh(const Sample & vertices)
-  : DomainImplementation(vertices.getDimension())
+  : PersistentObject()
+  , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_()
-  , tree_()
-  , verticesToSimplices_()
-  , lowerBoundingBoxSimplices_(0, vertices.getDimension())
-  , upperBoundingBoxSimplices_(0, vertices.getDimension())
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -76,15 +66,10 @@ Mesh::Mesh(const Sample & vertices)
 /* Parameters constructor, simplified interface for 1D case */
 Mesh::Mesh(const Sample & vertices,
            const IndicesCollection & simplices)
-  : DomainImplementation(vertices.getDimension())
+  : PersistentObject()
+  , dimension_(vertices.getDimension())
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
-  , tree_()
-  , verticesToSimplices_()
-  , lowerBoundingBoxSimplices_(0, vertices.getDimension())
-  , upperBoundingBoxSimplices_(0, vertices.getDimension())
-  , isAlreadyComputedVolume_(false)
-  , volume_(0.0)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
@@ -94,6 +79,12 @@ Mesh::Mesh(const Sample & vertices,
 Mesh * Mesh::clone() const
 {
   return new Mesh(*this);
+}
+
+/* Dimension accessor */
+UnsignedInteger Mesh::getDimension() const
+{
+  return dimension_;
 }
 
 /* Description of the vertices accessor */
@@ -110,50 +101,9 @@ Sample Mesh::getVertices() const
 
 void Mesh::setVertices(const Sample & vertices)
 {
-  isAlreadyComputedVolume_ = false;
   vertices_ = vertices;
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
-  verticesToSimplices_ = IndicesCollection();
-  lowerBoundingBoxSimplices_ = Sample(0, dimension_);
-  upperBoundingBoxSimplices_ = Sample(0, dimension_);
 }
-
-/* Nearest neighbour algorithm accessor */
-NearestNeighbourAlgorithm Mesh::getNearestNeighbourAlgorithm() const
-{
-  return tree_;
-}
-
-void Mesh::setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & tree)
-{
-  NearestNeighbourAlgorithm emptyClone(tree.getImplementation()->emptyClone());
-  tree_.swap(emptyClone);
-  tree_.setSample(vertices_);
-}
-
-/* Check if the given point is in a simplex containing nearestIndex and returns simplex index and barycentric coordinates */
-Bool Mesh::checkPointInNeighbourhoodWithCoordinates(const Point & point,
-    const UnsignedInteger nearestIndex,
-    UnsignedInteger & simplexIndex,
-    Point & coordinates) const
-{
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-  // To be sure that the vertices to simplices map is up to date
-  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  coordinates = Point(0);
-  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
-  {
-    simplexIndex = *cit;
-    if (checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates))
-    {
-      return true;
-    }
-  } // Loop over the simplices candidates
-  // If no simplex contains the given point, reset the coordinates vector
-  coordinates = Point(0);
-  return false;
-}
-
 
 /* Vertex accessor */
 Point Mesh::getVertex(const UnsignedInteger index) const
@@ -165,7 +115,6 @@ Point Mesh::getVertex(const UnsignedInteger index) const
 void Mesh::setVertex(const UnsignedInteger index,
                      const Point & vertex)
 {
-  isAlreadyComputedVolume_ = false;
   vertices_[index] = vertex;
 }
 
@@ -180,9 +129,6 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
   if (!(simplices == simplices_))
   {
     simplices_ = simplices;
-    verticesToSimplices_ = IndicesCollection();
-    lowerBoundingBoxSimplices_ = Sample(0, dimension_);
-    upperBoundingBoxSimplices_ = Sample(0, dimension_);
   }
 }
 
@@ -224,23 +170,6 @@ Bool Mesh::isValid() const
   return result;
 }
 
-/* Check if the given point is in the mesh */
-Bool Mesh::contains(const Point & point) const
-{
-  // First, check against the bounding box
-  if (!Interval(getLowerBound(), getUpperBound()).contains(point)) return false;
-  // Second, check the simplices containing the nearest vertex
-  const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
-  // To be sure that the vertices to simplices map is up to date
-  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
-    if (checkPointInSimplex(point, *cit)) return true;
-  // Third, a full loop to deal with points not inside of a simplex associated to the nearest vertex
-  const UnsignedInteger simplicesSize = getSimplicesNumber();
-  for (UnsignedInteger i = 0; i < simplicesSize; ++i) if (checkPointInSimplex(point, i)) return true;
-  return false;
-}
-
 /* Build the affine matrix associated to the simplex at the given index*/
 void Mesh::buildSimplexMatrix(const UnsignedInteger index,
 			      SquareMatrix & matrix) const
@@ -257,30 +186,12 @@ void Mesh::buildSimplexMatrix(const UnsignedInteger index,
   }
 }
 
-/* Check if the given point is in the given simplex */
-Bool Mesh::checkPointInSimplex(const Point & point,
-                               const UnsignedInteger index) const
-{
-  Point alpha;
-  return checkPointInSimplexWithCoordinates(point, index, alpha);
-}
-
 /* Check if the given point is in the given simplex and returns its barycentric coordinates */
 Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const UnsignedInteger index,
     Point & coordinates) const
 {
-  // Exit early if bounding boxes have been computed and point is outside bounding box
-  if (lowerBoundingBoxSimplices_.getSize() > 0)
-  {
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      if(point[i] < lowerBoundingBoxSimplices_(index, i))
-        return false;
-      if(point[i] > upperBoundingBoxSimplices_(index, i))
-        return false;
-    }
-  }
+  if (index >= getSimplicesNumber()) return false;
   SquareMatrix matrix(dimension_ + 1);
   buildSimplexMatrix(index, matrix);
   Point v(point);
@@ -302,132 +213,10 @@ UnsignedInteger Mesh::getSimplicesNumber() const
   return simplices_.getSize();
 }
 
-/* TBB functor to speed-up nearest index computation */
-struct NearestFunctor
-{
-  const Mesh & mesh_;
-  const Point & point_;
-  Scalar minDistance_;
-  UnsignedInteger minIndex_;
-
-  NearestFunctor(const Mesh & mesh, const Point & point)
-    : mesh_(mesh), point_(point), minDistance_(SpecFunc::MaxScalar), minIndex_(0) {}
-
-  NearestFunctor(const NearestFunctor & other, TBB::Split)
-    : mesh_(other.mesh_), point_(other.point_), minDistance_(SpecFunc::MaxScalar), minIndex_(0) {}
-
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const Scalar d = (point_ - mesh_.getVertices()[i]).normSquare();
-      if (d < minDistance_)
-      {
-        minDistance_ = d;
-        minIndex_ = i;
-      } // d < minDistance_
-    } // i
-  } // operator
-
-  void join(const NearestFunctor & other)
-  {
-    if (other.minDistance_ < minDistance_)
-    {
-      minDistance_ = other.minDistance_;
-      minIndex_ = other.minIndex_;
-    } // minDistance
-  } // join
-
-}; /* end struct NearestFunctor */
-
-/* Get the index of the nearest vertex */
-UnsignedInteger Mesh::getNearestVertexIndex(const Point & point) const
-{
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-  if (tree_.getSample().getSize() > 0) return tree_.query(point);
-  NearestFunctor functor( *this, point );
-  TBB::ParallelReduce( 0, getVerticesNumber(), functor );
-  return functor.minIndex_;
-}
-
-/* Get the index of the nearest vertex and the index of the containing simplex if any */
-Indices Mesh::getNearestVertexAndSimplexIndicesWithCoordinates(const Point & point,
-    Point & coordinates) const
-{
-  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension " << getDimension() << ", got a point of dimension " << point.getDimension();
-  const UnsignedInteger nearestIndex = getNearestVertexIndex(point);
-  Indices result(1, nearestIndex);
-  // To be sure that the vertices to simplices map is up to date
-  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  coordinates = Point(0);
-  for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(nearestIndex); cit != verticesToSimplices_.cend_at(nearestIndex); ++cit)
-  {
-    const UnsignedInteger simplexIndex = *cit;
-    if (checkPointInSimplexWithCoordinates(point, simplexIndex, coordinates))
-    {
-      result.add(simplexIndex);
-      break;
-    }
-  } // Loop over the simplices candidates
-  // If no simplex contains the given point, reset the coordinates vector
-  if (result.getSize() == 1) coordinates = Point(0);
-  return result;
-}
-
-/* Get the nearest vertex */
-Point Mesh::getNearestVertex(const Point & point) const
-{
-  return vertices_[getNearestVertexIndex(point)];
-}
-
-/* TBB policy to speed-up nearest index computation over a sample */
-struct MeshNearestPolicy
-{
-  const Sample & points_;
-  Indices & indices_;
-  const Mesh & mesh_;
-
-  MeshNearestPolicy(const Sample & points,
-                    Indices & indices,
-                    const Mesh & mesh)
-    : points_(points)
-    , indices_(indices)
-    , mesh_(mesh)
-  {}
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) indices_[i] = mesh_.getNearestVertexIndex(points_[i]);
-  }
-
-}; /* end struct MeshNearestPolicy */
-
-/* Get the index of the nearest vertex for a set of points */
-Indices Mesh::getNearestVertexIndex(const Sample & points) const
-{
-  if (points.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected points of dimension " << getDimension() << ", got points of dimension " << points.getDimension();
-  const UnsignedInteger size = points.getSize();
-  Indices indices(size);
-  if (size == 0) return indices;
-  const MeshNearestPolicy policy( points, indices, *this );
-  TBB::ParallelFor( 0, size, policy );
-  return indices;
-}
-
-/* Get the nearest vertex for a set of points */
-Sample Mesh::getNearestVertex(const Sample & points) const
-{
-  const Indices indices(getNearestVertexIndex(points));
-  const UnsignedInteger size = indices.getSize();
-  Sample neighbours(size, getDimension());
-  for (UnsignedInteger i = 0; i < size; ++i)
-    neighbours[i] = vertices_[indices[i]];
-  return neighbours;
-}
-
 /* Compute the volume of a given simplex */
 Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
 {
+  LOGWARN(OSS() << "Mesh::computeSimplexVolume is deprecated in favor of computeSimplicesVolume.");
   if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
 
   // First special case: 1D simplex
@@ -446,12 +235,73 @@ Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
     const Scalar y1 = vertices_(simplices_(index, 1), 1);
     const Scalar x2 = vertices_(simplices_(index, 2), 0);
     const Scalar y2 = vertices_(simplices_(index, 2), 1);
-    return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x0 - x1) * (y2 - y0));
+    return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x1 - x0) * (y2 - y0));
   }
   SquareMatrix matrix(dimension_ + 1);
   buildSimplexMatrix(index, matrix);
   Scalar sign = 0.0;
   return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
+}
+
+Point Mesh::computeSimplicesVolume() const
+{
+  const UnsignedInteger nrSimplices = getSimplicesNumber();
+  Point result(nrSimplices);
+  if (nrSimplices == 0) return result;
+  if (getDimension() == 1)
+  {
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+      const Scalar x1 = vertices_(simplices_(index, 1), 0);
+      result[index] = std::abs(x1 - x0);
+    }
+  }
+  else if (getDimension() == 2)
+  {
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+      const Scalar y0 = vertices_(simplices_(index, 0), 1);
+      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+      result[index] = 0.5 * std::abs(x02 * y01 - x01 * y02);
+    }
+  }
+  else if (getDimension() == 3)
+  {
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      const Scalar x0 = vertices_(simplices_(index, 0), 0);
+      const Scalar y0 = vertices_(simplices_(index, 0), 1);
+      const Scalar z0 = vertices_(simplices_(index, 0), 2);
+      const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+      const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+      const Scalar z01 = vertices_(simplices_(index, 1), 2) - z0;
+      const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+      const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+      const Scalar z02 = vertices_(simplices_(index, 2), 2) - z0;
+      const Scalar x03 = vertices_(simplices_(index, 3), 0) - x0;
+      const Scalar y03 = vertices_(simplices_(index, 3), 1) - y0;
+      const Scalar z03 = vertices_(simplices_(index, 3), 2) - z0;
+      result[index] = std::abs(x01 * (y02 * z03 - z02 * y03) + y01 * (z02 * x03 - x02 * z03) + z01 * (x02 * y03 - y02 * x03)) / 6.0;
+    }
+  }
+  else
+  {
+    // General case
+    SquareMatrix matrix(getDimension() + 1);
+    Scalar sign = 0.0;
+    const Scalar logGamma = SpecFunc::LogGamma(getDimension() + 1);
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      buildSimplexMatrix(index, matrix);
+      result[index] = exp(matrix.computeLogAbsoluteDeterminant(sign, false) - logGamma);
+    }
+  }
+  return result;
 }
 
 /* Compute P1 gram matrix */
@@ -464,11 +314,12 @@ CovarianceMatrix Mesh::computeP1Gram() const
   for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const UnsignedInteger verticesSize = vertices_.getSize();
   const UnsignedInteger simplicesSize = simplices_.getSize();
+  const Point simplexVolume(computeSimplicesVolume());
   SquareMatrix gram(verticesSize);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
     const Indices simplex(getSimplex(i));
-    const Scalar delta = computeSimplexVolume(i);
+    const Scalar delta = simplexVolume[i];
     for (UnsignedInteger j = 0; j < simplexSize; ++j)
     {
       const UnsignedInteger newJ = simplex[j];
@@ -482,47 +333,26 @@ CovarianceMatrix Mesh::computeP1Gram() const
   return CovarianceMatrix(gram.getImplementation());
 }
 
-/* TBB functor to speed-up volume computation */
-struct VolumeFunctor
-{
-  const Mesh & mesh_;
-  Scalar accumulator_;
-
-  VolumeFunctor(const Mesh & mesh)
-    : mesh_(mesh), accumulator_(0.0) {}
-
-  VolumeFunctor(const VolumeFunctor & other, TBB::Split)
-    : mesh_(other.mesh_), accumulator_(0.0) {}
-
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += mesh_.computeSimplexVolume(i);
-  }
-
-  void join(const VolumeFunctor & other)
-  {
-    accumulator_ += other.accumulator_;
-  }
-
-}; /* end struct VolumeFunctor */
-
 /* Compute the volume of the mesh */
 Scalar Mesh::computeVolume() const
 {
-  VolumeFunctor functor( *this );
-  TBB::ParallelReduce( 0, getSimplicesNumber(), functor );
-  isAlreadyComputedVolume_ = true;
-  return functor.accumulator_;
+  LOGWARN(OSS() << "Mesh::computeVolume is deprecated in favor of getVolume.");
+  return getVolume();
 }
 
 /* Get the numerical volume of the domain */
 Scalar Mesh::getVolume() const
 {
-  if (!isAlreadyComputedVolume_) volume_ = computeVolume();
-  return volume_;
+  const Point volumes(computeSimplicesVolume());
+  return volumes.norm1();
 }
 
 /* Check if the domain is empty, i.e if its numerical volume is zero */
+Bool Mesh::isEmpty() const
+{
+  return isNumericallyEmpty();
+}
+
 Bool Mesh::isNumericallyEmpty() const
 {
   return getVolume() <= ResourceMap::GetAsScalar("Domain-SmallVolume");
@@ -616,32 +446,21 @@ void Mesh::fixOrientation(const UnsignedInteger & index,
   std::swap(*cit, *(cit + 1));
 }
 
-/* Get the map between vertices and simplices: for each vertex, list the vertices indices it belongs to */
+/* @deprecated */
 IndicesCollection Mesh::getVerticesToSimplicesMap() const
 {
-  if (verticesToSimplices_.getSize() > 0) return verticesToSimplices_;
+  LOGWARN(OSS() << "Mesh::getVerticesToSimplicesMap is deprecated, compute it from getSimplices.");
   const UnsignedInteger numSimplices = getSimplicesNumber();
   const UnsignedInteger numVertices = getVerticesNumber();
   Collection<Indices> mapVerticesToSimplices(numVertices, Indices(0));
-  lowerBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension_, SpecFunc::MaxScalar));
-  upperBoundingBoxSimplices_ = Sample(numSimplices, Point(dimension_, - SpecFunc::MaxScalar));
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
     {
-      const UnsignedInteger index = *cit;
-      for(UnsignedInteger k = 0; k < dimension_; ++k)
-      {
-        if (vertices_(index, k) < lowerBoundingBoxSimplices_(i, k))
-          lowerBoundingBoxSimplices_(i, k) = vertices_(index, k);
-        if (vertices_(index, k) > upperBoundingBoxSimplices_(i, k))
-          upperBoundingBoxSimplices_(i, k) = vertices_(index, k);
-      }
-      mapVerticesToSimplices[index].add(i);
+      mapVerticesToSimplices[*cit].add(i);
     }
   } // Loop over simplices
-  verticesToSimplices_ = IndicesCollection(mapVerticesToSimplices);
-  return verticesToSimplices_;
+  return IndicesCollection(mapVerticesToSimplices);
 }
 
 /* Compute weights such that an integral of a function over the mesh
@@ -649,23 +468,19 @@ IndicesCollection Mesh::getVerticesToSimplicesMap() const
  */
 Point Mesh::computeWeights() const
 {
-  // First compute the volume of the simplices
-  const UnsignedInteger numSimplices = getSimplicesNumber();
-  Point simplicesVolume(numSimplices);
-  for (UnsignedInteger i = 0; i < numSimplices; ++i)
-    simplicesVolume[i] = computeSimplexVolume(i);
-  // Second compute the map between vertices and simplices
-  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
-  // Then compute the weights of the vertices by distributing the volume of each simplex among its vertices
+  // Compute the weights of the vertices by distributing the volume of each simplex among its vertices
   const UnsignedInteger numVertices = getVerticesNumber();
+  const UnsignedInteger numSimplices = getSimplicesNumber();
   Point weights(numVertices, 0.0);
-  for (UnsignedInteger i = 0; i < numVertices; ++i)
+  Point simplexVolume(computeSimplicesVolume());
+  for (UnsignedInteger simplex = 0; simplex < numSimplices; ++simplex)
   {
-    Scalar weight = 0.0;
-    for (IndicesCollection::const_iterator cit = verticesToSimplices_.cbegin_at(i); cit != verticesToSimplices_.cend_at(i); ++cit)
-      weight += simplicesVolume[*cit];
-    weights[i] = weight;
-  } // i
+    const Scalar weight = simplexVolume[simplex];
+    for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(simplex); cit != simplices_.cend_at(simplex); ++cit)
+    {
+      weights[*cit] += weight;
+    }
+  }
   // Normalize the weights: each simplex has dim+1 vertices, so each vertex
   // get 1/(dim+1) of the volume of the simplices it belongs to
   weights /= (dimension_ + 1.0);
@@ -828,7 +643,17 @@ Graph Mesh::draw3D(const Bool drawEdge,
   Collection< std::pair<Scalar, Indices> > trianglesAndDepth(4 * simplicesSize);
   UnsignedInteger triangleIndex = 0;
   Indices triangle(3);
-  if (verticesToSimplices_.getSize() == 0) (void) getVerticesToSimplicesMap();
+  const UnsignedInteger numSimplices = getSimplicesNumber();
+  const UnsignedInteger numVertices = getVerticesNumber();
+  Collection<Indices> mapVerticesToSimplices(numVertices, Indices(0));
+  for (UnsignedInteger i = 0; i < numSimplices; ++i)
+  {
+    for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
+    {
+      mapVerticesToSimplices[*cit].add(i);
+    }
+  } // Loop over simplices
+  IndicesCollection verticesToSimplices(mapVerticesToSimplices);
   const Bool backfaceCulling = ResourceMap::GetAsBool("Mesh-BackfaceCulling");
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
@@ -836,10 +661,10 @@ Graph Mesh::draw3D(const Bool drawEdge,
     const UnsignedInteger i1 = simplices_(i, 1);
     const UnsignedInteger i2 = simplices_(i, 2);
     const UnsignedInteger i3 = simplices_(i, 3);
-    const Indices simplicesVertex0(verticesToSimplices_.cbegin_at(i0), verticesToSimplices_.cend_at(i0));
-    const Indices simplicesVertex1(verticesToSimplices_.cbegin_at(i1), verticesToSimplices_.cend_at(i1));
-    const Indices simplicesVertex2(verticesToSimplices_.cbegin_at(i2), verticesToSimplices_.cend_at(i2));
-    const Indices simplicesVertex3(verticesToSimplices_.cbegin_at(i3), verticesToSimplices_.cend_at(i3));
+    const Indices simplicesVertex0(verticesToSimplices.cbegin_at(i0), verticesToSimplices.cend_at(i0));
+    const Indices simplicesVertex1(verticesToSimplices.cbegin_at(i1), verticesToSimplices.cend_at(i1));
+    const Indices simplicesVertex2(verticesToSimplices.cbegin_at(i2), verticesToSimplices.cend_at(i2));
+    const Indices simplicesVertex3(verticesToSimplices.cbegin_at(i3), verticesToSimplices.cend_at(i3));
     const Point visuVertex0(visuVertices[i0]);
     const Point visuVertex1(visuVertices[i1]);
     const Point visuVertex2(visuVertices[i2]);
@@ -1168,29 +993,19 @@ void Mesh::exportToVTKFile(const String & fileName,
 /* Method save() stores the object through the StorageManager */
 void Mesh::save(Advocate & adv) const
 {
-  DomainImplementation::save(adv);
-  adv.saveAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
-  adv.saveAttribute("volume_", volume_);
+  PersistentObject::save(adv);
+  adv.saveAttribute("dimension_", dimension_);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
-  adv.saveAttribute("tree_", tree_);
-  adv.saveAttribute("verticesToSimplices_", verticesToSimplices_);
-  adv.saveAttribute("lowerBoundingBoxSimplices_", lowerBoundingBoxSimplices_);
-  adv.saveAttribute("upperBoundingBoxSimplices_", upperBoundingBoxSimplices_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Mesh::load(Advocate & adv)
 {
-  DomainImplementation::load(adv);
-  adv.loadAttribute("isAlreadyComputedVolume_", isAlreadyComputedVolume_);
-  adv.loadAttribute("volume_", volume_);
+  PersistentObject::load(adv);
+  adv.loadAttribute("dimension_", dimension_);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
-  adv.loadAttribute("tree_", tree_);
-  adv.loadAttribute("verticesToSimplices_", verticesToSimplices_);
-  adv.loadAttribute("lowerBoundingBoxSimplices_", lowerBoundingBoxSimplices_);
-  adv.loadAttribute("upperBoundingBoxSimplices_", upperBoundingBoxSimplices_);
 }
 
 END_NAMESPACE_OPENTURNS

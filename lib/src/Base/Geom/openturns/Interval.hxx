@@ -142,7 +142,7 @@ public:
 
 private:
 
-  /** Get the numerical volume of the interval */
+  /* @deprecated */
   Scalar computeVolume() const;
 
   // An n-D intervall is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
@@ -154,11 +154,6 @@ private:
   BoolPersistentCollection finiteLowerBound_;
   BoolPersistentCollection finiteUpperBound_;
 
-  // Flag to tell if the global volume has already been computed
-  mutable Bool isAlreadyComputedVolume_;
-
-  // The global volume
-  mutable Scalar volume_;
 }; /* class Interval */
 
 END_NAMESPACE_OPENTURNS

@@ -35,6 +35,8 @@ static const Factory<P1LagrangeEvaluation> Factory_P1LagrangeEvaluation;
 /* Default constructor */
 P1LagrangeEvaluation::P1LagrangeEvaluation()
   : EvaluationImplementation()
+  , nearestNeighbour_()
+  , enclosingSimplex_()
 {
   // Nothing to do
 }
@@ -42,6 +44,8 @@ P1LagrangeEvaluation::P1LagrangeEvaluation()
 /* Parameters constructor */
 P1LagrangeEvaluation::P1LagrangeEvaluation(const Field & field)
   : EvaluationImplementation()
+  , nearestNeighbour_(field.getMesh().getVertices())
+  , enclosingSimplex_(field.getMesh().getVertices(), field.getMesh().getSimplices())
 {
   setField(field);
 }
@@ -122,17 +126,13 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   const UnsignedInteger nrVertices = mesh.getVerticesNumber();
   if (nrVertices != values_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a mesh with =" << values_.getSize() << " vertices, got " << nrVertices << " vertices";
   mesh_ = mesh;
-  // Build KDTree
   nearestNeighbour_.setSample(mesh_.getVertices());
-  // In evaluate(), mesh_.getNearestVertexAndSimplexIndicesWithCoordinates() builds mesh_::verticesToSimplices_ if not
-  // already done.  But evaluate() may be called from several threads at the same time, thus ensure now that
-  // mesh_::verticesToSimplices_ is built.
-  (void) mesh_.getVerticesToSimplicesMap();
+  enclosingSimplex_.setVerticesAndSimplices(mesh_.getVertices(), mesh_.getSimplices());
 
   // Check for pending vertices
   Interval::BoolCollection seenVertices(nrVertices);
-  const UnsignedInteger nrSimplices = mesh.getSimplicesNumber();
-  const IndicesCollection simplices(getSimplices());
+  const UnsignedInteger nrSimplices = mesh_.getSimplicesNumber();
+  const IndicesCollection simplices(mesh_.getSimplices());
   // Iterate over simplices
   for(UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
@@ -160,33 +160,6 @@ Mesh P1LagrangeEvaluation::getMesh() const
   return mesh_;
 }
 
-/* Vertices accessor */
-void P1LagrangeEvaluation::setVertices(const Sample & vertices)
-{
-  mesh_.setVertices(vertices);
-  nearestNeighbour_.setSample(vertices);
-  // In evaluate(), mesh_.getNearestVertexAndSimplexIndicesWithCoordinates() builds mesh_::verticesToSimplices_ if not
-  // already done.  But evaluate() may be called from several threads at the same time, thus ensure now that
-  // mesh_::verticesToSimplices_ is built.
-  (void) mesh_.getVerticesToSimplicesMap();
-}
-
-Sample P1LagrangeEvaluation::getVertices() const
-{
-  return mesh_.getVertices();
-}
-
-/* Simplices accessor */
-void P1LagrangeEvaluation::setSimplices(const IndicesCollection & simplices)
-{
-  mesh_.setSimplices(simplices);
-}
-
-IndicesCollection P1LagrangeEvaluation::getSimplices() const
-{
-  return mesh_.getSimplices();
-}
-
 /* Values accessor */
 void P1LagrangeEvaluation::setValues(const Sample & values)
 {
@@ -199,7 +172,7 @@ Sample P1LagrangeEvaluation::getValues() const
   return values_;
 }
 
-/** Nearest neighbour algorithm accessor */
+/* Nearest neighbour algorithm accessor */
 void P1LagrangeEvaluation::setNearestNeighbourAlgorithm(const NearestNeighbourAlgorithm & nearestNeighbour)
 {
   NearestNeighbourAlgorithm emptyClone(nearestNeighbour.getImplementation()->emptyClone());
@@ -210,6 +183,19 @@ void P1LagrangeEvaluation::setNearestNeighbourAlgorithm(const NearestNeighbourAl
 NearestNeighbourAlgorithm P1LagrangeEvaluation::getNearestNeighbourAlgorithm() const
 {
   return nearestNeighbour_;
+}
+
+/* EnclosingSimplexAlgorithm to speed-up point location */
+void P1LagrangeEvaluation::setEnclosingSimplexAlgorithm(const EnclosingSimplexAlgorithm & enclosingSimplex)
+{
+  EnclosingSimplexAlgorithm emptyClone(enclosingSimplex.getImplementation()->emptyClone());
+  enclosingSimplex_.swap(emptyClone);
+  enclosingSimplex_.setVerticesAndSimplices(mesh_.getVertices(), mesh_.getSimplices());
+}
+
+EnclosingSimplexAlgorithm P1LagrangeEvaluation::getEnclosingSimplexAlgorithm() const
+{
+  return enclosingSimplex_;
 }
 
 /* Here is the interface that all derived class must implement */
@@ -234,23 +220,52 @@ Point P1LagrangeEvaluation::operator()( const Point & inP ) const
   return result;
 }
 
+class P1LagrangeEvaluationComputeSamplePolicy
+{
+  const Sample & input_;
+  Sample & output_;
+  const P1LagrangeEvaluation & lagrange_;
+
+public:
+  P1LagrangeEvaluationComputeSamplePolicy(const Sample & input,
+                                          Sample & output,
+                                          const P1LagrangeEvaluation & lagrange)
+    : input_(input)
+    , output_(output)
+    , lagrange_(lagrange)
+  {
+    // Nothing to do
+  }
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      output_[i] = lagrange_.evaluate(input_[i]);
+  } // operator ()
+};  // class P1LagrangeEvaluationComputeSamplePolicy
+
 /* Evaluation method */
 Point P1LagrangeEvaluation::evaluate( const Point & inP ) const
 {
-  Point coordinates(0);
-  const Indices vertexAndSimplexIndices(mesh_.getNearestVertexAndSimplexIndicesWithCoordinates(inP, coordinates));
-  // Here, perform the P1 interpolation
-  // First get the index of the nearest vertex
-  const UnsignedInteger nearestIndex = vertexAndSimplexIndices[0];
-  // As a first guess, take the value at the nearest index. It will be the final value if no simplex contains the point
-  Point result(values_[nearestIndex]);
-  if (coordinates.getSize() > 0)
+  const UnsignedInteger simplexIndex = enclosingSimplex_.query(inP);
+  if (simplexIndex >= mesh_.getSimplicesNumber())
   {
-    const Indices simplex(mesh_.getSimplex(vertexAndSimplexIndices[1]));
-    result = values_[simplex[0]] * coordinates[0];
-    for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
-      result += values_[simplex[j]] * coordinates[j];
+    // No enclosing simplex.   Take value at the nearest point
+    return values_[nearestNeighbour_.query(inP)];
   }
+
+  // Compute barycentric coordinates
+  Point coordinates(0);
+  if (!mesh_.checkPointInSimplexWithCoordinates(inP, simplexIndex, coordinates))
+  {
+    // Hmmm, should not happen
+    return values_[nearestNeighbour_.query(inP)];
+  }
+  // Here, perform the P1 interpolation
+  const Indices simplex(mesh_.getSimplex(simplexIndex));
+  Point result(values_[simplex[0]] * coordinates[0]);
+  for (UnsignedInteger j = 1; j < simplex.getSize(); ++j)
+    result += values_[simplex[j]] * coordinates[j];
   return result;
 }
 
@@ -292,6 +307,7 @@ void P1LagrangeEvaluation::save(Advocate & adv) const
   adv.saveAttribute("mesh_", mesh_);
   adv.saveAttribute("values_", values_);
   adv.saveAttribute("nearestNeighbour_", nearestNeighbour_);
+  adv.saveAttribute("enclosingSimplex_", enclosingSimplex_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -301,6 +317,7 @@ void P1LagrangeEvaluation::load(Advocate & adv)
   adv.loadAttribute("mesh_", mesh_);
   adv.loadAttribute("values_", values_);
   adv.loadAttribute("nearestNeighbour_", nearestNeighbour_);
+  adv.loadAttribute("enclosingSimplex_", enclosingSimplex_);
 }
 
 END_NAMESPACE_OPENTURNS

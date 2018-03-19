@@ -50,6 +50,9 @@ public:
 
   /** Virtual copy constructor */
   virtual BoundingVolumeHierarchy * clone() const;
+#ifndef SWIG
+  virtual BoundingVolumeHierarchy * emptyClone() const;
+#endif
 
   void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
 

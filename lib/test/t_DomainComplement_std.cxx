@@ -98,17 +98,18 @@ int main(int argc, char *argv[])
       simplices(4, 1) = 2;
       simplices(4, 2) = 5;
       Mesh mesh2D(vertices, simplices);
+      MeshDomain mesh2Ddomain(mesh2D);
       const Point p0(2, -0.25);
       const Point p1(2, 1.25);
-      DomainComplement complement(mesh2D);
-      fullprint << "mesh contains " << p0 << "? " << (mesh2D.contains(p0) ? "true" : "false") << std::endl;
+      DomainComplement complement(mesh2Ddomain);
+      fullprint << "mesh contains " << p0 << "? " << (mesh2Ddomain.contains(p0) ? "true" : "false") << std::endl;
       fullprint << "complement contains " << p0 << "? " << (complement.contains(p0) ? "true" : "false") << std::endl;
-      fullprint << "mesh contains " << p1 << "? " << (mesh2D.contains(p1) ? "true" : "false") << std::endl;
+      fullprint << "mesh contains " << p1 << "? " << (mesh2Ddomain.contains(p1) ? "true" : "false") << std::endl;
       fullprint << "complement contains " << p1 << "? " << (complement.contains(p1) ? "true" : "false") << std::endl;
       Sample sample(2, 2);
       sample[0] = p0;
       sample[1] = p1;
-      fullprint << "mesh contains " << sample << "? " << (mesh2D.contains(sample)) << std::endl;
+      fullprint << "mesh contains " << sample << "? " << (mesh2Ddomain.contains(sample)) << std::endl;
       fullprint << "complement contains " << sample << "? " << (complement.contains(sample)) << std::endl;
     }
     { // Level set
