@@ -39,6 +39,7 @@ class OT_API KarhunenLoeveResult
 public:
 
   typedef TypedInterfaceObject<KarhunenLoeveResultImplementation>::Implementation Implementation;
+  typedef KarhunenLoeveResultImplementation::FunctionCollection  FunctionCollection;
 
   /** Default constructor */
   KarhunenLoeveResult();
@@ -72,7 +73,7 @@ public:
   /** Projection method */
   Point project(const Function & function) const;
   Point project(const Field & field) const;
-  Sample project(const Basis & basis) const;
+  Sample project(const FunctionCollection & functionCollection) const;
   Sample project(const ProcessSample & sample) const;
 
   /** Lift method */

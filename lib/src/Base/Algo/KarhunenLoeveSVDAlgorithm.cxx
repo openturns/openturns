@@ -180,7 +180,10 @@ void KarhunenLoeveSVDAlgorithm::run()
   MatrixImplementation U;
   MatrixImplementation Vt;
   // The singular values are given in decreasing order
-  const Point svd(designMatrix.computeSVD(U, Vt));
+  // Last two arguments are:
+  //   * fullSVD = false, we only want kTilde columns of U
+  //   * keepIntact = false, designMatrix is no more used afterwards
+  const Point svd(designMatrix.computeSVD(U, Vt,  false, false));
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
   Scalar cumulatedVariance = 0.0;
   Point eigenValues(svd.getDimension());
@@ -216,7 +219,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     } // j
   } // !uniformVerticesWeights_
   // Reduce and rescale the eigenvectors
-  MatrixImplementation transposedProjection(augmentedDimension, K);
+  MatrixImplementation projection(K, augmentedDimension);
   Point selectedEV(K);
   Basis modes(0);
   ProcessSample modesAsProcessSample(sample_.getMesh(), 0, dimension);
@@ -228,7 +231,6 @@ void KarhunenLoeveSVDAlgorithm::run()
     evaluation1D = new PiecewiseLinearEvaluation(sample_.getMesh().getVertices().getImplementation()->getData(), values);
   else
     evaluationXD = new P1LagrangeEvaluation(Field(sample_.getMesh(), dimension));
-  UnsignedInteger index = 0;
   LOGINFO("Create modes and projection");
   for (UnsignedInteger k = 0; k < K; ++k)
   {
@@ -255,28 +257,26 @@ void KarhunenLoeveSVDAlgorithm::run()
     if (uniformVerticesWeights_)
     {
       a *= verticesWeights_[0] / sqrt(selectedEV[k]);
-      std::copy(a.begin(), a.end(), transposedProjection.begin() + index);
-      index += augmentedDimension;
+      // Build the relevant row of the projection matrix
+      for(UnsignedInteger i = 0; i < augmentedDimension; ++i)
+        projection(k, i) = a[i];
     } // uniformVerticesWeights_
     else
     {
       const Scalar inverseSqrtLambda = 1.0 / sqrt(selectedEV[k]);
-      UnsignedInteger shift = 0;
       for (UnsignedInteger i = 0; i < verticesNumber; ++i)
       {
         const Scalar coefficient = verticesWeights_[i] * inverseSqrtLambda;
         for (UnsignedInteger j = 0; j < dimension; ++j)
         {
-          transposedProjection[index] = coefficient * a[shift];
-          ++shift;
-          ++index;
+          projection(k, i * dimension + j) = coefficient * a[i * dimension + j];
         } // j
       } // i
     } // !uniformVerticesWeights_
   } // k
   LOGINFO("Create KL result");
   covariance_ = RankMCovarianceModel(selectedEV, modes);
-  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, transposedProjection.transpose());
+  result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
 }
 
 /* Sample accessor */

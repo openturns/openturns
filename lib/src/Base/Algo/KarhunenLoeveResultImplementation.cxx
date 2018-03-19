@@ -131,6 +131,16 @@ Matrix KarhunenLoeveResultImplementation::getProjectionMatrix() const
 }
 
 /* Projection method */
+Sample KarhunenLoeveResultImplementation::project(const FunctionCollection & functionCollection) const
+{
+  const UnsignedInteger size = functionCollection.getSize();
+  const Sample vertices(modesAsProcessSample_.getMesh().getVertices());
+  Sample functionValues(size, projection_.getNbColumns());
+  for(UnsignedInteger i = 0; i < size; ++i)
+    functionValues[i] = (functionCollection[i](vertices)).getImplementation()->getData();
+  return projection_.getImplementation()->genSampleProd(functionValues, true, false, 'R');
+}
+
 Point KarhunenLoeveResultImplementation::project(const Function & function) const
 {
   // Evaluate the function over the vertices of the mesh and cast it into a Point
@@ -145,65 +155,38 @@ Point KarhunenLoeveResultImplementation::project(const Field & field) const
   return project(Function(P1LagrangeEvaluation(field).clone()));
 }
 
-struct ProjectBasisPolicy
-{
-  const Basis & basis_;
-  Sample & output_;
-  const KarhunenLoeveResultImplementation & result_;
-
-  ProjectBasisPolicy( const Basis & basis,
-                      Sample & output,
-                      const KarhunenLoeveResultImplementation & result)
-    : basis_(basis)
-    , output_(output)
-    , result_(result)
-  {}
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = result_.project(basis_.build(i));
-  }
-
-}; /* end struct ProjectBasisPolicy */
-
-Sample KarhunenLoeveResultImplementation::project(const Basis & basis) const
-{
-  const UnsignedInteger size = basis.getSize();
-  Sample result(size, projection_.getNbRows());
-  const ProjectBasisPolicy policy( basis, result, *this );
-  TBB::ParallelFor( 0, size, policy );
-  return result;
-}
-
-struct ProjectSamplePolicy
-{
-  const ProcessSample & sample_;
-  Sample & output_;
-  const KarhunenLoeveResultImplementation & result_;
-
-  ProjectSamplePolicy( const ProcessSample & sample,
-                       Sample & output,
-                       const KarhunenLoeveResultImplementation & result)
-    : sample_(sample)
-    , output_(output)
-    , result_(result)
-  {}
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
-      output_[i] = result_.project(sample_.getField(i));
-  }
-
-}; /* end struct ProjectSamplePolicy */
-
 Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  Sample result(size, projection_.getNbRows());
-  const ProjectSamplePolicy policy( sample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
-  return result;
+  if (!(size != 0)) return Sample();
+  const UnsignedInteger dimension = sample.getDimension();
+  const UnsignedInteger length = modesAsProcessSample_.getMesh().getVerticesNumber();
+  if (sample.getMesh() == modesAsProcessSample_.getMesh())
+  {
+    // result[i] = projection_ * sample.data_[i] if sample.data_ is viewed as a
+    //   Sample(size, length * dimension) and result[i] as a Point of dimension rows(projection_)
+    // This can be rewritten with matrix multiplication:
+    //   transposed(result) = transposed(sample.data_) * transposed(projection_)
+    // As result and sample.data_ are stored as Sample and not Matrix, we have
+    //   result = sample.data_ * transposed(projection_)
+    Sample values(size, length * dimension);
+    for(UnsignedInteger i = 0; i < size; ++i)
+      std::copy(&sample[i](0, 0), &sample[i](0, 0) + length * dimension, &values(i, 0));
+    return projection_.getImplementation()->genSampleProd(values, true, false, 'R');
+  }
+  else
+  {
+    // We build a P1LagrangeEvaluation as if ProcessSample was an aggregated Field.
+    P1LagrangeEvaluation evaluation(sample);
+    // values is Sample(length, size * dimension)
+    const Sample values(evaluation(modesAsProcessSample_.getMesh().getVertices()));
+    // Dispatch values so that it can be multiplied by projection_ like above
+    Sample dispatched(size, length * dimension);
+    for(UnsignedInteger i = 0; i < size; ++i)
+      for(UnsignedInteger j = 0; j < length; ++j)
+        std::copy(&values(j, i * dimension), &values(j, i * dimension) + dimension, &dispatched(i, j * dimension));
+    return projection_.getImplementation()->genSampleProd(dispatched, true, false, 'R');
+  }
 }
 
 /* Lift method */

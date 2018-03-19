@@ -106,9 +106,9 @@ Point KarhunenLoeveResult::project(const Field & field) const
   return getImplementation()->project(field);
 }
 
-Sample KarhunenLoeveResult::project(const Basis & basis) const
+Sample KarhunenLoeveResult::project(const FunctionCollection & functionCollection) const
 {
-  return getImplementation()->project(basis);
+  return getImplementation()->project(functionCollection);
 }
 
 Sample KarhunenLoeveResult::project(const ProcessSample & sample) const
