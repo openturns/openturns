@@ -891,7 +891,7 @@ endforeach ()
 
 
 # Build and install openturns.memoryview
-add_library( memoryview MODULE PythonReadOnlyBuffer.c )
+add_library (memoryview MODULE PythonReadOnlyBuffer.c)
 if (LINK_PYTHON_LIBRARY)
   target_link_libraries (memoryview ${PYTHON_LIBRARIES})
 endif ()
@@ -996,6 +996,7 @@ if (SPHINX_FOUND)
     foreach (module ${OPENTURNS_PYTHON_MODULES})
       add_dependencies (sphinx_${format} _${module})
     endforeach ()
+    add_dependencies (sphinx_${format} memoryview)
   endforeach ()
 
   # build html by default

@@ -17,7 +17,7 @@ Indices __getitem__(SignedInteger index) const {
   if (index < 0) {
     index += self->getSize();
   }
-  if (index < 0 || index >= size) {
+  if (index < 0 || index >= static_cast<OT::SignedInteger>(size)) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   return OT::Indices(self->cbegin_at(index), self->cend_at(index));
@@ -30,7 +30,7 @@ void __setitem__ (SignedInteger index,
   if (index < 0) {
     index += self->getSize();
   }
-  if (index < 0 || index >= size) {
+  if (index < 0 || index >= static_cast<OT::SignedInteger>(size)) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   OT::UnsignedInteger thisSize = self->cend_at(index) - self->cbegin_at(index);

@@ -43,10 +43,10 @@ static const Factory<PythonEvaluation> Factory_PythonEvaluation;
 PythonEvaluation::PythonEvaluation()
   : EvaluationImplementation()
   , pyObj_(NULL)
-  , pyBufferClass_(NULL)
   , pyObj_has_exec_(false)
   , pyObj_has_exec_sample_(false)
   , pyObj_discard_openturns_memoryview_(true)
+  , pyBufferClass_(NULL)
 {
   // Nothing to do
 }
@@ -56,10 +56,10 @@ PythonEvaluation::PythonEvaluation()
 PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   : EvaluationImplementation()
   , pyObj_(pyCallable)
-  , pyBufferClass_(NULL)
   , pyObj_has_exec_(false)
   , pyObj_has_exec_sample_(false)
   , pyObj_discard_openturns_memoryview_(true)
+  , pyBufferClass_(NULL)
 {
   Py_XINCREF(pyCallable);
 
