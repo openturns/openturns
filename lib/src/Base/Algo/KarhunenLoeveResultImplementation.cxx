@@ -152,7 +152,7 @@ Point KarhunenLoeveResultImplementation::project(const Field & field) const
 {
   if (field.getMesh() == modesAsProcessSample_.getMesh())
     return projection_ * field.getValues().getImplementation()->getData();
-  return project(Function(P1LagrangeEvaluation(field).clone()));
+  return project(Function(new P1LagrangeEvaluation(field)));
 }
 
 Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
