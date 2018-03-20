@@ -198,8 +198,10 @@ void RankMCovarianceModel::setBasis(const Basis & basis)
   functions_ = Basis::FunctionCollection(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     functions_[i] = basis.build(i);
-  scale_ = Point(functions_[0].getInputDimension(), 1.0);
-  amplitude_ = Point(functions_[0].getOutputDimension(), 1.0);
+  inputDimension_ = functions_[0].getInputDimension();
+  scale_ = Point(inputDimension_, 1.0);
+  outputDimension_ = functions_[0].getOutputDimension();
+  amplitude_ = Point(outputDimension_, 1.0);
   basis_ = basis;
 }
 
