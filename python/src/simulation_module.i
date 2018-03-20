@@ -38,8 +38,8 @@
 %import weightedexperiment_module.i
 
 /* Uncertainty/Algorithm/Simulation */
-%include SimulationResultImplementation.i
 %include SimulationResult.i
+%include ProbabilitySimulationResult.i
 %include Simulation.i
 %include ProbabilitySimulationAlgorithm.i
 %include PostAnalyticalSimulation.i

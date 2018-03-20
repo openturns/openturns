@@ -21,7 +21,7 @@ threshold : float
 event : :class:`~openturns.Event`
     An event which it composite (test is with the method
     :meth:`isComposite <openturns.Event.isComposite>`).
-simulationRes : :class:`~openturns.SimulationResult`
+simulationRes : :class:`~openturns.ProbabilitySimulationResult`
     A simulation result.
 
 Notes

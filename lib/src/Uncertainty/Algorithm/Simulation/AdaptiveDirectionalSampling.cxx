@@ -117,7 +117,7 @@ void AdaptiveDirectionalSampling::run()
       directionalSampling.setMaximumOuterSampling (ni);
       directionalSampling.setBlockSize (blockSize);
       directionalSampling.run();
-      const SimulationResult result(directionalSampling.getResult());
+      const ProbabilitySimulationResult result(directionalSampling.getResult());
       const Scalar pf = result.getProbabilityEstimate();
 
       if (pf > 0.0)
@@ -142,7 +142,7 @@ void AdaptiveDirectionalSampling::run()
     const Scalar varianceEstimate = w0SigmaSum * w0SigmaSum / (gamma_[l] * n); // (33)
 
     // update result
-    setResult(SimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
+    setResult(ProbabilitySimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
 
     // update weights
     for (UnsignedInteger i = 0; i < m; ++ i)

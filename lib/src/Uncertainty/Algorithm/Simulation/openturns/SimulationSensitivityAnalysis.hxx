@@ -30,7 +30,7 @@
 #include "openturns/Graph.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/SimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -61,7 +61,7 @@ public:
   explicit SimulationSensitivityAnalysis(const Event & event);
 
   /** Standard constructor */
-  explicit SimulationSensitivityAnalysis(const SimulationResult & result);
+  explicit SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result);
 
   /** Virtual constructor */
   virtual SimulationSensitivityAnalysis * clone() const;

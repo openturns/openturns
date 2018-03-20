@@ -95,7 +95,7 @@ try:
     myStudy.add('point', point)
 
     # Create a Simulation::Result
-    simulationResult = ot.SimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
+    simulationResult = ot.ProbabilitySimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
     myStudy.add('simulationResult', simulationResult)
 
     cNameList = [
@@ -233,7 +233,7 @@ try:
     print('matrix = ', repr(matrix))
 
     # Create a Simulation::Result from the one stored in the Study
-    simulationResult = ot.SimulationResult()
+    simulationResult = ot.ProbabilitySimulationResult()
     myStudy.fillObject('simulationResult', simulationResult)
 
     print('simulation result = ', simulationResult)

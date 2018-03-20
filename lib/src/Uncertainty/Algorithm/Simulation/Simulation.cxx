@@ -85,13 +85,13 @@ Event Simulation::getEvent() const
 }
 
 /* Result accessor */
-void Simulation::setResult(const SimulationResult & result)
+void Simulation::setResult(const ProbabilitySimulationResult & result)
 {
   result_ = result;
 }
 
 /* Result accessor */
-SimulationResult Simulation::getResult() const
+ProbabilitySimulationResult Simulation::getResult() const
 {
   return result_;
 }
@@ -193,7 +193,7 @@ void Simulation::run()
   // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
-  result_.getImplementation()->setEvent(event_);
+  result_.setEvent(event_);
   result_.setBlockSize(blockSize_);
   // Second, the variant part
   result_.setProbabilityEstimate(probabilityEstimate);
@@ -294,7 +294,7 @@ Graph Simulation::drawProbabilityConvergence(const Scalar level) const
     // The bounds are drawn only if there is a useable variance estimate
     if (varianceEstimate >= 0.0)
     {
-      const Scalar confidenceLength = SimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level);
+      const Scalar confidenceLength = ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level);
       Point pt(2);
       pt[0] = i + 1;
       pt[1] = probabilityEstimate - 0.5 * confidenceLength;

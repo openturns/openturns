@@ -18,13 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_SIMULATIONRESULTIMPLEMENTATION_HXX
-#define OPENTURNS_SIMULATIONRESULTIMPLEMENTATION_HXX
+#ifndef OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
+#define OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
 
-#include <cmath>
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Event.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/SimulationResult.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/Graph.hxx"
@@ -32,11 +31,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class SimulationResultImplementation
+ * @class ProbabilitySimulationResult
  * Implementation of SimulationResult
  */
-class OT_API SimulationResultImplementation
-  : public PersistentObject
+class OT_API ProbabilitySimulationResult
+  : public SimulationResult
 {
 
   CLASSNAME
@@ -44,17 +43,17 @@ public:
 
 
   /** Default constructor */
-  SimulationResultImplementation();
+  ProbabilitySimulationResult();
 
   /** Standard constructor */
-  SimulationResultImplementation(const Event & event,
-                                 const Scalar probabilityEstimate,
-                                 const Scalar varianceEstimate,
-                                 const UnsignedInteger outerSampling,
-                                 const UnsignedInteger blockSize);
+  ProbabilitySimulationResult(const Event & event,
+                              const Scalar probabilityEstimate,
+                              const Scalar varianceEstimate,
+                              const UnsignedInteger outerSampling,
+                              const UnsignedInteger blockSize);
 
   /** Virtual constructor */
-  virtual SimulationResultImplementation * clone() const;
+  virtual ProbabilitySimulationResult * clone() const;
 
   /** Event accessor */
   Event getEvent() const;
@@ -83,16 +82,8 @@ public:
   /** Draw the importance factors */
   Graph drawImportanceFactors() const;
 
-  /** Sample size accessor */
-  UnsignedInteger getOuterSampling() const;
-  void setOuterSampling(const UnsignedInteger outerSampling);
-
-  /** Block size accessor */
-  UnsignedInteger getBlockSize() const;
-  void setBlockSize(const UnsignedInteger blockSize);
-
   /** Confidence length */
-  virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -109,11 +100,9 @@ protected:
   Event event_;
   Scalar probabilityEstimate_;
   Scalar varianceEstimate_;
-  UnsignedInteger outerSampling_;
-  UnsignedInteger blockSize_;
 
-}; // class SimulationResultImplementation
+}; // class ProbabilitySimulationResult
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_SIMULATIONRESULTIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX */

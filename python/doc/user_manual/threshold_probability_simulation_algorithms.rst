@@ -82,4 +82,5 @@ Simulation result
     :template: class.rst_t
 
     SimulationResult
+    ProbabilitySimulationResult
     SubsetSamplingResult

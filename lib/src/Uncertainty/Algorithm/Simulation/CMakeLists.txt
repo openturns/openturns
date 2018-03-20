@@ -3,7 +3,7 @@
 # Register current directory files
 ot_add_current_dir_to_include_dirs ()
 
-ot_add_source_file (SimulationResultImplementation.cxx)
+ot_add_source_file (ProbabilitySimulationResult.cxx)
 ot_add_source_file (SimulationResult.cxx)
 ot_add_source_file (SimulationSensitivityAnalysis.cxx)
 ot_add_source_file (PostAnalyticalSimulation.cxx)
@@ -37,7 +37,7 @@ ot_install_header_file (RiskyAndFast.hxx)
 ot_install_header_file (RandomDirection.hxx)
 ot_install_header_file (OrthogonalDirection.hxx)
 ot_install_header_file (PostAnalyticalImportanceSampling.hxx)
-ot_install_header_file (SimulationResultImplementation.hxx)
+ot_install_header_file (ProbabilitySimulationResult.hxx)
 ot_install_header_file (SimulationSensitivityAnalysis.hxx)
 ot_install_header_file (DirectionalSampling.hxx)
 ot_install_header_file (RootStrategy.hxx)

@@ -38,7 +38,7 @@
 #include "openturns/PostAnalyticalSimulation.hxx"
 #include "openturns/Simulation.hxx"
 #include "openturns/SimulationResult.hxx"
-#include "openturns/SimulationResultImplementation.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include "openturns/Wilks.hxx"
 #include "openturns/SubsetSamplingResult.hxx"

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief SimulationResult stores the simulation result
+ *  @brief Base class for simulation results
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -21,9 +21,10 @@
 #ifndef OPENTURNS_SIMULATIONRESULT_HXX
 #define OPENTURNS_SIMULATIONRESULT_HXX
 
-#include "openturns/SimulationResultImplementation.hxx"
-#include "openturns/Pointer.hxx"
-#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Event.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/Graph.hxx"
 
@@ -31,58 +32,25 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class SimulationResult
- * SimulationResult stores the simulation result
+ * Implementation of SimulationResult
  */
 class OT_API SimulationResult
-  : public TypedInterfaceObject<SimulationResultImplementation>
+  : public PersistentObject
 {
 
   CLASSNAME
 public:
 
-  typedef Pointer<SimulationResultImplementation>                       Implementation;
 
   /** Default constructor */
   SimulationResult();
 
   /** Standard constructor */
-  SimulationResult(const Event & event,
-                   const Scalar probabilityEstimate,
-                   const Scalar varianceEstimate,
-                   const UnsignedInteger outerSampling,
+  SimulationResult(const UnsignedInteger outerSampling,
                    const UnsignedInteger blockSize);
 
-  /** Constructor with parameters */
-  SimulationResult(const SimulationResultImplementation & implementation);
-
-  /** Constructor with parameters */
-  SimulationResult(Implementation & p_implementation);
-
-  /** Event accessor */
-  Event getEvent() const;
-
-  /** Probability estimate accessor */
-  Scalar getProbabilityEstimate() const;
-  void setProbabilityEstimate(const Scalar probabilityEstimate);
-
-  /** Variance estimate accessor */
-  Scalar getVarianceEstimate() const;
-  void setVarianceEstimate(const Scalar varianceEstimate);
-
-  /** Coefficient of variation estimate accessor */
-  Scalar getCoefficientOfVariation() const;
-
-  /** Standard deviation estimate accessor */
-  Scalar getStandardDeviation() const;
-
-  /** Mean point conditioned to the event realization accessor */
-  Point getMeanPointInEventDomain() const;
-
-  /** Importance factors accessor */
-  PointWithDescription getImportanceFactors() const;
-
-  /** Draw the importance factors */
-  Graph drawImportanceFactors() const;
+  /** Virtual constructor */
+  virtual SimulationResult * clone() const;
 
   /** Sample size accessor */
   UnsignedInteger getOuterSampling() const;
@@ -92,15 +60,21 @@ public:
   UnsignedInteger getBlockSize() const;
   void setBlockSize(const UnsignedInteger blockSize);
 
-  /** Confidence length */
-  Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
-
   /** String converter */
-  String __repr__() const;
+  virtual String __repr__() const;
 
-private:
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
 
-}; // class Result
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
+protected:
+
+  UnsignedInteger outerSampling_;
+  UnsignedInteger blockSize_;
+
+}; // class SimulationResult
 
 END_NAMESPACE_OPENTURNS
 

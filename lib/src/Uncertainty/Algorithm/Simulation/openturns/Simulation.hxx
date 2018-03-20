@@ -27,7 +27,7 @@
 #include "openturns/Compact.hxx"
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/SimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/Event.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -56,7 +56,7 @@ public:
   Event getEvent() const;
 
   /** Result accessor */
-  SimulationResult getResult() const;
+  ProbabilitySimulationResult getResult() const;
 
   /** Maximum sample size accessor */
   void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
@@ -89,7 +89,7 @@ public:
   virtual void run();
 
   /** Draw the probability convergence at the given level */
-  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -108,7 +108,7 @@ public:
 protected:
 
   /** Result accessor */
-  void setResult(const SimulationResult & result);
+  void setResult(const ProbabilitySimulationResult & result);
 
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();
@@ -129,7 +129,7 @@ protected:
   Event event_;
 
   // Result of the simulation
-  SimulationResult result_;
+  ProbabilitySimulationResult result_;
 
   // callbacks
   std::pair< ProgressCallback, void *> progressCallback_;

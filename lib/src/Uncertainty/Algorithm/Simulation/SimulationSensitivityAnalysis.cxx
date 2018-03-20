@@ -72,7 +72,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Sample & inpu
 }
 
 /* Standard constructor */
-SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const SimulationResult & result)
+SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result)
   : PersistentObject(),
     inputSample_(),
     outputSample_(),

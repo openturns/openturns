@@ -1,5 +1,5 @@
 %define OT_SimulationResult_doc
-"Simulation result.
+"Probability simulation result.
 
 Notes
 -----
@@ -22,7 +22,7 @@ Examples
 >>> print(SimulationLHSResult.getImportanceFactors())
 [X0 : 0.000722617, X1 : 0.635094, X2 : 0.275692, X3 : 0.0884917]"
 %enddef
-%feature("docstring") OT::SimulationResultImplementation
+%feature("docstring") OT::ProbabilitySimulationResult
 OT_SimulationResult_doc
 
 // ---------------------------------------------------------------------
@@ -35,7 +35,7 @@ Returns
 blockSize : int
     Number of terms in the probability simulation estimator grouped together."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getBlockSize
+%feature("docstring") OT::ProbabilitySimulationResult::getBlockSize
 OT_SimulationResult_getBlockSize_doc
 
 // ---------------------------------------------------------------------
@@ -48,7 +48,7 @@ Parameters
 blockSize : int, :math:`blockSize \geq 0`
     Number of terms in the probability simulation estimator grouped together."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::setBlockSize
+%feature("docstring") OT::ProbabilitySimulationResult::setBlockSize
 OT_SimulationResult_setBlockSize_doc
 
 // ---------------------------------------------------------------------
@@ -61,7 +61,7 @@ Parameters
 event : :class:`~openturns.Event`
     Event we want to evaluate the probability."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::setEvent
+%feature("docstring") OT::ProbabilitySimulationResult::setEvent
 OT_SimulationResult_setEvent_doc
 
 // ---------------------------------------------------------------------
@@ -74,7 +74,7 @@ Returns
 event : :class:`~openturns.Event`
     Event we want to evaluate the probability."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getEvent
+%feature("docstring") OT::ProbabilitySimulationResult::getEvent
 OT_SimulationResult_getEvent_doc
 
 // ---------------------------------------------------------------------
@@ -110,7 +110,7 @@ See also
 --------
 drawImportanceFactors"
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getImportanceFactors
+%feature("docstring") OT::ProbabilitySimulationResult::getImportanceFactors
 OT_SimulationResult_getImportanceFactors_doc
 
 // ---------------------------------------------------------------------
@@ -130,7 +130,7 @@ Notes
     This notion is only available if the history mecanism of the model is
     activated (see :class:`~openturns.MemoizeFunction`)."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getMeanPointInEventDomain
+%feature("docstring") OT::ProbabilitySimulationResult::getMeanPointInEventDomain
 OT_SimulationResult_getMeanPointInEventDomain_doc
 
 // ---------------------------------------------------------------------
@@ -145,7 +145,7 @@ coefficient : float
     :math:`\sqrt{Var_e} / P_e` with :math:`Var_e` the variance estimate and
     :math:`P_e` the probability estimate."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getCoefficientOfVariation
+%feature("docstring") OT::ProbabilitySimulationResult::getCoefficientOfVariation
 OT_SimulationResult_getCoefficientOfVariation_doc
 
 // ---------------------------------------------------------------------
@@ -163,7 +163,7 @@ Returns
 confidenceLength : float
     Length of the confidence interval at the confidence level *level*."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getConfidenceLength
+%feature("docstring") OT::ProbabilitySimulationResult::getConfidenceLength
 OT_SimulationResult_getConfidenceLength_doc
 
 // ---------------------------------------------------------------------
@@ -176,7 +176,7 @@ Returns
 outerSampling : int
     Number of groups of terms in the probability simulation estimator."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getOuterSampling
+%feature("docstring") OT::ProbabilitySimulationResult::getOuterSampling
 OT_SimulationResult_getOuterSampling_doc
 
 // ---------------------------------------------------------------------
@@ -189,7 +189,7 @@ Parameters
 outerSampling : int, :math:`outerSampling \geq 0`
     Number of groups of terms in the probability simulation estimator."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::setOuterSampling
+%feature("docstring") OT::ProbabilitySimulationResult::setOuterSampling
 OT_SimulationResult_setOuterSampling_doc
 
 // ---------------------------------------------------------------------
@@ -202,7 +202,7 @@ Returns
 sigma : float
     Standard deviation of the estimator at the end of the simulation."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getStandardDeviation
+%feature("docstring") OT::ProbabilitySimulationResult::getStandardDeviation
 OT_SimulationResult_getStandardDeviation_doc
 
 // ---------------------------------------------------------------------
@@ -215,7 +215,7 @@ Returns
 varianceEstimate : float
     Variance estimate."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getVarianceEstimate
+%feature("docstring") OT::ProbabilitySimulationResult::getVarianceEstimate
 OT_SimulationResult_getVarianceEstimate_doc
 
 // ---------------------------------------------------------------------
@@ -228,7 +228,7 @@ Parameters
 varianceEstimate : float, :math:`Var_e \geq 0`
     Variance estimate."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::setVarianceEstimate
+%feature("docstring") OT::ProbabilitySimulationResult::setVarianceEstimate
 OT_SimulationResult_setVarianceEstimate_doc
 
 // ---------------------------------------------------------------------
@@ -241,7 +241,7 @@ Returns
 probaEstimate : float
     Estimate of the event probability."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::getProbabilityEstimate
+%feature("docstring") OT::ProbabilitySimulationResult::getProbabilityEstimate
 OT_SimulationResult_getProbabilityEstimate_doc
 
 // ---------------------------------------------------------------------
@@ -254,7 +254,7 @@ Parameters
 probaEstimate : float, :math:`0 \leq P_e \leq 1`
     Estimate of the event probability."
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::setProbabilityEstimate
+%feature("docstring") OT::ProbabilitySimulationResult::setProbabilityEstimate
 OT_SimulationResult_setProbabilityEstimate_doc
 
 // ---------------------------------------------------------------------
@@ -275,5 +275,5 @@ See also
 --------
 getImportanceFactors"
 %enddef
-%feature("docstring") OT::SimulationResultImplementation::drawImportanceFactors
+%feature("docstring") OT::ProbabilitySimulationResult::drawImportanceFactors
 OT_SimulationResult_drawImportanceFactors_doc

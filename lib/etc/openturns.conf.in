@@ -486,8 +486,8 @@
   <Simulation-DefaultMaximumStandardDeviation      value="0.0"    />
   <Simulation-DefaultBlockSize                     value="1"      />
 
-  <!-- OT::SimulationResultImplementation parameters -->
-  <SimulationResult-DefaultConfidenceLevel value="0.95" />
+  <!-- OT::ProbabilitySimulationResult parameters -->
+  <ProbabilitySimulationResult-DefaultConfidenceLevel value="0.95" />
 
   <!-- OT::SimulationSensitivityAnalysis parameters -->
   <SimulationSensitivityAnalysis-DefaultSampleMargin value="400" />

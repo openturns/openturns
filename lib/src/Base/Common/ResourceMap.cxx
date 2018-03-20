@@ -748,8 +748,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "Simulation-DefaultMaximumStandardDeviation", 0.0 );
   setAsUnsignedInteger( "Simulation-DefaultBlockSize", 1 );
 
-  // SimulationResultImplementation parameters //
-  setAsScalar( "SimulationResult-DefaultConfidenceLevel", 0.95 );
+  // ProbabilitySimulationResult parameters //
+  setAsScalar( "ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95 );
 
   // SimulationSensitivityAnalysis parameters //
   setAsUnsignedInteger( "SimulationSensitivityAnalysis-DefaultSampleMargin", 400 );

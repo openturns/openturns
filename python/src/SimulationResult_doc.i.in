@@ -1,34 +1,47 @@
-// SimulationResult docstrings are defined in SimulationResultImplementation_doc.i.in
-
 %feature("docstring") OT::SimulationResult
-OT_SimulationResult_doc
-%feature("docstring") OT::SimulationResult::drawImportanceFactors
-OT_SimulationResult_drawImportanceFactors_doc
+"Simulation result base class.
+
+Notes
+-----
+Structure created by the method run() of a :class:`~openturns.Simulation`,
+and obtained thanks to the method getResult()."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SimulationResult::getBlockSize
-OT_SimulationResult_getBlockSize_doc
-%feature("docstring") OT::SimulationResult::getCoefficientOfVariation
-OT_SimulationResult_getCoefficientOfVariation_doc
-%feature("docstring") OT::SimulationResult::getConfidenceLength
-OT_SimulationResult_getConfidenceLength_doc
-%feature("docstring") OT::SimulationResult::getEvent
-OT_SimulationResult_getEvent_doc
-%feature("docstring") OT::SimulationResult::getImportanceFactors
-OT_SimulationResult_getImportanceFactors_doc
-%feature("docstring") OT::SimulationResult::getMeanPointInEventDomain
-OT_SimulationResult_getMeanPointInEventDomain_doc
-%feature("docstring") OT::SimulationResult::getOuterSampling
-OT_SimulationResult_getOuterSampling_doc
-%feature("docstring") OT::SimulationResult::getProbabilityEstimate
-OT_SimulationResult_getProbabilityEstimate_doc
-%feature("docstring") OT::SimulationResult::getStandardDeviation
-OT_SimulationResult_getStandardDeviation_doc
-%feature("docstring") OT::SimulationResult::getVarianceEstimate
-OT_SimulationResult_getVarianceEstimate_doc
+"Accessor to the block size.
+
+Returns
+-------
+blockSize : int
+    Number of terms in the probability simulation estimator grouped together."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SimulationResult::setBlockSize
-OT_SimulationResult_setBlockSize_doc
+"Accessor to the block size.
+
+Parameters
+----------
+blockSize : int, :math:`blockSize \geq 0`
+    Number of terms in the probability simulation estimator grouped together."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationResult::getOuterSampling
+"Accessor to the outer sampling.
+
+Returns
+-------
+outerSampling : int
+    Number of groups of terms in the probability simulation estimator."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SimulationResult::setOuterSampling
-OT_SimulationResult_setOuterSampling_doc
-%feature("docstring") OT::SimulationResult::setProbabilityEstimate
-OT_SimulationResult_setProbabilityEstimate_doc
-%feature("docstring") OT::SimulationResult::setVarianceEstimate
-OT_SimulationResult_setVarianceEstimate_doc
+"Accessor to the outer sampling.
+
+Parameters
+----------
+outerSampling : int, :math:`outerSampling \geq 0`
+    Number of groups of terms in the probability simulation estimator."
