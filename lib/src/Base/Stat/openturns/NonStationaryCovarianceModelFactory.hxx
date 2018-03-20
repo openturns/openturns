@@ -50,9 +50,8 @@ public:
 
   /** Build a a spectral model based on a sample */
   using CovarianceModelFactoryImplementation::build;
-  CovarianceModelImplementation::Implementation build(const ProcessSample & sample) const;
-  CovarianceModelImplementation::Implementation build(const ProcessSample & sample,
-      const Bool isCentered) const;
+  CovarianceModel build(const ProcessSample & sample) const;
+  CovarianceModel build(const ProcessSample & sample, const Bool isCentered) const;
 
   UserDefinedCovarianceModel buildAsUserDefinedCovarianceModel(const ProcessSample & sample,
       const Bool isCentered = false) const;

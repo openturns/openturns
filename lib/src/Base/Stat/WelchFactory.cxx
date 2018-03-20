@@ -116,12 +116,12 @@ void WelchFactory::setOverlap(const Scalar overlap)
   overlap_ = overlap;
 }
 
-WelchFactory::Implementation WelchFactory::build(const ProcessSample & sample) const
+SpectralModel WelchFactory::build(const ProcessSample & sample) const
 {
   return buildAsUserDefinedSpectralModel(sample).clone();
 }
 
-WelchFactory::Implementation WelchFactory::build(const Field & timeSeries) const
+SpectralModel WelchFactory::build(const Field & timeSeries) const
 {
   return buildAsUserDefinedSpectralModel(timeSeries).clone();
 }

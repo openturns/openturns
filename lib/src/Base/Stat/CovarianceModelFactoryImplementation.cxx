@@ -57,12 +57,12 @@ String CovarianceModelFactoryImplementation::__str__(const String & offset) cons
 
 /* Here is the interface that all derived class must implement */
 
-CovarianceModelImplementation::Implementation CovarianceModelFactoryImplementation::build(const ProcessSample & sample) const
+CovarianceModel CovarianceModelFactoryImplementation::build(const ProcessSample & sample) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelFactoryImplementation::build(const ProcessSample & sample) const";
 }
 
-CovarianceModelImplementation::Implementation CovarianceModelFactoryImplementation::build(const Field & timeSeries) const
+CovarianceModel CovarianceModelFactoryImplementation::build(const Field & timeSeries) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelFactoryImplementation::build(const Field & timeSeries) const";
 }

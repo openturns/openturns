@@ -54,10 +54,10 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a spectral model based on a sample */
-  virtual CovarianceModelImplementation::Implementation build(const ProcessSample & sample) const;
+  virtual CovarianceModel build(const ProcessSample & sample) const;
 
   /** Build a spectral model based on a Field */
-  virtual CovarianceModelImplementation::Implementation build(const Field & timeSerie) const;
+  virtual CovarianceModel build(const Field & timeSerie) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

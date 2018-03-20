@@ -54,7 +54,8 @@ public:
   String __str__(const String & offset = "") const;
 
   /** Build a covariance model based on a process sample */
-  CovarianceModelImplementation::Implementation build(const ProcessSample & sample) const;
+  using CovarianceModelFactoryImplementation::build;
+  CovarianceModel build(const ProcessSample & sample) const;
 
   /** Build a user defined covariance model based on a process sample */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const ProcessSample & sample) const;
@@ -67,7 +68,7 @@ public:
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const UserDefinedSpectralModel & mySpectralModel) const;
 
   /** Build a covariance model based on a Field */
-  CovarianceModelImplementation::Implementation build(const Field & timeSerie) const;
+  CovarianceModel build(const Field & timeSerie) const;
 
   /** Build a user defined covariance model based on a Field */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const Field & timeSerie) const;

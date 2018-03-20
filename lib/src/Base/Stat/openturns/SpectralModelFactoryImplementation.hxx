@@ -30,6 +30,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration
+class SpectralModel;
+
 /**
  * @class SpectralModelFactoryImplementation
  */
@@ -61,10 +64,10 @@ public:
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */
-  virtual Implementation build(const ProcessSample & sample) const;
+  virtual SpectralModel build(const ProcessSample & sample) const;
 
   /** Build a a spectral model based on a Field */
-  virtual Implementation build(const Field & timeSerie) const;
+  virtual SpectralModel build(const Field & timeSerie) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

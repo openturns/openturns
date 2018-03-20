@@ -62,14 +62,14 @@ String NonStationaryCovarianceModelFactory::__str__(const String & offset) const
 }
 
 
-CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample) const
+CovarianceModel NonStationaryCovarianceModelFactory::build(const ProcessSample & sample) const
 {
   return buildAsUserDefinedCovarianceModel(sample, false).clone();
 }
 
 
 
-CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample, const Bool isCentered) const
+CovarianceModel NonStationaryCovarianceModelFactory::build(const ProcessSample & sample, const Bool isCentered) const
 {
   return buildAsUserDefinedCovarianceModel(sample, isCentered).clone();
 }
