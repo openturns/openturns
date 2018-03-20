@@ -114,15 +114,32 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
     }
   else
   {
+    MatrixImplementation phiS(outputDimension_, size);
+    MatrixImplementation phiT(outputDimension_, size);
+    Collection<Scalar>::iterator itPhiS = phiS.begin();;
+    Collection<Scalar>::iterator itPhiT = phiT.begin();;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const MatrixImplementation phiS(outputDimension_, 1, functions_[i](s));
+      const Point evalPhiS(functions_[i](s));
+      std::copy(evalPhiS.begin(), evalPhiS.end(), itPhiS);
+      itPhiS += outputDimension_;
+      const Point evalPhiT(functions_[i](t));
+      std::copy(evalPhiT.begin(), evalPhiT.end(), itPhiT);
+      itPhiT += outputDimension_;
+    }
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      itPhiT = phiT.begin();;
       for (UnsignedInteger j = 0; j < size; ++j)
       {
-        const MatrixImplementation phiT(1, outputDimension_, functions_[j](t));
-        result += phiS.genProd(phiT) * covariance_(i, j);
-      } // j
-    } // i
+        const Point ptPhiT(Point(Collection<Scalar>(itPhiT, itPhiT + outputDimension_)) * covariance_(i, j));
+        dger_(&dim, &dim, &plusOne,
+            const_cast<double*>(&phiS(0, i)), &increment,
+            const_cast<double*>(&ptPhiT[0]), &increment,
+            &result[0], &dim);
+        itPhiT += outputDimension_;
+      }
+    }
   } // covariance dimension > 0
   return result;
 }
