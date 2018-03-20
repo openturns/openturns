@@ -54,10 +54,12 @@ public:
   /** Evaluation operator */
   using EvaluationImplementation::operator();
   Point operator() (const Point & point) const;
-  Sample operator() (const Point & point,
-                     const Sample & parameters);
+
   Sample operator() (const Sample & inS) const;
 
+  /* @deprecated */
+  Sample operator() (const Point & point,
+                     const Sample & parameters);
   /** Parameters positions accessor */
   Indices getParametersPositions() const;
 

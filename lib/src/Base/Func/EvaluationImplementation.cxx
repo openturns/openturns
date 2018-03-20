@@ -264,9 +264,13 @@ Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
   {
     inS(1 + i, i) += epsilon;
   }
-  // operator()(x, theta) is non-const as it sets the parameter
+  Sample outS(parameterDimension + 1, getOutputDimension());
   Pointer<EvaluationImplementation> p_evaluation(clone());
-  Sample outS(p_evaluation->operator()(inP, inS));
+  for (UnsignedInteger i = 0; i < parameterDimension + 1; ++ i)
+  {
+    p_evaluation->setParameter(inS[i]);
+    outS[i] = p_evaluation->operator()(inP);
+  }
 
   Matrix grad(parameterDimension, outputDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)
@@ -311,6 +315,7 @@ Point EvaluationImplementation::operator() (const Point & inP) const
 Point EvaluationImplementation::operator() (const Point & inP,
     const Point & parameter)
 {
+  LOGWARN("EvaluationImplementation::operator()(inP,parameter) is deprecated, use setParameter(parameter) and operator()(inP)");
   setParameter(parameter);
   return (*this)(inP);
 }
@@ -318,6 +323,7 @@ Point EvaluationImplementation::operator() (const Point & inP,
 Sample EvaluationImplementation::operator() (const Point & inP,
     const Sample & parameters)
 {
+  LOGWARN("EvaluationImplementation::operator()(inP,parameters) is deprecated, use setParameter(parameter) and operator()(inP)");
   const UnsignedInteger size = parameters.getSize();
   Sample outS(size, getOutputDimension());
   for (UnsignedInteger i = 0; i < size; ++ i)

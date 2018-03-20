@@ -90,6 +90,7 @@ Matrix GradientImplementation::gradient(const Point & inP) const
 Matrix GradientImplementation::gradient (const Point & inP,
     const Point & parameter)
 {
+  LOGWARN("GradientImplementation::gradient(inP,parameter) is deprecated, use setParameter(parameter) and gradient(inP)");
   setParameter(parameter);
   return gradient(inP);
 }
