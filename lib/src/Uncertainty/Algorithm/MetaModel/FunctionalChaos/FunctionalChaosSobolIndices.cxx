@@ -73,13 +73,25 @@ String FunctionalChaosSobolIndices::summary() const
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
   OSS oss;
   FunctionalChaosRandomVector randomVector(functionalChaosResult_);
-  CovarianceMatrix covariance(randomVector.getCovariance());
+
+  const Indices indices(functionalChaosResult_.getIndices());
+  const Sample coefficients(functionalChaosResult_.getCoefficients());
+  const UnsignedInteger basisSize = indices.getSize();
+
+  // compute the variance
+  Point variance(outputDimension);
+  for (UnsignedInteger i = 0; i < outputDimension; ++i)
+  {
+    for (UnsignedInteger k = 0; k < basisSize; ++ k)
+      // Take into account only non-zero indices as the null index is the mean of the vector
+      if (indices[k] > 0)
+        variance[i] += coefficients(k, i) * coefficients(k, i);
+  }
+
+  // standard deviation
   Point stdDev(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-    stdDev[i] = std::sqrt(covariance(i, i));
-  Sample coefficients(functionalChaosResult_.getCoefficients());
-
-  const UnsignedInteger basisSize = coefficients.getSize();
+    stdDev[i] = std::sqrt(variance[i]);
 
   // quick summary
   oss << " input dimension: " << inputDimension << "\n"
@@ -90,7 +102,6 @@ String FunctionalChaosSobolIndices::summary() const
   oss << String(60, '-') << "\n";
   String st;
 
-  Indices indices(functionalChaosResult_.getIndices());
   EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
 
   for (UnsignedInteger m = 0; m < outputDimension; ++ m)
@@ -108,7 +119,7 @@ String FunctionalChaosSobolIndices::summary() const
       for (UnsignedInteger k = 0; k < multiIndices.getSize(); ++ k) degreeI += multiIndices[k];
 
       maxdegree = std::max(maxdegree, degreeI);
-      const Scalar varianceRatio = coefI * coefI / covariance(m, m);
+      const Scalar varianceRatio = coefI * coefI / variance[m];
       varianceOrder.push_back(std::pair<UnsignedInteger, Scalar >(i, varianceRatio));
     }
 
