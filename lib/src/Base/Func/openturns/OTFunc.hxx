@@ -66,6 +66,7 @@
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
+#include "openturns/NormInfEnumerateFunction.hxx"
 #include "openturns/ExpertMixture.hxx"
 #include "openturns/IndicatorEvaluation.hxx"
 #include "openturns/LARS.hxx"

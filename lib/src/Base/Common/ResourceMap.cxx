@@ -779,6 +779,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   setAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree", 10 );
 
+  // FunctionalChaosSobolIndices parameters //
+  setAsScalar( "FunctionalChaosSobolIndices-VariancePartThreshold", 1.0e-2);
+
   // GeneralLinearModelAlgorithm parameters //
   set("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
   setAsBool("GeneralLinearModelAlgorithm-NormalizeData", false);

@@ -20,6 +20,8 @@
  * MemoizeFunction, MemoizeEvaluation
  * Evaluation, Gradient, Hessian
  * MeshDomain
+ * NormInfEnumerateFunction 
+ * FunctionalChaosSobolIndices
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
@@ -67,6 +69,7 @@
  * Changed Mesh to not derive from DomainImplementation
  * Deprecated Mesh::computeSimplexVolume, use Mesh::computeSimplicesVolume instead
  * Deprecated Mesh,Interval::computeVolume
+ * Deprecated FunctionalChaosRandomVector::getSobol* methods in favor of FunctionalChaosSensitivity ones
 
 === Python module ===
 

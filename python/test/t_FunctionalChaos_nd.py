@@ -175,6 +175,7 @@ try:
 
             # Post-process the results
             vector = FunctionalChaosRandomVector(result)
+            sensitivity = FunctionalChaosSobolIndices(result)
             for outputIndex in range(outputDimension):
                 print("output=", outputIndex)
                 mean = vector.getMean()[outputIndex]
@@ -186,7 +187,7 @@ try:
                 indices = Indices(1)
                 for i in range(inputDimension):
                     indices[0] = i
-                    value = vector.getSobolIndex(i, outputIndex)
+                    value = sensitivity.getSobolIndex(i, outputIndex)
                     print("value= %.5g" % value)
                     print("Sobol index ", i, " =%.5f" % value, "absolute error=%.5e" % abs(
                         value - sob_1[i + inputDimension * outputIndex]))
@@ -196,7 +197,7 @@ try:
                     indices[0] = i
                     for j in range(i + 1, inputDimension):
                         indices[1] = j
-                        value = vector.getSobolIndex(indices, outputIndex)
+                        value = sensitivity.getSobolIndex(indices, outputIndex)
                         print("Sobol index ", indices, " =%.5f" % value, "absolute error=%.5e" % abs(
                             value - sob_2[k + inputDimension * outputIndex]))
                         k += 1
@@ -204,11 +205,11 @@ try:
                 indices[0] = 0
                 indices[1] = 1
                 indices[2] = 2
-                value = vector.getSobolIndex(indices, outputIndex)
+                value = sensitivity.getSobolIndex(indices, outputIndex)
                 print("Sobol index ", indices, " =%.5f" %
                       value, "absolute error=%.5e" % abs(value - sob_3[outputIndex]))
                 for i in range(inputDimension):
-                    value = vector.getSobolTotalIndex(i, outputIndex)
+                    value = sensitivity.getSobolTotalIndex(i, outputIndex)
                     print("Sobol total index ", i, " =%.5f" % value, "absolute error=%.5e" % abs(
                         value - sob_T1[i + inputDimension * outputIndex]))
                 indices = Indices(2)
@@ -217,7 +218,7 @@ try:
                     indices[0] = i
                     for j in range(i + 1, inputDimension):
                         indices[1] = j
-                        value = vector.getSobolTotalIndex(indices, outputIndex)
+                        value = sensitivity.getSobolTotalIndex(indices, outputIndex)
                         print("Sobol total index ", indices, " =%.5f" % value, "absolute error=%.5e" % abs(
                             value - sob_T2[k + inputDimension * outputIndex]))
                         k += 1
@@ -225,7 +226,7 @@ try:
                 indices[0] = 0
                 indices[1] = 1
                 indices[2] = 2
-                value = vector.getSobolTotalIndex(indices, outputIndex)
+                value = sensitivity.getSobolTotalIndex(indices, outputIndex)
                 print("Sobol total index ", indices, " =%.5f" %
                       value, "absolute error=%.5e" % abs(value - sob_T3[1]))
 

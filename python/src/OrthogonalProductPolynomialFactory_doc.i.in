@@ -2,19 +2,23 @@
 "Base class for orthogonal multivariate polynomials.
 
 Available constructors:
-        OrthogonalProductPolynomialFactory(*polynomials*)
+    OrthogonalProductPolynomialFactory(*polynomials*)
 
-        OrthogonalProductPolynomialFactory(*polynomials, enumerateFunction*)
+    OrthogonalProductPolynomialFactory(*polynomials, enumerateFunction*)
+
+    OrthogonalProductPolynomialFactory(*marginals*)
 
 Parameters
 ----------
-polynomials : list of :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
+polynomials : sequence of :class:`~openturns.OrthogonalUniVariatePolynomialFamily`
     List of orthogonal univariate polynomials factories with the same
     dimension as the orthogonal basis.
 enumerateFunction : :class:`~openturns.EnumerateFunction`
     Associates to an integer its multi-index image in the :math:`\Nset^d`
     dimension, which is the dimension of the basis. This multi-index represents
     the collection of degrees of the univariate polynomials.
+marginals : sequence of :class:`~openturns.Distribution`
+    List of physical space marginals.
 
 Notes
 -----
@@ -45,8 +49,8 @@ Examples
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
 >>> # Easier way to construct the same multivariate orthonormal basis
->>> polyColl = [ot.StandardDistributionPolynomialFactory(Xdist.getMarginal(i)) for i in range(Xdist.getDimension())]
->>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)"
+>>> marginals = [Xdist.getMarginal(i) for i in range(Xdist.getDimension())]
+>>> productBasis = ot.OrthogonalProductPolynomialFactory(marginals)"
 
 // ---------------------------------------------------------------------
 

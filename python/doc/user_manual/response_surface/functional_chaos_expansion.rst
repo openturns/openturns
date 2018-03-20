@@ -61,21 +61,14 @@ Least Squares problem resolution
     SVDMethod
     QRMethod
     SparseMethod
-    
-Functional chaos result
-=======================
 
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    FunctionalChaosResult
-
-Functional chaos random vector
-==============================
+Results
+=======
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
     FunctionalChaosRandomVector
+    FunctionalChaosResult
+    FunctionalChaosSobolIndices

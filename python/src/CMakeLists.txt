@@ -246,6 +246,7 @@ ot_add_python_module(func func_module.i
                       EnumerateFunctionImplementation.i EnumerateFunctionImplementation_doc.i.in
                       LinearEnumerateFunction.i LinearEnumerateFunction_doc.i.in
                       HyperbolicAnisotropicEnumerateFunction.i HyperbolicAnisotropicEnumerateFunction_doc.i.in
+                      NormInfEnumerateFunction.i NormInfEnumerateFunction_doc.i.in
                       SpecFunc.i SpecFunc_doc.i.in
                       EvaluationImplementation.i EvaluationImplementation_doc.i.in
                       Evaluation.i Evaluation_doc.i.in
@@ -777,6 +778,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
+                      FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
                       TensorApproximationResult.i TensorApproximationResult_doc.i.in
                       TensorApproximationAlgorithm.i TensorApproximationAlgorithm_doc.i.in
