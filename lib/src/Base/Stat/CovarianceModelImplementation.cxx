@@ -385,7 +385,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     rhoMatrix.checkSymmetry();
     outputCovariance_.checkSymmetry();
     // Compute the Kronecker product of rhoMatrix by outputCovariance_
-    return policy.kroneckerProduct(outputCovariance_);;
+    return policy.kroneckerProduct(outputCovariance_);
   }
   else
   {
