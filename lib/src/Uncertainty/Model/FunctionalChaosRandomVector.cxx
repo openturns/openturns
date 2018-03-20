@@ -91,7 +91,7 @@ void FunctionalChaosRandomVector::computeCovariance() const
       covariance_(i, j) = 0.0;
       for (UnsignedInteger k = 0; k < size; ++k)
         // Take into account only non-zero indices as the null index is the mean of the vector
-        if (indices[k] > 0) covariance_(i, j) += coefficients[k][i] * coefficients[k][j];
+        if (indices[k] > 0) covariance_(i, j) += coefficients(k, i) * coefficients(k, j);
     } // Loop over the second index
   } // Loop over the first index
   isAlreadyComputedCovariance_ = true;
