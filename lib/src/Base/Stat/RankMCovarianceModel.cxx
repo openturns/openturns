@@ -116,8 +116,8 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
   {
     MatrixImplementation phiS(outputDimension_, size);
     MatrixImplementation phiT(outputDimension_, size);
-    Collection<Scalar>::iterator itPhiS = phiS.begin();;
-    Collection<Scalar>::iterator itPhiT = phiT.begin();;
+    Collection<Scalar>::iterator itPhiS = phiS.begin();
+    Collection<Scalar>::iterator itPhiT = phiT.begin();
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Point evalPhiS(functions_[i](s));
@@ -129,7 +129,7 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
     }
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      itPhiT = phiT.begin();;
+      itPhiT = phiT.begin();
       for (UnsignedInteger j = 0; j < size; ++j)
       {
         const Point ptPhiT(Point(Collection<Scalar>(itPhiT, itPhiT + outputDimension_)) * covariance_(i, j));
