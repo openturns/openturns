@@ -116,12 +116,12 @@ void WelchFactory::setOverlap(const Scalar overlap)
   overlap_ = overlap;
 }
 
-WelchFactory::Implementation WelchFactory::build(const ProcessSample & sample) const
+SpectralModel WelchFactory::build(const ProcessSample & sample) const
 {
   return buildAsUserDefinedSpectralModel(sample).clone();
 }
 
-WelchFactory::Implementation WelchFactory::build(const Field & timeSeries) const
+SpectralModel WelchFactory::build(const Field & timeSeries) const
 {
   return buildAsUserDefinedSpectralModel(timeSeries).clone();
 }
@@ -172,7 +172,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
     {
       // Loop over the time stamps
       ComplexCollection zP(N);
-      for (UnsignedInteger m = 0; m < N; ++m) zP[m] = alpha[m] * sample[l][m][p]; // The first component of the value of a time series at a given index is the time value
+      for (UnsignedInteger m = 0; m < N; ++m) zP[m] = alpha[m] * sample[l](m, p); // The first component of the value of a time series at a given index is the time value
       // Perform the FFT direct transform of the tapered data
       const ComplexCollection zPHat(fftAlgorithm_.transform(zP));
       // Stores the result. Only the values associated with nonnegative frequency values are stored.
@@ -208,7 +208,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Fie
     for (UnsignedInteger timeIndex = 0; timeIndex < blockSize; ++timeIndex)
     {
       for (UnsignedInteger i = 0; i < dimension; ++i)
-        sample[blockIndex][timeIndex][i] = timeSeries.getValues()[blockIndex * hopSize + timeIndex][i];
+        sample[blockIndex](timeIndex, i) = timeSeries.getValues()(blockIndex * hopSize + timeIndex, i);
     } // Loop on the time index
   } // Loop on the blocks
   return buildAsUserDefinedSpectralModel(sample);

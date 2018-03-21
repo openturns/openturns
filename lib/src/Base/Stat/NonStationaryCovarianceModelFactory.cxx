@@ -62,14 +62,14 @@ String NonStationaryCovarianceModelFactory::__str__(const String & offset) const
 }
 
 
-CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample) const
+CovarianceModel NonStationaryCovarianceModelFactory::build(const ProcessSample & sample) const
 {
   return buildAsUserDefinedCovarianceModel(sample, false).clone();
 }
 
 
 
-CovarianceModelImplementation::Implementation NonStationaryCovarianceModelFactory::build(const ProcessSample & sample, const Bool isCentered) const
+CovarianceModel NonStationaryCovarianceModelFactory::build(const ProcessSample & sample, const Bool isCentered) const
 {
   return buildAsUserDefinedCovarianceModel(sample, isCentered).clone();
 }
@@ -119,7 +119,7 @@ struct ComputeCovariancePolicy
           Scalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
-            coef += input_[sampleIndex][i][k] * input_[sampleIndex][j][l];
+            coef += input_[sampleIndex](i, k) * input_[sampleIndex](j, l);
           } // sampleIndex
           matrix(k, l) = coef * alpha_;
         } // l
@@ -145,7 +145,7 @@ struct ComputeCovariancePolicy
           Scalar coef = 0.0;
           for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
           {
-            coef += (input_[sampleIndex][i][k] - muIK) * (input_[sampleIndex][j][l] - muJL);
+            coef += (input_[sampleIndex](i, k) - muIK) * (input_[sampleIndex](j, l) - muJL);
           } // sampleIndex
           matrix(k, l) = coef * alpha_;
         } // l

@@ -166,7 +166,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
 }
 
 /* Build a covariance model based on a process sample */
-CovarianceModelImplementation::Implementation StationaryCovarianceModelFactory::build(const ProcessSample & sample) const
+CovarianceModel StationaryCovarianceModelFactory::build(const ProcessSample & sample) const
 {
   return buildAsUserDefinedStationaryCovarianceModel(sample).clone();
 }
@@ -178,7 +178,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
 }
 
 /* Build a covariance model based on a field */
-CovarianceModelImplementation::Implementation StationaryCovarianceModelFactory::build(const Field & timeSeries) const
+CovarianceModel StationaryCovarianceModelFactory::build(const Field & timeSeries) const
 {
   return buildAsUserDefinedStationaryCovarianceModel(timeSeries).clone();
 }
