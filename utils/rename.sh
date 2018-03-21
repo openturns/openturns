@@ -15,8 +15,9 @@ files=`find lib python -name ${1}[\._]*`
 t_files=`find lib python -name t_${1}_*`
 for src_file in ${files} ${t_files}
 do
-  dest_file=`echo ${src_file} | sed "s|$1|$2|g"`
-  git mv ${src_file} ${dest_file}
+  parent_dir=`dirname ${src_file}`
+  dest_file=`basename ${src_file} | sed "s|$1|$2|g"`
+  git mv ${src_file} ${parent_dir}/${dest_file}
 done
 
 upper_src=`echo $1 | tr "[:lower:]" "[:upper:]"`
