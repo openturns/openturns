@@ -114,15 +114,28 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
     }
   else
   {
+    MatrixImplementation phiT(outputDimension_, size);
+    Collection<Scalar>::iterator itPhiT = phiT.begin();
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const MatrixImplementation phiS(outputDimension_, 1, functions_[i](s));
+      const Point evalPhiT(functions_[i](t));
+      std::copy(evalPhiT.begin(), evalPhiT.end(), itPhiT);
+      itPhiT += outputDimension_;
+    }
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Point phiS(functions_[i](s));
+      itPhiT = phiT.begin();
       for (UnsignedInteger j = 0; j < size; ++j)
       {
-        const MatrixImplementation phiT(1, outputDimension_, functions_[j](t));
-        result += phiS.genProd(phiT) * covariance_(i, j);
-      } // j
-    } // i
+        const Point ptPhiT(Point(Collection<Scalar>(itPhiT, itPhiT + outputDimension_)) * covariance_(i, j));
+        dger_(&dim, &dim, &plusOne,
+            const_cast<double*>(&phiS[0]), &increment,
+            const_cast<double*>(&ptPhiT[0]), &increment,
+            &result[0], &dim);
+        itPhiT += outputDimension_;
+      }
+    }
   } // covariance dimension > 0
   return result;
 }
@@ -198,8 +211,10 @@ void RankMCovarianceModel::setBasis(const Basis & basis)
   functions_ = Basis::FunctionCollection(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     functions_[i] = basis.build(i);
-  scale_ = Point(functions_[0].getInputDimension(), 1.0);
-  amplitude_ = Point(functions_[0].getOutputDimension(), 1.0);
+  inputDimension_ = functions_[0].getInputDimension();
+  scale_ = Point(inputDimension_, 1.0);
+  outputDimension_ = functions_[0].getOutputDimension();
+  amplitude_ = Point(outputDimension_, 1.0);
   basis_ = basis;
 }
 
