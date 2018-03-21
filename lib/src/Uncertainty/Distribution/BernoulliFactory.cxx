@@ -70,7 +70,7 @@ Bernoulli BernoulliFactory::buildAsBernoulli(const Sample & sample) const
   const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar x = sample[i][0];
+    const Scalar x = sample(i, 0);
     const int iX(static_cast<int>(round(x)));
     if ((std::abs(x - iX) > supportEpsilon) || ((iX != 0) && (iX != 1))) throw InvalidArgumentException(HERE) << "Error: can build a Bernoulli distribution only from a sample made of 0 and 1.";
     sum += x;

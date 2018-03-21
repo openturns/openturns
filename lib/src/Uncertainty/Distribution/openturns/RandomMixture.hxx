@@ -331,7 +331,7 @@ private:
       {
         const Distribution candidate(factory_.build(PointCollection(1, parameters)));
         for (UnsignedInteger i = 0; i < dataX_.getSize(); ++i)
-          norm += std::pow(candidate.computeCDF(dataX_[i][0]) - dataY_[i][0], 2);
+          norm += std::pow(candidate.computeCDF(dataX_(i, 0)) - dataY_(i, 0), 2);
         return Point(1, norm);
       }
       catch(...)

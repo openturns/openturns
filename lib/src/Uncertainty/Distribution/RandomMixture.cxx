@@ -786,14 +786,14 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
             UnsignedInteger k = 0;
             for (UnsignedInteger firstIndex = 0; firstIndex < aggregatedSupportSize; ++firstIndex)
             {
-              const Scalar xI = aggregatedSupport[firstIndex][0];
+              const Scalar xI = aggregatedSupport(firstIndex, 0);
               const Scalar pI = aggregatedProbabilities[firstIndex];
               for (UnsignedInteger secondIndex = 0; secondIndex < secondSupportSize; ++secondIndex)
               {
-                const Scalar xJ = secondSupport[secondIndex][0];
+                const Scalar xJ = secondSupport(secondIndex, 0);
                 const Scalar pJ = secondProbabilities[secondIndex];
-                newAggregatedSupportAndProbabilities[k][0] = xI + xJ;
-                newAggregatedSupportAndProbabilities[k][1] = pI * pJ;
+                newAggregatedSupportAndProbabilities(k, 0) = xI + xJ;
+                newAggregatedSupportAndProbabilities(k, 1) = pI * pJ;
                 ++k;
               } // secondIndex
             } // firstIndex
@@ -801,21 +801,21 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
             // First, sort the new aggregated data according to the support points
             newAggregatedSupportAndProbabilities = newAggregatedSupportAndProbabilities.sortAccordingToAComponent(0);
             // Second, filter out the duplicates in the point space and aggregate the values in the probability space
-            aggregatedSupport = Sample(1, Point(1, newAggregatedSupportAndProbabilities[0][0]));
-            aggregatedProbabilities = Point(1, newAggregatedSupportAndProbabilities[0][1]);
+            aggregatedSupport = Sample(1, Point(1, newAggregatedSupportAndProbabilities(0, 0)));
+            aggregatedProbabilities = Point(1, newAggregatedSupportAndProbabilities(0, 1));
             k = 0;
             for (UnsignedInteger index = 1; index < newAggregatedSupportSize; ++index)
             {
               // If the current point is equal to the last one aggregate the probabilities
-              if (newAggregatedSupportAndProbabilities[index][0] == aggregatedSupport[k][0])
+              if (newAggregatedSupportAndProbabilities[index][0] == aggregatedSupport(k, 0))
               {
-                aggregatedProbabilities[k] += newAggregatedSupportAndProbabilities[index][1];
+                aggregatedProbabilities[k] += newAggregatedSupportAndProbabilities(index, 1);
               } // current point equals to the previous one
               else
               {
                 ++k;
-                aggregatedSupport.add(Point(1, newAggregatedSupportAndProbabilities[index][0]));
-                aggregatedProbabilities.add(newAggregatedSupportAndProbabilities[index][1]);
+                aggregatedSupport.add(Point(1, newAggregatedSupportAndProbabilities(index, 0)));
+                aggregatedProbabilities.add(newAggregatedSupportAndProbabilities(index, 1));
               } // current point is different from the previous one
             } // Loop over the new aggregated support
             aggregatedSupportSize = aggregatedSupport.getSize();
@@ -851,13 +851,13 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
         while (currentContinuous >= firstContinuous && currentDiscrete >= firstDiscrete)
         {
           const Distribution continuousAtom(distributionCollection_[currentContinuous]);
-          const Scalar continuousWeight = reducedWeights[currentContinuous][0];
+          const Scalar continuousWeight = reducedWeights(currentContinuous, 0);
           Distribution discreteAtom(distributionCollection_[currentDiscrete]);
-          Scalar discreteWeight = reducedWeights[currentDiscrete][0];
+          Scalar discreteWeight = reducedWeights(currentDiscrete, 0);
           const Sample support(discreteAtom.getSupport());
           DistributionCollection mixtureAtoms;
           for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-            mixtureAtoms.add(RandomMixture(DistributionCollection(1, continuousAtom), Point(1, continuousWeight), support[i][0] * discreteWeight));
+            mixtureAtoms.add(RandomMixture(DistributionCollection(1, continuousAtom), Point(1, continuousWeight), support(i, 0) * discreteWeight));
           const Point probabilities(discreteAtom.getProbabilities());
           // Replace the current continuous atom by the Mixture
           distributionCollection_[currentContinuous] = Mixture(mixtureAtoms, probabilities);
@@ -1175,7 +1175,7 @@ Scalar RandomMixture::computePDF(const Point & point) const
           {
             const Complex deltaValue(characteristicValuesCache_[fromIndex + i - 1]);
             hX = 0.0;
-            for (UnsignedInteger j = 0; j < dimension_; ++j) hX += skinPoints[i][j] * point[j];
+            for (UnsignedInteger j = 0; j < dimension_; ++j) hX += skinPoints(i, j) * point[j];
             const Scalar sinHX = std::sin(hX);
             const Scalar cosHX = std::cos(hX);
             const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
@@ -1192,8 +1192,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
             hX = 0.0;
             for (UnsignedInteger j = 0; j < dimension_; ++j)
             {
-              pti[j] = skinPoints[i][j];
-              hX += skinPoints[i][j] * point[j];
+              pti[j] = skinPoints(i, j);
+              hX += skinPoints(i, j) * point[j];
             }
             const Complex deltaValue(computeDeltaCharacteristicFunction(pti));
             const Scalar sinHX = std::sin(hX);
@@ -1286,8 +1286,8 @@ Sample RandomMixture::computePDF(const Point & xMin,
     for (UnsignedInteger i = 0; i < n; ++i)
     {
       const Scalar x = a + i * (b - a) / (n - 1);
-      grid[i][0] = x;
-      pdf[i][0] = computePDF(x);
+      grid(i, 0) = x;
+      pdf(i, 0) = computePDF(x);
     }
     return pdf;
   } // dimension == 1 && size == 2
@@ -1354,7 +1354,7 @@ Sample RandomMixture::computePDF(const Point & xMin,
   }
   for (UnsignedInteger j = 0; j < size; ++j)
   {
-    result[j][0] = std::max(0.0, result[j][0]);
+    result(j, 0) = std::max(0.0, result(j, 0));
   }
   return result;
 }
@@ -1424,7 +1424,7 @@ void RandomMixture::addPDFOn1DGrid(const Indices & pointNumber, const Point & h,
   const Scalar scaling = h[0] / (2.0 * M_PI);
   for (UnsignedInteger j = 0; j < N; ++j)
   {
-    result[j][0] += scaling * std::real( sigma_plus[j] + sigma_minus[j] );
+    result(j, 0) += scaling * std::real( sigma_plus[j] + sigma_minus[j] );
   }
 }
 
@@ -1586,7 +1586,7 @@ void RandomMixture::addPDFOn2DGrid(const Indices & pointNumber, const Point & h,
   {
     for (UnsignedInteger i = 0; i < Nx; ++i, ++counter)
     {
-      result[counter][0] += scaling * std::real(
+      result(counter, 0) += scaling * std::real(
                               sigma_plus_plus(i, j)   + sigma_minus_minus(i, j) +
                               sigma_plus_minus(i, j)  + sigma_minus_plus(i, j)  +
                               sigma_plus_0[i]  + sigma_minus_0[i] +
@@ -2028,7 +2028,7 @@ void RandomMixture::addPDFOn3DGrid(const Indices & pointNumber, const Point & h,
     {
       for (UnsignedInteger i = 0; i < Nx; ++i, ++counter)
       {
-        result[counter][0] += scaling * std::real(
+        result(counter, 0) += scaling * std::real(
                                 sigma_plus_plus_plus(i, j, k)   + sigma_minus_minus_minus(i, j, k) +
                                 sigma_plus_plus_minus(i, j, k)  + sigma_minus_minus_plus(i, j, k)  +
                                 sigma_plus_minus_plus(i, j, k)  + sigma_minus_plus_minus(i, j, k)  +
@@ -2259,7 +2259,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
     const Scalar elementaryVolume = elementaryInterval.getVolume();
     Scalar cdf = 0.0;
     for (UnsignedInteger i = 0; i < gridX.getSize(); ++i)
-      if (interval.contains(gridX[i])) cdf += samplePDF[i][0] * elementaryVolume;
+      if (interval.contains(gridX[i])) cdf += samplePDF(i, 0) * elementaryVolume;
     return cdf;
 #endif
   }
@@ -2332,8 +2332,8 @@ Sample RandomMixture::computeQuantile(const Scalar qMin,
   const Scalar step = (qMax - qMin) / Scalar(pointNumber - 1.0);
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
-    result[i][0] = q;
-    result[i][1] = computeQuantile(q)[0];
+    result(i, 0) = q;
+    result(i, 1) = computeQuantile(q)[0];
     q += step;
   }
   return result;
@@ -2518,7 +2518,7 @@ void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points
   Point x(dimension_);
   for(UnsignedInteger i = 0; i < points.getSize(); ++i)
   {
-    for (UnsignedInteger j = 0; j < dimension_; ++j) x[j] = points[i][j];
+    for (UnsignedInteger j = 0; j < dimension_; ++j) x[j] = points(i, j);
     // Computation of CF - NormalCF
     // Here we check if it is possible to reduce calculation
     // We reduce CF - NormalCF to NormalCF * (CF/NormalCF -1), which rewrites
@@ -2974,8 +2974,8 @@ Scalar RandomMixture::computeEquivalentNormalPDFSum(const Point & y, const Point
     {
       for (UnsignedInteger d = 0; d < dimension_; ++d)
       {
-        skin1[d] = y[d] + skinPoints[j][d];
-        skin2[d] = y[d] - skinPoints[j][d];
+        skin1[d] = y[d] + skinPoints(j, d);
+        skin2[d] = y[d] - skinPoints(j, d);
       }
       delta += equivalentNormal_.computePDF(skin1) + equivalentNormal_.computePDF(skin2);
     }
@@ -3049,7 +3049,7 @@ DistributionCollection RandomMixture::project(const DistributionFactoryCollectio
     }
     Scalar kolmogorov = 0.0;
     for (UnsignedInteger j = 0; j < size; ++j)
-      kolmogorov = std::max(kolmogorov, std::abs(candidate.computeCDF(dataX[j][0]) - (qMin + j * (qMax - qMin) / (size - 1.0))));
+      kolmogorov = std::max(kolmogorov, std::abs(candidate.computeCDF(dataX(j, 0)) - (qMin + j * (qMax - qMin) / (size - 1.0))));
     result.add(RandomMixturePair(kolmogorov, candidate));
   }
   // Sort the results
@@ -3178,7 +3178,7 @@ Sample RandomMixture::getSupport(const Interval & interval) const
     const Point scaling(*weights_.getColumn(0).getImplementation());
     supportCandidates = Sample(support0.getSize(), dimension);
     for (UnsignedInteger i = 0; i < support0.getSize(); ++i)
-      supportCandidates[i] = scaling * support0[i][0] + constant_;
+      supportCandidates[i] = scaling * support0(i, 0) + constant_;
   } // dimension > 1
   for (UnsignedInteger indexNext = 1; indexNext < size; ++indexNext)
   {
@@ -3191,7 +3191,7 @@ Sample RandomMixture::getSupport(const Interval & interval) const
       const Point scaling(*weights_.getColumn(indexNext).getImplementation());
       nextSupport = Sample(supportNext.getSize(), dimension);
       for (UnsignedInteger i = 0; i < supportNext.getSize(); ++i)
-        nextSupport[i] = scaling * supportNext[i][0] + constant_;
+        nextSupport[i] = scaling * supportNext(i, 0) + constant_;
     } // dimension > 1
     const UnsignedInteger supportCandidatesSize = supportCandidates.getSize();
     const UnsignedInteger nextSupportSize = nextSupport.getSize();

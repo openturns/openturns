@@ -81,9 +81,9 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
     // else it is made using the linear event dot(u,u*) < beta^2.
     failureControl = (failureControl && !originFailure) || (!failureControl && originFailure);
     const Bool failureEvent = getEvent().getDomain().contains(blockSample[i]);
-    blockSample[i][0] = probability;
+    blockSample(i, 0) = probability;
     const Scalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
-    if (factor != 0.0) blockSample[i][0] = blockSample[i][0] + factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
+    if (factor != 0.0) blockSample(i, 0) = blockSample(i, 0) + factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
   }
   return blockSample;
 }

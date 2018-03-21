@@ -88,8 +88,8 @@ Graph UniVariateFunctionImplementation::draw(const Scalar xMin,
   for (UnsignedInteger i = 0; i < pointNumber; ++ i)
   {
     const Scalar x = xMin + (xMax - xMin) * i / (1.0 * pointNumber);
-    data[i][0] = x;
-    data[i][1] = operator()(x);
+    data(i, 0) = x;
+    data(i, 1) = operator()(x);
   }
   Curve curve(data, "red", "solid", 2, getName());
   Graph graph(getName(), "x", "y", true, "topright");

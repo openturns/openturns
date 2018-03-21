@@ -209,7 +209,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   const String secondDataFileName(secondSample.storeToTemporaryFile());
   const UnsignedInteger size = selection.getSize();
   Sample selectionSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i) selectionSample[i][0] = selection[i] + 1.0;
+  for (UnsignedInteger i = 0; i < size; ++ i) selectionSample(i, 0) = selection[i] + 1.0;
   const String selectionFileName(selectionSample.storeToTemporaryFile());
   const String resultFileName(Path::BuildTemporaryFileName("RResult.txt.XXXXXX"));
   const String commandFileName(Path::BuildTemporaryFileName("RCmd.R.XXXXXX"));

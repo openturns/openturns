@@ -702,8 +702,8 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
   Sample data(foIndices.getDimension(), 2);
   for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
   {
-    data[k][0] = k + 1;
-    data[k][1] = foIndices[k];
+    data(k, 0) = k + 1;
+    data(k, 1) = foIndices[k];
   }
   // Define cloud for FO
   Cloud firstOrderIndicesGraph(data, "red", "circle", "Aggregated FO");
@@ -711,8 +711,8 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
   // Total order
   for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
   {
-    data[k][0] = (k + 1) + 0.1;
-    data[k][1] = toIndices[k];
+    data(k, 0) = (k + 1) + 0.1;
+    data(k, 1) = toIndices[k];
   }
   // Define cloud for TO
   Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
@@ -737,9 +737,9 @@ Sample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & i
   for (UnsignedInteger p = 0; p < 2 + inputDimension; ++p)
   {
     Sample y(size_, outputDimension);
-    Scalar* yPermData = &y[0][0];
+    Scalar* yPermData = &y(0, 0);
 
-    const Scalar* yData = &outputDesign_[p * size_][0];
+    const Scalar* yData = &outputDesign_(p * size_, 0);
     for (UnsignedInteger k = 0; k < size_; ++k, yPermData += outputDimension)
       memcpy(yPermData, &yData[indices[k] * outputDimension], outputDimension * sizeof(Scalar));
     // add samples to the collection

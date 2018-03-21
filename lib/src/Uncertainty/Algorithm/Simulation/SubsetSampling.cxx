@@ -243,7 +243,7 @@ void SubsetSampling::run()
     eventOutputSample_ = Sample (0, getEvent().getFunction().getOutputDimension());
     for (UnsignedInteger i = 0; i < currentPointSample_.getSize(); ++ i)
     {
-      if (getEvent().getOperator()(currentLevelSample_[i][0], getEvent().getThreshold()))
+      if (getEvent().getOperator()(currentLevelSample_(i, 0), getEvent().getThreshold()))
       {
         eventInputSample_.add(standardEvent_.getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
         eventOutputSample_.add(currentLevelSample_[i]);
@@ -290,7 +290,7 @@ Scalar SubsetSampling::computeProbability(Scalar probabilityEstimateFactor, Scal
     Scalar varianceBlock = 0.0;
     for (UnsignedInteger j = 0 ; j < blockSize; ++ j)
     {
-      if (getEvent().getOperator()(currentLevelSample_[i * blockSize + j][0], threshold))
+      if (getEvent().getOperator()(currentLevelSample_(i * blockSize + j, 0), threshold))
       {
         // update local mean and variance
         meanBlock += 1.0 / blockSize;
@@ -329,7 +329,7 @@ void SubsetSampling::initializeSeed(Scalar threshold)
   {
     for (UnsignedInteger j = 0 ; j < blockSize; ++ j)
     {
-      if (getEvent().getOperator()(currentLevelSample_[i * blockSize + j][0], threshold))
+      if (getEvent().getOperator()(currentLevelSample_(i * blockSize + j, 0), threshold))
       {
         // initialize seeds : they're grouped at the beginning of the sample
         currentPointSample_[ seedIndex ] = currentPointSample_[i * blockSize + j];
@@ -353,7 +353,7 @@ Scalar SubsetSampling::computeVarianceGamma(Scalar currentFailureProbability, Sc
   {
     for (UnsignedInteger j = 0; j < Nc; ++ j)
     {
-      IndicatorMatrice(j, i) = getEvent().getOperator()(currentLevelSample_[ i * Nc + j ][0], threshold);
+      IndicatorMatrice(j, i) = getEvent().getOperator()(currentLevelSample_(i * Nc + j, 0), threshold);
     }
   }
   for (UnsignedInteger k = 0; k < N / Nc - 1; ++ k)
@@ -425,7 +425,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
     for (UnsignedInteger j = 0; j < getBlockSize(); ++ j)
     {
       // 2. accept the new point if in the failure domain
-      if (getEvent().getOperator()(blockSample[j][0], threshold))
+      if (getEvent().getOperator()(blockSample(j, 0), threshold))
       {
         currentPointSample_[i * blockSize + j] = inputSample[j];
         currentLevelSample_[i * blockSize + j] = blockSample[j];

@@ -107,7 +107,7 @@ Indices MixtureClassifier::classifySequential(const Sample & inS) const
   {
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Scalar grade = logWeights[classIndex] + atomsLogPDF[classIndex][i];
+      const Scalar grade = logWeights[classIndex] + atomsLogPDF(classIndex, i);
       if (grade > bestGrades[i])
       {
         bestGrades[i] = grade;

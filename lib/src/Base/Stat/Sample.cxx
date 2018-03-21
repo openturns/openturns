@@ -200,7 +200,7 @@ Scalar & Sample::at (const UnsignedInteger i,
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
   copyOnWrite();
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 }
 
 const Scalar & Sample::at (const UnsignedInteger i,
@@ -208,7 +208,7 @@ const Scalar & Sample::at (const UnsignedInteger i,
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
   if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 }
 
 const Scalar * Sample::__baseaddress__ () const

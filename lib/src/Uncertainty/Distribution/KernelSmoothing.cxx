@@ -134,7 +134,7 @@ struct PluginConstraint
     {
       for (UnsignedInteger j = 0; j < i; ++j)
       {
-        const Scalar dx = sample_[i][0] - sample_[j][0];
+        const Scalar dx = sample_(i, 0) - sample_(j, 0);
         const Scalar x = dx / h;
         // Clipping: if x is large enough, the exponential factor is 0.0
         if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * std::exp(-0.5 * x * x);
@@ -215,7 +215,7 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   // Small sample, just return the plugin bandwidth
   if (size <= ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" )) return computePluginBandwidth(sample);
   Sample smallSample(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ), 1);
-  for (UnsignedInteger i = 0; i < ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ); ++i) smallSample[i][0] = sample[i][0];
+  for (UnsignedInteger i = 0; i < ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ); ++i) smallSample(i, 0) = sample(i, 0);
   const Scalar h1 = computePluginBandwidth(smallSample)[0];
   const Scalar h2 = computeSilvermanBandwidth(smallSample)[0];
   return computeSilvermanBandwidth(sample) * (h1 / h2);
@@ -277,11 +277,11 @@ Distribution KernelSmoothing::build(const Sample & sample,
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       UnsignedInteger indexX = 0;
-      Scalar sliceX = (sample[i][0] - (xmin[0] - hX)) / deltaX;
+      Scalar sliceX = (sample(i, 0) - (xmin[0] - hX)) / deltaX;
       if (sliceX >= 0.0) indexX = static_cast< UnsignedInteger > (trunc(sliceX));
       if (indexX >= binNumber_) indexX = binNumber_ - 1;
       UnsignedInteger indexY = 0;
-      Scalar sliceY = (sample[i][1] - (xmin[1] - hY)) / deltaY;
+      Scalar sliceY = (sample(i, 1) - (xmin[1] - hY)) / deltaY;
       if (sliceY >= 0.0) indexY = static_cast< UnsignedInteger > (trunc(sliceY));
       if (indexY >= binNumber_) indexY = binNumber_ - 1;
       ++reducedData[indexX + indexY * binNumber_];
@@ -341,7 +341,7 @@ Distribution KernelSmoothing::build(const Sample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     UnsignedInteger index = 0;
-    Scalar slice = (newSample[i][0] - (xminNew - h)) / delta;
+    Scalar slice = (newSample(i, 0) - (xminNew - h)) / delta;
     if (slice >= 0.0) index = static_cast< UnsignedInteger > (trunc(slice));
     if (index >= binNumber_) index = binNumber_ - 1;
     ++reducedData[index];

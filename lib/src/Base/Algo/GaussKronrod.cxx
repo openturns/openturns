@@ -115,7 +115,7 @@ Point GaussKronrod::integrate(const Function & function,
     for (UnsignedInteger i = 0; i <= im; ++i)
     {
       const Scalar localError = ei[i];
-      for (UnsignedInteger j = 0; j < outputDimension; ++j) result[j] += fi[i][j];
+      for (UnsignedInteger j = 0; j < outputDimension; ++j) result[j] += fi(i, j);
       error += localError * localError;
       // Add a test on the integration interval length to avoid too short intervals
       if ((localError > errorMax) && (bi[i] - ai[i] > maximumError_))
@@ -159,12 +159,12 @@ Point GaussKronrod::computeRule(const Function & function,
   const Scalar center = 0.5 * (a + b);
   // Generate the set of points
   Sample x(2 * rule_.order_ + 1, 1);
-  x[0][0] = center;
+  x(0, 0) = center;
   for (UnsignedInteger i = 0; i < rule_.order_; ++i)
   {
     const Scalar t = width * rule_.otherKronrodNodes_[i];
-    x[2 * i + 1][0] = center - t;
-    x[2 * i + 2][0] = center + t;
+    x(2 * i + 1, 0) = center - t;
+    x(2 * i + 2, 0) = center + t;
   }
   // Use possible parallelization of the evaluation
   const Sample y(function(x));

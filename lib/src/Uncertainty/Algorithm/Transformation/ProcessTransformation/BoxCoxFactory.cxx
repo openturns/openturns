@@ -101,7 +101,7 @@ public:
     // Compute the sum of the log-data
     const UnsignedInteger size = sample_.getSize();
     sumLog_ = 0.0;
-    for (UnsignedInteger k = 0; k < size; ++k) sumLog_ += std::log(sample_[k][0]);
+    for (UnsignedInteger k = 0; k < size; ++k) sumLog_ += std::log(sample_(k, 0));
   }
   /** Likelihood function accessor */
   Function getLogLikelihoodFunction() const
@@ -304,12 +304,12 @@ BoxCoxTransform BoxCoxFactory::build(const Sample & sample,
   const Scalar xMax = std::max(0.0, 0.002 * round(1000.0 * lambdaMax));
   const UnsignedInteger npts = ResourceMap::GetAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber");
   Sample lambdaValues(npts, 1);
-  for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues[i][0] = xMin + i * (xMax - xMin) / (npts - 1.0);
+  for (UnsignedInteger i = 0; i < npts; ++i) lambdaValues(i, 0) = xMin + i * (xMax - xMin) / (npts - 1.0);
   for (UnsignedInteger d = 0; d < dimension; ++d)
   {
     Sample logLikelihoodValues(npts, 1);
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d], sumLog[d]);
-    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues[i][0] = boxCoxOptimization.computeLogLikelihood(lambdaValues[i])[0];
+    for (UnsignedInteger i = 0; i < npts; ++i) logLikelihoodValues(i, 0) = boxCoxOptimization.computeLogLikelihood(lambdaValues[i])[0];
     Curve curve(lambdaValues, logLikelihoodValues);
     curve.setColor(Curve::ConvertFromHSV((360.0 * d) / dimension, 1.0, 1.0));
     graph.add(curve);

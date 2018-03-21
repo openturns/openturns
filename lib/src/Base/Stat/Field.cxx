@@ -89,7 +89,7 @@ Scalar & Field::operator () (const UnsignedInteger i,
   return this->at(i, j);
 #else
   copyOnWrite();
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
@@ -99,7 +99,7 @@ const Scalar & Field::operator () (const UnsignedInteger i,
 #ifdef DEBUG_BOUNDCHECKING
   return this->at(i, j);
 #else
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
@@ -123,7 +123,7 @@ Scalar & Field::at (const UnsignedInteger i,
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
   copyOnWrite();
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 }
 
 const Scalar & Field::at (const UnsignedInteger i,
@@ -131,7 +131,7 @@ const Scalar & Field::at (const UnsignedInteger i,
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
-  return (*getImplementation())[i][j];
+  return (*getImplementation())(i, j);
 }
 
 /* Values accessor */

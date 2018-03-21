@@ -97,8 +97,8 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
   Sample gridPoints(2 * inputDimension, inP);
   for(UnsignedInteger i = 0; i < inputDimension; ++i)
   {
-    gridPoints[2 * i][i] += step[i];
-    gridPoints[2 * i + 1][i] -= step[i];
+    gridPoints(2 * i, i) += step[i];
+    gridPoints(2 * i + 1, i) -= step[i];
   } // For i
   /* Evaluate the evaluation */
   Sample gridValues(evaluation_.operator()(gridPoints));
@@ -107,7 +107,7 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
     for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
       /* result(i, j) = (f_j(x + e_i) - f_j(x - e_i)) / (2 * e_i) ~ df_j / dx_i */
-      result(i, j) = (gridValues[2 * i][j] - gridValues[2 * i + 1][j]) / (2.0 * step[i]);
+      result(i, j) = (gridValues(2 * i, j) - gridValues(2 * i + 1, j)) / (2.0 * step[i]);
   return result;
 }
 

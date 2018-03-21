@@ -123,8 +123,8 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   // Aggregate the realizations into the bins
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    // The index takes values in [[0, binNumber-1]] because min <= sample[i][0] <= max and step < binNumber / (max - min)
-    const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample[i][0] - min) * step));
+    // The index takes values in [[0, binNumber-1]] because min <= sample(i, 0) <= max and step < binNumber / (max - min)
+    const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample(i, 0) - min) * step));
     heights[index] += 1.0;
   }
   const Scalar inverseArea = 1.0 / (hOpt * size);

@@ -340,7 +340,7 @@ Field SpectralGaussianProcess::getRealization() const
   for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
   {
     const ComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));
-    for (UnsignedInteger k = 0; k < twoNF; ++k) sampleValues[k][i] = std::real(inverseFFTResult[k] * alpha_[k]);
+    for (UnsignedInteger k = 0; k < twoNF; ++k) sampleValues(k, i) = std::real(inverseFFTResult[k] * alpha_[k]);
   }
   sampleValues.setDescription(getDescription());
   return Field(mesh_, sampleValues);

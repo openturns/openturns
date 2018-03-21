@@ -458,7 +458,7 @@ struct CovarianceModelScalarDiscretizeRowPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][0] = model_.computeAsScalar(p_, input_[i]);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = model_.computeAsScalar(p_, input_[i]);
   }
 
 }; /* end struct CovarianceModelScalarDiscretizeRowPolicy */
@@ -850,8 +850,8 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     {
       const Scalar tau = (i * tMin + (pointNumber - i - 1.0) * tMax) / (pointNumber - 1.0);
       const Scalar value((*this)(tau)(rowIndex, columnIndex) / ratio);
-      data[i][0] = tau;
-      data[i][1] = value;
+      data(i, 0) = tau;
+      data(i, 1) = value;
     }
     Graph graph(getName(), "tau", (correlationFlag ? "correlation" : "covariance"), true, "topright");
     Curve curve(data);

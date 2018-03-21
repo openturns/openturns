@@ -255,9 +255,9 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
   {
     const Scalar f = (i * minimumFrequency + (frequencyNumber - i - 1.0) * maximumFrequency) / (frequencyNumber - 1.0);
     const Complex value((*this)(f)(rowIndex, columnIndex));
-    data[i][0] = f;
-    if (module) data[i][1] = std::abs(value);
-    else data[i][1] = std::arg(value);
+    data(i, 0) = f;
+    if (module) data(i, 1) = std::abs(value);
+    else data(i, 1) = std::arg(value);
   }
   Graph graph(getName(), "f", String("spectral density") + (module ? String("module") : String("phase")), true, "topright");
   Curve curve(data);

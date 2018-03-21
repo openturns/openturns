@@ -60,7 +60,7 @@ Scalar SpaceFillingMinDist::evaluate(const Sample & sample) const
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
   const Sample normalizedSample(normalize(sample));
-  const Scalar* addr_sample = &normalizedSample[0][0];
+  const Scalar* addr_sample = &normalizedSample(0, 0);
   Scalar minDist = std::numeric_limits<Scalar>::max();
   for (UnsignedInteger i = 0; i < size; ++i)
   {

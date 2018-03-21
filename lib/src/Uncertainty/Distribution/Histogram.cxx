@@ -505,10 +505,10 @@ Graph Histogram::drawPDF(const Scalar xMin,
   if ((xMax < first_) || (xMin > first_ + cumulatedWidth_[size - 1]))
   {
     Sample data(2, 2);
-    data[0][0] = xMin;
-    data[0][1] = 0.0;
-    data[1][0] = xMax;
-    data[1][1] = 0.0;
+    data(0, 0) = xMin;
+    data(0, 1) = 0.0;
+    data(1, 0) = xMax;
+    data(1, 1) = 0.0;
     graphPDF.add(Curve(data, "red", "solid", 2, title));
     return graphPDF;
   }
@@ -519,10 +519,10 @@ Graph Histogram::drawPDF(const Scalar xMin,
   if (first_ + cumulatedWidth_[indexLeft] >= xMax)
   {
     Sample data(2, 2);
-    data[0][0] = xMin;
-    data[0][1] = height_[indexLeft];
-    data[1][0] = xMax;
-    data[1][1] = height_[indexLeft];
+    data(0, 0) = xMin;
+    data(0, 1) = height_[indexLeft];
+    data(1, 0) = xMax;
+    data(1, 1) = height_[indexLeft];
     graphPDF.add(Curve(data, "red", "solid", 2, title));
     return graphPDF;
   }
@@ -539,22 +539,22 @@ Graph Histogram::drawPDF(const Scalar xMin,
   if (xMin <= first_)
   {
     Sample data(2, 2);
-    data[0][0] = xMin;
-    data[0][1] = 0.0;
-    data[1][0] = first_;
-    data[1][1] = 0.0;
+    data(0, 0) = xMin;
+    data(0, 1) = 0.0;
+    data(1, 0) = first_;
+    data(1, 1) = 0.0;
     dataFull.add(data);
   }
   // The first class that appears in the graph is only partially included
   else
   {
     Sample data(3, 2);
-    data[0][0] = xMin;
-    data[0][1] = height_[indexLeft];
-    data[1][0] = first_ + cumulatedWidth_[indexLeft];
-    data[1][1] = data[0][1];
-    data[2][0] = data[1][0];
-    data[2][1] = 0.0;
+    data(0, 0) = xMin;
+    data(0, 1) = height_[indexLeft];
+    data(1, 0) = first_ + cumulatedWidth_[indexLeft];
+    data(1, 1) = data(0, 1);
+    data(2, 0) = data(1, 0);
+    data(2, 1) = 0.0;
     dataFull.add(data);
     shiftFull = 1;
   }
@@ -564,37 +564,37 @@ Graph Histogram::drawPDF(const Scalar xMin,
   for (UnsignedInteger i = indexLeft + shiftFull; i < indexRight; ++i)
   {
     Sample data(4, 2);
-    data[0][0] = startX;
-    data[0][1] = 0.0;
-    data[1][0] = startX;
-    data[1][1] = height_[i];
+    data(0, 0) = startX;
+    data(0, 1) = 0.0;
+    data(1, 0) = startX;
+    data(1, 1) = height_[i];
     startX += width_[i];
-    data[2][0] = startX;
-    data[2][1] = height_[i];
-    data[3][0] = startX;
-    data[3][1] = 0.0;
+    data(2, 0) = startX;
+    data(2, 1) = height_[i];
+    data(3, 0) = startX;
+    data(3, 1) = 0.0;
     dataFull.add(data);
   }
   // The last class is completely included
   if (indexRight == size)
   {
     Sample data(2, 2);
-    data[0][0] = first_ + cumulatedWidth_[size - 1];
-    data[0][1] = 0.0;
-    data[1][0] = xMax;
-    data[1][1] = 0.0;
+    data(0, 0) = first_ + cumulatedWidth_[size - 1];
+    data(0, 1) = 0.0;
+    data(1, 0) = xMax;
+    data(1, 1) = 0.0;
     dataFull.add(data);
   }
   // The last class that appears in the graph is only partially included
   else
   {
     Sample data(3, 2);
-    data[0][0] = first_ + cumulatedWidth_[indexRight - 1];
-    data[0][1] = 0.0;
-    data[1][0] = data[0][0];
-    data[1][1] = height_[indexRight];
-    data[2][0] = xMax;
-    data[2][1] = height_[indexRight];
+    data(0, 0) = first_ + cumulatedWidth_[indexRight - 1];
+    data(0, 1) = 0.0;
+    data(1, 0) = data(0, 0);
+    data(1, 1) = height_[indexRight];
+    data(2, 0) = xMax;
+    data(2, 1) = height_[indexRight];
     dataFull.add(data);
   }
   Curve curve(dataFull, "red", "solid", 2, "");

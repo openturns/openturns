@@ -119,7 +119,7 @@ Interval BarPlot::getBoundingBox() const
   upperBound[0] = origin_;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    upperBound[0] += data_[i][0];
+    upperBound[0] += data_(i, 0);
   }
   upperBound[1] = std::max(0.0, max[1]);
   return Interval(lowerBound, upperBound);

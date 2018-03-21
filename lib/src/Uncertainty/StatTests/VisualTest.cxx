@@ -98,8 +98,8 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
     const Scalar q = (i + 0.5) * step;
-    data[i][0] = sample1.computeQuantilePerComponent(q)[0];
-    data[i][1] = sample2.computeQuantilePerComponent(q)[0];
+    data(i, 0) = sample1.computeQuantilePerComponent(q)[0];
+    data(i, 1) = sample2.computeQuantilePerComponent(q)[0];
   }
   Cloud cloudQQplot(data, "Data");
   if (pointNumber < 100) cloudQQplot.setPointStyle("fcircle");
@@ -109,10 +109,10 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   // First, the bisectrice
   Sample diagonal(2, 2);
   Point point(2);
-  diagonal[0][0] = data[0][0];
-  diagonal[0][1] = data[0][0];
-  diagonal[1][0] = data[pointNumber - 1][0];
-  diagonal[1][1] = data[pointNumber - 1][0];
+  diagonal(0, 0) = data(0, 0);
+  diagonal(0, 1) = data(0, 0);
+  diagonal(1, 0) = data(pointNumber - 1, 0);
+  diagonal(1, 1) = data(pointNumber - 1, 0);
   Curve bisectrice(diagonal, "Test line");
   bisectrice.setColor("red");
   bisectrice.setLineStyle("dashed");
@@ -134,8 +134,8 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    data[i][0] = sortedSample[i][0];
-    data[i][1] = dist.computeQuantile((i + 0.5) * step)[0];
+    data(i, 0) = sortedSample(i, 0);
+    data(i, 1) = dist.computeQuantile((i + 0.5) * step)[0];
   }
   Cloud cloudQQplot(data, "Data");
   if (size < 100) cloudQQplot.setPointStyle("fcircle");
@@ -145,10 +145,10 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   // First, the bisectrice
   Sample diagonal(2, 2);
   Point point(2);
-  diagonal[0][0] = data[0][0];
-  diagonal[0][1] = data[0][0];
-  diagonal[1][0] = data[size - 1][0];
-  diagonal[1][1] = data[size - 1][0];
+  diagonal(0, 0) = data(0, 0);
+  diagonal(0, 1) = data(0, 0);
+  diagonal(1, 0) = data(size - 1, 0);
+  diagonal(1, 1) = data(size - 1, 0);
   Curve bisectrice(diagonal, "Test line");
   bisectrice.setColor("red");
   bisectrice.setLineStyle("dashed");
@@ -180,10 +180,10 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   const Scalar mu = normal.getMean()[0];
   const Scalar sigma = normal.getStandardDeviation()[0];
   Sample henryLinePoints(2, 2);
-  henryLinePoints[0][0] = sortedSample[0][0]; // sample.getMin()[0];
-  henryLinePoints[0][1] = (henryLinePoints[0][0] - mu) / sigma;
-  henryLinePoints[1][0] = sortedSample[size - 1][0]; // sample.getMax()[0];
-  henryLinePoints[1][1] = (henryLinePoints[1][0] - mu) / sigma;
+  henryLinePoints(0, 0) = sortedSample(0, 0); // sample.getMin()[0];
+  henryLinePoints(0, 1) = (henryLinePoints(0, 0) - mu) / sigma;
+  henryLinePoints(1, 0) = sortedSample(size - 1, 0); // sample.getMax()[0];
+  henryLinePoints(1, 1) = (henryLinePoints(1, 0) - mu) / sigma;
   Curve henryLine(henryLinePoints, "Henry line");
   henryLine.setColor("red");
   henryLine.setLineStyle("dashed");
@@ -195,8 +195,8 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    data[i][0] = sortedSample[i][0];
-    data[i][1] = standard_normal.computeQuantile((i + 0.5) * step)[0];
+    data(i, 0) = sortedSample(i, 0);
+    data(i, 1) = standard_normal.computeQuantile((i + 0.5) * step)[0];
   }
   Cloud dataCloud(data, "Data");
   graphHenry.add(dataCloud);
@@ -260,8 +260,8 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Point point(2);
-    point[0] = sample1[i][0];
-    point[1] = y[i][0];
+    point[0] = sample1(i, 0);
+    point[1] = y(i, 0);
     sample2D[i] = point;
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
@@ -291,8 +291,8 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
   Sample data(size - 1, 2);
   for (UnsignedInteger i = 0; i < size - 1; ++i)
   {
-    data[i][0] = y[i][0];
-    data[i][1] = y[i + 1][0];
+    data(i, 0) = y(i, 0);
+    data(i, 1) = y(i + 1, 0);
   }
 
   OSS oss;
@@ -342,14 +342,14 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   Indices selectedFilaments(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger currentRank = static_cast<UnsignedInteger>(rankedOutput[i][0]);
+    const UnsignedInteger currentRank = static_cast<UnsignedInteger>(rankedOutput(i, 0));
     if ((currentRank >= minRank) && (currentRank <= maxRank))
       selectedFilaments.add(i);
     else
     {
       Sample data(inputDimension + 1, 1);
-      for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[i][j];
-      data[inputDimension][0] = rankedOutput[i][0];
+      for (UnsignedInteger j = 0; j < inputDimension; ++j) data(j, 0) = rankedInput(i, j);
+      data(inputDimension, 0) = rankedOutput(i, 0);
       Curve filament(data);
       filament.setColor("grey");
       cobWeb.add(filament);
@@ -360,8 +360,8 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < selectedSize; ++i)
   {
     Sample data(inputDimension + 1, 1);
-    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j][0] = rankedInput[selectedFilaments[i]][j];
-    data[inputDimension][0] = rankedOutput[selectedFilaments[i]][0];
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data(j, 0) = rankedInput(selectedFilaments[i], j);
+    data(inputDimension, 0) = rankedOutput(selectedFilaments[i], 0);
     Curve filament(data);
     filament.setColor(color);
     cobWeb.add(filament);
@@ -372,9 +372,9 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   {
     Sample data(2, 2);
     Point point(2);
-    data[0][0] = i;
-    data[1][0] = i;
-    data[1][1] = size;
+    data(0, 0) = i;
+    data(1, 0) = i;
+    data(1, 1) = size;
     Curve bar(data);
     if (i < inputDimension)
     {

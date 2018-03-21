@@ -130,7 +130,7 @@ void  NearestPointChecker::run()
     /* While some points remain to be classified */
     while (toBeClassified < notClassified)
     {
-      if (getComparisonOperator().compare(levelValuesSample[toBeClassified][0], getThreshold())) // the point verifies the constraint
+      if (getComparisonOperator().compare(levelValuesSample(toBeClassified, 0), getThreshold())) // the point verifies the constraint
       {
         /* Leave it in place and go to the next point */
         toBeClassified++;
@@ -148,7 +148,7 @@ void  NearestPointChecker::run()
       }
     }
     /* At the end, we still have to check the point at the position toBeClassified but without updating notClassified, which should be already equals to 0 and then could try to become < 0 */
-    if (getComparisonOperator().compare(levelValuesSample[toBeClassified][0], getThreshold())) toBeClassified++;
+    if (getComparisonOperator().compare(levelValuesSample(toBeClassified, 0), getThreshold())) toBeClassified++;
 
     /* we split the sample_ in 2 Sample : one with the left side (points verifying the constraint) and the other with the right side (points not verifying the constraint) */
     if (toBeClassified < pointNumber)

@@ -103,7 +103,7 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   Scalar empiricalError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
-    const Scalar ns = (y[i][0] - yHat[i]) / (1.0 - h[i]);
+    const Scalar ns = (y(i, 0) - yHat[i]) / (1.0 - h[i]);
     empiricalError += ns * ns / sampleSize;
   }
   LOGINFO(OSS() << "Empirical error=" << empiricalError);

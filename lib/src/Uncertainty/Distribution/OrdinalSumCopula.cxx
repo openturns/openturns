@@ -43,8 +43,8 @@ OrdinalSumCopula::OrdinalSumCopula()
   setName("OrdinalSumCopula");
   setDimension(2);
   Sample support(2, 1);
-  support[0][0] = 0.0;
-  support[1][0] = 1.0;
+  support(0, 0) = 0.0;
+  support(1, 0) = 1.0;
   blockDistribution_ = UserDefined(support);
   computeRange();
 }

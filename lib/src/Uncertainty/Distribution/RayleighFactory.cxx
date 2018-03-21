@@ -69,7 +69,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
   Scalar sumSquares = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar xI = sample[i][0] - gamma;
+    const Scalar xI = sample(i, 0) - gamma;
     sumSquares += xI * xI;
   }
   // Here we test on sumSquares in order to detect also overflows

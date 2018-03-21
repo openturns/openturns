@@ -267,7 +267,7 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
   Sample result(size * outputDimension_, outputDimension_);
   for(UnsignedInteger j = 0; j < outputDimension_; ++j)
     for(UnsignedInteger i = j; i < outputDimension_; ++i)
-      result[p * outputDimension_ + i][j] = outputCovariance_(i, j);
+      result(p * outputDimension_ + i, j) = outputCovariance_(i, j);
   return result;
 }
 

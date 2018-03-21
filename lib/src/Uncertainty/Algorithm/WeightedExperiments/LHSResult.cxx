@@ -108,14 +108,14 @@ Sample LHSResult::getOptimalDesign(UnsignedInteger restart) const
 
 Scalar LHSResult::getOptimalValue() const
 {
-  return criteria_[optimalIndex_][0];
+  return criteria_(optimalIndex_, 0);
 }
 
 Scalar LHSResult::getOptimalValue(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
-  return criteria_[restart][0];
+  return criteria_(restart, 0);
 }
 
 Sample LHSResult::getAlgoHistory() const
@@ -132,38 +132,38 @@ Sample LHSResult::getAlgoHistory(UnsignedInteger restart) const
 
 Scalar LHSResult::getC2() const
 {
-  return criteria_[optimalIndex_][1];
+  return criteria_(optimalIndex_, 1);
 }
 
 Scalar LHSResult::getC2(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
-  return criteria_[restart][1];
+  return criteria_(restart, 1);
 }
 
 Scalar LHSResult::getPhiP() const
 {
-  return criteria_[optimalIndex_][2];
+  return criteria_(optimalIndex_, 2);
 }
 
 Scalar LHSResult::getPhiP(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
-  return criteria_[restart][2];
+  return criteria_(restart, 2);
 }
 
 Scalar LHSResult::getMinDist() const
 {
-  return criteria_[optimalIndex_][3];
+  return criteria_(optimalIndex_, 3);
 }
 
 Scalar LHSResult::getMinDist(UnsignedInteger restart) const
 {
   if (restart > restart_)
     throw InvalidArgumentException(HERE) << "The restart number must be in [0," << restart_ << "]";
-  return criteria_[restart][3];
+  return criteria_(restart, 3);
 }
 
 UnsignedInteger LHSResult::findDescription(const char *text) const
@@ -264,8 +264,8 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
   Sample data(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    data[i][0] = i;
-    data[i][1] = collAlgoHistory_[restart][i][idx - 1];
+    data(i, 0) = i;
+    data(i, 1) = collAlgoHistory_[restart][i][idx - 1];
   }
   Description description(2);
   description[0] = "Iterations";

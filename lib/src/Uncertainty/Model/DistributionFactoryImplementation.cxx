@@ -201,7 +201,7 @@ DistributionFactoryResult DistributionFactoryImplementation::buildMaximumLikelih
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
       Matrix dpdfi(parameterDimension, 1, dpdf[i].getCollection());
-      dpdfi = dpdfi / pdf[i][0];
+      dpdfi = dpdfi / pdf(i, 0);
       theta = theta + dpdfi * dpdfi.transpose() / size;
     }
     CovarianceMatrix covariance(SymmetricMatrix(theta.getImplementation()).solveLinearSystem(IdentityMatrix(parameterDimension) / size).getImplementation());

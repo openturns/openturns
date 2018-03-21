@@ -75,7 +75,7 @@ Dirichlet DirichletFactory::buildAsDirichlet(const Sample & sample) const
     Scalar sum = 0.0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      const Scalar xIJ = sample[i][j];
+      const Scalar xIJ = sample(i, j);
       if (!(xIJ > 0.0)) throw InvalidArgumentException(HERE) << "Error: the sample contains points not in the unit simplex: x=" << sample[i];
       sum += xIJ;
       meanLog[j] += std::log(xIJ);

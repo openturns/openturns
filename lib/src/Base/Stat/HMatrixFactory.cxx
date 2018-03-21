@@ -103,7 +103,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      memcpy(points + i * spatialDimension * outputDimension + j * spatialDimension, &sample[i][0], spatialDimension * sizeof(double));
+      memcpy(points + i * spatialDimension * outputDimension + j * spatialDimension, &sample(i, 0), spatialDimension * sizeof(double));
   }
 
   hmat_clustering_algorithm_t* algo;

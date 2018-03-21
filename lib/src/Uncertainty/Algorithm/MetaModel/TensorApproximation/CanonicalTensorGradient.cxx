@@ -122,8 +122,8 @@ Matrix CanonicalTensorGradient::gradient(const Point & inP) const
           sumdI += coeffI[k] * dphiXj[k];
         }
       }
-      sumRI[i][j] = sumI;
-      sumdRI[i][j] = sumdI;
+      sumRI(i, j) = sumI;
+      sumdRI(i, j) = sumdI;
       prodI[i] *= sumI;
     }
   }
@@ -134,7 +134,7 @@ Matrix CanonicalTensorGradient::gradient(const Point & inP) const
     Scalar dj = 0.0;
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      dj += prodI[i] * (sumdRI[i][j] / sumRI[i][j]);
+      dj += prodI[i] * (sumdRI(i, j) / sumRI(i, j));
     }
     out(j, 0) = dj;
   }

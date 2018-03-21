@@ -135,7 +135,7 @@ void FAST::run() const
           for (UnsignedInteger i = 0; i < nbIn; ++ i)
           {
             const Scalar ui_s = 0.5 + std::asin(std::sin(w_i[i] * s[outerSampling * blockSize_ + blockIndex] + phi_i[i])) / M_PI;
-            inputBlock[blockIndex][i] = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
+            inputBlock(blockIndex, i) = inputsDistribution_.getMarginal(i).computeQuantile(ui_s)[0];
           }
         }
         output.add(model_(inputBlock));
@@ -154,18 +154,18 @@ void FAST::run() const
 
         // Partial variance of all factors except the factor of interest
         for (UnsignedInteger j = 0; j < omega / 2; ++ j)
-          D_l[out][inp] += std::norm(coefficients[j + 1]);
+          D_l(out, inp) += std::norm(coefficients[j + 1]);
 
         // Partial variance of the factor of interest
         for (UnsignedInteger j = 0; j < interferenceFactor_; ++ j)
-          D_i[out][inp] += std::norm(coefficients[(j + 1) * omega]);
+          D_i(out, inp) += std::norm(coefficients[(j + 1) * omega]);
       }
     }
     // When all resamplings are realised: save the indices
     for ( UnsignedInteger out = 0; out < nbOut; ++ out )
     {
-      firstOrderIndice_[out][inp] = D_i[out][inp] / D[out];
-      totalOrderIndice_[out][inp] = 1. - D_l[out][inp] / D[out];
+      firstOrderIndice_(out, inp) = D_i(out, inp) / D[out];
+      totalOrderIndice_(out, inp) = 1. - D_l(out, inp) / D[out];
     }
   }
   alreadyComputedIndices_ = true;

@@ -113,7 +113,7 @@ String FunctionalChaosSobolIndices::summary() const
     // compute part of contribution of each basis term
     for (UnsignedInteger i = 1; i < basisSize; ++ i)
     {
-      Scalar coefI = coefficients[i][m];
+      Scalar coefI = coefficients(i, m);
       Indices multiIndices(enumerateFunction(indices[i]));
       UnsignedInteger degreeI = 0;
       for (UnsignedInteger k = 0; k < multiIndices.getSize(); ++ k) degreeI += multiIndices[k];
@@ -197,7 +197,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variableIndice
   {
     if (coefficientIndices[i] > 0)
     {
-      const Scalar coefficientI = coefficients[i][0];
+      const Scalar coefficientI = coefficients(i, 0);
       if (coefficientI != 0.0)
       {
         Indices multiIndices(enumerateFunction(coefficientIndices[i]));
@@ -262,7 +262,7 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variableI
   {
     if (coefficientIndices[i] > 0)
     {
-      const Scalar coefficientI = coefficients[i][0];
+      const Scalar coefficientI = coefficients(i, 0);
       if (coefficientI != 0.0)
       {
         const Indices multiIndices(enumerateFunction(coefficientIndices[i]));
@@ -319,7 +319,7 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   {
     if (coefficientIndices[i] > 0)
     {
-      const Scalar coefficientI = coefficients[i][0];
+      const Scalar coefficientI = coefficients(i, 0);
       if (coefficientI != 0.0)
       {
         Indices multiIndices(enumerateFunction(coefficientIndices[i]));

@@ -98,7 +98,7 @@ struct LogNormalFactoryLMLEParameterConstraint
     Point sums(4, 0.0);
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
-      const Scalar delta = sample_[i][0] - gamma;
+      const Scalar delta = sample_(i, 0) - gamma;
       if (!(delta > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
       const Scalar logDelta = std::log(delta);
       const Scalar inverseDelta = 1.0 / delta;

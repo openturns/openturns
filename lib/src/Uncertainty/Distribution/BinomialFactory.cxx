@@ -72,7 +72,7 @@ Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
   const Scalar supportEpsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar x = sample[i][0];
+    const Scalar x = sample(i, 0);
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
     if (!(std::abs(x - iX) <= supportEpsilon) || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a Binomial distribution only from a sample made of nonnegative integers, here x=" << x;
@@ -149,7 +149,7 @@ Scalar BinomialFactory::ComputeLogLikelihood(const UnsignedInteger n,
   Scalar logLikelihood = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger k = static_cast<UnsignedInteger>(round(sample[i][0]));
+    const UnsignedInteger k = static_cast<UnsignedInteger>(round(sample(i, 0)));
     if (logLikelihoodCache.find(k) == logLikelihoodCache.end()) logLikelihoodCache[k] = logNFactorial - SpecFunc::LnGamma(n - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * logP + (n - k) * logQ;
     logLikelihood += logLikelihoodCache[k];
   }

@@ -73,7 +73,7 @@ void ANCOVA::run() const
     }
     for (UnsignedInteger marginal_k = 0; marginal_k < nbMarginals; ++marginal_k)
     {
-      const Sample coefficients = allCoefficients.getMarginal(marginal_k);
+      const Sample coefficients(allCoefficients.getMarginal(marginal_k));
 
       // Output sample obtained with correlated inputs
       const Sample Y(functionalChaosResult_.getMetaModel().getMarginal(marginal_k)(correlatedInput_));
@@ -84,17 +84,17 @@ void ANCOVA::run() const
       {
         Scalar temp = 0.;
         for (UnsignedInteger k = 0; k < counter + 1; ++k)
-          temp += coefficients[coefList[k]][0] * B[coefList[k]](T(correlatedInput_[j]))[0];
+          temp += coefficients(coefList[k], 0) * B[coefList[k]](T(correlatedInput_[j]))[0];
 
-        inputOutput[j][0] = temp;
-        inputOutput[j][1] = Y[j][0];
+        inputOutput(j, 0) = temp;
+        inputOutput(j, 1) = Y(j, 0);
       }
       const CovarianceMatrix inputOutputCovariance(inputOutput.computeCovariance());
 
       // Compute total part of variance of the marginal_k output due to input_i
-      indices_[marginal_k][input_i] = inputOutputCovariance(0, 1) / inputOutputCovariance(1, 1);
+      indices_(marginal_k, input_i) = inputOutputCovariance(0, 1) / inputOutputCovariance(1, 1);
       // "uncorrelated" part
-      uncorrelatedIndices_[marginal_k][input_i] = inputOutputCovariance(0, 0) / inputOutputCovariance(1, 1);
+      uncorrelatedIndices_(marginal_k, input_i) = inputOutputCovariance(0, 0) / inputOutputCovariance(1, 1);
     }
   }
   alreadyComputedIndices_ = true;

@@ -92,9 +92,9 @@ Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {
-      varianceI[q][p] +=  yEDotyB[q]  / (size - 1.0) -  muA[q] * muB[q];
+      varianceI(q, p) +=  yEDotyB[q]  / (size - 1.0) -  muA[q] * muB[q];
       // Vti = Var - V_{-i}
-      VTi[q][p] += muA[q] * muA[q] + referenceVariance_[q] - yEDotyA[q]  / (size - 1.0);
+      VTi(q, p) += muA[q] * muA[q] + referenceVariance_[q] - yEDotyA[q]  / (size - 1.0);
     }
   }
   return varianceI;

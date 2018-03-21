@@ -115,14 +115,14 @@ Scalar KFold::run(LeastSquaresMethod & method,
         if ((i == 0) || (jModK == (i - 1))) addedIndices.add(j);
         // Else it is a conserved index
         else conservedIndices.add(j);
-        rhs.add(y[j][0]);
+        rhs.add(y(j, 0));
         rowFilter.add(j);
       }
       else
       {
         // If it is not the first pass, the test points were in the learning database at the previous pass
         if (i > 0) removedIndices.add(j);
-        yTest.add(y[j][0]);
+        yTest.add(y(j, 0));
         inverseRowFilter.add(j);
       }
     } // Partitioning loop

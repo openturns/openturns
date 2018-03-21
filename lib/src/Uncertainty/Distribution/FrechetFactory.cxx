@@ -74,7 +74,7 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   // Convert the translated sample in logarithmic scale, in order for the new sample to be distributed according to the Gumbel distribution
   Sample logSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
-    logSample[i][0] = std::log(sample[i][0] - gamma);
+    logSample(i, 0) = std::log(sample(i, 0) - gamma);
   // Estimate the associated Gumbel
   const Gumbel associatedGumbel(GumbelFactory().buildAsGumbel(logSample));
   const Scalar alphaGumbel = associatedGumbel.getAlpha();

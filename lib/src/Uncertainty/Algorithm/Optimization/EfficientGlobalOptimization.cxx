@@ -157,7 +157,7 @@ void EfficientGlobalOptimization::run()
     Sample noiseSample(model.getMarginal(1)(inputSample));
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
-      noise[i] = noiseSample[i][0];
+      noise[i] = noiseSample(i, 0);
       if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise model must be positive";
     }
 
@@ -176,8 +176,8 @@ void EfficientGlobalOptimization::run()
   for (UnsignedInteger index = 0; index < size; ++ index)
   {
     if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
-      if ((problem.isMinimization() && (outputSample[index][0] < optimalValue))
-          || (!problem.isMinimization() && (outputSample[index][0] > optimalValue)))
+      if ((problem.isMinimization() && (outputSample(index, 0) < optimalValue))
+          || (!problem.isMinimization() && (outputSample(index, 0) > optimalValue)))
       {
         optimizerPrev = optimizer;
         optimalValuePrev = optimalValue;
@@ -196,11 +196,11 @@ void EfficientGlobalOptimization::run()
     for (UnsignedInteger index = 1; index < size; ++ index)
     {
       if (!problem.hasBounds() || (problem.hasBounds() && problem.getBounds().contains(inputSample[index])))
-        if ((problem.isMinimization() && (outputSample[index][0] < optimalValuePrev))
-            || (!problem.isMinimization() && (outputSample[index][0] > optimalValuePrev)))
+        if ((problem.isMinimization() && (outputSample(index, 0) < optimalValuePrev))
+            || (!problem.isMinimization() && (outputSample(index, 0) > optimalValuePrev)))
         {
           optimizerPrev = inputSample[index];
-          optimalValuePrev = outputSample[index][0];
+          optimalValuePrev = outputSample(index, 0);
         }
     }
   }
@@ -215,7 +215,7 @@ void EfficientGlobalOptimization::run()
       {
         for (UnsignedInteger j = 0; j < dimension; ++ j)
         {
-          Scalar distance = std::abs(inputSample[i1][j] - inputSample[i2][j]);
+          Scalar distance = std::abs(inputSample(i1, j) - inputSample(i2, j));
           if (distance < minimumDistance[j])
           {
             minimumDistance[j] = distance;
@@ -348,7 +348,7 @@ void EfficientGlobalOptimization::run()
       {
         for (UnsignedInteger j = 0; j < dimension; ++ j)
         {
-          Scalar distance = std::abs(inputSample[i][j] - newPoint[j]);
+          Scalar distance = std::abs(inputSample(i, j) - newPoint[j]);
           if (distance < minimumDistance[j])
           {
             minimumDistance[j] = distance;

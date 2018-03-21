@@ -123,7 +123,7 @@ Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar 
   Sample filteredSample(0, inputSample_.getDimension());
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
-    if (comparisonOperator_(outputSample_[i][0], threshold)) filteredSample.add(inputSample_[i]);
+    if (comparisonOperator_(outputSample_(i, 0), threshold)) filteredSample.add(inputSample_[i]);
   if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannont compute the mean point if no point is in the event domain.";
   return filteredSample.computeMean();
 }
@@ -203,9 +203,9 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   UnsignedInteger good = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < inputDimension; ++j) mergedSample[i][j] = inputSample_[i][j];
-    mergedSample[i][inputDimension] = outputSample_[i][0];
-    good += comparisonOperator_(outputSample_[i][0], threshold_);
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) mergedSample(i, j) = inputSample_(i, j);
+    mergedSample[i][inputDimension] = outputSample_(i, 0);
+    good += comparisonOperator_(outputSample_(i, 0), threshold_);
   }
   if ((good < sampleMargin) || (good >= size - sampleMargin)) LOGWARN(OSS() << "Warning: the default threshold does not correspond to well-estimated importance factors according to the default sample margin. The number of points defining the event is " << good << " and should be in [" << sampleMargin << ", " << size - sampleMargin - 1 << "] according to the SimulationSensitivityAnalysis-DefaulSampleMargin key value in ResourceMap.");
   // Sort the merged sample according to its last component
@@ -315,10 +315,10 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   if ((internalX >= lower) && (internalX <= upper) && (good >= sampleMargin) && (good < size - sampleMargin))
   {
     Sample data(2, 2);
-    data[0][0] = internalX;
-    data[0][1] = 0.0;
-    data[1][0] = internalX;
-    data[1][1] = 100.0;
+    data(0, 0) = internalX;
+    data(0, 1) = 0.0;
+    data(1, 0) = internalX;
+    data(1, 1) = 100.0;
     Curve curve(data);
     curve.setLineStyle("dashed");
     curve.setLineWidth(2);

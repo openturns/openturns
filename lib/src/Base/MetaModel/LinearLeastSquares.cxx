@@ -114,7 +114,7 @@ void LinearLeastSquares::run()
     /* build the right-hand side */
     for(UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
     {
-      rightHandSides(sampleIndex, outputIndex) = dataOut_[sampleIndex][outputIndex];
+      rightHandSides(sampleIndex, outputIndex) = dataOut_(sampleIndex, outputIndex);
     }
   } // each sample
   // Now, solve simultaneously the least-squares solutions for all the outputs

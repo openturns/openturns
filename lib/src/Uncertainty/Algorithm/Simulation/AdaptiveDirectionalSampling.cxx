@@ -129,9 +129,9 @@ void AdaptiveDirectionalSampling::run()
         for (UnsignedInteger k = 0; k < d; ++ k)
         {
           if ((1 << k) & i)
-            T0[k][i] = pf;
+            T0(k, i) = pf;
           else
-            T1[k][i] = pf;
+            T1(k, i) = pf;
         }
 
       } // if pf > 0
@@ -157,7 +157,7 @@ void AdaptiveDirectionalSampling::run()
       {
         for (UnsignedInteger i = 0; i < m; ++ i)
           if ((1 << k) & i)
-            T_[k] += std::abs(T0[k][i] - T1[k][i]);
+            T_[k] += std::abs(T0(k, i) - T1(k, i));
 
         Log::Debug(OSS() << "AdaptiveDirectionalSampling::run T[" << k << "]=" << T_[k]);
       }

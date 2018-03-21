@@ -523,10 +523,10 @@ CorrelationMatrix Dirichlet::getSpearmanCorrelation() const
       Scalar rhoIJ = 0.0;
       for (UnsignedLong indexU = 0; indexU < nI; ++indexU)
       {
-        const Scalar u = 0.5 * (integrationNodes_[j][indexU] + 1.0);
+        const Scalar u = 0.5 * (integrationNodes_(j, indexU) + 1.0);
         for (UnsignedLong indexV = 0; indexV < nJ; ++indexV)
         {
-          Scalar v = 0.5 * (integrationNodes_[j][indexU] + 1.0) * (1.0 - u);
+          Scalar v = 0.5 * (integrationNodes_(j, indexU) + 1.0) * (1.0 - u);
         } // indexV
       } // indexU
     } // j

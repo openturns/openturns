@@ -310,7 +310,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     {
       for (UnsignedInteger p = 0; p < size; ++ p)
       {
-        f[p] *= V[j][p];
+        f[p] *= V(j, p);
       }
     }
     Scalar currentRadius = dot(f, yFlat) / f.normSquare();
@@ -337,9 +337,9 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
       Scalar prod = currentRadius;
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
-        prod *= V[j][p];
+        prod *= V(j, p);
       }
-      const Scalar slack = y[p][0] - prod;
+      const Scalar slack = y(p, 0) - prod;
       marginalResidual += slack * slack / size;
     }
     marginalRelativeError = marginalResidual / y.computeVariance()[0];
@@ -432,7 +432,7 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
     marginalResidual = 0.0;
     for (UnsignedInteger p = 0; p < size; ++ p)
     {
-      const Scalar slack = y[p][0] - tensor(x[p])[0];
+      const Scalar slack = y(p, 0) - tensor(x[p])[0];
       marginalResidual += slack * slack / size;
     }
     marginalRelativeError = marginalResidual / y.computeVariance()[0];

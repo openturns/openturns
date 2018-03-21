@@ -194,7 +194,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     if (isInside)
     {
       nodes.add(rawNodes[i]);
-      weights.add(std::sqrt(normalizationFactor * rawWeights[i] / pdf[i][0]));
+      weights.add(std::sqrt(normalizationFactor * rawWeights[i] / pdf(i, 0)));
     }
   }
   const UnsignedInteger nodesNumber = nodes.getSize();

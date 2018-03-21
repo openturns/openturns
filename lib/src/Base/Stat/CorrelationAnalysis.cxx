@@ -99,9 +99,9 @@ Point CorrelationAnalysis::PCC(const Sample & inputSample,
     // Build the truncated sample
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger j = 0; j < index; ++j) truncatedInput[i][j] = inputSample[i][j];
-      for (UnsignedInteger j = index + 1; j < dimension; ++j) truncatedInput[i][j - 1] = inputSample[i][j];
-      remainingInput[i][0] = inputSample[i][index];
+      for (UnsignedInteger j = 0; j < index; ++j) truncatedInput(i, j) = inputSample(i, j);
+      for (UnsignedInteger j = index + 1; j < dimension; ++j) truncatedInput(i, j - 1) = inputSample(i, j);
+      remainingInput(i, 0) = inputSample(i, index);
     }
     // Build the linear models
     const LinearModel outputVersusTruncatedInput(LinearModelFactory().build(truncatedInput, outputSample));

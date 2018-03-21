@@ -231,8 +231,8 @@ Scalar FittingTest::BIC(const Sample & sample,
   const Sample logPDF(distribution.computeLogPDF(sample));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (logPDF[i][0] == -SpecFunc::MaxScalar) return SpecFunc::MaxScalar;
-    logLikelihood += logPDF[i][0];
+    if (logPDF(i, 0) == -SpecFunc::MaxScalar) return SpecFunc::MaxScalar;
+    logLikelihood += logPDF(i, 0);
   }
   return (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
 }
@@ -277,7 +277,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   const Sample cdfValues(distribution.computeCDF(sample.sort(0)));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar cdfValue = cdfValues[i][0];
+    const Scalar cdfValue = cdfValues(i, 0);
     value = std::max(value, std::max(std::abs(Scalar(i) / size - cdfValue), std::abs(cdfValue - Scalar(i + 1) / size)));
   }
   const Scalar pValue = DistFunc::pKolmogorov(size, value, true);
@@ -302,11 +302,11 @@ TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
   Scalar value = 0.0;
   for (UnsignedInteger i = 0; i < size1 + size2; ++ i)
   {
-    const Scalar sampleAllSorted_i = sampleAllSorted[i][0];
+    const Scalar sampleAllSorted_i = sampleAllSorted(i, 0);
     Scalar cdf1 = 0.0;
     for (UnsignedInteger j = 0; j < size1; ++ j)
     {
-      if (sampleAllSorted[j][0] <= sampleAllSorted_i)
+      if (sampleAllSorted(j, 0) <= sampleAllSorted_i)
       {
         cdf1 = (j + 1.0) / size1;
       }
@@ -316,7 +316,7 @@ TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
     Scalar cdf2 = 0.0;
     for (UnsignedInteger j = 0; j < size2; ++ j)
     {
-      if (sampleAllSorted[size1 + j][0] <= sampleAllSorted_i)
+      if (sampleAllSorted(size1 + j, 0) <= sampleAllSorted_i)
       {
         cdf2 = (j + 1.0) / size2;
       }
@@ -372,7 +372,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
   {
     const Scalar currentBound = distribution.computeQuantile(i / Scalar(iMax))[0];
     UnsignedInteger count = 0;
-    while (sample[dataIndex][0] <= currentBound)
+    while (sample(dataIndex, 0) <= currentBound)
     {
       ++count;
       ++dataIndex;

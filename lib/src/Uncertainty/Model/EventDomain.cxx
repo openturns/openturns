@@ -97,7 +97,7 @@ Sample EventDomain::getSample(const UnsignedInteger size) const
   // Then, we loop over the sample to check each point in sequence
   Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
-    result[i][0] = domain_.contains(returnSample[i]);
+    result(i, 0) = domain_.contains(returnSample[i]);
   result.setName("EventDomain sample");
   result.setDescription(getDescription());
   return result;

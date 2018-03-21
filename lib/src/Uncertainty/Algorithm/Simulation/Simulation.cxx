@@ -287,10 +287,10 @@ Graph Simulation::drawProbabilityConvergence(const Scalar level) const
   Sample dataUpperBound(0, 2);
   for (UnsignedInteger i = 0; i < size; i++)
   {
-    const Scalar probabilityEstimate = convergenceSample[i][0];
-    const Scalar varianceEstimate = convergenceSample[i][1];
-    dataEstimate[i][0] = i + 1;
-    dataEstimate[i][1] = probabilityEstimate;
+    const Scalar probabilityEstimate = convergenceSample(i, 0);
+    const Scalar varianceEstimate = convergenceSample(i, 1);
+    dataEstimate(i, 0) = i + 1;
+    dataEstimate(i, 1) = probabilityEstimate;
     // The bounds are drawn only if there is a useable variance estimate
     if (varianceEstimate >= 0.0)
     {

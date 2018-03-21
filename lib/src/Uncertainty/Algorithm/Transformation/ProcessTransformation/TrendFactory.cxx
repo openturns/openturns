@@ -100,7 +100,7 @@ TrendTransform TrendFactory::build(const Field & field,
     LeastSquaresMetaModelSelection selectionAlgo(inputSample, outputSample, coll, indices, basisSequenceFactory_, fittingAlgorithm_);
     selectionAlgo.run();
     Point localCoefficients(selectionAlgo.getCoefficients());
-    for (UnsignedInteger k = 0; k < N ; ++k) coefficients[k][d] = localCoefficients[k];
+    for (UnsignedInteger k = 0; k < N ; ++k) coefficients(k, d) = localCoefficients[k];
   }
   const DualLinearCombinationFunction trendFunction(coll, coefficients);
 

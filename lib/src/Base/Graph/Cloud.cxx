@@ -52,8 +52,8 @@ Cloud::Cloud(const ComplexCollection & data,
   Sample sample(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    sample[i][0] = data[i].real();
-    sample[i][1] = data[i].imag();
+    sample(i, 0) = data[i].real();
+    sample(i, 1) = data[i].imag();
   }
   // Check data validity
   setData(sample);
@@ -71,8 +71,8 @@ Cloud::Cloud(const Sample & dataX,
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    dataFull[i][0] = dataX[i][0];
-    dataFull[i][1] = dataY[i][0];
+    dataFull(i, 0) = dataX(i, 0);
+    dataFull(i, 1) = dataY(i, 0);
   }
   // Check data validity
   setData(dataFull);
@@ -88,8 +88,8 @@ Cloud::Cloud(const Point & dataX,
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    dataFull[i][0] = dataX[i];
-    dataFull[i][1] = dataY[i];
+    dataFull(i, 0) = dataX[i];
+    dataFull(i, 1) = dataY[i];
   }
   // Check data validity
   setData(dataFull);

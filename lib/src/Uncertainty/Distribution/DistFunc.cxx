@@ -1400,7 +1400,7 @@ Sample DistFunc::rUniformTriangle(const Point & a,
       y = 1.0 - sqrtU;
       z = -z;
     }
-    for (UnsignedInteger i = 0; i < dimension; ++i) result[n][i] = x * a[i] + y * b[i] + z * c[i];
+    for (UnsignedInteger i = 0; i < dimension; ++i) result(n, i) = x * a[i] + y * b[i] + z * c[i];
   } // n
   return result;
 }

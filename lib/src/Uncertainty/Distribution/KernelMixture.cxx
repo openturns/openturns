@@ -220,7 +220,7 @@ Point KernelMixture::getRealization() const
   // Then add a random noise according to the product kernel
   const UnsignedInteger dimension = getDimension();
   const Sample kernelSample(kernel_.getSample(dimension));
-  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] += bandwidth_[i] * kernelSample[i][0];
+  for (UnsignedInteger i = 0; i < dimension; ++i) result[i] += bandwidth_[i] * kernelSample(i, 0);
   return result;
 }
 
@@ -241,7 +241,7 @@ Point KernelMixture::computeDDF(const Point & point) const
     Scalar pdfAtom = 1.0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      atom[j] = (point[j] - sample_[i][j]) * bandwidthInverse_[j];
+      atom[j] = (point[j] - sample_(i, j)) * bandwidthInverse_[j];
       kernelPdfAtom[j] = kernel_.computePDF(Point(1, atom[j]));
       pdfAtom *= kernelPdfAtom[j];
     }
@@ -271,7 +271,7 @@ Scalar KernelMixture::computePDF(const Point & point) const
   {
     const Scalar x = point[0];
     const Scalar h = bandwidth_[0];
-    for(UnsignedInteger i = 0; i < size; ++i) pdfValue += kernel_.computePDF((x - sample_[i][0]) / h);
+    for(UnsignedInteger i = 0; i < size; ++i) pdfValue += kernel_.computePDF((x - sample_(i, 0)) / h);
     return pdfValue / (h * size);
   }
   // Quick rejection test
@@ -279,11 +279,11 @@ Scalar KernelMixture::computePDF(const Point & point) const
   const Scalar pdfEpsilon = kernel_.getPDFEpsilon();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar pdfAtom = kernel_.computePDF(Point(1, (point[0] - sample_[i][0]) * bandwidthInverse_[0]));
+    Scalar pdfAtom = kernel_.computePDF(Point(1, (point[0] - sample_(i, 0)) * bandwidthInverse_[0]));
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (pdfAtom < pdfEpsilon) break;
-      pdfAtom *= kernel_.computePDF(Point(1, (point[j] - sample_[i][j]) * bandwidthInverse_[j]));
+      pdfAtom *= kernel_.computePDF(Point(1, (point[j] - sample_(i, j)) * bandwidthInverse_[j]));
     }
     pdfValue += pdfAtom;
   } /* end for */
@@ -307,7 +307,7 @@ Scalar KernelMixture::computeCDF(const Point & point) const
     const Scalar x = point[0];
     const Scalar h = bandwidth_[0];
     for(UnsignedInteger i = 0; i < size; ++i)
-      cdfValue += kernel_.computeCDF((x - sample_[i][0]) / h);
+      cdfValue += kernel_.computeCDF((x - sample_(i, 0)) / h);
     return cdfValue / size;
   }
   // Check against the range of the distribution
@@ -325,11 +325,11 @@ Scalar KernelMixture::computeCDF(const Point & point) const
   const Scalar cdfEpsilon = kernel_.getCDFEpsilon();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar cdfAtom = kernel_.computeCDF((point[0] - sample_[i][0]) * bandwidthInverse_[0]);
+    Scalar cdfAtom = kernel_.computeCDF((point[0] - sample_(i, 0)) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (cdfAtom < cdfEpsilon) break;
-      cdfAtom *= kernel_.computeCDF((point[j] - sample_[i][j]) * bandwidthInverse_[j]);
+      cdfAtom *= kernel_.computeCDF((point[j] - sample_(i, j)) * bandwidthInverse_[j]);
     }
     cdfValue += cdfAtom;
   } /* end for */
@@ -379,11 +379,11 @@ Scalar KernelMixture::computeSurvivalFunction(const Point & point) const
   const UnsignedInteger size = sample_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar cdfAtom = kernel_.computeSurvivalFunction((point[0] - sample_[i][0]) * bandwidthInverse_[0]);
+    Scalar cdfAtom = kernel_.computeSurvivalFunction((point[0] - sample_(i, 0)) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (cdfAtom < cdfEpsilon) break;
-      cdfAtom *= kernel_.computeSurvivalFunction((point[j] - sample_[i][j]) * bandwidthInverse_[j]);
+      cdfAtom *= kernel_.computeSurvivalFunction((point[j] - sample_(i, j)) * bandwidthInverse_[j]);
     }
     survivalValue += cdfAtom;
   } /* end for */
@@ -412,17 +412,17 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
   {
     const Scalar hInverse = bandwidthInverse_[0];
     for(UnsignedInteger i = 0; i < size; ++i)
-      probability += kernel_.computeProbability(Interval((lowerBound[0] - sample_[i][0]) * hInverse, (upperBound[0] - sample_[i][0]) * hInverse));
+      probability += kernel_.computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * hInverse, (upperBound[0] - sample_(i, 0)) * hInverse));
     return probability / size;
   }
   const Scalar probabilityEpsilon = kernel_.getCDFEpsilon();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar probabilityAtom = kernel_.computeProbability(Interval((lowerBound[0] - sample_[i][0]) * bandwidthInverse_[0], (upperBound[0] - sample_[i][0]) * bandwidthInverse_[0]));
+    Scalar probabilityAtom = kernel_.computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * bandwidthInverse_[0], (upperBound[0] - sample_(i, 0)) * bandwidthInverse_[0]));
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (probabilityAtom < probabilityEpsilon) break;
-      probabilityAtom *= kernel_.computeProbability(Interval((lowerBound[j] - sample_[i][j]) * bandwidthInverse_[j], (upperBound[j] - sample_[i][j]) * bandwidthInverse_[j]));
+      probabilityAtom *= kernel_.computeProbability(Interval((lowerBound[j] - sample_(i, j)) * bandwidthInverse_[j], (upperBound[j] - sample_(i, j)) * bandwidthInverse_[j]));
     }
     probability += probabilityAtom;
   } /* end for */
@@ -445,15 +445,15 @@ Scalar KernelMixture::computeScalarQuantile(const Scalar prob,
     // equivalent to CDF(x) = 1 - prob, but numerically different with an
     // accuracy that depends on prob.
     // The cut-off is around the mean value
-    if (prob <= ccdfApproximation_.getValues()[0][0]) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()[0][0], ccdfApproximation_.getValues()[n - 1][0]);
-    return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, 1.0 - prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()[0][0], cdfApproximation_.getValues()[n - 1][0]);
+    if (prob <= ccdfApproximation_.getValues()(0, 0)) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()(0, 0), ccdfApproximation_.getValues()[n - 1][0]);
+    return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, 1.0 - prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()(0, 0), cdfApproximation_.getValues()[n - 1][0]);
   }
   // Here we have to solve CDF(x) = prob which is mathematically
   // equivalent to ComplementaryCDF(x) = 1 - prob, but numerically
   // different with an accuracy that depends on prob.
   // The cut-off is around the mean value
-  if (prob <= cdfApproximation_.getValues()[n - 1][0]) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()[0][0], cdfApproximation_.getValues()[n - 1][0]);
-  return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, 1.0 - prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()[0][0], ccdfApproximation_.getValues()[n - 1][0]);
+  if (prob <= cdfApproximation_.getValues()[n - 1][0]) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()(0, 0), cdfApproximation_.getValues()[n - 1][0]);
+  return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, 1.0 - prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()(0, 0), ccdfApproximation_.getValues()[n - 1][0]);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -464,7 +464,7 @@ Complex KernelMixture::computeCharacteristicFunction(const Scalar x) const
   const UnsignedInteger size = sample_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(Complex(0.0, sample_[i][0] * x));
+    cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(Complex(0.0, sample_(i, 0) * x));
   } /* end for */
   return cfValue * (1.0 / size);
 }
@@ -625,7 +625,7 @@ KernelMixture::PointWithDescriptionCollection KernelMixture::getParametersCollec
     Description description(marginalParameters.getDimension());
     for (UnsignedInteger j = 0; j < size; ++j)
     {
-      marginalParameters[j] = sample_[j][i];
+      marginalParameters[j] = sample_(j, i);
       if (dimension > 1) description[j] = (OSS() << "x_" << j << "^" << i);
       else description[j] = (OSS() << "x_" << j);
     }
@@ -644,7 +644,7 @@ KernelMixture::PointWithDescriptionCollection KernelMixture::getParametersCollec
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        dependence[index] = sample_[i][j];
+        dependence[index] = sample_(i, j);
         description[index] = (OSS() << "x_" << i << "^" << j);
         ++index;
       }
@@ -706,7 +706,7 @@ void KernelMixture::setParameter(const Point & parameter)
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      sample_[i][j] = parameter[index];
+      sample_(i, j) = parameter[index];
       ++ index;
     }
   }
