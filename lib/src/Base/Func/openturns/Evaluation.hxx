@@ -111,14 +111,18 @@ public:
 
   /** Operator () */
   Point operator() (const Point & inP) const;
-  Point operator() (const Point & inP,
-                    const Point & parameter);
-  Sample operator() (const Point & point,
-                     const Sample & parameters);
 
   Sample operator() (const Sample & inS) const;
 
   Field operator() (const Field & inTS) const;
+
+  /* @deprecated */
+  Point operator() (const Point & inP,
+                    const Point & parameter);
+
+  /* @deprecated */
+  Sample operator() (const Point & point,
+                     const Sample & parameters);
 
 
   /** Accessor for input point dimension */

@@ -318,6 +318,7 @@ Matrix FunctionImplementation::parameterGradient(const Point & inP) const
 Matrix FunctionImplementation::parameterGradient(const Point & inP,
     const Point & parameter)
 {
+  LOGWARN("FunctionImplementation::parameterGradient(inP,parameter) is deprecated, use setParameter(parameter) and parameterGradient(inP)");
   setParameter(parameter);
   return evaluation_.parameterGradient(inP);
 }
@@ -355,6 +356,7 @@ Point FunctionImplementation::operator() (const Point & inP) const
 Point FunctionImplementation::operator() (const Point & inP,
     const Point & parameter)
 {
+  LOGWARN("FunctionImplementation::operator()(inP,parameter) is deprecated, use setParameter(parameter) and operator()(inP)");
   setParameter(parameter);
   return evaluation_.operator()(inP);
 }
@@ -362,6 +364,7 @@ Point FunctionImplementation::operator() (const Point & inP,
 Sample FunctionImplementation::operator() (const Point & inP,
     const Sample & parameters)
 {
+  // Deprecated, but already issues a LOGWARN
   return evaluation_.operator()(inP, parameters);
 }
 
@@ -406,6 +409,7 @@ Matrix FunctionImplementation::gradient(const Point & inP,
                                         const Point & parameters)
 {
   if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
+  LOGWARN("FunctionImplementation::gradient()(inP,parameters) is deprecated, use setParameter(parameters) and gradient(inP)");
   setParameter(parameters);
   return gradient_.gradient(inP);
 }
@@ -439,6 +443,7 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP,
     const Point & parameters)
 {
   if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
+  LOGWARN("FunctionImplementation::hessian()(inP,parameters) is deprecated, use setParameter(parameters) and hessian(inP)");
   setParameter(parameters);
   return hessian_.hessian(inP);
 }

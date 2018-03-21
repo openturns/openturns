@@ -79,6 +79,8 @@ public:
 
   /** Gradient method */
   virtual Matrix gradient(const Point & inP) const;
+
+  /* @deprecated */
   virtual Matrix gradient(const Point & inP,
                           const Point & parameters);
 

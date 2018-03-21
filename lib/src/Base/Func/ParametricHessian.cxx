@@ -62,6 +62,7 @@ ParametricHessian * ParametricHessian::clone() const
 SymmetricTensor ParametricHessian::hessian(const Point & point,
     const Point & parameters) const
 {
+  LOGWARN("ParametricGradient::hessian(point,parameters) is deprecated, use setParameter(parameters) and hessian(point)");
   const UnsignedInteger parametersDimension = parameters.getDimension();
   if (parametersDimension != p_evaluation_->getParametersPositions().getSize()) throw InvalidArgumentException(HERE) << "Error: expected a parameters of dimension=" << p_evaluation_->getParametersPositions().getSize() << ", got dimension=" << parametersDimension;
   const UnsignedInteger inputDimension = p_evaluation_->function_.getInputDimension();
@@ -92,8 +93,30 @@ SymmetricTensor ParametricHessian::hessian(const Point & point,
 /* Hessian operator */
 SymmetricTensor ParametricHessian::hessian(const OT::Point & point) const
 {
-  // Use the current parameters value
-  return hessian(point, p_evaluation_->getParameter());
+  const UnsignedInteger parametersDimension = p_evaluation_->getParameterDimension();
+  const UnsignedInteger inputDimension = p_evaluation_->function_.getInputDimension();
+  const UnsignedInteger pointDimension = point.getDimension();
+  if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - parametersDimension << ", got dimension=" << pointDimension;
+  Point x(inputDimension);
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[p_evaluation_->parametersPositions_[i]] = p_evaluation_->parameter_[i];
+  for (UnsignedInteger i = 0; i < pointDimension; ++i) x[p_evaluation_->inputPositions_[i]] = point[i];
+  const UnsignedInteger outputDimension = getOutputDimension();
+  const SymmetricTensor fullHessian(p_evaluation_->function_.hessian(x));
+  // The gradient wrt x corresponds to the inputPositions rows of the full gradient
+  SymmetricTensor result(pointDimension, outputDimension);
+  for (UnsignedInteger i = 0; i < pointDimension; ++i)
+  {
+    const UnsignedInteger i0 = p_evaluation_->inputPositions_[i];
+    for (UnsignedInteger j = 0; j < pointDimension; ++j)
+    {
+      const UnsignedInteger j0 = p_evaluation_->inputPositions_[j];
+      {
+        for (UnsignedInteger k = 0; k < outputDimension; ++k)
+          result(i, j, k) = fullHessian(i0, j0, k);
+      }
+    }
+  }
+  return result;
 }
 
 /* Evaluation accessors */

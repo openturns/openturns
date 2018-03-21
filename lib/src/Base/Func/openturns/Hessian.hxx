@@ -73,6 +73,8 @@ public:
 
   /** Hessian method */
   virtual SymmetricTensor hessian(const Point & inP) const;
+
+  /* @deprecated */
   virtual SymmetricTensor hessian(const Point & inP,
                                   const Point & parameters);
 

@@ -179,6 +179,7 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
 Sample ParametricEvaluation::operator() (const Point & point,
     const Sample & parameters)
 {
+  LOGWARN("ParametricEvaluation::operator()(point,parameters) is deprecated, use setParameter(parameters) and operator()(point)");
   const UnsignedInteger size = parameters.getSize();
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger pointDimension = inputPositions_.getSize();

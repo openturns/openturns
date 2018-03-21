@@ -120,16 +120,20 @@ public:
 
   /** Operator () */
   virtual Point operator() (const Point & inP) const;
-  virtual Point operator() (const Point & inP,
-                            const Point & parameters);
-  virtual Sample operator() (const Point & point,
-                             const Sample & parameters);
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
   virtual Sample operator() (const Sample & inSample) const;
 
   /** Operator () on a time series, not pure virtual because a generic implementation is given */
   virtual Field operator() (const Field & inField) const;
+
+  /* @deprecated */
+  virtual Point operator() (const Point & inP,
+                            const Point & parameters);
+
+  /* @deprecated */
+  virtual Sample operator() (const Point & point,
+                             const Sample & parameters);
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

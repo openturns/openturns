@@ -70,6 +70,9 @@
  * Deprecated Mesh::computeSimplexVolume, use Mesh::computeSimplicesVolume instead
  * Deprecated Mesh,Interval::computeVolume
  * Deprecated FunctionalChaosRandomVector::getSobol* methods in favor of FunctionalChaosSensitivity ones
+ * DeprecatedEvaluation,EvaluationImplementation,EvaluationProxy,Function,FunctionImplementation,ParametricEvaluation::operator()(inP,parameter)
+ * Deprecated Gradient,GradientImplementation,ParametricGradient::gradient(inP,parameter)
+ * Deprecated Hessian,HessianImplementation,ParametricHessian::hessian(inP,parameter)
 
 === Python module ===
 
