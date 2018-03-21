@@ -833,7 +833,7 @@ ot_add_python_module(simulation simulation_module.i
                       ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i.in
                       SimulationResult.i SimulationResult_doc.i.in
                       SimulationAlgorithm.i SimulationAlgorithm_doc.i.in
-                      Simulation.i Simulation_doc.i.in
+                      EventSimulation.i EventSimulation_doc.i.in
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i.in
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i.in
                       Wilks.i Wilks_doc.i.in

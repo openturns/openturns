@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Simulation is a generic view of simulation methods for computing
+ *  @brief EventSimulation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
@@ -20,7 +20,7 @@
  *
  */
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
@@ -29,15 +29,15 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /*
- * @class Simulation
+ * @class EventSimulation
  */
 
-CLASSNAMEINIT(Simulation)
+CLASSNAMEINIT(EventSimulation)
 
-static const Factory<Simulation> Factory_Simulation;
+static const Factory<EventSimulation> Factory_EventSimulation;
 
 /** For save/load mechanism */
-Simulation::Simulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
+EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , convergenceStrategy_(convergenceStrategy)
   , event_()
@@ -47,7 +47,7 @@ Simulation::Simulation(const Bool verbose, const HistoryStrategy & convergenceSt
 }
 
 /* Constructor with parameters */
-Simulation::Simulation(const Event & event,
+EventSimulation::EventSimulation(const Event & event,
                        const Bool verbose,
                        const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
@@ -59,34 +59,34 @@ Simulation::Simulation(const Event & event,
 }
 
 /* Virtual constructor */
-Simulation * Simulation::clone() const
+EventSimulation * EventSimulation::clone() const
 {
-  return new Simulation(*this);
+  return new EventSimulation(*this);
 }
 
 /*  Event accessor */
-Event Simulation::getEvent() const
+Event EventSimulation::getEvent() const
 {
   return event_;
 }
 
 /* Result accessor */
-void Simulation::setResult(const ProbabilitySimulationResult & result)
+void EventSimulation::setResult(const ProbabilitySimulationResult & result)
 {
   result_ = result;
 }
 
 /* Result accessor */
-ProbabilitySimulationResult Simulation::getResult() const
+ProbabilitySimulationResult EventSimulation::getResult() const
 {
   return result_;
 }
 
 /* String converter */
-String Simulation::__repr__() const
+String EventSimulation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << Simulation::GetClassName()
+  oss << "class=" << EventSimulation::GetClassName()
       << " event=" << event_
       << " maximumOuterSampling=" << getMaximumOuterSampling()
       << " maximumCoefficientOfVariation=" << getMaximumCoefficientOfVariation()
@@ -96,7 +96,7 @@ String Simulation::__repr__() const
 }
 
 /* Performs the actual computation. */
-void Simulation::run()
+void EventSimulation::run()
 {
   /* We want to compute the probability of occurence of the given event
    *  We estimate this probability by computing the empirical mean of a
@@ -129,7 +129,7 @@ void Simulation::run()
   {
     // Perform a block of simulation
     const Sample blockSample(computeBlockSample());
-    LOGDEBUG(OSS() << "Simulation::run: blockSample=\n" << blockSample);
+    LOGDEBUG(OSS() << "EventSimulation::run: blockSample=\n" << blockSample);
     ++outerSampling;
     // Then, actualize the estimates
     const Scalar meanBlock = blockSample.computeMean()[0];
@@ -184,24 +184,24 @@ void Simulation::run()
 }
 
 /* Compute the block sample and the points that realized the event */
-Sample Simulation::computeBlockSample()
+Sample EventSimulation::computeBlockSample()
 {
-  throw NotYetImplementedException(HERE) << "In Simulation::computeBlockSample()";
+  throw NotYetImplementedException(HERE) << "In EventSimulation::computeBlockSample()";
 }
 
 /* Convergence strategy accessor */
-void Simulation::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy)
+void EventSimulation::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy)
 {
   convergenceStrategy_ = convergenceStrategy;
 }
 
-HistoryStrategy Simulation::getConvergenceStrategy() const
+HistoryStrategy EventSimulation::getConvergenceStrategy() const
 {
   return convergenceStrategy_;
 }
 
 /* Draw the probability convergence at the given level */
-Graph Simulation::drawProbabilityConvergence(const Scalar level) const
+Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
 {
   const Sample convergenceSample(convergenceStrategy_.getSample());
   const UnsignedInteger size = convergenceSample.getSize();
@@ -239,7 +239,7 @@ Graph Simulation::drawProbabilityConvergence(const Scalar level) const
 }
 
 /* Method save() stores the object through the StorageManager */
-void Simulation::save(Advocate & adv) const
+void EventSimulation::save(Advocate & adv) const
 {
 
   SimulationAlgorithm::save(adv);
@@ -249,7 +249,7 @@ void Simulation::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void Simulation::load(Advocate & adv)
+void EventSimulation::load(Advocate & adv)
 {
   SimulationAlgorithm::load(adv);
   adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);

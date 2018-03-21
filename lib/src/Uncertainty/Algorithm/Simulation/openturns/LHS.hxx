@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_LHS_HXX
 #define OPENTURNS_LHS_HXX
 
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Distribution.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class LHS
  */
 
-class OT_API LHS: public Simulation
+class OT_API LHS: public EventSimulation
 {
 
   CLASSNAME

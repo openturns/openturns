@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Simulation algorithms base class
+ *  @brief EventSimulation algorithms base class
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *

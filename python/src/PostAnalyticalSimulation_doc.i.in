@@ -7,7 +7,7 @@ PostAnalyticalImportanceSampling, PostAnalyticalControlledImportanceSampling
 
 Notes
 -----
-This class inherits from Simulation.
+This class inherits from EventSimulation.
 
 The principle is to perform a simulation study to evaluate the threshold
 exceedance probability according to an importance density centered around the

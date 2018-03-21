@@ -1,6 +1,6 @@
 // SWIG file simulation_module.i
 
-%module(package="openturns", docstring="Simulation uncertainty propagation algorithms.") simulation
+%module(package="openturns", docstring="EventSimulation uncertainty propagation algorithms.") simulation
 #pragma SWIG nowarn=302,509
 //%feature("autodoc","1");
 
@@ -37,11 +37,11 @@
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
 
-/* Uncertainty/Algorithm/Simulation */
+/* Uncertainty/Algorithm/EventSimulation */
 %include SimulationResult.i
 %include ProbabilitySimulationResult.i
 %include SimulationAlgorithm.i
-%include Simulation.i
+%include EventSimulation.i
 %include ProbabilitySimulationAlgorithm.i
 %include PostAnalyticalSimulation.i
 %include Wilks.i

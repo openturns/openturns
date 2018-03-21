@@ -38,7 +38,7 @@ static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulati
 
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
-  : Simulation(verbose, convergenceStrategy)
+  : EventSimulation(verbose, convergenceStrategy)
   , isExperimentProvided_(false)
 {
   // Nothing to do
@@ -48,7 +48,7 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbos
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
     const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
-  : Simulation(event, verbose, convergenceStrategy)
+  : EventSimulation(event, verbose, convergenceStrategy)
   , isExperimentProvided_(false)
 {
   // Nothing to do
@@ -59,7 +59,7 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & eve
     const WeightedExperiment & experiment,
     const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
-  : Simulation(event, verbose, convergenceStrategy)
+  : EventSimulation(event, verbose, convergenceStrategy)
   , isExperimentProvided_(true)
 {
   if (!getEvent().isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
@@ -93,7 +93,7 @@ String ProbabilitySimulationAlgorithm::__repr__() const
   OSS oss;
   oss << "class=" << ProbabilitySimulationAlgorithm::GetClassName()
       << " experiment=" << experiment_
-      << " derived from " << Simulation::__repr__();
+      << " derived from " << EventSimulation::__repr__();
   return oss;
 }
 
@@ -122,7 +122,7 @@ Sample ProbabilitySimulationAlgorithm::computeBlockSampleComposite()
 /* Method save() stores the object through the StorageManager */
 void ProbabilitySimulationAlgorithm::save(Advocate & adv) const
 {
-  Simulation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("experiment_", experiment_);
   adv.saveAttribute("isExperimentProvided_", isExperimentProvided_);
 }
@@ -130,14 +130,14 @@ void ProbabilitySimulationAlgorithm::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProbabilitySimulationAlgorithm::load(Advocate & adv)
 {
-  Simulation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("experiment_", experiment_);
   adv.loadAttribute("isExperimentProvided_", isExperimentProvided_);
 }
 
 void ProbabilitySimulationAlgorithm::setBlockSize(const UnsignedInteger blockSize)
 {
-  Simulation::setBlockSize(blockSize);
+  EventSimulation::setBlockSize(blockSize);
   experiment_.setSize(blockSize);
 }
 

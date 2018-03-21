@@ -1,8 +1,8 @@
-%feature("docstring") OT::Simulation
+%feature("docstring") OT::EventSimulation
 "Base class for sampling methods.
 
 Available constructor:
-    Simulation(*event, verbose=True, convergenceStrategy=ot.Compact()*)
+    EventSimulation(*event, verbose=True, convergenceStrategy=ot.Compact()*)
 
 Parameters
 ----------
@@ -32,7 +32,7 @@ which enables the definition of the event
 describes the indicator function equal to 1 if
 :math:`g(\vect{x}_i,\vect{d}) \leq 0` and equal to 0 otherwise.
 
-The Simulation object provides a generic simulation service for non-composite
+The EventSimulation object provides a generic simulation service for non-composite
 events, and its derived classes provide dedicated algorithms:
 
 - :class:`~openturns.ProbabilitySimulationAlgorithm`
@@ -51,7 +51,7 @@ SimulationResult"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::getConvergenceStrategy
+%feature("docstring") OT::EventSimulation::getConvergenceStrategy
 "Accessor to the convergence strategy.
 
 Returns
@@ -62,7 +62,7 @@ storage_strategy : :class:`~openturns.HistoryStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::setConvergenceStrategy
+%feature("docstring") OT::EventSimulation::setConvergenceStrategy
 "Accessor to the convergence strategy.
 
 Parameters
@@ -73,7 +73,7 @@ storage_strategy : :class:`~openturns.HistoryStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::getResult
+%feature("docstring") OT::EventSimulation::getResult
 "Accessor to the results.
 
 Returns
@@ -84,7 +84,7 @@ results : :class:`~openturns.SimulationResult`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::getEvent
+%feature("docstring") OT::EventSimulation::getEvent
 "Accessor to the event.
 
 Returns
@@ -94,7 +94,7 @@ event : :class:`~openturns.Event`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::run
+%feature("docstring") OT::EventSimulation::run
 "Launch simulation.
 
 Notes
@@ -114,7 +114,7 @@ setBlockSize, setMaximumOuterSampling, ResourceMap, SimulationResult"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::drawProbabilityConvergence
+%feature("docstring") OT::EventSimulation::drawProbabilityConvergence
 "Draw the probability convergence at a given level.
 
 Parameters

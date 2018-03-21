@@ -29,7 +29,7 @@ CLASSNAMEINIT(AdaptiveDirectionalSampling)
 
 /* Default constructor */
 AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
-  : Simulation()
+  : EventSimulation()
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
 {
@@ -40,7 +40,7 @@ AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
 AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const Event & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : Simulation(event)
+  : EventSimulation(event)
   , standardEvent_(StandardEvent(event))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)

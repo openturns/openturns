@@ -1,9 +1,9 @@
 %feature("docstring") OT::SimulationResult
-"Simulation result base class.
+"EventSimulation result base class.
 
 Notes
 -----
-Structure created by the method run() of a :class:`~openturns.Simulation`,
+Structure created by the method run() of a :class:`~openturns.EventSimulation`,
 and obtained thanks to the method getResult()."
 
 // ---------------------------------------------------------------------

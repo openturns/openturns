@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Simulation is a generic view of simulation methods for computing
+ *  @brief EventSimulation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
@@ -19,8 +19,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_SIMULATION_HXX
-#define OPENTURNS_SIMULATION_HXX
+#ifndef OPENTURNS_EVENTSIMULATION_HXX
+#define OPENTURNS_EVENTSIMULATION_HXX
 
 #include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/HistoryStrategy.hxx"
@@ -33,10 +33,10 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Simulation
+ * @class EventSimulation
  */
 
-class OT_API Simulation
+class OT_API EventSimulation
   : public SimulationAlgorithm
 {
 
@@ -44,12 +44,12 @@ class OT_API Simulation
 public:
 
   /** Constructor with parameters */
-  explicit Simulation(const Event & event,
+  explicit EventSimulation(const Event & event,
                       const Bool verbose = true,
                       const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
-  virtual Simulation * clone() const;
+  virtual EventSimulation * clone() const;
 
   /** Event accessor */
   Event getEvent() const;
@@ -85,10 +85,10 @@ protected:
   virtual Sample computeBlockSample();
 
   /** For save/load mechanism*/
-  Simulation(const Bool verbose = true,
+  EventSimulation(const Bool verbose = true,
              const HistoryStrategy & convergenceStrategy = Compact());
 
-  friend class Factory<Simulation>;
+  friend class Factory<EventSimulation>;
 
   /** History strategy for the probability and variance estimate */
   HistoryStrategy convergenceStrategy_;
@@ -99,9 +99,9 @@ protected:
   // Result of the simulation
   ProbabilitySimulationResult result_;
 
-} ; /* class Simulation */
+} ; /* class EventSimulation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_SIMULATION_HXX */
+#endif /* OPENTURNS_EVENTSIMULATION_HXX */
