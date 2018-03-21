@@ -347,7 +347,7 @@ Sample GaussianProcess::getRealizationGibbs() const
       // Here we work on the normalized covariance, ie the correlation
       Sample covarianceRow(covarianceModel_.discretizeRow(vertices, index));
       diagonal[index] = covarianceRow[index][0];
-      const Point delta(1, (DistFunc::rNormal() - values[index][0]) / diagonal[index]);
+      const Point delta(1, (DistFunc::rNormal() - values(index, 0)) / diagonal[index]);
       values += covarianceRow * delta;
     }
   }

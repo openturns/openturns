@@ -244,7 +244,7 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   for(UnsignedInteger i = 0; i < residualSize; ++i)
   {
     const Point residual(residuals[i]);
-    w[i][0] = (residual.normSquare() - residualsVariance);
+    w(i, 0) = (residual.normSquare() - residualsVariance);
   }
 
   /* Build a linear model on the squared residuals */
@@ -304,15 +304,15 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   for(UnsignedInteger i = 0; i < residualSize; ++i)
   {
     X(i, 0) = 1;
-    X(i, 1) = firstSample[i][0];
+    X(i, 1) = firstSample(i, 0);
   }
 
   Matrix AX(residualSize, dimension + 1);
-  AX(0, 1) = firstSample[0][0] - firstSample[1][0];
-  AX(residualSize - 1, 1) = firstSample[residualSize - 1][0] - firstSample[residualSize - 2][0];
+  AX(0, 1) = firstSample(0, 0) - firstSample(1, 0);
+  AX(residualSize - 1, 1) = firstSample(residualSize - 1, 0) - firstSample(residualSize - 2, 0);
   for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
   {
-    AX(i + 1, 1) = -firstSample[i][0] + 2 * firstSample[i + 1][0] - firstSample[i + 2][0];
+    AX(i + 1, 1) = -firstSample(i, 0) + 2 * firstSample(i + 1, 0) - firstSample(i + 2, 0);
   }
 
   CovarianceMatrix XtX(X.computeGram());

@@ -46,8 +46,8 @@ TestResult NormalityTest::AndersonDarlingNormal(const Sample & sample,
   UnsignedInteger effectiveIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar yi = DistFunc::pNormal((sortedSample[i][0] - mean) / sd);
-    Scalar yni = 1.0 - DistFunc::pNormal((sortedSample[size - i - 1][0] - mean) / sd);
+    Scalar yi = DistFunc::pNormal((sortedSample(i, 0) - mean) / sd);
+    Scalar yni = 1.0 - DistFunc::pNormal((sortedSample(size - i - 1, 0) - mean) / sd);
     if ((yi > 0.0) && (yni > 0.0))
     {
       testStatistic += (2.0 * effectiveIndex + 1) * (log(yi) + log(yni));
@@ -96,7 +96,7 @@ TestResult NormalityTest::CramerVonMisesNormal(const Sample & sample,
   Scalar testStatistic = 1.0 / (12.0 * size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar yi = DistFunc::pNormal((sortedSample[i][0] - mean) / sd);
+    Scalar yi = DistFunc::pNormal((sortedSample(i, 0) - mean) / sd);
     Scalar delta = yi - (2.0 * i + 1.0) / (2.0 * size);
     testStatistic += delta * delta;
   }

@@ -157,7 +157,7 @@ Scalar & FieldImplementation::operator () (const UnsignedInteger i,
   // No copyOnWrite() as the at() method already do it
   return at(i, j);
 #else
-  return (*this)[i][j];
+  return (*this)(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
@@ -167,7 +167,7 @@ const Scalar & FieldImplementation::operator () (const UnsignedInteger i,
 #ifdef DEBUG_BOUNDCHECKING
   return at(i, j);
 #else
-  return (*this)[i][j];
+  return (*this)(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
@@ -191,7 +191,7 @@ Scalar & FieldImplementation::at (const UnsignedInteger i,
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
   isAlreadyComputedInputMean_ = false;
-  return (*this)[i][j];
+  return (*this)(i, j);
 }
 
 const Scalar & FieldImplementation::at (const UnsignedInteger i,
@@ -199,7 +199,7 @@ const Scalar & FieldImplementation::at (const UnsignedInteger i,
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
-  return (*this)[i][j];
+  return (*this)(i, j);
 }
 
 /* Data accessors */
@@ -394,7 +394,7 @@ Graph FieldImplementation::draw() const
     const UnsignedInteger size = values_.getSize();
     Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)
-      normValues[i][0] = Point(values_[i]).norm();
+      normValues(i, 0) = Point(values_[i]).norm();
     Scalar normMin = normValues.getMin()[0];
     Scalar normMax = normValues.getMax()[0];
     if (normMax == normMin) normMax = normMin + 1.0;
@@ -419,11 +419,11 @@ Graph FieldImplementation::draw() const
         const Point u(v / arrowLength);
         data[0] = x;
         data[1] = x + v - u * delta;
-        data[2][0] = data[1][0] + u[1] * (-0.5 * delta);
-        data[2][1] = data[1][1] + u[0] * ( 0.5 * delta);
+        data(2, 0) = data(1, 0) + u[1] * (-0.5 * delta);
+        data(2, 1) = data(1, 1) + u[0] * ( 0.5 * delta);
         data[3] = x + v;
-        data[4][0] = data[1][0] + u[1] * ( 0.5 * delta);
-        data[4][1] = data[1][1] + u[0] * (-0.5 * delta);
+        data(4, 0) = data(1, 0) + u[1] * ( 0.5 * delta);
+        data(4, 1) = data(1, 1) + u[0] * (-0.5 * delta);
         data[5] = data[1];
         Curve curve(data);
         curve.setColor(color);
@@ -584,7 +584,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         for (UnsignedInteger i = 0; i < size; ++i)
         {
           Cloud point(Sample(1, mesh_.getVertex(i)));
-          const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (marginalValues[i][0] - minValue) / (maxValue - minValue)))]);
+          const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (marginalValues(i, 0) - minValue) / (maxValue - minValue)))]);
           point.setColor(color);
           point.setPointStyle("bullet");
           graph.add(point);
@@ -646,7 +646,7 @@ void FieldImplementation::exportToVTKFile(const String & fileName) const
     replace(fieldName.begin(), fieldName.end(), ' ', '~');
     if (fieldName.size() == 0) fieldName = String(OSS() << "v_" << i);
     file << "SCALARS " << fieldName << " float\nLOOKUP_TABLE default\n";
-    for (UnsignedInteger j = 0; j < getSize(); ++j) file << values_[j][i] << "\n";
+    for (UnsignedInteger j = 0; j < getSize(); ++j) file << values_(j, i) << "\n";
   }
   PlatformInfo::SetNumericalPrecision(oldPrecision);
   file.close();

@@ -72,7 +72,7 @@ Skellam SkellamFactory::buildAsSkellam(const Sample & sample) const
   const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar x = sample[i][0];
+    Scalar x = sample(i, 0);
     if (x != trunc(x)) throw InvalidArgumentException(HERE) << "Error: can build a Skellam distribution only from a sample with integer components, here sample[" << i << "][0]=" << x;
   }
   const Scalar mean = sample.computeMean()[0];

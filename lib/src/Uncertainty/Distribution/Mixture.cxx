@@ -254,7 +254,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   {
     const Scalar normalizedWeight = distributionCollection_[i].getWeight() / weightSum;
     distributionCollection_[i].setWeight(normalizedWeight);
-    x[i][0] = i;
+    x(i, 0) = i;
     p[i] = normalizedWeight;
     parallel = parallel && distributionCollection_[i].getImplementation()->isParallel();
   } /* end for */

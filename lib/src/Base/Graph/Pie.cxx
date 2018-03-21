@@ -171,7 +171,7 @@ String Pie::draw() const
   {
     oss << ",labels=c(\"";
     String separator("");
-    for(UnsignedInteger i = 0; i < size; ++i, separator = "\",\"") oss << separator << (data_[i][0] >= labelThreshold ? labels_[i] : "");
+    for(UnsignedInteger i = 0; i < size; ++i, separator = "\",\"") oss << separator << (data_(i, 0) >= labelThreshold ? labels_[i] : "");
     oss << "\")";
   }
   size = palette_.getSize();
@@ -245,8 +245,8 @@ void Pie::buildDefaultLabels()
   const UnsignedInteger size = data_.getSize();
   labels_ = Description(size);
   Scalar sum = 0.0;
-  for (UnsignedInteger i = 0; i < size; ++i) sum += data_[i][0];
-  for (UnsignedInteger i = 0; i < size; ++i) labels_[i] = String(OSS() << "L" << i << " " << 0.1 * round(1000.0 * data_[i][0] / sum) << "%");
+  for (UnsignedInteger i = 0; i < size; ++i) sum += data_(i, 0);
+  for (UnsignedInteger i = 0; i < size; ++i) labels_[i] = String(OSS() << "L" << i << " " << 0.1 * round(1000.0 * data_(i, 0) / sum) << "%");
 }
 
 /* Method save() stores the object through the StorageManager */

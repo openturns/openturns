@@ -129,8 +129,8 @@ private:
         const Point x(sample[k]);
         // Create the arguments of the local integration problem
         const ParametricFunction function(function_, index, x);
-        const Scalar a = sampleA[k][0];
-        const Scalar b = sampleB[k][0];
+        const Scalar a = sampleA(k, 0);
+        const Scalar b = sampleB(k, 0);
         for (UnsignedInteger i = 0; i < size; ++i)
         {
           lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, x);
@@ -138,7 +138,7 @@ private:
         } // Loop over bound functions
         result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
         for (UnsignedInteger i = 0; i < outputDimension; ++i)
-          if (!SpecFunc::IsNormal(result[k][i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
+          if (!SpecFunc::IsNormal(result(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
       } // Loop over sample points
       return result;
     }

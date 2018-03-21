@@ -99,11 +99,11 @@ Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sampl
     {
       for (UnsignedInteger q = 0; q < outputDimension; ++q)
       {
-        varianceI[q][p] =  (yEDotyB[q] - yADotyB[q]) / (size - 1.0);
+        varianceI(q, p) =  (yEDotyB[q] - yADotyB[q]) / (size - 1.0);
         // Vti = Var - V_{-i}
         // \sum_{k} yA[k] * yA[k] - yA[k]*yE[k]
         // yA[k] * yA[k]  = sigma_a^2 + muA^2
-        VTi[q][p] = referenceVariance_[q] + (size * muA[q] *  muA[q] - yEDotyA[q]) / (size - 1.0);
+        VTi(q, p) = referenceVariance_[q] + (size * muA[q] *  muA[q] - yEDotyA[q]) / (size - 1.0);
       }
     }
   }

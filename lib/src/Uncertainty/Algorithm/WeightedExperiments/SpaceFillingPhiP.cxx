@@ -53,7 +53,7 @@ Scalar SpaceFillingPhiP::evaluate(const Sample & sample) const
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
   Scalar sum = 0.0;
-  const Scalar* addr_sample = &sample[0][0];
+  const Scalar* addr_sample = &sample(0, 0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar* ptI(addr_sample + i * dimension);
@@ -82,12 +82,12 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
 
   const UnsignedInteger size(oldDesign.getSize());
   const UnsignedInteger dimension(oldDesign.getDimension());
-  const Scalar* addr_sample = &oldDesign[0][0];
+  const Scalar* addr_sample = &oldDesign(0, 0);
 
   Scalar result = (oldCriterion <= 0.0 ? 0.0 : std::exp(p_ * std::log(oldCriterion)));
   Scalar oldSum = 0.0;
-  Scalar* pt1(&oldDesign[0][0] + dimension * row1);
-  Scalar* pt2(&oldDesign[0][0] + dimension * row2);
+  Scalar* pt1(&oldDesign(0, 0) + dimension * row1);
+  Scalar* pt2(&oldDesign(0, 0) + dimension * row2);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (i == row1 || i == row2) continue;

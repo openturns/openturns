@@ -105,26 +105,26 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
   for(UnsignedInteger i = 1; i < inputDimension; ++i)
     for(UnsignedInteger j = 0; j < i; ++j)
     {
-      gridPoints[index][i] += step[i];
-      gridPoints[index][j] += step[j];
+      gridPoints(index, i) += step[i];
+      gridPoints(index, j) += step[j];
       ++index;
-      gridPoints[index][i] += step[i];
-      gridPoints[index][j] -= step[j];
+      gridPoints(index, i) += step[i];
+      gridPoints(index, j) -= step[j];
       ++index;
-      gridPoints[index][i] -= step[i];
-      gridPoints[index][j] -= step[j];
+      gridPoints(index, i) -= step[i];
+      gridPoints(index, j) -= step[j];
       ++index;
-      gridPoints[index][i] -= step[i];
-      gridPoints[index][j] += step[j];
+      gridPoints(index, i) -= step[i];
+      gridPoints(index, j) += step[j];
       ++index;
     } // For j
   for(UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     /* Special case for the diagonal terms, in order to avoid computing twice
      *  f(x) = f(x + e_i - e_i) = f(x - e_i + e_i) */
-    gridPoints[index][i] += 2.0 * step[i];
+    gridPoints(index, i) += 2.0 * step[i];
     ++index;
-    gridPoints[index][i] -= 2.0 * step[i];
+    gridPoints(index, i) -= 2.0 * step[i];
     ++index;
   } // For i
   /* Evaluate the evaluation */
@@ -144,7 +144,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
     scale = 1.0 / (4.0 * step[i] * step[i]);
     for (UnsignedInteger k = 0; k < outputDimension; ++k)
     {
-      result(i, i, k) = scale * (gridValues[diagonalOffset + 2 * i][k] - 2.0 * center[k] + gridValues[diagonalOffset + 2 * i + 1][k]);
+      result(i, i, k) = scale * (gridValues(diagonalOffset + 2 * i, k) - 2.0 * center[k] + gridValues(diagonalOffset + 2 * i + 1, k));
     } // k
     // Compute only the upper part of each sheet, as the hessian is symmetric
     for (UnsignedInteger j = 0; j < i; ++j)
@@ -152,7 +152,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
       scale = 1.0 / (4.0 * step[i] * step[j]);
       for (UnsignedInteger k = 0; k < outputDimension; ++k)
         /* result(i, j, k) = (f_k(x + e_i + e_j) - f_k(x + e_i - e_j) + f_k(x - e_i - e_j) - f_k(x - e_i + e_j)) / (4 * e_i * e_j) ~ d2f_k / dx_idx_j */
-        result(i, j, k) = scale * (gridValues[offDiagonalOffset + 4 * j][k] - gridValues[offDiagonalOffset + 4 * j + 1][k] + gridValues[offDiagonalOffset + 4 * j + 2][k] - gridValues[offDiagonalOffset + 4 * j + 3][k]);
+        result(i, j, k) = scale * (gridValues(offDiagonalOffset + 4 * j, k) - gridValues(offDiagonalOffset + 4 * j + 1, k) + gridValues(offDiagonalOffset + 4 * j + 2, k) - gridValues(offDiagonalOffset + 4 * j + 3, k));
     } // j
     offDiagonalOffset += 4 * i;
   } // i

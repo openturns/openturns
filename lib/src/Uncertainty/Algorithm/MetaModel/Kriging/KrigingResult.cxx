@@ -315,7 +315,7 @@ void KrigingResult::computeF() const
     {
       // Here we use potential parallelism in the evaluation of the basis functions
       const Sample basisSample(localBasis[j](inputTransformedSample_));
-      for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample[i][0];
+      for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample(i, 0);
     }
   }
 }
@@ -423,7 +423,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
     {
       // Here we use potential parallelism in the evaluation of the basis functions
       const Sample basisSample(localBasis[j](sample));
-      for (UnsignedInteger i = 0; i < sampleSize; ++ i) fx(j + index, basisMarginal + i * outputDimension) = basisSample[i][0];
+      for (UnsignedInteger i = 0; i < sampleSize; ++ i) fx(j + index, basisMarginal + i * outputDimension) = basisSample(i, 0);
     }
     index = index + localBasisSize;
   }

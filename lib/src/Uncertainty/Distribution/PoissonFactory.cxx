@@ -68,7 +68,7 @@ Poisson PoissonFactory::buildAsPoisson(const Sample & sample) const
   Scalar lambda = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar x = sample[i][0];
+    Scalar x = sample(i, 0);
     if ((x != trunc(x)) || (x < 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Poisson distribution only from a sample with integer components >= 0, here sample[" << i << "][0]=" << x;
     lambda += x;
   }

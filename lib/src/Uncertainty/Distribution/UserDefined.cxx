@@ -157,17 +157,17 @@ Scalar UserDefined::computePDF(const Point & point) const
   // Quick search for 1D case
   const Scalar x = point[0];
   UnsignedInteger upper = size - 1;
-  Scalar xUpper = points_[upper][0];
+  Scalar xUpper = points_(upper, 0);
   if (x > xUpper + supportEpsilon_) return 0.0;
   UnsignedInteger lower = 0;
-  Scalar xLower = points_[lower][0];
+  Scalar xLower = points_(lower, 0);
   if (x < xLower - supportEpsilon_) return 0.0;
   // Use bisection search of the correct index
   while (upper - lower > 1)
   {
     // The integer arithmetic ensure that middle will be strictly between lower and upper as far as upper - lower > 1
     const UnsignedInteger middle = (upper + lower) / 2;
-    const Scalar xMiddle = points_[middle][0];
+    const Scalar xMiddle = points_(middle, 0);
     if (xMiddle > x + supportEpsilon_)
     {
       upper = middle;
@@ -209,17 +209,17 @@ Scalar UserDefined::computeCDF(const Point & point) const
   {
     const Scalar x = point[0];
     UnsignedInteger upper = size - 1;
-    Scalar xUpper = points_[upper][0];
+    Scalar xUpper = points_(upper, 0);
     if (x > xUpper - supportEpsilon_) return 1.0;
     UnsignedInteger lower = 0;
-    Scalar xLower = points_[lower][0];
+    Scalar xLower = points_(lower, 0);
     if (x <= xLower - supportEpsilon_) return 0.0;
     // Use dichotomic search of the correct index
     while (upper - lower > 1)
     {
       // The integer arithmetic insure that middle will be strictly between lower and upper as far as upper - lower > 1
       const UnsignedInteger middle = (upper + lower) / 2;
-      const Scalar xMiddle = points_[middle][0];
+      const Scalar xMiddle = points_(middle, 0);
       if (xMiddle > x + supportEpsilon_)
       {
         upper = middle;
@@ -335,7 +335,7 @@ Bool UserDefined::isIntegral() const
   const UnsignedInteger size = points_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar x = points_[i][0];
+    const Scalar x = points_(i, 0);
     if (std::abs(x - round(x)) >= supportEpsilon_) return false;
   }
   return true;
@@ -383,7 +383,7 @@ UserDefined::PointWithDescriptionCollection UserDefined::getParametersCollection
     Description description(size);
     for (UnsignedInteger j = 0; j < size; ++j)
     {
-      point[j] = points_[j][i];
+      point[j] = points_(j, i);
       OSS oss;
       oss << "X^" << i << "_" << j;
       description[j] = oss;
@@ -417,7 +417,7 @@ Point UserDefined::getParameter() const
   {
     for (UnsignedInteger j = 0; j < size; ++ j)
     {
-      point[i * size + j] = points_[j][i];
+      point[i * size + j] = points_(j, i);
     }
   }
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -502,7 +502,7 @@ void UserDefined::setData(const Sample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Point x(sample[i]);
-    for (UnsignedInteger j = 0; j < dimension; ++j) weightedData[i][j] = x[j];
+    for (UnsignedInteger j = 0; j < dimension; ++j) weightedData(i, j) = x[j];
     weightedData[i][dimension] = weights[i];
   }
   // Sort the pairs
@@ -531,7 +531,7 @@ void UserDefined::setData(const Sample & sample,
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Point x(dimension);
-    for (UnsignedInteger j = 0; j < dimension; ++j) x[j] = weightedData[i][j];
+    for (UnsignedInteger j = 0; j < dimension; ++j) x[j] = weightedData(i, j);
     points_[i] = x;
     probabilities_[i] = std::max(0.0, std::min(1.0, weightedData[i][dimension]));
   }
@@ -563,7 +563,7 @@ Scalar UserDefined::computeScalarQuantile(const Scalar prob,
   UnsignedInteger index = 0;
   const Scalar p = tail ? 1 - prob : prob;
   while (cumulativeProbabilities_[index] < p) ++index;
-  return points_[index][0];
+  return points_(index, 0);
 }
 
 /* Merge the identical points of the support */
@@ -661,11 +661,11 @@ void UserDefined::compactSupport(const Scalar epsilon)
     setData(compactX, compactP);
     return;
   }
-  Scalar lastLocation = points_[0][0];
+  Scalar lastLocation = points_(0, 0);
   Scalar lastWeight = probabilities_[0];
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    const Scalar currentLocation = points_[i][0];
+    const Scalar currentLocation = points_(i, 0);
     const Scalar currentWeight = probabilities_[i];
     // The current point must be merged
     if (std::abs(currentLocation - lastLocation) <= epsilon) lastWeight += probabilities_[i];

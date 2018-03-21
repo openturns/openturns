@@ -516,7 +516,7 @@ Scalar DistributionImplementation::computePDF(const Point & point) const
     // The points with an even number of positive shifts are counted positively
     // The others are counted negatively
     const UnsignedInteger numNullBits = dimension_ - SpecFunc::BitCount(i);
-    pdf += (1.0 - 2.0 * (numNullBits % 2)) * cdfSample[i][0];
+    pdf += (1.0 - 2.0 * (numNullBits % 2)) * cdfSample(i, 0);
   }
   return pdf / std::pow(epsilon, 1.0 * dimension_);
 }
@@ -675,7 +675,7 @@ Sample DistributionImplementation::computeCDFSequential(const Sample & inSample)
 {
   const UnsignedInteger size = inSample.getSize();
   Sample outSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i) outSample[i][0] = computeCDF(inSample[i]);
+  for (UnsignedInteger i = 0; i < size; ++ i) outSample(i, 0) = computeCDF(inSample[i]);
   return outSample;
 }
 
@@ -695,7 +695,7 @@ struct ComputeCDFPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i][0] = distribution_.computeCDF(input_[i]);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeCDF(input_[i]);
   }
 
 }; /* end struct ComputeCDFPolicy */
@@ -721,7 +721,7 @@ Sample DistributionImplementation::computeComplementaryCDFSequential(const Sampl
 {
   const UnsignedInteger size = inSample.getSize();
   Sample outSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i) outSample[i][0] = computeComplementaryCDF(inSample[i]);
+  for (UnsignedInteger i = 0; i < size; ++ i) outSample(i, 0) = computeComplementaryCDF(inSample[i]);
   return outSample;
 }
 
@@ -741,7 +741,7 @@ struct ComputeComplementaryCDFPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i][0] = distribution_.computeComplementaryCDF(input_[i]);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeComplementaryCDF(input_[i]);
   }
 
 }; /* end struct ComputeComplementaryCDFPolicy */
@@ -767,7 +767,7 @@ Sample DistributionImplementation::computeSurvivalFunctionSequential(const Sampl
 {
   const UnsignedInteger size = inSample.getSize();
   Sample outSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i) outSample[i][0] = computeSurvivalFunction(inSample[i]);
+  for (UnsignedInteger i = 0; i < size; ++ i) outSample(i, 0) = computeSurvivalFunction(inSample[i]);
   return outSample;
 }
 
@@ -787,7 +787,7 @@ struct ComputeSurvivalFunctionPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][0] = distribution_.computeSurvivalFunction(input_[i]);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeSurvivalFunction(input_[i]);
   }
 
 }; /* end struct ComputeSurvivalFunctionPolicy */
@@ -1030,7 +1030,7 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const UnsignedInteger size = support.getSize();
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        const Scalar pt = support[i][0];
+        const Scalar pt = support(i, 0);
         value += computePDF(pt) * std::exp(Complex(0.0, x * pt));
       }
     }
@@ -1250,7 +1250,7 @@ Sample DistributionImplementation::computePDFSequential(const Sample & inSample)
   LOGINFO("In DistributionImplementation::computePDFSequential(const Sample & inSample)");
   const UnsignedInteger size = inSample.getSize();
   Sample outSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i][0] = computePDF(inSample[i]);
+  for (UnsignedInteger i = 0; i < size; ++i) outSample(i, 0) = computePDF(inSample[i]);
   return outSample;
 }
 
@@ -1299,7 +1299,7 @@ Sample DistributionImplementation::computeLogPDFSequential(const Sample & inSamp
 {
   const UnsignedInteger size = inSample.getSize();
   Sample outSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i][0] = computeLogPDF(inSample[i]);
+  for (UnsignedInteger i = 0; i < size; ++i) outSample(i, 0) = computeLogPDF(inSample[i]);
   return outSample;
 }
 
@@ -1320,7 +1320,7 @@ struct ComputeLogPDFPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i][0] = distribution_.computeLogPDF(input_[i]);
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeLogPDF(input_[i]);
   }
 
 }; /* end struct ComputeLogPDFPolicy */
@@ -1474,9 +1474,9 @@ Sample DistributionImplementation::computeComplementaryCDF(const Scalar xMin,
   grid = Sample(pointNumber, 1);
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {
-    grid[i][0] = x;
-    result[i][0] = x;
-    result[i][1] = computeComplementaryCDF(x);
+    grid(i, 0) = x;
+    result(i, 0) = x;
+    result(i, 1) = computeComplementaryCDF(x);
     x += step;
   }
   return result;
@@ -1500,7 +1500,7 @@ Sample DistributionImplementation::computeQuantile(const Scalar qMin,
 {
   // First, build the regular grid for the quantile levels
   grid = Sample(pointNumber, 1);
-  for (UnsignedInteger i = 0; i < pointNumber; ++i) grid[i][0] = qMin + i * (qMax - qMin) / (pointNumber - 1.0);
+  for (UnsignedInteger i = 0; i < pointNumber; ++i) grid(i, 0) = qMin + i * (qMax - qMin) / (pointNumber - 1.0);
   // Use possible parallelization
   return computeQuantile(grid.getImplementation()->getData(), tail);
 }
@@ -1720,7 +1720,7 @@ struct ComputeLogPDFGradientPolicy
     {
       const Point out = distribution_.computeLogPDFGradient(input_[i]);
       for (UnsignedInteger j = 0; j < output_.getDimension(); ++j)
-        output_[i][j] = out[j];
+        output_(i, j) = out[j];
     }
   }
 }; /* end struct ComputeLogPDFGradientPolicy */
@@ -1735,7 +1735,7 @@ Sample DistributionImplementation::computeLogPDFGradientSequential(const Sample 
   {
     const Point result = computeLogPDFGradient(sample[i]);
     for (UnsignedInteger j = 0; j < getParameterDimension(); ++j)
-      outSample[i][j] = result[j];
+      outSample(i, j) = result[j];
   }
   return outSample;
 }
@@ -1925,7 +1925,7 @@ Point DistributionImplementation::computeConditionalPDF(const Point & x,
   const Sample pdfConditioned(conditionedDistribution->computePDF(z));
   Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    if (pdfConditioning[i][0] > 0.0) result[i] = pdfConditioned[i][0] / pdfConditioning[i][0];
+    if (pdfConditioning(i, 0) > 0.0) result[i] = pdfConditioned(i, 0) / pdfConditioning(i, 0);
   return result;
 }
 
@@ -1989,7 +1989,7 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
   if (p_conditionalPDFWrapper_.isNull() || (p_conditionalPDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
   GaussKronrod algo;
   for (UnsignedInteger i = 0; i < size; ++i)
-    if (pdfConditioning[i][0] > 0.0)
+    if (pdfConditioning(i, 0) > 0.0)
     {
       if (x[i] >= xMax) result[i] = 1.0;
       else if (x[i] > xMin)
@@ -1997,9 +1997,9 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
         // Numerical integration with respect to x
         p_conditionalPDFWrapper_->setParameter(y[i]);
         const Point value(algo.integrate(p_conditionalPDFWrapper_, Interval(xMin, x[i])));
-        result[i] = std::min(1.0, std::max(0.0, value[0] / pdfConditioning[i][0]));
+        result[i] = std::min(1.0, std::max(0.0, value[0] / pdfConditioning(i, 0)));
       } // xMin < x < xMax
-    } // pdfConditioning[i][0] > 0
+    } // pdfConditioning(i, 0) > 0
   return result;
 }
 
@@ -2682,7 +2682,7 @@ void DistributionImplementation::computeCovarianceDiscrete() const
           const Sample samplePDF(marginalDistribution->computePDF(support));
           Scalar value = 0.0;
           const UnsignedInteger size = support.getSize();
-          for (UnsignedInteger i = 0; i < size; ++i) value += (support[i][0] - muI) * (support[i][1] - muJ) * samplePDF[i][0];
+          for (UnsignedInteger i = 0; i < size; ++i) value += (support(i, 0) - muI) * (support(i, 1) - muJ) * samplePDF(i, 0);
           covariance_(rowIndex, columnIndex) = value;
         }
       } // loop over column indices
@@ -2940,7 +2940,7 @@ Point DistributionImplementation::computeShiftedMomentDiscrete(const UnsignedInt
   const Sample pdfSupport(computePDF(support));
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
-      moment[j] += std::pow(support[i][j] - shift[j], static_cast<int>(n)) * pdfSupport[i][0];
+      moment[j] += std::pow(support(i, j) - shift[j], static_cast<int>(n)) * pdfSupport(i, 0);
   return moment;
 }
 
@@ -3231,9 +3231,9 @@ Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
   data.add(point);
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
   {
-    point[0] = support[i][0];
+    point[0] = support(i, 0);
     data.add(point);
-    point[1] = gridY[i][0];
+    point[1] = gridY(i, 0);
     data.add(point);
     point[1] = 0.0;
     data.add(point);
@@ -3375,9 +3375,9 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber) const
   {
     const Drawable drawable(graph.getDrawable(0));
     Sample data(5, 2);
-    data[1][0] = 1.0;
+    data(1, 0) = 1.0;
     data[2]    = Point(2, 1.0);
-    data[3][1] = 1.0;
+    data(3, 1) = 1.0;
     Curve square(data);
     square.setColor("blue");
     graph.setDrawable(square, 0);
@@ -3432,9 +3432,9 @@ Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
   data.add(point);
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
   {
-    point[0] = support[i][0];
+    point[0] = support(i, 0);
     data.add(point);
-    point[1] = gridY[i][0];
+    point[1] = gridY(i, 0);
     data.add(point);
     point[1] = 0.0;
     data.add(point);
@@ -3576,9 +3576,9 @@ Graph DistributionImplementation::drawLogPDF(const Indices & pointNumber) const
   {
     const Drawable drawable(graph.getDrawable(0));
     Sample data(5, 2);
-    data[1][0] = 1.0;
+    data(1, 0) = 1.0;
     data[2]    = Point(2, 1.0);
-    data[3][1] = 1.0;
+    data(3, 1) = 1.0;
     Curve square(data);
     square.setColor("blue");
     graph.setDrawable(square, 0);
@@ -3637,19 +3637,19 @@ Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
   const String xName(getDescription()[0]);
   Graph graphCDF(title, xName, "CDF", true, "topleft");
   Sample data(size + 2, 2);
-  data[0][0] = xMin;
-  data[0][1] = computeCDF(xMin);
+  data(0, 0) = xMin;
+  data(0, 1) = computeCDF(xMin);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar x = support[i][0];
-    data[i + 1][0] = x;
-    data[i + 1][1] = gridY[i][0];
+    const Scalar x = support(i, 0);
+    data(i + 1, 0) = x;
+    data(i + 1, 1) = gridY(i, 0);
   }
-  if (support[size - 1][0] == xMax) data[size + 1] = data[size];
+  if (support(size - 1, 0) == xMax) data[size + 1] = data[size];
   else
   {
-    data[size + 1][0] = xMax;
-    data[size + 1][1] = computeCDF(xMax);
+    data(size + 1, 0) = xMax;
+    data(size + 1, 1) = computeCDF(xMax);
   }
   graphCDF.add(Staircase(data, "red", "solid", 2, "s", title));
   return graphCDF;

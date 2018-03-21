@@ -192,7 +192,7 @@ Sample OrthogonalProductPolynomialFactory::getNodesAndWeights(const Indices & de
     // Build the current node
     for (UnsignedInteger j = 0; j < degreesSize; ++j)
     {
-      nodes[i][j] = marginalNodes[j][indices[j]];
+      nodes(i, j) = marginalNodes[j][indices[j]];
       weights[i] *= marginalWeights[j][indices[j]];
     }
     /* Update the indices */

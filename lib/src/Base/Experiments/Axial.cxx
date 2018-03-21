@@ -77,10 +77,10 @@ Sample Axial::generate() const
     for(UnsignedInteger vertex = 0; vertex < dimension; ++vertex)
     {
       /* Compute the coordinates of the positive vertex */
-      axialPlane[index][vertex] += levelValue;
+      axialPlane(index, vertex) += levelValue;
       ++index;
       /* Compute the coordinates of the negative vertex */
-      axialPlane[index][vertex] -= levelValue;
+      axialPlane(index, vertex) -= levelValue;
       ++index;
     } // vertex
   } // levelIndex

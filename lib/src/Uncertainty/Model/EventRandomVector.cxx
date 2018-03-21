@@ -127,7 +127,7 @@ Sample EventRandomVector::getSample(const UnsignedInteger size) const
   Sample returnSample(CompositeRandomVector::getSample(size));
   // Then, we loop over the sample and substitute realizations of the eventRandomVectorImplementation
   // in place of the realizations of the antecedent
-  for (UnsignedInteger i = 0; i < size; ++i) returnSample[i][0] = operator_(returnSample[i][0], threshold_);
+  for (UnsignedInteger i = 0; i < size; ++i) returnSample(i, 0) = operator_(returnSample(i, 0), threshold_);
   returnSample.setName("EventRandomVector sample");
   returnSample.setDescription(getDescription());
   return returnSample;

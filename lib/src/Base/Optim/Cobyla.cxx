@@ -151,7 +151,7 @@ void Cobyla::run()
 
   result_.setOptimalPoint(x);
   const UnsignedInteger index = evaluationInputHistory_.find(x);
-  Scalar bestValue = evaluationOutputHistory_[index][0];
+  Scalar bestValue = evaluationOutputHistory_(index, 0);
   result_.setOptimalValue(Point(1, bestValue));
   result_.setEvaluationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));

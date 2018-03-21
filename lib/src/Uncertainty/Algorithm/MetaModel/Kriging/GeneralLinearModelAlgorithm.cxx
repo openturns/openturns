@@ -566,7 +566,7 @@ void GeneralLinearModelAlgorithm::computeF()
     {
       // Here we use potential parallelism in the evaluation of the basis functions
       const Sample basisSample = localBasis[j](normalizedInputSample_);
-      for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample[i][0];
+      for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample(i, 0);
     }
   }
 }
@@ -623,7 +623,7 @@ void GeneralLinearModelAlgorithm::run()
     for(UnsignedInteger basisElement = 0; basisElement < localBasisSize; ++ basisElement)
     {
       beta_i[basisElement] = beta_[cumulatedSize];
-      trendCoefficientsSample[cumulatedSize][outputIndex] =  beta_[cumulatedSize];
+      trendCoefficientsSample(cumulatedSize, outputIndex) =  beta_[cumulatedSize];
       ++cumulatedSize;
     }
     trendCoefficients[outputIndex] = beta_i;

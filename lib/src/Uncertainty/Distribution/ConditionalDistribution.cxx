@@ -258,7 +258,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       if (support.getSize() == 1)
       {
         diracMarginalsIndices_.add(i);
-        diracValues_.add(support[0][0]);
+        diracValues_.add(support(0, 0));
       } // Dirac marginal
       // Truly random discrete distribution
       else
@@ -303,7 +303,7 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       Point discreteNode(discreteDimension);
       for (UnsignedInteger j = 0; j < discreteDimension; ++j)
       {
-        const Scalar rho = fractions[i][j];
+        const Scalar rho = fractions(i, j);
         const UnsignedInteger length = discreteSupports[j].getSize();
         const UnsignedInteger index = static_cast<UnsignedInteger>(round(rho * (length - 1)));
         discreteNode[j] = discreteSupports[j][index][0];

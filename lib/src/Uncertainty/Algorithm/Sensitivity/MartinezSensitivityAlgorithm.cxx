@@ -110,9 +110,9 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
     {
       // Compute rho(yB, yE) with rho : Pearson correlation
       // Si = rho(yB, yE) thus Vi = Si * V
-      varianceI[q][p] =  yEDotyB[q] / (size - 1.0)  * sigmaA[q] * sigmaA[q];
+      varianceI(q, p) =  yEDotyB[q] / (size - 1.0)  * sigmaA[q] * sigmaA[q];
       // STi = 1 - rho(yA, yE),  Vti = V -VTi thus VTi = rho(yA, yE) * var(yA)
-      VTi[q][p] = referenceVariance_[q] - yEDotyA[q] / (size - 1.0)  * sigmaA[q];
+      VTi(q, p) = referenceVariance_[q] - yEDotyA[q] / (size - 1.0)  * sigmaA[q];
     }
   }
   return varianceI;

@@ -132,7 +132,7 @@ struct NormalCopulaComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        output_[i][j] = DistFunc::pNormal(input_[i][j]);
+        output_(i, j) = DistFunc::pNormal(input_(i, j));
   }
 
 }; /* end struct NormalCopulaComputeSamplePolicy */

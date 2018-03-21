@@ -191,7 +191,7 @@ Sample DirectionalSampling::computeBlockSample()
     const Sample directionSample(samplingStrategy_.generate());
     // Compute the contribution of the sub-sample computed according to the sampling strategy
     const Scalar contribution = computeTotalContribution(directionSample);
-    blockSample[index][0] = contribution;
+    blockSample(index, 0) = contribution;
   }
   return blockSample;
 }

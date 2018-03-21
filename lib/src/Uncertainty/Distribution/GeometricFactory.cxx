@@ -69,7 +69,7 @@ Geometric GeometricFactory::buildAsGeometric(const Sample & sample) const
   Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < size; i++)
   {
-    Scalar x = sample[i][0];
+    Scalar x = sample(i, 0);
     if ((x != trunc(x)) || (x < 1.0)) throw InvalidArgumentException(HERE) << "Error: can build a Geometric distribution only from a sample with integer components >= 1, here sample[" << i << "][0]=" << x;
     sum += x;
   }

@@ -66,7 +66,7 @@ struct BurrFactoryParameterConstraint
     Scalar sumScaledRatio = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Scalar x = sample_[i][0];
+      const Scalar x = sample_(i, 0);
       const Scalar xC = std::pow(x , c);
       const Scalar logX = std::log(x);
       const Scalar ratio = logX / (1.0 + xC);
@@ -133,7 +133,7 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
   const Scalar c = solver.solve(f, 0.0, a, b, fA, fB);
   // Corresponding k estimate
   Scalar sumLogXC = 0.0;
-  for (UnsignedInteger i = 0; i < size; ++i) sumLogXC += log1p(std::pow(sample[i][0], c));
+  for (UnsignedInteger i = 0; i < size; ++i) sumLogXC += log1p(std::pow(sample(i, 0), c));
   const Scalar k = size / sumLogXC;
   Burr result(c, k);
   result.setDescription(sample.getDescription());

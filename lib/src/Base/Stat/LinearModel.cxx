@@ -112,7 +112,7 @@ Sample LinearModel::getPredicted(const Sample & predictor) const
   UnsignedInteger dimension = predictor.getDimension();
   Point linear(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
-  for (UnsignedInteger i = 0; i < size; ++i) predicted[i][0] = dot(linear, predictor[i]) + regression_[0];
+  for (UnsignedInteger i = 0; i < size; ++i) predicted(i, 0) = dot(linear, predictor[i]) + regression_[0];
   return predicted;
 }
 
@@ -127,7 +127,7 @@ Sample LinearModel::getResidual(const Sample & predictor,
   UnsignedInteger dimension = predictor.getDimension();
   Point linear(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i) linear[i] = regression_[i + 1];
-  for (UnsignedInteger i = 0; i < size; ++i) residual[i][0] = measured[i][0] - dot(linear, predictor[i]) - regression_[0];
+  for (UnsignedInteger i = 0; i < size; ++i) residual(i, 0) = measured(i, 0) - dot(linear, predictor[i]) - regression_[0];
   return residual;
 }
 

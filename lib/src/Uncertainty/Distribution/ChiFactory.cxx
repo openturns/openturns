@@ -65,7 +65,7 @@ Chi ChiFactory::buildAsChi(const Sample & sample) const
   Scalar sumSquares = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar xI = sample[i][0];
+    const Scalar xI = sample(i, 0);
     sumSquares += xI * xI;
   }
   try

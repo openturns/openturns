@@ -85,7 +85,7 @@ Sample Factorial::generate() const
       for(UnsignedInteger coordinate = 0; coordinate < dimension; ++coordinate)
       {
         /* If the current bit of binaryIndex is 1, set the coordinate to center[coordinate]+levelValue, else set it to center[coordinate]-levelValue */
-        factorialPlane[index][coordinate] += (2.0 * (binaryIndex % 2) - 1.0) * levelValue;
+        factorialPlane(index, coordinate) += (2.0 * (binaryIndex % 2) - 1.0) * levelValue;
         binaryIndex /= 2;
       } // coordinate
       ++index;

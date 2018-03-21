@@ -107,9 +107,9 @@ Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
 
     for (UnsignedInteger q = 0; q < outputDimension; ++q)
     {
-      varianceI[q][p] =  -squaredSumyBMinusyE[q] / (2.0 * size - 1.0) +  referenceVariance_[q];
+      varianceI(q, p) =  -squaredSumyBMinusyE[q] / (2.0 * size - 1.0) +  referenceVariance_[q];
       // Vti = Var - V_{-i}
-      VTi[q][p] = squaredSumyAMinusyE[q] / (2.0 * size - 1.0);
+      VTi(q, p) = squaredSumyAMinusyE[q] / (2.0 * size - 1.0);
     }
   }
   return varianceI;

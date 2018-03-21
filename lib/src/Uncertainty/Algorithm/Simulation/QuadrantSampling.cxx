@@ -66,10 +66,10 @@ Sample QuadrantSampling::generate() const
   {
     for (UnsignedInteger j = 0; j < strataDimension; ++ j)
     {
-      result[i][strataIndices_[j]] = std::abs(result[i][strataIndices_[j]]);
+      result(i, strataIndices_[j]) = std::abs(result(i, strataIndices_[j]));
       if ((1 << j) & quadrantIndex_)
       {
-        result[i][strataIndices_[j]] *= -1.0;
+        result(i, strataIndices_[j]) *= -1.0;
       }
     }
   }
@@ -81,12 +81,12 @@ Sample QuadrantSampling::generate() const
       Point inP(strataDimension);
       for (UnsignedInteger j = 0; j < strataDimension; ++ j)
       {
-        inP[j] = result[i][strataIndices_[j]];
+        inP[j] = result(i, strataIndices_[j]);
       }
       const Point rotP(R_ * inP);
       for (UnsignedInteger j = 0; j < strataDimension; ++ j)
       {
-        result[i][strataIndices_[j]] = rotP[j];
+        result(i, strataIndices_[j]) = rotP[j];
       }
     }
 
@@ -165,7 +165,7 @@ void QuadrantSampling::updateRotation()
     for (UnsignedInteger k = 1; k < p; ++ k)
     {
       // fk = ek
-      f[k][k] = 1.0;
+      f(k, k) = 1.0;
       // fk -= SUM <ek, fi> fi
       for (UnsignedInteger i = 0; i < k; ++ i)
       {

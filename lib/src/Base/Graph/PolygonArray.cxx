@@ -112,7 +112,7 @@ String PolygonArray::draw() const
   {
     for (UnsignedInteger j = 0; j < verticesNumber_; ++j)
     {
-      dataFile << std::setprecision(16) << data_[index][0] << " " << data_[index][1] << "\n";
+      dataFile << std::setprecision(16) << data_(index, 0) << " " << data_(index, 1) << "\n";
       ++index;
     }
     // Insert NaNs in order to tell R to go to the next polygon

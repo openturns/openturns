@@ -283,7 +283,7 @@ struct ComposedDistributionComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        output_[i][j] = distributionCollection_[j].computeQuantile(input_[i][j])[0];
+        output_(i, j) = distributionCollection_[j].computeQuantile(input_(i, j))[0];
   }
 
 }; /* end struct ComposedDistributionComputeSamplePolicy */
@@ -659,8 +659,8 @@ void ComposedDistribution::computeCovariance() const
       {
         const Scalar node = gaussNodes[nodeIndex];
         const Point q(marginalDistribution.computeQuantile(node));
-        marginalQuantiles[nodeIndex][component] = q[0];
-        marginalPDF[nodeIndex][component] = marginalDistribution.computePDF(q);
+        marginalQuantiles(nodeIndex, component) = q[0];
+        marginalPDF(nodeIndex, component) = marginalDistribution.computePDF(q);
       }
     }
     // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
@@ -679,8 +679,8 @@ void ComposedDistribution::computeCovariance() const
       {
         const Scalar nodeJ = gaussNodes[columnNodeIndex];
         const Scalar weightJ = gaussWeights[columnNodeIndex];
-        nodes2D[index][0] = nodeI;
-        nodes2D[index][1] = nodeJ;
+        nodes2D(index, 0) = nodeI;
+        nodes2D(index, 1) = nodeJ;
         weights2D[index] = weightI * weightJ;
         ++index;
       } // loop over J integration nodes
@@ -708,7 +708,7 @@ void ComposedDistribution::computeCovariance() const
           {
             for (UnsignedInteger columnNodeIndex = 0; columnNodeIndex < gaussWeights.getSize(); ++columnNodeIndex)
             {
-              covarianceIJ += weights2D[index] * (marginalQuantiles[rowNodeIndex][rowIndex] - muI) * (marginalQuantiles[columnNodeIndex][columnIndex] - muJ) * pdf2D[index];
+              covarianceIJ += weights2D[index] * (marginalQuantiles(rowNodeIndex, rowIndex) - muI) * (marginalQuantiles(columnNodeIndex, columnIndex) - muJ) * pdf2D[index];
               ++index;
             } // loop over J integration nodes
           } // loop over I integration nodes

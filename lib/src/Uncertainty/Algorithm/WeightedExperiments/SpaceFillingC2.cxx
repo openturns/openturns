@@ -58,7 +58,7 @@ Scalar SpaceFillingC2::evaluate(const Sample & sample) const
   const Sample normalizedSample(normalize(sample));
   const UnsignedInteger size(sample.getSize());
   const UnsignedInteger dimension(sample.getDimension());
-  const Scalar* addr_sample = &normalizedSample[0][0];
+  const Scalar* addr_sample = &normalizedSample(0, 0);
   Scalar sum1 = 0.0;
   Scalar sum2 = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -97,9 +97,9 @@ Scalar SpaceFillingC2::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
 {
   const UnsignedInteger size(oldDesign.getSize());
   const UnsignedInteger dimension(oldDesign.getDimension());
-  const Scalar* addr_sample(&oldDesign[0][0]);
-  Scalar* pt1(&oldDesign[0][0] + dimension * row1);
-  Scalar* pt2(&oldDesign[0][0] + dimension * row2);
+  const Scalar* addr_sample(&oldDesign(0, 0));
+  Scalar* pt1(&oldDesign(0, 0) + dimension * row1);
+  Scalar* pt2(&oldDesign(0, 0) + dimension * row2);
   // Part to remove
   Scalar oldSum = 0.0;
   for(UnsignedInteger j = 0; j < size; ++j)

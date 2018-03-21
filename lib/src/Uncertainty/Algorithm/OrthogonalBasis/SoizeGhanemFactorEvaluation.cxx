@@ -121,7 +121,7 @@ Sample SoizeGhanemFactorEvaluation::operator() (const Sample & inS) const
       u.stack(marginals_[i].computeCDF(inS.getMarginal(i)));
     const Sample pdf(copula_.computePDF(u));
     for (UnsignedInteger i = 0; i < size; ++i)
-      result[i][0] = 1.0 / std::sqrt(std::max(SpecFunc::MinScalar, pdf[i][0]));
+      result(i, 0) = 1.0 / std::sqrt(std::max(SpecFunc::MinScalar, pdf(i, 0)));
   }
   else
   {
@@ -131,7 +131,7 @@ Sample SoizeGhanemFactorEvaluation::operator() (const Sample & inS) const
     // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
     const Sample logResult(logFactor - measure_.computeLogPDF(inS));
     for (UnsignedInteger i = 0; i < size; ++i)
-      result[i][0] = std::exp(0.5 * logResult[i][0]);
+      result(i, 0) = std::exp(0.5 * logResult(i, 0));
   }
   callsNumber_ += size;
   return result;

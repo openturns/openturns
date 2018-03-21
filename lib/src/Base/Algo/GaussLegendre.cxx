@@ -155,7 +155,7 @@ void GaussLegendre::generateNodesAndWeights()
   {
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      nodes_[i][j] = marginalNodes[j][allTuples(i, j)];
+      nodes_(i, j) = marginalNodes[j][allTuples(i, j)];
       weights_[i] *= marginalWeights[j][allTuples(i, j)];
     }
   } // tuples

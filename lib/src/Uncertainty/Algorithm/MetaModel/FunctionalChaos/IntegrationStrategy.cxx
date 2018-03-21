@@ -171,7 +171,7 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   Point addedAlpha(addedSize, 0.0);
   Point weightedOutput(sampleSize);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
-    weightedOutput[i] = weights_[i] * outputSample_[i][marginalIndex];
+    weightedOutput[i] = weights_[i] * outputSample_(i, marginalIndex);
   IntegrationStrategyCoefficientsPolicy policy(weightedOutput, designMatrix, addedRanks, addedAlpha);
   TBB::ParallelFor( 0, addedSize, policy );
   alpha.add(addedAlpha);
@@ -181,7 +181,7 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   const Point values(designMatrix * alpha_k_p_);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
-    const Scalar delta = outputSample_[i][marginalIndex] - values[i];
+    const Scalar delta = outputSample_(i, marginalIndex) - values[i];
     residual_p_ += delta * delta;
   }
   residual_p_ = sqrt(residual_p_) / sampleSize;

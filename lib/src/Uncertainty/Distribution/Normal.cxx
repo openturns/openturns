@@ -177,7 +177,7 @@ Sample Normal::getSample(const UnsignedInteger size) const
   const UnsignedInteger dimension = getDimension();
   Sample result(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension; ++j) result[i][j] = DistFunc::rNormal();
+    for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
   if (hasIndependentCopula_) result *= sigma_;
   else result *= cholesky_;
   result += mean_;

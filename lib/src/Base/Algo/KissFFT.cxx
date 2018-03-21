@@ -210,7 +210,7 @@ ComplexMatrix KissFFT::transform2D(const Sample & sample) const
 
   for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
     for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-      complexMatrix(rowIndex, columnIndex) = sample[rowIndex][columnIndex];
+      complexMatrix(rowIndex, columnIndex) = sample(rowIndex, columnIndex);
   return transform2D(complexMatrix);
 }
 
@@ -242,7 +242,7 @@ ComplexMatrix KissFFT::inverseTransform2D(const Sample & sample) const
 
   for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
     for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-      complexMatrix(rowIndex, columnIndex) = sample[rowIndex][columnIndex];
+      complexMatrix(rowIndex, columnIndex) = sample(rowIndex, columnIndex);
   return inverseTransform2D(complexMatrix);
 }
 
