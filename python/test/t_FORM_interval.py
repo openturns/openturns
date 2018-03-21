@@ -68,13 +68,13 @@ def buildEvent(vector, interval):
     return ot.Event(newVector, Greater(), 0.0)
 
 # Tests
-ot.ResourceMap.SetAsUnsignedInteger('Simulation-DefaultBlockSize', 100)
+ot.ResourceMap.SetAsUnsignedInteger('SimulationAlgorithm-DefaultBlockSize', 100)
 ot.ResourceMap.SetAsUnsignedInteger(
-    'Simulation-DefaultMaximumOuterSampling', 100)
+    'SimulationAlgorithm-DefaultMaximumOuterSampling', 100)
 ot.ResourceMap.SetAsScalar(
-    'Simulation-DefaultMaximumCoefficientOfVariation', 0.0)
+    'SimulationAlgorithm-DefaultMaximumCoefficientOfVariation', 0.0)
 ot.ResourceMap.SetAsScalar(
-    'Simulation-DefaultMaximumStandardDeviation', 0.0)
+    'SimulationAlgorithm-DefaultMaximumStandardDeviation', 0.0)
 ot.ResourceMap.SetAsScalar(
     'RootStrategyImplementation-DefaultStepSize', 0.1)
 

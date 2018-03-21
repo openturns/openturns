@@ -480,11 +480,11 @@
   <RootStrategy-DefaultMaximumDistance value="8.0" />
   <RootStrategy-DefaultStepSize        value="1.0" />
 
-  <!-- OT::Simulation parameters -->
-  <Simulation-DefaultMaximumOuterSampling          value="1000"   />
-  <Simulation-DefaultMaximumCoefficientOfVariation value="1.0e-1" />
-  <Simulation-DefaultMaximumStandardDeviation      value="0.0"    />
-  <Simulation-DefaultBlockSize                     value="1"      />
+  <!-- OT::SimulationAlgorithm parameters -->
+  <SimulationAlgorithm-DefaultMaximumOuterSampling          value="1000"   />
+  <SimulationAlgorithm-DefaultMaximumCoefficientOfVariation value="1.0e-1" />
+  <SimulationAlgorithm-DefaultMaximumStandardDeviation      value="0.0"    />
+  <SimulationAlgorithm-DefaultBlockSize                     value="1"      />
 
   <!-- OT::ProbabilitySimulationResult parameters -->
   <ProbabilitySimulationResult-DefaultConfidenceLevel value="0.95" />

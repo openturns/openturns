@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_SIMULATION_HXX
 #define OPENTURNS_SIMULATION_HXX
 
-#include "openturns/PersistentObject.hxx"
+#include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/Compact.hxx"
 #include "openturns/Last.hxx"
@@ -37,12 +37,11 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API Simulation
-  : public PersistentObject
+  : public SimulationAlgorithm
 {
 
   CLASSNAME
 public:
-
 
   /** Constructor with parameters */
   explicit Simulation(const Event & event,
@@ -57,26 +56,6 @@ public:
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
-
-  /** Maximum sample size accessor */
-  void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
-  UnsignedInteger getMaximumOuterSampling() const;
-
-  /** Maximum coefficient of variation accessor */
-  void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation);
-  Scalar getMaximumCoefficientOfVariation() const;
-
-  /** Maximum standard deviation accessor */
-  void setMaximumStandardDeviation(const Scalar maximumStandardDeviation);
-  Scalar getMaximumStandardDeviation() const;
-
-  /** Block size accessor */
-  virtual void setBlockSize(const UnsignedInteger blockSize);
-  UnsignedInteger getBlockSize() const;
-
-  /** Verbosity accessor */
-  void setVerbose(const Bool verbose);
-  Bool getVerbose() const;
 
   /** Convergence strategy accessor */
   void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
@@ -97,14 +76,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-  /** Progress callback */
-  typedef void (*ProgressCallback)(Scalar, void * state);
-  void setProgressCallback(ProgressCallback callBack, void * state = 0);
-
-  /** Stop callback */
-  typedef Bool (*StopCallback)(void * state);
-  void setStopCallback(StopCallback callBack, void * state = 0);
-
 protected:
 
   /** Result accessor */
@@ -122,32 +93,11 @@ protected:
   /** History strategy for the probability and variance estimate */
   HistoryStrategy convergenceStrategy_;
 
-  // Size of the atomic blocks of computation
-  UnsignedInteger blockSize_;
-
   // The event we are computing the probability of
   Event event_;
 
   // Result of the simulation
   ProbabilitySimulationResult result_;
-
-  // callbacks
-  std::pair< ProgressCallback, void *> progressCallback_;
-  std::pair< StopCallback, void *> stopCallback_;
-
-private:
-
-  // Maximum number of outer iteration allowed
-  UnsignedInteger maximumOuterSampling_;
-
-  // Maximum coefficient of variation allowed for convergence
-  Scalar maximumCoefficientOfVariation_;
-
-  // Maximum standard deviation allowed for convergence
-  Scalar maximumStandardDeviation_;
-
-  // Do we have to echo all the intermediate results?
-  Bool verbose_;
 
 } ; /* class Simulation */
 

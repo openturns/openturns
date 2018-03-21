@@ -97,7 +97,7 @@ void SubsetSampling::run()
   const UnsignedInteger blockSize = getBlockSize();
   const UnsignedInteger N = maximumOuterSampling * blockSize;
 
-  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("Simulation-DefaultMaximumCoefficientOfVariation"))
+  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);

@@ -51,35 +51,6 @@ SimulationResult"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::getBlockSize
-"Accessor to the block size.
-
-Returns
--------
-blockSize : int
-    Number of terms in the probability simulation estimator grouped together.
-    It is set by default to 1."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::setBlockSize
-"Accessor to the block size.
-
-Parameters
-----------
-blockSize : int, :math:`blockSize \geq 1`
-    Number of terms in the probability simulation estimator grouped together.
-    It is set by default to 1.
-
-Notes
------
-For Monte Carlo, LHS and Importance Sampling methods, this allows to save space
-while allowing multithreading, when available we recommend
-to use the number of available CPUs; for the Directional Sampling, we recommend
-to set it to 1."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Simulation::getConvergenceStrategy
 "Accessor to the convergence strategy.
 
@@ -102,66 +73,6 @@ storage_strategy : :class:`~openturns.HistoryStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Simulation::getMaximumCoefficientOfVariation
-"Accessor to the maximum coefficient of variation.
-
-Returns
--------
-coefficient : float
-    Maximum coefficient of variation of the simulated sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::setMaximumCoefficientOfVariation
-"Accessor to the maximum coefficient of variation.
-
-Parameters
-----------
-coefficient : float
-    Maximum coefficient of variation of the simulated sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::getMaximumOuterSampling
-"Accessor to the maximum sample size.
-
-Returns
--------
-outerSampling : int
-    Maximum number of groups of terms in the probability simulation estimator."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::setMaximumOuterSampling
-"Accessor to the maximum sample size.
-
-Parameters
-----------
-outerSampling : int
-    Maximum number of groups of terms in the probability simulation estimator."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::getMaximumStandardDeviation
-"Accessor to the maximum standard deviation.
-
-Returns
--------
-sigma : float, :math:`\sigma > 0`
-    Maximum standard deviation of the estimator."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::setMaximumStandardDeviation
-"Accessor to the maximum standard deviation.
-
-Parameters
-----------
-sigma : float, :math:`\sigma > 0`
-    Maximum standard deviation of the estimator."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Simulation::getResult
 "Accessor to the results.
 
@@ -180,26 +91,6 @@ Returns
 -------
 event : :class:`~openturns.Event`
     Event we want to evaluate the probability."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::getVerbose
-"Accessor to verbosity.
-
-Returns
--------
-verbosity_enabled : bool
-    If *True*, the computation is verbose. By default it is verbose."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::setVerbose
-"Accessor to verbosity.
-
-Parameters
-----------
-verbosity_enabled : bool
-    If *True*, make the computation verbose. By default it is verbose."
 
 // ---------------------------------------------------------------------
 
@@ -236,23 +127,3 @@ Returns
 -------
 graph : a :class:`~openturns.Graph`
     probability convergence graph"
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::setProgressCallback
-"Set up a progress callback.
-
-Parameters
-----------
-callback : callable
-    Takes a float as argument as percentage of progress."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Simulation::setStopCallback
-"Set up a stop callback.
-
-Parameters
-----------
-callback : callable
-    Returns an int deciding whether to stop or continue."
-

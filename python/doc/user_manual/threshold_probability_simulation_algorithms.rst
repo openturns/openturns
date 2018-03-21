@@ -11,6 +11,7 @@ Simulations methods
     :toctree: _generated/
     :template: class.rst_t
 
+    SimulationAlgorithm
     Simulation
     ProbabilitySimulationAlgorithm
     DirectionalSampling

@@ -1,0 +1,153 @@
+%feature("docstring") OT::SimulationAlgorithm
+"Base class for simulation algorithms.
+
+See also
+--------
+ProbabilitySimulationAlgorithm, ExpectationSimulationAlgorithm"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::getBlockSize
+"Accessor to the block size.
+
+Returns
+-------
+blockSize : int
+    Number of terms in the probability simulation estimator grouped together.
+    It is set by default to 1."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setBlockSize
+"Accessor to the block size.
+
+Parameters
+----------
+blockSize : int, :math:`blockSize \geq 1`
+    Number of terms in the probability simulation estimator grouped together.
+    It is set by default to 1.
+
+Notes
+-----
+For Monte Carlo, LHS and Importance Sampling methods, this allows to save space
+while allowing multithreading, when available we recommend
+to use the number of available CPUs; for the Directional Sampling, we recommend
+to set it to 1."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::getMaximumCoefficientOfVariation
+"Accessor to the maximum coefficient of variation.
+
+Returns
+-------
+coefficient : float
+    Maximum coefficient of variation of the simulated sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setMaximumCoefficientOfVariation
+"Accessor to the maximum coefficient of variation.
+
+Parameters
+----------
+coefficient : float
+    Maximum coefficient of variation of the simulated sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::getMaximumOuterSampling
+"Accessor to the maximum sample size.
+
+Returns
+-------
+outerSampling : int
+    Maximum number of groups of terms in the probability simulation estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setMaximumOuterSampling
+"Accessor to the maximum sample size.
+
+Parameters
+----------
+outerSampling : int
+    Maximum number of groups of terms in the probability simulation estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::getMaximumStandardDeviation
+"Accessor to the maximum standard deviation.
+
+Returns
+-------
+sigma : float, :math:`\sigma > 0`
+    Maximum standard deviation of the estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setMaximumStandardDeviation
+"Accessor to the maximum standard deviation.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Maximum standard deviation of the estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::getVerbose
+"Accessor to verbosity.
+
+Returns
+-------
+verbosity_enabled : bool
+    If *True*, the computation is verbose. By default it is verbose."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setVerbose
+"Accessor to verbosity.
+
+Parameters
+----------
+verbosity_enabled : bool
+    If *True*, make the computation verbose. By default it is verbose."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::run
+"Launch simulation.
+
+Notes
+-----
+It launches the simulation on a sample of size at most *outerSampling * blockSize*,
+this sample being built by blocks of size *blockSize*. It allows to use
+efficiently the distribution of the computation as well as it allows to deal
+with a sample size :math:`> 2^{32}` by a combination of *blockSize* and
+*outerSampling*.
+
+see also
+--------
+setBlockSize, setMaximumOuterSampling, ResourceMap, SimulationAlgorithmResult"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setProgressCallback
+"Set up a progress callback.
+
+Parameters
+----------
+callback : callable
+    Takes a float as argument as percentage of progress."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SimulationAlgorithm::setStopCallback
+"Set up a stop callback.
+
+Parameters
+----------
+callback : callable
+    Returns an int deciding whether to stop or continue."
+

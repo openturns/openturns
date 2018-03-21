@@ -38,38 +38,24 @@ static const Factory<Simulation> Factory_Simulation;
 
 /** For save/load mechanism */
 Simulation::Simulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
-  : PersistentObject()
+  : SimulationAlgorithm()
   , convergenceStrategy_(convergenceStrategy)
-  , blockSize_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultBlockSize" ))
   , event_()
   , result_()
-  , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
-  , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling" ))
-  , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
-  , maximumStandardDeviation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumStandardDeviation" ))
-  , verbose_(verbose)
 {
-  // Nothing to do
+  setVerbose(verbose);
 }
 
 /* Constructor with parameters */
 Simulation::Simulation(const Event & event,
                        const Bool verbose,
                        const HistoryStrategy & convergenceStrategy)
-  : PersistentObject()
+  : SimulationAlgorithm()
   , convergenceStrategy_(convergenceStrategy)
-  , blockSize_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultBlockSize" ))
   , event_(event)
   , result_()
-  , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
-  , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling" ))
-  , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
-  , maximumStandardDeviation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumStandardDeviation" ))
-  , verbose_(verbose)
 {
-  // Nothing to do
+  setVerbose(verbose);
 }
 
 /* Virtual constructor */
@@ -96,79 +82,16 @@ ProbabilitySimulationResult Simulation::getResult() const
   return result_;
 }
 
-/* Maximum sample size accessor */
-void Simulation::setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling)
-{
-  maximumOuterSampling_ = maximumOuterSampling;
-}
-
-/* Maximum sample size accessor */
-UnsignedInteger Simulation::getMaximumOuterSampling() const
-{
-  return maximumOuterSampling_;
-}
-
-/* Maximum coefficient of variation accessor */
-void Simulation::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation)
-{
-  // Check if the given coefficient of variation is >= 0
-  //      if (!(maximumCoefficientOfVariation >= 0.0)) throw InvalidArgumentException(HERE) << "The maximum coefficient of variation must be >= 0.0";
-  maximumCoefficientOfVariation_ = maximumCoefficientOfVariation;
-}
-
-/* Maximum coefficient of variation accessor */
-Scalar Simulation::getMaximumCoefficientOfVariation() const
-{
-  return maximumCoefficientOfVariation_;
-}
-
-/* Maximum standard deviation accessor */
-void Simulation::setMaximumStandardDeviation(const Scalar maximumStandardDeviation)
-{
-  maximumStandardDeviation_ = maximumStandardDeviation;
-}
-
-Scalar Simulation::getMaximumStandardDeviation() const
-{
-  return maximumStandardDeviation_;
-}
-
-/* Block size accessor */
-void Simulation::setBlockSize(const UnsignedInteger blockSize)
-{
-  // Check if the given block size is >= 1
-  if (blockSize < 1) throw InvalidArgumentException(HERE) << "The block size must be >= 1";
-  blockSize_ = blockSize;
-}
-
-/* Block size accessor */
-UnsignedInteger Simulation::getBlockSize() const
-{
-  return blockSize_;
-}
-
-/* Verbosity accessor */
-void Simulation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
-/* Verbosity accessor */
-Bool Simulation::getVerbose() const
-{
-  return verbose_;
-}
-
 /* String converter */
 String Simulation::__repr__() const
 {
   OSS oss;
   oss << "class=" << Simulation::GetClassName()
       << " event=" << event_
-      << " maximumOuterSampling=" << maximumOuterSampling_
-      << " maximumCoefficientOfVariation=" << maximumCoefficientOfVariation_
-      << " maximumStandardDeviation=" << maximumStandardDeviation_
-      << " blockSize=" << blockSize_;
+      << " maximumOuterSampling=" << getMaximumOuterSampling()
+      << " maximumCoefficientOfVariation=" << getMaximumCoefficientOfVariation()
+      << " maximumStandardDeviation=" << getMaximumStandardDeviation()
+      << " blockSize=" << getBlockSize();
   return oss;
 }
 
@@ -229,7 +152,7 @@ void Simulation::run()
     result_.setVarianceEstimate(reducedVarianceEstimate);
     result_.setOuterSampling(outerSampling);
     // Display the result at each outer sample
-    if (verbose_) LOGINFO(result_.__repr__());
+    if (getVerbose()) LOGINFO(result_.__repr__());
     // Get the coefficient of variation back
     // We use the result to compute these quantities in order to
     // delegate the treatment of the degenerate cases (i.e. the
@@ -319,41 +242,19 @@ Graph Simulation::drawProbabilityConvergence(const Scalar level) const
 void Simulation::save(Advocate & adv) const
 {
 
-  PersistentObject::save(adv);
+  SimulationAlgorithm::save(adv);
   adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
   adv.saveAttribute("event_", event_);
   adv.saveAttribute("result_", result_);
-  adv.saveAttribute("blockSize_", blockSize_);
-  adv.saveAttribute("maximumOuterSampling_", maximumOuterSampling_);
-  adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
-  adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
-  adv.saveAttribute("verbose_", verbose_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Simulation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  SimulationAlgorithm::load(adv);
   adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
   adv.loadAttribute("event_", event_);
   adv.loadAttribute("result_", result_);
-  adv.loadAttribute("blockSize_", blockSize_);
-  adv.loadAttribute("maximumOuterSampling_", maximumOuterSampling_);
-  adv.loadAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
-  adv.loadAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
-  adv.loadAttribute("verbose_", verbose_);
-}
-
-
-void Simulation::setProgressCallback(ProgressCallback callBack, void * state)
-{
-  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, state);
-}
-
-
-void Simulation::setStopCallback(StopCallback callBack, void * state)
-{
-  stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
 
