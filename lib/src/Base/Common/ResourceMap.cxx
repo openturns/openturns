@@ -751,6 +751,10 @@ void ResourceMap::loadDefaultConfiguration()
   // ProbabilitySimulationResult parameters //
   setAsScalar( "ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95 );
 
+  // ExpectationSimulationAlgorithm parameters //
+  set("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX");
+  set("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE");
+
   // SimulationSensitivityAnalysis parameters //
   setAsUnsignedInteger( "SimulationSensitivityAnalysis-DefaultSampleMargin", 400 );
 

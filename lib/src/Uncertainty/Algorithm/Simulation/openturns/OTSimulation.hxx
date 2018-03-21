@@ -46,5 +46,6 @@
 #include "openturns/QuadrantSampling.hxx"
 #include "openturns/AdaptiveDirectionalSampling.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
+#include "openturns/ExpectationSimulationAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

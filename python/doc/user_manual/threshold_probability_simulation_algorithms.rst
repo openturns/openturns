@@ -12,6 +12,7 @@ Simulations methods
     :template: class.rst_t
 
     SimulationAlgorithm
+    SimulationResult
     EventSimulation
     ProbabilitySimulationAlgorithm
     DirectionalSampling

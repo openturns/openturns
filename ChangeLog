@@ -8,6 +8,7 @@
 
 ==== New classes ====
  * ProbabilitySimulationResult
+ * ExpectationSimulationAlgorithm, ExpectationSimulationResult
 
 ==== API changes ====
  * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes

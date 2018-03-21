@@ -853,6 +853,8 @@ ot_add_python_module(simulation simulation_module.i
                       SubsetSamplingResult.i SubsetSamplingResult_doc.i.in
                       SubsetSampling.i SubsetSampling_doc.i.in
                       AdaptiveDirectionalSampling.i AdaptiveDirectionalSampling_doc.i.in
+                      ExpectationSimulationAlgorithm.i ExpectationSimulationAlgorithm_doc.i.in
+                      ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                     )
 

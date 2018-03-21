@@ -62,6 +62,8 @@
 %include SubsetSamplingResult.i
 %include SubsetSampling.i
 %include AdaptiveDirectionalSampling.i
+%include ExpectationSimulationResult.i
+%include ExpectationSimulationAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i
