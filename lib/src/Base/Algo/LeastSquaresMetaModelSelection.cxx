@@ -46,7 +46,7 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection()
 /* Default constructor */
 LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
     const Sample & y,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
     const FittingAlgorithm & fittingAlgorithm)
@@ -62,7 +62,7 @@ LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
 LeastSquaresMetaModelSelection::LeastSquaresMetaModelSelection(const Sample & x,
     const Sample & y,
     const Point & weight,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices,
     const BasisSequenceFactory & basisSequenceFactory,
     const FittingAlgorithm & fittingAlgorithm)

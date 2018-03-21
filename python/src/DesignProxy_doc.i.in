@@ -9,8 +9,8 @@ Parameters
 ----------
 x : :class:`~openturns.Sample`
     Input sample
-psi : :class:`~openturns.Basis`
-    Functional basis"
+psi : sequence of :class:`~openturns.Function`
+    Basis"
 
 // ---------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ inputSample : :class:`~openturns.Sample`
 
 Returns
 -------
-basis : :class:`~openturns.getBasis`
+basis : collection of :class:`~openturns.Function`
     Basis."
 
 // ---------------------------------------------------------------------

@@ -25,6 +25,8 @@
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
+#include "openturns/PersistentCollection.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,6 +41,8 @@ class OT_API ApproximationAlgorithmImplementation
   CLASSNAME
 
 public:
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
 
   /** Default constructor */
@@ -47,14 +51,14 @@ public:
   /** Default constructor */
   ApproximationAlgorithmImplementation(const Sample & x,
                                        const Sample & y,
-                                       const Basis & psi,
+                                       const FunctionCollection & psi,
                                        const Indices & indices);
 
   /** Default constructor */
   ApproximationAlgorithmImplementation(const Sample & x,
                                        const Sample & y,
                                        const Point & weight,
-                                       const Basis & psi,
+                                       const FunctionCollection & psi,
                                        const Indices & indices);
 
   /** Virtual constructor */
@@ -71,7 +75,7 @@ public:
   Point getWeight() const;
 
   /** Basis accessor */
-  Basis getPsi() const;
+  FunctionCollection getPsi() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -122,7 +126,7 @@ protected:
   Bool hasUniformWeight_;
 
   /** Basis */
-  Basis psi_;
+  FunctionPersistentCollection psi_;
   Indices currentIndices_;
 
   mutable Bool isAlreadyComputedCoefficients_;

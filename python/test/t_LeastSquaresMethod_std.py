@@ -20,7 +20,7 @@ basis = ot.Basis(phis)
 for i in range(basisSize):
     print(ot.FunctionCollection(basis)[i](X))
 
-proxy = ot.DesignProxy(X, basis)
+proxy = ot.DesignProxy(X, phis)
 full = range(basisSize)
 
 design = ot.Matrix(proxy.computeDesign(full))

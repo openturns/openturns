@@ -134,7 +134,7 @@ struct IntegrationStrategyCoefficientsPolicy
    the L2 integral by a finite sum: the same input sample is used for all the calls
    to this method */
 void IntegrationStrategy::computeCoefficients(const Function & function,
-    const Basis & basis,
+    const FunctionCollection & basis,
     const Indices & indices,
     const Indices & addedRanks,
     const Indices & conservedRanks,

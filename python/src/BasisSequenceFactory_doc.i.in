@@ -3,10 +3,12 @@
 %feature("docstring") OT::BasisSequenceFactory
 OT_BasisSequenceFactory_doc
 %feature("docstring") OT::BasisSequenceFactory::getMaximumRelativeConvergence
-OT_BasisSequence_getMaximumRelativeConvergence_doc
+OT_BasisSequenceFactory_getMaximumRelativeConvergence_doc
 %feature("docstring") OT::BasisSequenceFactory::getVerbose
-OT_BasisSequence_getVerbose_doc
+OT_BasisSequenceFactory_getVerbose_doc
 %feature("docstring") OT::BasisSequenceFactory::setMaximumRelativeConvergence
-OT_BasisSequence_setMaximumRelativeConvergence_doc
+OT_BasisSequenceFactory_setMaximumRelativeConvergence_doc
 %feature("docstring") OT::BasisSequenceFactory::setVerbose
-OT_BasisSequence_setVerbose_doc
+OT_BasisSequenceFactory_setVerbose_doc
+%feature("docstring") OT::BasisSequenceFactory::build
+OT_BasisSequenceFactory_build_doc

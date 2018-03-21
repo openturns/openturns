@@ -52,20 +52,20 @@ LinearBasisFactory* LinearBasisFactory::clone() const
 
 Basis LinearBasisFactory::build() const
 {
-  Basis basis;
+  Collection<Function> functions;
 
   // constant term
-  basis.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 1.0), Matrix(1, inputDimension_)));
+  functions.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 1.0), Matrix(1, inputDimension_)));
 
   // linear term
   for ( UnsignedInteger i = 0; i < inputDimension_; ++ i )
   {
     Matrix linear(1, inputDimension_);
     linear(0, i) = 1.0;
-    basis.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 0.0), linear));
+    functions.add(LinearFunction (Point(inputDimension_, 0.0), Point(1, 0.0), linear));
   }
 
-  return basis;
+  return Basis(functions);
 }
 
 /* Method save() stores the object through the StorageManager */

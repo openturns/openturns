@@ -46,7 +46,7 @@ public:
   /** Default constructor */
   LeastSquaresMetaModelSelection(const Sample & x,
                                  const Sample & y,
-                                 const Basis & psi,
+                                 const FunctionCollection & psi,
                                  const Indices & indices,
                                  const BasisSequenceFactory & basisSequenceFactory = LARS(),
                                  const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
@@ -55,7 +55,7 @@ public:
   LeastSquaresMetaModelSelection(const Sample & x,
                                  const Sample & y,
                                  const Point & weight,
-                                 const Basis & psi,
+                                 const FunctionCollection & psi,
                                  const Indices & indices,
                                  const BasisSequenceFactory & basisSequenceFactory = LARS(),
                                  const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());

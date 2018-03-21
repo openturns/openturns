@@ -16,10 +16,8 @@ covariance : :class:`~openturns.CovarianceModel`
     The covariance function to decompose.
 experiment : :class:`~openturns.WeightedExperiment`
     The points and weights used in the quadrature approximation.
-basis : :class:`~openturns.Basis`
-    The basis in wich the eigenfunctions are projected.
-basisSize : int
-    The number of elements of the basis considered.
+basis : sequence of :class:`~openturns.Function`
+    The basis in which the eigenfunctions are projected.
 marginalDegree : int
     The maximum degree to take into account in the tensorized Legendre basis.
 mustScale : boolean
@@ -93,7 +91,7 @@ Give the basis used to decompose the eigenfunctions:
 here, the 10 first Legendre polynomials family:
 
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()]*2)
->>> basisSize = 10
+>>> functions = [basis.build(i) for i in range(10)]
 
 Create the weighted experiment of the quadrature approximation: here, a Monte Carlo experiment from the measure orthogonal wrt the Legendre polynomials family:
 
@@ -101,7 +99,7 @@ Create the weighted experiment of the quadrature approximation: here, a Monte Ca
 
 Create the Karhunen-Loeve Quadrature algorithm:
 
->>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, bounds, model, experiment, basis, basisSize, True, s)
+>>> algorithm = ot.KarhunenLoeveQuadratureAlgorithm(domain, bounds, model, experiment, functions, True, s)
 
 Run it!
 

@@ -24,7 +24,6 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/Basis.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/ProcessSample.hxx"
 #include "openturns/Matrix.hxx"
@@ -45,6 +44,7 @@ class OT_API KarhunenLoeveResultImplementation
 public:
 
   typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Default constructor */
   KarhunenLoeveResultImplementation();
@@ -53,7 +53,7 @@ public:
   explicit KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
       const Scalar threshold,
       const Point & eigenvalues,
-      const Basis & modes,
+      const FunctionCollection & modes,
       const ProcessSample & modesAsProcessSample,
       const Matrix & projection);
 
@@ -70,11 +70,11 @@ public:
   Point getEigenValues() const;
 
   /** Modes accessors */
-  Basis getModes() const;
+  FunctionCollection getModes() const;
   ProcessSample getModesAsProcessSample() const;
 
   /** Scaled modes accessors */
-  Basis getScaledModes() const;
+  FunctionCollection getScaledModes() const;
   ProcessSample getScaledModesAsProcessSample() const;
 
   /** Projection matrix accessor */
@@ -111,7 +111,7 @@ protected:
   Point eigenvalues_;
 
   /** Modes */
-  Basis modes_;
+  FunctionPersistentCollection modes_;
 
   /** Modes as process sample */
   ProcessSample modesAsProcessSample_;

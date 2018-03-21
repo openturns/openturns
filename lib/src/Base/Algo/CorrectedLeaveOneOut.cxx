@@ -53,7 +53,7 @@ String CorrectedLeaveOneOut::__repr__() const
 Scalar CorrectedLeaveOneOut::run(const Sample & x,
                                  const Sample & y,
                                  const Point & weight,
-                                 const Basis & basis,
+                                 const FunctionCollection & basis,
                                  const Indices & indices) const
 {
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);

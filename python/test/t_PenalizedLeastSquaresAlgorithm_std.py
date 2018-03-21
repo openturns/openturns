@@ -34,25 +34,25 @@ for i in range(inputSample.getSize()):
 penalizationFactor = 0.25
 # Uniform weight, no penalization
 algo = PenalizedLeastSquaresAlgorithm(
-    inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), basis, indices)
+    inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), coll, indices)
 print("Uniform weight, no penalization")
 print("Coefficients=", (algo.getCoefficients()))
 print("Residual=%g" % algo.getResidual())
 print("RelativeError=%g" % algo.getRelativeError())
 # Uniform weight, spherical penalization
 algo = PenalizedLeastSquaresAlgorithm(
-    inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), basis, indices, penalizationFactor)
+    inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), coll, indices, penalizationFactor)
 print("Uniform weight, spherical penalization")
 print("Coefficients=", (algo.getCoefficients()))
 print("Residual=%g" % algo.getResidual())
 # Non uniform weight, spherical penalization
 algo = PenalizedLeastSquaresAlgorithm(
-    inputSample, model(inputSample), weight, basis, indices)
+    inputSample, model(inputSample), weight, coll, indices)
 print("Non uniform weight, no penalization")
 print("Coefficients=", (algo.getCoefficients()))
 print("Residual=%g" % algo.getResidual())
 algo = PenalizedLeastSquaresAlgorithm(
-    inputSample, model(inputSample), weight, basis, indices, penalizationFactor)
+    inputSample, model(inputSample), weight, coll, indices, penalizationFactor)
 print("Non uniform weight, spherical penalization")
 print("Coefficients=", (algo.getCoefficients()))
 print("Residual=%g" % algo.getResidual())
@@ -62,7 +62,7 @@ for i in range(4):
 for i in range(3):
     penalizationMatrix[i, i + 1] = 1.0 / 8.0
 algo = PenalizedLeastSquaresAlgorithm(
-    inputSample, model(inputSample), weight, basis, indices, penalizationFactor, penalizationMatrix)
+    inputSample, model(inputSample), weight, coll, indices, penalizationFactor, penalizationMatrix)
 print("Non uniform weight, non spherical penalization")
 print("Coefficients=", (algo.getCoefficients()))
 print("Residual=%g" % algo.getResidual())

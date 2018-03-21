@@ -24,7 +24,8 @@
 #include <iostream>
 #include "openturns/ApproximationAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/Basis.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/TypedInterfaceObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,6 +42,7 @@ class OT_API ApproximationAlgorithmImplementationFactory
 {
   CLASSNAME
 public:
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   ApproximationAlgorithmImplementationFactory();
@@ -51,14 +53,14 @@ public:
   /** Method to create new ApproximationAlgorithmImplementation objects */
   virtual ApproximationAlgorithmImplementation * build (const Sample & x,
       const Sample & y,
-      const Basis & psi,
+      const FunctionCollection & psi,
       const Indices & indices) const;
 
   /** Method to create new ApproximationAlgorithmImplementation objects */
   virtual ApproximationAlgorithmImplementation * build (const Sample & x,
       const Sample & y,
       const Point & weight,
-      const Basis & psi,
+      const FunctionCollection & psi,
       const Indices & indices) const;
 
   /** String converter */

@@ -246,7 +246,7 @@ OT_KarhunenLoeveResult_project_doc
 
 Returns
 -------
-modes : :class:`~openturns.Basis`
+modes : collection of :class:`~openturns.Function`
     The truncated basis :math:`(\vect{\varphi}_k)_{1 \leq k \leq K}`.
 
 Notes
@@ -264,7 +264,7 @@ OT_KarhunenLoeveResult_getModes_doc
 
 Returns
 -------
-modes : :class:`~openturns.Basis`
+modes : collection of :class:`~openturns.Function`
     The truncated basis :math:`(\sqrt{\lambda_k}\vect{\varphi}_k)_{1 \leq k \leq K}`.
 
 Notes

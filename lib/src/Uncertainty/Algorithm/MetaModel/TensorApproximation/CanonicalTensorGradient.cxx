@@ -97,7 +97,7 @@ Matrix CanonicalTensorGradient::gradient(const Point & inP) const
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
     const Point xj(1, inP[j]);
-    const Basis basisI(evaluation_.getBasis(j));
+    const Collection<Function> basisI(evaluation_.getBasis(j));
     const UnsignedInteger basisSize = evaluation_.getDegrees()[j];
 
     // compute phi_(i,j)(xj), phi_(i,j)'(xj)

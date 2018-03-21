@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
     coll[2] = SymbolicFunction(inVar, formula);
     formula[0] = "x2^2";
     coll[3] = SymbolicFunction(inVar, formula);
-    Basis basis(coll);
     Indices indices(coll.getSize());
     indices.fill();
 
@@ -67,7 +66,7 @@ int main(int argc, char *argv[])
     Scalar penalizationFactor = 0.25;
     // Uniform weight, no penalization
     {
-      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), basis, indices);
+      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), coll, indices);
       fullprint << "Uniform weight, no penalization" << std::endl;
       fullprint << "Coefficients=" << algo.getCoefficients() << std::endl;
       fullprint << "Residual=" << algo.getResidual() << std::endl;
@@ -75,21 +74,21 @@ int main(int argc, char *argv[])
     }
     // Uniform weight, spherical penalization
     {
-      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), basis, indices, penalizationFactor);
+      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), Point(inputSample.getSize(), 1.0), coll, indices, penalizationFactor);
       fullprint << "Uniform weight, spherical penalization" << std::endl;
       fullprint << "Coefficients=" << algo.getCoefficients() << std::endl;
       fullprint << "Residual=" << algo.getResidual() << std::endl;
     }
     // Non uniform weight, no penalization
     {
-      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), weight, basis, indices);
+      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), weight, coll, indices);
       fullprint << "Non uniform weight, no penalization" << std::endl;
       fullprint << "Coefficients=" << algo.getCoefficients() << std::endl;
       fullprint << "Residual=" << algo.getResidual() << std::endl;
     }
     // Non uniform weight, spherical penalization
     {
-      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), weight, basis, indices, penalizationFactor);
+      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), weight, coll, indices, penalizationFactor);
       fullprint << "Non uniform weight, spherical penalization" << std::endl;
       fullprint << "Coefficients=" << algo.getCoefficients() << std::endl;
       fullprint << "Residual=" << algo.getResidual() << std::endl;
@@ -101,7 +100,7 @@ int main(int argc, char *argv[])
         penalizationMatrix(i, i) = 1.0;
       for (UnsignedInteger i = 0; i < 3; ++i)
         penalizationMatrix(i, i + 1) = 1.0 / 8.0;
-      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), weight, basis, indices, penalizationFactor, penalizationMatrix);
+      PenalizedLeastSquaresAlgorithm algo(inputSample, model(inputSample), weight, coll, indices, penalizationFactor, penalizationMatrix);
       fullprint << "Non uniform weight, non spherical penalization" << std::endl;
       fullprint << "Coefficients=" << algo.getCoefficients() << std::endl;
       fullprint << "Residual=" << algo.getResidual() << std::endl;

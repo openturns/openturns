@@ -175,7 +175,7 @@ String LeastSquaresMethodImplementation::__repr__() const
          << ", initialIndices=" << initialIndices_;
 }
 
-Basis LeastSquaresMethodImplementation::getBasis() const
+LeastSquaresMethodImplementation::FunctionCollection LeastSquaresMethodImplementation::getBasis() const
 {
   return proxy_.getBasis();
 }
@@ -218,16 +218,6 @@ MatrixImplementation LeastSquaresMethodImplementation::computeWeightedDesign(con
   return design;
 }
 
-
-Basis LeastSquaresMethodImplementation::buildCurrentBasis() const
-{
-  const UnsignedInteger currentBasisSize = currentIndices_.getSize();
-  const Basis fullBasis(proxy_.getBasis());
-  Basis basis(currentBasisSize);
-  for (UnsignedInteger j = 0; j < currentBasisSize; ++j)
-    basis[j] = fullBasis[currentIndices_[j]];
-  return basis;
-}
 
 // Update the decomposition and the by-products when the given indices
 // are added and removed from the current indices.

@@ -23,7 +23,7 @@ OT_BasisSequenceFactory_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_BasisSequence_getMaximumRelativeConvergence_doc
+%define OT_BasisSequenceFactory_getMaximumRelativeConvergence_doc
 "Accessor to the stopping criterion on the L1-norm of the coefficients.
 
 Returns
@@ -31,12 +31,12 @@ Returns
 e : float
     Stopping criterion."
 %enddef
-%feature("docstring") OT::BasisSequence::getMaximumRelativeConvergence
-OT_BasisSequence_getMaximumRelativeConvergence_doc
+%feature("docstring") OT::BasisSequenceFactoryImplementation::getMaximumRelativeConvergence
+OT_BasisSequenceFactory_getMaximumRelativeConvergence_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_BasisSequence_getVerbose_doc
+%define OT_BasisSequenceFactory_getVerbose_doc
 "Accessor to the verbosity.
 
 Returns
@@ -44,12 +44,12 @@ Returns
 v : bool.
     Verbosity"
 %enddef
-%feature("docstring") OT::BasisSequence::getVerbose
-OT_BasisSequence_getVerbose_doc
+%feature("docstring") OT::BasisSequenceFactoryImplementation::getVerbose
+OT_BasisSequenceFactory_getVerbose_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_BasisSequence_setMaximumRelativeConvergence_doc
+%define OT_BasisSequenceFactory_setMaximumRelativeConvergence_doc
 "Accessor to the stopping criterion on the L1-norm of the coefficients.
 
 Parameters
@@ -57,12 +57,12 @@ Parameters
 e : float
     Stopping criterion."
 %enddef
-%feature("docstring") OT::BasisSequence::setMaximumRelativeConvergence
-OT_BasisSequence_setMaximumRelativeConvergence_doc
+%feature("docstring") OT::BasisSequenceFactoryImplementation::setMaximumRelativeConvergence
+OT_BasisSequenceFactory_setMaximumRelativeConvergence_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_BasisSequence_setVerbose_doc
+%define OT_BasisSequenceFactory_setVerbose_doc
 "Accessor to the verbosity.
 
 Parameters
@@ -70,5 +70,30 @@ Parameters
 v : bool
     Enable or disable the verbosity."
 %enddef
-%feature("docstring") OT::BasisSequence::setVerbose
-OT_BasisSequence_setVerbose_doc
+%feature("docstring") OT::BasisSequenceFactoryImplementation::setVerbose
+OT_BasisSequenceFactory_setVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_BasisSequenceFactory_build_doc
+"Run the algorithm.
+
+Parameters
+----------
+x : 2-d sequence of float
+    Input sample
+y : 2-d sequence of float
+    Output sample
+psi : sequence of :class:`~openturns.Function`
+    Basis
+indices : sequence of int
+    Current indices of the basis
+
+Returns
+-------
+measure : :class:`~openturns.BasisSequence`
+    Fitting measure"
+%enddef
+%feature("docstring") OT::BasisSequenceFactoryImplementation::build
+OT_BasisSequenceFactory_build_doc
+

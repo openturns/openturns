@@ -2,8 +2,6 @@
 
 %feature("docstring") OT::Basis
 OT_Basis_doc
-%feature("docstring") OT::Basis::add
-OT_Basis_add_doc
 %feature("docstring") OT::Basis::build
 OT_Basis_build_doc
 %feature("docstring") OT::Basis::getDimension

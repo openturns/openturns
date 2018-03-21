@@ -25,7 +25,7 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Function>)
+//TEMPLATE_CLASSNAMEINIT(PersistentCollection<Function>)
 
 static const Factory<PersistentCollection<Function> > Factory_PersistentCollection_Function;
 

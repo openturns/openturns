@@ -43,6 +43,7 @@ class OT_API BasisSequenceFactory
   CLASSNAME
 
 public:
+  typedef BasisSequenceFactoryImplementation::FunctionCollection FunctionCollection;
 
 
   /** Default constructor */
@@ -62,7 +63,7 @@ public:
   /** Method to create new BasisSequence objects */
   BasisSequence build(const Sample & x,
                       const Sample & y,
-                      const Basis & psi,
+                      const FunctionCollection & psi,
                       const Indices & indices);
 #ifndef SWIG
   BasisSequence build(const Sample & y,

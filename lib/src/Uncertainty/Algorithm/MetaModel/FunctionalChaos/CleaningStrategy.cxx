@@ -90,6 +90,7 @@ void CleaningStrategy::computeInitialBasis()
   I_p_ = Indices(size);
   I_p_.fill();
   for (UnsignedInteger i = 0; i < size; ++i) Psi_k_p_[i] = basis_.build(i);
+  Psi_ = Psi_k_p_;
   addedPsi_k_ranks_ = Indices(I_p_.getSize());
   addedPsi_k_ranks_.fill();
   removedPsi_k_ranks_ = Indices(0);
@@ -214,6 +215,7 @@ void CleaningStrategy::updateBasis(const Point & alpha_k,
   {
     const Function newVector(basis_.build(currentVectorIndex_));
     Psi_k_p_.add(newVector);
+    Psi_.add(newVector);
     I_p_.add(currentVectorIndex_);
     addedPsi_k_ranks_ = Indices(1, I_p_.getSize() - 1);
     ++currentVectorIndex_;

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
     /* Functional basis */
     UnsignedInteger basisDimension = 10;
-    Basis basis(basisDimension);
+    Collection<Function> basis(basisDimension);
     Collection<Distribution> coefficients(basisDimension);
     UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(20);

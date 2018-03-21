@@ -44,6 +44,7 @@ class OT_API BasisSequenceFactoryImplementation
   friend class SparseMethod;
   CLASSNAME
 public:
+  typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
   explicit BasisSequenceFactoryImplementation(const Bool verbose = false);
@@ -58,7 +59,7 @@ public:
   /** Method to create new BasisSequence objects */
   virtual BasisSequence build(const Sample & x,
                               const Sample & y,
-                              const Basis & psi,
+                              const FunctionCollection & psi,
                               const Indices & indices);
 
 #ifndef SWIG

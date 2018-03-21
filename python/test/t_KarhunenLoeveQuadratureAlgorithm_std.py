@@ -9,12 +9,13 @@ try:
     domain = ot.Interval(-1.0, 1.0)
     basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
     basisSize = 5
+    functions = [basis.build(i) for i in range(basisSize)]
     experiment = ot.LHSExperiment(basis.getMeasure(), 100)
     mustScale = False
     threshold = 0.0001
     model = ot.AbsoluteExponential([1.0])
     algo = ot.KarhunenLoeveQuadratureAlgorithm(
-        domain, domain, model, experiment, basis, basisSize, mustScale, threshold)
+        domain, domain, model, experiment, functions, mustScale, threshold)
     algo.run()
     result = algo.getResult()
     lambd = result.getEigenValues()

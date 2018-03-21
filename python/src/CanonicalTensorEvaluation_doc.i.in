@@ -78,7 +78,7 @@ j : int
 
 Returns
 -------
-basis : :class:`~openturns.Basis`
+basis : collection of :class:`~openturns.Function`
     Basis for component j."
 
 // ---------------------------------------------------------------------

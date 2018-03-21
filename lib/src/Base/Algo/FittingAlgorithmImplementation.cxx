@@ -45,7 +45,7 @@ FittingAlgorithmImplementation * FittingAlgorithmImplementation::clone() const
 Scalar FittingAlgorithmImplementation::run(const Sample & x,
     const Sample & y,
     const Point & weight,
-    const Basis & basis,
+    const FunctionCollection & basis,
     const Indices & indices) const
 {
   const DesignProxy proxy(x, basis);
@@ -54,7 +54,7 @@ Scalar FittingAlgorithmImplementation::run(const Sample & x,
 
 Scalar FittingAlgorithmImplementation::run(const Sample & x,
     const Sample & y,
-    const Basis & basis,
+    const FunctionCollection & basis,
     const Indices & indices) const
 {
   const DesignProxy proxy(x, basis);

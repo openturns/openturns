@@ -5,7 +5,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-try:
+if 1:
     mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
     # 1D mesh, 1D covariance, uniform weight, automatic centering, more samples
     # than vertices
@@ -87,7 +87,3 @@ try:
     print("KL functions=", KLFunctions)
     print("KL lift=", result.lift(coefficients[0]))
     print("KL lift as field=", result.liftAsField(coefficients[0]))
-except:
-    import sys
-    print("t_KarhunenLoeveSVDAlgorithm_std.py",
-          sys.exc_info()[0], sys.exc_info()[1])

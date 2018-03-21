@@ -43,10 +43,9 @@ int main(int argc, char *argv[])
     {
       coll.add(SymbolicFunction(description, Description(1, OSS() << "x" << i)));
     }
-    Basis psi(coll);
     Indices indices(dimension);
     indices.fill();
-    DesignProxy proxy(x, psi);
+    DesignProxy proxy(x, coll);
     Point weights(size, 10.0);
     fullprint << "Uniform weights" << std::endl << std::endl;
     {

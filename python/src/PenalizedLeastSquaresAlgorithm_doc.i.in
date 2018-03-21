@@ -16,8 +16,8 @@ y : :class:`~openturns.Sample`
     Output sample
 weight : sequence of float
     Output weights
-psi : :class:`~openturns.Basis`
-    Functional basis
+psi : sequence of :class:`~openturns.Function`
+    Basis
 indices : sequence of int
     Indices allowed in the basis
 penalizationFactor : float, optional

@@ -28,30 +28,6 @@ OT_Basis_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Basis_add_doc
-"Add an element in the Basis.
-
-Parameters
-----------
-function : :class:`~openturns.Function`
-    Function added in the Basis.
-
-Examples
---------
->>> import openturns as ot
->>> dimension = 3
->>> input = ['x0', 'x1', 'x2']
->>> functions = []
->>> for i in range(2):
-...     functions.append(ot.SymbolicFunction(input, [input[i]]))
->>> basis = ot.Basis(functions)
->>> basis.add(ot.SymbolicFunction(input, [input[2]]))"
-%enddef
-%feature("docstring") OT::BasisImplementation::add
-OT_Basis_add_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Basis_build_doc
 "Build the element of the given index.
 

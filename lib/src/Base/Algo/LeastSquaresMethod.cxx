@@ -113,12 +113,7 @@ void LeastSquaresMethod::update(const Indices& addedIndices,
   getImplementation()->update(addedIndices, conservedIndices, removedIndices, row);
 }
 
-Basis LeastSquaresMethod::buildCurrentBasis() const
-{
-  return getImplementation()->buildCurrentBasis();
-}
-
-Basis LeastSquaresMethod::getBasis() const
+LeastSquaresMethod::FunctionCollection LeastSquaresMethod::getBasis() const
 {
   return getImplementation()->getBasis();
 }

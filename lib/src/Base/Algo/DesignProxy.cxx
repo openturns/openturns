@@ -43,7 +43,7 @@ DesignProxy::DesignProxy ()
 
 /* Parameters constructor */
 DesignProxy::DesignProxy(const Sample & x,
-                         const Basis & basis)
+                         const FunctionCollection & basis)
   : Object()
   , x_(x)
   , basis_(basis)
@@ -67,6 +67,7 @@ void DesignProxy::initialize() const
   UnsignedInteger nbCols = cacheSize / nbRows;
   // The cache stores at least the first function values
   if (nbCols <= 0) nbCols = 1;
+  if (nbCols > basis_.getSize()) nbCols = basis_.getSize();
   designCache_ = Matrix(nbRows, nbCols);
   alreadyComputed_ = Indices(nbCols, 0);
 }
@@ -167,7 +168,7 @@ Sample DesignProxy::getInputSample() const
 }
 
 /* Basis accessor */
-Basis DesignProxy::getBasis() const
+DesignProxy::FunctionCollection DesignProxy::getBasis() const
 {
   return basis_;
 }

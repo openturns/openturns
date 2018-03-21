@@ -55,7 +55,7 @@ String PenalizedLeastSquaresAlgorithmFactory::__repr__() const
 PenalizedLeastSquaresAlgorithm * PenalizedLeastSquaresAlgorithmFactory::build(const Sample & x,
     const Sample & y,
     const Point & weight,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices) const
 {
   return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi, indices, false, useNormal_ );

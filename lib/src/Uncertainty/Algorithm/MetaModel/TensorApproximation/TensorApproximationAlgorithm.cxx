@@ -209,8 +209,7 @@ void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
       prodColl[i2] = Function(tensor.getMarginalRank(i2).clone());
     }
 
-    const Basis basis(prodColl);
-    DesignProxy proxy(x, basis);
+    DesignProxy proxy(x, prodColl);
     Indices full(prodColl.getSize());
     full.fill();
 
@@ -410,8 +409,7 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
       prodColl[i] = Function(tensor.getMarginalRank(i).clone());
     }
 
-    const Basis basis(prodColl);
-    DesignProxy proxy(x, basis);
+    DesignProxy proxy(x, prodColl);
     Indices full(prodColl.getSize());
     full.fill();
 
@@ -489,16 +487,16 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
     }
   }
 
-  Basis basis;
+  FunctionCollection functions;
   const Basis basisj(tensor.getBasis(j));
   for (UnsignedInteger i = 0; i < m; ++ i)
   {
     for (UnsignedInteger k = 0; k < nj; ++ k)
     {
-      basis.add(basisj[k]);
+      functions.add(basisj[k]);
     }
   }
-  DesignProxy proxy(transformedInputSample_.getMarginal(j), basis);
+  DesignProxy proxy(transformedInputSample_.getMarginal(j), functions);
   proxy.setWeight(w);
   Indices full(nj * m);
   full.fill();

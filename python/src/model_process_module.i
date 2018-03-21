@@ -17,6 +17,7 @@
 %include OTexceptions.i
 %include std_vector.i
 
+%include BaseFuncCollection.i
 %import base_module.i
 %import dist_bundle1_module.i
 %import dist_bundle2_module.i

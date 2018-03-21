@@ -148,7 +148,7 @@ Point SparseMethod::solve(const Point & rhs)
 }
 
 
-Basis SparseMethod::getBasis() const
+SparseMethod::FunctionCollection SparseMethod::getBasis() const
 {
   return method_.getBasis();
 }
@@ -171,11 +171,6 @@ Sample SparseMethod::getInputSample() const
 Point SparseMethod::getWeight() const
 {
   return method_.getWeight();
-}
-
-Basis SparseMethod::buildCurrentBasis() const
-{
-  return method_.buildCurrentBasis();
 }
 
 CovarianceMatrix SparseMethod::getGramInverse() const

@@ -33,6 +33,7 @@
 #include "openturns/GaussProductExperiment.hxx"
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
+#include "openturns/Basis.hxx"
 #include "openturns/LegendreFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ComposedFunction.hxx"
@@ -55,7 +56,6 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm()
   , domain_()
   , experiment_()
   , basis_()
-  , basisSize_(0)
   , mustScale_(false)
 {
   // Nothing to do
@@ -66,8 +66,7 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
     const Interval & domainBounds,
     const CovarianceModel & covariance,
     const WeightedExperiment & experiment,
-    const Basis & basis,
-    const UnsignedInteger basisSize,
+    const FunctionCollection & basis,
     const Bool mustScale,
     const Scalar threshold)
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
@@ -76,7 +75,6 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   , domainUpperBound_(domainBounds.getUpperBound())
   , experiment_(experiment)
   , basis_(basis)
-  , basisSize_(basisSize)
   , mustScale_(mustScale)
 {
   // Check the arguments
@@ -97,8 +95,6 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   , domainLowerBound_(domainBounds.getLowerBound())
   , domainUpperBound_(domainBounds.getUpperBound())
   , experiment_(GaussProductExperiment(ComposedDistribution(Collection<Distribution>(domain.getDimension(), Uniform())), Indices(domain.getDimension(), marginalDegree + 1)))
-    // Here we have to use the double/double version of std::pow to make VC++ happy. Grrr.
-  , basis_(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(domain.getDimension(), LegendreFactory()), EnumerateFunction(domain.getDimension(), SpecFunc::MaxScalar))), basisSize_(static_cast<UnsignedInteger>(std::floor(0.5 + std::pow(1.0 * marginalDegree, 1.0 * domain.getDimension()))))
   , mustScale_(true)
 {
   // Check the arguments
@@ -106,6 +102,15 @@ KarhunenLoeveQuadratureAlgorithm::KarhunenLoeveQuadratureAlgorithm(const Domain 
   const Distribution distribution(experiment_.getDistribution());
   if (dimension != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the domain dimension=" << dimension << " does not match the distribution dimension=" << distribution.getDimension() << " of the weighted experiment";
   if (domainBounds.isNumericallyEmpty()) throw InvalidArgumentException(HERE) << "Error: the given domain is numerically empty.";
+
+
+  // Here we have to use the double/double version of std::pow to make VC++ happy. Grrr.
+  const UnsignedInteger basisSize = static_cast<UnsignedInteger>(std::floor(0.5 + std::pow(1.0 * marginalDegree, 1.0 * dimension)));
+  const Basis basis(OrthogonalProductPolynomialFactory(Collection<OrthogonalUniVariatePolynomialFamily>(dimension, LegendreFactory()), EnumerateFunction(dimension, SpecFunc::MaxScalar)));
+  for(UnsignedInteger i = 0; i < basisSize; ++i)
+  {
+    basis_.add(basis.build(i));
+  }
 }
 
 /* Virtual constructor */
@@ -165,10 +170,10 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     inverseScaling = LinearFunction(constant, center, inverseT);
   }
   // Here we set the collection of functions
-  Collection<Function> coll(basisSize_);
-  for (UnsignedInteger i = 0; i < basisSize_; ++i)
-    if (!hasSameBounds && mustScale_) coll[i] = ComposedFunction(basis_.build(i), inverseScaling);
-    else coll[i] = basis_.build(i);
+  Collection<Function> coll(basis_.getSize());
+  for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
+    if (!hasSameBounds && mustScale_) coll[i] = ComposedFunction(basis_[i], inverseScaling);
+    else coll[i] = basis_[i];
   // Compute the integration nodes and weights
   Point rawWeights;
   WeightedExperiment experimentCopy(experiment_);
@@ -209,10 +214,10 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   LOGINFO(OSS(false) << "Final number of integration nodes=" << nodesNumber);
   if (nodesNumber == 0) throw InternalException(HERE) << "Error: cannot compute a Karhunen Loeve decomposition with zero integration node.";
   LOGINFO("Compute the design matrix");
-  MatrixImplementation scaledTheta(nodesNumber, basisSize_);
+  MatrixImplementation scaledTheta(nodesNumber, basis_.getSize());
   UnsignedInteger indexTheta = 0;
   // scaledTheta(i,j)=w_i\theta_j(\xi_i)
-  for (UnsignedInteger j = 0; j < basisSize_; ++j)
+  for (UnsignedInteger j = 0; j < basis_.getSize(); ++j)
   {
     const Point thetaj(coll[j](nodes).getImplementation()->getData());
     for (UnsignedInteger i = 0; i < nodesNumber; ++i)
@@ -264,8 +269,8 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Here we have to expand scaledTheta if dimension > 1
   else
   {
-    omega = Matrix(nodesNumber * dimension, basisSize_ * dimension);
-    for (UnsignedInteger j = 0; j < basisSize_; ++j)
+    omega = Matrix(nodesNumber * dimension, basis_.getSize() * dimension);
+    for (UnsignedInteger j = 0; j < basis_.getSize(); ++j)
       for (UnsignedInteger i = 0; i < nodesNumber; ++i)
       {
         const Scalar value = scaledTheta(i, j);
@@ -288,9 +293,9 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Here we have to expand cholesky if dimension > 1
   else
   {
-    choleskyBlock = TriangularMatrix(basisSize_ * dimension);
-    for (UnsignedInteger j = 0; j < basisSize_; ++j)
-      for (UnsignedInteger i = j; i < basisSize_; ++i)
+    choleskyBlock = TriangularMatrix(basis_.getSize() * dimension);
+    for (UnsignedInteger j = 0; j < basis_.getSize(); ++j)
+      for (UnsignedInteger i = j; i < basis_.getSize(); ++i)
       {
         const Scalar value = cholesky(i, j);
         for (UnsignedInteger k = 0; k < dimension; ++k)
@@ -335,7 +340,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
   // Reduce and rescale the eigenvectors
   MatrixImplementation projection(K, nodesNumber * dimension);
   Point selectedEV(K);
-  Basis modes(0);
+  Collection<Function> modes;
   ProcessSample modesAsProcessSample(Mesh(nodes), 0, dimension);
   SampleImplementation values(nodesNumber, dimension);
   Point a(augmentedDimension, 1);
@@ -381,7 +386,7 @@ void KarhunenLoeveQuadratureAlgorithm::run()
       modes.add(LinearCombinationFunction(coll, a));
     else
     {
-      SampleImplementation aSample(basisSize_, dimension);
+      SampleImplementation aSample(basis_.getSize(), dimension);
       // aSample = diag(1/w) omega.a / ||omega.a||^2
       aSample.setData(a);
       modes.add(DualLinearCombinationFunction(coll, aSample));
@@ -403,15 +408,9 @@ WeightedExperiment KarhunenLoeveQuadratureAlgorithm::getExperiment() const
 }
 
 /* Basis accessor */
-Basis KarhunenLoeveQuadratureAlgorithm::getBasis() const
+KarhunenLoeveQuadratureAlgorithm::FunctionCollection KarhunenLoeveQuadratureAlgorithm::getBasis() const
 {
   return basis_;
-}
-
-/* BasisSize accessor */
-UnsignedInteger KarhunenLoeveQuadratureAlgorithm::getBasisSize() const
-{
-  return basisSize_;
 }
 
 /* MustScale accessor */
@@ -451,7 +450,6 @@ void KarhunenLoeveQuadratureAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "domainUpperBound_", domainUpperBound_ );
   adv.saveAttribute( "experiment_", experiment_ );
   adv.saveAttribute( "basis_", basis_ );
-  adv.saveAttribute( "basisSize_", basisSize_ );
   adv.saveAttribute( "mustScale_", mustScale_ );
 }
 
@@ -464,7 +462,6 @@ void KarhunenLoeveQuadratureAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "domainUpperBound_", domainUpperBound_ );
   adv.loadAttribute( "experiment_", experiment_ );
   adv.loadAttribute( "basis_", basis_ );
-  adv.loadAttribute( "basisSize_", basisSize_ );
   adv.loadAttribute( "mustScale_", mustScale_ );
 }
 

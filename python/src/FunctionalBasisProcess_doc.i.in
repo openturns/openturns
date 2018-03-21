@@ -5,7 +5,7 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     The distribution of the random vector :math:`\vect{A}=(A_1,\dots, A_K)`.
-basis : :class:`~openturns.Basis`
+basis : sequence of :class:`~openturns.Function`
     Collection of deterministic functions.
 mesh : :class:`~openturns.Mesh`
     Mesh :math:`\cM` over which the domain :math:`\cD` is discretized.
@@ -48,7 +48,7 @@ Create the functional basis process:
 
 Returns
 -------
-basis : :class:`~openturns.Basis`
+basis : collection of :class:`~openturns.Function`
     Collection of functions :math:`(\phi_i)_{1 \leq i \leq K}`."
 
 // ---------------------------------------------------------------------
@@ -68,7 +68,7 @@ distribution : :class:`~openturns.Distribution`
 
 Parameters
 ----------
-basis : :class:`~openturns.Basis`
+basis : sequence of :class:`~openturns.Function`
     Collection of functions :math:`(\phi_i)_{1 \leq i \leq K}`."
 
 // ---------------------------------------------------------------------

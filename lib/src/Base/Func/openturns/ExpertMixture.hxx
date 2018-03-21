@@ -25,7 +25,9 @@
 #include "openturns/Indices.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Classifier.hxx"
-#include "openturns/Basis.hxx"
+#include "openturns/Function.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,12 +43,14 @@ class OT_API ExpertMixture
   CLASSNAME
 
 public:
+  typedef Collection<Function> FunctionCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
 
   /** Constructor */
   ExpertMixture();
 
   /** Constructor */
-  ExpertMixture(const Basis & experts,
+  ExpertMixture(const FunctionCollection & experts,
                 const Classifier & classifier,
                 const Bool supervised = true);
 
@@ -72,8 +76,8 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Accessor for local experts */
-  Basis getExperts() const;
-  void setExperts(const Basis & experts);
+  FunctionCollection getExperts() const;
+  void setExperts(const FunctionCollection & experts);
 
   /** Accessor for classifier */
   Classifier getClassifier() const;
@@ -92,7 +96,7 @@ private:
   Sample evaluateNonSupervised(const Sample & inP) const;
 
   /** The local experts */
-  Basis experts_;
+  FunctionPersistentCollection experts_;
 
   /** The classifier */
   Classifier classifier_;

@@ -34,6 +34,8 @@ class OT_API CanonicalTensorEvaluation : public EvaluationImplementation
 public:
   typedef Collection<OrthogonalUniVariateFunctionFamily>           FunctionFamilyCollection;
   typedef PersistentCollection<OrthogonalUniVariateFunctionFamily> FunctionFamilyPersistentCollection;
+  typedef Collection<Function>                                     FunctionCollection;
+  typedef PersistentCollection<Function>                           FunctionPersistentCollection;
 
   CanonicalTensorEvaluation();
 
@@ -58,7 +60,7 @@ public:
   Point getCoefficients(const UnsignedInteger i, const UnsignedInteger j) const;
 
   /** Basis accessor along i-th component */
-  Basis getBasis(const UnsignedInteger i) const;
+  FunctionCollection getBasis(const UnsignedInteger i) const;
 
   void setRank(const UnsignedInteger rank);
   UnsignedInteger getRank() const;
@@ -82,7 +84,7 @@ protected:
   // subbasis coefficients
   PersistentCollection<Sample> coefficients_;
 
-  PersistentCollection<Basis> basis_;
+  PersistentCollection<FunctionPersistentCollection> basis_;
 
 };
 

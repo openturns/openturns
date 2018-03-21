@@ -43,7 +43,7 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation()
 /* Default constructor */
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
     const Sample & y,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices)
   : PersistentObject()
   , x_(x)
@@ -67,7 +67,7 @@ ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const
 ApproximationAlgorithmImplementation::ApproximationAlgorithmImplementation(const Sample & x,
     const Sample & y,
     const Point & weight,
-    const Basis & psi,
+    const FunctionCollection & psi,
     const Indices & indices)
   : PersistentObject()
   , x_(x)
@@ -126,7 +126,7 @@ Point ApproximationAlgorithmImplementation::getWeight() const
   return weight_;
 }
 
-Basis ApproximationAlgorithmImplementation::getPsi() const
+ApproximationAlgorithmImplementation::FunctionCollection ApproximationAlgorithmImplementation::getPsi() const
 {
   return psi_;
 }

@@ -57,7 +57,7 @@ String KFold::__repr__() const
 Scalar KFold::run(const Sample & x,
                   const Sample & y,
                   const Point & weight,
-                  const Basis & basis,
+                  const FunctionCollection & basis,
                   const Indices & indices) const
 {
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);
@@ -75,7 +75,7 @@ Scalar KFold::run(LeastSquaresMethod & method,
                   const Sample & y) const
 {
   const Sample x(method.getInputSample());
-  const Basis basis(method.getBasis());
+  const FunctionCollection basis(method.getBasis());
 
   const UnsignedInteger sampleSize = x.getSize();
   const Scalar variance = y.computeVariance()[0];

@@ -39,7 +39,7 @@ class OT_API PenalizedLeastSquaresAlgorithm
   CLASSNAME
 public:
 
-  typedef Collection<Function> FunctionCollection;
+  typedef ApproximationAlgorithmImplementation::FunctionCollection FunctionCollection;
 
   /** Default constructor */
   explicit PenalizedLeastSquaresAlgorithm(const Bool useNormal = true);
@@ -47,7 +47,7 @@ public:
   /** Parameters constructor, simple least squares problem with default parameters, spherically penalized for general parameters */
   PenalizedLeastSquaresAlgorithm(const Sample & x,
                                  const Sample & y,
-                                 const Basis & psi,
+                                 const FunctionCollection & psi,
                                  const Indices & indices,
                                  const Scalar penalizationFactor = 0.0,
                                  const Bool useNormal = false);
@@ -56,7 +56,7 @@ public:
   PenalizedLeastSquaresAlgorithm(const Sample & x,
                                  const Sample & y,
                                  const Point & weight,
-                                 const Basis & psi,
+                                 const FunctionCollection & psi,
                                  const Indices & indices,
                                  const Scalar penalizationFactor = 0.0,
                                  const Bool useNormal = false);
@@ -65,7 +65,7 @@ public:
   PenalizedLeastSquaresAlgorithm(const Sample & x,
                                  const Sample & y,
                                  const Point & weight,
-                                 const Basis & psi,
+                                 const FunctionCollection & psi,
                                  const Indices & indices,
                                  const Scalar penalizationFactor,
                                  const CovarianceMatrix & penalizationMatrix,

@@ -737,7 +737,7 @@ int main(int argc, char *argv[])
     FunctionalBasisProcess functionalBasisProcess;
     {
       UnsignedInteger basisDimension = 10;
-      Basis basis(basisDimension);
+      Collection<Function> basis(basisDimension);
       Collection<Distribution> coefficients(basisDimension);
       for (UnsignedInteger i = 0; i < basisDimension; ++i)
       {
@@ -913,7 +913,7 @@ int main(int argc, char *argv[])
       aCollection.add( Normal(mean, Point(2, 1.0), R) );
       Mixture distribution(aCollection, Point(aCollection.getSize(), 1.0));
       MixtureClassifier classifier(distribution);
-      Basis experts(0);
+      Collection<Function> experts(0);
       experts.add(SymbolicFunction("x", "-x"));
       experts.add(SymbolicFunction("x", "x"));
       expertMixture = ExpertMixture(experts, classifier);

@@ -115,6 +115,8 @@ protected:
   /** The collection of vectors upon which we project the (composed) model */
   FunctionCollection Psi_k_p_;
 
+  /** The full basis */
+  FunctionCollection Psi_;
 private:
 
 } ; /* class AdaptiveStrategyImplementation */
