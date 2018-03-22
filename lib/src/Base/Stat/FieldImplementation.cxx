@@ -157,7 +157,7 @@ Scalar & FieldImplementation::operator () (const UnsignedInteger i,
   // No copyOnWrite() as the at() method already do it
   return at(i, j);
 #else
-  return (*this)(i, j);
+  return values_(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
@@ -167,7 +167,7 @@ const Scalar & FieldImplementation::operator () (const UnsignedInteger i,
 #ifdef DEBUG_BOUNDCHECKING
   return at(i, j);
 #else
-  return (*this)(i, j);
+  return values_(i, j);
 #endif /* DEBUG_BOUNDCHECKING */
 }
 
@@ -191,7 +191,7 @@ Scalar & FieldImplementation::at (const UnsignedInteger i,
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
   isAlreadyComputedInputMean_ = false;
-  return (*this)(i, j);
+  return values_(i, j);
 }
 
 const Scalar & FieldImplementation::at (const UnsignedInteger i,
@@ -199,7 +199,7 @@ const Scalar & FieldImplementation::at (const UnsignedInteger i,
 {
   if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
   if (j >= getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
-  return (*this)(i, j);
+  return values_(i, j);
 }
 
 /* Data accessors */

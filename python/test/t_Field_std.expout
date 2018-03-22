@@ -9,6 +9,7 @@ field=     [ v0         v1         v2         X0         X1         X2         ]
 7 : [  1          1          1          0.445785  -1.03808   -0.856712  ]
 input dim= 3
 value[4]= [-2.29006,-1.28289,-1.31178]
+value[4, 0]=-2.29006
 nearest[2]= [0.793156,-0.470526,0.261018]
 mesh= class=Mesh name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=3 data=[[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]] simplices=[[0,1,2,4],[3,5,6,7],[1,2,3,6],[1,2,4,6],[1,3,5,6],[1,4,5,6]]
 input mean= [-0.0859856,-0.496935,0.0517341]

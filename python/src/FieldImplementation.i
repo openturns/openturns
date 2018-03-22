@@ -21,7 +21,7 @@
 namespace OT{
 %extend FieldImplementation {
 
-const Point __getitem__ (SignedInteger index) const
+Point __getitem__ (SignedInteger index) const
 {
   OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
@@ -44,6 +44,12 @@ void __setitem__ (SignedInteger index,
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
   self->at(index) = val;
+}
+
+
+UnsignedInteger __len__() const
+{
+  return self->getSize();
 }
 
 Scalar __getitem__(PyObject * args) const {
@@ -106,7 +112,6 @@ void __setitem__(PyObject * args, Scalar val) {
 fail:
           return;
 }
-
 
 FieldImplementation(const FieldImplementation & other)
 {
