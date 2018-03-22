@@ -18,6 +18,7 @@ for p in range(3):
     ts1.add(pt)
 
 print('ts1=', ts1)
+print('len=', len(ts1))
 
 # We get the second element of the ts
 secondElement = ts1[1]

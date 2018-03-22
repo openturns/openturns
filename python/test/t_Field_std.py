@@ -33,6 +33,7 @@ tree = ot.KDTree(vertices)
 print('field=', field)
 print('input dim=', field.getInputDimension())
 print('value[4]=', field.getValueAtIndex(4))
+print('value[4, 0]=%.6g' % field[4, 0])
 print('nearest[2]=', field.getValueAtIndex(tree.query(field[2])))
 print('mesh=', field.getMesh())
 print('input mean=', field.getInputMean())
@@ -45,3 +46,4 @@ with open(fname) as f:
     data = f.read()
     print(data)
 os.remove(fname)
+
