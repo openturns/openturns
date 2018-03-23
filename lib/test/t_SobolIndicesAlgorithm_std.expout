@@ -25,3 +25,5 @@ Confidence interval of total order Y|X3 = [0.211384, 0.279639]
 Asymptotic estimate
 Confidence interval of first order Y|X1 = [0.29234, 0.325464]
 Confidence interval of total order Y|X3 = [0.236059, 0.252527]
+First order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.308902,0.459187,0.00683867] sigma=class=Point name=Unnamed dimension=3 values=[0.0084503,0.00760475,0.0136799] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+Total order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.567786,0.430754,0.244293] sigma=class=Point name=Unnamed dimension=3 values=[0.0125981,0.00757338,0.00420115] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]

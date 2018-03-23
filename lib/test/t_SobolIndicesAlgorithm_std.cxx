@@ -160,6 +160,8 @@ int main(int argc, char *argv[])
                 << ", " << asymptoticConfidenceIntervalFirstOrder.getUpperBound()[0] << "]" << std::endl;
       fullprint << "Confidence interval of total order Y|X3 = [" << asymptoticConfidenceIntervalTotalOrder.getLowerBound()[2]
                 << ", " << asymptoticConfidenceIntervalTotalOrder.getUpperBound()[2] << "]" << std::endl;
+      fullprint << "First order indices distribution = " << sensitivitySobol.getFirstOrderIndicesDistribution() << std::endl;
+      fullprint << "Total order indices distribution = " << sensitivitySobol.getTotalOrderIndicesDistribution() << std::endl;
     }
 
   }

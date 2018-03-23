@@ -9,6 +9,12 @@ Total order indices interval =  [0.541877, 0.613681]
 [0.391828, 0.481429]
 [0.229972, 0.290251]
 asymptotic intervals:
+First order indices distribution =  Normal(mu = [0.302751,0.460825,0.00669407], sigma = [0.0103948,0.0118389,0.0134135], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
+Total order indices distribution =  Normal(mu = [0.57499,0.427147,0.256687], sigma = [0.0130501,0.00863901,0.00803273], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
 First order indices interval =  [0.282378, 0.323124]
 [0.437621, 0.484029]
 [-0.0195959, 0.032984]
@@ -26,6 +32,12 @@ Total order indices interval =  [0.534175, 0.586872]
 [0.414626, 0.451337]
 [0.228592, 0.249431]
 asymptotic intervals:
+First order indices distribution =  Normal(mu = [0.322419,0.457314,0.0260925], sigma = [0.0133557,0.00958827,0.0227135], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
+Total order indices distribution =  Normal(mu = [0.55841,0.433746,0.240408], sigma = [0.0131725,0.00828669,0.00467821], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
 First order indices interval =  [0.296243, 0.348596]
 [0.438522, 0.476107]
 [-0.0184251, 0.0706102]
@@ -43,6 +55,12 @@ Total order indices interval =  [0.53389, 0.613643]
 [0.381511, 0.470495]
 [0.221053, 0.288446]
 asymptotic intervals:
+First order indices distribution =  Normal(mu = [0.293133,0.451207,-0.00292379], sigma = [0.010897,0.0114136,0.00919454], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
+Total order indices distribution =  Normal(mu = [0.57499,0.427147,0.256687], sigma = [0.0130501,0.00863901,0.00803273], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
 First order indices interval =  [0.271776, 0.314491]
 [0.428837, 0.473578]
 [-0.0209448, 0.0150972]
@@ -60,6 +78,12 @@ Total order indices interval =  [0.52855, 0.609928]
 [0.385, 0.478943]
 [0.211384, 0.279639]
 asymptotic intervals:
+First order indices distribution =  Normal(mu = [0.308902,0.459187,0.00683867], sigma = [0.0084503,0.00760475,0.0136799], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
+Total order indices distribution =  Normal(mu = [0.567786,0.430754,0.244293], sigma = [0.0125981,0.00757338,0.00420115], R = [[ 1 0 0 ]
+ [ 0 1 0 ]
+ [ 0 0 1 ]])
 First order indices interval =  [0.29234, 0.325464]
 [0.444282, 0.474092]
 [-0.0199734, 0.0336508]

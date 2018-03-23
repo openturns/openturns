@@ -59,6 +59,8 @@ for method in methods:
     interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval()
     interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval()
     print("asymptotic intervals:")
+    print("First order indices distribution = ", sensitivity_algorithm.getFirstOrderIndicesDistribution())
+    print("Total order indices distribution = ", sensitivity_algorithm.getTotalOrderIndicesDistribution())
     print("First order indices interval = ", interval_fo_asymptotic)
     print("Total order indices interval = ", interval_to_asymptotic)
 
