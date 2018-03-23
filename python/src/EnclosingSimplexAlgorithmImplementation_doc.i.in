@@ -19,7 +19,8 @@ simplices : :class:`~openturns.IndicesCollection`
 
 See also
 --------
-NaiveEnclosingSimplex, BoundingVolumeHierarchy
+NaiveEnclosingSimplex, BoundingVolumeHierarchy, RegularGridEnclosingSimplex,
+EnclosingSimplexMonotonic1D
 
 Examples
 --------

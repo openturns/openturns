@@ -149,4 +149,6 @@ Spatial lookup
     RegularGridNearestNeighbour
     EnclosingSimplexAlgorithm
     NaiveEnclosingSimplex
+    RegularGridEnclosingSimplex
+    EnclosingSimplexMonotonic1D
     BoundingVolumeHierarchy

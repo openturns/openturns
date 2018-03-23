@@ -13,7 +13,7 @@ Available constructors:
 
 Parameters
 ----------
-sample : 2-d sequence of float
+points : 2-d sequence of float
     Points.
 
 simplices : :class:`~openturns.IndicesCollection`
@@ -33,7 +33,8 @@ strategy : str
 
 See also
 --------
-EnclosingSimplexAlgorithm, NaiveEnclosingSimplex
+EnclosingSimplexAlgorithm, NaiveEnclosingSimplex,
+RegularGridEnclosingSimplex, EnclosingSimplexMonotonic1D
 
 Examples
 --------

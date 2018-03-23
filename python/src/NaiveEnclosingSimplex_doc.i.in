@@ -6,8 +6,6 @@ by looking into all its simplices.  It works well for convex
 domains, but may be slow otherwise.
 
 Available constructors:
-    NaiveEnclosingSimplex(*mesh*)
-
     NaiveEnclosingSimplex(*points, simplices*)
 
 Parameters
@@ -33,7 +31,7 @@ Examples
 >>> upperBound = [2.0, 4.0]
 >>> interval = ot.Interval(lowerbound, upperBound)
 >>> mesh = mesher.build(interval)
->>> locator = ot.NaiveEnclosingSimplex(mesh)
+>>> locator = ot.NaiveEnclosingSimplex(mesh.getVertices(), mesh.getSimplices())
 >>> simplex = locator.query([0.1, 0.2])"
 
 // ---------------------------------------------------------------------

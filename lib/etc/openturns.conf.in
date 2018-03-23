@@ -253,6 +253,9 @@
   <BoundingVolumeHierarchy-BinNumber value="50" />
   <BoundingVolumeHierarchy-Strategy  value="Mean" />
 
+  <!-- OT::EnclosingSimplexAlgorithm parameters -->
+  <EnclosingSimplexAlgorithm-LargeDimension value="5" />
+
   <!-- OT::Matrix parameters -->
   <Matrix-size-visible-in-str-from value="5"                 />
 
@@ -534,7 +537,7 @@
   <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm      value="TNC"     />
 
-<!-- OT::KrigingAlgorithm parameters -->
+  <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-StartingScaling value="1.0e-13" />
   <KrigingAlgorithm-MaximalScaling  value="1.0e5"   />
   <KrigingAlgorithm-LinearAlgebra   value="LAPACK"  />

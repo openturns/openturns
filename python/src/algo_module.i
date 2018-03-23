@@ -50,6 +50,8 @@
 %include EnclosingSimplexAlgorithmImplementation.i
 %include EnclosingSimplexAlgorithm.i
 %include NaiveEnclosingSimplex.i
+%include EnclosingSimplexMonotonic1D.i
+%include RegularGridEnclosingSimplex.i
 %include BoundingVolumeHierarchy.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
