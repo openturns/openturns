@@ -423,7 +423,6 @@ Point MatrixImplementation::symVectProd (const Point & pt) const
 MatrixImplementation MatrixImplementation::computeGram (const Bool transposed) const
 {
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return MatrixImplementation(0, 0);
-  MatrixImplementation scalprod(*this);
   char uplo = 'L';
   char trans = transposed ? 'T' : 'N';
   int n = transposed ? nbColumns_ : nbRows_;

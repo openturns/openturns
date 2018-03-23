@@ -5,8 +5,10 @@ Parameters
 ----------
 mesh : :class:`~openturns.Mesh`
     A mesh which contains `N` vertices.
-sample : :class:`~openturns.CovarianceMatrixCollection`
-    A collection of :math:`N(N+1)/2` covariance matrices.
+collection : :class:`~openturns.CovarianceMatrixCollection`
+    A collection of :math:`N(N+1)/2` covariance matrices of common dimension :math:`d`.
+matrix : :class:`~openturns.CovarianceMatrix`
+    A symmetric positive definite matrix of dimension :math:`Nd` corresponding to the discretization of the model over the given mesh.
 
 Notes
 -----
@@ -33,7 +35,7 @@ which corresponds to the global covariance matrix, which lower part is:
     \right)
 
 
-We build a covariance function which is a  piecewise constant function defined on :math:`\cD \times \cD` by:
+We build a covariance function which is a piecewise constant function defined on :math:`\cD \times \cD` by:
 
 .. math::
 
@@ -51,7 +53,7 @@ Note that:
 
     k=\left\lfloor \dfrac{1}{2}\left( \sqrt{8n+1}-1 \right) \right\rfloor, \quad  \ell= n-\dfrac{k(k+1)}{2}
 
-
+When using the constructor based on a unique covariance matrix, it corresponds to the global covariance matrix described in the first constructor.
 
 Examples
 --------

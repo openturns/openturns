@@ -56,6 +56,9 @@ public:
   UserDefinedCovarianceModel buildAsUserDefinedCovarianceModel(const ProcessSample & sample,
       const Bool isCentered = false) const;
 
+  CovarianceMatrix buildAsCovarianceMatrix(const ProcessSample & sample,
+      const Bool isCentered = false) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

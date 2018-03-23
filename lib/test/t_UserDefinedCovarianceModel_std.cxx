@@ -80,6 +80,10 @@ int main(int argc, char *argv[])
     UserDefinedCovarianceModel myModel(timeGrid, covarianceCollection);
     fullprint << "myModel= " << myModel << std::endl;
 
+    /* Create a UserDefinedCovarianceModel */
+    UserDefinedCovarianceModel myModel2(timeGrid, referenceModel.discretize(timeGrid));
+    fullprint << "myModel2= " << myModel2 << std::endl;
+
     /* Sample the UserDefinedCovarianceModel */
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {

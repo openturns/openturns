@@ -43,6 +43,8 @@ for i in range(timeGrid.getN()):
 # Create a UserDefinedCovarianceModel
 myModel = UserDefinedCovarianceModel(timeGrid, covarianceCollection)
 print("myModel=", myModel)
+myModel2 = UserDefinedCovarianceModel(timeGrid, referenceModel.discretize(timeGrid))
+print("myModel2=", myModel2)
 
 for i in range(timeGrid.getN()):
     t = timeGrid.getValue(i)

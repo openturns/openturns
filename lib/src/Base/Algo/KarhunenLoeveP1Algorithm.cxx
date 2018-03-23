@@ -110,7 +110,7 @@ void KarhunenLoeveP1Algorithm::run()
   }
   // Discretize the covariance model
   LOGINFO("Discretize the covariance model");
-  CovarianceMatrix C(covariance_.discretize(mesh_));
+  CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
   LOGINFO("Discretize the Fredholm equation");
   SquareMatrix M((C * G).getImplementation());
   LOGINFO("Solve the eigenvalue problem");
