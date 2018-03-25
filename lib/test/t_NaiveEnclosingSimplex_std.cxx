@@ -38,7 +38,8 @@ int main(int argc, char *argv[])
   formula.add("x + 0.5*sin(y)");
   formula.add("y-0.1*x*sin(x)");
   SymbolicFunction f(inputVar, formula);
-  mesh.setVertices(f(mesh.getVertices()));
+  const Sample meshVertices(f(mesh.getVertices()));
+  mesh.setVertices(meshVertices);
 
   const IndicesCollection simplices(mesh.getSimplices());
   const NaiveEnclosingSimplex naive(mesh.getVertices(), simplices);
@@ -61,6 +62,19 @@ int main(int argc, char *argv[])
       if (!mesh.checkPointInSimplexWithCoordinates(test[i], index, coordinates))
       {
         fullprint << "Wrong simplex found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;
+        return ExitCode::Error;
+      }
+      if (coordinates[0] < 0.0 || coordinates[0] > 1.0 || coordinates[1] < 0.0 || coordinates[1] > 1.0)
+      {
+        fullprint << "Wrong barycentric coordinates found found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;
+        return ExitCode::Error;
+      }
+      const Point difference(test[i] - coordinates[0] * meshVertices[simplices(index, 0)]
+                                     - coordinates[1] * meshVertices[simplices(index, 1)]
+                                     - coordinates[2] * meshVertices[simplices(index, 2)]);
+      if (difference.norm1() > 1.e-10)
+      {
+        fullprint << "Wrong barycentric coordinates found found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;
         return ExitCode::Error;
       }
     }

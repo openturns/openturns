@@ -37,6 +37,9 @@ for regularGrid in grids:
             if not found:
                 print("Wrong simplex found for", x, "(index=", index, ") barycentric coordinates=", coordinates)
                 os.exit(1)
+            if coordinates[0] < 0.0 or coordinates[0] > 1.0 or coordinates[1] < 0.0 or coordinates[1] > 1.0:
+                print("Wrong barycentric coordinates found found for", x, "(index=", index, ") barycentric coordinates=", coordinates)
+                os.exit(1)
             if abs(x - coordinates[0] * vertices[index, 0] - coordinates[1] * vertices[index + 1, 0]) > 1.e-10:
                 print("Wrong barycentric coordinates found found for", x, "(index=", index, ") barycentric coordinates=", coordinates)
                 os.exit(1)

@@ -79,6 +79,11 @@ int main(int argc, char *argv[])
           fullprint << "Wrong simplex found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;
           return ExitCode::Error;
         }
+        if (coordinates[0] < 0.0 || coordinates[0] > 1.0 || coordinates[1] < 0.0 || coordinates[1] > 1.0)
+        {
+          fullprint << "Wrong barycentric coordinates found found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;
+          return ExitCode::Error;
+        }
         if (std::abs(test(i, 0) - coordinates[0] * vertices(index, 0) - coordinates[1] * vertices(index + 1, 0)) > 1.e-10)
         {
           fullprint << "Wrong barycentric coordinates found found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;

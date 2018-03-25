@@ -29,53 +29,75 @@ int main(int argc, char *argv[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  Interval interval(Point(2, 0.0), Point(2, 10.0));
-  Mesh mesh(IntervalMesher(Indices(2, 30)).build(interval));
   Description inputVar;
   inputVar.add("x");
   inputVar.add("y");
+  inputVar.add("z");
   Description formula;
-  formula.add("x + 0.5*sin(y)");
+  formula.add("0.05+0.95*x");
   formula.add("y-0.1*x*sin(x)");
-  SymbolicFunction f(inputVar, formula);
-  mesh.setVertices(f(mesh.getVertices()));
-
-  const IndicesCollection simplices(mesh.getSimplices());
-  const BoundingVolumeHierarchy bvh(mesh.getVertices(), simplices, 3);
-  fullprint << "bvh=" << bvh << std::endl;
-
-  RandomGenerator::SetSeed(0);
-  Collection<Distribution> coll;
-  coll.add(Uniform(-1.0, 11.0));
-  coll.add(Uniform(-1.0, 11.0));
-  const Sample test(ComposedDistribution(coll).getSample(100));
-
-  Point coordinates(4);
-  for (UnsignedInteger i = 0; i < test.getSize(); ++i)
+  formula.add("z+0.1*x*sin(x)");
+  for (UnsignedInteger dimension = 1;  dimension < 4; ++dimension)
   {
-    UnsignedInteger index = bvh.query(test[i]);
-    if (index >= simplices.getSize())
-      fullprint << i << " is outside" << std::endl;
-    else
+    const Interval interval(Point(dimension, 0.0), Point(dimension, 10.0));
+    const UnsignedInteger nrIntervals = std::exp(std::log(10000) / dimension);
+    Mesh mesh(IntervalMesher(Indices(dimension, nrIntervals)).build(interval));
+    SymbolicFunction f(Description(Collection<String>(inputVar.begin(), inputVar.begin() + dimension)),
+                       Description(Collection<String>(formula.begin(), formula.begin() + dimension)));
+    fullprint << "f=" << f << std::endl;
+    const Sample meshVertices(f(mesh.getVertices()));
+    mesh.setVertices(meshVertices);
+
+    const IndicesCollection simplices(mesh.getSimplices());
+    const BoundingVolumeHierarchy bvh(meshVertices, simplices, 3);
+    fullprint << "bvh=" << bvh << std::endl;
+
+    RandomGenerator::SetSeed(0);
+    Collection<Distribution> coll(dimension, Uniform(-1.0, 11.0));
+    const Sample test(ComposedDistribution(coll).getSample(100));
+
+    Point coordinates;
+    for (UnsignedInteger i = 0; i < test.getSize(); ++i)
     {
-      if (!mesh.checkPointInSimplexWithCoordinates(test[i], index, coordinates))
+      UnsignedInteger index = bvh.query(test[i]);
+      if (index >= simplices.getSize())
+        fullprint << i << " is outside" << std::endl;
+      else
       {
-        fullprint << "Wrong simplex found for " << test[i] << " (index=" << index << ") " << " barycentric coordinates=" << coordinates << std::endl;
-        return ExitCode::Error;
+        if (!mesh.checkPointInSimplexWithCoordinates(test[i], index, coordinates))
+        {
+          fullprint << "Wrong simplex found for " << test[i] << " (index=" << index << ") " << " barycentric coordinates=" << coordinates << std::endl;
+          return ExitCode::Error;
+        }
+        Point difference(test[i] - coordinates[dimension] * meshVertices[simplices(index, dimension)]);
+        for (UnsignedInteger d = 0; d < dimension; ++d)
+        {
+          if (coordinates[d] < 0.0 || coordinates[d] > 1.0)
+          {
+            fullprint << "Wrong barycentric coordinates found found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;
+            return ExitCode::Error;
+          }
+          difference -= coordinates[d] * meshVertices[simplices(index, d)];
+        }
+        if (difference.norm1() > 1.e-10)
+        {
+          fullprint << "Wrong barycentric coordinates found found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;
+          return ExitCode::Error;
+        }
       }
     }
-  }
-  const Indices result(bvh.query(test));
-  for (UnsignedInteger i = 0; i < result.getSize(); ++i)
-  {
-    if (result[i] >= simplices.getSize())
-      fullprint << i << " is outside" << std::endl;
-    else
+    const Indices result(bvh.query(test));
+    for (UnsignedInteger i = 0; i < result.getSize(); ++i)
     {
-      if (!mesh.checkPointInSimplexWithCoordinates(test[i], result[i], coordinates))
+      if (result[i] >= simplices.getSize())
+        fullprint << i << " is outside" << std::endl;
+      else
       {
-        fullprint << "Wrong simplex found for " << test[i] << " (index=" << result[i] << ")" << std::endl;
-        return ExitCode::Error;
+        if (!mesh.checkPointInSimplexWithCoordinates(test[i], result[i], coordinates))
+        {
+          fullprint << "Wrong simplex found for " << test[i] << " (index=" << result[i] << ")" << std::endl;
+          return ExitCode::Error;
+        }
       }
     }
   }
