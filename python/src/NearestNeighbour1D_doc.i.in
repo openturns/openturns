@@ -11,7 +11,7 @@ sample : :class:`~openturns.Sample`
 
 See also
 --------
-NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour, KDTree
+NearestNeighbourAlgorithm
 
 Examples
 --------

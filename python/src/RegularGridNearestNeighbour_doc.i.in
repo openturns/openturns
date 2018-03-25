@@ -10,7 +10,7 @@ grid : :class:`~openturns.RegularGrid`
 
 See also
 --------
-NearestNeighbourAlgorithm, NearestNeighbour1D, KDTree, NaiveNearestNeighbour
+NearestNeighbourAlgorithm
 
 Examples
 --------

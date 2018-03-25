@@ -21,7 +21,7 @@ simplices : :class:`~openturns.IndicesCollection`
 
 See also
 --------
-EnclosingSimplexAlgorithm, BoundingVolumeHierarchy
+EnclosingSimplexAlgorithm
 
 Examples
 --------

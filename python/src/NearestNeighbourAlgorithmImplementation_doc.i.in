@@ -5,14 +5,38 @@ Base class to define an algorithm to search for nearest neighbours of
 a list of points.
 
 Available constructors:
-    NearestNeighbourAlgorithm()
-
     NearestNeighbourAlgorithm(*sample*)
 
 Parameters
 ----------
 sample : :class:`~openturns.Sample`
     Input points.
+
+Notes
+-----
+
+Two algorithms can be selected in any dimension:
+
+* :class:`~openturns.NaiveNearestNeighbour` loops over all points
+  of the sample to find the closest one.
+* :class:`~openturns.KDTree` builds a binary tree.
+
+Two algorithms are specific to 1D spatial dimension, and much more efficient:
+
+* :class:`~openturns.RegularGridNearestNeighbour` is the most efficient
+  algorithm when points corresponds to a :class:`~openturns.RegularGrid`,
+  :meth:`query` works in constant time.
+* :class:`~openturns.NearestNeighbour1D` looks for nearest neighbour by
+  dichotomy in 1D.
+
+It is recommended to use derived classes in order to select the best algorithm
+according to your data.  If you create a generic :class:`NearestNeighbourAlgorithm`,
+here is how the derived class is selected:
+
+* If points correspond to a :class:`~openturns.RegularGrid`,
+  :class:`~openturns.RegularGridNearestNeighbour` algorithm is selected.
+* If spatial dimension is 1, :class:`~openturns.NearestNeighbour1D` is selected.
+* Otherwise, :class:`~openturns.KDTree` is selected.
 
 See also
 --------

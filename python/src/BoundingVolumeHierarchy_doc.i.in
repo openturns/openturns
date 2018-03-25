@@ -33,8 +33,7 @@ strategy : str
 
 See also
 --------
-EnclosingSimplexAlgorithm, NaiveEnclosingSimplex,
-RegularGridEnclosingSimplex, EnclosingSimplexMonotonic1D
+EnclosingSimplexAlgorithm
 
 Examples
 --------

@@ -11,8 +11,7 @@ regularGrid : :class:`~openturns.RegularGrid`
 
 See also
 --------
-EnclosingSimplexAlgorithm, NaiveEnclosingSimplex, 
-EnclosingSimplexMonotonic1D, BoundingVolumeHierarchy
+EnclosingSimplexAlgorithm
 
 Examples
 --------

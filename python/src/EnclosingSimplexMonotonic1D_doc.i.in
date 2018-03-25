@@ -11,8 +11,7 @@ points : 2-d sequence of float
 
 See also
 --------
-EnclosingSimplexAlgorithm, NaiveEnclosingSimplex, 
-RegularGridEnclosingSimplex, BoundingVolumeHierarchy
+EnclosingSimplexAlgorithm
 
 Examples
 --------
