@@ -58,7 +58,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -94,7 +93,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -151,7 +149,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -220,7 +217,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -277,7 +273,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -336,7 +331,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -723,32 +717,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem;
   problem.setObjective(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
-  if (normalize_)
-  {
-    if (normalizedOptimizationBounds_.getDimension() == 0)
-    {
-      normalizedOptimizationBounds_ = optimizationBounds_;
-      // Normalize upper bounds.  This can be done only if all scale parameters are activated, and scale
-      // parameters are the first ones.
-      const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
-      UnsignedInteger count = 0;
-      for (UnsignedInteger i = 0; i == count && i < activeParametersDescription.getSize(); ++i)
-        if (activeParametersDescription[i].compare(0, 6, "scale_") == 0)
-          ++ count;
-      if (count == inputTransformation_.getInputDimension())
-      {
-        Point upperPoint(optimizationBounds_.getUpperBound());
-        Point scaleParameters(count);
-        for(UnsignedInteger i = 0; i < count; ++i) scaleParameters[i] = upperPoint[i];
-        scaleParameters = inputTransformation_(scaleParameters);
-        for(UnsignedInteger i = 0; i < count; ++i) upperPoint[i] = scaleParameters[i];
-        normalizedOptimizationBounds_.setUpperBound(upperPoint);
-      }
-    }
-    problem.setBounds(normalizedOptimizationBounds_);
-  }
-  else
-    problem.setBounds(optimizationBounds_);
+  problem.setBounds(optimizationBounds_);
   solver_.setStartingPoint(initialParameters);
   solver_.setProblem(problem);
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
@@ -1029,7 +998,6 @@ void GeneralLinearModelAlgorithm::setOptimizationBounds(const Interval & optimiz
 {
   if (!(optimizationBounds.getDimension() == reducedCovarianceModel_.getParameter().getSize())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << reducedCovarianceModel_.getParameter().getSize() << ", got dimension=" << optimizationBounds.getDimension();
   optimizationBounds_ = optimizationBounds;
-  normalizedOptimizationBounds_ = Interval();
 }
 
 Interval GeneralLinearModelAlgorithm::getOptimizationBounds() const
