@@ -351,7 +351,33 @@ optimizeParameters : bool
 Parameters
 ----------
 bounds : :class:`~openturns.Interval`
-    Bounds for covariance model parameter optimization."
+    Bounds for covariance model parameter optimization.
+
+Notes
+-----
+Parameters involved by this method are:
+
+ - Scale parameters,
+ - Amplitude parameters if output dimension is greater than one or
+   analytical sigma disabled,
+ - Additional parameters.
+
+Lower & upper bounds are defined in resource map.
+Default lower upper bounds value for all parameters is
+:math:`10^{-2}` and defined thanks to the
+`GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound`
+resource map key.
+
+For scale parameters, default upper bounds are set as :math:`2`
+times the difference between the max and min values of `X` for
+each coordinate, `X` being the (transformed) input sample.
+The value :math:`2` is defined in resource map
+(`GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor`).
+
+Finally for other parameters (amplitude,...), default upper bound is set
+to :math:`100` (corresponding resource map key is
+`GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound`)
+"
 
 // ---------------------------------------------------------------------
 

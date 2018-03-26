@@ -149,9 +149,13 @@ Create the Kriging algorithm with the optimizer option:
 
 Parameters
 ----------
-problem : :class:`~openturns.Interval`
-    The bounds used for numerical optimization of the likelihood."
+bounds : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood.
 
+Notes
+-----
+See :class:`~openturns.GeneralLinearModelAlgorithm` class for more details,
+particularly :meth:`~openturns.GeneralLinearModelAlgorithm.setOptimizationBounds`."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingAlgorithm::getOptimizationBounds
