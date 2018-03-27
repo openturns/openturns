@@ -124,6 +124,10 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+
+  // Normalize input sample
+  normalizeInputSample();
+
   // If no basis then we suppose output sample centered
   checkYCentered(outputSample);
   // Set covariance model
@@ -180,6 +184,10 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+
+  // Normalize input sample
+  normalizeInputSample();
+
   // Set covariance model
   setCovarianceModel(covarianceModel);
 
@@ -249,6 +257,11 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+
+  // Normalize input sample
+  normalizeInputSample();
+
+
   // Set covariance model
   setCovarianceModel(covarianceModel);
 
@@ -339,8 +352,27 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
+    const Scalar scaleFactor(ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor"));
+    if (!(scaleFactor > 0))
+      throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
     const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    const Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    // We could set scale parameter if these parameters are enabled.
+    // check if scale is active
+    const Indices activeParameters(reducedCovarianceModel_.getActiveParameter());
+    Bool isScaleActive(true);
+    for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+    {
+      if (!activeParameters.contains(k))
+        isScaleActive = false;
+    }
+    if (isScaleActive)
+    {
+      const Point inputSampleRange(normalizedInputSample_.getMax() - normalizedInputSample_.getMin());
+      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k) upperBound[k] = inputSampleRange[k] * scaleFactor;
+    }
+    LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
