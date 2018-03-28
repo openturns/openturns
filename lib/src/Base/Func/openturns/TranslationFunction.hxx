@@ -56,7 +56,7 @@ public:
 
   /** Accessor for the constant term */
   virtual Point getConstant() const;
-  virtual void setConstant(const Point constant);
+  virtual void setConstant(const Point & constant);
 
 }; /* class TranslationFunction */
 

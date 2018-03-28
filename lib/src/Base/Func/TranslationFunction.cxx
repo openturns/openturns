@@ -70,7 +70,7 @@ Point TranslationFunction::getConstant() const
   return static_cast<TranslationEvaluation*>(getImplementation()->getEvaluation().getImplementation().get())->getConstant();
 }
 
-void TranslationFunction::setConstant(const Point constant)
+void TranslationFunction::setConstant(const Point & constant)
 {
   copyOnWrite();
   static_cast<TranslationEvaluation*>(getImplementation()->getEvaluation().getImplementation().get())->setConstant(constant);
