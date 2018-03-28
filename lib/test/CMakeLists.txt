@@ -344,6 +344,7 @@ ot_check_test (LeastSquaresMethod_weighted)
 ot_check_test (KarhunenLoeveSVDAlgorithm_std)
 ot_check_test (KarhunenLoeveLifting_std)
 ot_check_test (KarhunenLoeveProjection_std)
+ot_check_test (P1LagrangeInterpolation_std)
 
 # Analytical
 ot_check_test (Analytical_std)

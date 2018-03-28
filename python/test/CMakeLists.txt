@@ -318,6 +318,7 @@ ot_pyinstallcheck_test (KarhunenLoeveP1Algorithm_std)
 ot_pyinstallcheck_test (KarhunenLoeveSVDAlgorithm_std)
 ot_pyinstallcheck_test (KarhunenLoeveLifting_std)
 ot_pyinstallcheck_test (KarhunenLoeveProjection_std)
+ot_pyinstallcheck_test (P1LagrangeInterpolation_std)
 
 ## Model
 ot_pyinstallcheck_test (Event_std)

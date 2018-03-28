@@ -22,6 +22,7 @@
  * MeshDomain
  * NormInfEnumerateFunction 
  * FunctionalChaosSobolIndices
+ * P1LagrangeInterpolation
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class

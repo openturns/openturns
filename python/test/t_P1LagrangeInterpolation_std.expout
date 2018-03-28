@@ -1,0 +1,2 @@
+Interpolation= class=P1LagrangeInterpolation name=Unnamed inputMesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=1 description=[t] data=[[0],[1],[2],[3]] simplices=[[0,1],[1,2],[2,3]] outputMesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=1 data=[[2.3]] simplices=[]
+Values at [2.3] = 0 : [ 2.3 2.3 4.6 5.5 ]
