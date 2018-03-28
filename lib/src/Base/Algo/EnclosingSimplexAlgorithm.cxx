@@ -59,7 +59,7 @@ EnclosingSimplexAlgorithm::EnclosingSimplexAlgorithm(const Sample & vertices, co
     }
     if (standardSimplices)
     {
-      Mesh mesh(vertices);
+      Mesh mesh(vertices, simplices);
       if (mesh.isRegular())
         p_implementation_ = new RegularGridEnclosingSimplex(mesh);
       else
