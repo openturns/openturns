@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(TranslationFunction)
 
 /* Default constructor */
-TranslationFunction::TranslationFunction(const Point constant)
+TranslationFunction::TranslationFunction(const Point & constant)
   : Function(new TranslationEvaluation(constant),
              new ConstantGradient(IdentityMatrix(constant.getSize())),
              new ConstantHessian(SymmetricTensor(constant.getSize(), constant.getSize())))
