@@ -90,6 +90,7 @@
  * #938 (DistributionFactory::buildEstimator to handle Exception)
  * #939 (The help of the getMaximumDegreeStrataIndex method is wrong.)
  * #941 (Duplicate with SobolIndicesExperiment)
+ * #943 (Sample don't show up correctly in notebooks)
 
 == 1.10 release (2017-11-13) == #release-1.10
 
