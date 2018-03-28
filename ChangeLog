@@ -75,6 +75,7 @@
  * Deprecated Hessian,HessianImplementation,ParametricHessian::hessian(inP,parameter)
 
 === Python module ===
+ * Depend on swig>=2.0.9
 
 === Miscellaneous ===
  * Multivariate TruncatedDistribution
