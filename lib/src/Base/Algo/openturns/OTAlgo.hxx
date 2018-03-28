@@ -39,6 +39,8 @@
 #include "openturns/EnclosingSimplexAlgorithm.hxx"
 #include "openturns/EnclosingSimplexAlgorithmImplementation.hxx"
 #include "openturns/NaiveEnclosingSimplex.hxx"
+#include "openturns/RegularGridEnclosingSimplex.hxx"
+#include "openturns/EnclosingSimplexMonotonic1D.hxx"
 #include "openturns/BoundingVolumeHierarchy.hxx"
 #include "openturns/KFold.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"

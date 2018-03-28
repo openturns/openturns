@@ -516,6 +516,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "BoundingVolumeHierarchy-BinNumber", 50 );
   set( "BoundingVolumeHierarchy-Strategy", "Mean" );
 
+  // EnclosingSimplexAlgorithm parameters
+  setAsUnsignedInteger( "EnclosingSimplexAlgorithm-LargeDimension", 5);
+
   // Matrix parameters
   setAsUnsignedInteger( "Matrix-size-visible-in-str-from", 5 );
 

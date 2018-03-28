@@ -1,0 +1,56 @@
+%feature("docstring") OT::RegularGridEnclosingSimplex
+"Specialized point location algorithm on RegularGrid.
+
+Available constructors:
+    RegularGridEnclosingSimplex(*regularGrid*)
+
+Parameters
+----------
+regularGrid : :class:`~openturns.RegularGrid`
+    Points
+
+See also
+--------
+EnclosingSimplexAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> grid = ot.RegularGrid(0, 0.1, 20)
+>>> locator = ot.RegularGridEnclosingSimplex(grid)
+>>> simplex = locator.query([0.12])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RegularGridEnclosingSimplex::query
+"Accessor to the enclosing simplex index.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+
+Returns
+-------
+index : int
+    If point is inside RegularGrid bounds, return the index of the interval
+    in  which it is contained; otherwise return an int which is at least
+    greater than the number of intervals."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RegularGridEnclosingSimplex::queryScalar
+"Accessor to the enclosing simplex index.
+
+Parameters
+----------
+x : float
+    Given point.
+
+Returns
+-------
+index : int
+    If point is inside RegularGrid bounds, return the index of the interval
+    in  which it is contained; otherwise return an int which is at least
+    greater than the number of intervals."
+

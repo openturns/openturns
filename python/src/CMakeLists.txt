@@ -430,6 +430,8 @@ ot_add_python_module(algo algo_module.i
                       EnclosingSimplexAlgorithmImplementation.i EnclosingSimplexAlgorithmImplementation_doc.i.in
                       EnclosingSimplexAlgorithm.i EnclosingSimplexAlgorithm_doc.i.in
                       NaiveEnclosingSimplex.i  NaiveEnclosingSimplex_doc.i.in
+                      RegularGridEnclosingSimplex.i  RegularGridEnclosingSimplex_doc.i.in
+                      EnclosingSimplexMonotonic1D.i  EnclosingSimplexMonotonic1D_doc.i.in
                       BoundingVolumeHierarchy.i BoundingVolumeHierarchy_doc.i.in
                       KFold.i KFold_doc.i.in
                       PenalizedLeastSquaresAlgorithm.i PenalizedLeastSquaresAlgorithm_doc.i.in

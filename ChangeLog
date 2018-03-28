@@ -13,7 +13,7 @@
  * DomainComplement, DomainIntersection, DomainUnion, DomainDisjunctiveUnion, DomainDifference
  * SmoothedUniform
  * NearestNeighbourAlgorithm, RegularGridNearestNeighbour, NaiveNearestNeighbour, NearestNeighbour1D
- * EnclosingSimplex, EnclosingSimplexImplementation, NaiveEnclosingSimplex, BoundingVolumeHierarchy
+ * EnclosingSimplex, EnclosingSimplexImplementation, NaiveEnclosingSimplex, RegularGridEnclosingSimplex, EnclosingSimplexMonotonic1D, BoundingVolumeHierarchy
  * IndicesCollection
  * SymbolicParserExprTk
  * EvaluationProxy

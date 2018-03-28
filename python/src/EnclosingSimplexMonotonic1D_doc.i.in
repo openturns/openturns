@@ -1,0 +1,55 @@
+%feature("docstring") OT::EnclosingSimplexMonotonic1D
+"Specialized point location algorithm for monotonic 1D  meshes.
+
+Available constructors:
+    EnclosingSimplexMonotonic1D(*points*)
+
+Parameters
+----------
+points : 2-d sequence of float
+    Points.
+
+See also
+--------
+EnclosingSimplexAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.Mesh([[0.0], [0.04],[0.1], [0.2],[0.5], [1.0]])
+>>> locator = ot.EnclosingSimplexMonotonic1D(mesh.getVertices())
+>>> simplex = locator.query([0.62])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EnclosingSimplexMonotonic1D::query
+"Accessor to the enclosing simplex index.
+
+Parameters
+----------
+x : sequence of float
+    Given point.
+
+Returns
+-------
+index : int
+    If point is enclosed in a simplex, return its index; otherwise return an
+    int which is at least greater than the number of simplices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EnclosingSimplexMonotonic1D::queryScalar
+"Accessor to the enclosing simplex index.
+
+Parameters
+----------
+x : float
+    Given point.
+
+Returns
+-------
+index : int
+    If point is inside RegularGrid bounds, return the index of the interval
+    in  which it is contained; otherwise return an int which is at least
+    greater than the number of intervals."
+

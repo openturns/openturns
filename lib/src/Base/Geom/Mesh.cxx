@@ -192,6 +192,49 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     Point & coordinates) const
 {
   if (index >= getSimplicesNumber()) return false;
+  if (dimension_ == 1)
+  {
+    const Scalar x = point[0];
+    const Scalar x0 = vertices_(simplices_(index, 0), 0);
+    const Scalar x1 = vertices_(simplices_(index, 1), 0);
+    if ((x - x0) * (x - x1) > SpecFunc::ScalarEpsilon)
+      return false;
+    coordinates = Point(2);
+    if (x0 == x1)
+    {
+      // x, x0 and x1 are amost at the same position, any value would work.
+      coordinates[0] = 1.0;
+      coordinates[1] = 0.0;
+    }
+    else
+    {
+      const Scalar alpha = (x1 - x) / (x1 - x0);
+      coordinates[0] = alpha;
+      coordinates[1] = 1.0 - alpha;
+    }
+    return true;
+  }
+  else if (dimension_ == 2)
+  {
+    const Scalar x0 = vertices_(simplices_(index, 0), 0);
+    const Scalar y0 = vertices_(simplices_(index, 0), 1);
+    const Scalar x01 = vertices_(simplices_(index, 1), 0) - x0;
+    const Scalar y01 = vertices_(simplices_(index, 1), 1) - y0;
+    const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
+    const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
+    const Scalar det = (x02 * y01 - y02 * x01);
+    const Scalar x = point[0] - x0;
+    const Scalar y = point[1] - y0;
+    if (det == 0.0)
+    {
+      return false;
+    }
+    coordinates = Point(3);
+    coordinates[1] = (x02 * y - y02 * x) / det;
+    coordinates[2] = (x * y01 - y * x01) / det;
+    coordinates[0] = 1.0 - coordinates[1] - coordinates[2];
+    return coordinates[0] >= 0.0 && coordinates[0] <= 1.0 && coordinates[1] >= 0.0 && coordinates[1] <= 1.0 && coordinates[2] >= 0.0 && coordinates[2] <= 1.0;
+  }
   SquareMatrix matrix(dimension_ + 1);
   buildSimplexMatrix(index, matrix);
   Point v(point);

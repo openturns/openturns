@@ -161,7 +161,12 @@ Indices EnclosingSimplexAlgorithmImplementation::query(const Sample & sample) co
 
 namespace
 {
-inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const pt, const UnsignedInteger index)
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex1D(const Scalar v1, const Scalar v2, const Scalar pt)
+{
+  return (pt - v1) * (pt - v2) <= SpecFunc::ScalarEpsilon;
+}
+
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const pt)
 {
   const Scalar x = *pt;
   const Scalar y = *(pt + 1);
@@ -196,7 +201,7 @@ inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex2D(const Scalar * const
   }
 } // EnclosingSimplexAlgorithm_checkPointInSimplex2D
 
-inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const v4, const Scalar * const pt, const UnsignedInteger index)
+inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const v1, const Scalar * const v2, const Scalar * const v3, const Scalar * const v4, const Scalar * const pt)
 {
   const Scalar x = *pt;
   const Scalar y = *(pt + 1);
@@ -247,22 +252,29 @@ inline Bool EnclosingSimplexAlgorithm_checkPointInSimplex3D(const Scalar * const
 Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & point, const UnsignedInteger index, SquareMatrix & simplexMatrix) const
 {
   const UnsignedInteger dimension = vertices_.getDimension();
+  // Special case for dimension==1
+  // It is more efficient to skip the tests against both the global bounding box
+  // and the triangle bounding box
+  if (dimension == 1)
+  {
+    IndicesCollection::const_iterator cit1d = simplices_.cbegin_at(index);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex1D(vertices_(*cit1d, 0), vertices_(*(cit1d + 1), 0), point[0]);
+  }
   // Special case for dimension==2
   // It is more efficient to skip the tests against both the global bounding box
   // and the triangle bounding box
-  if (dimension == 2)
+  else if (dimension == 2)
   {
     IndicesCollection::const_iterator cit2d = simplices_.cbegin_at(index);
-    return EnclosingSimplexAlgorithm_checkPointInSimplex2D(&vertices_(*cit2d, 0), &vertices_(*(cit2d + 1), 0), &vertices_(*(cit2d + 2), 0), &point[0], index);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex2D(&vertices_(*cit2d, 0), &vertices_(*(cit2d + 1), 0), &vertices_(*(cit2d + 2), 0), &point[0]);
   }
-
   // Special case for dimension==3
   // It is more efficient to skip the tests against both the global bounding box
   // and the triangle bounding box
-  if (dimension == 3)
+  else if (dimension == 3)
   {
     IndicesCollection::const_iterator cit3d = simplices_.cbegin_at(index);
-    return EnclosingSimplexAlgorithm_checkPointInSimplex3D(&vertices_(*cit3d, 0), &vertices_(*(cit3d + 1), 0), &vertices_(*(cit3d + 2), 0), &vertices_(*(cit3d + 3), 0), &point[0], index);
+    return EnclosingSimplexAlgorithm_checkPointInSimplex3D(&vertices_(*cit3d, 0), &vertices_(*(cit3d + 1), 0), &vertices_(*(cit3d + 2), 0), &vertices_(*(cit3d + 3), 0), &point[0]);
   }
 
   // Exit if point is outside global bounding box

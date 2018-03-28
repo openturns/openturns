@@ -5,8 +5,6 @@ Base class to define an algorithm to find simplices containing
 a list of points.
 
 Available constructors:
-    EnclosingSimplexAlgorithm()
-
     EnclosingSimplexAlgorithm(*vertices, simplices*)
 
 Parameters
@@ -17,9 +15,41 @@ vertices : :class:`~openturns.Sample`
 simplices : :class:`~openturns.IndicesCollection`
     Simplices.
 
+Notes
+-----
+
+Two algorithms can be selected in any dimension:
+
+* :class:`~openturns.NaiveEnclosingSimplex` loops over all simplices
+  and stops when the given point is inside.
+* :class:`~openturns.BoundingVolumeHierarchy` builds a binary tree based
+  on bounding box of simplices.
+
+Two algorithms are specific to 1D meshes, and much more efficient:
+
+* :class:`~openturns.RegularGridEnclosingSimplex` is the most efficient
+  algorithm when mesh corresponds to a :class:`~openturns.RegularGrid`,
+  :meth:`query` works in constant time.
+* :class:`~openturns.EnclosingSimplexMonotonic1D` looks for enclosing
+  simplex by dichotomy, it only works for sorted 1D meshes.
+
+It is recommended to use derived classes in order to select the best algorithm
+according to your data.  If you create a generic :class:`EnclosingSimplexAlgorithm`,
+here is how the derived class is selected:
+
+* If vertices and simplices correspond to a :class:`~openturns.RegularGrid`,
+  :class:`~openturns.RegularGridEnclosingSimplex` algorithm is selected.
+* If vertices and simplices correspond to a simple 1D mesh with sorted vertices,
+  :class:`~openturns.EnclosingSimplexMonotonic1D` algorithm is selected.
+* Otherwise, 'EnclosingSimplexAlgorithm-LargeDimension' :class:`~openturns.ResourceMap`
+  entry is read.  If spatial dimension is lower than this value,
+  :class:`~openturns.BoundingVolumeHierarchy` algorithm is chosen, otherwise
+  it is :class:`~openturns.NaiveEnclosingSimplex`.
+
 See also
 --------
-NaiveEnclosingSimplex, BoundingVolumeHierarchy
+NaiveEnclosingSimplex, BoundingVolumeHierarchy, RegularGridEnclosingSimplex,
+EnclosingSimplexMonotonic1D
 
 Examples
 --------
