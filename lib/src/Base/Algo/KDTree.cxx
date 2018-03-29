@@ -42,8 +42,9 @@ class KDNearestNeighboursFinder
 public:
 
   /** Constructor */
-  KDNearestNeighboursFinder(const Sample & sample, const Interval & boundingBox, const UnsignedInteger size)
-    : sample_(sample)
+  KDNearestNeighboursFinder(const Indices & tree, const Sample & sample, const Interval & boundingBox, const UnsignedInteger size)
+    : tree_(tree)
+    , sample_(sample)
     , boundingBox_(boundingBox)
     , capacity_(size)
     , size_(0)
@@ -55,7 +56,7 @@ public:
   }
 
   /** Get the indices of the k nearest neighbours of the given point */
-  Indices getNearestNeighboursIndices(const KDTree::KDNode::KDNodePointer & p_node, const Point & x, const Bool sorted)
+  Indices getNearestNeighboursIndices(const UnsignedInteger inode, const Point & x, const Bool sorted)
   {
     if (size_ != 0)
     {
@@ -67,7 +68,7 @@ public:
     }
     Point lowerBoundingBox(boundingBox_.getLowerBound());
     Point upperBoundingBox(boundingBox_.getUpperBound());
-    collectNearestNeighbours(p_node, x, lowerBoundingBox, upperBoundingBox, 0);
+    collectNearestNeighbours(inode, x, lowerBoundingBox, upperBoundingBox, 0);
     if (sorted)
     {
       /* Sort heap in-place in ascending order.
@@ -99,15 +100,15 @@ private:
      + else replace the worst candidate from the current list by the new candidate
      Complexity: O(k) at each insertion, O(log(n)) expected insertions
   */
-  void collectNearestNeighbours(const KDTree::KDNode::KDNodePointer & p_node,
+  void collectNearestNeighbours(const UnsignedInteger inode,
                                 const Point & x,
                                 Point & lowerBoundingBox, Point & upperBoundingBox,
                                 const UnsignedInteger activeDimension)
   {
-    const Scalar splitValue = sample_(p_node->index_, activeDimension);
+    const Scalar splitValue = sample_(tree_[3*inode], activeDimension);
     const Scalar delta = x[activeDimension] - splitValue;
-    const KDTree::KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
-    const KDTree::KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
+    const UnsignedInteger sameSide(delta < 0.0 ? tree_[3*inode+1] : tree_[3*inode+2]);
+    const UnsignedInteger oppositeSide(delta < 0.0 ? tree_[3*inode+2] : tree_[3*inode+1]);
     const UnsignedInteger dimension = sample_.getDimension();
     const UnsignedInteger nextActiveDimension = (activeDimension + 1) % dimension;
     const Scalar saveLower = lowerBoundingBox[activeDimension];
@@ -139,7 +140,7 @@ private:
         lowerBoundingBox[activeDimension] = saveLower;
     }
     if (size_ == capacity_ && currentGreatestValidSquaredDistance < delta * delta) return;
-    const UnsignedInteger localIndex = p_node->index_;
+    const UnsignedInteger localIndex = tree_[3*inode];
     // Similar to (x - sample_[localIndex]).normSquare() but it is better to avoid Point creation
     Scalar localSquaredDistance = 0.0;
     for(UnsignedInteger i = 0; i < dimension; ++i)
@@ -223,6 +224,8 @@ private:
     }
   }
 
+  // Reference to tree
+  const Indices & tree_;
   // Points contained in the tree
   const Sample sample_;
   // Points bounding box
@@ -249,7 +252,7 @@ KDTree::KDTree()
   : NearestNeighbourAlgorithmImplementation()
   , points_(0, 0)
   , boundingBox_()
-  , p_root_(0)
+  , tree_()
 {
   // Nothing to do
 }
@@ -259,7 +262,7 @@ KDTree::KDTree(const Sample & points)
   : NearestNeighbourAlgorithmImplementation()
   , points_(0, 0)
   , boundingBox_()
-  , p_root_(0)
+  , tree_()
 {
   // Build the tree
   setSample(points);
@@ -275,24 +278,21 @@ void KDTree::setSample(const Sample & points)
 {
   if (points == points_) return;
 
-  // Reset tree if it contains old points
-  if (!p_root_.isNull())
-  {
-    p_root_.reset();
-  }
-
   points_ = points;
   boundingBox_ = Interval(points_.getDimension());
+  tree_ = Indices(3 * (points_.getSize() + 1));
 
   // Scramble the order in which the points are inserted in the tree in order to improve its balancing
   const UnsignedInteger size = points_.getSize();
   Indices buffer(size);
   buffer.fill();
   SobolSequence sequence(1);
+  UnsignedInteger root = 0;
+  UnsignedInteger currentSize = 0;
   for (UnsignedInteger i = 0; i < points_.getSize(); ++ i)
   {
     const UnsignedInteger index = i + static_cast< UnsignedInteger >((size - i) * sequence.generate()[0]);
-    insert(p_root_, buffer[index], 0);
+    insert(root, currentSize, buffer[index], 0);
     buffer[index] = buffer[i];
   }
   boundingBox_.setLowerBound(points_.getMin());
@@ -315,26 +315,42 @@ KDTree * KDTree::emptyClone() const
 String KDTree::__repr__() const
 {
   return OSS(true) << "class=" << GetClassName()
-         << " root=" << (p_root_ ? p_root_->__repr__() : "NULL");
+         << " root=" << (tree_.getSize() > 0 ? printNode(1) : "NULL");
 }
 
 String KDTree::__str__(const String & offset) const
 {
   (void)offset;
   return OSS(false) << "class=" << GetClassName()
-         << " root=" << (p_root_ ? p_root_->__repr__() : "NULL");
+         << " root=" << (tree_.getSize() > 0 ? printNode(1) : "NULL");
+}
+
+String KDTree::printNode(const UnsignedInteger inode) const
+{
+  return OSS() << "class=KDNode"
+         << " index=" << tree_[3*inode]
+         << " left=" << (tree_[3*inode+1] ? printNode(tree_[3*inode+1]) : "NULL")
+         << " right=" << (tree_[3*inode+2] ? printNode(tree_[3*inode+2]) : "NULL");
 }
 
 /* Insert the point at given index into the tree */
-void KDTree::insert(KDNode::KDNodePointer & p_node,
+void KDTree::insert(UnsignedInteger & inode,
+                    UnsignedInteger & currentSize,
                     const UnsignedInteger index,
                     const UnsignedInteger activeDimension)
 {
   if (index >= points_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected an index less than " << points_.getSize() << ", got " << index;
   // We are on a leaf
-  if (p_node == 0) p_node = new KDNode(index);
-  else if (points_(index, activeDimension) < points_(p_node->index_, activeDimension)) insert(p_node->p_left_, index, (activeDimension + 1) % points_.getDimension());
-  else insert(p_node->p_right_, index, (activeDimension + 1) % points_.getDimension());
+  if (inode == 0)
+  {
+    ++currentSize;
+    inode = currentSize;
+    tree_[3*inode] = index;
+  }
+  else if (points_(index, activeDimension) < points_(tree_[3*inode], activeDimension))
+    insert(tree_[3*inode+1], currentSize, index, (activeDimension + 1) % points_.getDimension());
+  else
+    insert(tree_[3*inode+2], currentSize, index, (activeDimension + 1) % points_.getDimension());
 }
 
 /* Get the index of the nearest neighbour of the given point */
@@ -344,34 +360,34 @@ UnsignedInteger KDTree::query(const Point & x) const
   Scalar smallestDistance = SpecFunc::MaxScalar;
   Point lowerBoundingBox(boundingBox_.getLowerBound());
   Point upperBoundingBox(boundingBox_.getUpperBound());
-  return getNearestNeighbourIndex(p_root_, x, smallestDistance, lowerBoundingBox, upperBoundingBox, 0);
+  return getNearestNeighbourIndex(1, x, smallestDistance, lowerBoundingBox, upperBoundingBox, 0);
 }
 
-UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
+UnsignedInteger KDTree::getNearestNeighbourIndex(const UnsignedInteger inode,
     const Point & x,
     Scalar & bestSquaredDistance,
     Point & lowerBoundingBox,
     Point & upperBoundingBox,
     const UnsignedInteger activeDimension) const
 {
-  if (p_node == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an emty tree";
-  // Set delta = x[activeDimension] - points_(p_node->index_, activeDimension)
-  // sameSide = p_node->p_left_ if delta < 0, p_node->p_right_ else
-  // oppositeSide = p_node->p_right_ if delta < 0, p_node->p_left_ else
+  if (inode == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an empty tree";
+  // Set delta = x[activeDimension] - points_(tree_[3*inode], activeDimension)
+  // sameSide = tree_(inode,  0) if delta < 0, tree_[3*inode+2] else
+  // oppositeSide = tree_[3*inode+2] if delta < 0, tree_(inode,  0) else
   // Possibilities:
   // 1) sameSide != 0
   // 1.1) Go on the same side. On return, the index is the best candidate index. If the associated distance is less than the current best index, update the current best index and the associated squared distance.
   // 2) Check if the current best squared distance is less than delta^2
-  // 2.1*) If yes, the points associated to p_node or to its opposite side can't be better than the current best candidate so return it and the associated squared distance to the upper level
+  // 2.1*) If yes, the points associated to inode or to its opposite side can't be better than the current best candidate so return it and the associated squared distance to the upper level
   // 2.2) If no, check the point associated to the current node and update the current best index and the associated squared distance
   // 2.3) oppositeSide != 0
   // 2.4) Go on the opposite side. On return, check if the returned squared distance is less than the current best squared distance and update the current best index and the associated squared distance.
   // 3*) Return the current best index and the associated squared distance to the upper level
 
-  const Scalar splitValue = points_(p_node->index_, activeDimension);
+  const Scalar splitValue = points_(tree_[3*inode], activeDimension);
   const Scalar delta = x[activeDimension] - splitValue;
-  const KDNode::KDNodePointer & sameSide(delta < 0.0 ? p_node->p_left_ : p_node->p_right_);
-  const KDNode::KDNodePointer & oppositeSide(delta < 0.0 ? p_node->p_right_ : p_node->p_left_);
+  const UnsignedInteger sameSide(delta < 0.0 ? tree_[3*inode+1] : tree_[3*inode+2]);
+  const UnsignedInteger oppositeSide(delta < 0.0 ? tree_[3*inode+2] : tree_[3*inode+1]);
   UnsignedInteger currentBestIndex = points_.getSize();
   Scalar currentBestSquaredDistance = bestSquaredDistance;
   const UnsignedInteger dimension = points_.getDimension();
@@ -417,7 +433,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const KDNode::KDNodePointer & p
     return currentBestIndex;
   }
   // 2.2)
-  const UnsignedInteger localIndex = p_node->index_;
+  const UnsignedInteger localIndex = tree_[3*inode];
   // Similar to (x - points_[localIndex]).normSquare() but it is better to avoid Point creation
   Scalar localSquaredDistance = 0.0;
   for(UnsignedInteger i = 0; i < dimension; ++i)
@@ -477,8 +493,8 @@ Indices KDTree::queryK(const Point & x, const UnsignedInteger k, const Bool sort
   }
   else
   {
-    KDNearestNeighboursFinder heap(points_, boundingBox_, k);
-    result = heap.getNearestNeighboursIndices(p_root_, x, sorted);
+    KDNearestNeighboursFinder heap(tree_, points_, boundingBox_, k);
+    result = heap.getNearestNeighboursIndices(1, x, sorted);
   }
   return result;
 }
