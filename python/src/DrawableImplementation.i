@@ -9,12 +9,12 @@
 %include openturns/DrawableImplementation.hxx
 
 %pythoncode %{
-def DrawableImplementation__repr_svg_(self):
+def DrawableImplementation__repr_png_(self):
     """Get the SVG representation."""
-    from .viewer import ToSVGString
-    return ToSVGString(self)
+    from .viewer import ToImageString
+    return ToImageString(self)
 
-DrawableImplementation._repr_svg_ = DrawableImplementation__repr_svg_
+DrawableImplementation._repr_png_ = DrawableImplementation__repr_png_
 
 
 def DrawableImplementation__repr_html_(self):

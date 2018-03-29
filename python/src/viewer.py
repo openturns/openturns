@@ -574,9 +574,9 @@ class View(object):
         plt.close(self._fig)
 
 
-def ToSVGString(graph):
+def ToImageString(graph, format='png'):
     """
-    Convert as SVG file.
+    Convert as image string.
 
     Parameters
     ----------
@@ -585,7 +585,8 @@ def ToSVGString(graph):
 
     Returns
     -------
-    str: a SVG representation as string
+    image_str : str
+       An image representation as string
     """
     # save interactive mode state
     ision = plt.isinteractive()
@@ -593,15 +594,20 @@ def ToSVGString(graph):
 
     view = View(graph)
     output = io.BytesIO()
-    view.save(output, format='svg')
+    view.save(output, format=format, dpi=100)
     view.close()
 
     # restore interactive mode state
     if ision:
         plt.ion()
 
-    svgBytes = output.getvalue()
-    return svgBytes.decode('utf-8')
+    image_bytes = output.getvalue()
+    if format == 'svg':
+        image_string = image_bytes.decode('utf-8')
+    else:
+        # raw bytes
+        image_string = image_bytes
+    return image_string
 
 
 def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axes_kwargs={}, text_kwargs={}):

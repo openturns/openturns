@@ -41,12 +41,12 @@ OTTypedInterfaceObjectHelper(Graph)
 %include openturns/Graph.hxx
 
 %pythoncode %{
-def Graph__repr_svg_(self):
+def Graph__repr_png_(self):
     """Get the SVG representation."""
-    from .viewer import ToSVGString
-    return ToSVGString(self)
+    from .viewer import ToImageString
+    return ToImageString(self)
 
-Graph._repr_svg_ = Graph__repr_svg_
+Graph._repr_png_ = Graph__repr_png_
 
 
 def Graph__repr_html_(self):

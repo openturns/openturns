@@ -14,12 +14,12 @@ OTTypedCollectionInterfaceObjectHelper(Drawable)
 %include openturns/Drawable.hxx
 
 %pythoncode %{
-def Drawable__repr_svg_(self):
+def Drawable__repr_png_(self):
     """Get the SVG representation."""
-    from .viewer import ToSVGString
-    return ToSVGString(self)
+    from .viewer import ToImageString
+    return ToImageString(self)
 
-Drawable._repr_svg_ = Drawable__repr_svg_
+Drawable._repr_png_ = Drawable__repr_png_
 
 
 def Drawable__repr_html_(self):
