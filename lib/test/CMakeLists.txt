@@ -103,7 +103,7 @@ macro (ot_check_test TESTNAME)
 endmacro (ot_check_test)
 
 
-include_directories (${INTERNAL_INCLUDE_DIRS})
+include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
 
 ## Pre-installation tests
 
