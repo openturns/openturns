@@ -298,7 +298,6 @@ Complex RatioDistribution::computeCharacteristicFunction(const Scalar x) const
   const Scalar varRight = right_.getCovariance()(0, 0);
   if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::ScalarEpsilon) return Complex(1.0, -x * muLeft * muRight);
   if (std::abs(x) > ResourceMap::GetAsScalar("RatioDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
-  Complex result(0.0);
   const Scalar aLeft = left_.getRange().getLowerBound()[0];
   const Scalar bLeft = left_.getRange().getUpperBound()[0];
   GaussKronrod algo;
