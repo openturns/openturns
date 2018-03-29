@@ -44,7 +44,7 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  explicit TranslationFunction(const Point constant);
+  explicit TranslationFunction(const Point & constant);
 
 
   /** Comparison operator */
@@ -56,7 +56,7 @@ public:
 
   /** Accessor for the constant term */
   virtual Point getConstant() const;
-  virtual void setConstant(const Point constant);
+  virtual void setConstant(const Point & constant);
 
 }; /* class TranslationFunction */
 

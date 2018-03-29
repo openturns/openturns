@@ -82,7 +82,7 @@ Point TranslationEvaluation::getConstant() const
   return constant_;
 }
 
-void TranslationEvaluation::setConstant(const Point constant)
+void TranslationEvaluation::setConstant(const Point & constant)
 {
   if (constant.getDimension() != constant_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   constant_ = constant;

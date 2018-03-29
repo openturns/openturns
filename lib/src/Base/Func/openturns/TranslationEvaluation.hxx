@@ -57,7 +57,7 @@ public:
 
   /** Accessor for the constant term */
   virtual Point getConstant() const;
-  virtual void setConstant(const Point constant);
+  virtual void setConstant(const Point & constant);
 
   /* Here is the interface that all derived class must implement */
 
