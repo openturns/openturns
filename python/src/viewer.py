@@ -574,7 +574,7 @@ class View(object):
         plt.close(self._fig)
 
 
-def ToImageString(graph, format='png'):
+def ToImageString(graph):
     """
     Convert as image string.
 
@@ -594,7 +594,8 @@ def ToImageString(graph, format='png'):
 
     view = View(graph)
     output = io.BytesIO()
-    view.save(output, format=format, dpi=100)
+    fmt = ot.ResourceMap.Get('View-ImageFormat')
+    view.save(output, format=fmt, dpi=100)
     view.close()
 
     # restore interactive mode state
@@ -602,7 +603,7 @@ def ToImageString(graph, format='png'):
         plt.ion()
 
     image_bytes = output.getvalue()
-    if format == 'svg':
+    if fmt == 'svg':
         image_string = image_bytes.decode('utf-8')
     else:
         # raw bytes

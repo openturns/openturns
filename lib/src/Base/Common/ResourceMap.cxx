@@ -960,6 +960,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger("TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration", 100);
   setAsScalar("TensorApproximationAlgorithm-DefaultMaximumRadiusError", 1.0e-5);
   setAsScalar("TensorApproximationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
+
+  // viewer.View parameters //
+  set("View-ImageFormat", "png");
 }
 
 /* String converter */
