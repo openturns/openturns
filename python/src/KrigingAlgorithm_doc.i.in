@@ -4,11 +4,7 @@
 Available constructors:
     KrigingAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True*)
 
-    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis*)
-
     KrigingAlgorithm(*inputSample, outputSample, covarianceModel, basisCollection, normalize=True*)
-
-    KrigingAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basisCollection*)
 
 Parameters
 ----------

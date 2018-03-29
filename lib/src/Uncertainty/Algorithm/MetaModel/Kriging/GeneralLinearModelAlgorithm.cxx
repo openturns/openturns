@@ -200,61 +200,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   initializeDefaultOptimizationAlgorithm();
 }
 
-/* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
-    const Function & inputTransformation,
-    const Sample & outputSample,
-    const CovarianceModel & covarianceModel,
-    const Basis & basis,
-    const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm()
-  , inputSample_()
-  , normalizedInputSample_(0, inputSample.getDimension())
-  , inputTransformation_()
-  , normalize_(true)
-  , outputSample_()
-  , covarianceModel_()
-  , reducedCovarianceModel_()
-  , solver_()
-  , optimizationBounds_()
-  , beta_(0)
-  , rho_(0)
-  , F_(0, 0)
-  , result_()
-  , basisCollection_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
-  , method_(0)
-  , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
-  , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
-{
-  // Set data
-  setData(inputSample, outputSample);
-  // Set the isoprobabilistic transformation
-  setInputTransformation(inputTransformation);
-  // Set covariance model
-  setCovarianceModel(covarianceModel);
-
-  // basis setter
-  if (basis.getSize() > 0)
-  {
-    if (basis[0].getOutputDimension() > 1) LOGWARN(OSS() << "Expected a basis of scalar functions, but first function has dimension" << basis[0].getOutputDimension() << ". Only the first output component will be taken into account.");
-    if (outputSample.getDimension() > 1) LOGWARN(OSS() << "The basis of functions will be applied to all output marginals" );
-    // Set basis
-    basisCollection_ = BasisCollection(outputSample.getDimension(), basis);
-  }
-  else
-  {
-    // If no basis then we suppose output sample centered
-    checkYCentered(outputSample);
-  }
-
-  initializeMethod();
-  initializeDefaultOptimizationAlgorithm();
-}
 
 /* Parameters constructor */
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
@@ -309,51 +254,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 
   // Set basis collection
   if (basisCollection.getSize() > 0) setBasisCollection(basisCollection);
-
-  initializeMethod();
-  initializeDefaultOptimizationAlgorithm();
-}
-
-/* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
-    const Function & inputTransformation,
-    const Sample & outputSample,
-    const CovarianceModel & covarianceModel,
-    const BasisCollection & basisCollection,
-    const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm()
-  , inputSample_()
-  , normalizedInputSample_(0, inputSample.getDimension())
-  , inputTransformation_()
-  , normalize_(true)
-  , outputSample_()
-  , covarianceModel_()
-  , reducedCovarianceModel_()
-  , solver_()
-  , optimizationBounds_()
-  , beta_(0)
-  , rho_(0)
-  , F_(0, 0)
-  , result_()
-  , basisCollection_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
-  , method_(0)
-  , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
-  , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
-{
-  // Set data
-  setData(inputSample, outputSample);
-  // Set the isoprobabilistic transformation
-  setInputTransformation(inputTransformation);
-  // Set covariance model
-  setCovarianceModel(covarianceModel);
-
-  // Set basis collection
-  if (basisCollection.getSize() > 0)  setBasisCollection(basisCollection);
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();

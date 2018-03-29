@@ -4,11 +4,7 @@
 Available constructors:
     GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True, keepCovariance=True*)
 
-    GeneralLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basis, keepCovariance=True*)
-
     GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basisCollection, normalize=True, keepCovariance=True*)
-
-    GeneralLinearModelAlgorithm(*inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, keepCovariance=True*)
 
 Parameters
 ----------

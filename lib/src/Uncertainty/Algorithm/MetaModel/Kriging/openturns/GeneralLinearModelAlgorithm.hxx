@@ -66,26 +66,10 @@ public:
 
   /** Parameters constructor */
   GeneralLinearModelAlgorithm (const Sample & inputSample,
-                               const Function & inputTransformation,
-                               const Sample & outputSample,
-                               const CovarianceModel & covarianceModel,
-                               const Basis & basis,
-                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
-
-  /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const Sample & inputSample,
                                const Sample & outputSample,
                                const CovarianceModel & covarianceModel,
                                const BasisCollection & basisCollection,
                                const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
-                               const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
-
-  /** Parameters constructor */
-  GeneralLinearModelAlgorithm (const Sample & inputSample,
-                               const Function & inputTransformation,
-                               const Sample & outputSample,
-                               const CovarianceModel & covarianceModel,
-                               const BasisCollection & basisCollection,
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
