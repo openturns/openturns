@@ -535,6 +535,7 @@
   <GeneralLinearModelAlgorithm-MaximalScaling                 value="1.0e5"   />
   <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound  value="1.0e-2"  />
   <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound  value="1.0e2"      />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor value="2"  />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm      value="TNC"     />
 
   <!-- OT::KrigingAlgorithm parameters -->
