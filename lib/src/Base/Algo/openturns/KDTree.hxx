@@ -79,49 +79,16 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-  /**
-   * @class KDNode
-   *
-   * A node in a KDTree
-   */
-  struct KDNode
-  {
-    typedef Pointer< KDNode> KDNodePointer;
+  String printNode(const UnsignedInteger inode) const;
 
-    /** Parameter constructor */
-    explicit KDNode(const UnsignedInteger index)
-      : index_(index)
-      , p_left_(0)
-      , p_right_(0)
-    {
-      // Nothing to do
-    }
-
-    /** String converter */
-    String __repr__() const
-    {
-      return OSS() << "class=KDNode"
-             << " index=" << index_
-             << " left=" << (p_left_ ? p_left_->__repr__() : "NULL")
-             << " right=" << (p_right_ ? p_right_->__repr__() : "NULL");
-    }
-
-    /* Index of the nodal point */
-    UnsignedInteger index_;
-
-    /* Children */
-    KDNodePointer p_left_;
-    KDNodePointer p_right_;
-
-  }; /* class KDNode */
-
-  /** Insert the point of the database at index i in the tree */
-  void insert(KDNode::KDNodePointer & p_node,
+  /** Insert the point of the database at index in the tree */
+  void insert(UnsignedInteger & inode,
+              UnsignedInteger & currentSize,
               const UnsignedInteger index,
               const UnsignedInteger activeDimension);
 
   /** Get the index of the nearest neighbour of the given point */
-  virtual UnsignedInteger getNearestNeighbourIndex(const KDNode::KDNodePointer & p_node,
+  virtual UnsignedInteger getNearestNeighbourIndex(const UnsignedInteger inode,
       const Point & x,
       Scalar & bestSquaredDistance,
       Point & lowerBoundingBox,
@@ -134,8 +101,8 @@ private:
   /** Global bounding box */
   Interval boundingBox_;
 
-  /** The root of the tree */
-  KDNode::KDNodePointer p_root_;
+  /** The tree, stored as a list of tuples (index, leftNode, rightNode) */
+  Indices tree_;
 
 }; /* class KDTree */
 
