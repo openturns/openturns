@@ -264,6 +264,10 @@ try:
     view = View(graph)
     view.ShowAll(block=True)
 
+    # test _repr_png_
+    png = graph._repr_png_()
+    assert(b'PNG' in png[:10])
+
 except:
     traceback.print_exc()
     os._exit(1)

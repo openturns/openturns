@@ -699,5 +699,8 @@
   <TensorApproximationAlgorithm-DefaultMaximumRadiusError value="1.0e-5"/>
   <TensorApproximationAlgorithm-DefaultMaximumResidualError value="1.0e-5"/>
 
+  <!-- viewer.View parameters -->
+  <View-ImageFormat value="png"/>
+
   <!-- <-your-variable value="its value" /> -->
 </openturns-configuration>
