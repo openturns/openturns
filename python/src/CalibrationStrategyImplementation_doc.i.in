@@ -53,9 +53,9 @@ lambda : float
     updated *calibration* coefficient according to the strategy. The value is
     computed as follows:
 
-.. math::
+    .. math::
 
-    \phi(\rho) = \left\{
+        \phi(\rho) = \left\{
                  \begin{array}{l}
                      \displaystyle s  \quad if \; \rho < m \\
                      \displaystyle e  \quad if \; \rho > M \\
@@ -63,9 +63,9 @@ lambda : float
                  \end{array}
                  \right.
 
-with :math:`s \in ]0, 1[, e > 1` and :math:`[m,M]` the values given,
-respectively, by the methods :meth:`getShrinkFactor`,
-:meth:`getExpansionFactor` and :meth:`getRange`.
+    with :math:`s \in ]0, 1[, e > 1` and :math:`[m,M]` the values given,
+    respectively, by the methods :meth:`getShrinkFactor`,
+    :meth:`getExpansionFactor` and :meth:`getRange`.
 
 Examples
 --------
