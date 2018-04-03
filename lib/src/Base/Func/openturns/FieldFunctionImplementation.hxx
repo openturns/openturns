@@ -90,7 +90,7 @@ public:
   virtual Description getOutputDescription() const;
 
   /** Accessor for the output mesh associated with the given input mesh */
-  Mesh getOutputMesh(const Mesh & inputMesh) const;
+  virtual Mesh getOutputMesh(const Mesh & inputMesh) const;
 
   /** Get the i-th marginal function */
   virtual Implementation getMarginal(const UnsignedInteger i) const;
