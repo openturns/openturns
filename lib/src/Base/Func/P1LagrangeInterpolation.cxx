@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief P1 Lagrange piecewise linear function.
+ *  @brief P1 Lagrange interpolation between two meshes.
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
