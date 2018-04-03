@@ -65,27 +65,36 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
   if (outputVariablesNames_.getSize() == 0)
   {
     // One formula by marginal
-    for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
+    if (checkResult_)
     {
-      const Scalar value = expressions_[outputIndex]->value();
-      // ExprTk does not throw on domain/division errors
-      if (!SpecFunc::IsNormal(value))
-        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-      result[outputIndex] = value;
-    }
-  }
+      for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
+      {
+        const Scalar value = expressions_[outputIndex]->value();
+        // ExprTk does not throw on domain/division errors
+        if (!SpecFunc::IsNormal(value))
+          throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+        result[outputIndex] = value;
+      } // outputIndex
+    } // checkResult
+    else
+      for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
+        result[outputIndex] = expressions_[outputIndex]->value();
+  } // outputVariablesNames_.getSize() == 0
   else
   {
     // Single formula, evaluate expression
     (void) expressions_[0]->value();
 
     std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), result.begin());
-    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+    if (checkResult_)
     {
-      if (!SpecFunc::IsNormal(result[outputIndex]))
-        throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-    }
-  }
+      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+      {
+        if (!SpecFunc::IsNormal(result[outputIndex]))
+          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      }
+    } // checkResult
+  } // !outputVariablesNames_.getSize() == 0
   return result;
 }
 
@@ -110,7 +119,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
       {
         const Scalar value = expressions_[outputIndex]->value();
         // ExprTk does not throw on domain/division errors
-        if (!SpecFunc::IsNormal(value))
+        if (checkResult_ && !SpecFunc::IsNormal(value))
           throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
         result(i, outputIndex) = value;
       }
@@ -118,29 +127,49 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   }
   else
   {
-    // Single formula
-    for (UnsignedInteger i = 0; i < size; ++i)
+    if (checkResult_)
     {
-      std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
-      // Evaluate expression
-      (void) expressions_[0]->value();
-
-      std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), &result(i, 0));
-      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+      // Single formula
+      for (UnsignedInteger i = 0; i < size; ++i)
       {
-        if (!SpecFunc::IsNormal(result(i, outputIndex)))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
-      }
-    }
+        std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
+        // Evaluate expression
+        (void) expressions_[0]->value();
+
+        std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), &result(i, 0));
+        for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
+        {
+          if (!SpecFunc::IsNormal(result(i, outputIndex)))
+            throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
+        }
+      } // i
+    } // checkResult_
+    else
+    {
+      // Single formula
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
+        // Evaluate expression
+        (void) expressions_[0]->value();
+
+        std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), &result(i, 0));
+      } // i
+    } // !checkResult_
   }
   return result;
 }
 
-namespace {
-Scalar ExprTk_sign(Scalar v) {
-  if (v > 0.0) return 1.0; else if (v < 0.0) return -1.0; else return 0.0;
+namespace
+{
+Scalar ExprTk_sign(Scalar v)
+{
+  if (v > 0.0) return 1.0;
+  else if (v < 0.0) return -1.0;
+  else return 0.0;
 }
-Scalar ExprTk_rint(Scalar v) {
+Scalar ExprTk_rint(Scalar v)
+{
   return ((v < 0.0) ? std::ceil(v - 0.5) : std::floor(v + 0.5));
 }
 }

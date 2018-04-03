@@ -192,3 +192,5 @@ OK
 [x,y]->[x * y] , f([2, 3])= [6]
 [x,y]->[x / y] , f([2, 3])= [0.666667]
 [x,y]->[x ^ y] , f([2, 3])= [8]
+[x]->[sqrt(x)] , f([-1]) not defined
+[x]->[sqrt(x)] , f([-1]) is normal? False

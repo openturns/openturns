@@ -62,7 +62,7 @@ public:
 protected:
   Description inputVariablesNames_;
   Description formulas_;
-
+  Bool checkResult_;
 }; /* class SymbolicParserImplementation */
 
 END_NAMESPACE_OPENTURNS

@@ -37,7 +37,8 @@
   <SpecFunc-Precision value="2.0e-16" />
 
   <!-- OT::SymbolicParser parameters -->
-  <SymbolicParser-Backend value="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
+  <SymbolicParser-Backend     value="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
+  <SymbolicParser-CheckResult value="true" />
 
   <!-- OT::DesignProxy parameters -->
   <DesignProxy-DefaultCacheSize value="16777216" />

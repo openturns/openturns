@@ -301,6 +301,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SymbolicParser parameters
   set( "SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND );
+  setAsBool( "SymbolicParser-CheckResult", true );
 
   // GramProxy parameters
   setAsUnsignedInteger( "DesignProxy-DefaultCacheSize", 16777216 );// 2^24=16777216=128 Mio

@@ -198,3 +198,13 @@ f = ot.SymbolicFunction(["x", "y"], ["x / y"])
 print(f, ", f([2, 3])=", f([2.0, 3.0]))
 f = ot.SymbolicFunction(["x", "y"], ["x ^ y"])
 print(f, ", f([2, 3])=", f([2.0, 3.0]))
+# Check for exceptional output
+f = ot.SymbolicFunction("x", "sqrt(x)")
+try:
+    print(f, ", f([-1])=", f([-1.0]))
+except:
+    print(f, ", f([-1]) not defined")
+
+ot.ResourceMap.SetAsBool("SymbolicParser-CheckResult", False)
+f = ot.SymbolicFunction("x", "sqrt(x)")
+print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(f([-1.0])[0]))
