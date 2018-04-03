@@ -167,18 +167,17 @@ Returns
 -------
 condMean : :class:`~openturns.Point`
     The conditional mean :math:`\Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
-   
     Or the conditional mean matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
 
-.. math::
+    .. math::
 
-    \left(
-      \begin{array}{l}
-         \Expect{\vect{Y}(\omega, \vect{\xi}_1)\, | \,  \cC}\\
-        \dots  \\
-        \Expect{\vect{Y}(\omega, \vect{\xi}_M)\, | \,  \cC}
-       \end{array}
-     \right)
+        \left(
+          \begin{array}{l}
+            \Expect{\vect{Y}(\omega, \vect{\xi}_1)\, | \,  \cC}\\
+            \dots  \\
+            \Expect{\vect{Y}(\omega, \vect{\xi}_M)\, | \,  \cC}
+          \end{array}
+        \right)
 
 "
 
@@ -204,21 +203,19 @@ Returns
 -------
 condCov : :class:`~openturns.CovarianceMatrix`
     The conditional covariance :math:`\Cov{\vect{Y}(\omega, \vect{x})\, | \,  \cC}` at point :math:`\vect{x}`.
-   
     Or the conditional covariance matrix at the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)`:
 
-.. math::
+    .. math::
 
-    \left(
-      \begin{array}{lcl}
-         \Sigma_{11} & \dots & \Sigma_{1M} \\
-        \dots  \\
-        \Sigma_{M1} & \dots & \Sigma_{MM}
-       \end{array}
-     \right)
+        \left(
+          \begin{array}{lcl}
+            \Sigma_{11} & \dots & \Sigma_{1M} \\
+            \dots  \\
+            \Sigma_{M1} & \dots & \Sigma_{MM}
+          \end{array}
+        \right)
 
-where :math:`\Sigma_{ij} = \Cov{\vect{Y}(\omega, \vect{\xi}_i), \vect{Y}(\omega, \vect{\xi}_j)\, | \,  \cC}`.
-"
+    where :math:`\Sigma_{ij} = \Cov{\vect{Y}(\omega, \vect{\xi}_i), \vect{Y}(\omega, \vect{\xi}_j)\, | \,  \cC}`."
 
 // ---------------------------------------------------------------------
 
