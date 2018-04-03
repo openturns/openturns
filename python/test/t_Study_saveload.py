@@ -286,6 +286,20 @@ try:
     # cleanup
     os.remove(fileName)
 
+
+    # test nan/inf
+    myStudy = ot.Study(fileName)
+    point = ot.Point([float(x) for x in ['1.23', 'nan', 'inf', '-inf']])
+    myStudy.add("point", point)
+    myStudy.save()
+    myStudy2 = ot.Study(fileName)
+    myStudy2.load()
+    point2 = ot.Point()
+    myStudy2.fillObject("point", point2)
+    print(point2)
+    # cleanup
+    os.remove(fileName)
+
 except:
     import os
     import traceback

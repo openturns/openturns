@@ -407,12 +407,30 @@ void fromStringConverter(const String & st, String & value)
   value = st;
 }
 
+
 template <typename _Tp>
 static inline
 void fromStringConverter(const String & st, _Tp & value)
 {
   std::istringstream iss (st);
   iss >> value;
+
+  if (st == "nan")
+  {
+    value = std::numeric_limits<_Tp>::quiet_NaN();
+  }
+  else if (st == "-nan")
+  {
+    value = -std::numeric_limits<_Tp>::quiet_NaN();
+  }
+  else if (st == "inf")
+  {
+    value = std::numeric_limits<_Tp>::infinity();
+  }
+  else if (st == "-inf")
+  {
+    value = -std::numeric_limits<_Tp>::infinity();
+  }
 }
 
 
