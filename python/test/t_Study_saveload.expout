@@ -7,4 +7,6 @@ randomGeneratorState =  RandomGeneratorState(buffer=[1890737188,1073353721,15902
 analytical =  [a,b,c]->[a+b+c,a-b*c,(a+2*b^2+3*c^3)/6]
 generalizedLinearModelResult =  GeneralLinearModelResult(covariance models=ExponentialModel(scale=[1], amplitude=[1], no spatial correlation), basis=[], trend coefficients=[])
 kDTree =  class=KDTree root=class=KDNode index=5 left=class=KDNode index=4 left=NULL right=class=KDNode index=6 left=NULL right=class=KDNode index=2 left=NULL right=NULL right=class=KDNode index=7 left=class=KDNode index=0 left=NULL right=class=KDNode index=1 left=NULL right=NULL right=class=KDNode index=9 left=NULL right=class=KDNode index=8 left=NULL right=class=KDNode index=3 left=NULL right=NULL
-[1.23,nan,inf,-inf]
+j= 0 isnormal= False isnan= True isinf= False
+j= 1 isnormal= False isnan= False isinf= True
+j= 2 isnormal= False isnan= False isinf= True

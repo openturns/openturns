@@ -31,6 +31,7 @@
 #include "openturns/XMLToolbox.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #ifndef WIN32
 #ifndef SWIG
@@ -389,6 +390,15 @@ void toStringConverter(const _Tp & value, String & st)
   PlatformInfo::SetNumericalPrecision(XMLStorageManager::Precision_);
   st = ( OSS() << value );
   PlatformInfo::SetNumericalPrecision(oldPrecision);
+
+  if (SpecFunc::IsNaN(value))
+  {
+    st = "nan";
+  }
+  else if (SpecFunc::IsInf(value))
+  {
+    st = value < 0.0 ? "-inf" : "inf";
+  }
 }
 
 
@@ -418,10 +428,6 @@ void fromStringConverter(const String & st, _Tp & value)
   if (st == "nan")
   {
     value = std::numeric_limits<_Tp>::quiet_NaN();
-  }
-  else if (st == "-nan")
-  {
-    value = -std::numeric_limits<_Tp>::quiet_NaN();
   }
   else if (st == "inf")
   {
