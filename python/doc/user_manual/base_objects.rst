@@ -92,6 +92,7 @@ Vectors
     BoolCollection
     Description
     Indices
+    IndicesCollection
     Point
     PointWithDescription
     ComplexCollection
