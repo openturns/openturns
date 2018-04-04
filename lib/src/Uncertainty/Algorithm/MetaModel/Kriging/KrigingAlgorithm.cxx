@@ -103,53 +103,6 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   else glmAlgo_.setMethod(0);
 }
 
-/* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
-                                   const Function & inputTransformation,
-                                   const Sample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const Basis & basis)
-  : MetaModelAlgorithm()
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
-  , normalize_(true)
-  , covarianceModel_(covarianceModel)
-  , glmAlgo_(inputSample, inputTransformation, outputSample, covarianceModel, basis, true)
-  , gamma_(0)
-  , rho_(0)
-  , result_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-{
-  // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
-}
-
-/* Constructor */
-KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
-                                   const Function & inputTransformation,
-                                   const Sample & outputSample,
-                                   const CovarianceModel & covarianceModel,
-                                   const BasisCollection & basisCollection)
-  : MetaModelAlgorithm()
-  , inputSample_(inputSample)
-  , outputSample_(outputSample)
-  , normalize_(true)
-  , covarianceModel_(covarianceModel)
-  , glmAlgo_(inputSample, inputTransformation, outputSample, covarianceModel, basisCollection, true)
-  , gamma_(0)
-  , rho_(0)
-  , result_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-{
-  // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
-}
-
-
 /* Virtual constructor */
 KrigingAlgorithm * KrigingAlgorithm::clone() const
 {

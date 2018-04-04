@@ -797,6 +797,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "GeneralLinearModelAlgorithm-MaximalScaling", 1.0e5 );
   setAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-2 );
   setAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 1.0e2 );
+  setAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor", 2.0 );
   set("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
 
   // KrigingAlgorithm parameters //

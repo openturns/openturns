@@ -58,7 +58,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -94,7 +93,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -126,6 +124,10 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+
+  // Normalize input sample
+  normalizeInputSample();
+
   // If no basis then we suppose output sample centered
   checkYCentered(outputSample);
   // Set covariance model
@@ -151,7 +153,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -183,6 +184,10 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+
+  // Normalize input sample
+  normalizeInputSample();
+
   // Set covariance model
   setCovarianceModel(covarianceModel);
 
@@ -203,62 +208,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   initializeDefaultOptimizationAlgorithm();
 }
 
-/* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
-    const Function & inputTransformation,
-    const Sample & outputSample,
-    const CovarianceModel & covarianceModel,
-    const Basis & basis,
-    const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm()
-  , inputSample_()
-  , normalizedInputSample_(0, inputSample.getDimension())
-  , inputTransformation_()
-  , normalize_(true)
-  , outputSample_()
-  , covarianceModel_()
-  , reducedCovarianceModel_()
-  , solver_()
-  , optimizationBounds_()
-  , normalizedOptimizationBounds_()
-  , beta_(0)
-  , rho_(0)
-  , F_(0, 0)
-  , result_()
-  , basisCollection_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
-  , method_(0)
-  , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
-  , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
-{
-  // Set data
-  setData(inputSample, outputSample);
-  // Set the isoprobabilistic transformation
-  setInputTransformation(inputTransformation);
-  // Set covariance model
-  setCovarianceModel(covarianceModel);
-
-  // basis setter
-  if (basis.getSize() > 0)
-  {
-    if (basis[0].getOutputDimension() > 1) LOGWARN(OSS() << "Expected a basis of scalar functions, but first function has dimension" << basis[0].getOutputDimension() << ". Only the first output component will be taken into account.");
-    if (outputSample.getDimension() > 1) LOGWARN(OSS() << "The basis of functions will be applied to all output marginals" );
-    // Set basis
-    basisCollection_ = BasisCollection(outputSample.getDimension(), basis);
-  }
-  else
-  {
-    // If no basis then we suppose output sample centered
-    checkYCentered(outputSample);
-  }
-
-  initializeMethod();
-  initializeDefaultOptimizationAlgorithm();
-}
 
 /* Parameters constructor */
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
@@ -277,7 +226,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , reducedCovarianceModel_()
   , solver_()
   , optimizationBounds_()
-  , normalizedOptimizationBounds_()
   , beta_(0)
   , rho_(0)
   , F_(0, 0)
@@ -309,57 +257,16 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Point zero(dimension);
     setInputTransformation(LinearFunction(mean, zero, linear));
   }
+
+  // Normalize input sample
+  normalizeInputSample();
+
+
   // Set covariance model
   setCovarianceModel(covarianceModel);
 
   // Set basis collection
   if (basisCollection.getSize() > 0) setBasisCollection(basisCollection);
-
-  initializeMethod();
-  initializeDefaultOptimizationAlgorithm();
-}
-
-/* Parameters constructor */
-GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
-    const Function & inputTransformation,
-    const Sample & outputSample,
-    const CovarianceModel & covarianceModel,
-    const BasisCollection & basisCollection,
-    const Bool keepCholeskyFactor)
-  : MetaModelAlgorithm()
-  , inputSample_()
-  , normalizedInputSample_(0, inputSample.getDimension())
-  , inputTransformation_()
-  , normalize_(true)
-  , outputSample_()
-  , covarianceModel_()
-  , reducedCovarianceModel_()
-  , solver_()
-  , optimizationBounds_()
-  , normalizedOptimizationBounds_()
-  , beta_(0)
-  , rho_(0)
-  , F_(0, 0)
-  , result_()
-  , basisCollection_()
-  , covarianceCholeskyFactor_()
-  , covarianceCholeskyFactorHMatrix_()
-  , keepCholeskyFactor_(keepCholeskyFactor)
-  , method_(0)
-  , hasRun_(false)
-  , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
-  , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
-{
-  // Set data
-  setData(inputSample, outputSample);
-  // Set the isoprobabilistic transformation
-  setInputTransformation(inputTransformation);
-  // Set covariance model
-  setCovarianceModel(covarianceModel);
-
-  // Set basis collection
-  if (basisCollection.getSize() > 0)  setBasisCollection(basisCollection);
 
   initializeMethod();
   initializeDefaultOptimizationAlgorithm();
@@ -445,8 +352,27 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   const UnsignedInteger optimizationDimension = reducedCovarianceModel_.getParameter().getSize();
   if (optimizationDimension > 0)
   {
+    const Scalar scaleFactor(ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor"));
+    if (!(scaleFactor > 0))
+      throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
     const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    const Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    // We could set scale parameter if these parameters are enabled.
+    // check if scale is active
+    const Indices activeParameters(reducedCovarianceModel_.getActiveParameter());
+    Bool isScaleActive(true);
+    for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+    {
+      if (!activeParameters.contains(k))
+        isScaleActive = false;
+    }
+    if (isScaleActive)
+    {
+      const Point inputSampleRange(normalizedInputSample_.getMax() - normalizedInputSample_.getMin());
+      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k) upperBound[k] = inputSampleRange[k] * scaleFactor;
+    }
+    LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
+
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
@@ -723,32 +649,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem;
   problem.setObjective(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
-  if (normalize_)
-  {
-    if (normalizedOptimizationBounds_.getDimension() == 0)
-    {
-      normalizedOptimizationBounds_ = optimizationBounds_;
-      // Normalize upper bounds.  This can be done only if all scale parameters are activated, and scale
-      // parameters are the first ones.
-      const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
-      UnsignedInteger count = 0;
-      for (UnsignedInteger i = 0; i == count && i < activeParametersDescription.getSize(); ++i)
-        if (activeParametersDescription[i].compare(0, 6, "scale_") == 0)
-          ++ count;
-      if (count == inputTransformation_.getInputDimension())
-      {
-        Point upperPoint(optimizationBounds_.getUpperBound());
-        Point scaleParameters(count);
-        for(UnsignedInteger i = 0; i < count; ++i) scaleParameters[i] = upperPoint[i];
-        scaleParameters = inputTransformation_(scaleParameters);
-        for(UnsignedInteger i = 0; i < count; ++i) upperPoint[i] = scaleParameters[i];
-        normalizedOptimizationBounds_.setUpperBound(upperPoint);
-      }
-    }
-    problem.setBounds(normalizedOptimizationBounds_);
-  }
-  else
-    problem.setBounds(optimizationBounds_);
+  problem.setBounds(optimizationBounds_);
   solver_.setStartingPoint(initialParameters);
   solver_.setProblem(problem);
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
@@ -1029,7 +930,6 @@ void GeneralLinearModelAlgorithm::setOptimizationBounds(const Interval & optimiz
 {
   if (!(optimizationBounds.getDimension() == reducedCovarianceModel_.getParameter().getSize())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << reducedCovarianceModel_.getParameter().getSize() << ", got dimension=" << optimizationBounds.getDimension();
   optimizationBounds_ = optimizationBounds;
-  normalizedOptimizationBounds_ = Interval();
 }
 
 Interval GeneralLinearModelAlgorithm::getOptimizationBounds() const

@@ -51,20 +51,19 @@ int main(int argc, char *argv[])
       Sample X2(sampleSize, dimension);
       for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
       {
-        X[i][0] = 3.0 + i;
-        X2[i][0] = 2.5 + i;
+        X(i, 0) = 3.0 + i;
+        X2(i, 0) = 2.5 + i;
       }
-      X[0][0] = 1.0;
-      X[1][0] = 3.0;
-      X2[0][0] = 2.0;
-      X2[1][0] = 4.0;
+      X(0, 0) = 1.0;
+      X(1, 0) = 3.0;
+      X2(0, 0) = 2.0;
+      X2(1, 0) = 4.0;
       Sample Y(model(X));
       Sample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
       SquaredExponential covarianceModel(Point(1, 1e-05), Point(1, 4.11749));
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
-
       algo.run();
 
       // perform an evaluation
@@ -99,22 +98,22 @@ int main(int argc, char *argv[])
       formulas[0] = "5.-x1-0.5*(x0-0.1)^2";
       SymbolicFunction model(input, formulas);
       Sample X(sampleSize, dimension);
-      X[0][0] = -4.61611719;
-      X[0][1] = -6.00099547;
-      X[1][0] = 4.10469096;
-      X[1][1] = 5.32782448;
-      X[2][0] = 0.;
-      X[2][1] = -.5;
-      X[3][0] = -6.17289014;
-      X[3][1] = -4.6984743;
-      X[4][0] = 1.3109306;
-      X[4][1] = -6.93271427;
-      X[5][0] = -5.03823144;
-      X[5][1] = 3.10584743;
-      X[6][0] = -2.87600388;
-      X[6][1] = 6.74310541;
-      X[7][0] = 5.21301203;
-      X[7][1] = 4.26386883;
+      X(0, 0) = -4.61611719;
+      X(0, 1) = -6.00099547;
+      X(1, 0) = 4.10469096;
+      X(1, 1) = 5.32782448;
+      X(2, 0) = 0.;
+      X(2, 1) = -.5;
+      X(3, 0) = -6.17289014;
+      X(3, 1) = -4.6984743;
+      X(4, 0) = 1.3109306;
+      X(4, 1) = -6.93271427;
+      X(5, 0) = -5.03823144;
+      X(5, 1) = 3.10584743;
+      X(6, 0) = -2.87600388;
+      X(6, 1) = 6.74310541;
+      X(7, 0) = 5.21301203;
+      X(7, 1) = 4.26386883;
       Sample Y(model(X));
 
       // create algorithm
@@ -124,7 +123,6 @@ int main(int argc, char *argv[])
       scale[1] = 18.9;
       Point amplitude(1,  8.05);
       SquaredExponential covarianceModel(scale, amplitude);
-
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
       algo.run();
 
