@@ -25,15 +25,25 @@ Examples
 %feature("docstring") OT::RegularGridNearestNeighbour::queryScalar
 "Accessor to the nearest neighbour index.
 
+Available usages:
+    queryScalar(*x*)
+
+    queryScalar(*point*)
+
+
 Parameters
 ----------
 x : float
-    Given point.
+    Given 1D point.
+point : sequence of float
+    Sequence of 1D points.
 
 Returns
 -------
 index : int
-    Index of the nearest neighbour."
+    Index of the nearest neighbour.
+indices : :class:`openturns.Indices`
+    Index of the nearest neighbour of the given points."
 
 // ---------------------------------------------------------------------
 
@@ -43,7 +53,7 @@ index : int
 Parameters
 ----------
 x : float
-    Given point.
+    Given 1D point.
 k : int
     Number of indices to return.
 sorted : bool

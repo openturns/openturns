@@ -22,35 +22,27 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::RegularGridEnclosingSimplex::query
-"Accessor to the enclosing simplex index.
-
-Parameters
-----------
-x : sequence of float
-    Given point.
-
-Returns
--------
-index : int
-    If point is inside RegularGrid bounds, return the index of the interval
-    in  which it is contained; otherwise return an int which is at least
-    greater than the number of intervals."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::RegularGridEnclosingSimplex::queryScalar
 "Accessor to the enclosing simplex index.
+
+Available usages:
+    queryScalar(*x*)
+
+    queryScalar(*point*)
 
 Parameters
 ----------
 x : float
     Given point.
+point : sequence of float
+    Sequence of 1D points.
 
 Returns
 -------
 index : int
-    If point is inside RegularGrid bounds, return the index of the interval
+    If *x* is inside RegularGrid bounds, return the index of the interval
     in  which it is contained; otherwise return an int which is at least
-    greater than the number of intervals."
+    greater than the number of intervals.
+indices : :class:`openturns.Indices`
+    Index of the enclosing simplex of the given 1D points."
 

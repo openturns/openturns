@@ -6,18 +6,23 @@ by looking into all its simplices.  It works well for convex
 domains, but may be slow otherwise.
 
 Available constructors:
-    NaiveEnclosingSimplex(*points, simplices*)
+    NaiveEnclosingSimplex(*vertices, simplices*)
 
 Parameters
 ----------
-mesh : :class:`~openturns.Mesh`
-    Mesh.
-
-sample : 2-d sequence of float
-    Points.
+vertices : :class:`~openturns.Sample`
+    Vertices.
 
 simplices : :class:`~openturns.IndicesCollection`
     Simplices.
+
+Notes
+-----
+
+In order to speed-up point location, a first pass is performed
+by looping over all simplices containing the nearest point.  If
+query point is not found in those simplices, then all simplices
+are looked for.
 
 See also
 --------
@@ -36,17 +41,21 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NaiveEnclosingSimplex::query
-"Accessor to the enclosing simplex index.
-
-Parameters
-----------
-x : sequence of float
-    Given point.
+%feature("docstring") OT::NaiveEnclosingSimplex::getNearestNeighbourAlgorithm
+"Accessor to the nearest neighbour algorithm.
 
 Returns
 -------
-index : int
-    If point is enclosed in a simplex, return its index; otherwise return an
-    int which is at least greater than the number of simplices."
+nearestNeighbour : :class:`~openturns.NearestNeighbourAlgorithm`
+    Algorithm used during first pass to locate the nearest point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NaiveEnclosingSimplex::setNearestNeighbourAlgorithm
+"Accessor to the nearest neighbour algorithm.
+
+Parameters
+----------
+nearestNeighbour : :class:`~openturns.NearestNeighbourAlgorithm`
+    Algorithm to use during first pass to locate the nearest point."
 

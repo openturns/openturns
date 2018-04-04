@@ -2,5 +2,7 @@
 
 %feature("docstring") OT::EnclosingSimplexAlgorithm
 OT_EnclosingSimplexAlgorithm_doc
+%feature("docstring") OT::EnclosingSimplexAlgorithm::setVerticesAndSimplices
+OT_EnclosingSimplexAlgorithm_setVerticesAndSimplices_doc
 %feature("docstring") OT::EnclosingSimplexAlgorithm::query
 OT_EnclosingSimplexAlgorithm_query_doc

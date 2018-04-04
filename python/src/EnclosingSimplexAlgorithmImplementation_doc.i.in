@@ -68,19 +68,47 @@ OT_EnclosingSimplexAlgorithm_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_EnclosingSimplexAlgorithm_setVerticesAndSimplices_doc
+"Rebuild a new data structure for these vertices and simplices.
+
+Parameters
+----------
+vertices : :class:`~openturns.Sample`
+    Vertices.
+
+simplices : :class:`~openturns.IndicesCollection`
+    Simplices."
+%enddef
+
+%feature("docstring") OT::EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices
+OT_EnclosingSimplexAlgorithm_setVerticesAndSimplices_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_EnclosingSimplexAlgorithm_query_doc
 "Get the index of the enclosing simplex of the given point.
+
+Available usages:
+    query(*point*)
+
+    query(*sample*)
 
 Parameters
 ----------
 point : sequence of float
     Given point.
+sample : 2-d sequence of float
+    Given points.
 
 Returns
 -------
 index : int
     If point is enclosed in a simplex, return its index; otherwise return an
-    int which is at least greater than the number of simplices."
+    int which is at least greater than the number of simplices.
+indices : :class:`openturns.Indices`
+    Index of enclosing simplex of each point of the sample.  If there is no
+    enclosing simplex, value is an int which is at least greater than the
+    number of simplices."
 %enddef
 
 %feature("docstring") OT::EnclosingSimplexAlgorithmImplementation::query
