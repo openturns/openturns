@@ -212,7 +212,7 @@ def _exec_sample_multiprocessing(func, n_cpus):
         except:
             # multiprocessing is not working on this platform,
             # fallback to sequential computations.
-            return [self._exec(point) for point in X]
+            return [func(point) for point in X]
         rs = p.map_async(func, X)
         p.close()
         return rs.get()
