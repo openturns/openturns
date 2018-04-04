@@ -16,4 +16,4 @@ Numerical methods
     control_termination.ipynb
     logistic_growth_model.ipynb
     study_save_load.ipynb
-
+    ifs.ipynb
