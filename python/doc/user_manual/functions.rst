@@ -249,6 +249,7 @@ as Python functions.
     SpecFunc_IncompleteBetaInverse
     SpecFunc_IncompleteGamma
     SpecFunc_IncompleteGammaInverse
+    SpecFunc_IsNormal
     SpecFunc_LambertW
     SpecFunc_LnBeta
     SpecFunc_LnGamma

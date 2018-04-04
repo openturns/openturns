@@ -1078,3 +1078,18 @@ k : int
 Returns
 -------
 result : int"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IsNormal
+"Check for non-NaN and non-Inf values.
+
+Parameters
+----------
+v : float
+
+Returns
+-------
+result : bool"
+
+
