@@ -3,6 +3,9 @@
 
 Allows to store and search points fast.
 
+Available constructors:
+    KDTree(*sample*)
+
 Parameters
 ----------
 sample : 2-d sequence of float
@@ -18,58 +21,3 @@ Examples
 >>> sample = ot.Normal(2).getSample(10)
 >>> tree = ot.KDTree(sample)
 >>> neighbour = sample[tree.query([0.1, 0.2])]"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KDTree::setSample
-"Build a kd-tree from these points.
-
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Input points."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KDTree::getSample
-"Collection of points accessor.
-
-Returns
--------
-points : :class:`~openturns.Sample`
-    Collection of points."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KDTree::query
-"Accessor to the nearest neighbour index.
-
-Parameters
-----------
-x : sequence of float
-    Given point.
-
-Returns
--------
-index : int
-    Index of the nearest neighbour."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KDTree::queryK
-"Accessor to the nearest neighbours indices.
-
-Parameters
-----------
-x : sequence of float
-    Given point.
-k : int
-    Number of points to return
-sorted : bool
-    Whether to return the points sorted
-
-Returns
--------
-indices : :class:`~openturns.Indices`
-    Indices of the k nearest neighbours."
-

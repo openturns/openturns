@@ -86,15 +86,24 @@ OT_NearestNeighbourAlgorithm_getSample_doc
 %define OT_NearestNeighbourAlgorithm_query_doc
 "Get the index of the nearest neighbour of the given point.
 
+Available usages:
+    query(*point*)
+
+    query(*sample*)
+
 Parameters
 ----------
 point : sequence of float
     Given point.
+sample : 2-d sequence of float
+    Given points.
 
 Returns
 -------
 index : int
-    Index of the nearest neighbour of the given point."
+    Index of the nearest neighbour of the given point.
+indices : :class:`openturns.Indices`
+    Index of the nearest neighbour of the given points."
 %enddef
 
 %feature("docstring") OT::NearestNeighbourAlgorithmImplementation::query
@@ -107,7 +116,7 @@ OT_NearestNeighbourAlgorithm_query_doc
 
 Parameters
 ----------
-point : sequence of float
+x : sequence of float
     Given point.
 k : int
     Number of indices to return.

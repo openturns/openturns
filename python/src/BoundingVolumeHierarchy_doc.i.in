@@ -46,19 +46,3 @@ Examples
 >>> locator = ot.BoundingVolumeHierarchy(mesh.getVertices(), mesh.getSimplices())
 >>> simplex = locator.query([0.1, 0.2])"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::BoundingVolumeHierarchy::query
-"Accessor to the enclosing simplex index.
-
-Parameters
-----------
-x : sequence of float
-    Given point.
-
-Returns
--------
-index : int
-    If point is enclosed in a simplex, return its index; otherwise return an
-    int which is at least greater than the number of simplices."
-
