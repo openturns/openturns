@@ -102,7 +102,7 @@ Sample::Sample(const UnsignedInteger size,
 }
 
 /* Partial copy constructor */
-Sample::Sample(const Sample other,
+Sample::Sample(const Sample & other,
                const UnsignedInteger first,
                const UnsignedInteger last)
   : TypedInterfaceObject<SampleImplementation>(new SampleImplementation(*other.getImplementation(), other.getImplementation()->begin() + first, other.getImplementation()->begin() + last))
