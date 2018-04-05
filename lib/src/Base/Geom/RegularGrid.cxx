@@ -78,7 +78,7 @@ RegularGrid::RegularGrid(const Mesh & mesh)
   n_ = mesh.getVerticesNumber();
   if (n_ == 0) throw InvalidArgumentException(HERE) << "Error: the mesh must contains at least one vertex to be converted into a RegularGrid.";
   start_ = mesh.getVertices()(0, 0);
-  if (n_ > 1) step_ = (mesh.getVertices()[n_ - 1][0] - start_) / (n_ - 1);
+  if (n_ > 1) step_ = (mesh.getVertices()(n_ - 1, 0) - start_) / (n_ - 1);
   vertices_.setDescription(Description(1, "t"));
   simplices_ = IndicesCollection(n_ - 1, 2);
   for (UnsignedInteger i = 0; i < n_ - 1; ++i)
