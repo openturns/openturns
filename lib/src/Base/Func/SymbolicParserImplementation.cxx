@@ -35,6 +35,7 @@ SymbolicParserImplementation::SymbolicParserImplementation()
   : PersistentObject()
   , inputVariablesNames_()
   , formulas_()
+  , checkResult_(ResourceMap::GetAsBool("SymbolicParser-CheckResult"))
 {
   // Nothing to do
 }
@@ -89,6 +90,7 @@ void SymbolicParserImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.saveAttribute( "formulas_", formulas_ );
+  adv.saveAttribute( "checkResult_", checkResult_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -97,6 +99,7 @@ void SymbolicParserImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "formulas_", formulas_ );
+  adv.loadAttribute( "checkResult_", checkResult_ );
 }
 
 
