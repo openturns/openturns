@@ -131,9 +131,9 @@ Bool Basis::isOrthogonal() const
   return getImplementation()->isOrthogonal();
 }
 
-Bool Basis::isFunctional() const
+Bool Basis::isFinite() const
 {
-  return getImplementation()->isFunctional();
+  return getImplementation()->isFinite();
 }
 
 END_NAMESPACE_OPENTURNS

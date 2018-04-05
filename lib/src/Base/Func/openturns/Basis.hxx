@@ -73,8 +73,11 @@ public:
   /** add an element */
   void add(const Function & elt);
 
-  Bool isFunctional() const;
+  /** Tells whether the basis is orthogonal */
   Bool isOrthogonal() const;
+
+  /** Tells whether the basis is finite */
+  Bool isFinite() const;
 
   /** String converter */
   String __repr__() const;

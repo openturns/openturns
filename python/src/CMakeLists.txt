@@ -349,8 +349,6 @@ ot_add_python_module(func func_module.i
                       TrendTransform.i TrendTransform_doc.i.in
                       InverseTrendEvaluation.i
                       InverseTrendTransform.i InverseTrendTransform_doc.i.in
-                      FunctionalBasis.i
-                      FunctionalBasisImplementation.i
                       BasisFactory.i BasisFactory_doc.i.in
                       ConstantBasisFactory.i ConstantBasisFactory_doc.i.in
                       LinearBasisFactory.i LinearBasisFactory_doc.i.in

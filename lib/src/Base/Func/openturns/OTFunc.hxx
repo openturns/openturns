@@ -141,8 +141,6 @@
 #include "openturns/TrendTransform.hxx"
 #include "openturns/InverseTrendEvaluation.hxx"
 #include "openturns/InverseTrendTransform.hxx"
-#include "openturns/FunctionalBasis.hxx"
-#include "openturns/FunctionalBasisImplementation.hxx"
 #include "openturns/FiniteBasis.hxx"
 #include "openturns/ConstantBasisFactory.hxx"
 #include "openturns/LinearBasisFactory.hxx"

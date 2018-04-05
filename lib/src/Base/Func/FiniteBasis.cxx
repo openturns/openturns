@@ -91,6 +91,11 @@ void FiniteBasis::add(const Function & elt)
   collection_.add(elt);
 }
 
+Bool FiniteBasis::isFinite() const
+{
+  return true;
+}
+
 void FiniteBasis::save(Advocate & adv) const
 {
   BasisImplementation::save(adv);

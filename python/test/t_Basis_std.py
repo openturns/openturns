@@ -20,7 +20,7 @@ try:
 
     print(basis.getSize())
     print(basis.getSubBasis([1, 2]))
-    print(basis.isFunctional())
+    print(basis.isFinite())
     print(basis.isOrthogonal())
     # print(basis[1])
     # print(basis[0:2])

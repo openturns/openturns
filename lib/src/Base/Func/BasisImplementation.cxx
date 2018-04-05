@@ -92,7 +92,7 @@ Bool BasisImplementation::isOrthogonal() const
   return false;
 }
 
-Bool BasisImplementation::isFunctional() const
+Bool BasisImplementation::isFinite() const
 {
   return false;
 }
