@@ -99,6 +99,7 @@
 #include "openturns/ParametricGradient.hxx"
 #include "openturns/ParametricHessian.hxx"
 #include "openturns/P1LagrangeEvaluation.hxx"
+#include "openturns/P1LagrangeInterpolation.hxx"
 #include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/ProductEvaluation.hxx"

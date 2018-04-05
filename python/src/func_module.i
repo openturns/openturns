@@ -124,6 +124,7 @@
 %include ParametricGradient.i
 %include ParametricHessian.i
 %include P1LagrangeEvaluation.i
+%include P1LagrangeInterpolation.i
 %include BasisImplementation.i
 %include Basis.i
 %include BasisSequenceImplementation.i

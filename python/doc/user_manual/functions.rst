@@ -61,6 +61,7 @@ Field and mixed functions
     OpenTURNSPythonFieldFunction
     OpenTURNSPythonFieldToPointFunction
     OpenTURNSPythonPointToFieldFunction
+    P1LagrangeInterpolation
 
 Collection of functions
 =======================
