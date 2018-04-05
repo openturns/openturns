@@ -10,7 +10,7 @@
 
 // available in math module
 %ignore OT::SpecFunc::IsInf;
-%ignore OT::SpecFunc::IsNan;
+%ignore OT::SpecFunc::IsNaN;
 
 // available in cmath module
 %ignore OT::SpecFunc::Acosh;
