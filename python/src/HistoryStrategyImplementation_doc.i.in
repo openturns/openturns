@@ -81,8 +81,9 @@ OT_HistoryStrategy_clear_doc
 // ---------------------------------------------------------------------
 
 %define OT_HistoryStrategy_setDimension_doc
-"Set the dimension of points to store.  This method must be called before
-calling the store method.
+"Set the dimension of points to store.
+
+This method must be called before calling the store method.
 
 Notes
 -----
