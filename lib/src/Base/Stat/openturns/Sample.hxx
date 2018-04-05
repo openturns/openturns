@@ -81,7 +81,7 @@ public:
          const Point & point);
 
   /** Partial copy constructor */
-  Sample(const Sample other,
+  Sample(const Sample & other,
          const UnsignedInteger first,
          const UnsignedInteger last);
 
