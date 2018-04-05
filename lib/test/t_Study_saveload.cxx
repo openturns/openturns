@@ -1108,6 +1108,31 @@ int main(int argc, char *argv[])
 
     // cleanup
     Os::Remove(fileName);
+
+    // Create a Study Object by giving its name
+    {
+      Study study(fileName);
+      Point point(4);
+      point[0] = std::numeric_limits<Scalar>::quiet_NaN();
+      point[1] = sqrt(-1.0);
+      point[2] = std::numeric_limits<Scalar>::infinity();
+      point[3] = -std::numeric_limits<Scalar>::infinity();
+      study.add("point", point);
+      study.save();
+      Study study2(fileName);
+      study2.load();
+      Point point2;
+      study2.fillObject("point", point2);
+      for (UnsignedInteger j = 0; j < point2.getDimension(); ++ j)
+      {
+        std::cout << "j=" << j;
+        std::cout << " isnormal=" << SpecFunc::IsNormal(point2[j]);
+        std::cout << " isnan=" << SpecFunc::IsNaN(point2[j]);
+        std::cout << " isinf=" << SpecFunc::IsInf(point2[j]) << std::endl;
+      }
+      // cleanup
+      Os::Remove(fileName);
+    }
   }
   catch (TestFailed & ex)
   {

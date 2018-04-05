@@ -4,6 +4,8 @@ from __future__ import print_function
 import openturns as ot
 import openturns.testing
 import os
+import sys
+import math as m
 
 ot.TESTPREAMBLE()
 
@@ -289,14 +291,18 @@ try:
 
     # test nan/inf
     myStudy = ot.Study(fileName)
-    point = ot.Point([float(x) for x in ['1.23', 'nan', 'inf', '-inf']])
+    point = ot.Point([float(x) for x in ['nan', 'inf', '-inf']])
     myStudy.add("point", point)
     myStudy.save()
     myStudy2 = ot.Study(fileName)
     myStudy2.load()
     point2 = ot.Point()
     myStudy2.fillObject("point", point2)
-    print(point2)
+    for j in range(len(point2)):
+        print('j=', j,
+              'isnormal=', ot.SpecFunc.IsNormal(point2[j]),
+              'isnan=', m.isnan(point2[j]),
+              'isinf=', m.isinf(point2[j]))
     # cleanup
     os.remove(fileName)
 
