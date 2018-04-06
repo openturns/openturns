@@ -415,45 +415,38 @@ Bool SampleImplementation::ParseStringAsValues(const String & line,
   return true;
 }
 
+
 Bool SampleImplementation::ParseStringAsDescription(const String & line,
     const char separator,
     Description & description)
 {
   // Here the speed is not critical at all
-  String workingLine(line);
 
-  // replace non escaped separators by spaces
-  if (!(separator == ' '))
+  description = Description();
+  UnsignedInteger start = 0;
+  UnsignedInteger len = 0;
+  Bool escaped = false;
+
+  for (UnsignedInteger i = 0; i < line.size(); ++ i)
   {
-    Bool escaped = false;
-    for (UnsignedInteger i = 0; i < workingLine.size(); ++ i)
+    if (line[i] == '\"')
     {
-      if (workingLine[i] == '\"')
-        escaped = !escaped;
-      else if (workingLine[i] == separator)
-        if (!escaped)
-          workingLine[i] = ' ';
+      if (!escaped)
+        ++ start;
+      escaped = !escaped;
     }
+    else if ((line[i] == separator) && !escaped)
+    {
+      description.add(line.substr(start, len));
+      start = i + 1;
+      len = 0;
+    }
+    else
+      ++ len;
   }
+  if (len > 0)
+    description.add(line.substr(start, len));
 
-  // Store every fields of the current line in a vector
-  std::stringstream strstr(workingLine);
-  std::vector<std::string> words;
-  std::copy(std::istream_iterator<std::string>(strstr),
-            std::istream_iterator<std::string>(), back_inserter(words));
-
-  // Check and store the fields in a Point
-  description = Description(words.size());
-  for(UnsignedInteger i = 0; i < words.size(); ++ i)
-  {
-    String word(words[i]);
-    // trim double quote delimiters
-    if ((word.size() >= 2) && (word[0] == '\"') && (word[word.size() - 1] == '\"'))
-    {
-      word = word.substr(1, word.size() - 2);
-    }
-    description[i] = word;
-  } // for i
   return true;
 }
 
