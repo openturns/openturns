@@ -43,21 +43,24 @@ PYVER = $(shell pyversions -d)
 PY3VER = $(shell py3versions -d)
 PYALL = $(PYVER) $(PY3VER)
 
+BUILD_DATE = $(shell date --utc --date="@$(SOURCE_DATE_EPOCH)" "+%a, %d %b %Y %H:%M:%S %z")
+
 %:
 ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), mips mipsel))
 	$(error This package requires more than 1GB RAM; do not build on mips/mipsel)
 endif
-	dh $@ --buildsystem=cmake --with python2,python3 --with quilt --parallel
+	dh $@ --buildsystem=cmake --with python2,python3 --parallel
 
 debian/tmp/usr/lib/R/site-library/rot:
 	-mkdir -p $(debRlib)
-	R CMD INSTALL --library=$(debRlib) utils/rot_1.4.6.tar.gz
+	R CMD INSTALL --library=$(debRlib) --built-timestamp='$(BUILD_DATE)' utils/rot_1.4.6.tar.gz
 
 override_dh_auto_configure: debian/tmp/usr/lib/R/site-library/rot $(PYALL:python%=cmake-configure-%) \
 
 cmake-configure-%:
 	dh_auto_configure -Bbuild-python$* -- \
             $(with_tbb) \
+            -Dot_configure_date:STRING='$(BUILD_DATE)' \
             -DUSE_SPHINX:BOOL=OFF \
             -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ \
             -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc \
@@ -102,7 +105,7 @@ override_dh_makeshlibs:
 	dh_makeshlibs -Xpyshared
 
 override_dh_strip:
-	dh_strip -plibopenturns0.11
+	dh_strip -plibopenturns0.11 -ppython-openturns -ppython3-openturns
 
 override_dh_python2:
 	dh_python2 -p python-openturns

@@ -1,0 +1,17 @@
+Description: Fix _exec_sample on machines without Python multiprocessing
+Author: Denis Barbier
+Origin: Debian
+Forwarded: no
+Last-Update: 2018-04-02
+
+--- openturns-1.10.orig/python/src/Function.i
++++ openturns-1.10.orig/python/src/Function.i
+@@ -216,7 +216,7 @@
+             # fallback to sequential computations.
+             res = list()
+             for point in X:
+-                res.append(self._exec(point))
++                res.append(func(point))
+             return res
+         rs = p.map_async(func, X)
+         p.close()

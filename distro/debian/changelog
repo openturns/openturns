@@ -1,3 +1,35 @@
+openturns (1.10-4) unstable; urgency=medium
+
+  * debian/control: Bump Standards-Version to 4.1.3, no changes needed.
+  * Upload to unstable.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 04 Apr 2018 21:47:11 +0200
+
+openturns (1.10-3) experimental; urgency=medium
+
+  * debian/patches/test-NormalGamma.patch: Really fixes
+    failures on ppc64el, s390x and arm64.
+    Closes: #887005
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 03 Apr 2018 19:26:28 +0200
+
+openturns (1.10-2) experimental; urgency=medium
+
+  * debian/patches/test-NormalGamma.patch: New patch to try
+    to fix t_NormalGamma_std test failures on ppc64el, s390x
+    and arm64.
+  * debian/rules: Also strip binaries from python-openturns
+    and python3-openturns binary packages.
+  * debian/control: Update Vcs-* fields to point to salsa.
+  * debian/patches/fix-multiprocessing-hurd.patch: New patch to fix
+    support on machines without Python multiprocessing.
+  * debian/rules: Remove dh --with quilt option, it is not
+    needed.
+  * Disable mips and mipsel again, buildds are still unable to
+    build openturns.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 02 Apr 2018 11:16:17 +0200
+
 openturns (1.10-1) experimental; urgency=low
 
   [ Julien Schueller ]
@@ -7,8 +39,10 @@ openturns (1.10-1) experimental; urgency=low
   [ Denis Barbier ]
 
   * Drop -dbg package, debug packages are now provided automatically.
+  * Re-enable mips and mipsel; check whether current buildds are
+    able to buikd openturns.
 
- -- Denis Barbier <barbier@debian.org>  Mon, 13 Nov 2017 18:14:47 +0100
+ -- Denis Barbier <barbier@debian.org>  Thu, 23 Nov 2017 22:02:03 +0100
 
 openturns (1.10~rc1-1) experimental; urgency=low
 
@@ -17,6 +51,29 @@ openturns (1.10~rc1-1) experimental; urgency=low
   * New upstream pre-release.
 
  -- Denis Barbier <barbier@debian.org>  Mon, 11 Oct 2017 18:14:47 +0200
+
+openturns (1.9-5) unstable; urgency=medium
+
+  * debian/patches/discard-levelsetmesher-test.patch:  This test fails
+    on many non-Intel ports, discard it for now.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 20 Nov 2017 00:25:04 +0100
+
+openturns (1.9-4) unstable; urgency=medium
+
+  * Upload into unstable
+  * This version builds with Python 3.6 without change. Closes: #881706
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 19 Nov 2017 16:53:02 +0100
+
+openturns (1.9-3) experimental; urgency=medium
+
+  * debian/copyright: Minor updates
+  * debian/rules: use SOURCE_DATE_EPOCH for reproducible builds
+  * debian/libopenturns-dev.install: Do not install openturns-config,
+    this script is obsolete.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 25 Aug 2017 23:23:45 +0200
 
 openturns (1.9-2) experimental; urgency=medium
 
