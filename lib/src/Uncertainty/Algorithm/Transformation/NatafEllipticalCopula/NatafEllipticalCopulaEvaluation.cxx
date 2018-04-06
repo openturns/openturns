@@ -98,7 +98,7 @@ Point NatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] = standardMarginal.computeQuantile(inP[i])[0];
   // Second, decorrelate the components
   result = cholesky_.solveLinearSystem(result);
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

@@ -160,7 +160,7 @@ Point KrigingEvaluation::operator()(const Point & inP) const
     for (UnsignedInteger j = 0; j < basisSize; ++j)
       value[i] += localBasis[j](inP)[0] * betaBasis[j];
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return value;
 }
 
@@ -238,7 +238,7 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   // Add should be done only if there is a trend
   if (trend.getDimension() > 0) result += trend;
   // update call numbers & return result
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return result;
 }
 

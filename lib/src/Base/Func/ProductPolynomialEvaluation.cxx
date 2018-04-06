@@ -170,7 +170,7 @@ Sample ProductPolynomialEvaluation::operator() (const Sample & inS) const
   const ProductPolynomialEvaluationComputeSamplePolicy policy( inS, result, polynomials_ );
   TBB::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return result;
 }
 

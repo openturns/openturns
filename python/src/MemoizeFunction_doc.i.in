@@ -56,6 +56,76 @@ Retrieve output sample:
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::MemoizeFunction::enableCache
+"Enable the cache mechanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::disableCache
+"Disable the cache mechanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::clearCache
+"Empty the content of the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::isCacheEnabled
+"Test whether the cache mechanism is enabled or not.
+
+Returns
+-------
+isCacheEnabled : bool
+    Flag telling whether the cache mechanism is enabled.
+    It is disabled by default."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::getCacheHits
+"Accessor to the number of computations saved thanks to the cache mecanism.
+
+Returns
+-------
+cacheHits : int
+    Integer that counts the number of computations saved thanks to the cache
+    mecanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::getCacheInput
+"Accessor to all the input numerical points stored in the cache mecanism.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    All the input numerical points stored in the cache mecanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::getCacheOutput
+"Accessor to all the output numerical points stored in the cache mecanism.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    All the output numerical points stored in the cache mecanism."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeFunction::addCacheContent
+"Add input numerical points and associated output to the cache.
+
+Parameters
+----------
+input_sample : 2-d sequence of float
+    Input numerical points to be added to the cache.
+output_sample : 2-d sequence of float
+    Output numerical points associated with the input_sample to be added to the
+    cache."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::MemoizeFunction::getInputHistory
 "Get the input sample.
 

@@ -124,47 +124,6 @@ Field Evaluation::operator() (const Field & inField) const
 }
 
 
-/* Enable or disable the internal cache */
-void Evaluation::enableCache() const
-{
-  getImplementation()->enableCache();
-}
-
-void Evaluation::disableCache() const
-{
-  getImplementation()->disableCache();
-}
-
-Bool Evaluation::isCacheEnabled() const
-{
-  return getImplementation()->isCacheEnabled();
-}
-
-UnsignedInteger Evaluation::getCacheHits() const
-{
-  return getImplementation()->getCacheHits();
-}
-
-void Evaluation::addCacheContent(const Sample& inSample, const Sample& outSample)
-{
-  getImplementation()->addCacheContent(inSample, outSample);
-}
-
-Sample Evaluation::getCacheInput() const
-{
-  return getImplementation()->getCacheInput();
-}
-
-Sample Evaluation::getCacheOutput() const
-{
-  return getImplementation()->getCacheOutput();
-}
-
-void Evaluation::clearCache() const
-{
-  getImplementation()->clearCache();
-}
-
 /* Gradient according to the marginal parameters */
 Matrix Evaluation::parameterGradient(const Point & inP) const
 {

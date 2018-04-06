@@ -16,86 +16,6 @@ OT_Evaluation_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Evaluation_addCacheContent_doc
-"Add input numerical points and associated output to the cache.
-
-Parameters
-----------
-input_sample : 2-d sequence of float
-    Input numerical points to be added to the cache.
-output_sample : 2-d sequence of float
-    Output numerical points associated with the input_sample to be added to the
-    cache."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::addCacheContent
-OT_Evaluation_addCacheContent_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Evaluation_clearCache_doc
-"Empty the content of the cache."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::clearCache
-OT_Evaluation_clearCache_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Evaluation_disableCache_doc
-"Disable the cache mechanism."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::disableCache
-OT_Evaluation_disableCache_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Evaluation_enableCache_doc
-"Enable the cache mechanism."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::enableCache
-OT_Evaluation_enableCache_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Evaluation_getCacheHits_doc
-"Accessor to the number of computations saved thanks to the cache mecanism.
-
-Returns
--------
-cacheHits : int
-    Integer that counts the number of computations saved thanks to the cache
-    mecanism."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::getCacheHits
-OT_Evaluation_getCacheHits_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Evaluation_getCacheInput_doc
-"Accessor to all the input numerical points stored in the cache mecanism.
-
-Returns
--------
-cacheInput : :class:`~openturns.Sample`
-    All the input numerical points stored in the cache mecanism."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::getCacheInput
-OT_Evaluation_getCacheInput_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Evaluation_getCacheOutput_doc
-"Accessor to all the output numerical points stored in the cache mecanism.
-
-Returns
--------
-cacheInput : :class:`~openturns.Sample`
-    All the output numerical points stored in the cache mecanism."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::getCacheOutput
-OT_Evaluation_getCacheOutput_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Evaluation_getCallsNumber_doc
 "Accessor to the number of times the function has been called.
 
@@ -245,20 +165,6 @@ parameter_dimension : int
 %enddef
 %feature("docstring") OT::EvaluationImplementation::getParameterDimension
 OT_Evaluation_getParameterDimension_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_Evaluation_isCacheEnabled_doc
-"Test whether the cache mechanism is enabled or not.
-
-Returns
--------
-isCacheEnabled : bool
-    Flag telling whether the cache mechanism is enabled.
-    It is disabled by default."
-%enddef
-%feature("docstring") OT::EvaluationImplementation::isCacheEnabled
-OT_Evaluation_isCacheEnabled_doc
 
 // ---------------------------------------------------------------------
 

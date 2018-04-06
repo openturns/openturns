@@ -77,7 +77,7 @@ Matrix ComposedGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  ++callsNumber_;
+  callsNumber_.increment();
   return  rightGradient_.gradient(inP) * leftGradient_.gradient(rightFunction_.operator()(inP));
 }
 

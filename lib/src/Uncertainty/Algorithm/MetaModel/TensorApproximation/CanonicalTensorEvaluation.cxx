@@ -192,7 +192,7 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
   }
 
   const Point outP(1, sumR);
-  ++ callsNumber_;
+  callsNumber_.increment();
   return outP;
 }
 

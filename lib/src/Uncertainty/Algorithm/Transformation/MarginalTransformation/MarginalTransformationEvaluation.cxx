@@ -321,7 +321,7 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
       result[i] = q;
     }
   }
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

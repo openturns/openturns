@@ -92,7 +92,7 @@ Point InverseTrendEvaluation::operator() (const Point & inP) const
   for (UnsignedInteger i = 0; i < reducedInputDimension; ++i) t[i] = inP[i];
   const Point z(function_(t));
   for (UnsignedInteger i = 0; i < outputDimension; ++i) result[i] = inP[i + reducedInputDimension] - z[i];
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

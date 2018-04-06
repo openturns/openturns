@@ -82,7 +82,7 @@ SymmetricTensor ComposedHessian::hessian(const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  ++callsNumber_;
+  callsNumber_.increment();
   // Hessian of the composed function fog, g:R^n->R^p, f:R^p->R^q so fog:R^n->R^q
   const Point rightIn(rightFunction_.operator()(inP));
   const Matrix rightGradientIn(rightGradient_.gradient(inP));

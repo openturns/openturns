@@ -80,7 +80,7 @@ Point InverseNatafIndependentCopulaEvaluation::operator () (const Point & inP) c
 {
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = DistFunc::pNormal(inP[i]);
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 

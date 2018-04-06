@@ -28,6 +28,7 @@
 #include "openturns/SymbolicGradient.hxx"
 #include "openturns/SymbolicHessian.hxx"
 #endif
+#include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/DatabaseEvaluation.hxx"
 #include "openturns/ProductFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
@@ -109,7 +110,10 @@ FunctionImplementation::FunctionImplementation(const Sample & inputSample,
   , useDefaultGradientImplementation_(false)
   , useDefaultHessianImplementation_(false)
 {
-  evaluation_ = new DatabaseEvaluation( inputSample, outputSample );
+  MemoizeEvaluation * p_evaluation = new MemoizeEvaluation(new DatabaseEvaluation( inputSample, outputSample ));
+  p_evaluation->enableCache();
+  p_evaluation->disableHistory();
+  evaluation_ = p_evaluation;
 }
 
 
@@ -194,48 +198,6 @@ Description FunctionImplementation::getInputDescription() const
 Description FunctionImplementation::getOutputDescription() const
 {
   return evaluation_.getOutputDescription();
-}
-
-/* Enable or disable the internal cache */
-void FunctionImplementation::enableCache() const
-{
-  evaluation_.enableCache();
-}
-
-void FunctionImplementation::disableCache() const
-{
-  evaluation_.disableCache();
-}
-
-Bool FunctionImplementation::isCacheEnabled() const
-{
-  return evaluation_.isCacheEnabled();
-}
-
-UnsignedInteger FunctionImplementation::getCacheHits() const
-{
-  return evaluation_.getCacheHits();
-}
-
-void FunctionImplementation::addCacheContent(const Sample& inSample,
-    const Sample& outSample)
-{
-  evaluation_.addCacheContent(inSample, outSample);
-}
-
-Sample FunctionImplementation::getCacheInput() const
-{
-  return evaluation_.getCacheInput();
-}
-
-Sample FunctionImplementation::getCacheOutput() const
-{
-  return evaluation_.getCacheOutput();
-}
-
-void FunctionImplementation::clearCache() const
-{
-  evaluation_.clearCache();
 }
 
 /* Multiplication operator between two functions with the same input dimension and 1D output dimension */

@@ -95,7 +95,7 @@ Point TranslationEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != constant_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   const Point result(inP + constant_);
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 /* Operator () */
@@ -103,7 +103,7 @@ Sample TranslationEvaluation::operator() (const Sample & inS) const
 {
   if (inS.getDimension() != constant_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   const Sample result((*inS.getImplementation()) + constant_);
-  callsNumber_ += inS.getSize();
+  callsNumber_.fetchAndAdd(inS.getSize());
   return result;
 }
 

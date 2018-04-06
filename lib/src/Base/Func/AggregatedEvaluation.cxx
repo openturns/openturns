@@ -76,7 +76,7 @@ Point AggregatedEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
-  ++callsNumber_;
+  callsNumber_.increment();
   const UnsignedInteger size = functionsCollection_.getSize();
   Point result(outputDimension_);
   UnsignedInteger outputIndex = 0;
@@ -99,7 +99,7 @@ Sample AggregatedEvaluation::operator () (const Sample & inS) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inS.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inS.getDimension();
-  ++ callsNumber_;
+  callsNumber_.fetchAndAdd(inS.getSize());
   const UnsignedInteger collectionSize = functionsCollection_.getSize();
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension_);

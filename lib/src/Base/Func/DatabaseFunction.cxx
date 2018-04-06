@@ -34,11 +34,10 @@ DatabaseFunction::DatabaseFunction ()
 
 /* Parameter constructor */
 DatabaseFunction::DatabaseFunction (const Sample & inputSample,
-                                    const Sample & outputSample,
-                                    const Bool enableCache)
+                                    const Sample & outputSample)
   : Function()
 {
-  setEvaluation(new DatabaseEvaluation(inputSample, outputSample, enableCache));
+  setEvaluation(new DatabaseEvaluation(inputSample, outputSample));
 }
 
 

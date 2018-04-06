@@ -33,8 +33,8 @@
 #include "openturns/Collection.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/StorageManager.hxx"
-#include "openturns/Cache.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/AtomicFunctions.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -53,11 +53,6 @@ class OT_API EvaluationImplementation
   CLASSNAME
 public:
 
-  typedef PersistentCollection<Scalar>               CacheKeyType;
-  typedef PersistentCollection<Scalar>               CacheValueType;
-  typedef Cache<CacheKeyType, CacheValueType>                 CacheType;
-  typedef Pointer<CacheType>                                  CacheImplementation;
-
   /** Default constructor */
   EvaluationImplementation();
 
@@ -74,44 +69,15 @@ public:
 
   /** Description Accessor, i.e. the names of the input and output parameters */
   virtual void setDescription(const Description & description);
-  Description getDescription() const;
+  virtual Description getDescription() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */
-  Description getInputDescription() const;
-  void setInputDescription(const Description & inputDescription);
+  virtual Description getInputDescription() const;
+  virtual void setInputDescription(const Description & inputDescription);
 
   /** Output description Accessor, i.e. the names of the Output parameters */
-  Description getOutputDescription() const;
-  void setOutputDescription(const Description & outputDescription);
-
-  /** Enable or disable the internal cache */
-  void enableCache() const;
-  void disableCache() const;
-
-  /** @brief Test the internal cache activity
-   * @see enableCache()
-   */
-  Bool isCacheEnabled() const;
-
-  /** @brief Returns the number of successful hits in the cache
-   */
-  UnsignedInteger getCacheHits() const;
-
-  /** @brief Add some content to the cache
-   */
-  void addCacheContent(const Sample & inSample, const Sample & outSample);
-
-  /** @brief Returns the cache input
-   */
-  Sample getCacheInput() const;
-
-  /** @brief Returns the cache output
-   */
-  Sample getCacheOutput() const;
-
-  /** @brief Empty the cache
-   */
-  void clearCache() const;
+  virtual Description getOutputDescription() const;
+  virtual void setOutputDescription(const Description & outputDescription);
 
   /* Here is the interface that all derived class must implement */
 
@@ -205,10 +171,7 @@ public:
 protected:
 
   /** Number of calls since the construction */
-  mutable UnsignedInteger callsNumber_;
-
-  /** A cache to store already computed points */
-  mutable CacheImplementation p_cache_;
+  mutable AtomicInt callsNumber_;
 
   /** The value of the parameters */
   Point parameter_;

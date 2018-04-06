@@ -77,7 +77,7 @@ String FieldToPointFunctionImplementation::__repr__() const
       << " name=" << getName()
       << " input description=" << inputDescription_
       << " output description=" << outputDescription_
-      << " number of calls=" << callsNumber_;
+      << " number of calls=" << callsNumber_.get();
   return oss;
 }
 
@@ -144,7 +144,7 @@ Sample FieldToPointFunctionImplementation::operator() (const ProcessSample & inP
   // The calls number is updated by these calls
   for (UnsignedInteger i = 0; i < size; ++i)
     outSample[i] = operator()(inPS.getField(i));
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return outSample;
 }
 
@@ -169,7 +169,7 @@ UnsignedInteger FieldToPointFunctionImplementation::getOutputDimension() const
 /* Number of calls to the dynamical function */
 UnsignedInteger FieldToPointFunctionImplementation::getCallsNumber() const
 {
-  return callsNumber_;
+  return callsNumber_.get();
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -181,7 +181,7 @@ void FieldToPointFunctionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "outputDimension_", outputDimension_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
-  adv.saveAttribute( "callsNumber_", callsNumber_ );
+  adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -193,7 +193,9 @@ void FieldToPointFunctionImplementation::load(Advocate & adv)
   adv.loadAttribute( "outputDimension_", outputDimension_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
-  adv.loadAttribute( "callsNumber_", callsNumber_ );
+  UnsignedInteger callsNumber;
+  adv.loadAttribute( "callsNumber_", callsNumber );
+  callsNumber_ = callsNumber;
 }
 
 

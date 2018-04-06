@@ -28,11 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef EvaluationImplementation::CacheKeyType             CacheKeyType;
-typedef EvaluationImplementation::CacheValueType           CacheValueType;
-typedef EvaluationImplementation::CacheType                CacheType;
-
-
 CLASSNAMEINIT(PythonEvaluation)
 
 static const Factory<PythonEvaluation> Factory_PythonEvaluation;
@@ -180,7 +175,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getInputDimension();
 
   Point outP;
-  ++ callsNumber_;
+  callsNumber_.increment();
 
   ScopedPyObjectPointer result;
 
@@ -279,7 +274,7 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
   Sample outS(0, outDim);
   if (size > 0)
   {
-    callsNumber_ += size;
+    callsNumber_.fetchAndAdd(size);
 
     ScopedPyObjectPointer result;
 

@@ -85,7 +85,7 @@ Point ProductEvaluation::operator() (const Point & inP) const
   const Point left(leftEvaluation_.operator()(inP));
   const Point right(rightEvaluation_.operator()(inP));
   const Point result(left[0] * right);
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 
@@ -95,7 +95,7 @@ Sample ProductEvaluation::operator() (const Sample & inSample) const
   const UnsignedInteger inputDimension = getInputDimension();
   if (inSample.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   const Sample leftSample(leftEvaluation_.operator()(inSample));
   Sample rightSample(rightEvaluation_.operator()(inSample));
   for (UnsignedInteger i = 0; i < size; ++i) rightSample[i] *= leftSample(i, 0);

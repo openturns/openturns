@@ -114,7 +114,7 @@ String SymbolicEvaluation::__str__(const String & offset) const
 Point SymbolicEvaluation::operator() (const Point & inP) const
 {
   Point result(parser_(inP));
-  ++ callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 
@@ -122,7 +122,7 @@ Point SymbolicEvaluation::operator() (const Point & inP) const
 Sample SymbolicEvaluation::operator() (const Sample & inS) const
 {
   Sample result(parser_(inS));
-  callsNumber_ += inS.getSize();
+  callsNumber_.fetchAndAdd(inS.getSize());
   result.setDescription(getOutputDescription());
   return result;
 }

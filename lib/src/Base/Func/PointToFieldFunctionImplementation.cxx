@@ -75,7 +75,7 @@ String PointToFieldFunctionImplementation::__repr__() const
       << " name=" << getName()
       << " input description=" << inputDescription_
       << " output description=" << outputDescription_
-      << " number of calls=" << callsNumber_;
+      << " number of calls=" << callsNumber_.get();
   return oss;
 }
 
@@ -167,7 +167,7 @@ UnsignedInteger PointToFieldFunctionImplementation::getOutputDimension() const
 /* Number of calls to the dynamical function */
 UnsignedInteger PointToFieldFunctionImplementation::getCallsNumber() const
 {
-  return callsNumber_;
+  return callsNumber_.get();
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -178,7 +178,7 @@ void PointToFieldFunctionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "outputDimension_", outputDimension_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
-  adv.saveAttribute( "callsNumber_", callsNumber_ );
+  adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -189,7 +189,9 @@ void PointToFieldFunctionImplementation::load(Advocate & adv)
   adv.loadAttribute( "outputDimension_", outputDimension_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
-  adv.loadAttribute( "callsNumber_", callsNumber_ );
+  UnsignedInteger callsNumber;
+  adv.loadAttribute( "callsNumber_", callsNumber );
+  callsNumber_ = callsNumber;
 }
 
 

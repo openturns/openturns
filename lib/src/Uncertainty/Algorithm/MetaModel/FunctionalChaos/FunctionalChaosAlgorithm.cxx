@@ -89,7 +89,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -111,7 +111,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy,
     const ProjectionStrategy & projectionStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -143,7 +143,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -155,7 +155,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 /* Constructor */
 FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample)
-  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample, false))
+  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_()
   , projectionStrategy_()
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
@@ -217,7 +217,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const Distribution & distribution,
     const AdaptiveStrategy & adaptiveStrategy)
-  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample, false))
+  : MetaModelAlgorithm(distribution, DatabaseFunction(inputSample, outputSample))
   , adaptiveStrategy_(adaptiveStrategy)
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))

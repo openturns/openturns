@@ -4,8 +4,6 @@
 Available constructor:
     DatabaseFunction(*inputSample, outputSample*)
 
-    DatabaseFunction(*inputSample, outputSample, enableCache*)
-
 Allows to build a function takes a value in the output sample when presented
 the corresponding point in the input sample .
 
@@ -15,9 +13,6 @@ inputSample : 2-d sequence of float
     Values of the inputs.
 outputSample : 2-d sequence of float
     Values of the outputs.
-enableCache : bool, optional
-    Whether to enable the cache, defaults to True
-    It can take a significant amount of time for large samples.
 
 Examples
 --------

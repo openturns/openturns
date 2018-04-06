@@ -2,20 +2,6 @@
 
 %feature("docstring") OT::Evaluation
 OT_Evaluation_doc
-%feature("docstring") OT::Evaluation::addCacheContent
-OT_Evaluation_addCacheContent_doc
-%feature("docstring") OT::Evaluation::clearCache
-OT_Evaluation_clearCache_doc
-%feature("docstring") OT::Evaluation::disableCache
-OT_Evaluation_disableCache_doc
-%feature("docstring") OT::Evaluation::enableCache
-OT_Evaluation_enableCache_doc
-%feature("docstring") OT::Evaluation::getCacheHits
-OT_Evaluation_getCacheHits_doc
-%feature("docstring") OT::Evaluation::getCacheInput
-OT_Evaluation_getCacheInput_doc
-%feature("docstring") OT::Evaluation::getCacheOutput
-OT_Evaluation_getCacheOutput_doc
 %feature("docstring") OT::Evaluation::getCallsNumber
 OT_Evaluation_getCallsNumber_doc
 %feature("docstring") OT::Evaluation::getDescription
@@ -32,8 +18,6 @@ OT_Evaluation_getOutputDescription_doc
 OT_Evaluation_getOutputDimension_doc
 %feature("docstring") OT::Evaluation::getParameterDimension
 OT_Evaluation_getParameterDimension_doc
-%feature("docstring") OT::Evaluation::isCacheEnabled
-OT_Evaluation_isCacheEnabled_doc
 %feature("docstring") OT::Evaluation::setDescription
 OT_Evaluation_setDescription_doc
 %feature("docstring") OT::Evaluation::setInputDescription

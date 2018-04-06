@@ -2,22 +2,6 @@
 
 %feature("docstring") OT::Function
 OT_Function_doc
-%feature("docstring") OT::Function::enableCache
-OT_Function_enableCache_doc
-%feature("docstring") OT::Function::disableCache
-OT_Function_disableCache_doc
-%feature("docstring") OT::Function::clearCache
-OT_Function_clearCache_doc
-%feature("docstring") OT::Function::isCacheEnabled
-OT_Function_isCacheEnabled_doc
-%feature("docstring") OT::Function::getCacheHits
-OT_Function_getCacheHits_doc
-%feature("docstring") OT::Function::getCacheInput
-OT_Function_getCacheInput_doc
-%feature("docstring") OT::Function::getCacheOutput
-OT_Function_getCacheOutput_doc
-%feature("docstring") OT::Function::addCacheContent
-OT_Function_addCacheContent_doc
 %feature("docstring") OT::Function::getCallsNumber
 OT_Function_getCallsNumber_doc
 %feature("docstring") OT::Function::getEvaluationCallsNumber

@@ -155,7 +155,7 @@ Matrix KrigingGradient::gradient(const Point & inP) const
   }
 
   // update calls number
-  callsNumber_ += p;
+  callsNumber_.fetchAndAdd(p);
   return result;
 }
 

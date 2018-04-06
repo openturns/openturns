@@ -136,7 +136,7 @@ Point LinearCombinationEvaluation::operator () (const Point & inP) const
   LinearCombinationEvaluationPointFunctor functor( inP, *this );
   TBB::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 
@@ -155,7 +155,7 @@ Sample LinearCombinationEvaluation::operator () (const Sample & inS) const
     for (UnsignedInteger i = 0; i < size; ++i)
       // Exploit possible parallelism in the basis functions
       result += functionsCollection_[i](inS) * coefficients_[i];
-    callsNumber_ += sampleSize;
+    callsNumber_.fetchAndAdd(sampleSize);
   }
   return result;
 }

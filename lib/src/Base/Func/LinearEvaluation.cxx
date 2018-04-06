@@ -117,7 +117,7 @@ Point LinearEvaluation::operator() (const Point & inP) const
 {
   if (inP.getDimension() != center_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   const Point result(constant_ + linear_ * (inP - center_));
-  ++callsNumber_;
+  callsNumber_.increment();
   return result;
 }
 /* Operator () */
@@ -128,7 +128,7 @@ Sample LinearEvaluation::operator() (const Sample & inS) const
   if (size == 0) return Sample(0, getOutputDimension());
   const Sample centered(inS - center_);
   const Sample result(linear_.getImplementation()->genSampleProd(centered, true, false, 'R') + constant_);
-  callsNumber_ += size;
+  callsNumber_.fetchAndAdd(size);
   return result;
 }
 

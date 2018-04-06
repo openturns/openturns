@@ -39,6 +39,7 @@
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
+#include "openturns/MemoizeFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -999,7 +1000,7 @@ Function GeneralLinearModelAlgorithm::getObjectiveFunction()
 {
   normalizeInputSample();
   computeF();
-  Function logLikelihood(ReducedLogLikelihoodEvaluation(*this));
+  MemoizeFunction logLikelihood(ReducedLogLikelihoodEvaluation(*this));
   // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
   logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" ), logLikelihood.getEvaluation()).clone());
   logLikelihood.enableCache();

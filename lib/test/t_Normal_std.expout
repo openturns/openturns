@@ -39,7 +39,7 @@ quantile=class=Point name=Unnamed dimension=1 values=[1.645]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.95996] upper bound=class=Point name=Unnamed dimension=1 values=[1.95996] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Normal(mu = 0, sigma = 1)) gradientImplementation=MinimumVolumeLevelSetGradient(Normal(mu = 0, sigma = 1)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Normal(mu = 0, sigma = 1)) level=2.83967
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[Marginal 1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Normal(mu = 0, sigma = 1)) gradientImplementation=MinimumVolumeLevelSetGradient(Normal(mu = 0, sigma = 1)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Normal(mu = 0, sigma = 1)) level=2.83967
 beta=0.058445
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.95996] upper bound=class=Point name=Unnamed dimension=1 values=[1.95996] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -124,7 +124,7 @@ quantile=class=Point name=Unnamed dimension=2 values=[1.916,3.833]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-2.21213,-4.42426] upper bound=class=Point name=Unnamed dimension=2 values=[2.21213,4.42426] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.97304
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[Marginal 1,Marginal 2,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])) gradientImplementation=MinimumVolumeLevelSetGradient(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Normal(mu = [0,0], sigma = [1,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]])) level=4.83361

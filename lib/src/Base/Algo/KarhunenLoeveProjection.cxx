@@ -70,7 +70,7 @@ String KarhunenLoeveProjection::__repr__() const
       << " name=" << getName()
       << " input description=" << inputDescription_
       << " output description=" << outputDescription_
-      << " number of calls=" << callsNumber_;
+      << " number of calls=" << callsNumber_.get();
   return oss;
 }
 
@@ -98,7 +98,7 @@ KarhunenLoeveProjection::Implementation KarhunenLoeveProjection::getMarginal(con
 Point KarhunenLoeveProjection::operator() (const Field & inFld) const
 {
   const Point outPoint(result_.project(inFld));
-  ++callsNumber_;
+  callsNumber_.increment();
   return outPoint;
 }
 
@@ -106,7 +106,7 @@ Point KarhunenLoeveProjection::operator() (const Field & inFld) const
 Sample KarhunenLoeveProjection::operator() (const ProcessSample & inPS) const
 {
   const Sample outSample(result_.project(inPS));
-  callsNumber_ += outSample.getSize();
+  callsNumber_.fetchAndAdd(outSample.getSize());
   return outSample;
 }
 
