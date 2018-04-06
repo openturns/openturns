@@ -24,6 +24,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Compact.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,6 +42,7 @@ SimulationAlgorithm::SimulationAlgorithm()
   , blockSize_(ResourceMap::GetAsUnsignedInteger( "SimulationAlgorithm-DefaultBlockSize" ))
   , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
   , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
+  , convergenceStrategy_(Compact())
   , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "SimulationAlgorithm-DefaultMaximumOuterSampling" ))
   , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumCoefficientOfVariation" ))
   , maximumStandardDeviation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumStandardDeviation" ))
@@ -136,6 +138,18 @@ void SimulationAlgorithm::run()
   throw NotYetImplementedException(HERE) << "In SimulationAlgorithm::run()";
 }
 
+/* Convergence strategy accessor */
+void SimulationAlgorithm::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy)
+{
+  convergenceStrategy_ = convergenceStrategy;
+}
+
+HistoryStrategy SimulationAlgorithm::getConvergenceStrategy() const
+{
+  return convergenceStrategy_;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void SimulationAlgorithm::save(Advocate & adv) const
 {
@@ -145,6 +159,7 @@ void SimulationAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("maximumOuterSampling_", maximumOuterSampling_);
   adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
+  adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
   adv.saveAttribute("verbose_", verbose_);
 }
 
@@ -156,6 +171,7 @@ void SimulationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("maximumOuterSampling_", maximumOuterSampling_);
   adv.loadAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
   adv.loadAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
+  adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
   adv.loadAttribute("verbose_", verbose_);
 }
 

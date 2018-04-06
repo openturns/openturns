@@ -22,6 +22,7 @@
 #define OPENTURNS_SIMULATIONALGORITHM_HXX
 
 #include "openturns/PersistentObject.hxx"
+#include "openturns/HistoryStrategy.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -68,6 +69,10 @@ public:
   /** Performs the actual computation. */
   virtual void run();
 
+  /** Convergence strategy accessor */
+  void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
+  HistoryStrategy getConvergenceStrategy() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -89,6 +94,9 @@ protected:
   // callbacks
   std::pair< ProgressCallback, void *> progressCallback_;
   std::pair< StopCallback, void *> stopCallback_;
+
+  /** History strategy for the probability and variance estimate */
+  HistoryStrategy convergenceStrategy_;
 
 private:
 

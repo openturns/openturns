@@ -57,10 +57,6 @@ public:
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
 
-  /** Convergence strategy accessor */
-  void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
-  HistoryStrategy getConvergenceStrategy() const;
-
   /** String converter */
   String __repr__() const;
 
@@ -89,9 +85,6 @@ protected:
              const HistoryStrategy & convergenceStrategy = Compact());
 
   friend class Factory<EventSimulation>;
-
-  /** History strategy for the probability and variance estimate */
-  HistoryStrategy convergenceStrategy_;
 
   // The event we are computing the probability of
   Event event_;

@@ -39,11 +39,11 @@ static const Factory<EventSimulation> Factory_EventSimulation;
 /** For save/load mechanism */
 EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
-  , convergenceStrategy_(convergenceStrategy)
   , event_()
   , result_()
 {
   setVerbose(verbose);
+  convergenceStrategy_ = convergenceStrategy;
 }
 
 /* Constructor with parameters */
@@ -51,11 +51,11 @@ EventSimulation::EventSimulation(const Event & event,
                        const Bool verbose,
                        const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
-  , convergenceStrategy_(convergenceStrategy)
   , event_(event)
   , result_()
 {
   setVerbose(verbose);
+  convergenceStrategy_ = convergenceStrategy;
 }
 
 /* Virtual constructor */
@@ -189,17 +189,6 @@ Sample EventSimulation::computeBlockSample()
   throw NotYetImplementedException(HERE) << "In EventSimulation::computeBlockSample()";
 }
 
-/* Convergence strategy accessor */
-void EventSimulation::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy)
-{
-  convergenceStrategy_ = convergenceStrategy;
-}
-
-HistoryStrategy EventSimulation::getConvergenceStrategy() const
-{
-  return convergenceStrategy_;
-}
-
 /* Draw the probability convergence at the given level */
 Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
 {
@@ -243,7 +232,6 @@ void EventSimulation::save(Advocate & adv) const
 {
 
   SimulationAlgorithm::save(adv);
-  adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
   adv.saveAttribute("event_", event_);
   adv.saveAttribute("result_", result_);
 }
@@ -252,7 +240,6 @@ void EventSimulation::save(Advocate & adv) const
 void EventSimulation::load(Advocate & adv)
 {
   SimulationAlgorithm::load(adv);
-  adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
   adv.loadAttribute("event_", event_);
   adv.loadAttribute("result_", result_);
 }
