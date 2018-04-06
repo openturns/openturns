@@ -133,7 +133,6 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
 /* Operator () */
 Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 {
-  const bool useCache = p_cache_->isEnabled();
   const UnsignedInteger size = inSample.getSize();
   const UnsignedInteger inDim = inSample.getDimension();
   const UnsignedInteger outDim = getOutputDimension();
