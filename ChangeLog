@@ -20,9 +20,10 @@
  * MemoizeFunction, MemoizeEvaluation
  * Evaluation, Gradient, Hessian
  * MeshDomain
- * NormInfEnumerateFunction 
+ * NormInfEnumerateFunction
  * FunctionalChaosSobolIndices
  * P1LagrangeInterpolation
+ * FilonQuadrature
 
 ==== API changes ====
  * Removed deprecated NumericalMathFunction class
