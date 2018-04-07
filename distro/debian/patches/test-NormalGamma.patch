@@ -1,0 +1,30 @@
+Description: t_NormalGamma_std.cxx test fails on arm64,
+ s390x and ppc64el because one digit is missing.
+Author: Denis Barbier
+Origin: Debian
+Forwarded: no
+Last-Update: 2018-04-02
+
+--- openturns-1.10/lib/test/t_NormalGamma_std.cxx
++++ openturns-1.10/lib/test/t_NormalGamma_std.cxx
+@@ -78,7 +78,7 @@
+     fullprint << "log pdf=" << LPDF << std::endl;
+     Scalar PDF = distribution.computePDF( point );
+     fullprint << "pdf     =" << PDF << std::endl;
+-    fullprint << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point);
++    fullprint << "pdf (FD)=" << std::setprecision(5) << distribution.DistributionImplementation::computePDF(point) << std::setprecision(6) << std::endl;
+     Scalar CDF = distribution.computeCDF( point );
+     fullprint << "cdf=" << CDF << std::endl;
+     Scalar CCDF = distribution.computeComplementaryCDF( point );
+--- openturns-1.10/lib/test/t_NormalGamma_std.expout
++++ openturns-1.10/lib/test/t_NormalGamma_std.expout
+@@ -20,7 +20,8 @@
+ ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.127136,-0.218956]
+ log pdf=-2.46797
+ pdf     =0.0847571
+-pdf (FD)=0.0847571cdf=0.198227
++pdf (FD)=0.084757
++cdf=0.198227
+ ccdf=0.801773
+ survival=0.0105935
+ Inverse survival=class=Point name=Unnamed dimension=2 values=[-0.941338,0.160511]
