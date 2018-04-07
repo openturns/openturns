@@ -171,7 +171,7 @@ private:
 
   /** Discrete distribution to select the component of the sum for sampling */
   UserDefined blockDistribution_;
-}; /* class ComposedCopula */
+}; /* class OrdinalSumCopula */
 
 
 END_NAMESPACE_OPENTURNS

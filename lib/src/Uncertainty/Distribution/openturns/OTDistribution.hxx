@@ -29,6 +29,7 @@
 #include "openturns/ArcsineMuSigma.hxx"
 #include "openturns/Bernoulli.hxx"
 #include "openturns/BernoulliFactory.hxx"
+#include "openturns/EmpiricalBernsteinCopula.hxx"
 #include "openturns/BernsteinCopulaFactory.hxx"
 #include "openturns/Beta.hxx"
 #include "openturns/BetaFactory.hxx"

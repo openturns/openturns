@@ -534,7 +534,12 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "Matrix-SymmetryThreshold", 1.0e-12 );
 
   // BernsteinCopulaFactory parameters //
-  setAsBool( "BernsteinCopulaFactory-Parallel", false );
+  setAsUnsignedInteger( "BernsteinCopulaFactory-kFraction", 2 );
+  setAsScalar( "BernsteinCopulaFactory-alpha", 1.0 );
+  set( "BernsteinCopulaFactory-BinNumberSelectionMethod", "LogLikelihood" );
+  setAsUnsignedInteger( "BernsteinCopulaFactory-MinM", 2 );
+  setAsUnsignedInteger( "BernsteinCopulaFactory-MaxM", 1 );
+  setAsUnsignedInteger( "BernsteinCopulaFactory-SamplingSize", 10000 );
 
   // BurrFactory parameters //
   setAsScalar( "BurrFactory-AbsolutePrecision", 1.0e-12 );

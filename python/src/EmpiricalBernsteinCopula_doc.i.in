@@ -1,0 +1,83 @@
+%feature("docstring") OT::EmpiricalBernsteinCopula
+"EmpiricalBernstein copula.
+
+Available constructor:
+    EmpiricalBernsteinCopula(*sample=[[0.0]], binNumber=1, isEmpiricalCopulaSample=False*)
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    The sample of size :math:`N>0` and dimension :math:`d` from which the empirical copula sample is extracted.
+binNumber : int, :math:`0<binNumber\leq N`
+    The number of cells into which each dimension of the unit cube :math:`[0, 1]^d` is divided to cluster the empirical copula sample.
+isCopulaSample : bool
+    Flag to tell if the given sample is already an empirical copula sample.
+
+Notes
+-----
+The empirical Bernstein copula is a copula based on the Bernstein approximation built upon a clustering of the empirical copula. It is defined by:
+
+.. math::
+
+    C(\vect{u}) = \dfrac{1}{N}\sum_{i=1}^N\prod_{j=1}^d I_{r_j^i,s_j^i}(u_j)
+
+for :math:`\vect{u}\in[0,1]^d`, where :math:`r_j^i=\lceil binNumber U_j^i \rceil`, :math:`binNumber - r_j^i + 1`, :math:`(\vect{U}_i)_{i=1,\dots,N}` is the empirical copula sample associated to *sample* and :math:`I_{a,b}(x)` is the value of the regularized incomplete beta function of parameters :math:`a` and :math:`b` at :math:`x`, see :class:`~openturns.SpecFunc`.
+
+This construction leads to an actual copula if and only if :math:`N` is a multiple of :math:`binNumber`. If it is not the case, the last points of the sample are droped in order to fulfill this condition.
+
+See also
+--------
+BernsteincopulaFactory
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(10), 2, False)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EmpiricalBernsteinCopula::getCopulaSample
+"Get the empirical copula sample.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    The empirical copula sample of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EmpiricalBernsteinCopula::setCopulaSample
+"Set the sample of the copula.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The sample from which the empirical copula sample is deduced.
+isEmpiricalCopulaSample : bool
+    Flag telling if the given sample is already an empirical copula sample. The default value is *False*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EmpiricalBernsteinCopula::getBinNumber
+"Get the bin number of the copula.
+
+Returns
+-------
+binNumber : int
+    The bin number of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EmpiricalBernsteinCopula::setBinNumber
+"Set the bin number of the copula.
+
+Parameters
+----------
+binNumber : int
+    The bin number of the copula. It must be positive and not greater than the copula sample size."

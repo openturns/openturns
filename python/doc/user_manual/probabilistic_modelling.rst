@@ -183,8 +183,9 @@ Copulas
     IndependentCopula
 
     :template: classWithPlot.rst_t
+    EmpiricalBernsteinCopula
     MaximumEntropyOrderStatisticsCopula
-
+    
     :template: class.rst_t
     MinCopula
     NormalCopula

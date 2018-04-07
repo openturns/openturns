@@ -1249,7 +1249,7 @@ Sample DistributionImplementation::computePDFSequential(const Sample & inSample)
 {
   LOGINFO("In DistributionImplementation::computePDFSequential(const Sample & inSample)");
   const UnsignedInteger size = inSample.getSize();
-  Sample outSample(size, 1);
+  SampleImplementation outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample(i, 0) = computePDF(inSample[i]);
   return outSample;
 }

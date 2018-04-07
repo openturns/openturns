@@ -271,13 +271,18 @@
   <Matrix-SymmetryThreshold value="1.0e-12"    />
 
   <!-- OT::BernsteinCopulaFactory parameters -->
-  <BernsteinCopulaFactory-Parallel value="false" />
+  <BernsteinCopulaFactory-kFraction                value="2"             />
+  <BernsteinCopulaFactory-alpha                    value="1.0"           />
+  <BernsteinCopulaFactory-BinNumberSelectionMethod value="LogLikelihood" />
+  <BernsteinCopulaFactory-MinM                     value="2"             />
+  <BernsteinCopulaFactory-MaxM                     value="1"             />
+  <BernsteinCopulaFactory-SamplingSize             value="10000"         />
 
   <!-- OT::BurrFactory parameters -->
   <BurrFactory-AbsolutePrecision value="1e-12" />
   <BurrFactory-RelativePrecision value="1e-12" />
   <BurrFactory-ResidualPrecision value="1e-12" />
-  <BurrFactory-MaximumIteration  value="10"     />
+  <BurrFactory-MaximumIteration  value="10"    />
   
   <!-- OT::ConditionalDistribution parameters -->
   <ConditionalDistribution-MarginalIntegrationNodesNumber value="256" />

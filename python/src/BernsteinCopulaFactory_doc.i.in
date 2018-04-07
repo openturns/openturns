@@ -4,27 +4,11 @@
 Available constructors:
     BernsteinCopulaFactory()
 
-The copula is estimated by a mixture of products of Beta distributions,
-ie its density function :math:`\hat{c}` is given by:
-
-.. math::
-
-    \forall (u_1,\hdots,u_d)\in[0,1]^d,\quad\hat{c}(u_1,\hdots,u_d) = \frac{1}{n}\sum_{i=1}^n\prod_{j=1}^d\beta_{\nu^i_j+1, m+1}(u_j)
-
-where :math:`\nu_j=\left\lfloor \dfrac{m}{n}\mathrm{rank}(X^i_j)\right\rfloor`
-is the index of the bin to which the normalized rank of the component :math:`j`
-of the observation :math:`j` belongs and :math:`\beta_{r,t}` is the density of
-the beta distribution supported by [0,1].
-
-This estimator is called the Bernstein estimator because of the fact that, for integer shape parameters :math:`r` and :math:`t`, the density function of the beta distribution is equal to the Bernstein polynomial :math:`P_{r,t}`:
-
-.. math::
-
-    \beta_{r+1,t+1}(u)=(t+1)\binom{t}{r}u^r(1-u)^{t-r-1}=P_{r,t-r-1}(u)
+This class allows to estimate a copula in a nonparametric way as an :class:`~openturns.EmpiricalBernsteinCopula`.
 
 See also
 --------
-DistributionFactory, Beta"
+DistributionFactory, EmpiricalBernsteinCopula"
 
 // ---------------------------------------------------------------------
 
@@ -33,7 +17,11 @@ DistributionFactory, Beta"
 
 **Available usages**:
 
+    build()
+
     build(*sample*)
+
+    build(*sample, method, objective*)
 
     build(*sample, m*)
 
@@ -41,12 +29,52 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension *d*
     The sample of size :math:`n>0` from which the copula is estimated.
+method : string
+    The name of thebin number selection method. Possible choices are *AMISE*, *LogLikelihood* and *PenalizedCsiszarDivergence*. Default is *LogLikelihood*, given by the *'BernsteinCopulaFactory-BinNumberSelection'* entry of :class:`~openturns.ResourceMap`.
 m : int
     The number of sub-intervals in which all the edges of the unit cube
-    :math:`[0, 1]^d` are regularly partitioned."
+    :math:`[0, 1]^d` are regularly partitioned.
+
+Returns
+-------
+copula : :class:`~openturns.Distribution`
+    The estimated copula as a generic distribution.
+
+"
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BernsteinCopulaFactory::computeBinNumber
+%feature("docstring") OT::BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula
+"Build the nonparametric Bernstein copula estimator based on the empirical copula.
+
+**Available usages**:
+
+    buildAsEmpiricalBernsteinCopula()
+
+    buildAsEmpiricalBernsteinCopula(*sample*)
+
+    buildAsEmpiricalBernsteinCopula(*sample, method, objective*)
+
+    buildAsEmpiricalBernsteinCopula(*sample, m*)
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension *d*
+    The sample of size :math:`n>0` from which the copula is estimated.
+method : string
+    The name of thebin number selection method. Possible choices are *AMISE*, *LogLikelihood* and *PenalizedCsiszarDivergence*. Default is *LogLikelihood*, given by the *'BernsteinCopulaFactory-BinNumberSelection'* entry of :class:`~openturns.ResourceMap`.
+m : int
+    The number of sub-intervals in which all the edges of the unit cube
+    :math:`[0, 1]^d` are regularly partitioned.
+
+Returns
+-------
+copula : :class:`~openturns.EmpiricalBernsteinCopula`
+    The estimated copula as an empirical Bernstein copula.
+
+"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BernsteinCopulaFactory::ComputeAMISEBinNumber
 "Compute the optimal AMISE number of bins.
 
 Parameters
@@ -67,22 +95,59 @@ where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :ma
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ClassifierImplementation::setParallel
-"Accessor to the parallel flag.
+%feature("docstring") OT::BernsteinCopulaFactory::ComputeLogLikelihoodBinNumber
+"Compute the optimal log-likelihood number of bins by cross-validation.
 
 Parameters
 ----------
-flag : bool
-    Logical value telling if the classification and grading are done in parallel.
+sample : 2-d sequence of float, of dimension 1
+    The sample of size :math:`n` from which the optimal log-likelihood bin number is computed.
+kFraction : int, :math:`0<kFraction<n`
+    The fraction of the sample used for the validation.
+
+Notes
+-----
+Let :math:`\cE=\left\{\vect{X}_1,\dots,\vect{X}_n\right\}` be the given sample. If :math:`kFraction=1`, the bin number :math:`m` is given by:
+
+.. math::
+
+    m = \argmin_{M\in\{1,\dots,n\}}\dfrac{1}{n}\sum_{\vect{X}_i\in\cE}-\log c^{\cE}_{M}(\vect{X}_i)
+
+where :math:`c_M^{\cE}` is the density function of the :class:`~openturns.EmpiricalBernsteinCopula` associated to the sample :math:`\cE` and the bin number :math:`M`.
+
+If :math:`kFraction>1`, the bin number :math:`m` is given by:
+
+.. math::
+
+    m = \argmin_{M\in\{1,\dots,n\}}\dfrac{1}{kFraction}\sum_{k=0}^{kFraction-1}\dfrac{1}{n}\sum_{\vect{X}_i\in\cE^V_k}-\log c^{\cE^L_k}_{M}(\vect{X}_i)
+
+where :math:`\cE^V_k=\left\{\vect{X}_i\in\cE\,|\,i\equiv k \mod kFraction\right\}` and :math:`\cE^L_k=\cE \backslash \cE^V_k`
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ClassifierImplementation::isParallel
-"Accessor to the parallel flag.
+%feature("docstring") OT::BernsteinCopulaFactory::ComputePenalizedCsiszarDivergenceBinNumber
+"Compute the optimal penalized Csiszar divergence number of bins.
 
-Returns
--------
-flag : bool
-    Logical value telling if the parallel mode has been activated.
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample of size :math:`n` from which the optimal AMISE bin number is computed.
+f : :class:`~openturns.Function`
+    The function defining the Csiszar divergence of interest.
+alpha : float, :math:`\alpha\geq 0`
+    The penalization factor.
+
+Notes
+-----
+Let :math:`\cE=\left\{\vect{X}_1,\dots,\vect{X}_n\right\}` be the given sample. The bin number :math:`m` is given by:
+
+.. math::
+
+    m = \argmin_{M\in\{1,\dots,n\}}\left[\hat{D}_f(c^{\cE}_{M})-\dfrac{1}{n}\sum_{\vect{X}_i\in\cE}f\left(\dfrac{1}{c^{\cE}_{M}(\vect{X}_i)}\right)\right]^2-[\rho_S(c^{\cE}_{M})-\rho_S({\cE}_{M})]^2
+
+where :math:`c_M^{\cE}` is the density function of the :class:`~openturns.EmpiricalBernsteinCopula` associated to the sample :math:`\cE` and the bin number :math:`M`, :math:`\hat{D}_f(c^{\cE}_{M})=\dfrac{1}{N}\sum_{j=1}^Nf\left(\dfrac{1}{\vect{U}_j}\right)` a Monte Carlo estimate of the Csiszar :math:`f` divergence, :math:`\rho_S(c^{\cE}_{M})` the exact Spearman correlation of the empirical Bernstein copula :math:`c^{\cE}_{M}` and :math:`\rho_S({\cE}_{M})` the empirical Spearman correlation of the sample :math:`{\cE}_{M}`.
+
+The parameter :math:`N` is controlled by the *'BernsteinCopulaFactory-SamplingSize'* key in :class:`~openturns.ResourceMap`.
 "
+

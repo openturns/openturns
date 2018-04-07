@@ -112,7 +112,7 @@ String OrdinalSumCopula::__str__(const String & offset) const
   return oss;
 }
 
-/* Distribution collection accessor */
+/* Copula collection accessor */
 void OrdinalSumCopula::setCopulaCollection(const CopulaCollection & coll)
 {
   // Check if the collection is not empty
