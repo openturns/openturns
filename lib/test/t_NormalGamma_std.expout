@@ -20,7 +20,8 @@ ddf     =class=Point name=Unnamed dimension=2 values=[-0.127136,-0.218956]
 ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.127136,-0.218956]
 log pdf=-2.46797
 pdf     =0.0847571
-pdf (FD)=0.0847571cdf=0.198227
+pdf (FD)=0.084757
+cdf=0.198227
 ccdf=0.801773
 survival=0.0105935
 Inverse survival=class=Point name=Unnamed dimension=2 values=[-0.941338,0.160511]

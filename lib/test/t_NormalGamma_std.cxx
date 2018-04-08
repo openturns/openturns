@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
-    fullprint << "pdf (FD)=" << distribution.DistributionImplementation::computePDF(point);
+    fullprint << "pdf (FD)=" << std::setprecision(5) << distribution.DistributionImplementation::computePDF(point) << std::setprecision(6) << std::endl;
     Scalar CDF = distribution.computeCDF( point );
     fullprint << "cdf=" << CDF << std::endl;
     Scalar CCDF = distribution.computeComplementaryCDF( point );
