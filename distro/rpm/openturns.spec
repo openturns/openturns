@@ -15,7 +15,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.10
+Version:        1.11rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -162,6 +162,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}/
 
 %changelog
+* Mon Apr 9 2018 Julien Schueller <schueller at phimeca dot com> 1.11-1
+- New upstream release
+
 * Mon Oct 11 2017 Julien Schueller <schueller at phimeca dot com> 1.10-1
 - New upstream release
 
