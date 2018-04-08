@@ -31,7 +31,7 @@ Quantile=class=Point name=Unnamed dimension=2 values=[0.694453,0.694453]
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126794,0.0126794] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974641
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[x0,x1,y0] evaluationImplementation=MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
  0 : [ 0.833333  0.166667  ]
  1 : [ 0.583333  0.916667  ]
  2 : [ 0.166667  0.583333  ]
