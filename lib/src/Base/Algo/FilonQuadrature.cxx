@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FilonQuadrature
  */
 
-CLASSNAMEINIT(FilonQuadrature);
+CLASSNAMEINIT(FilonQuadrature)
 
 static const Factory<FilonQuadrature> Factory_FilonQuadrature;
 

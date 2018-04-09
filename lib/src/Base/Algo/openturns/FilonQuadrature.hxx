@@ -33,7 +33,7 @@ class OT_API FilonQuadrature
   : public IntegrationAlgorithmImplementation
 {
 
-  CLASSNAME;
+  CLASSNAME
 
 public:
 
