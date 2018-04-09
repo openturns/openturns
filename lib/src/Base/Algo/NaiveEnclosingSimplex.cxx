@@ -44,7 +44,7 @@ NaiveEnclosingSimplex::NaiveEnclosingSimplex()
 
 /* Parameter constructor */
 NaiveEnclosingSimplex::NaiveEnclosingSimplex(const Sample & vertices,
-                                             const IndicesCollection & simplices)
+    const IndicesCollection & simplices)
   : EnclosingSimplexAlgorithmImplementation()
 {
   setVerticesAndSimplices(vertices, simplices);

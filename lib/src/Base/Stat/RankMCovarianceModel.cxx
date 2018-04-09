@@ -130,9 +130,9 @@ CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
       {
         const Point ptPhiT(Point(Collection<Scalar>(itPhiT, itPhiT + outputDimension_)) * covariance_(i, j));
         dger_(&dim, &dim, &plusOne,
-            const_cast<double*>(&phiS[0]), &increment,
-            const_cast<double*>(&ptPhiT[0]), &increment,
-            &result[0], &dim);
+              const_cast<double*>(&phiS[0]), &increment,
+              const_cast<double*>(&ptPhiT[0]), &increment,
+              &result[0], &dim);
         itPhiT += outputDimension_;
       }
     }

@@ -134,8 +134,8 @@ struct EnclosingSimplexAlgorithmImplementationQueryPolicy
   const EnclosingSimplexAlgorithmImplementation & algorithm_;
 
   EnclosingSimplexAlgorithmImplementationQueryPolicy(const Sample & points,
-                    Indices & indices,
-                    const EnclosingSimplexAlgorithmImplementation & algorithm)
+      Indices & indices,
+      const EnclosingSimplexAlgorithmImplementation & algorithm)
     : points_(points)
     , indices_(indices)
     , algorithm_(algorithm)

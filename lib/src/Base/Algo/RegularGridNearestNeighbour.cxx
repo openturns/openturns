@@ -156,7 +156,8 @@ Indices RegularGridNearestNeighbour::queryScalarK(const Scalar x, const Unsigned
     result.fill();
   }
   else
-  { // Always sort neighbours, this is fast enough anyway
+  {
+    // Always sort neighbours, this is fast enough anyway
     UnsignedInteger iMin = queryScalar(x);
     UnsignedInteger iMax = iMin;
     result[0] = iMin;

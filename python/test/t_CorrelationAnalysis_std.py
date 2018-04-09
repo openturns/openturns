@@ -39,5 +39,6 @@ print("prcc=", prcc)
 pearson = ot.CorrelationAnalysis.PearsonCorrelation(inputSample, outputSample)
 print("pearson=", pearson)
 
-spearman = ot.CorrelationAnalysis.SpearmanCorrelation(inputSample, outputSample)
+spearman = ot.CorrelationAnalysis.SpearmanCorrelation(
+    inputSample, outputSample)
 print("spearman=", spearman)

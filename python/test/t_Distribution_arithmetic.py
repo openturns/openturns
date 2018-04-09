@@ -135,7 +135,7 @@ graph = result.drawPDF()
 
 result = dist1 / dist2
 print('dist1/dist2:', result)
-#graph = result.drawPDF()
+# graph = result.drawPDF()
 
 
 result = ot.LogNormal() * ot.LogNormal()

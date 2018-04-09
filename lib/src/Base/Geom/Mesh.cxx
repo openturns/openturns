@@ -172,7 +172,7 @@ Bool Mesh::isValid() const
 
 /* Build the affine matrix associated to the simplex at the given index*/
 void Mesh::buildSimplexMatrix(const UnsignedInteger index,
-			      SquareMatrix & matrix) const
+                              SquareMatrix & matrix) const
 {
   if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
   if (matrix.getDimension() != dimension_ + 1)
@@ -441,44 +441,44 @@ void Mesh::fixOrientation()
 }
 
 void Mesh::fixOrientation(const UnsignedInteger & index,
-			  SquareMatrix & matrix)
+                          SquareMatrix & matrix)
 {
   if (getDimension() == 1)
-    {
-      IndicesCollection::iterator cit = simplices_.begin_at(index);
-      if (vertices_(*(cit + 1), 0) < vertices_(*cit, 0)) std::swap(*cit, *(cit + 1));
-      return;
-    }
+  {
+    IndicesCollection::iterator cit = simplices_.begin_at(index);
+    if (vertices_(*(cit + 1), 0) < vertices_(*cit, 0)) std::swap(*cit, *(cit + 1));
+    return;
+  }
   if (getDimension() == 2)
-    {
-      IndicesCollection::iterator cit = simplices_.begin_at(index);
-      const Scalar v1x = vertices_(*cit, 0);
-      const Scalar v1y = vertices_(*cit, 1);
-      const Scalar v2x = vertices_(*(cit + 1), 0);
-      const Scalar v2y = vertices_(*(cit + 1), 1);
-      const Scalar v3x = vertices_(*(cit + 2), 0);
-      const Scalar v3y = vertices_(*(cit + 2), 1);
-      if ((v3x - v2x) * (v1y - v2y) < (v1x - v2x) * (v3y - v2y)) std::swap(*cit, *(cit + 1));
-      return;
-    }
+  {
+    IndicesCollection::iterator cit = simplices_.begin_at(index);
+    const Scalar v1x = vertices_(*cit, 0);
+    const Scalar v1y = vertices_(*cit, 1);
+    const Scalar v2x = vertices_(*(cit + 1), 0);
+    const Scalar v2y = vertices_(*(cit + 1), 1);
+    const Scalar v3x = vertices_(*(cit + 2), 0);
+    const Scalar v3y = vertices_(*(cit + 2), 1);
+    if ((v3x - v2x) * (v1y - v2y) < (v1x - v2x) * (v3y - v2y)) std::swap(*cit, *(cit + 1));
+    return;
+  }
   if (getDimension() == 3)
-    {
-      IndicesCollection::iterator cit = simplices_.begin_at(index);
-      const Scalar v1x = vertices_(*cit, 0);
-      const Scalar v1y = vertices_(*cit, 1);
-      const Scalar v1z = vertices_(*cit, 2);
-      const Scalar v2x = vertices_(*(cit + 1), 0);
-      const Scalar v2y = vertices_(*(cit + 1), 1);
-      const Scalar v2z = vertices_(*(cit + 1), 2);
-      const Scalar v3x = vertices_(*(cit + 2), 0);
-      const Scalar v3y = vertices_(*(cit + 2), 1);
-      const Scalar v3z = vertices_(*(cit + 2), 2);
-      const Scalar v4x = vertices_(*(cit + 3), 0);
-      const Scalar v4y = vertices_(*(cit + 3), 1);
-      const Scalar v4z = vertices_(*(cit + 3), 2);
-      if ((v1x - v4x) * ((v2y - v4y) * (v3z - v4z) - (v3y - v4y) * (v2z - v4z)) + (v3x - v4x) * ((v1y - v4y) * (v2z - v4z) - (v2y - v4y) * (v1z - v4z)) < (v2x - v4x) * ((v1y - v4y) * (v3z - v4z) - (v3y - v4y) * (v1z - v4z)) ) std::swap(*cit, *(cit + 1));
-      return;
-    }
+  {
+    IndicesCollection::iterator cit = simplices_.begin_at(index);
+    const Scalar v1x = vertices_(*cit, 0);
+    const Scalar v1y = vertices_(*cit, 1);
+    const Scalar v1z = vertices_(*cit, 2);
+    const Scalar v2x = vertices_(*(cit + 1), 0);
+    const Scalar v2y = vertices_(*(cit + 1), 1);
+    const Scalar v2z = vertices_(*(cit + 1), 2);
+    const Scalar v3x = vertices_(*(cit + 2), 0);
+    const Scalar v3y = vertices_(*(cit + 2), 1);
+    const Scalar v3z = vertices_(*(cit + 2), 2);
+    const Scalar v4x = vertices_(*(cit + 3), 0);
+    const Scalar v4y = vertices_(*(cit + 3), 1);
+    const Scalar v4z = vertices_(*(cit + 3), 2);
+    if ((v1x - v4x) * ((v2y - v4y) * (v3z - v4z) - (v3y - v4y) * (v2z - v4z)) + (v3x - v4x) * ((v1y - v4y) * (v2z - v4z) - (v2y - v4y) * (v1z - v4z)) < (v2x - v4x) * ((v1y - v4y) * (v3z - v4z) - (v3y - v4y) * (v1z - v4z)) ) std::swap(*cit, *(cit + 1));
+    return;
+  }
   buildSimplexMatrix(index, matrix);
   Scalar sign = 0.0;
   (void) matrix.computeLogAbsoluteDeterminant(sign, false);
@@ -1024,7 +1024,7 @@ void Mesh::exportToVTKFile(const String & fileName) const
 }
 
 void Mesh::exportToVTKFile(const String & fileName,
-			   const IndicesCollection & simplices) const
+                           const IndicesCollection & simplices) const
 {
   std::ofstream file(fileName.c_str(), std::ios::out);
   if (!file) throw FileNotFoundException(HERE) << "Error: can't open file " << fileName;

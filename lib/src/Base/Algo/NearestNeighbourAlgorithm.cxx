@@ -37,7 +37,7 @@ NearestNeighbourAlgorithm::NearestNeighbourAlgorithm()
   // Nothing to do
 }
 
-  /** Constructor with parameter */
+/** Constructor with parameter */
 NearestNeighbourAlgorithm::NearestNeighbourAlgorithm(const Sample & sample)
   : TypedInterfaceObject<NearestNeighbourAlgorithmImplementation>()
 {
@@ -99,8 +99,8 @@ Indices NearestNeighbourAlgorithm::query(const Sample & sample) const
 
 /* Get the indices of the k nearest neighbours of the given point */
 Indices NearestNeighbourAlgorithm::queryK(const Point & x,
-                                          const UnsignedInteger k,
-                                          const Bool sorted) const
+    const UnsignedInteger k,
+    const Bool sorted) const
 {
   return getImplementation()->queryK(x, k, sorted);
 }

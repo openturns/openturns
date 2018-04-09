@@ -82,7 +82,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
 

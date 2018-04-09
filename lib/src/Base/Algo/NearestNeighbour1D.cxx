@@ -190,7 +190,8 @@ Indices NearestNeighbour1D::queryScalarK(const Scalar x, const UnsignedInteger k
     result.fill();
   }
   else
-  { // Always sort neighbours, this is fast enough anyway
+  {
+    // Always sort neighbours, this is fast enough anyway
     UnsignedInteger iMin = queryScalar(x);
     // We want index in sorted_, not the original one
     for(UnsignedInteger i = 0; i < size; ++i)

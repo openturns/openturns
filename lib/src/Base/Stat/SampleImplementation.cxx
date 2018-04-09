@@ -53,7 +53,8 @@
 int csvparse (OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension, const char * separator);
 #endif
 
-namespace {
+namespace
+{
 
 // wraps std::getline to handle EOLs across systems
 OT::Bool GetLine(std::ifstream & file, OT::String & line)
@@ -471,8 +472,8 @@ Bool SampleImplementation::ParseComment(const String & line, const String & mark
 
 
 SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fileName,
-                                                             const String & separator,
-                                                             const UnsignedInteger skippedLines)
+    const String & separator,
+    const UnsignedInteger skippedLines)
 {
   if (separator.size() != 1) throw InvalidArgumentException(HERE) << "Expected a separator with one character, got separator=" << separator;
   const char theSeparator = separator[0];
@@ -1877,7 +1878,7 @@ SampleImplementation & SampleImplementation::operator += (const SampleImplementa
   int size(size_ * dimension_);
   double alpha(1.0);
   int one(1);
-  daxpy_(&size, &alpha, const_cast<double*>(&((translation)(0,0))), &one, &((*this)(0,0)), &one);
+  daxpy_(&size, &alpha, const_cast<double*>(&((translation)(0, 0))), &one, &((*this)(0, 0)), &one);
   return *this;
 }
 
@@ -2130,11 +2131,11 @@ SampleImplementation SampleImplementation::select(const UnsignedIntegerCollectio
   const UnsignedInteger size = indices.getSize();
   SampleImplementation result(size, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      const UnsignedInteger index = indices[i];
-      if (index >= size_) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
-      std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result.data_.begin() + i * dimension_);
-    }
+  {
+    const UnsignedInteger index = indices[i];
+    if (index >= size_) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
+    std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result.data_.begin() + i * dimension_);
+  }
   result.setDescription(getDescription());
   return result;
 }

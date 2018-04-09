@@ -96,7 +96,7 @@ public:
 protected:
 
 private:
-  
+
   // Low discrepancy sequence
   LowDiscrepancySequence sequence_;
 
@@ -108,7 +108,7 @@ private:
 
   // Transformation from uniform space to distribution space
   MarginalTransformationEvaluation transformation_;
-  
+
 }; /* class LowDiscrepancyExperiment */
 
 

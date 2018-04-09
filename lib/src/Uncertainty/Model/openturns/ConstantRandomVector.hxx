@@ -55,7 +55,7 @@ public:
   /** Virtual constructor */
   virtual ConstantRandomVector * clone() const;
 
-    /** Parameters value accessor */
+  /** Parameters value accessor */
   virtual Point getParameter() const;
   virtual void setParameter(const Point & parameters);
 

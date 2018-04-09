@@ -140,10 +140,10 @@ LevelSet::BoolCollection LevelSet::contains(const Sample & sample) const
     const DomainImplementation::BoolCollection isInsideBoundingBox(Interval(lowerBound_, upperBound_).contains(sample));
     for(UnsignedInteger i = 0; i < size; ++i)
     {
-       if (isInsideBoundingBox[i])
-       {
-         insideIndices.add(i);
-       }
+      if (isInsideBoundingBox[i])
+      {
+        insideIndices.add(i);
+      }
     }
     const Sample insidePoints(sample.select(insideIndices));
     const Sample values(function_(insidePoints));

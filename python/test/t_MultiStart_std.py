@@ -10,7 +10,7 @@ dim = 2
 
 # problem
 model = ot.SymbolicFunction(['x', 'y'],
-                    ['3*(1-x)^2*exp(-x^2-(y+1)^2)-10*(x/5-x^3-y^5)*exp(-x^2-y^2)-exp(-(x+1)^2-y^2)/3'])
+                            ['3*(1-x)^2*exp(-x^2-(y+1)^2)-10*(x/5-x^3-y^5)*exp(-x^2-y^2)-exp(-(x+1)^2-y^2)/3'])
 bounds = ot.Interval([-3.0] * dim, [3.0] * dim)
 problem = ot.OptimizationProblem(model)
 problem.setBounds(bounds)

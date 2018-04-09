@@ -482,8 +482,8 @@ public:
 
   /** Factory of SampleImplementation from Text file */
   static SampleImplementation BuildFromTextFile(const FileName & fileName,
-                                                const String & separator = " ",
-                                                const UnsignedInteger skippedLines = 0);
+      const String & separator = " ",
+      const UnsignedInteger skippedLines = 0);
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   String storeToTemporaryFile() const;
@@ -761,7 +761,7 @@ public:
 
   /** Select points in the sample */
   SampleImplementation select(const UnsignedIntegerCollection & indices) const;
-  
+
   /**
    * Translate realizations in-place
    */

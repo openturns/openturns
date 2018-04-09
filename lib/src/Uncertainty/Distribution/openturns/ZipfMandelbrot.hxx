@@ -78,7 +78,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
 

@@ -116,7 +116,7 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
     // First the vertices
-    Sample vertices((m + 1) * (n + 1) + (diamond ? m * n: 0), 2);
+    Sample vertices((m + 1) * (n + 1) + (diamond ? m * n : 0), 2);
     const Point lowerBound(interval.getLowerBound());
     const Point upperBound(interval.getUpperBound());
     Point discretizedX(m + 1);
@@ -196,7 +196,7 @@ Mesh IntervalMesher::build(const Interval & interval,
     const UnsignedInteger n = discretization_[1];
     const UnsignedInteger p = discretization_[2];
     // First the vertices
-    Sample vertices((m + 1) * (n + 1) * (p + 1) + (diamond ? m * n * p: 0), 3);
+    Sample vertices((m + 1) * (n + 1) * (p + 1) + (diamond ? m * n * p : 0), 3);
     const Point lowerBound(interval.getLowerBound());
     const Point upperBound(interval.getUpperBound());
     Point discretizedX(m + 1);

@@ -89,7 +89,8 @@ String PiecewiseLinearEvaluation::__str__(const String & offset) const
   return OSS(false) << offset << __repr__();
 }
 
-namespace {
+namespace
+{
 Bool computeRegular(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
@@ -111,9 +112,9 @@ UnsignedInteger findSegmentIndex(const Point & locations, const Scalar value, co
   if (value >= locations[start])
   {
     // Shortcuts for the most common cases when looping over a Sample
-    if (start == iRight || value < locations[start+1])
+    if (start == iRight || value < locations[start + 1])
       return start;
-    else if (start + 1 == iRight || value < locations[start+2])
+    else if (start + 1 == iRight || value < locations[start + 2])
       return start + 1 ;
   }
   else

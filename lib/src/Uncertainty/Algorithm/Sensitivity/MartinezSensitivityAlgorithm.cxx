@@ -146,7 +146,7 @@ void MartinezSensitivityAlgorithm::computeAsymptoticDistribution() const
     XYZ[3 * q + 1] = Y[q];
     XYZ[3 * q + 2] = Z[q];
     sumX += X[q];
-    sumSqrtYZ += "sqrt("+Y[q]+"*"+Z[q]+")";
+    sumSqrtYZ += "sqrt(" + Y[q] + "*" + Z[q] + ")";
     if (q < outputDimension - 1)
     {
       sumX += "+";

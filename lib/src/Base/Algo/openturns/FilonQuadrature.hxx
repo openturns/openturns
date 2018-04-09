@@ -42,8 +42,8 @@ public:
 
   /** Parameter constructor */
   explicit FilonQuadrature(const UnsignedInteger n,
-			   const Scalar omega = 1.0,
-			   const UnsignedInteger kind = 0);
+                           const Scalar omega = 1.0,
+                           const UnsignedInteger kind = 0);
 
   /** Virtual copy constructor */
   virtual FilonQuadrature * clone() const;

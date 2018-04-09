@@ -124,8 +124,8 @@ class UniformNdPy(ot.PythonDistribution):
         return param
 
     def getParameterDescription(self):
-        paramDesc = ['a_'+str(i) for i in range(len(self.a))]
-        paramDesc.extend(['b_'+str(i) for i in range(len(self.a))])
+        paramDesc = ['a_' + str(i) for i in range(len(self.a))]
+        paramDesc.extend(['b_' + str(i) for i in range(len(self.a))])
         return paramDesc
 
     def setParameter(self, parameter):

@@ -72,7 +72,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;

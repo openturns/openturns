@@ -70,7 +70,7 @@ Sample BootstrapExperiment::generateWithWeights(Point & weights) const
 
 /* Selection generation */
 Indices BootstrapExperiment::GenerateSelection(const UnsignedInteger size,
-					       const UnsignedInteger length)
+    const UnsignedInteger length)
 {
   const RandomGenerator::UnsignedIntegerCollection selection(RandomGenerator::IntegerGenerate(size, length));
   return Indices(selection.begin(), selection.end());

@@ -84,7 +84,7 @@ SymbolicParser::SymbolicParser(const SymbolicParserImplementation & implementati
 /* Constructor with parameters */
 SymbolicParser::SymbolicParser(Implementation & p_implementation)
   : TypedInterfaceObject<SymbolicParserImplementation>(p_implementation)
-  {
+{
   // Nothing to do
 }
 

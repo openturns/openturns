@@ -632,7 +632,7 @@ Sample Distribution::computeQuantile(const Point & prob,
 }
 
 Scalar Distribution::computeScalarQuantile(const Scalar prob,
-					  const Bool tail) const
+    const Bool tail) const
 {
   return getImplementation()->computeScalarQuantile(prob, tail);
 }

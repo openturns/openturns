@@ -326,7 +326,7 @@ Scalar SobolIndicesAlgorithmImplementation::computeVariance(const Sample & u, co
 }
 
 void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & varianceFO,
-                                                                const Point & varianceTO) const
+    const Point & varianceTO) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   Point stdandardDeviationFO(inputDimension);
@@ -597,10 +597,10 @@ Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & s
 
 /* Multiplication of two sub-samples */
 Sample SobolIndicesAlgorithmImplementation::ComputeProdSample(const Sample & sample,
-                                                              const UnsignedInteger marginalIndex,
-                                                              const UnsignedInteger size,
-                                                              const UnsignedInteger indexX,
-                                                              const UnsignedInteger indexY)
+    const UnsignedInteger marginalIndex,
+    const UnsignedInteger size,
+    const UnsignedInteger indexX,
+    const UnsignedInteger indexY)
 {
   Sample prod(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i)

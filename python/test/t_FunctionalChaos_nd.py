@@ -218,7 +218,8 @@ try:
                     indices[0] = i
                     for j in range(i + 1, inputDimension):
                         indices[1] = j
-                        value = sensitivity.getSobolTotalIndex(indices, outputIndex)
+                        value = sensitivity.getSobolTotalIndex(
+                            indices, outputIndex)
                         print("Sobol total index ", indices, " =%.5f" % value, "absolute error=%.5e" % abs(
                             value - sob_T2[k + inputDimension * outputIndex]))
                         k += 1

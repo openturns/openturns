@@ -136,7 +136,7 @@ void MauntzKucherenkoSensitivityAlgorithm::computeAsymptoticDistribution() const
   sumX = "(" + sumX + ")";
   sumY = "(" + sumY + ")";
   Function psiFO = SymbolicFunction(XY, Description(1, sumX + "/" + sumY));
-  Function psiTO = SymbolicFunction(XY, Description(1, "1 - "+ sumX + "/" + sumY));
+  Function psiTO = SymbolicFunction(XY, Description(1, "1 - " + sumX + "/" + sumY));
 
   Point varianceFO(inputDimension);
   Point varianceTO(inputDimension);

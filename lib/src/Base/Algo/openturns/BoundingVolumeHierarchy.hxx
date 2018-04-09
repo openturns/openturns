@@ -131,8 +131,8 @@ private:
 
   /** Recursively build tree */
   Node::NodePointer build(UnsignedInteger & sorted,
-           const UnsignedInteger firstIndex,
-           const UnsignedInteger lastIndex);
+                          const UnsignedInteger firstIndex,
+                          const UnsignedInteger lastIndex);
 
   /** The root of the tree */
   Node::NodePointer p_root_;

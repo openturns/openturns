@@ -69,7 +69,7 @@ try:
         "GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", False)
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     # Define interval
-    bounds = ot.Interval([1e-2]*2, [100]*2)
+    bounds = ot.Interval([1e-2] * 2, [100] * 2)
     algo.setOptimizationBounds(bounds)
     algo.run()
     result = algo.getResult()

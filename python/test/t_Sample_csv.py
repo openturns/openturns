@@ -125,7 +125,6 @@ try:
     aSample = Sample.ImportFromTextFile('sample.csv', ';', 1)
     print('import with skipped lines=', repr(aSample))
 
-
     os.remove('sample.csv')
 except:
     import sys

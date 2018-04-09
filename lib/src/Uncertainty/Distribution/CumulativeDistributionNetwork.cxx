@@ -163,7 +163,7 @@ void CumulativeDistributionNetwork::setGraph(const BipartiteGraph & graph)
   {
     const UnsignedInteger nodeSize = graph.cend_at(i) - graph.cbegin_at(i);
     if (distributionCollection_[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the number of links=" << nodeSize << " starting from red node " << i << " is different from distribution " << i << " dimension=" << size;
-    }
+  }
   graph_ = graph;
 }
 

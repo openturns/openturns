@@ -42,8 +42,8 @@ public:
 
   /** Default constructor */
   EmpiricalBernsteinCopula(const Sample & copulaSample,
-		  const UnsignedInteger binNumber,
-		  const Bool isEmiricalCopulaSample = false);
+                           const UnsignedInteger binNumber,
+                           const Bool isEmiricalCopulaSample = false);
 
   /** Comparison operator */
   Bool operator ==(const EmpiricalBernsteinCopula & other) const;
@@ -58,7 +58,7 @@ public:
 
   /** Copula sample accessor */
   void setCopulaSample(const Sample & copulaSample,
-		       const Bool isEmpiricalCopulaSample = false);
+                       const Bool isEmpiricalCopulaSample = false);
   Sample getCopulaSample() const;
 
   /** Bin number accessor */
@@ -115,13 +115,13 @@ private:
 
   /** Default constructor */
   EmpiricalBernsteinCopula(const Sample & copulaSample,
-		  const UnsignedInteger binNumber,
-		  const SampleImplementation & logBetaMarginalFactors,
-		  const SampleImplementation & logFactors);
+                           const UnsignedInteger binNumber,
+                           const SampleImplementation & logBetaMarginalFactors,
+                           const SampleImplementation & logFactors);
 
   /** Compute the normalization factors */
   void update();
-  
+
   /** The underlying sample */
   Sample copulaSample_;
 
@@ -133,7 +133,7 @@ private:
   SampleImplementation logBetaMarginalFactors_;
   SampleImplementation logFactors_;
   MatrixImplementation logFactorsMinus1_;
-  
+
 }; /* class EmpiricalBernsteinCopula */
 
 

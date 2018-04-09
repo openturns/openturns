@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
     const UnsignedInteger n  = regularGrid.getSimplicesNumber();
     fullprint << "regularGrid = " << regularGrid << " lowerBound=" << lowerBound << " upperBound=" << upperBound << " " << n << " simplices" << std::endl;
     const RegularGridEnclosingSimplex algo(regularGrid);
-  
+
     RandomGenerator::SetSeed(0);
     const Sample test(Uniform(lowerBound - 0.2 * (upperBound - lowerBound), upperBound + 0.2 * (upperBound - lowerBound)).getSample(1000));
-  
+
     Point coordinates;
     const Sample vertices(regularGrid.getVertices());
     for (UnsignedInteger i = 0; i < test.getSize(); ++i)

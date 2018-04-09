@@ -172,8 +172,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
-	// If at least one vertex moves, the orientation can change
-	simplicesToCheck.add(goodSimplicesNumber - 1);
+        // If at least one vertex moves, the orientation can change
+        simplicesToCheck.add(goodSimplicesNumber - 1);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
           const UnsignedInteger index = boundingSimplices(i, j);

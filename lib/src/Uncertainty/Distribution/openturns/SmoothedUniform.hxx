@@ -41,8 +41,8 @@ public:
 
   /** Parameters constructor */
   SmoothedUniform(const Scalar a,
-		  const Scalar b,
-		  const Scalar sigma);
+                  const Scalar b,
+                  const Scalar sigma);
 
 
   /** Comparison operator */

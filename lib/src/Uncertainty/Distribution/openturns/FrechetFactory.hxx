@@ -52,7 +52,7 @@ public:
   Frechet buildAsFrechet(const Point & parameters) const;
   Frechet buildAsFrechet() const;
 
-  using DistributionFactoryImplementation::buildEstimator;  
+  using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
 }; /* class FrechetFactory */

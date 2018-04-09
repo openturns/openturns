@@ -62,8 +62,8 @@ public:
 
   /** Selection generation */
   static Indices GenerateSelection(const UnsignedInteger size,
-				   const UnsignedInteger length);
-  
+                                   const UnsignedInteger length);
+
 protected:
 
 private:

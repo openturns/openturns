@@ -8,10 +8,10 @@ ot.PlatformInfo.SetNumericalPrecision(6)
 dim = 2
 
 # First domain: [0,2]x[0,2]
-cube = ot.Interval([0.0]*dim, [2.0]*dim)
+cube = ot.Interval([0.0] * dim, [2.0] * dim)
 
 # Second domain: sphere center=(0,0) r=1
-function = ot.SymbolicFunction(["x","y"], ["x^2 + y^2"])
+function = ot.SymbolicFunction(["x", "y"], ["x^2 + y^2"])
 sphere = ot.LevelSet(function, 1.0)
 
 # Inside sphere but not cube

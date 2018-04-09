@@ -31,7 +31,8 @@ size = 70
 ref = ot.Normal([2.0] * dimension, ot.CovarianceMatrix(2))
 sample = ref.getSample(size)
 ks = ot.KernelSmoothing().build(sample)
-truncatedKS = ot.TruncatedDistribution(ks, ot.Interval([1.0]*dimension, [3.0]*dimension))
+truncatedKS = ot.TruncatedDistribution(
+    ks, ot.Interval([1.0] * dimension, [3.0] * dimension))
 distribution.append(truncatedKS)
 referenceDistribution.append(ref)  # N/A
 ot.RandomGenerator.SetSeed(0)
@@ -158,7 +159,8 @@ for testCase in range(len(distribution)):
     print('parameters (ref)=', repr(
         referenceDistribution[testCase].getParametersCollection()))
     print('parameter       =', repr(distribution[testCase].getParameter()))
-    print('parameter desc  =', repr(distribution[testCase].getParameterDescription()))
+    print('parameter desc  =',
+          repr(distribution[testCase].getParameterDescription()))
     print('marginal 0      =', repr(distribution[testCase].getMarginal(0)))
     for i in range(6):
         print('standard moment n=', i, ' value=',

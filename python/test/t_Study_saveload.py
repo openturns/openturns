@@ -288,7 +288,6 @@ try:
     # cleanup
     os.remove(fileName)
 
-
     # test nan/inf
     myStudy = ot.Study(fileName)
     point = ot.Point([float(x) for x in ['nan', 'inf', '-inf']])

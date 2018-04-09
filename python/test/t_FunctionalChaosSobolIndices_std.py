@@ -16,7 +16,7 @@ meanTh = a / 2
 covTh = (b ** 2 * pi ** 8) / 18.0 + \
     (b * pi ** 4) / 5.0 + (a ** 2) / 8.0 + 1.0 / 2.0
 sob_1 = [(b * pi ** 4 / 5.0 + b ** 2 * pi ** 8 / 50.0 + 1.0 / 2.0)
-          / covTh, (a ** 2 / 8.0) / covTh, 0.0]
+         / covTh, (a ** 2 / 8.0) / covTh, 0.0]
 sob_2 = [
     0.0, (b ** 2 * pi ** 8 / 18.0 - b ** 2 * pi ** 8 / 50.0) / covTh, 0.0]
 sob_3 = [0.0]
@@ -26,7 +26,8 @@ sob_T2 = [sob_2[0] + sob_2[1] + sob_3[0], sob_2[0]
           + sob_2[2] + sob_3[0], sob_2[1] + sob_2[2] + sob_3[0]]
 sob_T3 = [sob_3[0]]
 
-model = ot.SymbolicFunction(['xi1', 'xi2', 'xi3'], ['sin(xi1) + (' + str(a) + ') * (sin(xi2)) ^ 2 + (' + str(b) + ') * xi3^4 * sin(xi1)'])
+model = ot.SymbolicFunction(['xi1', 'xi2', 'xi3'], [
+                            'sin(xi1) + (' + str(a) + ') * (sin(xi2)) ^ 2 + (' + str(b) + ') * xi3^4 * sin(xi1)'])
 
 # Create the input distribution
 distribution = ot.ComposedDistribution([ot.Uniform(-pi, pi)] * dimension)

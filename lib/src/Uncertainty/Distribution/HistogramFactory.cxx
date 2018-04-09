@@ -52,13 +52,13 @@ Distribution HistogramFactory::build(const Sample & sample) const
 }
 
 Distribution HistogramFactory::build(const Sample & sample,
-    const Scalar bandwidth) const
+                                     const Scalar bandwidth) const
 {
   return buildAsHistogram(sample, bandwidth).clone();
 }
 
 Distribution HistogramFactory::build(const Sample & sample,
-    const UnsignedInteger binNumber) const
+                                     const UnsignedInteger binNumber) const
 {
   return buildAsHistogram(sample, binNumber).clone();
 }

@@ -34,11 +34,13 @@ point = [1.8]
 print("Nearest index(", point, ")=", tree.query(point))
 simplex = enclosingSimplex.query(point)
 found, coordinates = mesh1D.checkPointInSimplexWithCoordinates(point, simplex)
-print("Nearest index(", point, "), found=", found, "simplex=", int(simplex), "coordinates=", coordinates)
+print("Nearest index(", point, "), found=", found,
+      "simplex=", int(simplex), "coordinates=", coordinates)
 point = [-1.8]
 simplex = enclosingSimplex.query(point)
 found, coordinates = mesh1D.checkPointInSimplexWithCoordinates(point, simplex)
-print("Nearest index(", point, "), found=", found, "simplex=", int(simplex), "coordinates=", coordinates)
+print("Nearest index(", point, "), found=", found,
+      "simplex=", int(simplex), "coordinates=", coordinates)
 points = [[-0.25], [2.25]]
 print("Nearest index(", points, ")=", tree.query(points))
 print("P1 gram=\n", mesh1D.computeP1Gram())

@@ -236,7 +236,7 @@ Distribution KernelSmoothing::build(const Sample & sample) const
  * If binning: condensation on a regular grid
  */
 Distribution KernelSmoothing::build(const Sample & sample,
-    const Point & bandwidth) const
+                                    const Point & bandwidth) const
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;

@@ -74,10 +74,10 @@ PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", repr(PDFgr))
 # by the finite difference technique
 PDFgrFD = Point(2)
-v00 = distribution.getV()[0,0]
+v00 = distribution.getV()[0, 0]
 nu = distribution.getNu()
 PDFgrFD[0] = (Wishart(CorrelationMatrix([[v00]]), nu).computePDF(point) -
-              Wishart(CorrelationMatrix([[v00-eps]]), nu).computePDF(point)) / (1.0 * eps)
+              Wishart(CorrelationMatrix([[v00 - eps]]), nu).computePDF(point)) / (1.0 * eps)
 PDFgrFD[1] = (Wishart(CorrelationMatrix([[v00]]), nu + eps).computePDF(point) -
               Wishart(CorrelationMatrix([[v00]]), nu - eps).computePDF(point)) / (2.0 * eps)
 print("pdf gradient (FD)=", repr(PDFgrFD))

@@ -111,4 +111,5 @@ try:
 
 except:
     import sys
-    print("t_EmpiricalBernsteinCopula_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_EmpiricalBernsteinCopula_std.py",
+          sys.exc_info()[0], sys.exc_info()[1])

@@ -121,13 +121,13 @@ Point FilonQuadrature::integrate(const Function & function,
     for (UnsignedInteger i = 2; i < size - 1; i += 2)
       c2n += f[i] * std::cos(omega * x(i, 0));
     c2n += f[size - 1] * (0.5 * std::cos(omega * x(size - 1, 0)));
-    
+
     c2nm1 = Point(outputDimension);
     for (UnsignedInteger i = 1; i < size - 1; i += 2)
       c2nm1 += f[i] * std::cos(omega * x(i, 0));
 
     valueCos = ((f[size - 1] * std::sin(omega * x(size - 1, 0)) - f[0] * std::sin(omega * x(0, 0))) * alpha + c2n * beta + c2nm1 * gamma) * h;
-    
+
     if (kind_ == 0) return valueCos;
   } // cos(t*x) or exp(I*t*x)
   if (kind_ == 1 || kind_ >= 2)

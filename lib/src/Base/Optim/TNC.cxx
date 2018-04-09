@@ -120,7 +120,7 @@ void TNC::run()
   }
   if (!bounds.contains(x))
   {
-    LOGWARN(OSS() << "Starting point is not inside bounds x=" << x.__str__() <<" bounds=" << bounds);
+    LOGWARN(OSS() << "Starting point is not inside bounds x=" << x.__str__() << " bounds=" << bounds);
   }
   Point low(bounds.getLowerBound());
   Point up(bounds.getUpperBound());

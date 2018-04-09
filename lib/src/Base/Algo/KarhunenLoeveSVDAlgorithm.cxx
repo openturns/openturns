@@ -188,10 +188,10 @@ void KarhunenLoeveSVDAlgorithm::run()
   Scalar cumulatedVariance = 0.0;
   Point eigenValues(svd.getDimension());
   for (UnsignedInteger i = 0; i < svd.getDimension(); ++i)
-    {
-      eigenValues[i] = svd[i] * svd[i];
-      cumulatedVariance += eigenValues[i];
-    }
+  {
+    eigenValues[i] = svd[i] * svd[i];
+    cumulatedVariance += eigenValues[i];
+  }
   LOGINFO("Extract the relevant eigenpairs");
   // Start at 0 if the given threshold is large (eg greater than 1)
   UnsignedInteger K = 0;

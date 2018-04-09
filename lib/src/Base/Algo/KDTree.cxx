@@ -105,10 +105,10 @@ private:
                                 Point & lowerBoundingBox, Point & upperBoundingBox,
                                 const UnsignedInteger activeDimension)
   {
-    const Scalar splitValue = sample_(tree_[3*inode], activeDimension);
+    const Scalar splitValue = sample_(tree_[3 * inode], activeDimension);
     const Scalar delta = x[activeDimension] - splitValue;
-    const UnsignedInteger sameSide(delta < 0.0 ? tree_[3*inode+1] : tree_[3*inode+2]);
-    const UnsignedInteger oppositeSide(delta < 0.0 ? tree_[3*inode+2] : tree_[3*inode+1]);
+    const UnsignedInteger sameSide(delta < 0.0 ? tree_[3 * inode + 1] : tree_[3 * inode + 2]);
+    const UnsignedInteger oppositeSide(delta < 0.0 ? tree_[3 * inode + 2] : tree_[3 * inode + 1]);
     const UnsignedInteger dimension = sample_.getDimension();
     const UnsignedInteger nextActiveDimension = (activeDimension + 1) % dimension;
     const Scalar saveLower = lowerBoundingBox[activeDimension];
@@ -140,7 +140,7 @@ private:
         lowerBoundingBox[activeDimension] = saveLower;
     }
     if (size_ == capacity_ && currentGreatestValidSquaredDistance < delta * delta) return;
-    const UnsignedInteger localIndex = tree_[3*inode];
+    const UnsignedInteger localIndex = tree_[3 * inode];
     // Similar to (x - sample_[localIndex]).normSquare() but it is better to avoid Point creation
     Scalar localSquaredDistance = 0.0;
     for(UnsignedInteger i = 0; i < dimension; ++i)
@@ -328,9 +328,9 @@ String KDTree::__str__(const String & offset) const
 String KDTree::printNode(const UnsignedInteger inode) const
 {
   return OSS() << "class=KDNode"
-         << " index=" << tree_[3*inode]
-         << " left=" << (tree_[3*inode+1] ? printNode(tree_[3*inode+1]) : "NULL")
-         << " right=" << (tree_[3*inode+2] ? printNode(tree_[3*inode+2]) : "NULL");
+         << " index=" << tree_[3 * inode]
+         << " left=" << (tree_[3 * inode + 1] ? printNode(tree_[3 * inode + 1]) : "NULL")
+         << " right=" << (tree_[3 * inode + 2] ? printNode(tree_[3 * inode + 2]) : "NULL");
 }
 
 /* Insert the point at given index into the tree */
@@ -345,12 +345,12 @@ void KDTree::insert(UnsignedInteger & inode,
   {
     ++currentSize;
     inode = currentSize;
-    tree_[3*inode] = index;
+    tree_[3 * inode] = index;
   }
-  else if (points_(index, activeDimension) < points_(tree_[3*inode], activeDimension))
-    insert(tree_[3*inode+1], currentSize, index, (activeDimension + 1) % points_.getDimension());
+  else if (points_(index, activeDimension) < points_(tree_[3 * inode], activeDimension))
+    insert(tree_[3 * inode + 1], currentSize, index, (activeDimension + 1) % points_.getDimension());
   else
-    insert(tree_[3*inode+2], currentSize, index, (activeDimension + 1) % points_.getDimension());
+    insert(tree_[3 * inode + 2], currentSize, index, (activeDimension + 1) % points_.getDimension());
 }
 
 /* Get the index of the nearest neighbour of the given point */
@@ -384,10 +384,10 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const UnsignedInteger inode,
   // 2.4) Go on the opposite side. On return, check if the returned squared distance is less than the current best squared distance and update the current best index and the associated squared distance.
   // 3*) Return the current best index and the associated squared distance to the upper level
 
-  const Scalar splitValue = points_(tree_[3*inode], activeDimension);
+  const Scalar splitValue = points_(tree_[3 * inode], activeDimension);
   const Scalar delta = x[activeDimension] - splitValue;
-  const UnsignedInteger sameSide(delta < 0.0 ? tree_[3*inode+1] : tree_[3*inode+2]);
-  const UnsignedInteger oppositeSide(delta < 0.0 ? tree_[3*inode+2] : tree_[3*inode+1]);
+  const UnsignedInteger sameSide(delta < 0.0 ? tree_[3 * inode + 1] : tree_[3 * inode + 2]);
+  const UnsignedInteger oppositeSide(delta < 0.0 ? tree_[3 * inode + 2] : tree_[3 * inode + 1]);
   UnsignedInteger currentBestIndex = points_.getSize();
   Scalar currentBestSquaredDistance = bestSquaredDistance;
   const UnsignedInteger dimension = points_.getDimension();
@@ -433,7 +433,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const UnsignedInteger inode,
     return currentBestIndex;
   }
   // 2.2)
-  const UnsignedInteger localIndex = tree_[3*inode];
+  const UnsignedInteger localIndex = tree_[3 * inode];
   // Similar to (x - points_[localIndex]).normSquare() but it is better to avoid Point creation
   Scalar localSquaredDistance = 0.0;
   for(UnsignedInteger i = 0; i < dimension; ++i)

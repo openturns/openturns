@@ -15,9 +15,11 @@ try:
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
     estimatedDistribution = factory.build(sample, 0)
-    print("Estimated distribution (local likelihood)=", repr(estimatedDistribution))
+    print("Estimated distribution (local likelihood)=",
+          repr(estimatedDistribution))
     estimatedDistribution = factory.build(sample, 1)
-    print("Estimated distribution (modified moments)=", repr(estimatedDistribution))
+    print("Estimated distribution (modified moments)=",
+          repr(estimatedDistribution))
     estimatedDistribution = factory.build(sample, 2)
     print("Estimated distribution (moments)=", repr(estimatedDistribution))
     estimatedDistribution = factory.build()

@@ -161,13 +161,13 @@ Point EvaluationProxy::operator() (const Point & inP) const
 }
 
 Point EvaluationProxy::operator() (const Point & inP,
-    const Point & parameter)
+                                   const Point & parameter)
 {
   return evaluation_.operator()(inP, parameter);
 }
 
 Sample EvaluationProxy::operator() (const Point & inP,
-    const Sample & parameters)
+                                    const Sample & parameters)
 {
   return evaluation_.operator()(inP, parameters);
 }

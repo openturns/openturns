@@ -83,7 +83,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** Get the PDFGradient of the distribution */
   using EllipticalDistribution::computePDFGradient;
   Point computePDFGradient(const Point & point) const;

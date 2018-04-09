@@ -84,7 +84,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const;
 

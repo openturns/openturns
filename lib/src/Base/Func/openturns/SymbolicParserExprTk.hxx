@@ -26,7 +26,8 @@
 #include "openturns/Pointer.hxx"
 
 // Forward declaration
-namespace exprtk {
+namespace exprtk
+{
 template<typename T> class expression;
 }
 

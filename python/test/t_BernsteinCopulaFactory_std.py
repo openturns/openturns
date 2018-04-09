@@ -37,7 +37,8 @@ try:
         print("Max. error=%.5f" % max_error)
         # Penalized Csiszar divergence method
         f = SymbolicFunction("t", "-log(t)")
-        m = BernsteinCopulaFactory.ComputePenalizedCsiszarDivergenceBinNumber(sample, f)
+        m = BernsteinCopulaFactory.ComputePenalizedCsiszarDivergenceBinNumber(
+            sample, f)
         print("Penalized Csiszar divergence m=", m)
         est_copula = BernsteinCopulaFactory().build(sample, m)
         max_error = 0.0

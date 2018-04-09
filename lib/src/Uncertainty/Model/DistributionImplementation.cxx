@@ -261,52 +261,52 @@ Distribution DistributionImplementation::operator / (const Scalar value) const
 
 /* Product operator */
 Distribution operator * (const Scalar scalar,
-    const DistributionImplementation & distribution)
+                         const DistributionImplementation & distribution)
 {
   return distribution * scalar;
 }
 
 Distribution operator * (const Scalar scalar,
-    const DistributionImplementation::Implementation & p_distribution)
+                         const DistributionImplementation::Implementation & p_distribution)
 {
   return (*p_distribution) * scalar;
 }
 
 /* Division operator */
 Distribution operator / (const Scalar scalar,
-    const DistributionImplementation & distribution)
+                         const DistributionImplementation & distribution)
 {
   return (distribution.inverse()) * scalar;
 }
 
 Distribution operator / (const Scalar scalar,
-    const DistributionImplementation::Implementation & p_distribution)
+                         const DistributionImplementation::Implementation & p_distribution)
 {
   return (*p_distribution).inverse() * scalar;
 }
 
 /* Addition operator */
 Distribution operator + (const Scalar scalar,
-    const DistributionImplementation & distribution)
+                         const DistributionImplementation & distribution)
 {
   return distribution + scalar;
 }
 
 Distribution operator + (const Scalar scalar,
-    const DistributionImplementation::Implementation & p_distribution)
+                         const DistributionImplementation::Implementation & p_distribution)
 {
   return (*p_distribution) + scalar;
 }
 
 /* Subtraction operator */
 Distribution operator - (const Scalar scalar,
-    const DistributionImplementation & distribution)
+                         const DistributionImplementation & distribution)
 {
   return (distribution * (-1.0)) + scalar;
 }
 
 Distribution operator - (const Scalar scalar,
-    const DistributionImplementation::Implementation & p_distribution)
+                         const DistributionImplementation::Implementation & p_distribution)
 {
   return ((*p_distribution) * (-1.0)) + scalar;
 }
@@ -323,7 +323,7 @@ Distribution operator - (const DistributionImplementation::Implementation & p_di
 
 
 Distribution maximum(const DistributionImplementation::Implementation & p_left,
-    const DistributionImplementation::Implementation & p_right)
+                     const DistributionImplementation::Implementation & p_right)
 {
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = p_left;
@@ -332,7 +332,7 @@ Distribution maximum(const DistributionImplementation::Implementation & p_left,
 }
 
 Distribution maximum(const DistributionImplementation & left,
-    const DistributionImplementation::Implementation & p_right)
+                     const DistributionImplementation::Implementation & p_right)
 {
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = left;
@@ -341,7 +341,7 @@ Distribution maximum(const DistributionImplementation & left,
 }
 
 Distribution maximum(const DistributionImplementation::Implementation & p_left,
-    const DistributionImplementation & right)
+                     const DistributionImplementation & right)
 {
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = p_left;
@@ -350,7 +350,7 @@ Distribution maximum(const DistributionImplementation::Implementation & p_left,
 }
 
 Distribution maximum(const DistributionImplementation & left,
-    const DistributionImplementation & right)
+                     const DistributionImplementation & right)
 {
   MaximumDistribution::DistributionCollection coll(2);
   coll[0] = left;
@@ -1167,31 +1167,31 @@ Scalar DistributionImplementation::computeEntropy() const
       Scalar entropy = 0.0;
       for (UnsignedInteger marginal = 0; marginal < dimension_; ++marginal)
       {
-	const Implementation marginalDistribution(getMarginal(marginal).getImplementation());
-	Point integrationBounds(1, lowerBound_[marginal]);
-	integrationBounds.add(getSingularities());
-	integrationBounds.add(upperBound_[marginal]);
-	for (UnsignedInteger j = 0; j < integrationBounds.getSize() - 1; ++j)
-	  {
-	    const Scalar a = integrationBounds[j];
-	    const Scalar b = integrationBounds[j + 1];
-	    const Scalar delta = b - a;
-	    const Point logPDFAtNodes(marginalDistribution->computeLogPDF(nodes * Point(1, delta) + Point(1, a)).asPoint());
-	    for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
-	      {
-		const Scalar logPI = logPDFAtNodes[i];
-		entropy += -logPI * std::exp(logPI) * weights[i] * delta;
-	      } // integration nodes
-	  } // Singularities
+        const Implementation marginalDistribution(getMarginal(marginal).getImplementation());
+        Point integrationBounds(1, lowerBound_[marginal]);
+        integrationBounds.add(getSingularities());
+        integrationBounds.add(upperBound_[marginal]);
+        for (UnsignedInteger j = 0; j < integrationBounds.getSize() - 1; ++j)
+        {
+          const Scalar a = integrationBounds[j];
+          const Scalar b = integrationBounds[j + 1];
+          const Scalar delta = b - a;
+          const Point logPDFAtNodes(marginalDistribution->computeLogPDF(nodes * Point(1, delta) + Point(1, a)).asPoint());
+          for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
+          {
+            const Scalar logPI = logPDFAtNodes[i];
+            entropy += -logPI * std::exp(logPI) * weights[i] * delta;
+          } // integration nodes
+        } // Singularities
       } // marginal
       return entropy;
     } // hasIndependentCopula()
     // In low dimension, use an adaptive quadrature
     if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallDimensionEntropy"))
-      {
-	const EntropyKernel entropyKernel(this);
-	return IteratedQuadrature().integrate(entropyKernel, getRange())[0];
-      } // Low dimension
+    {
+      const EntropyKernel entropyKernel(this);
+      return IteratedQuadrature().integrate(entropyKernel, getRange())[0];
+    } // Low dimension
   } // isContinuous()
   return -computeLogPDF(getSampleByQMC(ResourceMap::GetAsUnsignedInteger("Distribution-EntropySamplingSize"))).computeMean()[0];
 }

@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
   try
   {
     LogNormal distribution(1.5, 2.5, -1.5);
-    fullprint << "Distribution          =" << distribution << std::endl;    UnsignedInteger size = 10000;
+    fullprint << "Distribution          =" << distribution << std::endl;
+    UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     LogNormalFactory factory;
     CovarianceMatrix covariance;

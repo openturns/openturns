@@ -158,9 +158,9 @@ void ProjectionStrategyImplementation::setExperiment(const WeightedExperiment & 
   // TODO: implement experiments comparison
 //   if (!(weightedExperiment == weightedExperiment_))
 //   {
-    weightedExperiment_ = weightedExperiment;
-    weightedExperiment_.setDistribution(getMeasure());
-    inputSample_ = Sample(0, 0);
+  weightedExperiment_ = weightedExperiment;
+  weightedExperiment_.setDistribution(getMeasure());
+  inputSample_ = Sample(0, 0);
 //   }
 }
 

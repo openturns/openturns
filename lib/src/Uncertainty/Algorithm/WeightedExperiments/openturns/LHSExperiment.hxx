@@ -112,7 +112,7 @@ private:
 
   // Transformation from uniform space to distribution space
   MarginalTransformationEvaluation transformation_;
-  
+
 }; /* class LHSExperiment */
 
 

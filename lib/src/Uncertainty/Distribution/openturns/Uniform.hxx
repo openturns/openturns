@@ -102,7 +102,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** Get the roughness, i.e. the L2-norm of the PDF */
   Scalar getRoughness() const;
 

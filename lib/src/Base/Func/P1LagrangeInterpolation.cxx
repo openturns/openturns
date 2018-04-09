@@ -61,10 +61,10 @@ P1LagrangeInterpolation::P1LagrangeInterpolation(const Mesh & inputMesh, const M
 
 /* Parameters constructor */
 P1LagrangeInterpolation::P1LagrangeInterpolation(const Mesh & inputMesh,
-                                                 const Mesh & outputMesh,
-                                                 const UnsignedInteger dimension,
-                                                 const EnclosingSimplexAlgorithm & enclosingSimplex,
-                                                 const NearestNeighbourAlgorithm & nearestNeighbour)
+    const Mesh & outputMesh,
+    const UnsignedInteger dimension,
+    const EnclosingSimplexAlgorithm & enclosingSimplex,
+    const NearestNeighbourAlgorithm & nearestNeighbour)
   : FieldFunctionImplementation(inputMesh.getDimension(), dimension, dimension)
   , inputMesh_(inputMesh)
   , outputMesh_(outputMesh)

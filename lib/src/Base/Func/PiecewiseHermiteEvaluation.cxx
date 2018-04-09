@@ -102,7 +102,8 @@ String PiecewiseHermiteEvaluation::__str__(const String & offset) const
          << ", derivatives=" << derivatives_ << ")";
 }
 
-namespace {
+namespace
+{
 Bool computeRegularHermite(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
@@ -124,9 +125,9 @@ UnsignedInteger findSegmentIndexHermite(const Point & locations, const Scalar va
   if (value >= locations[start])
   {
     // Shortcuts for the most common cases when looping over a Sample
-    if (start == iRight || value < locations[start+1])
+    if (start == iRight || value < locations[start + 1])
       return start;
-    else if (start + 1 == iRight || value < locations[start+2])
+    else if (start + 1 == iRight || value < locations[start + 2])
       return start + 1 ;
   }
   else

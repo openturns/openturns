@@ -44,57 +44,57 @@ int main(int argc, char *argv[])
       Sample sample(ref_copula.getSample(size));
       // Default method: log-likelihood
       {
-	UnsignedInteger m = BernsteinCopulaFactory::ComputeLogLikelihoodBinNumber(sample);
-	fullprint << "Log-likelihood bin number=" << m << std::endl;
-	Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
-	Scalar max_error = 0.0;
-	for (UnsignedInteger n = 0; n < 11; ++n)
-	  {
-	    point[0] = 0.1 * n;
-	    for (UnsignedInteger p = 0; p < 11; ++p)
-	      {
-		point[1] = 0.1 * p;
-		max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
-	      }
-	  }
-	fullprint << "Max. error=" << max_error << std::endl;
+        UnsignedInteger m = BernsteinCopulaFactory::ComputeLogLikelihoodBinNumber(sample);
+        fullprint << "Log-likelihood bin number=" << m << std::endl;
+        Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
+        Scalar max_error = 0.0;
+        for (UnsignedInteger n = 0; n < 11; ++n)
+        {
+          point[0] = 0.1 * n;
+          for (UnsignedInteger p = 0; p < 11; ++p)
+          {
+            point[1] = 0.1 * p;
+            max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
+          }
+        }
+        fullprint << "Max. error=" << max_error << std::endl;
       }
       // AMISE method
       {
-	UnsignedInteger m = BernsteinCopulaFactory::ComputeAMISEBinNumber(sample);
-	fullprint << "AMISE bin number=" << m << std::endl;
-	Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
-	Scalar max_error = 0.0;
-	for (UnsignedInteger n = 0; n < 11; ++n)
-	  {
-	    point[0] = 0.1 * n;
-	    for (UnsignedInteger p = 0; p < 11; ++p)
-	      {
-		point[1] = 0.1 * p;
-		max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
-	      }
-	  }
-	fullprint << "Max. error=" << max_error << std::endl;
+        UnsignedInteger m = BernsteinCopulaFactory::ComputeAMISEBinNumber(sample);
+        fullprint << "AMISE bin number=" << m << std::endl;
+        Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
+        Scalar max_error = 0.0;
+        for (UnsignedInteger n = 0; n < 11; ++n)
+        {
+          point[0] = 0.1 * n;
+          for (UnsignedInteger p = 0; p < 11; ++p)
+          {
+            point[1] = 0.1 * p;
+            max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
+          }
+        }
+        fullprint << "Max. error=" << max_error << std::endl;
       }
       // Penalized Csiszar divergence method
       {
-	SymbolicFunction f("t", "-log(t)");
-	UnsignedInteger m = BernsteinCopulaFactory::ComputePenalizedCsiszarDivergenceBinNumber(sample, f);
-	fullprint << "Penalized Csiszar divergence bin number=" << m << std::endl;
-	Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
-	Scalar max_error = 0.0;
-	for (UnsignedInteger n = 0; n < 11; ++n)
-	  {
-	    point[0] = 0.1 * n;
-	    for (UnsignedInteger p = 0; p < 11; ++p)
-	      {
-		point[1] = 0.1 * p;
-		max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
-	      }
-	  }
-	fullprint << "Max. error=" << max_error << std::endl;
+        SymbolicFunction f("t", "-log(t)");
+        UnsignedInteger m = BernsteinCopulaFactory::ComputePenalizedCsiszarDivergenceBinNumber(sample, f);
+        fullprint << "Penalized Csiszar divergence bin number=" << m << std::endl;
+        Distribution est_copula(BernsteinCopulaFactory().build(sample, m));
+        Scalar max_error = 0.0;
+        for (UnsignedInteger n = 0; n < 11; ++n)
+        {
+          point[0] = 0.1 * n;
+          for (UnsignedInteger p = 0; p < 11; ++p)
+          {
+            point[1] = 0.1 * p;
+            max_error = std::max(max_error, std::abs(ref_copula.computeCDF(point) - est_copula.computeCDF(point)));
+          }
+        }
+        fullprint << "Max. error=" << max_error << std::endl;
       }
-    }      
+    }
   }
   catch (TestFailed & ex)
   {

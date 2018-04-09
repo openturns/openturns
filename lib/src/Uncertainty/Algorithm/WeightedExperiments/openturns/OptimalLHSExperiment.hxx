@@ -85,7 +85,7 @@ protected:
 
   // Transformation from uniform space to distribution space
   MarginalTransformationEvaluation transformation_;
-  
+
 }; /* class OptimalLHSExperiment */
 
 } /* namespace OT */

@@ -328,13 +328,13 @@ int main(int argc, char *argv[])
       Point x(1, -1.0);
       fullprint << "Result is ";
       try
-	{
-	  fullprint << f(x) << std::endl;
-	}
+      {
+        fullprint << f(x) << std::endl;
+      }
       catch(...)
-	{
-	  fullprint << "undefined" << std::endl;
-	}
+      {
+        fullprint << "undefined" << std::endl;
+      }
     }
     // Disable check for exceptional values
     {

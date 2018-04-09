@@ -49,7 +49,7 @@ Distribution UserDefinedFactory::build(const Sample & sample) const
 }
 
 Distribution UserDefinedFactory::build(const Sample & sample,
-    const Scalar epsilon) const
+                                       const Scalar epsilon) const
 {
   return buildAsUserDefined(sample, epsilon).clone();
 }

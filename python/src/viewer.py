@@ -27,6 +27,7 @@ __all__ = ["View", "PlotDesign"]
 
 
 class View(object):
+
     """
     Create the figure.
 
@@ -390,7 +391,8 @@ class View(object):
                         plt.clabel(contourset, **clabel_kwargs)
                     except KeyError:
                         # https://github.com/matplotlib/matplotlib/issues/9742
-                        warnings.warn('pyplot.clabel likely failed on boundary level')
+                        warnings.warn(
+                            'pyplot.clabel likely failed on boundary level')
                 for i in range(len(contourset.levels)):
                     contourset.collections[i].set_label(
                         '_nolegend_' if i > 0 else drawable.getLegend())

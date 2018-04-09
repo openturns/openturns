@@ -57,7 +57,7 @@ public:
                                        const Point & t) const;
 #ifndef SWIG
   Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const;
+                                       const Collection<Scalar>::const_iterator & t_begin) const;
 #endif
 
   /** Gradient */

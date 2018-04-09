@@ -5,7 +5,7 @@ import openturns as ot
 
 
 size = 8
-for dimension in [2,3]:
+for dimension in [2, 3]:
     distribution = ot.Normal(dimension)
     for computeSecondOrder in [False, True]:
         experiment = ot.SobolIndicesExperiment(

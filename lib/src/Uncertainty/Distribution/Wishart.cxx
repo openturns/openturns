@@ -233,7 +233,7 @@ void Wishart::computeMean() const
 /* Compute the entropy of the distribution */
 Scalar Wishart::computeEntropy() const
 {
-  // E = p\nu/2 - logNormalizationFactor + (p + 1 - \nu)[\log|L|+{p\log(2)\sum_{i=0}^{p-1}\psi((\nu-i)/2)}/2] 
+  // E = p\nu/2 - logNormalizationFactor + (p + 1 - \nu)[\log|L|+{p\log(2)\sum_{i=0}^{p-1}\psi((\nu-i)/2)}/2]
   const Scalar p = cholesky_.getDimension();
   Scalar E = 0.5 * nu_ * p - logNormalizationFactor_;
   Scalar logDetL = 0.0;

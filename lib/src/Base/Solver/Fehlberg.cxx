@@ -44,8 +44,8 @@ Fehlberg::Fehlberg()
 
 /* Default constructor */
 Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
-		   const Scalar localPrecision,
-		   const UnsignedInteger order)
+                   const Scalar localPrecision,
+                   const UnsignedInteger order)
   : ODESolverImplementation(transitionFunction)
   , localPrecision_(localPrecision)
   , order_(order)
@@ -58,10 +58,10 @@ Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
   // See en.m.wikipedia.org/wiki/List_of_Runge-Kutta_methods for orders 0, 1, 2 and 4
   // and https://fr.mathworks.com/help/symbolic/mupad_ref/numeric-butcher.html for order 3
   switch (order)
-    {
+  {
     case 0:
       alpha_[0] = 1.0;
-      
+
       beta_[ 0] = 1.0;
 
       c_[0] = 1.0;
@@ -72,7 +72,7 @@ Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
     case 1:
       alpha_[0] = 1.0 / 2.0;
       alpha_[1] = 1.0;
-      
+
       beta_[ 0] = 1.0 / 2.0;
       beta_[ 1] = 1.0 / 256.0;
       beta_[ 2] = 255.0 / 256.0;
@@ -88,7 +88,7 @@ Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
       alpha_[0] = 1.0 / 4.0;
       alpha_[1] = 27.0 / 40.0;
       alpha_[2] = 1.0;
-      
+
       beta_[ 0] = 1.0 / 4.0;
       beta_[ 1] = -189.0 / 800.0;
       beta_[ 2] = 729.0 / 800.0;
@@ -110,7 +110,7 @@ Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
       alpha_[1] = 4.0 / 9.0;
       alpha_[2] = 6.0 / 7.0;
       alpha_[3] = 1.0;
-      
+
       beta_[0] = 1.0 / 4.0;
       beta_[1] = 4.0 / 81.0;
       beta_[2] = 32.0 / 81.0;
@@ -139,7 +139,7 @@ Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
       alpha_[2] = 12.0 / 13.0;
       alpha_[3] = 1.0;
       alpha_[4] = 1.0 / 2.0;
-      
+
       beta_[ 0] = 1.0 / 4.0;
       beta_[ 1] = 3.0 / 32.0;
       beta_[ 2] = 9.0 / 32.0;
@@ -171,7 +171,7 @@ Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
       break;
     default:
       throw InvalidArgumentException(HERE) << "Error: no method of order=" << order << " is available for now. Use order=0, 1, 2 or 4;";
-    }
+  }
 }
 
 /* Virtual constructor */
@@ -184,17 +184,17 @@ Fehlberg * Fehlberg::clone() const
 String Fehlberg::__repr__() const
 {
   return OSS() << "class=" << GetClassName()
-	       << ", localPrecision=" << localPrecision_
-	       << ", order=" << order_
-	       << ", alpha=" << alpha_
-	       << ", beta=" << beta_
-	       << ", c=" << c_
-	       << ", cHat=" << cHat_;
+         << ", localPrecision=" << localPrecision_
+         << ", order=" << order_
+         << ", alpha=" << alpha_
+         << ", beta=" << beta_
+         << ", c=" << c_
+         << ", cHat=" << cHat_;
 }
 
 /* Perform cross-validation */
 Sample Fehlberg::solve(const Point & initialState,
-		       const Point & timeGrid) const
+                       const Point & timeGrid) const
 {
   if (initialState.getDimension() != transitionFunction_.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the initial state has a dimension=" << initialState.getDimension() << ", expected dimension=" << transitionFunction_.getInputDimension();
   if (!timeGrid.isMonotonic()) throw InvalidArgumentException(HERE) << "Error: expected a monotonic time grid.";
@@ -215,20 +215,20 @@ Sample Fehlberg::solve(const Point & initialState,
   Bool done = false;
   Point gradient;
   while (!done)
+  {
+    Scalar newT = t + h;
+    if ((positiveStep && (newT > tEnd)) || (!positiveStep && (newT < tEnd)))
     {
-      Scalar newT = t + h;
-      if ((positiveStep && (newT > tEnd)) || (!positiveStep && (newT < tEnd)))
-	{
-	  done = true;
-	  h = tEnd - t;
-	  newT = tEnd;
-	}
-      state = computeStep(t, state, gradient, h);
-      values.add(state);
-      derivatives.add(gradient);
-      times.add(newT);
-      t = newT;
+      done = true;
+      h = tEnd - t;
+      newT = tEnd;
     }
+    state = computeStep(t, state, gradient, h);
+    values.add(state);
+    derivatives.add(gradient);
+    times.add(newT);
+    t = newT;
+  }
   // Final evaluation of the gradient
   derivatives.add(transitionFunction_(t, state));
   // Now we interpolate the solution on the expected grid
@@ -243,9 +243,9 @@ Sample Fehlberg::solve(const Point & initialState,
    See J. Stoer, R. Bulirsch, "Introduction to Numerical Analysis 2nd Edition", pp448-458.
  */
 Point Fehlberg::computeStep(const Scalar t,
-			    const Point & state,
-			    Point & gradient,
-			    Scalar & h) const
+                            const Point & state,
+                            Point & gradient,
+                            Scalar & h) const
 {
   const UnsignedInteger dimension = state.getDimension();
   Sample f(order_ + 2, dimension);
@@ -253,33 +253,33 @@ Point Fehlberg::computeStep(const Scalar t,
   f[0] = gradient;
   UnsignedInteger index = 0;
   for (UnsignedInteger k = 0; k <= order_; ++k)
+  {
+    const Scalar tK = t + alpha_[k] * h;
+    Point yK(state);
+    for (UnsignedInteger l = 0; l <= k; ++l)
     {
-      const Scalar tK = t + alpha_[k] * h;
-      Point yK(state);
-      for (UnsignedInteger l = 0; l <= k; ++l)
-	{
-	  yK += f[l] * (h * beta_[index]);
-	  ++index;
-	}
-      f[k + 1] = transitionFunction_(tK, yK);
+      yK += f[l] * (h * beta_[index]);
+      ++index;
     }
+    f[k + 1] = transitionFunction_(tK, yK);
+  }
   Point PhiI(dimension);
   Point PhiII(dimension);
   for (UnsignedInteger k = 0; k <= order_; ++k)
-    {
-      PhiI  += f[k] * c_[k];
-      PhiII += f[k] * cHat_[k];
-    }
+  {
+    PhiI  += f[k] * c_[k];
+    PhiII += f[k] * cHat_[k];
+  }
   PhiII += f[order_ + 1] * cHat_[order_ + 1];
   const Point value(state + PhiII * h);
   // The update formula for h is based on relation 7.2.5.17 in the reference,
   // with the remark that \bar{y}_{i+1}-\hat{y}_{i+1}=h_i(\Phi_I-\Phi_{II})
   const Scalar delta = (PhiI - PhiII).norm();
   if (delta > 0.0)
-    {
-      const Scalar factor = std::exp(std::log(localPrecision_ / delta) / (order_ + 1.0));
-      h *= factor;
-    }
+  {
+    const Scalar factor = std::exp(std::log(localPrecision_ / delta) / (order_ + 1.0));
+    h *= factor;
+  }
   return value;
 }
 

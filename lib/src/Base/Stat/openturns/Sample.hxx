@@ -44,7 +44,7 @@ public:
 
   /* Some typedefs for easy reading */
   typedef SampleImplementation::UnsignedIntegerCollection UnsignedIntegerCollection;
-  
+
 public:
 
   /** Factory of Sample from CSV file */
@@ -178,7 +178,7 @@ public:
 
   /** Return the internal linear storage */
   Point asPoint() const;
-  
+
   /**
    * Method split() trunk the sample before the index passed as argument
    * and returns the remainder as new sample. This method tries its best not for doubling

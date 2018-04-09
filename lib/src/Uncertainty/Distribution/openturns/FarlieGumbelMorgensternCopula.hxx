@@ -115,7 +115,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

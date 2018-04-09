@@ -238,7 +238,7 @@ Distribution LogNormalFactory::build(const Sample & sample) const
 }
 
 Distribution LogNormalFactory::build(const Sample & sample,
-    const UnsignedInteger method) const
+                                     const UnsignedInteger method) const
 {
   return buildAsLogNormal(sample, method).clone();
 }

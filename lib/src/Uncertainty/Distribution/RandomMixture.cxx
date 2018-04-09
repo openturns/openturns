@@ -415,8 +415,8 @@ Matrix RandomMixture::getWeights() const
 
 /* Distribution collection accessor */
 void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollection & coll,
-							const Matrix & weights,
-							const Bool simplifyAtom)
+    const Matrix & weights,
+    const Bool simplifyAtom)
 {
   weights_ = weights;
   // Size will be updated during the several treatments of the collection
@@ -625,22 +625,22 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       // Set the aggregated normal if any. Note that this atom absorbs the constant.
       if (hasNormalAtom)
       {
-	if (hasPendingUniform)
-	  {
-	    distributionCollection_.add(SmoothedUniform(pendingUniform.getA() + aggregatedMean + constant_[0], pendingUniform.getB() + aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
-	    constant_[0] = 0.0;
-	    // Add a unit weight as its initial weight has been merged into the parameters
-	    reducedWeights.add(Point(1, 1.0));	    
-	    // No more pending uniform
-	    hasPendingUniform = false;
-	  } // hasPendingNormal && hasPendingUniform
-	else
-	  {
-	    distributionCollection_.add(Normal(aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
-	    constant_[0] = 0.0;
-	    // Add a unit weight as its initial weight has been merged into the parameters
-	    reducedWeights.add(Point(1, 1.0));
-	  } // hasPendingNormal && !hasPendingUniform
+        if (hasPendingUniform)
+        {
+          distributionCollection_.add(SmoothedUniform(pendingUniform.getA() + aggregatedMean + constant_[0], pendingUniform.getB() + aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
+          constant_[0] = 0.0;
+          // Add a unit weight as its initial weight has been merged into the parameters
+          reducedWeights.add(Point(1, 1.0));
+          // No more pending uniform
+          hasPendingUniform = false;
+        } // hasPendingNormal && hasPendingUniform
+        else
+        {
+          distributionCollection_.add(Normal(aggregatedMean + constant_[0], std::sqrt(aggregatedVariance)));
+          constant_[0] = 0.0;
+          // Add a unit weight as its initial weight has been merged into the parameters
+          reducedWeights.add(Point(1, 1.0));
+        } // hasPendingNormal && !hasPendingUniform
       } // hasNormalAtom
       // Set the pending Uniform if any. Note that this atom absorbs the constant if not yet absorbed.
       if (hasPendingUniform)
@@ -2361,30 +2361,30 @@ Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     return q * alpha + constant_[0];
   }
   if (isContinuous())
+  {
+    // General continuous case
+    // Try a Newton method to benefit from the additive nature of Poisson's summation formula:
+    // F(x_n+dx_n)~F(x_n)+p(x_n)dx_n
+    // so F(x_n+dx_n)=q gives dx_n = (q - F(x_n)) / p(x_n)
+    // and at the next step we have to compute F(x_n+dx_n), p(x_n+dx_n)
+    // but F(x_n+dx_n)=F(x_n)+P(X\in[x_n,x_n+dx_n])
+    const Scalar q = (tail ? 1.0 - prob : prob);
+    Scalar x = equivalentNormal_.computeQuantile(q)[0];
+    Scalar sigma = equivalentNormal_.getStandardDeviation()[0];
+    Scalar epsilon = cdfEpsilon_ * sigma;
+    Scalar dx = sigma;
+    Scalar cdf = computeCDF(x);
+    for (UnsignedInteger i = 0; i < 16 && std::abs(dx) > epsilon; ++i)
     {
-      // General continuous case
-      // Try a Newton method to benefit from the additive nature of Poisson's summation formula:
-      // F(x_n+dx_n)~F(x_n)+p(x_n)dx_n
-      // so F(x_n+dx_n)=q gives dx_n = (q - F(x_n)) / p(x_n)
-      // and at the next step we have to compute F(x_n+dx_n), p(x_n+dx_n)
-      // but F(x_n+dx_n)=F(x_n)+P(X\in[x_n,x_n+dx_n])
-      const Scalar q = (tail ? 1.0 - prob : prob);
-      Scalar x = equivalentNormal_.computeQuantile(q)[0];
-      Scalar sigma = equivalentNormal_.getStandardDeviation()[0];
-      Scalar epsilon = cdfEpsilon_ * sigma;
-      Scalar dx = sigma;
-      Scalar cdf = computeCDF(x);
-      for (UnsignedInteger i = 0; i < 16 && std::abs(dx) > epsilon; ++i)
-	{
-	  const Scalar pdf = computePDF(x);
-	  dx = (q - cdf) / pdf;
-	  Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x, x + dx)) : computeProbability(Interval(x + dx, x)));
-	  cdf += (dx > 0.0 ? dcdf : -dcdf);
-	  x += dx;
-	}
-      // Has the Newton iteration converged?
-      if (std::abs(dx) <= epsilon) return x;
+      const Scalar pdf = computePDF(x);
+      dx = (q - cdf) / pdf;
+      Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x, x + dx)) : computeProbability(Interval(x + dx, x)));
+      cdf += (dx > 0.0 ? dcdf : -dcdf);
+      x += dx;
     }
+    // Has the Newton iteration converged?
+    if (std::abs(dx) <= epsilon) return x;
+  }
   // If no convergence of Newton's iteration of if non continuous and non analytical
   return DistributionImplementation::computeScalarQuantile(prob, tail);
 }

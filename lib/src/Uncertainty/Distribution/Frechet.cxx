@@ -152,7 +152,7 @@ Scalar Frechet::computeLogPDF(const Point & point) const
 /* Compute the entropy of the distribution */
 Scalar Frechet::computeEntropy() const
 {
-  return 1.0 + SpecFunc::EulerConstant * (1.0 + 1.0/ alpha_) + std::log(beta_ / alpha_);
+  return 1.0 + SpecFunc::EulerConstant * (1.0 + 1.0 / alpha_) + std::log(beta_ / alpha_);
 }
 
 /* Get the minimum volume level set containing a given probability of the distribution */

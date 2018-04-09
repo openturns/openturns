@@ -33,7 +33,7 @@ CorrelationAnalysis::CorrelationAnalysis() {}
 
 /* Compute the Pearson correlation coefficient between the component number index of the input sample and the 1D outputSample */
 Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
-                                              const Sample & outputSample)
+    const Sample & outputSample)
 {
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
@@ -50,7 +50,7 @@ Point CorrelationAnalysis::PearsonCorrelation(const Sample & inputSample,
 
 /* Compute the Spearman correlation coefficient between the component number index of the input sample and the 1D outputSample */
 Point CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
-                                               const Sample & outputSample)
+    const Sample & outputSample)
 {
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
