@@ -93,7 +93,7 @@ try:
     # Selection
     indices = [1, 0, 2, 1, 2]
     print("selection=", sample5.select(indices))
-    
+
     # html conversion
     print(sample1._repr_html_())
 except:

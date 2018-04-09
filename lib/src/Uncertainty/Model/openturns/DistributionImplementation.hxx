@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -278,7 +278,7 @@ public:
 
   /** Compute the entropy of the distribution */
   virtual Scalar computeEntropy() const;
-  
+
   /** Get the PDF gradient of the distribution */
   virtual Point computePDFGradient(const Point & point) const;
   virtual Sample computePDFGradient(const Sample & inSample) const;
@@ -1370,10 +1370,10 @@ protected:
       const Point logPDF(p_distribution_->computeLogPDF(sample).asPoint());
       Sample result(size, 1);
       for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const Scalar logPDFI = logPDF[i];
-	  result(i, 0) = -std::exp(logPDFI) * logPDFI;
-	}
+      {
+        const Scalar logPDFI = logPDF[i];
+        result(i, 0) = -std::exp(logPDFI) * logPDFI;
+      }
       return result;
     };
 
@@ -1452,31 +1452,31 @@ protected:
 
 /** Product operator */
 OT_API Distribution operator * (const Scalar,
-    const DistributionImplementation & distribution);
+                                const DistributionImplementation & distribution);
 
 OT_API Distribution operator * (const Scalar,
-    const DistributionImplementation::Implementation & p_distribution);
+                                const DistributionImplementation::Implementation & p_distribution);
 
 /** Division operator */
 OT_API Distribution operator / (const Scalar,
-    const DistributionImplementation & distribution);
+                                const DistributionImplementation & distribution);
 
 OT_API Distribution operator / (const Scalar,
-    const DistributionImplementation::Implementation & p_distribution);
+                                const DistributionImplementation::Implementation & p_distribution);
 
 /** Addition operator */
 OT_API Distribution operator + (const Scalar,
-    const DistributionImplementation & distribution);
+                                const DistributionImplementation & distribution);
 
 OT_API Distribution operator + (const Scalar,
-    const DistributionImplementation::Implementation & p_distribution);
+                                const DistributionImplementation::Implementation & p_distribution);
 
 /** Subtraction operator */
 OT_API Distribution operator - (const Scalar,
-    const DistributionImplementation & distribution);
+                                const DistributionImplementation & distribution);
 
 OT_API Distribution operator - (const Scalar,
-    const DistributionImplementation::Implementation & p_distribution);
+                                const DistributionImplementation::Implementation & p_distribution);
 
 OT_API Distribution operator - (const DistributionImplementation & distribution);
 
@@ -1486,16 +1486,16 @@ OT_API Distribution operator - (const DistributionImplementation::Implementation
 #endif
 
 OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
-    const DistributionImplementation::Implementation & p_right);
+                            const DistributionImplementation::Implementation & p_right);
 
 OT_API Distribution maximum(const DistributionImplementation & left,
-    const DistributionImplementation::Implementation & p_right);
+                            const DistributionImplementation::Implementation & p_right);
 
 OT_API Distribution maximum(const DistributionImplementation::Implementation & p_left,
-    const DistributionImplementation & right);
+                            const DistributionImplementation & right);
 
 OT_API Distribution maximum(const DistributionImplementation & left,
-    const DistributionImplementation & right);
+                            const DistributionImplementation & right);
 
 
 END_NAMESPACE_OPENTURNS

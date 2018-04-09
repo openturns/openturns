@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -222,15 +222,15 @@ int main(int argc, char *argv[])
 
   /** TEST NUMBER FIFTEEN : MULTIPLICATION WITH A SAMPLE METHOD */
   fullprint << "test number fifteen : multiplication with a sample method" << std::endl;
-  Sample S(2,4);
-  S(0,0) = 1.0;
-  S(0,1) = 3.0;
-  S(0,2) = -1.0;
-  S(0,3) = -3.0;
-  S(1,0) = -2.0;
-  S(1,1) = -5.0;
-  S(1,2) = 3.0;
-  S(1,3) = 1.0;
+  Sample S(2, 4);
+  S(0, 0) = 1.0;
+  S(0, 1) = 3.0;
+  S(0, 2) = -1.0;
+  S(0, 3) = -3.0;
+  S(1, 0) = -2.0;
+  S(1, 1) = -5.0;
+  S(1, 2) = 3.0;
+  S(1, 3) = 1.0;
   Matrix matrix32 = Matrix(3, 2, elementsValues);
   Matrix matrix23 = Matrix(2, 3, elementsValues);
   Collection<double> elementsValues12(elementsValues);
@@ -253,15 +253,15 @@ int main(int argc, char *argv[])
   fullprint << "S*matrix43 = " << resultS3 << std::endl;
   Sample resultS4(matrix34.getImplementation()->genSampleProd(S, true, false, 'R'));
   fullprint << "S*matrix34^T = " << resultS4 << std::endl;
-  Sample S2(4,2);
-  S2(0,0) = S(0,0);
-  S2(1,0) = S(0,1);
-  S2(2,0) = S(0,2);
-  S2(3,0) = S(0,3);
-  S2(0,1) = S(1,0);
-  S2(1,1) = S(1,1);
-  S2(2,1) = S(1,2);
-  S2(3,1) = S(1,3);
+  Sample S2(4, 2);
+  S2(0, 0) = S(0, 0);
+  S2(1, 0) = S(0, 1);
+  S2(2, 0) = S(0, 2);
+  S2(3, 0) = S(0, 3);
+  S2(0, 1) = S(1, 0);
+  S2(1, 1) = S(1, 1);
+  S2(2, 1) = S(1, 2);
+  S2(3, 1) = S(1, 3);
   fullprint << "S2 = " << S2 << std::endl;
   Sample resultS1T(matrix32.getImplementation()->genSampleProd(S2, false, true, 'L'));
   fullprint << "matrix32*S2^T = " << resultS1T << std::endl;

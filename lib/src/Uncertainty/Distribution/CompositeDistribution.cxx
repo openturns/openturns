@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -98,7 +98,7 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   probabilities_ = Point(size, 0.0);
   // Compute the probabilities
   // We start at i=1 because the first bound is the lower bound of the range, where CDF == 0.0
-  for (UnsignedInteger i = 1; i < size-1; ++i) probabilities_[i] = antecedent.computeCDF(bounds[i]);
+  for (UnsignedInteger i = 1; i < size - 1; ++i) probabilities_[i] = antecedent.computeCDF(bounds[i]);
   probabilities_[size - 1] = 1.0;
   increasing_ = Indices(size - 1);
   // Compute the variations

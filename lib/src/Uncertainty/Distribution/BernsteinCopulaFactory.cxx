@@ -15,7 +15,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -89,7 +89,7 @@ class LogLikelihoodObjective: public FunctionImplementation
 {
 public:
   LogLikelihoodObjective(const Collection<Sample> & learningSamples,
-                const Collection<Sample> & validationSamples)
+                         const Collection<Sample> & validationSamples)
     : FunctionImplementation()
     , learningSamples_(learningSamples)
     , validationSamples_(validationSamples)
@@ -167,8 +167,8 @@ class PenalizedCsiszarDivergenceObjective: public FunctionImplementation
 {
 public:
   PenalizedCsiszarDivergenceObjective(const Sample & sample,
-				      const Function & objective,
-				      const Scalar alpha)
+                                      const Function & objective,
+                                      const Scalar alpha)
     : FunctionImplementation()
     , sample_(sample)
     , objective_(objective)
@@ -259,8 +259,8 @@ private:
 
 // Find the best bin number using an exhaustive search between two bounds given through ResourceMap, or between 1 and size/2 if the bounds are in reverse order
 UnsignedInteger BernsteinCopulaFactory::FindBestBinNumberSequential(const Function & mObjective,
-								    const UnsignedInteger mMin,
-								    const UnsignedInteger mMax)
+    const UnsignedInteger mMin,
+    const UnsignedInteger mMax)
 {
   Scalar bestMValue = SpecFunc::MaxScalar;
   UnsignedInteger bestM = 0;
@@ -286,32 +286,32 @@ UnsignedInteger BernsteinCopulaFactory::ComputeLogLikelihoodBinNumber(const Samp
   if (kFraction > 1)
     BuildCrossValidationSamples(sample, kFraction, learningCollection, validationCollection);
   else
-    {
-      learningCollection.add(sample);
-      validationCollection.add(sample);
-    }
+  {
+    learningCollection.add(sample);
+    validationCollection.add(sample);
+  }
   UnsignedInteger mMin = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MinM");
   UnsignedInteger mMax = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MaxM");
   if (mMin > mMax)
-    {
-      mMin = 1;
-      mMax = learningCollection[0].getSize();
-    }
+  {
+    mMin = 1;
+    mMax = learningCollection[0].getSize();
+  }
   return FindBestBinNumberSequential(LogLikelihoodObjective(learningCollection, validationCollection), mMin, mMax);
 }
 
 // Compute the optimal bin number according to the maximum mean log-likelihood function computed using cross-validation
 UnsignedInteger BernsteinCopulaFactory::ComputePenalizedCsiszarDivergenceBinNumber(const Sample & sample,
-										   const Function & f,
+    const Function & f,
     const Scalar alpha)
 {
   UnsignedInteger mMin = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MinM");
   UnsignedInteger mMax = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MaxM");
   if (mMin > mMax)
-    {
-      mMin = 1;
-      mMax = sample.getSize();
-    }
+  {
+    mMin = 1;
+    mMax = sample.getSize();
+  }
   return FindBestBinNumberSequential(PenalizedCsiszarDivergenceObjective(sample, f, alpha), mMin, mMax);
 }
 

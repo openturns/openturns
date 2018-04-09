@@ -15,7 +15,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -83,8 +83,8 @@ Indices NearestNeighbourAlgorithmImplementation::query(const Sample & sample) co
 
 /* Get the indices of the k nearest neighbours of the given point */
 Indices NearestNeighbourAlgorithmImplementation::queryK(const Point & x,
-                                                        const UnsignedInteger k,
-                                                        const Bool sorted) const
+    const UnsignedInteger k,
+    const Bool sorted) const
 {
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const";
 }

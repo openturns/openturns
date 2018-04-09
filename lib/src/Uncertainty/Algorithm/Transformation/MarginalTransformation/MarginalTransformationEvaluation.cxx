@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -382,8 +382,8 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Point x(1, inP[j]);
           const Distribution inputMarginal(inputDistributionCollection_[j]);
           const Distribution outputMarginal(outputDistributionCollection_[j]);
-	  // Here it is useless to call computeScalarQuantile() as the result will
-	  // be promoted into a Point in computePDF()
+          // Here it is useless to call computeScalarQuantile() as the result will
+          // be promoted into a Point in computePDF()
           const Scalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
           if (denominator > 0.0)
           {
@@ -407,8 +407,8 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Point x(1, inP[j]);
           const Distribution inputMarginal(inputDistributionCollection_[j]);
           const Distribution outputMarginal(outputDistributionCollection_[j]);
-	  // Here it is useless to call computeScalarQuantile() as the result will
-	  // be promoted into a Point in computePDF()
+          // Here it is useless to call computeScalarQuantile() as the result will
+          // be promoted into a Point in computePDF()
           const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
           const Scalar denominator = outputMarginal.computePDF(q);
           if (denominator > 0.0)

@@ -77,7 +77,7 @@ for algoName in algoNames:
                     continue
                 result = algo.getResult()
                 print('x^=', printPoint(
-                result.getOptimalPoint(), 3))
+                      result.getOptimalPoint(), 3))
 
 
 # FORM

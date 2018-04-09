@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -41,7 +41,7 @@ IndicesCollection::IndicesCollection(const UnsignedInteger size, const UnsignedI
 
 /* Constructor from size, stride and values */
 IndicesCollection::IndicesCollection(const UnsignedInteger size,
-   const UnsignedInteger stride, const Indices & values)
+                                     const UnsignedInteger stride, const Indices & values)
   : TypedInterfaceObject<IndicesCollectionImplementation>(new IndicesCollectionImplementation(size, stride, values))
 {
   // Nothing to do

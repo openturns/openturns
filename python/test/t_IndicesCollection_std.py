@@ -17,11 +17,11 @@ ind3.fill(3)
 coll2.append(ind1)
 coll2.append(ind4)
 coll2.append(ind3)
-flat2 =  ot.IndicesCollection(coll2);
+flat2 = ot.IndicesCollection(coll2)
 print('flat2=', flat2)
 
 # Copy constructor
-flat3 = ot.IndicesCollection(flat2);
+flat3 = ot.IndicesCollection(flat2)
 print('flat3=', flat3)
 
 # Strided
@@ -29,12 +29,12 @@ coll4 = []
 coll4.append(ind4)
 coll4.append(ind4)
 coll4.append(ind4)
-strided1 =  ot.IndicesCollection(coll4);
+strided1 = ot.IndicesCollection(coll4)
 print('strided1=', strided1)
 
 # Constructor with dimensions and values
-full = ot.Indices(16);
-full.fill();
+full = ot.Indices(16)
+full.fill()
 strided2 = ot.IndicesCollection(8, 2, full)
 print('strided2=', strided2)
 
@@ -51,4 +51,3 @@ except TypeError:
 # loop
 for x in strided2:
     print(x)
-

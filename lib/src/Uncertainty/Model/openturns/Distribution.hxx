@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -202,7 +202,7 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-  
+
   /** Get the PDF gradient of the distribution */
   Point computePDFGradient(const Point & point) const;
   Sample computePDFGradient(const Sample & sample) const;
@@ -232,7 +232,7 @@ public:
                          const Bool tail = false) const;
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,
-			       const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeInterval(const Scalar prob) const;

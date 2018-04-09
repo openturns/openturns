@@ -1,4 +1,2 @@
 tests-disable-coupling_tools.patch
 discard-levelsetmesher-test.patch
-fix-multiprocessing-hurd.patch
-test-NormalGamma.patch

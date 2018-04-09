@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -238,7 +238,7 @@ Distribution LogNormalFactory::build(const Sample & sample) const
 }
 
 Distribution LogNormalFactory::build(const Sample & sample,
-    const UnsignedInteger method) const
+                                     const UnsignedInteger method) const
 {
   return buildAsLogNormal(sample, method).clone();
 }

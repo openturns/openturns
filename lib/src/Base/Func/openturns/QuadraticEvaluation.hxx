@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief Class for a quadratic numerical math function implementation
+ *  @brief Class for a quadratic numerical math function implementation
  *        of the form y = constant + <linear, x-c> + <<quadratic, x-c>, x-c>
  *        where constant is a dim(y) numerical point, c a dim(x) numerical
  *        point, linear is a dim(x) by dim(y) matrix, quadratic is a
@@ -8,13 +8,20 @@
  *        means Transpose(linear).x, <quadratic, x> means
  *        Transpose_kj(quadratic).x
  *
- * Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
- * Permission to copy, use, modify, sell and distribute this software
- * is granted provided this copyright notice appears in all copies.
- * This software is provided "as is" without express or implied
- * warranty, and with no claim as to its suitability for any purpose.
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 

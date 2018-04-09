@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -425,7 +425,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar("Fehlberg-LocalPrecision", 1.0e-10);
   setAsScalar("Fehlberg-InitialStep", 1.0e-7);
   setAsUnsignedInteger("Fehlberg-DefaultOrder", 4);
-  
+
   // KarhunenLoeveQuadratureAlgorithm parameters //
   setAsScalar( "KarhunenLoeveQuadratureAlgorithm-RegularizationFactor", 0.0);
 

@@ -151,8 +151,8 @@ try:
     print("covariance=", repr(covariance))
     print("covariance (ref)=", repr(distributionRef.getCovariance()))
     parameters = distribution.getParameter()
-    print("parameters=" , parameters)
-    print("parametersDesc=" , distribution.getParameterDescription())
+    print("parameters=", parameters)
+    print("parametersDesc=", distribution.getParameterDescription())
     distribution.setParameter(parameters)
 
 except:

@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -43,7 +43,7 @@ IndicesCollectionImplementation::IndicesCollectionImplementation()
 
 /* Constructor from size and stride */
 IndicesCollectionImplementation::IndicesCollectionImplementation(const UnsignedInteger size,
-   const UnsignedInteger stride)
+    const UnsignedInteger stride)
   : PersistentObject()
   , size_(size)
   , values_(size * stride)
@@ -55,7 +55,7 @@ IndicesCollectionImplementation::IndicesCollectionImplementation(const UnsignedI
 
 /* Constructor from size, stride and values */
 IndicesCollectionImplementation::IndicesCollectionImplementation(const UnsignedInteger size,
-   const UnsignedInteger stride, const Indices & values)
+    const UnsignedInteger stride, const Indices & values)
   : PersistentObject()
   , size_(size)
   , values_(values)

@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all EmpiricalBernsteinCopulas
  *
- *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */

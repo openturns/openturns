@@ -3,7 +3,8 @@
 from __future__ import print_function
 from openturns import *
 import numpy as np
-np.set_printoptions(formatter={'float': '{: 4.1f}'.format, 'complexfloat': '{: 4.1f}'.format})
+np.set_printoptions(
+    formatter={'float': '{: 4.1f}'.format, 'complexfloat': '{: 4.1f}'.format})
 
 TESTPREAMBLE()
 
@@ -157,7 +158,7 @@ try:
     print(marginal.getDescription())
 
     # check array / IndicesCollection conversion
-    a0 = np.array(((1,3,5), (2,4,6)))
+    a0 = np.array(((1, 3, 5), (2, 4, 6)))
     i0 = IndicesCollection(a0)
     print("array", a0, "=> IndicesCollection", i0)
 

@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
     const UnsignedInteger n  = regularGrid.getSimplicesNumber();
     fullprint << "regularGrid = " << regularGrid << " lowerBound=" << lowerBound << " upperBound=" << upperBound << " " << n << " simplices" << std::endl;
     const RegularGridEnclosingSimplex algo(regularGrid);
-  
+
     RandomGenerator::SetSeed(0);
     const Sample test(Uniform(lowerBound - 0.2 * (upperBound - lowerBound), upperBound + 0.2 * (upperBound - lowerBound)).getSample(1000));
-  
+
     Point coordinates;
     const Sample vertices(regularGrid.getVertices());
     for (UnsignedInteger i = 0; i < test.getSize(); ++i)

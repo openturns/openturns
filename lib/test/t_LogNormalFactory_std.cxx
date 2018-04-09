@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
   try
   {
     LogNormal distribution(1.5, 2.5, -1.5);
-    fullprint << "Distribution          =" << distribution << std::endl;    UnsignedInteger size = 10000;
+    fullprint << "Distribution          =" << distribution << std::endl;
+    UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     LogNormalFactory factory;
     CovarianceMatrix covariance;

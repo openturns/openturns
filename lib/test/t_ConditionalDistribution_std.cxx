@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
       Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "Quantile=" << quantile << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-      // fullprint << "entropy=" << distribution.computeEntropy() << std::endl;    
+      // fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
       // fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     }
     // 1D tests
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
       Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "Quantile=" << quantile << std::endl;
       fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-      //fullprint << "entropy=" << distribution.computeEntropy() << std::endl;    
+      //fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
       // Extract the marginals
       for (UnsignedInteger j = 0; j < dim; ++j)
       {

@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -140,10 +140,10 @@ LevelSet::BoolCollection LevelSet::contains(const Sample & sample) const
     const DomainImplementation::BoolCollection isInsideBoundingBox(Interval(lowerBound_, upperBound_).contains(sample));
     for(UnsignedInteger i = 0; i < size; ++i)
     {
-       if (isInsideBoundingBox[i])
-       {
-         insideIndices.add(i);
-       }
+      if (isInsideBoundingBox[i])
+      {
+        insideIndices.add(i);
+      }
     }
     const Sample insidePoints(sample.select(insideIndices));
     const Sample values(function_(insidePoints));

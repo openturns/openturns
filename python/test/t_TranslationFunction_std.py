@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 inputDimension = 3
 
-myFunction = TranslationFunction( [ 2.0, 3.0, -4.0 ] )
+myFunction = TranslationFunction([2.0, 3.0, -4.0])
 myFunction.setName("translationFunction")
 inPoint = Point(inputDimension)
 inPoint[0] = 7.0
@@ -20,4 +20,3 @@ print(myFunction.getName(), ".gradient( ", repr(inPoint), " ) = ",
       repr(myFunction.gradient(inPoint)))
 print(myFunction.getName(), ".hessian( ", repr(inPoint), " ) = ",
       repr(myFunction.hessian(inPoint)))
-

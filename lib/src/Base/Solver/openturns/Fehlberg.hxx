@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -41,8 +41,8 @@ public:
 
   /** Parameter constructor */
   explicit Fehlberg(const FieldFunction & transitionFunction,
-		    const Scalar localPrecision = ResourceMap::GetAsScalar("Fehlberg-LocalPrecision"),
-		    const UnsignedInteger order = ResourceMap::GetAsScalar("Fehlberg-DefaultOrder"));
+                    const Scalar localPrecision = ResourceMap::GetAsScalar("Fehlberg-LocalPrecision"),
+                    const UnsignedInteger order = ResourceMap::GetAsScalar("Fehlberg-DefaultOrder"));
 
   /** Virtual constructor */
   virtual Fehlberg * clone() const;
@@ -52,7 +52,7 @@ public:
 
   /** Solve the ODE */
   using ODESolverImplementation::solve;
-  
+
   Sample solve(const Point & initialState,
                const Point & timeGrid) const;
 
@@ -66,7 +66,7 @@ private:
   /** Perform one step of the Fehlberg method */
   Point computeStep(const Scalar t,
                     const Point & state,
-		    Point & gradient,
+                    Point & gradient,
                     Scalar & h) const;
 
   /* Local absolute error target */

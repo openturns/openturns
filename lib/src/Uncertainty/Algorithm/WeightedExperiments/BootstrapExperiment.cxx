@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -70,7 +70,7 @@ Sample BootstrapExperiment::generateWithWeights(Point & weights) const
 
 /* Selection generation */
 Indices BootstrapExperiment::GenerateSelection(const UnsignedInteger size,
-					       const UnsignedInteger length)
+    const UnsignedInteger length)
 {
   const RandomGenerator::UnsignedIntegerCollection selection(RandomGenerator::IntegerGenerate(size, length));
   return Indices(selection.begin(), selection.end());

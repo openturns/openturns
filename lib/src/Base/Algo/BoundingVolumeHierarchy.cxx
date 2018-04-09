@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -50,9 +50,9 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy()
 
 /* Parameter constructor */
 BoundingVolumeHierarchy::BoundingVolumeHierarchy(const Sample & vertices,
-                                                 const IndicesCollection & simplices,
-                                                 const UnsignedInteger binNumber,
-                                                 const String strategy)
+    const IndicesCollection & simplices,
+    const UnsignedInteger binNumber,
+    const String strategy)
   : EnclosingSimplexAlgorithmImplementation()
   , p_root_(0)
   , binNumber_(binNumber)
@@ -107,38 +107,39 @@ void BoundingVolumeHierarchy::setVerticesAndSimplices(const Sample & vertices, c
   p_root_ = build(sorted, 0, nrSimplices);
 }
 
-namespace {
+namespace
+{
 
 class PartitionSimplexBounds
 {
 public:
-    PartitionSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension, const Scalar threshold)
-      : centerBoundingBoxSimplices_(centerBoundingBoxSimplices)
-      , activeDimension_(activeDimension)
-      , threshold_(threshold)
-      {}
-    bool operator() (const UnsignedInteger index) const
-    {
-      return centerBoundingBoxSimplices_(index, activeDimension_) < threshold_;
-    }
+  PartitionSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension, const Scalar threshold)
+    : centerBoundingBoxSimplices_(centerBoundingBoxSimplices)
+    , activeDimension_(activeDimension)
+    , threshold_(threshold)
+  {}
+  bool operator() (const UnsignedInteger index) const
+  {
+    return centerBoundingBoxSimplices_(index, activeDimension_) < threshold_;
+  }
 private:
-    const Sample & centerBoundingBoxSimplices_;
-    const UnsignedInteger activeDimension_;
-    const Scalar threshold_;
+  const Sample & centerBoundingBoxSimplices_;
+  const UnsignedInteger activeDimension_;
+  const Scalar threshold_;
 };
 
 class CompareSimplexBounds
 {
 public:
-    CompareSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension)
-      : centerBoundingBoxSimplices_(centerBoundingBoxSimplices), activeDimension_(activeDimension) {}
-    bool operator() (const UnsignedInteger lhs, const UnsignedInteger rhs) const
-    {
-      return centerBoundingBoxSimplices_(lhs, activeDimension_) < centerBoundingBoxSimplices_(rhs, activeDimension_);
-    }
+  CompareSimplexBounds(const Sample & centerBoundingBoxSimplices, const UnsignedInteger activeDimension)
+    : centerBoundingBoxSimplices_(centerBoundingBoxSimplices), activeDimension_(activeDimension) {}
+  bool operator() (const UnsignedInteger lhs, const UnsignedInteger rhs) const
+  {
+    return centerBoundingBoxSimplices_(lhs, activeDimension_) < centerBoundingBoxSimplices_(rhs, activeDimension_);
+  }
 private:
-    const Sample & centerBoundingBoxSimplices_;
-    const UnsignedInteger activeDimension_;
+  const Sample & centerBoundingBoxSimplices_;
+  const UnsignedInteger activeDimension_;
 };
 
 void update_lower_bounds(Collection<Scalar>::iterator begin, Collection<Scalar>::iterator end, Collection<Scalar>::const_iterator otherLower)
@@ -161,9 +162,9 @@ void update_upper_bounds(Collection<Scalar>::iterator begin, Collection<Scalar>:
 
 /* Recursively build tree  */
 BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
-    UnsignedInteger & sorted,
-    const UnsignedInteger firstIndex,
-    const UnsignedInteger lastIndex)
+  UnsignedInteger & sorted,
+  const UnsignedInteger firstIndex,
+  const UnsignedInteger lastIndex)
 {
   // This node contains all simplices from sortedSimplices_[firstIndex] to sortedSimplices_[lastIndex-1]
   // First compute its bounding box.
@@ -249,7 +250,8 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   return new Node(activeDimension, valueSplit, leftChild, rightChild, lowerBounds, upperBounds);
 }
 
-namespace {
+namespace
+{
 inline Bool is_point_inside_bounds(const Point & point, const Point & lowerBounds, const Point & upperBounds)
 {
   for(UnsignedInteger i = 0; i < point.getSize(); ++i)
@@ -293,7 +295,7 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
         {
           const UnsignedInteger simplexIndex = sortedSimplices_[(current->offset_ + i)];
           const Scalar middleValue = 0.5 * (lowerBoundingBoxSimplices_(simplexIndex, current->activeDimension_)
-                                          + upperBoundingBoxSimplices_(simplexIndex, current->activeDimension_));
+                                            + upperBoundingBoxSimplices_(simplexIndex, current->activeDimension_));
           pairDistanceSimplex[i] = std::make_pair(std::abs(point[current->activeDimension_] - middleValue), simplexIndex);
         }
         // First value contains distance in order to use standard comparator for std::pair

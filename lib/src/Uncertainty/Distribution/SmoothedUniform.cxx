@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -52,8 +52,8 @@ SmoothedUniform::SmoothedUniform()
 
 /* Parameters constructor */
 SmoothedUniform::SmoothedUniform(const Scalar a,
-                 const Scalar b,
-                 const Scalar sigma)
+                                 const Scalar b,
+                                 const Scalar sigma)
   : RandomMixture()
   , a_(a)
   , b_(b)
@@ -242,7 +242,7 @@ Point SmoothedUniform::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar SmoothedUniform::computeScalarQuantile(const Scalar prob,
-                                      const Bool tail) const
+    const Bool tail) const
 {
   const Scalar q = (tail ? 1.0 - prob : prob);
   const Scalar xMin = range_.getLowerBound()[0];
@@ -255,18 +255,18 @@ Scalar SmoothedUniform::computeScalarQuantile(const Scalar prob,
   Scalar dx = delta;
   const Scalar epsilon = cdfEpsilon_ * delta;
   for (UnsignedInteger i = 0; i < 16 && std::abs(dx) > epsilon; ++i)
-    {
-      const Scalar ax = (a_ - x) / sigma_;
-      const Scalar bx = (b_ - x) / sigma_;
-      const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-      const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
-      const Scalar PhiBX = DistFunc::pNormal(bx);
-      const Scalar PhiAX = DistFunc::pNormal(ax);
-      const Scalar pdf = (PhiBX - PhiAX) / ba;
-      const Scalar cdf = sigma_ * (phiAX - phiBX + PhiAX * ax - PhiBX * bx) / ba + 1.0;
-      dx = (q - cdf) / pdf;
-      x += dx;
-    }
+  {
+    const Scalar ax = (a_ - x) / sigma_;
+    const Scalar bx = (b_ - x) / sigma_;
+    const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
+    const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+    const Scalar PhiBX = DistFunc::pNormal(bx);
+    const Scalar PhiAX = DistFunc::pNormal(ax);
+    const Scalar pdf = (PhiBX - PhiAX) / ba;
+    const Scalar cdf = sigma_ * (phiAX - phiBX + PhiAX * ax - PhiBX * bx) / ba + 1.0;
+    dx = (q - cdf) / pdf;
+    x += dx;
+  }
   // If Newton's iteration failed to converge (only due to cumulated rounding effects)
   if (std::abs(dx) > epsilon) return DistributionImplementation::computeScalarQuantile(prob, tail);
   return x;
@@ -294,7 +294,7 @@ Point SmoothedUniform::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point SmoothedUniform::getKurtosis() const
 {
-  const Scalar den = 12.0 * sigma_* sigma_ / (b_ - a_) / (b_ - a_) + 1.0;
+  const Scalar den = 12.0 * sigma_ * sigma_ / (b_ - a_) / (b_ - a_) + 1.0;
   return Point(1, 3.0 - 1.2 / den / den);
 }
 

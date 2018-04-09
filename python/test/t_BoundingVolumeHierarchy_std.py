@@ -10,9 +10,9 @@ inputVar = ["x", "y", "z"]
 formula = ["0.05+0.95*x", "y-0.1*x*sin(x)", "z+0.1*x*sin(x)"]
 
 for dim in [1, 2, 3]:
-    interval = ot.Interval([0.0]*dim, [10.0]*dim)
+    interval = ot.Interval([0.0] * dim, [10.0] * dim)
     nrIntervals = int(exp(log(10000) / dim))
-    mesh = ot.IntervalMesher([nrIntervals]*dim).build(interval)
+    mesh = ot.IntervalMesher([nrIntervals] * dim).build(interval)
     f = ot.SymbolicFunction(inputVar[0:dim], formula[0:dim])
     mesh.setVertices(f(mesh.getVertices()))
 
@@ -23,22 +23,27 @@ for dim in [1, 2, 3]:
     print("bvh=", bvh)
 
     ot.RandomGenerator.SetSeed(0)
-    test = ot.ComposedDistribution([ot.Uniform(-1.0, 11.0)]*dim).getSample(100)
+    test = ot.ComposedDistribution(
+        [ot.Uniform(-1.0, 11.0)] * dim).getSample(100)
 
     for i, vertex in enumerate(test):
         index = bvh.query(vertex)
         if index >= nrSimplices:
             print(i, "is outside")
         else:
-            found, coordinates = mesh.checkPointInSimplexWithCoordinates(vertex, index)
+            found, coordinates = mesh.checkPointInSimplexWithCoordinates(
+                vertex, index)
             if not found:
-                print("Wrong simplex found for", vertex, "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
+                print("Wrong simplex found for", vertex,
+                      "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
 
     indices = bvh.query(test)
     for i, index in enumerate(indices):
         if index >= nrSimplices:
             print(i, "is outside")
         else:
-            found, coordinates = mesh.checkPointInSimplexWithCoordinates(test[i], index)
+            found, coordinates = mesh.checkPointInSimplexWithCoordinates(
+                test[i], index)
             if not found:
-                print("Wrong simplex found for", test[i], "(index=", index, simplices[index], "barycentric coordinates=", coordinates)
+                print("Wrong simplex found for", test[
+                      i], "(index=", index, simplices[index], "barycentric coordinates=", coordinates)

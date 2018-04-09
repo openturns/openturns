@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -52,13 +52,13 @@ Distribution HistogramFactory::build(const Sample & sample) const
 }
 
 Distribution HistogramFactory::build(const Sample & sample,
-    const Scalar bandwidth) const
+                                     const Scalar bandwidth) const
 {
   return buildAsHistogram(sample, bandwidth).clone();
 }
 
 Distribution HistogramFactory::build(const Sample & sample,
-    const UnsignedInteger binNumber) const
+                                     const UnsignedInteger binNumber) const
 {
   return buildAsHistogram(sample, binNumber).clone();
 }

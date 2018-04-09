@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -328,13 +328,13 @@ int main(int argc, char *argv[])
       Point x(1, -1.0);
       fullprint << "Result is ";
       try
-	{
-	  fullprint << f(x) << std::endl;
-	}
+      {
+        fullprint << f(x) << std::endl;
+      }
       catch(...)
-	{
-	  fullprint << "undefined" << std::endl;
-	}
+      {
+        fullprint << "undefined" << std::endl;
+      }
     }
     // Disable check for exceptional values
     {

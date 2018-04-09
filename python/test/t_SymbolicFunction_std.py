@@ -131,7 +131,7 @@ model = ot.SymbolicFunction('x', '3*x')
 assert model(x)[0] == 3.0 * x[0], 'str ctor eval'
 
 # Check constants
-f = ot.SymbolicFunction("x", "e_");
+f = ot.SymbolicFunction("x", "e_")
 print(f, ", e_=", f([0.0]))
 f = ot.SymbolicFunction("x", "pi_")
 print(f, ", pi_=", f([0.0]))

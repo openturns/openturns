@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -31,7 +31,8 @@ int main(int argc, char *argv[])
 
   try
   {
-    { // Interval
+    {
+      // Interval
       Point p1(2, -1.0);
       Point p2(2, 2.0);
       Interval interval(p1, p2);
@@ -50,7 +51,8 @@ int main(int argc, char *argv[])
       fullprint << "interval contains " << sample << "? " << (interval.contains(sample)) << std::endl;
       fullprint << "complement contains " << sample << "? " << (complement.contains(sample)) << std::endl;
     }
-    { // Mesh
+    {
+      // Mesh
       Sample vertices(0, 2);
       Point p(2);
 
@@ -112,7 +114,8 @@ int main(int argc, char *argv[])
       fullprint << "mesh contains " << sample << "? " << (mesh2Ddomain.contains(sample)) << std::endl;
       fullprint << "complement contains " << sample << "? " << (complement.contains(sample)) << std::endl;
     }
-    { // Level set
+    {
+      // Level set
       Description inVars(0);
       inVars.add("x");
       inVars.add("y");

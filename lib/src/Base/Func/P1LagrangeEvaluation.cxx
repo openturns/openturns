@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -136,13 +136,13 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   // Iterate over simplices
   for(UnsignedInteger i = 0; i < nrSimplices; ++i)
   {
-     // Iterate over vertices
-     for(IndicesCollection::const_iterator vertexIt = simplices.cbegin_at(i), vertexGuard = simplices.cend_at(i); vertexIt != vertexGuard; ++vertexIt)
-     {
-        const UnsignedInteger vertexIndex = (*vertexIt);
-        if (vertexIndex >= nrVertices) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex;
-        seenVertices[vertexIndex] = 1;
-     }
+    // Iterate over vertices
+    for(IndicesCollection::const_iterator vertexIt = simplices.cbegin_at(i), vertexGuard = simplices.cend_at(i); vertexIt != vertexGuard; ++vertexIt)
+    {
+      const UnsignedInteger vertexIndex = (*vertexIt);
+      if (vertexIndex >= nrVertices) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex;
+      seenVertices[vertexIndex] = 1;
+    }
   }
   Indices pendingVertices;
   for (UnsignedInteger i = 0; i < nrVertices; ++i)

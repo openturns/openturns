@@ -46,4 +46,3 @@ with open(fname) as f:
     data = f.read()
     print(data)
 os.remove(fname)
-

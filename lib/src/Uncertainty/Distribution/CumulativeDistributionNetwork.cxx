@@ -15,7 +15,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -163,7 +163,7 @@ void CumulativeDistributionNetwork::setGraph(const BipartiteGraph & graph)
   {
     const UnsignedInteger nodeSize = graph.cend_at(i) - graph.cbegin_at(i);
     if (distributionCollection_[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the number of links=" << nodeSize << " starting from red node " << i << " is different from distribution " << i << " dimension=" << size;
-    }
+  }
   graph_ = graph;
 }
 

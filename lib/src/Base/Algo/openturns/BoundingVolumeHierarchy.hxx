@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -131,8 +131,8 @@ private:
 
   /** Recursively build tree */
   Node::NodePointer build(UnsignedInteger & sorted,
-           const UnsignedInteger firstIndex,
-           const UnsignedInteger lastIndex);
+                          const UnsignedInteger firstIndex,
+                          const UnsignedInteger lastIndex);
 
   /** The root of the tree */
   Node::NodePointer p_root_;

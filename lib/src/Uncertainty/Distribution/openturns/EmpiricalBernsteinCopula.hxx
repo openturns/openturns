@@ -2,7 +2,7 @@
 /**
  *  @brief The class that implements the Bernstein approximation of the empirical copula
  *
- *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -42,8 +42,8 @@ public:
 
   /** Default constructor */
   EmpiricalBernsteinCopula(const Sample & copulaSample,
-		  const UnsignedInteger binNumber,
-		  const Bool isEmiricalCopulaSample = false);
+                           const UnsignedInteger binNumber,
+                           const Bool isEmiricalCopulaSample = false);
 
   /** Comparison operator */
   Bool operator ==(const EmpiricalBernsteinCopula & other) const;
@@ -58,7 +58,7 @@ public:
 
   /** Copula sample accessor */
   void setCopulaSample(const Sample & copulaSample,
-		       const Bool isEmpiricalCopulaSample = false);
+                       const Bool isEmpiricalCopulaSample = false);
   Sample getCopulaSample() const;
 
   /** Bin number accessor */
@@ -115,13 +115,13 @@ private:
 
   /** Default constructor */
   EmpiricalBernsteinCopula(const Sample & copulaSample,
-		  const UnsignedInteger binNumber,
-		  const SampleImplementation & logBetaMarginalFactors,
-		  const SampleImplementation & logFactors);
+                           const UnsignedInteger binNumber,
+                           const SampleImplementation & logBetaMarginalFactors,
+                           const SampleImplementation & logFactors);
 
   /** Compute the normalization factors */
   void update();
-  
+
   /** The underlying sample */
   Sample copulaSample_;
 
@@ -133,7 +133,7 @@ private:
   SampleImplementation logBetaMarginalFactors_;
   SampleImplementation logFactors_;
   MatrixImplementation logFactorsMinus1_;
-  
+
 }; /* class EmpiricalBernsteinCopula */
 
 

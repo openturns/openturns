@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -70,8 +70,8 @@ int main(int argc, char *argv[])
         return ExitCode::Error;
       }
       const Point difference(test[i] - coordinates[0] * meshVertices[simplices(index, 0)]
-                                     - coordinates[1] * meshVertices[simplices(index, 1)]
-                                     - coordinates[2] * meshVertices[simplices(index, 2)]);
+                             - coordinates[1] * meshVertices[simplices(index, 1)]
+                             - coordinates[2] * meshVertices[simplices(index, 2)]);
       if (difference.norm1() > 1.e-10)
       {
         fullprint << "Wrong barycentric coordinates found found for " << test[i] << " (index=" << index << ") barycentric coordinates=" << coordinates << std::endl;

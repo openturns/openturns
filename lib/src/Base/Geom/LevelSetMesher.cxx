@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -172,8 +172,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
-	// If at least one vertex moves, the orientation can change
-	simplicesToCheck.add(goodSimplicesNumber - 1);
+        // If at least one vertex moves, the orientation can change
+        simplicesToCheck.add(goodSimplicesNumber - 1);
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
           const UnsignedInteger index = boundingSimplices(i, j);

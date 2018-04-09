@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -136,7 +136,7 @@ void MauntzKucherenkoSensitivityAlgorithm::computeAsymptoticDistribution() const
   sumX = "(" + sumX + ")";
   sumY = "(" + sumY + ")";
   Function psiFO = SymbolicFunction(XY, Description(1, sumX + "/" + sumY));
-  Function psiTO = SymbolicFunction(XY, Description(1, "1 - "+ sumX + "/" + sumY));
+  Function psiTO = SymbolicFunction(XY, Description(1, "1 - " + sumX + "/" + sumY));
 
   Point varianceFO(inputDimension);
   Point varianceTO(inputDimension);

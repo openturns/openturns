@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -216,8 +216,7 @@ Scalar TruncatedDistribution::computePDF(const Point & point) const
     const Scalar x = point[0];
     if ((x < getRange().getLowerBound()[0] - quantileEpsilon_) || (x > getRange().getUpperBound()[0] + quantileEpsilon_)) return 0.0;
   }
-  else
-    if (!epsilonRange_.contains(point)) return 0.0;
+  else if (!epsilonRange_.contains(point)) return 0.0;
 
   return normalizationFactor_ * distribution_.computePDF(point);
 }
@@ -402,7 +401,7 @@ Bool TruncatedDistribution::isElliptical() const
   if (getDimension() == 1)
   {
     return distribution_.isElliptical() && bounds_.getFiniteLowerBound()[0] && bounds_.getFiniteUpperBound()[0]
-      && (std::abs(distribution_.getRange().getLowerBound()[0] - getRange().getLowerBound()[0] + distribution_.getRange().getUpperBound()[0] - getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"));
+           && (std::abs(distribution_.getRange().getLowerBound()[0] - getRange().getLowerBound()[0] + distribution_.getRange().getUpperBound()[0] - getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"));
   }
   return (normalizationFactor_ == 1.0) && distribution_.isElliptical();
 }

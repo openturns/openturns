@@ -23,7 +23,6 @@ try:
     inputFunction[0] = "u1"
     inputFunction[1] = "u2"
 
-
     formulas = Description(1)
     formulas[0] = "3.0 - u1 * u2"
 

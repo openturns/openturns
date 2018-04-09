@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
       X(6, 1) = 6.74310541;
       X(7, 0) = 5.21301203;
       X(7, 1) = 4.26386883;
-       Sample Y(model(X));
+      Sample Y(model(X));
 
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());

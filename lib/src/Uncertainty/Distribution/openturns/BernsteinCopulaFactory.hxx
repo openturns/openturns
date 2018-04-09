@@ -15,7 +15,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -71,7 +71,7 @@ public:
       const UnsignedInteger binNumber);
 
   /** Compute the number of bins according to the inverse power rule */
-      static UnsignedInteger ComputeAMISEBinNumber(const Sample & sample);
+  static UnsignedInteger ComputeAMISEBinNumber(const Sample & sample);
 
   /** Compute the number of bins according to cross-validation maximum log-likelihood */
   static UnsignedInteger ComputeLogLikelihoodBinNumber(const Sample & sample,
@@ -79,8 +79,8 @@ public:
 
   /** Compute the number of bins according to penalized Csiszar divergence */
   static UnsignedInteger ComputePenalizedCsiszarDivergenceBinNumber(const Sample & sample,
-								    const Function & f,
-								    const Scalar alpha = ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
+      const Function & f,
+      const Scalar alpha = ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
 
   /** Build all the learning/validation partitions of the given sample */
   static void BuildCrossValidationSamples(const Sample & sample,
@@ -92,8 +92,8 @@ private:
 
   /** Find the best bin number using an exhaustive search between two bounds given throug ResourceMap, or between 1 and size/2 if the bounds are in reverse order */
   static UnsignedInteger FindBestBinNumberSequential(const Function & mObjective,
-						     const UnsignedInteger mMin,
-						     const UnsignedInteger mMax);
+      const UnsignedInteger mMin,
+      const UnsignedInteger mMax);
 
 }; /* class BernsteinCopulaFactory */
 

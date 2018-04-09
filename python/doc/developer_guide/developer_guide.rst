@@ -36,3 +36,4 @@ channels for you to contact us:
     windows_port
     windows_native_port
     validation/validation
+    release

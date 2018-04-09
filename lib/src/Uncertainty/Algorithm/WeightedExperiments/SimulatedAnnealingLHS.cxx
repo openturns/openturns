@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -78,7 +78,7 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
   if (initialDesign.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Initial design dimension " << initialDesign.getDimension() << " does not match distribution dimension " << distribution.getDimension();
   // Transform the initial design into a standard design
   // dummy lhs, only distribution is needed
-  // It is used to 
+  // It is used to
   setLHS(LHSExperiment(distribution, 1));
   standardInitialDesign_ = transformation_(initialDesign);
 }

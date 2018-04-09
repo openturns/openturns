@@ -16,7 +16,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -370,16 +370,16 @@ void KarhunenLoeveQuadratureAlgorithm::run()
     UnsignedInteger index = 0;
     const Scalar alphaK = factor / std::sqrt(selectedEV[k]);
     for (UnsignedInteger i = 0; i < nodesNumber; ++i)
+    {
+      const Scalar wA = factor / weights[i];
+      const Scalar wB = weights[i] * alphaK;
+      for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-	const Scalar wA = factor / weights[i];
-	const Scalar wB = weights[i] * alphaK;
-	for (UnsignedInteger j = 0; j < dimension; ++j)
-	  {
-	    modeValues[index] = omegaA[index] * wA;
-            projection(k, i * dimension + j) = omegaA[index] * wB;
-	    ++index;
-	  } // for j
-      } // for i
+        modeValues[index] = omegaA[index] * wA;
+        projection(k, i * dimension + j) = omegaA[index] * wB;
+        ++index;
+      } // for j
+    } // for i
     values.setData(modeValues);
     modesAsProcessSample.add(values);
     if (dimension == 1)

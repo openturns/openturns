@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     fullprint << "beta=" << beta << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
-    
+
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();

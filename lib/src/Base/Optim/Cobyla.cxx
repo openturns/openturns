@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -84,7 +84,7 @@ void Cobyla::run()
     Interval bounds(getProblem().getBounds());
     if (!bounds.contains(x))
     {
-      LOGWARN(OSS() << "Starting point is not inside bounds x=" << x.__str__() <<" bounds=" << bounds);
+      LOGWARN(OSS() << "Starting point is not inside bounds x=" << x.__str__() << " bounds=" << bounds);
     }
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {

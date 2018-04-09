@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -97,8 +97,8 @@ String FunctionalChaosSobolIndices::summary() const
   oss << " input dimension: " << inputDimension << "\n"
       << " output dimension: " << outputDimension << "\n"
       << " basis size: " << functionalChaosResult_.getReducedBasis().getSize() << "\n"
-      << " mean: " << randomVector.getMean().__str__() <<"\n"
-      << " std-dev: " << stdDev.__str__() <<"\n";
+      << " mean: " << randomVector.getMean().__str__() << "\n"
+      << " std-dev: " << stdDev.__str__() << "\n";
   oss << String(60, '-') << "\n";
   String st;
 
@@ -144,7 +144,7 @@ String FunctionalChaosSobolIndices::summary() const
       oss << st << " | ";
 
       st = OSS() << multiIndices;
-      oss << st << String(29-st.size(), ' ') << " | ";
+      oss << st << String(29 - st.size(), ' ') << " | ";
 
       st = OSS() << varianceOrder[i].second;
       oss << st << "\n";
@@ -162,10 +162,10 @@ String FunctionalChaosSobolIndices::summary() const
       oss << st << " | ";
 
       st = OSS() << getSobolIndex(i, m);
-      oss << st << String(22-st.size(), ' ') << " | ";
+      oss << st << String(22 - st.size(), ' ') << " | ";
 
       st = OSS() << getSobolTotalIndex(i, m);
-      oss << st << String(22-st.size(), ' ') << "\n";
+      oss << st << String(22 - st.size(), ' ') << "\n";
     }
     oss << String(60, '-') << "\n";
     oss << "\n";

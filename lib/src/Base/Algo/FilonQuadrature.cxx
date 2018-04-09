@@ -2,7 +2,7 @@
 /**
  *  @brief Implement the Filon quadrature for oscilatory integrands
  *
- *  Copyright 2005-2017 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class FilonQuadrature
  */
 
-CLASSNAMEINIT(FilonQuadrature);
+CLASSNAMEINIT(FilonQuadrature)
 
 static const Factory<FilonQuadrature> Factory_FilonQuadrature;
 
@@ -121,13 +121,13 @@ Point FilonQuadrature::integrate(const Function & function,
     for (UnsignedInteger i = 2; i < size - 1; i += 2)
       c2n += f[i] * std::cos(omega * x(i, 0));
     c2n += f[size - 1] * (0.5 * std::cos(omega * x(size - 1, 0)));
-    
+
     c2nm1 = Point(outputDimension);
     for (UnsignedInteger i = 1; i < size - 1; i += 2)
       c2nm1 += f[i] * std::cos(omega * x(i, 0));
 
     valueCos = ((f[size - 1] * std::sin(omega * x(size - 1, 0)) - f[0] * std::sin(omega * x(0, 0))) * alpha + c2n * beta + c2nm1 * gamma) * h;
-    
+
     if (kind_ == 0) return valueCos;
   } // cos(t*x) or exp(I*t*x)
   if (kind_ == 1 || kind_ >= 2)

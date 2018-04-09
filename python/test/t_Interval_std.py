@@ -53,7 +53,7 @@ try:
     print("is point", p6, "inside", repr(
         interval1), "? ", interval1.contains(p6))
     print('marginal(1)=', interval2.getMarginal(1))
-    print('marginal(1,0)=', interval2.getMarginal([1,0]))
+    print('marginal(1,0)=', interval2.getMarginal([1, 0]))
 except:
     import sys
     print("t_Interval_std.py", sys.exc_info()[0], sys.exc_info()[1])

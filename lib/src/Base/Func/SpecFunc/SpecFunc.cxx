@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -474,11 +474,11 @@ Scalar SpecFunc::DiLog(const Scalar x)
   if (!(x <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the DiLog function does not take real values for arguments greater than 1.";
   // Special case for x close to 1
   if (x >= 0.999997)
-    {
-      const Scalar z = 1.0 - x;
-      const Scalar logZ = std::log(z);
-      return PI2_6 + z * (logZ - 1.0 + z * (logZ - 0.5) * 0.5);
-    }
+  {
+    const Scalar z = 1.0 - x;
+    const Scalar logZ = std::log(z);
+    return PI2_6 + z * (logZ - 1.0 + z * (logZ - 0.5) * 0.5);
+  }
   // Use DiLog(x) = -DiLog(1 / x) - \pi^2 / 6 - \log^2(-x) / 2
   // to map (-\infty, -1) into (-1, 0) for the argument
   if (x < -1.0) return -DiLog(1.0 / x) - PI2_6  - 0.5 * pow(log(-x), 2);

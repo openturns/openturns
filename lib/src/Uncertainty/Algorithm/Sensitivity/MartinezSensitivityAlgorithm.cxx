@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -146,7 +146,7 @@ void MartinezSensitivityAlgorithm::computeAsymptoticDistribution() const
     XYZ[3 * q + 1] = Y[q];
     XYZ[3 * q + 2] = Z[q];
     sumX += X[q];
-    sumSqrtYZ += "sqrt("+Y[q]+"*"+Z[q]+")";
+    sumSqrtYZ += "sqrt(" + Y[q] + "*" + Z[q] + ")";
     if (q < outputDimension - 1)
     {
       sumX += "+";

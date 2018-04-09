@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -482,8 +482,8 @@ public:
 
   /** Factory of SampleImplementation from Text file */
   static SampleImplementation BuildFromTextFile(const FileName & fileName,
-                                                const String & separator = " ",
-                                                const UnsignedInteger skippedLines = 0);
+      const String & separator = " ",
+      const UnsignedInteger skippedLines = 0);
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   String storeToTemporaryFile() const;
@@ -761,7 +761,7 @@ public:
 
   /** Select points in the sample */
   SampleImplementation select(const UnsignedIntegerCollection & indices) const;
-  
+
   /**
    * Translate realizations in-place
    */

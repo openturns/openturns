@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -61,10 +61,10 @@ P1LagrangeInterpolation::P1LagrangeInterpolation(const Mesh & inputMesh, const M
 
 /* Parameters constructor */
 P1LagrangeInterpolation::P1LagrangeInterpolation(const Mesh & inputMesh,
-                                                 const Mesh & outputMesh,
-                                                 const UnsignedInteger dimension,
-                                                 const EnclosingSimplexAlgorithm & enclosingSimplex,
-                                                 const NearestNeighbourAlgorithm & nearestNeighbour)
+    const Mesh & outputMesh,
+    const UnsignedInteger dimension,
+    const EnclosingSimplexAlgorithm & enclosingSimplex,
+    const NearestNeighbourAlgorithm & nearestNeighbour)
   : FieldFunctionImplementation(inputMesh.getDimension(), dimension, dimension)
   , inputMesh_(inputMesh)
   , outputMesh_(outputMesh)

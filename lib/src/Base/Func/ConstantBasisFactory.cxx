@@ -14,7 +14,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -55,9 +55,9 @@ Basis ConstantBasisFactory::build() const
   Point constant(1);
   constant[0] = 1.;
   return Basis(Collection<Function>(1,
-                  LinearFunction (Point(inputDimension_, 0.0),
-                            constant,
-                            Matrix(1, inputDimension_))));
+                                    LinearFunction (Point(inputDimension_, 0.0),
+                                        constant,
+                                        Matrix(1, inputDimension_))));
 }
 
 /* Method save() stores the object through the StorageManager */
