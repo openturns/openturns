@@ -1944,35 +1944,9 @@ SampleImplementation SampleImplementation::operator - (const SampleImplementatio
   return sample;
 }
 
-struct MatrixMultiplyPolicy
-{
-  const SquareMatrix & scale_;
-  const UnsignedInteger dimension_;
-
-  MatrixMultiplyPolicy( const SquareMatrix & scale) : scale_(scale), dimension_(scale_.getDimension()) {}
-
-  inline void inplace_op( NSI_point point ) const
-  {
-    point = scale_ * point;
-  }
-
-}; /* end struct MatrixMultiplyPolicy */
-
 /*
  * Scale realizations componentwise in-place
  */
-void SampleImplementation::scale(const SquareMatrix & scaling)
-{
-  if (dimension_ != scaling.getDimension())
-    throw InvalidArgumentException(HERE) << "Scaling point has incorrect dimension. Got " << scaling.getDimension()
-                                         << ". Expected " << dimension_;
-
-  if (size_ == 0) return;
-  const MatrixMultiplyPolicy policy( scaling );
-  ParallelFunctor<MatrixMultiplyPolicy> functor( *this, policy );
-  TBB::ParallelFor( 0, size_, functor );
-}
-
 void SampleImplementation::scale(const Point & scaling)
 {
   if (dimension_ != scaling.getDimension())
@@ -1998,12 +1972,6 @@ SampleImplementation & SampleImplementation::operator *= (const Point & scaling)
   return *this;
 }
 
-SampleImplementation & SampleImplementation::operator *= (const SquareMatrix & scaling)
-{
-  scale(scaling);
-  return *this;
-}
-
 SampleImplementation & SampleImplementation::operator /= (const Scalar scaling)
 {
   return operator/=(Point(dimension_, scaling));
@@ -2021,14 +1989,6 @@ SampleImplementation & SampleImplementation::operator /= (const Point & scaling)
   return *this;
 }
 
-SampleImplementation & SampleImplementation::operator /= (const SquareMatrix & scaling)
-{
-  SquareMatrix tmp(scaling);
-  SquareMatrix inverseScaling(tmp.solveLinearSystem(IdentityMatrix(getDimension())).getImplementation());
-  scale(inverseScaling);
-  return *this;
-}
-
 SampleImplementation SampleImplementation::operator * (const Scalar scaling) const
 {
   return operator*(Point(dimension_, scaling));
@@ -2042,28 +2002,12 @@ SampleImplementation SampleImplementation::operator * (const Point & scaling) co
   return nsi;
 }
 
-SampleImplementation SampleImplementation::operator * (const SquareMatrix & scaling) const
-{
-  SampleImplementation nsi(*this);
-  nsi *= scaling;
-  nsi.setName("");
-  return nsi;
-}
-
 SampleImplementation SampleImplementation::operator / (const Scalar scaling) const
 {
   return operator/(Point(dimension_, scaling));
 }
 
 SampleImplementation SampleImplementation::operator / (const Point & scaling) const
-{
-  SampleImplementation nsi(*this);
-  nsi /= scaling;
-  nsi.setName("");
-  return nsi;
-}
-
-SampleImplementation SampleImplementation::operator / (const SquareMatrix & scaling) const
 {
   SampleImplementation nsi(*this);
   nsi /= scaling;

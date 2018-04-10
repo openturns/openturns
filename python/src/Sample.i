@@ -465,8 +465,6 @@ Bool __eq__(const Sample & other) { return (*self) == other; }
 Sample __truediv__(const Scalar & u) { return (*self) / u; }
 
 Sample __truediv__(const Point & v) { return (*self) / v; }
-
-Sample __truediv__(const SquareMatrix & m) { return (*self) / m; }
 #endif
 
 Sample __rmul__(Scalar s)

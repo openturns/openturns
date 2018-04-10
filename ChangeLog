@@ -16,6 +16,8 @@
  * Removed deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation methods
  * Removed deprecated TruncatedDistribution single bound accessors
  * Removed deprecated Function constructors
+ * Removed deprecated Sample,SampleImplementation::operator*(SquareMatrix) and operator/(SquareMatrix) (and in-place operators)
+ * Removed deprecated SampleImplementation::scale(SquareMatrix)
 
 === Python module ===
 

@@ -79,17 +79,7 @@ experiments
 >>> print(sample - sample[0, 0])
 0 : [ 0 1 ]
 1 : [ 2 3 ]
-2 : [ 4 5 ]
-
-**Scaling:** right multiplication or division of a (compatible) square matrix
-with the points in the sample (this can be used e.g. for rotating all the
-points in a sample)
-
->>> angle = np.pi / 4.0
->>> rotation_matrix = ot.SquareMatrix([[np.cos(angle), -np.sin(angle)],
-...                                    [np.sin(angle),  np.cos(angle)]])
->>> rotated_sample = sample * rotation_matrix
->>> np.testing.assert_array_almost_equal(rotated_sample / rotation_matrix, sample)"
+2 : [ 4 5 ]"
 
 %feature("docstring") OT::Sample::ImportFromCSVFile
 "Static method for building a sample from a CSV file.
