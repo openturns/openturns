@@ -9,6 +9,7 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
 
 === Python module ===
 
