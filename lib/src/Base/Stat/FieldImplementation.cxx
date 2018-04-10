@@ -114,18 +114,6 @@ UnsignedInteger FieldImplementation::getOutputDimension() const
   return values_.getDimension();
 }
 
-UnsignedInteger FieldImplementation::getSpatialDimension() const
-{
-  LOGWARN(OSS() << "Field::getSpatialDimension is deprecated in favor of getInputDimension.");
-  return getInputDimension();
-}
-
-UnsignedInteger FieldImplementation::getDimension() const
-{
-  LOGWARN(OSS() << "Field::getDimension is deprecated in favor of getOutputDimension.");
-  return getOutputDimension();
-}
-
 /* Mesh accessor */
 Mesh FieldImplementation::getMesh() const
 {
@@ -319,23 +307,11 @@ Point FieldImplementation::getInputMean() const
   return inputMean_;
 }
 
-Point FieldImplementation::getSpatialMean() const
-{
-  LOGWARN(OSS() << "Field::getSpatialMean is deprecated in favor of getInputMean.");
-  return getInputMean();
-}
-
 /* Compute the input mean of the field */
 Point FieldImplementation::getOutputMean() const
 {
   if (!mesh_.isRegular() || (mesh_.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the temporal mean is defined only when the mesh is regular and of dimension 1.";
   return values_.computeMean();
-}
-
-Point FieldImplementation::getTemporalMean() const
-{
-  LOGWARN(OSS() << "Field::getTemporalMean is deprecated in favor of getOutputMean.");
-  return getOutputMean();
 }
 
 Sample FieldImplementation::getValues() const

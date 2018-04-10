@@ -10,6 +10,7 @@
 
 ==== API changes ====
  * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
+ * Removed deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean methods
 
 === Python module ===
 
