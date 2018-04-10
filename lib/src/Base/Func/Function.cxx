@@ -70,15 +70,6 @@ Function::Function(const EvaluationImplementation & evaluation)
 }
 
 
-/* Analytical formula constructor */
-Function::Function(const Description & inputVariablesNames,
-                   const Description & outputVariablesNames,
-                   const Description & formulas)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(inputVariablesNames, outputVariablesNames, formulas))
-{
-  LOGWARN(OSS() << "Function(Description, Description, Description) is deprecated in favor of SymbolicFunction.");
-}
-
 /* Constructor from evaluation */
 Function::Function(const Evaluation & evaluation)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(*evaluation.getImplementation()))
@@ -96,12 +87,6 @@ Function::Function(const Evaluation & evaluation,
   // Nothing to do
 }
 
-/* Constructor from field */
-Function::Function(const Field & field)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new P1LagrangeEvaluation( field )))
-{
-  LOGWARN(OSS() << "Function(Field) is deprecated.");
-}
 
 /* Comparison operator */
 Bool Function::operator ==(const Function & other) const

@@ -62,15 +62,6 @@ public:
   /** Default constructor */
   FunctionImplementation();
 
-  /** @deprecated */
-  FunctionImplementation(const Description & inputVariablesNames,
-                         const Description & outputVariablesNames,
-                         const Description & formulas);
-
-  /** @deprecated */
-  FunctionImplementation(const Sample & inputSample,
-                         const Sample & outputSample);
-
   /** Constructor from implementations */
   FunctionImplementation(const Evaluation & funcImpl,
                          const Gradient & gradImpl,

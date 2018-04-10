@@ -23,13 +23,6 @@
 #include "openturns/NoEvaluation.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicEvaluation.hxx"
-#include "openturns/SymbolicGradient.hxx"
-#include "openturns/SymbolicHessian.hxx"
-#endif
-#include "openturns/MemoizeEvaluation.hxx"
-#include "openturns/DatabaseEvaluation.hxx"
 #include "openturns/ProductFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
@@ -38,7 +31,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Os.hxx"
-#include "openturns/SymbolicFunction.hxx"
 
 #undef GetClassName
 
@@ -58,62 +50,6 @@ FunctionImplementation::FunctionImplementation()
   , useDefaultHessianImplementation_(false)
 {
   // Nothing to do
-}
-
-/* Analytical formula constructor */
-FunctionImplementation::FunctionImplementation(const Description & inputVariablesNames,
-    const Description & outputVariablesNames,
-    const Description & formulas)
-  : PersistentObject()
-  , evaluation_(new NoEvaluation)
-  , gradient_(new NoGradient)
-  , hessian_(new NoHessian)
-  , useDefaultGradientImplementation_(true)
-  , useDefaultHessianImplementation_(true)
-{
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  // Try to build an analytical gradient
-  Pointer<SymbolicEvaluation> symbolicEvaluation(new SymbolicEvaluation(inputVariablesNames, outputVariablesNames, formulas));
-  evaluation_ = symbolicEvaluation.get();
-  try
-  {
-    gradient_ = new SymbolicGradient(symbolicEvaluation);
-    useDefaultGradientImplementation_ = false;
-  }
-  catch(...)
-  {
-    LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
-    gradient_ = new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
-  }
-  try
-  {
-    hessian_ = new SymbolicHessian(symbolicEvaluation);
-    useDefaultHessianImplementation_ = false;
-  }
-  catch(...)
-  {
-    LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
-    hessian_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
-  }
-#else
-  throw NotYetImplementedException(HERE) << "In FunctionImplementation::FunctionImplementation(const Description & inputVariablesNames, const Description & outputVariablesNames, const Description & formulas): Analytical function requires muParser or ExprTk";
-#endif
-}
-
-
-/* Constructor from a wrapper file */
-FunctionImplementation::FunctionImplementation(const Sample & inputSample,
-    const Sample & outputSample)
-  : PersistentObject()
-  , gradient_(new NoGradient)
-  , hessian_(new NoHessian)
-  , useDefaultGradientImplementation_(false)
-  , useDefaultHessianImplementation_(false)
-{
-  MemoizeEvaluation * p_evaluation = new MemoizeEvaluation(new DatabaseEvaluation( inputSample, outputSample ));
-  p_evaluation->enableCache();
-  p_evaluation->disableHistory();
-  evaluation_ = p_evaluation;
 }
 
 

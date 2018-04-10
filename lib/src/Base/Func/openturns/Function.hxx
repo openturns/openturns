@@ -66,11 +66,6 @@ public:
   /** Constructor from evaluation implementation */
   Function(const EvaluationImplementation & evaluation);
 
-  /** @deprecated */
-  Function(const Description & inputVariablesNames,
-           const Description & outputVariablesNames,
-           const Description & formulas);
-
 #ifndef SWIG
   /** Constructor from evaluation */
   explicit Function(const Evaluation & evaluation);
@@ -80,9 +75,6 @@ public:
            const Gradient & gradient,
            const Hessian  & hessian);
 #endif
-
-  /** @deprecated */
-  Function(const Field & field);
 
   /** Comparison operator */
   Bool operator ==(const Function & other) const;

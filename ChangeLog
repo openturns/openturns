@@ -15,6 +15,7 @@
  * Removed deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation methods
  * Removed deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation methods
  * Removed deprecated TruncatedDistribution single bound accessors
+ * Removed deprecated Function constructors
 
 === Python module ===
 
