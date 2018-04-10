@@ -82,18 +82,6 @@ UnsignedInteger ProcessImplementation::getOutputDimension() const
   return ouputDimension_;
 }
 
-UnsignedInteger ProcessImplementation::getSpatialDimension() const
-{
-  LOGWARN(OSS() << "Process::getSpatialDimension is deprecated in favor of getInputDimension.");
-  return getInputDimension();
-}
-
-UnsignedInteger ProcessImplementation::getDimension() const
-{
-  LOGWARN(OSS() << "Process::getDimension is deprecated in favor of getOutputDimension.");
-  return getOutputDimension();
-}
-
 void ProcessImplementation::setOutputDimension(const UnsignedInteger ouputDimension)
 {
   ouputDimension_ = ouputDimension;

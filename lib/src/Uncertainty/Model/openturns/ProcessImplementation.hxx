@@ -81,10 +81,6 @@ public:
   virtual UnsignedInteger getInputDimension() const;
   virtual UnsignedInteger getOutputDimension() const;
 
-  /** @deprecated */
-  virtual UnsignedInteger getSpatialDimension() const;
-  virtual UnsignedInteger getDimension() const;
-
   /** TimeGrid accessor */
   virtual RegularGrid getTimeGrid() const;
   virtual void setTimeGrid(const RegularGrid & timeGrid);
