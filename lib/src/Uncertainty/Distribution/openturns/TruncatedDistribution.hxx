@@ -116,22 +116,6 @@ public:
   void setDistribution(const Distribution & distribution);
   Distribution getDistribution() const;
 
-  /** Lower bound accessor @deprecated */
-  void setLowerBound(const Scalar lowerBound);
-  Scalar getLowerBound() const;
-
-  /** Lower bound finite flag accessor @deprecated */
-  void setFiniteLowerBound(const Bool finiteLowerBound);
-  Bool getFiniteLowerBound() const;
-
-  /** Upper bound accessor @deprecated */
-  void setUpperBound(const Scalar upperBound);
-  Scalar getUpperBound() const;
-
-  /** Upper bound finite flag accessor @deprecated */
-  void setFiniteUpperBound(const Bool finiteUpperBound);
-  Bool getFiniteUpperBound() const;
-
   /** Threshold realization accessor */
   void setThresholdRealization(const Scalar thresholdRealization);
   Scalar getThresholdRealization() const;
