@@ -73,62 +73,6 @@ DomainImplementation::BoolCollection DomainImplementation::contains(const Sample
   return result;
 }
 
-/* Check if the given point is inside of the discretization of the domain */
-Bool DomainImplementation::numericallyContains(const Point & point) const
-{
-  LOGWARN(OSS() << "DomainImplementation::numericallyContains is deprecated in favor of derived classes.");
-  return contains(point);
-}
-
-/* Check if the domain is empty, i.e if its numerical volume is zero */
-Bool DomainImplementation::isEmpty() const
-{
-  LOGWARN(OSS() << "DomainImplementation::isEmpty is deprecated in favor of derived classes.");
-  return isNumericallyEmpty();
-}
-
-/* Check if the domain is numerically empty, i.e if its numerical volume is zero */
-Bool DomainImplementation::isNumericallyEmpty() const
-{
-  LOGWARN(OSS() << "DomainImplementation::isNumericallyEmpty is deprecated in favor of derived classes.");
-  return getNumericalVolume() <= ResourceMap::GetAsScalar("Domain-SmallVolume");
-}
-
-/* Get the volume of the domain */
-Scalar DomainImplementation::getVolume() const
-{
-  LOGWARN(OSS() << "DomainImplementation::getVolume is deprecated in favor of derived classes.");
-  throw NotYetImplementedException(HERE);
-}
-
-/* Get the numerical volume of the domain */
-Scalar DomainImplementation::getNumericalVolume() const
-{
-  LOGWARN(OSS() << "DomainImplementation::getNumericalVolume is deprecated in favor of getVolume method in derived classes.");
-  return getVolume();
-}
-
-/* Compute the volume of the mesh */
-Scalar DomainImplementation::computeVolume() const
-{
-  LOGWARN(OSS() << "DomainImplementation::computeVolume is deprecated in favor of getVolume method in derived classes.");
-  return getVolume();
-}
-
-/* Lower bound of the bounding box */
-Point DomainImplementation::getLowerBound() const
-{
-  LOGWARN(OSS() << "DomainImplementation::getLowerBound is deprecated in favor of derived classes.");
-  throw NotYetImplementedException(HERE) << "In DomainImplementation::getLowerBound()";
-}
-
-/* Upper bound of the bounding box */
-Point DomainImplementation::getUpperBound() const
-{
-  LOGWARN(OSS() << "DomainImplementation::getUpperBound is deprecated in favor of derived classes.");
-  throw NotYetImplementedException(HERE) << "In DomainImplementation::getUpperBound()";
-}
-
 /* Get the dimension of the domain*/
 UnsignedInteger DomainImplementation::getDimension() const
 {

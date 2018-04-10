@@ -18,6 +18,10 @@
  * Removed deprecated Function constructors
  * Removed deprecated Sample,SampleImplementation::operator*(SquareMatrix) and operator/(SquareMatrix) (and in-place operators)
  * Removed deprecated SampleImplementation::scale(SquareMatrix)
+ * Removed deprecated Domain(a, b) constructor
+ * Removed deprecated Domain,DomainImplementation::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume
+ * Removed deprecated Domain,DomainImplementation::getLowerBound, getUpperBound methods
+ * Removed deprecated Interval,Mesh::computeVolume in 1.12
 
 === Python module ===
 

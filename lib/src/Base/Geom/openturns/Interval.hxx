@@ -142,9 +142,6 @@ public:
 
 private:
 
-  /* @deprecated */
-  Scalar computeVolume() const;
-
   // An n-D intervall is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
   Point lowerBound_;
   Point upperBound_;

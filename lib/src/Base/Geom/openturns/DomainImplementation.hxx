@@ -47,26 +47,11 @@ public:
   /** Virtual constructor method */
   virtual DomainImplementation * clone() const;
 
-  /** @deprecated */
-  virtual Bool isEmpty() const;
-
-  /** @deprecated */
-  virtual Bool isNumericallyEmpty() const;
-
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
 
   /** Check if the closed domain contains given points */
   virtual BoolCollection contains(const Sample & sample) const;
-
-  /** @deprecated */
-  virtual Bool numericallyContains(const Point & point) const;
-
-  /** @deprecated */
-  virtual Scalar getNumericalVolume() const;
-
-  /** @deprecated */
-  virtual Scalar getVolume() const;
 
   /** String converter */
   String __repr__() const;
@@ -75,12 +60,6 @@ public:
   /** Dimension accessors */
   UnsignedInteger getDimension() const;
 
-  /** @deprecated */
-  virtual Point getLowerBound() const;
-
-  /** @deprecated */
-  virtual Point getUpperBound() const;
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -88,9 +67,6 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  // @deprecated
-  virtual Scalar computeVolume() const;
-
   /** The dimension of the DomainImplementation */
   UnsignedInteger dimension_;
 

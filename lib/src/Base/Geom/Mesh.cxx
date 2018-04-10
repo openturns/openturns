@@ -376,13 +376,6 @@ CovarianceMatrix Mesh::computeP1Gram() const
   return CovarianceMatrix(gram.getImplementation());
 }
 
-/* Compute the volume of the mesh */
-Scalar Mesh::computeVolume() const
-{
-  LOGWARN(OSS() << "Mesh::computeVolume is deprecated in favor of getVolume.");
-  return getVolume();
-}
-
 /* Get the numerical volume of the domain */
 Scalar Mesh::getVolume() const
 {

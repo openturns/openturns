@@ -180,9 +180,6 @@ protected:
   void buildSimplexMatrix(const UnsignedInteger index,
                           SquareMatrix & matrix) const;
 
-  // @deprecated
-  Scalar computeVolume() const;
-
   void checkValidity() const;
 
   // An n-D mesh is a set of vertices with a topology described by a set of simplices
