@@ -1,4 +1,3 @@
-Remove deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel in 1.12
 Remove deprecated Mesh::getVerticesToSimplicesMap,computeSimplexVolume in 1.12
 Remove deprecated FunctionalChaosRandomVector::getSobol* in 1.13
 Remove deprecated Evaluation,EvaluationImplementation,EvaluationProxy,Function,FunctionImplementation,ParametricEvaluation::operator(inP,parameter) in 1.12

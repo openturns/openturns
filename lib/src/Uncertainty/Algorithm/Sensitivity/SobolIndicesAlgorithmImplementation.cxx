@@ -530,20 +530,6 @@ void SobolIndicesAlgorithmImplementation::setConfidenceLevel(const Scalar confid
   confidenceLevel_ = confidenceLevel;
 }
 
-// Getter for bootstrap confidence level
-Scalar SobolIndicesAlgorithmImplementation::getBootstrapConfidenceLevel() const
-{
-  LOGWARN("SobolIndicesAlgorithm::getBootstrapConfidenceLevel is deprecated, use getConfidenceLevel.");
-  return getConfidenceLevel();
-}
-
-// Setter for bootstrap confidence level
-void SobolIndicesAlgorithmImplementation::setBootstrapConfidenceLevel(const Scalar confidenceLevel)
-{
-  LOGWARN("SobolIndicesAlgorithm::setBootstrapConfidenceLevel is deprecated, use setConfidenceLevel.");
-  setConfidenceLevel(confidenceLevel);
-}
-
 /* String converter */
 String SobolIndicesAlgorithmImplementation::__repr__() const
 {
