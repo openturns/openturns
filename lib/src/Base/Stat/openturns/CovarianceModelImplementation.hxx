@@ -71,10 +71,6 @@ public:
   virtual UnsignedInteger getInputDimension() const;
   virtual UnsignedInteger getOutputDimension() const;
 
-  /** @deprecated */
-  virtual UnsignedInteger getSpatialDimension() const;
-  virtual UnsignedInteger getDimension() const;
-
   /** Compute the covariance function */
   virtual CovarianceMatrix operator() (const Scalar s,
                                        const Scalar t) const;
@@ -157,10 +153,6 @@ public:
   /** Output correlation accessors */
   virtual CorrelationMatrix getOutputCorrelation() const;
   virtual void setOutputCorrelation(const CorrelationMatrix & correlation);
-
-  /** @deprecated */
-  virtual CorrelationMatrix getSpatialCorrelation() const;
-  virtual void setSpatialCorrelation(const CorrelationMatrix & correlation);
 
   /** Nugget factor accessor */
   virtual void setNuggetFactor(const Scalar nuggetFactor);

@@ -154,18 +154,6 @@ UnsignedInteger CovarianceModelImplementation::getInputDimension() const
   return inputDimension_;
 }
 
-UnsignedInteger CovarianceModelImplementation::getDimension() const
-{
-  LOGWARN(OSS() << "CovarianceModel::getDimension is deprecated in favor of getOutputDimension.");
-  return getOutputDimension();
-}
-
-UnsignedInteger CovarianceModelImplementation::getSpatialDimension() const
-{
-  LOGWARN(OSS() << "CovarianceModel::getSpatialDimension is deprecated in favor of getInputDimension.");
-  return getInputDimension();
-}
-
 CovarianceMatrix CovarianceModelImplementation::operator() (const Scalar s,
     const Scalar t) const
 {
@@ -626,18 +614,6 @@ void CovarianceModelImplementation::setOutputCorrelation(const CorrelationMatrix
   isDiagonal_ = outputCorrelation.isDiagonal();
   outputCorrelation_ = isDiagonal_ ? CorrelationMatrix() : outputCorrelation;
   updateOutputCovariance();
-}
-
-CorrelationMatrix CovarianceModelImplementation::getSpatialCorrelation() const
-{
-  LOGWARN(OSS() << "CovarianceModel::getSpatialCorrelation is deprecated in favor of getOutputCorrelation.");
-  return getOutputCorrelation();
-}
-
-void CovarianceModelImplementation::setSpatialCorrelation(const CorrelationMatrix & spatialCorrelation)
-{
-  LOGWARN(OSS() << "CovarianceModel::setSpatialCorrelation is deprecated in favor of setOutputCorrelation.");
-  setOutputCorrelation(spatialCorrelation);
 }
 
 void CovarianceModelImplementation::updateOutputCovariance()

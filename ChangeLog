@@ -12,6 +12,7 @@
  * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
  * Removed deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean methods
  * Remove deprecated Process::getDimension, getSpatialDimension methods
+ * Removed deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation methods
 
 === Python module ===
 
