@@ -23,6 +23,7 @@
  * Removed deprecated Domain,DomainImplementation::getLowerBound, getUpperBound methods
  * Removed deprecated Interval,Mesh::computeVolume in 1.12
  * Removed deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel
+ * Removed deprecated Mesh::getVerticesToSimplicesMap,computeSimplexVolume
 
 === Python module ===
 

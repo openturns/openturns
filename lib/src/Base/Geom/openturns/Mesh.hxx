@@ -76,9 +76,6 @@ public:
   /** Get the number of simplices */
   UnsignedInteger getSimplicesNumber() const;
 
-  /* @deprecated */
-  IndicesCollection getVerticesToSimplicesMap() const;
-
   /** Compute weights such that an integral of a function over the mesh
    * is a weighted sum of its values at the vertices
    */
@@ -114,9 +111,6 @@ public:
 
   /** Simplex accessor */
   Indices getSimplex(const UnsignedInteger index) const;
-
-  /* @deprecated */
-  Scalar computeSimplexVolume(const UnsignedInteger index) const;
 
   /** Compute the volume of all simplices */
   Point computeSimplicesVolume() const;
