@@ -113,35 +113,14 @@ public:
 
   virtual Field operator() (const Field & inField) const;
 
-  /* @deprecated */
-  virtual Point operator()(const Point & inP,
-                           const Point & parameter);
-
-  /* @deprecated */
-  virtual Sample operator() (const Point & point,
-                             const Sample & parameters);
-
-
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   virtual Matrix gradient(const Point & inP) const;
-
-  /* @deprecated */
-  virtual Matrix gradient(const Point & inP,
-                          const Point & parameter);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   virtual SymmetricTensor hessian(const Point & inP) const;
 
-  /* @deprecated */
-  virtual SymmetricTensor hessian(const Point & inP,
-                                  const Point & parameter);
-
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const Point & inP) const;
-
-  /* @deprecated */
-  virtual Matrix parameterGradient(const Point & inP,
-                                   const Point & parameter);
 
   /** Parameters value accessor */
   virtual Point getParameter() const;

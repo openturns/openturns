@@ -212,15 +212,6 @@ Matrix FunctionImplementation::parameterGradient(const Point & inP) const
   return evaluation_.parameterGradient(inP);
 }
 
-/* Gradient according to the marginal parameters */
-Matrix FunctionImplementation::parameterGradient(const Point & inP,
-    const Point & parameter)
-{
-  LOGWARN("FunctionImplementation::parameterGradient(inP,parameter) is deprecated, use setParameter(parameter) and parameterGradient(inP)");
-  setParameter(parameter);
-  return evaluation_.parameterGradient(inP);
-}
-
 /* Parameters value accessor */
 Point FunctionImplementation::getParameter() const
 {
@@ -249,21 +240,6 @@ void FunctionImplementation::setParameterDescription(const Description & descrip
 Point FunctionImplementation::operator() (const Point & inP) const
 {
   return evaluation_.operator()(inP);
-}
-
-Point FunctionImplementation::operator() (const Point & inP,
-    const Point & parameter)
-{
-  LOGWARN("FunctionImplementation::operator()(inP,parameter) is deprecated, use setParameter(parameter) and operator()(inP)");
-  setParameter(parameter);
-  return evaluation_.operator()(inP);
-}
-
-Sample FunctionImplementation::operator() (const Point & inP,
-    const Sample & parameters)
-{
-  // Deprecated, but already issues a LOGWARN
-  return evaluation_.operator()(inP, parameters);
 }
 
 /* Operator () */
@@ -303,15 +279,6 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
   } // Usual gradient failed
 }
 
-Matrix FunctionImplementation::gradient(const Point & inP,
-                                        const Point & parameters)
-{
-  if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
-  LOGWARN("FunctionImplementation::gradient()(inP,parameters) is deprecated, use setParameter(parameters) and gradient(inP)");
-  setParameter(parameters);
-  return gradient_.gradient(inP);
-}
-
 /* Method hessian() returns the symetric tensor of the function at point */
 SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
 {
@@ -335,15 +302,6 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
       throw InternalException(HERE) << "Error: cannot compute hessian at point=" << inP;
     }
   } // Usual gradient failed
-}
-
-SymmetricTensor FunctionImplementation::hessian(const Point & inP,
-    const Point & parameters)
-{
-  if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
-  LOGWARN("FunctionImplementation::hessian()(inP,parameters) is deprecated, use setParameter(parameters) and hessian(inP)");
-  setParameter(parameters);
-  return hessian_.hessian(inP);
 }
 
 /* Accessor for parameter dimension */

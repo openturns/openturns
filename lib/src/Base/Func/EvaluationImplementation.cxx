@@ -230,28 +230,6 @@ Point EvaluationImplementation::operator() (const Point & inP) const
   throw NotYetImplementedException(HERE) << "In EvaluationImplementation::operator() (const Point & inP) const";
 }
 
-Point EvaluationImplementation::operator() (const Point & inP,
-    const Point & parameter)
-{
-  LOGWARN("EvaluationImplementation::operator()(inP,parameter) is deprecated, use setParameter(parameter) and operator()(inP)");
-  setParameter(parameter);
-  return (*this)(inP);
-}
-
-Sample EvaluationImplementation::operator() (const Point & inP,
-    const Sample & parameters)
-{
-  LOGWARN("EvaluationImplementation::operator()(inP,parameters) is deprecated, use setParameter(parameter) and operator()(inP)");
-  const UnsignedInteger size = parameters.getSize();
-  Sample outS(size, getOutputDimension());
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    setParameter(parameters[i]);
-    outS[i] = operator()(inP);
-  }
-  return outS;
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger EvaluationImplementation::getInputDimension() const
 {

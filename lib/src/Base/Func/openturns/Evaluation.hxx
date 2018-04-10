@@ -86,15 +86,6 @@ public:
 
   Field operator() (const Field & inTS) const;
 
-  /* @deprecated */
-  Point operator() (const Point & inP,
-                    const Point & parameter);
-
-  /* @deprecated */
-  Sample operator() (const Point & point,
-                     const Sample & parameters);
-
-
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 

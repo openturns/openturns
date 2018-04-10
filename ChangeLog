@@ -24,6 +24,9 @@
  * Removed deprecated Interval,Mesh::computeVolume in 1.12
  * Removed deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel
  * Removed deprecated Mesh::getVerticesToSimplicesMap,computeSimplexVolume
+ * Removed deprecated Evaluation,EvaluationImplementation,EvaluationProxy,Function,FunctionImplementation,ParametricEvaluation::operator(inP,parameter)
+ * Removed deprecated Gradient,GradientImplementation,ParametricGradient::gradient(inP,parameter)
+ * Removed deprecated Hessian,HessianImplementation,ParametricHessian::operator(inP,parameter)
 
 === Python module ===
 

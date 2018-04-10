@@ -161,18 +161,6 @@ Point Evaluation::operator() (const Point & inP) const
   return getImplementation()->operator()(inP);
 }
 
-Point Evaluation::operator() (const Point & inP,
-                              const Point & parameter)
-{
-  return getImplementation()->operator()(inP, parameter);
-}
-
-Sample Evaluation::operator() (const Point & inP,
-                               const Sample & parameters)
-{
-  return getImplementation()->operator()(inP, parameters);
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger Evaluation::getInputDimension() const
 {
