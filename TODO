@@ -1,5 +1,4 @@
 Remove deprecated SecondOrderModel::getDimension, getSpatialDimension in 1.12
-Remove deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation in 1.12
 Remove deprecated TruncatedDistribution single bound accessors in favor of setBound/getRange in 1.12
 Remove deprecated Function ctors in 1.12
 Remove deprecated Sample,SampleImplementation::operator*(SquareMatrix) and operator/(SquareMatrix) (and in-place operators) in 1.12

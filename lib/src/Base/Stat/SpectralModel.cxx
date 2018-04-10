@@ -68,16 +68,6 @@ UnsignedInteger SpectralModel::getInputDimension() const
   return getImplementation()->getInputDimension();
 }
 
-UnsignedInteger SpectralModel::getDimension() const
-{
-  return getImplementation()->getDimension();
-}
-
-UnsignedInteger SpectralModel::getSpatialDimension() const
-{
-  return getImplementation()->getSpatialDimension();
-}
-
 HermitianMatrix SpectralModel::operator() (const Scalar frequency) const
 {
   return getImplementation()->operator()(frequency);
@@ -127,11 +117,6 @@ void SpectralModel::setScale(const Point & scale)
 CorrelationMatrix SpectralModel::getOutputCorrelation() const
 {
   return getImplementation()->getOutputCorrelation();
-}
-
-CorrelationMatrix SpectralModel::getSpatialCorrelation() const
-{
-  return getImplementation()->getSpatialCorrelation();
 }
 
 /* String converter */

@@ -13,6 +13,7 @@
  * Removed deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean methods
  * Remove deprecated Process::getDimension, getSpatialDimension methods
  * Removed deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation methods
+ * Removed deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation methods
 
 === Python module ===
 
