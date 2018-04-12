@@ -77,16 +77,6 @@ Spectral information
     Hanning
     Hamming
 
-Link Temporal - Spectral information
-====================================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    SecondOrderModel
-    ExponentialCauchy
-
 Gaussian process
 ================
 

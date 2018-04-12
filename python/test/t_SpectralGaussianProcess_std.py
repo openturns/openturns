@@ -15,11 +15,8 @@ try:
     # Scale values
     scale = Point(defaultDimension, 1.0)
 
-    # Second order model with parameters
-    myModel = ExponentialCauchy(scale, amplitude)
-
-    # checking the copy-cast*/
-    mySecondOrderModel = SecondOrderModel(myModel)
+    # Spectral density
+    myModel = CauchyModel(scale, amplitude)
 
     points = 8
     tMin = 0.0

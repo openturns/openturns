@@ -22,8 +22,8 @@ try:
     size = 10
     timeGrid = RegularGrid(0.0, 0.1, size)
 
-    # Cauchy model
-    model = ExponentialCauchy(scale, amplitude)
+    # Absolute model
+    model = AbsoluteExponential(scale, amplitude)
     myProcess = GaussianProcess(model, timeGrid)
 
     # Create a Process sample of size N
@@ -42,7 +42,7 @@ try:
         for j in range(size):
             s = timeGrid.getValue(j)
             estimatedValue = myCovarianceModel(t, s)[0, 0]
-            modelValue = model.computeCovariance(t, s)[0, 0]
+            modelValue = model(t, s)[0, 0]
             print("Covariance C( %.6g" % t, ",  %.6g" % s, ") : ", " evaluation =  %.6g" %
                   estimatedValue, " model =  %.6g" % modelValue)
 

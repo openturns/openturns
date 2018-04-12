@@ -63,28 +63,6 @@ GaussianProcess::GaussianProcess()
 
 /* Standard constructor  */
 GaussianProcess::GaussianProcess(const TrendTransform & trend,
-                                 const SecondOrderModel & model,
-                                 const Mesh & mesh)
-  : ProcessImplementation()
-  , covarianceModel_(model.getCovarianceModel())
-  , covarianceCholeskyFactor_(0)
-  , covarianceHMatrix_()
-  , isInitialized_(false)
-  , hasStationaryTrend_(false)
-  , checkedStationaryTrend_(false)
-  , trend_(trend)
-  , stationaryTrendValue_(trend.getOutputDimension())
-  , samplingMethod_(0)
-{
-  if (trend.getInputDimension() != model.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the second order model spatial dimension=" << model.getInputDimension();
-  if (trend.getOutputDimension() != model.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the second order model dimension=" << model.getOutputDimension();
-  setMesh(mesh);
-  setOutputDimension(model.getOutputDimension());
-  setDescription(trend_.getOutputDescription());
-}
-
-/* Standard constructor  */
-GaussianProcess::GaussianProcess(const TrendTransform & trend,
                                  const CovarianceModel & covarianceModel,
                                  const Mesh & mesh)
   : ProcessImplementation()
@@ -102,31 +80,6 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   if (trend.getOutputDimension() != covarianceModel.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the covariance model dimension=" << covarianceModel.getOutputDimension();
   setMesh(mesh);
   setOutputDimension(covarianceModel.getOutputDimension());
-  setDescription(trend_.getOutputDescription());
-}
-
-/* Standard constructor  */
-GaussianProcess::GaussianProcess(const SecondOrderModel & model,
-                                 const Mesh & mesh)
-  : ProcessImplementation()
-  , covarianceModel_(model.getCovarianceModel())
-  , covarianceCholeskyFactor_(0)
-  , covarianceHMatrix_()
-  , isInitialized_(false)
-  , hasStationaryTrend_(true)
-  , checkedStationaryTrend_(true)
-  , trend_()
-  , stationaryTrendValue_(model.getOutputDimension())
-  , samplingMethod_(0)
-{
-  // We use the upper class accessor to prevent the reinitialization of the flags
-  ProcessImplementation::setMesh(mesh);
-  setOutputDimension(model.getOutputDimension());
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
-#else
-  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
-#endif
   setDescription(trend_.getOutputDescription());
 }
 

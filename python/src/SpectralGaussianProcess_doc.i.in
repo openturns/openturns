@@ -2,17 +2,12 @@
 "Spectral Gaussian process.
 
 Available constructors:
-    SpectralGaussianProcess(*secondOrderModel, timeGrid*)
-
     SpectralGaussianProcess(*spectralModel, timeGrid*)
-
-    SpectralGaussianProcess(*secondOrderModel, fmax, N*)
 
     SpectralGaussianProcess(*spectralModel, maxFreq, N*)
 
 Parameters
 ----------
-secondOrderModel : :class:`~openturns.SecondOrderModel`
 
 timeGrid : :class:`~openturns.RegularGrid`
     The time grid associated to the process.
@@ -60,14 +55,6 @@ Create a *SpectralGaussianProcess* from a spectral model and a time grid:
 >>> mySpectralModel = ot.CauchyModel(scale, amplitude, spatialCorrelation)
 >>> mySpectNormProc1 = ot.SpectralGaussianProcess(mySpectralModel, myTimeGrid)
 
-Create a *SpectralGaussianProcess* from a second order model and a time grid:
-
->>> import openturns as ot
->>> amplitude = [1.0]
->>> scale = [4.0, 5.0]
->>> myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)
->>> mySecondOrderModel = ot.ExponentialCauchy(scale, amplitude)
->>> mySpectNormProc2 = ot.SpectralGaussianProcess(mySecondOrderModel, myTimeGrid)
 "
 // ---------------------------------------------------------------------
 

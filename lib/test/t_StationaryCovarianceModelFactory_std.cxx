@@ -42,7 +42,8 @@ int main(int argc, char *argv[])
     const RegularGrid timeGrid(0.0, 0.1, size);
     const Point amplitude(dimension, 1.0);
     const Point scale(dimension, 1.0);
-    ExponentialCauchy model(scale, amplitude);
+    CauchyModel model(scale, amplitude);
+    AbsoluteExponential covModel(scale, amplitude);
     SpectralGaussianProcess myProcess(model, timeGrid);
 
     // Create a sample of time series
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
     {
       const Scalar t = myTimeGrid.getValue(i);
       const Scalar estimatedValue = myCovarianceModel(t)(0, 0);
-      const Scalar modelValue = model.computeCovariance(t)(0, 0);
+      const Scalar modelValue = covModel(t)(0, 0);
       fullprint << "Covariance C(" << t << ") : ";
       fullprint << " evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
     }

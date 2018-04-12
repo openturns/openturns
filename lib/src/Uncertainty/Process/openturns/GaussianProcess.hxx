@@ -23,7 +23,6 @@
 
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/SquareMatrix.hxx"
-#include "openturns/SecondOrderModel.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/HMatrix.hxx"
@@ -49,16 +48,7 @@ public:
 
   /** Standard constructor  */
   GaussianProcess(const TrendTransform & trend,
-                  const SecondOrderModel  & model,
-                  const Mesh & mesh);
-
-  /** Standard constructor  */
-  GaussianProcess(const TrendTransform & trend,
                   const CovarianceModel & covarianceModel,
-                  const Mesh & mesh);
-
-  /** Standard constructor  */
-  GaussianProcess(const SecondOrderModel  & model,
                   const Mesh & mesh);
 
   /** Standard constructor  */

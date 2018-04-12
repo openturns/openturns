@@ -16,30 +16,12 @@ try:
     # Scale values
     scale = Point(defaultDimension, 1.0)
 
-    # Second order model with parameters
-    myModel = ExponentialCauchy(scale, amplitude)
-    print("myModel = ", myModel)
-
-    # checking the copy-cast*/
-    mySecondOrderModel = SecondOrderModel(myModel)
-    print("mySecondOrderModel = ", mySecondOrderModel)
-
     tmin = 0.0
     step = 0.1
     n = 11
 
     myTimeGrid = RegularGrid(tmin, step, n)
     size = 25
-
-    myProcess = GaussianProcess(myModel, myTimeGrid)
-    print("myProcess = ", myProcess)
-    print("is stationary? ", myProcess.isStationary())
-    myProcess.setSamplingMethod(0)
-    print("mean over ", size, " realizations = ",
-          myProcess.getSample(size).computeMean())
-    myProcess.setSamplingMethod(2)
-    print("mean over ", size, " realizations = ",
-          myProcess.getSample(size).computeMean())
 
     # Second order model with parameters
     myCovModel = ExponentialModel(scale, amplitude)
@@ -48,12 +30,12 @@ try:
     myProcess1 = GaussianProcess(myCovModel, myTimeGrid)
     print("myProcess1 = ", myProcess1)
     print("is stationary? ", myProcess1.isStationary())
-    myProcess.setSamplingMethod(0)
+    myProcess1.setSamplingMethod(0)
     print("mean over ", size, " realizations = ",
-          myProcess.getSample(size).computeMean())
-    myProcess.setSamplingMethod(2)
+          myProcess1.getSample(size).computeMean())
+    myProcess1.setSamplingMethod(2)
     print("mean over ", size, " realizations = ",
-          myProcess.getSample(size).computeMean())
+          myProcess1.getSample(size).computeMean())
 
     # With constant trend
     trend = TrendTransform(SymbolicFunction("t", "4.0"))
@@ -69,12 +51,12 @@ try:
     myProcess3 = GaussianProcess(trend3, myCovModel, myTimeGrid)
     print("myProcess3 = ", myProcess3)
     print("is stationary? ", myProcess3.isStationary())
-    myProcess.setSamplingMethod(0)
+    myProcess3.setSamplingMethod(0)
     print("mean over ", size, " realizations = ",
-          myProcess.getSample(size).computeMean())
-    myProcess.setSamplingMethod(2)
+          myProcess3.getSample(size).computeMean())
+    myProcess3.setSamplingMethod(2)
     print("mean over ", size, " realizations = ",
-          myProcess.getSample(size).computeMean())
+          myProcess3.getSample(size).computeMean())
 
 except:
     import sys

@@ -624,8 +624,6 @@ int main(int argc, char *argv[])
 
     // Create a CauchyModel
     CauchyModel cauchyModel;
-    // Create an ExponentialCauchy
-    ExponentialCauchy exponentialCauchy;
     // Create an AbsoluteExponential
     AbsoluteExponential absoluteExponential;
     {
@@ -634,19 +632,13 @@ int main(int argc, char *argv[])
       Point amplitude(defaultDimension, 1.0);
       Point scale(spatialDimension, 1.0);
       cauchyModel = CauchyModel (scale, amplitude);
-      exponentialCauchy = ExponentialCauchy (scale, amplitude);
       absoluteExponential = AbsoluteExponential(scale, amplitude);
     }
     study.add("cauchyModel", cauchyModel);
-    study.add("exponentialCauchy", exponentialCauchy);
     study.add("absoluteExponential", absoluteExponential);
 
-    // Create a second order model
-    SecondOrderModel secondOrderModel(absoluteExponential, cauchyModel);
-    study.add("secondOrderModel", secondOrderModel);
-
     // Create a SpectralGaussianProcess
-    SpectralGaussianProcess spectralGaussianProcess(exponentialCauchy, regularGrid);
+    SpectralGaussianProcess spectralGaussianProcess(cauchyModel, regularGrid);
     study.add("spectralGaussianProcess", spectralGaussianProcess);
 
     // Create an  UserDefinedSpectralModel
@@ -662,7 +654,7 @@ int main(int argc, char *argv[])
     study.add("userDefinedSpectralModel", userDefinedSpectralModel);
 
     // Create a GaussianProcess
-    GaussianProcess gaussianProcess(exponentialCauchy, regularGrid);
+    GaussianProcess gaussianProcess(absoluteExponential, regularGrid);
     study.add("gaussianProcess", gaussianProcess);
 
     // Create a CompositeProcess Object
@@ -1079,9 +1071,7 @@ int main(int argc, char *argv[])
     compare<BasisSequence >( basisSequence, study2 );
     compare<UniVariatePolynomial >( uniVariatePolynomial, study2 );
     compare<CauchyModel >( cauchyModel, study2 );
-    compare<ExponentialCauchy >( exponentialCauchy, study2 );
     compare<AbsoluteExponential >( absoluteExponential, study2 );
-    compare<SecondOrderModel >( secondOrderModel, study2 );
     compare<CompositeProcess >( compositeProcess, study2 );
     compare<SpectralGaussianProcess >( spectralGaussianProcess, study2 );
     compare<GaussianProcess >( gaussianProcess, study2 );
