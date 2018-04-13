@@ -130,6 +130,7 @@
  * #939 (The help of the getMaximumDegreeStrataIndex method is wrong.)
  * #941 (Duplicate with SobolIndicesExperiment)
  * #944 (Inline plots crash in notebooks if too many points)
+ * #946 (OT via anaconda, usage of ot.HypothesisTest error: R_EXECUTABLE-NOTFOUND)
 
 == 1.10 release (2017-11-13) == #release-1.10
 
