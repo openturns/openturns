@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     const WhiteNoise whiteNoise(Uniform(), timeGrid);
 
     // Composite process
-    const CompositeProcess process(ValueFunction(SymbolicFunction("x", "x+2")), whiteNoise);
+    const CompositeProcess process(ValueFunction(SymbolicFunction("x", "x+2"), timeGrid), whiteNoise);
     // A realization of the process
     const TimeSeries timeSeries(process.getRealization());
     const Sample sample(timeSeries.getValues());

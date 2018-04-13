@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
 
     /* Create an intance */
     SymbolicFunction myFunc("x", "x^2");
-    ValueFunction mySpatialFunc(myFunc);
+    RegularGrid tg(0.0, 0.2, 6);
+    ValueFunction mySpatialFunc(myFunc, tg);
 
     fullprint << "mySpatialFunc=" << mySpatialFunc << std::endl;
     /* Get the input and output description */
@@ -44,7 +45,6 @@ int main(int argc, char *argv[])
     fullprint << "mySpatialFunc input dimension=" << mySpatialFunc.getInputDimension() << std::endl;
     fullprint << "mySpatialFunc output dimension=" << mySpatialFunc.getOutputDimension() << std::endl;
     /* Create a TimeSeries */
-    RegularGrid tg(0.0, 0.2, 6);
     Sample data(tg.getN(), myFunc.getInputDimension());
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
       for (UnsignedInteger j = 0; j < data.getDimension(); ++j)

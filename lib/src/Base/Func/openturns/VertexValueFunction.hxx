@@ -43,19 +43,19 @@ class OT_API VertexValueFunction
 public:
 
   /** Default constructor */
-  explicit VertexValueFunction(const UnsignedInteger meshDimension = 1);
+  VertexValueFunction();
 
   /** Parameter constructor */
-  explicit VertexValueFunction(const Function & function,
-                               const UnsignedInteger meshDimension = 1);
+  VertexValueFunction(const Function & function,
+                      const Mesh & mesh);
 
   /** Parameter constructor */
-  explicit VertexValueFunction(const Evaluation & evaluation,
-                               const UnsignedInteger meshDimension = 1);
+  VertexValueFunction(const Evaluation & evaluation,
+                      const Mesh & mesh);
 
   /** Parameter constructor */
-  explicit VertexValueFunction(const EvaluationImplementation & evaluation,
-                               const UnsignedInteger meshDimension = 1);
+  VertexValueFunction(const EvaluationImplementation & evaluation,
+                      const Mesh & mesh);
 
   /** Virtual constructor */
   virtual VertexValueFunction * clone() const;

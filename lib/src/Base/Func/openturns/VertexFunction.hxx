@@ -32,8 +32,8 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class VertexFunction
  *
- * The class that simulates a dynamical function based on a
- * numerical math function that acts only on the temporal part
+ * The class that simulates a field function based on a
+ * math function that acts only on the temporal part
  * of a time series.
  */
 class OT_API VertexFunction
@@ -46,13 +46,13 @@ public:
   VertexFunction();
 
   /** Parameter constructor */
-  explicit VertexFunction(const Function & function);
+  explicit VertexFunction(const Function & function, const Mesh & mesh);
 
   /** Parameter constructor */
-  explicit VertexFunction(const Evaluation & evaluation);
+  explicit VertexFunction(const Evaluation & evaluation, const Mesh & mesh);
 
   /** Parameter constructor */
-  explicit VertexFunction(const EvaluationImplementation & evaluation);
+  explicit VertexFunction(const EvaluationImplementation & evaluation, const Mesh & mesh);
 
   /** Virtual constructor */
   virtual VertexFunction * clone() const;

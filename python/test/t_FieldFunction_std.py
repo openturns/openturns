@@ -13,6 +13,6 @@ print('myFunc output description=', myFunc.getOutputDescription())
 # Get the input and output dimension, based on description
 print('myFunc input dimension=', myFunc.getInputDimension())
 print('myFunc output dimension=', myFunc.getOutputDimension())
-print('myFunc spatial dimension=', myFunc.getSpatialDimension())
+print('myFunc spatial dimension=', myFunc.getInputMesh().getDimension())
 # Get the number of calls
 print('called ', myFunc.getCallsNumber(), ' times')

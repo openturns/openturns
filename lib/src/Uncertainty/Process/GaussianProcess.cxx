@@ -54,9 +54,9 @@ GaussianProcess::GaussianProcess()
   , samplingMethod_(0)
 {
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
+  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(covarianceModel_.getInputDimension(), "x"), Description(getOutputDimension(), "0.0")), getMesh());
 #else
-  trend_ = TrendTransform(DatabaseFunction(Sample(1, covarianceModel_.getInputDimension()), Sample(1, getOutputDimension())));
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, covarianceModel_.getInputDimension()), Sample(1, getOutputDimension())), getMesh());
 #endif
   setDescription(trend_.getOutputDescription());
 }
@@ -83,7 +83,6 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   setDescription(trend_.getOutputDescription());
 }
 
-/* Standard constructor  */
 GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
                                  const Mesh & mesh)
   : ProcessImplementation()
@@ -101,9 +100,9 @@ GaussianProcess::GaussianProcess(const CovarianceModel & covarianceModel,
   ProcessImplementation::setMesh(mesh);
   setOutputDimension(covarianceModel.getOutputDimension());
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")));
+  trend_ = TrendTransform(SymbolicFunction(Description::BuildDefault(getInputDimension(), "x"), Description(getOutputDimension(), "0.0")), getMesh());
 #else
-  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())));
+  trend_ = TrendTransform(DatabaseFunction(Sample(1, getInputDimension()), Sample(1, getOutputDimension())), getMesh());
 #endif
   setDescription(trend_.getOutputDescription());
 }

@@ -51,6 +51,7 @@ public:
 
   /** Parameter constructor */
   PointToFieldFunction(const UnsignedInteger inputDimension,
+                       const Mesh & outputMesh,
                        const UnsignedInteger outputDimension);
 
   /** Constructor from PointToFieldFunctionImplementation */

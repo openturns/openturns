@@ -85,6 +85,19 @@ PythonFieldToPointFunction::PythonFieldToPointFunction(PyObject * pyCallable)
     setOutputDescription(convert< _PySequence_, Description >(descOut.get()));
   }
   else setOutputDescription(Description::BuildDefault(outputDimension, "y"));
+
+  ScopedPyObjectPointer inputMesh(PyObject_CallMethod ( pyObj_,
+                                  const_cast<char *>("getInputMesh"),
+                                  const_cast<char *>("()")));
+  void * ptr = 0;
+  if (SWIG_IsOK(SWIG_ConvertPtr(inputMesh.get(), &ptr, SWIG_TypeQuery("OT::Mesh *"), 0)))
+  {
+    inputMesh_ = *reinterpret_cast< OT::Mesh * >(ptr);
+  }
+  else
+  {
+    throw InvalidArgumentException(HERE) << "getInputMesh() does not return a Mesh";
+  }
 }
 
 /* Virtual constructor */
@@ -144,9 +157,8 @@ Point PythonFieldToPointFunction::operator() (const Field & inF) const
   if (inputDimension != inF.getOutputDimension())
     throw InvalidDimensionException(HERE) << "Input field has incorrect dimension. Got " << inF.getOutputDimension() << ". Expected " << getInputDimension();
 
-  const UnsignedInteger spatialDimension = getSpatialDimension();
-  if (spatialDimension != inF.getInputDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect spatial dimension. Got " << inF.getInputDimension() << ". Expected " << getSpatialDimension();
+  if (getInputMesh().getDimension() != inF.getInputDimension())
+    throw InvalidDimensionException(HERE) << "Input field has incorrect spatial dimension. Got " << inF.getInputDimension() << ". Expected " << getInputMesh().getDimension();
 
   callsNumber_.increment();
 
@@ -170,16 +182,6 @@ Point PythonFieldToPointFunction::operator() (const Field & inF) const
     throw InvalidDimensionException(HERE) << "Output point has incorrect dimension. Got " << outP.getDimension() << ". Expected " << getOutputDimension();
   }
   return outP;
-}
-
-/* Accessor for mesh dimension */
-UnsignedInteger PythonFieldToPointFunction::getSpatialDimension() const
-{
-  ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                               const_cast<char *>("getSpatialDimension"),
-                               const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
-  return dim;
 }
 
 

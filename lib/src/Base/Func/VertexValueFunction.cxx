@@ -30,8 +30,8 @@ CLASSNAMEINIT(VertexValueFunction)
 static const Factory<VertexValueFunction> Factory_VertexValueFunction;
 
 /* Default constructor */
-VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
+VertexValueFunction::VertexValueFunction()
+  : FieldFunctionImplementation()
   , function_()
 {
   // Nothing to do
@@ -39,45 +39,45 @@ VertexValueFunction::VertexValueFunction(const UnsignedInteger meshDimension)
 
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Function & function,
-    const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, function.getInputDimension() - meshDimension, function.getOutputDimension())
+    const Mesh & mesh)
+  : FieldFunctionImplementation(mesh, function.getInputDimension() - mesh.getDimension(), mesh, function.getOutputDimension())
   , function_(function)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
-  if (function_.getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << function_.getInputDimension();
+  if (function_.getInputDimension() < mesh.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << mesh.getDimension() << ". Here input dimension=" << function_.getInputDimension();
   // Set the descriptions
   Description inputDescription(function_.getInputDescription());
-  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + mesh.getDimension());
   setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
 }
 
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Evaluation & evaluation,
-    const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension() - meshDimension, evaluation.getOutputDimension())
+    const Mesh & mesh)
+  : FieldFunctionImplementation(mesh, evaluation.getInputDimension() - mesh.getDimension(), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
-  if (function_.getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << function_.getInputDimension();
+  if (function_.getInputDimension() < mesh.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << mesh.getDimension() << ". Here input dimension=" << function_.getInputDimension();
   // Set the descriptions
   Description inputDescription(function_.getInputDescription());
-  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + mesh.getDimension());
   setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
 }
 
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const EvaluationImplementation & evaluation,
-    const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension() - meshDimension, evaluation.getOutputDimension())
+    const Mesh & mesh)
+  : FieldFunctionImplementation(mesh, evaluation.getInputDimension() - mesh.getDimension(), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
-  if (function_.getInputDimension() < meshDimension) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << meshDimension << ". Here input dimension=" << function_.getInputDimension();
+  if (function_.getInputDimension() < mesh.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << mesh.getDimension() << ". Here input dimension=" << function_.getInputDimension();
   // Set the descriptions
   Description inputDescription(function_.getInputDescription());
-  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + meshDimension);
+  inputDescription.erase(inputDescription.begin(), inputDescription.begin() + mesh.getDimension());
   setInputDescription(inputDescription);
   setOutputDescription(function_.getOutputDescription());
 }
@@ -112,7 +112,7 @@ String VertexValueFunction::__str__(const String & offset) const
 /* Operator () */
 Field VertexValueFunction::operator() (const Field & inFld) const
 {
-  if (inFld.getInputDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getSpatialDimension() << ", got mesh dimension=" << inFld.getInputDimension();
+  if (inFld.getInputDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getInputMesh().getDimension() << ", got mesh dimension=" << inFld.getInputDimension();
   callsNumber_.increment();
   return Field(inFld.getMesh(), function_(inFld.getImplementation()->asSample()));
 }
@@ -121,14 +121,14 @@ Field VertexValueFunction::operator() (const Field & inFld) const
 VertexValueFunction::Implementation VertexValueFunction::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
-  return new VertexValueFunction(function_.getMarginal(i));
+  return new VertexValueFunction(function_.getMarginal(i), getInputMesh());
 }
 
 /* Get the function corresponding to indices components */
 VertexValueFunction::Implementation VertexValueFunction::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  return new VertexValueFunction(function_.getMarginal(indices));
+  return new VertexValueFunction(function_.getMarginal(indices), getInputMesh());
 }
 
 /* Evaluation accessor */

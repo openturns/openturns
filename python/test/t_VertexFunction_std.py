@@ -8,7 +8,8 @@ TESTPREAMBLE()
 try:
     # Create an intance
     myFunc = SymbolicFunction("t", "t + t^2")
-    myVertexFunc = VertexFunction(myFunc)
+    tg = RegularGrid(0.0, 0.2, 6)
+    myVertexFunc = VertexFunction(myFunc, tg)
 
     print("myVertexFunc=", myVertexFunc)
     # Get the input and output description
@@ -20,7 +21,6 @@ try:
     print("myVertexFunc input dimension=", myVertexFunc.getInputDimension())
     print("myVertexFunc output dimension=", myVertexFunc.getOutputDimension())
     # Create a TimeSeries
-    tg = RegularGrid(0.0, 0.2, 6)
     data = Sample(tg.getN(), myFunc.getInputDimension() - 1)
     for i in range(data.getSize()):
         for j in range(data.getDimension()):

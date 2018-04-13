@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     KarhunenLoeveProjection projection(result);
     // Construction based on a FieldFunction followed by a FieldToPointFunction
     {
-      ValueFunction fieldFunction(SymbolicFunction("x", "x"));
+      ValueFunction fieldFunction(SymbolicFunction("x", "x"), mesh);
       /* Create an instance */
       FieldToPointConnection myFunc(projection, fieldFunction);
 

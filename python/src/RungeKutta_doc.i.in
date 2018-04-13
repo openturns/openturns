@@ -9,7 +9,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
->>> phi = ot.VertexValueFunction(f)
+>>> mesh = ot.Mesh(1)
+>>> phi = ot.VertexValueFunction(f, mesh)
 >>> solver = ot.RungeKutta(phi)
 >>> Y0 = [1.0, -1.0]
 >>> nt = 100

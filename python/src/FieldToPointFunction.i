@@ -85,12 +85,12 @@ class OpenTURNSPythonFieldToPointFunction(object):
 
     Parameters
     ----------
+    inputMesh : :class:`~openturns.Mesh`
+        The input mesh
     inputDim : positive int
         Dimension of the input field values d
     outputDim : positive int
         Dimension of the output vector d'
-    spatialDim : positive integer
-        Dimension of the input domain n
 
     Notes
     -----
@@ -101,10 +101,11 @@ class OpenTURNSPythonFieldToPointFunction(object):
     Examples
     --------
     >>> import openturns as ot
+    >>> mesh = ot.Mesh(1)
     >>> class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
     ...    def __init__(self):
     ...         # first argument:
-    ...         super(FUNC, self).__init__(2, 2, 1)
+    ...         super(FUNC, self).__init__(mesh, 2, 2)
     ...         self.setInputDescription(['R', 'S'])
     ...         self.setOutputDescription(['T', 'U'])
     ...    def _exec(self, X):
@@ -112,24 +113,23 @@ class OpenTURNSPythonFieldToPointFunction(object):
     ...         return Y
     >>> F = FUNC()
     """
-    def __init__(self, n=0, p=0, s=0):
+    def __init__(self, inputMesh, inputDim, outputDim):
+        if not isinstance(inputMesh, openturns.geom.Mesh):
+            raise TypeError('inputMesh argument is not a Mesh.')
+        self.__inputMesh = inputMesh
         try:
-            self.__n = int(n)
+            self.__inputDim = int(inputDim)
         except:
-            raise TypeError('n argument is not an integer.')
+            raise TypeError('inputDim argument is not an integer.')
         try:
-            self.__p = int(p)
+            self.__outputDim = int(outputDim)
         except:
-            raise TypeError('p argument is not an integer.')
-        try:
-            self.__s = int(s)
-        except:
-            raise TypeError('s argument is not an integer.')
-        self.__descIn = ['x' + str(i) for i in range(n)]
-        self.__descOut = ['y' + str(i) for i in range(p)]
+            raise TypeError('outputDim argument is not an integer.')
+        self.__descIn = ['x' + str(i) for i in range(inputDim)]
+        self.__descOut = ['y' + str(i) for i in range(outputDim)]
 
     def setInputDescription(self, descIn):
-        if (len(descIn) != self.__n):
+        if (len(descIn) != self.__inputDim):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
@@ -137,7 +137,7 @@ class OpenTURNSPythonFieldToPointFunction(object):
         return self.__descIn
 
     def setOutputDescription(self, descOut):
-        if (len(descOut) != self.__p):
+        if (len(descOut) != self.__outputDim):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
@@ -145,16 +145,16 @@ class OpenTURNSPythonFieldToPointFunction(object):
         return self.__descOut
 
     def getInputDimension(self):
-        return self.__n
+        return self.__inputDim
 
     def getOutputDimension(self):
-        return self.__p
+        return self.__outputDim
 
-    def getSpatialDimension(self):
-        return self.__s
+    def getInputMesh(self):
+        return self.__inputMesh
 
     def __str__(self):
-        return 'OpenTURNSPythonFieldToPointFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__n, self.__descOut, self.__p)
+        return 'OpenTURNSPythonFieldToPointFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__inputDim, self.__descOut, self.__outputDim)
 
     def __repr__(self):
         return self.__str__()
@@ -193,12 +193,12 @@ class PythonFieldToPointFunction(FieldToPointFunction):
 
     Parameters
     ----------
+    inputMesh : :class:`~openturns.Mesh`
+        The input mesh
     inputDim : positive int
         Dimension of the input field values d
     outputDim : positive int
         Dimension of the output vector d'
-    spatialDim : positive integer
-        Dimension of the input domain n
     func : a callable python object
         called on a :class:`~openturns.Field` object.
         Returns a :class:`~openturns.Field`.
@@ -207,18 +207,18 @@ class PythonFieldToPointFunction(FieldToPointFunction):
     Examples
     --------
     >>> import openturns as ot
+    >>> mesh = ot.Mesh(1)
     >>> def myPyFunc(X):
     ...     Y = X.getValues().computeMean()
     ...     return Y
     >>> inputDim = 2
     >>> outputDim = 2
-    >>> spatialDim = 1
-    >>> myFunc = ot.PythonFieldToPointFunction(inputDim,outputDim,spatialDim,myPyFunc)
+    >>> myFunc = ot.PythonFieldToPointFunction(mesh, inputDim, outputDim, myPyFunc)
     """
-    def __new__(self, n, p, s, func=None):
+    def __new__(self, inputMesh, inputDim, outputDim, func=None):
         if func == None:
             raise RuntimeError('func not provided.')
-        instance = OpenTURNSPythonFieldToPointFunction(n, p, s)
+        instance = OpenTURNSPythonFieldToPointFunction(inputMesh, inputDim, outputDim)
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):

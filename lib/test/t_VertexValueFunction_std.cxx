@@ -38,7 +38,14 @@ int main(int argc, char *argv[])
     inputVars.add("x");
     Description formula(1, "x + t^2");
     SymbolicFunction myFunc(inputVars, formula);
-    VertexValueFunction myVertexValueFunc(myFunc);
+    /* Create a TimeSeries */
+    RegularGrid tg(0.0, 0.2, 6);
+    Sample data(tg.getN(), myFunc.getInputDimension() - 1);
+    for (UnsignedInteger i = 0; i < data.getSize(); ++i)
+      for (UnsignedInteger j = 0; j < data.getDimension(); ++j)
+        data(i, j) = i * data.getDimension() + j;
+    TimeSeries ts(tg, data);
+    VertexValueFunction myVertexValueFunc(myFunc, tg);
 
     fullprint << "myVertexValueFunc=" << myVertexValueFunc << std::endl;
     /* Get the input and output description */
@@ -47,13 +54,7 @@ int main(int argc, char *argv[])
     /* Get the input and output dimension, based on description */
     fullprint << "myVertexValueFunc input dimension=" << myVertexValueFunc.getInputDimension() << std::endl;
     fullprint << "myVertexValueFunc output dimension=" << myVertexValueFunc.getOutputDimension() << std::endl;
-    /* Create a TimeSeries */
-    RegularGrid tg(0.0, 0.2, 6);
-    Sample data(tg.getN(), myFunc.getInputDimension() - 1);
-    for (UnsignedInteger i = 0; i < data.getSize(); ++i)
-      for (UnsignedInteger j = 0; j < data.getDimension(); ++j)
-        data(i, j) = i * data.getDimension() + j;
-    TimeSeries ts(tg, data);
+    
     fullprint << "input time series=" << ts << std::endl;
     fullprint << "output time series=" << myVertexValueFunc(ts) << std::endl;
     /* Get the number of calls */

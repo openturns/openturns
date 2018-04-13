@@ -86,11 +86,11 @@ class OpenTURNSPythonPointToFieldFunction(object):
     Parameters
     ----------
     inputDim : positive int
-        Dimension of the input field values d
+        Dimension of the input vector d
+    outputMesh : :class:`~openturns.Mesh`
+        The output mesh
     outputDim : positive int
-        Dimension of the output vector d'
-    spatialDim : positive integer
-        Dimension of the input domain n
+        Dimension of the output field values d'
 
     Notes
     -----
@@ -103,35 +103,34 @@ class OpenTURNSPythonPointToFieldFunction(object):
     >>> import openturns as ot
     >>> class FUNC(ot.OpenTURNSPythonPointToFieldFunction):
     ...     def __init__(self):
-    ...         super(FUNC, self).__init__(2, 2)
+    ...         mesh = ot.RegularGrid(0.0, 0.1, 11)
+    ...         super(FUNC, self).__init__(2, mesh, 2)
     ...         self.setInputDescription(['R', 'S'])
     ...         self.setOutputDescription(['T', 'U'])
-    ...         self.mesh_ = ot.RegularGrid(0.0, 0.1, 11) 
     ...     def _exec(self, X):
-    ...         size = self.mesh_.getVerticesNumber()
+    ...         size = self.getOutputMesh().getVerticesNumber()
     ...         values = [ot.Point(X)*i for i in range(size)]
-    ...         Y = ot.Field(self.mesh_, values)
+    ...         Y = ot.Field(self.getOutputMesh(), values)
     ...         return Y
     >>> F = FUNC()
     """
-    def __init__(self, n=0, p=0, s=0):
+    def __init__(self, inputDim, outputMesh, outputDim):
         try:
-            self.__n = int(n)
+            self.__inputDim = int(inputDim)
         except:
             raise TypeError('inputDim argument is not an integer.')
+        if not isinstance(outputMesh, openturns.geom.Mesh):
+            raise TypeError('outputMesh argument is not a Mesh.')
+        self.__outputMesh = outputMesh
         try:
-            self.__p = int(p)
+            self.__outputDim = int(outputDim)
         except:
             raise TypeError('outputDim argument is not an integer.')
-        try:
-            self.__s = int(s)
-        except:
-            raise TypeError('spatialDim argument is not an integer.')
-        self.__descIn = ['x' + str(i) for i in range(n)]
-        self.__descOut = ['y' + str(i) for i in range(p)]
+        self.__descIn = ['x' + str(i) for i in range(inputDim)]
+        self.__descOut = ['y' + str(i) for i in range(outputDim)]
 
     def setInputDescription(self, descIn):
-        if (len(descIn) != self.__n):
+        if (len(descIn) != self.__inputDim):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
@@ -139,7 +138,7 @@ class OpenTURNSPythonPointToFieldFunction(object):
         return self.__descIn
 
     def setOutputDescription(self, descOut):
-        if (len(descOut) != self.__p):
+        if (len(descOut) != self.__outputDim):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
@@ -147,16 +146,16 @@ class OpenTURNSPythonPointToFieldFunction(object):
         return self.__descOut
 
     def getInputDimension(self):
-        return self.__n
+        return self.__inputDim
 
     def getOutputDimension(self):
-        return self.__p
+        return self.__outputDim
 
-    def getSpatialDimension(self):
-        return self.__s
+    def getOutputMesh(self):
+        return self.__outputMesh
 
     def __str__(self):
-        return 'OpenTURNSPythonPointToFieldFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__n, self.__descOut, self.__p)
+        return 'OpenTURNSPythonPointToFieldFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__inputDim, self.__descOut, self.__outputDim)
 
     def __repr__(self):
         return self.__str__()
@@ -198,11 +197,11 @@ class PythonPointToFieldFunction(PointToFieldFunction):
     Parameters
     ----------
     inputDim : positive int
-        Dimension of the input field values d
+        Dimension of the input vector d
+    outputMesh : :class:`~openturns.Mesh`
+        The output mesh
     outputDim : positive int
-        Dimension of the output vector d'
-    spatialDim : positive integer
-        Dimension of the input domain n
+        Dimension of the output field values d'
     func : a callable python object
         called on a :class:`~openturns.Field` object.
         Returns a :class:`~openturns.Field`.
@@ -211,25 +210,24 @@ class PythonPointToFieldFunction(PointToFieldFunction):
     Examples
     --------
     >>> import openturns as ot
+    >>> mesh = ot.RegularGrid(0.0, 0.1, 11)
     >>> def  myPyFunc(X):
-    ...     mesh = ot.RegularGrid(0.0, 0.1, 11)
     ...     size = 11
     ...     values = [ot.Point(X)*i for i in range(size)]
     ...     Y = ot.Field(mesh, values)
     ...     return Y
     >>> inputDim = 2
     >>> outputDim = 2
-    >>> spatialDim = 1
-    >>> myFunc = ot.PythonPointToFieldFunction(inputDim, outputDim, spatialDim, myPyFunc)
+    >>> myFunc = ot.PythonPointToFieldFunction(inputDim, mesh, outputDim, myPyFunc)
 
     Evaluation on a vector:
 
     >>> Yfield = myFunc([1.1, 2.2])
     """
-    def __new__(self, n, p, s, func=None):
+    def __new__(self, inputDim, outputMesh, outputDim, func=None):
         if func == None:
             raise RuntimeError('func not provided.')
-        instance = OpenTURNSPythonPointToFieldFunction(n, p, s)
+        instance = OpenTURNSPythonPointToFieldFunction(inputDim, outputMesh, outputDim)
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):

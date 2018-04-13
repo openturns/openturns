@@ -40,7 +40,8 @@ int main(int argc, char *argv[])
     formula.add("sin(t)");
     formula.add("cos(t)");
     SymbolicFunction myFunc(inputVars, formula);
-    InverseTrendTransform myInverseTrendFunc(myFunc);
+    RegularGrid tg(0.0, 0.1, 11);
+    InverseTrendTransform myInverseTrendFunc(myFunc, tg);
 
     fullprint << "myInverseTrendFunc=" << myInverseTrendFunc << std::endl;
     fullprint << "myInverseTrendFunc input description=" << myInverseTrendFunc.getInputDescription() << std::endl;
@@ -50,7 +51,6 @@ int main(int argc, char *argv[])
     fullprint << "myInverseTrendFunc output dimension=" << myInverseTrendFunc.getOutputDimension() << std::endl;
 
     /* Create a TimeSeries */
-    RegularGrid tg(0.0, 0.1, 11);
     Sample data(tg.getN(), 2);
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
     {

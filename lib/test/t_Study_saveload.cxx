@@ -669,7 +669,7 @@ int main(int argc, char *argv[])
       Description inputDescription(1, "x");
       Description formula(1, "2 * x + 5");
       SymbolicFunction myOneDimensionalFunction(inputDescription, formula);
-      ValueFunction myFunction(myOneDimensionalFunction);
+      ValueFunction myFunction(myOneDimensionalFunction, timeGrid);
       compositeProcess = CompositeProcess (myFunction, myARMAProcess);
     }
     study.add("compositeProcess", compositeProcess);

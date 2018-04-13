@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * FieldFunction and co knows its input/output meshes before evaluation
 
 ==== New classes ====
  * ProbabilitySimulationResult
@@ -33,6 +34,7 @@
  * Removed ExponentialCauchy, SecondOrderModel, SecondOrderImplementation
  * LowDiscrepancyExperiment to work with dependent distributions
  * Deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
+ * Deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
 
 === Python module ===
 

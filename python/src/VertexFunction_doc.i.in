@@ -53,9 +53,9 @@ Create a function :math:`h : \Rset \rightarrow \Rset` such that:
 
 Convert :math:`h` into a vertex function:
 
->>> myVertexFunction = ot.VertexFunction(h)
->>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
+>>> myVertexFunction = ot.VertexFunction(h, tg)
+>>> # Create a TimeSeries
 >>> data = ot.Sample(tg.getN(), h.getInputDimension())
 >>> for i in range(data.getSize()):
 ...     for j in range(data.getDimension()):
@@ -93,8 +93,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> h = ot.SymbolicFunction('t', 't^2')
->>> n = 1
->>> myVertexFunction = ot.VertexFunction(h)
+>>> mesh = ot.Mesh(1)
+>>> myVertexFunction = ot.VertexFunction(h, mesh)
 >>> print(myVertexFunction.getFunction())
 [t]->[t^2]"
 

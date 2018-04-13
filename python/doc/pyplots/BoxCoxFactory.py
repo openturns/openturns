@@ -27,7 +27,7 @@ myXproc = ot.GaussianProcess(myCovModel, myMesh)
 # thanks to the spatial function g
 # myXtProcess R --> R
 g = ot.SymbolicFunction(['x1'],  ['exp(x1)'])
-myDynTransform = ot.ValueFunction(g, 2)
+myDynTransform = ot.ValueFunction(g, myMesh)
 myXtProcess = ot.CompositeProcess(myDynTransform, myXproc)
 
 myField = myXtProcess.getRealization()

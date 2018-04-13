@@ -14,7 +14,7 @@ try:
     result = algo.getResult()
     projection = KarhunenLoeveProjection(result)
     # Construction based on a FieldFunction followed by a FieldToPointFunction
-    fieldFunction = ValueFunction(SymbolicFunction("x", "x"))
+    fieldFunction = ValueFunction(SymbolicFunction("x", "x"), mesh)
     # Create an instance
     myFunc = FieldToPointConnection(projection, fieldFunction)
 

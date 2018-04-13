@@ -47,13 +47,13 @@ public:
   TrendTransform();
 
   /** Parameter constructor */
-  explicit TrendTransform(const Function & function);
+  TrendTransform(const Function & function, const Mesh & mesh);
 
   /** Parameter constructor */
-  TrendTransform(const Evaluation & evaluation);
+  TrendTransform(const Evaluation & evaluation, const Mesh & mesh);
 
   /** Parameter constructor */
-  TrendTransform(const EvaluationImplementation & evaluation);
+  TrendTransform(const EvaluationImplementation & evaluation, const Mesh & mesh);
 
   /** Virtual constructor */
   virtual TrendTransform * clone() const;

@@ -60,7 +60,8 @@ Convert :math:`g` into a value function with :math:`n=1` the dimension of the
 mesh of the field on which :math:`g` will be applied:
 
 >>> n = 1
->>> myValueFunction = ot.ValueFunction(g, n)
+>>> mesh = ot.Mesh(n)
+>>> myValueFunction = ot.ValueFunction(g, mesh)
 >>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
 >>> data = ot.Sample(tg.getN(), g.getInputDimension())
@@ -100,7 +101,8 @@ Examples
 >>> import openturns as ot
 >>> g = ot.SymbolicFunction('x', 'x^2')
 >>> n = 1
->>> myValueFunction = ot.ValueFunction(g, n)
+>>> mesh = ot.Mesh(n)
+>>> myValueFunction = ot.ValueFunction(g, mesh)
 >>> print(myValueFunction.getFunction())
 [x]->[x^2]"
 

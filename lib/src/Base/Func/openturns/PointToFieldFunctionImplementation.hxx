@@ -50,6 +50,7 @@ public:
 
   /** Parameter constructor */
   PointToFieldFunctionImplementation(const UnsignedInteger inputDimension,
+                                     const Mesh & outputMesh,
                                      const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
@@ -81,7 +82,7 @@ public:
   virtual Description getOutputDescription() const;
 
   /** Accessor for the output mesh */
-  Mesh getOutputMesh() const;
+  virtual Mesh getOutputMesh() const;
 
   /** Get the i-th marginal function */
   virtual PointToFieldFunction getMarginal(const UnsignedInteger i) const;
@@ -99,6 +100,8 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
+  /** Output mesh */
+  Mesh outputMesh_;
 
   /** Dimension of the input variables */
   UnsignedInteger inputDimension_;

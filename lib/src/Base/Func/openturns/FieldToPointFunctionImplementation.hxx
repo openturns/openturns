@@ -44,10 +44,10 @@ public:
   typedef Pointer<FieldToPointFunctionImplementation> Implementation;
 
   /** Default constructor */
-  explicit FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension = 0);
+  FieldToPointFunctionImplementation();
 
   /** Parameter constructor */
-  FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension,
+  FieldToPointFunctionImplementation(const Mesh & inputMesh,
                                      const UnsignedInteger inputDimension,
                                      const UnsignedInteger outputDimension);
 
@@ -65,7 +65,10 @@ public:
   virtual Point operator() (const Field & inFld) const;
   virtual Sample operator() (const ProcessSample & inPS) const;
 
-  /** Accessor for mesh dimension */
+  /** Accessor for input mesh */
+  virtual Mesh getInputMesh() const;
+
+  /** @deprecated Accessor for mesh dimension */
   virtual UnsignedInteger getSpatialDimension() const;
 
   /** Accessor for input point dimension */
@@ -98,10 +101,10 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  /** Expected dimension of the mesh underlying the field arguments */
-  UnsignedInteger spatialDimension_;
+  /** Input mesh */
+  Mesh inputMesh_;
 
-  /** Description of the input variables */
+  /** Dimension of the input variables */
   UnsignedInteger inputDimension_;
 
   /** Description of the output variables */

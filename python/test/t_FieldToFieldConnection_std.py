@@ -8,8 +8,9 @@ TESTPREAMBLE()
 try:
     # Construction based on two functions
     # Create an instance
+    grid = RegularGrid(0.0, 0.1, 11)
     myFunc = FieldToFieldConnection(
-        ValueFunction(SymbolicFunction("x", "sin(x)")), ValueFunction(SymbolicFunction("x", "cos(x)")))
+        ValueFunction(SymbolicFunction("x", "sin(x)"), grid), ValueFunction(SymbolicFunction("x", "cos(x)"), grid))
 
     print("myFunc=", myFunc)
     # Get the input and output description
@@ -19,7 +20,6 @@ try:
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Connection on a point
-    grid = RegularGrid(0.0, 0.1, 11)
     field = Field(grid, grid.getVertices() * [2.0])
     print("field=", field)
     print("myFunc(field)=", myFunc(field))

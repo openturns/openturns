@@ -25,17 +25,17 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(FieldToPointFunction)
 
 /* Default constructor */
-FieldToPointFunction::FieldToPointFunction(const UnsignedInteger spatialDimension)
-  : TypedInterfaceObject<FieldToPointFunctionImplementation>(new FieldToPointFunctionImplementation(spatialDimension))
+FieldToPointFunction::FieldToPointFunction()
+  : TypedInterfaceObject<FieldToPointFunctionImplementation>(new FieldToPointFunctionImplementation())
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-FieldToPointFunction::FieldToPointFunction(const UnsignedInteger spatialDimension,
+FieldToPointFunction::FieldToPointFunction(const Mesh & inputMesh,
     const UnsignedInteger inputDimension,
     const UnsignedInteger outputDimension)
-  : TypedInterfaceObject<FieldToPointFunctionImplementation>(new FieldToPointFunctionImplementation(spatialDimension, inputDimension, outputDimension))
+  : TypedInterfaceObject<FieldToPointFunctionImplementation>(new FieldToPointFunctionImplementation(inputMesh, inputDimension, outputDimension))
 {
   // Nothing to do
 }
@@ -127,6 +127,12 @@ Point FieldToPointFunction::operator() (const Field & inFld) const
 Sample FieldToPointFunction::operator() (const ProcessSample & inPS) const
 {
   return getImplementation()->operator()(inPS);
+}
+
+/* Accessor for input mesh */
+Mesh FieldToPointFunction::getInputMesh() const
+{
+  return getImplementation()->getInputMesh();
 }
 
 /* Accessor for mesh dimension */

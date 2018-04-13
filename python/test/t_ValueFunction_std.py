@@ -8,7 +8,8 @@ TESTPREAMBLE()
 try:
     # Create an intance
     myFunc = SymbolicFunction("x", "x^2")
-    mySpatialFunc = ValueFunction(myFunc)
+    tg = RegularGrid(0.0, 0.2, 6)
+    mySpatialFunc = ValueFunction(myFunc, tg)
 
     print("mySpatialFunc=", mySpatialFunc)
     # Get the input and output description
@@ -21,7 +22,6 @@ try:
     print("mySpatialFunc output dimension=",
           mySpatialFunc.getOutputDimension())
     # Create a TimeSeries
-    tg = RegularGrid(0.0, 0.2, 6)
     data = Sample(tg.getN(), myFunc.getInputDimension())
     for i in range(data.getSize()):
         for j in range(data.getDimension()):

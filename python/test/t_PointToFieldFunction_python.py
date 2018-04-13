@@ -6,11 +6,12 @@ import sys
 
 TESTPREAMBLE()
 
+mesh = RegularGrid(0.0, 0.1, 11)
 
 class FUNC(OpenTURNSPythonPointToFieldFunction):
 
     def __init__(self):
-        super(FUNC, self).__init__(2, 2)
+        super(FUNC, self).__init__(2, mesh, 2)
         self.setInputDescription(['R', 'S'])
         self.setOutputDescription(['T', 'U'])
         self.mesh_ = RegularGrid(0.0, 0.1, 11)
@@ -22,8 +23,8 @@ class FUNC(OpenTURNSPythonPointToFieldFunction):
         return Y
 
 F = FUNC()
-print(('in_dim=' + str(F.getInputDimension())
-       + ' out_dim=' + str(F.getOutputDimension())))
+print('in_dim=' + str(F.getInputDimension())
+       + ' out_dim=' + str(F.getOutputDimension()))
 
 print((F((10.0, 5.0))))
 

@@ -44,7 +44,7 @@ FieldToFieldConnection::FieldToFieldConnection()
 /* Parameters constructor */
 FieldToFieldConnection::FieldToFieldConnection(const FieldFunction & leftFieldFunction,
     const FieldFunction & rightFieldFunction)
-  : FieldFunctionImplementation(rightFieldFunction.getSpatialDimension(), rightFieldFunction.getInputDimension(), leftFieldFunction.getOutputDimension())
+  : FieldFunctionImplementation(rightFieldFunction.getInputMesh(), rightFieldFunction.getInputDimension(), leftFieldFunction.getOutputMesh(), leftFieldFunction.getOutputDimension())
   , isFieldFunctionComposition_(true)
   , leftFieldFunction_(leftFieldFunction)
   , rightFieldFunction_(rightFieldFunction)
@@ -60,7 +60,7 @@ FieldToFieldConnection::FieldToFieldConnection(const FieldFunction & leftFieldFu
 /* Parameters constructor */
 FieldToFieldConnection::FieldToFieldConnection(const PointToFieldFunction & pointToFieldFunction,
     const FieldToPointFunction & fieldToPointFunction)
-  : FieldFunctionImplementation(fieldToPointFunction.getSpatialDimension(), fieldToPointFunction.getInputDimension(), fieldToPointFunction.getOutputDimension())
+  : FieldFunctionImplementation(fieldToPointFunction.getInputMesh(), fieldToPointFunction.getInputDimension(), pointToFieldFunction.getOutputMesh(), fieldToPointFunction.getOutputDimension())
   , isFieldFunctionComposition_(false)
   , leftFieldFunction_()
   , rightFieldFunction_()

@@ -45,7 +45,7 @@ PointToFieldConnection::PointToFieldConnection()
 /* Parameters constructor */
 PointToFieldConnection::PointToFieldConnection(const FieldFunction & fieldFunction,
     const PointToFieldFunction & pointToFieldFunction)
-  : PointToFieldFunctionImplementation(pointToFieldFunction.getInputDimension(), fieldFunction.getOutputDimension())
+  : PointToFieldFunctionImplementation(pointToFieldFunction.getInputDimension(), fieldFunction.getOutputMesh(), fieldFunction.getOutputDimension())
   , startByPointToFieldFunction_(true)
   , function_()
   , fieldFunction_(fieldFunction)
@@ -60,7 +60,7 @@ PointToFieldConnection::PointToFieldConnection(const FieldFunction & fieldFuncti
 /* Parameters constructor */
 PointToFieldConnection::PointToFieldConnection(const PointToFieldFunction & pointToFieldFunction,
     const Function & function)
-  : PointToFieldFunctionImplementation(function.getInputDimension(), pointToFieldFunction.getOutputDimension())
+  : PointToFieldFunctionImplementation(function.getInputDimension(), pointToFieldFunction.getOutputMesh(), pointToFieldFunction.getOutputDimension())
   , startByPointToFieldFunction_(false)
   , function_(function)
   , fieldFunction_()

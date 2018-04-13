@@ -11,7 +11,8 @@ try:
     inputVars = Description(["t"])
     formula = Description(["sin(t)", "cos(t)"])
     myFunc = SymbolicFunction(inputVars, formula)
-    myTrendFunc = TrendTransform(myFunc)
+    tg = RegularGrid(0.0, 0.1, 11)
+    myTrendFunc = TrendTransform(myFunc, tg)
 
     print("myTrendFunc=", myTrendFunc)
     # Get the input description and dimension
@@ -22,7 +23,6 @@ try:
           myTrendFunc.getOutputDescription())
     print("myTrendFunc output dimension=", myTrendFunc.getOutputDimension())
     # Create a TimeSeries
-    tg = RegularGrid(0.0, 0.1, 11)
     data = Sample(tg.getN(), formula.getSize())
     for i in range(data.getSize()):
         for j in range(data.getDimension()):

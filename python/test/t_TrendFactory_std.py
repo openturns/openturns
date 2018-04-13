@@ -51,7 +51,7 @@ try:
 
     # We make a trend transform to the time series
     # We get a time series which contains values of time
-    myTransformFunction = TrendTransform(myFunction)
+    myTransformFunction = TrendTransform(myFunction, timeGrid)
     myTimeSeries = TimeSeries(myTransformFunction(realization))
     print("myTimeSeries = ", myTimeSeries)
 

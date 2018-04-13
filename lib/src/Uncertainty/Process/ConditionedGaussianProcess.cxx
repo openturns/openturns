@@ -105,7 +105,7 @@ void ConditionedGaussianProcess::initialize()
   // Evaluation of the trend part (evaluation once)
   trendEvaluationMesh_ = krigingEvaluation(mesh_.getVertices());
   // Set the trend function
-  trend_ = TrendTransform(krigingEvaluation);
+  trend_ = TrendTransform(krigingEvaluation, mesh_);
   // Set descriptions
   trend_.setInputDescription( Description::BuildDefault(getInputDimension(), "x"));
   trend_.setOutputDescription( Description::BuildDefault(getOutputDimension(), "y"));

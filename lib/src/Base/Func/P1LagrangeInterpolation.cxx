@@ -35,8 +35,6 @@ static const Factory<P1LagrangeInterpolation> Factory_P1LagrangeInterpolation;
 /* Default constructor */
 P1LagrangeInterpolation::P1LagrangeInterpolation()
   : FieldFunctionImplementation()
-  , inputMesh_()
-  , outputMesh_()
   , enclosingSimplex_()
   , nearestNeighbour_()
   , barycentricCoordinates_()
@@ -47,9 +45,7 @@ P1LagrangeInterpolation::P1LagrangeInterpolation()
 
 /* Parameters constructor */
 P1LagrangeInterpolation::P1LagrangeInterpolation(const Mesh & inputMesh, const Mesh & outputMesh, const UnsignedInteger dimension)
-  : FieldFunctionImplementation(inputMesh.getDimension(), dimension, dimension)
-  , inputMesh_(inputMesh)
-  , outputMesh_(outputMesh)
+  : FieldFunctionImplementation(inputMesh, dimension, outputMesh, dimension)
   , enclosingSimplex_(inputMesh.getVertices(), inputMesh.getSimplices())
   , nearestNeighbour_(inputMesh.getVertices())
   , barycentricCoordinates_()
@@ -65,9 +61,7 @@ P1LagrangeInterpolation::P1LagrangeInterpolation(const Mesh & inputMesh,
     const UnsignedInteger dimension,
     const EnclosingSimplexAlgorithm & enclosingSimplex,
     const NearestNeighbourAlgorithm & nearestNeighbour)
-  : FieldFunctionImplementation(inputMesh.getDimension(), dimension, dimension)
-  , inputMesh_(inputMesh)
-  , outputMesh_(outputMesh)
+  : FieldFunctionImplementation(inputMesh, dimension, outputMesh, dimension)
   , enclosingSimplex_(enclosingSimplex.getImplementation()->emptyClone())
   , nearestNeighbour_(nearestNeighbour.getImplementation()->emptyClone())
   , barycentricCoordinates_()
@@ -83,18 +77,6 @@ P1LagrangeInterpolation::P1LagrangeInterpolation(const Mesh & inputMesh,
 P1LagrangeInterpolation * P1LagrangeInterpolation::clone() const
 {
   return new P1LagrangeInterpolation(*this);
-}
-
-/* Mesh accessors */
-Mesh P1LagrangeInterpolation::getInputMesh() const
-{
-  return inputMesh_;
-}
-
-Mesh P1LagrangeInterpolation::getOutputMesh(const Mesh & inputMesh) const
-{
-  if (inputMesh != inputMesh_) throw InvalidArgumentException(HERE) << "Error: input mesh is not the one used when building P1LagrangeInterpolation";
-  return outputMesh_;
 }
 
 /* Field dimension accessor */
@@ -148,9 +130,10 @@ String P1LagrangeInterpolation::__str__( const String & offset ) const
 /* Compute sparse projection matrix */
 void P1LagrangeInterpolation::computeProjection()
 {
+  const UnsignedInteger spatialDimension = getInputMesh().getDimension();
   const UnsignedInteger outputSize = outputMesh_.getVerticesNumber();
-  barycentricCoordinates_ = Sample(outputSize, 1 + spatialDimension_);
-  neighbours_ = IndicesCollection(outputSize, 1 + spatialDimension_);
+  barycentricCoordinates_ = Sample(outputSize, 1 + spatialDimension);
+  neighbours_ = IndicesCollection(outputSize, 1 + spatialDimension);
 
   const Sample outputVertices(outputMesh_.getVertices());
   const Indices simplexIndices = enclosingSimplex_.query(outputVertices);
@@ -168,9 +151,9 @@ void P1LagrangeInterpolation::computeProjection()
     nearestPointIndices = nearestNeighbour_.query(outputVertices.select(outside));
   }
 
-  Point coordinates(spatialDimension_ + 1);
+  Point coordinates(spatialDimension + 1);
   UnsignedInteger counterOutside = 0;
-  Collection< std::pair<UnsignedInteger, Scalar> > neighbourAndCoefficient(1 + spatialDimension_);
+  Collection< std::pair<UnsignedInteger, Scalar> > neighbourAndCoefficient(1 + spatialDimension);
   const IndicesCollection simplices(inputMesh_.getSimplices());
   for(UnsignedInteger i = 0; i < outputSize; ++i)
   {
@@ -180,7 +163,7 @@ void P1LagrangeInterpolation::computeProjection()
       const UnsignedInteger nearest = nearestPointIndices[counterOutside];
       // All other coefficients are zero, but we set all indices to the same
       // point in order to avoid memory gaps during matrix-matrix multiplication
-      for (UnsignedInteger j = 0; j <= spatialDimension_; ++j)
+      for (UnsignedInteger j = 0; j <= spatialDimension; ++j)
         neighbours_(i, j) = nearest;
       ++counterOutside;
     }
@@ -192,13 +175,13 @@ void P1LagrangeInterpolation::computeProjection()
       }
       IndicesCollection::const_iterator cit = simplices.cbegin_at(simplexIndices[i]);
       // Points are sorted to avoid memory gaps during matrix-matrix multiplication
-      for (UnsignedInteger j = 0; j <= spatialDimension_; ++j, ++cit)
+      for (UnsignedInteger j = 0; j <= spatialDimension; ++j, ++cit)
       {
         neighbourAndCoefficient[j].first = *cit;
         neighbourAndCoefficient[j].second = coordinates[j];
       }
       std::sort(neighbourAndCoefficient.begin(), neighbourAndCoefficient.end());
-      for (UnsignedInteger j = 0; j <= spatialDimension_; ++j)
+      for (UnsignedInteger j = 0; j <= spatialDimension; ++j)
       {
         neighbours_(i, j) = neighbourAndCoefficient[j].first;
         barycentricCoordinates_(i, j) = neighbourAndCoefficient[j].second;
@@ -215,10 +198,11 @@ Field P1LagrangeInterpolation::operator()(const Field & field) const
   const UnsignedInteger outputSize = outputMesh_.getVerticesNumber();
   const Sample values(field.getValues());
   Sample result(outputSize, dimension);
+  const UnsignedInteger spatialDimension = getInputMesh().getDimension();
   for(UnsignedInteger i = 0; i < outputSize; ++i)
   {
     IndicesCollection::const_iterator cit = neighbours_.cbegin_at(i);
-    for (UnsignedInteger j = 0; j <= spatialDimension_; ++j, ++cit)
+    for (UnsignedInteger j = 0; j <= spatialDimension; ++j, ++cit)
     {
       const UnsignedInteger neighbour = *cit;
       const Scalar alpha = barycentricCoordinates_(i, j);
@@ -235,8 +219,6 @@ Field P1LagrangeInterpolation::operator()(const Field & field) const
 void P1LagrangeInterpolation::save(Advocate & adv) const
 {
   FieldFunctionImplementation::save(adv);
-  adv.saveAttribute("inputMesh_", inputMesh_);
-  adv.saveAttribute("outputMesh_", outputMesh_);
   adv.saveAttribute("enclosingSimplex_", *(enclosingSimplex_.getImplementation()->emptyClone()));
   adv.saveAttribute("nearestNeighbour_", *(nearestNeighbour_.getImplementation()->emptyClone()));
 }
@@ -245,8 +227,6 @@ void P1LagrangeInterpolation::save(Advocate & adv) const
 void P1LagrangeInterpolation::load(Advocate & adv)
 {
   FieldFunctionImplementation::load(adv);
-  adv.loadAttribute("inputMesh_", inputMesh_);
-  adv.loadAttribute("outputMesh_", outputMesh_);
   adv.loadAttribute("enclosingSimplex_", enclosingSimplex_);
   adv.loadAttribute("nearestNeighbour_", nearestNeighbour_);
   enclosingSimplex_.setVerticesAndSimplices(inputMesh_.getVertices(), inputMesh_.getSimplices());

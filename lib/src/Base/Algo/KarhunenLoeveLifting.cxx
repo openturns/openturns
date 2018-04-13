@@ -40,7 +40,7 @@ KarhunenLoeveLifting::KarhunenLoeveLifting()
 
 /* Parameter constructor */
 KarhunenLoeveLifting::KarhunenLoeveLifting(const KarhunenLoeveResult & result)
-  : PointToFieldFunctionImplementation(result.getEigenValues().getSize(), result.getModesAsProcessSample().getDimension())
+  : PointToFieldFunctionImplementation(result.getEigenValues().getSize(), result.getModesAsProcessSample().getMesh(), result.getModesAsProcessSample().getDimension())
   , result_(result)
 {
   // Set the description

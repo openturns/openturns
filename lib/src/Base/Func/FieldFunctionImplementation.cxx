@@ -30,9 +30,8 @@ CLASSNAMEINIT(FieldFunctionImplementation)
 static const Factory<FieldFunctionImplementation> Factory_FieldFunctionImplementation;
 
 /* Default constructor */
-FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger spatialDimension)
+FieldFunctionImplementation::FieldFunctionImplementation()
   : PersistentObject()
-  , spatialDimension_(spatialDimension)
   , inputDimension_(0)
   , outputDimension_(0)
   , inputDescription_()
@@ -43,11 +42,13 @@ FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger s
 }
 
 /* Default constructor */
-FieldFunctionImplementation::FieldFunctionImplementation(const UnsignedInteger spatialDimension,
+FieldFunctionImplementation::FieldFunctionImplementation(const Mesh & inputMesh,
     const UnsignedInteger inputDimension,
+    const Mesh & outputMesh,
     const UnsignedInteger outputDimension)
   : PersistentObject()
-  , spatialDimension_(spatialDimension)
+  , inputMesh_(inputMesh)
+  , outputMesh_(outputMesh)
   , inputDimension_(inputDimension)
   , outputDimension_(outputDimension)
   , inputDescription_(Description::BuildDefault(inputDimension, "x"))
@@ -123,12 +124,17 @@ Description FieldFunctionImplementation::getOutputDescription() const
   return outputDescription_;
 }
 
-/* Accessor for the output mesh associated with the given input mesh */
-Mesh FieldFunctionImplementation::getOutputMesh(const Mesh & inputMesh) const
+/* Accessor for the input mesh */
+Mesh FieldFunctionImplementation::getInputMesh() const
 {
-  return inputMesh;
+  return inputMesh_;
 }
 
+/* Accessor for the output mesh */
+Mesh FieldFunctionImplementation::getOutputMesh() const
+{
+  return outputMesh_;
+}
 
 /* Operator () */
 Point FieldFunctionImplementation::operator() (const Scalar timeStamp,
@@ -152,7 +158,7 @@ Field FieldFunctionImplementation::operator() (const Field & inFld) const
 ProcessSample FieldFunctionImplementation::operator() (const ProcessSample & inPS) const
 {
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
-  if (inPS.getMesh().getDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getSpatialDimension() << ", got " << inPS.getMesh().getDimension();
+  if (inPS.getMesh().getDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getInputMesh().getDimension() << ", got " << inPS.getMesh().getDimension();
   const UnsignedInteger size = inPS.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
   Field field0(operator()(inPS.getField(0)));
@@ -168,7 +174,8 @@ ProcessSample FieldFunctionImplementation::operator() (const ProcessSample & inP
 /* Accessor for mesh dimension */
 UnsignedInteger FieldFunctionImplementation::getSpatialDimension() const
 {
-  return spatialDimension_;
+  LOGWARN(OSS() << "FieldFunction::getSpatialDimension is deprecated");
+  return inputMesh_.getDimension();
 }
 
 /* Accessor for input point dimension */
@@ -193,7 +200,8 @@ UnsignedInteger FieldFunctionImplementation::getCallsNumber() const
 void FieldFunctionImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "spatialDimension_", spatialDimension_ );
+  adv.saveAttribute( "inputMesh_", inputMesh_ );
+  adv.saveAttribute( "outputMesh_", outputMesh_ );
   adv.saveAttribute( "inputDimension_", inputDimension_ );
   adv.saveAttribute( "outputDimension_", outputDimension_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
@@ -205,7 +213,8 @@ void FieldFunctionImplementation::save(Advocate & adv) const
 void FieldFunctionImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "spatialDimension_", spatialDimension_ );
+  adv.loadAttribute( "inputMesh_", inputMesh_ );
+  adv.loadAttribute( "outputMesh_", outputMesh_ );
   adv.loadAttribute( "inputDimension_", inputDimension_ );
   adv.loadAttribute( "outputDimension_", outputDimension_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );

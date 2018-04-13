@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
     // Construction based on two functions
     {
       /* Create an instance */
-      FieldToFieldConnection myFunc(ValueFunction(SymbolicFunction("x", "sin(x)")), ValueFunction(SymbolicFunction("x", "cos(x)")));
+      RegularGrid grid(0.0, 0.1, 11);
+      FieldToFieldConnection myFunc(ValueFunction(SymbolicFunction("x", "sin(x)"), grid), ValueFunction(SymbolicFunction("x", "cos(x)"), grid));
 
       fullprint << "myFunc=" << myFunc << std::endl;
       /* Get the input and output description */
@@ -44,7 +45,6 @@ int main(int argc, char *argv[])
       fullprint << "myFunc input dimension=" << myFunc.getInputDimension() << std::endl;
       fullprint << "myFunc output dimension=" << myFunc.getOutputDimension() << std::endl;
       /* Connection on a point */
-      RegularGrid grid(0.0, 0.1, 11);
       Field field(grid, grid.getVertices() * Point(1, 2.0));
       fullprint << "field=" << field << std::endl;
       fullprint << "myFunc(field)=" << myFunc(field) << std::endl;

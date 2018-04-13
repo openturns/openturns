@@ -36,7 +36,7 @@ try:
 
     # Construction based on a PointToFieldFunction followed by a
     # FieldToPointFunction
-    fieldFunction = ValueFunction(SymbolicFunction("x", "x"))
+    fieldFunction = ValueFunction(SymbolicFunction("x", "x"), mesh)
     # Create an instance
     myFunc = PointToFieldConnection(fieldFunction, lifting)
 

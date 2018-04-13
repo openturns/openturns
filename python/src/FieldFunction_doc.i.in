@@ -12,8 +12,8 @@ OT_FieldFunction_getInputDimension_doc
 OT_FieldFunction_getMarginal_doc
 %feature("docstring") OT::FieldFunction::getOutputMesh
 OT_FieldFunction_getOutputMesh_doc
-%feature("docstring") OT::FieldFunction::getSpatialDimension
-OT_FieldFunction_getSpatialDimension_doc
+%feature("docstring") OT::FieldFunction::getInputMesh
+OT_FieldFunction_getInputMesh_doc
 %feature("docstring") OT::FieldFunction::getOutputDescription
 OT_FieldFunction_getOutputDescription_doc
 %feature("docstring") OT::FieldFunction::getOutputDimension

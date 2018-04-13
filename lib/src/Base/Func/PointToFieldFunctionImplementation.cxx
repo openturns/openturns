@@ -33,6 +33,7 @@ static const Factory<PointToFieldFunctionImplementation> Factory_PointToFieldFun
 /* Default constructor */
 PointToFieldFunctionImplementation::PointToFieldFunctionImplementation()
   : PersistentObject()
+  , outputMesh_(0)
   , inputDimension_(0)
   , outputDimension_(0)
   , inputDescription_()
@@ -44,8 +45,10 @@ PointToFieldFunctionImplementation::PointToFieldFunctionImplementation()
 
 /* Parameter constructor */
 PointToFieldFunctionImplementation::PointToFieldFunctionImplementation(const UnsignedInteger inputDimension,
+    const Mesh & outputMesh,
     const UnsignedInteger outputDimension)
   : PersistentObject()
+  , outputMesh_(outputMesh)
   , inputDimension_(inputDimension)
   , outputDimension_(outputDimension)
   , inputDescription_(Description::BuildDefault(inputDimension, "x"))
@@ -126,7 +129,7 @@ Description PointToFieldFunctionImplementation::getOutputDescription() const
 /* Accessor for the output mesh */
 Mesh PointToFieldFunctionImplementation::getOutputMesh() const
 {
-  throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::getOutputMesh()";
+  return outputMesh_;
 }
 
 
@@ -176,6 +179,7 @@ void PointToFieldFunctionImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "inputDimension_", inputDimension_ );
   adv.saveAttribute( "outputDimension_", outputDimension_ );
+  adv.saveAttribute( "outputMesh_", outputMesh_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
@@ -187,6 +191,7 @@ void PointToFieldFunctionImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputDimension_", inputDimension_ );
   adv.loadAttribute( "outputDimension_", outputDimension_ );
+  adv.loadAttribute( "outputMesh_", outputMesh_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   UnsignedInteger callsNumber;

@@ -85,6 +85,19 @@ PythonPointToFieldFunction::PythonPointToFieldFunction(PyObject * pyCallable)
     setOutputDescription(convert< _PySequence_, Description >(descOut.get()));
   }
   else setOutputDescription(Description::BuildDefault(outputDimension, "y"));
+
+  ScopedPyObjectPointer outputMesh(PyObject_CallMethod ( pyObj_,
+                                  const_cast<char *>("getOutputMesh"),
+                                  const_cast<char *>("()")));
+  void * ptr = 0;
+  if (SWIG_IsOK(SWIG_ConvertPtr(outputMesh.get(), &ptr, SWIG_TypeQuery("OT::Mesh *"), 0)))
+  {
+    outputMesh_ = *reinterpret_cast< OT::Mesh * >(ptr);
+  }
+  else
+  {
+    throw InvalidArgumentException(HERE) << "getOutputMesh() does not return a Mesh";
+  }
 }
 
 /* Virtual constructor */

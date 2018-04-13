@@ -85,6 +85,32 @@ PythonFieldFunction::PythonFieldFunction(PyObject * pyCallable)
     setOutputDescription(convert< _PySequence_, Description >(descOut.get()));
   }
   else setOutputDescription(Description::BuildDefault(outputDimension, "y"));
+
+
+  ScopedPyObjectPointer inputMesh(PyObject_CallMethod ( pyObj_,
+                                  const_cast<char *>("getInputMesh"),
+                                  const_cast<char *>("()")));
+  void * ptr = 0;
+  if (SWIG_IsOK(SWIG_ConvertPtr(inputMesh.get(), &ptr, SWIG_TypeQuery("OT::Mesh *"), 0)))
+  {
+    inputMesh_ = *reinterpret_cast< OT::Mesh * >(ptr);
+  }
+  else
+  {
+    throw InvalidArgumentException(HERE) << "getInputMesh() does not return a Mesh";
+  }
+
+  ScopedPyObjectPointer outputMesh(PyObject_CallMethod ( pyObj_,
+                                    const_cast<char *>("getOutputMesh"),
+                                    const_cast<char *>("()")));
+  if (SWIG_IsOK(SWIG_ConvertPtr(outputMesh.get(), &ptr, SWIG_TypeQuery("OT::Mesh *"), 0)))
+  {
+    outputMesh_ = *reinterpret_cast< OT::Mesh * >(ptr);
+  }
+  else
+  {
+    throw InvalidArgumentException(HERE) << "getOutputMesh() does not return a Mesh";
+  }
 }
 
 /* Virtual constructor */
@@ -141,12 +167,12 @@ String PythonFieldFunction::__str__(const String & offset) const
 Field PythonFieldFunction::operator() (const Field & inF) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inputDimension != inF.getOutputDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect dimension. Got " << inF.getOutputDimension() << ". Expected " << getInputDimension();
+  if (inputDimension != inF.getValues().getDimension())
+    throw InvalidDimensionException(HERE) << "Input field has incorrect dimension. Got " << inF.getValues().getDimension() << ". Expected " << inputDimension;
 
-  const UnsignedInteger spatialDimension = getSpatialDimension();
-  if (spatialDimension != inF.getInputDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect spatial dimension. Got " << inF.getInputDimension() << ". Expected " << getSpatialDimension();
+  const UnsignedInteger spatialDimension = getInputMesh().getDimension();
+  if (spatialDimension != inF.getMesh().getDimension())
+    throw InvalidDimensionException(HERE) << "Input field has incorrect input mesh dimension. Got " << inF.getInputDimension() << ". Expected " << spatialDimension;
 
   callsNumber_.increment();
 
@@ -167,21 +193,11 @@ Field PythonFieldFunction::operator() (const Field & inF) const
     throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a Field";
   }
 
-  if (p_outF->getOutputDimension() != getOutputDimension())
+  if (p_outF->getValues().getDimension() != getOutputDimension())
   {
-    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getOutputDimension() << ". Expected " << getOutputDimension();
+    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getValues().getDimension() << ". Expected " << getOutputDimension();
   }
   return *p_outF;
-}
-
-/* Accessor for mesh dimension */
-UnsignedInteger PythonFieldFunction::getSpatialDimension() const
-{
-  ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                               const_cast<char *>("getSpatialDimension"),
-                               const_cast<char *>("()")));
-  UnsignedInteger dim = convert< _PyInt_, UnsignedInteger >(result.get());
-  return dim;
 }
 
 

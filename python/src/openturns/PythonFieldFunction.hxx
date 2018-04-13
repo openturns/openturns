@@ -64,9 +64,6 @@ public:
   using FieldFunctionImplementation::operator();
   virtual Field operator() (const Field & inF) const;
 
-  /** Accessor for mesh dimension */
-  virtual UnsignedInteger getSpatialDimension() const;
-
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 
