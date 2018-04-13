@@ -23,7 +23,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   ot_install_swig_file (${SOURCEFILE})
   if (${ARGC} GREATER 2)
     set (SWIG_MODULE_${MODULENAME}_EXTRA_DEPS ${ARGN})
-    list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS openturns/PythonWrappingFunctions.hxx)
+    list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS generate_docstrings openturns/PythonWrappingFunctions.hxx)
   endif ()
 
   set (swig_other_sources)
@@ -57,7 +57,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
   endif ()
 
-  add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME} generate_swig_runtime generate_docstrings)
+  add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME} generate_swig_runtime)
   swig_link_libraries (${MODULENAME} OT)
 
   if (LINK_PYTHON_LIBRARY)
