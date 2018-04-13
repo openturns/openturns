@@ -66,11 +66,6 @@ public:
   /** Constructor from evaluation implementation */
   Function(const EvaluationImplementation & evaluation);
 
-  /** @deprecated */
-  Function(const Description & inputVariablesNames,
-           const Description & outputVariablesNames,
-           const Description & formulas);
-
 #ifndef SWIG
   /** Constructor from evaluation */
   explicit Function(const Evaluation & evaluation);
@@ -80,9 +75,6 @@ public:
            const Gradient & gradient,
            const Hessian  & hessian);
 #endif
-
-  /** @deprecated */
-  Function(const Field & field);
 
   /** Comparison operator */
   Bool operator ==(const Function & other) const;
@@ -130,35 +122,15 @@ public:
 
   Field operator() (const Field & inTS) const;
 
-  /* @deprecated */
-  Point operator() (const Point & inP,
-                    const Point & parameter);
-
-  /* @deprecated */
-  Sample operator() (const Point & point,
-                     const Sample & parameters);
-
-
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   Matrix gradient(const Point & inP) const;
 
-  /* @deprecated */
-  Matrix gradient(const Point & inP,
-                  const Point & parameters);
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   SymmetricTensor hessian(const Point & inP) const;
 
-  /* @deprecated */
-  SymmetricTensor hessian(const Point & inP,
-                          const Point & parameters);
-
   /** Gradient according to the marginal parameters */
   virtual Matrix parameterGradient(const Point & inP) const;
-
-  /* @deprecated */
-  virtual Matrix parameterGradient(const Point & inP,
-                                   const Point & parameters);
 
   /** Parameters value accessor */
   virtual Point getParameter() const;

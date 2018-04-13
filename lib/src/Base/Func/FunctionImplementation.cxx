@@ -23,13 +23,6 @@
 #include "openturns/NoEvaluation.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicEvaluation.hxx"
-#include "openturns/SymbolicGradient.hxx"
-#include "openturns/SymbolicHessian.hxx"
-#endif
-#include "openturns/MemoizeEvaluation.hxx"
-#include "openturns/DatabaseEvaluation.hxx"
 #include "openturns/ProductFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
@@ -38,7 +31,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Os.hxx"
-#include "openturns/SymbolicFunction.hxx"
 
 #undef GetClassName
 
@@ -58,62 +50,6 @@ FunctionImplementation::FunctionImplementation()
   , useDefaultHessianImplementation_(false)
 {
   // Nothing to do
-}
-
-/* Analytical formula constructor */
-FunctionImplementation::FunctionImplementation(const Description & inputVariablesNames,
-    const Description & outputVariablesNames,
-    const Description & formulas)
-  : PersistentObject()
-  , evaluation_(new NoEvaluation)
-  , gradient_(new NoGradient)
-  , hessian_(new NoHessian)
-  , useDefaultGradientImplementation_(true)
-  , useDefaultHessianImplementation_(true)
-{
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  // Try to build an analytical gradient
-  Pointer<SymbolicEvaluation> symbolicEvaluation(new SymbolicEvaluation(inputVariablesNames, outputVariablesNames, formulas));
-  evaluation_ = symbolicEvaluation.get();
-  try
-  {
-    gradient_ = new SymbolicGradient(symbolicEvaluation);
-    useDefaultGradientImplementation_ = false;
-  }
-  catch(...)
-  {
-    LOGWARN("Cannot compute an analytical gradient, using finite differences instead.");
-    gradient_ = new CenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
-  }
-  try
-  {
-    hessian_ = new SymbolicHessian(symbolicEvaluation);
-    useDefaultHessianImplementation_ = false;
-  }
-  catch(...)
-  {
-    LOGWARN("Cannot compute an analytical hessian, using finite differences instead.");
-    hessian_ = new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
-  }
-#else
-  throw NotYetImplementedException(HERE) << "In FunctionImplementation::FunctionImplementation(const Description & inputVariablesNames, const Description & outputVariablesNames, const Description & formulas): Analytical function requires muParser or ExprTk";
-#endif
-}
-
-
-/* Constructor from a wrapper file */
-FunctionImplementation::FunctionImplementation(const Sample & inputSample,
-    const Sample & outputSample)
-  : PersistentObject()
-  , gradient_(new NoGradient)
-  , hessian_(new NoHessian)
-  , useDefaultGradientImplementation_(false)
-  , useDefaultHessianImplementation_(false)
-{
-  MemoizeEvaluation * p_evaluation = new MemoizeEvaluation(new DatabaseEvaluation( inputSample, outputSample ));
-  p_evaluation->enableCache();
-  p_evaluation->disableHistory();
-  evaluation_ = p_evaluation;
 }
 
 
@@ -276,15 +212,6 @@ Matrix FunctionImplementation::parameterGradient(const Point & inP) const
   return evaluation_.parameterGradient(inP);
 }
 
-/* Gradient according to the marginal parameters */
-Matrix FunctionImplementation::parameterGradient(const Point & inP,
-    const Point & parameter)
-{
-  LOGWARN("FunctionImplementation::parameterGradient(inP,parameter) is deprecated, use setParameter(parameter) and parameterGradient(inP)");
-  setParameter(parameter);
-  return evaluation_.parameterGradient(inP);
-}
-
 /* Parameters value accessor */
 Point FunctionImplementation::getParameter() const
 {
@@ -313,21 +240,6 @@ void FunctionImplementation::setParameterDescription(const Description & descrip
 Point FunctionImplementation::operator() (const Point & inP) const
 {
   return evaluation_.operator()(inP);
-}
-
-Point FunctionImplementation::operator() (const Point & inP,
-    const Point & parameter)
-{
-  LOGWARN("FunctionImplementation::operator()(inP,parameter) is deprecated, use setParameter(parameter) and operator()(inP)");
-  setParameter(parameter);
-  return evaluation_.operator()(inP);
-}
-
-Sample FunctionImplementation::operator() (const Point & inP,
-    const Sample & parameters)
-{
-  // Deprecated, but already issues a LOGWARN
-  return evaluation_.operator()(inP, parameters);
 }
 
 /* Operator () */
@@ -367,15 +279,6 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
   } // Usual gradient failed
 }
 
-Matrix FunctionImplementation::gradient(const Point & inP,
-                                        const Point & parameters)
-{
-  if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
-  LOGWARN("FunctionImplementation::gradient()(inP,parameters) is deprecated, use setParameter(parameters) and gradient(inP)");
-  setParameter(parameters);
-  return gradient_.gradient(inP);
-}
-
 /* Method hessian() returns the symetric tensor of the function at point */
 SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
 {
@@ -399,15 +302,6 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
       throw InternalException(HERE) << "Error: cannot compute hessian at point=" << inP;
     }
   } // Usual gradient failed
-}
-
-SymmetricTensor FunctionImplementation::hessian(const Point & inP,
-    const Point & parameters)
-{
-  if (useDefaultHessianImplementation_) LOGWARN(OSS() << "You are using a default implementation for the hessian. Be careful, your computation can be severely wrong!");
-  LOGWARN("FunctionImplementation::hessian()(inP,parameters) is deprecated, use setParameter(parameters) and hessian(inP)");
-  setParameter(parameters);
-  return hessian_.hessian(inP);
 }
 
 /* Accessor for parameter dimension */

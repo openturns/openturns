@@ -138,7 +138,8 @@ Scalar MCMC::computeLogLikelihood(const Point & xi) const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     // retrieve model data if available
-    const Point zi(model_(xi, parameters_[i]));
+    model_.setParameter(parameters_[i]);
+    const Point zi(model_(xi));
 
     Distribution pI(conditional_);
     pI.setParameter(zi);

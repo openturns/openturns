@@ -27,10 +27,8 @@
 #include "openturns/Description.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CorrelationMatrix.hxx"
-#include "openturns/SquareMatrix.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/ResourceMap.hxx"
 
@@ -782,12 +780,8 @@ public:
 
   SampleImplementation operator * (const Scalar scaling) const;
   SampleImplementation operator * (const Point & scaling) const;
-  /** @deprecated */
-  SampleImplementation operator * (const SquareMatrix & scaling) const;
   SampleImplementation operator / (const Scalar scaling) const;
   SampleImplementation operator / (const Point & scaling) const;
-  /** @deprecated */
-  SampleImplementation operator / (const SquareMatrix & scaling) const;
 
   /**
    * Scale realizations componentwise in-place
@@ -795,12 +789,8 @@ public:
 
   SampleImplementation & operator *= (const Scalar scaling);
   SampleImplementation & operator *= (const Point & scaling);
-  /** @deprecated */
-  SampleImplementation & operator *= (const SquareMatrix & scaling);
   SampleImplementation & operator /= (const Scalar scaling);
   SampleImplementation & operator /= (const Point & scaling);
-  /** @deprecated */
-  SampleImplementation & operator /= (const SquareMatrix & scaling);
 
   /** Save to CSV file */
   void exportToCSVFile(const FileName & filename,
@@ -829,8 +819,6 @@ private:
 
   void translate(const Point & translation);
   void scale(const Point & scaling);
-  /** @deprecated */
-  void scale(const SquareMatrix & scaling);
 
   /** The size of the sample */
   UnsignedInteger size_;

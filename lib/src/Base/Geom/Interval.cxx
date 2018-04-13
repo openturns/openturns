@@ -189,13 +189,6 @@ Scalar Interval::getVolume() const
   return volume;
 }
 
-/* Get the numerical volume of the domain */
-Scalar Interval::computeVolume() const
-{
-  LOGWARN(OSS() << "Interval::computeVolume is deprecated in favor of getVolume.");
-  return getVolume();
-}
-
 /* Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
 Bool Interval::numericallyContains(const Point & point) const
 {

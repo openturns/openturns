@@ -70,15 +70,6 @@ Function::Function(const EvaluationImplementation & evaluation)
 }
 
 
-/* Analytical formula constructor */
-Function::Function(const Description & inputVariablesNames,
-                   const Description & outputVariablesNames,
-                   const Description & formulas)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(inputVariablesNames, outputVariablesNames, formulas))
-{
-  LOGWARN(OSS() << "Function(Description, Description, Description) is deprecated in favor of SymbolicFunction.");
-}
-
 /* Constructor from evaluation */
 Function::Function(const Evaluation & evaluation)
   : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(*evaluation.getImplementation()))
@@ -96,12 +87,6 @@ Function::Function(const Evaluation & evaluation,
   // Nothing to do
 }
 
-/* Constructor from field */
-Function::Function(const Field & field)
-  : TypedInterfaceObject<FunctionImplementation>(new FunctionImplementation(new P1LagrangeEvaluation( field )))
-{
-  LOGWARN(OSS() << "Function(Field) is deprecated.");
-}
 
 /* Comparison operator */
 Bool Function::operator ==(const Function & other) const
@@ -245,13 +230,6 @@ Matrix Function::parameterGradient(const Point & inP) const
   return getImplementation()->parameterGradient(inP);
 }
 
-Matrix Function::parameterGradient(const Point & inP,
-                                   const Point & parameter)
-{
-  copyOnWrite();
-  return getImplementation()->parameterGradient(inP, parameter);
-}
-
 /* Parameters value accessor */
 Point Function::getParameter() const
 {
@@ -282,20 +260,6 @@ Point Function::operator() (const Point & inP) const
   return getImplementation()->operator()(inP);
 }
 
-Point Function::operator() (const Point & inP,
-                            const Point & parameter)
-{
-  copyOnWrite();
-  return getImplementation()->operator()(inP, parameter);
-}
-
-Sample Function::operator() (const Point & inP,
-                             const Sample & parameters)
-{
-  copyOnWrite();
-  return getImplementation()->operator()(inP, parameters);
-}
-
 /* Operator () */
 Sample Function::operator() (const Sample & inSample) const
 {
@@ -314,26 +278,11 @@ Matrix Function::gradient(const Point & inP) const
   return getImplementation()->gradient(inP);
 }
 
-Matrix Function::gradient(const Point & inP,
-                          const Point & parameters)
-{
-  copyOnWrite();
-  return getImplementation()->gradient(inP, parameters);
-}
-
 /* Method hessian() returns the symmetric tensor of the function at point */
 SymmetricTensor Function::hessian(const Point & inP) const
 {
   return getImplementation()->hessian(inP);
 }
-
-SymmetricTensor Function::hessian(const Point & inP,
-                                  const Point & parameters)
-{
-  copyOnWrite();
-  return getImplementation()->hessian(inP, parameters);
-}
-
 
 /* Accessor for parameter dimension */
 UnsignedInteger Function::getParameterDimension() const

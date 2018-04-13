@@ -90,14 +90,6 @@ SymmetricTensor Hessian::hessian(const Point & inP) const
   return getImplementation()->hessian(inP);
 }
 
-/* Hessian method */
-SymmetricTensor Hessian::hessian(const Point & inP,
-                                 const Point & parameters)
-{
-  return getImplementation()->hessian(inP, parameters);
-}
-
-
 /* Accessor for input point dimension */
 UnsignedInteger Hessian::getInputDimension() const
 {

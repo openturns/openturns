@@ -1,5 +1,40 @@
 = New Features =
 
+== 1.12 release (in progress) == #release-1.12
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
+ * Removed deprecated Field::getDimension, getSpatialDimension, getSpatialMean, getTemporalMean methods
+ * Remove deprecated Process::getDimension, getSpatialDimension methods
+ * Removed deprecated CovarianceModel::getDimension, getSpatialDimension, getSpatialCorrelation, setSpatialCorrelation methods
+ * Removed deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation methods
+ * Removed deprecated TruncatedDistribution single bound accessors
+ * Removed deprecated Function constructors
+ * Removed deprecated Sample,SampleImplementation::operator*(SquareMatrix) and operator/(SquareMatrix) (and in-place operators)
+ * Removed deprecated SampleImplementation::scale(SquareMatrix)
+ * Removed deprecated Domain(a, b) constructor
+ * Removed deprecated Domain,DomainImplementation::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume
+ * Removed deprecated Domain,DomainImplementation::getLowerBound, getUpperBound methods
+ * Removed deprecated Interval,Mesh::computeVolume in 1.12
+ * Removed deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel
+ * Removed deprecated Mesh::getVerticesToSimplicesMap,computeSimplexVolume
+ * Removed deprecated Evaluation,EvaluationImplementation,EvaluationProxy,Function,FunctionImplementation,ParametricEvaluation::operator(inP,parameter)
+ * Removed deprecated Gradient,GradientImplementation,ParametricGradient::gradient(inP,parameter)
+ * Removed deprecated Hessian,HessianImplementation,ParametricHessian::operator(inP,parameter)
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.11rc1 release (2018-04-11) == #release-1.11rc1
 
 === Library ===

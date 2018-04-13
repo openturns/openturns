@@ -88,10 +88,6 @@ public:
   UnsignedInteger getInputDimension() const;
   UnsignedInteger getOutputDimension() const;
 
-  /** @deprecated */
-  UnsignedInteger getSpatialDimension() const;
-  UnsignedInteger getDimension() const;
-
   /** Return the values stored in the field as a sample */
   Sample getValues() const;
   void setValues(const Sample & values);
@@ -127,15 +123,9 @@ public:
   /** Compute the input mean of the field */
   Point getInputMean() const;
 
-  /** @deprecated */
-  Point getSpatialMean() const;
-
   /** Compute the temporal mean of the field, ie its input mean when the mesh
       is regular and of dimension 1 */
   Point getOutputMean() const;
-
-  /** @deprecated */
-  Point getTemporalMean() const;
 
   /** Draw a marginal of the timeSerie */
   Graph drawMarginal(const UnsignedInteger index = 0,

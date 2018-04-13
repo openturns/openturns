@@ -160,18 +160,6 @@ Point EvaluationProxy::operator() (const Point & inP) const
   return evaluation_.operator()(inP);
 }
 
-Point EvaluationProxy::operator() (const Point & inP,
-                                   const Point & parameter)
-{
-  return evaluation_.operator()(inP, parameter);
-}
-
-Sample EvaluationProxy::operator() (const Point & inP,
-                                    const Sample & parameters)
-{
-  return evaluation_.operator()(inP, parameters);
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger EvaluationProxy::getInputDimension() const
 {

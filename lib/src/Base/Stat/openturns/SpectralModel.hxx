@@ -60,10 +60,6 @@ public:
   UnsignedInteger getOutputDimension() const;
   UnsignedInteger getInputDimension() const;
 
-  /** @deprecated */
-  UnsignedInteger getDimension() const;
-  UnsignedInteger getSpatialDimension() const;
-
   /** Computation of the spectral density function */
   virtual HermitianMatrix operator() (const Scalar frequency) const;
 
@@ -90,9 +86,6 @@ public:
 
   /** Spatial correlation accessor */
   CorrelationMatrix getOutputCorrelation() const;
-
-  /** @deprecated */
-  CorrelationMatrix getSpatialCorrelation() const;
 
   /** String converter */
   virtual String __repr__() const;

@@ -127,16 +127,6 @@ UnsignedInteger Process::getOutputDimension() const
   return getImplementation()->getOutputDimension();
 }
 
-UnsignedInteger Process::getSpatialDimension() const
-{
-  return getImplementation()->getSpatialDimension();
-}
-
-UnsignedInteger Process::getDimension() const
-{
-  return getImplementation()->getDimension();
-}
-
 /* Discrete realization accessor */
 Field Process::getRealization() const
 {

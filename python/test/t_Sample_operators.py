@@ -50,9 +50,6 @@ print('sample/2:', sample5 / 2.)
 print('sample*v:', sample5 * v)
 print('sample/v:', sample5 / v)
 
-print('sample*m:', sample5 * m)
-print('sample/m:', sample5 / m)
-
 # in-place
 sample5 += t
 print('sample+=t:', sample5)
@@ -72,8 +69,3 @@ print('sample*=v:', sample5)
 sample5 /= v
 print('sample/=v:', sample5)
 
-sample5 *= m
-print('sample*=m:', sample5)
-
-sample5 /= m
-print('sample/=m:', sample5)

@@ -120,12 +120,5 @@ Matrix Gradient::gradient(const Point & inP) const
   return getImplementation()->gradient(inP);
 }
 
-/* Gradient method */
-Matrix Gradient::gradient(const Point & inP,
-                          const Point & parameters)
-{
-  return getImplementation()->gradient(inP, parameters);
-}
-
 
 END_NAMESPACE_OPENTURNS

@@ -86,15 +86,6 @@ Matrix GradientImplementation::gradient(const Point & inP) const
   throw NotYetImplementedException(HERE) << "In GradientImplementation::gradient(const Point & inP) const";
 }
 
-/* Gradient method */
-Matrix GradientImplementation::gradient (const Point & inP,
-    const Point & parameter)
-{
-  LOGWARN("GradientImplementation::gradient(inP,parameter) is deprecated, use setParameter(parameter) and gradient(inP)");
-  setParameter(parameter);
-  return gradient(inP);
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger GradientImplementation::getInputDimension() const
 {

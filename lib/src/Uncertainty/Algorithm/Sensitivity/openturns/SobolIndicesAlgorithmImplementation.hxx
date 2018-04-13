@@ -94,10 +94,6 @@ public:
   Scalar getConfidenceLevel() const;
   void setConfidenceLevel(const Scalar confidenceLevel);
 
-  /** @deprecated Setters for bootstrap confidence level */
-  Scalar getBootstrapConfidenceLevel() const;
-  void setBootstrapConfidenceLevel(const Scalar confidenceLevel);
-
   /** Whether to use bootstrap or asymptotic distribution */
   void setUseAsymptoticDistribution(Bool useAsymptoticDistribution);
   Bool getUseAsymptoticDistribution() const;

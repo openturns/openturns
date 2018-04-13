@@ -71,16 +71,6 @@ UnsignedInteger CovarianceModel::getOutputDimension() const
   return getImplementation()->getOutputDimension();
 }
 
-UnsignedInteger CovarianceModel::getSpatialDimension() const
-{
-  return getImplementation()->getSpatialDimension();
-}
-
-UnsignedInteger CovarianceModel::getDimension() const
-{
-  return getImplementation()->getDimension();
-}
-
 /* Computation of the covariance function */
 CovarianceMatrix CovarianceModel::operator() (const Scalar s,
     const Scalar t) const
@@ -247,17 +237,6 @@ void CovarianceModel::setOutputCorrelation(const CorrelationMatrix & outputCorre
 {
   copyOnWrite();
   getImplementation()->setOutputCorrelation(outputCorrelation);
-}
-
-CorrelationMatrix CovarianceModel::getSpatialCorrelation() const
-{
-  return getImplementation()->getSpatialCorrelation();
-}
-
-void CovarianceModel::setSpatialCorrelation(const CorrelationMatrix & spatialCorrelation)
-{
-  copyOnWrite();
-  getImplementation()->setSpatialCorrelation(spatialCorrelation);
 }
 
 /* Nugget factor accessor */

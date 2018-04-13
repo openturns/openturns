@@ -57,9 +57,6 @@ public:
 
   Sample operator() (const Sample & inS) const;
 
-  /* @deprecated */
-  Sample operator() (const Point & point,
-                     const Sample & parameters);
   /** Parameters positions accessor */
   Indices getParametersPositions() const;
 

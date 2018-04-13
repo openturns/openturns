@@ -134,18 +134,6 @@ UnsignedInteger SpectralModelImplementation::getInputDimension() const
   return inputDimension_;
 }
 
-UnsignedInteger SpectralModelImplementation::getDimension() const
-{
-  LOGWARN(OSS() << "SpectralModel::getDimension is deprecated in favor of getOutputDimension.");
-  return getOutputDimension();
-}
-
-UnsignedInteger SpectralModelImplementation::getSpatialDimension() const
-{
-  LOGWARN(OSS() << "SpectralModel::getSpatialDimension is deprecated in favor of getInputDimension.");
-  return getInputDimension();
-}
-
 /* Dimension accessor */
 void SpectralModelImplementation::setOutputDimension(const UnsignedInteger dimension)
 {
@@ -202,12 +190,6 @@ CorrelationMatrix SpectralModelImplementation::getOutputCorrelation() const
 {
   if (!isDiagonal_) return outputCorrelation_;
   return CorrelationMatrix(outputDimension_);
-}
-
-CorrelationMatrix SpectralModelImplementation::getSpatialCorrelation() const
-{
-  LOGWARN(OSS() << "SpectralModel::getSpatialCorrelation is deprecated in favor of getOutputCorrelation.");
-  return getOutputCorrelation();
 }
 
 void SpectralModelImplementation::updateOutputCovariance()

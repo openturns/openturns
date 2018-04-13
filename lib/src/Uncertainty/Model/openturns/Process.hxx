@@ -86,10 +86,6 @@ public:
   UnsignedInteger getInputDimension() const;
   UnsignedInteger getOutputDimension() const;
 
-  /** @deprecated */
-  UnsignedInteger getSpatialDimension() const;
-  UnsignedInteger getDimension() const;
-
   /** Discrete realization accessor */
   Field getRealization() const;
 

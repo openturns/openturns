@@ -256,36 +256,6 @@ UnsignedInteger Mesh::getSimplicesNumber() const
   return simplices_.getSize();
 }
 
-/* Compute the volume of a given simplex */
-Scalar Mesh::computeSimplexVolume(const UnsignedInteger index) const
-{
-  LOGWARN(OSS() << "Mesh::computeSimplexVolume is deprecated in favor of computeSimplicesVolume.");
-  if (index >= getSimplicesNumber()) throw InvalidArgumentException(HERE) << "Error: the simplex index=" << index << " must be less than the number of simplices=" << getSimplicesNumber();
-
-  // First special case: 1D simplex
-  if (getDimension() == 1)
-  {
-    const Scalar x0 = vertices_(simplices_(index, 0), 0);
-    const Scalar x1 = vertices_(simplices_(index, 1), 0);
-    return std::abs(x1 - x0);
-  }
-  // Second special case: 2D simplex
-  if (getDimension() == 2)
-  {
-    const Scalar x0 = vertices_(simplices_(index, 0), 0);
-    const Scalar y0 = vertices_(simplices_(index, 0), 1);
-    const Scalar x1 = vertices_(simplices_(index, 1), 0);
-    const Scalar y1 = vertices_(simplices_(index, 1), 1);
-    const Scalar x2 = vertices_(simplices_(index, 2), 0);
-    const Scalar y2 = vertices_(simplices_(index, 2), 1);
-    return 0.5 * std::abs((x2 - x0) * (y1 - y0) - (x1 - x0) * (y2 - y0));
-  }
-  SquareMatrix matrix(dimension_ + 1);
-  buildSimplexMatrix(index, matrix);
-  Scalar sign = 0.0;
-  return exp(matrix.computeLogAbsoluteDeterminant(sign, false) - SpecFunc::LogGamma(dimension_ + 1));
-}
-
 Point Mesh::computeSimplicesVolume() const
 {
   const UnsignedInteger nrSimplices = getSimplicesNumber();
@@ -374,13 +344,6 @@ CovarianceMatrix Mesh::computeP1Gram() const
     } // Loop over first vertex
   } // Loop over simplices
   return CovarianceMatrix(gram.getImplementation());
-}
-
-/* Compute the volume of the mesh */
-Scalar Mesh::computeVolume() const
-{
-  LOGWARN(OSS() << "Mesh::computeVolume is deprecated in favor of getVolume.");
-  return getVolume();
 }
 
 /* Get the numerical volume of the domain */
@@ -487,23 +450,6 @@ void Mesh::fixOrientation(const UnsignedInteger & index,
   if ((sign > 0.0) == (dimension_ % 2 == 1)) return;
   IndicesCollection::iterator cit = simplices_.begin_at(index);
   std::swap(*cit, *(cit + 1));
-}
-
-/* @deprecated */
-IndicesCollection Mesh::getVerticesToSimplicesMap() const
-{
-  LOGWARN(OSS() << "Mesh::getVerticesToSimplicesMap is deprecated, compute it from getSimplices.");
-  const UnsignedInteger numSimplices = getSimplicesNumber();
-  const UnsignedInteger numVertices = getVerticesNumber();
-  Collection<Indices> mapVerticesToSimplices(numVertices, Indices(0));
-  for (UnsignedInteger i = 0; i < numSimplices; ++i)
-  {
-    for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(i), guard = simplices_.cend_at(i); cit != guard; ++cit)
-    {
-      mapVerticesToSimplices[*cit].add(i);
-    }
-  } // Loop over simplices
-  return IndicesCollection(mapVerticesToSimplices);
 }
 
 /* Compute weights such that an integral of a function over the mesh

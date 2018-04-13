@@ -111,10 +111,6 @@ public:
   UnsignedInteger getInputDimension() const;
   UnsignedInteger getOutputDimension() const;
 
-  /** @deprecated */
-  UnsignedInteger getSpatialDimension() const;
-  UnsignedInteger getDimension() const;
-
   /** Return the values stored in the field as a sample */
   Sample getValues() const;
   void setValues(const Sample & values);
@@ -124,12 +120,6 @@ public:
 
   /** Compute the spatial mean of the field */
   Point getInputMean() const;
-
-  /** @deprecated */
-  Point getSpatialMean() const;
-
-  /** Compute the temporal mean of the field */
-  Point getTemporalMean() const;
 
   /** Draw a marginal of the field */
   Graph drawMarginal(const UnsignedInteger index = 0,

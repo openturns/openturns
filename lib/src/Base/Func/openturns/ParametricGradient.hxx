@@ -57,10 +57,6 @@ public:
   using GradientImplementation::gradient;
   Matrix gradient(const Point & point) const;
 
-  /* @deprecated */
-  Matrix gradient(const Point & point,
-                  const Point & parameters) const;
-
   /** Dimension accessor */
   UnsignedInteger getInputDimension() const;
   UnsignedInteger getParameterDimension() const;

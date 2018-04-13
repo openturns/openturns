@@ -156,18 +156,6 @@ void SobolIndicesAlgorithm::setConfidenceLevel(const Scalar confidenceLevel)
   getImplementation()->setConfidenceLevel(confidenceLevel);
 }
 
-Scalar SobolIndicesAlgorithm::getBootstrapConfidenceLevel() const
-{
-  return getImplementation()->getBootstrapConfidenceLevel();
-}
-
-// Setter for bootstrap confidence level
-void SobolIndicesAlgorithm::setBootstrapConfidenceLevel(const Scalar confidenceLevel)
-{
-  copyOnWrite();
-  getImplementation()->setBootstrapConfidenceLevel(confidenceLevel);
-}
-
 void SobolIndicesAlgorithm::setUseAsymptoticDistribution(Bool useAsymptoticDistribution)
 {
   copyOnWrite();

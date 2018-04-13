@@ -46,39 +46,15 @@ public:
   /** Copy-Standard constructors */
   Domain(const DomainImplementation & implementation);
 
-  /** @deprecated */
-  Domain(const Point & a,
-         const Point & b);
-
-  /** @deprecated */
-  Bool isEmpty() const;
-
-  /** @deprecated */
-  Bool isNumericallyEmpty() const;
-
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
 
   /** Check if the closed domain contains given points */
   virtual BoolCollection contains(const Sample & sample) const;
 
-  /** @deprecated */
-  Bool numericallyContains(const Point & point) const;
-
-  /** @deprecated */
-  Scalar getNumericalVolume() const;
-
-  /** @deprecated */
-  Scalar getVolume() const;
-
   /** Dimension accessors */
   virtual UnsignedInteger getDimension() const;
 
-  /** @deprecated */
-  Point getLowerBound() const;
-
-  /** @deprecated */
-  Point getUpperBound() const;
 
 }; /* class Domain */
 

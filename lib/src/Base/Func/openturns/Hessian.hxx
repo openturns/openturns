@@ -74,10 +74,6 @@ public:
   /** Hessian method */
   virtual SymmetricTensor hessian(const Point & inP) const;
 
-  /* @deprecated */
-  virtual SymmetricTensor hessian(const Point & inP,
-                                  const Point & parameters);
-
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 

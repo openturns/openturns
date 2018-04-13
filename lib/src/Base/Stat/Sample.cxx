@@ -654,13 +654,6 @@ Sample & Sample::operator *= (const Point & scaling)
   return *this;
 }
 
-Sample & Sample::operator *= (const SquareMatrix & scaling)
-{
-  copyOnWrite();
-  getImplementation()->operator *=(scaling);
-  return *this;
-}
-
 Sample & Sample::operator /= (const Scalar scaling)
 {
   copyOnWrite();
@@ -669,13 +662,6 @@ Sample & Sample::operator /= (const Scalar scaling)
 }
 
 Sample & Sample::operator /= (const Point & scaling)
-{
-  copyOnWrite();
-  getImplementation()->operator /=(scaling);
-  return *this;
-}
-
-Sample & Sample::operator /= (const SquareMatrix & scaling)
 {
   copyOnWrite();
   getImplementation()->operator /=(scaling);
@@ -694,12 +680,6 @@ Sample Sample::operator * (const Point & scaling) const
   return sample;
 }
 
-Sample Sample::operator * (const SquareMatrix & scaling) const
-{
-  const Sample sample(getImplementation()->operator * (scaling));
-  return sample;
-}
-
 Sample Sample::operator / (const Scalar scaling) const
 {
   const Sample sample(getImplementation()->operator / (scaling));
@@ -707,12 +687,6 @@ Sample Sample::operator / (const Scalar scaling) const
 }
 
 Sample Sample::operator / (const Point & scaling) const
-{
-  const Sample sample(getImplementation()->operator / (scaling));
-  return sample;
-}
-
-Sample Sample::operator / (const SquareMatrix & scaling) const
 {
   const Sample sample(getImplementation()->operator / (scaling));
   return sample;

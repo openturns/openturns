@@ -86,14 +86,6 @@ SymmetricTensor HessianImplementation::hessian(const Point & inP) const
   throw NotYetImplementedException(HERE) << "In HessianImplementation::hessian(const Point & inP) const";
 }
 
-SymmetricTensor HessianImplementation::hessian(const Point & inP,
-    const Point & parameters)
-{
-  LOGWARN("HessianImplementation::gradient(inP,parameters) is deprecated, use setParameter(parameters) and hessian(inP)");
-  setParameter(parameters);
-  return hessian(inP);
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger HessianImplementation::getInputDimension() const
 {

@@ -2,6 +2,5 @@ g2=class=FunctionImplementation name=Unnamed description=[x0,x2,y0,y1,y2] evalua
 g2(x)=class=Point name=Unnamed dimension=3 values=[0.690284,2.05998,0.190476]
 point history=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=2 data=[[1,2]]
 parameter history=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=1 dimension=2 data=[[0.85,0.85]]
-g2_0(x, theta)=class=Point name=Unnamed dimension=1 values=[-16.1941]
-dg2_0/dtheta(x)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[17.0356,-0.340712]
-g2_0(x, thetas)=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=1 data=[[-16.1941],[0.72989],[0.841471]]
+g2_0(x)=class=Point name=Unnamed dimension=1 values=[0.690284]
+dg2_0/dtheta(x)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[0.151187,-0.177867]

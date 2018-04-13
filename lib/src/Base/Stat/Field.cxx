@@ -205,17 +205,6 @@ UnsignedInteger Field::getOutputDimension() const
   return getImplementation()->getOutputDimension();
 }
 
-UnsignedInteger Field::getSpatialDimension() const
-{
-  return getImplementation()->getSpatialDimension();
-}
-
-UnsignedInteger Field::getDimension() const
-{
-  return getImplementation()->getDimension();
-}
-
-
 Sample Field::getValues() const
 {
   return getImplementation()->getValues();
@@ -249,17 +238,6 @@ Mesh Field::asDeformedMesh() const
 Point Field::getInputMean() const
 {
   return getImplementation()->getInputMean();
-}
-
-Point Field::getSpatialMean() const
-{
-  return getImplementation()->getSpatialMean();
-}
-
-/* Compute the temporal mean of the field */
-Point Field::getTemporalMean() const
-{
-  return getImplementation()->getTemporalMean();
 }
 
 /* Draw a marginal of the field */
