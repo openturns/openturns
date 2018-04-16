@@ -3102,10 +3102,7 @@ Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const
 /* Get the i-th marginal distribution */
 Distribution DistributionImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (!(i < dimension_)) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension";
-  if (dimension_ == 1) return clone();
-  if (isCopula()) return new Uniform(0.0, 1.0);
-  return new MarginalDistribution(*this, i);
+  return getMarginal(Indices(1, i));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
