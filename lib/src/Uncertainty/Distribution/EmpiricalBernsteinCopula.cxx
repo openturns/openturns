@@ -36,7 +36,7 @@ static const Factory<EmpiricalBernsteinCopula> Factory_EmpiricalBernsteinCopula;
 
 /* Default constructor */
 EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
-  : CopulaImplementation()
+  : ContinuousDistribution()
   , copulaSample_(0, 1)
   , binNumber_(1)
   , logBetaFactors_(0)
@@ -53,7 +53,7 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
 EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
     const UnsignedInteger binNumber,
     const Bool isEmpiricalCopulaSample)
-  : CopulaImplementation()
+  : ContinuousDistribution()
   , copulaSample_(0, 1)
   , binNumber_(binNumber)
   , logBetaFactors_(0)
@@ -71,7 +71,7 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
     const UnsignedInteger binNumber,
     const SampleImplementation & logBetaMarginalFactors,
     const SampleImplementation & logFactors)
-  : CopulaImplementation()
+  : ContinuousDistribution()
   , copulaSample_(copulaSample)
   , binNumber_(binNumber)
   , logBetaMarginalFactors_(logBetaMarginalFactors)
@@ -148,7 +148,7 @@ void EmpiricalBernsteinCopula::setCopulaSample(const Sample & copulaSample,
   if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension>0.";
   const UnsignedInteger remainder = size % binNumber_;
   // If the given sample is an empirical copula sample of a compatible size
-  if (isEmpiricalCopulaSample && remainder == 0)
+  if (isEmpiricalCopulaSample)
     copulaSample_ = copulaSample;
   else
   {
@@ -164,6 +164,7 @@ void EmpiricalBernsteinCopula::setCopulaSample(const Sample & copulaSample,
     copulaSample_ /= 1.0 * (size - remainder);
   } // !(isEmpiricalCopulaSample && remainder == 0)
   setDimension(dimension);
+  isCopula_ = (remainder == 0);
   // Now the sample is correct, compute the by-products
   update();
   computeRange();
@@ -409,7 +410,7 @@ void EmpiricalBernsteinCopula::update()
 /* Method save() stores the object through the StorageManager */
 void EmpiricalBernsteinCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  ContinuousDistribution::save(adv);
   adv.saveAttribute( "copulaSample_", copulaSample_ );
   adv.saveAttribute( "binNumber_", binNumber_ );
 }
@@ -417,7 +418,7 @@ void EmpiricalBernsteinCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void EmpiricalBernsteinCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  ContinuousDistribution::load(adv);
   adv.loadAttribute( "copulaSample_", copulaSample_ );
   adv.loadAttribute( "binNumber_", binNumber_ );
   update();
