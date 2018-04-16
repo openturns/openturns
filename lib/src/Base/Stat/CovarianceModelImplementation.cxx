@@ -677,15 +677,15 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
     amplitude_[i] = parameter[index];
     ++ index;
   }
-  CorrelationMatrix spatialCorrelation(outputDimension_);
-  // Third the spatial correation parameter, only the lower triangle
+  CorrelationMatrix outputCorrelation(outputDimension_);
+  // Third the output correlation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
-      spatialCorrelation(i, j) = parameter[index];
+      outputCorrelation(i, j) = parameter[index];
       ++ index;
     }
-  setOutputCorrelation(spatialCorrelation);
+  setOutputCorrelation(outputCorrelation);
 }
 
 
