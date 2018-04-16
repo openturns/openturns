@@ -38,9 +38,6 @@ class OT_API Mixture
   : public DistributionImplementation
 {
   CLASSNAME
-  // Make the BernsteinCopulaFactory class a friend of Mixture as it has to
-  // set the isCopula_ attribute directly
-  friend class BernsteinCopulaFactory;
 
 public:
 
