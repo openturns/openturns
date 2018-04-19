@@ -558,13 +558,17 @@ void ResourceMap::loadDefaultConfiguration()
   // ComposedDistribution parameters //
   setAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
 
-  // DirichletFactory parameters //
+  // Dirichlet parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
   setAsUnsignedInteger( "Dirichlet-DefaultIntegrationSize", 50 );
 
   // DirichletFactory parameters //
   setAsScalar( "DirichletFactory-ParametersEpsilon", 1.0e-12 );
   setAsUnsignedInteger( "DirichletFactory-MaximumIteration", 10 );
+
+  // ExtremeValueCopula parameters //
+  setAsBool( "ExtremeValueCopula-CheckPickandFunction", true );
+  setAsUnsignedInteger( "ExtremeValueCopula-CheckGridSize", 11 );
 
   // FisherSnedecorFactory parameters //
   setAsScalar( "FisherSnedecorFactory-D1LowerBound", 1.0e-2 );

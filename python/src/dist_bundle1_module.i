@@ -47,6 +47,7 @@
 %include Epanechnikov.i
 %include Exponential.i
 %include ExponentialFactory.i
+%include ExtremeValueCopula.i
 %include FisherSnedecor.i
 %include FisherSnedecorFactory.i
 %include Frechet.i
