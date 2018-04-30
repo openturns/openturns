@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_EMPIRICALBERNSTEINCOPULA_HXX
 #define OPENTURNS_EMPIRICALBERNSTEINCOPULA_HXX
 
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * made from the empirical compula and a Bernstein approximation
  */
 class OT_API EmpiricalBernsteinCopula
-  : public CopulaImplementation
+  : public ContinuousDistribution
 {
   CLASSNAME
 public:
@@ -77,22 +77,22 @@ public:
   Sample getSample(const UnsignedInteger size) const;
 
   /** Get the PDF of the EmpiricalBernsteinCopula */
-  using CopulaImplementation::computePDF;
+  using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const;
 
   /** Get the log-PDF of the EmpiricalBernsteinCopula */
-  using CopulaImplementation::computeLogPDF;
+  using ContinuousDistribution::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the EmpiricalBernsteinCopula */
-  using CopulaImplementation::computeCDF;
+  using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const;
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
+  using ContinuousDistribution::getMarginal;
   Distribution getMarginal(const Indices & indices) const;
 
   /** Get the Spearman correlation of the distribution */
