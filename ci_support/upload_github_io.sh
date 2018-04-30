@@ -17,5 +17,5 @@ touch .nojekyll
 git config user.email "sayhi@circleci.com"
 git config user.name "CircleCI"
 git add -A .
-git commit -a -m "CircleCI build ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BUILD_NUM}"
+git commit -a -m "CircleCI build ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_BUILD_NUM}" || exit 0
 git push --quiet origin master > /dev/null 2>&1
