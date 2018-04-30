@@ -50,7 +50,7 @@
  * Deprecated SpectralModel::getDimension, getSpatialDimension, getSpatialCorrelation
  * Deprecated TruncatedDistribution single bound accessors in favor of setBounds/getBounds
  * Deprecated remaining analytical & database Function ctors
- * Mesh constructor no longer builds a KDTree, new method Mesh::setNearestNeighbourAlgorithm must be called explicitly
+ * Mesh class no longer holds a KDTree
  * Deprecated Domain::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume, getLowerBound, getUpperBound
  * Add an argument to KarhunenLoeveQuadratureAlgorithm to pass domain bounds
  * Add an argument to Mesh::streamToVTKFile() and Mesh::exportToVTKFile() to pass custom simplices

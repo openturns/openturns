@@ -5,9 +5,7 @@ Notes
 -----
 A Domain object can be created through its derived classes:
 
-- :class:`~openturns.Mesh`
-
-- :class:`~openturns.RegularGrid`
+- :class:`~openturns.MeshDomain`
 
 - :class:`~openturns.Interval`
 
