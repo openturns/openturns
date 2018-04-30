@@ -114,6 +114,7 @@ public:
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
+  void setCallsNumber(const UnsignedInteger callsNumber);
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,

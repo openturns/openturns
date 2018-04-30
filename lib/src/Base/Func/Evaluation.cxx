@@ -197,6 +197,12 @@ UnsignedInteger Evaluation::getCallsNumber() const
   return getImplementation()->getCallsNumber();
 }
 
+void Evaluation::setCallsNumber(const UnsignedInteger callsNumber)
+{
+  copyOnWrite();
+  getImplementation()->setCallsNumber(callsNumber);
+}
+
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Evaluation::draw(const UnsignedInteger inputMarginal,

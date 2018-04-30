@@ -4,6 +4,8 @@
 OT_Evaluation_doc
 %feature("docstring") OT::Evaluation::getCallsNumber
 OT_Evaluation_getCallsNumber_doc
+%feature("docstring") OT::Evaluation::setCallsNumber
+OT_Evaluation_setCallsNumber_doc
 %feature("docstring") OT::Evaluation::getDescription
 OT_Evaluation_getDescription_doc
 %feature("docstring") OT::Evaluation::getInputDescription
