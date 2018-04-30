@@ -14,7 +14,7 @@ myTimeGrid = ot.RegularGrid(tMin, timeStep, size)
 # We fix the parameter of the Cauchy model
 amplitude = [5]
 scale = [3]
-model = ot.ExponentialCauchy(scale, amplitude)
+model = ot.CauchyModel(scale, amplitude)
 gp = ot.SpectralGaussianProcess(model, myTimeGrid)
 
 # Get a time series or a sample of time series
@@ -49,7 +49,7 @@ for k in range(frequencyGrid.getN()):
     freq = frequencyGrid.getStart() + k * frequencyGrid.getStep()
     plotSample[k, 0] = freq
     plotSample[k, 1] = abs(myEstimatedModel_PS(freq)[0, 0])
-    plotSample[k, 2] = abs(model.computeSpectralDensity(freq)[0, 0])
+    plotSample[k, 2] = abs(model(freq)[0, 0])
 
 
 # Graph section

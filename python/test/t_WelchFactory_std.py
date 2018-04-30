@@ -14,7 +14,7 @@ try:
     timeGrid = RegularGrid(0.0, 0.1, size)
     amplitude = Point(dimension, 2.0)
     scale = Point(dimension, 1.0)
-    model = ExponentialCauchy(scale, amplitude)
+    model = CauchyModel(scale, amplitude)
     myProcess = SpectralGaussianProcess(model, timeGrid)
 
     # Create a Process sample
@@ -38,7 +38,7 @@ try:
                 estimatedValue = (
                     mySpectralModel(frequency)[i, j]).real
                 modelValue = (
-                    model.computeSpectralDensity(frequency)[i, j]).real
+                    model(frequency)[i, j]).real
                 print("Frequency =  %.6f" % frequency, ", evaluation = %.8f" %
                       estimatedValue, " model = %.8f" % modelValue)
 
@@ -59,7 +59,7 @@ try:
                 estimatedValue = (
                     mySpectralModel2(frequency)[i, j]).real
                 modelValue = (
-                    model.computeSpectralDensity(frequency)[i, j]).real
+                    model(frequency)[i, j]).real
                 print("Frequency =  %.6f" % frequency, ", evaluation = %.8f" %
                       estimatedValue, " model = %.8f" % modelValue)
 

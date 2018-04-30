@@ -41,7 +41,7 @@ Create a time series from a stationary second order process:
 
 >>> import openturns as ot
 >>> myTimeGrid = ot.RegularGrid(0.0, 0.1, 2**8)
->>> model = ot.ExponentialCauchy([5.0], [3.0])
+>>> model = ot.CauchyModel([5.0], [3.0])
 >>> gp = ot.SpectralGaussianProcess(model, myTimeGrid)
 >>> myTimeSeries = gp.getRealization()
 
@@ -52,7 +52,7 @@ Estimate the spectral model with WelchFactory:
 >>> myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber , myOverlapSize)
 >>> myEstimatedModel_TS = myFactory.build(myTimeSeries)
 
-Change the filtering window: 
+Change the filtering window:
 
 >>> myFactory.setFilteringWindows(ot.Hamming())
 

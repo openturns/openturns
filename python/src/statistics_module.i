@@ -62,9 +62,6 @@
 %include CovarianceModelImplementation.i
 %include CovarianceModel.i
 %include StationaryCovarianceModel.i
-%include SecondOrderModelImplementation.i 
-%include ExponentialCauchy.i 
-%include SecondOrderModel.i 
 %include SpectralModelFactoryImplementation.i
 %include SpectralModelFactory.i 
 %include UserDefinedSpectralModel.i

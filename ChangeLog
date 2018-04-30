@@ -27,6 +27,7 @@
  * Removed deprecated Evaluation,EvaluationImplementation,EvaluationProxy,Function,FunctionImplementation,ParametricEvaluation::operator(inP,parameter)
  * Removed deprecated Gradient,GradientImplementation,ParametricGradient::gradient(inP,parameter)
  * Removed deprecated Hessian,HessianImplementation,ParametricHessian::operator(inP,parameter)
+ * Removed ExponentialCauchy, SecondOrderModel, SecondOrderImplementation
 
 === Python module ===
 

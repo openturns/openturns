@@ -42,11 +42,8 @@ int main(int argc, char *argv[])
     /* Scale values */
     Point scale(defaultDimension, 1.0);
 
-    /* Second order model with parameters */
-    ExponentialCauchy myModel(scale, amplitude);
-
-    /* checking the copy-cast*/
-    SecondOrderModel mySecondOrderModel(myModel);
+    /* spectral model */
+    CauchyModel myModel(scale, amplitude);
 
     const UnsignedInteger points = 8;
     const Scalar tMin = 0.0;
@@ -54,11 +51,6 @@ int main(int argc, char *argv[])
 
     // RegularGrid --> Build list of frequencies using the RegularGrid
     RegularGrid myTimeGrid(tMin, tStep, points);
-
-    SpectralGaussianProcess mySpectralProcess0(myModel, myTimeGrid);
-
-    fullprint << "mySpectralProcess0 = " << mySpectralProcess0.__str__() << std::endl;
-    fullprint << "Realization = " << mySpectralProcess0.getRealization().__str__() << std::endl;
 
     // Constructor using maximalFrequency value and size of discretization
     const Scalar maximalFrequency = 10.0;

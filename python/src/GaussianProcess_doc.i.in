@@ -2,11 +2,7 @@
 "Gaussian processes.
 
 Available constructor:
-    GaussianProcess(*trend, secondOrderModel, mesh*)
-
     GaussianProcess(*trend, covarianceModel, mesh*)
-
-    GaussianProcess(*secondOrderModel, mesh*)
 
     GaussianProcess(*covarianceModel, mesh*)
 
@@ -14,9 +10,6 @@ Parameters
 ----------
 trend : :class:`~openturns.TrendTransform`
     Trend function of the process. By default the trend is null.
-secondOrderModel : :class:`~openturns.SecondOrderModel`
-    Stationary second order model that insures the coherence between the
-    covariance function and the spectral density function.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Temporal covariance model :math:`C`.
 mesh : :class:`~openturns.Mesh`
@@ -36,13 +29,6 @@ The gaussian processes may have a trend: in that case, the Gaussian
 process is the sum of the trend function
 :math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean Gaussian process.
 
-If the zero-mean process is stationary, in order to manipulate the same
-Gaussian process through both the temporal and spectral views, it is necessary to
-create a second order model *secondOrderModel* that insures the coherence
-between the covariance function :math:`C^{stat}` and the spectral density
-function :math:`S: \Rset \mapsto \cH^+(d)`. :math:`\cH^+(d) \in \cM_d(\Cset)`
-is the set of :math:`d`-dimensional positive definite hermitian matrices.
-
 
 Examples
 --------
@@ -55,7 +41,7 @@ Examples
 >>> # Scale values
 >>> scale = [1.0]*defaultDimension
 >>> # Second order model with parameters
->>> myModel = ot.ExponentialCauchy(scale, amplitude)
+>>> myModel = ot.AbsoluteExponential(scale, amplitude)
 >>> # Time grid
 >>> tmin = 0.0
 >>> step = 0.1

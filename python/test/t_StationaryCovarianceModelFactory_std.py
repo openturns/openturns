@@ -23,7 +23,8 @@ try:
     timeGrid = RegularGrid(0., 0.1, size)
 
     # Cauchy model
-    model = ExponentialCauchy(scale, amplitude)
+    model = CauchyModel(scale, amplitude)
+    covModel = AbsoluteExponential(scale, amplitude)
     myProcess = SpectralGaussianProcess(model, timeGrid)
 
     # Create a sample of size N = 1000
@@ -42,7 +43,7 @@ try:
     for i in range(tg.getN()):
         t = tg.getValue(i)
         estimatedValue = myCovarianceModel(t)[0, 0]
-        modelValue = model.computeCovariance(t)[0, 0]
+        modelValue = covModel(t)[0, 0]
         print("Covariance C( %.6g" % t, ") : ", " evaluation =  %.6g" %
               estimatedValue, " model =  %.6g" % modelValue)
 

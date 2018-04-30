@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     RegularGrid timeGrid(0.0, 0.1, size);
     Point amplitude(dimension, 2.0);
     Point scale(dimension, 1.0);
-    ExponentialCauchy model(scale, amplitude);
+    CauchyModel model(scale, amplitude);
     SpectralGaussianProcess myProcess(model, timeGrid);
 
     // Create a Process sample
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         {
           const Scalar frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep();
           const Scalar estimatedValue = std::real(mySpectralModel(frequency)(i, j));
-          const Scalar modelValue = std::real(model.computeSpectralDensity(frequency)(i, j));
+          const Scalar modelValue = std::real(model(frequency)(i, j));
           fullprint << "Frequency =  " <<  frequency ;
           fullprint << ", evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
         }
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         {
           const Scalar frequency = myFrequencyGrid.getStart() + k * myFrequencyGrid.getStep();
           const Scalar estimatedValue = std::real(mySpectralModel2(frequency)(i, j));
-          const Scalar modelValue = std::real(model.computeSpectralDensity(frequency)(i, j));
+          const Scalar modelValue = std::real(model(frequency)(i, j));
           fullprint << "Frequency =  " <<  frequency ;
           fullprint << ", evaluation = " << estimatedValue << " model = " << modelValue << std::endl;
         }

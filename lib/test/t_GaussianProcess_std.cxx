@@ -44,14 +44,6 @@ int main(int argc, char *argv[])
     /* Scale values */
     Point scale(spatialDimension, 1.0);
 
-    /* Second order model with parameters */
-    ExponentialCauchy myModel(scale, amplitude);
-    fullprint << "myModel=" << myModel << std::endl;
-
-    /* checking the copy-cast*/
-    SecondOrderModel mySecondOrderModel(myModel);
-    fullprint << "mySecondOrderModel=" << mySecondOrderModel << std::endl;
-
     const Scalar tmin = 0.0;
     const Scalar step = 0.1;
     const UnsignedInteger n = 11;
@@ -59,13 +51,6 @@ int main(int argc, char *argv[])
     RegularGrid myTimeGrid(tmin, step, n);
     const UnsignedInteger size = 25;
 
-    GaussianProcess myProcess(myModel, myTimeGrid);
-    fullprint << "myProcess=" << myProcess << std::endl;
-    fullprint << "is stationary? " << myProcess.isStationary() << std::endl;
-    myProcess.setSamplingMethod(0);
-    fullprint << "mean over " << size << " realizations=" << myProcess.getSample(size).computeMean() << std::endl;
-    myProcess.setSamplingMethod(2);
-    fullprint << "mean over " << size << " realizations=" << myProcess.getSample(size).computeMean() << std::endl;
 
     /* Second order model with parameters */
     ExponentialModel myCovModel(scale, amplitude);

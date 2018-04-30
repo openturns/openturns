@@ -49,23 +49,6 @@ SpectralGaussianProcess::SpectralGaussianProcess()
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 
-/* Standard constructor  */
-SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
-    const RegularGrid & timeGrid)
-  : ProcessImplementation()
-  , spectralModel_(model.getSpectralModel())
-  , maximalFrequency_(0.0)
-  , nFrequency_(0)
-  , frequencyStep_(0.0)
-  , choleskyFactorsCache_(0)
-  , alpha_(0)
-  , fftAlgorithm_()
-{
-  setTimeGrid(timeGrid);
-  setOutputDimension(model.getOutputDimension());
-  setDescription(Description::BuildDefault(getOutputDimension(), "x"));
-}
-
 /* Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
 SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralModel,
     const RegularGrid & timeGrid)
@@ -80,29 +63,6 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
 {
   setTimeGrid(timeGrid);
   setOutputDimension(spectralModel.getOutputDimension());
-  setDescription(Description::BuildDefault(getOutputDimension(), "x"));
-}
-
-/* Standard constructor  */
-SpectralGaussianProcess::SpectralGaussianProcess(const SecondOrderModel & model,
-    const Scalar maximalFrequency,
-    const UnsignedInteger nFrequency)
-  : ProcessImplementation()
-  , spectralModel_(model.getSpectralModel())
-  , maximalFrequency_(maximalFrequency)
-  , nFrequency_(nFrequency)
-  , frequencyStep_(0.0)
-  , choleskyFactorsCache_(0)
-  , alpha_(0)
-  , fftAlgorithm_()
-{
-  if (!(maximalFrequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
-  if (nFrequency < 1) throw InvalidArgumentException(HERE) << "Error: the number of frequency points in the positive domain must be at least 1.";
-  frequencyStep_ = maximalFrequency_ / nFrequency_;
-  // Adapt the time grid to the frequency discretization
-  computeTimeGrid();
-  computeAlpha();
-  setOutputDimension(model.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
 }
 

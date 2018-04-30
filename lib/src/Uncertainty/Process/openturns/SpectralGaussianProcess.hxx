@@ -23,7 +23,6 @@
 
 #include "openturns/ProcessImplementation.hxx"
 #include "openturns/SpectralModel.hxx"
-#include "openturns/SecondOrderModel.hxx"
 #include "openturns/TriangularComplexMatrix.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/FFT.hxx"
@@ -51,18 +50,9 @@ public:
   /** Default constructor */
   SpectralGaussianProcess();
 
-  /** Standard constructor  - The timeGrid imposes the frequencies values*/
-  SpectralGaussianProcess(const SecondOrderModel & model,
-                          const RegularGrid & grid);
-
   /** Standard constructor with spectralModel - The timeGrid imposes the frequencies values*/
   SpectralGaussianProcess(const SpectralModel & spectralModel,
                           const RegularGrid & grid);
-
-  /** Specific constructor  - The frequency parameters impose the time grid */
-  SpectralGaussianProcess(const SecondOrderModel & model,
-                          const Scalar maximalFrequency,
-                          const UnsignedInteger nFrequency);
 
   /** Specific constructor  - The frequency parameters impose the time grid */
   SpectralGaussianProcess(const SpectralModel & spectralModel,
