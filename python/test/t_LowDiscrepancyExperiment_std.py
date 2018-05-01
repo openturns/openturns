@@ -7,8 +7,8 @@ TESTPREAMBLE()
 
 try:
     distribution = Normal(4)
-    distribution.setMean(Point(4, 5.0))
-    size = 10
+    distribution.setMean([5.0]*4)
+    size = 16
     myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size)
     print("myPlane = ", myPlane)
     # Test sampling with weights
@@ -39,6 +39,13 @@ try:
 
     # Test constructor with no distribution and dimension>1
     myPlane = LowDiscrepancyExperiment(HaltonSequence(2), size)
+    print("sample = ", myPlane.generate())
+    # Test with dependent marginals
+    R = CorrelationMatrix(4)
+    for i in range(1, 4):
+        R[i - 1, i] = 0.5
+    distribution.setCorrelation(R)
+    myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, False)
     print("sample = ", myPlane.generate())
 except:
     import sys

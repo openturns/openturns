@@ -28,12 +28,14 @@
  * Removed deprecated Gradient,GradientImplementation,ParametricGradient::gradient(inP,parameter)
  * Removed deprecated Hessian,HessianImplementation,ParametricHessian::operator(inP,parameter)
  * Removed ExponentialCauchy, SecondOrderModel, SecondOrderImplementation
+ * LowDiscrepancyExperiment to work with dependent distributions
 
 === Python module ===
 
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #949 (LowDiscrepancyExperiment for distributions having dependent copula)
 
 
 == 1.11rc1 release (2018-04-11) == #release-1.11rc1

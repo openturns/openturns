@@ -21,7 +21,8 @@
 #include "openturns/LowDiscrepancyExperiment.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/ComposedDistribution.hxx"
+#include "openturns/IndependentCopula.hxx"
+#include "openturns/DistributionTransformation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/RandomGenerator.hxx"
 
@@ -82,7 +83,7 @@ LowDiscrepancyExperiment::LowDiscrepancyExperiment(const LowDiscrepancySequence 
   // Warning! The distribution must not be given to the upper class directly
   // because the correct initialization of the sequence depends on a test on
   // its dimension
-  setDistribution(ComposedDistribution(DistributionCollection(sequence.getDimension())));
+  setDistribution(IndependentCopula(sequence.getDimension()));
 }
 
 /* Virtual constructor */
@@ -139,16 +140,16 @@ void LowDiscrepancyExperiment::load(Advocate & adv)
 /* Distribution accessor */
 void LowDiscrepancyExperiment::setDistribution(const Distribution & distribution)
 {
-  if (!distribution.hasIndependentCopula()) throw InvalidArgumentException(HERE) << "Error: the LowDiscrepancyExperiment can only be used with distributions having an independent copula.";
   const UnsignedInteger dimension = distribution.getDimension();
-  DistributionCollection marginals(dimension);
-  // Get the marginal distributions
-  for (UnsignedInteger i = 0; i < dimension; ++ i) marginals[i] = distribution.getMarginal(i);
   // restart the low-discrepancy sequence if asked for or mandatory (dimension changed)
   if (restart_ || (dimension != getDistribution().getDimension()))
     sequence_.initialize(dimension);
   // Build the iso-probabilistic transformation
-  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
+  // For distributions with non-indepedent copula, it resorts to using the method
+  // described in:
+  // Mathieu Cambou, Marius Hofert, Christiane Lemieux, "Quasi-Random numbers for copula models", Statistics and Computing, September 2017, Volume 27, Issue 5, pp 1307–1329
+  // preprint here: https://arxiv.org/pdf/1508.03483.pdf
+  transformation_ = DistributionTransformation(IndependentCopula(dimension), distribution);
   WeightedExperimentImplementation::setDistribution(distribution);
 }
 

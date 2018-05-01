@@ -15,13 +15,12 @@ size : positive int
 sequence : :class:`~openturns.LowDiscrepancySequence`
     Sequence of points :math:`(u_1, \cdots, u_N)` with low discrepancy.
     If not specified, the sequence is a :class:`~openturns.SobolSequence`.
-distribution :
-    Distribution :math:`\mu` of dimension :math:`n` with an independent copula.
+distribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` of dimension :math:`n`.
     The low discrepancy sequence :math:`(u_1, \cdots, u_N)` is uniformly
-    distributed over :math:`[0,1]^n`. We use the marginal transformation
-    :math:`\Xi_i =F_i^{-1}(u_i)` to generate points :math:`(\Xi_i)_{i\in I}`
-    according to the distribution :math:`\mu`. The weights are all equal to
-    :math:`1/N`.
+    distributed over :math:`[0,1]^n`. We use an iso-probabilistic transformation
+    from the independent copula of dimension :math:`n` to the given distribution.
+    The weights are all equal to :math:`1/N`.
 restart : bool
     Flag to tell if the low discrepancy sequence must be restarted from
     its initial state at each change of distribution or not.
@@ -31,8 +30,9 @@ restart : bool
 Notes
 -----
 The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
-independently from the distribution :math:`\mu`. When the :meth:`generate`
-method is recalled, the generated sample changes.
+according to the distribution :math:`\mu`. When the :meth:`generate`
+method is called again, the generated sample changes. In case of dependent
+marginals, the approach based on [Cambou2017]_ is used.
 
 See also
 --------
@@ -96,6 +96,18 @@ of distribution:
 2 : [ 0.8125 0.6875 ]
 3 : [ 0.5625 0.4375 ]
 4 : [ 0.0625 0.9375 ]
+
+Generate a sample according to a distribution with dependent marginals:
+
+>>> distribution = ot.Normal([0.0]*2, ot.CovarianceMatrix(2, [4.0, 1.0, 1.0, 9.0]))
+>>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, False)
+>>> print(myPlane.generate())
+    [ y0        y1        ]
+0 : [  0         0        ]
+1 : [  1.34898  -1.65792  ]
+2 : [ -1.34898   1.65792  ]
+3 : [ -0.637279 -1.10187  ]
+4 : [  2.3007    3.97795  ]
 "
 // ---------------------------------------------------------------------
 

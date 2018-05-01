@@ -18,6 +18,8 @@ Bibliography
 .. [Burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
+.. [Cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, "Quasi-Random numbers for copula models", Stat. Comp., 2017, 27(5), 1307-1329.
+    `pdf <http://doc.openturns.org/papers/cambou2017.pdf>`__
 .. [Caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
