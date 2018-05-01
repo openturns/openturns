@@ -24,7 +24,11 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   if (${ARGC} GREATER 2)
     set (SWIG_MODULE_${MODULENAME}_EXTRA_DEPS ${ARGN})
   endif ()
-  list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS generate_docstrings openturns/PythonWrappingFunctions.hxx)
+  list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS openturns/PythonWrappingFunctions.hxx)
+  if (CMAKE_VERSION VERSION_GREATER 3)
+    # necessary for cmake >=3.11, but does not work with cmake 2.8.2
+    list (APPEND SWIG_MODULE_${MODULENAME}_EXTRA_DEPS generate_docstrings)
+  endif ()
 
   set (swig_other_sources)
   foreach (it ${ARGN})
@@ -57,7 +61,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
   endif ()
 
-  add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME} generate_swig_runtime)
+  add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME} generate_swig_runtime generate_docstrings)
   swig_link_libraries (${MODULENAME} OT)
 
   if (LINK_PYTHON_LIBRARY)
