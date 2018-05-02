@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   {
     Normal distribution(4);
     distribution.setMean(Point(4, 5.0));
-    UnsignedInteger size = 10;
+    UnsignedInteger size = 16;
     LowDiscrepancyExperiment myPlane(HaltonSequence(), distribution, size);
     fullprint << "myPlane = " << myPlane << std::endl;
     // Test sampling with weights
@@ -66,6 +66,14 @@ int main(int argc, char *argv[])
     // Test constructor with no distribution and dimension>1
     myPlane = LowDiscrepancyExperiment(HaltonSequence(2), size);
     fullprint << "sample = " << myPlane.generate() << std::endl;
+
+    // Test with dependent marginals
+    CorrelationMatrix R(4);
+    for (UnsignedInteger i = 1; i < 4; ++i)
+      R(i - 1, i) = 0.5;
+    distribution.setCorrelation(R);
+    myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, false);
+    fullprint << "sample = " << myPlane.generate() << std::endl;    
   }
   catch (TestFailed & ex)
   {
