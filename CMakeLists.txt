@@ -1,6 +1,6 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 2.8.4)
 
 # By default, build in Release mode. Must appear before project() command
 if (NOT DEFINED CMAKE_BUILD_TYPE)
