@@ -56,9 +56,6 @@ public:
   /** Get the Spearman correlation of the copula */
   CorrelationMatrix getSpearmanCorrelation() const;
 
-  /** Get the Kendall concordance of the copula */
-  CorrelationMatrix getKendallTau() const;
-
   /** Get the standard deviation of the copula */
   Point getStandardDeviation() const;
 

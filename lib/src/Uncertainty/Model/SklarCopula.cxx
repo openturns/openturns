@@ -423,8 +423,7 @@ Distribution SklarCopula::getDistribution() const
 /* Get the Kendall concordance of the copula */
 CorrelationMatrix SklarCopula::getKendallTau() const
 {
-  if (distribution_.isElliptical()) return distribution_.getKendallTau();
-  return CopulaImplementation::getKendallTau();
+  return distribution_.getKendallTau();
 }
 
 /* Compute the covariance of the copula */

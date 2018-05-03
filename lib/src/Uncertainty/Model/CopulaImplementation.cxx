@@ -149,60 +149,6 @@ CorrelationMatrix CopulaImplementation::getSpearmanCorrelation() const
   return getLinearCorrelation();
 }
 
-struct CopulaImplementationKendallTauWrapper
-{
-  CopulaImplementationKendallTauWrapper(const DistributionImplementation::Implementation & distribution)
-    : p_distribution_(distribution)
-  {
-    // Nothing to do
-  }
-
-  Point kernel(const Point & point) const
-  {
-    return Point(1, p_distribution_->computeCDF(point) * p_distribution_->computePDF(point));
-  }
-
-  const DistributionImplementation::Implementation & p_distribution_;
-};
-
-/* Get the Kendall concordance of the copula */
-CorrelationMatrix CopulaImplementation::getKendallTau() const
-{
-  const UnsignedInteger dimension = getDimension();
-  CorrelationMatrix tau(dimension);
-  if (hasIndependentCopula()) return tau;
-  // Here we have a circular dependency between copulas and distributions
-  if (hasEllipticalCopula())
-  {
-    const CorrelationMatrix shape(getShapeMatrix());
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      for(UnsignedInteger j = 0; j < i; ++j)
-        tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
-    return tau;
-  }
-  const IteratedQuadrature integrator = IteratedQuadrature(GaussKronrod());
-  const Interval square(Point(2, 0.0), Point(2, 1.0));
-  // Performs the integration in the strictly lower triangle of the tau matrix
-  Indices indices(2);
-  for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
-  {
-    indices[0] = rowIndex;
-    for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
-    {
-      indices[1] = columnIndex;
-      const Implementation marginalDistribution(getMarginal(indices).getImplementation());
-      if (!marginalDistribution->hasIndependentCopula())
-      {
-        // Build the integrand
-        const CopulaImplementationKendallTauWrapper functionWrapper(marginalDistribution);
-        const Function function(bindMethod<CopulaImplementationKendallTauWrapper, Point, Point>(functionWrapper, &CopulaImplementationKendallTauWrapper::kernel, 2, 1));
-        tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
-      }
-    } // loop over column indices
-  } // loop over row indices
-  return tau;
-}
-
 /* Get the skewness of the copula */
 Point CopulaImplementation::getSkewness() const
 {
