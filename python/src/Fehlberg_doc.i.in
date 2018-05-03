@@ -3,8 +3,9 @@
 
 Parameters
 ----------
-transitionFunction : :class:`~openturns.FieldFunction`
+transitionFunction : :class:`~openturns.Function`
     The function defining the flow of the ordinary differential equation.
+    Must have one or zero parameter.
 localPrecision : float
     The expected absolute error on one step.
 order : int, :math:`order\in\{0,1,2,3,4\}`
@@ -113,8 +114,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
->>> mesh = ot.Mesh(1)
->>> phi = ot.VertexValueFunction(f, mesh)
+>>> phi = ot.ParametricFunction(f, [0], [0.0])
 >>> solver = ot.Fehlberg(phi)
 >>> Y0 = [1.0, -1.0]
 >>> nt = 100

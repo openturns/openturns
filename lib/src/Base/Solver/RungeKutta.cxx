@@ -36,7 +36,7 @@ RungeKutta::RungeKutta()
 }
 
 /* Default constructor */
-RungeKutta::RungeKutta(const FieldFunction & transitionFunction)
+RungeKutta::RungeKutta(const Function & transitionFunction)
   : ODESolverImplementation(transitionFunction)
 {
   // Nothing to do
@@ -67,11 +67,12 @@ Sample RungeKutta::solve(const Point & initialState,
   Scalar t = timeGrid[0];
   Point state(initialState);
   result[0] = state;
+  Function transitionFunction(transitionFunction_);
   for (UnsignedInteger i = 1; i < steps; ++i)
   {
     const Scalar newT = timeGrid[i];
     const Scalar timeStep = newT - t;
-    const Point phi(computeStep(t, state, timeStep));
+    const Point phi(computeStep(transitionFunction, t, state, timeStep));
     state += timeStep * phi;
     result[i] = state;
     t = newT;
@@ -80,14 +81,24 @@ Sample RungeKutta::solve(const Point & initialState,
 }
 
 /* Perform one step of the RungeKutta method */
-Point RungeKutta::computeStep(const Scalar t,
+Point RungeKutta::computeStep(Function & transitionFunction,
+                              const Scalar t,
                               const Point & state,
                               const Scalar h) const
 {
-  const Point k1(evaluate(t, state));
-  const Point k2(evaluate(t + 0.5 * h, state + k1 * (0.5 * h)));
-  const Point k3(evaluate(t + 0.5 * h, state + k2 * (0.5 * h)));
-  const Point k4(evaluate(t + h, state + k3 * h));
+  Point parameter(1, t);
+  if (transitionFunction.getParameter().getDimension() > 0)
+    transitionFunction.setParameter(parameter);
+  const Point k1(transitionFunction(state));
+  parameter[0] = t + 0.5 * h;
+  if (transitionFunction.getParameter().getDimension() > 0)
+    transitionFunction.setParameter(parameter);
+  const Point k2(transitionFunction(state + k1 * (0.5 * h)));
+  const Point k3(transitionFunction(state + k2 * (0.5 * h)));
+  parameter[0] = t + h;
+  if (transitionFunction.getParameter().getDimension() > 0)
+    transitionFunction.setParameter(parameter);
+  const Point k4(transitionFunction(state + k3 * h));
   return (k1 + k2 * 2.0 + k3 * 2.0 + k4) * (1.0 / 6.0);
 }
 

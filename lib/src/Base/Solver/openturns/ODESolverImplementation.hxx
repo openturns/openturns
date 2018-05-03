@@ -22,7 +22,7 @@
 #define OPENTURNS_ODESOLVERIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/FieldFunction.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Mesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,7 +43,7 @@ public:
   ODESolverImplementation();
 
   /** Parameter constructor */
-  explicit ODESolverImplementation(const FieldFunction & transitionFunction);
+  explicit ODESolverImplementation(const Function & transitionFunction);
 
   /** Virtual constructor */
   virtual ODESolverImplementation * clone() const;
@@ -59,8 +59,8 @@ public:
                        const Mesh & timeGrid) const;
 
   /** Transition function accessor */
-  void setTransitionFunction(const FieldFunction & transitionFunction);
-  FieldFunction getTransitionFunction() const;
+  void setTransitionFunction(const Function & transitionFunction);
+  Function getTransitionFunction() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -69,11 +69,8 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  // helper function to evaluation the function at a specific node
-  Point evaluate(const Scalar t, const Point & inP) const;
-
   /** Transition function */
-  FieldFunction transitionFunction_;
+  Function transitionFunction_;
 
 }; /* class ODESolverImplementation */
 

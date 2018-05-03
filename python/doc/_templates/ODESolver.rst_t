@@ -16,13 +16,12 @@
         return [dY0, dY1]
 
     phi_func = ot.PythonFunction(2, 2, flow)
+    solver = ot.{{ objname }}(phi_func)
+
+    initialState = [2.0, 2.0]
     nt = 47
     dt = 0.1
     timeGrid = ot.RegularGrid(0.0, dt, nt)
-    phi = ot.ValueFunction(phi_func, timeGrid)
-    solver = ot.{{ objname }}(phi)
-
-    initialState = [2.0, 2.0]
     result = solver.solve(initialState, timeGrid)
     xMin = result.getMin()
     xMax = result.getMax()

@@ -49,19 +49,7 @@ int main(int argc, char *argv[])
     {
       timeGrid[i] = pow(i, 2.0) / pow(nt - 1.0, 2.0);
     }
-    Sample vertices(nt, 1);
-    for (UnsignedInteger i = 0; i < nt; ++i)
-    {
-      vertices(i, 0) = timeGrid[i];
-    }
-    IndicesCollection simplices(nt - 1, 2);
-    for (UnsignedInteger i = 0; i < nt-1; ++i)
-    {
-      simplices(i, 0) = i;
-      simplices(i, 1) = i + 1;
-    }
-    Mesh timeMesh(vertices, simplices);
-    VertexValueFunction phi(f, timeMesh);
+    ParametricFunction phi(f, Indices(1, 0), Point(1, 0.0));
     fullprint << "time grid=" << timeGrid << std::endl;
     Point ref(2);
     Scalar t = timeGrid[nt - 1];

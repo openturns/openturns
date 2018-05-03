@@ -37,11 +37,12 @@ ODESolverImplementation::ODESolverImplementation()
 }
 
 /* Parameter constructor */
-ODESolverImplementation::ODESolverImplementation(const FieldFunction & transitionFunction)
+ODESolverImplementation::ODESolverImplementation(const Function & transitionFunction)
   : PersistentObject()
   , transitionFunction_(transitionFunction)
 {
-  // Nothing to do
+  if (transitionFunction.getParameterDimension() > 1)
+    throw InvalidArgumentException(HERE) << "The function must have one or zero parameter";
 }
 
 /* Virtual constructor */
@@ -75,21 +76,14 @@ String ODESolverImplementation::__repr__() const
 }
 
 /* Transition function accessor */
-void ODESolverImplementation::setTransitionFunction(const FieldFunction & transitionFunction)
+void ODESolverImplementation::setTransitionFunction(const Function & transitionFunction)
 {
   transitionFunction_ = transitionFunction;
 }
 
-FieldFunction ODESolverImplementation::getTransitionFunction() const
+Function ODESolverImplementation::getTransitionFunction() const
 {
   return transitionFunction_;
-}
-
-Point ODESolverImplementation::evaluate(const Scalar t, const Point & inP) const
-{
-  Field X(Mesh(Sample(1, Point(1, t))), Sample(1, inP));
-  Field Y(transitionFunction_(X));
-  return Y.getValues()[0];
 }
 
 /* Method save() stores the object through the StorageManager */

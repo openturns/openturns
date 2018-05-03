@@ -43,7 +43,7 @@ Fehlberg::Fehlberg()
 }
 
 /* Default constructor */
-Fehlberg::Fehlberg(const FieldFunction & transitionFunction,
+Fehlberg::Fehlberg(const Function & transitionFunction,
                    const Scalar localPrecision,
                    const UnsignedInteger order)
   : ODESolverImplementation(transitionFunction)
@@ -214,6 +214,7 @@ Sample Fehlberg::solve(const Point & initialState,
   if (!positiveStep) h = -h;
   Bool done = false;
   Point gradient;
+  Function transitionFunction(transitionFunction_);
   while (!done)
   {
     Scalar newT = t + h;
@@ -223,14 +224,16 @@ Sample Fehlberg::solve(const Point & initialState,
       h = tEnd - t;
       newT = tEnd;
     }
-    state = computeStep(t, state, gradient, h);
+    state = computeStep(transitionFunction, t, state, gradient, h);
     values.add(state);
     derivatives.add(gradient);
     times.add(newT);
     t = newT;
   }
   // Final evaluation of the gradient
-  derivatives.add(evaluate(t, state));
+  if (transitionFunction.getParameter().getDimension() > 0)
+    transitionFunction.setParameter(Point(1, t));
+  derivatives.add(transitionFunction(state));
   // Now we interpolate the solution on the expected grid
   PiecewiseHermiteEvaluation hermite(times, values, derivatives);
   Sample result(steps, dimension);
@@ -242,14 +245,18 @@ Sample Fehlberg::solve(const Point & initialState,
 /* Perform one step of the Fehlberg method
    See J. Stoer, R. Bulirsch, "Introduction to Numerical Analysis 2nd Edition", pp448-458.
  */
-Point Fehlberg::computeStep(const Scalar t,
+Point Fehlberg::computeStep(Function & transitionFunction,
+                            const Scalar t,
                             const Point & state,
                             Point & gradient,
                             Scalar & h) const
 {
   const UnsignedInteger dimension = state.getDimension();
   Sample f(order_ + 2, dimension);
-  gradient = evaluate(t, state);
+  Point parameter(1, t);
+  if (transitionFunction.getParameter().getDimension() > 0)
+    transitionFunction.setParameter(parameter);
+  gradient = transitionFunction(state);
   f[0] = gradient;
   UnsignedInteger index = 0;
   for (UnsignedInteger k = 0; k <= order_; ++k)
@@ -261,7 +268,10 @@ Point Fehlberg::computeStep(const Scalar t,
       yK += f[l] * (h * beta_[index]);
       ++index;
     }
-    f[k + 1] = evaluate(tK, yK);
+    parameter[0] = tK;
+    if (transitionFunction.getParameter().getDimension() > 0)
+      transitionFunction.setParameter(parameter);
+    f[k + 1] = transitionFunction(yK);
   }
   Point PhiI(dimension);
   Point PhiII(dimension);
