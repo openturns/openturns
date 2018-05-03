@@ -85,6 +85,13 @@ FieldFunction ODESolverImplementation::getTransitionFunction() const
   return transitionFunction_;
 }
 
+Point ODESolverImplementation::evaluate(const Scalar t, const Point & inP) const
+{
+  Field X(Mesh(Sample(1, Point(1, t))), Sample(1, inP));
+  Field Y(transitionFunction_(X));
+  return Y.getValues()[0];
+}
+
 /* Method save() stores the object through the StorageManager */
 void ODESolverImplementation::save(Advocate & adv) const
 {

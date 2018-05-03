@@ -69,6 +69,8 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
+  // helper function to evaluation the function at a specific node
+  Point evaluate(const Scalar t, const Point & inP) const;
 
   /** Transition function */
   FieldFunction transitionFunction_;

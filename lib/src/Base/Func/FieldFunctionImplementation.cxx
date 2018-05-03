@@ -137,18 +137,6 @@ Mesh FieldFunctionImplementation::getOutputMesh() const
 }
 
 /* Operator () */
-Point FieldFunctionImplementation::operator() (const Scalar timeStamp,
-    const Point & inP) const
-{
-  return (*this)(Point(1, timeStamp), inP);
-}
-
-Point FieldFunctionImplementation::operator() (const Point & location,
-    const Point & inP) const
-{
-  return (*this)(Field(Mesh(Sample(1, location), IndicesCollection()), Sample(1, inP))).getValues()[0];
-}
-
 Field FieldFunctionImplementation::operator() (const Field & inFld) const
 {
   throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::operator() (const Field & inFld) const";

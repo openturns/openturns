@@ -120,18 +120,6 @@ Mesh FieldFunction::getOutputMesh() const
 }
 
 /* Operator () */
-Point FieldFunction::operator() (const Scalar timeStamp,
-                                 const Point & inP) const
-{
-  return getImplementation()->operator()(timeStamp, inP);
-}
-
-Point FieldFunction::operator() (const Point & location,
-                                 const Point & inP) const
-{
-  return getImplementation()->operator()(location, inP);
-}
-
 Field FieldFunction::operator() (const Field & inFld) const
 {
   return getImplementation()->operator()(inFld);

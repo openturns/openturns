@@ -84,10 +84,10 @@ Point RungeKutta::computeStep(const Scalar t,
                               const Point & state,
                               const Scalar h) const
 {
-  const Point k1(transitionFunction_(t, state));
-  const Point k2(transitionFunction_(t + 0.5 * h, state + k1 * (0.5 * h)));
-  const Point k3(transitionFunction_(t + 0.5 * h, state + k2 * (0.5 * h)));
-  const Point k4(transitionFunction_(t + h, state + k3 * h));
+  const Point k1(evaluate(t, state));
+  const Point k2(evaluate(t + 0.5 * h, state + k1 * (0.5 * h)));
+  const Point k3(evaluate(t + 0.5 * h, state + k2 * (0.5 * h)));
+  const Point k4(evaluate(t + h, state + k3 * h));
   return (k1 + k2 * 2.0 + k3 * 2.0 + k4) * (1.0 / 6.0);
 }
 

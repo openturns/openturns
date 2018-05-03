@@ -67,10 +67,6 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual Point operator() (const Scalar timeStamp,
-                            const Point & inP) const;
-  virtual Point operator() (const Point & location,
-                            const Point & inP) const;
   virtual Field operator() (const Field & inFld) const;
   virtual ProcessSample operator() (const ProcessSample & inPS) const;
 
