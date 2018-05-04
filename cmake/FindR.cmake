@@ -93,14 +93,9 @@ endif ()
 
 include (FindPackageHandleStandardArgs)
 
-
-if (CMAKE_VERSION VERSION_LESS 2.8.3)
-  find_package_handle_standard_args (R DEFAULT_MSG R_EXECUTABLE R_VERSION_STRING ${R_PACKAGES})
-else ()
-  find_package_handle_standard_args (R 
-    REQUIRED_VARS R_EXECUTABLE ${R_PACKAGES} 
-    VERSION_VAR R_VERSION_STRING
- )
-endif ()
+find_package_handle_standard_args (R
+  REQUIRED_VARS R_EXECUTABLE ${R_PACKAGES}
+  VERSION_VAR R_VERSION_STRING
+)
 
 mark_as_advanced (R_EXECUTABLE R_INCLUDE_DIR R_LIBRARIES R_VERSION_STRING ${R_PACKAGES})
