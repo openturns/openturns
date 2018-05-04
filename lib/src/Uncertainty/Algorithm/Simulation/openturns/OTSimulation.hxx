@@ -36,9 +36,9 @@
 #include "openturns/PostAnalyticalControlledImportanceSampling.hxx"
 #include "openturns/PostAnalyticalImportanceSampling.hxx"
 #include "openturns/PostAnalyticalSimulation.hxx"
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/SimulationResult.hxx"
-#include "openturns/SimulationResultImplementation.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include "openturns/Wilks.hxx"
 #include "openturns/SubsetSamplingResult.hxx"
@@ -46,5 +46,6 @@
 #include "openturns/QuadrantSampling.hxx"
 #include "openturns/AdaptiveDirectionalSampling.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
+#include "openturns/ExpectationSimulationAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

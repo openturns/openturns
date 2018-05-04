@@ -39,7 +39,7 @@ static const Factory<DirectionalSampling> Factory_DirectionalSampling;
 
 /* Constructor with parameters */
 DirectionalSampling::DirectionalSampling()
-  : Simulation()
+  : EventSimulation()
   , standardFunction_(standardEvent_.getImplementation()->getFunction())
   , inputDistribution_(standardEvent_.getImplementation()->getAntecedent().getDistribution())
 {
@@ -48,7 +48,7 @@ DirectionalSampling::DirectionalSampling()
 
 /* Constructor with parameters */
 DirectionalSampling::DirectionalSampling(const Event & event)
-  : Simulation(event)
+  : EventSimulation(event)
 {
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
   standardEvent_ = StandardEvent(event);
@@ -61,7 +61,7 @@ DirectionalSampling::DirectionalSampling(const Event & event)
 DirectionalSampling::DirectionalSampling(const Event & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : Simulation(event)
+  : EventSimulation(event)
   , rootStrategy_(rootStrategy)
 {
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
@@ -228,14 +228,14 @@ String DirectionalSampling::__repr__() const
   oss << "class=" << DirectionalSampling::GetClassName()
       << " rootStrategy=" << rootStrategy_.__repr__()
       << " samplingStrategy=" << samplingStrategy_.__repr__()
-      << " derived from " << Simulation::__repr__();
+      << " derived from " << EventSimulation::__repr__();
   return oss;
 }
 
 /* Method save() stores the object through the StorageManager */
 void DirectionalSampling::save(Advocate & adv) const
 {
-  Simulation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("rootStrategy_", rootStrategy_);
   adv.saveAttribute("samplingStrategy_", samplingStrategy_);
 }
@@ -243,7 +243,7 @@ void DirectionalSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void DirectionalSampling::load(Advocate & adv)
 {
-  Simulation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("rootStrategy_", rootStrategy_);
   adv.loadAttribute("samplingStrategy_", samplingStrategy_);
   standardEvent_ = StandardEvent(event_);

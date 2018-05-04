@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_PROBABILITYSIMULATIONALGORITHM_HXX
 #define OPENTURNS_PROBABILITYSIMULATIONALGORITHM_HXX
 
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ProbabilitySimulationAlgorithm
  */
 
-class OT_API ProbabilitySimulationAlgorithm : public Simulation
+class OT_API ProbabilitySimulationAlgorithm : public EventSimulation
 {
 
   CLASSNAME

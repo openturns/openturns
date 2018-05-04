@@ -830,9 +830,10 @@ ot_add_python_module(analytical analytical_module.i
 
 ot_add_python_module(simulation simulation_module.i
                       SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i.in
-                      SimulationResultImplementation.i SimulationResultImplementation_doc.i.in
+                      ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i.in
                       SimulationResult.i SimulationResult_doc.i.in
-                      Simulation.i Simulation_doc.i.in
+                      SimulationAlgorithm.i SimulationAlgorithm_doc.i.in
+                      EventSimulation.i EventSimulation_doc.i.in
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i.in
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i.in
                       Wilks.i Wilks_doc.i.in
@@ -852,6 +853,8 @@ ot_add_python_module(simulation simulation_module.i
                       SubsetSamplingResult.i SubsetSamplingResult_doc.i.in
                       SubsetSampling.i SubsetSampling_doc.i.in
                       AdaptiveDirectionalSampling.i AdaptiveDirectionalSampling_doc.i.in
+                      ExpectationSimulationAlgorithm.i ExpectationSimulationAlgorithm_doc.i.in
+                      ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                     )
 

@@ -1,7 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Simulation is a generic view of simulation methods for computing
- * probabilities and related quantities by sampling and estimation
+ *  @brief EventSimulation algorithms base class
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,44 +18,30 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_SIMULATION_HXX
-#define OPENTURNS_SIMULATION_HXX
+#ifndef OPENTURNS_SIMULATIONALGORITHM_HXX
+#define OPENTURNS_SIMULATIONALGORITHM_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/HistoryStrategy.hxx"
-#include "openturns/Compact.hxx"
-#include "openturns/Last.hxx"
-#include "openturns/Graph.hxx"
-#include "openturns/SimulationResult.hxx"
-#include "openturns/Event.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Simulation
+ * @class SimulationAlgorithm
  */
 
-class OT_API Simulation
+class OT_API SimulationAlgorithm
   : public PersistentObject
 {
 
   CLASSNAME
 public:
 
-
   /** Constructor with parameters */
-  explicit Simulation(const Event & event,
-                      const Bool verbose = true,
-                      const HistoryStrategy & convergenceStrategy = Compact());
+  SimulationAlgorithm();
 
   /** Virtual constructor */
-  virtual Simulation * clone() const;
-
-  /** Event accessor */
-  Event getEvent() const;
-
-  /** Result accessor */
-  SimulationResult getResult() const;
+  virtual SimulationAlgorithm * clone() const;
 
   /** Maximum sample size accessor */
   void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
@@ -78,18 +63,15 @@ public:
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 
-  /** Convergence strategy accessor */
-  void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
-  HistoryStrategy getConvergenceStrategy() const;
-
   /** String converter */
   String __repr__() const;
 
   /** Performs the actual computation. */
   virtual void run();
 
-  /** Draw the probability convergence at the given level */
-  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("SimulationResult-DefaultConfidenceLevel")) const;
+  /** Convergence strategy accessor */
+  void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
+  HistoryStrategy getConvergenceStrategy() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -106,34 +88,15 @@ public:
   void setStopCallback(StopCallback callBack, void * state = 0);
 
 protected:
-
-  /** Result accessor */
-  void setResult(const SimulationResult & result);
-
-  /** Compute the block sample and the points that realized the event */
-  virtual Sample computeBlockSample();
-
-  /** For save/load mechanism*/
-  Simulation(const Bool verbose = true,
-             const HistoryStrategy & convergenceStrategy = Compact());
-
-  friend class Factory<Simulation>;
-
-  /** History strategy for the probability and variance estimate */
-  HistoryStrategy convergenceStrategy_;
-
   // Size of the atomic blocks of computation
   UnsignedInteger blockSize_;
-
-  // The event we are computing the probability of
-  Event event_;
-
-  // Result of the simulation
-  SimulationResult result_;
 
   // callbacks
   std::pair< ProgressCallback, void *> progressCallback_;
   std::pair< StopCallback, void *> stopCallback_;
+
+  /** History strategy for the probability and variance estimate */
+  HistoryStrategy convergenceStrategy_;
 
 private:
 
@@ -149,9 +112,9 @@ private:
   // Do we have to echo all the intermediate results?
   Bool verbose_;
 
-} ; /* class Simulation */
+} ; /* class SimulationAlgorithm */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_SIMULATION_HXX */
+#endif /* OPENTURNS_SIMULATIONALGORITHM_HXX */

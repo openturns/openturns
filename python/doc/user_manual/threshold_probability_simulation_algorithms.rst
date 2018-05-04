@@ -11,7 +11,9 @@ Simulations methods
     :toctree: _generated/
     :template: class.rst_t
 
-    Simulation
+    SimulationAlgorithm
+    SimulationResult
+    EventSimulation
     ProbabilitySimulationAlgorithm
     DirectionalSampling
     LHS
@@ -82,4 +84,5 @@ Simulation result
     :template: class.rst_t
 
     SimulationResult
+    ProbabilitySimulationResult
     SubsetSamplingResult

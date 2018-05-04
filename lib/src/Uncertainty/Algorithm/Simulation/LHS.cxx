@@ -38,7 +38,7 @@ static const Factory<LHS> Factory_LHS;
 
 /* Default constructor */
 LHS::LHS()
-  : Simulation()
+  : EventSimulation()
   , dimension_(0)
   , blockIndex_(0)
 {
@@ -47,7 +47,7 @@ LHS::LHS()
 
 /* Constructor with parameters */
 LHS::LHS(const Event & event)
-  : Simulation(event)
+  : EventSimulation(event)
   , dimension_(event.getImplementation()->getAntecedent().getDimension())
   , blockIndex_(0)
 {
@@ -99,7 +99,7 @@ Sample LHS::computeBlockSample()
 void LHS::run()
 {
   shuffle_ = LHSExperiment::ComputeShuffle(dimension_, getBlockSize() * getMaximumOuterSampling());
-  Simulation::run();
+  EventSimulation::run();
 }
 
 /* String converter */
@@ -107,14 +107,14 @@ String LHS::__repr__() const
 {
   OSS oss;
   oss << "class=" << LHS::GetClassName()
-      << " derived from " << Simulation::__repr__();
+      << " derived from " << EventSimulation::__repr__();
   return oss;
 }
 
 /* Method save() stores the object through the StorageManager */
 void LHS::save(Advocate & adv) const
 {
-  Simulation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("dimension_", dimension_);
   adv.saveAttribute("blockIndex_", blockIndex_);
   adv.saveAttribute("shuffle_", shuffle_);
@@ -124,7 +124,7 @@ void LHS::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LHS::load(Advocate & adv)
 {
-  Simulation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("dimension_", dimension_);
   adv.loadAttribute("blockIndex_", blockIndex_);
   adv.loadAttribute("shuffle_", shuffle_);

@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_ADAPTATIVEDIRECTIONALSAMPLING_HXX
 #define OPENTURNS_ADAPTATIVEDIRECTIONALSAMPLING_HXX
 
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/StandardEvent.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * AdaptiveDirectionalSampling
  */
 class OT_API AdaptiveDirectionalSampling
-  : public Simulation
+  : public EventSimulation
 {
   CLASSNAME
 

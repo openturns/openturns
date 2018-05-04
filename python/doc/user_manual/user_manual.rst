@@ -22,7 +22,7 @@ This section details classes, functions included in the Python bindings.
     response_surface/response_surface
     statistics_on_sample
     stochastic_process
-    taylor_decomposition
+    central_tendency
     threshold_probability_reliability_algorithms
     threshold_probability_simulation_algorithms
     transformations

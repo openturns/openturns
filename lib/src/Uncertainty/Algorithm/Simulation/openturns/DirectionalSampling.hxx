@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_DIRECTIONALSAMPLING_HXX
 #define OPENTURNS_DIRECTIONALSAMPLING_HXX
 
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/StandardEvent.hxx"
@@ -35,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API DirectionalSampling :
-  public Simulation
+  public EventSimulation
 {
   CLASSNAME
 public:

@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     myAlgo.run();
 
     /* Stream out the result */
-    SimulationResult result(myAlgo.getResult());
+    ProbabilitySimulationResult result(myAlgo.getResult());
     fullprint << "MonteCarlo result=" << result << std::endl;
     /* Draw the convergence graph */
     Graph convergenceGraph(myAlgo.drawProbabilityConvergence());

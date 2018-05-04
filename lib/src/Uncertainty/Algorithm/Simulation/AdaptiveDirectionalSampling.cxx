@@ -29,7 +29,7 @@ CLASSNAMEINIT(AdaptiveDirectionalSampling)
 
 /* Default constructor */
 AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
-  : Simulation()
+  : EventSimulation()
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
 {
@@ -40,7 +40,7 @@ AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
 AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const Event & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : Simulation(event)
+  : EventSimulation(event)
   , standardEvent_(StandardEvent(event))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
@@ -117,7 +117,7 @@ void AdaptiveDirectionalSampling::run()
       directionalSampling.setMaximumOuterSampling (ni);
       directionalSampling.setBlockSize (blockSize);
       directionalSampling.run();
-      const SimulationResult result(directionalSampling.getResult());
+      const ProbabilitySimulationResult result(directionalSampling.getResult());
       const Scalar pf = result.getProbabilityEstimate();
 
       if (pf > 0.0)
@@ -142,7 +142,7 @@ void AdaptiveDirectionalSampling::run()
     const Scalar varianceEstimate = w0SigmaSum * w0SigmaSum / (gamma_[l] * n); // (33)
 
     // update result
-    setResult(SimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
+    setResult(ProbabilitySimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
 
     // update weights
     for (UnsignedInteger i = 0; i < m; ++ i)

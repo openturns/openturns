@@ -1,0 +1,177 @@
+%feature("docstring") OT::ExpectationSimulationAlgorithm
+"Expectation computation using sampling.
+
+Incremental Monte Carlo sampling algorithm to estimate the mean :math:`\Expect{\vect{X}}` of a random vector
+:math:`\vect{X}`.
+
+Parameters
+----------
+X : :class:`~openturns.RandomVector`
+    The random vector to study.
+
+Notes
+-----
+The algorithm can operate on a multivariate random vector :math:`\vect{X}`.
+
+There are 3 mathematical stopping criteria available:
+
+- through an operator on the coefficient of variation
+- through an operator on the standard deviation
+- on the maximum standard deviation per component
+
+The criterion on the coefficient of variation is defined using either:
+
+  - The maximum: :math:`\max_i \frac{\sigma_i}{|\mu_i|} \leq \max_{cov}`
+  - The norm-1: :math:`\frac{1}{d} \sum_1^{d} \frac{\sigma_i}{|\mu_i|} \leq \max_{cov}`
+  - The norm-2: :math:`\sqrt{\frac{1}{d} \sum_1^{d} \left(\frac{\sigma_i}{|\mu_i|}\right)^2} \leq \max_{cov}`
+
+  The type of operator on the coefficient of variation is set using :meth:`setCoefficientOfVariationCriterionType`.
+
+  The default type is set by the `ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType`
+  :class:`~openturns.ResourceMap` key.
+
+  The threshold :math:`\max_{cov}` can be set using :meth:`setMaximumCoefficientOfVariation`.
+
+The criterion on the standard deviation is defined using either:
+
+  - The maximum: :math:`\max_i \sigma_i \leq \max_{\sigma}`
+  - The norm-1: :math:`\frac{1}{d} \sum_1^{d} |\sigma_i| \leq \max_{\sigma}`
+  - The norm-2: :math:`\sqrt{\frac{1}{d} \sum_1^{d} \sigma_i^2} \leq \max_{\sigma}`
+
+  The type of operator on the coefficient of variation can be set using :meth:`setStandardDeviationCriterionType`.
+
+  The default type is set by the `ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType`
+  :class:`~openturns.ResourceMap` key.
+
+  The threshold :math:`\max_{\sigma}` can be set using :meth:`setMaximumStandardDeviation`.
+
+The criterion on the maximum deviation per component is defined by :math:`\sigma_i \leq \max_{\sigma_i}`
+
+  The thresholds :math:`\max_{\sigma_i}` can be set using :meth:`setMaximumStandardDeviationPerComponent`.
+
+  By default this criterion is disabled.
+
+
+See also
+--------
+ExpectationSimulationResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> # Create a composite random vector
+>>> model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> vect = ot.RandomVector(distribution)
+>>> X = ot.RandomVector(model, vect)
+>>> algo = ot.ExpectationSimulationAlgorithm(X)
+>>> algo.setMaximumOuterSampling(1000)
+>>> algo.setBlockSize(1)
+>>> algo.setCoefficientOfVariationCriterionType('NONE')
+>>> algo.run()
+>>> result = algo.getResult()
+>>> expectation = result.getExpectationEstimate()
+>>> print(expectation)
+[-1.39543]
+>>> expectationDistribution = result.getExpectationDistribution()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::getResult
+"Accessor to the result.
+
+Returns
+-------
+result : :class:`~openturns.ExpectationSimulationResult`
+    The simulation result."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::setCoefficientOfVariationCriterionType
+"Accessor to the criterion operator.
+
+Parameters
+----------
+result : str
+    The criterion operator, either NONE, MAX, NORM1 or NORM2."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::getCoefficientOfVariationCriterionType
+"Accessor to the criterion operator.
+
+Returns
+-------
+result : str
+    The criterion operator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::setStandardDeviationCriterionType
+"Accessor to the criterion operator.
+
+Parameters
+----------
+result : str
+    The criterion operator, either NONE, MAX, NORM1 or NORM2"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::getStandardDeviationCriterionType
+"Accessor to the criterion operator.
+
+Returns
+-------
+result : str
+    The criterion operator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::setMaximumStandardDeviationPerComponent
+"Accessor to the maximum standard deviation.
+
+Parameters
+----------
+sigmaMax : sequence of float
+    The maximum standard deviation on each component.
+
+    If empty, the stopping criterion is not applied."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::getMaximumStandardDeviationPerComponent
+"Accessor to the maximum standard deviation.
+
+Returns
+-------
+sigmaMax : sequence of float
+    The maximum standard deviation on each component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::getRandomVector
+"Accessor to the random vector.
+
+Returns
+-------
+X : :class:`~openturns.RandomVector`
+    Random vector we want to study."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExpectationSimulationAlgorithm::drawExpectationConvergence
+"Draw the expectation convergence at a given level.
+
+Parameters
+----------
+marginalIndex : int
+    Index of the random vector component to consider
+level : float, optional
+    The expectation convergence is drawn at this given confidence length
+    *level*. By default *level* is 0.95.
+
+Returns
+-------
+graph : a :class:`~openturns.Graph`
+    expectation convergence graph"

@@ -742,14 +742,18 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "RootStrategy-DefaultMaximumDistance", 8.0 );
   setAsScalar( "RootStrategy-DefaultStepSize", 1.0 );
 
-  // Simulation parameters //
-  setAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling", 1000 );
-  setAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation", 1.0e-1 );
-  setAsScalar( "Simulation-DefaultMaximumStandardDeviation", 0.0 );
-  setAsUnsignedInteger( "Simulation-DefaultBlockSize", 1 );
+  // SimulationAlgorithm parameters //
+  setAsUnsignedInteger( "SimulationAlgorithm-DefaultMaximumOuterSampling", 1000 );
+  setAsScalar( "SimulationAlgorithm-DefaultMaximumCoefficientOfVariation", 1.0e-1 );
+  setAsScalar( "SimulationAlgorithm-DefaultMaximumStandardDeviation", 0.0 );
+  setAsUnsignedInteger( "SimulationAlgorithm-DefaultBlockSize", 1 );
 
-  // SimulationResultImplementation parameters //
-  setAsScalar( "SimulationResult-DefaultConfidenceLevel", 0.95 );
+  // ProbabilitySimulationResult parameters //
+  setAsScalar( "ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95 );
+
+  // ExpectationSimulationAlgorithm parameters //
+  set("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX");
+  set("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE");
 
   // SimulationSensitivityAnalysis parameters //
   setAsUnsignedInteger( "SimulationSensitivityAnalysis-DefaultSampleMargin", 400 );

@@ -30,13 +30,13 @@
 #include "openturns/Graph.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/SimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class SimulationSensitivityAnalysis
- * Implementation of Simulation sensitivity analysis, it means computation of standardized importance factors
+ * Implementation of EventSimulation sensitivity analysis, it means computation of standardized importance factors
  */
 class OT_API SimulationSensitivityAnalysis
   : public PersistentObject
@@ -61,7 +61,7 @@ public:
   explicit SimulationSensitivityAnalysis(const Event & event);
 
   /** Standard constructor */
-  explicit SimulationSensitivityAnalysis(const SimulationResult & result);
+  explicit SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result);
 
   /** Virtual constructor */
   virtual SimulationSensitivityAnalysis * clone() const;

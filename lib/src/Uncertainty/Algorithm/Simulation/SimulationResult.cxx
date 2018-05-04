@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief SimulationResult stores the simulation result
+ *  @brief Implementation of SimulationResult
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,143 +18,85 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cmath>
 #include "openturns/SimulationResult.hxx"
-#include "openturns/DistFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
-
 CLASSNAMEINIT(SimulationResult)
+
+static const Factory<SimulationResult> Factory_SimulationResult;
 
 /* Default constructor */
 SimulationResult::SimulationResult()
-  : TypedInterfaceObject<SimulationResultImplementation>(SimulationResultImplementation().clone())
+  : PersistentObject()
+  , outerSampling_(0)
+  , blockSize_(0)
 {
   // Nothing to do
 }
 
 /* Standard constructor */
-SimulationResult::SimulationResult(const Event & event,
-                                   const Scalar probabilityEstimate,
-                                   const Scalar varianceEstimate,
-                                   const UnsignedInteger outerSampling,
-                                   const UnsignedInteger blockSize)
-  : TypedInterfaceObject<SimulationResultImplementation>(new SimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize))
+SimulationResult::SimulationResult(const UnsignedInteger outerSampling,
+    const UnsignedInteger blockSize)
+  : PersistentObject()
+  , outerSampling_(outerSampling)
+  , blockSize_(blockSize)
 {
   // Nothing to do
 }
 
-/* Constructor with parameters */
-SimulationResult::SimulationResult(Implementation & p_implementation)
-  : TypedInterfaceObject<SimulationResultImplementation>(p_implementation)
+/* Virtual constructor */
+SimulationResult * SimulationResult::clone() const
 {
-  // Nothing to do
-}
-
-/* Constructor with parameters */
-SimulationResult::SimulationResult(const SimulationResultImplementation & implementation)
-  : TypedInterfaceObject<SimulationResultImplementation>(implementation.clone())
-{
-  // Nothing to do
-}
-
-/* Event accessor */
-Event SimulationResult::getEvent() const
-{
-  return getImplementation()->getEvent();
-}
-
-/* Probability estimate accessor */
-Scalar SimulationResult::getProbabilityEstimate() const
-{
-  return getImplementation()->getProbabilityEstimate();
-}
-
-void SimulationResult::setProbabilityEstimate(const Scalar probabilityEstimate)
-{
-  copyOnWrite();
-  getImplementation()->setProbabilityEstimate(probabilityEstimate);
-}
-
-/* Variance estimate accessor */
-Scalar SimulationResult::getVarianceEstimate() const
-{
-  return getImplementation()->getVarianceEstimate();
-}
-
-void SimulationResult::setVarianceEstimate(const Scalar varianceEstimate)
-{
-  copyOnWrite();
-  getImplementation()->setVarianceEstimate(varianceEstimate);
-}
-
-/* Coefficient of variation estimate accessor */
-Scalar SimulationResult::getCoefficientOfVariation() const
-{
-  return getImplementation()->getCoefficientOfVariation();
-}
-
-/* Standard deviation estimate accessor */
-Scalar SimulationResult::getStandardDeviation() const
-{
-  return getImplementation()->getStandardDeviation();
-}
-
-/* Mean point conditioned to the event realization accessor */
-Point SimulationResult::getMeanPointInEventDomain() const
-{
-  return getImplementation()->getMeanPointInEventDomain();
+  return new SimulationResult(*this);
 }
 
 /* Outer sampling accessor */
 UnsignedInteger SimulationResult::getOuterSampling() const
 {
-  return getImplementation()->getOuterSampling();
+  return outerSampling_;
 }
 
 void SimulationResult::setOuterSampling(const UnsignedInteger outerSampling)
 {
-  copyOnWrite();
-  getImplementation()->setOuterSampling(outerSampling);
-}
-
-/* String converter */
-String SimulationResult::__repr__() const
-{
-  return getImplementation()->__repr__();
-}
-
-/* Confidence length */
-Scalar SimulationResult::getConfidenceLength(const Scalar level) const
-{
-  return getImplementation()->getConfidenceLength(level);
+  outerSampling_ = outerSampling;
 }
 
 /* Block size accessor */
 UnsignedInteger SimulationResult::getBlockSize() const
 {
-  return getImplementation()->getBlockSize();
+  return blockSize_;
 }
 
 void SimulationResult::setBlockSize(const UnsignedInteger blockSize)
 {
-  copyOnWrite();
-  getImplementation()->setBlockSize(blockSize);
+  blockSize_ = blockSize;
 }
 
-/* Importance factors accessor */
-PointWithDescription SimulationResult::getImportanceFactors() const
+/* String converter */
+String SimulationResult::__repr__() const
 {
-  return getImplementation()->getImportanceFactors();
+  OSS oss;
+  oss << " outerSampling=" << outerSampling_
+      << " blockSize=" << blockSize_;
+  return oss;
 }
 
-/* Draw the importance factors */
-Graph SimulationResult::drawImportanceFactors() const
+/* Method save() stores the object through the StorageManager */
+void SimulationResult::save(Advocate & adv) const
 {
-  return getImplementation()->drawImportanceFactors();
+  PersistentObject::save(adv);
+  adv.saveAttribute("outerSampling_", outerSampling_);
+  adv.saveAttribute("blockSize_", blockSize_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void SimulationResult::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("outerSampling_", outerSampling_);
+  adv.loadAttribute("blockSize_", blockSize_);
 }
 
 END_NAMESPACE_OPENTURNS

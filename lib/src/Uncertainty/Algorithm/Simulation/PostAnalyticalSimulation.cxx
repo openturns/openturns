@@ -36,14 +36,14 @@ static const Factory<PostAnalyticalSimulation> Factory_PostAnalyticalSimulation;
 
 /* Constructor with parameters */
 PostAnalyticalSimulation::PostAnalyticalSimulation()
-  : Simulation()
+  : EventSimulation()
   , controlProbability_(0.)
 {
 }
 
 /* Constructor with parameters */
 PostAnalyticalSimulation::PostAnalyticalSimulation(const AnalyticalResult & analyticalResult)
-  : Simulation(analyticalResult.getLimitStateVariable())
+  : EventSimulation(analyticalResult.getLimitStateVariable())
   , analyticalResult_(analyticalResult)
   , standardEvent_(StandardEvent(getEvent()))
   , standardDistribution_(standardEvent_.getImplementation()->getAntecedent().getDistribution())
@@ -77,14 +77,14 @@ String PostAnalyticalSimulation::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void PostAnalyticalSimulation::save(Advocate & adv) const
 {
-  Simulation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("analyticalResult_", analyticalResult_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void PostAnalyticalSimulation::load(Advocate & adv)
 {
-  Simulation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("analyticalResult_", analyticalResult_);
   standardEvent_ = StandardEvent(getEvent());
   standardDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();

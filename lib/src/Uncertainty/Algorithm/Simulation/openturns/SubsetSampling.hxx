@@ -21,13 +21,13 @@
 #ifndef OPENTURNS_SUBSETSAMPLING_HXX
 #define OPENTURNS_SUBSETSAMPLING_HXX
 
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/StandardEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SubsetSampling
-  : public Simulation
+  : public EventSimulation
 {
   CLASSNAME
 public:

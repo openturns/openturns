@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_POSTANALYTICALSIMULATION_HXX
 #define OPENTURNS_POSTANALYTICALSIMULATION_HXX
 
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/AnalyticalResult.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/Distribution.hxx"
@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API PostAnalyticalSimulation
-  : public Simulation
+  : public EventSimulation
 {
 
   CLASSNAME

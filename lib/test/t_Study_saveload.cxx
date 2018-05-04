@@ -201,9 +201,9 @@ int main(int argc, char *argv[])
     study.add("staircase", staircase);
 
     // Create a Simulation::Result
-    SimulationResult simulationResult(Event(), 0.5, 0.01, 150, 4);
-    simulationResult.setName("simulationResult");
-    study.add("simulationResult", simulationResult);
+    ProbabilitySimulationResult simulationResult(Event(), 0.5, 0.01, 150, 4);
+    simulationResult.setName("probabilitySimulationResult");
+    study.add("probabilitySimulationResult", simulationResult);
 
     Arcsine arcsine(5.2, 11.6);
     study.add("arcsine", arcsine);
@@ -1052,7 +1052,7 @@ int main(int argc, char *argv[])
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );
     compare<LHS>(lhs, study2, "lhs");
-    compare<SimulationResult >( simulationResult, study2 );
+    compare<ProbabilitySimulationResult >( simulationResult, study2 );
 
     // Analytical
     compare<SORM >( sorm, study2, "sorm");

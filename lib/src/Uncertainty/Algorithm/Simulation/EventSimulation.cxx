@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Simulation is a generic view of simulation methods for computing
+ *  @brief EventSimulation is a generic view of simulation methods for computing
  * probabilities and related quantities by sampling and estimation
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
@@ -20,7 +20,7 @@
  *
  */
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Simulation.hxx"
+#include "openturns/EventSimulation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
@@ -29,151 +29,74 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /*
- * @class Simulation
+ * @class EventSimulation
  */
 
-CLASSNAMEINIT(Simulation)
+CLASSNAMEINIT(EventSimulation)
 
-static const Factory<Simulation> Factory_Simulation;
+static const Factory<EventSimulation> Factory_EventSimulation;
 
 /** For save/load mechanism */
-Simulation::Simulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
-  : PersistentObject()
-  , convergenceStrategy_(convergenceStrategy)
-  , blockSize_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultBlockSize" ))
+EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
+  : SimulationAlgorithm()
   , event_()
   , result_()
-  , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
-  , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling" ))
-  , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
-  , maximumStandardDeviation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumStandardDeviation" ))
-  , verbose_(verbose)
 {
-  // Nothing to do
+  setVerbose(verbose);
+  convergenceStrategy_ = convergenceStrategy;
 }
 
 /* Constructor with parameters */
-Simulation::Simulation(const Event & event,
+EventSimulation::EventSimulation(const Event & event,
                        const Bool verbose,
                        const HistoryStrategy & convergenceStrategy)
-  : PersistentObject()
-  , convergenceStrategy_(convergenceStrategy)
-  , blockSize_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultBlockSize" ))
+  : SimulationAlgorithm()
   , event_(event)
   , result_()
-  , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
-  , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "Simulation-DefaultMaximumOuterSampling" ))
-  , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumCoefficientOfVariation" ))
-  , maximumStandardDeviation_(ResourceMap::GetAsScalar( "Simulation-DefaultMaximumStandardDeviation" ))
-  , verbose_(verbose)
 {
-  // Nothing to do
+  setVerbose(verbose);
+  convergenceStrategy_ = convergenceStrategy;
 }
 
 /* Virtual constructor */
-Simulation * Simulation::clone() const
+EventSimulation * EventSimulation::clone() const
 {
-  return new Simulation(*this);
+  return new EventSimulation(*this);
 }
 
 /*  Event accessor */
-Event Simulation::getEvent() const
+Event EventSimulation::getEvent() const
 {
   return event_;
 }
 
 /* Result accessor */
-void Simulation::setResult(const SimulationResult & result)
+void EventSimulation::setResult(const ProbabilitySimulationResult & result)
 {
   result_ = result;
 }
 
 /* Result accessor */
-SimulationResult Simulation::getResult() const
+ProbabilitySimulationResult EventSimulation::getResult() const
 {
   return result_;
 }
 
-/* Maximum sample size accessor */
-void Simulation::setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling)
-{
-  maximumOuterSampling_ = maximumOuterSampling;
-}
-
-/* Maximum sample size accessor */
-UnsignedInteger Simulation::getMaximumOuterSampling() const
-{
-  return maximumOuterSampling_;
-}
-
-/* Maximum coefficient of variation accessor */
-void Simulation::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation)
-{
-  // Check if the given coefficient of variation is >= 0
-  //      if (!(maximumCoefficientOfVariation >= 0.0)) throw InvalidArgumentException(HERE) << "The maximum coefficient of variation must be >= 0.0";
-  maximumCoefficientOfVariation_ = maximumCoefficientOfVariation;
-}
-
-/* Maximum coefficient of variation accessor */
-Scalar Simulation::getMaximumCoefficientOfVariation() const
-{
-  return maximumCoefficientOfVariation_;
-}
-
-/* Maximum standard deviation accessor */
-void Simulation::setMaximumStandardDeviation(const Scalar maximumStandardDeviation)
-{
-  maximumStandardDeviation_ = maximumStandardDeviation;
-}
-
-Scalar Simulation::getMaximumStandardDeviation() const
-{
-  return maximumStandardDeviation_;
-}
-
-/* Block size accessor */
-void Simulation::setBlockSize(const UnsignedInteger blockSize)
-{
-  // Check if the given block size is >= 1
-  if (blockSize < 1) throw InvalidArgumentException(HERE) << "The block size must be >= 1";
-  blockSize_ = blockSize;
-}
-
-/* Block size accessor */
-UnsignedInteger Simulation::getBlockSize() const
-{
-  return blockSize_;
-}
-
-/* Verbosity accessor */
-void Simulation::setVerbose(const Bool verbose)
-{
-  verbose_ = verbose;
-}
-
-/* Verbosity accessor */
-Bool Simulation::getVerbose() const
-{
-  return verbose_;
-}
-
 /* String converter */
-String Simulation::__repr__() const
+String EventSimulation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << Simulation::GetClassName()
+  oss << "class=" << EventSimulation::GetClassName()
       << " event=" << event_
-      << " maximumOuterSampling=" << maximumOuterSampling_
-      << " maximumCoefficientOfVariation=" << maximumCoefficientOfVariation_
-      << " maximumStandardDeviation=" << maximumStandardDeviation_
-      << " blockSize=" << blockSize_;
+      << " maximumOuterSampling=" << getMaximumOuterSampling()
+      << " maximumCoefficientOfVariation=" << getMaximumCoefficientOfVariation()
+      << " maximumStandardDeviation=" << getMaximumStandardDeviation()
+      << " blockSize=" << getBlockSize();
   return oss;
 }
 
 /* Performs the actual computation. */
-void Simulation::run()
+void EventSimulation::run()
 {
   /* We want to compute the probability of occurence of the given event
    *  We estimate this probability by computing the empirical mean of a
@@ -193,7 +116,7 @@ void Simulation::run()
   // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
-  result_.getImplementation()->setEvent(event_);
+  result_.setEvent(event_);
   result_.setBlockSize(blockSize_);
   // Second, the variant part
   result_.setProbabilityEstimate(probabilityEstimate);
@@ -206,7 +129,7 @@ void Simulation::run()
   {
     // Perform a block of simulation
     const Sample blockSample(computeBlockSample());
-    LOGDEBUG(OSS() << "Simulation::run: blockSample=\n" << blockSample);
+    LOGDEBUG(OSS() << "EventSimulation::run: blockSample=\n" << blockSample);
     ++outerSampling;
     // Then, actualize the estimates
     const Scalar meanBlock = blockSample.computeMean()[0];
@@ -229,7 +152,7 @@ void Simulation::run()
     result_.setVarianceEstimate(reducedVarianceEstimate);
     result_.setOuterSampling(outerSampling);
     // Display the result at each outer sample
-    if (verbose_) LOGINFO(result_.__repr__());
+    if (getVerbose()) LOGINFO(result_.__repr__());
     // Get the coefficient of variation back
     // We use the result to compute these quantities in order to
     // delegate the treatment of the degenerate cases (i.e. the
@@ -261,24 +184,13 @@ void Simulation::run()
 }
 
 /* Compute the block sample and the points that realized the event */
-Sample Simulation::computeBlockSample()
+Sample EventSimulation::computeBlockSample()
 {
-  throw NotYetImplementedException(HERE) << "In Simulation::computeBlockSample()";
-}
-
-/* Convergence strategy accessor */
-void Simulation::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy)
-{
-  convergenceStrategy_ = convergenceStrategy;
-}
-
-HistoryStrategy Simulation::getConvergenceStrategy() const
-{
-  return convergenceStrategy_;
+  throw NotYetImplementedException(HERE) << "In EventSimulation::computeBlockSample()";
 }
 
 /* Draw the probability convergence at the given level */
-Graph Simulation::drawProbabilityConvergence(const Scalar level) const
+Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
 {
   const Sample convergenceSample(convergenceStrategy_.getSample());
   const UnsignedInteger size = convergenceSample.getSize();
@@ -294,7 +206,7 @@ Graph Simulation::drawProbabilityConvergence(const Scalar level) const
     // The bounds are drawn only if there is a useable variance estimate
     if (varianceEstimate >= 0.0)
     {
-      const Scalar confidenceLength = SimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level);
+      const Scalar confidenceLength = ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, i + 1, blockSize_).getConfidenceLength(level);
       Point pt(2);
       pt[0] = i + 1;
       pt[1] = probabilityEstimate - 0.5 * confidenceLength;
@@ -316,44 +228,20 @@ Graph Simulation::drawProbabilityConvergence(const Scalar level) const
 }
 
 /* Method save() stores the object through the StorageManager */
-void Simulation::save(Advocate & adv) const
+void EventSimulation::save(Advocate & adv) const
 {
 
-  PersistentObject::save(adv);
-  adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
+  SimulationAlgorithm::save(adv);
   adv.saveAttribute("event_", event_);
   adv.saveAttribute("result_", result_);
-  adv.saveAttribute("blockSize_", blockSize_);
-  adv.saveAttribute("maximumOuterSampling_", maximumOuterSampling_);
-  adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
-  adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
-  adv.saveAttribute("verbose_", verbose_);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void Simulation::load(Advocate & adv)
+void EventSimulation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
+  SimulationAlgorithm::load(adv);
   adv.loadAttribute("event_", event_);
   adv.loadAttribute("result_", result_);
-  adv.loadAttribute("blockSize_", blockSize_);
-  adv.loadAttribute("maximumOuterSampling_", maximumOuterSampling_);
-  adv.loadAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
-  adv.loadAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
-  adv.loadAttribute("verbose_", verbose_);
-}
-
-
-void Simulation::setProgressCallback(ProgressCallback callBack, void * state)
-{
-  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, state);
-}
-
-
-void Simulation::setStopCallback(StopCallback callBack, void * state)
-{
-  stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
 }
 
 

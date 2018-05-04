@@ -1,7 +1,7 @@
-// SWIG file Simulation.i
+// SWIG file SimulationAlgorithm.i
 
 %{
-#include "openturns/Simulation.hxx"
+#include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
 
 static void PythonProgressCallback(OT::Scalar percent, void * data) {
@@ -18,19 +18,19 @@ static OT::Bool PythonStopCallback(void * data) {
 
 %}
 
-%include Simulation_doc.i
+%include SimulationAlgorithm_doc.i
 
-%ignore OT::Simulation::setProgressCallback(ProgressCallback callBack, void * data);
-%ignore OT::Simulation::setStopCallback(StopCallback callBack, void * data);
+%ignore OT::SimulationAlgorithm::setProgressCallback(ProgressCallback callBack, void * data);
+%ignore OT::SimulationAlgorithm::setStopCallback(StopCallback callBack, void * data);
 
-%include openturns/Simulation.hxx
+%include openturns/SimulationAlgorithm.hxx
 
 namespace OT {
 
 
-%extend Simulation {
+%extend SimulationAlgorithm {
 
-Simulation(const Simulation & other) { return new OT::Simulation(other); }
+SimulationAlgorithm(const SimulationAlgorithm & other) { return new OT::SimulationAlgorithm(other); }
 
 void setProgressCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
@@ -50,7 +50,7 @@ void setStopCallback(PyObject * callBack) {
   }
 }
 
-} // Simulation
+} // SimulationAlgorithm
 } // OT
 
 

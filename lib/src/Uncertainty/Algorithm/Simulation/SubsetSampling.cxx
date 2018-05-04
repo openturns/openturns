@@ -39,7 +39,7 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 
 /* Default constructor */
 SubsetSampling::SubsetSampling()
-  : Simulation()
+  : EventSimulation()
   , proposalRange_(0.0)
   , conditionalProbability_(0.0)
   , iSubset_(false)
@@ -55,7 +55,7 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const Event & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
-  : Simulation(event)
+  : EventSimulation(event)
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , iSubset_(false)
@@ -97,7 +97,7 @@ void SubsetSampling::run()
   const UnsignedInteger blockSize = getBlockSize();
   const UnsignedInteger N = maximumOuterSampling * blockSize;
 
-  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("Simulation-DefaultMaximumCoefficientOfVariation"))
+  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
@@ -527,7 +527,7 @@ String SubsetSampling::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << Simulation::__repr__()
+      << " derived from " << EventSimulation::__repr__()
       << " proposalRange=" << proposalRange_
       << " conditionalProbability=" << conditionalProbability_
       << " keepEventSample_=" << keepEventSample_;
@@ -538,7 +538,7 @@ String SubsetSampling::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void SubsetSampling::save(Advocate & adv) const
 {
-  Simulation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("proposalRange_", proposalRange_);
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
   adv.saveAttribute("iSubset_", iSubset_);
@@ -556,7 +556,7 @@ void SubsetSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SubsetSampling::load(Advocate & adv)
 {
-  Simulation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
   adv.loadAttribute("keepEventSample_", keepEventSample_);
