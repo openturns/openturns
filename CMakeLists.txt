@@ -1,14 +1,12 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 2.8.4)
 
 # By default, build in Release mode. Must appear before project() command
 if (NOT DEFINED CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 endif ()
-if (CMAKE_VERSION VERSION_GREATER 2.8)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" Release Debug RelWithDebInfo MinSizeRel)
-endif ()
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" Release Debug RelWithDebInfo MinSizeRel)
 
 project (OpenTURNS)
 
@@ -144,10 +142,6 @@ endif()
 
 
 if (NOT DEFINED LAPACK_LIBRARIES)
-  # workaround for cmake issue #0009976
-  if (CMAKE_VERSION VERSION_LESS 2.8.4)
-    enable_language (Fortran)
-  endif ()
   find_package (LAPACK REQUIRED)
   if (LAPACK_FOUND)
     set (OPENTURNS_HAVE_LAPACK TRUE)

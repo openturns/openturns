@@ -33,6 +33,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * CMake >= 2.8.4 is required to build OpenTURNS
 
 === Bug fixes ===
  * #949 (LowDiscrepancyExperiment for distributions having dependent copula)

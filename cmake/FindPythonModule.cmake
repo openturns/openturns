@@ -69,18 +69,11 @@ macro (find_python_module module)
       endif ()
     endif ()
 
-    if (CMAKE_VERSION VERSION_LESS 2.8.3)
-      find_package_handle_standard_args (${module} DEFAULT_MSG ${module_upper}_LOCATION 
-                                          ${module}_FIND_OPTIONAL
-                                          _${module_upper}_VERSION_MATCH
-                                       )
-    else ()
-      find_package_handle_standard_args (${module} REQUIRED_VARS ${module_upper}_LOCATION 
-                                          ${module}_FIND_OPTIONAL
-                                          _${module_upper}_VERSION_MATCH
-                                          VERSION_VAR ${module_upper}_VERSION_STRING
-                                       )
-    endif ()
+    find_package_handle_standard_args (${module} REQUIRED_VARS ${module_upper}_LOCATION
+                                        ${module}_FIND_OPTIONAL
+                                        _${module_upper}_VERSION_MATCH
+                                        VERSION_VAR ${module_upper}_VERSION_STRING
+                                     )
     mark_as_advanced (${module_upper}_LOCATION)
   endif (NOT ${module_upper}_FOUND)
 endmacro (find_python_module)
