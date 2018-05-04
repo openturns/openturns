@@ -30,6 +30,20 @@ OT_Evaluation_getCallsNumber_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Evaluation_setCallsNumber_doc
+"Accessor to the number of times the function has been called.
+
+Parameters
+----------
+calls_number : int
+    Integer that counts the number of times the function has been called
+    since its creation."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setCallsNumber
+OT_Evaluation_setCallsNumber_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Evaluation_getDescription_doc
 "Accessor to the description of the inputs and outputs.
 
