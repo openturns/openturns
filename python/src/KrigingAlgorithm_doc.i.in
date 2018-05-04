@@ -10,16 +10,12 @@ Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p` upon which the meta-model is built.
-inputTransformation : :class:`~openturns.Function`
-    Function :math:`T` used to normalize the input sample.
-
-    If used, the meta model is built on the transformed data.
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance model used for the underlying Gaussian process assumption.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend (universal kriging): :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^d \rightarrow \Rset`.
 
     If :math:`p>1`, the same basis is used for each marginal output.
-covarianceModel : :class:`~openturns.CovarianceModel`
-    Covariance model used for the underlying Gaussian process assumption.
 basisCollection : sequence of :class:`~openturns.Basis`
     Collection of :math:`p` functional basis: one basis for each marginal output: :math:`\left[(\varphi_j^1)_{1 \leq j \leq n_1}, \dots, (\varphi_j^p)_{1 \leq j \leq n_p}\right]`. If the sequence is empty, no trend coefficient is estimated (simple kriging).
 normalize : bool, optional
