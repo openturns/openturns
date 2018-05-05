@@ -1,0 +1,113 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief The ExtremeValueCopula distribution
+ *
+ *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#ifndef OPENTURNS_EXTREMEVALUECOPULA_HXX
+#define OPENTURNS_EXTREMEVALUECOPULA_HXX
+
+#include "openturns/ArchimedeanCopula.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class ExtremeValueCopula
+ *
+ * The ExtremeValueCopula distribution.
+ */
+class OT_API ExtremeValueCopula
+  : public CopulaImplementation
+{
+  CLASSNAME
+public:
+
+  /** Default constructor */
+  ExtremeValueCopula();
+
+  /** Parameters constructor */
+  explicit ExtremeValueCopula(const Function & pickandFunction);
+
+  /** Comparison operator */
+  Bool operator ==(const ExtremeValueCopula & other) const;
+protected:
+  Bool equals(const DistributionImplementation & other) const;
+public:
+
+  /** String converter */
+  String __repr__() const;
+  String __str__(const String & offset = "") const;
+
+
+  /* Interface inherited from Distribution */
+  /** Virtual constructor */
+  virtual ExtremeValueCopula * clone() const;
+
+  /** Get one realization of the distribution */
+  Point getRealization() const;
+
+  /** Get the PDF of the distribution */
+  using CopulaImplementation::computePDF;
+  Scalar computePDF(const Point & point) const;
+
+  /** Get the log PDF of the distribution */
+  using CopulaImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const;
+
+  /** Get the CDF of the distribution */
+  using CopulaImplementation::computeCDF;
+  Scalar computeCDF(const Point & point) const;
+
+  /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using CopulaImplementation::computeConditionalCDF;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
+
+  /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
+  using CopulaImplementation::computeConditionalQuantile;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
+
+  /** Tell if the distribution has independent copula */
+  Bool hasIndependentCopula() const;
+
+  /* Interface specific to ExtremeValueCopula */
+
+  /** Pickand function accessor */
+  void setPickandFunction(const Function & pickandFunction,
+                          const Bool check = ResourceMap::GetAsBool("ExtremeValueCopula-CheckPickandFunction"));
+  Function getPickandFunction() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
+protected:
+
+
+private:
+
+  /** The Pickand function */
+  Function
+  pickandFunction_;
+
+}; /* class ExtremeValueCopula */
+
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_EXTREMEVALUECOPULA_HXX */

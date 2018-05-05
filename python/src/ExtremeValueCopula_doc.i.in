@@ -1,0 +1,60 @@
+%feature("docstring") OT::ExtremeValueCopula
+"ExtremeValue copula.
+
+Available constructor:
+    ExtremeValueCopula(*pickandFunction*)
+
+Parameters
+----------
+pickandFunction : :class:`~openturns.Function`
+    Parameter :math:`A`, the Pickand function defining the extreme value copula. By default, it is the constant function equal to 1.
+
+Notes
+-----
+The ExtremeValue copula is a bivariate copula defined by:
+
+.. math::
+
+    C(u_1, u_2) = \exp\left[\log(u_1u_2)A\left(\dfrac{\log u_2}{\log u_1u_2}\right)\right]
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+Where :math:`A` is a convex function satisfying :math:`A(0)=A(1)=1`, :math:`\max(t, 1-t)\leq A(t)\leq 1`.
+
+See also
+--------
+Copula
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.ExtremeValueCopula(ot.SymbolicFunction('t', '1'))
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExtremeValueCopula::getPickandFunction
+"Get the Pickand function :math:`A`.
+
+Returns
+-------
+A : :class:`~openturns.Function`
+    The Pickand function :math:`A` of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ExtremeValueCopula::setPickandFunction
+"Set the Pickand function :math:`A`.
+
+Parameters
+----------
+A : :class:`~openturns.Function`
+    The Pickand function of the copula. It must be a convex function :math:`A` such that :math:`\forall t\in[0,1],\:\max(t, 1-t)\leq A(t)\leq 1`.
+check : bool
+    Flag to tell if the properties of a Pickand function are verified by the given function. Default value is *True*, given by the *ExtremeValueCopula-CheckPickandFunction* entry in the :class:`~openturns.ResourceMap`, and the test is done pointwise on a regular grid of size given by the *ExtremeValueCopula-CheckGridSize* entry in the :class:`~openturns.ResourceMap`.
+"

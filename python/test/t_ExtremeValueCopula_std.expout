@@ -1,0 +1,37 @@
+Copula  class=ExtremeValueCopula name=ExtremeValueCopula dimension=2 pickandFunction=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[t,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0] formulas=[(t-0.5)^2+0.75] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0] formulas=[(t-0.5)^2+0.75] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0] formulas=[(t-0.5)^2+0.75]
+Copula  ExtremeValueCopula(A = [t]->[(t-0.5)^2+0.75])
+Mean  class=Point name=Unnamed dimension=2 values=[0.5,0.5]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0489531,0.0489531,0.0833333]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.629877,0.840792]
+oneSample= class=Sample name=ExtremeValueCopula implementation=class=SampleImplementation name=ExtremeValueCopula size=10 dimension=2 description=[X0,X1] data=[[0.135276,0.0154791],[0.347057,0.867276],[0.92068,0.849891],[0.0632061,0.106293],[0.714382,0.534288],[0.373767,0.595993],[0.883503,0.659838],[0.92851,0.951152],[0.684575,0.822944],[0.359802,0.840971]]
+anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.502777,0.502285]
+anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845153,0.0503034,0.0503034,0.0840158]
+Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=1.605125  cdf=0.089443
+Quantile= class=Point name=Unnamed dimension=2 values=[0.629961,0.629961]
+CDF(quantile)=0.500000
+Quantile= class=Point name=Unnamed dimension=2 values=[0.135721,0.135721]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.027249,0.027249]
+Survival(inverseSurvival)=0.950000
+entropy=-0.260550
+CDF(x|y)=0.6602
+Quantile(p|y)=0.6
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.56939]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.0571768]
+indices= [1,0]
+margins= class=MarginalDistribution name=MarginalDistribution dimension=2 distribution=class=ExtremeValueCopula name=ExtremeValueCopula dimension=2 pickandFunction=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[t,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0] formulas=[(t-0.5)^2+0.75] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0] formulas=[(t-0.5)^2+0.75] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[t] outputVariablesNames=[y0] formulas=[(t-0.5)^2+0.75] indices=[1,0]
+margins PDF=1.485674
+margins CDF=0.125000
+margins quantile= class=Point name=Unnamed dimension=2 values=[0.966383,0.966383]
+margins CDF(qantile)=0.950000
+margins realization= class=Point name=Unnamed dimension=2 values=[0.820279,0.243714]

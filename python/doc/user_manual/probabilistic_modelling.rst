@@ -184,6 +184,7 @@ Copulas
 
     :template: classWithPlot.rst_t
     EmpiricalBernsteinCopula
+    ExtremeValueCopula
     MaximumEntropyOrderStatisticsCopula
     
     :template: class.rst_t

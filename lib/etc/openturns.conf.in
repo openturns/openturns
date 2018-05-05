@@ -303,7 +303,11 @@
   <DirichletFactory-ParametersEpsilon value="1.0e-12" />
   <DirichletFactory-MaximumIteration  value="10"    />
 
-  <!-- OT::FisherSnedecorFactory parameters -->
+  <!-- OT::ExtremeValueCopula parameters -->
+  <ExtremeValueCopula-CheckPickandFunction value="true" />
+  <ExtremeValueCopula-CheckGridSize        value="11" />
+
+<!-- OT::FisherSnedecorFactory parameters -->
   <FisherSnedecorFactory-D1LowerBound            value="1.0e-2"  />
   <FisherSnedecorFactory-D2LowerBound            value="1.0e-2"  />
 
