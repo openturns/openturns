@@ -2817,19 +2817,85 @@ CorrelationMatrix DistributionImplementation::getSpearmanCorrelation() const
   return getCopula().getSpearmanCorrelation();
 }
 
+struct DistributionImplementationKendallTauWrapper
+{
+  DistributionImplementationKendallTauWrapper(const Distribution & distribution)
+    : distribution_(distribution)
+  {
+    if (!distribution.isCopula())
+      {
+	const UnsignedInteger dimension = distribution.getDimension();
+	marginalCollection_ = Collection<Distribution>(dimension);
+	for (UnsignedInteger i = 0; i < dimension; ++i)
+	  marginalCollection_[i] = distribution.getMarginal(i);
+      }
+  }
+
+  Point kernelForCopula(const Point & point) const
+  {
+    return Point(1, distribution_.computeCDF(point) * distribution_.computePDF(point));
+  }
+
+  Point kernelForDistribution(const Point & point) const
+  {
+    const UnsignedInteger dimension = distribution_.getDimension();
+    Point x(dimension);
+    Scalar factor = 1.0;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      {
+	const Point xi(marginalCollection_[i].computeQuantile(point[i]));
+	x[i] = xi[0];
+	factor *= marginalCollection_[i].computePDF(xi);
+	if (std::abs(factor) < SpecFunc::Precision) return Point(1, 0.0);
+      }
+    return Point(1, distribution_.computeCDF(point) * distribution_.computePDF(x) / factor);
+  }
+
+  const Distribution & distribution_;
+  Collection<Distribution> marginalCollection_;
+}; // DistributionImplementationKendallTauWrapperx
+
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix DistributionImplementation::getKendallTau() const
 {
-  if (isElliptical())
+  CorrelationMatrix tau(dimension_);
+  // First special case: independent marginals
+  if (hasIndependentCopula()) return tau;
+  // Second special case: elliptical distribution
+  if (hasEllipticalCopula())
   {
-    const CorrelationMatrix shape(getCorrelation());
-    CorrelationMatrix tau(dimension_);
+    const CorrelationMatrix shape(getShapeMatrix());
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       for(UnsignedInteger j = 0; j < i; ++j)
         tau(i, j) = std::asin(shape(i, j)) * (2.0 / M_PI);
     return tau;
   }
-  return getCopula().getKendallTau();
+  // General case
+  const IteratedQuadrature integrator;
+  const Interval square(2);
+  // Performs the integration in the strictly lower triangle of the tau matrix
+  Indices indices(2);
+  for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
+  {
+    indices[0] = rowIndex;
+    for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension_; ++columnIndex)
+    {
+      indices[1] = columnIndex;
+      const Distribution marginalDistribution(getMarginal(indices).getImplementation());
+      if (!marginalDistribution.hasIndependentCopula())
+      {
+        // Build the integrand
+	const DistributionImplementationKendallTauWrapper functionWrapper(marginalDistribution);
+	Function function;
+	if (isCopula())
+	    function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForCopula, 2, 1));
+	else
+	    function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForDistribution, 2, 1));
+        tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
+      }
+    } // loop over column indices
+  } // loop over row indices
+  return tau;
 }
 
 /* Get the shape matrix of the distribution, ie the correlation matrix
@@ -2837,7 +2903,11 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
 CorrelationMatrix DistributionImplementation::getShapeMatrix() const
 {
   if (!hasEllipticalCopula()) throw NotDefinedException(HERE) << "Error: the shape matrix is defined only for distributions with elliptical copulas.";
-  return getCopula().getShapeMatrix();
+  // Easy case: elliptical distribution
+  if (isElliptical()) return getCorrelation();
+  // Difficult case: elliptical distribution with nonelliptical marginals
+  const Collection<Distribution> ellipticalMarginals(dimension_, getStandardDistribution().getMarginal(0));
+  return ComposedDistribution(ellipticalMarginals, getCopula()).getCorrelation();
 }
 
 /* Cholesky factor of the correlation matrix accessor */
@@ -3102,10 +3172,7 @@ Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const
 /* Get the i-th marginal distribution */
 Distribution DistributionImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (!(i < dimension_)) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension";
-  if (dimension_ == 1) return clone();
-  if (isCopula()) return new Uniform(0.0, 1.0);
-  return new MarginalDistribution(*this, i);
+  return getMarginal(Indices(1, i));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
