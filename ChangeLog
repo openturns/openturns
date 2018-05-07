@@ -39,6 +39,7 @@
  * CMake >= 2.8.4 is required to build OpenTURNS
 
 === Bug fixes ===
+ * #948 (Bug with BayesDistribution)
  * #949 (LowDiscrepancyExperiment for distributions having dependent copula)
 
 
