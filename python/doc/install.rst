@@ -7,6 +7,14 @@ Installation
 From binary packages
 ====================
 
+Pip
+---
+Install the package from `PyPI <https://pypi.org/project/openturns/>`_::
+
+    pip install openturns
+
+For an installation without administrative priviledges the option :code:`--user` can be used.
+
 Conda
 -----
 This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python package manager.
@@ -23,7 +31,6 @@ Windows
 -------
 Download the installer matching your python version and architecture from `GitHub <https://github.com/openturns/build/releases>`_
 
-
 Debian/Ubuntu
 -------------
 
@@ -38,7 +45,7 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb http://ubuntu.openturns.org xenial main  |
     +-------------------------------------+----------------------------------------------+
-    | Ubuntu 17.10 'Artful Aardvark'      | deb http://ubuntu.openturns.org artful main  |
+    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb http://ubuntu.openturns.org bionic main  |
     +-------------------------------------+----------------------------------------------+
     | Debian 8.0 'Jessie'                 | deb http://debian.openturns.org jessie main  |
     +-------------------------------------+----------------------------------------------+
@@ -49,12 +56,12 @@ Add the mirror signature::
 
     curl http://debian.openturns.org/openturns.org-repo.key | sudo apt-key add -
 
-To be able to retrieve OpenTURNS packages, you must add the appropriate
+To be able to retrieve packages, you must add the appropriate
 repository address to your sources list. To do so, you may either use the
 graphical user interface of aptitude or you can edit the sources-list file
 (`/etc/apt/sources.list`).
 
-For instance, asuming you are running Ubuntu 16.04,
+For instance, assuming you are running Ubuntu 16.04,
 add the following source to your sources list::
 
     echo deb http://ubuntu.openturns.org xenial main | sudo tee /etc/apt/sources.list.d/openturns.list
@@ -100,14 +107,14 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_27/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_28/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.3/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_6/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_7/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_27/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_28/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_42.3/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_6/repodata/repomd.xml.key
 
@@ -117,7 +124,7 @@ Install the package::
 
 Archlinux/Parabola
 ------------------
-Install from `AUR <https://aur.archlinux.org/packages/openturns/>`_ repository::
+Install from `AUR <https://aur.archlinux.org/packages/openturns/>`_::
 
     yaourt -S openturns
 
