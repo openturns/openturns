@@ -671,3 +671,22 @@ class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implement
 >>> print(mesh2d)
 class=Mesh name=Unnamed dimension=2 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[0,0],[1,0],[1,1]] simplices=[[2,0,1]]"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::isEmpty
+"Check whether the mesh is empty.
+
+Returns
+-------
+empty : bool
+    Tells if the mesh is empty, ie if its volume is null."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getDimension
+"Dimension accessor.
+
+Returns
+-------
+dimension : int
+    Dimension of the vertices."

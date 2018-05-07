@@ -202,6 +202,8 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
   return 0;
 }
 
+#if PY_VERSION_HEX < 0x03000000
+
 static Py_ssize_t
 Buffer_getreadbuffer(PyObject *obj, Py_ssize_t segment, void **ptrptr)
 {
@@ -239,6 +241,7 @@ Buffer_getcharbuffer(PyObject *obj, Py_ssize_t segment, char **ptrptr)
   return self->bufferview.length * self->bufferview.itemsize;
 }
 
+#endif
 
 static PyBufferProcs Buffer_as_buffer = {
 #if PY_VERSION_HEX < 0x03000000
@@ -311,7 +314,6 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   Buffer* self = (Buffer*)obj;
   PyObject * shapeObj = NULL;
   PyObject * strideObj = NULL;
-  PyObject * rawObj = NULL;
   char * rawData;
   long length = 0;
   Py_ssize_t shapeLength;
@@ -414,7 +416,7 @@ static PyTypeObject BufferType = {
     (initproc)Buffer_init         /* tp_init */
 };
 
-Py_ssize_t
+static Py_ssize_t
 Buffer_length(PyObject *obj)
 {
   Buffer* self = (Buffer*)obj;
@@ -544,7 +546,7 @@ error_out(PyObject *m) {
 
 static PyMethodDef memoryview_methods[] = {
     {"error_out", (PyCFunction)error_out, METH_NOARGS, NULL},
-    {NULL, NULL}
+    {NULL, NULL, 0, NULL}
 };
 
 #if PY_MAJOR_VERSION >= 3
@@ -577,9 +579,6 @@ PyMODINIT_FUNC
 PyInit_memoryview(void)
 
 #else
-
-#define GETSTATE(m) (&_state)
-static struct module_state _state;
 
 #define INITERROR return
 

@@ -82,7 +82,7 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Point & parameters) 
     copula.setParameter(parameters);
     return copula;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a NormalCopula from the given parameters";
   }

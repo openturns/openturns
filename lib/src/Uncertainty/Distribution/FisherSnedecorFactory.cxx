@@ -95,7 +95,7 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Point & parame
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a FisherSnedecor distribution from the given parameters";
   }

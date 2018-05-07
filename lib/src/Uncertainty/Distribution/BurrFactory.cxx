@@ -148,7 +148,7 @@ Burr BurrFactory::buildAsBurr(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution from the given parameters";
   }

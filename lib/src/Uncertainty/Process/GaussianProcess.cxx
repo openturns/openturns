@@ -157,7 +157,7 @@ void GaussianProcess::initialize() const
         covarianceHMatrix_.factorize("LLt");
         continuationCondition = false;
       }
-      catch (InternalException)
+      catch (InternalException &)
       {
         cumulatedScaling += scaling ;
         scaling *= 2.0;

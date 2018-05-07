@@ -86,7 +86,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
     result.setDescription(sample.getDescription());
     return result;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rayleigh distribution from the given sample";
   }
@@ -100,7 +100,7 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution from the given parameters";
   }

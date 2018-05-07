@@ -137,7 +137,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
     result.setDescription(sample.getDescription());
     return result;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Rice distribution from the given sample";
   }
@@ -151,7 +151,7 @@ Rice RiceFactory::buildAsRice(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from the given parameters";
   }

@@ -19,6 +19,7 @@
  *
  */
 #include <iomanip>
+#include <limits>
 #include "openturns/XMLStorageManager.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/InterfaceObject.hxx"

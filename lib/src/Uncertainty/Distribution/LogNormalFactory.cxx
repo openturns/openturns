@@ -271,7 +271,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfLocalLikelihoodMaximization(sample);
       }
-      catch (InvalidArgumentException)
+      catch (InvalidArgumentException &)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << "Warning! Unable to bracket the location parameter gamma. Using the modified moment estimator.");
@@ -283,7 +283,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfModifiedMoments(sample);
       }
-      catch (InvalidArgumentException)
+      catch (InvalidArgumentException &)
       {
         // We switch to the moment estimate
         LOGWARN(OSS() << "Warning! Unable to bracket the shape parameter sigma. Using the classical moment estimator.");
@@ -306,7 +306,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from the given parameters";
   }
