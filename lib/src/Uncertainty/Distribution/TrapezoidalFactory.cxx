@@ -125,7 +125,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Point & parameters) con
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution from the given parameters: " << parameters;
   }

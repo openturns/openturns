@@ -82,7 +82,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
     {
       return buildMethodOfProbabilityWeightedMoments(sample);
     }
-    catch (InvalidArgumentException)
+    catch (InvalidArgumentException &)
     {
       // Nothing to do, fallback on the exponential regression
       LOGINFO("Method of probability weighted moment failed, using method of exponential regression");
@@ -93,7 +93,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
   {
     return buildMethodOfExponentialRegression(sample);
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     // Nothing to do, fallback on the exponential regression
     LOGINFO("Method of exponential regression failed, using method of probability weighted moment");
@@ -109,7 +109,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Point
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from the given parameters";
   }

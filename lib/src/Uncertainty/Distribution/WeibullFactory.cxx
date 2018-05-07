@@ -80,7 +80,7 @@ Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
     return result;
   }
   // Here we are in the case of a (nearly) Dirac distribution
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     if (gamma == 0.0) gamma = SpecFunc::ScalarEpsilon;
     Weibull result(100.0 * std::abs(gamma) * SpecFunc::ScalarEpsilon, 1.0, gamma);
@@ -97,7 +97,7 @@ Weibull WeibullFactory::buildAsWeibull(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from the given parameters";
   }

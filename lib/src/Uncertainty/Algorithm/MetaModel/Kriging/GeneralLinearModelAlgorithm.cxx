@@ -407,7 +407,7 @@ void GeneralLinearModelAlgorithm::setBasisCollection(const BasisCollection & bas
       outputDimension =  basis[index][0].getOutputDimension();
       continuationCondition = false;
     }
-    catch (InvalidArgumentException)
+    catch (InvalidArgumentException &)
     {
       ++index;
       continuationCondition = continuationCondition && index < basis.getSize();

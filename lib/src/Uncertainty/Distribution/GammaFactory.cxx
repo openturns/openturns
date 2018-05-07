@@ -91,7 +91,7 @@ Gamma GammaFactory::buildAsGamma(const Point & parameters) const
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Gamma distribution from the given parameters";
   }

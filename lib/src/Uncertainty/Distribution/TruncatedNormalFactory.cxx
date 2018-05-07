@@ -136,7 +136,7 @@ TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Point & par
     distribution.setParameter(parameters);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution from the given parameters";
   }
