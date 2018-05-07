@@ -96,6 +96,7 @@
  * #944 (Inline plots crash in notebooks if too many points)
  * #945 (build fails with cmake 3.11)
  * #946 (OT via anaconda, usage of ot.HypothesisTest error: R_EXECUTABLE-NOTFOUND)
+ * #948 (Bug with BayesDistribution)
  * #950 (Circular call to getShape() in Copula)
 
 == 1.10 release (2017-11-13) == #release-1.10
