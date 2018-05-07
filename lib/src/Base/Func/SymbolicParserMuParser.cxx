@@ -160,7 +160,7 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
     {
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
+        std::copy(&inS(i, 0), &inS(i, 0) + inputDimension, inputStack_.begin());
         for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
         {
           const Scalar value = parsers_[outputIndex].get()->Eval();
@@ -175,7 +175,7 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
     {
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
+        std::copy(&inS(i, 0), &inS(i, 0) + inputDimension, inputStack_.begin());
         for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
           result(i, outputIndex) = parsers_[outputIndex].get()->Eval();
       } // i
