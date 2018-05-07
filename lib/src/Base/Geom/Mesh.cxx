@@ -163,7 +163,7 @@ Bool Mesh::isValid() const
   {
     checkValidity();
   }
-  catch (Exception)
+  catch (Exception &)
   {
     result = false;
   }

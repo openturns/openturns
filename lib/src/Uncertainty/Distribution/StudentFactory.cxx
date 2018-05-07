@@ -83,7 +83,7 @@ Student StudentFactory::buildAsStudent(const Point & parameter) const
     distribution.setParameter(parameter);
     return distribution;
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from the given parameters";
   }

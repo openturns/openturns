@@ -138,7 +138,7 @@ Bool OrderStatisticsMarginalChecker::isCompatible() const
   {
     check();
   }
-  catch (InvalidArgumentException)
+  catch (InvalidArgumentException &)
   {
     compatible = false;
   }
