@@ -39,7 +39,6 @@
  * CMake >= 2.8.4 is required to build OpenTURNS
 
 === Bug fixes ===
- * #948 (Bug with BayesDistribution)
  * #949 (LowDiscrepancyExperiment for distributions having dependent copula)
 
 
@@ -140,6 +139,7 @@
  * #945 (build fails with cmake 3.11)
  * #946 (OT via anaconda, usage of ot.HypothesisTest error: R_EXECUTABLE-NOTFOUND)
  * #947 (EmpiricalBernsteinCopula::setCopulaSample() too restrictive)
+ * #948 (Bug with BayesDistribution)
  * #950 (Circular call to getShape() in Copula)
 
 == 1.10 release (2017-11-13) == #release-1.10
