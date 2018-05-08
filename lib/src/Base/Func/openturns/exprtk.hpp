@@ -586,55 +586,40 @@ namespace exprtk
                              const typename std::iterator_traits<Iterator>::value_type& zero_or_more,
                              const typename std::iterator_traits<Iterator>::value_type& zero_or_one)
       {
-         if (0 == std::distance(data_begin,data_end))
-         {
-            return false;
-         }
-
          Iterator d_itr = data_begin;
          Iterator p_itr = pattern_begin;
-         Iterator c_itr = data_begin;
-         Iterator m_itr = data_begin;
 
-         while ((data_end != d_itr) && (zero_or_more != (*p_itr)))
+         while ((p_itr != pattern_end) && (d_itr != data_end))
          {
-            if ((!Compare::cmp((*p_itr),(*d_itr))) && (zero_or_one != (*p_itr)))
+            if (zero_or_more == *p_itr)
             {
-               return false;
-            }
-
-            ++p_itr;
-            ++d_itr;
-         }
-
-         while (data_end != d_itr)
-         {
-            if (zero_or_more == (*p_itr))
-            {
-               if (pattern_end == (++p_itr))
+               while ((p_itr != pattern_end) && (*p_itr == zero_or_more || *p_itr == zero_or_one))
                {
-                  return true;
+                  ++p_itr;
                }
 
-               m_itr = p_itr;
-               c_itr = d_itr;
-               ++c_itr;
-            }
-            else if ((Compare::cmp((*p_itr),(*d_itr))) || (zero_or_one == (*p_itr)))
-            {
-               ++p_itr;
+               if (p_itr == pattern_end)
+                  return true;
+
+               const typename std::iterator_traits<Iterator>::value_type c = *(p_itr++);
+
+               while ((d_itr != data_end) && !Compare::cmp(c,*d_itr))
+               {
+                  ++d_itr;
+               }
+
                ++d_itr;
             }
-            else
+            else if ((*p_itr == zero_or_one) || Compare::cmp(*p_itr, *d_itr))
             {
-               p_itr = m_itr;
-               d_itr = c_itr++;
+               ++d_itr;
+               ++p_itr;
             }
+            else
+               return false;
          }
 
-         while ((p_itr != pattern_end) && (zero_or_more == (*p_itr))) { ++p_itr; }
-
-         return (p_itr == pattern_end);
+         return (d_itr == data_end) && (p_itr == pattern_end);
       }
 
       inline bool wc_match(const std::string& wild_card,
@@ -8137,12 +8122,12 @@ namespace exprtk
                if (0 == str0_base_ptr_)
                   return;
 
-               irange_ptr range_ptr = dynamic_cast<irange_ptr>(binary_node<T>::branch_[0].first);
+               irange_ptr range = dynamic_cast<irange_ptr>(binary_node<T>::branch_[0].first);
 
-               if (0 == range_ptr)
+               if (0 == range)
                   return;
 
-               str0_range_ptr_ = &(range_ptr->range_ref());
+               str0_range_ptr_ = &(range->range_ref());
             }
 
             if (is_generally_string_node(binary_node<T>::branch_[1].first))
@@ -8152,12 +8137,12 @@ namespace exprtk
                if (0 == str1_base_ptr_)
                   return;
 
-               irange_ptr range_ptr = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
+               irange_ptr range = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
 
-               if (0 == range_ptr)
+               if (0 == range)
                   return;
 
-               str1_range_ptr_ = &(range_ptr->range_ref());
+               str1_range_ptr_ = &(range->range_ref());
             }
 
             initialised_ = str0_base_ptr_  &&
@@ -8402,12 +8387,12 @@ namespace exprtk
                if (0 == str1_base_ptr_)
                   return;
 
-               irange_ptr range_ptr = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
+               irange_ptr range = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
 
-               if (0 == range_ptr)
+               if (0 == range)
                   return;
 
-               str1_range_ptr_ = &(range_ptr->range_ref());
+               str1_range_ptr_ = &(range->range_ref());
             }
 
             initialised_ = str0_base_ptr_  &&
@@ -8511,12 +8496,12 @@ namespace exprtk
 
                str0_base_ptr_ = dynamic_cast<str_base_ptr>(binary_node<T>::branch_[0].first);
 
-               irange_ptr range_ptr = dynamic_cast<irange_ptr>(binary_node<T>::branch_[0].first);
+               irange_ptr range = dynamic_cast<irange_ptr>(binary_node<T>::branch_[0].first);
 
-               if (0 == range_ptr)
+               if (0 == range)
                   return;
 
-               str0_range_ptr_ = &(range_ptr->range_ref());
+               str0_range_ptr_ = &(range->range_ref());
             }
 
             if (is_generally_string_node(binary_node<T>::branch_[1].first))
@@ -8526,12 +8511,12 @@ namespace exprtk
                if (0 == str1_base_ptr_)
                   return;
 
-               irange_ptr range_ptr = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
+               irange_ptr range = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
 
-               if (0 == range_ptr)
+               if (0 == range)
                   return;
 
-               str1_range_ptr_ = &(range_ptr->range_ref());
+               str1_range_ptr_ = &(range->range_ref());
             }
 
             initialised_ = str0_base_ptr_  &&
@@ -15033,12 +15018,12 @@ namespace exprtk
                if (0 == str0_base_ptr_)
                   return;
 
-               irange_ptr range_ptr = dynamic_cast<irange_ptr>(binary_node<T>::branch_[0].first);
+               irange_ptr range = dynamic_cast<irange_ptr>(binary_node<T>::branch_[0].first);
 
-               if (0 == range_ptr)
+               if (0 == range)
                   return;
 
-               str0_range_ptr_ = &(range_ptr->range_ref());
+               str0_range_ptr_ = &(range->range_ref());
             }
 
             if (is_generally_string_node(binary_node<T>::branch_[1].first))
@@ -15048,12 +15033,12 @@ namespace exprtk
                if (0 == str1_base_ptr_)
                   return;
 
-               irange_ptr range_ptr = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
+               irange_ptr range = dynamic_cast<irange_ptr>(binary_node<T>::branch_[1].first);
 
-               if (0 == range_ptr)
+               if (0 == range)
                   return;
 
-               str1_range_ptr_ = &(range_ptr->range_ref());
+               str1_range_ptr_ = &(range->range_ref());
             }
          }
 
@@ -17735,6 +17720,13 @@ namespace exprtk
         symbol_table_list_(e.symbol_table_list_)
       {
          control_block_->ref_count++;
+      }
+
+      expression(const symbol_table<T>& symbol_table)
+      : control_block_(0)
+      {
+         set_expression(new details::null_node<T>());
+         symbol_table_list_.push_back(symbol_table);
       }
 
       inline expression<T>& operator=(const expression<T>& e)
