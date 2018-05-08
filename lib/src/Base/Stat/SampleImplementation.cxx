@@ -1673,7 +1673,7 @@ Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
   const Point mean(computeMean());
 
   Point centeredMoment(dimension_);
-  const int intK(static_cast<const int>(k));
+  const int intK = static_cast<int>(k);
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
     for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -1698,7 +1698,7 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
   if (k == 0) return Point(dimension_, 1.0);
 
   Point moment(dimension_);
-  const int intK(static_cast<const int>(k));
+  const int intK = static_cast<int>(k);
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
     for (UnsignedInteger j = 0; j < dimension_; ++j)
