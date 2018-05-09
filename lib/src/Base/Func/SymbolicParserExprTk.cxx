@@ -113,7 +113,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
     // One formula by marginal
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
+      std::copy(&inS(i, 0), &inS(i, 0) + inputDimension, inputStack_.begin());
 
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
@@ -132,7 +132,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
       // Single formula
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
+        std::copy(&inS(i, 0), &inS(i, 0) + inputDimension, inputStack_.begin());
         // Evaluate expression
         (void) expressions_[0]->value();
 
@@ -149,7 +149,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
       // Single formula
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        std::copy(&inS(i, 0), &inS(i, inputDimension), inputStack_.begin());
+        std::copy(&inS(i, 0), &inS(i, 0) + inputDimension, inputStack_.begin());
         // Evaluate expression
         (void) expressions_[0]->value();
 
