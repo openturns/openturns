@@ -330,10 +330,12 @@ void LinearCombinationEvaluation::save(Advocate & adv) const
 void LinearCombinationEvaluation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "functionsCollection_", functionsCollection_ );
-  adv.loadAttribute( "coefficients_", coefficients_ );
+  FunctionPersistentCollection functionsCollection;
+  Point coefficients;
+  adv.loadAttribute( "functionsCollection_", functionsCollection );
+  adv.loadAttribute( "coefficients_", coefficients );
   // For additional checks
-  setFunctionsCollectionAndCoefficients(functionsCollection_, coefficients_);
+  setFunctionsCollectionAndCoefficients(functionsCollection, coefficients);
 }
 
 
