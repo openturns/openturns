@@ -219,7 +219,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
 
   /* Convert the input vector in OpenTURNS format */
   Point inPoint(n);
-  memcpy(&inPoint[0], &x[0], n * sizeof(Scalar));
+  memcpy(&inPoint[0], x, n * sizeof(Scalar));
 
   const OptimizationProblem problem(algorithm->getProblem());
   Point outPoint(2);
@@ -268,7 +268,8 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   }
 
   /* Convert the constraint vector in double format */
-  memcpy(&con[0], &constraintValue[0], constraintValue.getDimension() * sizeof(Scalar));
+  if (constraintValue.getDimension() > 0)
+    memcpy(con, &constraintValue[0], constraintValue.getDimension() * sizeof(Scalar));
 
   // only take violated constraints into account to compute error
   for (UnsignedInteger j = 0; j < constraintValue.getDimension(); ++ j)
