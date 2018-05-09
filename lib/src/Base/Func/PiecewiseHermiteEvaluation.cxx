@@ -107,6 +107,7 @@ namespace
 Bool computeRegularHermite(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
+  if (size < 2) return true;
   const Scalar step = locations[1] - locations[0];
   const Scalar relativeEpsilon = ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular") * std::abs(step);
   for (UnsignedInteger i = 2; i < size; ++i)
