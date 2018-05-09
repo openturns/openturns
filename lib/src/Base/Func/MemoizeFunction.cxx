@@ -41,7 +41,8 @@ MemoizeFunction::MemoizeFunction (const Function & function, const HistoryStrate
                            function.getGradient(),
                            function.getHessian())
 {
-  // Nothing to do
+  setUseDefaultGradientImplementation(function.getUseDefaultGradientImplementation());
+  setUseDefaultHessianImplementation(function.getUseDefaultHessianImplementation());
 }
 
 /** Operator () */
