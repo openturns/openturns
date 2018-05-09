@@ -109,7 +109,7 @@ public:
    */
   UnsignedInteger use_count()
   {
-    return static_cast<int volatile>( use_count_.get() );
+    return use_count_.get();
   }
 
 }; /* end class GenericCounterImplementation */
