@@ -127,7 +127,7 @@ Description FieldToPointFunctionImplementation::getOutputDescription() const
 
 
 /* Operator () */
-Point FieldToPointFunctionImplementation::operator() (const Field & inFld) const
+Point FieldToPointFunctionImplementation::operator() (const Sample & inFld) const
 {
   throw NotYetImplementedException(HERE) << "In FieldToPointFunctionImplementation::operator() (const Field & inFld) const";
 }
@@ -143,7 +143,7 @@ Sample FieldToPointFunctionImplementation::operator() (const ProcessSample & inP
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
   for (UnsignedInteger i = 0; i < size; ++i)
-    outSample[i] = operator()(inPS.getField(i));
+    outSample[i] = operator()(inPS[i]);
   callsNumber_.fetchAndAdd(size);
   return outSample;
 }

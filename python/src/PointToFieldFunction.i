@@ -109,8 +109,7 @@ class OpenTURNSPythonPointToFieldFunction(object):
     ...         self.setOutputDescription(['T', 'U'])
     ...     def _exec(self, X):
     ...         size = self.getOutputMesh().getVerticesNumber()
-    ...         values = [ot.Point(X)*i for i in range(size)]
-    ...         Y = ot.Field(self.getOutputMesh(), values)
+    ...         Y = [ot.Point(X)*i for i in range(size)]
     ...         return Y
     >>> F = FUNC()
     """
@@ -179,10 +178,8 @@ class OpenTURNSPythonPointToFieldFunction(object):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X is a Point object and Y a Field objects')
 
     def _exec_sample(self, X):
-        if len(X) == 0:
-            return ProcessSample(Mesh(), 0, self.getOutputDimension())
-        res = ProcessSample(1, self._exec(X[0]))
-        for i in range(1, len(X)):
+        res = ProcessSample(self.getOutputMesh(), 0, self.getOutputDimension())
+        for i in range(len(X)):
             res.add(self._exec(X[i]))
         return res
 
@@ -213,8 +210,7 @@ class PythonPointToFieldFunction(PointToFieldFunction):
     >>> mesh = ot.RegularGrid(0.0, 0.1, 11)
     >>> def  myPyFunc(X):
     ...     size = 11
-    ...     values = [ot.Point(X)*i for i in range(size)]
-    ...     Y = ot.Field(mesh, values)
+    ...     Y = [ot.Point(X)*i for i in range(size)]
     ...     return Y
     >>> inputDim = 2
     >>> outputDim = 2

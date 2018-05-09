@@ -62,7 +62,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual Point operator() (const Field & inFld) const;
+  virtual Point operator() (const Sample & inFld) const;
   virtual Sample operator() (const ProcessSample & inPS) const;
 
   /** Accessor for input mesh */

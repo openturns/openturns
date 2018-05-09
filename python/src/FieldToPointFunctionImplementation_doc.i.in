@@ -47,7 +47,8 @@ Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows t
 ...         self.setInputDescription(['R', 'S'])
 ...         self.setOutputDescription(['T', 'U'])  
 ...     def _exec(self, X):
-...         Y = X.getValues().computeMean()
+...         Xs = ot.Sample(X)
+...         Y = Xs.computeMean()
 ...         return Y
 >>> F = FUNC()
 
@@ -58,7 +59,8 @@ Create the associated FieldToPointFunction:
 It is also possible to create a FieldToPointFunction from a python function as follows:
 
 >>> def myPyFunc(X):
-...     Y = X.getValues().computeMean()
+...     Xs = ot.Sample(X)
+...     Y = Xs.computeMean()
 ...     return Y
 >>> inputDim = 2
 >>> outputDim = 2

@@ -276,7 +276,7 @@ Field GaussianProcess::getRealization() const
   }
   // else apply the trend
   values.setDescription(getDescription());
-  return trend_(Field(mesh_, values));
+  return Field(mesh_, trend_(values));
 }
 
 Sample GaussianProcess::getRealizationGibbs() const

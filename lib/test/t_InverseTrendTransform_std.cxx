@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     }
     TimeSeries ts(tg, data);
     fullprint << "input time series=" << ts << std::endl;
-    fullprint << "output time series=" << myInverseTrendFunc(ts) << std::endl;
+    fullprint << "output time series=" << myInverseTrendFunc(ts.getValues()) << std::endl;
     /* Get the number of calls */
     fullprint << "called " << myInverseTrendFunc.getCallsNumber() << " times" << std::endl;
   }

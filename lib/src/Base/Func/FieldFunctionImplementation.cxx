@@ -137,9 +137,9 @@ Mesh FieldFunctionImplementation::getOutputMesh() const
 }
 
 /* Operator () */
-Field FieldFunctionImplementation::operator() (const Field & inFld) const
+Sample FieldFunctionImplementation::operator() (const Sample & inFld) const
 {
-  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::operator() (const Field & inFld) const";
+  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::operator() (const Sample & inFld) const";
 }
 
 /* Operator () */
@@ -149,13 +149,11 @@ ProcessSample FieldFunctionImplementation::operator() (const ProcessSample & inP
   if (inPS.getMesh().getDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getInputMesh().getDimension() << ", got " << inPS.getMesh().getDimension();
   const UnsignedInteger size = inPS.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
-  Field field0(operator()(inPS.getField(0)));
-  ProcessSample outSample(field0.getMesh(), size, field0.getOutputDimension());
-  outSample.setField(field0, 0);
+  ProcessSample outSample(getOutputMesh(), size, getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
-  for (UnsignedInteger i = 1; i < size; ++i)
-    outSample.setField(operator()(inPS.getField(i)), i);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    outSample[i] = operator()(inPS[i]);
   return outSample;
 }
 

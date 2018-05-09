@@ -1,9 +1,6 @@
 %define OT_FieldFunction_doc
 "Function mapping a field to a field.
 
-Available constructors:
-    FieldFunction(*spatialDim, inputDim, outputDim*)
-
 Parameters
 ----------
 inputMesh : :class:`~openturns.Mesh`
@@ -51,7 +48,8 @@ Using the class :class:`~openturns.OpenTURNSPythonFieldFunction` allows to defin
 ...         self.setInputDescription(['R', 'S'])
 ...         self.setOutputDescription(['T', 'U'])
 ...     def _exec(self, X):
-...         Y = ot.Field(self.getOutputMesh(), X.getValues() * ([2.0]*X.getValues().getDimension()))
+...         Xs = ot.Sample(X)
+...         Y = Xs * ([2.0]*Xs.getDimension())
 ...         return Y
 >>> F = FUNC()
 
@@ -63,11 +61,9 @@ It is also possible to create a FieldFunction from a python function as follows:
 
 >>> mesh = ot.RegularGrid(0.0, 0.1, 11)
 >>> def myPyFunc(X):
-...     mesh = X.getMesh()
-...     values = X.getValues() * ([2.0]*X.getValues().getDimension())
-...     values.setDescription(ot.Description.BuildDefault(values.getDimension(), 'Y'))
-...     Y = ot.Field(mesh, values)
-...     return Y
+...     Xs = ot.Sample(X)
+...     values = Xs * ([2.0]*Xs.getDimension())
+...     return values
 >>> inputDim = 2
 >>> outputDim = 2
 >>> myFunc = ot.PythonFieldFunction(mesh, inputDim, mesh, outputDim, myPyFunc)

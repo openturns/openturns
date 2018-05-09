@@ -151,19 +151,28 @@ String PythonFieldToPointFunction::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-Point PythonFieldToPointFunction::operator() (const Field & inF) const
+Point PythonFieldToPointFunction::operator() (const Sample & inF) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inputDimension != inF.getOutputDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect dimension. Got " << inF.getOutputDimension() << ". Expected " << getInputDimension();
+  if (inputDimension != inF.getDimension())
+    throw InvalidDimensionException(HERE) << "Input field values have incorrect dimension. Got " << inF.getDimension() << ". Expected " << inputDimension;
 
-  if (getInputMesh().getDimension() != inF.getInputDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect spatial dimension. Got " << inF.getInputDimension() << ". Expected " << getInputMesh().getDimension();
+  const UnsignedInteger inputSize = getInputMesh().getVerticesNumber();
+  if (inF.getSize() != getInputMesh().getVerticesNumber())
+    throw InvalidDimensionException(HERE) << "Input field values have incorrect size. Got " << inF.getSize() << ". Expected " << inputSize;
 
   callsNumber_.increment();
 
-  ScopedPyObjectPointer pyInField(SWIG_NewPointerObj(new OT::Field(inF), SWIG_TypeQuery("OT::Field *"), SWIG_POINTER_OWN | 0));
-  ScopedPyObjectPointer pyOutP(PyObject_CallFunctionObjArgs( pyObj_, pyInField.get(), NULL));
+  // Force a memory copy of inS into a Python list
+  ScopedPyObjectPointer inTuple(PyTuple_New(inputSize));
+  for (UnsignedInteger i = 0; i < inputSize; ++ i)
+  {
+    PyObject * eltTuple = PyTuple_New(inputDimension);
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j) PyTuple_SetItem(eltTuple, j, convert< Scalar, _PyFloat_ > (inF(i, j)));
+    PyTuple_SetItem(inTuple.get(), i, eltTuple);
+  }
+
+  ScopedPyObjectPointer pyOutP(PyObject_CallFunctionObjArgs(pyObj_, inTuple.get(), NULL));
   if (pyOutP.isNull())
   {
     handleException();

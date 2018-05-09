@@ -134,11 +134,13 @@ String FieldToFieldConnection::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field FieldToFieldConnection::operator() (const Field & inF) const
+Sample FieldToFieldConnection::operator() (const Sample & inF) const
 {
-  if (inF.getOutputDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToFieldConnection with an argument of invalid dimension";
+  if (inF.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToFieldConnection with an argument of invalid dimension";
+  if (inF.getSize() != getInputMesh().getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error:";
+
   callsNumber_.increment();
-  const Field outValue(isFieldFunctionComposition_ ? leftFieldFunction_(rightFieldFunction_(inF)) : pointToFieldFunction_(fieldToPointFunction_(inF)));
+  const Sample outValue(isFieldFunctionComposition_ ? leftFieldFunction_(rightFieldFunction_(inF)) : pointToFieldFunction_(fieldToPointFunction_(inF)));
   return outValue;
 }
 

@@ -14,8 +14,8 @@ class FUNC(ot.OpenTURNSPythonFieldFunction):
         self.setOutputDescription(['T', 'U'])
 
     def _exec(self, X):
-        Y = ot.Field(X.getMesh(), X.getValues()
-                     * ([2.0] * X.getValues().getDimension()))
+        Xs = ot.Sample(X)
+        Y = Xs * ([2.0] * Xs.getDimension())
         return Y
 
 F = FUNC()
@@ -25,7 +25,7 @@ print('in_dim=' + str(F.getInputDimension())
 
 
 X = ot.Field(mesh, ot.Normal(2).getSample(11))
-print(F(X))
+print(F(X.getValues()))
 
 Xsample = ot.ProcessSample(5, X)
 print(F(Xsample))
@@ -40,7 +40,7 @@ newFunc = ot.FieldFunction(myFunc)
 print(('myFunc input dimension= ' + str(myFunc.getInputDimension())))
 print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
 
-print(myFunc(X))
+print(myFunc(X.getValues()))
 
 print(myFunc(Xsample))
 
@@ -63,11 +63,10 @@ simplicies.append([1, 4, 5, 6])
 mesh3D = ot.Mesh(vertices, simplicies)
 
 def myPyFunc(X):
-    mesh = X.getMesh()
-    values = X.getValues() * ([2.0] * X.getValues().getDimension())
-    values.setDescription(
+    Xs = ot.Sample(X)
+    Y = Xs * ([2.0] * Xs.getDimension())
+    Y.setDescription(
         ot.Description.BuildDefault(values.getDimension(), "Y"))
-    Y = ot.Field(mesh, values)
     return Y
 
 in_dim = 3
@@ -80,7 +79,7 @@ values = ot.Normal(mesh3D.getDimension()).getSample(mesh3D.getVerticesNumber())
 # Evaluation over a single field
 X = ot.Field(mesh3D, values)
 print('X=', X)
-Y = myFunc(X)
+Y = myFunc(X.getValues())
 print('Y=', Y)
 print('myFunc input dimension=', myFunc.getInputDimension())
 print('myFunc output dimension=', myFunc.getOutputDimension())

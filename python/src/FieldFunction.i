@@ -79,6 +79,7 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 # We have to make sure the submodule is loaded with absolute path
 import openturns.func
 import openturns.geom
+import openturns.typ
 
 class OpenTURNSPythonFieldFunction(object):
     """
@@ -174,27 +175,18 @@ class OpenTURNSPythonFieldFunction(object):
 
     def __call__(self, X):
         Y = None
-        try:
-            fld = Field(X)
-        except:
-            try:
-                ps = ProcessSample(X)
-            except:
-                raise TypeError('Expect a Field or a ProcessSample as argument')
-            else:
-                Y = self._exec_sample(ps)
+        if isinstance(X, openturns.func.ProcessSample):
+            Y = self._exec_sample(X)
         else:
-            Y = self._exec(fld)
+            Y = self._exec(X)
         return Y
 
     def _exec(self, X):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X and Y are Fields objects')
 
     def _exec_sample(self, X):
-        if len(X) == 0:
-            return ProcessSample(Mesh(), 0, self.getOutputDimension())
-        res = ProcessSample(1, self._exec(X[0]))
-        for i in range(1, len(X)):
+        res = ProcessSample(self.getOutputMesh(), 0, self.getOutputDimension())
+        for i in range(len(X)):
             res.add(self._exec(X[i]))
         return res
 

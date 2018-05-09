@@ -109,7 +109,7 @@ class OpenTURNSPythonFieldToPointFunction(object):
     ...         self.setInputDescription(['R', 'S'])
     ...         self.setOutputDescription(['T', 'U'])
     ...    def _exec(self, X):
-    ...         Y = X.getValues().computeMean()
+    ...         Y = ot.Sample(X).computeMean()
     ...         return Y
     >>> F = FUNC()
     """
@@ -161,17 +161,10 @@ class OpenTURNSPythonFieldToPointFunction(object):
 
     def __call__(self, X):
         Y = None
-        try:
-            fld = openturns.func.Field(X)
-        except:
-            try:
-                ps = openturns.func.ProcessSample(X)
-            except:
-                raise TypeError('Expect a Field or a ProcessSample as argument')
-            else:
-                Y = self._exec_sample(ps)
+        if isinstance(X, openturns.func.ProcessSample):
+            Y = self._exec_sample(X)
         else:
-            Y = self._exec(fld)
+            Y = self._exec(X)
         return Y
 
     def _exec(self, X):
@@ -209,7 +202,7 @@ class PythonFieldToPointFunction(FieldToPointFunction):
     >>> import openturns as ot
     >>> mesh = ot.Mesh(1)
     >>> def myPyFunc(X):
-    ...     Y = X.getValues().computeMean()
+    ...     Y = ot.Sample(X).computeMean()
     ...     return Y
     >>> inputDim = 2
     >>> outputDim = 2

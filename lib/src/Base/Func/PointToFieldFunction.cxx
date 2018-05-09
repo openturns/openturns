@@ -124,7 +124,7 @@ Mesh PointToFieldFunction::getOutputMesh() const
 }
 
 /* Operator () */
-Field PointToFieldFunction::operator() (const Point & inP) const
+Sample PointToFieldFunction::operator() (const Point & inP) const
 {
   return getImplementation()->operator()(inP);
 }

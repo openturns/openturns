@@ -134,7 +134,7 @@ Mesh PointToFieldFunctionImplementation::getOutputMesh() const
 
 
 /* Operator () */
-Field PointToFieldFunctionImplementation::operator() (const Point & inP) const
+Sample PointToFieldFunctionImplementation::operator() (const Point & inP) const
 {
   throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::operator() (const Point & inP) const";
 }
@@ -145,13 +145,11 @@ ProcessSample PointToFieldFunctionImplementation::operator() (const Sample & inS
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given sample has a size of 0.";
-  Field field0(operator()(inS[0]));
-  ProcessSample outSample(field0.getMesh(), size, field0.getOutputDimension());
-  outSample.setField(field0, 0);
+  ProcessSample outSample(getOutputMesh(), size, getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
-  for (UnsignedInteger i = 1; i < size; ++i)
-    outSample.setField(operator()(inS[i]), i);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    outSample[i] = operator()(inS[i]);
   return outSample;
 }
 

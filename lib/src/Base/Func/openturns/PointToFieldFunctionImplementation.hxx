@@ -64,7 +64,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual Field operator() (const Point & inP) const;
+  virtual Sample operator() (const Point & inP) const;
   virtual ProcessSample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */

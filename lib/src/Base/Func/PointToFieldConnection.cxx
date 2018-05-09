@@ -132,11 +132,11 @@ String PointToFieldConnection::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field PointToFieldConnection::operator() (const Point & inP) const
+Sample PointToFieldConnection::operator() (const Point & inP) const
 {
   if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a PointToFieldConnection with an argument of invalid dimension";
   callsNumber_.increment();
-  const Field outValue(startByPointToFieldFunction_ ? fieldFunction_(pointToFieldFunction_(inP)) : pointToFieldFunction_(function_(inP)));
+  const Sample outValue(startByPointToFieldFunction_ ? fieldFunction_(pointToFieldFunction_(inP)) : pointToFieldFunction_(function_(inP)));
   return outValue;
 }
 

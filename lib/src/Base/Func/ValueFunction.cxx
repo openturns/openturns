@@ -97,11 +97,12 @@ String ValueFunction::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field ValueFunction::operator() (const Field & inFld) const
+Sample ValueFunction::operator() (const Sample & inFld) const
 {
-  if (inFld.getInputDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getInputMesh().getDimension() << ", got mesh dimension=" << inFld.getInputDimension();
+  if (inFld.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected field values of dimension=" << getInputDimension() << ", got dimension=" << inFld.getDimension();
+  if (inFld.getSize() != getInputMesh().getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: expected field values of size=" << getInputMesh().getVerticesNumber() << ", got size=" << inFld.getSize();
   callsNumber_.increment();
-  return Field(inFld.getMesh(), function_(inFld.getValues()));
+  return function_(inFld);
 }
 
 /* Get the i-th marginal function */

@@ -120,7 +120,7 @@ Mesh FieldFunction::getOutputMesh() const
 }
 
 /* Operator () */
-Field FieldFunction::operator() (const Field & inFld) const
+Sample FieldFunction::operator() (const Sample & inFld) const
 {
   return getImplementation()->operator()(inFld);
 }

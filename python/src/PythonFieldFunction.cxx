@@ -164,40 +164,55 @@ String PythonFieldFunction::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-Field PythonFieldFunction::operator() (const Field & inF) const
+Sample PythonFieldFunction::operator() (const Sample & inF) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inputDimension != inF.getValues().getDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect dimension. Got " << inF.getValues().getDimension() << ". Expected " << inputDimension;
+  if (inputDimension != inF.getDimension())
+    throw InvalidDimensionException(HERE) << "Input field values have incorrect dimension. Got " << inF.getDimension() << ". Expected " << inputDimension;
 
-  const UnsignedInteger spatialDimension = getInputMesh().getDimension();
-  if (spatialDimension != inF.getMesh().getDimension())
-    throw InvalidDimensionException(HERE) << "Input field has incorrect input mesh dimension. Got " << inF.getInputDimension() << ". Expected " << spatialDimension;
+  const UnsignedInteger inputSize = getInputMesh().getVerticesNumber();
+  if (inF.getSize() != inputSize)
+    throw InvalidDimensionException(HERE) << "Input field values have incorrect size. Got " << inF.getSize() << ". Expected " << inputSize;
 
   callsNumber_.increment();
 
-  ScopedPyObjectPointer pyInField(SWIG_NewPointerObj(new OT::Field(inF), SWIG_TypeQuery("OT::Field *"), SWIG_POINTER_OWN | 0));
-  ScopedPyObjectPointer pyOutField(PyObject_CallFunctionObjArgs( pyObj_, pyInField.get(), NULL));
-  if (pyOutField.isNull())
+  // Force a memory copy of inS into a Python list
+  ScopedPyObjectPointer inTuple(PyTuple_New(inputSize));
+  for (UnsignedInteger i = 0; i < inputSize; ++ i)
+  {
+    PyObject * eltTuple = PyTuple_New(inputDimension);
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j) PyTuple_SetItem(eltTuple, j, convert< Scalar, _PyFloat_ > (inF(i, j)));
+    PyTuple_SetItem(inTuple.get(), i, eltTuple);
+  }
+
+  ScopedPyObjectPointer execSampleName(convert< String, _PyString_ >("_exec"));
+  ScopedPyObjectPointer result(PyObject_CallMethodObjArgs(pyObj_, execSampleName.get(), inTuple.get(), NULL));
+  if (result.isNull())
   {
     handleException();
   }
-  void * ptr = 0;
-  OT::Field * p_outF = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr(pyOutField.get(), &ptr, SWIG_TypeQuery("OT::Field *"), 0)))
+
+  Sample outF;
+  try
   {
-    p_outF = reinterpret_cast< OT::Field * >(ptr);
+    outF = convert< _PySequence_, Sample >(result.get());
   }
-  else
+  catch (InvalidArgumentException &)
   {
-    throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a Field";
+    throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec_sample() method is not a 2d-sequence object";
   }
 
-  if (p_outF->getValues().getDimension() != getOutputDimension())
-  {
-    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getValues().getDimension() << ". Expected " << getOutputDimension();
-  }
-  return *p_outF;
+  const UnsignedInteger outputSize = getOutputMesh().getVerticesNumber();
+  if (outF.getSize() != outputSize)
+    throw InvalidArgumentException(HERE) << "Python Field function returned a sequence object with incorrect size (got "
+                                         << outF.getSize() << ", expected " << outputSize << ")";
+
+  const UnsignedInteger outputDimension = getOutputDimension();
+  if (outF.getDimension() != outputDimension)
+    throw InvalidArgumentException(HERE) << "Python Field function returned a sequence object with incorrect dimension (got "
+                                         << outF.getDimension() << ", expected " << outputDimension << ")";
+  outF.setDescription(getOutputDescription());
+  return outF;
 }
 
 

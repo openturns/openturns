@@ -76,7 +76,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  Field operator() (const Field & inFld) const;
+  Sample operator() (const Sample & inFld) const;
   ProcessSample operator() (const ProcessSample & inPS) const;
 
   /** Get the i-th marginal function */

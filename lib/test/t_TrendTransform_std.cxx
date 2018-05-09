@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
         data(i, j) = i * data.getDimension() + j;
     TimeSeries ts(tg, data);
     fullprint << "input time series=" << ts << std::endl;
-    fullprint << "output time series=" << myTrendFunc(ts) << std::endl;
+    fullprint << "output time series=" << myTrendFunc(ts.getValues()) << std::endl;
     /* Get the number of calls */
     fullprint << "called " << myTrendFunc.getCallsNumber() << " times" << std::endl;
   }

@@ -15,10 +15,8 @@ class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
             20, 1.0e-4, ot.GaussKronrodRule(ot.GaussKronrodRule.G7K15))
 
     def _exec(self, X):
-        inputTG = X.getTimeGrid()
-        inputValues = X.getValues()
         f = ot.Function(ot.PiecewiseLinearEvaluation(
-            [x[0] for x in inputTG.getVertices()], inputValues))
+            [x[0] for x in self.getInputMesh().getVertices()], X))
         outputValues = ot.Sample(0, 1)
         for t in self.getOutputMesh().getVertices():
             kernel = ot.Normal(t[0], 0.05)
@@ -28,7 +26,7 @@ class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
             weight = ot.Function(ot.PythonFunction(1, 1, pdf))
             outputValues.add(self.algo_.integrate(
                 weight * f, kernel.getRange()))
-        return ot.Field(self.getOutputMesh(), outputValues)
+        return outputValues
 
 N = 5
 X = ot.GaussianProcess(ot.GeneralizedExponential(

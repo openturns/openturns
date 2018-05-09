@@ -118,7 +118,7 @@ void FieldToPointFunction::setOutputDescription(const Description & outputDescri
 }
 
 /* Operator () */
-Point FieldToPointFunction::operator() (const Field & inFld) const
+Point FieldToPointFunction::operator() (const Sample & inFld) const
 {
   return getImplementation()->operator()(inFld);
 }

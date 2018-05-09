@@ -28,7 +28,7 @@ try:
     # Connection on a field
     field = result.getModesAsProcessSample().computeMean()
     print("field=", field)
-    print("myFunc(field)=", myFunc(field))
+    print("myFunc(field)=", myFunc(field.getValues()))
     # Get the number of calls
     print("called ", myFunc.getCallsNumber(), " times")
 
@@ -49,7 +49,7 @@ try:
     # Connection on a field
     field = result.getModesAsProcessSample().computeMean()
     print("field=", field)
-    print("myFunc(field)=", myFunc(field))
+    print("myFunc(field)=", myFunc(field.getValues()))
     # Get the number of calls
     print("called ", myFunc.getCallsNumber(), " times")
 

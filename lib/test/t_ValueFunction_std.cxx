@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         data(i, j) = i * data.getDimension() + j;
     TimeSeries ts(tg, data);
     fullprint << "input time series=" << ts << std::endl;
-    fullprint << "output time series=" << mySpatialFunc(ts) << std::endl;
+    fullprint << "output time series=" << mySpatialFunc(ts.getValues()) << std::endl;
     /* Get the number of calls */
     fullprint << "called " << mySpatialFunc.getCallsNumber() << " times" << std::endl;
   }

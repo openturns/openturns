@@ -97,11 +97,10 @@ String VertexFunction::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field VertexFunction::operator() (const Field & inFld) const
+Sample VertexFunction::operator() (const Sample & inFld) const
 {
-  if (inFld.getInputDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getInputMesh().getDimension() << ", got mesh dimension=" << inFld.getInputDimension();
   callsNumber_.increment();
-  return Field(inFld.getMesh(), function_(inFld.getMesh().getVertices()));
+  return function_(getInputMesh().getVertices());
 }
 
 /* Get the i-th marginal function */

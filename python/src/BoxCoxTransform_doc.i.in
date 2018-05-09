@@ -89,9 +89,9 @@ Apply it to a field:
 
 >>> myField = myXtProcess.getRealization()
 >>> myModelTransform = ot.BoxCoxFactory().build(myField)
->>> myStabilizedField = myModelTransform(myField)
+>>> myStabilizedField = myModelTransform(myField.getValues())
 
->>> marginal = ot.HistogramFactory().build(myStabilizedField.getValues())
+>>> marginal = ot.HistogramFactory().build(myStabilizedField)
 >>> graph2 = marginal.drawPDF()
 "
 

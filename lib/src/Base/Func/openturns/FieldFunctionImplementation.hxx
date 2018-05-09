@@ -67,7 +67,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual Field operator() (const Field & inFld) const;
+  virtual Sample operator() (const Sample & inFld) const;
   virtual ProcessSample operator() (const ProcessSample & inPS) const;
 
   /** @deprecated Accessor for mesh dimension */

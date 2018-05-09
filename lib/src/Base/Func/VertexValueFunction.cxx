@@ -110,11 +110,13 @@ String VertexValueFunction::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field VertexValueFunction::operator() (const Field & inFld) const
+Sample VertexValueFunction::operator() (const Sample & inFld) const
 {
-  if (inFld.getInputDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getInputMesh().getDimension() << ", got mesh dimension=" << inFld.getInputDimension();
+  if (inFld.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with dimension=" << getInputDimension() << ", got dimension=" << inFld.getDimension();
   callsNumber_.increment();
-  return Field(inFld.getMesh(), function_(inFld.getImplementation()->asSample()));
+  Sample verticesValues(getInputMesh().getVertices());
+  verticesValues.stack(inFld);
+  return function_(verticesValues);
 }
 
 /* Get the i-th marginal function */

@@ -47,7 +47,8 @@ int main(int argc, char *argv[])
     fullprint << "lifting input dimension=" << lifting.getInputDimension() << std::endl;
     fullprint << "lifting output dimension=" << lifting.getOutputDimension() << std::endl;
     Point point(lifting.getInputDimension(), 1.0);
-    Field field(lifting(point));
+    Sample values(lifting(point));
+    Field field(lifting.getOutputMesh(), values);
     fullprint << "point=" << point << std::endl;
     fullprint << "field=" << field << std::endl;
     /* Get the number of calls */

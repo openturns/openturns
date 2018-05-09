@@ -62,7 +62,7 @@ public:
 
   /** Operator () */
   using PointToFieldFunctionImplementation::operator();
-  virtual Field operator() (const Point & inP) const;
+  virtual Sample operator() (const Point & inP) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

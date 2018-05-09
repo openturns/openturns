@@ -52,7 +52,7 @@ try:
     # We make a trend transform to the time series
     # We get a time series which contains values of time
     myTransformFunction = TrendTransform(myFunction, timeGrid)
-    myTimeSeries = TimeSeries(myTransformFunction(realization))
+    myTimeSeries = TimeSeries(timeGrid, myTransformFunction(realization.getValues()))
     print("myTimeSeries = ", myTimeSeries)
 
     # We wants to get the coefficients using a factory

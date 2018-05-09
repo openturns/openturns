@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     fullprint << "projection input dimension=" << projection.getInputDimension() << std::endl;
     fullprint << "projection output dimension=" << projection.getOutputDimension() << std::endl;
     Field field(result.getModesAsProcessSample().computeMean());
-    Point point(projection(field));
+    Point point(projection(field.getValues()));
     fullprint << "field=" << field << std::endl;
     fullprint << "point=" << point << std::endl;
     /* Get the number of calls */

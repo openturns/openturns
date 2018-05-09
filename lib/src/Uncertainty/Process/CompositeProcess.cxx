@@ -106,10 +106,9 @@ FieldFunction CompositeProcess::getFunction() const
 /* Realization accessor */
 Field CompositeProcess::getRealization() const
 {
-  Field result(function_(antecedent_.getRealization()));
-  Sample values(result.getValues());
+  Sample values(function_(antecedent_.getRealization().getValues()));
   values.setDescription(getDescription());
-  result.setValues(values);
+  Field result(function_.getOutputMesh(), values);
   return result;
 }
 
@@ -130,7 +129,7 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   /* TimeGrid associated with the possible future */
   const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  return TimeSeries(futurTimeGrid, function_(antecedent_.getFuture(stepNumber)).getValues());
+  return TimeSeries(futurTimeGrid, function_(antecedent_.getFuture(stepNumber).getValues()));
 }
 
 /* Get the random vector corresponding to the i-th marginal component */

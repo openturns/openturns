@@ -45,9 +45,11 @@ int main(int argc, char *argv[])
       fullprint << "myFunc input dimension=" << myFunc.getInputDimension() << std::endl;
       fullprint << "myFunc output dimension=" << myFunc.getOutputDimension() << std::endl;
       /* Connection on a point */
-      Field field(grid, grid.getVertices() * Point(1, 2.0));
-      fullprint << "field=" << field << std::endl;
-      fullprint << "myFunc(field)=" << myFunc(field) << std::endl;
+      Sample inputValues(grid.getVertices() * Point(1, 2.0));
+      Field inputField(grid, inputValues);
+      fullprint << "field=" << inputField << std::endl;
+      Field outputField(grid, myFunc(inputValues));
+      fullprint << "myFunc(field)=" << outputField << std::endl;
       /* Get the number of calls */
       fullprint << "called " << myFunc.getCallsNumber() << " times" << std::endl;
     }
@@ -76,7 +78,8 @@ int main(int argc, char *argv[])
       /* Connection on a point */
       Field field(result.getModesAsProcessSample().computeMean());
       fullprint << "field=" << field << std::endl;
-      fullprint << "myFunc(field)=" << myFunc(field) << std::endl;
+      Field outputField(myFunc.getOutputMesh(), myFunc(field.getValues()));
+      fullprint << "myFunc(field)=" << outputField << std::endl;
       /* Get the number of calls */
       fullprint << "called " << myFunc.getCallsNumber() << " times" << std::endl;
     }

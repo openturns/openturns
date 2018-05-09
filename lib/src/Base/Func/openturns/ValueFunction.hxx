@@ -71,7 +71,7 @@ public:
 
   /** Operator () */
   using FieldFunctionImplementation::operator();
-  Field operator() (const Field & inFld) const;
+  Sample operator() (const Sample & inFld) const;
 
   /** Get the i-th marginal function */
   Implementation getMarginal(const UnsignedInteger i) const;

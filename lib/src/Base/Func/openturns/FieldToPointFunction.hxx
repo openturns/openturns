@@ -69,7 +69,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  Point operator() (const Field & inFld) const;
+  Point operator() (const Sample & inFld) const;
   Sample operator() (const ProcessSample & inPS) const;
 
   /** Get the i-th marginal function */

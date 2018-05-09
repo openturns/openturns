@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     fullprint << "myVertexFunc output dimension=" << myVertexFunc.getOutputDimension() << std::endl;
 
     fullprint << "input time series=" << ts << std::endl;
-    fullprint << "output time series=" << myVertexFunc(ts) << std::endl;
+    fullprint << "output time series=" << myVertexFunc(ts.getValues()) << std::endl;
     /* Get the number of calls */
     fullprint << "called " << myVertexFunc.getCallsNumber() << " times" << std::endl;
   }

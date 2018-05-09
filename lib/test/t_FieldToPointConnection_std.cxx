@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
       /* Connection on a field */
       Field field(result.getModesAsProcessSample().computeMean());
       fullprint << "field=" << field << std::endl;
-      fullprint << "myFunc(field)=" << myFunc(field) << std::endl;
+      fullprint << "myFunc(field)=" << myFunc(field.getValues()) << std::endl;
       /* Get the number of calls */
       fullprint << "called " << myFunc.getCallsNumber() << " times" << std::endl;
     }
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
       /* Connection on a field */
       Field field(result.getModesAsProcessSample().computeMean());
       fullprint << "field=" << field << std::endl;
-      fullprint << "myFunc(field)=" << myFunc(field) << std::endl;
+      fullprint << "myFunc(field)=" << myFunc(field.getValues()) << std::endl;
       /* Get the number of calls */
       fullprint << "called " << myFunc.getCallsNumber() << " times" << std::endl;
     }
