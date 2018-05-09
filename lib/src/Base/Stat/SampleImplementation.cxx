@@ -1395,7 +1395,7 @@ struct NSI_Sortable
   }
   inline NSI_const_point::const_iterator end()
   {
-    return &NSI_const_point(p_nsi_, index_).operator[](getDimension());
+    return &NSI_const_point(p_nsi_, index_).operator[](0) + getDimension();
   }
 
 };
