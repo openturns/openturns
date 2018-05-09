@@ -207,8 +207,8 @@ Point & Point::operator +=(const Point & other)
         << other.getDimension();
   double alpha = 1.0;
   int one = 1;
-  daxpy_(&n, &alpha, const_cast<double*>(&other[0]), &one, &(*this)[0], &one);
-
+  if (n > 0)
+    daxpy_(&n, &alpha, const_cast<double*>(&other[0]), &one, &(*this)[0], &one);
   return *this;
 }
 
@@ -229,7 +229,8 @@ Point operator - (const Point & lhs, const Point & rhs)
   Point result(lhs);
   double alpha = -1.0;
   int one = 1;
-  daxpy_(&n, &alpha, const_cast<double*>(&rhs[0]), &one, &result[0], &one);
+  if (n > 0)
+    daxpy_(&n, &alpha, const_cast<double*>(&rhs[0]), &one, &result[0], &one);
   return result;
 }
 
@@ -248,8 +249,8 @@ Point & Point::operator -=(const Point & other)
 
   double alpha = -1.0;
   int one = 1;
-  daxpy_(&n, &alpha, const_cast<double*>(&other[0]), &one, &(*this)[0], &one);
-
+  if (n > 0)
+    daxpy_(&n, &alpha, const_cast<double*>(&other[0]), &one, &(*this)[0], &one);
   return *this;
 }
 
@@ -263,7 +264,8 @@ Point operator *(const Point & point,
   double alpha = scalar;
   Point result(point);
   int one = 1;
-  dscal_(&n, &alpha, &result[0], &one);
+  if (n > 0)
+    dscal_(&n, &alpha, &result[0], &one);
   return result;
 }
 
@@ -274,7 +276,8 @@ Point operator *(const Scalar scalar,
   double alpha = scalar;
   Point result(point);
   int one = 1;
-  dscal_(&n, &alpha, &result[0], &one);
+  if (n > 0)
+    dscal_(&n, &alpha, &result[0], &one);
   return result;
 }
 
@@ -284,7 +287,8 @@ Point & Point::operator *=(const Scalar scalar)
   int n = getDimension();
   double alpha = scalar;
   int one = 1;
-  dscal_(&n, &alpha, &(*this)[0], &one);
+  if (n > 0)
+    dscal_(&n, &alpha, &(*this)[0], &one);
   return *this;
 }
 
@@ -297,7 +301,8 @@ Point operator /(const Point & point,
   double alpha = 1.0 / scalar;
   Point result(point);
   int one = 1;
-  dscal_(&n, &alpha, &result[0], &one);
+  if (n > 0)
+    dscal_(&n, &alpha, &result[0], &one);
   return result;
 }
 
@@ -308,7 +313,8 @@ Point & Point::operator /=(const Scalar scalar)
   int n = getDimension();
   double alpha = 1.0 / scalar;
   int one = 1;
-  dscal_(&n, &alpha, &(*this)[0], &one);
+  if (n > 0)
+    dscal_(&n, &alpha, &(*this)[0], &one);
   return *this;
 }
 
@@ -326,7 +332,10 @@ Scalar dot(const Point & lhs,
         << rhs.getDimension();
 
   int one = 1;
-  return ddot_(&n, const_cast<double*>(&lhs[0]), &one, const_cast<double*>(&rhs[0]), &one);
+  if (n > 0)
+    return ddot_(&n, const_cast<double*>(&lhs[0]), &one, const_cast<double*>(&rhs[0]), &one);
+  else
+    return 0.0;
 }
 
 
@@ -351,17 +360,23 @@ Bool operator <(const Point & lhs,
 /*  Norm */
 Scalar Point::norm() const
 {
-  int n(getDimension());
+  int n = getDimension();
   int one(1);
-  return dnrm2_(&n, const_cast<double*>(&(*this)[0]), &one);
+  if (n > 0)
+    return dnrm2_(&n, const_cast<double*>(&(*this)[0]), &one);
+  else
+    return 0.0;
 }
 
 /* l1-norm */
 Scalar Point::norm1() const
 {
-  int n(getDimension());
+  int n = getDimension();
   int one(1);
-  return dasum_(&n, const_cast<double*>(&(*this)[0]), &one);
+  if (n > 0)
+    return dasum_(&n, const_cast<double*>(&(*this)[0]), &one);
+  else
+    return 0.0;
 }
 
 /* linf-norm */

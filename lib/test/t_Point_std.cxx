@@ -171,13 +171,21 @@ int main(int argc, char *argv[])
       std::sort(point10.begin(), point10.end());
       fullprint << "point9 " << point9 << std::endl;
       fullprint << "point10 " << point10 << std::endl;
-
     }
     catch (InvalidArgumentException & ex)
     {
       throw TestFailed(ex.__repr__());
     }
 
+    // empty point operators test
+    {
+      Point point0;
+      Point point0mul(point0 * 5.0);
+      Point point0div(point0 / 2.0);
+      point0 *= 5.0;
+      point0 /= 2.0;
+      fullprint << "point0=" << point0 << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {
