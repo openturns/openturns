@@ -19,3 +19,4 @@ J = class=Point name=Unnamed dimension=2 values=[0,3]
 dotProduct = 0
 point9 class=Point name=Unnamed dimension=3 values=[0,-1,-2]
 point10 class=Point name=Unnamed dimension=3 values=[-2,-1,0]
+point0=class=Point name=Unnamed dimension=0 values=[]
