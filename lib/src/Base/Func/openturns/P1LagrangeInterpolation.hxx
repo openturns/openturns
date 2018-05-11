@@ -77,7 +77,7 @@ public:
   String __str__( const String & offset = "" ) const;
 
   /** Operator () */
-  virtual Field operator()(const Field & field) const;
+  virtual Sample operator()(const Sample & field) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

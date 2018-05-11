@@ -190,13 +190,11 @@ void P1LagrangeInterpolation::computeProjection()
   }
 }
 
-Field P1LagrangeInterpolation::operator()(const Field & field) const
+Sample P1LagrangeInterpolation::operator()(const Sample & values) const
 {
-  if (field.getMesh() != inputMesh_) throw InvalidArgumentException(HERE) << "Error: the given field is not defined on the expected mesh";
-  const UnsignedInteger dimension = field.getOutputDimension();
-  if (dimension != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the given field has an invalid output dimension. Expect a dimension " << inputDimension_ << ", got " << dimension;
+  const UnsignedInteger dimension = values.getDimension();
+  if (dimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given field has an invalid output dimension. Expect a dimension " << getInputDimension() << ", got " << dimension;
   const UnsignedInteger outputSize = outputMesh_.getVerticesNumber();
-  const Sample values(field.getValues());
   Sample result(outputSize, dimension);
   const UnsignedInteger spatialDimension = getInputMesh().getDimension();
   for(UnsignedInteger i = 0; i < outputSize; ++i)
@@ -212,7 +210,7 @@ Field P1LagrangeInterpolation::operator()(const Field & field) const
       }
     }
   }
-  return Field(outputMesh_, result);
+  return result;
 }
 
 /* Method save() stores the object through the StorageManager */
