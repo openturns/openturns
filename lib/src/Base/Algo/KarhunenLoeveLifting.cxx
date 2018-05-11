@@ -44,7 +44,7 @@ KarhunenLoeveLifting::KarhunenLoeveLifting(const KarhunenLoeveResult & result)
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getModesAsProcessSample().getSize();
+  const UnsignedInteger size = result_.getEigenValues().getSize();
   if (size == 0) setOutputDescription(Description::BuildDefault(getOutputDimension(), "x"));
   else setOutputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setInputDescription(Description::BuildDefault(getInputDimension(), "xi"));

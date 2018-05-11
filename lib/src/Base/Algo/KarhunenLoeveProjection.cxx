@@ -44,7 +44,7 @@ KarhunenLoeveProjection::KarhunenLoeveProjection(const KarhunenLoeveResult & res
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getModesAsProcessSample().getSize();
+  const UnsignedInteger size = result_.getEigenValues().getSize();
   if (size == 0) setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   else setInputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "xi"));
