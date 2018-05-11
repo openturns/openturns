@@ -182,6 +182,11 @@ Point OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedIn
   Coefficients recurrenceCoefficientsI(getRecurrenceCoefficients(0));
   Scalar alphaPrec = recurrenceCoefficientsI[0];
   d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
+  if (n == 1)
+  {
+    weights = Point(1, 1.0);
+    return d;
+  }
   for (UnsignedInteger i = 1; i < n; ++i)
   {
     recurrenceCoefficientsI = getRecurrenceCoefficients(i);
