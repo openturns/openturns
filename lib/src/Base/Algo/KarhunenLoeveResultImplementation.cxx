@@ -152,8 +152,13 @@ Point KarhunenLoeveResultImplementation::project(const Function & function) cons
 Point KarhunenLoeveResultImplementation::project(const Field & field) const
 {
   if (field.getMesh() == modesAsProcessSample_.getMesh())
-    return projection_ * field.getValues().getImplementation()->getData();
+    return project(field.getValues());
   return project(Function(new P1LagrangeEvaluation(field)));
+}
+
+Point KarhunenLoeveResultImplementation::project(const Sample & values) const
+{
+  return projection_ * values.getImplementation()->getData();
 }
 
 Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
@@ -204,13 +209,18 @@ Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) con
   return LinearCombinationFunction(functions, scaledCoefficients);
 }
 
-Field KarhunenLoeveResultImplementation::liftAsField(const Point & coefficients) const
+Sample KarhunenLoeveResultImplementation::liftAsSample(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
   Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
     values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
-  return Field(modesAsProcessSample_.getMesh(), values);
+  return values;
+}
+
+Field KarhunenLoeveResultImplementation::liftAsField(const Point & coefficients) const
+{
+  return Field(modesAsProcessSample_.getMesh(), liftAsSample(coefficients));
 }
 
 /* String converter */

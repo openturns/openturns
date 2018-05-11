@@ -106,6 +106,11 @@ Point KarhunenLoeveResult::project(const Field & field) const
   return getImplementation()->project(field);
 }
 
+Point KarhunenLoeveResult::project(const Sample & values) const
+{
+  return getImplementation()->project(values);
+}
+
 Sample KarhunenLoeveResult::project(const FunctionCollection & functionCollection) const
 {
   return getImplementation()->project(functionCollection);
@@ -120,6 +125,11 @@ Sample KarhunenLoeveResult::project(const ProcessSample & sample) const
 Function KarhunenLoeveResult::lift(const Point & coefficients) const
 {
   return getImplementation()->lift(coefficients);
+}
+
+Sample KarhunenLoeveResult::liftAsSample(const Point & coefficients) const
+{
+  return getImplementation()->liftAsSample(coefficients);
 }
 
 Field KarhunenLoeveResult::liftAsField(const Point & coefficients) const

@@ -203,6 +203,8 @@ Available constructors:
 
     project(*field*)
 
+    project(*values*)
+
     project(*fieldSample*)
 
 Parameters
@@ -213,6 +215,8 @@ functions : list of :class:`~openturns.Function`
     A list of functions.
 field :  :class:`~openturns.Field`
     A field.
+values :  :class:`~openturns.Sample`
+    Field values.
 fieldSample :  :class:`~openturns.ProcessSample`
     A collection of fields.
 
@@ -318,3 +322,25 @@ The sum defining :math:`f` is truncated to the first :math:`K` terms, where :mat
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::liftAsField
 OT_KarhunenLoeveResult_liftAsField_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveResult_liftAsSample_doc
+"Lift the coefficients into a sample.
+
+Parameters
+----------
+coef : :class:`~openturns.Point`
+    The coefficients :math:`(\xi_1, \dots, \xi_K)`.
+
+Returns
+-------
+modes : :class:`~openturns.Sample`
+    The function :math:`f` defined in :eq:`lift` evaluated on the mesh associated to the discretization of :eq:`projection`.
+
+Notes
+-----
+The sum defining :math:`f` is truncated to the first :math:`K` terms, where :math:`K` is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
+%enddef
+%feature("docstring") OT::KarhunenLoeveResultImplementation::liftAsSample
+OT_KarhunenLoeveResult_liftAsSample_doc

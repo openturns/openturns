@@ -97,9 +97,9 @@ PointToFieldFunction KarhunenLoeveLifting::getMarginal(const Indices & indices) 
 /* Operator () */
 Sample KarhunenLoeveLifting::operator() (const Point & inP) const
 {
-  const Field outField(result_.liftAsField(inP));
+  const Sample outField(result_.liftAsSample(inP));
   callsNumber_.increment();
-  return outField.getValues();
+  return outField;
 }
 
 /* Accessor for the output mesh */

@@ -97,8 +97,7 @@ KarhunenLoeveProjection::Implementation KarhunenLoeveProjection::getMarginal(con
 /* Operator () */
 Point KarhunenLoeveProjection::operator() (const Sample & inFld) const
 {
-  const Field inputField(getInputMesh(), inFld);
-  const Point outPoint(result_.project(inputField));
+  const Point outPoint(result_.project(inFld));
   callsNumber_.increment();
   return outPoint;
 }
