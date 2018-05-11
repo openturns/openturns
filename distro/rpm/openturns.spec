@@ -15,7 +15,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.11rc1
+Version:        1.11
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -24,7 +24,7 @@ URL:            http://www.openturns.org
 Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%{version}.tar.bz2
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:  gcc-c++, cmake, bison, flex, bc, swig
+BuildRequires:  gcc-c++, cmake, bison, flex, swig
 BuildRequires:  muParser-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  boost-devel
@@ -108,7 +108,7 @@ Python textual interface to OpenTURNS uncertainty library
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
-       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES=-j8 \
+       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES=-j16 \
 %ifarch i586 i686
        -DCMAKE_C_FLAGS_RELEASE="%optflags -O0" \
 %endif
