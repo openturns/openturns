@@ -95,6 +95,12 @@ Matrix KarhunenLoeveResult::getProjectionMatrix() const
   return getImplementation()->getProjectionMatrix();
 }
 
+/* Mesh accessor */
+Mesh KarhunenLoeveResult::getMesh() const
+{
+  return getImplementation()->getMesh();
+}
+
 /* Projection method */
 Point KarhunenLoeveResult::project(const Function & function) const
 {

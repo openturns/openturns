@@ -180,6 +180,20 @@ OT_KarhunenLoeveResult_getScaledModesAsProcessSample_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_KarhunenLoeveResult_getMesh_doc
+"Accessor to the mesh.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    The mesh corresponds to the discretization points of the integral in
+    :eq:`projection`."
+%enddef
+%feature("docstring") OT::KarhunenLoeveResultImplementation::getMesh
+OT_KarhunenLoeveResult_getMesh_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_KarhunenLoeveResult_getProjectionMatrix_doc
 "Accessor to the projection matrix.
 

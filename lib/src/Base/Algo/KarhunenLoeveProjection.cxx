@@ -40,7 +40,7 @@ KarhunenLoeveProjection::KarhunenLoeveProjection()
 
 /* Parameter constructor */
 KarhunenLoeveProjection::KarhunenLoeveProjection(const KarhunenLoeveResult & result)
-  : FieldToPointFunctionImplementation(result.getModesAsProcessSample().getMesh(), result.getModesAsProcessSample().getDimension(), result.getEigenValues().getSize())
+  : FieldToPointFunctionImplementation(result.getMesh(), result.getModesAsProcessSample().getDimension(), result.getEigenValues().getSize())
   , result_(result)
 {
   // Set the description

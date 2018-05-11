@@ -100,6 +100,12 @@ ProcessSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
   return modesAsProcessSample_;
 }
 
+/* Mesh accessor */
+Mesh KarhunenLoeveResultImplementation::getMesh() const
+{
+  return modesAsProcessSample_.getMesh();
+}
+
 /* Scaled modes accessors */
 KarhunenLoeveResultImplementation::FunctionCollection KarhunenLoeveResultImplementation::getScaledModes() const
 {
@@ -158,9 +164,10 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
 {
   const UnsignedInteger size = sample.getSize();
   if (!(size != 0)) return Sample();
+  const Mesh mesh(modesAsProcessSample_.getMesh());
   const UnsignedInteger dimension = sample.getDimension();
-  const UnsignedInteger length = modesAsProcessSample_.getMesh().getVerticesNumber();
-  if (sample.getMesh() == modesAsProcessSample_.getMesh())
+  const UnsignedInteger length = mesh.getVerticesNumber();
+  if (sample.getMesh() == mesh)
   {
     // result[i] = projection_ * sample.data_[i] if sample.data_ is viewed as a
     //   Sample(size, length * dimension) and result[i] as a Point of dimension rows(projection_)
@@ -178,7 +185,7 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
     // We build a P1LagrangeEvaluation as if ProcessSample was an aggregated Field.
     P1LagrangeEvaluation evaluation(sample);
     // values is Sample(length, size * dimension)
-    const Sample values(evaluation(modesAsProcessSample_.getMesh().getVertices()));
+    const Sample values(evaluation(mesh.getVertices()));
     // Dispatch values so that it can be multiplied by projection_ like above
     Sample dispatched(size, length * dimension);
     for(UnsignedInteger i = 0; i < size; ++i)

@@ -72,6 +72,9 @@ public:
   /** Projection matrix accessor */
   Matrix getProjectionMatrix() const;
 
+  /** Mesh accessor */
+  Mesh getMesh() const;
+
   /** Projection method */
   Point project(const Function & function) const;
   Point project(const Sample & values) const;
