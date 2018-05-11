@@ -149,13 +149,6 @@ Point KarhunenLoeveResultImplementation::project(const Function & function) cons
   return projection_ * functionValues;
 }
 
-Point KarhunenLoeveResultImplementation::project(const Field & field) const
-{
-  if (field.getMesh() == modesAsProcessSample_.getMesh())
-    return project(field.getValues());
-  return project(Function(new P1LagrangeEvaluation(field)));
-}
-
 Point KarhunenLoeveResultImplementation::project(const Sample & values) const
 {
   return projection_ * values.getImplementation()->getData();

@@ -74,7 +74,6 @@ public:
 
   /** Projection method */
   Point project(const Function & function) const;
-  Point project(const Field & field) const;
   Point project(const Sample & values) const;
   Sample project(const FunctionCollection & functionCollection) const;
   Sample project(const ProcessSample & sample) const;

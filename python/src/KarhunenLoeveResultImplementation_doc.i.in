@@ -201,8 +201,6 @@ Available constructors:
 
     project(*functions*)
 
-    project(*field*)
-
     project(*values*)
 
     project(*fieldSample*)
@@ -213,8 +211,6 @@ function : :class:`~openturns.Function`
     A function.
 functions : list of :class:`~openturns.Function`
     A list of functions.
-field :  :class:`~openturns.Field`
-    A field.
 values :  :class:`~openturns.Sample`
     Field values.
 fieldSample :  :class:`~openturns.ProcessSample`
@@ -236,7 +232,7 @@ The *project* method calculates the projection :eq:`projection` on a function  o
 
 Lets note :math:`\cM_{KL}` the mesh coming from the :class:`~openturns.KarhunenLoeveResult` (ie the one contained in the *modesAsSample* :class:`~openturns.ProcessSample`).
 
-If the given field is defined on :math:`\cM_{KL}`, the associated values  are directly used for the projection. Otherwise, a :class:`~openturns.P1LagrangeEvaluation`  function is built using this field and then used to interpolate the values of the field on :math:`\cM_{KL}`.
+The given values are defined on the input field :math:`\cM_{KL}` and the associated values are directly used for the projection.
 
 If evaluated from a function, the *project* method evaluates the function on :math:`\cM_{KL}` and uses :eq:`projectionMatrix`. "
 %enddef

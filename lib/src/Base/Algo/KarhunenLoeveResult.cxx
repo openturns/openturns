@@ -101,11 +101,6 @@ Point KarhunenLoeveResult::project(const Function & function) const
   return getImplementation()->project(function);
 }
 
-Point KarhunenLoeveResult::project(const Field & field) const
-{
-  return getImplementation()->project(field);
-}
-
 Point KarhunenLoeveResult::project(const Sample & values) const
 {
   return getImplementation()->project(values);
