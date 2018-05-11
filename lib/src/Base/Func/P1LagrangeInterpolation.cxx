@@ -194,6 +194,7 @@ Sample P1LagrangeInterpolation::operator()(const Sample & values) const
 {
   const UnsignedInteger dimension = values.getDimension();
   if (dimension != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given field has an invalid output dimension. Expect a dimension " << getInputDimension() << ", got " << dimension;
+  callsNumber_.increment();
   const UnsignedInteger outputSize = outputMesh_.getVerticesNumber();
   Sample result(outputSize, dimension);
   const UnsignedInteger spatialDimension = getInputMesh().getDimension();
