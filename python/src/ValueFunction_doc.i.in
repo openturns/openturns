@@ -39,7 +39,7 @@ The first constructor builds an object which evaluation operator is not defined 
 
 See also
 --------
-FieldFunction, VertexFunction, VertexValueFunction, OpenTURNSPythonFunction, PythonFunction
+FieldFunction, VertexValueFunction, OpenTURNSPythonFunction, PythonFunction
 
 Examples
 --------

@@ -53,7 +53,6 @@ Field and mixed functions
     PointToFieldFunction
     PythonFieldFunction
     ValueFunction
-    VertexFunction
     VertexValueFunction
     PythonFieldFunction
     PythonFieldToPointFunction

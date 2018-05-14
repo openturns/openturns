@@ -35,6 +35,7 @@
  * LowDiscrepancyExperiment to work with dependent distributions
  * Deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
  * Deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
+ * Removed VertexFunction class
 
 === Python module ===
 
