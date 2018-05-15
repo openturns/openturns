@@ -46,7 +46,8 @@
 %include FieldImplementation.i
 %include Field.i
 %include TimeSeries.i 
-%include ProcessSample.i 
+%include ProcessSampleImplementation.i
+%include ProcessSample.i
 %include SpecFunc.i
 %include EvaluationImplementation.i
 %include Evaluation.i

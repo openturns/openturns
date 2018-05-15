@@ -46,6 +46,7 @@
 #include "openturns/Field.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/ProcessSample.hxx"
+#include "openturns/ProcessSampleImplementation.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/TestResult.hxx"

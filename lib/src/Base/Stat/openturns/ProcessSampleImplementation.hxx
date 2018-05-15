@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ProcessSample class
+ *  @brief ProcessSampleImplementation class
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,52 +18,44 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_PROCESSSAMPLE_HXX
-#define OPENTURNS_PROCESSSAMPLE_HXX
+#ifndef OPENTURNS_PROCESSSAMPLEIMPLEMENTATION_HXX
+#define OPENTURNS_PROCESSSAMPLEIMPLEMENTATION_HXX
 
-#include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/ProcessSampleImplementation.hxx"
+#include "openturns/PersistentObject.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Field.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/PersistentCollection.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class ProcessSample
+ * @class ProcessSampleImplementation
  *
  * An interface for time series
  */
-class OT_API ProcessSample
-  : public TypedInterfaceObject<ProcessSampleImplementation>
+class OT_API ProcessSampleImplementation
+  : public PersistentObject
 {
   CLASSNAME
 
 public:
 
   /** Some typedefs to ease reading */
-//   typedef Pointer<ProcessSampleImplementation> Implementation;
   typedef Collection<Sample>           SampleCollection;
   typedef PersistentCollection<Sample> SamplePersistentCollection;
 
   /** Default constructor */
-  ProcessSample();
+  ProcessSampleImplementation();
 
   /** Constructors */
-  ProcessSample(const UnsignedInteger size,
+  ProcessSampleImplementation(const UnsignedInteger size,
                 const Field & field);
 
-  ProcessSample(const Mesh & mesh,
+  ProcessSampleImplementation(const Mesh & mesh,
                 const UnsignedInteger size,
                 const UnsignedInteger dimension);
-
-  /** Copy constructors */
-  ProcessSample(const ProcessSampleImplementation & implementation);
-
-  /** Constructor from implementation */
-  ProcessSample(const Implementation & p_implementation);
-
-#ifndef SWIG
-  /** Constructor from implementation pointer */
-  ProcessSample(ProcessSampleImplementation * p_implementation);
-#endif
 
   /** Partial copy constructor */
   void add(const Field & field);
@@ -79,6 +71,9 @@ public:
   const Sample & operator[] (const UnsignedInteger i) const;
 
 #endif
+
+  /** Virtual constructor */
+  virtual ProcessSampleImplementation * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -109,19 +104,31 @@ public:
   Field computeQuantilePerComponent(const Scalar prob) const;
 
   /** Get the i-th marginal sample */
-  ProcessSample getMarginal(const UnsignedInteger index) const;
+  ProcessSampleImplementation getMarginal(const UnsignedInteger index) const;
 
   /** Get the marginal sample corresponding to indices dimensions */
-  ProcessSample getMarginal(const Indices & indices) const;
+  ProcessSampleImplementation getMarginal(const Indices & indices) const;
 
   /** Draw a marginal of the timeSerie */
   Graph drawMarginal(const UnsignedInteger index = 0) const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
 private:
 
-}; /* class ProcessSample */
+  /** Mesh on which the ProcessSampleImplementation focuses */
+  Mesh mesh_;
+
+  /** Sample collection of all the fields */
+  SamplePersistentCollection data_;
+
+}; /* class ProcessSampleImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_PROCESSSAMPLE_HXX */
+#endif /* OPENTURNS_PROCESSSAMPLEIMPLEMENTATION_HXX */
