@@ -122,8 +122,8 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
     try
     {
       LOGINFO(OSS(false) << "Trying factory " << factory);
-      const Distribution distribution(factoryCollection[i].build(sample));
-      const TestResult result(Kolmogorov(sample, distribution, fakeLevel, distribution.getParameterDimension()));
+      const Distribution distribution(factory.build(sample));
+      const TestResult result(Kolmogorov(sample, factory, fakeLevel));
       LOGINFO(OSS(false) << "Resulting distribution=" << distribution << ", test result=" << result);
       if (result.getPValue() > bestPValue)
       {
@@ -133,7 +133,8 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
         builtAtLeastOne = true;
       }
     }
-    catch (InvalidArgumentException & ex)
+    // The factories can raise many different exceptions (InvalidArgumenException, InternalException, NotDefinedException...). Here we catch everything and echoe the reason of the exception.
+    catch (const Exception & ex)
     {
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
     }
@@ -247,6 +248,21 @@ Scalar FittingTest::BIC(const Sample & sample,
 
 
 /* Kolmogorov test */
+
+Scalar FittingTest::ComputeKolmogorovStatistics(const Sample & sample,
+						const Distribution & distribution)
+{
+  const UnsignedInteger size = sample.getSize();
+  Scalar value = 0.0;
+  const Sample cdfValues(distribution.computeCDF(sample.sort(0)));
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar cdfValue = cdfValues(i, 0);
+      value = std::max(value, std::max(std::abs(Scalar(i) / size - cdfValue), std::abs(cdfValue - Scalar(i + 1) / size)));
+    }
+  return value;
+}
+
 TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const DistributionFactory & factory,
                                    const Scalar level)
@@ -256,32 +272,36 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   const Distribution distribution(factory.build(sample));
   if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
-  return Kolmogorov(sample, distribution, level, distribution.getParameterDimension());
+  // The Kolmogorov test p-value is overestimated if parameters have been estimated
+  // We fix it by computing a Monte Carlo estimate of the p-value
+  const UnsignedInteger samplingSize = ResourceMap::GetAsUnsignedInteger("FittingTest-KolmogorovSamplingSize");
+  Sample kolmogorovStatistics(samplingSize, 1);
+  const UnsignedInteger size = sample.getSize();
+  for (UnsignedInteger i = 0; i < samplingSize; ++i)
+    {
+      const Sample newSample(distribution.getSample(size));
+      kolmogorovStatistics(i, 0) = ComputeKolmogorovStatistics(newSample, factory.build(newSample));
+    }
+  // The p-value is estimated using the empirical CDF of the K-statistics at the
+  // actual sample K-statistics
+  const Scalar pValue = kolmogorovStatistics.computeEmpiricalCDF(Point(1, ComputeKolmogorovStatistics(sample, distribution)), true);
+  TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), (pValue > level), pValue, level);
+  result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
+  LOGDEBUG(OSS() << result);
+  return result;
 }
 
-
-/* Kolmogorov test */
 TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const Distribution & distribution,
-                                   const Scalar level,
-                                   const UnsignedInteger estimatedParameters)
+                                   const Scalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
   if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
-  if (estimatedParameters > 0) LOGINFO("Warning: using Kolmogorov test for a distribution with estimated parameters will result in an overestimated pValue");
-  const UnsignedInteger size = sample.getSize();
-  Scalar value = 0.0;
-  const Sample cdfValues(distribution.computeCDF(sample.sort(0)));
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Scalar cdfValue = cdfValues(i, 0);
-    value = std::max(value, std::max(std::abs(Scalar(i) / size - cdfValue), std::abs(cdfValue - Scalar(i + 1) / size)));
-  }
-  const Scalar pValue = DistFunc::pKolmogorov(size, value, true);
-  TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), pValue > level, pValue, level);
+  const Scalar pValue = DistFunc::pKolmogorov(sample.getSize(), ComputeKolmogorovStatistics(sample, distribution), true);
+  TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), (pValue > level), pValue, level);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;

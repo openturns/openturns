@@ -695,7 +695,8 @@
   <ARMALikelihoodFactory-RootEpsilon                  value="1.0e-6"  />
 
   <!-- OT::FittingTest parameters -->
-  <FittingTest-ChiSquaredMinFrequency                 value="5" />
+  <FittingTest-ChiSquaredMinFrequency                 value="5"     />
+  <FittingTest-KolmogorovSamplingSize                 value="10"    />
 
   <!-- OT::LeastSquaresMetaModelSelection parameters -->
   <LeastSquaresMetaModelSelection-DecompositionMethod value="SVD"/>

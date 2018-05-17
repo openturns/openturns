@@ -958,6 +958,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FittingTest parameters //
   setAsUnsignedInteger( "FittingTest-ChiSquaredMinFrequency", 5 );
+  setAsUnsignedInteger( "FittingTest-KolmogorovSamplingSize", 10 );
 
   // LeastSquaresMetaModelSelection parameters //
   set("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");

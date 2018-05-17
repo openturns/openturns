@@ -137,7 +137,7 @@ try:
     for i in range(continuousDistributionNumber):
         for j in range(continuousDistributionNumber):
             value = FittingTest.Kolmogorov(continuousSampleCollection[
-                                           i], continuousDistributionCollection[j], 0.05, 0).getPValue()
+                                           i], continuousDistributionCollection[j], 0.05).getPValue()
             if (fabs(value) < 1.0e-6):
                 value = 0.0
             resultKolmogorov[i, j] = value
