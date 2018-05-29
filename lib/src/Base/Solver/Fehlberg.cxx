@@ -231,8 +231,7 @@ Sample Fehlberg::solve(const Point & initialState,
     t = newT;
   }
   // Final evaluation of the gradient
-  if (transitionFunction.getParameter().getDimension() > 0)
-    transitionFunction.setParameter(Point(1, t));
+  transitionFunction.setParameter(Point(1, t));
   derivatives.add(transitionFunction(state));
   // Now we interpolate the solution on the expected grid
   PiecewiseHermiteEvaluation hermite(times, values, derivatives);
@@ -254,8 +253,7 @@ Point Fehlberg::computeStep(Function & transitionFunction,
   const UnsignedInteger dimension = state.getDimension();
   Sample f(order_ + 2, dimension);
   Point parameter(1, t);
-  if (transitionFunction.getParameter().getDimension() > 0)
-    transitionFunction.setParameter(parameter);
+  transitionFunction.setParameter(parameter);
   gradient = transitionFunction(state);
   f[0] = gradient;
   UnsignedInteger index = 0;
@@ -269,8 +267,7 @@ Point Fehlberg::computeStep(Function & transitionFunction,
       ++index;
     }
     parameter[0] = tK;
-    if (transitionFunction.getParameter().getDimension() > 0)
-      transitionFunction.setParameter(parameter);
+    transitionFunction.setParameter(parameter);
     f[k + 1] = transitionFunction(yK);
   }
   Point PhiI(dimension);

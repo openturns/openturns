@@ -5,7 +5,7 @@ Parameters
 ----------
 transitionFunction : :class:`~openturns.Function`
     The function defining the flow of the ordinary differential equation.
-    Must have one or zero parameter.
+    Must have one parameter.
 localPrecision : float
     The expected absolute error on one step.
 order : int, :math:`order\in\{0,1,2,3,4\}`

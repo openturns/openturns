@@ -5,7 +5,7 @@ Parameters
 ----------
 transitionFunction : :class:`~openturns.Function`
     The function defining the flow of the ordinary differential equation.
-    Must have one or zero parameter.
+    Must have one parameter.
 
 See also
 --------

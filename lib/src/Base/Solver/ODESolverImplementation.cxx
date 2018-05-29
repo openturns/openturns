@@ -41,8 +41,8 @@ ODESolverImplementation::ODESolverImplementation(const Function & transitionFunc
   : PersistentObject()
   , transitionFunction_(transitionFunction)
 {
-  if (transitionFunction.getParameterDimension() > 1)
-    throw InvalidArgumentException(HERE) << "The function must have one or zero parameter";
+  if (transitionFunction.getParameter().getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "The function must have one parameter";
 }
 
 /* Virtual constructor */
