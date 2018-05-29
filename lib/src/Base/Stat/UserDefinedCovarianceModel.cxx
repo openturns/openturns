@@ -52,6 +52,7 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   , p_mesh_(0)
   , nearestNeighbour_()
 {
+  Log::Warn(OSS() << "UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh, const CovarianceMatrixCollection & covarianceCollection) is deprecated: use FunctionalChaosSobolIndices");
   const UnsignedInteger N = mesh.getVerticesNumber();
   const UnsignedInteger size = (N * (N + 1)) / 2;
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the mesh is empty.";

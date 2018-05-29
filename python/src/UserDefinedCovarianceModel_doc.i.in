@@ -5,55 +5,12 @@ Parameters
 ----------
 mesh : :class:`~openturns.Mesh`
     A mesh which contains `N` vertices.
-collection : :class:`~openturns.CovarianceMatrixCollection`
-    A collection of :math:`N(N+1)/2` covariance matrices of common dimension :math:`d`.
 matrix : :class:`~openturns.CovarianceMatrix`
     A symmetric positive definite matrix of dimension :math:`Nd` corresponding to the discretization of the model over the given mesh.
 
 Notes
 -----
-The covariance model is built as follows.
-We consider a process :math:`X: \Omega \times \cD \rightarrow \Rset^d` with :math:`\cD \in \Rset^n`. We note :math:`(\vect{t}_0,\dots, \vect{t}_{N-1})` the vertices of :math:`\cM \in \cD` and :math:`(\mat{C}_{k,\ell})_{0 \leq \ell \leq k \leq N-1}` where :math:`\mat{C}_{k,\ell} \in \cS_d^+(\Rset)`.
-
-Care: The covariance matrices :math:`(\mat{C}_{i,j})_{0 \leq j \leq i \leq N-1}` must be given in the following order:
-
-.. math::
-
-    \mat{C}_{0,0}, \, \mat{C}_{1, 0}, \, \mat{C}_{1,1}, \, \mat{C}_{2,0},  \,\mat{C}_{2,1},\, \mat{C}_{2,2}, \,\dots
-
-which corresponds to the global covariance matrix, which lower part is:
-
-.. math::
-
-    \left(
-    \begin{array}{cccc}
-    \mat{C}_{0,0}& & & \\
-    \mat{C}_{1,0}&  \mat{C}_{1,1}& & \\
-    \mat{C}_{2,0}&   \mat{C}_{2,1}& \mat{C}_{2,2}& \\
-    \dots & \dots & \dots & \dots
-    \end{array}
-    \right)
-
-
-We build a covariance function which is a piecewise constant function defined on :math:`\cD \times \cD` by:
-
-.. math::
-
-    \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \, \quad C(\vect{s}, \vect{t}) =  \mat{C}_{k(\vect{s}),k(\vect{t})}
-
-
-where :math:`k(\vect{s})` is such that :math:`\vect{t}_{k(\vect{s})}` is the  vertex of :math:`\cM` the nearest to :math:`\vect{s}`.
-
-Note that:
-
-    - the  matrix :math:`\mat{C}_{k,\ell}` has the index :math:`n=\ell +\dfrac{k(k+1)}{2}` in the collection of covariance matrcies fixed by the User;
-    - inversely, the matrix stored at index `n` in the collection is the matrix :math:`\mat{C}_{k,\ell}` where:
-
-.. math::
-
-    k=\left\lfloor \dfrac{1}{2}\left( \sqrt{8n+1}-1 \right) \right\rfloor, \quad  \ell= n-\dfrac{k(k+1)}{2}
-
-When using the constructor based on a unique covariance matrix, it corresponds to the global covariance matrix described in the first constructor.
+Let :math:`\mat{\Sigma}` be the given covariance matrix, :math:`s_i` and :math:`s_j` be two vertices of the mesh, with :math:`i,j\in\{0,\dots,N-1\}`. The :math:`d\times d` sub-matrix :math:`\mat{S}=(\Sigma_{id+k,jd+\ell})_{k,\ell\in\{0,\dots,d-1}` is equal to :math:`C(s_i,s_j)`, where :math:`C` is the user defined covariance model.
 
 Examples
 --------
@@ -71,23 +28,18 @@ Create the time grid:
 >>> a = 4.0
 >>> myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
 
-Create the collection of elementary covariance matrices 
-ie the n(n+1)/2 small covariance matrices quantifying
-the covariance between X(s) and X(t) for s, t in the
-vertices of the mesh and index(s) <= index(t):
+Create the large covariance matrix:
 
->>> myCovarianceCollection = ot.CovarianceMatrixCollection()
+>>> myCovariance = ot.CovarianceMatrix(myMesh.getVerticesNumber())
 >>> for k in range(myMesh.getVerticesNumber()):
 ...     t = myMesh.getVertices()[k]
 ...     for l in range(k + 1):
 ...         s = myMesh.getVertices()[l]
-...         matrix = ot.CovarianceMatrix(1)
-...         matrix[0, 0] = C(s[0], t[0])
-...         myCovarianceCollection.add(matrix)
+...         myCovariance[k, l] = C(s[0], t[0])
 
 Create the covariance model:
 
->>> myCovarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovarianceCollection)
+>>> myCovarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovariance)
 "
 
 // ---------------------------------------------------------------------

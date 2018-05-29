@@ -49,7 +49,7 @@ public:
   /** Default constructor */
   UserDefinedCovarianceModel();
 
-  /** Standard constructor */
+  /** Standard constructor @deprecated */
   UserDefinedCovarianceModel(const Mesh & mesh,
                              const CovarianceMatrixCollection & covarianceCollection);
 
