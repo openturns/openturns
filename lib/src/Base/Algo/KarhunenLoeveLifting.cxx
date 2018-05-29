@@ -102,12 +102,6 @@ Sample KarhunenLoeveLifting::operator() (const Point & inP) const
   return outField;
 }
 
-/* Accessor for the output mesh */
-Mesh KarhunenLoeveLifting::getOutputMesh() const
-{
-  return result_.getMesh();
-}
-
 /* Method save() stores the object through the StorageManager */
 void KarhunenLoeveLifting::save(Advocate & adv) const
 {

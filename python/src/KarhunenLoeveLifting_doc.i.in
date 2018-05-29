@@ -31,12 +31,3 @@ function : :class:`~openturns.KarhunenLoeveLifting`
     The initial function restricted to the concerned marginal(s) at the indice(s)
     :math:`i`."
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KarhunenLoeveLifting::getOutputMesh
-"Get the output mesh.
-
-Returns
--------
-outputMesh : :class:`~openturns.Mesh`
-    The mesh :math:`\cM_{N'}` of the output field."

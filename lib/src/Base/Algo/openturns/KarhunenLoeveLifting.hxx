@@ -60,9 +60,6 @@ public:
   using PointToFieldFunctionImplementation::operator();
   virtual Sample operator() (const Point & inP) const;
 
-  /** Accessor for the output mesh */
-  virtual Mesh getOutputMesh() const;
-
   /** Get the i-th marginal function */
   virtual PointToFieldFunction getMarginal(const UnsignedInteger i) const;
 
