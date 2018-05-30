@@ -759,6 +759,12 @@ void ResourceMap::loadDefaultConfiguration()
   set("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX");
   set("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE");
 
+  // SobolSimulationAlgorithm parameters //
+  setAsUnsignedInteger( "SobolSimulationAlgorithm-DefaultBlockSize", 1000 );
+  setAsUnsignedInteger( "SobolSimulationAlgorithm-DefaultBatchSize", 1 );
+  setAsScalar( "SobolSimulationAlgorithm-DefaultIndexQuantileLevel", 0.05 );
+  setAsScalar( "SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon", 1e-2 );
+
   // SimulationSensitivityAnalysis parameters //
   setAsUnsignedInteger( "SimulationSensitivityAnalysis-DefaultSampleMargin", 400 );
 

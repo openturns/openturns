@@ -127,8 +127,11 @@ public:
   /** Method that draw  the sensitivity graph of a fixed marginal */
   virtual Graph draw(UnsignedInteger marginalIndex) const;
 
+  /** Design accessor */
+  void setDesign(const Sample & inputDesign,
+                 const Sample & outputDesign,
+                 const UnsignedInteger size);
 protected:
-
 
   /** Internal method that compute Vi/VTi using a collection of samples */
   virtual Sample computeIndices(const Sample & design,

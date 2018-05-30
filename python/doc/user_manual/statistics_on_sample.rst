@@ -151,6 +151,8 @@ Sensitivity Analysis
     :template: class.rst_t
 
     SobolIndicesExperiment
+    SobolSimulationAlgorithm
+    SobolSimulationResult
 
 Statistical tests
 =================

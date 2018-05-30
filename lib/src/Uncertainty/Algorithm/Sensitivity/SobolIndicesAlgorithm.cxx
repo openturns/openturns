@@ -19,7 +19,10 @@
  *
  */
 #include "openturns/SobolIndicesAlgorithm.hxx"
+#include "openturns/JansenSensitivityAlgorithm.hxx"
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
+#include "openturns/MauntzKucherenkoSensitivityAlgorithm.hxx"
+#include "openturns/SaltelliSensitivityAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -189,5 +192,12 @@ String SobolIndicesAlgorithm::__str__(const String & ) const
   return getImplementation()->__str__();
 }
 
+void SobolIndicesAlgorithm::setDesign(const Sample & inputDesign,
+                                      const Sample & outputDesign,
+                                      const UnsignedInteger size)
+{
+  copyOnWrite();
+  getImplementation()->setDesign(inputDesign, outputDesign, size);
+}
 
 END_NAMESPACE_OPENTURNS

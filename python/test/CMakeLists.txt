@@ -636,6 +636,7 @@ ot_pyinstallcheck_test (AdaptiveDirectionalSampling_flood)
 ot_pyinstallcheck_test (AdaptiveDirectionalSampling_hyperplane)
 ot_pyinstallcheck_test (AdaptiveDirectionalSampling_std)
 ot_pyinstallcheck_test (ExpectationSimulationAlgorithm_std)
+ot_pyinstallcheck_test (SobolSimulationAlgorithm_std)
 
 ## StatTests
 if (R_rot_FOUND)

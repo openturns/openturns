@@ -497,6 +497,12 @@
   <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value="MAX" />
   <ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType value="NONE" />
 
+  <!-- OT::SobolSimulationAlgorithm parameters -->
+  <SobolSimulationAlgorithm-DefaultBlockSize value="1000" />
+  <SobolSimulationAlgorithm-DefaultBatchSize value="1000" />
+  <SobolSimulationAlgorithm-DefaultIndexQuantileLevel value="0.05" />
+  <SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon value="1.0e-2" />
+
   <!-- OT::SimulationSensitivityAnalysis parameters -->
   <SimulationSensitivityAnalysis-DefaultSampleMargin value="400" />
 
