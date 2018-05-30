@@ -16,6 +16,8 @@ OT_KarhunenLoeveResult_getScaledModes_doc
 OT_KarhunenLoeveResult_getModesAsProcessSample_doc
 %feature("docstring") OT::KarhunenLoeveResult::getScaledModesAsProcessSample
 OT_KarhunenLoeveResult_getScaledModesAsProcessSample_doc
+%feature("docstring") OT::KarhunenLoeveResult::getMesh
+OT_KarhunenLoeveResult_getMesh_doc
 %feature("docstring") OT::KarhunenLoeveResult::getProjectionMatrix
 OT_KarhunenLoeveResult_getProjectionMatrix_doc
 %feature("docstring") OT::KarhunenLoeveResult::project
@@ -24,3 +26,5 @@ OT_KarhunenLoeveResult_project_doc
 OT_KarhunenLoeveResult_lift_doc
 %feature("docstring") OT::KarhunenLoeveResult::liftAsField
 OT_KarhunenLoeveResult_liftAsField_doc
+%feature("docstring") OT::KarhunenLoeveResult::liftAsSample
+OT_KarhunenLoeveResult_liftAsSample_doc

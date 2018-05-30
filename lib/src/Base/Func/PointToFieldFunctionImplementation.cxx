@@ -33,6 +33,7 @@ static const Factory<PointToFieldFunctionImplementation> Factory_PointToFieldFun
 /* Default constructor */
 PointToFieldFunctionImplementation::PointToFieldFunctionImplementation()
   : PersistentObject()
+  , outputMesh_(0)
   , inputDimension_(0)
   , outputDimension_(0)
   , inputDescription_()
@@ -44,8 +45,10 @@ PointToFieldFunctionImplementation::PointToFieldFunctionImplementation()
 
 /* Parameter constructor */
 PointToFieldFunctionImplementation::PointToFieldFunctionImplementation(const UnsignedInteger inputDimension,
+    const Mesh & outputMesh,
     const UnsignedInteger outputDimension)
   : PersistentObject()
+  , outputMesh_(outputMesh)
   , inputDimension_(inputDimension)
   , outputDimension_(outputDimension)
   , inputDescription_(Description::BuildDefault(inputDimension, "x"))
@@ -126,12 +129,12 @@ Description PointToFieldFunctionImplementation::getOutputDescription() const
 /* Accessor for the output mesh */
 Mesh PointToFieldFunctionImplementation::getOutputMesh() const
 {
-  throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::getOutputMesh()";
+  return outputMesh_;
 }
 
 
 /* Operator () */
-Field PointToFieldFunctionImplementation::operator() (const Point & inP) const
+Sample PointToFieldFunctionImplementation::operator() (const Point & inP) const
 {
   throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::operator() (const Point & inP) const";
 }
@@ -142,13 +145,11 @@ ProcessSample PointToFieldFunctionImplementation::operator() (const Sample & inS
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given sample has a size of 0.";
-  Field field0(operator()(inS[0]));
-  ProcessSample outSample(field0.getMesh(), size, field0.getOutputDimension());
-  outSample.setField(field0, 0);
+  ProcessSample outSample(getOutputMesh(), size, getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
-  for (UnsignedInteger i = 1; i < size; ++i)
-    outSample.setField(operator()(inS[i]), i);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    outSample[i] = operator()(inS[i]);
   return outSample;
 }
 
@@ -176,6 +177,7 @@ void PointToFieldFunctionImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "inputDimension_", inputDimension_ );
   adv.saveAttribute( "outputDimension_", outputDimension_ );
+  adv.saveAttribute( "outputMesh_", outputMesh_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "callsNumber_", static_cast<UnsignedInteger>(callsNumber_.get()) );
@@ -187,6 +189,7 @@ void PointToFieldFunctionImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputDimension_", inputDimension_ );
   adv.loadAttribute( "outputDimension_", outputDimension_ );
+  adv.loadAttribute( "outputMesh_", outputMesh_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   UnsignedInteger callsNumber;

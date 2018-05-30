@@ -1,22 +1,20 @@
-// SWIG file ProcessSamples.i
+// SWIG file ProcessSampleImplementations.i
 
 %{
-#include "openturns/ProcessSample.hxx"
+#include "openturns/ProcessSampleImplementation.hxx"
 %}
 
-%include ProcessSample_doc.i
+%include ProcessSampleImplementation_doc.i
 
-OTTypedInterfaceObjectHelper(ProcessSample)
-
-%include openturns/ProcessSample.hxx
+%include openturns/ProcessSampleImplementation.hxx
 
 
 namespace OT {
-%extend ProcessSample {
+%extend ProcessSampleImplementation {
 
-ProcessSample(const ProcessSample & other)
+ProcessSampleImplementation(const ProcessSampleImplementation & other)
 {
-  return new OT::ProcessSample(other);
+  return new OT::ProcessSampleImplementation(other);
 }
 
 Field __getitem__ (SignedInteger index) const
@@ -49,7 +47,7 @@ UnsignedInteger __len__() const
   return self->getSize();
 }
 
-} // ProcessSample
+} // ProcessSampleImplementation
 
 } // OT
 

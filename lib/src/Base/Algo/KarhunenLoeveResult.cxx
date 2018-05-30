@@ -95,15 +95,21 @@ Matrix KarhunenLoeveResult::getProjectionMatrix() const
   return getImplementation()->getProjectionMatrix();
 }
 
+/* Mesh accessor */
+Mesh KarhunenLoeveResult::getMesh() const
+{
+  return getImplementation()->getMesh();
+}
+
 /* Projection method */
 Point KarhunenLoeveResult::project(const Function & function) const
 {
   return getImplementation()->project(function);
 }
 
-Point KarhunenLoeveResult::project(const Field & field) const
+Point KarhunenLoeveResult::project(const Sample & values) const
 {
-  return getImplementation()->project(field);
+  return getImplementation()->project(values);
 }
 
 Sample KarhunenLoeveResult::project(const FunctionCollection & functionCollection) const
@@ -120,6 +126,11 @@ Sample KarhunenLoeveResult::project(const ProcessSample & sample) const
 Function KarhunenLoeveResult::lift(const Point & coefficients) const
 {
   return getImplementation()->lift(coefficients);
+}
+
+Sample KarhunenLoeveResult::liftAsSample(const Point & coefficients) const
+{
+  return getImplementation()->liftAsSample(coefficients);
 }
 
 Field KarhunenLoeveResult::liftAsField(const Point & coefficients) const

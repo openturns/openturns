@@ -11,12 +11,13 @@
     def flow(X):
         Y0 = X[0]
         Y1 = X[1]
+        t = X[2]
         dY0 = Y0 * (2.0 - Y1)
         dY1 = Y1 * (Y0 - 1.0)
         return [dY0, dY1]
 
-    phi_func = ot.PythonFunction(2, 2, flow)
-    phi = ot.ValueFunction(phi_func)
+    f = ot.PythonFunction(3, 2, flow)
+    phi = ot.ParametricFunction(f, [2], [0.0])
     solver = ot.{{ objname }}(phi)
 
     initialState = [2.0, 2.0]
@@ -28,7 +29,7 @@
     xMax = result.getMax()
     delta = 0.2 * (xMax - xMin)
     mesh = ot.IntervalMesher([12]*2).build(ot.Interval(xMin - delta, xMax + delta))
-    field = ot.Field(mesh, phi_func(mesh.getVertices()))
+    field = ot.Field(mesh, phi(mesh.getVertices()))
     ot.ResourceMap.SetAsScalar("Field-ArrowScaling", 0.1)
     graph = field.draw()
     cloud = ot.Cloud(mesh.getVertices())

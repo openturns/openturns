@@ -48,11 +48,12 @@ public:
   typedef Pointer<FieldFunctionImplementation> Implementation;
 
   /** Default constructor */
-  explicit FieldFunctionImplementation(const UnsignedInteger spatialDimension = 1);
+  FieldFunctionImplementation();
 
   /** Parameter constructor */
-  FieldFunctionImplementation(const UnsignedInteger spatialDimension,
+  FieldFunctionImplementation(const Mesh & inputMesh,
                               const UnsignedInteger inputDimension,
+                              const Mesh & outputMesh,
                               const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
@@ -66,14 +67,10 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  virtual Point operator() (const Scalar timeStamp,
-                            const Point & inP) const;
-  virtual Point operator() (const Point & location,
-                            const Point & inP) const;
-  virtual Field operator() (const Field & inFld) const;
+  virtual Sample operator() (const Sample & inFld) const;
   virtual ProcessSample operator() (const ProcessSample & inPS) const;
 
-  /** Accessor for mesh dimension */
+  /** @deprecated Accessor for mesh dimension */
   virtual UnsignedInteger getSpatialDimension() const;
 
   /** Accessor for input point dimension */
@@ -90,8 +87,11 @@ public:
   virtual void setOutputDescription(const Description & outputDescription);
   virtual Description getOutputDescription() const;
 
-  /** Accessor for the output mesh associated with the given input mesh */
-  virtual Mesh getOutputMesh(const Mesh & inputMesh) const;
+  /** Accessor for the output mesh */
+  virtual Mesh getInputMesh() const;
+
+  /** Accessor for the output mesh */
+  virtual Mesh getOutputMesh() const;
 
   /** Get the i-th marginal function */
   virtual Implementation getMarginal(const UnsignedInteger i) const;
@@ -109,8 +109,9 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
-  /** Expected dimension of the mesh underlying the field arguments */
-  UnsignedInteger spatialDimension_;
+  /** Input/output meshes */
+  Mesh inputMesh_;
+  Mesh outputMesh_;
 
   /** Expected dimension of the values of the field arguments */
   UnsignedInteger inputDimension_;

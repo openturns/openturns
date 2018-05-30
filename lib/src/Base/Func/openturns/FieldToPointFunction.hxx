@@ -41,10 +41,10 @@ class OT_API FieldToPointFunction
 public:
 
   /** Default constructor */
-  explicit FieldToPointFunction(const UnsignedInteger spatialDimension = 0);
+  FieldToPointFunction();
 
   /** Parameter constructor */
-  FieldToPointFunction(const UnsignedInteger spatialDimension,
+  FieldToPointFunction(const Mesh & inputMesh,
                        const UnsignedInteger inputDimension,
                        const UnsignedInteger outputDimension);
 
@@ -69,7 +69,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  Point operator() (const Field & inFld) const;
+  Point operator() (const Sample & inFld) const;
   Sample operator() (const ProcessSample & inPS) const;
 
   /** Get the i-th marginal function */
@@ -78,7 +78,10 @@ public:
   /** Get the function corresponding to indices components */
   FieldToPointFunction getMarginal(const Indices & indices) const;
 
-  /** Accessor for mesh dimension */
+  /** Accessor for input mesh */
+  Mesh getInputMesh() const;
+
+  /** @deprecated Accessor for mesh dimension */
   UnsignedInteger getSpatialDimension() const;
 
   /** Accessor for input point dimension */

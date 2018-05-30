@@ -30,17 +30,16 @@ CLASSNAMEINIT(ValueFunction)
 static const Factory<ValueFunction> Factory_ValueFunction;
 
 /* Default constructor */
-ValueFunction::ValueFunction(const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension)
-  , function_()
+ValueFunction::ValueFunction()
+  : FieldFunctionImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
 ValueFunction::ValueFunction(const Function & function,
-                             const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, function.getInputDimension(), function.getOutputDimension())
+                             const Mesh & mesh)
+  : FieldFunctionImplementation(mesh, function.getInputDimension(), mesh, function.getOutputDimension())
   , function_(function)
 {
   // Set the descriptions
@@ -50,8 +49,8 @@ ValueFunction::ValueFunction(const Function & function,
 
 /* Parameter constructor */
 ValueFunction::ValueFunction(const Evaluation & evaluation,
-                             const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension(), evaluation.getOutputDimension())
+                             const Mesh & mesh)
+  : FieldFunctionImplementation(mesh, evaluation.getInputDimension(), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Set the descriptions
@@ -61,8 +60,8 @@ ValueFunction::ValueFunction(const Evaluation & evaluation,
 
 /* Parameter constructor */
 ValueFunction::ValueFunction(const EvaluationImplementation & evaluation,
-                             const UnsignedInteger meshDimension)
-  : FieldFunctionImplementation(meshDimension, evaluation.getInputDimension(), evaluation.getOutputDimension())
+                             const Mesh & mesh)
+  : FieldFunctionImplementation(mesh, evaluation.getInputDimension(), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Set the descriptions
@@ -98,25 +97,26 @@ String ValueFunction::__str__(const String & offset) const
 }
 
 /* Operator () */
-Field ValueFunction::operator() (const Field & inFld) const
+Sample ValueFunction::operator() (const Sample & inFld) const
 {
-  if (inFld.getInputDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field with mesh dimension=" << getSpatialDimension() << ", got mesh dimension=" << inFld.getInputDimension();
+  if (inFld.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected field values of dimension=" << getInputDimension() << ", got dimension=" << inFld.getDimension();
+  if (inFld.getSize() != getInputMesh().getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: expected field values of size=" << getInputMesh().getVerticesNumber() << ", got size=" << inFld.getSize();
   callsNumber_.increment();
-  return Field(inFld.getMesh(), function_(inFld.getValues()));
+  return function_(inFld);
 }
 
 /* Get the i-th marginal function */
 ValueFunction::Implementation ValueFunction::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
-  return new ValueFunction(function_.getMarginal(i));
+  return new ValueFunction(function_.getMarginal(i), getInputMesh());
 }
 
 /* Get the function corresponding to indices components */
 ValueFunction::Implementation ValueFunction::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  return new ValueFunction(function_.getMarginal(indices));
+  return new ValueFunction(function_.getMarginal(indices), getInputMesh());
 }
 
 /* Method save() stores the object through the StorageManager */

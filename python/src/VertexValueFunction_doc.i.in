@@ -59,9 +59,9 @@ Create a function :math:`\ell : \Rset \times \Rset \rightarrow \Rset` such as:
 Convert :math:`h` into a vertex value function with :math:`n=1`:
 
 >>> n = 1
->>> myVertexValueFunction = ot.VertexValueFunction(h, n)
->>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
+>>> myVertexValueFunction = ot.VertexValueFunction(h, tg)
+>>> # Create a TimeSeries
 >>> data = ot.Sample(tg.getN(), h.getInputDimension()-1)
 >>> for i in range(data.getSize()):
 ...     for j in range(data.getDimension()):
@@ -76,13 +76,13 @@ Convert :math:`h` into a vertex value function with :math:`n=1`:
 4 : [ 0.8 4   ]
 5 : [ 1   5   ]
 >>> print(myVertexValueFunction(ts))
-    [ t    y0   ]
-0 : [ 0    0    ]
-1 : [ 0.2  1.04 ]
-2 : [ 0.4  2.16 ]
-3 : [ 0.6  3.36 ]
-4 : [ 0.8  4.64 ]
-5 : [ 1    6    ]"
+    [ y0   ]
+0 : [ 0    ]
+1 : [ 1.04 ]
+2 : [ 2.16 ]
+3 : [ 3.36 ]
+4 : [ 4.64 ]
+5 : [ 6    ]"
 
 // ---------------------------------------------------------------------
 
@@ -99,7 +99,8 @@ Examples
 >>> import openturns as ot
 >>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 >>> n = 1
->>> myVertexValueFunction = ot.ValueFunction(h, n)
+>>> mesh = ot.Mesh(n)
+>>> myVertexValueFunction = ot.ValueFunction(h, mesh)
 >>> print(myVertexValueFunction.getFunction())
 [t,x]->[x + t^2]"
 

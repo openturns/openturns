@@ -78,6 +78,8 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 %pythoncode %{
 # We have to make sure the submodule is loaded with absolute path
 import openturns.func
+import openturns.geom
+import openturns.typ
 
 class OpenTURNSPythonFieldFunction(object):
     """
@@ -85,12 +87,14 @@ class OpenTURNSPythonFieldFunction(object):
 
     Parameters
     ----------
-    spatialDim : int, :math:`\geq 1`
-        Dimension :math:`n` of the domain :math:`\cD`
+    inputMesh : :class:`~openturns.Mesh`
+        The input mesh
     inputDim : int, :math:`\geq 1`
         Dimension :math:`d` of the values of the input field
+    outputMesh : :class:`~openturns.Mesh`
+        The output mesh
     outputDim : int, :math:`\geq 1`
-        Dimension :math:`d'` of the values of the output field 
+        Dimension :math:`d'` of the values of the output field
 
     Notes
     -----
@@ -101,15 +105,15 @@ class OpenTURNSPythonFieldFunction(object):
     Examples
     --------
     >>> import openturns as ot
-    
+    >>> mesh = ot.Mesh(1)
     >>> class FUNC(ot.OpenTURNSPythonFieldFunction):
     ...     def __init__(self):
     ...         # first argument:
-    ...         super(FUNC, self).__init__(2, 2, 1)
+    ...         super(FUNC, self).__init__(mesh, 2, mesh, 2)
     ...         self.setInputDescription(['R', 'S'])
     ...         self.setOutputDescription(['T', 'U'])
     ...     def _exec(self, X):
-    ...         Y = ot.Field(X.getMesh(), X.getValues() * ([2.0]*X.getValues().getDimension()))
+    ...         Y = ot.Field(self.getOutputMesh(), X.getValues() * ([2.0]*X.getValues().getDimension()))
     ...         return Y
     >>> F = FUNC()
 
@@ -117,24 +121,26 @@ class OpenTURNSPythonFieldFunction(object):
 
     >>> myFunc = ot.FieldFunction(F)
     """
-    def __init__(self, n=0, p=0, s=0):
+    def __init__(self, inputMesh, inputDim, outputMesh, outputDim):
+        if not isinstance(inputMesh, openturns.geom.Mesh):
+            raise TypeError('inputMesh argument is not a Mesh.')
+        self.__inputMesh = inputMesh
         try:
-            self.__n = int(n)
+            self.__inputDim = int(inputDim)
         except:
             raise TypeError('inputDim argument is not an integer.')
+        if not isinstance(outputMesh, openturns.geom.Mesh):
+            raise TypeError('outputMesh argument is not a Mesh.')
+        self.__outputMesh = outputMesh
         try:
-            self.__p = int(p)
+            self.__outputDim = int(outputDim)
         except:
             raise TypeError('outputDim argument is not an integer.')
-        try:
-            self.__s = int(s)
-        except:
-            raise TypeError('spatialDim argument is not an integer.')
-        self.__descIn = ['x' + str(i) for i in range(n)]
-        self.__descOut = ['y' + str(i) for i in range(p)]
+        self.__descIn = ['x' + str(i) for i in range(inputDim)]
+        self.__descOut = ['y' + str(i) for i in range(outputDim)]
 
     def setInputDescription(self, descIn):
-        if (len(descIn) != self.__n):
+        if (len(descIn) != self.__inputDim):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
@@ -142,7 +148,7 @@ class OpenTURNSPythonFieldFunction(object):
         return self.__descIn
 
     def setOutputDescription(self, descOut):
-        if (len(descOut) != self.__p):
+        if (len(descOut) != self.__outputDim):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
@@ -150,43 +156,37 @@ class OpenTURNSPythonFieldFunction(object):
         return self.__descOut
 
     def getInputDimension(self):
-        return self.__n
+        return self.__inputDim
 
     def getOutputDimension(self):
-        return self.__p
+        return self.__outputDim
 
-    def getSpatialDimension(self):
-        return self.__s
+    def getInputMesh(self):
+        return self.__inputMesh
+
+    def getOutputMesh(self):
+        return self.__outputMesh
 
     def __str__(self):
-        return 'OpenTURNSPythonFieldFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__n, self.__descOut, self.__p)
+        return 'OpenTURNSPythonFieldFunction( %s #%d ) -> %s #%d' % (self.__descIn, self.__inputDim, self.__descOut, self.__outputDim)
 
     def __repr__(self):
         return self.__str__()
 
     def __call__(self, X):
         Y = None
-        try:
-            fld = Field(X)
-        except:
-            try:
-                ps = ProcessSample(X)
-            except:
-                raise TypeError('Expect a Field or a ProcessSample as argument')
-            else:
-                Y = self._exec_sample(ps)
+        if isinstance(X, openturns.func.ProcessSample):
+            Y = self._exec_sample(X)
         else:
-            Y = self._exec(fld)
+            Y = self._exec(X)
         return Y
 
     def _exec(self, X):
         raise RuntimeError('You must define a method _exec(X) -> Y, where X and Y are Fields objects')
 
     def _exec_sample(self, X):
-        if len(X) == 0:
-            return ProcessSample(Mesh(), 0, self.getOutputDimension())
-        res = ProcessSample(1, self._exec(X[0]))
-        for i in range(1, len(X)):
+        res = ProcessSample(self.getOutputMesh(), 0, self.getOutputDimension())
+        for i in range(len(X)):
             res.add(self._exec(X[i]))
         return res
 
@@ -200,12 +200,14 @@ class PythonFieldFunction(FieldFunction):
 
     Parameters
     ----------
+    inputMesh : :class:`~openturns.Mesh`
+        The input mesh
     inputDim : int, :math:`\geq 1`
         Dimension :math:`d` of the values of the input field
+    outputMesh : :class:`~openturns.Mesh`
+        The output mesh
     outputDim : int, :math:`\geq 1`
         Dimension :math:`d'` of the values of the output field 
-    spatialDim : int, :math:`\geq 1`
-        Dimension :math:`n` of the domain :math:`\cD`
     func : a callable python object
         called on a :class:`~openturns.Field` object.
         Returns a :class:`~openturns.Field`.
@@ -214,6 +216,7 @@ class PythonFieldFunction(FieldFunction):
     Examples
     --------
     >>> import openturns as ot
+    >>> mesh = ot.Mesh(1)
     >>> def myPyFunc(X):
     ...     mesh = X.getMesh()
     ...     values = X.getValues() * ([2.0]*X.getValues().getDimension())
@@ -222,13 +225,12 @@ class PythonFieldFunction(FieldFunction):
     ...     return Y
     >>> inputDim = 2
     >>> outputDim = 2
-    >>> spatialDim = 1
-    >>> myFunc = ot.PythonFieldFunction(inputDim, outputDim, spatialDim, myPyFunc)
+    >>> myFunc = ot.PythonFieldFunction(mesh, inputDim, mesh, outputDim, myPyFunc)
     """
-    def __new__(self, n, p, s, func=None):
+    def __new__(self, inputMesh, inputDim, outputMesh, outputDim, func=None):
         if func == None:
             raise RuntimeError('func not provided.')
-        instance = OpenTURNSPythonFieldFunction(n, p, s)
+        instance = OpenTURNSPythonFieldFunction(inputMesh, inputDim, outputMesh, outputDim)
         import collections
         if func != None:
             if not isinstance(func, collections.Callable):

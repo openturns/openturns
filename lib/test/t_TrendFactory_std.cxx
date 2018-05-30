@@ -90,8 +90,8 @@ int main(int argc, char *argv[])
 
     // We make a trend transform to the time series
     // We get a time series which contains values of time
-    TrendTransform myTransformFunction(myFunction);
-    TimeSeries myTimeSeries(myTransformFunction(realization));
+    TrendTransform myTransformFunction(myFunction, timeGrid);
+    TimeSeries myTimeSeries(timeGrid, myTransformFunction(realization.getValues()));
     fullprint << "myTimeSeries = " << myTimeSeries << std::endl;
 
     // We wants to get the coefficients using a factory

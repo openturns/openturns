@@ -1,17 +1,16 @@
 %define OT_FieldFunction_doc
 "Function mapping a field to a field.
 
-Available constructors:
-    FieldFunction(*spatialDim, inputDim, outputDim*)
-
 Parameters
 ----------
-spatialDim : int, :math:`\geq 1`
-    Dimension :math:`n` of the domain :math:`\cD`
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh
 inputDim : int, :math:`\geq 1`
-    Dimension :math:`d` of the input field values 
+    Dimension :math:`d` of the values of the input field
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh
 outputDim : int, :math:`\geq 1`
-    Dimension :math:`d'` of the output field values 
+    Dimension :math:`d'` of the values of the output field
 
 Notes
 -----
@@ -44,11 +43,13 @@ Using the class :class:`~openturns.OpenTURNSPythonFieldFunction` allows to defin
 >>> class FUNC(ot.OpenTURNSPythonFieldFunction):
 ...     def __init__(self):
 ...         # first argument:
-...         super(FUNC, self).__init__(2, 2, 1)
+...         mesh = ot.RegularGrid(0.0, 0.1, 11)
+...         super(FUNC, self).__init__(mesh, 2, mesh, 2)
 ...         self.setInputDescription(['R', 'S'])
 ...         self.setOutputDescription(['T', 'U'])
 ...     def _exec(self, X):
-...         Y = ot.Field(X.getMesh(), X.getValues() * ([2.0]*X.getValues().getDimension()))
+...         Xs = ot.Sample(X)
+...         Y = Xs * ([2.0]*Xs.getDimension())
 ...         return Y
 >>> F = FUNC()
 
@@ -58,20 +59,18 @@ Create the associated FieldFunction:
 
 It is also possible to create a FieldFunction from a python function as follows:
 
+>>> mesh = ot.RegularGrid(0.0, 0.1, 11)
 >>> def myPyFunc(X):
-...     mesh = X.getMesh()
-...     values = X.getValues() * ([2.0]*X.getValues().getDimension())
-...     values.setDescription(ot.Description.BuildDefault(values.getDimension(), 'Y'))
-...     Y = ot.Field(mesh, values)
-...     return Y
+...     Xs = ot.Sample(X)
+...     values = Xs * ([2.0]*Xs.getDimension())
+...     return values
 >>> inputDim = 2
 >>> outputDim = 2
->>> spatialDim = 1
->>> myFunc = ot.PythonFieldFunction(inputDim, outputDim, spatialDim, myPyFunc)
+>>> myFunc = ot.PythonFieldFunction(mesh, inputDim, mesh, outputDim, myPyFunc)
 
 Evaluate the function on a field:
 
->>> X = ot.Field(ot.RegularGrid(0.0, 0.1, 11), ot.Normal(2).getSample(11))
+>>> X = ot.Field(mesh, ot.Normal(2).getSample(11))
 >>> Y = myFunc(X)"
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation
@@ -138,6 +137,19 @@ OT_FieldFunction_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_FieldFunction_getInputMesh_doc
+"Get the mesh associated to the input domain.
+
+Returns
+-------
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh :math:`\cM_{N'}`."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::getInputMesh
+OT_FieldFunction_getInputMesh_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_FieldFunction_getOutputMesh_doc
 "Get the mesh associated to the output domain.
 
@@ -148,18 +160,6 @@ outputMesh : :class:`~openturns.Mesh`
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation::getOutputMesh
 OT_FieldFunction_getOutputMesh_doc
-// ---------------------------------------------------------------------
-
-%define OT_FieldFunction_getSpatialDimension_doc
-"Get the dimension of the input domain.
-
-Returns
--------
-spatialDim : int,
-    Dimension :math:`n` of the input domain :math:`\cD`."
-%enddef
-%feature("docstring") OT::FieldFunctionImplementation::getSpatialDimension
-OT_FieldFunction_getSpatialDimension_doc
 
 // ---------------------------------------------------------------------
 

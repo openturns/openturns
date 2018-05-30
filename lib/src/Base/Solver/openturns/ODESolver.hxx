@@ -46,7 +46,7 @@ public:
   ODESolver();
 
   /** Parameter constructor */
-  explicit ODESolver(const FieldFunction & transitionFunction);
+  explicit ODESolver(const Function & transitionFunction);
 
   /** Constructor from implementation */
   ODESolver(const Implementation & p_implementation);
@@ -66,8 +66,8 @@ public:
                const Mesh & timeGrid) const;
 
   /** Transition function accessor */
-  void setTransitionFunction(const FieldFunction & transitionFunction);
-  FieldFunction getTransitionFunction() const;
+  void setTransitionFunction(const Function & transitionFunction);
+  Function getTransitionFunction() const;
 
 }; /* class ODESolver */
 

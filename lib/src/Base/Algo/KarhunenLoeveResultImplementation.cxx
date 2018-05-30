@@ -100,6 +100,12 @@ ProcessSample KarhunenLoeveResultImplementation::getModesAsProcessSample() const
   return modesAsProcessSample_;
 }
 
+/* Mesh accessor */
+Mesh KarhunenLoeveResultImplementation::getMesh() const
+{
+  return modesAsProcessSample_.getMesh();
+}
+
 /* Scaled modes accessors */
 KarhunenLoeveResultImplementation::FunctionCollection KarhunenLoeveResultImplementation::getScaledModes() const
 {
@@ -149,20 +155,19 @@ Point KarhunenLoeveResultImplementation::project(const Function & function) cons
   return projection_ * functionValues;
 }
 
-Point KarhunenLoeveResultImplementation::project(const Field & field) const
+Point KarhunenLoeveResultImplementation::project(const Sample & values) const
 {
-  if (field.getMesh() == modesAsProcessSample_.getMesh())
-    return projection_ * field.getValues().getImplementation()->getData();
-  return project(Function(new P1LagrangeEvaluation(field)));
+  return projection_ * values.getImplementation()->getData();
 }
 
 Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
   if (!(size != 0)) return Sample();
+  const Mesh mesh(modesAsProcessSample_.getMesh());
   const UnsignedInteger dimension = sample.getDimension();
-  const UnsignedInteger length = modesAsProcessSample_.getMesh().getVerticesNumber();
-  if (sample.getMesh() == modesAsProcessSample_.getMesh())
+  const UnsignedInteger length = mesh.getVerticesNumber();
+  if (sample.getMesh() == mesh)
   {
     // result[i] = projection_ * sample.data_[i] if sample.data_ is viewed as a
     //   Sample(size, length * dimension) and result[i] as a Point of dimension rows(projection_)
@@ -180,7 +185,7 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
     // We build a P1LagrangeEvaluation as if ProcessSample was an aggregated Field.
     P1LagrangeEvaluation evaluation(sample);
     // values is Sample(length, size * dimension)
-    const Sample values(evaluation(modesAsProcessSample_.getMesh().getVertices()));
+    const Sample values(evaluation(mesh.getVertices()));
     // Dispatch values so that it can be multiplied by projection_ like above
     Sample dispatched(size, length * dimension);
     for(UnsignedInteger i = 0; i < size; ++i)
@@ -204,13 +209,18 @@ Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) con
   return LinearCombinationFunction(functions, scaledCoefficients);
 }
 
-Field KarhunenLoeveResultImplementation::liftAsField(const Point & coefficients) const
+Sample KarhunenLoeveResultImplementation::liftAsSample(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
   Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
     values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
-  return Field(modesAsProcessSample_.getMesh(), values);
+  return values;
+}
+
+Field KarhunenLoeveResultImplementation::liftAsField(const Point & coefficients) const
+{
+  return Field(modesAsProcessSample_.getMesh(), liftAsSample(coefficients));
 }
 
 /* String converter */

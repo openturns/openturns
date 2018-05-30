@@ -38,22 +38,22 @@ TrendTransform::TrendTransform()
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const Function & function)
-  : VertexValueFunction(TrendEvaluation(function), function.getInputDimension())
+TrendTransform::TrendTransform(const Function & function, const Mesh & mesh)
+  : VertexValueFunction(TrendEvaluation(function), mesh)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const Evaluation & evaluation)
-  : VertexValueFunction(TrendEvaluation(Function(evaluation)), evaluation.getInputDimension())
+TrendTransform::TrendTransform(const Evaluation & evaluation, const Mesh & mesh)
+  : VertexValueFunction(TrendEvaluation(Function(evaluation)), mesh)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-TrendTransform::TrendTransform(const EvaluationImplementation & evaluation)
-  : VertexValueFunction(TrendEvaluation(evaluation), evaluation.getInputDimension())
+TrendTransform::TrendTransform(const EvaluationImplementation & evaluation, const Mesh & mesh)
+  : VertexValueFunction(TrendEvaluation(evaluation), mesh)
 {
   // Nothing to do
 }
@@ -89,7 +89,7 @@ String TrendTransform::__str__(const String & offset) const
 /* Inverse accessor */
 InverseTrendTransform TrendTransform::getInverse() const
 {
-  return InverseTrendTransform(getTrendFunction());
+  return InverseTrendTransform(getTrendFunction(), getInputMesh());
 }
 
 /* Underlying trend function accessor */

@@ -40,11 +40,11 @@ KarhunenLoeveLifting::KarhunenLoeveLifting()
 
 /* Parameter constructor */
 KarhunenLoeveLifting::KarhunenLoeveLifting(const KarhunenLoeveResult & result)
-  : PointToFieldFunctionImplementation(result.getEigenValues().getSize(), result.getModesAsProcessSample().getDimension())
+  : PointToFieldFunctionImplementation(result.getEigenValues().getSize(), result.getMesh(), result.getModesAsProcessSample().getDimension())
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getModesAsProcessSample().getSize();
+  const UnsignedInteger size = result_.getEigenValues().getSize();
   if (size == 0) setOutputDescription(Description::BuildDefault(getOutputDimension(), "x"));
   else setOutputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setInputDescription(Description::BuildDefault(getInputDimension(), "xi"));
@@ -95,17 +95,11 @@ PointToFieldFunction KarhunenLoeveLifting::getMarginal(const Indices & indices) 
 }
 
 /* Operator () */
-Field KarhunenLoeveLifting::operator() (const Point & inP) const
+Sample KarhunenLoeveLifting::operator() (const Point & inP) const
 {
-  const Field outField(result_.liftAsField(inP));
+  const Sample outField(result_.liftAsSample(inP));
   callsNumber_.increment();
   return outField;
-}
-
-/* Accessor for the output mesh */
-Mesh KarhunenLoeveLifting::getOutputMesh() const
-{
-  return result_.getModesAsProcessSample().getMesh();
 }
 
 /* Method save() stores the object through the StorageManager */

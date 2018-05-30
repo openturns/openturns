@@ -18,7 +18,7 @@ try:
 
     # Composite process
     process = CompositeProcess(
-        ValueFunction(SymbolicFunction("x", "x+2")), whiteNoise)
+        ValueFunction(SymbolicFunction("x", "x+2"), timeGrid), whiteNoise)
     # A realization of the process
     timeSeries = process.getRealization()
     sample = timeSeries.getValues()

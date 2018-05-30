@@ -3,27 +3,29 @@
 from __future__ import print_function
 import openturns as ot
 
+mesh = ot.RegularGrid(0.0, 0.1, 11)
 
 class FUNC(ot.OpenTURNSPythonFieldFunction):
 
     def __init__(self):
         # first argument:
-        super(FUNC, self).__init__(2, 2, 1)
+        super(FUNC, self).__init__(mesh, 2, mesh, 2)
         self.setInputDescription(['R', 'S'])
         self.setOutputDescription(['T', 'U'])
 
     def _exec(self, X):
-        Y = ot.Field(X.getMesh(), X.getValues()
-                     * ([2.0] * X.getValues().getDimension()))
+        Xs = ot.Sample(X)
+        Y = Xs * ([2.0] * Xs.getDimension())
         return Y
 
 F = FUNC()
-print(('in_dim=' + str(F.getInputDimension())
+print('in_dim=' + str(F.getInputDimension())
        + ' out_dim=' + str(F.getOutputDimension())
-       + ' spatial_dim=' + str(F.getSpatialDimension())))
+       + ' spatial_dim=' + str(F.getInputMesh().getDimension()))
 
-X = ot.Field(ot.RegularGrid(0.0, 0.1, 11), ot.Normal(2).getSample(11))
-print(F(X))
+
+X = ot.Field(mesh, ot.Normal(2).getSample(11))
+print(F(X.getValues()))
 
 Xsample = ot.ProcessSample(5, X)
 print(F(Xsample))
@@ -38,25 +40,9 @@ newFunc = ot.FieldFunction(myFunc)
 print(('myFunc input dimension= ' + str(myFunc.getInputDimension())))
 print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
 
-print(myFunc(X))
+print(myFunc(X.getValues()))
 
 print(myFunc(Xsample))
-
-
-def myPyFunc(X):
-    mesh = X.getMesh()
-    values = X.getValues() * ([2.0] * X.getValues().getDimension())
-    values.setDescription(
-        ot.Description.BuildDefault(values.getDimension(), "Y"))
-    Y = ot.Field(mesh, values)
-    return Y
-
-in_dim = 3
-out_dim = 3
-spatial_dim = 3
-
-myFunc = ot.PythonFieldFunction(in_dim, out_dim, spatial_dim, myPyFunc)
-print('myFunc=', myFunc)
 
 vertices = []
 vertices.append([0.0, 0.0, 0.0])
@@ -75,15 +61,29 @@ simplicies.append([1, 2, 4, 6])
 simplicies.append([1, 3, 5, 6])
 simplicies.append([1, 4, 5, 6])
 mesh3D = ot.Mesh(vertices, simplicies)
-values = ot.Normal(spatial_dim).getSample(mesh3D.getVerticesNumber())
+
+def myPyFunc(X):
+    Xs = ot.Sample(X)
+    Y = Xs * ([2.0] * Xs.getDimension())
+    Y.setDescription(
+        ot.Description.BuildDefault(values.getDimension(), "Y"))
+    return Y
+
+in_dim = 3
+out_dim = 3
+
+myFunc = ot.PythonFieldFunction(mesh3D, in_dim, mesh3D, out_dim, myPyFunc)
+print('myFunc=', myFunc)
+
+values = ot.Normal(mesh3D.getDimension()).getSample(mesh3D.getVerticesNumber())
 # Evaluation over a single field
 X = ot.Field(mesh3D, values)
 print('X=', X)
-Y = myFunc(X)
+Y = myFunc(X.getValues())
 print('Y=', Y)
 print('myFunc input dimension=', myFunc.getInputDimension())
 print('myFunc output dimension=', myFunc.getOutputDimension())
-print('myFunc spatial dimension=', myFunc.getSpatialDimension())
+print('myFunc spatial dimension=', myFunc.getInputMesh().getDimension())
 print('called ', myFunc.getCallsNumber(), ' times')
 # Evaluation over a process sample
 X = ot.ProcessSample(5, X)
@@ -92,5 +92,5 @@ Y = myFunc(X)
 print('Y=', Y)
 print('myFunc input dimension=', myFunc.getInputDimension())
 print('myFunc output dimension=', myFunc.getOutputDimension())
-print('myFunc spatial dimension=', myFunc.getSpatialDimension())
+print('myFunc spatial dimension=', myFunc.getInputMesh().getDimension())
 print('called ', myFunc.getCallsNumber(), ' times')

@@ -31,7 +31,8 @@ Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_
 
 >>> import openturns as ot
 >>> h = ot.SymbolicFunction(['t'], ['-(1+2*t+t^2)'])
->>> fTrendInv = ot.InverseTrendTransform(h)
+>>> mesh = ot.RegularGrid(0.0, 0.1, 11)
+>>> fTrendInv = ot.InverseTrendTransform(h, mesh)
 
 "
 

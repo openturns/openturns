@@ -12,7 +12,7 @@ myXProcess = ot.GaussianProcess(myCovModel, myGrid)
 
 # Create a trend
 fTrend = ot.SymbolicFunction(["t"], ["1+2*t+t^2"])
-fTemp = ot.TrendTransform(fTrend)
+fTemp = ot.TrendTransform(fTrend, myGrid)
 
 # Add the trend to the process and get a field
 myYProcess = ot.CompositeProcess(fTemp, myXProcess)

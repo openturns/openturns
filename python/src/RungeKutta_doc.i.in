@@ -1,6 +1,12 @@
 %feature("docstring") OT::RungeKutta
 "Runge-Kutta fourth-order method.
 
+Parameters
+----------
+transitionFunction : :class:`~openturns.Function`
+    The function defining the flow of the ordinary differential equation.
+    Must have one parameter.
+
 See also
 --------
 ODESolver
@@ -9,7 +15,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['t', 'y0', 'y1'], ['t - y0', 'y1 + t^2'])
->>> phi = ot.VertexValueFunction(f)
+>>> phi = ot.ParametricFunction(f, [0], [0.0])
 >>> solver = ot.RungeKutta(phi)
 >>> Y0 = [1.0, -1.0]
 >>> nt = 100

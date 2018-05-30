@@ -45,7 +45,7 @@ FieldToPointConnection::FieldToPointConnection()
 /* Parameters constructor */
 FieldToPointConnection::FieldToPointConnection(const Function & function,
     const FieldToPointFunction & fieldToPointFunction)
-  : FieldToPointFunctionImplementation(fieldToPointFunction.getSpatialDimension(), fieldToPointFunction.getInputDimension(), function.getOutputDimension())
+  : FieldToPointFunctionImplementation(fieldToPointFunction.getInputMesh(), fieldToPointFunction.getInputDimension(), function.getOutputDimension())
   , startByFieldToPointFunction_(true)
   , function_(function)
   , fieldFunction_()
@@ -60,14 +60,14 @@ FieldToPointConnection::FieldToPointConnection(const Function & function,
 /* Parameters constructor */
 FieldToPointConnection::FieldToPointConnection(const FieldToPointFunction & fieldToPointFunction,
     const FieldFunction & fieldFunction)
-  : FieldToPointFunctionImplementation(fieldFunction.getSpatialDimension(), fieldFunction.getInputDimension(), fieldToPointFunction.getOutputDimension())
+  : FieldToPointFunctionImplementation(fieldFunction.getInputMesh(), fieldFunction.getInputDimension(), fieldToPointFunction.getOutputDimension())
   , startByFieldToPointFunction_(false)
   , function_()
   , fieldFunction_(fieldFunction)
   , fieldToPointFunction_(fieldToPointFunction)
 {
   // Check if the dimensions of the point to field and field to point functions are compatible
-  if (fieldToPointFunction_.getInputDimension() != fieldFunction_.getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension=" << fieldToPointFunction_.getInputDimension() << " of the field to point function must be equal to the output dimension=" << fieldFunction_.getOutputDimension() << " of the field function to compose them";
+  if (fieldToPointFunction_.getInputMesh().getDimension() != fieldFunction_.getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension=" << fieldToPointFunction_.getInputDimension() << " of the field to point function must be equal to the output dimension=" << fieldFunction_.getOutputDimension() << " of the field function to compose them";
   setInputDescription(fieldFunction_.getInputDescription());
   setOutputDescription(fieldToPointFunction_.getOutputDescription());
 }
@@ -132,9 +132,10 @@ String FieldToPointConnection::__str__(const String & offset) const
 }
 
 /* Operator () */
-Point FieldToPointConnection::operator() (const Field & inF) const
+Point FieldToPointConnection::operator() (const Sample & inF) const
 {
-  if (inF.getOutputDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToPointConnection with an argument of invalid dimension";
+  if (inF.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToPointConnection with an argument of invalid dimension";
+  if (inF.getSize() != getInputMesh().getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a FieldToPointConnection with an argument of invalid size";
   callsNumber_.increment();
   const Point outValue(startByFieldToPointFunction_ ? function_(fieldToPointFunction_(inF)) : fieldToPointFunction_(fieldFunction_(inF)));
   return outValue;
@@ -220,6 +221,5 @@ FieldToPointFunction FieldToPointConnection::getFieldToPointFunction() const
 {
   return fieldToPointFunction_;
 }
-
 
 END_NAMESPACE_OPENTURNS

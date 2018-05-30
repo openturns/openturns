@@ -46,7 +46,9 @@ public:
   P1LagrangeInterpolation();
 
   /** Parameters constructor */
-  P1LagrangeInterpolation(const Mesh & inputMesh, const Mesh & outputMesh, const UnsignedInteger dimension);
+  P1LagrangeInterpolation(const Mesh & inputMesh,
+                          const Mesh & outputMesh,
+                          const UnsignedInteger dimension);
 
   /** Parameters constructor */
   P1LagrangeInterpolation(const Mesh & inputMesh,
@@ -57,10 +59,6 @@ public:
 
   /** Virtual constructor */
   virtual P1LagrangeInterpolation * clone() const;
-
-  /** Mesh accessor */
-  Mesh getInputMesh() const;
-  Mesh getOutputMesh(const Mesh & inputMesh) const;
 
   /** Field dimension accessor */
   void setDimension(const UnsignedInteger dimension);
@@ -79,7 +77,7 @@ public:
   String __str__( const String & offset = "" ) const;
 
   /** Operator () */
-  virtual Field operator()(const Field & field) const;
+  virtual Sample operator()(const Sample & field) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -90,12 +88,6 @@ public:
 
 private:
   void computeProjection();
-
-  /* Mesh of the field defining the P1 Lagrange interpolation */
-  Mesh inputMesh_;
-
-  /* Points where values have to be projected */
-  Mesh outputMesh_;
 
   /* EnclosingSimplexAlgorithm to speed-up point location */
   EnclosingSimplexAlgorithm enclosingSimplex_;

@@ -66,7 +66,7 @@ public:
 
   /** Operator () */
   using FieldFunctionImplementation::operator();
-  Field operator() (const Field & inF) const;
+  Sample operator() (const Sample & inF) const;
 
   ProcessSample operator() (const ProcessSample & inS) const;
 

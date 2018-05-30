@@ -72,15 +72,19 @@ public:
   /** Projection matrix accessor */
   Matrix getProjectionMatrix() const;
 
+  /** Mesh accessor */
+  Mesh getMesh() const;
+
   /** Projection method */
   Point project(const Function & function) const;
-  Point project(const Field & field) const;
+  Point project(const Sample & values) const;
   Sample project(const FunctionCollection & functionCollection) const;
   Sample project(const ProcessSample & sample) const;
 
   /** Lift method */
   Function lift(const Point & coefficients) const;
   Field liftAsField(const Point & coefficients) const;
+  Sample liftAsSample(const Point & coefficients) const;
 
   /** String converter */
   String __repr__() const;

@@ -70,7 +70,7 @@ Define a scalar temporal Gaussian process on a mesh of dimension 1:
 Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_{trend}(t)=1+2t+t^2`:
 
 >>> fTrend = ot.SymbolicFunction(['t'], ['1+2*t+t^2'])
->>> fTemp = ot.TrendTransform(fTrend)
+>>> fTemp = ot.TrendTransform(fTrend, myGrid)
 
 
 Add the trend to the initial process and get a field:

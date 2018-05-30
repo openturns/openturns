@@ -27,12 +27,12 @@ Examples
 Create a trend function: :math:`f_{trend} : \Rset \mapsto \Rset` where :math:`f_{trend}(t)=1+2t+t^2`:
 
 >>> import openturns as ot
+>>> myGrid = ot.RegularGrid(0.0, 0.1, 10)
 >>> f = ot.SymbolicFunction(['t'], ['1+2*t+t^2'])
->>> fTrend = ot.TrendTransform(f)
+>>> fTrend = ot.TrendTransform(f, myGrid)
 
 Add it to a process:
 
->>> myGrid = ot.RegularGrid(0.0, 0.1, 10)
 >>> amplitude=[5.0]
 >>> scale=[0.2]
 >>> myCovModel=ot.ExponentialModel(scale, amplitude)

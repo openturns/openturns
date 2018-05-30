@@ -39,7 +39,7 @@ The first constructor builds an object which evaluation operator is not defined 
 
 See also
 --------
-FieldFunction, VertexFunction, VertexValueFunction, OpenTURNSPythonFunction, PythonFunction
+FieldFunction, VertexValueFunction, OpenTURNSPythonFunction, PythonFunction
 
 Examples
 --------
@@ -60,9 +60,9 @@ Convert :math:`g` into a value function with :math:`n=1` the dimension of the
 mesh of the field on which :math:`g` will be applied:
 
 >>> n = 1
->>> myValueFunction = ot.ValueFunction(g, n)
->>> # Create a TimeSeries
 >>> tg = ot.RegularGrid(0.0, 0.2, 6)
+>>> myValueFunction = ot.ValueFunction(g, tg)
+>>> # Create a TimeSeries
 >>> data = ot.Sample(tg.getN(), g.getInputDimension())
 >>> for i in range(data.getSize()):
 ...     for j in range(data.getDimension()):
@@ -77,13 +77,13 @@ mesh of the field on which :math:`g` will be applied:
 4 : [ 0.8 4   ]
 5 : [ 1   5   ]
 >>> print(myValueFunction(ts))
-    [ t    y0   ]
-0 : [  0    0   ]
-1 : [  0.2  1   ]
-2 : [  0.4  4   ]
-3 : [  0.6  9   ]
-4 : [  0.8 16   ]
-5 : [  1   25   ]"
+    [ y0 ]
+0 : [  0 ]
+1 : [  1 ]
+2 : [  4 ]
+3 : [  9 ]
+4 : [ 16 ]
+5 : [ 25 ]"
 
 // ---------------------------------------------------------------------
 
@@ -100,7 +100,8 @@ Examples
 >>> import openturns as ot
 >>> g = ot.SymbolicFunction('x', 'x^2')
 >>> n = 1
->>> myValueFunction = ot.ValueFunction(g, n)
+>>> mesh = ot.Mesh(n)
+>>> myValueFunction = ot.ValueFunction(g, mesh)
 >>> print(myValueFunction.getFunction())
 [x]->[x^2]"
 

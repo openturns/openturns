@@ -40,7 +40,7 @@ public:
   Fehlberg();
 
   /** Parameter constructor */
-  explicit Fehlberg(const FieldFunction & transitionFunction,
+  explicit Fehlberg(const Function & transitionFunction,
                     const Scalar localPrecision = ResourceMap::GetAsScalar("Fehlberg-LocalPrecision"),
                     const UnsignedInteger order = ResourceMap::GetAsScalar("Fehlberg-DefaultOrder"));
 
@@ -64,7 +64,8 @@ public:
 
 private:
   /** Perform one step of the Fehlberg method */
-  Point computeStep(const Scalar t,
+  Point computeStep(Function & transitionFunction,
+                    const Scalar t,
                     const Point & state,
                     Point & gradient,
                     Scalar & h) const;

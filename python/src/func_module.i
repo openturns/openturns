@@ -46,7 +46,8 @@
 %include FieldImplementation.i
 %include Field.i
 %include TimeSeries.i 
-%include ProcessSample.i 
+%include ProcessSampleImplementation.i
+%include ProcessSample.i
 %include SpecFunc.i
 %include EvaluationImplementation.i
 %include Evaluation.i
@@ -94,7 +95,6 @@
 %include PointToPointConnection.i
 %include IndicatorFunction.i
 %include ValueFunction.i
-%include VertexFunction.i
 %include VertexValueFunction.i
 %include DualLinearCombinationEvaluation.i
 %include DualLinearCombinationGradient.i

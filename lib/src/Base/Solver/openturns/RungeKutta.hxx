@@ -40,7 +40,7 @@ public:
   RungeKutta();
 
   /** Parameter constructor */
-  explicit RungeKutta(const FieldFunction & transitionFunction);
+  explicit RungeKutta(const Function & transitionFunction);
 
   /** Virtual constructor */
   virtual RungeKutta * clone() const;
@@ -62,7 +62,8 @@ public:
 
 private:
   /** Perform one step of the RungeKutta method */
-  Point computeStep(const Scalar t,
+  Point computeStep(Function & transitionFunction,
+                    const Scalar t,
                     const Point & state,
                     const Scalar h) const;
 

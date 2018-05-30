@@ -32,8 +32,8 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class ValueFunction
  *
- * The class that simulates a dynamical function based on a
- * numerical math function that acts only on the spatial part
+ * The class that simulates a field function based on a
+ * math function that acts only on the spatial part
  * of a time series.
  */
 class OT_API ValueFunction
@@ -43,21 +43,21 @@ class OT_API ValueFunction
 public:
 
   /** Default constructor */
-  explicit ValueFunction(const UnsignedInteger meshDimension = 1);
+  ValueFunction();
 
   /** Parameter constructor */
-  explicit ValueFunction(const Function & function,
-                         const UnsignedInteger meshDimension = 1);
+  ValueFunction(const Function & function,
+                const Mesh & mesh);
 
 #ifndef SWIG
   /** Parameter constructor */
-  explicit ValueFunction(const Evaluation & evaluation,
-                         const UnsignedInteger meshDimension = 1);
+  ValueFunction(const Evaluation & evaluation,
+                const Mesh & mesh);
 #endif
 
   /** Parameter constructor */
-  explicit ValueFunction(const EvaluationImplementation & evaluation,
-                         const UnsignedInteger meshDimension = 1);
+  ValueFunction(const EvaluationImplementation & evaluation,
+                const Mesh & mesh);
 
   /** Virtual constructor */
   virtual ValueFunction * clone() const;
@@ -71,7 +71,7 @@ public:
 
   /** Operator () */
   using FieldFunctionImplementation::operator();
-  Field operator() (const Field & inFld) const;
+  Sample operator() (const Sample & inFld) const;
 
   /** Get the i-th marginal function */
   Implementation getMarginal(const UnsignedInteger i) const;

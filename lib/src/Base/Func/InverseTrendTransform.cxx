@@ -40,22 +40,22 @@ InverseTrendTransform::InverseTrendTransform()
 }
 
 /* Parameter constructor */
-InverseTrendTransform::InverseTrendTransform(const Function & function)
-  : VertexValueFunction(InverseTrendEvaluation(function), function.getInputDimension())
+InverseTrendTransform::InverseTrendTransform(const Function & function, const Mesh & mesh)
+  : VertexValueFunction(InverseTrendEvaluation(function), mesh)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-InverseTrendTransform::InverseTrendTransform(const Evaluation & evaluation)
-  : VertexValueFunction(InverseTrendEvaluation(Function(evaluation)), evaluation.getInputDimension())
+InverseTrendTransform::InverseTrendTransform(const Evaluation & evaluation, const Mesh & mesh)
+  : VertexValueFunction(InverseTrendEvaluation(Function(evaluation)), mesh)
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & evaluation)
-  : VertexValueFunction(InverseTrendEvaluation(Function(evaluation)), evaluation.getInputDimension())
+InverseTrendTransform::InverseTrendTransform(const EvaluationImplementation & evaluation, const Mesh & mesh)
+  : VertexValueFunction(InverseTrendEvaluation(Function(evaluation)), mesh)
 {
   // Nothing to do
 }
@@ -78,7 +78,7 @@ String InverseTrendTransform::__repr__() const
 /* Inverse accessor */
 TrendTransform InverseTrendTransform::getInverse() const
 {
-  return TrendTransform(getTrendFunction());
+  return TrendTransform(getTrendFunction(), getInputMesh());
 }
 
 /* Underlying trend function accessor */

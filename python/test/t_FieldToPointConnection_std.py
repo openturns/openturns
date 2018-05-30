@@ -14,7 +14,7 @@ try:
     result = algo.getResult()
     projection = KarhunenLoeveProjection(result)
     # Construction based on a FieldFunction followed by a FieldToPointFunction
-    fieldFunction = ValueFunction(SymbolicFunction("x", "x"))
+    fieldFunction = ValueFunction(SymbolicFunction("x", "x"), mesh)
     # Create an instance
     myFunc = FieldToPointConnection(projection, fieldFunction)
 
@@ -28,7 +28,7 @@ try:
     # Connection on a field
     field = result.getModesAsProcessSample().computeMean()
     print("field=", field)
-    print("myFunc(field)=", myFunc(field))
+    print("myFunc(field)=", myFunc(field.getValues()))
     # Get the number of calls
     print("called ", myFunc.getCallsNumber(), " times")
 
@@ -49,7 +49,7 @@ try:
     # Connection on a field
     field = result.getModesAsProcessSample().computeMean()
     print("field=", field)
-    print("myFunc(field)=", myFunc(field))
+    print("myFunc(field)=", myFunc(field.getValues()))
     # Get the number of calls
     print("called ", myFunc.getCallsNumber(), " times")
 

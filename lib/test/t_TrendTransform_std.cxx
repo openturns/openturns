@@ -40,7 +40,8 @@ int main(int argc, char *argv[])
     formula.add("sin(t)");
     formula.add("cos(t)");
     SymbolicFunction myFunc(inputVars, formula);
-    TrendTransform myTrendFunc(myFunc);
+    RegularGrid tg(0.0, 0.1, 11);
+    TrendTransform myTrendFunc(myFunc, tg);
 
     fullprint << "myTrendFunc=" << myTrendFunc << std::endl;
     fullprint << "myTrendFunc input description=" << myTrendFunc.getInputDescription() << std::endl;
@@ -50,14 +51,13 @@ int main(int argc, char *argv[])
     fullprint << "myTrendFunc output dimension=" << myTrendFunc.getOutputDimension() << std::endl;
 
     /* Create a TimeSeries */
-    RegularGrid tg(0.0, 0.1, 11);
     Sample data(tg.getN(), 2);
     for (UnsignedInteger i = 0; i < data.getSize(); ++i)
       for (UnsignedInteger j = 0; j < data.getDimension(); ++j)
         data(i, j) = i * data.getDimension() + j;
     TimeSeries ts(tg, data);
     fullprint << "input time series=" << ts << std::endl;
-    fullprint << "output time series=" << myTrendFunc(ts) << std::endl;
+    fullprint << "output time series=" << myTrendFunc(ts.getValues()) << std::endl;
     /* Get the number of calls */
     fullprint << "called " << myTrendFunc.getCallsNumber() << " times" << std::endl;
   }

@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/ValueFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,11 +34,11 @@ static const Factory<CompositeProcess> Factory_CompositeProcess;
 
 CompositeProcess::CompositeProcess()
   : ProcessImplementation()
-  , function_(SymbolicFunction("x", "x^2"))
+  , function_(ValueFunction(SymbolicFunction("x", "x^2"), WhiteNoise().getMesh()))
   , antecedent_(new WhiteNoise())
 {
   // Set the mesh
-  setMesh(function_.getOutputMesh(antecedent_.getMesh()));
+  setMesh(function_.getOutputMesh());
 }
 
 /* Standard constructor */
@@ -51,11 +52,11 @@ CompositeProcess::CompositeProcess(const FieldFunction & function,
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible dimensions "
                                          << "here Process dimension=" << antecedent_.getOutputDimension()
                                          << " and FieldFunction input dimension=" << function.getInputDimension();
-  if (function.getSpatialDimension() != antecedent_.getInputDimension())
+  if (function.getInputMesh().getDimension() != antecedent_.getInputDimension())
     throw InvalidArgumentException(HERE) << "Error: trying to build a CompositeProcess from a Process and a FieldFunction with incompatible mesh dimensions "
                                          << "here Process mesh dimension=" << antecedent_.getInputDimension()
-                                         << " and FieldFunction mesh dimension=" << function.getSpatialDimension();
-  setMesh(function.getOutputMesh(antecedent_.getMesh()));
+                                         << " and FieldFunction mesh dimension=" << function.getInputMesh().getDimension();
+  setMesh(function.getOutputMesh());
   setOutputDimension(function.getOutputDimension());
   setDescription(function.getOutputDescription());
 }
@@ -105,10 +106,9 @@ FieldFunction CompositeProcess::getFunction() const
 /* Realization accessor */
 Field CompositeProcess::getRealization() const
 {
-  Field result(function_(antecedent_.getRealization()));
-  Sample values(result.getValues());
+  Sample values(function_(antecedent_.getRealization().getValues()));
   values.setDescription(getDescription());
-  result.setValues(values);
+  Field result(function_.getOutputMesh(), values);
   return result;
 }
 
@@ -129,7 +129,7 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   /* TimeGrid associated with the possible future */
   const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  return TimeSeries(futurTimeGrid, function_(antecedent_.getFuture(stepNumber)).getValues());
+  return TimeSeries(futurTimeGrid, function_(antecedent_.getFuture(stepNumber).getValues()));
 }
 
 /* Get the random vector corresponding to the i-th marginal component */

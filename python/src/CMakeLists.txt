@@ -138,7 +138,6 @@ ot_add_python_module(typ typ_module.i
                       Sample.i Sample_doc.i.in
                       FieldImplementation.i FieldImplementation_doc.i.in
                       Field.i Field_doc.i.in
-                      ProcessSample.i ProcessSample_doc.i.in
                       TimeSeries.i TimeSeries_doc.i.in
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in
                       HistoryStrategy.i HistoryStrategy_doc.i.in
@@ -303,7 +302,6 @@ ot_add_python_module(func func_module.i
 		      KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i.in
                       IndicatorFunction.i IndicatorFunction_doc.i.in
                       ValueFunction.i ValueFunction_doc.i.in
-                      VertexFunction.i VertexFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in
                       TranslationFunction.i TranslationFunction_doc.i.in
                       LinearFunction.i LinearFunction_doc.i.in
@@ -350,6 +348,8 @@ ot_add_python_module(func func_module.i
                       ConstantBasisFactory.i ConstantBasisFactory_doc.i.in
                       LinearBasisFactory.i LinearBasisFactory_doc.i.in
                       QuadraticBasisFactory.i QuadraticBasisFactory_doc.i.in
+                      ProcessSample.i ProcessSample_doc.i.in
+                      ProcessSampleImplementation.i ProcessSampleImplementation_doc.i.in
                       BaseFuncTemplateDefs.i
                    )
 

@@ -40,11 +40,11 @@ KarhunenLoeveProjection::KarhunenLoeveProjection()
 
 /* Parameter constructor */
 KarhunenLoeveProjection::KarhunenLoeveProjection(const KarhunenLoeveResult & result)
-  : FieldToPointFunctionImplementation(result.getModesAsProcessSample().getMesh().getDimension(), result.getModesAsProcessSample().getDimension(), result.getEigenValues().getSize())
+  : FieldToPointFunctionImplementation(result.getMesh(), result.getModesAsProcessSample().getDimension(), result.getEigenValues().getSize())
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getModesAsProcessSample().getSize();
+  const UnsignedInteger size = result_.getEigenValues().getSize();
   if (size == 0) setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   else setInputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "xi"));
@@ -95,7 +95,7 @@ KarhunenLoeveProjection::Implementation KarhunenLoeveProjection::getMarginal(con
 }
 
 /* Operator () */
-Point KarhunenLoeveProjection::operator() (const Field & inFld) const
+Point KarhunenLoeveProjection::operator() (const Sample & inFld) const
 {
   const Point outPoint(result_.project(inFld));
   callsNumber_.increment();

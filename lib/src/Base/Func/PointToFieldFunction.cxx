@@ -33,8 +33,9 @@ PointToFieldFunction::PointToFieldFunction()
 
 /* Parameter constructor */
 PointToFieldFunction::PointToFieldFunction(const UnsignedInteger inputDimension,
+    const Mesh & outputMesh,
     const UnsignedInteger outputDimension)
-  : TypedInterfaceObject<PointToFieldFunctionImplementation>(new PointToFieldFunctionImplementation(inputDimension, outputDimension))
+  : TypedInterfaceObject<PointToFieldFunctionImplementation>(new PointToFieldFunctionImplementation(inputDimension, outputMesh, outputDimension))
 {
   // Nothing to do
 }
@@ -123,7 +124,7 @@ Mesh PointToFieldFunction::getOutputMesh() const
 }
 
 /* Operator () */
-Field PointToFieldFunction::operator() (const Point & inP) const
+Sample PointToFieldFunction::operator() (const Point & inP) const
 {
   return getImplementation()->operator()(inP);
 }

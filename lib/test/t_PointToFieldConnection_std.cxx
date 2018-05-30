@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     }
     // Construction based on a PointToFieldFunction followed by a FieldToPointFunction
     {
-      ValueFunction fieldFunction(SymbolicFunction("x", "x"));
+      ValueFunction fieldFunction(SymbolicFunction("x", "x"), mesh);
       /* Create an instance */
       PointToFieldConnection myFunc(fieldFunction, lifting);
 

@@ -1,23 +1,14 @@
 %define OT_FieldToPointFunction_doc
 "Function mapping a field into a point.
 
-Available constructors:
-    FieldToPointFunction(*spatialDim=0*)
-
-    FieldToPointFunction(*spatialDim, inputDim, outputDim*)
-
-    FieldToPointFunction(*OTpythonFunc*)
-
 Parameters
 ----------
-spatialDim : int, :math:`\geq 1`
-    Dimension :math:`n` of the domain :math:`\cD`
-inputDim : int, :math:`\geq 1`
-    Dimension :math:`d` of the input field values
-outputDim : int, :math:`\geq 1`
-    Dimension :math:`d'` of the output vector 
-OTpythonFunc : :class:`~openturns.OpenTURNSPythonFieldToPointFunction`
-    The implementation of the function.
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh
+inputDim : positive int
+    Dimension of the input field values d
+outputDim : positive int
+    Dimension of the output vector d'
 
 Notes
 -----
@@ -51,11 +42,13 @@ Using the class :class:`~openturns.OpenTURNSPythonFieldToPointFunction` allows t
 >>> class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
 ...     def __init__(self):
 ...         # first argument:
-...         super(FUNC, self).__init__(2, 2, 1)
+...         mesh = ot.RegularGrid(0.0, 0.1, 11)
+...         super(FUNC, self).__init__(mesh, 2, 2)
 ...         self.setInputDescription(['R', 'S'])
 ...         self.setOutputDescription(['T', 'U'])  
 ...     def _exec(self, X):
-...         Y = X.getValues().computeMean()
+...         Xs = ot.Sample(X)
+...         Y = Xs.computeMean()
 ...         return Y
 >>> F = FUNC()
 
@@ -66,16 +59,17 @@ Create the associated FieldToPointFunction:
 It is also possible to create a FieldToPointFunction from a python function as follows:
 
 >>> def myPyFunc(X):
-...     Y = X.getValues().computeMean()
+...     Xs = ot.Sample(X)
+...     Y = Xs.computeMean()
 ...     return Y
 >>> inputDim = 2
 >>> outputDim = 2
->>> spatialDim = 1
->>> myFunc = ot.PythonFieldToPointFunction(inputDim,outputDim,spatialDim,myPyFunc)
+>>> mesh = ot.RegularGrid(0.0, 0.1, 11)
+>>> myFunc = ot.PythonFieldToPointFunction(mesh, inputDim, outputDim, myPyFunc)
 
 Evaluate the function on a field:
 
->>> myField = ot.Field(ot.RegularGrid(0.0, 0.1, 11), ot.Normal(2).getSample(11))
+>>> myField = ot.Field(mesh, ot.Normal(2).getSample(11))
 >>> Y = myFunc(myField)
 "
 %enddef
@@ -143,16 +137,16 @@ OT_FieldToPointFunction_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_FieldToPointFunction_getSpatialDimension_doc
-"Get the dimension of the input domain.
+%define OT_FieldToPointFunction_getInputMesh_doc
+"Get the mesh associated to the input domain.
 
 Returns
 -------
-spatialDim : int,
-    Dimension :math:`n` of the input domain :math:`\cD`."
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh :math:`\cM_{N'}`."
 %enddef
-%feature("docstring") OT::FieldToPointFunctionImplementation::getSpatialDimension
-OT_FieldToPointFunction_getSpatialDimension_doc
+%feature("docstring") OT::FieldToPointFunctionImplementation::getInputMesh
+OT_FieldToPointFunction_getInputMesh_doc
 
 // ---------------------------------------------------------------------
 

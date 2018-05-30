@@ -85,6 +85,19 @@ PythonPointToFieldFunction::PythonPointToFieldFunction(PyObject * pyCallable)
     setOutputDescription(convert< _PySequence_, Description >(descOut.get()));
   }
   else setOutputDescription(Description::BuildDefault(outputDimension, "y"));
+
+  ScopedPyObjectPointer outputMesh(PyObject_CallMethod ( pyObj_,
+                                  const_cast<char *>("getOutputMesh"),
+                                  const_cast<char *>("()")));
+  void * ptr = 0;
+  if (SWIG_IsOK(SWIG_ConvertPtr(outputMesh.get(), &ptr, SWIG_TypeQuery("OT::Mesh *"), 0)))
+  {
+    outputMesh_ = *reinterpret_cast< OT::Mesh * >(ptr);
+  }
+  else
+  {
+    throw InvalidArgumentException(HERE) << "getOutputMesh() does not return a Mesh";
+  }
 }
 
 /* Virtual constructor */
@@ -138,7 +151,7 @@ String PythonPointToFieldFunction::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
-Field PythonPointToFieldFunction::operator() (const Point & inP) const
+Sample PythonPointToFieldFunction::operator() (const Point & inP) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
   if (inputDimension != inP.getDimension())
@@ -147,27 +160,32 @@ Field PythonPointToFieldFunction::operator() (const Point & inP) const
   callsNumber_.increment();
 
   ScopedPyObjectPointer pyInP(SWIG_NewPointerObj(new OT::Point(inP), SWIG_TypeQuery("OT::Point *"), SWIG_POINTER_OWN | 0));
-  ScopedPyObjectPointer pyOutField(PyObject_CallFunctionObjArgs( pyObj_, pyInP.get(), NULL));
-  if (pyOutField.isNull())
+  ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, pyInP.get(), NULL));
+  if (result.isNull())
   {
     handleException();
   }
-  void * ptr = 0;
-  OT::Field * p_outF = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr(pyOutField.get(), &ptr, SWIG_TypeQuery("OT::Field *"), 0)))
+
+  Sample outF;
+  try
   {
-    p_outF = reinterpret_cast< OT::Field * >(ptr);
+    outF = convert< _PySequence_, Sample >(result.get());
   }
-  else
+  catch (InvalidArgumentException &)
   {
-    throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec() method is not a Field";
+    throw InvalidArgumentException(HERE) << "Output value for " << getName() << "._exec_sample() method is not a 2d-sequence object";
   }
 
-  if (p_outF->getOutputDimension() != getOutputDimension())
-  {
-    throw InvalidDimensionException(HERE) << "Output field has incorrect dimension. Got " << p_outF->getOutputDimension() << ". Expected " << getOutputDimension();
-  }
-  return *p_outF;
+  const UnsignedInteger outputSize = getOutputMesh().getVerticesNumber();
+
+  if (outF.getSize() != outputSize)
+    throw InvalidArgumentException(HERE) << "Python Field function returned a sequence object with incorrect size (got "
+                                          << outF.getSize() << ", expected " << outputSize << ")";
+  if (outF.getDimension() != getOutputDimension())
+    throw InvalidArgumentException(HERE) << "Python Field function returned a sequence object with incorrect dimension (got "
+                                          << outF.getDimension() << ", expected " << getOutputDimension() << ")";
+  outF.setDescription(getOutputDescription());
+  return outF;
 }
 
 /* Accessor for input point dimension */

@@ -9,4 +9,4 @@ outPoint = [2.5]
 interpolation = ot.P1LagrangeInterpolation(
     mesh, ot.Mesh([outPoint]), len(values[0]))
 print("Interpolation=", interpolation)
-print("Values at", outPoint, "=", interpolation(ot.Field(mesh, values)))
+print("Values at", outPoint, "=", interpolation(values))

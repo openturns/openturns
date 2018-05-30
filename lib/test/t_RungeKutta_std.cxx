@@ -40,9 +40,6 @@ int main(int argc, char *argv[])
     formulas[0] = "t - y0";
     formulas[1] = "y1 + t^2";
     SymbolicFunction f(inputVariables, formulas);
-    VertexValueFunction phi(f);
-    RungeKutta solver(phi);
-    fullprint << "ODE solver=" << solver << std::endl;
     Point initialState(2);
     initialState[0] =  1.0;
     initialState[1] = -1.0;
@@ -52,6 +49,9 @@ int main(int argc, char *argv[])
     {
       timeGrid[i] = pow(i, 2.0) / pow(nt - 1.0, 2.0);
     }
+    ParametricFunction phi(f, Indices(1, 0), Point(1, 0.0));
+    RungeKutta solver(phi);
+    fullprint << "ODE solver=" << solver << std::endl;
     fullprint << "time grid=" << timeGrid << std::endl;
     Sample result(solver.solve(initialState, timeGrid));
     fullprint << "result=" << result << std::endl;

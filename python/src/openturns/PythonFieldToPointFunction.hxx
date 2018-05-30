@@ -61,10 +61,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual Point operator() (const Field & inF) const;
-
-  /** Accessor for mesh dimension */
-  virtual UnsignedInteger getSpatialDimension() const;
+  virtual Point operator() (const Sample & inF) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

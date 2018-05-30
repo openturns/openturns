@@ -11,7 +11,8 @@ try:
     inputVars = Description(["t"])
     formula = Description(["sin(t)", "cos(t)"])
     myFunc = SymbolicFunction(inputVars, formula)
-    myInverseTrendFunc = InverseTrendTransform(myFunc)
+    tg = RegularGrid(0.0, 0.1, 11)
+    myInverseTrendFunc = InverseTrendTransform(myFunc, tg)
 
     print("myInverseTrendFunc=", myInverseTrendFunc)
     # Get the input description and dimension
@@ -25,7 +26,6 @@ try:
     print("myInverseTrendFunc output dimension=",
           myInverseTrendFunc.getOutputDimension())
     # Create a TimeSeries
-    tg = RegularGrid(0.0, 0.1, 11)
     data = Sample(tg.getN(), formula.getSize())
     for i in range(data.getSize()):
         t = tg.getStart() + i * tg.getStep()

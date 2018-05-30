@@ -30,9 +30,9 @@ CLASSNAMEINIT(FieldToPointFunctionImplementation)
 static const Factory<FieldToPointFunctionImplementation> Factory_FieldToPointFunctionImplementation;
 
 /* Default constructor */
-FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension)
+FieldToPointFunctionImplementation::FieldToPointFunctionImplementation()
   : PersistentObject()
-  , spatialDimension_(spatialDimension)
+  , inputMesh_(0)
   , inputDimension_(0)
   , outputDimension_(0)
   , inputDescription_()
@@ -43,11 +43,11 @@ FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const Uns
 }
 
 /* Parameter constructor */
-FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const UnsignedInteger spatialDimension,
+FieldToPointFunctionImplementation::FieldToPointFunctionImplementation(const Mesh & inputMesh,
     const UnsignedInteger inputDimension,
     const UnsignedInteger outputDimension)
   : PersistentObject()
-  , spatialDimension_(spatialDimension)
+  , inputMesh_(inputMesh)
   , inputDimension_(inputDimension)
   , outputDimension_(outputDimension)
   , inputDescription_(Description::BuildDefault(inputDimension, "x"))
@@ -127,7 +127,7 @@ Description FieldToPointFunctionImplementation::getOutputDescription() const
 
 
 /* Operator () */
-Point FieldToPointFunctionImplementation::operator() (const Field & inFld) const
+Point FieldToPointFunctionImplementation::operator() (const Sample & inFld) const
 {
   throw NotYetImplementedException(HERE) << "In FieldToPointFunctionImplementation::operator() (const Field & inFld) const";
 }
@@ -136,22 +136,29 @@ Point FieldToPointFunctionImplementation::operator() (const Field & inFld) const
 Sample FieldToPointFunctionImplementation::operator() (const ProcessSample & inPS) const
 {
   if (inPS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inPS.getDimension();
-  if (inPS.getMesh().getDimension() != getSpatialDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getSpatialDimension() << ", got " << inPS.getMesh().getDimension();
+  if (inPS.getMesh().getDimension() != getInputMesh().getDimension()) throw InvalidArgumentException(HERE) << "Error: the given process sample has an invalid mesh dimension. Expect a mesh dimension " << getInputMesh().getDimension() << ", got " << inPS.getMesh().getDimension();
   const UnsignedInteger size = inPS.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given process sample has a size of 0.";
   Sample outSample(inPS.getSize(), getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
   for (UnsignedInteger i = 0; i < size; ++i)
-    outSample[i] = operator()(inPS.getField(i));
+    outSample[i] = operator()(inPS[i]);
   callsNumber_.fetchAndAdd(size);
   return outSample;
+}
+
+/* Accessor for input mesh */
+Mesh FieldToPointFunctionImplementation::getInputMesh() const
+{
+  return inputMesh_;
 }
 
 /* Accessor for mesh dimension */
 UnsignedInteger FieldToPointFunctionImplementation::getSpatialDimension() const
 {
-  return spatialDimension_;
+  LOGWARN(OSS() << "FieldToPointFunction::getSpatialDimension is deprecated");
+  return inputMesh_.getDimension();
 }
 
 /* Accessor for input point dimension */
@@ -176,7 +183,7 @@ UnsignedInteger FieldToPointFunctionImplementation::getCallsNumber() const
 void FieldToPointFunctionImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "spatialDimension_", spatialDimension_ );
+  adv.saveAttribute( "inputMesh_", inputMesh_ );
   adv.saveAttribute( "inputDimension_", inputDimension_ );
   adv.saveAttribute( "outputDimension_", outputDimension_ );
   adv.saveAttribute( "inputDescription_", inputDescription_ );
@@ -188,7 +195,7 @@ void FieldToPointFunctionImplementation::save(Advocate & adv) const
 void FieldToPointFunctionImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "spatialDimension_", spatialDimension_ );
+  adv.loadAttribute( "inputMesh_", inputMesh_ );
   adv.loadAttribute( "inputDimension_", inputDimension_ );
   adv.loadAttribute( "outputDimension_", outputDimension_ );
   adv.loadAttribute( "inputDescription_", inputDescription_ );

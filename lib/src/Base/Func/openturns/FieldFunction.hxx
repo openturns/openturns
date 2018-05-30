@@ -47,16 +47,13 @@ public:
   /* Some typedefs for easy reading */
 
   /** Default constructor */
-  explicit FieldFunction(const UnsignedInteger spatialDimension = 1);
+  FieldFunction();
 
   /** Parameter constructor */
-  explicit FieldFunction(const UnsignedInteger spatialDimension,
-                         const UnsignedInteger inputDimension,
-                         const UnsignedInteger outputDimension);
-
-  /** Constructor from Function */
-  explicit FieldFunction(const Function & function,
-                         const UnsignedInteger spatialDimension = 1);
+  FieldFunction(const Mesh & inputMesh,
+                const UnsignedInteger inputDimension,
+                const Mesh & outputMesh,
+                const UnsignedInteger outputDimension);
 
   /** Constructor from FieldFunctionImplementation */
   FieldFunction(const FieldFunctionImplementation & implementation);
@@ -79,11 +76,7 @@ public:
   virtual String __str__(const String & offset = "") const;
 
   /** Operator () */
-  Point operator() (const Scalar timeStamp,
-                    const Point & inP) const;
-  Point operator() (const Point & location,
-                    const Point & inP) const;
-  Field operator() (const Field & inFld) const;
+  Sample operator() (const Sample & inFld) const;
   ProcessSample operator() (const ProcessSample & inPS) const;
 
   /** Get the i-th marginal function */
@@ -92,7 +85,7 @@ public:
   /** Get the function corresponding to indices components */
   FieldFunction getMarginal(const Indices & indices) const;
 
-  /** Accessor for mesh dimension */
+  /** @deprecated Accessor for mesh dimension */
   UnsignedInteger getSpatialDimension() const;
 
   /** Accessor for input point dimension */
@@ -101,8 +94,11 @@ public:
   /** Accessor for output point dimension */
   UnsignedInteger getOutputDimension() const;
 
-  /** Accessor for the output mesh associated with the given input mesh */
-  Mesh getOutputMesh(const Mesh & inputMesh) const;
+  /** Accessor for the input mesh */
+  Mesh getInputMesh() const;
+
+  /** Accessor for the output mesh */
+  Mesh getOutputMesh() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */
   Description getInputDescription() const;

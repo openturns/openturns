@@ -2,24 +2,23 @@ import openturns as ot
 from matplotlib import pyplot as plt
 from openturns.viewer import View
 
+mesh = ot.RegularGrid(-5.0, 0.1, 101)
 
 class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
 
     def __init__(self):
-        super(GaussianConvolution, self).__init__(1, 1, 1)
+        outputGrid = ot.RegularGrid(-1.0, 0.02, 101)
+        super(GaussianConvolution, self).__init__(mesh, 1, outputGrid, 1)
         self.setInputDescription(["x"])
         self.setOutputDescription(["y"])
-        self.outputGrid_ = ot.RegularGrid(-1.0, 0.02, 101)
         self.algo_ = ot.GaussKronrod(
             20, 1.0e-4, ot.GaussKronrodRule(ot.GaussKronrodRule.G7K15))
 
     def _exec(self, X):
-        inputTG = X.getTimeGrid()
-        inputValues = X.getValues()
         f = ot.Function(ot.PiecewiseLinearEvaluation(
-            [x[0] for x in inputTG.getVertices()], inputValues))
+            [x[0] for x in self.getInputMesh().getVertices()], X))
         outputValues = ot.Sample(0, 1)
-        for t in self.outputGrid_.getVertices():
+        for t in self.getOutputMesh().getVertices():
             kernel = ot.Normal(t[0], 0.05)
 
             def pdf(X):
@@ -27,11 +26,11 @@ class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
             weight = ot.Function(ot.PythonFunction(1, 1, pdf))
             outputValues.add(self.algo_.integrate(
                 weight * f, kernel.getRange()))
-        return ot.Field(self.outputGrid_, outputValues)
+        return outputValues
 
 N = 5
 X = ot.GaussianProcess(ot.GeneralizedExponential(
-    [0.1], 1.0), ot.RegularGrid(-5.0, 0.1, 101))
+    [0.1], 1.0), mesh)
 f = ot.FieldFunction(GaussianConvolution())
 Y = ot.CompositeProcess(f, X)
 x_graph = X.getSample(N).drawMarginal(0)

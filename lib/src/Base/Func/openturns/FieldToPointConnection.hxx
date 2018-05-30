@@ -58,7 +58,7 @@ public:
 
   /** Operator () */
   using FieldToPointFunctionImplementation::operator();
-  Point operator() (const Field & inF) const;
+  Point operator() (const Sample & inF) const;
 
   Sample operator() (const ProcessSample & inS) const;
 

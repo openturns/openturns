@@ -104,7 +104,7 @@ TrendTransform TrendFactory::build(const Field & field,
   }
   const DualLinearCombinationFunction trendFunction(coll, coefficients);
 
-  return TrendTransform(trendFunction);
+  return TrendTransform(trendFunction, field.getMesh());
 }
 
 /* String converter */

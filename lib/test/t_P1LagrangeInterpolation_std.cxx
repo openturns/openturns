@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     }
     P1LagrangeInterpolation interpolation(mesh, Mesh(outputPoints), values.getDimension());
     fullprint << "Interpolation=" << interpolation << std::endl;
-    fullprint << "Values at " << outPoint << "=" << interpolation(Field(mesh, values)) << std::endl;
+    fullprint << "Values at " << outPoint << "=" << interpolation(values) << std::endl;
   }
   catch (TestFailed & ex)
   {

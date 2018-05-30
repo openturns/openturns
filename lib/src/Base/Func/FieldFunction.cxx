@@ -26,25 +26,18 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(FieldFunction)
 
 /* Default constructor */
-FieldFunction::FieldFunction(const UnsignedInteger spatialDimension)
-  : TypedInterfaceObject<FieldFunctionImplementation>(new FieldFunctionImplementation(spatialDimension))
+FieldFunction::FieldFunction()
+  : TypedInterfaceObject<FieldFunctionImplementation>(new FieldFunctionImplementation())
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-FieldFunction::FieldFunction(const UnsignedInteger spatialDimension,
+FieldFunction::FieldFunction(const Mesh & inputMesh,
                              const UnsignedInteger inputDimension,
+                             const Mesh & outputMesh,
                              const UnsignedInteger outputDimension)
-  : TypedInterfaceObject<FieldFunctionImplementation>(new FieldFunctionImplementation(spatialDimension, inputDimension, outputDimension))
-{
-  // Nothing to do
-}
-
-/* Constructor from Function */
-FieldFunction::FieldFunction(const Function & function,
-                             const UnsignedInteger spatialDimension)
-  : TypedInterfaceObject<FieldFunctionImplementation>(ValueFunction(function, spatialDimension).clone())
+  : TypedInterfaceObject<FieldFunctionImplementation>(new FieldFunctionImplementation(inputMesh, inputDimension, outputMesh, outputDimension))
 {
   // Nothing to do
 }
@@ -114,26 +107,20 @@ Description FieldFunction::getOutputDescription() const
   return getImplementation()->getOutputDescription();
 }
 
-/* Output mesh Accessor */
-Mesh FieldFunction::getOutputMesh(const Mesh & inputMesh) const
+/* Input mesh accessor */
+Mesh FieldFunction::getInputMesh() const
 {
-  return getImplementation()->getOutputMesh(inputMesh);
+  return getImplementation()->getInputMesh();
+}
+
+/* Output mesh accessor */
+Mesh FieldFunction::getOutputMesh() const
+{
+  return getImplementation()->getOutputMesh();
 }
 
 /* Operator () */
-Point FieldFunction::operator() (const Scalar timeStamp,
-                                 const Point & inP) const
-{
-  return getImplementation()->operator()(timeStamp, inP);
-}
-
-Point FieldFunction::operator() (const Point & location,
-                                 const Point & inP) const
-{
-  return getImplementation()->operator()(location, inP);
-}
-
-Field FieldFunction::operator() (const Field & inFld) const
+Sample FieldFunction::operator() (const Sample & inFld) const
 {
   return getImplementation()->operator()(inFld);
 }

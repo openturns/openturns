@@ -37,11 +37,12 @@ ODESolverImplementation::ODESolverImplementation()
 }
 
 /* Parameter constructor */
-ODESolverImplementation::ODESolverImplementation(const FieldFunction & transitionFunction)
+ODESolverImplementation::ODESolverImplementation(const Function & transitionFunction)
   : PersistentObject()
   , transitionFunction_(transitionFunction)
 {
-  // Nothing to do
+  if (transitionFunction.getParameter().getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "The function must have one parameter";
 }
 
 /* Virtual constructor */
@@ -75,12 +76,12 @@ String ODESolverImplementation::__repr__() const
 }
 
 /* Transition function accessor */
-void ODESolverImplementation::setTransitionFunction(const FieldFunction & transitionFunction)
+void ODESolverImplementation::setTransitionFunction(const Function & transitionFunction)
 {
   transitionFunction_ = transitionFunction;
 }
 
-FieldFunction ODESolverImplementation::getTransitionFunction() const
+Function ODESolverImplementation::getTransitionFunction() const
 {
   return transitionFunction_;
 }

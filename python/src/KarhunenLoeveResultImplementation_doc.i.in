@@ -180,6 +180,20 @@ OT_KarhunenLoeveResult_getScaledModesAsProcessSample_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_KarhunenLoeveResult_getMesh_doc
+"Accessor to the mesh.
+
+Returns
+-------
+mesh : :class:`~openturns.Mesh`
+    The mesh corresponds to the discretization points of the integral in
+    :eq:`projection`."
+%enddef
+%feature("docstring") OT::KarhunenLoeveResultImplementation::getMesh
+OT_KarhunenLoeveResult_getMesh_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_KarhunenLoeveResult_getProjectionMatrix_doc
 "Accessor to the projection matrix.
 
@@ -201,7 +215,7 @@ Available constructors:
 
     project(*functions*)
 
-    project(*field*)
+    project(*values*)
 
     project(*fieldSample*)
 
@@ -211,8 +225,8 @@ function : :class:`~openturns.Function`
     A function.
 functions : list of :class:`~openturns.Function`
     A list of functions.
-field :  :class:`~openturns.Field`
-    A field.
+values :  :class:`~openturns.Sample`
+    Field values.
 fieldSample :  :class:`~openturns.ProcessSample`
     A collection of fields.
 
@@ -232,7 +246,7 @@ The *project* method calculates the projection :eq:`projection` on a function  o
 
 Lets note :math:`\cM_{KL}` the mesh coming from the :class:`~openturns.KarhunenLoeveResult` (ie the one contained in the *modesAsSample* :class:`~openturns.ProcessSample`).
 
-If the given field is defined on :math:`\cM_{KL}`, the associated values  are directly used for the projection. Otherwise, a :class:`~openturns.P1LagrangeEvaluation`  function is built using this field and then used to interpolate the values of the field on :math:`\cM_{KL}`.
+The given values are defined on the input field :math:`\cM_{KL}` and the associated values are directly used for the projection.
 
 If evaluated from a function, the *project* method evaluates the function on :math:`\cM_{KL}` and uses :eq:`projectionMatrix`. "
 %enddef
@@ -318,3 +332,25 @@ The sum defining :math:`f` is truncated to the first :math:`K` terms, where :mat
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::liftAsField
 OT_KarhunenLoeveResult_liftAsField_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveResult_liftAsSample_doc
+"Lift the coefficients into a sample.
+
+Parameters
+----------
+coef : :class:`~openturns.Point`
+    The coefficients :math:`(\xi_1, \dots, \xi_K)`.
+
+Returns
+-------
+modes : :class:`~openturns.Sample`
+    The function :math:`f` defined in :eq:`lift` evaluated on the mesh associated to the discretization of :eq:`projection`.
+
+Notes
+-----
+The sum defining :math:`f` is truncated to the first :math:`K` terms, where :math:`K` is determined by the :math:`s`, defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
+%enddef
+%feature("docstring") OT::KarhunenLoeveResultImplementation::liftAsSample
+OT_KarhunenLoeveResult_liftAsSample_doc

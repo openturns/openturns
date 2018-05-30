@@ -58,10 +58,7 @@ public:
 
   /** Operator () */
   using PointToFieldFunctionImplementation::operator();
-  virtual Field operator() (const Point & inP) const;
-
-  /** Accessor for the output mesh */
-  virtual Mesh getOutputMesh() const;
+  virtual Sample operator() (const Point & inP) const;
 
   /** Get the i-th marginal function */
   virtual PointToFieldFunction getMarginal(const UnsignedInteger i) const;

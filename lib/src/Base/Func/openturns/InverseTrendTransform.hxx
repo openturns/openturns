@@ -48,13 +48,13 @@ public:
   InverseTrendTransform();
 
   /** Parameter constructor */
-  explicit InverseTrendTransform(const Function & function);
+  InverseTrendTransform(const Function & function, const Mesh & mesh);
 
   /** Parameter constructor */
-  InverseTrendTransform(const Evaluation & evaluation);
+  InverseTrendTransform(const Evaluation & evaluation, const Mesh & mesh);
 
   /** Parameter constructor */
-  InverseTrendTransform(const EvaluationImplementation & evaluation);
+  InverseTrendTransform(const EvaluationImplementation & evaluation, const Mesh & mesh);
 
   /** Virtual constructor */
   virtual InverseTrendTransform * clone() const;
