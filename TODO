@@ -1,1 +1,2 @@
 Remove deprecated FunctionalChaosRandomVector::getSobol* in 1.13
+Remove deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
