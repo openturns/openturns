@@ -1,7 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class builds a spectral model using a frequency grid and a spectral function
- *  given as a collection of Covariance Matrix
+ *  @brief This class builds a covariance model using a mesh and a covariance
+ *         function given as a collection of Covariance Matrix or a global
+ *         covariance matrix
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *
@@ -43,15 +44,18 @@ class OT_API UserDefinedCovarianceModel
 
 public:
 
-  typedef PersistentCollection<CovarianceMatrix>          CovarianceMatrixPersistentCollection;
-  typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
-  /** Default onstructor */
+  /** Default constructor */
   UserDefinedCovarianceModel();
 
-  /** Standard onstructor */
+  /** Standard constructor @deprecated */
   UserDefinedCovarianceModel(const Mesh & mesh,
-                             const CovarianceMatrixCollection & spectralFunction);
+                             const CovarianceMatrixCollection & covarianceCollection);
+
+  /** Standard constructor */
+  UserDefinedCovarianceModel(const Mesh & mesh,
+                             const CovarianceMatrix & covariance);
 
   /** Virtual copy constructor */
   virtual UserDefinedCovarianceModel * clone() const;
@@ -93,9 +97,9 @@ public:
 private:
 
   /** Collection of covariance functions */
-  CovarianceMatrixPersistentCollection covarianceCollection_;
+  CovarianceMatrix covariance_;
 
-  /** Mesh of evaluation */
+  /** Mesh of the native discretization */
   Pointer<Mesh> p_mesh_;
 
   /** NearestNeighbourAlgorithm to speed-up nearest neighbour search */

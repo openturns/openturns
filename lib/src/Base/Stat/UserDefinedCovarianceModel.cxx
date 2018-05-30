@@ -37,41 +37,68 @@ static const Factory<UserDefinedCovarianceModel> Factory_UserDefinedCovarianceMo
 /* Constructor with parameters */
 UserDefinedCovarianceModel::UserDefinedCovarianceModel()
   : CovarianceModelImplementation()
-  , covarianceCollection_(0)
-  , p_mesh_(RegularGrid().clone())
+  , covariance_(0)
+  , p_mesh_(new RegularGrid())
   , nearestNeighbour_()
 {
   outputDimension_ = 0;
 }
 
-// For a non stationary model, we need N x N covariance functions with N the number of vertices in the mesh
+// For a non stationary model, we need N x (N+1)/2 covariance matrices with N the number of vertices in the mesh
 UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
-    const CovarianceMatrixCollection & covarianceFunction)
+    const CovarianceMatrixCollection & covarianceCollection)
   : CovarianceModelImplementation()
-  , covarianceCollection_(0)
+  , covariance_(0)
+  , p_mesh_(0)
+  , nearestNeighbour_()
+{
+  Log::Warn(OSS() << "UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh, const CovarianceMatrixCollection & covarianceCollection) is deprecated: use FunctionalChaosSobolIndices");
+  const UnsignedInteger N = mesh.getVerticesNumber();
+  const UnsignedInteger size = (N * (N + 1)) / 2;
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the mesh is empty.";
+  if (size != covarianceCollection.getSize())
+    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
+                                         << " mesh size=" << N << " and covariance collection size=" << covarianceCollection.getSize() << " instead of " << size;
+  outputDimension_ = covarianceCollection[0].getDimension();
+  // Check all the dimensions in the collection
+  for (UnsignedInteger k = 1; k < size; ++k)
+  {
+    if (covarianceCollection[k].getDimension() != outputDimension_)
+      throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
+  }
+  p_mesh_ = mesh.clone();
+  nearestNeighbour_.setSample(p_mesh_->getVertices());
+  inputDimension_ = mesh.getDimension();
+  // Build the full covariance matrix
+  const UnsignedInteger fullDimension = N * outputDimension_;
+  covariance_ = CovarianceMatrix(fullDimension);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < N; ++j)
+    for (UnsignedInteger i = 0; i < j + 1; ++i)
+      {
+	for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+	  for (UnsignedInteger l = 0; l < outputDimension_; ++l)
+	    covariance_(i * outputDimension_ + l, j * outputDimension_ + k) = covarianceCollection[index](l, k);
+	++index;
+      } // i
+}
+
+// For a non stationary model, we need N x (N+1)/2 covariance matrices with N the number of vertices in the mesh
+UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
+    const CovarianceMatrix & covariance)
+  : CovarianceModelImplementation()
+  , covariance_(0)
   , p_mesh_(0)
   , nearestNeighbour_()
 {
   const UnsignedInteger N = mesh.getVerticesNumber();
-  const UnsignedInteger size = (N * (N + 1)) / 2;
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the mesh is empty.";
-  if (size != covarianceFunction.getSize())
-    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
-                                         << " mesh size=" << N << " and covariance function size=" << covarianceFunction.getSize() << " instead of " << size;
+  const UnsignedInteger fullDimension = covariance.getDimension();
+  if (fullDimension % N != 0) throw InvalidArgumentException(HERE) << "Error: the given covariance has a dimension=" << fullDimension << " which is not a multiple of the vertices number=" << N;
+  outputDimension_ = fullDimension / N;
+  covariance_ = covariance;
   p_mesh_ = mesh.clone();
   nearestNeighbour_.setSample(p_mesh_->getVertices());
   inputDimension_ = mesh.getDimension();
-  covarianceCollection_ = CovarianceMatrixCollection(size);
-  // put the first element
-  covarianceCollection_[0] = covarianceFunction[0];
-  outputDimension_ = covarianceCollection_[0].getDimension();
-  // put the next elements if dimension is ok
-  for (UnsignedInteger k = 1; k < size; ++k)
-  {
-    if (covarianceFunction[k].getDimension() != outputDimension_)
-      throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
-    covarianceCollection_[k] = covarianceFunction[k];
-  }
 }
 
 /* Virtual constructor */
@@ -90,7 +117,7 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
   // If the grid size is one, return the covariance function
   // else find in the grid the nearest instant values
   const UnsignedInteger N = p_mesh_->getVerticesNumber();
-  if (N == 1) return covarianceCollection_[0];
+  if (N == 1) return covariance_;
 
   // Use the evaluation based on indices
   return operator()(nearestNeighbour_.query(s), nearestNeighbour_.query(t));
@@ -99,41 +126,25 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
 CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
-  UnsignedInteger sIndex = i;
-  UnsignedInteger tIndex = j;
-  // The covariance matrices correspond to sIndex >= tIndex.
-  // As C(s, t) = C(t, s), we swap sIndex and tIndex if sIndex < tIndex
-  if (sIndex < tIndex) std::swap(sIndex, tIndex);
-  // The covariances are stored the following way:
-  // sIndex=0, tIndex=0 -> index=0
-  // sIndex=1, tIndex=0 -> index=1
-  // sIndex=1, tIndex=1 -> index=2
-  // sIndex=2, tIndex=0 -> index=3
-  // sIndex=2, tIndex=1 -> index=4
-  // sIndex=2, tIndex=2 -> index=5
-  // ie index = tIndex + sIndex * (sIndex + 1) / 2
-  const SignedInteger index = tIndex + (sIndex * (sIndex + 1)) / 2;
-  return covarianceCollection_[index];
+  const UnsignedInteger sShift = i * outputDimension_;
+  const UnsignedInteger tShift = j * outputDimension_;
+  CovarianceMatrix result(outputDimension_);
+  for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+    for (UnsignedInteger l = 0; l < outputDimension_; ++l)
+      result(l, k) = covariance_(sShift + l, tShift + k);
+  return result;
 }
 
 CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices) const
 {
-  const UnsignedInteger size = vertices.getSize();
-  CovarianceMatrix covariance(size * outputDimension_);
   // It is better to check vertices as the simplices don't play a role in the discretization
   if (vertices == p_mesh_->getVertices())
   {
     // Here we know that the given mesh is exactly the one defining the covariance model
-    for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
-    {
-      const UnsignedInteger jBase = static_cast< UnsignedInteger >(sqrt(2 * i + 0.25) - 0.5);
-      const UnsignedInteger kBase = i - (jBase * (jBase + 1)) / 2;
-      for (UnsignedInteger k = 0; k < outputDimension_; ++k)
-        for (UnsignedInteger j = 0; j < outputDimension_; ++j)
-          covariance(jBase + j, kBase + k) = covarianceCollection_[i](j, k);
-    }
-    return covariance;
+    return covariance_;
   }
+  const UnsignedInteger size = vertices.getSize();
+  CovarianceMatrix covariance(size * outputDimension_);
   // Here we have to project the given vertices on the underlying mesh
   // We try to call the query() method a minimum number of time as it
   // is the most costly part of the discretization
@@ -169,22 +180,10 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
 {
   if (outputDimension_ != 1) throw InternalException(HERE) << "Error: the discretizeRow() method is not defined if the output dimension is not 1. Here, dimension=" << outputDimension_;
   const UnsignedInteger size = vertices.getSize();
-  Sample result(size, 1);
+  SampleImplementation result(size, 1);
   if (vertices == p_mesh_->getVertices())
   {
-    UnsignedInteger index = (p * (p + 1)) / 2;
-    for (UnsignedInteger i = 0; i < p; ++i)
-    {
-      result(i, 0) = covarianceCollection_[index](0, 0);
-      ++index;
-    }
-    UnsignedInteger shift = p;
-    for (UnsignedInteger i = p; i < size; ++i)
-    {
-      result(i, 0) = covarianceCollection_[index](0, 0);
-      ++shift;
-      index += shift;
-    }
+    result.setData(*covariance_.getRow(p).getImplementation());
     return result;
   }
   const Indices nearestIndex(nearestNeighbour_.query(vertices));
@@ -196,7 +195,7 @@ TriangularMatrix UserDefinedCovarianceModel::discretizeAndFactorize(const Sample
 {
   // We suppose that covariance matrix is symmetric positive definite
   CovarianceMatrix covariance = discretize(vertices);
-  TriangularMatrix choleskyFactor = covariance.computeCholesky();
+  const TriangularMatrix choleskyFactor = covariance.computeCholesky();
   return choleskyFactor;
 }
 
@@ -218,7 +217,7 @@ String UserDefinedCovarianceModel::__repr__() const
   OSS oss(true);
   oss << "class=" << UserDefinedCovarianceModel::GetClassName()
       << " mesh=" << p_mesh_->__repr__()
-      << " covarianceCollection=" << covarianceCollection_;
+      << " covariance=" << covariance_;
   return oss;
 
 }
@@ -235,7 +234,7 @@ void UserDefinedCovarianceModel::save(Advocate & adv) const
   CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "mesh_", *p_mesh_);
   adv.saveAttribute("nearestNeighbour_", nearestNeighbour_);
-  adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
+  adv.saveAttribute( "covariance_", covariance_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -246,7 +245,7 @@ void UserDefinedCovarianceModel::load(Advocate & adv)
   adv.loadAttribute( "mesh_", mesh);
   p_mesh_ = mesh.getImplementation();
   adv.loadAttribute( "nearestNeighbour_", nearestNeighbour_);
-  adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
+  adv.loadAttribute( "covariance_", covariance_);
 }
 
 END_NAMESPACE_OPENTURNS

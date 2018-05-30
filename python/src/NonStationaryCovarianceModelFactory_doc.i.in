@@ -85,10 +85,30 @@ Estimate the covariance model without supposing the stationarity:
 Parameters
 ----------
 sampleFields : :class:`~openturns.ProcessSample`
-    The fields used to estimate the covariance model which is not supposed to be stationary.
+    The fields used to estimate the covariance model.
+isCentered : bool, optional
+    Flag telling if the given sample is from a centered process or if it has to be centered by the empirical mean. Default value is *False*.
 
 Returns
 -------
 covEst : :class:`~openturns.UserDefinedCovarianceModel`
     The estimated covariance model that can be used as  a :class:`~openturns.UserDefinedCovarianceModel`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix
+"Estimate the covariance model as a covariance matrix.
+
+Parameters
+----------
+sampleFields : :class:`~openturns.ProcessSample`
+    The fields used to estimate the covariance model.
+isCentered : bool, optional
+    Flag telling if the given sample is from a centered process or if it has to be centered by the empirical mean. Default value is *False*.
+
+Returns
+-------
+covEst : :class:`~openturns.CovarianceMatrix`
+    The unbiased estimation of the discretization of the covariance function over the mesh defining the given sample.
 "

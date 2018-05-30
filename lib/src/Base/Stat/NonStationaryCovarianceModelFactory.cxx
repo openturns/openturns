@@ -75,101 +75,46 @@ CovarianceModel NonStationaryCovarianceModelFactory::build(const ProcessSample &
 }
 
 
-struct ComputeCovariancePolicy
-{
-  const ProcessSample & input_;
-  const Bool isCentered_;
-  CovarianceMatrixCollection & output_;
-  Field mean_;
-  UnsignedInteger dimension_;
-  UnsignedInteger size_;
-  Scalar alpha_;
-
-  ComputeCovariancePolicy(const ProcessSample & input,
-                          const Bool isCentered,
-                          CovarianceMatrixCollection & output)
-    : input_(input)
-    , isCentered_(isCentered)
-    , output_(output)
-    , mean_()
-    , dimension_(input.getDimension())
-    , size_(input.getSize())
-    , alpha_(1.0 / (size_ - 1.0))
-  {
-    if (!isCentered) mean_ = input.computeMean();
-  }
-
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    if (isCentered_) evaluateCentered(r);
-    else evaluateNonCentered(r);
-  }
-
-  inline void evaluateCentered( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
-    {
-      const UnsignedInteger i = static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5);
-      const UnsignedInteger j = index - (i * (i + 1)) / 2;
-      CovarianceMatrix & matrix(output_[index]);
-      for (UnsignedInteger k = 0; k < dimension_; ++k)
-      {
-        for (UnsignedInteger l = 0; l <= k; ++l)
-        {
-          Scalar coef = 0.0;
-          for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
-          {
-            coef += input_[sampleIndex](i, k) * input_[sampleIndex](j, l);
-          } // sampleIndex
-          matrix(k, l) = coef * alpha_;
-        } // l
-      } // k
-    } // index
-  }
-
-  inline void evaluateNonCentered( const TBB::BlockedRange<UnsignedInteger> & r ) const
-  {
-    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
-    {
-      const UnsignedInteger i = static_cast< UnsignedInteger >(sqrt(2 * index + 0.25) - 0.5);
-      const UnsignedInteger j = index - (i * (i + 1)) / 2;
-      const Point muI(mean_.getValueAtIndex(i));
-      const Point muJ(mean_.getValueAtIndex(j));
-      CovarianceMatrix & matrix(output_[index]);
-      for (UnsignedInteger k = 0; k < dimension_; ++k)
-      {
-        const Scalar muIK = muI[k];
-        for (UnsignedInteger l = 0; l <= k; ++l)
-        {
-          const Scalar muJL = muJ[l];
-          Scalar coef = 0.0;
-          for (UnsignedInteger sampleIndex = 0; sampleIndex < size_; ++sampleIndex)
-          {
-            coef += (input_[sampleIndex](i, k) - muIK) * (input_[sampleIndex](j, l) - muJL);
-          } // sampleIndex
-          matrix(k, l) = coef * alpha_;
-        } // l
-      } // k
-    } // index
-  }
-}; /* end struct ComputeCovariancePolicy */
-
 UserDefinedCovarianceModel NonStationaryCovarianceModelFactory::buildAsUserDefinedCovarianceModel(const ProcessSample & sample, const Bool isCentered) const
+{
+  return UserDefinedCovarianceModel(sample.getMesh(), buildAsCovarianceMatrix(sample, isCentered));
+}
+
+CovarianceMatrix NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix(const ProcessSample & sample, const Bool isCentered) const
 {
   const Mesh & mesh(sample.getMesh());
   const UnsignedInteger N = mesh.getVerticesNumber();
-  // Create a collection of null CovarianceMatrix
-  const UnsignedInteger size = (N * (N + 1)) / 2;
   const UnsignedInteger dimension = sample.getDimension();
-  CovarianceMatrixCollection collection(size);
-  for (UnsignedInteger i = 0; i < size; ++i) collection[i] = CovarianceMatrix(SquareMatrix(dimension).getImplementation());
-
-  // Special case for a sample of size 1
-  if (size == 0) return UserDefinedCovarianceModel(mesh, collection);
-
-  const ComputeCovariancePolicy policy( sample, isCentered, collection );
-  TBB::ParallelFor( 0, size, policy );
-  return UserDefinedCovarianceModel(mesh, collection);
+  const UnsignedInteger fullDimension = N * dimension;
+  // Create a collection of null CovarianceMatrix
+  const UnsignedInteger size = sample.getSize();
+  if (size == 0) return CovarianceMatrix(fullDimension);
+  // Build the design matrix
+  MatrixImplementation designMatrix(fullDimension, size);
+  MatrixImplementation::iterator designBegin = designMatrix.begin();
+  if (isCentered)
+    {
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, designBegin);
+	  designBegin += fullDimension;
+	}
+    } // isCentered
+  else
+    {
+      const Point mean(sample.computeMean().getValues().getImplementation()->getData());
+      Point point(fullDimension);
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, &point[0]);
+	  point -= mean;
+	  std::copy(point.begin(), point.end(), designBegin);
+	  designBegin += fullDimension;
+	}
+    } // !isCentered
+  MatrixImplementation gram(designMatrix.computeGram(false));
+  const CovarianceMatrix result(gram / (isCentered ? size : size - 1.0));
+  return result;
 }
 
 /* Method save() stores the object through the StorageManager */

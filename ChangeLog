@@ -32,6 +32,7 @@
  * Removed deprecated Hessian,HessianImplementation,ParametricHessian::operator(inP,parameter)
  * Removed ExponentialCauchy, SecondOrderModel, SecondOrderImplementation
  * LowDiscrepancyExperiment to work with dependent distributions
+ * Deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
 
 === Python module ===
 
