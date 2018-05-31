@@ -7,12 +7,20 @@
 static void PythonProgressCallback(OT::Scalar percent, void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
   OT::ScopedPyObjectPointer point(OT::convert< OT::Scalar, OT::_PyFloat_ >(percent));
-  OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs( pyObj, point.get(), NULL ));
+  OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, point.get(), NULL));
+  if (result.isNull())
+  {
+    OT::handleException();
+  }
 }
 
 static OT::Bool PythonStopCallback(void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
-  OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs( pyObj, NULL ));
+  OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, NULL));
+  if (result.isNull())
+  {
+    OT::handleException();
+  }
   return OT::convert< OT::_PyInt_, OT::UnsignedInteger >(result.get());
 }
 
@@ -78,7 +86,8 @@ def TimerCallback(duration):
     >>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
     >>> algo.setMaximumOuterSampling(int(1e9))
     >>> algo.setMaximumCoefficientOfVariation(-1.0)
-    >>> algo.setStopCallback(TimerCallback(1.5))
+    >>> timer = TimerCallback(1.5)
+    >>> algo.setStopCallback(timer)
     >>> algo.run()
     """
     from time import time
