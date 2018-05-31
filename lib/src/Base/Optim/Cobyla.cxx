@@ -23,6 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/NearestNeighbourAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -120,7 +121,7 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode(ot_cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this));
+  int returnCode = ot_cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
   result_ = OptimizationResult(dimension, 2);
   result_.setProblem(getProblem());
@@ -149,10 +150,13 @@ void Cobyla::run()
     result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
   }
 
-  result_.setOptimalPoint(x);
-  const UnsignedInteger index = evaluationInputHistory_.find(x);
-  Scalar bestValue = evaluationOutputHistory_(index, 0);
-  result_.setOptimalValue(Point(1, bestValue));
+  UnsignedInteger optimalIndex = evaluationInputHistory_.find(x);
+  // x might not be exactly the best point evaluated, so fallback to the nearest
+  if (optimalIndex >= size)
+    optimalIndex = NearestNeighbourAlgorithm(evaluationInputHistory_).query(x);
+  result_.setOptimalPoint(evaluationInputHistory_[optimalIndex]);
+  result_.setOptimalValue(Point(1, evaluationOutputHistory_(optimalIndex, 0)));
+
   result_.setEvaluationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
