@@ -88,9 +88,6 @@ protected:
   /** Result accessor */
   void setResult(const ExpectationSimulationResult & result);
 
-  /** History strategy for the probability and variance estimate */
-  HistoryStrategy convergenceStrategy_;
-
   // The vector to study
   RandomVector randomVector_;
 
