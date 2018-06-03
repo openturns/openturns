@@ -25,6 +25,7 @@
 #include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -179,11 +180,128 @@ void KarhunenLoeveSVDAlgorithm::run()
   // Compute the SVD decomposition of the design matrix
   MatrixImplementation U;
   MatrixImplementation Vt;
-  // The singular values are given in decreasing order
-  // Last two arguments are:
-  //   * fullSVD = false, we only want kTilde columns of U
-  //   * keepIntact = false, designMatrix is no more used afterwards
-  const Point svd(designMatrix.computeSVD(U, Vt,  false, false));
+  Point svd;
+  // Do we use an approximate random algorithm?
+  if (ResourceMap::GetAsBool("KarhunenLoeveSVDAlgorithm-UseRandomSVD"))
+  {
+    LOGINFO("Use random SVD");
+    // Maximum number of singular values to compute
+    MatrixImplementation & A = designMatrix;
+    const UnsignedInteger m = A.getNbRows();
+    const UnsignedInteger n = A.getNbColumns();
+    const UnsignedInteger rank = std::min(std::min(ResourceMap::GetAsUnsignedInteger("KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank"), A.getNbColumns()), A.getNbRows());
+    LOGINFO(OSS() << "Maximum rank=" << rank);
+    LOGINFO(OSS() << "A=" << A.getNbRows() << "x" << A.getNbColumns());
+    if (ResourceMap::Get("KarhunenLoeveSVDAlgorithm-RandomSVDVariant") == "Halko2010")
+    {
+      // Here we use the algorithm described in:
+      // Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, "Finding structure with randomness: Probabilistic algorithms for constructing approximate matrix decompositions", https://arxiv.org/pdf/0909.4061.pdf
+      LOGINFO("Use Halko2010 variant");
+      // Create a Gaussian mixing matrix to apply to A = designMatrix
+      LOGINFO("Create a Gaussian mixing matrix to apply to A = designMatrix");
+      const MatrixImplementation Omega(m, rank, DistFunc::rNormal(m * rank));
+      LOGINFO(OSS() << "Omega=" << Omega.getNbRows() << "x" << Omega.getNbColumns());
+      // Y = A'.Omega
+      LOGINFO("Create Y = A'.Omega");
+      MatrixImplementation Y(A.genProd(Omega, true, false));
+      LOGINFO(OSS() << "Y=" << Y.getNbRows() << "x" << Y.getNbColumns());
+      // Orthonormalize Y columns
+      LOGINFO("Orthonormalize Y columns");
+      MatrixImplementation R;
+      Y = Y.computeQR(R, false, false);
+      LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
+      LOGINFO(OSS() << "Y=" << Y.getNbRows() << "x" << Y.getNbColumns());
+      // B = A.Y
+      LOGINFO("Create B = A.Y");
+      MatrixImplementation B(A.genProd(Y, false, false));
+      LOGINFO(OSS() << "B=" << B.getNbRows() << "x" << B.getNbColumns());
+      // Create a Gaussian mixing matrix to apply to B
+      LOGINFO("Create a Gaussian mixing matrix to apply to B");
+      MatrixImplementation P(B.getNbColumns(), rank, DistFunc::rNormal(B.getNbColumns() * rank));
+      LOGINFO(OSS() << "P=" << P.getNbRows() << "x" << P.getNbColumns());
+      // Z = B.P
+      LOGINFO("Create Z = B.P");
+      MatrixImplementation Z(B.genProd(P, false, false));
+      // Orthonormalize Z columns
+      LOGINFO("Orthonormalize Z columns");
+      Z = Z.computeQR(R, false, false);
+      LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
+      LOGINFO(OSS() << "Z=" << Z.getNbRows() << "x" << Z.getNbColumns());
+      // C = Z'.B
+      LOGINFO("Create C = Z'.B");
+      MatrixImplementation C(Z.genProd(B, true, false));
+      LOGINFO(OSS() << "C=" << C.getNbRows() << "x" << C.getNbColumns());
+      // Compute the SVD of C
+      LOGINFO("Compute the SVD of C");
+      MatrixImplementation Uc;
+      MatrixImplementation VTc;
+      svd = C.computeSVD(Uc, VTc, false, false);
+      LOGINFO(OSS() << "Uc=" << Uc.getNbRows() << "x" << Uc.getNbColumns());
+      LOGINFO(OSS() << "VTc=" << VTc.getNbRows() << "x" << VTc.getNbColumns());
+      // Restore A singular vectors
+      LOGINFO("Restore A singular vectors");
+      U = Z.genProd(Uc, false, false);
+      LOGINFO(OSS() << "U=" << U.getNbRows() << "x" << U.getNbColumns());
+      // Vt is not needed for the algorithm
+      // Vt = Y * Vt;
+    }
+    else
+    {
+      // Here we use the algorithm described in:
+      // Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert, "An algorithm for the principal component analysis of large data sets", arXiv:1007.5510v2
+      LOGINFO("Use Halko2011 variant");
+      const UnsignedInteger l = rank + ResourceMap::GetAsUnsignedInteger("KarhunenLoeveSVDAlgorithm-Halko2011Margin");
+      const UnsignedInteger iMax = ResourceMap::GetAsUnsignedInteger("KarhunenLoeveSVDAlgorithm-Halko2011Iterations");
+      // Create a Gaussian mixing matrix to apply to A = designMatrix
+      LOGINFO("Create a Gaussian mixing matrix to apply to A = designMatrix");
+      const MatrixImplementation G(n, l, DistFunc::rNormal(n * l));
+      LOGINFO(OSS() << "G=" << G.getNbRows() << "x" << G.getNbColumns());
+      LOGINFO("Create AGi = A.G");
+      MatrixImplementation AGi(A.genProd(G, false, false));
+      LOGINFO(OSS() << "AGi=" << AGi.getNbRows() << "x" << AGi.getNbColumns());
+      LOGINFO("Create H");
+      MatrixImplementation H(m, (iMax + 1) * l);
+      LOGINFO(OSS() << "H=" << H.getNbRows() << "x" << H.getNbColumns());
+      std::copy(AGi.begin(), AGi.end(), H.begin());
+      for (UnsignedInteger i = 1; i <= iMax; ++i)
+      {
+        AGi = A.genProd(A.genProd(AGi, true, false), false, false);
+        std::copy(AGi.begin(), AGi.end(), H.begin() + i * l);
+	LOGINFO(OSS() << "H=" << H.getNbRows() << "x" << H.getNbColumns());
+      }
+      LOGINFO("Create QR decomposition of H");
+      MatrixImplementation R;
+      MatrixImplementation Q(H.computeQR(R, false));
+      LOGINFO(OSS() << "R=" << R.getNbRows() << "x" << R.getNbColumns());
+      LOGINFO(OSS() << "Q=" << Q.getNbRows() << "x" << Q.getNbColumns());
+      LOGINFO("Create T = A.Q");
+      MatrixImplementation T(A.genProd(Q, true, false));
+      LOGINFO(OSS() << "T=" << T.getNbRows() << "x" << T.getNbColumns());
+      LOGINFO("Create SVD of T");
+      MatrixImplementation Uc;
+      MatrixImplementation VTc;
+      svd = T.computeSVD(Uc, VTc, false, false);
+      LOGINFO(OSS() << "Uc=" << Uc.getNbRows() << "x" << Uc.getNbColumns());
+      LOGINFO(OSS() << "VTc=" << VTc.getNbRows() << "x" << VTc.getNbColumns());
+      LOGINFO("Create U");
+      MatrixImplementation W(VTc.getNbColumns(), rank);
+      LOGINFO(OSS() << "W=" << W.getNbRows() << "x" << W.getNbColumns());
+      for (UnsignedInteger i = 0; i < VTc.getNbColumns(); ++i)
+	for (UnsignedInteger j = 0; j < rank; ++j)
+	  W(i, j) = VTc(j, i);
+      U = Q.genProd(W, false, false);
+      LOGINFO(OSS() << "U=" << U.getNbRows() << "x" << U.getNbColumns());
+    }
+  }
+  else
+  {
+    LOGINFO("Use LAPACK SVD");
+    // The singular values are given in decreasing order
+    // Last two arguments are:
+    //   * fullSVD = false, we only want kTilde columns of U
+    //   * keepIntact = false, designMatrix is no more used afterwards
+    svd = designMatrix.computeSVD(U, Vt,  false, false);
+  }
   LOGDEBUG(OSS(false) << "U=\n" << U << ", singular values=" << svd);
   Scalar cumulatedVariance = 0.0;
   Point eigenValues(svd.getDimension());

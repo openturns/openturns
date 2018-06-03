@@ -78,9 +78,30 @@ We have:
 
     \tilde{\vect{\varphi}}_k(\vect{t})= \sum_{\ell=1}^L  C(\vect{t}, \vect{\xi}_\ell) \vect{\phi}_{\ell,k} \quad \mbox{pour} \quad k \leq \tilde{K}
 
+The most computationally intensive part of the algorithm is the computation of the
+SVD decomposition. By default, it is done using LAPACK dgesdd routine. While being
+very accurate and reasonably fast for small to medium sized problems, it becomes
+prohibitively slow for large cases. The user can choose to use a stochastic
+algorithm instead, with the constraint that the number of singular values to be
+computed has to be fixed a priori.
+The following keys of :class:`~openturns.ResourceMap` allow to select and tune
+these algorithms:
 
+    - 'KarhunenLoeveSVDAlgorithm-UseRandomSVD' which triggers the use of a random
+      algorithm. By default, it is set to *False* and LAPACK is used.
+    - 'KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank' which fixes the number of
+      singular values to compute. By default it is set to 1000.	
+    - 'KarhunenLoeveSVDAlgorithm-RandomSVDVariant' which can be equal to either
+      'Halko2010' for [Halko2010]_ (the default) or 'Halko2011' for [Halko2011]_.
+      These two algorithms have very similar structures, the first one being based
+      on a random compression of both the rows and columns of :math:`\mat{Y}`, the
+      second one being based on an iterative compressed sampling of the columns of
+      :math:`\mat{Y}`.
+    - 'KarhunenLoeveSVDAlgorithm-Halko2011Margin' and
+      'KarhunenLoeveSVDAlgorithm-Halko2011Iterations' to fix the parameters of the
+      'Halko2011' variant. See [Halko2011]_ for the details.
 
-
+      
 Examples
 --------
 Create a Karhunen-Loeve SVD algorithm:
