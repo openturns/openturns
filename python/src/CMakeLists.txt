@@ -454,7 +454,6 @@ ot_add_python_module(algo algo_module.i
 		      KarhunenLoeveResult.i KarhunenLoeveResult_doc.i.in
 		      KarhunenLoeveAlgorithmImplementation.i KarhunenLoeveAlgorithmImplementation_doc.i.in
 		      KarhunenLoeveP1Algorithm.i KarhunenLoeveP1Algorithm_doc.i.in
-		      KarhunenLoeveSVDAlgorithm.i KarhunenLoeveSVDAlgorithm_doc.i.in
 		      KarhunenLoeveAlgorithm.i KarhunenLoeveAlgorithm_doc.i.in
                       BaseAlgoTemplateDefs.i
                    )
@@ -545,6 +544,7 @@ ot_add_python_module(model_process model_process_module.i
                       ARMAFactory.i ARMAFactory_doc.i.in
 		      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
 		      KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in
+		      KarhunenLoeveSVDAlgorithm.i KarhunenLoeveSVDAlgorithm_doc.i.in
                       PythonEvaluation.cxx
                       PythonGradient.cxx
                       PythonHessian.cxx

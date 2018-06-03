@@ -166,6 +166,13 @@
   <!-- OT::KarhunenLoeveQuadratureAlgorithm parameters -->
   <KarhunenLoeveQuadratureAlgorithm-RegularizationFactor value="0.0" />
 
+  <!-- OT::KarhunenLoeveSVDAlgorithm parameters -->
+  <KarhunenLoeveSVDAlgorithm-UseRandomSVD         value="false"  />
+  <KarhunenLoeveSVDAlgorithm-RandomSVDVariant     value="tygert" />
+  <KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank value="1000"   />
+  <KarhunenLoeveSVDAlgorithm-TygertMargin         value="2"      />
+  <KarhunenLoeveSVDAlgorithm-TygertIterations     value="2"      />
+
   <!-- OT::KarhunenLoeveP1Algorithm parameters -->
   <KarhunenLoeveP1Algorithm-RegularizationFactor value="0.0" />
 
