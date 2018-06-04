@@ -198,7 +198,7 @@ You may also want to enable debug symbols for further use with a debugger.
 ::
 
     mkdir -p build && cd build
-    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wno-unused-parameter" ..
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wno-unused-parameter -D_GLIBCXX_ASSERTIONS" ..
     make
 
 Namespaces
