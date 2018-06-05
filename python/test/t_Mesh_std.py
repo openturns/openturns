@@ -96,3 +96,8 @@ rotation[0, 1] = m.sin(m.pi / 3.0)
 rotation[1, 0] = -m.sin(m.pi / 3.0)
 rotation[1, 1] = m.cos(m.pi / 3.0)
 rotation[2, 2] = 1.0
+
+# isregular bug
+time_grid = ot.RegularGrid(0.0, 0.2, 40963)
+mesh = ot.Mesh(time_grid)
+print(mesh.isRegular())

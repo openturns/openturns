@@ -505,7 +505,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "Domain-SmallVolume",   1.0e-12 );
 
   // Mesh parameters
-  setAsScalar( "Mesh-VertexEpsilon", 1.0e-12 );
+  setAsScalar( "Mesh-VertexEpsilon", 1.0e-6 );
   setAsUnsignedInteger( "Mesh-LargeSize", 5000 );
   setAsBool( "Mesh-BackfaceCulling", false );
   setAsScalar( "Mesh-DiffuseFactor", 0.7 );

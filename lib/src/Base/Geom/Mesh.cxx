@@ -411,10 +411,11 @@ Bool Mesh::isRegular() const
   Bool regular = true;
   const Scalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
   const Scalar step = vertices_(simplices_(0, 1), 0) - vertices_(simplices_(0, 0), 0);
-  for (UnsignedInteger i = 1; i < size; ++i)
+  const Scalar absStep = std::abs(step);
+  for (UnsignedInteger i = 1; (i < size) && regular; ++ i)
   {
-    regular = regular && (std::abs(vertices_(simplices_(i, 1), 0) - vertices_(simplices_(i, 0), 0) - step) < epsilon);
-    if (!regular) break;
+    const Scalar delta = vertices_(simplices_(i, 1), 0) - vertices_(simplices_(i, 0), 0);
+    regular = (std::abs(delta - step) <= absStep * epsilon);
   }
   return regular;
 }
