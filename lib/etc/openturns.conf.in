@@ -242,7 +242,7 @@
   <Domain-SmallVolume   value="1.0e-12" />
 
   <!-- OT::Mesh parameters -->
-  <Mesh-VertexEpsilon   value="1.0e-12" />
+  <Mesh-VertexEpsilon   value="1.0e-6" />
   <Mesh-LargeSize       value="5000"    />
   <Mesh-BackfaceCulling value="false"   />
   <Mesh-DiffuseFactor   value="0.7"     />
