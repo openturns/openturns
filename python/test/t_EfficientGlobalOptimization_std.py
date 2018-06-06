@@ -160,3 +160,28 @@ openturns.testing.assert_almost_equal(
 # ei = algo.getExpectedImprovement()
 # print(ei)
 print('OK')
+
+
+# Cobyla out of bound test
+ot.RandomGenerator.SetSeed(0)
+dim = 4
+model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['x1*x1+x2^3*x1+x3+x4'])
+model = ot.MemoizeFunction(model)
+bounds = ot.Interval([-5.0] * dim, [5.0] * dim)
+problem = ot.OptimizationProblem()
+problem.setObjective(model)
+problem.setBounds(bounds)
+experiment = ot.Composite([0.0] * dim, [1.0, 2.0, 4.0])
+inputSample = experiment.generate()
+outputSample = model(inputSample)
+covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
+basis = ot.ConstantBasisFactory(dim).build()
+kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
+kriging.run()
+algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
+algo.setMaximumEvaluationNumber(2)
+algo.run()
+result = algo.getResult()
+
+
+

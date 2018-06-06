@@ -122,11 +122,11 @@ Install the package::
 
     yum install python-openturns
 
-Archlinux/Parabola
-------------------
+Archlinux
+---------
 Install from `AUR <https://aur.archlinux.org/packages/openturns/>`_::
 
-    yaourt -S openturns
+    aurman -S openturns
 
 
 From sources
