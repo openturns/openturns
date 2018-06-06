@@ -473,6 +473,11 @@ void ResourceMap::loadDefaultConfiguration()
   // SobolSequence parameters //
   setAsUnsignedInteger( "SobolSequence-InitialSeed", 1 );
 
+  // ProcessSample parameters //
+  setAsUnsignedInteger( "ProcessSample-RobbinsMonroProximalIterations", 10 );
+  setAsScalar( "ProcessSample-RobbinsMonroProximalFactor", 1.0 );
+  setAsScalar( "ProcessSample-RobbinsMonroExponent", 0.75 );
+
   // SensitivityAlgorithm parameters //
   setAsBool( "SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution", false );
   setAsUnsignedInteger( "SobolIndicesAlgorithm-DefaultBlockSize", 1 );

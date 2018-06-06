@@ -210,6 +210,10 @@
   <!-- OT::SobolSequence parameters -->
   <SobolSequence-InitialSeed value="1" />
 
+  <!-- OT::ProcessSample parameters -->
+  <ProcessSample-RobbinsMonroProximalIterations value="10"  />
+  <ProcessSample-RobbinsMonroProximalFactor     value="1.0" />
+
   <!-- OT::SensitivityAlgorithm parameters -->
   <SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution value="0" />
   <SobolIndicesAlgorithm-DefaultBlockSize value="1" />
