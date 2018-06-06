@@ -172,6 +172,11 @@ ProcessSample ProcessSample::computeQuantilePerComponent(const Point & prob) con
   return getImplementation()->computeQuantilePerComponent(prob);
 }
 
+Field ProcessSample::computeQuantilePerComponentRobbinsMonroBasic(const Scalar prob) const
+{
+  return getImplementation()->computeQuantilePerComponentRobbinsMonroBasic(prob);
+}
+
 /* Get the i-th marginal process sample */
 ProcessSample ProcessSample::getMarginal(const UnsignedInteger index) const
 {

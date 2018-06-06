@@ -725,6 +725,12 @@ void ResourceMap::loadDefaultConfiguration()
   // ReverseHaltonSequence parameters //
   setAsUnsignedInteger( "ReverseHaltonSequence-InitialSeed", 1 );
 
+  // ProcessSample parameters //
+  setAsBool( "ProcessSample-UseRobbinsMonroQuantile", false );
+  setAsScalar( "ProcessSample-RobbinsMonroProximalFactor", 1.0 );
+  setAsScalar( "ProcessSample-RobbinsMonroExponent", 0.75 );
+  setAsUnsignedInteger( "ProcessSample-RobbinsMonroProximalIterations", 10 );
+
   // SobolSequence parameters //
   setAsUnsignedInteger( "SobolSequence-InitialSeed", 1 );
 

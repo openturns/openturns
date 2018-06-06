@@ -208,6 +208,12 @@
   <!-- OT::ReverseHaltonSequence parameters -->
   <ReverseHaltonSequence-InitialSeed value_int="1" />
 
+  <!-- OT::ProcessSample parameters -->
+  <ProcessSample-UseRobbinsMonroQuantile        value_bool="false" />
+  <ProcessSample-RobbinsMonroProximalFactor     value_float="1.0" />
+  <ProcessSample-RobbinsMonroExponent           value_float="0.75" />
+  <ProcessSample-RobbinsMonroProximalIterations value_int="10"  />
+
   <!-- OT::SobolSequence parameters -->
   <SobolSequence-InitialSeed value_int="1" />
 

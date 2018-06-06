@@ -104,6 +104,14 @@ public:
   Field computeQuantilePerComponent(const Scalar prob) const;
   ProcessSampleImplementation computeQuantilePerComponent(const Point & prob) const;
 
+ private:
+  /**  Method computeQuantilePerComponent() gives the quantile per component of the sample using Robbins Monro approximation, nested version */
+  Sample computeQuantilePerComponentRobbinsMonro(const Scalar prob) const;
+ public:
+  
+  /**  Method computeQuantilePerComponent() gives the quantile per component of the sample using Robbins Monro approximation, basic version */
+  Field computeQuantilePerComponentRobbinsMonroBasic(const Scalar prob) const;
+  
   /** Get the i-th marginal sample */
   ProcessSampleImplementation getMarginal(const UnsignedInteger index) const;
 

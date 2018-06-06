@@ -109,6 +109,9 @@ public:
   Field computeQuantilePerComponent(const Scalar prob) const;
   ProcessSample computeQuantilePerComponent(const Point & prob) const;
 
+  /** For comparison/debugging purpose */
+  Field computeQuantilePerComponentRobbinsMonroBasic(const Scalar prob) const;
+
   /** Get the i-th marginal sample */
   ProcessSample getMarginal(const UnsignedInteger index) const;
 
