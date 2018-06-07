@@ -201,17 +201,68 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
-  // This initialization set the correct time grid into result
   const UnsignedInteger dimension = data_[0].getDimension();
   const UnsignedInteger length = data_[0].getSize();
-  Sample result(length, dimension);
-  // Loop over the location indices
-  for (UnsignedInteger i = 0; i < length; ++i)
+  const UnsignedInteger sampleSize = dimension * length;
+
+  // Store and transpose values in a contiguous buffer
+  Point contiguous(size * sampleSize);
+  for (UnsignedInteger k = 0; k < size; ++k)
   {
-    Sample dataI(size, dimension);
-    for (UnsignedInteger j = 0; j < size; ++j)
-      dataI[j] = data_[j][i];
-    result[i] = dataI.computeQuantilePerComponent(prob);
+    const SampleImplementation::data_const_iterator data_begin = data_[k].getImplementation()->data_begin();
+    for (UnsignedInteger ij = 0; ij < sampleSize; ++ij)
+      contiguous[ij * size + k] = *(data_begin + ij);
+  }
+
+  // Special case for extremum cases
+  const Scalar scalarIndex = prob * size - 0.5;
+  UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
+  Scalar beta = scalarIndex - index;
+  if (scalarIndex >= size - 1)
+  {
+    beta = 0.0;
+  }
+  else if (scalarIndex <= 0.0)
+  {
+    beta = 0.0;
+    // Ensure that index does not overflow
+    index = 0;
+  }
+
+  const Scalar alpha = 1.0 - beta;
+  Point::iterator it = contiguous.begin();
+  SampleImplementation result(length, dimension);
+  if (beta == 0.0)
+  {
+    // We use a special case here to avoid using an indefinite value if index is the last element
+    for (SampleImplementation::data_iterator resultIt = result.data_begin(); resultIt != result.data_end(); ++resultIt, it += size)
+    {
+      // Find index-th element
+      std::nth_element(it, it + index, it + size);
+      *resultIt = *(it + index);
+    }
+  }
+  else if (2 * index > size)
+  {
+    for (SampleImplementation::data_iterator resultIt = result.data_begin(); resultIt != result.data_end(); ++resultIt, it += size)
+    {
+      // Find index-th and (index+1)-th elements
+      std::nth_element(it, it + index, it + size);
+      std::nth_element(it + index, it + index + 1, it + size);
+      // Interpolation between the two adjacent empirical quantiles
+      *resultIt = alpha * (*(it + index)) + beta * (*(it + index + 1));
+    }
+  }
+  else
+  {
+    for (SampleImplementation::data_iterator resultIt = result.data_begin(); resultIt != result.data_end(); ++resultIt, it += size)
+    {
+      // Find index-th and (index+1)-th elements
+      std::nth_element(it, it + index + 1, it + size);
+      std::nth_element(it, it + index, it + index + 1);
+      // Interpolation between the two adjacent empirical quantiles
+      *resultIt = alpha * (*(it + index)) + beta * (*(it + index + 1));
+    }
   }
   return Field(mesh_, result);
 }
