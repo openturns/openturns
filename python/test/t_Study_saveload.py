@@ -120,7 +120,7 @@ try:
     formulas[2] = '(a+2*b^2+3*c^3)/6'
     analytical = ot.SymbolicFunction(input, formulas)
     analytical.setName('analytical')
-    analytical.setDescription(['a', 'b', 'c','z1', 'z2', 'z3'])
+    analytical.setOutputDescription(['z1', 'z2', 'z3'])
     myStudy.add('analytical', analytical)
 
     # Create a TaylorExpansionMoments algorithm

@@ -34,10 +34,14 @@ OT_Function_hessian_doc
 OT_Function_getDescription_doc
 %feature("docstring") OT::Function::setDescription
 OT_Function_setDescription_doc
+%feature("docstring") OT::Function::setInputDescription
+OT_Function_setInputDescription_doc
 %feature("docstring") OT::Function::getInputDescription
 OT_Function_getInputDescription_doc
 %feature("docstring") OT::Function::getOutputDescription
 OT_Function_getOutputDescription_doc
+%feature("docstring") OT::Function::setOutputDescription
+OT_Function_setOutputDescription_doc
 %feature("docstring") OT::Function::getInputDimension
 OT_Function_getInputDimension_doc
 %feature("docstring") OT::Function::getOutputDimension
