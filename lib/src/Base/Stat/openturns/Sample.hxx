@@ -262,11 +262,13 @@ public:
    * Method computeQuantilePerComponent() gives the quantile per component of the sample
    */
   Point computeQuantilePerComponent(const Scalar prob) const;
+  Sample computeQuantilePerComponent(const Point & prob) const;
 
   /**
    * Method computeQuantile() gives the N-dimension quantile of the sample
    */
   Point computeQuantile(const Scalar prob) const;
+  Sample computeQuantile(const Point & prob) const;
 
   /**
    * Get the empirical CDF of the sample

@@ -470,12 +470,13 @@ Examples
 
 Parameters
 ----------
-p : float, :math:`0 \leq p \leq 1`
-    Input probability level.
+p : float, :math:`0 \leq p \leq 1`, or sequence of float
+    Input probability level.  When a sequence is given, it must be sorted
+    in ascending order.
 
 Returns
 -------
-quantile : :class:`~openturns.Point`
+quantile : :class:`~openturns.Point` or :class:`~openturns.Sample`
     Quantile of the joint distribution at probability level :math:`p`,
     estimated from the sample.
 
@@ -502,12 +503,13 @@ Examples
 
 Parameters
 ----------
-p : float, :math:`0 \leq p \leq 1`
-    Input probability level.
+p : float, :math:`0 \leq p \leq 1`, or sequence of float
+    Input probability level.  When a sequence is given, it must be sorted
+    in ascending order.
 
 Returns
 -------
-quantile : :class:`~openturns.Point`
+quantile : :class:`~openturns.Point` or :class:`~openturns.Sample`
     Componentwise quantile at probability level :math:`p`, estimated from the
     sample.
 

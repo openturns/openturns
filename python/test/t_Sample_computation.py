@@ -45,6 +45,9 @@ try:
     prob = 0.25
     print("Quantile per component(", prob, ")=", repr(
         sample.computeQuantilePerComponent(prob)))
+    probs = [0.25, 0.75]
+    print("Quantile per component(", probs, ")=", repr(
+        sample.computeQuantilePerComponent(probs)))
     pointCDF = Point(sample.getDimension(), 0.25)
     print(
         "Empirical CDF(", repr(pointCDF), "=", sample.computeEmpiricalCDF(pointCDF))

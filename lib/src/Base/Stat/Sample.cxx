@@ -530,10 +530,20 @@ Point Sample::computeQuantilePerComponent(const Scalar prob) const
   return getImplementation()->computeQuantilePerComponent(prob);
 }
 
+Sample Sample::computeQuantilePerComponent(const Point & prob) const
+{
+  return getImplementation()->computeQuantilePerComponent(prob);
+}
+
 /*
  * Method computeQuantile() gives the N-dimension quantile of the sample
  */
 Point Sample::computeQuantile(const Scalar prob) const
+{
+  return getImplementation()->computeQuantile(prob);
+}
+
+Sample Sample::computeQuantile(const Point & prob) const
 {
   return getImplementation()->computeQuantile(prob);
 }
