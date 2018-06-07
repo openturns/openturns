@@ -1733,8 +1733,19 @@ Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
     for (UnsignedInteger i = 0; i < size_; ++i)
       component[i] = operator()(i, j);
 
-    TBB::ParallelSort(component.begin(), component.end());
-
+    // Find index-th and (index+1)-th elements.
+    // We call nth_element twice, and select the right order so that second
+    // call operates on the smallest subset.
+    if (2 * index > size_)
+    {
+      std::nth_element(component.begin(), component.begin() + index, component.end());
+      std::nth_element(component.begin() + index, component.begin() + index + 1, component.end());
+    }
+    else
+    {
+      std::nth_element(component.begin(), component.begin() + index + 1, component.end());
+      std::nth_element(component.begin(), component.begin() + index, component.begin() + index + 1);
+    }
     // Interpolation between the two adjacent empirical quantiles
     quantile[j] = alpha * component[index] + beta * component[index + 1];
   } // end for
