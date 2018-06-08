@@ -34,8 +34,14 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
      # handle docstring generation
       set (DOCSTRING_IN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${it})
       get_filename_component (DOCSTRING_FILE_BASENAME ${DOCSTRING_IN_FILE} NAME_WE)
+      # https://github.com/swig/swig/issues/1273
+      if (SWIG_VERSION VERSION_LESS 4)
+        set (TIMES x4)
+      else ()
+        set (TIMES x2)
+      endif ()
       add_custom_target (generate_${DOCSTRING_FILE_BASENAME}
-                          COMMAND ${CMAKE_COMMAND} -DDOCSTRING_IN_FILE=${DOCSTRING_IN_FILE} -DDOCSTRING_FILE=${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i -P ${CMAKE_SOURCE_DIR}/cmake/escape_backslash_x4.cmake
+                          COMMAND ${CMAKE_COMMAND} -DDOCSTRING_IN_FILE=${DOCSTRING_IN_FILE} -DDOCSTRING_FILE=${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i -DTIMES=${TIMES} -P ${CMAKE_SOURCE_DIR}/cmake/escape_backslash.cmake
                           DEPENDS ${DOCSTRING_IN_FILE})
       add_dependencies (generate_docstrings generate_${DOCSTRING_FILE_BASENAME})
       list (APPEND SWIGFILES ${CMAKE_CURRENT_BINARY_DIR}/${DOCSTRING_FILE_BASENAME}.i)
