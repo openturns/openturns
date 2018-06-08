@@ -333,13 +333,53 @@ Sample FieldImplementation::asSample() const
   return data;
 }
 
-/* Return the field as a defomed mesh, ie its values are added to the components of the vertices if the dimensions match */
-Mesh FieldImplementation::asDeformedMesh() const
+/* Return the field as a defomed mesh, ie the dimension of the vertices is augmented using zero coordinates at the positions given by the first Indices, the dimension of the values is augmented the same way by adding zero values at the positions given by the second indices, then the vertices are translated by the values */
+Mesh FieldImplementation::asDeformedMesh(const Indices & verticesPadding,
+    const Indices & valuesPadding) const
 {
-  if (getOutputDimension() != getInputDimension()) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << values_.getDimension() << " does not match the mesh dimension=" << getInputDimension();
-  Sample data(mesh_.getVertices());
-  data += values_;
-  return Mesh(data, mesh_.getSimplices());
+  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger verticesPaddingSize = verticesPadding.getSize();
+  const UnsignedInteger augmentedInputDimension = inputDimension + verticesPaddingSize;
+  if (!verticesPadding.check(augmentedInputDimension)) throw InvalidArgumentException(HERE) << "Error: the given indices=" << verticesPadding << " of null coordinates for padding have ties or leave gaps in the augmented coordinates.";
+  const UnsignedInteger outputDimension = getOutputDimension();
+  const UnsignedInteger valuesPaddingSize = valuesPadding.getSize();
+  const UnsignedInteger augmentedOutputDimension = outputDimension + valuesPaddingSize;
+  if (!valuesPadding.check(augmentedOutputDimension)) throw InvalidArgumentException(HERE) << "Error: the given indices=" << valuesPadding << " of null values for padding have ties or leave gaps in the augmented values.";
+  // Most common situation: no dimension augmentation
+  if ((verticesPaddingSize == 0) && (valuesPaddingSize == 0))
+  {
+    if (inputDimension != outputDimension) throw InternalException(HERE) << "Error: cannot deform the mesh if the dimension of the values=" << outputDimension << " does not match the mesh dimension=" << inputDimension << ". Maybe you should augment one of the dimensions by padding zeros.";
+    return Mesh(mesh_.getVertices() + values_, mesh_.getSimplices());
+  }
+  const Indices nonZeroCoordinates(verticesPadding.complement(augmentedInputDimension));
+  const UnsignedInteger nonZeroCoordinatesSize = nonZeroCoordinates.getSize();
+  const Indices nonZeroValues(valuesPadding.complement(augmentedOutputDimension));
+  const UnsignedInteger nonZeroValuesSize = nonZeroValues.getSize();
+  const UnsignedInteger size = values_.getSize();
+  Sample vertices(mesh_.getVertices());
+  Sample deformedVertices(size, augmentedInputDimension);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      for (UnsignedInteger j = 0; j < nonZeroCoordinatesSize; ++j)
+	deformedVertices(i, nonZeroCoordinates[j]) = vertices(i, j);
+      for (UnsignedInteger j = 0; j < nonZeroValuesSize; ++j)
+	deformedVertices(i, nonZeroValues[j]) += values_(i, j);
+    }
+  // If the input dimension has not changed we can reuse the topology
+  const IndicesCollection oldSimplices(mesh_.getSimplices());
+  if (verticesPaddingSize == 0) return Mesh(deformedVertices, oldSimplices);
+  // Otherwise we have to adapt the topology
+  IndicesCollection newSimplices(oldSimplices.getSize(), augmentedInputDimension + 1);
+  for (UnsignedInteger i = 0; i < oldSimplices.getSize(); ++i)
+  {
+    // First copy the old vertices indices
+    for (UnsignedInteger j = 0; j <= inputDimension; ++j)
+      newSimplices(i, j) = oldSimplices(i, j);
+    // Then duplicate the last index to indicate a lower dimensional manifold
+    for (UnsignedInteger j = inputDimension + 1; j <= augmentedInputDimension; ++j)
+      newSimplices(i, j) = oldSimplices(i, inputDimension);
+  } // i
+  return Mesh(deformedVertices, newSimplices);
 }
 
 /* Draw a marginal of the Field */

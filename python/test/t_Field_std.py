@@ -46,3 +46,6 @@ with open(fname) as f:
     data = f.read()
     print(data)
 os.remove(fname)
+
+scalarField = ot.Field(mesh3D, ot.Sample(len(vertices), [1.0]))
+print('deformed with complement=', scalarField.asDeformedMesh([1], [0, 2, 3]))
