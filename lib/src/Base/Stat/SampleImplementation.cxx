@@ -1766,17 +1766,25 @@ SampleImplementation SampleImplementation::computeQuantilePerComponent(const Poi
   for (UnsignedInteger p = 0; p < probSize; ++p)
     if (!(prob[p] >= 0.0) || !(prob[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
-  // Check that prob is sorted; we could accept unsorted argument, but we would have to
-  // sort it and rearrange output; code is already ugly enough
-  for (UnsignedInteger p = 1; p < prob.getSize(); ++p)
-    if (!(prob[p - 1] <= prob[p])) throw InvalidArgumentException(HERE) << "Error: argument of computeQuantilePerComponent must be sorted in ascending order";
+  // Sort prob in ascending order
+  Collection< std::pair<Scalar, UnsignedInteger> > probPairs(probSize);
+  for (UnsignedInteger i = 0; i < probSize; ++i)
+    probPairs[i] = std::pair<Scalar, UnsignedInteger>(prob[i], i);
+  std::sort(probPairs.begin(), probPairs.end());
+  Bool sorted = true;
+  Indices indices(probSize);
+  for (UnsignedInteger i = 0; i < probSize; ++i)
+  {
+    if (probPairs[i].second != i) sorted = false;
+    indices[probPairs[i].second] = i;
+  }
 
   // Compute the list of pivots and coefficients
   Indices pivots(probSize);
   Point betas(probSize);
   for (UnsignedInteger p = 0; p < probSize; ++p)
   {
-    Scalar scalarIndex = prob[p] * size_ - 0.5;
+    const Scalar scalarIndex = probPairs[p].first * size_ - 0.5;
     UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
     Scalar beta = scalarIndex - index;
     // Special case for extremum cases
@@ -1796,6 +1804,7 @@ SampleImplementation SampleImplementation::computeQuantilePerComponent(const Poi
   }
 
   SampleImplementation quantile(probSize, dimension_);
+  quantile.setDescription(Description::BuildDefault(dimension_, "q"));
   Point component(size_);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
@@ -1840,7 +1849,7 @@ SampleImplementation SampleImplementation::computeQuantilePerComponent(const Poi
     }
   }
 
-  return quantile;
+  return sorted ? quantile : quantile.select(indices);
 }
 
 /*

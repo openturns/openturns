@@ -471,8 +471,7 @@ Examples
 Parameters
 ----------
 p : float, :math:`0 \leq p \leq 1`, or sequence of float
-    Input probability level.  When a sequence is given, it must be sorted
-    in ascending order.
+    Input probability level.
 
 Returns
 -------
@@ -504,8 +503,7 @@ Examples
 Parameters
 ----------
 p : float, :math:`0 \leq p \leq 1`, or sequence of float
-    Input probability level.  When a sequence is given, it must be sorted
-    in ascending order.
+    Input probability level.
 
 Returns
 -------

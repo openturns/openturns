@@ -79,6 +79,9 @@ int main(int argc, char *argv[])
     probs[0] = 0.25;
     probs[1] = 0.75;
     fullprint << "Quantile per component(" << probs << ")=" << sample.computeQuantilePerComponent(probs) << std::endl;
+    probs[0] = 0.75;
+    probs[1] = 0.25;
+    fullprint << "Quantile per component(" << probs << ")=" << sample.computeQuantilePerComponent(probs) << std::endl;
     Point pointCDF(sample.getDimension(), 0.25);
     fullprint << "Empirical CDF(" << pointCDF << "=" << sample.computeEmpiricalCDF(pointCDF) << std::endl;
     UnsignedInteger dim = 3;
