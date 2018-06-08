@@ -26,6 +26,7 @@
 #include "openturns/Drawable.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -193,6 +194,67 @@ Sample ProcessSampleImplementation::computeSpatialMean() const
   return result;
 }
 
+struct ComputeQuantilePerComponentPolicy
+{
+  Point & contiguous_;
+  SampleImplementation & output_;
+  const UnsignedInteger size_;
+  const UnsignedInteger index_;
+  const Scalar alpha_;
+  const Scalar beta_;
+
+  ComputeQuantilePerComponentPolicy( Point & contiguous,
+                        SampleImplementation & output,
+                        UnsignedInteger size,
+                        UnsignedInteger index,
+                        Scalar beta)
+    : contiguous_(contiguous)
+    , output_(output)
+    , size_(size)
+    , index_(index)
+    , alpha_(1.0 - beta)
+    , beta_(beta)
+  {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    Point::iterator it = contiguous_.begin() + r.begin() * size_;
+    SampleImplementation::data_iterator resultIt = output_.data_begin() + r.begin();
+    if (beta_ == 0)
+    {
+      // We use a special case here to avoid using an indefinite value if index is the last element
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++resultIt, it += size_)
+      {
+        // Find index-th element
+        std::nth_element(it, it + index_, it + size_);
+        *resultIt = *(it + index_);
+      }
+    }
+    else if (2 * index_ > size_)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++resultIt, it += size_)
+      {
+        // Find index-th and (index+1)-th elements
+        std::nth_element(it, it + index_, it + size_);
+        std::nth_element(it + index_, it + index_ + 1, it + size_);
+        // Interpolation between the two adjacent empirical quantiles
+        *resultIt = alpha_ * (*(it + index_)) + beta_ * (*(it + index_ + 1));
+      }
+    }
+    else
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++resultIt, it += size_)
+      {
+        // Find index-th and (index+1)-th elements
+        std::nth_element(it, it + index_ + 1, it + size_);
+        std::nth_element(it, it + index_, it + index_ + 1);
+        // Interpolation between the two adjacent empirical quantiles
+        *resultIt = alpha_ * (*(it + index_)) + beta_ * (*(it + index_ + 1));
+      }
+    }
+  }
+}; /* end struct ComputeQuantilePerComponentPolicy */
+
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
@@ -229,41 +291,9 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
     index = 0;
   }
 
-  const Scalar alpha = 1.0 - beta;
-  Point::iterator it = contiguous.begin();
   SampleImplementation result(length, dimension);
-  if (beta == 0.0)
-  {
-    // We use a special case here to avoid using an indefinite value if index is the last element
-    for (SampleImplementation::data_iterator resultIt = result.data_begin(); resultIt != result.data_end(); ++resultIt, it += size)
-    {
-      // Find index-th element
-      std::nth_element(it, it + index, it + size);
-      *resultIt = *(it + index);
-    }
-  }
-  else if (2 * index > size)
-  {
-    for (SampleImplementation::data_iterator resultIt = result.data_begin(); resultIt != result.data_end(); ++resultIt, it += size)
-    {
-      // Find index-th and (index+1)-th elements
-      std::nth_element(it, it + index, it + size);
-      std::nth_element(it + index, it + index + 1, it + size);
-      // Interpolation between the two adjacent empirical quantiles
-      *resultIt = alpha * (*(it + index)) + beta * (*(it + index + 1));
-    }
-  }
-  else
-  {
-    for (SampleImplementation::data_iterator resultIt = result.data_begin(); resultIt != result.data_end(); ++resultIt, it += size)
-    {
-      // Find index-th and (index+1)-th elements
-      std::nth_element(it, it + index + 1, it + size);
-      std::nth_element(it, it + index, it + index + 1);
-      // Interpolation between the two adjacent empirical quantiles
-      *resultIt = alpha * (*(it + index)) + beta * (*(it + index + 1));
-    }
-  }
+  const ComputeQuantilePerComponentPolicy policy( contiguous, result, size, index, beta);
+  TBB::ParallelFor( 0, sampleSize, policy );
   return Field(mesh_, result);
 }
 
