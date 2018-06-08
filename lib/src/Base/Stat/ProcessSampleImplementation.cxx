@@ -283,6 +283,7 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
   if (scalarIndex >= size - 1)
   {
     beta = 0.0;
+    index = size - 1;
   }
   else if (scalarIndex <= 0.0)
   {
@@ -295,6 +296,58 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
   const ComputeQuantilePerComponentPolicy policy( contiguous, result, size, index, beta);
   TBB::ParallelFor( 0, sampleSize, policy );
   return Field(mesh_, result);
+}
+
+ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerComponent(const Point & prob) const
+{
+  const UnsignedInteger size = getSize();
+  if (size == 0) return ProcessSampleImplementation();
+  if (size == 1) return *this;
+
+  // Check that prob is inside bounds
+  const UnsignedInteger probSize = prob.getSize();
+  for (UnsignedInteger p = 0; p < probSize; ++p)
+    if (!(prob[p] >= 0.0) || !(prob[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+
+  const UnsignedInteger dimension = data_[0].getDimension();
+  const UnsignedInteger length = data_[0].getSize();
+  const UnsignedInteger sampleSize = dimension * length;
+
+  // Store and transpose values in a contiguous buffer
+  Point contiguous(size * sampleSize);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const SampleImplementation::data_const_iterator data_begin = data_[k].getImplementation()->data_begin();
+    for (UnsignedInteger ij = 0; ij < sampleSize; ++ij)
+      contiguous[ij * size + k] = *(data_begin + ij);
+  }
+
+  SampleImplementation quantile(probSize, dimension);
+  ProcessSampleImplementation result(mesh_, 0, dimension);
+  SampleImplementation output(length, dimension);
+  output.setDescription(Description::BuildDefault(dimension, "q"));
+  for (UnsignedInteger p = 0; p < probSize; ++p)
+  {
+    const Scalar scalarIndex = prob[p] * size - 0.5;
+    UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
+    Scalar beta = scalarIndex - index;
+    // Special case for extremum cases
+    if (scalarIndex >= size - 1)
+    {
+      beta = 0.0;
+      index = size - 1;
+    }
+    else if (scalarIndex <= 0.0)
+    {
+      beta = 0.0;
+      // Ensure that index does not overflow
+      index = 0;
+    }
+    const ComputeQuantilePerComponentPolicy policy( contiguous, output, size, index, beta);
+    TBB::ParallelFor( 0, sampleSize, policy );
+    result.add(output);
+  }
+  return result;
 }
 
 /* Get the i-th marginal process sample */

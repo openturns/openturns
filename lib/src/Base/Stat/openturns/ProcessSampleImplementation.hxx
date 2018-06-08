@@ -102,6 +102,7 @@ public:
 
   /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
   Field computeQuantilePerComponent(const Scalar prob) const;
+  ProcessSampleImplementation computeQuantilePerComponent(const Point & prob) const;
 
   /** Get the i-th marginal sample */
   ProcessSampleImplementation getMarginal(const UnsignedInteger index) const;
