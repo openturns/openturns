@@ -28,6 +28,7 @@
 #include "openturns/QuadraticEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
+#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -132,10 +133,21 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
   /* We don't have a true linear algebra with tensors, so we must perform the tensor/vector product by hand */
   const Point delta(inP - center_);
   Point result(constant_ + linear_ * delta);
-  /* As we don't have a sheet extractor yet, we can't use the following code */
-  const UnsignedInteger sheetNumber = quadratic_.getNbSheets();
-  for(UnsignedInteger index = 0; index < sheetNumber; ++index)
-    result[index] += 0.5 * dot(delta, quadratic_.getSheet(index) * delta);
+
+  const UnsignedInteger nbSheets = quadratic_.getNbSheets();
+  const UnsignedInteger nbRows = quadratic_.getNbRows();
+  char uplo('L');
+  int n(nbRows);
+  int one(1);
+  double alpha(1.0);
+  double beta(0.0);
+  int luplo(1);
+  Point temp(nbRows);
+  for(UnsignedInteger index = 0; index < nbSheets; ++index)
+  {
+    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(quadratic_(0,0,index))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &temp[0], &one, &luplo);
+    result[index] += 0.5 * ddot_(&n, const_cast<double*>(&delta[0]), &one, &temp[0], &one);
+  }
   callsNumber_.increment();
   return result;
 }
