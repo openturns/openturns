@@ -50,7 +50,7 @@ public:
   KarhunenLoeveResultImplementation();
 
   /** Default constructor */
-  explicit KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
+  KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
       const Scalar threshold,
       const Point & eigenvalues,
       const FunctionCollection & modes,
