@@ -35,9 +35,10 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
       set (DOCSTRING_IN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${it})
       get_filename_component (DOCSTRING_FILE_BASENAME ${DOCSTRING_IN_FILE} NAME_WE)
       # https://github.com/swig/swig/issues/1273
-      if (SWIG_VERSION VERSION_LESS 4)
-        set (TIMES x4)
-      else ()
+      option (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH "Force double escaping of backslashes" OFF)
+      mark_as_advanced (SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
+      set (TIMES x1)
+      if ((SWIG_VERSION VERSION_LESS 4) OR SWIG_FORCE_DOUBLE_ESCAPE_BACKSLASH)
         set (TIMES x2)
       endif ()
       add_custom_target (generate_${DOCSTRING_FILE_BASENAME}
