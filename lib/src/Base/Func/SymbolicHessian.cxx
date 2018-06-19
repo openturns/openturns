@@ -182,7 +182,7 @@ void SymbolicHessian::initialize() const
       {
         firstDerivative = Ev3::Diff(ev3Expression, rowIndex);
         //                    Ev3::Simplify(&firstDerivative);
-        LOGINFO(OSS() << "First variable=" << p_evaluation_->inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
+        LOGDEBUG(OSS() << "First variable=" << p_evaluation_->inputVariablesNames_[rowIndex] << ", derivative=" << firstDerivative->ToString());
       }
       catch(...)
       {
@@ -194,7 +194,7 @@ void SymbolicHessian::initialize() const
         {
           Ev3::Expression secondDerivative(Ev3::Diff(firstDerivative, columnIndex));
           //                        Ev3::Simplify(&secondDerivative);
-          LOGINFO(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")d(" << p_evaluation_->inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
+          LOGDEBUG(OSS() << "d2(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")d(" << p_evaluation_->inputVariablesNames_[columnIndex] << ")=" << secondDerivative->ToString());
           hessianFormulas[hessianIndex] = secondDerivative->ToString();
           ++ hessianIndex;
         }

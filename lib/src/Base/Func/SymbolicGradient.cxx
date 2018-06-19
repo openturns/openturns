@@ -168,7 +168,7 @@ void SymbolicGradient::initialize() const
       {
         Ev3::Expression derivative(Ev3::Diff(ev3Expression, rowIndex));
         //                    Ev3::Simplify(&derivative);
-        LOGINFO(OSS() << "d(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")=" << derivative->ToString());
+        LOGDEBUG(OSS() << "d(" << ev3Expression->ToString() << ")/d(" << p_evaluation_->inputVariablesNames_[rowIndex] << ")=" << derivative->ToString());
         gradientFormulas[gradientIndex] = derivative->ToString();
         ++ gradientIndex;
       }
