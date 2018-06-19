@@ -101,7 +101,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
   if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim^2+1 points. */
   Sample gridPoints(2 * inputDimension * inputDimension + 1, inP);
-  UnsignedInteger index = 0;
+  UnsignedInteger index = 1;
   for(UnsignedInteger i = 1; i < inputDimension; ++i)
     for(UnsignedInteger j = 0; j < i; ++j)
     {
@@ -130,13 +130,13 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
   /* Evaluate the evaluation */
   Sample gridValues(evaluation_.operator()(gridPoints));
   /* Get the center value */
-  Point center(gridValues[gridValues.getSize() - 1]);
+  Point center(gridValues[0]);
   /* Compute the hessian */
   UnsignedInteger outputDimension = evaluation_.getOutputDimension();
   SymmetricTensor result(inputDimension, outputDimension);
-  UnsignedInteger diagonalOffset = 2 * inputDimension * (inputDimension - 1);
+  UnsignedInteger diagonalOffset = 1 + 2 * inputDimension * (inputDimension - 1);
   Scalar scale = -1.0;
-  UnsignedInteger offDiagonalOffset = 0;
+  UnsignedInteger offDiagonalOffset = 1;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     // Diagonal term
