@@ -168,19 +168,19 @@ void ExpectationSimulationAlgorithm::run()
     const Scalar coefficientOfVariationCriterion = covOk ? computeCriterion(coefficientOfVariationCriterionType_, coefficientOfVariation) : SpecFunc::MaxScalar;
 
     // decide whether we should stop
-    if (coefficientOfVariationCriterion <= getMaximumCoefficientOfVariation())
+    if (!stop && (coefficientOfVariationCriterion <= getMaximumCoefficientOfVariation()))
     {
       LOGINFO(OSS() << "Stopped due to maximum coefficient variation criterion:" << coefficientOfVariationCriterion);
       stop = true;
     }
-    if (standardDeviationCriterion <= getMaximumStandardDeviation())
+    if (!stop && (standardDeviationCriterion <= getMaximumStandardDeviation()))
     {
       LOGINFO(OSS() << "Stopped due to maximum standard deviation criterion:" << standardDeviationCriterion);
       stop = true;
     }
     for (UnsignedInteger j = 0; j < maximumStandardDeviationPerComponent_.getDimension(); ++ j)
     {
-      if (standardDeviation[j] <= maximumStandardDeviationPerComponent_[j])
+      if (!stop && (standardDeviation[j] <= maximumStandardDeviationPerComponent_[j]))
       {
         LOGINFO(OSS() << "Stopped due to maximum standard deviation criterion on component j=" << j << " sigma=" << standardDeviation[j]);
         stop = true;
@@ -207,7 +207,10 @@ void ExpectationSimulationAlgorithm::run()
     if (!stop && stopCallback_.first)
     {
       stop = stopCallback_.first(stopCallback_.second);
-      LOGINFO(OSS() << "Stopped due to user");
+      if (stop)
+      {
+        LOGINFO(OSS() << "Stopped due to user");
+      }
     }
   }
 }

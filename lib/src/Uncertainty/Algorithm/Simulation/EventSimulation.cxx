@@ -179,6 +179,10 @@ void EventSimulation::run()
     if (stopCallback_.first)
     {
       stop = stopCallback_.first(stopCallback_.second);
+      if (stop)
+      {
+        LOGINFO(OSS() << "Stopped due to user");
+      }
     }
   }
 }
