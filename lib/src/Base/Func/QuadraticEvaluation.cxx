@@ -136,6 +136,8 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
 
   const UnsignedInteger nbSheets = quadratic_.getNbSheets();
   const UnsignedInteger nbRows = quadratic_.getNbRows();
+  if (nbSheets == 0 || nbRows == 0)
+    return result;
   char uplo('L');
   int n(nbRows);
   int one(1);

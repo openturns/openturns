@@ -114,9 +114,11 @@ Matrix LinearGradient::gradient(const Point & inP) const
   if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   Matrix value(constant_);
   // Add the linear term <linear, x>
-  const Point delta(inP - center_);
   const UnsignedInteger nbSheets = linear_.getNbSheets();
   const UnsignedInteger nbRows = linear_.getNbRows();
+  if (nbSheets == 0 || nbRows == 0)
+    return value;
+  const Point delta(inP - center_);
   char uplo('L');
   int n(nbRows);
   int one(1);
