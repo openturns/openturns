@@ -42,3 +42,7 @@ Weibull-Exponential: RandomMixture(Weibull(alpha = 1, beta = 1, gamma = 0) - Exp
 result.CDF(1.0)=0.816060
 -Weibull-Exponential: RandomMixture(-Weibull(alpha = 1, beta = 1, gamma = 0) - Exponential(lambda = 1, gamma = 0))
 result.CDF(-1.0)=0.735759
+ComposedDistribution(RandomMixture(Normal(mu = 0, sigma = 1.41421)), RandomMixture(Normal(mu = 0, sigma = 1.41421)), IndependentCopula(dimension = 2))
+ComposedDistribution(RandomMixture(Normal(mu = 3, sigma = 1)), RandomMixture(Normal(mu = 3, sigma = 1)), IndependentCopula(dimension = 2))
+ComposedDistribution(RandomMixture(Normal(mu = 0, sigma = 1.41421)), RandomMixture(Normal(mu = 0, sigma = 1.41421)), IndependentCopula(dimension = 2))
+ComposedDistribution(RandomMixture(Normal(mu = -3, sigma = 1)), RandomMixture(Normal(mu = -3, sigma = 1)), IndependentCopula(dimension = 2))

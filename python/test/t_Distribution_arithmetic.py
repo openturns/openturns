@@ -167,3 +167,9 @@ print('result.CDF(1.0)=%.6f' % result.computeCDF(1.0))
 result = -1.0 * ot.Weibull() - ot.Exponential()
 print('-Weibull-Exponential:', result)
 print('result.CDF(-1.0)=%.6f' % result.computeCDF(-1.0))
+
+# 2-d
+print(ot.Normal(2) + ot.Normal(2))
+print(ot.Normal(2) + 3.0)
+print(ot.Normal(2) - ot.Normal(2))
+print(ot.Normal(2) - 3.0)
