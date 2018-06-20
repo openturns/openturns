@@ -295,6 +295,8 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
 
   const Sample convergenceSample(convergenceStrategy_.getSample());
   const UnsignedInteger dimension = convergenceSample.getDimension() / 2;
+  if (!(marginalIndex < dimension))
+    throw InvalidDimensionException (HERE) << "Marginal index must be <" << dimension;
   const UnsignedInteger size = convergenceSample.getSize();
   Sample dataEstimate(size, 2);
   Sample dataLowerBound(0, 2);
@@ -322,7 +324,7 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
   }
   const Curve estimateCurve(dataEstimate, "red", "solid", 2, "expectation estimate");
   OSS oss;
-  oss << getClassName() << " convergence graph at level " << level;
+  oss << "Expectation convergence graph at level " << level;
   Graph convergenceGraph(oss, "outer iteration", "estimate", true, "topright");
   convergenceGraph.add(estimateCurve);
   const Curve lowerBoundCurve(dataLowerBound, "green", "solid", 1, "bounds");
