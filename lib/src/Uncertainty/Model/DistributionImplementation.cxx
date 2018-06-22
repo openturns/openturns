@@ -148,21 +148,55 @@ Distribution DistributionImplementation::operator + (const Distribution & other)
 
 Distribution DistributionImplementation::operator + (const DistributionImplementation & other) const
 {
-  if ((dimension_ != 1) || (other.dimension_ != 1)) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator + (const DistributionImplementation & other) const: can add 1D distributions only.";
-  Collection< Distribution > coll(2);
-  coll[0] = *this;
-  coll[1] = other.clone();
-  return new RandomMixture(coll);
+  if (dimension_ != other.dimension_)
+    throw InvalidDimensionException(HERE) << "Can only sum distributions with the same dimension:" << dimension_ <<  " vs " << other.dimension_;
+
+  if (dimension_ == 1)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = *this;
+    coll[1] = other.clone();
+    return new RandomMixture(coll);
+  }
+
+  if (!hasIndependentCopula() || !other.hasIndependentCopula())
+    throw NotYetImplementedException(HERE) << "Can only sum distributions with independent copulas";
+
+  Collection< Distribution > marginals(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = getMarginal(j);
+    coll[1] = other.getMarginal(j);
+    marginals[j] = new RandomMixture(coll);
+  }
+  return new ComposedDistribution(marginals);
 }
 
 Distribution DistributionImplementation::operator + (const Scalar value) const
 {
-  if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator + (const Scalar value) const: can add a constant to 1D distributions only.";
   if (value == 0.0) return clone();
-  Collection< Distribution > coll(2);
-  coll[0] = *this;
-  coll[1] = Dirac(Point(1, value));
-  return new RandomMixture(coll);
+
+  if (dimension_ == 1)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = *this;
+    coll[1] = Dirac(Point(1, value));
+    return new RandomMixture(coll);
+  }
+
+  if (!hasIndependentCopula())
+    throw NotYetImplementedException(HERE) << "Can only add a constant to a distribution with an independent copula";
+
+  Collection< Distribution > marginals(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = getMarginal(j);
+    coll[1] = Dirac(Point(1, value));
+    marginals[j] = new RandomMixture(coll);
+  }
+  return new ComposedDistribution(marginals);
 }
 
 /* Subtraction operator */
@@ -173,24 +207,59 @@ Distribution DistributionImplementation::operator - (const Distribution & other)
 
 Distribution DistributionImplementation::operator - (const DistributionImplementation & other) const
 {
-  if ((dimension_ != 1) || (other.dimension_ != 1)) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator - (const DistributionImplementation & other) const: can subtract 1D distributions only.";
-  Collection< Distribution > coll(2);
-  coll[0] = *this;
-  coll[1] = other.clone();
+  if (dimension_ != other.dimension_)
+    throw InvalidDimensionException(HERE) << "Can only subtract distributions with the same dimension:" << dimension_ <<  " vs " << other.dimension_;
+
   Point weights(2);
   weights[0] = 1.0;
   weights[1] = -1.0;
-  return new RandomMixture(coll, weights);
+
+  if (dimension_ == 1)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = *this;
+    coll[1] = other.clone();
+    return new RandomMixture(coll, weights);
+  }
+
+  if (!hasIndependentCopula() || !other.hasIndependentCopula())
+    throw NotYetImplementedException(HERE) << "Can only subtract distributions with independent copulas";
+
+  Collection< Distribution > marginals(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = getMarginal(j);
+    coll[1] = other.getMarginal(j);
+    marginals[j] = new RandomMixture(coll, weights);
+  }
+  return new ComposedDistribution(marginals);
 }
 
 Distribution DistributionImplementation::operator - (const Scalar value) const
 {
-  if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator - (const Scalar value) const: can subtract a constant to 1D distributions only.";
   if (value == 0.0) return clone();
-  Collection< Distribution > coll(2);
-  coll[0] = *this;
-  coll[1] = Dirac(Point(1, -value));
-  return new RandomMixture(coll);
+
+  if (dimension_ == 1)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = *this;
+    coll[1] = Dirac(Point(1, -value));
+    return new RandomMixture(coll);
+  }
+
+  if (!hasIndependentCopula())
+    throw NotYetImplementedException(HERE) << "Can only subtract a constant to a distribution with an independent copula";
+
+  Collection< Distribution > marginals(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+  {
+    Collection< Distribution > coll(2);
+    coll[0] = getMarginal(j);
+    coll[1] = Dirac(Point(1, -value));
+    marginals[j] = new RandomMixture(coll);
+  }
+  return new ComposedDistribution(marginals);
 }
 
 /* Multiplication operator */
