@@ -167,6 +167,11 @@ Field ProcessSample::computeQuantilePerComponent(const Scalar prob) const
   return getImplementation()->computeQuantilePerComponent(prob);
 }
 
+ProcessSample ProcessSample::computeQuantilePerComponent(const Point & prob) const
+{
+  return getImplementation()->computeQuantilePerComponent(prob);
+}
+
 /* Get the i-th marginal process sample */
 ProcessSample ProcessSample::getMarginal(const UnsignedInteger index) const
 {

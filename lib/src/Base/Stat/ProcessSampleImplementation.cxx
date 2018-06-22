@@ -26,6 +26,7 @@
 #include "openturns/Drawable.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -193,6 +194,67 @@ Sample ProcessSampleImplementation::computeSpatialMean() const
   return result;
 }
 
+struct ComputeQuantilePerComponentPolicy
+{
+  Point & contiguous_;
+  SampleImplementation & output_;
+  const UnsignedInteger size_;
+  const UnsignedInteger index_;
+  const Scalar alpha_;
+  const Scalar beta_;
+
+  ComputeQuantilePerComponentPolicy( Point & contiguous,
+                        SampleImplementation & output,
+                        UnsignedInteger size,
+                        UnsignedInteger index,
+                        Scalar beta)
+    : contiguous_(contiguous)
+    , output_(output)
+    , size_(size)
+    , index_(index)
+    , alpha_(1.0 - beta)
+    , beta_(beta)
+  {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    Point::iterator it = contiguous_.begin() + r.begin() * size_;
+    SampleImplementation::data_iterator resultIt = output_.data_begin() + r.begin();
+    if (beta_ == 0)
+    {
+      // We use a special case here to avoid using an indefinite value if index is the last element
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++resultIt, it += size_)
+      {
+        // Find index-th element
+        std::nth_element(it, it + index_, it + size_);
+        *resultIt = *(it + index_);
+      }
+    }
+    else if (2 * index_ > size_)
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++resultIt, it += size_)
+      {
+        // Find index-th and (index+1)-th elements
+        std::nth_element(it, it + index_, it + size_);
+        std::nth_element(it + index_, it + index_ + 1, it + size_);
+        // Interpolation between the two adjacent empirical quantiles
+        *resultIt = alpha_ * (*(it + index_)) + beta_ * (*(it + index_ + 1));
+      }
+    }
+    else
+    {
+      for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++resultIt, it += size_)
+      {
+        // Find index-th and (index+1)-th elements
+        std::nth_element(it, it + index_ + 1, it + size_);
+        std::nth_element(it, it + index_, it + index_ + 1);
+        // Interpolation between the two adjacent empirical quantiles
+        *resultIt = alpha_ * (*(it + index_)) + beta_ * (*(it + index_ + 1));
+      }
+    }
+  }
+}; /* end struct ComputeQuantilePerComponentPolicy */
+
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
@@ -201,19 +263,91 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
-  // This initialization set the correct time grid into result
   const UnsignedInteger dimension = data_[0].getDimension();
   const UnsignedInteger length = data_[0].getSize();
-  Sample result(length, dimension);
-  // Loop over the location indices
-  for (UnsignedInteger i = 0; i < length; ++i)
+  const UnsignedInteger sampleSize = dimension * length;
+
+  // Store and transpose values in a contiguous buffer
+  Point contiguous(size * sampleSize);
+  for (UnsignedInteger k = 0; k < size; ++k)
   {
-    Sample dataI(size, dimension);
-    for (UnsignedInteger j = 0; j < size; ++j)
-      dataI[j] = data_[j][i];
-    result[i] = dataI.computeQuantilePerComponent(prob);
+    const SampleImplementation::data_const_iterator data_begin = data_[k].getImplementation()->data_begin();
+    for (UnsignedInteger ij = 0; ij < sampleSize; ++ij)
+      contiguous[ij * size + k] = *(data_begin + ij);
   }
+
+  // Special case for extremum cases
+  const Scalar scalarIndex = prob * size - 0.5;
+  UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
+  Scalar beta = scalarIndex - index;
+  if (scalarIndex >= size - 1)
+  {
+    beta = 0.0;
+    index = size - 1;
+  }
+  else if (scalarIndex <= 0.0)
+  {
+    beta = 0.0;
+    // Ensure that index does not overflow
+    index = 0;
+  }
+
+  SampleImplementation result(length, dimension);
+  const ComputeQuantilePerComponentPolicy policy( contiguous, result, size, index, beta);
+  TBB::ParallelFor( 0, sampleSize, policy );
   return Field(mesh_, result);
+}
+
+ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerComponent(const Point & prob) const
+{
+  const UnsignedInteger size = getSize();
+  if (size == 0) return ProcessSampleImplementation();
+  if (size == 1) return *this;
+
+  // Check that prob is inside bounds
+  const UnsignedInteger probSize = prob.getSize();
+  for (UnsignedInteger p = 0; p < probSize; ++p)
+    if (!(prob[p] >= 0.0) || !(prob[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+
+  const UnsignedInteger dimension = data_[0].getDimension();
+  const UnsignedInteger length = data_[0].getSize();
+  const UnsignedInteger sampleSize = dimension * length;
+
+  // Store and transpose values in a contiguous buffer
+  Point contiguous(size * sampleSize);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const SampleImplementation::data_const_iterator data_begin = data_[k].getImplementation()->data_begin();
+    for (UnsignedInteger ij = 0; ij < sampleSize; ++ij)
+      contiguous[ij * size + k] = *(data_begin + ij);
+  }
+
+  SampleImplementation quantile(probSize, dimension);
+  ProcessSampleImplementation result(mesh_, 0, dimension);
+  SampleImplementation output(length, dimension);
+  output.setDescription(Description::BuildDefault(dimension, "q"));
+  for (UnsignedInteger p = 0; p < probSize; ++p)
+  {
+    const Scalar scalarIndex = prob[p] * size - 0.5;
+    UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
+    Scalar beta = scalarIndex - index;
+    // Special case for extremum cases
+    if (scalarIndex >= size - 1)
+    {
+      beta = 0.0;
+      index = size - 1;
+    }
+    else if (scalarIndex <= 0.0)
+    {
+      beta = 0.0;
+      // Ensure that index does not overflow
+      index = 0;
+    }
+    const ComputeQuantilePerComponentPolicy policy( contiguous, output, size, index, beta);
+    TBB::ParallelFor( 0, sampleSize, policy );
+    result.add(output);
+  }
+  return result;
 }
 
 /* Get the i-th marginal process sample */

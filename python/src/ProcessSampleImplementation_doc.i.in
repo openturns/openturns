@@ -149,12 +149,12 @@ OT_ProcessSample_computeTemporalMean_doc
 
 Parameters
 ----------
-p : float, :math:`0 \leq p \leq 1`
+p : float, :math:`0 \leq p \leq 1`, or sequence of float
     Order of the quantile.
 
 Returns
 -------
-quantileField : :class:`~openturns.Field`
+quantile : :class:`~openturns.Field` or :class:`~openturns.ProcessSample`
     This field has the same size and the same dimension as the fields
     of the collection. At each vertex of the mesh, we estimate the
     component-wise quantile of order `p`, using the empirical quantile.
