@@ -12,16 +12,15 @@ a = 4.0
 # myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
 myMesh = ot.RegularGrid(-a, 2 * a / N, N + 1)
 
-myCovarianceCollection = ot.CovarianceMatrixCollection()
-for k in range(myMesh.getVerticesNumber()):
-    t = myMesh.getVertices()[k]
+vertices = myMesh.getVertices()
+myCovariance = ot.CovarianceMatrix(len(vertices))
+for k in range(len(vertices)):
+    t = vertices[k]
     for l in range(k + 1):
-        s = myMesh.getVertices()[l]
-        matrix = ot.CovarianceMatrix(1)
-        matrix[0, 0] = C(s[0], t[0])
-        myCovarianceCollection.add(matrix)
+        s = vertices[l]
+        myCovariance[k, l] = C(s[0], t[0])
 
-covarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovarianceCollection)
+covarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovariance)
 
 
 def f(x):

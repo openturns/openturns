@@ -125,12 +125,22 @@ Description FunctionImplementation::getDescription() const
 }
 
 /* Input description Accessor */
+void FunctionImplementation::setInputDescription(const Description & inputDescription)
+{
+  evaluation_.setInputDescription(inputDescription);
+}
+
 Description FunctionImplementation::getInputDescription() const
 {
   return evaluation_.getInputDescription();
 }
 
 /* Output description Accessor */
+void FunctionImplementation::setOutputDescription(const Description & outputDescription)
+{
+  evaluation_.setOutputDescription(outputDescription);
+}
+
 Description FunctionImplementation::getOutputDescription() const
 {
   return evaluation_.getOutputDescription();

@@ -440,6 +440,7 @@ if (BUILD_PYTHON)
     if (SWIG_EXECUTABLE)
       set (SWIG_USE_FILE ${CMAKE_ROOT}/Modules/UseSWIG.cmake)
       set (SWIG_FOUND TRUE)
+      set (SWIG_VERSION 2)
     endif ()
   else ()
     # we need absolute module imports

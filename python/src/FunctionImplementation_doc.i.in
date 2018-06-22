@@ -496,6 +496,19 @@ OT_Function_setDescription_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Function_setInputDescription_doc
+"Accessor to the description of the input vector.
+
+Parameters
+----------
+description : :class:`~openturns.Description`
+    Description of the input vector."
+%enddef
+%feature("docstring") OT::FunctionImplementation::setInputDescription
+OT_Function_setInputDescription_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Function_getInputDescription_doc
 "Accessor to the description of the input vector.
 
@@ -514,6 +527,19 @@ Examples
 %enddef
 %feature("docstring") OT::FunctionImplementation::getInputDescription
 OT_Function_getInputDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Function_setOutputDescription_doc
+"Accessor to the description of the output vector.
+
+Parameters
+----------
+description : :class:`~openturns.Description`
+    Description of the output vector."
+%enddef
+%feature("docstring") OT::FunctionImplementation::setOutputDescription
+OT_Function_setOutputDescription_doc
 
 // ---------------------------------------------------------------------
 

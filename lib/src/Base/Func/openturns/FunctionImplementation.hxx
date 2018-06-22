@@ -144,9 +144,11 @@ public:
   virtual Description getDescription() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */
+  void setInputDescription(const Description & inputDescription);
   virtual Description getInputDescription() const;
 
   /** Output description Accessor, i.e. the names of the Output parameters */
+  void setOutputDescription(const Description & outputDescription);
   virtual Description getOutputDescription() const;
 
   /** Get the i-th marginal function */

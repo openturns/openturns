@@ -123,12 +123,24 @@ Description Function::getDescription() const
 }
 
 /* Input description Accessor */
+void Function::setInputDescription(const Description & inputDescription)
+{
+  copyOnWrite();
+  getImplementation()->setInputDescription(inputDescription);
+}
+
 Description Function::getInputDescription() const
 {
   return getImplementation()->getInputDescription();
 }
 
 /* Output description Accessor */
+void Function::setOutputDescription(const Description & outputDescription)
+{
+  copyOnWrite();
+  getImplementation()->setOutputDescription(outputDescription);
+}
+
 Description Function::getOutputDescription() const
 {
   return getImplementation()->getOutputDescription();

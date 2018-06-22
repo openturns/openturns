@@ -56,7 +56,7 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
   if (outputVariablesNames.getSize() != formulas.getSize())
     throw InvalidDimensionException(HERE) << "The number of outputVariablesNames (" << outputVariablesNames.getSize()
                                           << ") does not match the number of formulas (" << formulas.getSize() << ")";
-
+  setOutputDescription(outputVariablesNames);
   initialize();
 } // SymbolicEvaluation
 
@@ -70,6 +70,7 @@ SymbolicEvaluation::SymbolicEvaluation(const Description & inputVariablesNames,
   , formulas_(Description(1, formula))
   , parser_(outputVariablesNames)
 {
+  setOutputDescription(outputVariablesNames);
   initialize();
 }
 
@@ -78,7 +79,6 @@ void SymbolicEvaluation::initialize()
   parser_.setVariables(inputVariablesNames_);
   parser_.setFormulas(formulas_);
   setInputDescription(inputVariablesNames_);
-  setOutputDescription(outputVariablesNames_);
 }
 
 /* Virtual constructor */

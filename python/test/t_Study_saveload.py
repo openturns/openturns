@@ -120,6 +120,7 @@ try:
     formulas[2] = '(a+2*b^2+3*c^3)/6'
     analytical = ot.SymbolicFunction(input, formulas)
     analytical.setName('analytical')
+    analytical.setOutputDescription(['z1', 'z2', 'z3'])
     myStudy.add('analytical', analytical)
 
     # Create a TaylorExpansionMoments algorithm
@@ -266,6 +267,7 @@ try:
     myStudy.fillObject('analytical', analytical)
 
     print('analytical = ', analytical)
+    print('analytical.outputDescription=', analytical.getOutputDescription())
 
     # Create a GeneralLinearModelResult from the one stored in the Study
     generalizedLinearModelResult = ot.GeneralLinearModelResult()
