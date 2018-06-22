@@ -77,6 +77,7 @@ public:
 
   /** Operator () */
   virtual Point operator() (const Point & inP) const;
+  virtual Sample operator() (const Sample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

@@ -21,6 +21,7 @@
 #include "openturns/LinearGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
+#include "openturns/Lapack.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -113,16 +114,19 @@ Matrix LinearGradient::gradient(const Point & inP) const
   if (inP.getDimension() != constant_.getNbRows()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
   Matrix value(constant_);
   // Add the linear term <linear, x>
-  for(UnsignedInteger i = 0; i < linear_.getNbRows(); ++i)
-  {
-    for(UnsignedInteger j = 0; j < linear_.getNbColumns(); ++j)
-    {
-      for(UnsignedInteger k = 0; k < linear_.getNbSheets(); ++k)
-      {
-        value(i, k) += (inP[j] - center_[j]) * linear_(i, j, k);
-      }
-    }
-  }
+  const UnsignedInteger nbSheets = linear_.getNbSheets();
+  const UnsignedInteger nbRows = linear_.getNbRows();
+  if (nbSheets == 0 || nbRows == 0)
+    return value;
+  const Point delta(inP - center_);
+  char uplo('L');
+  int n(nbRows);
+  int one(1);
+  double alpha(1.0);
+  double beta(1.0);
+  int luplo(1);
+  for(UnsignedInteger k = 0; k < nbSheets; ++k)
+    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(linear_(0,0,k))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &value(0,k), &one, &luplo);
   callsNumber_.increment();
   return value;
 }

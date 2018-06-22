@@ -28,6 +28,7 @@
 #include "openturns/QuadraticEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
+#include "openturns/Lapack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -132,11 +133,59 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
   /* We don't have a true linear algebra with tensors, so we must perform the tensor/vector product by hand */
   const Point delta(inP - center_);
   Point result(constant_ + linear_ * delta);
-  /* As we don't have a sheet extractor yet, we can't use the following code */
-  const UnsignedInteger sheetNumber = quadratic_.getNbSheets();
-  for(UnsignedInteger index = 0; index < sheetNumber; ++index)
-    result[index] += 0.5 * dot(delta, quadratic_.getSheet(index) * delta);
+
+  const UnsignedInteger nbSheets = quadratic_.getNbSheets();
+  const UnsignedInteger nbRows = quadratic_.getNbRows();
+  if (nbSheets == 0 || nbRows == 0)
+    return result;
+  char uplo('L');
+  int n(nbRows);
+  int one(1);
+  double alpha(1.0);
+  double beta(0.0);
+  int luplo(1);
+  Point temp(nbRows);
+  for(UnsignedInteger index = 0; index < nbSheets; ++index)
+  {
+    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(quadratic_(0,0,index))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &temp[0], &one, &luplo);
+    result[index] += 0.5 * ddot_(&n, const_cast<double*>(&delta[0]), &one, &temp[0], &one);
+  }
   callsNumber_.increment();
+  return result;
+}
+
+Sample QuadraticEvaluation::operator() (const Sample & inS) const
+{
+  if ((inS.getDimension() != linear_.getNbColumns()) || (inS.getDimension() != quadratic_.getNbRows())) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  const UnsignedInteger size = inS.getSize();
+  if (size == 0)
+    return Sample(0, inS.getDimension());
+  const Sample delta(inS - center_);
+  Sample result(linear_.getImplementation()->genSampleProd(delta, true, false, 'R'));
+  result.setDescription(getOutputDescription());
+  result += constant_;
+
+  const UnsignedInteger nbSheets = quadratic_.getNbSheets();
+  const UnsignedInteger nbRows = quadratic_.getNbRows();
+  if (nbSheets == 0 || nbRows == 0)
+    return result;
+  char side('L');
+  char uplo('L');
+  int m(nbRows);
+  int n(size);
+  int one(1);
+  double alpha(1.0);
+  double beta(0.0);
+  int lside(1);
+  int luplo(1);
+  MatrixImplementation temp(nbRows, size);
+  for(UnsignedInteger index = 0; index < nbSheets; ++index)
+  {
+    dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&(quadratic_(0,0,index))), &m, const_cast<double*>(&(delta(0,0))), &m, &beta, &temp(0,0), &m, &lside, &luplo);
+    for(UnsignedInteger i = 0; i < size; ++i)
+      result(i, index) += 0.5 * ddot_(&m, const_cast<double*>(&delta(i,0)), &one, &temp(0,i), &one);
+  }
+  callsNumber_.fetchAndAdd(size);
   return result;
 }
 
