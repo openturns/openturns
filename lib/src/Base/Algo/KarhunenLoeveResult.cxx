@@ -35,6 +35,18 @@ KarhunenLoeveResult::KarhunenLoeveResult()
   // Nothing to do
 }
 
+/* Constructor with parameters */
+KarhunenLoeveResult::KarhunenLoeveResult(const CovarianceModel & covariance,
+    const Scalar threshold,
+    const Point & eigenvalues,
+    const FunctionCollection & modes,
+    const ProcessSample & modesAsProcessSample,
+    const Matrix & projection)
+  : TypedInterfaceObject<KarhunenLoeveResultImplementation>( new KarhunenLoeveResultImplementation(covariance, threshold, eigenvalues, modes, modesAsProcessSample, projection) )
+{
+  // Nothing to do
+}
+
 /* Constructor from implementation */
 KarhunenLoeveResult::KarhunenLoeveResult(const KarhunenLoeveResultImplementation & implementation)
   : TypedInterfaceObject<KarhunenLoeveResultImplementation>( implementation.clone() )
