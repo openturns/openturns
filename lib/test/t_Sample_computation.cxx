@@ -75,6 +75,13 @@ int main(int argc, char *argv[])
     Scalar prob = 0.25;
     fullprint << "Quantile per component(" << prob << ")=" << sample.computeQuantilePerComponent(prob) << std::endl;
     //    fullprint << "Quantile(" << prob << ")=" << sample.computeQuantile(prob) << std::endl;
+    Point probs(2);
+    probs[0] = 0.25;
+    probs[1] = 0.75;
+    fullprint << "Quantile per component(" << probs << ")=" << sample.computeQuantilePerComponent(probs) << std::endl;
+    probs[0] = 0.75;
+    probs[1] = 0.25;
+    fullprint << "Quantile per component(" << probs << ")=" << sample.computeQuantilePerComponent(probs) << std::endl;
     Point pointCDF(sample.getDimension(), 0.25);
     fullprint << "Empirical CDF(" << pointCDF << "=" << sample.computeEmpiricalCDF(pointCDF) << std::endl;
     UnsignedInteger dim = 3;

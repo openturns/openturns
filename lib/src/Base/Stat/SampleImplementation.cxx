@@ -1733,13 +1733,123 @@ Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
     for (UnsignedInteger i = 0; i < size_; ++i)
       component[i] = operator()(i, j);
 
-    TBB::ParallelSort(component.begin(), component.end());
-
+    // Find index-th and (index+1)-th elements.
+    // We call nth_element twice, and select the right order so that second
+    // call operates on the smallest subset.
+    if (2 * index > size_)
+    {
+      std::nth_element(component.begin(), component.begin() + index, component.end());
+      std::nth_element(component.begin() + index, component.begin() + index + 1, component.end());
+    }
+    else
+    {
+      std::nth_element(component.begin(), component.begin() + index + 1, component.end());
+      std::nth_element(component.begin(), component.begin() + index, component.begin() + index + 1);
+    }
     // Interpolation between the two adjacent empirical quantiles
     quantile[j] = alpha * component[index] + beta * component[index + 1];
   } // end for
 
   return quantile;
+}
+
+/*
+ * Gives the quantile per component of the sample
+ */
+SampleImplementation SampleImplementation::computeQuantilePerComponent(const Point & prob) const
+{
+  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
+  const UnsignedInteger probSize = prob.getSize();
+  if (probSize == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component with an empty argument.";
+
+  // Check that prob is inside bounds
+  for (UnsignedInteger p = 0; p < probSize; ++p)
+    if (!(prob[p] >= 0.0) || !(prob[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+
+  // Sort prob in ascending order
+  Collection< std::pair<Scalar, UnsignedInteger> > probPairs(probSize);
+  for (UnsignedInteger i = 0; i < probSize; ++i)
+    probPairs[i] = std::pair<Scalar, UnsignedInteger>(prob[i], i);
+  std::sort(probPairs.begin(), probPairs.end());
+  Bool sorted = true;
+  Indices indices(probSize);
+  for (UnsignedInteger i = 0; i < probSize; ++i)
+  {
+    if (probPairs[i].second != i) sorted = false;
+    indices[probPairs[i].second] = i;
+  }
+
+  // Compute the list of pivots and coefficients
+  Indices pivots(probSize);
+  Point betas(probSize);
+  for (UnsignedInteger p = 0; p < probSize; ++p)
+  {
+    const Scalar scalarIndex = probPairs[p].first * size_ - 0.5;
+    UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
+    Scalar beta = scalarIndex - index;
+    // Special case for extremum cases
+    if (scalarIndex >= size_ - 1)
+    {
+      beta = 0.0;
+      index = size_ - 1;
+    }
+    else if (scalarIndex <= 0.0)
+    {
+      beta = 0.0;
+      // Ensure that index does not overflow
+      index = 0;
+    }
+    pivots[p] = index;
+    betas[p] = beta;
+  }
+
+  SampleImplementation quantile(probSize, dimension_);
+  quantile.setDescription(Description::BuildDefault(dimension_, "q"));
+  Point component(size_);
+  for (UnsignedInteger j = 0; j < dimension_; ++j)
+  {
+    for (UnsignedInteger i = 0; i < size_; ++i)
+      component[i] = operator()(i, j);
+
+    UnsignedInteger lastIndex = 0;
+    for (UnsignedInteger p = 0; p < probSize; ++p)
+    {
+      // Find index-th and (index+1)-th elements.
+      // We call nth_element twice, and select the right order so that second
+      // call operates on the smallest subset.
+      const UnsignedInteger index = pivots[p];
+      const Scalar beta = betas[p];
+      const Scalar alpha = 1.0 - beta;
+      if (beta == 0.0)
+      {
+        // We use a special case here to avoid using an indefinite value if index is the last element
+        std::nth_element(component.begin() + lastIndex, component.begin() + index, component.end());
+        quantile(p, j) = component[index];
+      }
+      else if (lastIndex == index && p > 0)
+      {
+        // Same index, but alpha and beta may have changed
+        quantile(p, j) = alpha * component[index] + beta * component[index + 1];
+      }
+      else if (2 * index > size_ + lastIndex)
+      {
+        std::nth_element(component.begin() + lastIndex, component.begin() + index, component.end());
+        std::nth_element(component.begin() + index, component.begin() + index + 1, component.end());
+        // Interpolation between the two adjacent empirical quantiles
+        quantile(p, j) = alpha * component[index] + beta * component[index + 1];
+      }
+      else
+      {
+        std::nth_element(component.begin() + lastIndex, component.begin() + index + 1, component.end());
+        std::nth_element(component.begin() + lastIndex, component.begin() + index, component.begin() + index + 1);
+        // Interpolation between the two adjacent empirical quantiles
+        quantile(p, j) = alpha * component[index] + beta * component[index + 1];
+      }
+      lastIndex = index;
+    }
+  }
+
+  return sorted ? quantile : quantile.select(indices);
 }
 
 /*
@@ -1751,6 +1861,14 @@ Point SampleImplementation::computeQuantile(const Scalar prob) const
 
   if (getDimension() == 1) return computeQuantilePerComponent(prob);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Scalar prob) const";
+}
+
+SampleImplementation SampleImplementation::computeQuantile(const Point & prob) const
+{
+  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
+
+  if (getDimension() == 1) return computeQuantilePerComponent(prob);
+  throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Point & prob) const";
 }
 
 struct CDFPolicy

@@ -715,11 +715,13 @@ public:
    * Gives the quantile per component of the sample
    */
   virtual Point computeQuantilePerComponent(const Scalar prob) const;
+  virtual SampleImplementation computeQuantilePerComponent(const Point & prob) const;
 
   /**
    * Gives the N-dimension quantile of the sample
    */
   Point computeQuantile(const Scalar prob) const;
+  SampleImplementation computeQuantile(const Point & prob) const;
 
   /**
    * Get the empirical CDF of the sample
