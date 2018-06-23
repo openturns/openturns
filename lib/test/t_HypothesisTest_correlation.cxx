@@ -91,22 +91,6 @@ int main(int , char *[])
   fullprint << "FullPearsonX0Y=" << HypothesisTest::FullPearson(sampleX, sampleY, 0.90) << std::endl;
   fullprint << "FullPearsonYY=" << HypothesisTest::FullPearson(sampleY, sampleY, 0.90) << std::endl;
 
-  // PartialSpearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on firstSample[i] and secondSample, for i in the selection.
-  // Probability of the H0 reject zone : 1-0.90
-
-  // The three tests must be equal
-  fullprint << "PartialSpearmanX0Y=" << HypothesisTest::PartialSpearman(sampleX, sampleY, selection2, 0.90) << std::endl;
-  fullprint << "SpearmanX0Y=" << HypothesisTest::Spearman(sampleX0, sampleY, 0.90) << std::endl;
-  fullprint << "FullSpearmanX0Y=" << HypothesisTest::FullSpearman(sampleX0, sampleY, 0.90) << std::endl;
-
-  fullprint << "PartialSpearmanXY=" << HypothesisTest::PartialSpearman(sampleX, sampleY, selection, 0.90) << std::endl;
-
-  // FullSpearman : Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullSpearman performs the Independence Spearman test simultaneously on all firstSample[i] and secondSample.
-  // Probability of the H0 reject zone : 1-0.90
-
-  fullprint << "FullSpearmanYZ=" << HypothesisTest::FullSpearman(sampleY, sampleZ, 0.90) << std::endl;
-  fullprint << "FullSpearmanYY=" << HypothesisTest::FullSpearman(sampleY, sampleY, 0.90) << std::endl;
-
   // Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used.
 
   // The two tests must be equal

@@ -60,7 +60,7 @@ public:
   /** Spearman test between 2 scalar samples : test the monotonous relation   */
   static TestResult Spearman(const Sample & firstSample,
                              const Sample & secondSample,
-                             const Scalar level = 0.95);
+                             const Scalar level = 0.05);
 
 
   /** Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numeriacl sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample, for i in the selection. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
@@ -79,7 +79,7 @@ public:
   static TestResultCollection PartialSpearman(const Sample & firstSample,
       const Sample & secondSample,
       const Indices & selection,
-      const Scalar level = 0.95);
+      const Scalar level = 0.05);
 
   /** Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullPearson performs the Independence Pearson test simultaneously on all firstSample[i] and secondSample. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
   static TestResultCollection FullPearson(const Sample & firstSample,
@@ -94,7 +94,7 @@ public:
   /** Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on all firstSample[i] and secondSample. */
   static TestResultCollection FullSpearman(const Sample & firstSample,
       const Sample & secondSample,
-      const Scalar level = 0.95);
+      const Scalar level = 0.05);
 
 protected:
   /** Generic invocation of a R script for executing a partial test between two samples */

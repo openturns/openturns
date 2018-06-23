@@ -145,6 +145,8 @@ public:
   static UnsignedInteger rPoisson(const Scalar lambda);
   static Indices rPoisson(const Scalar lambda,
                           const UnsignedInteger size);
+  // For Spearman test
+  static Scalar pSpearmanCorrelation(const UnsignedInteger size, const Scalar rho, const Bool tail = false, const Bool ties = false);
   // For Student distribution
   static Scalar pStudent(const Scalar nu,
                          const Scalar x,
