@@ -46,6 +46,12 @@ int main(int argc, char *argv[])
       Mixture distribution(atoms);
       Mixture::PointWithDescriptionCollection parameters(distribution.getParametersCollection());
       fullprint << "parameters=" << parameters << std::endl;
+      Point parameter(distribution.getParameter());
+      fullprint << "parameter=" << parameter << std::endl;
+      Description parameterDescription(distribution.getParameterDescription());
+      fullprint << "parameter description=" << parameterDescription << std::endl;
+      distribution.setParameter(parameter);
+
       for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
       // get weights used
@@ -214,4 +220,3 @@ int main(int argc, char *argv[])
 
   return ExitCode::Success;
 }
-

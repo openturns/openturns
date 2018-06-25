@@ -1,4 +1,6 @@
 parameters=[[w_0 : 0.142857, mean_0 : -3, standard_deviation_0 : 1, w_1 : 0.285714, mean_0 : 1, standard_deviation_0 : 2, w_2 : 0.571429, mean_0 : 3, standard_deviation_0 : 3]]
+parameter=class=Point name=Unnamed dimension=9 values=[0.142857,-3,1,0.285714,1,2,0.571429,3,3]
+parameter description=[w_0,mean_0,standard_deviation_0,w_1,mean_0,standard_deviation_0,w_2,mean_0,standard_deviation_0]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.57143]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[13.1429]

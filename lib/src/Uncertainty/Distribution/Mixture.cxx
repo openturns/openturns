@@ -230,7 +230,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     Scalar w = weights[i];
     if (w < smallWeight * maximumWeight)
     {
-      LOGINFO(OSS() << "Warning! The distribution number " << i << " has a too small weight=" << w << " for a relative threshold equal to Mixture-SmallWeight=" << smallWeight << " with respect to the maximum weight=" << maximumWeight << ". It is removed from the collection.");
+      LOGWARN(OSS() << "Warning! The distribution number " << i << " has a too small weight=" << w << " for a relative threshold equal to Mixture-SmallWeight=" << smallWeight << " with respect to the maximum weight=" << maximumWeight << ". It is removed from the collection.");
     }
     else
     {
@@ -545,6 +545,58 @@ Mixture::PointWithDescriptionCollection Mixture::getParametersCollection() const
   parameters[size].setName("dependence");
   return parameters;
 } // getParametersCollection
+
+Point Mixture::getParameter() const
+{
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Point parameter(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    parameter.add(distributionCollection_[i].getWeight());
+    parameter.add(distributionCollection_[i].getParameter());
+  }
+  return parameter;
+}
+
+Description Mixture::getParameterDescription() const
+{
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Description description(0);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    description.add(String(OSS() << "w_" << i));
+    description.add(distributionCollection_[i].getParameterDescription());
+  }
+  return description;
+}
+
+void Mixture::setParameter(const Point & parameter)
+{
+  // Save own weight
+  const Scalar w = getWeight();
+  // Get the atom parameters
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Collection<Distribution> newAtoms(size);
+  UnsignedInteger shift = 0;
+  const UnsignedInteger parameterSize = parameter.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Distribution atom(distributionCollection_[i]);
+    Point atomParameter(atom.getParameter());
+    const UnsignedInteger atomParameterSize = atomParameter.getSize();
+    if (shift + atomParameterSize + 1 > parameterSize) throw InvalidArgumentException(HERE) << "Error: expected at least a parameter of size=" << shift + atomParameterSize + 1 << ", got size=" << parameterSize;
+    // Update the current atom weight
+    atom.setWeight(parameter[shift]);
+    ++shift;
+    // Update the current atom parameter
+    std::copy(parameter.begin() + shift, parameter.begin() + shift + atomParameterSize, atomParameter.begin());
+    atom.setParameter(atomParameter);
+    newAtoms[i] = atom;
+    shift += atomParameterSize;
+  }
+  *this = Mixture(newAtoms);
+  setWeight(w);
+}
 
 /* Check if the distribution is elliptical */
 Bool Mixture::isElliptical() const

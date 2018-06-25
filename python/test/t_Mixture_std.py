@@ -160,6 +160,11 @@ try:
     print("covariance=", repr(covariance))
     parameters = distribution.getParametersCollection()
     print("parameters=", repr(parameters))
+    parameter = distribution.getParameter()
+    print("parameter=", parameter)
+    parameterDescription = distribution.getParameterDescription()
+    print("parameter description=", parameterDescription)
+    distribution.setParameter(parameter)
     for i in range(6):
         print("standard moment n=", i, " value=",
               distribution.getStandardMoment(i))
