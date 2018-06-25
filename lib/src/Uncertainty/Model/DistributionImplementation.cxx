@@ -1316,7 +1316,7 @@ Sample DistributionImplementation::computeDDF(const Sample & inSample) const
 /* Get the PDF of the distribution */
 Sample DistributionImplementation::computePDFSequential(const Sample & inSample) const
 {
-  LOGINFO("In DistributionImplementation::computePDFSequential(const Sample & inSample)");
+  LOGDEBUG("In DistributionImplementation::computePDFSequential(const Sample & inSample)");
   const UnsignedInteger size = inSample.getSize();
   SampleImplementation outSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i) outSample(i, 0) = computePDF(inSample[i]);
@@ -1347,7 +1347,7 @@ struct ComputePDFPolicy
 
 Sample DistributionImplementation::computePDFParallel(const Sample & inSample) const
 {
-  LOGINFO("In DistributionImplementation::computePDFParallel(const Sample & inSample)");
+  LOGDEBUG("In DistributionImplementation::computePDFParallel(const Sample & inSample)");
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
@@ -2892,12 +2892,12 @@ struct DistributionImplementationKendallTauWrapper
     : distribution_(distribution)
   {
     if (!distribution.isCopula())
-      {
-	const UnsignedInteger dimension = distribution.getDimension();
-	marginalCollection_ = Collection<Distribution>(dimension);
-	for (UnsignedInteger i = 0; i < dimension; ++i)
-	  marginalCollection_[i] = distribution.getMarginal(i);
-      }
+    {
+      const UnsignedInteger dimension = distribution.getDimension();
+      marginalCollection_ = Collection<Distribution>(dimension);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+        marginalCollection_[i] = distribution.getMarginal(i);
+    }
   }
 
   Point kernelForCopula(const Point & point) const
@@ -2911,12 +2911,12 @@ struct DistributionImplementationKendallTauWrapper
     Point x(dimension);
     Scalar factor = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-	const Point xi(marginalCollection_[i].computeQuantile(point[i]));
-	x[i] = xi[0];
-	factor *= marginalCollection_[i].computePDF(xi);
-	if (std::abs(factor) < SpecFunc::Precision) return Point(1, 0.0);
-      }
+    {
+      const Point xi(marginalCollection_[i].computeQuantile(point[i]));
+      x[i] = xi[0];
+      factor *= marginalCollection_[i].computePDF(xi);
+      if (std::abs(factor) < SpecFunc::Precision) return Point(1, 0.0);
+    }
     return Point(1, distribution_.computeCDF(point) * distribution_.computePDF(x) / factor);
   }
 
@@ -2954,12 +2954,12 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
       if (!marginalDistribution.hasIndependentCopula())
       {
         // Build the integrand
-	const DistributionImplementationKendallTauWrapper functionWrapper(marginalDistribution);
-	Function function;
-	if (isCopula())
-	    function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForCopula, 2, 1));
-	else
-	    function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForDistribution, 2, 1));
+        const DistributionImplementationKendallTauWrapper functionWrapper(marginalDistribution);
+        Function function;
+        if (isCopula())
+          function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForCopula, 2, 1));
+        else
+          function = (bindMethod<DistributionImplementationKendallTauWrapper, Point, Point>(functionWrapper, &DistributionImplementationKendallTauWrapper::kernelForDistribution, 2, 1));
         tau(rowIndex, columnIndex) = integrator.integrate(function, square)[0];
       }
     } // loop over column indices
@@ -4087,7 +4087,7 @@ void DistributionImplementation::setDescription(const Description & description)
   // Fourth, check if there was any duplicate
   if (it != test.end())
   {
-    LOGINFO(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Use default description instead.");
+    LOGWARN(OSS() << "Warning! The description of the distribution " << getName() << " is " << description << " and cannot identify uniquely the marginal distribution. Use default description instead.");
     description_ = Description::BuildDefault(dimension_, "X");
   }
   else description_ = description;

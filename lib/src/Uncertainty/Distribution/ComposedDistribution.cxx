@@ -191,7 +191,7 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
     if (marginalDescription.size() > 0) description[i] = marginalDescription;
     else
     {
-      LOGINFO(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the ComposedDistribution, because the marginal description is empty.");
+      LOGWARN(OSS() << "Warning: using the name of the marginal " << i << " instead of its description for building the description of the ComposedDistribution, because the marginal description is empty.");
       const String marginalName(coll[i].getName());
       description[i] = marginalName;
     }
