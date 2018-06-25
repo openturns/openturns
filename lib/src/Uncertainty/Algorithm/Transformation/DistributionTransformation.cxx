@@ -66,7 +66,7 @@ Function DistributionTransformation::Build (const Distribution & distribution,
     LOGINFO(OSS(false) << "Same distribution for input vector=" << distribution << " and basis=" << measure);
     transformation = IdentityFunction(dimension);
   }
-  else
+  else // No transformation
   {
     // The second case is when both distributions share the same copula
     // in which case the transformation is made of maginal transformations
@@ -131,9 +131,9 @@ Function DistributionTransformation::Build (const Distribution & distribution,
           invTZ = Function(FunctionImplementation(InverseRosenblattEvaluation(measure.getImplementation()).clone()));
         }
         transformation = ComposedFunction(invTZ, TX);
-      }
+      } // Different standard spaces
     } // Non-independent input copula
-  }
+  } // Transformation
   return transformation;
 }
 
