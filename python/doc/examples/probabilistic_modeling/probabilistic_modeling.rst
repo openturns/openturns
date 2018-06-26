@@ -41,6 +41,7 @@ Stochastic processes
     :maxdepth: 1
 
     mesh_creation.ipynb
+    regular_grid_creation.ipynb
     gaussian_process_covariance.ipynb
     gaussian_process_spectral.ipynb
     userdefined_covariance_model.ipynb
