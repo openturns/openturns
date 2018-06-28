@@ -43,6 +43,7 @@ Stochastic processes
     mesh_creation.ipynb
     regular_grid_creation.ipynb
     process_manipulation.ipynb
+    field_manipulation.ipynb
     gaussian_process_covariance.ipynb
     gaussian_process_spectral.ipynb
     userdefined_covariance_model.ipynb
