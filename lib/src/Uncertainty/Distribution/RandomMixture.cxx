@@ -33,6 +33,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Triangular.hxx"
 #include "openturns/Trapezoidal.hxx"
+#include "openturns/TruncatedDistribution.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/Exponential.hxx"
 #include "openturns/Gamma.hxx"
@@ -453,6 +454,12 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       // Aggregate the atoms
       atomCandidates.add(mixture->getDistributionCollection());
     } // atom is a RandomMixture
+    else if (atomKind == "TruncatedDistribution")
+    {
+      const TruncatedDistribution * truncatedDistribution(static_cast< const TruncatedDistribution * >(atom.getImplementation().get()));
+      weightCandidates.add(*w.getImplementation());
+      atomCandidates.add(truncatedDistribution->getSimplifiedVersion());
+    }
     else
     {
       weightCandidates.add(*w.getImplementation());
@@ -2065,9 +2072,8 @@ Scalar RandomMixture::computeCDF(const Point & point) const
   if (isAnalytical_ && (dimension_ == 1))
   {
     const Scalar alpha = weights_(0, 0);
-    if (alpha > 0.0) return distributionCollection_[0].computeCDF((x - constant_[0]) / alpha);
-    // If alpha < 0.0, compute the complementary CDF
-    return distributionCollection_[0].computeComplementaryCDF((x - constant_[0]) / alpha);
+    const Scalar cdf = alpha > 0.0 ? distributionCollection_[0].computeCDF((x - constant_[0]) / alpha) : distributionCollection_[0].computeComplementaryCDF((x - constant_[0]) / alpha);
+    return cdf;
   }
   // Check range
   const Interval range(getRange());
@@ -2234,6 +2240,15 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   if (interval.isNumericallyEmpty()) return 0.0;
+  // Use direct convolution for two continuous atoms of dimension 1
+  if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
+    {
+      const Scalar lower = interval.getLowerBound()[0];
+      const Scalar upper = interval.getUpperBound()[0];
+      const Scalar cdfLower = computeCDF(lower);
+      const Scalar cdfUpper = computeCDF(upper);
+      return std::min(1.0, std::max(0.0, cdfUpper - cdfLower));
+    }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
     const Scalar oldPDFPrecision = pdfPrecision_;
@@ -2264,23 +2279,15 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
 #endif
   }
   // Special case for combination containing only one contributor
-  if (isAnalytical_)
+  if (isAnalytical_ && (dimension_ == 1))
   {
     const Scalar lower = interval.getLowerBound()[0];
     const Scalar upper = interval.getUpperBound()[0];
-    const Scalar weight = getWeight();
-    // Negative weight, swap upper and lower bound flags
-    if (weight < 0.0)
-    {
-      const Interval adjustedInterval(Point(1, (upper - constant_[0]) / weight), Point(1, (lower - constant_[0]) / weight), interval.getFiniteUpperBound(), interval.getFiniteUpperBound());
-      return distributionCollection_[0].computeProbability(adjustedInterval.intersect(getRange()));
-    }
-    else
-    {
-      const Interval adjustedInterval(Point(1, (lower - constant_[0]) / weight), Point(1, (upper - constant_[0]) / weight), interval.getFiniteUpperBound(), interval.getFiniteUpperBound());
-      return distributionCollection_[0].computeProbability(interval.intersect(getRange()));
-    }
-  }
+    const Scalar alpha = weights_(0, 0);
+    // Negative alpha, swap upper and lower bound flags
+    if (alpha < 0.0) return distributionCollection_[0].computeProbability(Interval((upper - constant_[0]) / alpha, (lower - constant_[0]) / alpha));
+    return distributionCollection_[0].computeProbability(Interval((lower - constant_[0]) / alpha, (upper - constant_[0]) / alpha));
+  } // isAnalytical
   const Interval clippedInterval(getRange().intersect(interval));
   // Quick return if there is no mass in the clipped interval
   if (clippedInterval.isNumericallyEmpty()) return 0.0;
@@ -2374,12 +2381,18 @@ Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     Scalar epsilon = cdfEpsilon_ * sigma;
     Scalar dx = sigma;
     Scalar cdf = computeCDF(x);
+    const Bool twoAtoms = distributionCollection_.getSize() == 2;
     for (UnsignedInteger i = 0; i < 16 && std::abs(dx) > epsilon; ++i)
     {
       const Scalar pdf = computePDF(x);
       dx = (q - cdf) / pdf;
-      Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x, x + dx)) : computeProbability(Interval(x + dx, x)));
-      cdf += (dx > 0.0 ? dcdf : -dcdf);
+      // Depending on the size of the mixture, use computeCDF (size == 2) or computeProbability (size > 2)
+      if (twoAtoms) cdf = computeCDF(x);
+      else
+      {
+        const Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x, x + dx)) : computeProbability(Interval(x + dx, x)));
+        cdf += (dx > 0.0 ? dcdf : -dcdf);
+      }
       x += dx;
     }
     // Has the Newton iteration converged?

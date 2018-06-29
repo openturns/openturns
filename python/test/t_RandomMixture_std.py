@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from openturns import *
-from math import sqrt, pi, exp
+from math import sqrt, pi, exp, log
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
@@ -318,6 +318,24 @@ try:
     print("case 2, q=%.6f" % q)
     q = case2.computeQuantile(0.95, True)[0]
     print("case 2, q comp=%.6f" % q)
+    # For ticket 953
+    atom1 = TruncatedDistribution(Uniform(0.0, 1.0), 0.0, 1.0)
+    atom2 = Uniform(0.0, 2.0)
+    sum = atom1 + atom2
+    print("sum=", sum)
+    print("CDF=%.6g" % sum.computeCDF(2.0))
+    print("quantile=", sum.computeQuantile(0.2))
+    minS = 0.2
+    maxS = 10.0
+    muS = (log(minS) + log(maxS)) / 2.0
+    sigma = (log(maxS) - muS) / 3.0
+    atom1 = TruncatedDistribution(LogNormal(muS, sigma), minS, maxS)
+    atom2 = Uniform(0.0, 2.0)
+    sum = atom1 + atom2
+    print("sum=", sum)
+    print("CDF=%.6g" % sum.computeCDF(2.0))
+    print("quantile=", sum.computeQuantile(0.2))
+
 except:
     import sys
     print("t_RandomMixture_std.py", sys.exc_info()[0], sys.exc_info()[1])
