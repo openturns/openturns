@@ -70,6 +70,9 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
+  /** Get the simplified version (or clone the distribution) */
+  Distribution getSimplifiedVersion() const;
+
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */

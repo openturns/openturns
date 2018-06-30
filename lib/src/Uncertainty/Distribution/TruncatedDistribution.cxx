@@ -25,6 +25,9 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/TruncatedNormal.hxx"
+#include "openturns/Exponential.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 
@@ -66,6 +69,7 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   if (!SpecFunc::IsNormal(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter must be a real value, here bound=" << upperBound;
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can truncate only distribution with dimension=1, here dimension=" << distribution.getDimension();
   setName("TruncatedDistribution");
+  // This call also set the range
   setDistribution(distribution);
   setThresholdRealization(thresholdRealization);
   setDimension(1);
@@ -75,7 +79,6 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
   if (cdfLowerBound_ == cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the interval [lowerBound, upperBound] must contain a non-empty part of the support of the distribution, here CDf(lowerBound)=" << cdfLowerBound_ << " and CDF(upperBound)=" << cdfUpperBound_;
   pdfLowerBound_ = distribution.computePDF(Point(1, lowerBound));
   pdfUpperBound_ = distribution.computePDF(Point(1, upperBound));
-  computeRange();
 }
 
 /* Parameters constructor to use when one of the bounds is not finite */
@@ -173,6 +176,65 @@ String TruncatedDistribution::__str__(const String & offset) const
 TruncatedDistribution * TruncatedDistribution::clone() const
 {
   return new TruncatedDistribution(*this);
+}
+
+/* Get the simplified version (or clone the distribution) */
+Distribution TruncatedDistribution::getSimplifiedVersion() const
+{
+  // No simplification in the multivariate case for now
+  if (getDimension() > 1) return *this;
+  // Simplification of the 1D case
+  Distribution localDistribution(distribution_);
+  String kind(localDistribution.getImplementation()->getClassName());
+  Scalar lower = bounds_.getLowerBound()[0];
+  Scalar upper = bounds_.getUpperBound()[0];
+  // Delve into the antecedents until we get something not truncated
+  while (kind == "TruncatedDistribution")
+    {
+      const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
+      localDistribution = truncatedDistribution->getDistribution();
+      kind = localDistribution.getImplementation()->getClassName();
+      lower = std::max(lower, truncatedDistribution->getBounds().getLowerBound()[0]);
+      upper = std::min(upper, truncatedDistribution->getBounds().getUpperBound()[0]);
+    }
+  const Scalar a = localDistribution.getRange().getLowerBound()[0];
+  const Scalar b = localDistribution.getRange().getUpperBound()[0];
+  // If no truncation
+  const Scalar w = getWeight();
+  if ((lower <= a) && (upper >= b))
+    {
+      localDistribution.setWeight(w);
+      return localDistribution;
+    }
+  // Intersect the underlying distribution range and the truncation range
+  const Scalar alpha = std::max(lower, a);
+  const Scalar beta = std::min(upper, b);
+  // Actual simplifications
+  if (kind == "Uniform")
+    {
+      Uniform simplified(alpha, beta);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  if (kind == "Normal")
+    {
+      const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
+      const Scalar mu = normal->getMean()[0];
+      const Scalar sigma = normal->getSigma()[0];
+      TruncatedNormal simplified(mu, sigma, alpha, beta);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  if ((kind == "Exponential") && (upper >= b))
+    {
+      const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
+      const Scalar lambda = exponential->getLambda();
+      Exponential simplified(lambda, alpha);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  // No simplification
+ return TruncatedDistribution(localDistribution, alpha, beta);
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
