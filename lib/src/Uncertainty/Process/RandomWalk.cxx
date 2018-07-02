@@ -139,13 +139,6 @@ TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
   return TimeSeries(futurTimeGrid, data);
 }
 
-/* Get the random vector corresponding to the i-th marginal component */
-Process RandomWalk::getMarginal(const UnsignedInteger i) const
-{
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
-  return new RandomWalk(Point(1, origin_[i]), distribution_.getMarginal(i), mesh_);
-}
-
 /* Get the marginal process corresponding to indices components */
 Process RandomWalk::getMarginal(const Indices & indices) const
 {

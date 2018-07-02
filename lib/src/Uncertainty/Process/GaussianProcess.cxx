@@ -76,7 +76,7 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   , stationaryTrendValue_(trend.getOutputDimension())
   , samplingMethod_(0)
 {
-  if (trend.getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model input dimension=" << covarianceModel.getInputDimension();
+  if (trend.getTrendFunction().getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model input dimension=" << covarianceModel.getInputDimension();
   if (trend.getOutputDimension() != covarianceModel.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the covariance model dimension=" << covarianceModel.getOutputDimension();
   setMesh(mesh);
   setOutputDimension(covarianceModel.getOutputDimension());
@@ -389,6 +389,26 @@ Bool GaussianProcess::isNormal() const
   return true;
 }
 
+/* Get the random vector corresponding to the i-th marginal component */
+Process GaussianProcess::getMarginal(const Indices & indices) const
+{
+  const UnsignedInteger outputDimension = getOutputDimension();
+  if (!indices.check(outputDimension)) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
+  if (outputDimension == 1) return clone();
+
+  TrendTransform trend(getTrend().getTrendFunction().getMarginal(indices), getMesh());
+  GaussianProcess result(trend, getCovarianceModel().getMarginal(indices), getMesh());
+  result.hasStationaryTrend_ = hasStationaryTrend_;
+  result.checkedStationaryTrend_ = checkedStationaryTrend_;
+  if (hasStationaryTrend_)
+  {
+    Point stationaryTrendValue(indices.getSize());
+    for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+      stationaryTrendValue[i] = stationaryTrendValue_[indices[i]];
+    result.stationaryTrendValue_ = stationaryTrendValue;
+  }
+  return result.clone();
+}
 
 /* Method save() stores the object through the StorageManager */
 void GaussianProcess::save(Advocate & adv) const

@@ -200,9 +200,7 @@ ProcessSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
 /* Get the random vector corresponding to the i-th marginal component */
 Process ProcessImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index must be less than the output dimension";
-  if (getOutputDimension() == 1) return clone();
-  throw NotYetImplementedException(HERE) << "In ProcessImplementation::getMarginal(const UnsignedInteger i) const";
+  return getMarginal(Indices(1, i));
 }
 
 /* Get the marginal random vector corresponding to indices components */

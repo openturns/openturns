@@ -26,6 +26,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/Process.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -93,6 +94,9 @@ public:
 
   /** Check if the process is Normal */
   Bool isNormal() const;
+
+  /** Get the process corresponding to indices components */
+  virtual Process getMarginal(const Indices & indices) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

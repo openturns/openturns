@@ -178,13 +178,6 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
   return TimeSeries(futureTimeGrid, result);
 }
 
-/* Get the marginal process corresponding to the i-th marginal component */
-Process FunctionalBasisProcess::getMarginal(const UnsignedInteger i) const
-{
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal process must be in the range [0, dim-1]";
-  return getMarginal(Indices(1, i));
-}
-
 /* Get the marginal random vector corresponding to indices components */
 Process FunctionalBasisProcess::getMarginal(const Indices & indices) const
 {

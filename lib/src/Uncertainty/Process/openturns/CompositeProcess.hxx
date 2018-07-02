@@ -72,9 +72,6 @@ public:
   /** Function accessor */
   FieldFunction getFunction() const;
 
-  /** Get the random vector corresponding to the i-th marginal component */
-  Process getMarginal(const UnsignedInteger i) const;
-
   /** Get the marginal random vector corresponding to indices components */
   Process getMarginal(const Indices & indices) const;
 

@@ -132,12 +132,6 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   return TimeSeries(futurTimeGrid, function_(antecedent_.getFuture(stepNumber).getValues()));
 }
 
-/* Get the random vector corresponding to the i-th marginal component */
-Process CompositeProcess::getMarginal(const UnsignedInteger i) const
-{
-  return new CompositeProcess(function_.getMarginal(i), antecedent_.getMarginal(i));
-}
-
 /* Get the marginal random vector corresponding to indices components */
 Process CompositeProcess::getMarginal(const Indices & indices) const
 {
