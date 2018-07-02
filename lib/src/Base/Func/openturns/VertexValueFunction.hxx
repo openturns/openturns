@@ -80,6 +80,9 @@ public:
   /** Function accessor */
   Function getFunction() const;
 
+  /** Accessor for the input mesh */
+  virtual void setInputMesh(const Mesh & inputMesh);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

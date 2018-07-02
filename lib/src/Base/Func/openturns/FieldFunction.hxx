@@ -95,9 +95,11 @@ public:
   UnsignedInteger getOutputDimension() const;
 
   /** Accessor for the input mesh */
+  void setInputMesh(const Mesh & inputMesh);
   Mesh getInputMesh() const;
 
   /** Accessor for the output mesh */
+  void setOutputMesh(const Mesh & outputMesh);
   Mesh getOutputMesh() const;
 
   /** Input description Accessor, i.e. the names of the input parameters */

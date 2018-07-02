@@ -125,12 +125,22 @@ Description FieldFunctionImplementation::getOutputDescription() const
 }
 
 /* Accessor for the input mesh */
+void FieldFunctionImplementation::setInputMesh(const Mesh & inputMesh)
+{
+  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::setInputMesh";
+}
+
 Mesh FieldFunctionImplementation::getInputMesh() const
 {
   return inputMesh_;
 }
 
 /* Accessor for the output mesh */
+void FieldFunctionImplementation::setOutputMesh(const Mesh & outputMesh)
+{
+  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::setOutputMesh";
+}
+
 Mesh FieldFunctionImplementation::getOutputMesh() const
 {
   return outputMesh_;
