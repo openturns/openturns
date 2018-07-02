@@ -29,9 +29,9 @@ CLASSNAMEINIT(AbsoluteExponential)
 static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 
-/* Constructor based on spatial dimension */
-AbsoluteExponential::AbsoluteExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
+/* Constructor based on input dimension */
+AbsoluteExponential::AbsoluteExponential(const UnsignedInteger inputDimension)
+  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
 {
   definesComputeStandardRepresentative_ = true;
 }

@@ -187,7 +187,7 @@ void AggregatedProcess::setProcessCollection(const ProcessCollection & coll)
   UnsignedInteger outputDimension = processCollection_[0].getOutputDimension();
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    if (coll[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a spatial dimension=" << inputDimension << ", got process " << i << " with a spatial dimension=" << coll[i].getInputDimension();
+    if (coll[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an input dimension=" << inputDimension << ", got process " << i << " with an input dimension=" << coll[i].getInputDimension();
     processCollection_[i] = coll[i];
     outputDimension += coll[i].getOutputDimension();
   }
@@ -204,7 +204,7 @@ AggregatedProcess::ProcessCollection AggregatedProcess::getProcessCollection() c
 void AggregatedProcess::setMesh(const Mesh & mesh)
 {
   // We know that an AggregatedProcess cannot be built with an empty process collection
-  if (mesh.getDimension() != processCollection_[0].getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given mesh has a dimension=" << mesh.getDimension() << " which is different from the spatial dimension of the aggregated process spatial dimension=" << processCollection_[0].getInputDimension();
+  if (mesh.getDimension() != processCollection_[0].getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given mesh has a dimension=" << mesh.getDimension() << " which is different from the input dimension of the aggregated process input dimension=" << processCollection_[0].getInputDimension();
   for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
     processCollection_[i].setMesh(mesh);
   ProcessImplementation::setMesh(mesh);

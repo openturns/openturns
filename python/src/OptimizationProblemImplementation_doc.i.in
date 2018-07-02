@@ -85,7 +85,7 @@ OT_OptimizationProblem_getBounds_doc
 // ---------------------------------------------------------------------
 
 %define OT_OptimizationProblem_getDimension_doc
-"Accessor to spatial dimension.
+"Accessor to input dimension.
 
 Returns
 -------

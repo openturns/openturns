@@ -34,13 +34,13 @@ static const Factory<ProductCovarianceModel> Factory_ProductCovarianceModel;
 
 
 /* Default constructor */
-ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger spatialDimension)
-  : CovarianceModelImplementation(spatialDimension)
-  , collection_(spatialDimension, AbsoluteExponential(1))
+ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger inputDimension)
+  : CovarianceModelImplementation(inputDimension)
+  , collection_(inputDimension, AbsoluteExponential(1))
 {
   definesComputeStandardRepresentative_ = true;
   // Update the default values for the amplitude
-  setAmplitude(Point(spatialDimension, collection_[0].getAmplitude()[0]));
+  setAmplitude(Point(inputDimension, collection_[0].getAmplitude()[0]));
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
@@ -60,7 +60,7 @@ ProductCovarianceModel::ProductCovarianceModel(const CovarianceModelCollection &
 /* Collection accessor */
 void ProductCovarianceModel::setCollection(const CovarianceModelCollection & collection)
 {
-  // Check if the given models have a spatial dimension=1
+  // Check if the given models have an input dimension=1
   const UnsignedInteger size = collection.getSize();
   if (size == 0)
     throw InvalidArgumentException(HERE) << "Error: the collection must have a positive size, here size=0";

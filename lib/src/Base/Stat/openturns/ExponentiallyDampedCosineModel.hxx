@@ -45,8 +45,8 @@ class OT_API ExponentiallyDampedCosineModel
 public:
 
 
-  /** Constructor with spatial dimension */
-  explicit ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension = 1);
+  /** Constructor with input dimension */
+  explicit ExponentiallyDampedCosineModel(const UnsignedInteger inputDimension = 1);
 
   /** Standard constructor with scale and amplitude parameters */
   ExponentiallyDampedCosineModel(const Point & scale,

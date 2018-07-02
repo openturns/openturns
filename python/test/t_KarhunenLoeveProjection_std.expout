@@ -1,7 +1,7 @@
 projection= class=KarhunenLoeveProjection name=Unnamed input description=[v0] output description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] number of calls=0
 projection input description= [v0]
 projection output description= [xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9]#10
-projection spatial dimension= 1
+projection input dimension= 1
 projection input dimension= 1
 projection output dimension= 10
 field= 0 : [ -1           1.19752    ]

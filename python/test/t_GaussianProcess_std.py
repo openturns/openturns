@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
     # Default dimension parameter to evaluate the model
     defaultDimension = 1
-    spatialDimension = 1
+    inputDimension = 1
 
     # Amplitude values
     amplitude = Point(defaultDimension, 1.0)

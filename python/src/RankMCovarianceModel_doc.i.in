@@ -2,7 +2,7 @@
 "Covariance function of finite rank.
 
 Available constructors:
-    RankMCovarianceModel(*spatialDimension*)
+    RankMCovarianceModel(*inputDimension*)
 
     RankMCovarianceModel(*variance, basis*)
 

@@ -177,7 +177,7 @@ Y=     [ y0         y1         y2         ]
 7 : [ -1.50563    0.515853   3.93752   ]
 myFunc input dimension= 3
 myFunc output dimension= 3
-myFunc spatial dimension= 3
+myFunc input dimension= 3
 called  1  times
 X= [field 0:
     [ v0         v1         v2         X0         X1         X2         ]
@@ -281,5 +281,5 @@ field 4:
 7 : [  1          1          1         -1.50563    0.515853   3.93752   ]]
 myFunc input dimension= 3
 myFunc output dimension= 3
-myFunc spatial dimension= 3
+myFunc input dimension= 3
 called  6  times

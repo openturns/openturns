@@ -54,8 +54,8 @@ public:
 };
 
 /* Default constructor */
-DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension)
+DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension)
+  : StationaryCovarianceModel(inputDimension)
   , covarianceFactor_()
 {
   // Remove the scale from the active parameter
@@ -64,9 +64,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 }
 
 /* Parameters constructor */
-DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
+DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude)
-  : StationaryCovarianceModel(spatialDimension)
+  : StationaryCovarianceModel(inputDimension)
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -78,10 +78,10 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 }
 
 /** Parameters constructor */
-DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
+DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude,
     const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(Point(spatialDimension, 1.0), Point(amplitude.getDimension(), 1.0))
+  : StationaryCovarianceModel(Point(inputDimension, 1.0), Point(amplitude.getDimension(), 1.0))
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -96,9 +96,9 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimensio
 }
 
 /** Parameters constructor */
-DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger spatialDimension,
+DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const CovarianceMatrix & covariance)
-  : StationaryCovarianceModel(spatialDimension)
+  : StationaryCovarianceModel(inputDimension)
 {
   outputDimension_ = covariance.getDimension();
   amplitude_ = Point(outputDimension_);
@@ -186,7 +186,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 {
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
-                                         << " different from the input spatial dimension=" << inputDimension_;
+                                         << " different from the input dimension=" << inputDimension_;
 
   if (vertices.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
@@ -235,7 +235,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
 {
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
-                                         << " different from the input spatial dimension=" << inputDimension_;
+                                         << " different from the input dimension=" << inputDimension_;
 
   if (vertices.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";

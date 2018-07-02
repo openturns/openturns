@@ -37,7 +37,7 @@ class OT_API GeneralizedExponential
 public:
 
   /** Default constructor */
-  explicit GeneralizedExponential(const UnsignedInteger spatialDimension = 1);
+  explicit GeneralizedExponential(const UnsignedInteger inputDimension = 1);
 
   /** Parameters constructor */
   GeneralizedExponential(const Point & scale,

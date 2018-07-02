@@ -12,7 +12,7 @@ try:
     ot.PlatformInfo.SetNumericalPrecision(2)
 
     # Kriging use case
-    spatialDimension = 2
+    inputDimension = 2
 
     # Learning data
     levels = [8, 5]
@@ -31,7 +31,7 @@ try:
 
     # 3) Basis definition
     basisCollection = ot.BasisCollection(
-        1, ot.ConstantBasisFactory(spatialDimension).build())
+        1, ot.ConstantBasisFactory(inputDimension).build())
 
     # Kriring algorithm
     algo = ot.KrigingAlgorithm(inputSample, outputSample,

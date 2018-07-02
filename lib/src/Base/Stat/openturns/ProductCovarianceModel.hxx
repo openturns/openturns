@@ -43,7 +43,7 @@ public:
   typedef Collection<CovarianceModel>           CovarianceModelCollection;
 
   /** Default constructor */
-  explicit ProductCovarianceModel(const UnsignedInteger spatialDimension = 1);
+  explicit ProductCovarianceModel(const UnsignedInteger inputDimension = 1);
 
   /** Parameters constructor */
   explicit ProductCovarianceModel(const CovarianceModelCollection & collection);

@@ -76,7 +76,7 @@ GaussianProcess::GaussianProcess(const TrendTransform & trend,
   , stationaryTrendValue_(trend.getOutputDimension())
   , samplingMethod_(0)
 {
-  if (trend.getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model spatial dimension=" << covarianceModel.getInputDimension();
+  if (trend.getInputDimension() != covarianceModel.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an input dimension=" << trend.getInputDimension() << " different from the covariance model input dimension=" << covarianceModel.getInputDimension();
   if (trend.getOutputDimension() != covarianceModel.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given trend has an output dimension=" << trend.getOutputDimension() << " different from the covariance model dimension=" << covarianceModel.getOutputDimension();
   setMesh(mesh);
   setOutputDimension(covarianceModel.getOutputDimension());

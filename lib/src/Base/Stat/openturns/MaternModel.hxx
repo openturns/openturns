@@ -36,8 +36,8 @@ class OT_API MaternModel
 
 public:
 
-  /** Constructor based on spatial dimension*/
-  explicit MaternModel(const UnsignedInteger spatialDimension = 1);
+  /** Constructor based on input dimension*/
+  explicit MaternModel(const UnsignedInteger inputDimension = 1);
 
   /** Parameters constructor */
   MaternModel(const Point & scale,

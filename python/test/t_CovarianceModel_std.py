@@ -10,7 +10,7 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
 
     print('myModel = ',  myModel)
 
-    spatialDimension = myModel.getInputDimension()
+    inputDimension = myModel.getInputDimension()
     dimension = myModel.getOutputDimension()
     active = myModel.getActiveParameter()
     print('active=', active)
@@ -18,9 +18,9 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
     print('parameterDescription=', myModel.getParameterDescription())
 
     if x1 is None and x2 is None:
-        x1 = ot.Point(spatialDimension)
-        x2 = ot.Point(spatialDimension)
-        for j in range(spatialDimension):
+        x1 = ot.Point(inputDimension)
+        x2 = ot.Point(inputDimension)
+        for j in range(inputDimension):
             x1[j] = -1.0 - j
             x2[j] = 3.0 + 2.0 * j
 
@@ -31,19 +31,19 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
     print('dCov =', repr(grad))
 
     if (dimension == 1):
-        gradfd = ot.Point(spatialDimension)
-        for j in range(spatialDimension):
+        gradfd = ot.Point(inputDimension)
+        for j in range(inputDimension):
             x1_d = ot.Point(x1)
             x1_d[j] = x1_d[j] + eps
             gradfd[j] = (myModel(x1_d, x2)[0, 0] - myModel(x1, x2)[0, 0]) / eps
     else:
-        gradfd = ot.Matrix(spatialDimension, dimension * dimension)
+        gradfd = ot.Matrix(inputDimension, dimension * dimension)
         covarianceX1X2 = myModel(x1, x2)
         # Symmetrize matrix
         covarianceX1X2.getImplementation().symmetrize()
         centralValue = ot.Point(covarianceX1X2.getImplementation())
         # Loop over the shifted points
-        for i in range(spatialDimension):
+        for i in range(inputDimension):
             currentPoint = ot.Point(x1)
             currentPoint[i] += eps
             localCovariance = myModel(currentPoint, x2)
@@ -61,14 +61,14 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
         print('dCov/dP=', pGrad)
         ot.PlatformInfo.SetNumericalPrecision(precision)
 
-spatialDimension = 2
+inputDimension = 2
 
 
 myDefautModel = ot.SquaredExponential([2.0], [3.0])
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-myModel = ot.SquaredExponential([2.0] * spatialDimension, [3.0])
+myModel = ot.SquaredExponential([2.0] * inputDimension, [3.0])
 test_model(myModel)
 
 
@@ -76,7 +76,7 @@ myDefautModel = ot.GeneralizedExponential([2.0], [3.0], 1.5)
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-myModel = ot.GeneralizedExponential([2.0] * spatialDimension, [3.0], 1.5)
+myModel = ot.GeneralizedExponential([2.0] * inputDimension, [3.0], 1.5)
 test_model(myModel)
 
 
@@ -84,14 +84,14 @@ myDefautModel = ot.AbsoluteExponential([2.0], [3.0])
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-myModel = ot.AbsoluteExponential([2.0] * spatialDimension, [3.0])
+myModel = ot.AbsoluteExponential([2.0] * inputDimension, [3.0])
 test_model(myModel)
 
 myDefautModel = ot.MaternModel([2.0], [3.0], 1.5)
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-myModel = ot.MaternModel([2.0] * spatialDimension, [3.0], 1.5)
+myModel = ot.MaternModel([2.0] * inputDimension, [3.0], 1.5)
 test_model(myModel)
 
 
@@ -100,14 +100,14 @@ print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
 myModel = ot.ExponentiallyDampedCosineModel(
-    [2.0] * spatialDimension, [3.0], 1.5)
+    [2.0] * inputDimension, [3.0], 1.5)
 test_model(myModel)
 
 myDefautModel = ot.SphericalModel([2.0], [3.0], 4.5)
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-myModel = ot.SphericalModel([2.0] * spatialDimension, [3.0], 4.5)
+myModel = ot.SphericalModel([2.0] * inputDimension, [3.0], 4.5)
 test_model(myModel)
 
 
@@ -123,7 +123,7 @@ for j in range(dimension):
         spatialCorrelation[i, j] = (
             i + 1.0) / dimension - (j + 1.0) / dimension
 myModel = ot.DiracCovarianceModel(
-    spatialDimension, amplitude, spatialCorrelation)
+    inputDimension, amplitude, spatialCorrelation)
 test_model(myModel, x1=[0.5, 0.0], x2=[0.5, 0.0])
 
 myDefautModel = ot.ProductCovarianceModel()
@@ -137,13 +137,13 @@ test_model(myModel)
 
 # Collection ==> add covariance models
 # Add AbsoluteExponentialModel to the collection
-myAbsoluteExponential = ot.AbsoluteExponential([2.0] * spatialDimension, [3.0])
-mySquaredExponential = ot.SquaredExponential([2.0] * spatialDimension, [3.0])
+myAbsoluteExponential = ot.AbsoluteExponential([2.0] * inputDimension, [3.0])
+mySquaredExponential = ot.SquaredExponential([2.0] * inputDimension, [3.0])
 # Add exponentialModel to the collection
 amplitude = [4.0, 2.0]
-scale = [1.0] * spatialDimension
+scale = [1.0] * inputDimension
 # Define a spatial correlation
-spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
+spatialCorrelation = ot.CorrelationMatrix(inputDimension)
 spatialCorrelation[1, 0] = 0.3
 myExponentialModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 # Build TensorizedCovarianceModel with scale = [1,..,1]

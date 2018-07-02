@@ -14,7 +14,7 @@ try:
     print("myFunc input description=", myFunc.getInputDescription())
     print("myFunc output description=", myFunc.getOutputDescription())
     # Get the spatial, input and output dimension
-    print("myFunc spatial dimension=", myFunc.getInputMesh().getDimension())
+    print("myFunc input dimension=", myFunc.getInputMesh().getDimension())
     print("myFunc input dimension=", myFunc.getInputDimension())
     print("myFunc output dimension=", myFunc.getOutputDimension())
     # Get the number of calls

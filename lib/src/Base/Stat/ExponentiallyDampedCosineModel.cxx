@@ -33,9 +33,9 @@ CLASSNAMEINIT(ExponentiallyDampedCosineModel)
 
 static const Factory<ExponentiallyDampedCosineModel> Factory_ExponentiallyDampedCosineModel;
 
-/* Constructor from spatial dimension */
-ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension)
+/* Constructor from input dimension */
+ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger inputDimension)
+  : StationaryCovarianceModel(inputDimension)
   , frequency_(1.0)
 {
   definesComputeStandardRepresentative_ = true;

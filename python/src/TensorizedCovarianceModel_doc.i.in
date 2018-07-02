@@ -33,16 +33,16 @@ Examples
 Create a tensorized covariance function from the tensorization of an absolute exponential function, a squared exponential function and an exponential function:
 
 >>> import openturns as ot
->>> spatialDimension = 2
+>>> inputDimension = 2
 
 Create the each covariance models:
 
->>> myCov1 = ot.AbsoluteExponential([3.0] * spatialDimension)
->>> myCov2 = ot.SquaredExponential(spatialDimension *[2.0])
+>>> myCov1 = ot.AbsoluteExponential([3.0] * inputDimension)
+>>> myCov2 = ot.SquaredExponential(inputDimension *[2.0])
 
 >>> amplitude= [4.0, 2.0]
 >>> scale = [1.0, 1.0]
->>> spatialCorrelation = ot.CorrelationMatrix(spatialDimension)
+>>> spatialCorrelation = ot.CorrelationMatrix(inputDimension)
 >>> spatialCorrelation[1,0] = 0.3
 >>> myCov3 = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 
@@ -56,4 +56,4 @@ Create the tensorized model:
 
 Fix the same scale to each model:
 
->>> covarianceModel.setScale([1.0]*spatialDimension)"
+>>> covarianceModel.setScale([1.0]*inputDimension)"

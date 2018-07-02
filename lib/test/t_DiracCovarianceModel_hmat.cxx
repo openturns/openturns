@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 6);
 
     // Spatial dimension
-    const UnsignedInteger spatialDimension = 2;
+    const UnsignedInteger inputDimension = 2;
     // Dimension
     const UnsignedInteger dimension = 2;
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     Point amplitude(dimension);
     for (UnsignedInteger k = 0; k < dimension; ++k) amplitude[k] = 1.5 + 2.0 * k;
     // Model of dimension 2
-    DiracCovarianceModel myModel1(spatialDimension, amplitude);
+    DiracCovarianceModel myModel1(inputDimension, amplitude);
     fullprint << "myModel1 = " << myModel1 << std::endl;
     fullprint << "Pretty print of myModel1 = " << myModel1.__str__() << std::endl;
 
@@ -74,12 +74,12 @@ int main(int argc, char *argv[])
     for (UnsignedInteger j = 0; j < dimension; ++j)
       for (UnsignedInteger i = j + 1; i < dimension; ++i)
         spatialCorrelation(i , j) = (i + 1.0)  / dimension - (j + 1.0) / dimension;
-    DiracCovarianceModel myModel2(spatialDimension, amplitude, spatialCorrelation);
+    DiracCovarianceModel myModel2(inputDimension, amplitude, spatialCorrelation);
     fullprint << "myModel2 = " << myModel2 << std::endl;
     fullprint << "Pretty print of myModel2 = " << myModel2.__str__() << std::endl;
 
     // Evaluation on some points
-    Indices levels(spatialDimension, 1);
+    Indices levels(inputDimension, 1);
     Box box(levels);
     const Sample vertices = box.generate();
     const Scalar nuggetFactor = ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor");

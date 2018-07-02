@@ -13,7 +13,7 @@ spatialDim : int
     By default, equal to 1.
 scale : sequence of floats
     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
-    The size of :math:`\vect{\theta}` is the spatial dimension.
+    The size of :math:`\vect{\theta}` is the input dimension.
 amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
     Must be of size equal to 1.

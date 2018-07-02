@@ -66,7 +66,7 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
 /* Collection accessor */
 void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & collection)
 {
-  // Check if the given models have the same spatial dimension
+  // Check if the given models have the same input dimension
   const UnsignedInteger size = collection.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
   Point amplitude(0);
@@ -77,8 +77,8 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   {
     const UnsignedInteger localSpatialDimension = collection[i].getInputDimension();
     if (inputDimension_ != localSpatialDimension)
-      throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setCollection, incompatible spatial dimension of the element #" << i
-                                           << " spatial dimension of element = " << localSpatialDimension << ", spatial dimension of the model = " << inputDimension_;
+      throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setCollection, incompatible input dimension of the element #" << i
+                                           << " input dimension of element = " << localSpatialDimension << ", input dimension of the model = " << inputDimension_;
 
     const UnsignedInteger localDimension = collection[i].getOutputDimension();
     outputDimension_ += localDimension;
@@ -141,7 +141,7 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
     const CovarianceModel localCovariance = collection_[k];
     const UnsignedInteger localDimension = localCovariance.getOutputDimension();
     const Matrix gradient_k = localCovariance.partialGradient(s, t);
-    // Gradient gradient_k is of size spatialDimension x localDimension^2
+    // Gradient gradient_k is of size inputDimension x localDimension^2
     for (UnsignedInteger localIndex = 0; localIndex < localDimension * localDimension; ++localIndex)
     {
       // Each row of the matrix gradient_k is a matrix localDimension x localDimension

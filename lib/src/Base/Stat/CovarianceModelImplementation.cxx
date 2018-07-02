@@ -42,10 +42,10 @@ CLASSNAMEINIT(CovarianceModelImplementation)
 static const Factory<CovarianceModelImplementation> Factory_CovarianceModelImplementation;
 
 /* Dimension-based constructor */
-CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger spatialDimension)
+CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger inputDimension)
   : PersistentObject()
-  , scale_(spatialDimension, 1.0)
-  , inputDimension_(spatialDimension)
+  , scale_(inputDimension, 1.0)
+  , inputDimension_(inputDimension)
   , amplitude_(1, 1.0)
   , outputDimension_(1)
   , outputCorrelation_(0)
@@ -805,7 +805,7 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     const Bool asStationary,
     const Bool correlationFlag) const
 {
-  if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if spatial dimension=1, here spatial dimension=" << inputDimension_;
+  if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if input dimension=1, here input dimension=" << inputDimension_;
   if (rowIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
   if (columnIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
   if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;

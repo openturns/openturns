@@ -33,9 +33,9 @@ CLASSNAMEINIT(SphericalModel)
 
 static const Factory<SphericalModel> Factory_SphericalModel;
 
-/* Constructor from spatial dimension */
-SphericalModel::SphericalModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension)
+/* Constructor from input dimension */
+SphericalModel::SphericalModel(const UnsignedInteger inputDimension)
+  : StationaryCovarianceModel(inputDimension)
   , radius_(1.0)
 {
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;

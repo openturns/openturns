@@ -70,7 +70,7 @@ multivariateBasis : collection of :class:`~openturns.Basis`
     If the trend is not estimated, the collection must be empty.
 covarianceModel : :class:`~openturns.CovarianceModel`
     Covariance model.
-    Should have spatial dimension equal to input sample's dimension and dimension equal to output sample's dimension.
+    Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
     See note for some particular applications.
 generalLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
     Empty structure that contains results of general linear model algorithm.

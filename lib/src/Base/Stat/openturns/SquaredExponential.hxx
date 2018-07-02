@@ -36,8 +36,8 @@ class OT_API SquaredExponential
 
 public:
 
-  /** Constructor based on spatial dimension */
-  explicit SquaredExponential(const UnsignedInteger spatialDimension = 1);
+  /** Constructor based on input dimension */
+  explicit SquaredExponential(const UnsignedInteger inputDimension = 1);
 
   /** Parameters constructor */
   SquaredExponential(const Point & scale);

@@ -98,12 +98,12 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   }
 
   const UnsignedInteger size = sample.getSize();
-  const UnsignedInteger spatialDimension = sample.getDimension();
-  double* points = new double[spatialDimension * outputDimension * size];
+  const UnsignedInteger inputDimension = sample.getDimension();
+  double* points = new double[inputDimension * outputDimension * size];
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      memcpy(points + i * spatialDimension * outputDimension + j * spatialDimension, &sample(i, 0), spatialDimension * sizeof(double));
+      memcpy(points + i * inputDimension * outputDimension + j * inputDimension, &sample(i, 0), inputDimension * sizeof(double));
   }
 
   hmat_clustering_algorithm_t* algo;
@@ -117,7 +117,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   else
     throw InvalidArgumentException(HERE) << "Unknown clustering method: " << clusteringAlgorithm << ", valid choices are: median, geometric or hybrid";
 
-  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, spatialDimension, outputDimension * size, algo);
+  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, inputDimension, outputDimension * size, algo);
   hmat_delete_clustering(algo);
   delete[] points;
 

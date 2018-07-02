@@ -39,7 +39,7 @@ class OT_API RankMCovarianceModel
 public:
 
   /** Default constructor */
-  explicit RankMCovarianceModel(const UnsignedInteger spatialDimension = 1);
+  explicit RankMCovarianceModel(const UnsignedInteger inputDimension = 1);
 
   /** Parameters constructor */
   RankMCovarianceModel(const Point & variance,

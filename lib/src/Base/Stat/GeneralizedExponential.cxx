@@ -30,8 +30,8 @@ static const Factory<GeneralizedExponential> Factory_GeneralizedExponential;
 
 
 /* Default constructor */
-GeneralizedExponential::GeneralizedExponential(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
+GeneralizedExponential::GeneralizedExponential(const UnsignedInteger inputDimension)
+  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
   , p_(1.0)
 {
   definesComputeStandardRepresentative_ = true;

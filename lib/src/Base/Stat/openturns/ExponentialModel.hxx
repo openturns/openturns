@@ -45,8 +45,8 @@ class OT_API ExponentialModel
 public:
 
 
-  /** Constructor with spatial dimension */
-  explicit ExponentialModel(const UnsignedInteger spatialDimension = 1);
+  /** Constructor with input dimension */
+  explicit ExponentialModel(const UnsignedInteger inputDimension = 1);
 
 
   /** Standard constructor with scale and amplitude parameters parameters */

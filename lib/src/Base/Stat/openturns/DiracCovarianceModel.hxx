@@ -38,19 +38,19 @@ public:
 
 
   /** Default constructor */
-  explicit DiracCovarianceModel(const UnsignedInteger spatialDimension = 1);
+  explicit DiracCovarianceModel(const UnsignedInteger inputDimension = 1);
 
   /** Parameters constructor */
-  DiracCovarianceModel(const UnsignedInteger spatialDimension,
+  DiracCovarianceModel(const UnsignedInteger inputDimension,
                        const Point & amplitude);
 
   /** Parameters constructor */
-  DiracCovarianceModel(const UnsignedInteger spatialDimension,
+  DiracCovarianceModel(const UnsignedInteger inputDimension,
                        const Point & amplitude,
                        const CorrelationMatrix & correlation);
 
   /** Parameters constructor */
-  DiracCovarianceModel(const UnsignedInteger spatialDimension,
+  DiracCovarianceModel(const UnsignedInteger inputDimension,
                        const CovarianceMatrix & covariance);
 
   /** Virtual copy constructor */

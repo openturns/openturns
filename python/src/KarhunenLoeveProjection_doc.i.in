@@ -12,7 +12,7 @@ The class :class:`~openturns.KarhunenLoeveProjection` is a specific function  :c
 
 See the documentation of :class:`~openturns.KarhunenLoeveResult` to get information on the projection function.
 
-The function acts on :class:`~openturns.Fields` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with a spatial dimension equal to :math:`n`."
+The function acts on :class:`~openturns.Fields` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with an input dimension equal to :math:`n`."
 
 // ---------------------------------------------------------------------
 

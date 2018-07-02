@@ -31,8 +31,8 @@ static const Factory<RankMCovarianceModel> Factory_RankMCovarianceModel;
 
 
 /* Default constructor */
-RankMCovarianceModel::RankMCovarianceModel(const UnsignedInteger spatialDimension)
-  : CovarianceModelImplementation(spatialDimension)
+RankMCovarianceModel::RankMCovarianceModel(const UnsignedInteger inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , variance_(1, 1.0)
   , covariance_(0)
   , basis_()
