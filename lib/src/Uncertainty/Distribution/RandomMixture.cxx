@@ -443,7 +443,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       // Here we know that the atom is 1D, so we merge a 1D RandomMixture
       // Get the weight of the atom
       // Cast the atom into a RandomMixture
-      const RandomMixture * mixture(static_cast< const RandomMixture * >(atom.getImplementation().get()));
+      const RandomMixture * mixture(dynamic_cast< const RandomMixture * >(atom.getImplementation().get()));
       // Aggregate the constant
       constant_ += w * mixture->constant_;
       // Aggregate the weights
@@ -456,7 +456,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     } // atom is a RandomMixture
     else if (atomKind == "TruncatedDistribution")
     {
-      const TruncatedDistribution * truncatedDistribution(static_cast< const TruncatedDistribution * >(atom.getImplementation().get()));
+      const TruncatedDistribution * truncatedDistribution(dynamic_cast< const TruncatedDistribution * >(atom.getImplementation().get()));
       weightCandidates.add(*w.getImplementation());
       atomCandidates.add(truncatedDistribution->getSimplifiedVersion());
     }
