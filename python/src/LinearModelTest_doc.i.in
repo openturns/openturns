@@ -16,7 +16,7 @@ Based on the adjusted :math:`R^2` indicator.
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -87,7 +87,7 @@ class=TestResult name=Unnamed type=AdjustedRSquared binaryQualityMeasure=false p
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -157,7 +157,7 @@ class=TestResult name=Unnamed type=Fisher binaryQualityMeasure=false p-value thr
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -227,7 +227,7 @@ class=TestResult name=Unnamed type=RSquared binaryQualityMeasure=false p-value t
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -296,7 +296,7 @@ class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-valu
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -371,7 +371,7 @@ class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-va
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -443,7 +443,7 @@ class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-valu
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.

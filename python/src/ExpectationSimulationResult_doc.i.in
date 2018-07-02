@@ -1,5 +1,5 @@
 %feature("docstring") OT::ExpectationSimulationResult
-"Expecations simulation result.
+"Expectation simulation result.
 
 Gathers the results of a :class:`~openturns.ExpectationSimulationAlgorithm`
 algorithm.
