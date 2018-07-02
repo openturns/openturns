@@ -143,9 +143,6 @@ ot_add_python_module(typ typ_module.i
                       CorrelationMatrix.i CorrelationMatrix_doc.i.in
                       IdentityMatrix.i IdentityMatrix_doc.i.in
                       Sample.i Sample_doc.i.in
-                      FieldImplementation.i FieldImplementation_doc.i.in
-                      Field.i Field_doc.i.in
-                      TimeSeries.i TimeSeries_doc.i.in
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i.in
                       HistoryStrategy.i HistoryStrategy_doc.i.in
                       BaseTypCollection.i
@@ -355,6 +352,9 @@ ot_add_python_module(func func_module.i
                       ConstantBasisFactory.i ConstantBasisFactory_doc.i.in
                       LinearBasisFactory.i LinearBasisFactory_doc.i.in
                       QuadraticBasisFactory.i QuadraticBasisFactory_doc.i.in
+                      FieldImplementation.i FieldImplementation_doc.i.in
+                      Field.i Field_doc.i.in
+                      TimeSeries.i TimeSeries_doc.i.in
                       ProcessSample.i ProcessSample_doc.i.in
                       ProcessSampleImplementation.i ProcessSampleImplementation_doc.i.in
                       BaseFuncTemplateDefs.i
