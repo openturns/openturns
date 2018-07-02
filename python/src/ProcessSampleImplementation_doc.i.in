@@ -248,6 +248,8 @@ Parameters
 ----------
 indice : int
     Index of the field that is drawn in the graph.
+interpolate : bool (optional, default=True)
+    Whether to draw interpolated values.
 
 Returns
 -------

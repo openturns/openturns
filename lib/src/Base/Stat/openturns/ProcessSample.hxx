@@ -116,7 +116,8 @@ public:
   ProcessSample getMarginal(const Indices & indices) const;
 
   /** Draw a marginal of the timeSerie */
-  Graph drawMarginal(const UnsignedInteger index = 0) const;
+  Graph drawMarginal(const UnsignedInteger index = 0,
+                     const Bool interpolate = true) const;
 
 private:
 

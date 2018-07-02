@@ -370,7 +370,8 @@ ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const Indic
 }
 
 /* Draw a marginal of the ProcessSampleImplementation, ie the collection of all the Field marginals */
-Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index) const
+Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
+                                                const Bool interpolate) const
 {
   if (mesh_.getDimension() != 1) throw NotDefinedException(HERE) << "Error: cannot draw a marginal sample if the mesh is of dimension greater than one. Here dimension=" << mesh_.getDimension();
   if (index > getDimension() - 1 ) throw InvalidArgumentException(HERE) << "Error : indice should be in {0,...," << getDimension() - 1 << "}";
@@ -382,7 +383,7 @@ Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index) con
   const Description colors(Drawable::BuildDefaultPalette(size));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Drawable drawable(Field(mesh_, data_[i]).drawMarginal(index).getDrawable(0));
+    Drawable drawable(Field(mesh_, data_[i]).drawMarginal(index, interpolate).getDrawable(0));
     drawable.setColor(colors[i]);
     graph.add(drawable);
   }

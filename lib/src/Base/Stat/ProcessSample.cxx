@@ -185,9 +185,10 @@ ProcessSample ProcessSample::getMarginal(const Indices & indices) const
 }
 
 /* Draw a marginal of the ProcessSample, ie the collection of all the Field marginals */
-Graph ProcessSample::drawMarginal(const UnsignedInteger index) const
+Graph ProcessSample::drawMarginal(const UnsignedInteger index,
+                                  const Bool interpolate) const
 {
-  return getImplementation()->drawMarginal(index);
+  return getImplementation()->drawMarginal(index, interpolate);
 }
 
 
