@@ -12,6 +12,7 @@
  * ProbabilitySimulationResult
  * ExpectationSimulationAlgorithm, ExpectationSimulationResult
  * ExtremeValueCopula
+ * ChaospyDistribution
 
 ==== API changes ====
  * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes

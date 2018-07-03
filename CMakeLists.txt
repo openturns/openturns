@@ -461,6 +461,7 @@ if (BUILD_PYTHON)
   include (FindPythonModule)
   find_python_module (numpy)
   find_python_module (scipy)
+  find_python_module (chaospy)
   find_python_module (matplotlib 1.1)
   find_python_module (nbconvert)
 

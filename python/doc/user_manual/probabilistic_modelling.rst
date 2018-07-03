@@ -16,6 +16,7 @@ Continuous parametric distributions
     Distribution
     DistributionCollection
     PythonDistribution
+    ChaospyDistribution
     SciPyDistribution
 
 .. autosummary::
