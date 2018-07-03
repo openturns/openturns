@@ -49,7 +49,8 @@ public:
   OptimizationResult();
 
   /** Default constructor */
-  OptimizationResult(const UnsignedInteger inputDimension, const UnsignedInteger outputDimension);
+  explicit OptimizationResult(const UnsignedInteger inputDimension,
+                              const UnsignedInteger outputDimension = 1);
 
 
   /** Standard constructor */
