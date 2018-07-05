@@ -77,7 +77,6 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 
 %pythoncode %{
 # We have to make sure the submodule is loaded with absolute path
-import openturns.func
 import openturns.geom
 import openturns.typ
 
@@ -175,7 +174,7 @@ class OpenTURNSPythonFieldFunction(object):
 
     def __call__(self, X):
         Y = None
-        if isinstance(X, openturns.func.ProcessSample):
+        if isinstance(X, ProcessSample):
             Y = self._exec_sample(X)
         else:
             Y = self._exec(X)
