@@ -11,3 +11,11 @@ The current section is dedicated to probabilistic methods and concepts.
     parametric_models
     copulas
     random_mixture
+
+Stochastic process
+------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    trend_transform
