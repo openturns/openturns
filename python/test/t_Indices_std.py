@@ -8,8 +8,7 @@ TESTPREAMBLE()
 try:
     size = 4
     indices = Indices(size, 0)
-    for i in range(size):
-        indices[i] = i
+    indices.fill()
     print("indices=", repr(indices))
     print("are indices valid with bound=", size, "? ", indices.check(size))
     print("are indices valid with bound=", size //
@@ -17,7 +16,8 @@ try:
     indices[0] = indices[size - 1]
     print("indices after transformation=", repr(indices))
     print("are indices valid with bound=", size, "? ", indices.check(size))
-
+    print("complement wrt 7=", indices.complement(7))
+    
     # slicing
     indices2 = Indices((1, 2, 3, 4, 5))
     print('indices2[2] = ', indices2[2])

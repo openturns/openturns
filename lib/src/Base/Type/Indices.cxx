@@ -64,4 +64,20 @@ void Indices::fill(const UnsignedInteger initialValue,
   }
 }
 
+/* Compute the complement between the indices and {0,...,n-1} for a given n */
+Indices Indices::complement(const UnsignedInteger n) const
+{
+  // Check if the values are in the given bound
+  const UnsignedInteger maxIndex = *max_element(begin(), end());
+  if (maxIndex >= n) throw InvalidArgumentException(HERE) << "Error: the given bound=" << n << " must be greater than the maximum index=" << maxIndex;
+  Indices flags(n, 1);
+  for (UnsignedInteger i = 0; i < getSize(); ++i)
+    flags[(*this)[i]] = 0;
+  // The size of result is unknown as the base Indices may contain repeated values
+  Indices result(0);
+  for (UnsignedInteger i = 0; i < n; ++i)
+    if (flags[i] == 1) result.add(i);
+  return result;
+}
+
 END_NAMESPACE_OPENTURNS
