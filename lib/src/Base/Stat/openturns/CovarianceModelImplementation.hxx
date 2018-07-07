@@ -83,12 +83,18 @@ public:
 
 #ifndef SWIG
   virtual Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-      const Collection<Scalar>::const_iterator & t_begin) const;
+                                               const Collection<Scalar>::const_iterator & t_begin) const;
 #endif
 
   // Special case for 1D model
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
+
+#ifndef SWIG
+  // Special case for 1D model
+  virtual Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                                 const Collection<Scalar>::const_iterator & t_begin) const;
+#endif
 
   virtual CovarianceMatrix operator() (const Scalar tau) const;
   virtual CovarianceMatrix operator() (const Point & tau) const;
