@@ -202,7 +202,10 @@ class CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 {
 private:
   const CovarianceModel covarianceModel_;
+  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
+  const Collection<Scalar>::const_iterator verticesBegin_;
+  const UnsignedInteger inputDimension_;
   const UnsignedInteger covarianceDimension_;
   const double epsilon_;
 
@@ -210,12 +213,27 @@ public:
   CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
     : HMatrixRealAssemblyFunction()
     , covarianceModel_(covarianceModel)
+    , definesComputeStandardRepresentative_(false)
     , vertices_(vertices)
+    , verticesBegin_(vertices.getImplementation()->data_begin())
+    , inputDimension_(vertices.getDimension())
     , covarianceDimension_(covarianceModel.getOutputDimension())
-    , epsilon_(epsilon) {}
+    , epsilon_(epsilon)
+  {
+    if (vertices.getSize() == 0) return;
+    try {
+      (void) covarianceModel_.computeStandardRepresentative(vertices[0], vertices[0]);
+      definesComputeStandardRepresentative_ = true;
+    } catch (NotYetImplementedException &) {
+      // Do nothing
+    }
+  }
 
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const
   {
+    if (definesComputeStandardRepresentative_)
+      return covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_) + (i != j ? 0.0 : epsilon_);
+
     const UnsignedInteger rowIndex = i / covarianceDimension_;
     const UnsignedInteger columnIndex = j / covarianceDimension_;
     const CovarianceMatrix localCovarianceMatrix(covarianceModel_( vertices_[rowIndex],  vertices_[columnIndex] ));
@@ -232,7 +250,10 @@ class CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 private:
   const CovarianceModel covarianceModel_;
+  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
+  const Collection<Scalar>::const_iterator verticesBegin_;
+  const UnsignedInteger inputDimension_;
   const double epsilon_;
   CovarianceMatrix epsilonId_;
 
@@ -240,20 +261,37 @@ public:
   CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
     : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
     , covarianceModel_(covarianceModel)
+    , definesComputeStandardRepresentative_(false)
     , vertices_(vertices)
+    , verticesBegin_(vertices.getImplementation()->data_begin())
+    , inputDimension_(vertices.getDimension())
     , epsilon_(epsilon)
   {
     Matrix eps = epsilon_ * IdentityMatrix(covarianceModel.getOutputDimension());
     Pointer<MatrixImplementation> impl = eps.getImplementation();
     epsilonId_ = CovarianceMatrix(covarianceModel.getOutputDimension(), *impl.get());
+    if (vertices.getSize() == 0) return;
+    try {
+      (void) covarianceModel_.computeStandardRepresentative(vertices[0], vertices[0]);
+      definesComputeStandardRepresentative_ = true;
+    } catch (NotYetImplementedException &) {
+      // Do nothing
+    }
   }
 
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const
   {
-    CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
-    if (i == j && epsilon_ != 0.0)
-      localResult = localResult + epsilonId_;
-    memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
+    if (definesComputeStandardRepresentative_)
+    {
+      localValues->getImplementation()->operator[](0) = covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_) + (i != j ? 0.0 : epsilon_);
+    }
+    else
+    {
+      CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
+      if (i == j && epsilon_ != 0.0)
+        localResult = localResult + epsilonId_;
+      memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
+    }
   }
 };
 
