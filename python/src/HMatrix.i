@@ -54,8 +54,6 @@ private:
 
 %include HMatrix_doc.i
 
-%ignore OT::HMatrix::assemble;
-
 %template(HMatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::HMatrixImplementation>;
 %template(pairlonglong) std::pair< size_t, size_t >;
 

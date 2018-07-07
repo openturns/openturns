@@ -12,6 +12,12 @@ OT_HMatrix_norm_doc
 OT_HMatrix_getNbRows_doc
 %feature("docstring") OT::HMatrix::getNbColumns
 OT_HMatrix_getNbColumns_doc
+%feature("docstring") OT::HMatrix::assemble
+OT_HMatrix_assemble_doc
+%feature("docstring") OT::HMatrix::assembleReal
+OT_HMatrix_assembleReal_doc
+%feature("docstring") OT::HMatrix::assembleTensor
+OT_HMatrix_assembleTensor_doc
 %feature("docstring") OT::HMatrix::factorize
 OT_HMatrix_factorize_doc
 %feature("docstring") OT::HMatrix::solve
@@ -28,7 +34,3 @@ OT_HMatrix_scale_doc
 OT_HMatrix_gemv_doc
 %feature("docstring") OT::HMatrix::gemm
 OT_HMatrix_gemm_doc
-%feature("docstring") OT::HMatrix::assembleReal
-OT_HMatrix_assembleReal_doc
-%feature("docstring") OT::HMatrix::assembleTensor
-OT_HMatrix_assembleTensor_doc
