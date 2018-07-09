@@ -9,7 +9,7 @@ dependencies:
     - pip3 install matplotlib git+https://github.com/sphinx-doc/sphinx.git numpydoc nbsphinx jupyter_client ipython --user --upgrade
     # keep an eye on swig
     - git clone https://github.com/swig/swig.git
-    - cd swig && ./autogen.sh && ./configure --prefix=$HOME/.local --without-alllang && make -j2 && make install
+    - cd swig && git checkout rel-3.0.12 && ./autogen.sh && ./configure --prefix=$HOME/.local --without-alllang && make -j2 && make install
     # use latest hmat-oss
     - git clone https://github.com/jeromerobert/hmat-oss.git
     - cd hmat-oss && cmake -DCMAKE_INSTALL_PREFIX=~/.local . && make install -j2
