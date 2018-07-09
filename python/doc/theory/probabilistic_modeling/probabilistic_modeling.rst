@@ -19,3 +19,4 @@ Stochastic process
     :maxdepth: 1
 
     trend_transform
+    boxcox_transformation
