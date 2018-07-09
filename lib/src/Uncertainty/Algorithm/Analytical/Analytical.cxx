@@ -90,7 +90,7 @@ OptimizationAlgorithm Analytical::getNearestPointAlgorithm() const
 /* OptimizationAlgorithm accessor */
 void Analytical::setNearestPointAlgorithm(const OptimizationAlgorithm & nearestPointAlgorithm)
 {
-  nearestPointAlgorithm_ = nearestPointAlgorithm_;
+  nearestPointAlgorithm_ = nearestPointAlgorithm;
 }
 
 /* String converter */
