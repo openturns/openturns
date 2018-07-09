@@ -272,6 +272,12 @@ endif ()
 include (TestBigEndian)
 test_big_endian (__BIG_ENDIAN__) 
 
+if (POLICY CMP0056)
+  cmake_policy (SET CMP0056 NEW)
+endif()
+if (POLICY CMP0066)
+  cmake_policy (SET CMP0066 NEW)
+endif()
 try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
