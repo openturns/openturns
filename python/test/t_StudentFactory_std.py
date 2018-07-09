@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    distribution = Student(3.5, 2.5)
+    distribution = Student(3.5, 2.5, 1.4)
     size = 10000
     sample = distribution.getSample(size)
     factory = StudentFactory()

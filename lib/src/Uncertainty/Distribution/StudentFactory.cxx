@@ -70,7 +70,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
   const Scalar nu = 2.0 + 2.0 / (sigma * sigma - 1.0);
   if (!(nu > 2.0)) throw InvalidArgumentException(HERE) << "Error: can build a Student distribution only if nu > 2.0, here nu=" << nu;
-  Student result(nu, mu);
+  Student result(nu, mu, sigma / sqrt(nu / (nu - 2.0)));
   result.setDescription(sample.getDescription());
   return result;
 }
