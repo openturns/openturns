@@ -56,7 +56,7 @@ String Hanning::__repr__() const
 String Hanning::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << Hanning::GetClassName();
+  oss << offset << "class=" << Hanning::GetClassName();
   return oss;
 }
 

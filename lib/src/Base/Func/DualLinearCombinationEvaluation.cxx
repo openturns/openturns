@@ -309,7 +309,7 @@ UnsignedInteger DualLinearCombinationEvaluation::getOutputDimension() const
 
 
 /* Gradient according to the marginal parameters */
-Matrix DualLinearCombinationEvaluation::parameterGradient(const Point & inP) const
+Matrix DualLinearCombinationEvaluation::parameterGradient(const Point & ) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   // const UnsignedInteger size(functionsCollection_.getSize());

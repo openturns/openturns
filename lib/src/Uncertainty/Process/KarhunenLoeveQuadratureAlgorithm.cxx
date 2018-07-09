@@ -434,7 +434,8 @@ String KarhunenLoeveQuadratureAlgorithm::__repr__() const
 String KarhunenLoeveQuadratureAlgorithm::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << KarhunenLoeveQuadratureAlgorithm::GetClassName()
+  oss << offset
+      << "class=" << KarhunenLoeveQuadratureAlgorithm::GetClassName()
       << ", domain=" << domain_
       << ", domainLowerBound=" << domainLowerBound_
       << ", domainUpperBound=" << domainUpperBound_;

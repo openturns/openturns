@@ -128,7 +128,8 @@ String AbsoluteExponential::__repr__() const
 String AbsoluteExponential::__str__(const String & offset) const
 {
   OSS oss;
-  oss << AbsoluteExponential::GetClassName()
+  oss << offset
+      << AbsoluteExponential::GetClassName()
       << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ")";

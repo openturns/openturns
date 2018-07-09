@@ -61,19 +61,19 @@ String UniVariateFunctionImplementation::__str__(const String & offset) const
 
 
 /* UniVariateFunctionImplementation are evaluated as functors */
-Scalar UniVariateFunctionImplementation::operator() (const Scalar x) const
+Scalar UniVariateFunctionImplementation::operator() (const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::operator() (const Scalar x)";
 }
 
 /* UniVariateFunctionImplementation gradient */
-Scalar UniVariateFunctionImplementation::gradient(const Scalar x) const
+Scalar UniVariateFunctionImplementation::gradient(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::gradient(const Scalar x)";
 }
 
 /* UniVariateFunctionImplementation hessian */
-Scalar UniVariateFunctionImplementation::hessian(const Scalar x) const
+Scalar UniVariateFunctionImplementation::hessian(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "UniVariateFunctionImplementation::hessian(const Scalar x)";
 }

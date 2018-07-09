@@ -218,7 +218,8 @@ String MaternModel::__repr__() const
 String MaternModel::__str__(const String & offset) const
 {
   OSS oss;
-  oss << MaternModel::GetClassName()
+  oss << offset
+      << MaternModel::GetClassName()
       << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", nu=" << nu_

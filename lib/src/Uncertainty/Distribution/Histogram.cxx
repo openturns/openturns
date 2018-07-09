@@ -492,7 +492,7 @@ Graph Histogram::drawPDF() const
 /* Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF(const Scalar xMin,
                          const Scalar xMax,
-                         const UnsignedInteger pointNumber) const
+                         const UnsignedInteger ) const
 {
   if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");

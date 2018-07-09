@@ -49,7 +49,7 @@ ComposedEvaluation * ComposedEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool ComposedEvaluation::operator ==(const ComposedEvaluation & other) const
+Bool ComposedEvaluation::operator ==(const ComposedEvaluation & ) const
 {
   return true;
 }

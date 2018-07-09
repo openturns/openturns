@@ -59,7 +59,8 @@ String QuadraticFunction::__repr__() const
 String QuadraticFunction::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class=" << QuadraticFunction::GetClassName()
+  oss << offset
+      << "class=" << QuadraticFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__str__();
   return oss;

@@ -237,7 +237,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & offset) const
+  String __str__(const String & ) const
   {
     OSS oss(false);
     oss << "KernelProbability("

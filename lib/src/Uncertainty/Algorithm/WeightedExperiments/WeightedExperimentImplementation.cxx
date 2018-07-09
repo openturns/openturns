@@ -114,7 +114,7 @@ Sample WeightedExperimentImplementation::generate() const
 }
 
 /* Sample generation with weights */
-Sample WeightedExperimentImplementation::generateWithWeights(Point & weights) const
+Sample WeightedExperimentImplementation::generateWithWeights(Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::generateWithWeights()";
 }

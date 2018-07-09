@@ -55,7 +55,7 @@ String UniVariateFunctionFactory::__repr__() const
 
 
 /* The method to get the function of any order */
-UniVariateFunction UniVariateFunctionFactory::build(const UnsignedInteger order) const
+UniVariateFunction UniVariateFunctionFactory::build(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "UniVariateFunctionFactory::build";
 }

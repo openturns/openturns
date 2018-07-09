@@ -52,7 +52,7 @@ HessianImplementation * HessianImplementation::clone() const
 }
 
 /* Comparison operator */
-Bool HessianImplementation::operator ==(const HessianImplementation & other) const
+Bool HessianImplementation::operator ==(const HessianImplementation & ) const
 {
   return true;
 }
@@ -81,7 +81,7 @@ Bool HessianImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Hessian method */
-SymmetricTensor HessianImplementation::hessian(const Point & inP) const
+SymmetricTensor HessianImplementation::hessian(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In HessianImplementation::hessian(const Point & inP) const";
 }

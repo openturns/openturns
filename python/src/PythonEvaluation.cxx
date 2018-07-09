@@ -131,7 +131,7 @@ PythonEvaluation::~PythonEvaluation()
 }
 
 /* Comparison operator */
-Bool PythonEvaluation::operator ==(const PythonEvaluation & other) const
+Bool PythonEvaluation::operator ==(const PythonEvaluation & ) const
 {
   return true;
 }
@@ -151,7 +151,7 @@ String PythonEvaluation::__repr__() const
 String PythonEvaluation::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class=" << PythonEvaluation::GetClassName()
+  oss << offset << "class=" << PythonEvaluation::GetClassName()
       << " name=" << getName();
   return oss;
 }

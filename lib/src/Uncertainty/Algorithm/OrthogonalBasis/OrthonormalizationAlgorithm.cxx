@@ -86,7 +86,7 @@ String OrthonormalizationAlgorithm::__repr__() const
 }
 
 /* String converter */
-String OrthonormalizationAlgorithm::__str__(const String & offset) const
+String OrthonormalizationAlgorithm::__str__(const String & ) const
 {
   return __repr__();
 }

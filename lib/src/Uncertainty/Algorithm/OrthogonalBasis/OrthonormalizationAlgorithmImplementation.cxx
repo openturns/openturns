@@ -60,7 +60,7 @@ OrthonormalizationAlgorithmImplementation * OrthonormalizationAlgorithmImplement
 
 /* Calculate the coefficients of recurrence a0, a1, a2 such that
    Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
-OrthonormalizationAlgorithmImplementation::Coefficients OrthonormalizationAlgorithmImplementation::getRecurrenceCoefficients(const UnsignedInteger n) const
+OrthonormalizationAlgorithmImplementation::Coefficients OrthonormalizationAlgorithmImplementation::getRecurrenceCoefficients(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In OrthonormalizationAlgorithmImplementation::getRecurrenceCoefficients(const UnsignedInteger n) const";
 }

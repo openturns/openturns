@@ -44,7 +44,7 @@ NoGradient * NoGradient::clone() const
 }
 
 /* Comparison operator */
-Bool NoGradient::operator ==(const NoGradient & other) const
+Bool NoGradient::operator ==(const NoGradient & ) const
 {
   return true;
 }

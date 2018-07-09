@@ -124,7 +124,7 @@ String IndicesCollectionImplementation::__repr__() const
 String IndicesCollectionImplementation::__str__(const String & offset) const
 {
   OSS oss;
-  oss << toString(false);
+  oss << offset << toString(false);
   if (size_ >= ResourceMap::GetAsUnsignedInteger("Collection-size-visible-in-str-from"))
     oss << "#" << size_;
   return oss;

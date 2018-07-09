@@ -54,7 +54,7 @@ ProductEvaluation * ProductEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool ProductEvaluation::operator ==(const ProductEvaluation & other) const
+Bool ProductEvaluation::operator ==(const ProductEvaluation & ) const
 {
   return true;
 }

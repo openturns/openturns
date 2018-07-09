@@ -88,7 +88,7 @@ String SobolIndicesExperiment::__repr__() const
   return oss;
 }
 
-void SobolIndicesExperiment::setSize(const UnsignedInteger size)
+void SobolIndicesExperiment::setSize(const UnsignedInteger )
 {
   throw InternalException(HERE) << "Cannot set the size of SobolIndicesExperiment";
 }

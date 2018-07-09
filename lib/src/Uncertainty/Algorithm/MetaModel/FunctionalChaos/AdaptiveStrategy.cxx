@@ -107,7 +107,7 @@ String AdaptiveStrategy::__repr__() const
 
 
 /* String converter */
-String AdaptiveStrategy::__str__(const String & offset) const
+String AdaptiveStrategy::__str__(const String & ) const
 {
   return __repr__();
 }

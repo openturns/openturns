@@ -100,7 +100,7 @@ public:
   {
     return OSS() << key_ << " : " << value_;
   }
-  String __str__(const String & offset) const
+  String __str__(const String & ) const
   {
     return OSS() << key_ << " : " << value_;
   }
@@ -114,7 +114,7 @@ String PointWithDescription::__str__(const String & offset) const
   for (UnsignedInteger i = 0; i < size; ++i) assoc[i] = KeyValuePair(i < desc.getSize() ? desc[i] : "", (*this)[i]);
 
   OSS oss(false);
-  oss << "[";
+  oss << offset << "[";
   std::copy(assoc.begin(), assoc.end(), OSS_iterator<KeyValuePair>(oss, ", "));
   oss << "]";
   return oss;

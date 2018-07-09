@@ -103,7 +103,7 @@ Scalar StationaryCovarianceModel::computeStandardRepresentative(const Point & s,
   return computeStandardRepresentative(t - s);
 }
 
-Scalar StationaryCovarianceModel::computeStandardRepresentative(const Point & tau) const
+Scalar StationaryCovarianceModel::computeStandardRepresentative(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In StationaryCovarianceModel::computeStandardRepresentative (const Point & tau) const";
 }
@@ -155,7 +155,7 @@ String StationaryCovarianceModel::__repr__() const
 String StationaryCovarianceModel::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class= " << StationaryCovarianceModel::GetClassName();
+  oss << offset << "class= " << StationaryCovarianceModel::GetClassName();
   return oss;
 }
 

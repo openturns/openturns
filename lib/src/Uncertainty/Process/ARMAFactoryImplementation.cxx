@@ -142,7 +142,8 @@ String ARMAFactoryImplementation::__repr__() const
 String ARMAFactoryImplementation::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class= " << ARMAFactoryImplementation::GetClassName()
+  oss << offset
+      << "class= " << ARMAFactoryImplementation::GetClassName()
       << " p=" << p_
       << " q=" << q_
       << " invertible=" << invertible_;
@@ -150,13 +151,13 @@ String ARMAFactoryImplementation::__str__(const String & offset) const
 }
 
 /* Build method */
-ARMA ARMAFactoryImplementation::build(const TimeSeries & timeSeries) const
+ARMA ARMAFactoryImplementation::build(const TimeSeries & ) const
 {
   throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const TimeSeries & timeSeries) const";
 }
 
 /* Build method */
-ARMA ARMAFactoryImplementation::build(const ProcessSample & sample) const
+ARMA ARMAFactoryImplementation::build(const ProcessSample & ) const
 {
   throw NotYetImplementedException(HERE) << "In ARMAFactoryImplementation::build(const ProcessSample & sample) const";
 }

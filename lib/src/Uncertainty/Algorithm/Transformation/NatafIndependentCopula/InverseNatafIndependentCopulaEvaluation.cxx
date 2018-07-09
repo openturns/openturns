@@ -86,7 +86,7 @@ Point InverseNatafIndependentCopulaEvaluation::operator () (const Point & inP) c
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameter are not taken into account. */
 
-Matrix InverseNatafIndependentCopulaEvaluation::parameterGradient(const Point & inP) const
+Matrix InverseNatafIndependentCopulaEvaluation::parameterGradient(const Point & ) const
 {
   return Matrix(0, dimension_);
 }

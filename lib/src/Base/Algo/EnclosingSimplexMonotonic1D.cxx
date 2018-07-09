@@ -158,7 +158,7 @@ String EnclosingSimplexMonotonic1D::__repr__() const
 /* String converter */
 String EnclosingSimplexMonotonic1D::__str__(const String & offset) const
 {
-  return OSS(false) << "class=" << EnclosingSimplexMonotonic1D::GetClassName();
+  return OSS(false) << offset << "class=" << EnclosingSimplexMonotonic1D::GetClassName();
 }
 
 END_NAMESPACE_OPENTURNS

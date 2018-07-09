@@ -80,7 +80,7 @@ std::string ToString(double val)
   return oss.str();
 }
 
-void clearPoint(OT::CSVParserState & theState, yyscan_t yyscanner)
+void clearPoint(OT::CSVParserState & theState, yyscan_t /*yyscanner*/)
 {
   theState.point = OT::Point();
 }
@@ -95,7 +95,7 @@ void printPoint(OT::CSVParserState & theState, yyscan_t yyscanner, OT::SampleImp
 }
 
 
-void clearHeader(OT::CSVParserState & theState, yyscan_t yyscanner)
+void clearHeader(OT::CSVParserState & theState, yyscan_t /*yyscanner*/)
 {
   theState.Header = OT::Description();
 }
@@ -174,7 +174,7 @@ endOfFile: /* Empty */
 
 %%
 
-int yyerror(OT::CSVParserState & theState, yyscan_t yyscanner, FILE * theFile, OT::SampleImplementation &impl, OT::UnsignedInteger & theDimension, const char * theSeparator, const char *s) {
+int yyerror(OT::CSVParserState & theState, yyscan_t yyscanner, FILE * /*theFile*/, OT::SampleImplementation &/*impl*/, OT::UnsignedInteger & /*theDimension*/, const char * /*theSeparator*/, const char *s) {
   LOGINFO(OT::OSS() << "file " << theState.theFileName << " line " << csvget_lineno(yyscanner) << " is ignored: " << s);
   theState.errors = true;
   return 0;

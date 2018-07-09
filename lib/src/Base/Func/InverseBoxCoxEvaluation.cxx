@@ -85,7 +85,7 @@ String InverseBoxCoxEvaluation::__repr__() const
 String InverseBoxCoxEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "InverseBoxCox(lambda=" << lambda_
+  oss << offset << "InverseBoxCox(lambda=" << lambda_
       << ", shift=" << shift_
       << ")";
   return oss;

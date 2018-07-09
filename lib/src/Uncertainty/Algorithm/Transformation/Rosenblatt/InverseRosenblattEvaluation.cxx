@@ -81,7 +81,7 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
  *       = 0
  * => dQ/dp(y, p) = - dF/dp(Q(y, p), p) / f(Q(y, p), p)
  */
-Matrix InverseRosenblattEvaluation::parameterGradient(const Point & inP) const
+Matrix InverseRosenblattEvaluation::parameterGradient(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient(const Point & inP) const";
 }

@@ -57,7 +57,7 @@ KarhunenLoeveLifting * KarhunenLoeveLifting::clone() const
 }
 
 /* Comparison operator */
-Bool KarhunenLoeveLifting::operator ==(const KarhunenLoeveLifting & other) const
+Bool KarhunenLoeveLifting::operator ==(const KarhunenLoeveLifting & ) const
 {
   return true;
 }

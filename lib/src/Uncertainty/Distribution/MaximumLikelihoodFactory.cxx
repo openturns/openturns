@@ -81,7 +81,7 @@ String MaximumLikelihoodFactory::__repr__() const
 }
 
 /* String converter */
-String MaximumLikelihoodFactory::__str__(const String & offset) const
+String MaximumLikelihoodFactory::__str__(const String & ) const
 {
   return this->getClassName();
 }

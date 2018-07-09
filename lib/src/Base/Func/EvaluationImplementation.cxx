@@ -63,7 +63,7 @@ EvaluationImplementation * EvaluationImplementation::clone() const
 
 
 /* Comparison operator */
-Bool EvaluationImplementation::operator ==(const EvaluationImplementation & other) const
+Bool EvaluationImplementation::operator ==(const EvaluationImplementation & ) const
 {
   return true;
 }
@@ -225,7 +225,7 @@ Description EvaluationImplementation::getParameterDescription() const
 
 
 /* Operator () */
-Point EvaluationImplementation::operator() (const Point & inP) const
+Point EvaluationImplementation::operator() (const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In EvaluationImplementation::operator() (const Point & inP) const";
 }

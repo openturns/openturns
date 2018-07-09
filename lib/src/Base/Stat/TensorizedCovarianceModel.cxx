@@ -273,7 +273,7 @@ String TensorizedCovarianceModel::__repr__() const
 }
 
 /* String converter */
-String TensorizedCovarianceModel::__str__(const String & offset) const
+String TensorizedCovarianceModel::__str__(const String & ) const
 {
   return __repr__();
 }

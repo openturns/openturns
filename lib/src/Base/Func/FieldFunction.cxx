@@ -64,7 +64,7 @@ FieldFunction::FieldFunction(FieldFunctionImplementation * p_implementation)
 }
 
 /* Comparison operator */
-Bool FieldFunction::operator ==(const FieldFunction & other) const
+Bool FieldFunction::operator ==(const FieldFunction & ) const
 {
   return true;
 }

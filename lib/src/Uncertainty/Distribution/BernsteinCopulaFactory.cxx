@@ -152,7 +152,7 @@ public:
   String __str__(const String & offset) const
   {
     OSS oss;
-    oss << "LogLikelihoodObjective(" << learningSamples_.__str__() << ", " << validationSamples_.__str__() << ")";
+    oss << offset << "LogLikelihoodObjective(" << learningSamples_.__str__() << ", " << validationSamples_.__str__() << ")";
     return oss;
   }
 
@@ -241,7 +241,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & offset) const
+  String __str__(const String & ) const
   {
     OSS oss;
     oss << "PenalizedCsiszarDivergenceObjective(" << sample_.__str__() << ", " << objective_.__str__() << ")";

@@ -222,7 +222,7 @@ SquareComplexMatrix HermitianMatrix::operator * (const SymmetricMatrix & m) cons
 }
 
 /* IdentityMatrix multiplications  */
-HermitianMatrix HermitianMatrix::operator * (const IdentityMatrix & m) const
+HermitianMatrix HermitianMatrix::operator * (const IdentityMatrix & ) const
 {
   return (*this);
 }

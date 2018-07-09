@@ -104,7 +104,7 @@ String AggregatedGradient::__repr__() const
          << " evaluation=" << *p_evaluation_;
 }
 
-String AggregatedGradient::__str__(const String & offset) const
+String AggregatedGradient::__str__(const String & ) const
 {
   return __repr__();
 }

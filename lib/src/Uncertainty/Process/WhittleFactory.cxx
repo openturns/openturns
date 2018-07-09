@@ -284,7 +284,7 @@ String WhittleFactory::__repr__() const
 }
 
 /* String converter */
-String WhittleFactory::__str__(const String & offset) const
+String WhittleFactory::__str__(const String & ) const
 {
   return this->__repr__();
 }

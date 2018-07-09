@@ -80,7 +80,7 @@ String BoxCoxGradient::__repr__() const
 String BoxCoxGradient::__str__(const String & offset) const
 {
   OSS oss (false);
-  oss << "BoxCoxGradient(lambda=" << getLambda()
+  oss << offset << "BoxCoxGradient(lambda=" << getLambda()
       << ", shift=" << getShift()
       << ")";
   return oss;

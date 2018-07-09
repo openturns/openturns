@@ -111,13 +111,13 @@ CovarianceMatrix RandomVectorImplementation::getCovariance() const
 }
 
 /* Get the random vector corresponding to the i-th marginal component */
-RandomVector RandomVectorImplementation::getMarginal(const UnsignedInteger i) const
+RandomVector RandomVectorImplementation::getMarginal(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getMarginal(const UnsignedInteger i) const";
 }
 
 /* Get the marginal random vector corresponding to indices components */
-RandomVector RandomVectorImplementation::getMarginal(const Indices & indices) const
+RandomVector RandomVectorImplementation::getMarginal(const Indices & ) const
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getMarginal(const Indices & indices) const";
 }
@@ -169,7 +169,7 @@ Point RandomVectorImplementation::getParameter() const
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getParameter";
 }
 
-void RandomVectorImplementation::setParameter(const Point & parameter)
+void RandomVectorImplementation::setParameter(const Point & )
 {
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::setParameter";
 }

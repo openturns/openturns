@@ -71,7 +71,7 @@ String FixedExperiment::__repr__() const
 }
 
 /* Distribution accessor */
-void FixedExperiment::setDistribution(const Distribution & distribution)
+void FixedExperiment::setDistribution(const Distribution & )
 {
   // The distribution of a FixedExperiment cannot be changed
 }

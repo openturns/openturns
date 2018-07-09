@@ -58,13 +58,13 @@ Sample NearestNeighbourAlgorithmImplementation::getSample() const
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::getSample() const";
 }
 
-void NearestNeighbourAlgorithmImplementation::setSample(const Sample & sample)
+void NearestNeighbourAlgorithmImplementation::setSample(const Sample & )
 {
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::setSample(const Sample & sample)";
 }
 
 /* Get the index of the nearest neighbour of the given point */
-UnsignedInteger NearestNeighbourAlgorithmImplementation::query(const Point & x) const
+UnsignedInteger NearestNeighbourAlgorithmImplementation::query(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::query(const Point & x) const";
 }
@@ -82,9 +82,9 @@ Indices NearestNeighbourAlgorithmImplementation::query(const Sample & sample) co
 }
 
 /* Get the indices of the k nearest neighbours of the given point */
-Indices NearestNeighbourAlgorithmImplementation::queryK(const Point & x,
-    const UnsignedInteger k,
-    const Bool sorted) const
+Indices NearestNeighbourAlgorithmImplementation::queryK(const Point & ,
+    const UnsignedInteger ,
+    const Bool ) const
 {
   throw NotYetImplementedException(HERE) << "In NearestNeighbourAlgorithmImplementation::queryK(const Point & x, const UnsignedInteger k, const Bool sorted) const";
 }
@@ -100,9 +100,8 @@ String NearestNeighbourAlgorithmImplementation::__repr__() const
 /* String converter */
 String NearestNeighbourAlgorithmImplementation::__str__(const String & offset) const
 {
-  (void)offset;
   OSS oss(false);
-  oss << "class=" << NearestNeighbourAlgorithmImplementation::GetClassName();
+  oss << offset << "class=" << NearestNeighbourAlgorithmImplementation::GetClassName();
   return oss;
 }
 

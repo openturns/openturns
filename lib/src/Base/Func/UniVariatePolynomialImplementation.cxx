@@ -73,7 +73,7 @@ String UniVariatePolynomialImplementation::__str__(const String & offset) const
 }
 
 String UniVariatePolynomialImplementation::__str__(const String & variableName,
-    const String & offset) const
+    const String & ) const
 {
   OSS oss(false);
   const UnsignedInteger size = coefficients_.getSize();

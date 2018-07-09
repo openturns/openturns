@@ -99,7 +99,8 @@ String LHSExperiment::__repr__() const
 String LHSExperiment::__str__(const String & offset) const
 {
   OSS oss;
-  oss << GetClassName()
+  oss << offset
+      << GetClassName()
       << "(distribution=" << distribution_
       << ", size" << size_
       << ", always shuffle=" << alwaysShuffle_

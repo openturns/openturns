@@ -219,8 +219,7 @@ String NaiveNearestNeighbour::__repr__() const
 
 String NaiveNearestNeighbour::__str__(const String & offset) const
 {
-  (void)offset;
-  return OSS(false) << "class=" << GetClassName()
+  return OSS(false) << offset << "class=" << GetClassName()
          << " sample=" << points_;
 }
 

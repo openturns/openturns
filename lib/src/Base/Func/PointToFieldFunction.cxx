@@ -62,7 +62,7 @@ PointToFieldFunction::PointToFieldFunction(PointToFieldFunctionImplementation * 
 }
 
 /* Comparison operator */
-Bool PointToFieldFunction::operator ==(const PointToFieldFunction & other) const
+Bool PointToFieldFunction::operator ==(const PointToFieldFunction & ) const
 {
   return true;
 }

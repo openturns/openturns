@@ -129,7 +129,7 @@ Bool DistributionImplementation::operator ==(const DistributionImplementation & 
   return equals(other) && other.equals(*this);
 }
 
-Bool DistributionImplementation::equals(const DistributionImplementation & other) const
+Bool DistributionImplementation::equals(const DistributionImplementation & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::equals";
 }
@@ -438,7 +438,7 @@ String DistributionImplementation::__repr__() const
 }
 
 /* String converter */
-String DistributionImplementation::__str__(const String & offset) const
+String DistributionImplementation::__str__(const String & ) const
 {
   return __repr__();
 }
@@ -600,7 +600,7 @@ Scalar DistributionImplementation::computeLogPDF(const Point & point) const
 
 /* Get the CDF, complementary CDF and survival function of the distribution */
 /* On a Point */
-Scalar DistributionImplementation::computeCDF(const Point & point) const
+Scalar DistributionImplementation::computeCDF(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCDF(const Point & point) const";
 }
@@ -1939,8 +1939,8 @@ Collection<PiecewiseHermiteEvaluation> DistributionImplementation::interpolatePD
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar DistributionImplementation::computeConditionalDDF(const Scalar x,
-    const Point & y) const
+Scalar DistributionImplementation::computeConditionalDDF(const Scalar ,
+    const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeConditionalDDF(const Scalar x, const Point & y) const";
 }
@@ -3190,7 +3190,7 @@ Bool DistributionImplementation::hasIndependentCopula() const
 }
 
 /* Get the support of a distribution that intersect a given interval */
-Sample DistributionImplementation::getSupport(const Interval & interval) const
+Sample DistributionImplementation::getSupport(const Interval & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::getSupport(const Interval & interval) const";
 }
@@ -3221,19 +3221,19 @@ Point DistributionImplementation::getSingularities() const
  *  the function phi such that the density of the distribution can
  *  be written as p(x) = phi(t(x-mu)R(x-mu))
  */
-Scalar DistributionImplementation::computeDensityGenerator(const Scalar betaSquare) const
+Scalar DistributionImplementation::computeDensityGenerator(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGenerator(const Scalar betaSquare) const";
 }
 
 /* Compute the derivative of the density generator */
-Scalar DistributionImplementation::computeDensityGeneratorDerivative(const Scalar betaSquare) const
+Scalar DistributionImplementation::computeDensityGeneratorDerivative(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGeneratorDerivative(const Scalar betaSquare) const";
 }
 
 /* Compute the seconde derivative of the density generator */
-Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const
+Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const";
 }
@@ -3340,8 +3340,8 @@ Distribution DistributionImplementation::getStandardRepresentative() const
 }
 
 /* Compute the radial distribution CDF */
-Scalar DistributionImplementation::computeRadialDistributionCDF(const Scalar radius,
-    const Bool tail) const
+Scalar DistributionImplementation::computeRadialDistributionCDF(const Scalar ,
+    const Bool ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeRadialDistributionCDF(const Scalar radius, const Bool tail) const";
 }
@@ -3350,7 +3350,7 @@ Scalar DistributionImplementation::computeRadialDistributionCDF(const Scalar rad
 /* Draw the PDF of a discrete distribution */
 Graph DistributionImplementation::drawDiscretePDF(const Scalar xMin,
     const Scalar xMax,
-    const UnsignedInteger pointNumber) const
+    const UnsignedInteger ) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
   if (xMax < xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
@@ -3551,7 +3551,7 @@ Graph DistributionImplementation::drawPDF() const
 /* Draw the log-PDF of a discrete distribution */
 Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
     const Scalar xMax,
-    const UnsignedInteger pointNumber) const
+    const UnsignedInteger ) const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot draw the PDF of a multidimensional discrete distribution this way.";
   if (xMax < xMin - ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon")) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax < xMin, here xmin=" << xMin << " and xmax=" << xMax;
@@ -3752,7 +3752,7 @@ Graph DistributionImplementation::drawLogPDF() const
 /* Draw the CDF of a discrete distribution */
 Graph DistributionImplementation::drawDiscreteCDF(const Scalar xMin,
     const Scalar xMax,
-    const UnsignedInteger pointNumber) const
+    const UnsignedInteger ) const
 {
   // Value :    0    1/5  2/5  3/5    4/5    1
   // Data  : ------+-----+---+------+----+---------

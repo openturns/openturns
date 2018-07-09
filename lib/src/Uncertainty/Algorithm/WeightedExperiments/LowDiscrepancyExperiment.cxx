@@ -109,7 +109,8 @@ String LowDiscrepancyExperiment::__repr__() const
 String LowDiscrepancyExperiment::__str__(const String & offset) const
 {
   OSS oss;
-  oss << GetClassName()
+  oss << offset
+      << GetClassName()
       << "(sequence=" << sequence_
       << ", distribution=" << distribution_
       << ", size" << size_

@@ -64,12 +64,12 @@ String MonomialFunction::__str__(const String & offset) const
 {
   // Pretty print
   if (degree_ == 0)
-    return OSS(true) << "[x] -> 1"  ;
+    return OSS(true) << offset << "[x] -> 1"  ;
   else if (degree_ == 1)
   {
-    return OSS(true) << "[x] --> x" ;
+    return OSS(true) << offset << "[x] --> x" ;
   }
-  return OSS(true) << "[x] --> x^" << degree_ ;
+  return OSS(true) << offset << "[x] --> x^" << degree_ ;
 }
 
 /* MonomialFunction are evaluated as functors */

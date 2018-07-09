@@ -65,7 +65,7 @@ PointToFieldFunctionImplementation * PointToFieldFunctionImplementation::clone()
 }
 
 /* Comparison operator */
-Bool PointToFieldFunctionImplementation::operator ==(const PointToFieldFunctionImplementation & other) const
+Bool PointToFieldFunctionImplementation::operator ==(const PointToFieldFunctionImplementation & ) const
 {
   return true;
 }
@@ -134,7 +134,7 @@ Mesh PointToFieldFunctionImplementation::getOutputMesh() const
 
 
 /* Operator () */
-Sample PointToFieldFunctionImplementation::operator() (const Point & inP) const
+Sample PointToFieldFunctionImplementation::operator() (const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::operator() (const Point & inP) const";
 }

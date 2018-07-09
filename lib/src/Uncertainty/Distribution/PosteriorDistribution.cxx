@@ -148,7 +148,7 @@ PosteriorDistribution::PointWithDescriptionCollection PosteriorDistribution::get
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::getParametersCollection() const";
 }
 
-void PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)
+void PosteriorDistribution::setParametersCollection(const PointCollection & )
 {
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)";
 }

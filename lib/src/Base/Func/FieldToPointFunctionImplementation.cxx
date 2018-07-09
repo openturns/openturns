@@ -64,7 +64,7 @@ FieldToPointFunctionImplementation * FieldToPointFunctionImplementation::clone()
 }
 
 /* Comparison operator */
-Bool FieldToPointFunctionImplementation::operator ==(const FieldToPointFunctionImplementation & other) const
+Bool FieldToPointFunctionImplementation::operator ==(const FieldToPointFunctionImplementation & ) const
 {
   return true;
 }
@@ -127,7 +127,7 @@ Description FieldToPointFunctionImplementation::getOutputDescription() const
 
 
 /* Operator () */
-Point FieldToPointFunctionImplementation::operator() (const Sample & inFld) const
+Point FieldToPointFunctionImplementation::operator() (const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In FieldToPointFunctionImplementation::operator() (const Field & inFld) const";
 }

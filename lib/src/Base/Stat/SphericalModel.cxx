@@ -162,7 +162,8 @@ String SphericalModel::__repr__() const
 String SphericalModel::__str__(const String & offset) const
 {
   OSS oss;
-  oss << SphericalModel::GetClassName()
+  oss << offset
+      << SphericalModel::GetClassName()
       << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", radius=" << radius_

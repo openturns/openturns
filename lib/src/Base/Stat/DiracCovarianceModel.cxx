@@ -373,8 +373,9 @@ String DiracCovarianceModel::__repr__() const
 String DiracCovarianceModel::__str__(const String & offset) const
 {
   OSS oss;
-  oss << DiracCovarianceModel::GetClassName();
-  oss << "(t)=" << outputCovariance_.__str__()
+  oss << offset
+      << DiracCovarianceModel::GetClassName()
+      << "(t)=" << outputCovariance_.__str__()
       << " * t==" << Point(inputDimension_, 0.0).__str__();
   return oss;
 }

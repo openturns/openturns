@@ -45,7 +45,7 @@ BasisImplementation * BasisImplementation::clone() const
 }
 
 /* Build the Function of the given index */
-Function BasisImplementation::build(const UnsignedInteger index) const
+Function BasisImplementation::build(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In Function BasisImplementation::build(const UnsignedInteger index) const";
 }
@@ -56,7 +56,7 @@ Function BasisImplementation::operator[](const UnsignedInteger index) const
   return build(index);
 }
 
-Function & BasisImplementation::operator[](const UnsignedInteger index)
+Function & BasisImplementation::operator[](const UnsignedInteger )
 {
   throw NotYetImplementedException(HERE) << "In BasisImplementation::operator[](const UnsignedInteger index)";
 }
@@ -72,7 +72,7 @@ BasisImplementation::FunctionCollection BasisImplementation::getSubBasis(const I
   return coll;
 }
 
-void BasisImplementation::add(const Function & elt)
+void BasisImplementation::add(const Function & )
 {
   throw NotYetImplementedException(HERE) << "In BasisImplementation::add(const Function & elt)";
 }

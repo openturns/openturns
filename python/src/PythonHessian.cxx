@@ -79,7 +79,7 @@ PythonHessian::~PythonHessian()
 }
 
 /* Comparison operator */
-Bool PythonHessian::operator ==(const PythonHessian & other) const
+Bool PythonHessian::operator ==(const PythonHessian & ) const
 {
   return true;
 }
@@ -98,7 +98,7 @@ String PythonHessian::__repr__() const
 String PythonHessian::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class=" << PythonHessian::GetClassName()
+  oss << offset << "class=" << PythonHessian::GetClassName()
       << " name=" << getName();
   return oss;
 }

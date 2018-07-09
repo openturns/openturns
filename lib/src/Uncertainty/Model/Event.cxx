@@ -82,7 +82,7 @@ String Event::__repr__() const
 }
 
 /* String converter */
-String Event::__str__(const String & offset) const
+String Event::__str__(const String & ) const
 {
   return __repr__();
 }

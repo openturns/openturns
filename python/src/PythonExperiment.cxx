@@ -83,7 +83,7 @@ PythonExperiment::~PythonExperiment()
 }
 
 /* Comparison operator */
-Bool PythonExperiment::operator ==(const PythonExperiment & other) const
+Bool PythonExperiment::operator ==(const PythonExperiment & ) const
 {
   return true;
 }
@@ -102,7 +102,7 @@ String PythonExperiment::__repr__() const
 String PythonExperiment::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class=" << PythonExperiment::GetClassName()
+  oss << offset << "class=" << PythonExperiment::GetClassName()
       << " name=" << getName();
   return oss;
 }

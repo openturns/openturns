@@ -104,7 +104,7 @@ String Study::__repr__() const
 }
 
 /* String converter */
-String Study::__str__(const String & offset) const
+String Study::__str__(const String & ) const
 {
   OSS oss(false);
   const char * separator = "  ";

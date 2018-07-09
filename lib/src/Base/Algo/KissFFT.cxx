@@ -87,7 +87,7 @@ String KissFFT::__repr__() const
 String KissFFT::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << KissFFT::GetClassName();
+  oss << offset << "class=" << KissFFT::GetClassName();
   return oss;
 }
 

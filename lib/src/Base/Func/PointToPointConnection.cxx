@@ -58,7 +58,7 @@ PointToPointConnection * PointToPointConnection::clone() const
 }
 
 /* Comparison operator */
-Bool PointToPointConnection::operator ==(const PointToPointConnection & other) const
+Bool PointToPointConnection::operator ==(const PointToPointConnection & ) const
 {
   return true;
 }

@@ -178,7 +178,7 @@ String SoizeGhanemFactorEvaluation::__str__(const String & offset) const
 {
   OSS oss(true);
   const Description input(getInputDescription());
-  oss << input << "->1/sqrt(" << (useCopula_ ? copula_.__str__() : measure_.__str__()) << ".computePDF(";
+  oss << offset << input << "->1/sqrt(" << (useCopula_ ? copula_.__str__() : measure_.__str__()) << ".computePDF(";
   String separator(", ");
   for (UnsignedInteger i = 0; i < input.getSize(); ++i)
   {

@@ -249,7 +249,7 @@ String ProductCovarianceModel::__repr__() const
 }
 
 /* String converter */
-String ProductCovarianceModel::__str__(const String & offset) const
+String ProductCovarianceModel::__str__(const String & ) const
 {
   return __repr__();
 }

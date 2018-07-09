@@ -151,7 +151,7 @@ HermitianMatrix SpectralModelImplementation::operator() (const Scalar frequency)
 }
 
 /** Standard representative */
-Complex SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const
+Complex SpectralModelImplementation::computeStandardRepresentative(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const";
 }

@@ -58,7 +58,7 @@ ComposedHessian * ComposedHessian::clone() const
 }
 
 /* Comparison operator */
-Bool ComposedHessian::operator ==(const ComposedHessian & other) const
+Bool ComposedHessian::operator ==(const ComposedHessian & ) const
 {
   return true;
 }

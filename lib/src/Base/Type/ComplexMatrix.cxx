@@ -279,7 +279,7 @@ ComplexMatrix ComplexMatrix::operator* (const SymmetricMatrix & m) const
 }
 
 /* ComplexMatrix multiplication - SymmetricMatrix on right */
-ComplexMatrix ComplexMatrix::operator* (const IdentityMatrix & m) const
+ComplexMatrix ComplexMatrix::operator* (const IdentityMatrix & ) const
 {
   return (*this);
 }

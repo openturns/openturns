@@ -188,7 +188,7 @@ void OptimizationAlgorithmImplementation::setProblem(const OptimizationProblem &
 }
 
 /* Performs the actual checks. Must be overloaded by the actual optimisation algorithm */
-void OptimizationAlgorithmImplementation::checkProblem(const OptimizationProblem & problem) const
+void OptimizationAlgorithmImplementation::checkProblem(const OptimizationProblem & ) const
 {
   throw NotYetImplementedException(HERE) << "In OptimizationAlgorithmImplementation::checkProblem()";
 }

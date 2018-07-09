@@ -58,7 +58,8 @@ String TranslationFunction::__repr__() const
 String TranslationFunction::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << TranslationFunction::GetClassName()
+  oss << offset
+      << "class=" << TranslationFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__str__();
   return oss;

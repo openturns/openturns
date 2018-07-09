@@ -79,7 +79,7 @@ Scalar FittingAlgorithmImplementation::run(const Sample & y,
   return run(method, y);
 }
 
-Scalar FittingAlgorithmImplementation::run(LeastSquaresMethod & method, const Sample & y) const
+Scalar FittingAlgorithmImplementation::run(LeastSquaresMethod & , const Sample & ) const
 {
   throw NotYetImplementedException(HERE);
 }

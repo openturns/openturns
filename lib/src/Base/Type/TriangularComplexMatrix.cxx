@@ -216,7 +216,7 @@ SquareComplexMatrix TriangularComplexMatrix::operator * (const SymmetricMatrix &
 }
 
 /*  IdentityMatrix multiplications */
-TriangularComplexMatrix TriangularComplexMatrix::operator * (const IdentityMatrix & m) const
+TriangularComplexMatrix TriangularComplexMatrix::operator * (const IdentityMatrix & ) const
 {
   return (*this);
 }

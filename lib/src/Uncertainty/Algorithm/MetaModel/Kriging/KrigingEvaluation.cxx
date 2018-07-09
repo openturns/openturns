@@ -76,7 +76,7 @@ KrigingEvaluation * KrigingEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool KrigingEvaluation::operator==(const KrigingEvaluation & other) const
+Bool KrigingEvaluation::operator==(const KrigingEvaluation & ) const
 {
   return true;
 }

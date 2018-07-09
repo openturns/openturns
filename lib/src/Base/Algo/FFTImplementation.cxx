@@ -65,10 +65,10 @@ FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCo
 }
 
 /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
-FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger step,
-    const UnsignedInteger last) const
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCollection & ,
+    const UnsignedInteger ,
+    const UnsignedInteger ,
+    const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE);
 }
@@ -80,24 +80,24 @@ FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexC
 }
 
 /* FFT transformation on complex - For some FFT implementation, the transformation is applied on a part of the collection */
-FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger size) const
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & ,
+    const UnsignedInteger ,
+    const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
 }
 
 /* FFT transformation on complex - For some FFT implementation, the need is to transform a regular sequence of the collection (between first and last, by step = step)*/
-FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger step,
-    const UnsignedInteger last) const
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & ,
+    const UnsignedInteger ,
+    const UnsignedInteger ,
+    const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
 }
 
 /** FFT inverse transformation */
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection) const
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & ) const
 {
   throw NotYetImplementedException(HERE);
 }
@@ -113,93 +113,93 @@ FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const S
 }
 
 /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger step,
-    const UnsignedInteger last) const
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & ,
+    const UnsignedInteger ,
+    const UnsignedInteger ,
+    const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /* FFT inverse transformation */
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & collection) const
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection) const";
 }
 
 /* FFT inverse transformation - The transformation is applied on a part of the collection */
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger size) const
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & ,
+    const UnsignedInteger ,
+    const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
 }
 
 /* FFT transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & collection,
-    const UnsignedInteger first,
-    const UnsignedInteger step,
-    const UnsignedInteger last) const
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & ,
+    const UnsignedInteger ,
+    const UnsignedInteger ,
+    const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
 }
 
 /** FFT 2D transformation on complex */
-ComplexMatrix FFTImplementation::transform2D(const ComplexMatrix & complexMatrix) const
+ComplexMatrix FFTImplementation::transform2D(const ComplexMatrix & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const ComplexMatrix & complexMatrix) const";
 }
 
 /** FFT 2D transformation on real matrix */
-ComplexMatrix FFTImplementation::transform2D(const Matrix & matrix) const
+ComplexMatrix FFTImplementation::transform2D(const Matrix & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const Matrix & matrix) const";
 }
 
 /** FFT 2D transformation on sample */
-ComplexMatrix FFTImplementation::transform2D(const Sample & sample) const
+ComplexMatrix FFTImplementation::transform2D(const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const Sample & sample) const";
 }
 
 /** FFT 3D transformation on complex */
-ComplexTensor FFTImplementation::transform3D(const ComplexTensor & tensor) const
+ComplexTensor FFTImplementation::transform3D(const ComplexTensor & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform3D(const ComplexTensor & tensor) const";
 }
 
 /* FFT 3D transformation on real data */
-ComplexTensor FFTImplementation::transform3D(const Tensor & tensor) const
+ComplexTensor FFTImplementation::transform3D(const Tensor & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform3D(const Tensor & tensor) const";
 }
 
 /** IFFT 2D transformation on complex */
-ComplexMatrix FFTImplementation::inverseTransform2D(const ComplexMatrix & complexMatrix) const
+ComplexMatrix FFTImplementation::inverseTransform2D(const ComplexMatrix & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const ComplexMatrix & complexMatrix) const";
 }
 
 /** IFFT 2D transformation on real matrix */
-ComplexMatrix FFTImplementation::inverseTransform2D(const Matrix & matrix) const
+ComplexMatrix FFTImplementation::inverseTransform2D(const Matrix & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const Matrix & matrix) const";
 }
 
 /** IFFT 2D transformation on sample */
-ComplexMatrix FFTImplementation::inverseTransform2D(const Sample & sample) const
+ComplexMatrix FFTImplementation::inverseTransform2D(const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const Sample & sample) const";
 }
 
 /** IFFT 3D transformation on complex */
-ComplexTensor FFTImplementation::inverseTransform3D(const ComplexTensor & tensor) const
+ComplexTensor FFTImplementation::inverseTransform3D(const ComplexTensor & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform3D(const ComplexTensor & tensor) const";
 }
 
 /** IFFT 3D transformation on complex */
-ComplexTensor FFTImplementation::inverseTransform3D(const Tensor & tensor) const
+ComplexTensor FFTImplementation::inverseTransform3D(const Tensor & ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform3D(const Tensor & tensor) const";
 }
@@ -216,7 +216,7 @@ String FFTImplementation::__repr__() const
 String FFTImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << FFTImplementation::GetClassName();
+  oss << offset << "class=" << FFTImplementation::GetClassName();
   return oss;
 }
 

@@ -141,7 +141,8 @@ String ExponentiallyDampedCosineModel::__repr__() const
 String ExponentiallyDampedCosineModel::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << ExponentiallyDampedCosineModel::GetClassName()
+  oss << offset
+      << "class=" << ExponentiallyDampedCosineModel::GetClassName()
       << "(scale=" << scale_
       << ", amplitude=" << amplitude_
       << ", frequency=" << frequency_

@@ -74,7 +74,7 @@ String LevelSetMesher::__repr__() const
 }
 
 /* String converter */
-String LevelSetMesher::__str__(const String & offset) const
+String LevelSetMesher::__str__(const String & ) const
 {
   return __repr__();
 }

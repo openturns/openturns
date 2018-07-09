@@ -335,7 +335,7 @@ CovarianceModel KarhunenLoeveSVDAlgorithm::getCovarianceModel() const
 }
 
 /* Hide the covariance model accessor as it has no meaning in the SVD context */
-void KarhunenLoeveSVDAlgorithm::setCovarianceModel(const CovarianceModel & covariance)
+void KarhunenLoeveSVDAlgorithm::setCovarianceModel(const CovarianceModel & )
 {
   // Nothing to do
 }
@@ -355,7 +355,8 @@ String KarhunenLoeveSVDAlgorithm::__repr__() const
 String KarhunenLoeveSVDAlgorithm::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << KarhunenLoeveSVDAlgorithm::GetClassName()
+  oss << offset
+      << "class=" << KarhunenLoeveSVDAlgorithm::GetClassName()
       << ", sample=" << sample_
       << ", centered=" << centeredSample_
       << ", weights=" << verticesWeights_;

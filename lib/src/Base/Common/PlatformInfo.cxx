@@ -78,6 +78,8 @@ void PlatformInfo::SetTwoDigitExponent(const Bool enable)
 {
 #if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
   _set_output_format(enable ? _TWO_DIGIT_EXPONENT : 0);
+#else
+  (void) enable;
 #endif
 }
 

@@ -65,7 +65,7 @@ FieldFunctionImplementation * FieldFunctionImplementation::clone() const
 }
 
 /* Comparison operator */
-Bool FieldFunctionImplementation::operator ==(const FieldFunctionImplementation & other) const
+Bool FieldFunctionImplementation::operator ==(const FieldFunctionImplementation & ) const
 {
   return true;
 }
@@ -137,7 +137,7 @@ Mesh FieldFunctionImplementation::getOutputMesh() const
 }
 
 /* Operator () */
-Sample FieldFunctionImplementation::operator() (const Sample & inFld) const
+Sample FieldFunctionImplementation::operator() (const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::operator() (const Sample & inFld) const";
 }

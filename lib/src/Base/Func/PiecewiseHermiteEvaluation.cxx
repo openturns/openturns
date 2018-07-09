@@ -96,7 +96,7 @@ String PiecewiseHermiteEvaluation::__repr__() const
 
 String PiecewiseHermiteEvaluation::__str__(const String & offset) const
 {
-  return OSS(false) << GetClassName() << "("
+  return OSS(false) << offset << GetClassName() << "("
          << "locations=" << locations_
          << ", values=" << values_
          << ", derivatives=" << derivatives_ << ")";

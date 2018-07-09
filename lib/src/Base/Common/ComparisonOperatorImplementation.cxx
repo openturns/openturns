@@ -41,8 +41,8 @@ ComparisonOperatorImplementation * ComparisonOperatorImplementation::clone() con
 }
 
 /* Evaluation operator */
-Bool ComparisonOperatorImplementation::operator() (const Scalar a,
-    const Scalar b) const
+Bool ComparisonOperatorImplementation::operator() (const Scalar ,
+    const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In ComparisonOperatorImplementation::operator() (const Scalar a, const Scalar b) const";
 }

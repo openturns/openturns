@@ -353,30 +353,30 @@ String SORMResult::__str__(const String & offset) const
   OSS oss;
   try
   {
-    oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << "\n";
-    oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << "\n";
+    oss << offset << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << "\n";
+    oss << offset << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << "\n";
   }
   catch (...)
   {
-    oss << "Probability estimate and generalised reliability index (Breitung) not defined." << "\n";
+    oss << offset << "Probability estimate and generalised reliability index (Breitung) not defined." << "\n";
   }
   try
   {
-    oss << "Probability estimate    (HohenBichler)=" << getEventProbabilityHohenBichler() << "\n";
-    oss << "Generalised reliability (HohenBichler)=" << getGeneralisedReliabilityIndexHohenBichler() << "\n";
+    oss << offset << "Probability estimate    (HohenBichler)=" << getEventProbabilityHohenBichler() << "\n";
+    oss << offset << "Generalised reliability (HohenBichler)=" << getGeneralisedReliabilityIndexHohenBichler() << "\n";
   }
   catch (...)
   {
-    oss << "Probability estimate and generalised reliability index (HohenBichler) not defined." << "\n";
+    oss << offset << "Probability estimate and generalised reliability index (HohenBichler) not defined." << "\n";
   }
   try
   {
-    oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << "\n";
-    oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << "\n";
+    oss << offset << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << "\n";
+    oss << offset << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << "\n";
   }
   catch (...)
   {
-    oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << "\n";
+    oss << offset << "Probability estimate and generalised reliability index (Tvedt) not defined." << "\n";
   }
   return oss;
 }

@@ -52,7 +52,7 @@ ComposedGradient * ComposedGradient::clone() const
 }
 
 /* Comparison operator */
-Bool ComposedGradient::operator ==(const ComposedGradient & other) const
+Bool ComposedGradient::operator ==(const ComposedGradient & ) const
 {
   return true;
 }

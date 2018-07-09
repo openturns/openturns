@@ -114,7 +114,7 @@ String TriangularMatrix::__repr__() const
 String TriangularMatrix::__str__(const String & offset) const
 {
   checkTriangularity();
-  return SquareMatrix::__str__();
+  return SquareMatrix::__str__(offset);
 }
 
 /* Get the dimension of the matrix */
@@ -217,7 +217,7 @@ SquareMatrix TriangularMatrix::operator * (const SymmetricMatrix & m) const
 }
 
 /*  IdentityMatrix multiplications */
-TriangularMatrix TriangularMatrix::operator * (const IdentityMatrix & m) const
+TriangularMatrix TriangularMatrix::operator * (const IdentityMatrix & ) const
 {
   return (*this);
 }

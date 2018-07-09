@@ -110,7 +110,7 @@ struct XMLInternalObject : public StorageManager::InternalObject
   {
     return OSS() << "XMLInternalObject { node = <" << node_ << ">}";
   }
-  virtual String __str__(const String & offset) const
+  virtual String __str__(const String & ) const
   {
     return __repr__();
   }
@@ -139,7 +139,7 @@ struct XMLStorageManagerState : public StorageManager::InternalObject
     return OSS(true) << "XMLStorageManagerState { root = <" << root_
            << ">, current_ = <" << current_ << ">}";
   }
-  virtual String __str__(const String & offset) const
+  virtual String __str__(const String & ) const
   {
     return __repr__();
   }
@@ -211,7 +211,7 @@ Bool XMLStorageManager::canManageVersion(UnsignedInteger version) const
 
 
 /* Do some administrative tasks before saving/reloading */
-void XMLStorageManager::initialize(const SaveAction caller)
+void XMLStorageManager::initialize(const SaveAction )
 {
   cleanSavedObjects();
   OSS oss;
@@ -226,20 +226,20 @@ void XMLStorageManager::initialize(const SaveAction caller)
 }
 
 /* Do some administrative tasks before saving/reloading */
-void XMLStorageManager::initialize(const LoadAction caller)
+void XMLStorageManager::initialize(const LoadAction )
 {
   p_document_.reset(new XMLDoc( fileName_ ));
   p_document_->setCompressionLevel(compressionLevel_);
 }
 
 /* Do some administrative tasks after saving/reloading */
-void XMLStorageManager::finalize(const SaveAction caller)
+void XMLStorageManager::finalize(const SaveAction )
 {
   // Nothing to do
 }
 
 /* Do some administrative tasks after saving/reloading */
-void XMLStorageManager::finalize(const LoadAction caller)
+void XMLStorageManager::finalize(const LoadAction )
 {
   // Nothing to do
 }
@@ -543,7 +543,7 @@ void AttributeWriter<Complex>(Pointer<StorageManager::InternalObject> & p_obj,
 
 template <typename TAG, typename _Tp>
 static inline
-void AttributeReader(TAG tag,
+void AttributeReader(TAG ,
                      Pointer<XMLStorageManagerState> & p_state,
                      const String & name,
                      _Tp & value)
@@ -580,7 +580,7 @@ void IndexedValueWriter(TAG tag,
 
 template <>
 inline
-void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, Complex>(XML_STMGR::numericalcomplex_tag tag,
+void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, Complex>(XML_STMGR::numericalcomplex_tag ,
     Pointer<StorageManager::InternalObject> & p_obj,
     UnsignedInteger index,
     Complex value)
@@ -707,7 +707,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
                                       const String & name,
                                       Bool & value)
 {
@@ -745,7 +745,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
                                       const String & name,
                                       UnsignedInteger & value)
 {
@@ -781,7 +781,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
                                       const String & name,
                                       Unsigned64BitsInteger & value)
 {
@@ -818,7 +818,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
                                       const String & name,
                                       Scalar & value)
 {
@@ -856,7 +856,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
                                       const String & name,
                                       Complex & value)
 {
@@ -894,7 +894,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & p_obj,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
                                       const String & name,
                                       String & value)
 {

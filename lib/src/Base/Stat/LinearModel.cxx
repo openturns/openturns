@@ -81,7 +81,7 @@ String LinearModel::__repr__() const
 /* String converter */
 String LinearModel::__str__(const String & offset) const
 {
-  return OSS(false) << "LinearModel name=" << getName()
+  return OSS(false) << offset << "LinearModel name=" << getName()
          << " regression=" << regression_
          << " confidence intervals=" << confidenceIntervals_
          << " p-Values=" << pValues_;

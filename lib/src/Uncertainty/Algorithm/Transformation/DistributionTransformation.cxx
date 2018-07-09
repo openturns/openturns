@@ -145,7 +145,7 @@ DistributionTransformation DistributionTransformation::inverse() const
 }
 
 /* Comparison operator */
-Bool DistributionTransformation::operator ==(const DistributionTransformation & other) const
+Bool DistributionTransformation::operator ==(const DistributionTransformation & ) const
 {
   return true;
 }

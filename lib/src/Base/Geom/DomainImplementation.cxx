@@ -59,7 +59,7 @@ String DomainImplementation::__str__(const String & offset) const
 }
 
 /* Check if the given point is inside of the domain */
-Bool DomainImplementation::contains(const Point & point) const
+Bool DomainImplementation::contains(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }

@@ -57,7 +57,7 @@ ProductGradient * ProductGradient::clone() const
 }
 
 /* Comparison operator */
-Bool ProductGradient::operator ==(const ProductGradient & other) const
+Bool ProductGradient::operator ==(const ProductGradient & ) const
 {
   return true;
 }

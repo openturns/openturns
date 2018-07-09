@@ -63,7 +63,7 @@ String IntervalMesher::__repr__() const
 }
 
 /* String converter */
-String IntervalMesher::__str__(const String & offset) const
+String IntervalMesher::__str__(const String & ) const
 {
   return __repr__();
 }

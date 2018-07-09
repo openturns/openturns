@@ -105,45 +105,45 @@ CorrelationMatrix IdentityMatrix::operator * (const CorrelationMatrix & m) const
 
 /* Resolution of a linear system */
 Point IdentityMatrix::solveLinearSystem(const Point & b,
-                                        const Bool keepIntact)
+                                        const Bool )
 {
   return b;
 }
 
 Matrix IdentityMatrix::solveLinearSystem(const Matrix & b,
-    const Bool keepIntact)
+    const Bool )
 {
   return b;
 }
 
 /* Compute determinant */
 Scalar IdentityMatrix::computeLogAbsoluteDeterminant(Scalar & sign,
-    const Bool keepIntact)
+    const Bool )
 {
   sign = 1.0;
   return 0.0;
 }
 
-Scalar IdentityMatrix::computeDeterminant(const Bool keepIntact)
+Scalar IdentityMatrix::computeDeterminant(const Bool )
 {
   return 1.0;
 }
 
 /* Compute eigenvalues */
-Point IdentityMatrix::computeEigenValues(const Bool keepIntact)
+Point IdentityMatrix::computeEigenValues(const Bool )
 {
   return Point(getNbRows(), 1.0);
 }
 
 Point IdentityMatrix::computeEV(SquareMatrix & v,
-                                const Bool keepIntact)
+                                const Bool )
 {
   v = *this;
   return Point(getNbRows(), 1.0);
 }
 
 /* Compute singular values */
-Point IdentityMatrix::computeSingularValues(const Bool keepIntact)
+Point IdentityMatrix::computeSingularValues(const Bool )
 {
   return Point(getNbRows(), 1.0);
 }
@@ -151,8 +151,8 @@ Point IdentityMatrix::computeSingularValues(const Bool keepIntact)
 /* Compute singular values */
 Point IdentityMatrix::computeSVD(Matrix & u,
                                  Matrix & vT,
-                                 const Bool fullSVD,
-                                 const Bool keepIntact)
+                                 const Bool ,
+                                 const Bool )
 {
   u = *this;
   vT = *this;
@@ -166,7 +166,7 @@ Bool IdentityMatrix::isPositiveDefinite() const
 }
 
 /* Build the Cholesky factorization of the matrix */
-TriangularMatrix IdentityMatrix::computeCholesky(const Bool keepIntact)
+TriangularMatrix IdentityMatrix::computeCholesky(const Bool )
 {
   return getImplementation();
 }

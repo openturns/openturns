@@ -50,19 +50,19 @@ String CovarianceModelFactoryImplementation::__repr__() const
 }
 
 /* String converter */
-String CovarianceModelFactoryImplementation::__str__(const String & offset) const
+String CovarianceModelFactoryImplementation::__str__(const String & ) const
 {
   return this->getClassName();
 }
 
 /* Here is the interface that all derived class must implement */
 
-CovarianceModel CovarianceModelFactoryImplementation::build(const ProcessSample & sample) const
+CovarianceModel CovarianceModelFactoryImplementation::build(const ProcessSample & ) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelFactoryImplementation::build(const ProcessSample & sample) const";
 }
 
-CovarianceModel CovarianceModelFactoryImplementation::build(const Field & timeSeries) const
+CovarianceModel CovarianceModelFactoryImplementation::build(const Field & ) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelFactoryImplementation::build(const Field & timeSeries) const";
 }

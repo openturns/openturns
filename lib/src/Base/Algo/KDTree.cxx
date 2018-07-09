@@ -320,8 +320,7 @@ String KDTree::__repr__() const
 
 String KDTree::__str__(const String & offset) const
 {
-  (void)offset;
-  return OSS(false) << "class=" << GetClassName()
+  return OSS(false) << offset << "class=" << GetClassName()
          << " root=" << (tree_.getSize() > 0 ? printNode(1) : "NULL");
 }
 

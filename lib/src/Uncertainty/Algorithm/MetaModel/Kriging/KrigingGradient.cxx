@@ -76,7 +76,7 @@ KrigingGradient * KrigingGradient::clone() const
 }
 
 /* Comparison operator */
-Bool KrigingGradient::operator==(const KrigingGradient & other) const
+Bool KrigingGradient::operator==(const KrigingGradient & ) const
 {
   return true;
 }

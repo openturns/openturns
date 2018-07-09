@@ -45,7 +45,7 @@ FilteringWindowsImplementation * FilteringWindowsImplementation::clone() const
   return new FilteringWindowsImplementation(*this);
 }
 
-Scalar FilteringWindowsImplementation::operator()(const Scalar t) const
+Scalar FilteringWindowsImplementation::operator()(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In FilteringWindowsImplementation::operator()(const Scalar t) const";
 }
@@ -62,7 +62,7 @@ String FilteringWindowsImplementation::__repr__() const
 String FilteringWindowsImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class= " << FilteringWindowsImplementation::GetClassName();
+  oss << offset << "class= " << FilteringWindowsImplementation::GetClassName();
   return oss;
 }
 

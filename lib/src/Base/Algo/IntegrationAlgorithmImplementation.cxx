@@ -63,9 +63,9 @@ Point IntegrationAlgorithmImplementation::integrate(const Function & function,
   return integrate(function, interval, error[0]);
 }
 
-Point IntegrationAlgorithmImplementation::integrate(const Function & function,
-    const Interval & interval,
-    Scalar & error) const
+Point IntegrationAlgorithmImplementation::integrate(const Function & ,
+    const Interval & ,
+    Scalar & ) const
 {
   throw NotYetImplementedException(HERE) << "In IntegrationAlgorithmImplementation::integrate(const Function & function, const Interval & interval, Scalar & error) const";
 }
@@ -82,7 +82,7 @@ String IntegrationAlgorithmImplementation::__repr__() const
 String IntegrationAlgorithmImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << IntegrationAlgorithmImplementation::GetClassName();
+  oss << offset << "class=" << IntegrationAlgorithmImplementation::GetClassName();
   return oss;
 }
 

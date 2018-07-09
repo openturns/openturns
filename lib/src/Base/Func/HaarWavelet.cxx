@@ -102,13 +102,13 @@ Scalar HaarWavelet::operator() (const Scalar x) const
 }
 
 /* HaarWavelet gradient */
-Scalar HaarWavelet::gradient(const Scalar x) const
+Scalar HaarWavelet::gradient(const Scalar ) const
 {
   return 0.0;
 }
 
 /* HaarWavelet hessian */
-Scalar HaarWavelet::hessian(const Scalar x) const
+Scalar HaarWavelet::hessian(const Scalar ) const
 {
   return 0.0;
 }

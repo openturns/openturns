@@ -97,7 +97,7 @@ PythonRandomVectorImplementation::~PythonRandomVectorImplementation()
 }
 
 /* Comparison operator */
-Bool PythonRandomVectorImplementation::operator ==(const PythonRandomVectorImplementation & other) const
+Bool PythonRandomVectorImplementation::operator ==(const PythonRandomVectorImplementation & ) const
 {
   return true;
 }
@@ -116,7 +116,7 @@ String PythonRandomVectorImplementation::__repr__() const
 String PythonRandomVectorImplementation::__str__(const String & offset) const
 {
   OSS oss;
-  oss << "class=" << PythonRandomVectorImplementation::GetClassName()
+  oss << offset << "class=" << PythonRandomVectorImplementation::GetClassName()
       << " name=" << getName();
   return oss;
 }

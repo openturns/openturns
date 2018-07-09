@@ -79,7 +79,7 @@ String BoxCoxHessian::__repr__() const
 String BoxCoxHessian::__str__(const String & offset) const
 {
   OSS oss (false);
-  oss << "BoxCoxHessian(lambda=" << getLambda()
+  oss << offset << "BoxCoxHessian(lambda=" << getLambda()
       << ", shift=" << getShift()
       << ")";
   return oss;

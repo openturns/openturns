@@ -106,7 +106,7 @@ String RegularGridEnclosingSimplex::__repr__() const
 /* String converter */
 String RegularGridEnclosingSimplex::__str__(const String & offset) const
 {
-  return OSS(false) << "class=" << RegularGridEnclosingSimplex::GetClassName();
+  return OSS(false) << offset << "class=" << RegularGridEnclosingSimplex::GetClassName();
 }
 
 END_NAMESPACE_OPENTURNS

@@ -183,7 +183,7 @@ Matrix Matrix::operator* (const SymmetricMatrix & m) const
   return Implementation(m.getImplementation()->symProd(*getImplementation(), 'R').clone());
 }
 
-Matrix Matrix::operator* (const IdentityMatrix & m) const
+Matrix Matrix::operator* (const IdentityMatrix & ) const
 {
   return *this;
 }

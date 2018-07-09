@@ -323,6 +323,7 @@ void SetMemoryFlag(bool flag)
   LockNewDelete lock;
   Memory::GetInstance().flag_ = flag;
 #else
+  (void) flag;
   fprintf( stderr, "No memory debugging available. Compile with -DDEBUG_MEMORY flag or --enable-debug=memory option.\n" );
 #endif /* DEBUG_MEMORY */
 }

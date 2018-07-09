@@ -344,7 +344,8 @@ String BoundingVolumeHierarchy::__repr__() const
 String BoundingVolumeHierarchy::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << BoundingVolumeHierarchy::GetClassName()
+  oss << offset
+      << "class=" << BoundingVolumeHierarchy::GetClassName()
       << " binNumber=" << binNumber_
       << " strategy=" << strategy_;
   return oss;

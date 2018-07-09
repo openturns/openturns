@@ -67,21 +67,21 @@ Matrix DistributionParametersImplementation::gradient() const
 
 
 /* Conversion operator */
-Point DistributionParametersImplementation::operator () (const Point & inP) const
+Point DistributionParametersImplementation::operator () (const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::operator() const";
 }
 
 
 /* Conversion from native parameters */
-Point DistributionParametersImplementation::inverse(const Point & inP) const
+Point DistributionParametersImplementation::inverse(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::inverse const";
 }
 
 
 /* Parameters value and description accessor */
-void DistributionParametersImplementation::setValues(const Point & values)
+void DistributionParametersImplementation::setValues(const Point & )
 {
   throw NotYetImplementedException(HERE) << "In DistributionParametersImplementation::setValues()";
 }
@@ -107,7 +107,7 @@ String DistributionParametersImplementation::__repr__() const
 
 
 /* String converter */
-String DistributionParametersImplementation::__str__(const String & offset) const
+String DistributionParametersImplementation::__str__(const String & ) const
 {
   return __repr__();
 }

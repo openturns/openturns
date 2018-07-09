@@ -86,7 +86,7 @@ String BoxCoxEvaluation::__repr__() const
 String BoxCoxEvaluation::__str__(const String & offset) const
 {
   OSS oss (false);
-  oss << "BoxCox(lambda=" << lambda_
+  oss << offset << "BoxCox(lambda=" << lambda_
       << ", shift=" << shift_
       << ")";
   return oss;

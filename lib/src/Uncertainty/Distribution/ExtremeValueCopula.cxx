@@ -251,7 +251,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & offset) const
+  String __str__(const String & ) const
   {
     OSS oss;
     oss << "ConditionalCDF(" << pickandFunction_.__str__() << ", " << u_ << ")";

@@ -388,7 +388,7 @@ String NLopt::__repr__() const
 String NLopt::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << getClassName()
+  oss << offset << "class=" << getClassName()
       << " algorithm=" << algoName_;
   return oss;
 }

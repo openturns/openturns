@@ -76,7 +76,7 @@ String MethodOfMomentsFactory::__repr__() const
 }
 
 /* String converter */
-String MethodOfMomentsFactory::__str__(const String & offset) const
+String MethodOfMomentsFactory::__str__(const String & ) const
 {
   return this->getClassName();
 }

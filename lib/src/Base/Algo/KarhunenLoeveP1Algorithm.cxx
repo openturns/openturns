@@ -200,7 +200,8 @@ String KarhunenLoeveP1Algorithm::__repr__() const
 String KarhunenLoeveP1Algorithm::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << KarhunenLoeveP1Algorithm::GetClassName()
+  oss << offset
+      << "class=" << KarhunenLoeveP1Algorithm::GetClassName()
       << ", mesh=" << mesh_;
   return oss;
 }

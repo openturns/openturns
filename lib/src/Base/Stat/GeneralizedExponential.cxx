@@ -165,7 +165,8 @@ String GeneralizedExponential::__repr__() const
 String GeneralizedExponential::__str__(const String & offset) const
 {
   OSS oss;
-  oss << GeneralizedExponential::GetClassName()
+  oss << offset
+      << GeneralizedExponential::GetClassName()
       << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", p=" << p_

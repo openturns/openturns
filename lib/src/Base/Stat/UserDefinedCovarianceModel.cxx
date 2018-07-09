@@ -223,7 +223,7 @@ String UserDefinedCovarianceModel::__repr__() const
 }
 
 /* String converter */
-String UserDefinedCovarianceModel::__str__(const String & offset) const
+String UserDefinedCovarianceModel::__str__(const String & ) const
 {
   return __repr__();
 }

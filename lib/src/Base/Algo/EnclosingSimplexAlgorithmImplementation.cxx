@@ -121,7 +121,7 @@ void EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(const Samp
 }
 
 /* Get the index of the enclosing simplex of the given point */
-UnsignedInteger EnclosingSimplexAlgorithmImplementation::query(const Point & x) const
+UnsignedInteger EnclosingSimplexAlgorithmImplementation::query(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In EnclosingSimplexAlgorithmImplementation::query(const Point & x) const";
 }
@@ -319,7 +319,7 @@ String EnclosingSimplexAlgorithmImplementation::__repr__() const
 String EnclosingSimplexAlgorithmImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << EnclosingSimplexAlgorithmImplementation::GetClassName();
+  oss << offset << "class=" << EnclosingSimplexAlgorithmImplementation::GetClassName();
   return oss;
 }
 

@@ -363,12 +363,12 @@ SphereUniformNormImplementation::Implementation SphereUniformNormImplementation:
   }
 }
 
-UnsignedInteger SphereUniformNormImplementation::getOffsetLevel(const UnsignedInteger distance) const
+UnsignedInteger SphereUniformNormImplementation::getOffsetLevel(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In SphereUniformNormImplementation::getOffsetLevel(const UnsignedInteger distance) const";
 }
 
-Sample SphereUniformNormImplementation::getPoints(const UnsignedInteger distance) const
+Sample SphereUniformNormImplementation::getPoints(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In SphereUniformNormImplementation::getPoints(const UnsignedInteger distance) const";
 }
@@ -382,7 +382,7 @@ String SphereUniformNormImplementation::__repr__() const
 }
 
 
-String SphereUniformNormImplementation::__str__(const String & offset) const
+String SphereUniformNormImplementation::__str__(const String & ) const
 {
   return __repr__();
 }
