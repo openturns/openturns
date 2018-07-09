@@ -74,7 +74,7 @@ void printPointee(const Pointer<TestClass> & p)
   fullprint << "p -> " << (*p) << std::endl;
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

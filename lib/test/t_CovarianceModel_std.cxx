@@ -87,7 +87,7 @@ static void test_model(const CovarianceModel & myModel)
 }
 
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

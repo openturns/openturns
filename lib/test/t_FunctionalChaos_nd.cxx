@@ -35,7 +35,7 @@ inline Scalar sobol(const Indices & indices,
   return value;
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

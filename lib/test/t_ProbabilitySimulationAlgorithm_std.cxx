@@ -24,18 +24,18 @@
 using namespace OT;
 using namespace OT::Test;
 
-static Bool stop(void * p)
+static Bool stop(void * )
 {
   std::cerr << "-- stop?" << std::endl;
   return false;
 }
 
-static void progress(Scalar percent, void * p)
+static void progress(Scalar percent, void * )
 {
   std::cerr << "-- progress=" << percent << "%" << std::endl;
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

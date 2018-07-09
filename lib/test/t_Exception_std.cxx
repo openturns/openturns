@@ -88,7 +88,7 @@ ExitCodeValue check< Exception >()
 }
 
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   Log::Show( Log::ALL );
 

@@ -42,7 +42,7 @@ hmatrix__str__(const HMatrix & hmat)
   return res.__str__();
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

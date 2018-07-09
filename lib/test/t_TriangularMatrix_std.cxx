@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 typedef Collection<Scalar> ScalarCollection;
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

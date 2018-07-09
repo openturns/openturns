@@ -34,7 +34,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/PlatformInfo.hxx"
 
-#define TESTPREAMBLE { OT::Test::parseOptions(argc, argv); OT::PlatformInfo::SetTwoDigitExponent(); }
+#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
 
 BEGIN_NAMESPACE_OPENTURNS
 

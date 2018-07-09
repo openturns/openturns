@@ -30,7 +30,7 @@ Scalar clean(Scalar in)
   return in;
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

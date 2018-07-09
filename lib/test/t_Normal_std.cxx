@@ -38,7 +38,7 @@ inline Point clean(Point in)
   return in;
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
 

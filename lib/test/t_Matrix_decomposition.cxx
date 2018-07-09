@@ -90,7 +90,7 @@ inline void testQR(UnsignedInteger m, UnsignedInteger n, Bool full, Bool keep)
 }
 
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

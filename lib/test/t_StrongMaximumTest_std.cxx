@@ -44,7 +44,7 @@ void printSample(String name, Sample sample)
   fullprint << "];" << std::endl;
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
