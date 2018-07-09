@@ -10,7 +10,7 @@ myFunc output dimension= 2
 3 : [ -0.442695  0.196266 ]
 4 : [ -0.442695  0.196266 ]
 myFunc= FieldToPointFunction :
-class=PythonFieldToPointFunction name=OpenTURNSPythonFieldToPointFunction
+  class=PythonFieldToPointFunction name=OpenTURNSPythonFieldToPointFunction
 X=     [ v0         v1         v2         X0         X1         X2         ]
 0 : [  0          0          0         -1.03808   -0.856712   0.473617  ]
 1 : [  0          0          1         -0.125498   0.351418   1.78236   ]
