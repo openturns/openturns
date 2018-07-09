@@ -110,7 +110,7 @@ namespace tutils
               words[2] = (uint32_t)(state[4 * i + 2]);
               words[3] = (uint32_t)(state[4 * i + 3]);
 #endif
-              memcpy(&u_[i], &words[0], 16);
+              memcpy(static_cast<void*>(&u_[i]), &words[0], 16);
             }
         }
 
