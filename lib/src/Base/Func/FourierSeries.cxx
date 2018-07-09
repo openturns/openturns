@@ -57,15 +57,15 @@ String FourierSeries::__repr__() const
 }
 
 
-String FourierSeries::__str__(const String & offset) const
+String FourierSeries::__str__(const String & ) const
 {
   OSS oss(false);
   if (k_ == 0)
-    oss << offset << "f:X -> 1";
+    oss << "f:X -> 1";
   else if (k_ == 1)
-    oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(X)" : "sin(X)");
+    oss << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(X)" : "sin(X)");
   else
-    oss << offset << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(" : "sin(") << k_ << " * X)";
+    oss << "f:X -> sqrt(2) * " << (isCosine_ ? "cos(" : "sin(") << k_ << " * X)";
   return oss;
 }
 

@@ -352,11 +352,10 @@ String KarhunenLoeveSVDAlgorithm::__repr__() const
 }
 
 /* String converter */
-String KarhunenLoeveSVDAlgorithm::__str__(const String & offset) const
+String KarhunenLoeveSVDAlgorithm::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset
-      << "class=" << KarhunenLoeveSVDAlgorithm::GetClassName()
+  oss << "class=" << KarhunenLoeveSVDAlgorithm::GetClassName()
       << ", sample=" << sample_
       << ", centered=" << centeredSample_
       << ", weights=" << verticesWeights_;

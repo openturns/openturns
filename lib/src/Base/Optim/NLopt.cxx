@@ -385,10 +385,10 @@ String NLopt::__repr__() const
 }
 
 /* String converter */
-String NLopt::__str__(const String & offset) const
+String NLopt::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << getClassName()
+  oss << "class=" << getClassName()
       << " algorithm=" << algoName_;
   return oss;
 }

@@ -80,10 +80,10 @@ String InverseNormal::__repr__() const
   return oss;
 }
 
-String InverseNormal::__str__(const String & offset) const
+String InverseNormal::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(lambda = " << lambda_ << ", mu = " << mu_ << ")";
+  oss << getClassName() << "(lambda = " << lambda_ << ", mu = " << mu_ << ")";
   return oss;
 }
 

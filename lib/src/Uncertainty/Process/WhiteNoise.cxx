@@ -77,10 +77,10 @@ String WhiteNoise::__repr__() const
   return oss;
 }
 
-String WhiteNoise::__str__(const String & offset) const
+String WhiteNoise::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(" << distribution_.__str__() << ")";
+  oss << getClassName() << "(" << distribution_.__str__() << ")";
   return oss;
 }
 

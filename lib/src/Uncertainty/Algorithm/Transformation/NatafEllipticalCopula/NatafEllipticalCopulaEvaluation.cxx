@@ -74,10 +74,10 @@ String NatafEllipticalCopulaEvaluation::__repr__() const
   return oss;
 }
 
-String NatafEllipticalCopulaEvaluation::__str__(const String & offset) const
+String NatafEllipticalCopulaEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << NatafEllipticalCopulaEvaluation::GetClassName()
+  oss << NatafEllipticalCopulaEvaluation::GetClassName()
       << "(Copula(cholesky=" << cholesky_ << ", E=" << standardDistribution_.getMarginal(0) << ")->" << standardDistribution_ << ")";
 
   return oss;

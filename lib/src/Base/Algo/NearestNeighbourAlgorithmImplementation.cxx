@@ -98,10 +98,10 @@ String NearestNeighbourAlgorithmImplementation::__repr__() const
 }
 
 /* String converter */
-String NearestNeighbourAlgorithmImplementation::__str__(const String & offset) const
+String NearestNeighbourAlgorithmImplementation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << NearestNeighbourAlgorithmImplementation::GetClassName();
+  oss << "class=" << NearestNeighbourAlgorithmImplementation::GetClassName();
   return oss;
 }
 

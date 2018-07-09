@@ -162,10 +162,10 @@ String GumbelAB::__repr__() const
 }
 
 
-String GumbelAB::__str__(const String & offset) const
+String GumbelAB::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(a = " << a_ << ", b = " << b_ << ")";
+  oss << getClassName() << "(a = " << a_ << ", b = " << b_ << ")";
   return oss;
 }
 

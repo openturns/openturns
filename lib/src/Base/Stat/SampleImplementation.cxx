@@ -40,6 +40,7 @@
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Lapack.hxx"
+#include "openturns/Os.hxx"
 
 #include <locale.h>
 #ifdef OPENTURNS_HAVE_XLOCALE_H
@@ -957,7 +958,7 @@ String SampleImplementation::__str__(const String & offset) const
   // Print the column title
   if (printDescription)
   {
-    oss << offset << String( iwidth, ' ' ) << "   [ ";
+    oss << String( iwidth, ' ' ) << "   [ ";
     const char * sep = "";
     for( UnsignedInteger j = 0; j < dimension_; ++j, sep = " " )
     {
@@ -974,17 +975,17 @@ String SampleImplementation::__str__(const String & offset) const
       }
       oss << sep << (*p_description_)[j] << String( twidth - (*p_description_)[j].size(), ' ' );
     }
-    oss << " ]\n";
+    oss << " ]" << Os::GetEndOfLine() << offset;
   }
 
   const char * newline = "";
-  for( UnsignedInteger i = 0; i < size_; ++i, newline = "\n" )
+  for( UnsignedInteger i = 0; i < size_; ++i, newline = Os::GetEndOfLine() )
   {
     if (ellipsis && (size_ > 2 * printEllipsisSize))
     {
       if (i == printEllipsisSize)
       {
-        oss << "\n...";
+        oss << Os::GetEndOfLine() << offset <<  "...";
       }
       if ((i >= printEllipsisSize) && (i < size_ - printEllipsisSize))
       {

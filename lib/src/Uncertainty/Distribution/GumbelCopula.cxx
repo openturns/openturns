@@ -79,10 +79,10 @@ String GumbelCopula::__repr__() const
   return oss;
 }
 
-String GumbelCopula::__str__(const String & offset) const
+String GumbelCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(theta = " << theta_ << ")";
+  oss << getClassName() << "(theta = " << theta_ << ")";
   return oss;
 }
 

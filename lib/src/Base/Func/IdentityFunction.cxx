@@ -54,11 +54,10 @@ String IdentityFunction::__repr__() const
   return oss;
 }
 
-String IdentityFunction::__str__(const String & offset) const
+String IdentityFunction::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset
-      << "class=" << IdentityFunction::GetClassName()
+  oss << "class=" << IdentityFunction::GetClassName()
       << " name=" << getName()
       << " implementation=" << getImplementation()->__str__();
   return oss;

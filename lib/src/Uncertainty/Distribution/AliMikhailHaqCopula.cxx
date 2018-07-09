@@ -78,10 +78,10 @@ String AliMikhailHaqCopula::__repr__() const
   return oss;
 }
 
-String AliMikhailHaqCopula::__str__(const String & offset) const
+String AliMikhailHaqCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(theta = " << theta_ << ")";
+  oss << getClassName() << "(theta = " << theta_ << ")";
   return oss;
 }
 

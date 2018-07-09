@@ -79,10 +79,10 @@ String CumulativeDistributionNetwork::__repr__() const
   return oss;
 }
 
-String CumulativeDistributionNetwork::__str__(const String & offset) const
+String CumulativeDistributionNetwork::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "([";
+  oss << getClassName() << "([";
   String separator("");
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {

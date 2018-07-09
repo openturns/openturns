@@ -86,9 +86,9 @@ String CenteredFiniteDifferenceHessian::__repr__() const
 }
 
 /* String converter */
-String CenteredFiniteDifferenceHessian::__str__(const String & offset) const
+String CenteredFiniteDifferenceHessian::__str__(const String & ) const
 {
-  return OSS(false) << offset << "CenteredFiniteDifferenceHessian epsilon : " << getEpsilon();
+  return OSS(false) << "CenteredFiniteDifferenceHessian epsilon : " << getEpsilon();
 }
 
 /* Here is the interface that all derived class must implement */

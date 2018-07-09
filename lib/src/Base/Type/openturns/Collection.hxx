@@ -381,8 +381,9 @@ public:
   }
   inline String __str__(const String & offset = "") const
   {
+    (void) offset;
     OSS oss;
-    oss << offset << toString(false);
+    oss << toString(false);
     if (getSize() >= ResourceMap::GetAsUnsignedInteger("Collection-size-visible-in-str-from"))
       oss << "#" << getSize();
     return oss;

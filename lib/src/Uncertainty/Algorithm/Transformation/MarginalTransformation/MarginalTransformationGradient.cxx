@@ -101,9 +101,9 @@ String MarginalTransformationGradient::__repr__() const
   return oss;
 }
 
-String MarginalTransformationGradient::__str__(const String & offset) const
+String MarginalTransformationGradient::__str__(const String & ) const
 {
-  return OSS(false) << offset << "Gradient of " << evaluation_.getName();
+  return OSS(false) << "Gradient of " << evaluation_.getName();
 }
 
 /* Method save() stores the object through the StorageManager */

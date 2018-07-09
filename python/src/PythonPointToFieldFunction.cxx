@@ -138,10 +138,10 @@ String PythonPointToFieldFunction::__repr__() const
 }
 
 /* String converter */
-String PythonPointToFieldFunction::__str__(const String & offset) const
+String PythonPointToFieldFunction::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonPointToFieldFunction::GetClassName()
+  oss << "class=" << PythonPointToFieldFunction::GetClassName()
       << " name=" << getName();
   return oss;
 }

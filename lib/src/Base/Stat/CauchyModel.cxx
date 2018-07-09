@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Field.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -104,7 +105,7 @@ String CauchyModel::__str__(const String & offset) const
   oss << " amplitude=" << amplitude_
       << " scale=" << scale_;
   if (!isDiagonal_)
-    oss << " spatial correlation=\n" << outputCorrelation_.__str__(offset);
+    oss << " spatial correlation=" << Os::GetEndOfLine() << offset << outputCorrelation_.__str__(offset);
   else
     oss << " no spatial correlation";
   return oss;

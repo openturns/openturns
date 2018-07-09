@@ -67,10 +67,10 @@ String MinCopula::__repr__() const
   return oss;
 }
 
-String MinCopula::__str__(const String & offset) const
+String MinCopula::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(dim = " << getDimension() << ")";
+  oss << getClassName() << "(dim = " << getDimension() << ")";
   return oss;
 }
 

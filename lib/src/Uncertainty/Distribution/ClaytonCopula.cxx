@@ -78,10 +78,10 @@ String ClaytonCopula::__repr__() const
   return oss;
 }
 
-String ClaytonCopula::__str__(const String & offset) const
+String ClaytonCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(theta = " << theta_ << ")";
+  oss << getClassName() << "(theta = " << theta_ << ")";
   return oss;
 }
 

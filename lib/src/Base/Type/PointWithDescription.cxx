@@ -106,7 +106,7 @@ public:
   }
 };
 
-String PointWithDescription::__str__(const String & offset) const
+String PointWithDescription::__str__(const String & ) const
 {
   const UnsignedInteger size = getSize();
   const Description desc = getDescription();
@@ -114,7 +114,7 @@ String PointWithDescription::__str__(const String & offset) const
   for (UnsignedInteger i = 0; i < size; ++i) assoc[i] = KeyValuePair(i < desc.getSize() ? desc[i] : "", (*this)[i]);
 
   OSS oss(false);
-  oss << offset << "[";
+  oss << "[";
   std::copy(assoc.begin(), assoc.end(), OSS_iterator<KeyValuePair>(oss, ", "));
   oss << "]";
   return oss;

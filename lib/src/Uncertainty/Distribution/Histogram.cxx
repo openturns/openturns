@@ -116,10 +116,10 @@ String Histogram::__repr__() const
   return oss;
 }
 
-String Histogram::__str__(const String & offset) const
+String Histogram::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(origin = " << first_;
+  oss << getClassName() << "(origin = " << first_;
   for (UnsignedInteger i = 0; i < width_.getSize(); ++i) oss << ", {w" << i << " = " << width_[i] << ", h" << i << " = " << height_[i] << "}";
   oss << ")";
   return oss;

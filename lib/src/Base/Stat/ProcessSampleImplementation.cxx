@@ -27,6 +27,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/TBB.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -87,9 +88,9 @@ String ProcessSampleImplementation::__repr__() const
 String ProcessSampleImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << "[";
+  oss << "[";
   String separator("");
-  for (UnsignedInteger i = 0; i < data_.getSize(); ++i, separator = "\n") oss << separator << offset << "field " << i << ":\n" << getField(i).__str__(offset);
+  for (UnsignedInteger i = 0; i < data_.getSize(); ++i, separator = Os::GetEndOfLine()) oss << separator << offset << "field " << i << ":" << Os::GetEndOfLine() << getField(i).__str__(offset);
   oss << "]";
   return oss;
 }

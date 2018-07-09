@@ -96,11 +96,10 @@ String LHSExperiment::__repr__() const
   return oss;
 }
 
-String LHSExperiment::__str__(const String & offset) const
+String LHSExperiment::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset
-      << GetClassName()
+  oss << GetClassName()
       << "(distribution=" << distribution_
       << ", size" << size_
       << ", always shuffle=" << alwaysShuffle_

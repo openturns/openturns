@@ -86,10 +86,10 @@ String Gamma::__repr__() const
   return oss;
 }
 
-String Gamma::__str__(const String & offset) const
+String Gamma::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(k = " << k_ << ", lambda = " << lambda_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(k = " << k_ << ", lambda = " << lambda_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

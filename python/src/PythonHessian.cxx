@@ -95,10 +95,10 @@ String PythonHessian::__repr__() const
 }
 
 /* String converter */
-String PythonHessian::__str__(const String & offset) const
+String PythonHessian::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonHessian::GetClassName()
+  oss << "class=" << PythonHessian::GetClassName()
       << " name=" << getName();
   return oss;
 }

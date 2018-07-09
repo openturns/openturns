@@ -96,10 +96,10 @@ String OrdinalSumCopula::__repr__() const
   return oss;
 }
 
-String OrdinalSumCopula::__str__(const String & offset) const
+String OrdinalSumCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {

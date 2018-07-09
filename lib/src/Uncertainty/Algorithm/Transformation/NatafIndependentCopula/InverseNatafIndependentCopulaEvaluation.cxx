@@ -62,10 +62,10 @@ String InverseNatafIndependentCopulaEvaluation::__repr__() const
   return oss;
 }
 
-String InverseNatafIndependentCopulaEvaluation::__str__(const String & offset) const
+String InverseNatafIndependentCopulaEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << InverseNatafIndependentCopulaEvaluation::GetClassName()
+  oss << InverseNatafIndependentCopulaEvaluation::GetClassName()
       << "(Normal(" << dimension_ << ")->IndependentCopula(" << dimension_ << "))";
 
   return oss;

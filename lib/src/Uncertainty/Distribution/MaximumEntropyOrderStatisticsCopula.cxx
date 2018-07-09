@@ -84,10 +84,10 @@ String MaximumEntropyOrderStatisticsCopula::__repr__() const
   return oss;
 }
 
-String MaximumEntropyOrderStatisticsCopula::__str__(const String & offset) const
+String MaximumEntropyOrderStatisticsCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(collection = " << distribution_.distributionCollection_ << ")";
+  oss << getClassName() << "(collection = " << distribution_.distributionCollection_ << ")";
   return oss;
 }
 

@@ -78,10 +78,10 @@ String Bernoulli::__repr__() const
   return oss;
 }
 
-String Bernoulli::__str__(const String & offset) const
+String Bernoulli::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(p = " << p_ << ")";
+  oss << getClassName() << "(p = " << p_ << ")";
   return oss;
 }
 

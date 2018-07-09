@@ -82,9 +82,9 @@ String FieldToPointFunctionImplementation::__repr__() const
 }
 
 /* String converter */
-String FieldToPointFunctionImplementation::__str__(const String & offset) const
+String FieldToPointFunctionImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 /* Get the i-th marginal function */

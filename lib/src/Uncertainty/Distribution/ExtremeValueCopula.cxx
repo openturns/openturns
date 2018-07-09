@@ -84,10 +84,10 @@ String ExtremeValueCopula::__repr__() const
   return oss;
 }
 
-String ExtremeValueCopula::__str__(const String & offset) const
+String ExtremeValueCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(A = " << pickandFunction_ << ")";
+  oss << getClassName() << "(A = " << pickandFunction_ << ")";
   return oss;
 }
 

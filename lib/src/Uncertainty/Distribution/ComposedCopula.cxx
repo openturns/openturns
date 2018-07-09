@@ -92,10 +92,10 @@ String ComposedCopula::__repr__() const
   return oss;
 }
 
-String ComposedCopula::__str__(const String & offset) const
+String ComposedCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   String separator("");
   for (UnsignedInteger i = 0; i < copulaCollection_.getSize(); ++i)
   {

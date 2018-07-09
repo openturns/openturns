@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/WhittleFactoryState.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -81,11 +82,11 @@ String WhittleFactoryState::__repr__() const
 String WhittleFactoryState::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getARMA().__str__(offset) << "\n";
-  oss << offset << "Information criteria:\n";
-  oss << offset << "AICc = " << informationCriteria_[0] << "\n";
-  oss << offset << "AIC  = " << informationCriteria_[1] << "\n";
-  oss << offset << "BIC  = " << informationCriteria_[2];
+  oss << getARMA().__str__(offset) << Os::GetEndOfLine() << offset;
+  oss << "Information criteria:" << Os::GetEndOfLine() << offset;
+  oss << "AICc = " << informationCriteria_[0] << Os::GetEndOfLine() << offset;
+  oss << "AIC  = " << informationCriteria_[1] << Os::GetEndOfLine() << offset;
+  oss << "BIC  = " << informationCriteria_[2];
   return oss;
 }
 

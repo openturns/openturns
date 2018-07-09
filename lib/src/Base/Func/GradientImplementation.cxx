@@ -66,9 +66,9 @@ String GradientImplementation::__repr__() const
 }
 
 /* String converter */
-String GradientImplementation::__str__(const String & offset) const
+String GradientImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << "GradientImplementation";
+  return OSS(false) << "GradientImplementation";
 }
 
 

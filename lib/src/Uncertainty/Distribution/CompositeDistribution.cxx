@@ -288,10 +288,10 @@ String CompositeDistribution::__repr__() const
   return oss;
 }
 
-String CompositeDistribution::__str__(const String & offset) const
+String CompositeDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "=f(" << antecedent_.__str__() << ") with f=" << function_.getEvaluation().__str__();
+  oss << getClassName() << "=f(" << antecedent_.__str__() << ") with f=" << function_.getEvaluation().__str__();
   return oss;
 }
 

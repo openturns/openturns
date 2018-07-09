@@ -95,10 +95,10 @@ String PythonGradient::__repr__() const
 }
 
 /* String converter */
-String PythonGradient::__str__(const String & offset) const
+String PythonGradient::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonGradient::GetClassName()
+  oss << "class=" << PythonGradient::GetClassName()
       << " name=" << getName();
   return oss;
 }

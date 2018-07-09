@@ -53,10 +53,10 @@ String Hanning::__repr__() const
 }
 
 /* String converter */
-String Hanning::__str__(const String & offset) const
+String Hanning::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << Hanning::GetClassName();
+  oss << "class=" << Hanning::GetClassName();
   return oss;
 }
 

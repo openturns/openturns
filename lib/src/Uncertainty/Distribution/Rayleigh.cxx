@@ -80,10 +80,10 @@ String Rayleigh::__repr__() const
   return oss;
 }
 
-String Rayleigh::__str__(const String & offset) const
+String Rayleigh::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(sigma = " << sigma_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(sigma = " << sigma_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

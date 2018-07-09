@@ -72,10 +72,10 @@ String IndependentCopula::__repr__() const
 }
 
 /* String converter */
-String IndependentCopula::__str__(const String & offset) const
+String IndependentCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(dimension = " << getDimension() << ")";
+  oss << getClassName() << "(dimension = " << getDimension() << ")";
   return oss;
 }
 

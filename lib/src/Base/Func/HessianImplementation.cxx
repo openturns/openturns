@@ -67,9 +67,9 @@ String HessianImplementation::__repr__() const
 }
 
 /* String converter */
-String HessianImplementation::__str__(const String & offset) const
+String HessianImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << "HessianImplementation";
+  return OSS(false) << "HessianImplementation";
 }
 
 /* Test for actual implementation */

@@ -54,9 +54,9 @@ String UniVariateFunctionImplementation::__repr__() const
 }
 
 
-String UniVariateFunctionImplementation::__str__(const String & offset) const
+String UniVariateFunctionImplementation::__str__(const String & ) const
 {
-  return OSS(true) << offset << __repr__();
+  return OSS(true) << __repr__();
 }
 
 

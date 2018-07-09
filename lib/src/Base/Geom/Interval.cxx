@@ -441,11 +441,11 @@ String Interval::__str__(const String & offset) const
   OSS oss(false);
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
-    if (i > 0) oss << Os::GetEndOfLine();
-    if (finiteLowerBound_[i]) oss << offset << "[" << lowerBound_[i] << ", ";
-    else oss << offset << "]-inf (" << lowerBound_[i] << "), ";
+    if (i > 0) oss << Os::GetEndOfLine() << offset;
+    if (finiteLowerBound_[i]) oss << "[" << lowerBound_[i] << ", ";
+    else oss << "]-inf (" << lowerBound_[i] << "), ";
     if (finiteUpperBound_[i]) oss << upperBound_[i] << "]";
-    else oss << offset << "(" << upperBound_[i] << ") +inf[";
+    else oss << "(" << upperBound_[i] << ") +inf[";
   }
   return oss;
 }

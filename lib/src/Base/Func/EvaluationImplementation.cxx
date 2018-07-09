@@ -84,9 +84,9 @@ String EvaluationImplementation::__repr__() const
 }
 
 /* String converter */
-String EvaluationImplementation::__str__(const String & offset) const
+String EvaluationImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << "EvaluationImplementation";
+  return OSS(false) << "EvaluationImplementation";
 }
 
 /* Description Accessor */

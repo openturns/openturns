@@ -81,10 +81,10 @@ String Burr::__repr__() const
   return oss;
 }
 
-String Burr::__str__(const String & offset) const
+String Burr::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(c = " << c_ << ", k = " << k_ << ")";
+  oss << getClassName() << "(c = " << c_ << ", k = " << k_ << ")";
   return oss;
 }
 

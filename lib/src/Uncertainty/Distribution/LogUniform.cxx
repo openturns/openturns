@@ -86,10 +86,10 @@ String LogUniform::__repr__() const
   return oss;
 }
 
-String LogUniform::__str__(const String & offset) const
+String LogUniform::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(aLog = " << aLog_ << ", bLog = " << bLog_ << ")";
+  oss << getClassName() << "(aLog = " << aLog_ << ", bLog = " << bLog_ << ")";
   return oss;
 }
 

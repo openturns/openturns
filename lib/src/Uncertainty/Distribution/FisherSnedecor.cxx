@@ -85,10 +85,10 @@ String FisherSnedecor::__repr__() const
   return oss;
 }
 
-String FisherSnedecor::__str__(const String & offset) const
+String FisherSnedecor::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(d1 = " << d1_ << ", d2 = " << d2_ << ")";
+  oss << getClassName() << "(d1 = " << d1_ << ", d2 = " << d2_ << ")";
   return oss;
 }
 

@@ -127,10 +127,10 @@ String EmpiricalBernsteinCopula::__repr__() const
   return oss;
 }
 
-String EmpiricalBernsteinCopula::__str__(const String & offset) const
+String EmpiricalBernsteinCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "("
+  oss << getClassName() << "("
       << " copulaSample=" << copulaSample_
       << " binNumber=" << binNumber_
       << ")";

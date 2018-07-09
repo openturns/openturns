@@ -231,10 +231,10 @@ String RankMCovarianceModel::__repr__() const
 }
 
 /* String converter */
-String RankMCovarianceModel::__str__(const String & offset) const
+String RankMCovarianceModel::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << RankMCovarianceModel::GetClassName();
+  oss << "class=" << RankMCovarianceModel::GetClassName();
   if (covariance_.getDimension() > 0) oss << ", covariance=" << covariance_;
   else oss << ", variance=" << variance_;
   oss << ", basis=" << basis_

@@ -77,11 +77,10 @@ String ConditionedGaussianProcess::__repr__() const
   return oss;
 }
 
-String ConditionedGaussianProcess::__str__(const String & offset) const
+String ConditionedGaussianProcess::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset
-      << "ConditionedGaussianProcess("
+  oss << "ConditionedGaussianProcess("
       << "mesh=" << mesh_.__str__()
       << ", trend=" << trend_.__str__()
       << ", covariance=" << covarianceModel_.__str__()

@@ -117,10 +117,10 @@ String P1LagrangeInterpolation::__repr__() const
   return oss;
 }
 
-String P1LagrangeInterpolation::__str__( const String & offset ) const
+String P1LagrangeInterpolation::__str__( const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << P1LagrangeInterpolation::GetClassName()
+  oss << "class=" << P1LagrangeInterpolation::GetClassName()
       << " name=" << getName()
       << " inputMesh=" << inputMesh_
       << " outputMesh=" << outputMesh_;

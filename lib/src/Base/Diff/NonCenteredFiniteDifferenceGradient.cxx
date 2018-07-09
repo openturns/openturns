@@ -79,9 +79,9 @@ String NonCenteredFiniteDifferenceGradient::__repr__() const
 }
 
 /* String converter */
-String NonCenteredFiniteDifferenceGradient::__str__(const String & offset) const
+String NonCenteredFiniteDifferenceGradient::__str__(const String & ) const
 {
-  return OSS(false) << offset << "NonCenteredFiniteDifferenceGradient epsilon : " << getEpsilon();
+  return OSS(false) << "NonCenteredFiniteDifferenceGradient epsilon : " << getEpsilon();
 }
 
 /* Here is the interface that all derived class must implement */

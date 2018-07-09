@@ -114,11 +114,10 @@ String SquaredExponential::__repr__() const
 }
 
 /* String converter */
-String SquaredExponential::__str__(const String & offset) const
+String SquaredExponential::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset
-      << SquaredExponential::GetClassName()
+  oss << SquaredExponential::GetClassName()
       << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ")";

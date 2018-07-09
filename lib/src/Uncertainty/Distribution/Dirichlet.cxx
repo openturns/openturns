@@ -89,10 +89,10 @@ String Dirichlet::__repr__() const
   return oss;
 }
 
-String Dirichlet::__str__(const String & offset) const
+String Dirichlet::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(theta = " << theta_.__str__() << ")";
+  oss << getClassName() << "(theta = " << theta_.__str__() << ")";
   return oss;
 }
 

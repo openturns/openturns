@@ -22,7 +22,7 @@ basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] lin
   [[ 0 ]
    [ 0 ]]
   quadratic :
-sheet #0
+  sheet #0
   [[ 1 0 ]
    [ 0 0 ]]
 ,QuadraticEvaluation
@@ -34,7 +34,7 @@ sheet #0
   [[ 0 ]
    [ 0 ]]
   quadratic :
-sheet #0
+  sheet #0
   [[ 0 1 ]
    [ 1 0 ]]
 ,QuadraticEvaluation
@@ -46,7 +46,7 @@ sheet #0
   [[ 0 ]
    [ 0 ]]
   quadratic :
-sheet #0
+  sheet #0
   [[ 0 0 ]
    [ 0 1 ]]
 ] )

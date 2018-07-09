@@ -77,10 +77,10 @@ String InverseBoxCoxGradient::__repr__() const
 }
 
 /* String converter __str__ */
-String InverseBoxCoxGradient::__str__(const String & offset) const
+String InverseBoxCoxGradient::__str__(const String & ) const
 {
   OSS oss (false);
-  oss << offset << "InverseBoxCoxGradient(lambda=" << getLambda()
+  oss << "InverseBoxCoxGradient(lambda=" << getLambda()
       << ", shift=" << getShift()
       << ")";
   return oss;

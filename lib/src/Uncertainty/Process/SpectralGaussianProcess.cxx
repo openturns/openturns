@@ -161,11 +161,10 @@ String SpectralGaussianProcess::__repr__() const
   return oss;
 }
 
-String SpectralGaussianProcess::__str__(const String & offset) const
+String SpectralGaussianProcess::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset
-      << " SpectralGaussianProcess=" << SpectralGaussianProcess::GetClassName()
+  oss << " SpectralGaussianProcess=" << SpectralGaussianProcess::GetClassName()
       << " dimension=" << getOutputDimension()
       << " spectralModel=" << spectralModel_
       << " maximal frequency=" << maximalFrequency_

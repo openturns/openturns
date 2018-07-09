@@ -136,11 +136,10 @@ String NaiveEnclosingSimplex::__repr__() const
 }
 
 /* String converter */
-String NaiveEnclosingSimplex::__str__(const String & offset) const
+String NaiveEnclosingSimplex::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset
-      << "class=" << NaiveEnclosingSimplex::GetClassName()
+  oss << "class=" << NaiveEnclosingSimplex::GetClassName()
       << " nearestNeighbourAlgorithm=" << nearestNeighbour_.getImplementation()->getClassName();
   return oss;
 }

@@ -131,10 +131,10 @@ String KrigingResult::__repr__() const
          << ", covariance coefficients=" << covarianceCoefficients_;
 }
 
-String KrigingResult::__str__(const String & offset) const
+String KrigingResult::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   oss << "covariance models=" << covarianceModel_;
   oss << ", covariance coefficients=" << covarianceCoefficients_;
   oss << ", basis=" << basis_;

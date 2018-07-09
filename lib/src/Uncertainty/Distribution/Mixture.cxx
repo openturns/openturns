@@ -135,10 +135,10 @@ String Mixture::__repr__() const
   return oss;
 }
 
-String Mixture::__str__(const String & offset) const
+String Mixture::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   String separator("");
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {

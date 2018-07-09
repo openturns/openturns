@@ -1006,14 +1006,14 @@ String DrawableImplementation::__repr__() const
 String DrawableImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName()
-      << offset << "(name=" << getName()
-      << offset << ", color=" << color_
-      << offset << ", fill=" << fillStyle_
-      << offset << ", line=" << lineStyle_
-      << offset << ", point=" << pointStyle_
-      << offset << ", width=" << lineWidth_
-      << offset << ", data=\n" << data_.__str__(offset);
+  oss << getClassName()
+      << "(name=" << getName()
+      << ", color=" << color_
+      << ", fill=" << fillStyle_
+      << ", line=" << lineStyle_
+      << ", point=" << pointStyle_
+      << ", width=" << lineWidth_
+      << ", data=" << Os::GetEndOfLine() << offset << data_.__str__(offset);
   return oss;
 }
 

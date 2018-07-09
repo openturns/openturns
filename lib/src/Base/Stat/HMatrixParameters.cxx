@@ -146,10 +146,10 @@ String HMatrixParameters::__repr__() const
   return oss;
 }
 
-String HMatrixParameters::__str__(const String & offset) const
+String HMatrixParameters::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class= " << HMatrixParameters::GetClassName();
+  oss << "class= " << HMatrixParameters::GetClassName();
   return oss;
 }
 

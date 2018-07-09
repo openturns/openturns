@@ -80,10 +80,10 @@ String Chi::__repr__() const
   return oss;
 }
 
-String Chi::__str__(const String & offset) const
+String Chi::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(nu = " << nu_ << ")";
+  oss << getClassName() << "(nu = " << nu_ << ")";
   return oss;
 }
 

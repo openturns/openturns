@@ -77,10 +77,10 @@ String CompositeProcess::__repr__() const
   return oss;
 }
 
-String CompositeProcess::__str__(const String & offset) const
+String CompositeProcess::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(" << function_.__str__()
+  oss << getClassName() << "(" << function_.__str__()
       << "(" << antecedent_.__str__() << ")";
   return oss;
 }

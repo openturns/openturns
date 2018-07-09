@@ -76,10 +76,10 @@ String Geometric::__repr__() const
   return oss;
 }
 
-String Geometric::__str__(const String & offset) const
+String Geometric::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(p = " << p_ << ")";
+  oss << getClassName() << "(p = " << p_ << ")";
   return oss;
 }
 

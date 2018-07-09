@@ -76,10 +76,10 @@ String NonCentralStudent::__repr__() const
   return oss;
 }
 
-String NonCentralStudent::__str__(const String & offset) const
+String NonCentralStudent::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(nu = " << nu_ << ", delta = " << delta_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(nu = " << nu_ << ", delta = " << delta_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

@@ -213,10 +213,10 @@ String FFTImplementation::__repr__() const
 }
 
 /* String converter */
-String FFTImplementation::__str__(const String & offset) const
+String FFTImplementation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << FFTImplementation::GetClassName();
+  oss << "class=" << FFTImplementation::GetClassName();
   return oss;
 }
 

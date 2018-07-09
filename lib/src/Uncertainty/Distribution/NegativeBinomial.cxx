@@ -84,10 +84,10 @@ String NegativeBinomial::__repr__() const
   return oss;
 }
 
-String NegativeBinomial::__str__(const String & offset) const
+String NegativeBinomial::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(r = " << r_ << ", p = " << p_ << ")";
+  oss << getClassName() << "(r = " << r_ << ", p = " << p_ << ")";
   return oss;
 }
 

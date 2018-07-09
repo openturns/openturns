@@ -121,10 +121,10 @@ String IndicesCollectionImplementation::__repr__() const
   return toString(true);
 }
 
-String IndicesCollectionImplementation::__str__(const String & offset) const
+String IndicesCollectionImplementation::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << toString(false);
+  oss << toString(false);
   if (size_ >= ResourceMap::GetAsUnsignedInteger("Collection-size-visible-in-str-from"))
     oss << "#" << size_;
   return oss;

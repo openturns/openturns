@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ARMACoefficients.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -90,7 +91,7 @@ String ARMACoefficients::__repr__() const
 String ARMACoefficients::__str__(const String & offset) const
 {
   OSS oss(false);
-  for (UnsignedInteger i = 0; i < getSize(); ++i) oss << offset << "shift = " << i << "\n" << offset << (*this)[i].__str__(offset) << "\n";
+  for (UnsignedInteger i = 0; i < getSize(); ++i) oss << "shift = " << i << Os::GetEndOfLine() << offset << (*this)[i].__str__(offset) << Os::GetEndOfLine() << offset;
   return oss;
 }
 

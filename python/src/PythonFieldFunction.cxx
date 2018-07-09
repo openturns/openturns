@@ -151,10 +151,10 @@ String PythonFieldFunction::__repr__() const
 }
 
 /* String converter */
-String PythonFieldFunction::__str__(const String & offset) const
+String PythonFieldFunction::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonFieldFunction::GetClassName()
+  oss << "class=" << PythonFieldFunction::GetClassName()
       << " name=" << getName();
   return oss;
 }

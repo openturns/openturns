@@ -318,9 +318,9 @@ String KDTree::__repr__() const
          << " root=" << (tree_.getSize() > 0 ? printNode(1) : "NULL");
 }
 
-String KDTree::__str__(const String & offset) const
+String KDTree::__str__(const String & ) const
 {
-  return OSS(false) << offset << "class=" << GetClassName()
+  return OSS(false) << "class=" << GetClassName()
          << " root=" << (tree_.getSize() > 0 ? printNode(1) : "NULL");
 }
 

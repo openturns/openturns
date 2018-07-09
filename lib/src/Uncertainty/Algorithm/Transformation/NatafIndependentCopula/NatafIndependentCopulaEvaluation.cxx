@@ -70,10 +70,10 @@ String NatafIndependentCopulaEvaluation::__repr__() const
   return oss;
 }
 
-String NatafIndependentCopulaEvaluation::__str__(const String & offset) const
+String NatafIndependentCopulaEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << NatafIndependentCopulaEvaluation::GetClassName()
+  oss << NatafIndependentCopulaEvaluation::GetClassName()
       << "(IndependentCopula(" << dimension_ << ")->Normal(" << dimension_ << "))";
 
   return oss;

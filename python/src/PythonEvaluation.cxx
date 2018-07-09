@@ -148,10 +148,10 @@ String PythonEvaluation::__repr__() const
 }
 
 /* String converter */
-String PythonEvaluation::__str__(const String & offset) const
+String PythonEvaluation::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonEvaluation::GetClassName()
+  oss << "class=" << PythonEvaluation::GetClassName()
       << " name=" << getName();
   return oss;
 }

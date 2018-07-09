@@ -139,11 +139,10 @@ String ARMAFactoryImplementation::__repr__() const
 }
 
 /* String converter */
-String ARMAFactoryImplementation::__str__(const String & offset) const
+String ARMAFactoryImplementation::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset
-      << "class= " << ARMAFactoryImplementation::GetClassName()
+  oss << "class= " << ARMAFactoryImplementation::GetClassName()
       << " p=" << p_
       << " q=" << q_
       << " invertible=" << invertible_;

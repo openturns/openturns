@@ -24,6 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ChiSquare.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -85,7 +86,7 @@ String Wishart::__repr__() const
 String Wishart::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(V = \n" << getV() << ", nu = " << nu_ << ")";
+  oss << getClassName() << "(V = " << Os::GetEndOfLine() << offset << getV() << ", nu = " << nu_ << ")";
   return oss;
 }
 

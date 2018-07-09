@@ -316,10 +316,10 @@ String EnclosingSimplexAlgorithmImplementation::__repr__() const
 }
 
 /* String converter */
-String EnclosingSimplexAlgorithmImplementation::__str__(const String & offset) const
+String EnclosingSimplexAlgorithmImplementation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << EnclosingSimplexAlgorithmImplementation::GetClassName();
+  oss << "class=" << EnclosingSimplexAlgorithmImplementation::GetClassName();
   return oss;
 }
 

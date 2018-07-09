@@ -118,10 +118,10 @@ String ParametricHessian::__repr__() const
   return oss;
 }
 
-String ParametricHessian::__str__(const String & offset) const
+String ParametricHessian::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << ParametricHessian::GetClassName();
+  oss << ParametricHessian::GetClassName();
   return oss;
 }
 

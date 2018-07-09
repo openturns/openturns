@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ARMAState.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -67,13 +68,12 @@ String ARMAState::__str__(const String & offset) const
   OSS oss;
   // The x part of the state stores the p past values of the process that
   // are needed to compute the current value
-  oss << offset;
   String separator("");
   const UnsignedInteger xSize = x_.getSize();
-  for (UnsignedInteger i = 0; i < xSize; ++i, separator = "\n")
+  for (UnsignedInteger i = 0; i < xSize; ++i, separator = Os::GetEndOfLine() )
   {
     const UnsignedInteger index = xSize - i;
-    oss << separator << "X(t-" << index << ")" << std::setw(String(OSS() << xSize).size() - String(OSS() << index).size() + 3) << " = " << x_[i];
+    oss << separator << offset << "X(t-" << index << ")" << std::setw(String(OSS() << xSize).size() - String(OSS() << index).size() + 3) << " = " << x_[i];
   }
   // The epsilon part of the state stores the q past values of the noise
   // that are needed to compute the current value

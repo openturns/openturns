@@ -84,10 +84,10 @@ String Skellam::__repr__() const
   return oss;
 }
 
-String Skellam::__str__(const String & offset) const
+String Skellam::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(lambda1 = " << lambda1_ << ", lambda2 = " << lambda2_ << ")";
+  oss << getClassName() << "(lambda1 = " << lambda1_ << ", lambda2 = " << lambda2_ << ")";
   return oss;
 }
 

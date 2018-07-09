@@ -110,8 +110,8 @@ String FunctionalChaosResult::__repr__() const
 String FunctionalChaosResult::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << "meta model=" << metaModel_ << Os::GetEndOfLine();
-  oss << offset << "orthogonal basis=" << orthogonalBasis_;
+  oss << "meta model=" << metaModel_ << Os::GetEndOfLine() << offset;
+  oss << "orthogonal basis=" << orthogonalBasis_;
   return oss;
 }
 

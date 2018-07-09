@@ -215,11 +215,10 @@ String MaternModel::__repr__() const
 }
 
 /* String converter */
-String MaternModel::__str__(const String & offset) const
+String MaternModel::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset
-      << MaternModel::GetClassName()
+  oss << MaternModel::GetClassName()
       << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", nu=" << nu_

@@ -81,10 +81,10 @@ String Exponential::__repr__() const
   return oss;
 }
 
-String Exponential::__str__(const String & offset) const
+String Exponential::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(lambda = " << lambda_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(lambda = " << lambda_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

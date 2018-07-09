@@ -80,9 +80,9 @@ String CenteredFiniteDifferenceGradient::__repr__() const
 }
 
 /* String converter */
-String CenteredFiniteDifferenceGradient::__str__(const String & offset) const
+String CenteredFiniteDifferenceGradient::__str__(const String & ) const
 {
-  return OSS(false) << offset << "CenteredFiniteDifferenceGradient epsilon : " << getEpsilon();
+  return OSS(false) << "CenteredFiniteDifferenceGradient epsilon : " << getEpsilon();
 }
 
 /* Here is the interface that all derived class must implement */

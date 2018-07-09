@@ -81,10 +81,10 @@ String GeneralizedPareto::__repr__() const
   return oss;
 }
 
-String GeneralizedPareto::__str__(const String & offset) const
+String GeneralizedPareto::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(sigma = " << sigma_ << ", xi=" << xi_ << ")";
+  oss << getClassName() << "(sigma = " << sigma_ << ", xi=" << xi_ << ")";
   return oss;
 }
 

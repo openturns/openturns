@@ -212,10 +212,10 @@ String BetaMuSigma::__repr__() const
 }
 
 
-String BetaMuSigma::__str__(const String & offset) const
+String BetaMuSigma::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ", a = " << a_ << ", b = " << b_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ", a = " << a_ << ", b = " << b_ << ")";
   return oss;
 }
 

@@ -85,10 +85,10 @@ String KPermutationsDistribution::__repr__() const
   return oss;
 }
 
-String KPermutationsDistribution::__str__(const String & offset) const
+String KPermutationsDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(k = " << k_ << ", n = " << n_ << ")";
+  oss << getClassName() << "(k = " << k_ << ", n = " << n_ << ")";
   return oss;
 }
 

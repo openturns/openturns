@@ -26,6 +26,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/ComposedDistribution.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -589,7 +590,7 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
   const String name(getName());
-  if (hasVisibleName()) oss << offset << "Marginal transformation " << getName() << " :\n";
+  if (hasVisibleName()) oss << "Marginal transformation " << getName() << " :" << Os::GetEndOfLine() << offset;
   const Description inputDescription(getInputDescription());
   const Description outputDescription(getOutputDescription());
   UnsignedInteger length = 0;
@@ -600,10 +601,9 @@ String MarginalTransformationEvaluation::__str__(const String & offset) const
   }
   for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++i)
   {
-    oss << offset;
     if (inputDistributionCollection_.getSize() > 1) oss << "| " << std::setw(length) << outputDescription[i] << " = ";
-    if (simplifications_[i]) oss << expressions_[i].getEvaluation().__str__() << "\n";
-    else oss << inputDistributionCollection_[i] << " -> " << outputDescription[i] << " : " << outputDistributionCollection_[i] << "\n";
+    if (simplifications_[i]) oss << expressions_[i].getEvaluation().__str__() << Os::GetEndOfLine() << offset;
+    else oss << inputDistributionCollection_[i] << " -> " << outputDescription[i] << " : " << outputDistributionCollection_[i] << Os::GetEndOfLine() << offset;
   }
   return oss;
 }

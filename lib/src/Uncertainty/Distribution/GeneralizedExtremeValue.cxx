@@ -83,10 +83,10 @@ String GeneralizedExtremeValue::__repr__() const
   return oss;
 }
 
-String GeneralizedExtremeValue::__str__(const String & offset) const
+String GeneralizedExtremeValue::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(mu=" << mu_
+  oss << getClassName() << "(mu=" << mu_
       << ", sigma=" << sigma_
       << ", xi=" << xi_
       << ")";

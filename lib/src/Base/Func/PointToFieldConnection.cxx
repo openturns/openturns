@@ -24,6 +24,7 @@
 #include "openturns/PointToFieldConnection.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/PointToFieldFunction.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -117,7 +118,7 @@ String PointToFieldConnection::__repr__() const
 String PointToFieldConnection::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << offset << "name=" << getName() << "\n";
+  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
   if (startByPointToFieldFunction_)
   {
     oss << "(" << pointToFieldFunction_ << ")o(";

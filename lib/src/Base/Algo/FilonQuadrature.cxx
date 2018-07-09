@@ -198,10 +198,10 @@ String FilonQuadrature::__repr__() const
 }
 
 /* String converter */
-String FilonQuadrature::__str__(const String & offset) const
+String FilonQuadrature::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << FilonQuadrature::GetClassName()
+  oss << FilonQuadrature::GetClassName()
       << "(n=" << n_
       << ", omega=" << omega_
       << ", kernel=" << (kind_ == 0 ? "cos(omega*x)" : (kind_ == 1 ? "sin(omega*x)" : "exp(I*omega*x)"))

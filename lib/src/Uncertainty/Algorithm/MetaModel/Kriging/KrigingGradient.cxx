@@ -94,9 +94,9 @@ String KrigingGradient::__repr__() const
 }
 
 /* String converter */
-String KrigingGradient::__str__(const String & offset) const
+String KrigingGradient::__str__(const String & ) const
 {
-  return OSS(false) << offset << GetClassName();
+  return OSS(false) << GetClassName();
 }
 
 /* Test for actual implementation */

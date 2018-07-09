@@ -90,10 +90,10 @@ String MarginalDistribution::__repr__() const
   return oss;
 }
 
-String MarginalDistribution::__str__(const String & offset) const
+String MarginalDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(distribution="
+  oss << getClassName() << "(distribution="
       << distribution_.__str__()
       << ", indices=" << indices_;
   oss << ")";

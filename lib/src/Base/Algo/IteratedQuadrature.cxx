@@ -120,10 +120,10 @@ String IteratedQuadrature::__repr__() const
 }
 
 /* String converter */
-String IteratedQuadrature::__str__(const String & offset) const
+String IteratedQuadrature::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << IteratedQuadrature::GetClassName()
+  oss << IteratedQuadrature::GetClassName()
       << "(algorithm=" << algorithm_
       << ")";
   return oss;

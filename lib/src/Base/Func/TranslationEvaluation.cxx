@@ -67,11 +67,10 @@ String TranslationEvaluation::__repr__() const
   return oss;
 }
 
-String TranslationEvaluation::__str__(const String & offset) const
+String TranslationEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset
-      << "class=" << TranslationEvaluation::GetClassName()
+  oss << "class=" << TranslationEvaluation::GetClassName()
       << " name=" << getName()
       << " constant=" << constant_;
   return oss;

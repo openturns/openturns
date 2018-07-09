@@ -159,11 +159,10 @@ String SphericalModel::__repr__() const
 }
 
 /* String converter */
-String SphericalModel::__str__(const String & offset) const
+String SphericalModel::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset
-      << SphericalModel::GetClassName()
+  oss << SphericalModel::GetClassName()
       << "(scale=" << scale_.__str__()
       << ", amplitude=" << amplitude_.__str__()
       << ", radius=" << radius_

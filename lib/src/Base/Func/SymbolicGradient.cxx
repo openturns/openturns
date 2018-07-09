@@ -95,14 +95,13 @@ String SymbolicGradient::__repr__() const
 String SymbolicGradient::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset;
   // Check that the symbolic differentiation has been done
   try
   {
     initialize();
     if (isAnalytical_)
     {
-      oss << "\n";
+      oss << Os::GetEndOfLine() << offset;
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(p_evaluation_->getInputVariablesNames());
       const Description outputVariablesNames(p_evaluation_->getOutputVariablesNames());
@@ -119,7 +118,7 @@ String SymbolicGradient::__str__(const String & offset) const
       {
         for (UnsignedInteger i = 0; i < iMax; ++i)
         {
-          oss << offset << "| " << std::setw(length) << ("d(" + outputVariablesNames[j] + ") / d(" + inputVariablesNames[i] + ")") << " = " << getFormula(i, j) << Os::GetEndOfLine();
+          oss << "| " << std::setw(length) << ("d(" + outputVariablesNames[j] + ") / d(" + inputVariablesNames[i] + ")") << " = " << getFormula(i, j) << Os::GetEndOfLine() << offset;
         }
       }
     } // isAnalytical
@@ -128,7 +127,7 @@ String SymbolicGradient::__str__(const String & offset) const
   {
     // Nothing to do
   }
-  if (!isAnalytical_) oss << offset << "No analytical gradient available. Try using finite difference instead.";
+  if (!isAnalytical_) oss << "No analytical gradient available. Try using finite difference instead.";
   return oss;
 }
 

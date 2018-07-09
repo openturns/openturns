@@ -21,6 +21,7 @@
 #include "openturns/ExponentialModel.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -228,7 +229,7 @@ String ExponentialModel::__str__(const String & offset) const
   oss << "(scale=" << getScale()
       << ", amplitude=" << getAmplitude();
   if (!isDiagonal_)
-    oss << ", spatial correlation=\n" << getOutputCorrelation().__str__(offset);
+    oss << ", spatial correlation=" << Os::GetEndOfLine() << offset << getOutputCorrelation().__str__(offset);
   else
     oss << ", no spatial correlation";
   oss << ")";

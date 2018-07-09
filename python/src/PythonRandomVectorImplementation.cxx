@@ -113,10 +113,10 @@ String PythonRandomVectorImplementation::__repr__() const
 }
 
 /* String converter */
-String PythonRandomVectorImplementation::__str__(const String & offset) const
+String PythonRandomVectorImplementation::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonRandomVectorImplementation::GetClassName()
+  oss << "class=" << PythonRandomVectorImplementation::GetClassName()
       << " name=" << getName();
   return oss;
 }

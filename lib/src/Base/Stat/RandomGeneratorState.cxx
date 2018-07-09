@@ -59,9 +59,9 @@ String RandomGeneratorState::__repr__() const
          << "index=" << index_ << ")";
 }
 
-String RandomGeneratorState::__str__(const String & offset) const
+String RandomGeneratorState::__str__(const String & ) const
 {
-  return OSS(false) << offset << "RandomGeneratorState("
+  return OSS(false) << "RandomGeneratorState("
          << "buffer=" << buffer_ << ", "
          << "index=" << index_ << ")";
 }

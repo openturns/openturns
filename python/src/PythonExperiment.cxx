@@ -99,10 +99,10 @@ String PythonExperiment::__repr__() const
 }
 
 /* String converter */
-String PythonExperiment::__str__(const String & offset) const
+String PythonExperiment::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonExperiment::GetClassName()
+  oss << "class=" << PythonExperiment::GetClassName()
       << " name=" << getName();
   return oss;
 }

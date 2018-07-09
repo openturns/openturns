@@ -79,10 +79,10 @@ String IntegrationAlgorithmImplementation::__repr__() const
 }
 
 /* String converter */
-String IntegrationAlgorithmImplementation::__str__(const String & offset) const
+String IntegrationAlgorithmImplementation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << IntegrationAlgorithmImplementation::GetClassName();
+  oss << "class=" << IntegrationAlgorithmImplementation::GetClassName();
   return oss;
 }
 

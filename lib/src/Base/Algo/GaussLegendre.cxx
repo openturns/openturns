@@ -191,10 +191,10 @@ String GaussLegendre::__repr__() const
 }
 
 /* String converter */
-String GaussLegendre::__str__(const String & offset) const
+String GaussLegendre::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << GaussLegendre::GetClassName()
+  oss << GaussLegendre::GetClassName()
       << "(" << discretization_ << ")";
   return oss;
 }

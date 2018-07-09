@@ -226,7 +226,7 @@ String LevelSet::__repr__() const
 String LevelSet::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << "{x | f(x) <= " << level_ << "} with f=\n" << function_.__str__(offset);
+  oss << "{x | f(x) <= " << level_ << "} with f=" << Os::GetEndOfLine() << offset << function_.__str__(offset);
   return oss;
 }
 

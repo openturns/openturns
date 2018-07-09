@@ -162,10 +162,10 @@ String TruncatedDistribution::__repr__() const
   return oss;
 }
 
-String TruncatedDistribution::__str__(const String & offset) const
+String TruncatedDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(" << distribution_.__str__() << ", bounds = " << bounds_.__str__() << ")";
+  oss << getClassName() << "(" << distribution_.__str__() << ", bounds = " << bounds_.__str__() << ")";
   return oss;
 }
 

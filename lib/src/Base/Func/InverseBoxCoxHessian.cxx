@@ -76,10 +76,10 @@ String InverseBoxCoxHessian::__repr__() const
 }
 
 /* String converter __str__ */
-String InverseBoxCoxHessian::__str__(const String & offset) const
+String InverseBoxCoxHessian::__str__(const String & ) const
 {
   OSS oss (false);
-  oss << offset << "InverseBoxCoxHessian(lambda=" << getLambda()
+  oss << "InverseBoxCoxHessian(lambda=" << getLambda()
       << ", shift=" << getShift()
       << ")";
   return oss;

@@ -82,10 +82,10 @@ String RatioDistribution::__repr__() const
   return oss;
 }
 
-String RatioDistribution::__str__(const String & offset) const
+String RatioDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(" << left_.__str__() << " * " << right_.__str__() << ")";
+  oss << getClassName() << "(" << left_.__str__() << " * " << right_.__str__() << ")";
   return oss;
 }
 

@@ -105,10 +105,9 @@ String LinearCombinationHessian::__repr__() const
          << " evaluation=" << *p_evaluation_;
 }
 
-String LinearCombinationHessian::__str__(const String & offset) const
+String LinearCombinationHessian::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset;
   const UnsignedInteger size = p_evaluation_->functionsCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) oss << (i > 0 ? "+" : "") << "(" << p_evaluation_->coefficients_[i] << ")*" << p_evaluation_->functionsCollection_[i].getGradient().__str__();
   return oss;

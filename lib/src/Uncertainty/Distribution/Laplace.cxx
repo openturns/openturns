@@ -83,10 +83,10 @@ String Laplace::__repr__() const
   return oss;
 }
 
-String Laplace::__str__(const String & offset) const
+String Laplace::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(lambda = " << lambda_ << ", mu = " << mu_ << ")";
+  oss << getClassName() << "(lambda = " << lambda_ << ", mu = " << mu_ << ")";
   return oss;
 }
 

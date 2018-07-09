@@ -64,9 +64,9 @@ String SpectralModelFactoryImplementation::__repr__() const
 }
 
 /* String converter */
-String SpectralModelFactoryImplementation::__str__(const String & offset) const
+String SpectralModelFactoryImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << this->getClassName();
+  return OSS(false) << this->getClassName();
 }
 
 /* Here is the interface that all derived class must implement */

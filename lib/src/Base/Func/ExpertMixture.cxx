@@ -21,6 +21,7 @@
 #include "openturns/ExpertMixture.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -90,8 +91,8 @@ String ExpertMixture::__repr__() const
 
 String ExpertMixture::__str__(const String & offset) const
 {
-  return OSS(false) << "experts=" << experts_.__str__(offset)
-         << "\nclassifier=" << classifier_.__str__(offset);
+  return OSS(false) << "experts=" << experts_.__str__(offset) << Os::GetEndOfLine() << offset
+         << "classifier=" << classifier_.__str__(offset);
 }
 
 

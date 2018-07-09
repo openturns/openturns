@@ -83,10 +83,10 @@ String Binomial::__repr__() const
   return oss;
 }
 
-String Binomial::__str__(const String & offset) const
+String Binomial::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(n = " << n_ << ", p = " << p_ << ")";
+  oss << getClassName() << "(n = " << n_ << ", p = " << p_ << ")";
   return oss;
 }
 

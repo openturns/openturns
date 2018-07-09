@@ -102,11 +102,11 @@ String TensorApproximationResult::__repr__() const
          << " metaModel=" << metaModel_;
 }
 
-String TensorApproximationResult::__str__(const String & offset) const
+String TensorApproximationResult::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "meta model=" << metaModel_ << Os::GetEndOfLine();
-//   oss << offset << "orthogonal basis=" << orthogonalBasis_;
+  oss << "meta model=" << metaModel_;
+//   oss << Os::GetEndOfLine() << offset << "orthogonal basis=" << orthogonalBasis_;
   return oss;
 }
 

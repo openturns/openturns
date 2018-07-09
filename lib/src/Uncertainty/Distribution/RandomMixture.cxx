@@ -48,6 +48,7 @@
 #include "openturns/TBB.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/SobolSequence.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -378,7 +379,7 @@ String RandomMixture::__repr__() const
 String RandomMixture::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   const UnsignedInteger size = distributionCollection_.getSize();
   if (dimension_ > 1) oss << "\n";
   // Print marginal by marginal
@@ -400,7 +401,7 @@ String RandomMixture::__str__(const String & offset) const
       oss << distributionCollection_[i];
     }
     // skip to new line
-    if (dimension_ > 1) oss << "\n";
+    if (dimension_ > 1) oss << Os::GetEndOfLine() << offset;
   }
   oss << ")";
   return oss;

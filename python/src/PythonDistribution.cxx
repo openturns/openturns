@@ -116,10 +116,10 @@ String PythonDistribution::__repr__() const
 }
 
 /* String converter */
-String PythonDistribution::__str__(const String & offset) const
+String PythonDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << "class=" << PythonDistribution::GetClassName()
+  oss << "class=" << PythonDistribution::GetClassName()
       << " name=" << getName();
   return oss;
 }
