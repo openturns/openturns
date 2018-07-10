@@ -127,7 +127,7 @@ Description FieldFunctionImplementation::getOutputDescription() const
 /* Accessor for the input mesh */
 void FieldFunctionImplementation::setInputMesh(const Mesh & inputMesh)
 {
-  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::setInputMesh";
+  throw NotDefinedException(HERE) << "In FieldFunctionImplementation::setInputMesh";
 }
 
 Mesh FieldFunctionImplementation::getInputMesh() const
@@ -138,7 +138,7 @@ Mesh FieldFunctionImplementation::getInputMesh() const
 /* Accessor for the output mesh */
 void FieldFunctionImplementation::setOutputMesh(const Mesh & outputMesh)
 {
-  throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::setOutputMesh";
+  throw NotDefinedException(HERE) << "In FieldFunctionImplementation::setOutputMesh";
 }
 
 Mesh FieldFunctionImplementation::getOutputMesh() const

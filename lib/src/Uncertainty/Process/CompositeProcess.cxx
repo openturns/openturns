@@ -134,7 +134,7 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   {
     function.setInputMesh(futurTimeGrid);
   }
-  catch (NotYetImplementedException &)
+  catch (NotDefinedException &)
   {
     throw InternalException(HERE) << "Error: can only ask future of a process with a point-wise function";
   }
