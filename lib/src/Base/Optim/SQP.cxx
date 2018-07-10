@@ -171,7 +171,7 @@ void SQP::run()
   UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
 
   // reset result
-  result_ = OptimizationResult(dimension, 1);
+  result_ = OptimizationResult(dimension);
   result_.setProblem(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 

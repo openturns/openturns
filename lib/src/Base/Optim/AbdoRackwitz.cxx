@@ -153,7 +153,7 @@ void AbdoRackwitz::run()
   UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
 
   // reset result
-  result_ = OptimizationResult(currentPoint_.getDimension(), 1);
+  result_ = OptimizationResult(currentPoint_.getDimension());
   result_.setProblem(getProblem());
   result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
