@@ -167,3 +167,12 @@ for testCase in range(len(distribution)):
               referenceDistribution[testCase].getStandardMoment(i))
     print('Standard representative=', referenceDistribution[
           testCase].getStandardRepresentative())
+# Check simplification
+candidates= [Normal(1.0, 2.0), Uniform(1.0, 2.0), Exponential(1.0, 2.0), \
+             TruncatedDistribution(Weibull(), 1.5, 7.8), \
+             Beta(1.5, 7.8, -1.0, 2.0)]
+intervals = [Interval(-1.0, 4.0), Interval(0.2, 2.4), Interval(2.5, 65.0), \
+             Interval(2.5, 6.0), Interval(-2.5, 6.0)]
+for i in range(len(candidates)):
+    d = TruncatedDistribution(candidates[i], intervals[i])
+    print("d=", d, "simplified=", d.getSimplifiedVersion())

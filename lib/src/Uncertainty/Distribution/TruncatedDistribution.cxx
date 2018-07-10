@@ -25,6 +25,9 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/TruncatedNormal.hxx"
+#include "openturns/Exponential.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 
@@ -60,22 +63,14 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const Scalar upperBound,
     const Scalar thresholdRealization)
   : DistributionImplementation()
-  , bounds_(Point(1, lowerBound), Point(1, upperBound))
+  , bounds_(Point(distribution.getDimension(), lowerBound), Point(distribution.getDimension(), upperBound))
 {
   if (!SpecFunc::IsNormal(lowerBound)) throw InvalidArgumentException(HERE) << "The lower bound parameter must be a real value, here bound=" << lowerBound;
   if (!SpecFunc::IsNormal(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter must be a real value, here bound=" << upperBound;
-  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can truncate only distribution with dimension=1, here dimension=" << distribution.getDimension();
   setName("TruncatedDistribution");
+  // This call also set the range
   setDistribution(distribution);
   setThresholdRealization(thresholdRealization);
-  setDimension(1);
-  if (upperBound <= lowerBound) throw InvalidArgumentException(HERE) << "Error: the upper bound must be greater than the lower bound, here lowerBound=" << lowerBound << " and upperBound=" << upperBound;
-  cdfLowerBound_ = distribution.computeCDF(Point(1, lowerBound));
-  cdfUpperBound_ = distribution.computeCDF(Point(1, upperBound));
-  if (cdfLowerBound_ == cdfUpperBound_) throw InvalidArgumentException(HERE) << "Error: the interval [lowerBound, upperBound] must contain a non-empty part of the support of the distribution, here CDf(lowerBound)=" << cdfLowerBound_ << " and CDF(upperBound)=" << cdfUpperBound_;
-  pdfLowerBound_ = distribution.computePDF(Point(1, lowerBound));
-  pdfUpperBound_ = distribution.computePDF(Point(1, upperBound));
-  computeRange();
 }
 
 /* Parameters constructor to use when one of the bounds is not finite */
@@ -84,41 +79,27 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const BoundSide side,
     const Scalar thresholdRealization)
   : DistributionImplementation()
-  , bounds_(1)
+  , bounds_(distribution.getDimension())
 {
   if (!SpecFunc::IsNormal(bound)) throw InvalidArgumentException(HERE) << "The bound parameter must be a real value, here bound=" << bound;
   setName("TruncatedDistribution");
-  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can truncate only distribution with dimension=1, here dimension=" << distribution.getDimension();
-  distribution_ = distribution;
   setThresholdRealization(thresholdRealization);
-  setDimension(1);
-  setDescription(distribution.getDescription());
   switch (side)
   {
     case LOWER:
-      bounds_.setLowerBound(Point(1, bound));
-      cdfLowerBound_ = distribution.computeCDF(Point(1, bound));
-      if (cdfLowerBound_ == 1.0) throw InvalidArgumentException(HERE) << "Error: the interval [bound, +inf[ must contain a non-empty part of the support of the distribution, here CDF(bound)=" << cdfLowerBound_;
-      pdfLowerBound_ = distribution.computePDF(Point(1, bound));
+      bounds_.setLowerBound(Point(distribution.getDimension(), bound));
       bounds_.setUpperBound(distribution.getRange().getUpperBound());
-      cdfUpperBound_ = 1.0;
-      pdfUpperBound_ = 0.0;
       bounds_.setFiniteUpperBound(distribution.getRange().getFiniteUpperBound());
       break;
     case UPPER:
-      bounds_.setUpperBound(Point(1, bound));
-      cdfUpperBound_ = distribution.computeCDF(Point(1, bound));
-      if (cdfUpperBound_ == 0.0) throw InvalidArgumentException(HERE) << "Error: the interval ]-inf, bound] must contain a non-empty part of the support of the distribution, here CDF(bound)=" << cdfUpperBound_;
-      pdfUpperBound_ = distribution.computePDF(Point(1, bound));
       bounds_.setLowerBound(distribution.getRange().getLowerBound());
-      cdfLowerBound_ = 0.0;
-      pdfLowerBound_ = 0.0;
+      bounds_.setUpperBound(Point(distribution.getDimension(), bound));
       bounds_.setFiniteLowerBound(distribution.getRange().getFiniteLowerBound());
       break;
     default:
       throw InvalidArgumentException(HERE) << "Error: invalid side argument for bounds, must be LOWER or UPPER, here side=" << side;
   } /* end switch */
-  computeRange();
+  setDistribution(distribution);
 }
 
 
@@ -127,13 +108,14 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const Interval & truncationInterval,
     const Scalar thresholdRealization)
   : DistributionImplementation()
+  , bounds_(truncationInterval)
 {
   setName("TruncatedDistribution");
-  distribution_ = distribution;
+  // This call also set the range and compute the normalization factor
+  // Don't use the bounds accessor to avoid computing the range and
+  // the normalization factor twice
+  setDistribution(distribution);
   setThresholdRealization(thresholdRealization);
-  setDimension(distribution.getDimension());
-  setDescription(distribution.getDescription());
-  setBounds(truncationInterval);
 }
 
 
@@ -175,11 +157,72 @@ TruncatedDistribution * TruncatedDistribution::clone() const
   return new TruncatedDistribution(*this);
 }
 
+/* Get the simplified version (or clone the distribution) */
+Distribution TruncatedDistribution::getSimplifiedVersion() const
+{
+  // No simplification in the multivariate case for now
+  if (getDimension() > 1) return *this;
+  // Simplification of the 1D case
+  Distribution localDistribution(distribution_);
+  String kind(localDistribution.getImplementation()->getClassName());
+  Scalar lower = bounds_.getLowerBound()[0];
+  Scalar upper = bounds_.getUpperBound()[0];
+  // Delve into the antecedents until we get something not truncated
+  while (kind == "TruncatedDistribution")
+    {
+      const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
+      localDistribution = truncatedDistribution->getDistribution();
+      kind = localDistribution.getImplementation()->getClassName();
+      lower = std::max(lower, truncatedDistribution->getBounds().getLowerBound()[0]);
+      upper = std::min(upper, truncatedDistribution->getBounds().getUpperBound()[0]);
+    }
+  const Scalar a = localDistribution.getRange().getLowerBound()[0];
+  const Scalar b = localDistribution.getRange().getUpperBound()[0];
+  // If no truncation
+  const Scalar w = getWeight();
+  if ((lower <= a) && (upper >= b))
+    {
+      localDistribution.setWeight(w);
+      return localDistribution;
+    }
+  // Intersect the underlying distribution range and the truncation range
+  const Scalar alpha = std::max(lower, a);
+  const Scalar beta = std::min(upper, b);
+  // Actual simplifications
+  if (kind == "Uniform")
+    {
+      Uniform simplified(alpha, beta);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  if (kind == "Normal")
+    {
+      const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
+      const Scalar mu = normal->getMean()[0];
+      const Scalar sigma = normal->getSigma()[0];
+      TruncatedNormal simplified(mu, sigma, alpha, beta);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  if ((kind == "Exponential") && (upper >= b))
+    {
+      const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
+      const Scalar lambda = exponential->getLambda();
+      Exponential simplified(lambda, alpha);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  // No simplification
+ return TruncatedDistribution(localDistribution, alpha, beta);
+}
+
 /* Compute the numerical range of the distribution given the parameters values */
 void TruncatedDistribution::computeRange()
 {
   setRange(distribution_.getRange().intersect(bounds_));
-  normalizationFactor_ = 1.0 / distribution_.computeProbability(getRange());
+  const Scalar probability = distribution_.computeProbability(getRange());
+  if (!(probability > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
+  normalizationFactor_ = 1.0 / probability;
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
 }
 
@@ -187,7 +230,8 @@ void TruncatedDistribution::computeRange()
 Point TruncatedDistribution::getRealization() const
 {
   // Use CDF inversion only if P([a, b]) < tau
-  if ((getDimension() == 1) && (thresholdRealization_ * normalizationFactor_ > 1.0)) return computeQuantile(RandomGenerator::Generate());
+  if ((getDimension() == 1) && (thresholdRealization_ * normalizationFactor_ > 1.0))
+      return computeQuantile(RandomGenerator::Generate());
   // Here we use simple rejection of the underlying distribution against the bounds
   for (;;)
   {
@@ -413,6 +457,16 @@ void TruncatedDistribution::setDistribution(const Distribution & distribution)
     throw InvalidArgumentException(HERE) << "The distribution dimension (" << distribution.getDimension()
                                          << ") must match the bounds dimension (" << bounds_.getDimension() << ")";
   distribution_ = distribution;
+  setDimension(distribution.getDimension());
+  setDescription(distribution.getDescription());
+  // Precompute some useful quantities for dimension=1
+  if (getDimension() == 1)
+    {
+      pdfLowerBound_ = distribution.computePDF(bounds_.getLowerBound());
+      pdfUpperBound_ = distribution.computePDF(bounds_.getUpperBound());
+      cdfLowerBound_ = distribution.computeCDF(bounds_.getLowerBound());
+      cdfUpperBound_ = distribution.computeCDF(bounds_.getUpperBound());
+    }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
@@ -453,18 +507,10 @@ Scalar TruncatedDistribution::getThresholdRealization() const
 
 void TruncatedDistribution::setBounds(const Interval & bounds)
 {
+    if (distribution_.getDimension() != bounds.getDimension()) throw InvalidArgumentException(HERE) << "The truncation interval dimension must match the distribution dimension.";
   if (bounds_ != bounds)
   {
-    if (distribution_.getDimension() != bounds.getDimension()) throw InvalidArgumentException(HERE) << "The truncation interval dimension must match the distribution dimension.";
-
-    const Scalar cdfLowerBound = distribution_.computeCDF(bounds.getLowerBound());
-    const Scalar cdfUpperBound = distribution_.computeCDF(bounds.getUpperBound());
-    if (!(distribution_.computeProbability(bounds) > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
     bounds_ = bounds;
-    pdfLowerBound_ = distribution_.computePDF(bounds.getLowerBound());
-    pdfUpperBound_ = distribution_.computePDF(bounds.getUpperBound());
-    cdfLowerBound_ = cdfLowerBound;
-    cdfUpperBound_ = cdfUpperBound;
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;

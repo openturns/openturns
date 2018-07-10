@@ -357,6 +357,27 @@ int main(int argc, char *argv[])
     fullprint << "case 2, q=" << q << std::endl;
     q = case2.computeQuantile(0.95, true)[0];
     fullprint << "case 2, q comp=" << q << std::endl;
+    // For ticket 953
+    {
+      TruncatedDistribution atom1(Uniform(0.0, 1.0), 0.0, 1.0);
+      Uniform atom2(0.0, 2.0);
+      Distribution sum(atom1 + atom2);
+      fullprint << "sum=" << sum << std::endl;
+      fullprint << "CDF=" << sum.computeCDF(2.0) << std::endl;
+      fullprint << "quantile=" << sum.computeQuantile(0.2) << std::endl;
+    }
+    {
+      Scalar minS = 0.2;
+      Scalar maxS = 10.0;
+      Scalar muS = (std::log(minS) + std::log(maxS)) / 2.0;
+      Scalar sigma = (std::log(maxS) - muS) / 3.0;
+      TruncatedDistribution atom1(LogNormal(muS, sigma), minS, maxS);
+      Uniform atom2(0.0, 2.0);
+      Distribution sum(atom1 + atom2);
+      fullprint << "sum=" << sum << std::endl;
+      fullprint << "CDF=" << sum.computeCDF(2.0) << std::endl;
+      fullprint << "quantile=" << sum.computeQuantile(0.2) << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

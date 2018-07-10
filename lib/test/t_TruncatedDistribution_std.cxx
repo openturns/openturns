@@ -126,8 +126,25 @@ int main(int argc, char *argv[])
       parameter[0] = 1.0;
       distribution.setParameter(parameter);
       fullprint << "Distribution after setParameter =" << distribution.getParameter().__str__() << std::endl;
-
     }
+    // Check simplification
+    Collection<Distribution> candidates(0);
+    Collection<Interval> intervals(0);
+    candidates.add(Normal(1.0, 2.0));
+    intervals.add(Interval(-1.0, 4.0));
+    candidates.add(Uniform(1.0, 2.0));
+    intervals.add(Interval(0.2, 2.4));
+    candidates.add(Exponential(1.0, 2.0));
+    intervals.add(Interval(2.5, 65.0));
+    candidates.add(TruncatedDistribution(Weibull(), 1.5, 7.8));
+    intervals.add(Interval(2.5, 6.0));
+    candidates.add(Beta(1.5, 7.8, -1.0, 2.0));
+    intervals.add(Interval(-2.5, 6.0));    
+    for (UnsignedInteger i = 0; i < candidates.getSize(); ++i)
+      {
+	TruncatedDistribution d(candidates[i], intervals[i]);
+	fullprint << "d=" << d << ", simplified=" << d.getSimplifiedVersion() << std::endl;
+      }
   }
   catch (TestFailed & ex)
   {

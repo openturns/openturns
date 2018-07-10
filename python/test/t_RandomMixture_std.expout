@@ -343,3 +343,9 @@ case 1, q=0.384146
 case 1, q comp=0.000393
 case 2, q=-0.000393
 case 2, q comp=-0.384146
+sum= RandomMixture(Uniform(a = 0, b = 1) + Uniform(a = 0, b = 2))
+CDF=0.75
+quantile= [0.894427]
+sum= RandomMixture(TruncatedDistribution(LogNormal(muLog = 0.346574, sigmaLog = 0.652004, gamma = 0), bounds = [0.2, 10]) + Uniform(a = 0, b = 2))
+CDF=0.306712
+quantile= [1.67422]
