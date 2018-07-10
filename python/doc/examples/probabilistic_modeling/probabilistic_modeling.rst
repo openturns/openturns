@@ -50,7 +50,7 @@ Stochastic processes
     gaussian_process_spectral.ipynb
     userdefined_covariance_model.ipynb
     userdefined_spectral_model.ipynb
-    arma_process.ipynb
+    arma_creation.ipynb
     white_noise_process.ipynb
     random_walk_process.ipynb
     functional_basis_process.ipynb
