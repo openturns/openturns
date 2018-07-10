@@ -182,4 +182,5 @@ realizations at a time of the process.
 .. topic:: Examples:
 
     - See :doc:`/examples/probabilistic_modeling/arma_creation`
+    - See :doc:`/examples/probabilistic_modeling/arma_manipulation`
     - See :doc:`/examples/data_analysis/estimate_arma`
