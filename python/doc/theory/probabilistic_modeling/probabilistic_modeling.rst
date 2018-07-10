@@ -15,8 +15,18 @@ The current section is dedicated to probabilistic methods and concepts.
 Stochastic process
 ------------------
 
+Transformation of fields
+~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. toctree::
-    :maxdepth: 1
 
     trend_transform
     boxcox_transformation
+
+
+ARMA stochastic process
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+
+    arma_process
