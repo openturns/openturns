@@ -46,6 +46,12 @@ HMatrix::HMatrix(const HMatrixImplementation & i)
   // Nothing to do
 }
 
+/** Copy matrix */
+HMatrix HMatrix::copy() const
+{
+  return HMatrix(new HMatrixImplementation(*getImplementation()));
+}
+
 void HMatrix::assemble(const HMatrixRealAssemblyFunction& f, char symmetry)
 {
   copyOnWrite();

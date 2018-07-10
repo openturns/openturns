@@ -4,6 +4,17 @@ OT_HMatrix_doc
 OT_HMatrix_getDiagonal_doc
 %feature("docstring") OT::HMatrix::dump
 OT_HMatrix_dump_doc
+%feature("docstring") OT::HMatrix::copy
+"Copy matrix.
+
+As factorization overwrites matrix contents, this method
+is useful to get a copy of assembled matrix before it is
+factorized.
+
+Returns
+-------
+matrix : :class:`~openturns.HMatrix`
+    Matrix copy."
 %feature("docstring") OT::HMatrix::transpose
 OT_HMatrix_transpose_doc
 %feature("docstring") OT::HMatrix::norm
