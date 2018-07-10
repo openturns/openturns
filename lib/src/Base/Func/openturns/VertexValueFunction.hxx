@@ -83,6 +83,9 @@ public:
   /** Accessor for the input mesh */
   virtual void setInputMesh(const Mesh & inputMesh);
 
+  /** Accessor for the output mesh */
+  virtual void setOutputMesh(const Mesh & outputMesh);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

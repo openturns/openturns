@@ -132,6 +132,13 @@ void ValueFunction::setInputMesh(const Mesh & inputMesh)
   inputMesh_ = inputMesh;
 }
 
+void ValueFunction::setOutputMesh(const Mesh & outputMesh)
+{
+  if (outputMesh.getDimension() != outputMesh_.getDimension())
+    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
+  outputMesh_ = outputMesh;
+}
+
 /* Method save() stores the object through the StorageManager */
 void ValueFunction::save(Advocate & adv) const
 {

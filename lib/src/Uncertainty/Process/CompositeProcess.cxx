@@ -133,6 +133,7 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   try
   {
     function.setInputMesh(futurTimeGrid);
+    function.setOutputMesh(futurTimeGrid);
   }
   catch (NotDefinedException &)
   {

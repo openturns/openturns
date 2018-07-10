@@ -146,6 +146,13 @@ void VertexValueFunction::setInputMesh(const Mesh & inputMesh)
   inputMesh_ = inputMesh;
 }
 
+void VertexValueFunction::setOutputMesh(const Mesh & outputMesh)
+{
+  if (outputMesh.getDimension() != outputMesh_.getDimension())
+    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
+  outputMesh_ = outputMesh;
+}
+
 /* Method save() stores the object through the StorageManager */
 void VertexValueFunction::save(Advocate & adv) const
 {
