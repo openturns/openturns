@@ -2617,6 +2617,14 @@ void RandomMixture::computeCovariance() const
 /* Get the standard deviation of the RandomMixture */
 Point RandomMixture::getStandardDeviation() const
 {
+  // It looks like the default implementation but
+  // it is not in the multivariate case. Even if
+  // it looks wasteful to compute the whole covariance
+  // matrix only for its diagonal, it is not so wasteful
+  // as random mixtures are limited to dimension <= 3,
+  // and it is much more efficient than using getCenteredMoment()
+  // because the covariance is a simple algebra based on
+  // coefficients and atoms covariance.
   const UnsignedInteger dimension = getDimension();
   Point sigma(dimension, 0.0);
   for (UnsignedInteger i = 0; i < dimension; ++i)

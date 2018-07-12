@@ -2620,6 +2620,18 @@ Point DistributionImplementation::getMean() const
 /* Get the standard deviation of the distribution */
 Point DistributionImplementation::getStandardDeviation() const
 {
+  // In the case of dimension==1, use the covariance matrix. The call
+  // to getCovariance() reuse the covariance if it has already been computed.
+  if (dimension_ == 1) return Point(1, std::sqrt(getCovariance()(0, 0)));
+  // In higher dimension, either use the covariance if it has already been
+  // computed...
+  if (isAlreadyComputedCovariance_)
+  {
+    Point result(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = std::sqrt(covariance_(i, i));
+    return result;
+  }
+  // ... or compute only the marginal variances.
   const Point variance(getCenteredMoment(2));
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = std::sqrt(variance[i]);

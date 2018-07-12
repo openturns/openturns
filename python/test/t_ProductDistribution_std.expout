@@ -1,0 +1,15 @@
+Distribution  ProductDistribution(Uniform(a = -1, b = 2) * Normal(mu = 1, sigma = 2))
+Elliptical = False
+Continuous = True
+oneRealization= [2.28927]
+oneSample first= [-0.11143]  last= [2.03647]
+mean= [0.48959]
+covariance= [[ 4.80714 ]]
+Point=  [2.5]
+ddf      = [-0.032141]
+pdf      =0.0680485
+cdf      =0.856594
+pdf gradient      = [0.00830329,0.0103036,0.0171714,-0.00243373]
+cdf gradient      = [-0.034449,-0.102285,-0.0746378,-0.0477418]
+quantile     = [4.65046]
+t_ProductDistribution_std.py <class 'ValueError'> incomplete format
