@@ -16,7 +16,7 @@ namespace OT {
 
 %extend ResourceMap {
 
-static UnsignedInteger __len__() const
+static UnsignedInteger __len__()
 {
   return OT::ResourceMap::GetSize();
 }
