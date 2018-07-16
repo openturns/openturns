@@ -38,8 +38,8 @@ class OT_API StationaryCovarianceModel
 
 public:
 
-  /** Constructor with spatial dimension */
-  explicit StationaryCovarianceModel(const UnsignedInteger spatialDimension = 1);
+  /** Constructor with input dimension */
+  explicit StationaryCovarianceModel(const UnsignedInteger inputDimension = 1);
 
   /** Standard constructor with scale and amplitude parameters parameters */
   StationaryCovarianceModel(const Point & scale,

@@ -53,7 +53,7 @@ assert_almost_equal(covariancePoint, theoricalVariance, 8.95e-7, 8.95e-7)
 # Test 2
 
 # Kriging use case
-spatialDimension = 2
+inputDimension = 2
 
 # Learning data
 levels = [8, 5]
@@ -79,7 +79,7 @@ covarianceModel = SquaredExponential([1.98824, 0.924731], [3.15352])
 
 # 3) Basis definition
 basisCollection = BasisCollection(
-    1, ConstantBasisFactory(spatialDimension).build())
+    1, ConstantBasisFactory(inputDimension).build())
 
 # Kriring algorithm
 algo = KrigingAlgorithm(inputSample, outputSample,

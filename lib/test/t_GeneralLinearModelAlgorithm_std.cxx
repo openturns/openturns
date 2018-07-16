@@ -35,12 +35,12 @@ int main(int argc, char *argv[])
     // Set Numerical precision to 4
     PlatformInfo::SetNumericalPrecision(4);
     UnsignedInteger sampleSize = 40;
-    UnsignedInteger spatialDimension = 1;
+    UnsignedInteger inputDimension = 1;
 
     // Create the function to estimate
     SymbolicFunction model("x0", "x0");
 
-    Sample X(sampleSize, spatialDimension);
+    Sample X(sampleSize, inputDimension);
     for (UnsignedInteger i = 0; i < sampleSize; ++ i)
       X[i][0] = 3.0 + (8.0 * i) / sampleSize;
     Sample Y = model(X);
@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
     // Add a small noise to data
     Y += GaussianProcess(AbsoluteExponential(Point(1, 0.1), Point(1, 0.2)), Mesh(X)).getRealization().getValues();
 
-    Basis basis = LinearBasisFactory(spatialDimension).build();
+    Basis basis = LinearBasisFactory(inputDimension).build();
     // Case of a misspecified covariance model
-    DiracCovarianceModel covarianceModel(spatialDimension);
+    DiracCovarianceModel covarianceModel(inputDimension);
     fullprint << "===================================================\n" << std::endl;
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
     fullprint << "trend (dirac, optimized)=" << result.getTrendCoefficients() << std::endl;
     fullprint << "===================================================\n" << std::endl;
     // Now without estimating covariance parameters
-    basis = LinearBasisFactory(spatialDimension).build();
-    covarianceModel = DiracCovarianceModel(spatialDimension);
+    basis = LinearBasisFactory(inputDimension).build();
+    covarianceModel = DiracCovarianceModel(inputDimension);
     algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, true, true);
     algo.setOptimizeParameters(false);
     algo.run();
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     // Case of a well specified covariance model
     // Test the optimization when the amplitude is deduced analytically from the scale
     {
-      AbsoluteExponential covarianceModel(spatialDimension);
+      AbsoluteExponential covarianceModel(inputDimension);
       GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
       algo.run();
       GeneralLinearModelResult result = algo.getResult();

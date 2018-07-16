@@ -41,17 +41,17 @@ int main(int argc, char *argv[])
     std::cout << "Test standard using HMat" << std::endl;
     std::cout << "=======================" << std::endl;
     UnsignedInteger sampleSize = 6;
-    UnsignedInteger spatialDimension = 1;
+    UnsignedInteger inputDimension = 1;
 
     // Create the function to estimate
-    Description input(spatialDimension);
+    Description input(inputDimension);
     input[0] = "x0";
     Description formulas(1);
     formulas[0] = "x0";
     SymbolicFunction model(input, formulas);
 
-    Sample X(sampleSize, spatialDimension);
-    Sample X2(sampleSize, spatialDimension);
+    Sample X(sampleSize, inputDimension);
+    Sample X2(sampleSize, inputDimension);
     for ( UnsignedInteger i = 0; i < sampleSize; ++ i )
     {
       X[i][0] = 3.0 + i;
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
     // Add a small noise to data
     Sample Y2 = model(X2);
 
-    Basis basis = LinearBasisFactory(spatialDimension).build();
-    DiracCovarianceModel covarianceModel(spatialDimension);
+    Basis basis = LinearBasisFactory(inputDimension).build();
+    DiracCovarianceModel covarianceModel(inputDimension);
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
     algo.run();
 

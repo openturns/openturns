@@ -23,7 +23,7 @@ X=     [ v0         v1         v2         X0         X1         X2         ]
 Y= [-0.0444346,-0.219765,0.570384]
 myFunc input dimension= 3
 myFunc output dimension= 3
-myFunc spatial dimension= 3
+myFunc input dimension= 3
 called  1  times
 X= [field 0:
     [ v0         v1         v2         X0         X1         X2         ]
@@ -82,5 +82,5 @@ Y= 0 : [ -0.0444346 -0.219765   0.570384  ]
 4 : [ -0.0444346 -0.219765   0.570384  ]
 myFunc input dimension= 3
 myFunc output dimension= 3
-myFunc spatial dimension= 3
+myFunc input dimension= 3
 called  11  times

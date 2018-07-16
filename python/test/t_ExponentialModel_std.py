@@ -10,13 +10,13 @@ try:
 
     # Default dimension parameter to evaluate the model
     defaultDimension = 1
-    spatialDimension = 1
+    inputDimension = 1
 
     # Amplitude values
     amplitude = Point(defaultDimension, 2.0)
 
     # Scale values
-    scale = Point(spatialDimension, 1.0)
+    scale = Point(inputDimension, 1.0)
 
     # Default constructor
     myDefautModel = ExponentialModel()

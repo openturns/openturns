@@ -42,7 +42,7 @@ here is how the derived class is selected:
 * If vertices and simplices correspond to a simple 1D mesh with sorted vertices,
   :class:`~openturns.EnclosingSimplexMonotonic1D` algorithm is selected.
 * Otherwise, 'EnclosingSimplexAlgorithm-LargeDimension' :class:`~openturns.ResourceMap`
-  entry is read.  If spatial dimension is lower than this value,
+  entry is read.  If input dimension is lower than this value,
   :class:`~openturns.BoundingVolumeHierarchy` algorithm is chosen, otherwise
   it is :class:`~openturns.NaiveEnclosingSimplex`.
 

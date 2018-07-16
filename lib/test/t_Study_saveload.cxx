@@ -628,9 +628,9 @@ int main(int argc, char *argv[])
     AbsoluteExponential absoluteExponential;
     {
       const UnsignedInteger defaultDimension = 1;
-      const UnsignedInteger spatialDimension = 1;
+      const UnsignedInteger inputDimension = 1;
       Point amplitude(defaultDimension, 1.0);
-      Point scale(spatialDimension, 1.0);
+      Point scale(inputDimension, 1.0);
       cauchyModel = CauchyModel (scale, amplitude);
       absoluteExponential = AbsoluteExponential(scale, amplitude);
     }
@@ -917,16 +917,16 @@ int main(int argc, char *argv[])
     UserDefinedStationaryCovarianceModel userDefinedStationaryCovarianceModel;
     {
       const UnsignedInteger dimension = 1;
-      const UnsignedInteger spatialDimension = 1;
+      const UnsignedInteger inputDimension = 1;
       Point amplitude(dimension);
-      Point scale(spatialDimension);
+      Point scale(inputDimension);
       CorrelationMatrix spatialCorrelation(dimension);
       for (UnsignedInteger index = 0 ; index < dimension; ++index)
       {
         amplitude[index] = 1.0 ;
         if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
       }
-      for (UnsignedInteger index = 0 ; index < spatialDimension; ++index)
+      for (UnsignedInteger index = 0 ; index < inputDimension; ++index)
         scale[index] = (index + 1.0) / dimension ;
       ExponentialModel referenceModel(scale, amplitude, spatialCorrelation);
       UnsignedInteger size = 20;

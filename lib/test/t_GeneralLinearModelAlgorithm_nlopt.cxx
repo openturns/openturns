@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     ResourceMap::SetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound", 1.0e-5);
     ResourceMap::SetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound", 100);
     // Data & estimation
-    const UnsignedInteger spatialDimension = 1;
+    const UnsignedInteger inputDimension = 1;
     Sample X = Normal(0, 1).getSample(100);
     X = X.sortAccordingToAComponent(0);
     SquaredExponential covarianceModel(1);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     formula[0] = "x - 0.6 * cos(x/3)";
     SymbolicFunction model(inDescription, formula);
     const Sample Y = model(X);
-    const Basis basis = QuadraticBasisFactory(spatialDimension).build();
+    const Basis basis = QuadraticBasisFactory(inputDimension).build();
     GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis, true);
     NLopt solver("LN_NELDERMEAD");
     algo.setOptimizationAlgorithm(solver);

@@ -32,12 +32,12 @@ static void test_model(const CovarianceModel & myModel)
 
   fullprint << "myModel = " << myModel << std::endl;
 
-  const UnsignedInteger spatialDimension = myModel.getInputDimension();
+  const UnsignedInteger inputDimension = myModel.getInputDimension();
   const UnsignedInteger dimension = myModel.getOutputDimension();
 
-  Point x1(spatialDimension);
-  Point x2(spatialDimension);
-  for (UnsignedInteger j = 0; j < spatialDimension; ++ j)
+  Point x1(inputDimension);
+  Point x2(inputDimension);
+  for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
     x1[j] = 8.0 * (0.5 - j);
     x2[j] = -1.0 * (3.0 - 2.0 * j);
@@ -51,8 +51,8 @@ static void test_model(const CovarianceModel & myModel)
   Scalar eps = 1e-3;
   if (dimension == 1)
   {
-    Point gradfd(spatialDimension);
-    for (UnsignedInteger j = 0; j < spatialDimension; ++ j)
+    Point gradfd(inputDimension);
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j)
     {
       Point x1_g(x1);
       Point x1_d(x1);
@@ -64,14 +64,14 @@ static void test_model(const CovarianceModel & myModel)
   }
   else
   {
-    Matrix gradfd(spatialDimension, dimension * dimension);
+    Matrix gradfd(inputDimension, dimension * dimension);
     CovarianceMatrix covarianceX1X2 = myModel(x1, x2);
     // Convert result into MatrixImplementation to symmetrize & get the collection
     MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
     covarianceX1X2Implementation.symmetrize();
     const Point centralValue(covarianceX1X2Implementation);
     // Loop over the shifted points
-    for (UnsignedInteger i = 0; i < spatialDimension; ++i)
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       Point currentPoint(x1);
       currentPoint[i] += eps;
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
   {
 
     PlatformInfo::SetNumericalPrecision(3);
-    // Default spatial dimension parameter to evaluate the model
+    // Default input dimension parameter to evaluate the model
     const UnsignedInteger dimension = 2;
 
 
@@ -159,14 +159,14 @@ int main(int argc, char *argv[])
 
     {
       // Tensorized covariance model
-      const UnsignedInteger spatialDimension = 2;
+      const UnsignedInteger inputDimension = 2;
       Collection<CovarianceModel> collection;
       // Collection ==> add covariance models
       // Add AbsoluteExponentialModel to the collection
-      AbsoluteExponential myAbsoluteExponential(Point(spatialDimension, 3.0));
+      AbsoluteExponential myAbsoluteExponential(Point(inputDimension, 3.0));
       collection.add(myAbsoluteExponential);
       // Add SquaredExponentialModel to the collection
-      SquaredExponential mySquaredExponential(Point(spatialDimension, 2.0));
+      SquaredExponential mySquaredExponential(Point(inputDimension, 2.0));
       collection.add(mySquaredExponential);
       // Add exponentialModel to the collection
       Point amplitude(2);
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
       // Define scale
       Point scale(2, 1.0);
       // Define a spatial correlation
-      CorrelationMatrix spatialCorrelation(spatialDimension);
+      CorrelationMatrix spatialCorrelation(inputDimension);
       spatialCorrelation(1, 0) = 0.3;
       ExponentialModel myExponentialModel(scale, amplitude, spatialCorrelation);
       collection.add(myExponentialModel);

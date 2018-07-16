@@ -130,10 +130,10 @@ String P1LagrangeInterpolation::__str__( const String & offset ) const
 /* Compute sparse projection matrix */
 void P1LagrangeInterpolation::computeProjection()
 {
-  const UnsignedInteger spatialDimension = getInputMesh().getDimension();
+  const UnsignedInteger inputDimension = getInputMesh().getDimension();
   const UnsignedInteger outputSize = outputMesh_.getVerticesNumber();
-  barycentricCoordinates_ = Sample(outputSize, 1 + spatialDimension);
-  neighbours_ = IndicesCollection(outputSize, 1 + spatialDimension);
+  barycentricCoordinates_ = Sample(outputSize, 1 + inputDimension);
+  neighbours_ = IndicesCollection(outputSize, 1 + inputDimension);
 
   const Sample outputVertices(outputMesh_.getVertices());
   const Indices simplexIndices = enclosingSimplex_.query(outputVertices);
@@ -151,9 +151,9 @@ void P1LagrangeInterpolation::computeProjection()
     nearestPointIndices = nearestNeighbour_.query(outputVertices.select(outside));
   }
 
-  Point coordinates(spatialDimension + 1);
+  Point coordinates(inputDimension + 1);
   UnsignedInteger counterOutside = 0;
-  Collection< std::pair<UnsignedInteger, Scalar> > neighbourAndCoefficient(1 + spatialDimension);
+  Collection< std::pair<UnsignedInteger, Scalar> > neighbourAndCoefficient(1 + inputDimension);
   const IndicesCollection simplices(inputMesh_.getSimplices());
   for(UnsignedInteger i = 0; i < outputSize; ++i)
   {
@@ -163,7 +163,7 @@ void P1LagrangeInterpolation::computeProjection()
       const UnsignedInteger nearest = nearestPointIndices[counterOutside];
       // All other coefficients are zero, but we set all indices to the same
       // point in order to avoid memory gaps during matrix-matrix multiplication
-      for (UnsignedInteger j = 0; j <= spatialDimension; ++j)
+      for (UnsignedInteger j = 0; j <= inputDimension; ++j)
         neighbours_(i, j) = nearest;
       ++counterOutside;
     }
@@ -175,13 +175,13 @@ void P1LagrangeInterpolation::computeProjection()
       }
       IndicesCollection::const_iterator cit = simplices.cbegin_at(simplexIndices[i]);
       // Points are sorted to avoid memory gaps during matrix-matrix multiplication
-      for (UnsignedInteger j = 0; j <= spatialDimension; ++j, ++cit)
+      for (UnsignedInteger j = 0; j <= inputDimension; ++j, ++cit)
       {
         neighbourAndCoefficient[j].first = *cit;
         neighbourAndCoefficient[j].second = coordinates[j];
       }
       std::sort(neighbourAndCoefficient.begin(), neighbourAndCoefficient.end());
-      for (UnsignedInteger j = 0; j <= spatialDimension; ++j)
+      for (UnsignedInteger j = 0; j <= inputDimension; ++j)
       {
         neighbours_(i, j) = neighbourAndCoefficient[j].first;
         barycentricCoordinates_(i, j) = neighbourAndCoefficient[j].second;
@@ -197,11 +197,11 @@ Sample P1LagrangeInterpolation::operator()(const Sample & values) const
   callsNumber_.increment();
   const UnsignedInteger outputSize = outputMesh_.getVerticesNumber();
   Sample result(outputSize, dimension);
-  const UnsignedInteger spatialDimension = getInputMesh().getDimension();
+  const UnsignedInteger inputDimension = getInputMesh().getDimension();
   for(UnsignedInteger i = 0; i < outputSize; ++i)
   {
     IndicesCollection::const_iterator cit = neighbours_.cbegin_at(i);
-    for (UnsignedInteger j = 0; j <= spatialDimension; ++j, ++cit)
+    for (UnsignedInteger j = 0; j <= inputDimension; ++j, ++cit)
     {
       const UnsignedInteger neighbour = *cit;
       const Scalar alpha = barycentricCoordinates_(i, j);

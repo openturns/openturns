@@ -30,10 +30,10 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 
 /* Default constructor */
-MaternModel::MaternModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(Point(spatialDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
+MaternModel::MaternModel(const UnsignedInteger inputDimension)
+  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
   , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
-  , sqrt2nuOverTheta_(Point(spatialDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
+  , sqrt2nuOverTheta_(Point(inputDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
   definesComputeStandardRepresentative_ = true;
   // Compute the normalization factor

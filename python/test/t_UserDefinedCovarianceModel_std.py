@@ -12,7 +12,7 @@ print("myDefautModel = ", myDefautModel)
 
 # Default dimension parameter to evaluate the model
 dimension = 1
-spatialDimension = 1
+inputDimension = 1
 
 # Amplitude values
 amplitude = Point(dimension)

@@ -199,9 +199,9 @@ Point KrigingResult::getConditionalMean(const Sample & xi) const
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
-  const UnsignedInteger spatialDimension = xi.getDimension();
-  if (spatialDimension != covarianceModel_.getInputDimension())
-    throw InvalidArgumentException(HERE) << " In KrigingResult::getMean, input data should have the same dimension as covariance model's spatial dimension. Here, (input dimension = " << spatialDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  const UnsignedInteger inputDimension = xi.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getMean, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
   const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMean, expected a non empty sample";
@@ -327,9 +327,9 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // returned matrix should have dimensions (p * s) x (p * s)
   if (!hasCholeskyFactor_)
     throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalCovariance, Cholesky factor was not provided. This last one is mandatory to compute the covariance";
-  const UnsignedInteger spatialDimension = xi.getDimension();
-  if (spatialDimension != covarianceModel_.getInputDimension())
-    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's spatial dimension. Here, (input dimension = " << spatialDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  const UnsignedInteger inputDimension = xi.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
   const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
   const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)

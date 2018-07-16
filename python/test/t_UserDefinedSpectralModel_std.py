@@ -21,12 +21,12 @@ try:
 
     # Default dimension parameter to evaluate the model
     dimension = 2
-    spatialDimension = 1
+    inputDimension = 1
 
     # Amplitude values
     amplitude = Point(dimension)
     # Scale values
-    scale = Point(spatialDimension, 1.0)
+    scale = Point(inputDimension, 1.0)
     # Spatial correlation
     spatialCorrelation = CorrelationMatrix(dimension)
     for index in range(dimension):

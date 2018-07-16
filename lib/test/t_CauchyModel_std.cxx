@@ -35,13 +35,13 @@ int main(int argc, char *argv[])
     /* Default dimension parameter to evaluate the model */
     const UnsignedInteger defaultDimension = 1;
 
-    /* Default spatial dimension parameter  */
-    const UnsignedInteger spatialDimension = 1;
+    /* Default input dimension parameter  */
+    const UnsignedInteger inputDimension = 1;
 
     /* Amplitude values */
     Point amplitude(defaultDimension, 1.0);
     /* Scale values */
-    Point scale(spatialDimension, 1.0);
+    Point scale(inputDimension, 1.0);
 
 
     /* Default constructor */

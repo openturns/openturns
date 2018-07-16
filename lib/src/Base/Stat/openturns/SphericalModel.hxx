@@ -45,8 +45,8 @@ class OT_API SphericalModel
 public:
 
 
-  /** Constructor with spatial dimension */
-  explicit SphericalModel(const UnsignedInteger spatialDimension = 1);
+  /** Constructor with input dimension */
+  explicit SphericalModel(const UnsignedInteger inputDimension = 1);
 
   /** Standard constructor with amplitude and range parameters parameters */
   SphericalModel(const Point & scale,

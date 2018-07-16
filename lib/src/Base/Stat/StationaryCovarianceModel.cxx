@@ -34,8 +34,8 @@ CLASSNAMEINIT(StationaryCovarianceModel)
 static const Factory<StationaryCovarianceModel> Factory_StationaryCovarianceModel;
 
 /* Constructor with parameters */
-StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger spatialDimension)
-  : CovarianceModelImplementation(spatialDimension)
+StationaryCovarianceModel::StationaryCovarianceModel(const UnsignedInteger inputDimension)
+  : CovarianceModelImplementation(inputDimension)
 {
   // Nothing to do
 }

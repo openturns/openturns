@@ -2,7 +2,7 @@ myFunc= FieldToPointFunction :
   class=FieldToPointFunctionImplementation name=Unnamed input description=[] output description=[] number of calls=0
 myFunc input description= []
 myFunc output description= []
-myFunc spatial dimension= 0
+myFunc input dimension= 0
 myFunc input dimension= 0
 myFunc output dimension= 0
 called  0  times

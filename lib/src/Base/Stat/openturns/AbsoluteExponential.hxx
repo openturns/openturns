@@ -36,8 +36,8 @@ class OT_API AbsoluteExponential
 
 public:
 
-  /** Constructor based on spatial dimension*/
-  explicit AbsoluteExponential(const UnsignedInteger spatialDimension = 1);
+  /** Constructor based on input dimension*/
+  explicit AbsoluteExponential(const UnsignedInteger inputDimension = 1);
 
   /** Parameters constructor */
   AbsoluteExponential(const Point & scale);

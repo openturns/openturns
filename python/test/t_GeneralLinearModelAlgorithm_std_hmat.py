@@ -17,15 +17,15 @@ try:
     print("Test standard using HMat")
     print("========================")
     sampleSize = 6
-    spatialDimension = 1
+    inputDimension = 1
 
     # Create the function to estimate
     input_description = ["x0"]
     formulas = ["x0"]
     model = ot.SymbolicFunction(input_description, formulas)
 
-    X = ot.Sample(sampleSize, spatialDimension)
-    X2 = ot.Sample(sampleSize, spatialDimension)
+    X = ot.Sample(sampleSize, inputDimension)
+    X2 = ot.Sample(sampleSize, inputDimension)
     for i in range(sampleSize):
         X[i, 0] = 3.0 + i
         X2[i, 0] = 2.5 + i
@@ -40,8 +40,8 @@ try:
         # Add a small noise to data
         Y[i, 0] += 0.01 * ot.DistFunc.rNormal()
 
-    basis = ot.LinearBasisFactory(spatialDimension).build()
-    covarianceModel = ot.DiracCovarianceModel(spatialDimension)
+    basis = ot.LinearBasisFactory(inputDimension).build()
+    covarianceModel = ot.DiracCovarianceModel(inputDimension)
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
 

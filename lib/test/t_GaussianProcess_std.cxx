@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
     const UnsignedInteger defaultDimension = 1;
 
     /* Spatial dimension of the model */
-    const UnsignedInteger spatialDimension = 1;
+    const UnsignedInteger inputDimension = 1;
 
     /* Amplitude values */
     Point amplitude(defaultDimension, 1.0);
     /* Scale values */
-    Point scale(spatialDimension, 1.0);
+    Point scale(inputDimension, 1.0);
 
     const Scalar tmin = 0.0;
     const Scalar step = 0.1;

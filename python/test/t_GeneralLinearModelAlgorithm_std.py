@@ -10,12 +10,12 @@ try:
     # Set Numerical precision to 4
     ot.PlatformInfo.SetNumericalPrecision(4)
     sampleSize = 40
-    spatialDimension = 1
+    inputDimension = 1
 
     # Create the function to estimate
     model = ot.SymbolicFunction(["x0"], ["x0"])
 
-    X = ot.Sample(sampleSize, spatialDimension)
+    X = ot.Sample(sampleSize, inputDimension)
     for i in range(sampleSize):
         X[i, 0] = 3.0 + (8.0 * i) / sampleSize
     Y = model(X)
@@ -24,9 +24,9 @@ try:
     Y += ot.GaussianProcess(ot.AbsoluteExponential(
         [0.1], [0.2]), ot.Mesh(X)).getRealization().getValues()
 
-    basis = ot.LinearBasisFactory(spatialDimension).build()
+    basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
-    covarianceModel = ot.DiracCovarianceModel(spatialDimension)
+    covarianceModel = ot.DiracCovarianceModel(inputDimension)
     print("===================================================\n")
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
@@ -36,8 +36,8 @@ try:
     print("trend (dirac, optimized)=", result.getTrendCoefficients())
     print("===================================================\n")
     # Now without estimating covariance parameters
-    basis = ot.LinearBasisFactory(spatialDimension).build()
-    covarianceModel = ot.DiracCovarianceModel(spatialDimension)
+    basis = ot.LinearBasisFactory(inputDimension).build()
+    covarianceModel = ot.DiracCovarianceModel(inputDimension)
     algo = ot.GeneralLinearModelAlgorithm(
         X, Y, covarianceModel, basis, True, True)
     algo.setOptimizeParameters(False)
@@ -50,7 +50,7 @@ try:
     # Case of a well specified covariance model
     # Test the optimization when the amplitude is deduced analytically from
     # the scale
-    covarianceModel = ot.AbsoluteExponential(spatialDimension)
+    covarianceModel = ot.AbsoluteExponential(inputDimension)
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.run()
     result = algo.getResult()

@@ -32,9 +32,9 @@ CLASSNAMEINIT(ExponentialModel)
 
 static const Factory<ExponentialModel> Factory_ExponentialModel;
 
-/* Constructor from spatial dimension */
-ExponentialModel::ExponentialModel(const UnsignedInteger spatialDimension)
-  : StationaryCovarianceModel(spatialDimension)
+/* Constructor from input dimension */
+ExponentialModel::ExponentialModel(const UnsignedInteger inputDimension)
+  : StationaryCovarianceModel(inputDimension)
 {
   definesComputeStandardRepresentative_ = true;
 }
@@ -109,7 +109,7 @@ Matrix ExponentialModel::partialGradient(const Point & s,
 {
   /* Computation of the gradient
    * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
-    Note that if spatial dimesnion is 1, factor = sgn(tau_k)
+    Note that if input dimension is 1, factor = sgn(tau_k)
    */
   if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
   if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();

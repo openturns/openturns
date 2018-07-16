@@ -4,5 +4,5 @@ myFunc input description= []
 myFunc output description= []
 myFunc input dimension= 0
 myFunc output dimension= 0
-myFunc spatial dimension= 1
+myFunc input dimension= 1
 called  0  times

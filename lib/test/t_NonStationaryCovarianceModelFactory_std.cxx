@@ -39,10 +39,10 @@ int main(int argc, char *argv[])
     // Size of the TimeGrid
     UnsignedInteger size = 10;
     UnsignedInteger dimension = 1;
-    UnsignedInteger spatialDimension = 1;
+    UnsignedInteger inputDimension = 1;
     RegularGrid timeGrid(0.0, 0.1, size);
     Point amplitude(dimension, 1.0);
-    Point scale(spatialDimension, 1.0);
+    Point scale(inputDimension, 1.0);
     ExponentialModel model(scale, amplitude);
     GaussianProcess myProcess(model, timeGrid);
 

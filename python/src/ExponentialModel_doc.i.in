@@ -14,7 +14,7 @@ Parameters
 ----------
 spatialDim : int
     Spatial dimension :math:`n`.
-    By default, the spatial dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
+    By default, the input dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
 scale : sequence of floats
      Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
 amplitude : sequence of positive floats
@@ -73,6 +73,6 @@ Create an exponential model from the scale and covariance matrix:
 >>> spatialCovariance[0,0] = 4.0
 >>> spatialCovariance[1,1] = 5.0
 >>> spatialCovariance[0,1] = 1.2
->>> spatialDimension = 2
+>>> inputDimension = 2
 >>> myCovarianceModel = ot.ExponentialModel(scale, spatialCovariance)"
 

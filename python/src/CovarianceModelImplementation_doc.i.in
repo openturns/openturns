@@ -416,11 +416,11 @@ OT_CovarianceModel_getOutputCorrelation_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_getInputDimension_doc
-"Get the spatial dimension :math:`n` of the covariance function.
+"Get the input dimension :math:`n` of the covariance function.
 
 Returns
 -------
-spatialDimension : int
+inputDimension : int
     Spatial dimension :math:`n` of the covariance function."
 
 %enddef
@@ -527,7 +527,7 @@ Parameters
 scale : :class:`~openturns.Point`
     The scale parameter :math:`\vect{\theta} \in \Rset^n` to be used in the
     covariance function.
-    Its size must be equal to the spatial dimension of the covariance function."
+    Its size must be equal to the input dimension of the covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setScale
 OT_CovarianceModel_setScale_doc
@@ -632,7 +632,7 @@ OT_CovarianceModel_getActiveParameter_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_draw_doc
-"Draw a specific component of the covariance model with spatial dimension 1.
+"Draw a specific component of the covariance model with input dimension 1.
 
 Parameters
 ----------

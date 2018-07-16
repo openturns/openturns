@@ -48,10 +48,10 @@ Examples
 >>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 >>> outputSample = model(inputSample)
 >>> # Definition of exponential model
->>> spatialDimension = 2
+>>> inputDimension = 2
 >>> covarianceModel = ot.SquaredExponential([1.988, 0.924], [3.153])
 >>> # Basis definition
->>> basis = ot.ConstantBasisFactory(spatialDimension).build()
+>>> basis = ot.ConstantBasisFactory(inputDimension).build()
 >>> # Kriring algorithm
 >>> algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
@@ -85,10 +85,10 @@ Examples
 >>> model = ot.SymbolicFunction(['x', 'y'], ['cos(0.5*x) + sin(y)'])
 >>> outputSample = model(inputSample)
 >>> # Definition of exponential model
->>> spatialDimension = 2
->>> covarianceModel = ot.SquaredExponential(spatialDimension *[0.95])
+>>> inputDimension = 2
+>>> covarianceModel = ot.SquaredExponential(inputDimension *[0.95])
 >>> # Basis definition
->>> basis = ot.ConstantBasisFactory(spatialDimension).build()
+>>> basis = ot.ConstantBasisFactory(inputDimension).build()
 >>> # Kriring algorithm
 >>> algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()

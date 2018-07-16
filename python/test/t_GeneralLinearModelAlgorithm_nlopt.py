@@ -20,13 +20,13 @@ try:
     ot.ResourceMap.SetAsScalar(
         'GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound', 100)
     # Data & estimation
-    spatialDimension = 1
+    inputDimension = 1
     X = ot.Normal().getSample(100)
     X = X.sortAccordingToAComponent(0)
     covarianceModel = ot.SquaredExponential([1.0], [1.0])
     model = ot.SymbolicFunction(["x"], ["x - 0.6 * cos(x/3)"])
     Y = model(X)
-    basis = ot.QuadraticBasisFactory(spatialDimension).build()
+    basis = ot.QuadraticBasisFactory(inputDimension).build()
     algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True)
     algo.setOptimizationAlgorithm(ot.NLopt('LN_NELDERMEAD'))
     algo.run()

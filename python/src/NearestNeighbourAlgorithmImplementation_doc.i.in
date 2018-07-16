@@ -21,7 +21,7 @@ Two algorithms can be selected in any dimension:
   of the sample to find the closest one.
 * :class:`~openturns.KDTree` builds a binary tree.
 
-Two algorithms are specific to 1D spatial dimension, and much more efficient:
+Two algorithms are specific to 1D input dimension, and much more efficient:
 
 * :class:`~openturns.RegularGridNearestNeighbour` is the most efficient
   algorithm when points corresponds to a :class:`~openturns.RegularGrid`,
@@ -35,7 +35,7 @@ here is how the derived class is selected:
 
 * If points correspond to a :class:`~openturns.RegularGrid`,
   :class:`~openturns.RegularGridNearestNeighbour` algorithm is selected.
-* If spatial dimension is 1, :class:`~openturns.NearestNeighbour1D` is selected.
+* If input dimension is 1, :class:`~openturns.NearestNeighbour1D` is selected.
 * Otherwise, :class:`~openturns.KDTree` is selected.
 
 See also

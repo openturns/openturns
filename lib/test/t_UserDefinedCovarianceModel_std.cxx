@@ -42,12 +42,12 @@ int main(int argc, char *argv[])
     const UnsignedInteger dimension = 1;
 
     // Spatial dimension of the model
-    UnsignedInteger spatialDimension = 1;
+    UnsignedInteger inputDimension = 1;
     /* Amplitude values */
     Point amplitude(dimension);
 
     /* Scale values */
-    Point scale(spatialDimension, 1.0);
+    Point scale(inputDimension, 1.0);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)

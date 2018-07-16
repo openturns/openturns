@@ -152,11 +152,11 @@ OT_SpectralModel_getOutputCorrelation_doc
 // ---------------------------------------------------------------------
 
 %define OT_SpectralModel_getInputDimension_doc
-"Get the spatial dimension of the spectral density function.
+"Get the input dimension of the spectral density function.
 
 Returns
 -------
-spatialDimension : int
+inputDimension : int
     SpatialDimension of the *SpectralModel*."
 
 %enddef

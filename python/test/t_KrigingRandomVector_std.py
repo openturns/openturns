@@ -8,7 +8,7 @@ TESTPREAMBLE()
 
 PlatformInfo.SetNumericalPrecision(3)
 # Kriging use case
-spatialDimension = 2
+inputDimension = 2
 
 # Learning data
 levels = [8., 5.]
@@ -34,7 +34,7 @@ covarianceModel = SquaredExponential([1.988, 0.924], [3.153])
 
 # 3) Basis definition
 basisCollection = BasisCollection(
-    1, ConstantBasisFactory(spatialDimension).build())
+    1, ConstantBasisFactory(inputDimension).build())
 
 # Kriring algorithm
 algo = KrigingAlgorithm(inputSample, outputSample,
