@@ -490,7 +490,7 @@ if (BUILD_PYTHON)
       set (OPENTURNS_PYTHON_MODULE_PATH ${PYTHON_SITE_PACKAGES})
 
     else ()
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
+      execute_process (COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} "${PYTHON_EXECUTABLE}" -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
                         OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
                         RESULT_VARIABLE _PYTHON_pythonlib_result
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -510,10 +510,10 @@ if (BUILD_PYTHON)
     endif ()
 
     if (CMAKE_VERSION VERSION_LESS "2.8.6")
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.version_info[0])"
+      execute_process (COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} "${PYTHON_EXECUTABLE}" -c "import sys; print(sys.version_info[0])"
                        OUTPUT_VARIABLE PYTHON_VERSION_MAJOR
                        OUTPUT_STRIP_TRAILING_WHITESPACE)
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import platform; print(platform.python_version())"
+      execute_process (COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} "${PYTHON_EXECUTABLE}" -c "import platform; print(platform.python_version())"
                        OUTPUT_VARIABLE PYTHON_VERSION_STRING
                        OUTPUT_STRIP_TRAILING_WHITESPACE)
     endif ()
