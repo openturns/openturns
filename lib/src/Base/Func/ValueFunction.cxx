@@ -125,18 +125,9 @@ Function ValueFunction::getFunction() const
   return function_;
 }
 
-void ValueFunction::setInputMesh(const Mesh & inputMesh)
+Bool ValueFunction::isActingPointwise() const
 {
-  if (inputMesh.getDimension() != inputMesh_.getDimension())
-    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
-  inputMesh_ = inputMesh;
-}
-
-void ValueFunction::setOutputMesh(const Mesh & outputMesh)
-{
-  if (outputMesh.getDimension() != outputMesh_.getDimension())
-    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
-  outputMesh_ = outputMesh;
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

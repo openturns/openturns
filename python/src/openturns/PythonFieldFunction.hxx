@@ -70,6 +70,9 @@ public:
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
 
+  /** Acts point-wise ? */
+  virtual Bool isActingPointwise() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

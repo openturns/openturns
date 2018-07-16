@@ -102,6 +102,9 @@ public:
   void setOutputMesh(const Mesh & outputMesh);
   Mesh getOutputMesh() const;
 
+  /** Acts point-wise ? */
+  Bool isActingPointwise() const;
+
   /** Input description Accessor, i.e. the names of the input parameters */
   Description getInputDescription() const;
 

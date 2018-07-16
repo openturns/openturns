@@ -130,15 +130,9 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
   FieldFunction function(function_);
-  try
-  {
-    function.setInputMesh(futurTimeGrid);
-    function.setOutputMesh(futurTimeGrid);
-  }
-  catch (NotDefinedException &)
-  {
-    throw InternalException(HERE) << "Error: can only ask future of a process with a point-wise function";
-  }
+  if (!function.isActingPointwise())
+    throw NotDefinedException(HERE) << "Error: can only ask future of a process with a point-wise function";
+  function.setInputMesh(futurTimeGrid);
   return TimeSeries(futurTimeGrid, function(antecedent_.getFuture(stepNumber).getValues()));
 }
 

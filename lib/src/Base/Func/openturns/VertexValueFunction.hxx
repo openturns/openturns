@@ -80,11 +80,8 @@ public:
   /** Function accessor */
   Function getFunction() const;
 
-  /** Accessor for the input mesh */
-  virtual void setInputMesh(const Mesh & inputMesh);
-
-  /** Accessor for the output mesh */
-  virtual void setOutputMesh(const Mesh & outputMesh);
+  /** Acts point-wise ? */
+  virtual Bool isActingPointwise() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

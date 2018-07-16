@@ -238,6 +238,20 @@ UnsignedInteger PythonFieldFunction::getOutputDimension() const
 }
 
 
+/* Accessor for output point dimension */
+Bool PythonFieldFunction::isActingPointwise() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isActingPointwise")))
+  {
+    ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
+                                const_cast<char *>("isActingPointwise"),
+                                const_cast<char *>("()")));
+    return convert< _PyBool_, Bool >(result.get());
+  }
+  else
+    return FieldFunctionImplementation::isActingPointwise();
+}
+
 /* Method save() stores the object through the StorageManager */
 void PythonFieldFunction::save(Advocate & adv) const
 {

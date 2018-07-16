@@ -130,6 +130,11 @@ Mesh FieldFunction::getOutputMesh() const
   return getImplementation()->getOutputMesh();
 }
 
+Bool FieldFunction::isActingPointwise() const
+{
+  return getImplementation()->isActingPointwise();
+}
+
 /* Operator () */
 Sample FieldFunction::operator() (const Sample & inFld) const
 {

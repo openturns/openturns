@@ -189,6 +189,20 @@ OT_FieldFunction_getOutputMesh_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_FieldFunction_isActingPointwise_doc
+"Whether the function acts point-wise.
+
+Returns
+-------
+pointWise : bool
+    Returns true if the function evaluation at each vertex depends only on the
+    vertex or the value at the vertex."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::isActingPointwise
+OT_FieldFunction_isActingPointwise_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_FieldFunction_getOutputDescription_doc
 "Get the description of the output field values.
 

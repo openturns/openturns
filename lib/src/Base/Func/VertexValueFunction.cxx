@@ -139,18 +139,9 @@ Function VertexValueFunction::getFunction() const
   return function_;
 }
 
-void VertexValueFunction::setInputMesh(const Mesh & inputMesh)
+Bool VertexValueFunction::isActingPointwise() const
 {
-  if (inputMesh.getDimension() != inputMesh_.getDimension())
-    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
-  inputMesh_ = inputMesh;
-}
-
-void VertexValueFunction::setOutputMesh(const Mesh & outputMesh)
-{
-  if (outputMesh.getDimension() != outputMesh_.getDimension())
-    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
-  outputMesh_ = outputMesh;
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

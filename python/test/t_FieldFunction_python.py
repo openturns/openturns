@@ -18,6 +18,9 @@ class FUNC(ot.OpenTURNSPythonFieldFunction):
         Y = Xs * ([2.0] * Xs.getDimension())
         return Y
 
+    def isActingPointwise(self):
+        return True
+
 F = FUNC()
 print('in_dim=' + str(F.getInputDimension())
        + ' out_dim=' + str(F.getOutputDimension())
@@ -43,6 +46,8 @@ print(('myFunc output dimension= ' + str(myFunc.getOutputDimension())))
 print(myFunc(X.getValues()))
 
 print(myFunc(Xsample))
+
+print('point-wise?', myFunc.isActingPointwise())
 
 vertices = []
 vertices.append([0.0, 0.0, 0.0])
