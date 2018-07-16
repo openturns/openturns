@@ -56,7 +56,7 @@ OrthogonalFunctionFactory * OrthogonalFunctionFactory::clone() const
 
 
 /* Build the Function of the given index */
-Function OrthogonalFunctionFactory::build(const UnsignedInteger index) const
+Function OrthogonalFunctionFactory::build(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In OrthogonalFunctionFactory::build(const UnsignedInteger index) const";
 }

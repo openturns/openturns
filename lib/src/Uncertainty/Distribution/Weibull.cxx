@@ -84,10 +84,10 @@ String Weibull::__repr__() const
   return oss;
 }
 
-String Weibull::__str__(const String & offset) const
+String Weibull::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

@@ -57,7 +57,7 @@ String DistributionFactoryImplementation::__repr__() const
 }
 
 /* String converter */
-String DistributionFactoryImplementation::__str__(const String & offset) const
+String DistributionFactoryImplementation::__str__(const String & ) const
 {
   return this->getClassName();
 }
@@ -66,13 +66,13 @@ String DistributionFactoryImplementation::__str__(const String & offset) const
 /* Here is the interface that all derived class must implement */
 
 /* Build a distribution based on a sample */
-Distribution DistributionFactoryImplementation::build(const Sample & sample) const
+Distribution DistributionFactoryImplementation::build(const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const Sample & sample) const";
 }
 
 /* Build a distribution based on a set of parameters */
-Distribution DistributionFactoryImplementation::build(const Point & parameters) const
+Distribution DistributionFactoryImplementation::build(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionFactoryImplementation::build(const PointCollection & parameters) const";
 }

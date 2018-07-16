@@ -53,13 +53,13 @@ String DomainImplementation::__repr__() const
 
 }
 
-String DomainImplementation::__str__(const String & offset) const
+String DomainImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 /* Check if the given point is inside of the domain */
-Bool DomainImplementation::contains(const Point & point) const
+Bool DomainImplementation::contains(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DomainImplementation::contains(const Point & point) const";
 }

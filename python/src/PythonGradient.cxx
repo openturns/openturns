@@ -79,7 +79,7 @@ PythonGradient::~PythonGradient()
 }
 
 /* Comparison operator */
-Bool PythonGradient::operator ==(const PythonGradient & other) const
+Bool PythonGradient::operator ==(const PythonGradient & ) const
 {
   return true;
 }
@@ -95,7 +95,7 @@ String PythonGradient::__repr__() const
 }
 
 /* String converter */
-String PythonGradient::__str__(const String & offset) const
+String PythonGradient::__str__(const String & ) const
 {
   OSS oss;
   oss << "class=" << PythonGradient::GetClassName()

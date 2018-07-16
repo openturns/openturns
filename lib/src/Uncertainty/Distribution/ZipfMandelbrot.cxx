@@ -93,10 +93,10 @@ String ZipfMandelbrot::__repr__() const
   return oss;
 }
 
-String ZipfMandelbrot::__str__(const String & offset) const
+String ZipfMandelbrot::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(n = " << n_ << ", q = " << q_ << ", s = " << s_ << ")";
+  oss << getClassName() << "(n = " << n_ << ", q = " << q_ << ", s = " << s_ << ")";
   return oss;
 }
 

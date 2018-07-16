@@ -142,7 +142,7 @@ Bool EllipticalDistribution::hasEllipticalCopula() const
 /* Compute the density generator of the elliptical distribution, i.e.
  *  the function phi such that the density of the distribution can
  *  be written as p(x) = phi((x-mean_).C^{-1} * (x-mean_))                      */
-Scalar EllipticalDistribution::computeDensityGenerator(const Scalar betaSquare) const
+Scalar EllipticalDistribution::computeDensityGenerator(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In EllipticalDistribution::computeDensityGenerator(const Scalar betaSquare) const";
 }

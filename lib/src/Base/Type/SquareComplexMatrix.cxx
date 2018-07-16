@@ -145,7 +145,7 @@ SquareComplexMatrix SquareComplexMatrix::operator* (const HermitianMatrix & m) c
   return Implementation(getImplementation()->hermProd(*(m.getImplementation()), 'R').conjugateTranspose().clone());
 }
 
-SquareComplexMatrix SquareComplexMatrix::operator* (const IdentityMatrix & m) const
+SquareComplexMatrix SquareComplexMatrix::operator* (const IdentityMatrix & ) const
 {
   return *this;
 }

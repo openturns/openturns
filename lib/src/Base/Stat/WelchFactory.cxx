@@ -87,7 +87,7 @@ String WelchFactory::__repr__() const
 }
 
 /* String converter */
-String WelchFactory::__str__(const String & offset) const
+String WelchFactory::__str__(const String & ) const
 {
   return __repr__();
 }

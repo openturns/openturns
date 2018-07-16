@@ -98,14 +98,13 @@ String SymbolicHessian::__repr__() const
 String SymbolicHessian::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset;
   // Check that the symbolic differentiation has been done
   try
   {
     initialize();
     if (isAnalytical_)
     {
-      oss << "\n";
+      oss << Os::GetEndOfLine() << offset;
       // First, find the maximum length of the output variable names
       const Description inputVariablesNames(p_evaluation_->getInputVariablesNames());
       const Description outputVariablesNames(p_evaluation_->getOutputVariablesNames());
@@ -129,9 +128,9 @@ String SymbolicHessian::__str__(const String & offset) const
         {
           for (UnsignedInteger j = 0; j < i; ++j)
           {
-            oss << offset << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")d(" + inputVariablesNames[j] + ")") << " = " << getFormula(i, j, k) << Os::GetEndOfLine();
+            oss << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")d(" + inputVariablesNames[j] + ")") << " = " << getFormula(i, j, k) << Os::GetEndOfLine() << offset;
           }
-          oss << offset << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")^2") << " = " << getFormula(i, i, k) << Os::GetEndOfLine();
+          oss << "| " << std::setw(length) << ("d^2(" + outputVariablesNames[k] + ") / d(" + inputVariablesNames[i] + ")^2") << " = " << getFormula(i, i, k) << Os::GetEndOfLine() << offset;
         } // For i
       } // For k
     } // isAnalytical
@@ -140,7 +139,7 @@ String SymbolicHessian::__str__(const String & offset) const
   {
     // Nothing to do
   }
-  if (!isAnalytical_) oss << offset << "No analytical hessian available. Try using finite difference instead.";
+  if (!isAnalytical_) oss << "No analytical hessian available. Try using finite difference instead.";
   return oss;
 }
 

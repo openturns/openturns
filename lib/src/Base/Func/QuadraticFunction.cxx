@@ -61,7 +61,7 @@ String QuadraticFunction::__str__(const String & offset) const
   OSS oss;
   oss << "class=" << QuadraticFunction::GetClassName()
       << " name=" << getName()
-      << " implementation=" << getImplementation()->__str__();
+      << " implementation=" << getImplementation()->__str__(offset);
   return oss;
 }
 

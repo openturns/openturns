@@ -29,7 +29,7 @@ extern "C" int openturns_library_ok();
  * @param  argc The number or arguments in argv
  * @param  argv The array of arguments from the calling program
  */
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   return openturns_library_ok() ? 0 : 1 ;
 }

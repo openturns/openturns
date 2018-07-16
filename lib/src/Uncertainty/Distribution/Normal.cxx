@@ -138,7 +138,7 @@ String Normal::__repr__() const
 String Normal::__str__(const String & offset) const
 {
   OSS oss;
-  oss << offset << getClassName();
+  oss << getClassName();
   if (getDimension() == 1) oss << "(mu = " << getMean()[0] << ", sigma = " << getSigma()[0] << ")";
   else oss << "(mu = " << getMean().__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getCorrelation().__str__(offset) << ")";
   return oss;

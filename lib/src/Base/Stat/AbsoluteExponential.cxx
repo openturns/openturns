@@ -125,7 +125,7 @@ String AbsoluteExponential::__repr__() const
 }
 
 /* String converter */
-String AbsoluteExponential::__str__(const String & offset) const
+String AbsoluteExponential::__str__(const String & ) const
 {
   OSS oss;
   oss << AbsoluteExponential::GetClassName()

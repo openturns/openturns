@@ -81,10 +81,10 @@ String LinearGradient::__repr__() const
 String LinearGradient::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << LinearGradient::GetClassName() << Os::GetEndOfLine()
-      << offset << "  center :"  << Os::GetEndOfLine() << center_.__str__(offset + "  ") << Os::GetEndOfLine()
-      << offset << "  constant :" << Os::GetEndOfLine() << constant_.__str__(offset + "  ") << Os::GetEndOfLine()
-      << offset << "  linear :" << Os::GetEndOfLine() << linear_.__str__(offset + "  ") << Os::GetEndOfLine();
+  oss << LinearGradient::GetClassName() << Os::GetEndOfLine() << offset
+      << "  center :"  << Os::GetEndOfLine() << offset << center_.__str__(offset + "  ") << Os::GetEndOfLine()
+      << "  constant :" << Os::GetEndOfLine() << offset << constant_.__str__(offset + "  ") << Os::GetEndOfLine()
+      << "  linear :" << Os::GetEndOfLine() << offset << linear_.__str__(offset + "  ") << Os::GetEndOfLine();
   return oss;
 }
 

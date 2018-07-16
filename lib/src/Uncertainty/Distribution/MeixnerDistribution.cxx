@@ -113,10 +113,10 @@ String MeixnerDistribution::__repr__() const
   return oss;
 }
 
-String MeixnerDistribution::__str__(const String & offset) const
+String MeixnerDistribution::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", delta = " << delta_ << ", mu = " << mu_ << ")";
+  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", delta = " << delta_ << ", mu = " << mu_ << ")";
   return oss;
 }
 

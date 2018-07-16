@@ -213,7 +213,7 @@ void Cobyla::load(Advocate & adv)
  * cobyla signature
  */
 int Cobyla::ComputeObjectiveAndConstraint(int n,
-    int m,
+    int ,
     double *x,
     double *f,
     double *con,

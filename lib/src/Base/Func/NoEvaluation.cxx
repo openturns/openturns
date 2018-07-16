@@ -44,7 +44,7 @@ NoEvaluation * NoEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool NoEvaluation::operator ==(const NoEvaluation & other) const
+Bool NoEvaluation::operator ==(const NoEvaluation & ) const
 {
   return true;
 }

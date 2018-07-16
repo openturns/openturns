@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/PointToFieldFunction.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,7 +63,7 @@ PointToFieldFunction::PointToFieldFunction(PointToFieldFunctionImplementation * 
 }
 
 /* Comparison operator */
-Bool PointToFieldFunction::operator ==(const PointToFieldFunction & other) const
+Bool PointToFieldFunction::operator ==(const PointToFieldFunction & ) const
 {
   return true;
 }
@@ -78,7 +79,7 @@ String PointToFieldFunction::__repr__() const
 /* String converter */
 String PointToFieldFunction::__str__(const String & offset) const
 {
-  return OSS(false) << offset << getClassName() << " :\n" << getImplementation()->__str__( offset + "  ");
+  return OSS(false) << getClassName() << " :" << Os::GetEndOfLine() << offset << "  " << getImplementation()->__str__( offset + "  ");
 }
 
 /* Get the i-th marginal function */

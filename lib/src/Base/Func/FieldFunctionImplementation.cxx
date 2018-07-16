@@ -65,7 +65,7 @@ FieldFunctionImplementation * FieldFunctionImplementation::clone() const
 }
 
 /* Comparison operator */
-Bool FieldFunctionImplementation::operator ==(const FieldFunctionImplementation & other) const
+Bool FieldFunctionImplementation::operator ==(const FieldFunctionImplementation & ) const
 {
   return true;
 }
@@ -83,9 +83,9 @@ String FieldFunctionImplementation::__repr__() const
 }
 
 /* String converter */
-String FieldFunctionImplementation::__str__(const String & offset) const
+String FieldFunctionImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 /* Get the i-th marginal function */
@@ -137,7 +137,7 @@ Mesh FieldFunctionImplementation::getOutputMesh() const
 }
 
 /* Operator () */
-Sample FieldFunctionImplementation::operator() (const Sample & inFld) const
+Sample FieldFunctionImplementation::operator() (const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In FieldFunctionImplementation::operator() (const Sample & inFld) const";
 }

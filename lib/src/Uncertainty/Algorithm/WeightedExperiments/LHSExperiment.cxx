@@ -96,7 +96,7 @@ String LHSExperiment::__repr__() const
   return oss;
 }
 
-String LHSExperiment::__str__(const String & offset) const
+String LHSExperiment::__str__(const String & ) const
 {
   OSS oss;
   oss << GetClassName()

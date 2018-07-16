@@ -76,7 +76,7 @@ KrigingEvaluation * KrigingEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool KrigingEvaluation::operator==(const KrigingEvaluation & other) const
+Bool KrigingEvaluation::operator==(const KrigingEvaluation & ) const
 {
   return true;
 }
@@ -94,9 +94,9 @@ String KrigingEvaluation::__repr__() const
 }
 
 /* String converter */
-String KrigingEvaluation::__str__(const String & offset) const
+String KrigingEvaluation::__str__(const String & ) const
 {
-  return OSS(false) << offset << GetClassName();
+  return OSS(false) << GetClassName();
 }
 
 /* Test for actual implementation */

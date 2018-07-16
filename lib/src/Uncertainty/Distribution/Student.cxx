@@ -115,7 +115,7 @@ String Student::__repr__() const
 String Student::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName();
+  oss << getClassName();
   if (getDimension() == 1) oss << "(nu = " << nu_ << ", mu = " << getMean()[0] << ", sigma = " << getSigma()[0] << ")";
   else oss << "(nu = " << nu_ << ", mu = " << getMean().__str__() << ", sigma = " << getSigma().__str__() << ", R = " << getCorrelation().__str__(offset) << ")";
   return oss;

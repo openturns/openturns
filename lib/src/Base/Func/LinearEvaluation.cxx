@@ -81,7 +81,7 @@ String LinearEvaluation::__repr__() const
   return oss;
 }
 
-String LinearEvaluation::__str__(const String & offset) const
+String LinearEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
   oss << "class=" << LinearEvaluation::GetClassName()

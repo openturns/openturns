@@ -419,7 +419,7 @@ String BoxCoxFactory::__repr__() const
 }
 
 /* String converter */
-String BoxCoxFactory::__str__(const String & offset) const
+String BoxCoxFactory::__str__(const String & ) const
 {
   OSS oss;
   oss << "class=" << BoxCoxFactory::GetClassName();

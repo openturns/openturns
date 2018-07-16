@@ -20,6 +20,7 @@
  */
 #include "openturns/Tensor.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -85,7 +86,7 @@ String Tensor::__str__(const String & offset) const
   if ( (rows   >= ResourceMap::GetAsUnsignedInteger("Tensor-size-visible-in-str-from")) ||
        (cols   >= ResourceMap::GetAsUnsignedInteger("Tensor-size-visible-in-str-from")) ||
        (sheets >= ResourceMap::GetAsUnsignedInteger("Tensor-size-visible-in-str-from")) )
-    oss << rows << "x" << cols << "x" << sheets << "\n";
+    oss << rows << "x" << cols << "x" << sheets << Os::GetEndOfLine();
 
   size_t lwidth = 0;
   size_t rwidth = 0;
@@ -100,12 +101,12 @@ String Tensor::__str__(const String & offset) const
       }
 
   const char * nl = "";
-  for( UnsignedInteger k = 0; k < sheets; ++k, nl = "\n" )
+  for( UnsignedInteger k = 0; k < sheets; ++k, nl = Os::GetEndOfLine() )
   {
-    oss << nl << "sheet #" << k << "\n";
+    oss << nl << "sheet #" << k << Os::GetEndOfLine();
     const char * bracket = "[";
     const char * newline = "";
-    for( UnsignedInteger i = 0; i < rows; ++i, newline = "\n", bracket = " " )
+    for( UnsignedInteger i = 0; i < rows; ++i, newline = Os::GetEndOfLine(), bracket = " " )
     {
       oss << newline << offset << bracket << "[ ";
       const char * sep = "";

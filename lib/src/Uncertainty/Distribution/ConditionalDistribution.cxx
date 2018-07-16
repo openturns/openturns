@@ -138,10 +138,10 @@ String ConditionalDistribution::__repr__() const
   return oss;
 }
 
-String ConditionalDistribution::__str__(const String & offset) const
+String ConditionalDistribution::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(X with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
+  oss << getClassName() << "(X with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
   return oss;
 }
 

@@ -70,10 +70,10 @@ String NatafIndependentCopulaEvaluation::__repr__() const
   return oss;
 }
 
-String NatafIndependentCopulaEvaluation::__str__(const String & offset) const
+String NatafIndependentCopulaEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << NatafIndependentCopulaEvaluation::GetClassName()
+  oss << NatafIndependentCopulaEvaluation::GetClassName()
       << "(IndependentCopula(" << dimension_ << ")->Normal(" << dimension_ << "))";
 
   return oss;
@@ -99,7 +99,7 @@ Point NatafIndependentCopulaEvaluation::operator () (const Point & inP) const
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameters are not taken into account. */
 
-Matrix NatafIndependentCopulaEvaluation::parameterGradient(const Point & inP) const
+Matrix NatafIndependentCopulaEvaluation::parameterGradient(const Point & ) const
 {
   return Matrix(0, dimension_);
 }

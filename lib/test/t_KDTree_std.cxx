@@ -38,7 +38,7 @@ Scalar debug_squared_minimum_distance(const Point & point, const Sample & sample
 }
 }
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

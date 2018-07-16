@@ -26,6 +26,7 @@
 #include "openturns/Normal.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -137,7 +138,7 @@ String ARMA::__str__(const String & offset) const
   //  ARMA process
   for (UnsignedInteger d = 0; d < getOutputDimension() ; ++d)
   {
-    if (d > 0) oss << "\n";
+    if (d > 0) oss << Os::GetEndOfLine() << offset;
     // Writing d-th the marginal process
     oss << "X_{" << d << ",t}" ;
     // decomposition by number of elements

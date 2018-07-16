@@ -117,7 +117,7 @@ String P1LagrangeInterpolation::__repr__() const
   return oss;
 }
 
-String P1LagrangeInterpolation::__str__( const String & offset ) const
+String P1LagrangeInterpolation::__str__( const String & ) const
 {
   OSS oss(false);
   oss << "class=" << P1LagrangeInterpolation::GetClassName()

@@ -97,10 +97,10 @@ String Multinomial::__repr__() const
   return oss;
 }
 
-String Multinomial::__str__(const String & offset) const
+String Multinomial::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(n = " << n_ << ", p = " << p_.__str__() << ")";
+  oss << getClassName() << "(n = " << n_ << ", p = " << p_.__str__() << ")";
   return oss;
 }
 

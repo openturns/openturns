@@ -83,10 +83,10 @@ String Triangular::__repr__() const
   return oss;
 }
 
-String Triangular::__str__(const String & offset) const
+String Triangular::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(a = " << a_ << ", m = " << m_ << ", b = " << b_ << ")";
+  oss << getClassName() << "(a = " << a_ << ", m = " << m_ << ", b = " << b_ << ")";
   return oss;
 }
 

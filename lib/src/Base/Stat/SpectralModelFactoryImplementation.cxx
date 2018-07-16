@@ -64,19 +64,19 @@ String SpectralModelFactoryImplementation::__repr__() const
 }
 
 /* String converter */
-String SpectralModelFactoryImplementation::__str__(const String & offset) const
+String SpectralModelFactoryImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << this->getClassName();
+  return OSS(false) << this->getClassName();
 }
 
 /* Here is the interface that all derived class must implement */
 
-SpectralModel SpectralModelFactoryImplementation::build(const ProcessSample & sample) const
+SpectralModel SpectralModelFactoryImplementation::build(const ProcessSample & ) const
 {
   throw NotYetImplementedException(HERE) << "In SpectralModelFactoryImplementation::build(const ProcessSample & sample) const";
 }
 
-SpectralModel SpectralModelFactoryImplementation::build(const Field & timeSeries) const
+SpectralModel SpectralModelFactoryImplementation::build(const Field & ) const
 {
   throw NotYetImplementedException(HERE) << "In SpectralModelFactoryImplementation::build(const Field & timeSeries) const";
 }

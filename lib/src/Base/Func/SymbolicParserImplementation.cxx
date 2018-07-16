@@ -69,7 +69,7 @@ void SymbolicParserImplementation::setFormulas(const Description & formulas)
 }
 
 /* Evaluation operator */
-Point SymbolicParserImplementation::operator()(const Point & inP) const
+Point SymbolicParserImplementation::operator()(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In SymbolicParserImplementation::operator()(const Point & inP) const";
 }

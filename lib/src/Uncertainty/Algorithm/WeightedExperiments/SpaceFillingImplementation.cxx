@@ -46,13 +46,13 @@ SpaceFillingImplementation * SpaceFillingImplementation::clone() const
 }
 
 /** Evaluate criterion on a sample */
-Scalar SpaceFillingImplementation::evaluate(const Sample & sample) const
+Scalar SpaceFillingImplementation::evaluate(const Sample & ) const
 {
   throw NotYetImplementedException(HERE);
 }
 
 /** Compute criterion when performing an elementary perturbation */
-Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar oldCriterion,
+Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar ,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   // Default method uses O(N*N) computations

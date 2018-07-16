@@ -65,7 +65,7 @@ PointToFieldFunctionImplementation * PointToFieldFunctionImplementation::clone()
 }
 
 /* Comparison operator */
-Bool PointToFieldFunctionImplementation::operator ==(const PointToFieldFunctionImplementation & other) const
+Bool PointToFieldFunctionImplementation::operator ==(const PointToFieldFunctionImplementation & ) const
 {
   return true;
 }
@@ -83,9 +83,9 @@ String PointToFieldFunctionImplementation::__repr__() const
 }
 
 /* String converter */
-String PointToFieldFunctionImplementation::__str__(const String & offset) const
+String PointToFieldFunctionImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 /* Get the i-th marginal function */
@@ -134,7 +134,7 @@ Mesh PointToFieldFunctionImplementation::getOutputMesh() const
 
 
 /* Operator () */
-Sample PointToFieldFunctionImplementation::operator() (const Point & inP) const
+Sample PointToFieldFunctionImplementation::operator() (const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::operator() (const Point & inP) const";
 }

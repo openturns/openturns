@@ -549,6 +549,7 @@ Scalar NonCentralStudentPDFAlt0(const Scalar nu,
   if (std::abs(delta / (4.0 * nu)) < precision) return std::exp(SpecFunc::LnGamma(0.5 * nu + 0.5) - SpecFunc::LnGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
   // Case delta <> 0
 #ifdef OPENTURNS_HAVE_BOOST
+  (void) maximumIteration;
   return boost::math::pdf(boost::math::non_central_t(nu, delta), x);
 #else
   const Scalar halfNu = 0.5 * nu;

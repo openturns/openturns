@@ -71,10 +71,10 @@ String NonCentralChiSquare::__repr__() const
   return oss;
 }
 
-String NonCentralChiSquare::__str__(const String & offset) const
+String NonCentralChiSquare::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(nu = " << nu_ << ", lambda = " << lambda_ << ")";
+  oss << getClassName() << "(nu = " << nu_ << ", lambda = " << lambda_ << ")";
   return oss;
 }
 

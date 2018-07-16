@@ -77,9 +77,11 @@ String DatabaseEvaluation::__repr__() const
 String DatabaseEvaluation::__str__( const String & offset ) const
 {
   OSS oss(false);
-  oss << DatabaseEvaluation::GetClassName() << Os::GetEndOfLine()
-      << offset << "  input sample :" << Os::GetEndOfLine() << inputSample_.__str__(offset) << Os::GetEndOfLine()
-      << offset << "  output sample :" << Os::GetEndOfLine() << outputSample_.__str__(offset);
+  oss << DatabaseEvaluation::GetClassName() << Os::GetEndOfLine() << offset
+      << "  input sample :" << Os::GetEndOfLine() << offset
+      << inputSample_.__str__(offset) << Os::GetEndOfLine() << offset
+      << "  output sample :" << Os::GetEndOfLine() << offset
+      << outputSample_.__str__(offset);
   return oss;
 }
 

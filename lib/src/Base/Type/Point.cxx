@@ -65,7 +65,7 @@ Point * Point::clone() const
   return new Point(*this);
 }
 
-void Point::setDescription(const Description & description)
+void Point::setDescription(const Description & )
 {
   // Nothing to do
 }

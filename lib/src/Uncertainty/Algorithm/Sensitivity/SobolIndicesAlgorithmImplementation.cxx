@@ -595,14 +595,14 @@ Sample SobolIndicesAlgorithmImplementation::ComputeProdSample(const Sample & sam
 }
 
 /* String converter */
-String SobolIndicesAlgorithmImplementation::__str__(const String & offset) const
+String SobolIndicesAlgorithmImplementation::__str__(const String & ) const
 {
   return __repr__();
 }
 
 /** Internal method that compute Vi/VTi using a collection of samples */
-Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & design,
-    Sample & VTi) const
+Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & ,
+    Sample & ) const
 {
   // Method is defined in Jansan/Saltelli/Martinez/Mauntz classes
   throw new NotYetImplementedException(HERE);

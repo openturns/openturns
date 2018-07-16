@@ -88,10 +88,10 @@ String Dirac::__repr__() const
   return oss;
 }
 
-String Dirac::__str__(const String & offset) const
+String Dirac::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(point = " << point_.__str__() << ")";
+  oss << getClassName() << "(point = " << point_.__str__() << ")";
   return oss;
 }
 
@@ -136,8 +136,8 @@ Scalar Dirac::computeCDF(const Point & point) const
 }
 
 /* Compute the multivariate quantile of the distribution */
-Point Dirac::computeQuantile(const Scalar prob,
-                             const Bool tail) const
+Point Dirac::computeQuantile(const Scalar ,
+                             const Bool ) const
 {
   return point_;
 }
@@ -162,8 +162,8 @@ Point Dirac::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-Scalar Dirac::computeScalarQuantile(const Scalar prob,
-                                    const Bool tail) const
+Scalar Dirac::computeScalarQuantile(const Scalar ,
+                                    const Bool ) const
 {
   return point_[0];
 }

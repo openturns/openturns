@@ -68,7 +68,7 @@ Point FiniteDifferenceStepImplementation::getEpsilon() const
 }
 
 /* Evaluation operator */
-Point FiniteDifferenceStepImplementation::operator()(const Point & inP) const
+Point FiniteDifferenceStepImplementation::operator()(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In FiniteDifferenceStepImplementation::operator()(const Point & inP) const";
 }

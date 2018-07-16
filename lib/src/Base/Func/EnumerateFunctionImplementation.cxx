@@ -58,31 +58,31 @@ UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeCardinal(const 
 }
 
 /* Evaluation operator */
-Indices EnumerateFunctionImplementation::operator() (const UnsignedInteger index) const
+Indices EnumerateFunctionImplementation::operator() (const UnsignedInteger ) const
 {
   throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::operator() (const UnsignedInteger index) const";
 }
 
 /* The inverse of the association */
-UnsignedInteger EnumerateFunctionImplementation::inverse(const Indices & indices) const
+UnsignedInteger EnumerateFunctionImplementation::inverse(const Indices & ) const
 {
   throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::inverse(const Indices & indices) const";
 }
 
 /* The cardinal of the given strata */
-UnsignedInteger EnumerateFunctionImplementation::getStrataCardinal(const UnsignedInteger strateIndex) const
+UnsignedInteger EnumerateFunctionImplementation::getStrataCardinal(const UnsignedInteger ) const
 {
   throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::getStrataCardinal(const UnsignedInteger strateIndex) const";
 }
 
 /* The cardinal of the cumulated strata above or equal to the given strate */
-UnsignedInteger EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger strateIndex) const
+UnsignedInteger EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger ) const
 {
   throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::getStrataCumulatedCardinal(const UnsignedInteger strateIndex) const";
 }
 
 /* The index of the strata of degree max <= maximumDegree */
-UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const
+UnsignedInteger EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedInteger ) const
 {
   throw NotYetImplementedException( HERE ) << "In EnumerateFunctionImplementation::getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const";
 }

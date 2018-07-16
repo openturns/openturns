@@ -80,13 +80,13 @@ String HaarWavelet::__repr__() const
 }
 
 
-String HaarWavelet::__str__(const String & offset) const
+String HaarWavelet::__str__(const String & ) const
 {
   OSS oss(false);
   if (isScaling_)
-    oss << offset << "f:X -> {1.0 for 0.0<=X<1.0, 0.0 elsewhere}";
+    oss << "f:X -> {1.0 for 0.0<=X<1.0, 0.0 elsewhere}";
   else
-    oss << offset << "f:X -> {" << value_ << " for " << a_ << "<=X<" << m_ << ", " << -value_ << " for " << m_ << "<=X<" << b_ << ", 0.0 elsewhere}";
+    oss << "f:X -> {" << value_ << " for " << a_ << "<=X<" << m_ << ", " << -value_ << " for " << m_ << "<=X<" << b_ << ", 0.0 elsewhere}";
   return oss;
 }
 
@@ -102,13 +102,13 @@ Scalar HaarWavelet::operator() (const Scalar x) const
 }
 
 /* HaarWavelet gradient */
-Scalar HaarWavelet::gradient(const Scalar x) const
+Scalar HaarWavelet::gradient(const Scalar ) const
 {
   return 0.0;
 }
 
 /* HaarWavelet hessian */
-Scalar HaarWavelet::hessian(const Scalar x) const
+Scalar HaarWavelet::hessian(const Scalar ) const
 {
   return 0.0;
 }

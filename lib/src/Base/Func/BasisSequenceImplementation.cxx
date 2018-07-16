@@ -64,9 +64,9 @@ String BasisSequenceImplementation::__repr__() const
          << " masterBasis=" << masterBasis_;
 }
 
-String BasisSequenceImplementation::__str__(const String & offset) const
+String BasisSequenceImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 

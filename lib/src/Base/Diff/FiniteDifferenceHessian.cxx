@@ -144,7 +144,7 @@ FiniteDifferenceStep FiniteDifferenceHessian::getFiniteDifferenceStep() const
 }
 
 /* Evaluation method */
-SymmetricTensor FiniteDifferenceHessian::hessian(const Point & inP) const
+SymmetricTensor FiniteDifferenceHessian::hessian(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In FiniteDifferenceHessian::hessian(const Point & inP) const";
 }

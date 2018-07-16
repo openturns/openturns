@@ -55,7 +55,7 @@ String LinearFunction::__repr__() const
   return oss;
 }
 
-String LinearFunction::__str__(const String & offset) const
+String LinearFunction::__str__(const String & ) const
 {
   OSS oss(false);
   oss << "class=" << LinearFunction::GetClassName()

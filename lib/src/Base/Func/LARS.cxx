@@ -199,9 +199,9 @@ String LARS::__repr__() const
   return OSS(true) << "class=" << getClassName();
 }
 
-String LARS::__str__(const String & offset) const
+String LARS::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 /* Method save() stores the object through the StorageManager */

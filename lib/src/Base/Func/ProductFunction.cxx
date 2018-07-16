@@ -62,7 +62,7 @@ ProductFunction * ProductFunction::clone() const
 }
 
 /* Comparison operator */
-Bool ProductFunction::operator ==(const ProductFunction & other) const
+Bool ProductFunction::operator ==(const ProductFunction & ) const
 {
   return true;
 }
@@ -82,7 +82,8 @@ String ProductFunction::__repr__() const
 String ProductFunction::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << ProductFunction::GetClassName()
+  oss << offset
+      << "class=" << ProductFunction::GetClassName()
       << " name=" << getName()
       << " description=" << getDescription()
       << " left function=" << p_leftFunction_->__str__()

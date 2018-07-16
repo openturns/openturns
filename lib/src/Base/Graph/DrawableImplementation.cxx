@@ -1006,19 +1006,19 @@ String DrawableImplementation::__repr__() const
 String DrawableImplementation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName()
-      << offset << "(name=" << getName()
-      << offset << ", color=" << color_
-      << offset << ", fill=" << fillStyle_
-      << offset << ", line=" << lineStyle_
-      << offset << ", point=" << pointStyle_
-      << offset << ", width=" << lineWidth_
-      << offset << ", data=\n" << data_.__str__(offset);
+  oss << getClassName()
+      << "(name=" << getName()
+      << ", color=" << color_
+      << ", fill=" << fillStyle_
+      << ", line=" << lineStyle_
+      << ", point=" << pointStyle_
+      << ", width=" << lineWidth_
+      << ", data=" << Os::GetEndOfLine() << offset << data_.__str__(offset);
   return oss;
 }
 
 /* Comparison operator */
-Bool DrawableImplementation::operator == (const DrawableImplementation & other) const
+Bool DrawableImplementation::operator == (const DrawableImplementation & ) const
 {
   return false;
 }
@@ -1152,12 +1152,12 @@ Bool DrawableImplementation::IsValidPattern(const String & pattern)
 }
 
 /* Check validity of the data */
-void DrawableImplementation::checkData(const Sample & data) const
+void DrawableImplementation::checkData(const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "DrawableImplementation::checkData(const Sample & data) const";
 }
 
-void DrawableImplementation::checkData(const Point & data) const
+void DrawableImplementation::checkData(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DrawableImplementation::checkData(const Point & data) const";
 }
@@ -1275,7 +1275,7 @@ String DrawableImplementation::getPattern() const
   throw NotDefinedException(HERE) << "Error: no pattern in " << getClassName();
 }
 
-void DrawableImplementation::setPattern(const String style)
+void DrawableImplementation::setPattern(const String )
 {
   throw NotDefinedException(HERE) << "Error: no pattern in " << getClassName();
 }
@@ -1286,7 +1286,7 @@ Point DrawableImplementation::getCenter() const
   throw NotDefinedException(HERE) << "Error: no center in " << getClassName();
 }
 
-void DrawableImplementation::setCenter(const Point & center)
+void DrawableImplementation::setCenter(const Point & )
 {
   throw NotDefinedException(HERE) << "Error: no center in " << getClassName();
 }
@@ -1297,7 +1297,7 @@ Scalar DrawableImplementation::getRadius() const
   throw NotDefinedException(HERE) << "Error: no radius in " << getClassName();
 }
 
-void DrawableImplementation::setRadius(const Scalar radius)
+void DrawableImplementation::setRadius(const Scalar )
 {
   throw NotDefinedException(HERE) << "Error: no radius in " << getClassName();
 }
@@ -1308,7 +1308,7 @@ Description DrawableImplementation::getLabels() const
   throw NotDefinedException(HERE) << "Error: no labels in " << getClassName();
 }
 
-void DrawableImplementation::setLabels(const Description & labels)
+void DrawableImplementation::setLabels(const Description & )
 {
   throw NotDefinedException(HERE) << "Error: no labels in " << getClassName();
 }
@@ -1319,7 +1319,7 @@ Description DrawableImplementation::getPalette() const
   throw NotDefinedException(HERE) << "Error: no palette in " << getClassName();
 }
 
-void DrawableImplementation::setPalette(const Description & palette)
+void DrawableImplementation::setPalette(const Description & )
 {
   throw NotDefinedException(HERE) << "Error: no palette in " << getClassName();
 }
@@ -1347,7 +1347,7 @@ Scalar DrawableImplementation::getOrigin() const
   throw NotDefinedException(HERE) << "Error: no origin in " << getClassName();
 }
 
-void DrawableImplementation::setOrigin(const Scalar origin)
+void DrawableImplementation::setOrigin(const Scalar )
 {
   throw NotDefinedException(HERE) << "Error: no origin in " << getClassName();
 }
@@ -1358,7 +1358,7 @@ Sample DrawableImplementation::getX() const
   throw NotDefinedException(HERE) << "Error: no sample X in " << getClassName();
 }
 
-void DrawableImplementation::setX(const Sample & x)
+void DrawableImplementation::setX(const Sample & )
 {
   throw NotDefinedException(HERE) << "Error: no sample X in " << getClassName();
 }
@@ -1369,7 +1369,7 @@ Sample DrawableImplementation::getY() const
   throw NotDefinedException(HERE) << "Error: no sample Y in " << getClassName();
 }
 
-void DrawableImplementation::setY(const Sample & y)
+void DrawableImplementation::setY(const Sample & )
 {
   throw NotDefinedException(HERE) << "Error: no sample Y in " << getClassName();
 }
@@ -1380,7 +1380,7 @@ Point DrawableImplementation::getLevels() const
   throw NotDefinedException(HERE) << "Error: no levels in " << getClassName();
 }
 
-void DrawableImplementation::setLevels(const Point & levels)
+void DrawableImplementation::setLevels(const Point & )
 {
   throw NotDefinedException(HERE) << "Error: no levels in " << getClassName();
 }
@@ -1391,7 +1391,7 @@ Bool DrawableImplementation::getDrawLabels() const
   throw NotDefinedException(HERE) << "Error: no flag drawLabels in " << getClassName();
 }
 
-void DrawableImplementation::setDrawLabels(const Bool & drawLabels)
+void DrawableImplementation::setDrawLabels(const Bool & )
 {
   throw NotDefinedException(HERE) << "Error: no flag drawLabels in " << getClassName();
 }
@@ -1402,7 +1402,7 @@ Description DrawableImplementation::getTextAnnotations() const
   throw NotDefinedException(HERE) << "Error: no flag textAnnotations in " << getClassName();
 }
 
-void DrawableImplementation::setTextAnnotations(const Description & textAnnotations)
+void DrawableImplementation::setTextAnnotations(const Description & )
 {
   throw NotDefinedException(HERE) << "Error: no flag textAnnotations in " << getClassName();
 }
@@ -1413,7 +1413,7 @@ Description DrawableImplementation::getTextPositions() const
   throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
 }
 
-void DrawableImplementation::setTextPositions(const Description & textPositions)
+void DrawableImplementation::setTextPositions(const Description & )
 {
   throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
 }

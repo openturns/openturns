@@ -89,7 +89,7 @@ VertexValueFunction * VertexValueFunction::clone() const
 }
 
 /* Comparison operator */
-Bool VertexValueFunction::operator ==(const VertexValueFunction & other) const
+Bool VertexValueFunction::operator ==(const VertexValueFunction & ) const
 {
   return true;
 }

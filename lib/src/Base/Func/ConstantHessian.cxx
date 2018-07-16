@@ -72,15 +72,15 @@ String ConstantHessian::__str__(const String & offset) const
   OSS oss(false);
   const UnsignedInteger inputDimension = getInputDimension();
   const Description description(Description::BuildDefault(inputDimension, "x"));
-  if (hasVisibleName()) oss << offset << getName() << ":" << Os::GetEndOfLine();
+  if (hasVisibleName()) oss << getName() << ":" << Os::GetEndOfLine() << offset;
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
-    if (i == 0) oss << offset << "  (";
+    if (i == 0) oss << "  (";
     oss << description[i];
     if (i == inputDimension - 1) oss << ")";
     else oss << ", ";
   }
-  oss << " ->" << Os::GetEndOfLine();
+  oss << " ->" << Os::GetEndOfLine() << offset;
   oss << constant_.__str__(offset + "  ");
   return oss;
 }

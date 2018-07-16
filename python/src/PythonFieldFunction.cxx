@@ -134,7 +134,7 @@ PythonFieldFunction::~PythonFieldFunction()
 }
 
 /* Comparison operator */
-Bool PythonFieldFunction::operator ==(const PythonFieldFunction & other) const
+Bool PythonFieldFunction::operator ==(const PythonFieldFunction & ) const
 {
   return true;
 }
@@ -151,7 +151,7 @@ String PythonFieldFunction::__repr__() const
 }
 
 /* String converter */
-String PythonFieldFunction::__str__(const String & offset) const
+String PythonFieldFunction::__str__(const String & ) const
 {
   OSS oss;
   oss << "class=" << PythonFieldFunction::GetClassName()

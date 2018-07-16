@@ -31,13 +31,13 @@ public:
   {
     return String("MyTest class");
   }
-  virtual String __str__(const String & offset)  const
+  virtual String __str__(const String & )  const
   {
     return String("What a beautiful print !");
   }
 };
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream prettyprint(std::cout);

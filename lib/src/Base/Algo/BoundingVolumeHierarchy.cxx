@@ -341,7 +341,7 @@ String BoundingVolumeHierarchy::__repr__() const
 }
 
 /* String converter */
-String BoundingVolumeHierarchy::__str__(const String & offset) const
+String BoundingVolumeHierarchy::__str__(const String & ) const
 {
   OSS oss(false);
   oss << "class=" << BoundingVolumeHierarchy::GetClassName()

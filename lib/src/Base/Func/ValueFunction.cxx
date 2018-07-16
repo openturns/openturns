@@ -76,7 +76,7 @@ ValueFunction * ValueFunction::clone() const
 }
 
 /* Comparison operator */
-Bool ValueFunction::operator ==(const ValueFunction & other) const
+Bool ValueFunction::operator ==(const ValueFunction & ) const
 {
   return true;
 }

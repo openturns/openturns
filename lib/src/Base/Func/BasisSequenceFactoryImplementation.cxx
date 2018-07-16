@@ -54,9 +54,9 @@ String BasisSequenceFactoryImplementation::__repr__() const
 }
 
 
-String BasisSequenceFactoryImplementation::__str__(const String & offset) const
+String BasisSequenceFactoryImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 
@@ -113,7 +113,7 @@ void BasisSequenceFactoryImplementation::initialize()
 }
 
 
-void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & method, const Sample & y)
+void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & , const Sample & )
 {
   throw NotYetImplementedException(HERE) << " in BasisSequenceFactoryImplementation::updateBasis";
 }

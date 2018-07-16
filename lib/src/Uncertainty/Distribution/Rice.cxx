@@ -87,10 +87,10 @@ String Rice::__repr__() const
   return oss;
 }
 
-String Rice::__str__(const String & offset) const
+String Rice::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(sigma = " << sigma_ << ", nu = " << nu_ << ")";
+  oss << getClassName() << "(sigma = " << sigma_ << ", nu = " << nu_ << ")";
   return oss;
 }
 

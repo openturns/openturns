@@ -161,7 +161,7 @@ String SpectralGaussianProcess::__repr__() const
   return oss;
 }
 
-String SpectralGaussianProcess::__str__(const String & offset) const
+String SpectralGaussianProcess::__str__(const String & ) const
 {
   OSS oss(false);
   oss << " SpectralGaussianProcess=" << SpectralGaussianProcess::GetClassName()

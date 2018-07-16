@@ -143,7 +143,7 @@ String CanonicalTensorEvaluation::__repr__() const
          << " basis=" << basis_;
 }
 
-String CanonicalTensorEvaluation::__str__(const String & offset) const
+String CanonicalTensorEvaluation::__str__(const String & ) const
 {
   return __repr__();
 }

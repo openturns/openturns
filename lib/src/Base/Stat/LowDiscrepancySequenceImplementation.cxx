@@ -51,7 +51,7 @@ LowDiscrepancySequenceImplementation * LowDiscrepancySequenceImplementation::clo
 
 
 /* initialize the sequence */
-void LowDiscrepancySequenceImplementation::initialize(const UnsignedInteger dimension)
+void LowDiscrepancySequenceImplementation::initialize(const UnsignedInteger )
 {
   throw NotYetImplementedException(HERE) << "In LowDiscrepancySequenceImplementation::initialize(const UnsignedInteger dimension)";
 }

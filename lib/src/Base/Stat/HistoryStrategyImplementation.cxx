@@ -51,7 +51,7 @@ HistoryStrategyImplementation * HistoryStrategyImplementation::clone() const
 }
 
 /* Store the point according to the strategy */
-void HistoryStrategyImplementation::store(const Point & point)
+void HistoryStrategyImplementation::store(const Point & )
 {
   throw NotYetImplementedException(HERE) << "In HistoryStrategyImplementation::store(const Point & point)";
 }

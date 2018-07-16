@@ -60,7 +60,7 @@ String TranslationFunction::__str__(const String & offset) const
   OSS oss(false);
   oss << "class=" << TranslationFunction::GetClassName()
       << " name=" << getName()
-      << " implementation=" << getImplementation()->__str__();
+      << " implementation=" << getImplementation()->__str__(offset);
   return oss;
 }
 

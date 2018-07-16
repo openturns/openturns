@@ -73,10 +73,9 @@ String LinearCombinationEvaluation::__repr__() const
          << " coefficients=" << coefficients_;
 }
 
-String LinearCombinationEvaluation::__str__(const String & offset) const
+String LinearCombinationEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset;
   const UnsignedInteger size = functionsCollection_.getSize();
   if (size > 1) oss << "(";
   for (UnsignedInteger i = 0; i < size; ++i)

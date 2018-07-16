@@ -81,10 +81,10 @@ String ChiSquare::__repr__() const
   return oss;
 }
 
-String ChiSquare::__str__(const String & offset) const
+String ChiSquare::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(nu = " << nu_ << ")";
+  oss << getClassName() << "(nu = " << nu_ << ")";
   return oss;
 }
 

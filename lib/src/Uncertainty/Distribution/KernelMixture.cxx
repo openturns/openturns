@@ -30,6 +30,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -119,7 +120,7 @@ String KernelMixture::__repr__() const
 String KernelMixture::__str__(const String & offset) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(kernel = " << kernel_.__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << "\n" << sample_.__str__(offset);
+  oss << getClassName() << "(kernel = " << kernel_.__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << Os::GetEndOfLine() << offset << sample_.__str__(offset);
   return oss;
 }
 

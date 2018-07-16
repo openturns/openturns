@@ -162,7 +162,7 @@ String GeneralizedExponential::__repr__() const
 }
 
 /* String converter */
-String GeneralizedExponential::__str__(const String & offset) const
+String GeneralizedExponential::__str__(const String & ) const
 {
   OSS oss;
   oss << GeneralizedExponential::GetClassName()

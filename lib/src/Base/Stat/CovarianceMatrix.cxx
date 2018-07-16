@@ -86,7 +86,7 @@ CovarianceMatrix CovarianceMatrix::operator + (const CovarianceMatrix & m) const
 }
 
 /* CovarianceMatrix multiplication (must have consistent dimensions) */
-CovarianceMatrix CovarianceMatrix::operator * (const IdentityMatrix & m) const
+CovarianceMatrix CovarianceMatrix::operator * (const IdentityMatrix & ) const
 {
   return *this;
 }

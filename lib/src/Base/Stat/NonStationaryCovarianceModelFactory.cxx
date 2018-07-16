@@ -56,7 +56,7 @@ String NonStationaryCovarianceModelFactory::__repr__() const
 }
 
 /* String converter */
-String NonStationaryCovarianceModelFactory::__str__(const String & offset) const
+String NonStationaryCovarianceModelFactory::__str__(const String & ) const
 {
   return __repr__();
 }

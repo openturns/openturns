@@ -162,10 +162,10 @@ String LogNormalMuSigmaOverMu::__repr__() const
 }
 
 
-String LogNormalMuSigmaOverMu::__str__(const String & offset) const
+String LogNormalMuSigmaOverMu::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(mu = " << mu_ << ", sigmaOverMu = " << sigmaOverMu_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", sigmaOverMu = " << sigmaOverMu_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

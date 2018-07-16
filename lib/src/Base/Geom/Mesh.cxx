@@ -494,7 +494,7 @@ String Mesh::__repr__() const
          << " simplices=" << simplices_.__repr__();
 }
 
-String Mesh::__str__(const String & offset) const
+String Mesh::__str__(const String & ) const
 {
   return __repr__();
 }

@@ -97,10 +97,10 @@ String SmoothedUniform::__repr__() const
   return oss;
 }
 
-String SmoothedUniform::__str__(const String & offset) const
+String SmoothedUniform::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(a = " << a_ << ", b = " << b_ << ", sigma = " << sigma_ << ")";
+  oss << getClassName() << "(a = " << a_ << ", b = " << b_ << ", sigma = " << sigma_ << ")";
   return oss;
 }
 

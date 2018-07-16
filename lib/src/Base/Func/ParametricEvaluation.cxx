@@ -233,13 +233,13 @@ String ParametricEvaluation::__repr__() const
   return oss;
 }
 
-String ParametricEvaluation::__str__(const String & offset) const
+String ParametricEvaluation::__str__(const String & ) const
 {
   PointWithDescription parameters(parameter_);
   parameters.setDescription(parameterDescription_);
 
   OSS oss(false);
-  oss << offset << ParametricEvaluation::GetClassName()
+  oss << ParametricEvaluation::GetClassName()
       << "(" << function_
       << ", parameters positions=" << parametersPositions_
       << ", parameters=" << parameters

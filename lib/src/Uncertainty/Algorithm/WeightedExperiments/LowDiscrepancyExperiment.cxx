@@ -106,7 +106,7 @@ String LowDiscrepancyExperiment::__repr__() const
   return oss;
 }
 
-String LowDiscrepancyExperiment::__str__(const String & offset) const
+String LowDiscrepancyExperiment::__str__(const String & ) const
 {
   OSS oss;
   oss << GetClassName()

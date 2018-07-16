@@ -78,10 +78,10 @@ String InverseChiSquare::__repr__() const
   return oss;
 }
 
-String InverseChiSquare::__str__(const String & offset) const
+String InverseChiSquare::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(nu = " << nu_ << ")";
+  oss << getClassName() << "(nu = " << nu_ << ")";
   return oss;
 }
 

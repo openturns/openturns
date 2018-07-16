@@ -150,7 +150,7 @@ FiniteDifferenceStep FiniteDifferenceGradient::getFiniteDifferenceStep() const
 }
 
 /* Evaluation method */
-Matrix FiniteDifferenceGradient::gradient(const Point & inP) const
+Matrix FiniteDifferenceGradient::gradient(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In FiniteDifferenceGradient::gradient(const Point & inP) const";
 }

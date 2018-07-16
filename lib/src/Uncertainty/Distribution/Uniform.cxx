@@ -81,10 +81,10 @@ String Uniform::__repr__() const
   return oss;
 }
 
-String Uniform::__str__(const String & offset) const
+String Uniform::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(a = " << a_ << ", b = " << b_ << ")";
+  oss << getClassName() << "(a = " << a_ << ", b = " << b_ << ")";
   return oss;
 }
 

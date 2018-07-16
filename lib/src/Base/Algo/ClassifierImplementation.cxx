@@ -64,7 +64,7 @@ UnsignedInteger ClassifierImplementation::getNumberOfClasses() const
 }
 
 /* Classify a sample */
-UnsignedInteger ClassifierImplementation::classify(const Point & inP) const
+UnsignedInteger ClassifierImplementation::classify(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In ClassifierImplementation::classify(const Point & inP) const";
 }
@@ -118,7 +118,7 @@ Indices ClassifierImplementation::classify(const Sample & inS) const
 }
 
 /* Grade a point */
-Scalar ClassifierImplementation::grade(const Point & inP, const UnsignedInteger hClass) const
+Scalar ClassifierImplementation::grade(const Point & , const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In ClassifierImplementation::grade(const Point & inP, const UnsignedInteger hClass) const";
 }
@@ -201,7 +201,7 @@ String ClassifierImplementation::__repr__() const
 }
 
 
-String ClassifierImplementation::__str__(const String & offset) const
+String ClassifierImplementation::__str__(const String & ) const
 {
   return __repr__();
 }

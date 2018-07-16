@@ -27,7 +27,7 @@ using namespace OT::Test;
 typedef ComposedDistribution::DistributionCollection                DistributionCollection;
 typedef RandomWalkMetropolisHastings::CalibrationStrategyCollection CalibrationStrategyCollection;
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

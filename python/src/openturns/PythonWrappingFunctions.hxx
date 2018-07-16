@@ -91,7 +91,7 @@ struct _PyObject_ {};
 template <>
 inline
 int
-isAPython<_PyObject_>(PyObject * pyObj)
+isAPython<_PyObject_>(PyObject * )
 {
   return 1;
 }
@@ -194,7 +194,7 @@ struct traitsPythonType< UnsignedInteger >
 template <>
 inline
 bool
-canConvert< _PyInt_, UnsignedInteger >(PyObject * pyObj)
+canConvert< _PyInt_, UnsignedInteger >(PyObject * )
 {
   return true;
 }
@@ -1729,7 +1729,7 @@ struct traitsPythonType< WhittleFactoryState >
 template <>
 inline
 WhittleFactoryState
-convert< _PySequence_, WhittleFactoryState >(PyObject * pyObj)
+convert< _PySequence_, WhittleFactoryState >(PyObject * )
 {
   return WhittleFactoryState();
 }

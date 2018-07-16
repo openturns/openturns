@@ -134,13 +134,13 @@ Expression ExpressionParser::Parse(const char* buf,
 }
 
 // parser: report error (private method)
-double ExpressionParser::error(const std::string & s)
+double ExpressionParser::error(const std::string & )
 {
   ++no_of_errors_;
   return 0;
 }
-double ExpressionParser::error(const std::string & s,
-                               const Token_value tk)
+double ExpressionParser::error(const std::string & ,
+                               const Token_value )
 {
   ++no_of_errors_;
   return 0;

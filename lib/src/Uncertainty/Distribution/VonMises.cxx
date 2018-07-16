@@ -88,10 +88,10 @@ String VonMises::__repr__() const
   return oss;
 }
 
-String VonMises::__str__(const String & offset) const
+String VonMises::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(mu = " << mu_ << ", kappa=" << kappa_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", kappa=" << kappa_ << ")";
   return oss;
 }
 

@@ -42,7 +42,7 @@ Epanechnikov::Epanechnikov()
 }
 
 /* Comparison operator */
-Bool Epanechnikov::operator ==(const Epanechnikov & other) const
+Bool Epanechnikov::operator ==(const Epanechnikov & ) const
 {
   return true;
 }
@@ -63,10 +63,10 @@ String Epanechnikov::__repr__() const
   return oss;
 }
 
-String Epanechnikov::__str__(const String & offset) const
+String Epanechnikov::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "()";
+  oss << getClassName() << "()";
   return oss;
 }
 

@@ -64,7 +64,7 @@ String AggregatedProcess::__repr__() const
   return oss;
 }
 
-String AggregatedProcess::__str__(const String & offset) const
+String AggregatedProcess::__str__(const String & ) const
 {
   OSS oss(false);
   oss << "AggregatedProcess(" << processCollection_ << ")";

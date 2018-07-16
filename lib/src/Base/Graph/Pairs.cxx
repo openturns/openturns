@@ -42,7 +42,7 @@ Pairs::Pairs()
 
 /* Default constructor */
 Pairs::Pairs(const Sample & data,
-             const String & title)
+             const String & )
   : DrawableImplementation(data)
 {
   checkData(data);

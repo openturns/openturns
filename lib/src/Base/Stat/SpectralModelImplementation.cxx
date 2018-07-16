@@ -151,7 +151,7 @@ HermitianMatrix SpectralModelImplementation::operator() (const Scalar frequency)
 }
 
 /** Standard representative */
-Complex SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const
+Complex SpectralModelImplementation::computeStandardRepresentative(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In SpectralModelImplementation::computeStandardRepresentative(const Scalar frequency) const";
 }
@@ -215,10 +215,10 @@ String SpectralModelImplementation::__repr__() const
 }
 
 /* String converter */
-String SpectralModelImplementation::__str__(const String & offset) const
+String SpectralModelImplementation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class=" << SpectralModelImplementation::GetClassName();
+  oss << "class=" << SpectralModelImplementation::GetClassName();
   return oss;
 }
 

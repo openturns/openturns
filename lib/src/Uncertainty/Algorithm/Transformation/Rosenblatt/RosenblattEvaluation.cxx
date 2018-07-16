@@ -73,7 +73,7 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
 }
 
 /* Gradient according to the marginal parameters. */
-Matrix RosenblattEvaluation::parameterGradient(const Point & inP) const
+Matrix RosenblattEvaluation::parameterGradient(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parameterGradient(const Point & inP) const";
 }
@@ -100,10 +100,10 @@ String RosenblattEvaluation::__repr__() const
   return oss;
 }
 
-String RosenblattEvaluation::__str__(const String & offset) const
+String RosenblattEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << RosenblattEvaluation::GetClassName()
+  oss << RosenblattEvaluation::GetClassName()
       << "(" << distribution_
       << "->Normal(" << distribution_.getDimension() << ")";
   return oss;

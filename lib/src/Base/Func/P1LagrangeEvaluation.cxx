@@ -103,7 +103,8 @@ String P1LagrangeEvaluation::__str__( const String & offset ) const
 {
   OSS oss(false);
   oss << P1LagrangeEvaluation::GetClassName() << Os::GetEndOfLine()
-      << offset << "field :" << Os::GetEndOfLine() << getField().__str__(offset);
+      << offset << "field :" << Os::GetEndOfLine()
+      << offset << getField().__str__(offset);
   return oss;
 }
 

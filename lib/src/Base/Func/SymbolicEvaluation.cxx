@@ -108,10 +108,10 @@ String SymbolicEvaluation::__repr__() const
 }
 
 /* String converter */
-String SymbolicEvaluation::__str__(const String & offset) const
+String SymbolicEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getInputDescription() << "->" << formulas_;
+  oss << getInputDescription() << "->" << formulas_;
   return oss;
 }
 

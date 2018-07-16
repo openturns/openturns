@@ -108,7 +108,7 @@ String NearestNeighbour1D::__repr__() const
 }
 
 /* String converter */
-String NearestNeighbour1D::__str__(const String & offset) const
+String NearestNeighbour1D::__str__(const String & ) const
 {
   return OSS(false) << "class=" << GetClassName()
          << " points=" << points_

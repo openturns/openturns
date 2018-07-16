@@ -121,7 +121,7 @@ PythonPointToFieldFunction::~PythonPointToFieldFunction()
 }
 
 /* Comparison operator */
-Bool PythonPointToFieldFunction::operator ==(const PythonPointToFieldFunction & other) const
+Bool PythonPointToFieldFunction::operator ==(const PythonPointToFieldFunction & ) const
 {
   return true;
 }
@@ -138,7 +138,7 @@ String PythonPointToFieldFunction::__repr__() const
 }
 
 /* String converter */
-String PythonPointToFieldFunction::__str__(const String & offset) const
+String PythonPointToFieldFunction::__str__(const String & ) const
 {
   OSS oss;
   oss << "class=" << PythonPointToFieldFunction::GetClassName()

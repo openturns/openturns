@@ -118,7 +118,7 @@ String TrendFactory::__repr__() const
 }
 
 /* String converter */
-String TrendFactory::__str__(const String & offset) const
+String TrendFactory::__str__(const String & ) const
 {
   return __repr__();
 }

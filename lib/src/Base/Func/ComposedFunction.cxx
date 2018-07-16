@@ -106,7 +106,7 @@ ComposedFunction * ComposedFunction::clone() const
 }
 
 /* Comparison operator */
-Bool ComposedFunction::operator ==(const ComposedFunction & other) const
+Bool ComposedFunction::operator ==(const ComposedFunction & ) const
 {
   return true;
 }

@@ -125,10 +125,10 @@ String TruncatedNormal::__repr__() const
   return oss;
 }
 
-String TruncatedNormal::__str__(const String & offset) const
+String TruncatedNormal::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ", a = " << a_ << ", b = " << b_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ", a = " << a_ << ", b = " << b_ << ")";
   return oss;
 }
 

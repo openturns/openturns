@@ -98,7 +98,7 @@ String KarhunenLoeveAlgorithmImplementation::__repr__() const
          << " result=" << result_;
 }
 
-String KarhunenLoeveAlgorithmImplementation::__str__(const String & offset) const
+String KarhunenLoeveAlgorithmImplementation::__str__(const String & ) const
 {
   return __repr__();
 }

@@ -86,10 +86,10 @@ String Trapezoidal::__repr__() const
   return oss;
 }
 
-String Trapezoidal::__str__(const String & offset) const
+String Trapezoidal::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(a = " << a_ << ", b = " << b_ << ", c = " << c_ << ", d = " << d_ << ")";
+  oss << getClassName() << "(a = " << a_ << ", b = " << b_ << ", c = " << c_ << ", d = " << d_ << ")";
   return oss;
 }
 

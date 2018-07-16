@@ -241,10 +241,10 @@ private:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "RadialCDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "RadialCDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 

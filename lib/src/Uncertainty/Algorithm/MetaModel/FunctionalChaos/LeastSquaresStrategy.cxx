@@ -111,9 +111,9 @@ String LeastSquaresStrategy::__repr__() const
 void LeastSquaresStrategy::computeCoefficients(const Function & function,
     const FunctionCollection & basis,
     const Indices & indices,
-    const Indices & addedRanks,
-    const Indices & conservedRanks,
-    const Indices & removedRanks,
+    const Indices & ,
+    const Indices & ,
+    const Indices & ,
     const UnsignedInteger marginalIndex)
 {
   // Check if the marginal index is not compatible with the function output dimension

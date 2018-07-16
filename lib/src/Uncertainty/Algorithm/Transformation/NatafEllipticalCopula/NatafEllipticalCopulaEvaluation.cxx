@@ -74,10 +74,10 @@ String NatafEllipticalCopulaEvaluation::__repr__() const
   return oss;
 }
 
-String NatafEllipticalCopulaEvaluation::__str__(const String & offset) const
+String NatafEllipticalCopulaEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << NatafEllipticalCopulaEvaluation::GetClassName()
+  oss << NatafEllipticalCopulaEvaluation::GetClassName()
       << "(Copula(cholesky=" << cholesky_ << ", E=" << standardDistribution_.getMarginal(0) << ")->" << standardDistribution_ << ")";
 
   return oss;
@@ -104,7 +104,7 @@ Point NatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
 
 /* Gradient according to the marginal parameters. Currently, the dependence parameters are not taken into account. */
 
-Matrix NatafEllipticalCopulaEvaluation::parameterGradient(const Point & inP) const
+Matrix NatafEllipticalCopulaEvaluation::parameterGradient(const Point & ) const
 {
   return Matrix(0, getInputDimension());
 }

@@ -44,7 +44,7 @@ NoHessian * NoHessian::clone() const
 }
 
 /* Comparison operator */
-Bool NoHessian::operator ==(const NoHessian & other) const
+Bool NoHessian::operator ==(const NoHessian & ) const
 {
   return true;
 }

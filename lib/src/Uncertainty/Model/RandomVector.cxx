@@ -221,7 +221,7 @@ String RandomVector::__repr__() const
 }
 
 /* String converter */
-String RandomVector::__str__(const String & offset) const
+String RandomVector::__str__(const String & ) const
 {
   return __repr__();
 }

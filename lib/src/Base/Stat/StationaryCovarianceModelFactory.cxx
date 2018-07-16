@@ -67,7 +67,7 @@ void StationaryCovarianceModelFactory::setSpectralModelFactory(const WelchFactor
 }
 
 /* String converter */
-String StationaryCovarianceModelFactory::__str__(const String & offset) const
+String StationaryCovarianceModelFactory::__str__(const String & ) const
 {
   return __repr__();
 }

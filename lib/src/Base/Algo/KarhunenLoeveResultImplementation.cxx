@@ -235,7 +235,7 @@ String KarhunenLoeveResultImplementation::__repr__() const
          << " projection=" << projection_;
 }
 
-String KarhunenLoeveResultImplementation::__str__(const String & offset) const
+String KarhunenLoeveResultImplementation::__str__(const String & ) const
 {
   return __repr__();
 }

@@ -61,7 +61,7 @@ String IdentityEvaluation::__repr__() const
   return oss;
 }
 
-String IdentityEvaluation::__str__(const String & offset) const
+String IdentityEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
   oss << IdentityEvaluation::GetClassName()

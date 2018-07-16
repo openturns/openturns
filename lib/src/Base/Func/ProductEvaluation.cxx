@@ -21,6 +21,7 @@
 
 #include "openturns/ProductEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,7 +55,7 @@ ProductEvaluation * ProductEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool ProductEvaluation::operator ==(const ProductEvaluation & other) const
+Bool ProductEvaluation::operator ==(const ProductEvaluation & ) const
 {
   return true;
 }
@@ -73,9 +74,8 @@ String ProductEvaluation::__repr__() const
 String ProductEvaluation::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset;
   if (hasVisibleName()) oss << getName() << " :";
-  if (getOutputDimension() > 1) oss << "\n";
+  if (getOutputDimension() > 1) oss << Os::GetEndOfLine() << offset;
   oss << "(" << leftEvaluation_.getImplementation()->__str__(offset) << ") * ("
       << "(" << rightEvaluation_.getImplementation()->__str__(offset) << ")";
   return oss;

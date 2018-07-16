@@ -34,7 +34,7 @@ static const Factory<KFold> Factory_KFold;
 
 /* Default constructor */
 KFold::KFold( const UnsignedInteger k,
-              const Bool useNormal)
+              const Bool )
   : FittingAlgorithmImplementation()
 {
   setK( k );

@@ -76,7 +76,7 @@ String BoxCoxHessian::__repr__() const
 }
 
 /* String converter __str__ */
-String BoxCoxHessian::__str__(const String & offset) const
+String BoxCoxHessian::__str__(const String & ) const
 {
   OSS oss (false);
   oss << "BoxCoxHessian(lambda=" << getLambda()

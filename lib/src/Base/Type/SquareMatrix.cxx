@@ -136,7 +136,7 @@ SquareMatrix SquareMatrix::operator * (const SymmetricMatrix & m) const
   return Implementation(m.getImplementation()->symProd(*getImplementation(), 'R').clone());
 }
 
-SquareMatrix SquareMatrix::operator * (const IdentityMatrix & m) const
+SquareMatrix SquareMatrix::operator * (const IdentityMatrix & ) const
 {
   return *this;
 }

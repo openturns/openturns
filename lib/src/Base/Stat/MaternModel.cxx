@@ -215,7 +215,7 @@ String MaternModel::__repr__() const
 }
 
 /* String converter */
-String MaternModel::__str__(const String & offset) const
+String MaternModel::__str__(const String & ) const
 {
   OSS oss;
   oss << MaternModel::GetClassName()

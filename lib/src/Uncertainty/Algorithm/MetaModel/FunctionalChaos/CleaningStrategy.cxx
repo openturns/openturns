@@ -100,8 +100,8 @@ void CleaningStrategy::computeInitialBasis()
 
 /* Update the basis for the next iteration of approximation */
 void CleaningStrategy::updateBasis(const Point & alpha_k,
-                                   const Scalar residual,
-                                   const Scalar relativeError)
+                                   const Scalar ,
+                                   const Scalar )
 {
   // The dimension will be adapted, so it is not const
   UnsignedInteger dimension = alpha_k.getSize();

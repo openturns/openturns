@@ -146,10 +146,10 @@ String ComposedDistribution::__repr__() const
   return oss;
 }
 
-String ComposedDistribution::__str__(const String & offset) const
+String ComposedDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   String separator("");
   for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++i)
   {

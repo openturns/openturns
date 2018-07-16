@@ -124,7 +124,7 @@ String SymmetricMatrix::__repr__() const
 String SymmetricMatrix::__str__(const String & offset) const
 {
   checkSymmetry();
-  return SquareMatrix::clean(0.0).__str__();
+  return SquareMatrix::clean(0.0).__str__(offset);
 }
 
 /* Operator () gives access to the elements of the matrix (to modify these elements) */
@@ -207,7 +207,7 @@ SquareMatrix SymmetricMatrix::operator * (const SymmetricMatrix & m) const
   return Implementation((getImplementation()->symProd(*(m.getImplementation()), 'L') ).clone());
 }
 
-SymmetricMatrix SymmetricMatrix::operator * (const IdentityMatrix & m) const
+SymmetricMatrix SymmetricMatrix::operator * (const IdentityMatrix & ) const
 {
   return *this;
 }

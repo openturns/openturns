@@ -138,7 +138,7 @@ void ApproximationAlgorithmImplementation::run()
   run(proxy);
 }
 
-void ApproximationAlgorithmImplementation::run(const DesignProxy & proxy)
+void ApproximationAlgorithmImplementation::run(const DesignProxy & )
 {
   throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementation::run(const DesignProxy & proxy)";
 }
@@ -155,7 +155,7 @@ String ApproximationAlgorithmImplementation::__repr__() const
 }
 
 
-String ApproximationAlgorithmImplementation::__str__(const String & offset) const
+String ApproximationAlgorithmImplementation::__str__(const String & ) const
 {
   return __repr__();
 }

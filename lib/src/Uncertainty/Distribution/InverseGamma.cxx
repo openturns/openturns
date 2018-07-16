@@ -82,10 +82,10 @@ String InverseGamma::__repr__() const
   return oss;
 }
 
-String InverseGamma::__str__(const String & offset) const
+String InverseGamma::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(k = " << k_ << ", lambda = " << lambda_ << ")";
+  oss << getClassName() << "(k = " << k_ << ", lambda = " << lambda_ << ")";
   return oss;
 }
 

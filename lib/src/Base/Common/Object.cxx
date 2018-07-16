@@ -40,7 +40,7 @@ String Object::__repr__() const
 }
 
 /* Pretty string converter */
-String Object::__str__(const String & offset) const
+String Object::__str__(const String & ) const
 {
   return __repr__();
 }

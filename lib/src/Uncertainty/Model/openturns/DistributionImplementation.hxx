@@ -837,10 +837,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "PDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "PDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
@@ -990,10 +990,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
+      oss << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
@@ -1060,10 +1060,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "MinimumVolumeLevelSetGradient(" << p_distribution_->__str__() << ")";
+      oss << "MinimumVolumeLevelSetGradient(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
@@ -1130,10 +1130,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
+      oss << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
@@ -1197,10 +1197,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
+      oss << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
@@ -1269,10 +1269,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
@@ -1330,10 +1330,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
+      oss << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
@@ -1404,10 +1404,10 @@ protected:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & ) const
     {
       OSS oss;
-      oss << offset << "EntropyKernel(" << p_distribution_->__str__() << ")";
+      oss << "EntropyKernel(" << p_distribution_->__str__() << ")";
       return oss;
     }
 

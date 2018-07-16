@@ -105,9 +105,9 @@ String MarginalTransformationHessian::__repr__() const
   return oss;
 }
 
-String MarginalTransformationHessian::__str__(const String & offset) const
+String MarginalTransformationHessian::__str__(const String & ) const
 {
-  return OSS() << offset << "Hessian of " << p_evaluation_->getName();
+  return OSS() << "Hessian of " << p_evaluation_->getName();
 }
 
 /* Method save() stores the object through the StorageManager */

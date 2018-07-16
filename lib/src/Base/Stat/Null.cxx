@@ -47,13 +47,13 @@ Null * Null::clone() const
 }
 
 /* Store the point according to the strategy */
-void Null::store(const Point & point)
+void Null::store(const Point & )
 {
   // Nothing to do
 }
 
 /* Store the sample according to the strategy */
-void Null::store(const Sample & sample)
+void Null::store(const Sample & )
 {
   // Nothing to do
 }

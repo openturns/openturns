@@ -84,7 +84,7 @@ Scalar ArchimedeanCopula::computeCDF(const Point & point) const
   return computeInverseArchimedeanGenerator(computeArchimedeanGenerator(point[0]) + computeArchimedeanGenerator(point[1]));
 }
 
-Scalar ArchimedeanCopula::computeComplementaryCDF(const Point & point) const
+Scalar ArchimedeanCopula::computeComplementaryCDF(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeComplementaryCDF(const Point & point) const";
 }
@@ -134,25 +134,25 @@ Scalar ArchimedeanCopula::computeConditionalPDF(const Scalar x,
  * the function phi such that the CDF of the copula can
  * be written as CDF(t) = phi^{-1}(phi(u)+phi(v))
  */
-Scalar ArchimedeanCopula::computeArchimedeanGenerator(const Scalar t) const
+Scalar ArchimedeanCopula::computeArchimedeanGenerator(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGenerator(const Scalar t) const";
 }
 
 /* Compute the inverse of the archimedean generator */
-Scalar ArchimedeanCopula::computeInverseArchimedeanGenerator(const Scalar t) const
+Scalar ArchimedeanCopula::computeInverseArchimedeanGenerator(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeInverseArchimedeanGenerator(const Scalar t) const";
 }
 
 /* Compute the derivative of the density generator */
-Scalar ArchimedeanCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
+Scalar ArchimedeanCopula::computeArchimedeanGeneratorDerivative(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const";
 }
 
 /* Compute the seconde derivative of the density generator */
-Scalar ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
+Scalar ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const";
 }

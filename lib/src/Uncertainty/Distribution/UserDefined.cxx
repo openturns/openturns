@@ -103,10 +103,10 @@ String UserDefined::__repr__() const
   return oss;
 }
 
-String UserDefined::__str__(const String & offset) const
+String UserDefined::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   String separator("");
   for (UnsignedInteger i = 0; i < points_.getSize(); ++i)
   {

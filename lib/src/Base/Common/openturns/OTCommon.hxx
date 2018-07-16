@@ -35,7 +35,6 @@
 #include "openturns/InterfaceObject.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/LessOrEqual.hxx"
-#include "openturns/Lockable.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Memory.hxx"
 #include "openturns/Os.hxx"

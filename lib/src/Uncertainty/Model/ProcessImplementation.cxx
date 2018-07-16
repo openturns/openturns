@@ -182,7 +182,7 @@ ProcessSample ProcessImplementation::getSample(const UnsignedInteger size) const
 }
 
 /* Future accessor */
-TimeSeries ProcessImplementation::getFuture(const UnsignedInteger stepNumber) const
+TimeSeries ProcessImplementation::getFuture(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In ProcessImplementation::getFuture(const UnsignedInteger stepNumber) const";
 }

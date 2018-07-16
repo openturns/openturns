@@ -515,7 +515,7 @@ String ARMALikelihoodFactory::__repr__() const
 }
 
 /* String converter */
-String ARMALikelihoodFactory::__str__(const String & offset) const
+String ARMALikelihoodFactory::__str__(const String & ) const
 {
   return this->__repr__();
 }
@@ -682,7 +682,7 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
 }
 
 /* Build method */
-ARMA ARMALikelihoodFactory::build(const ProcessSample & sample) const
+ARMA ARMALikelihoodFactory::build(const ProcessSample & ) const
 {
   throw NotYetImplementedException(HERE) << "In ARMALikelihoodFactory::build(const ProcessSample & sample) const";
 }

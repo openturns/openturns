@@ -209,7 +209,7 @@ UnsignedInteger AggregatedEvaluation::getOutputDimension() const
 
 
 /* Gradient according to the marginal parameters */
-Matrix AggregatedEvaluation::parameterGradient(const Point & inP) const
+Matrix AggregatedEvaluation::parameterGradient(const Point & ) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   const UnsignedInteger size = functionsCollection_.getSize();

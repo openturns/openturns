@@ -100,7 +100,7 @@ PythonDistribution::~PythonDistribution()
 }
 
 /* Comparison operator */
-Bool PythonDistribution::operator ==(const PythonDistribution & other) const
+Bool PythonDistribution::operator ==(const PythonDistribution & ) const
 {
   return true;
 }
@@ -116,7 +116,7 @@ String PythonDistribution::__repr__() const
 }
 
 /* String converter */
-String PythonDistribution::__str__(const String & offset) const
+String PythonDistribution::__str__(const String & ) const
 {
   OSS oss;
   oss << "class=" << PythonDistribution::GetClassName()

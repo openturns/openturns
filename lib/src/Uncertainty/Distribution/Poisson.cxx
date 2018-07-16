@@ -78,10 +78,10 @@ String Poisson::__repr__() const
   return oss;
 }
 
-String Poisson::__str__(const String & offset) const
+String Poisson::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(lambda = " << lambda_ << ")";
+  oss << getClassName() << "(lambda = " << lambda_ << ")";
   return oss;
 }
 

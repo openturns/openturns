@@ -112,12 +112,12 @@ LeastSquaresMethodImplementation * LeastSquaresMethodImplementation::clone() con
   return new LeastSquaresMethodImplementation(*this);
 }
 
-Point LeastSquaresMethodImplementation::solve(const Point & rhs)
+Point LeastSquaresMethodImplementation::solve(const Point & )
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
 }
 
-Point LeastSquaresMethodImplementation::solveNormal(const Point & rhs)
+Point LeastSquaresMethodImplementation::solveNormal(const Point & )
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormal";
 }
@@ -225,7 +225,7 @@ MatrixImplementation LeastSquaresMethodImplementation::computeWeightedDesign(con
 void LeastSquaresMethodImplementation::update(const Indices & addedIndices,
     const Indices & conservedIndices,
     const Indices & removedIndices,
-    const Bool row)
+    const Bool )
 {
   if ((addedIndices.getSize() > 0) || (removedIndices.getSize() > 0))
   {

@@ -31,6 +31,7 @@
 #include "openturns/StandardEvent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -353,30 +354,30 @@ String SORMResult::__str__(const String & offset) const
   OSS oss;
   try
   {
-    oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << "\n";
-    oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << "\n";
+    oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << Os::GetEndOfLine() << offset;
+    oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << Os::GetEndOfLine() << offset;
   }
   catch (...)
   {
-    oss << "Probability estimate and generalised reliability index (Breitung) not defined." << "\n";
+    oss << "Probability estimate and generalised reliability index (Breitung) not defined." << Os::GetEndOfLine() << offset;
   }
   try
   {
-    oss << "Probability estimate    (HohenBichler)=" << getEventProbabilityHohenBichler() << "\n";
-    oss << "Generalised reliability (HohenBichler)=" << getGeneralisedReliabilityIndexHohenBichler() << "\n";
+    oss << "Probability estimate    (HohenBichler)=" << getEventProbabilityHohenBichler() << Os::GetEndOfLine() << offset;
+    oss << "Generalised reliability (HohenBichler)=" << getGeneralisedReliabilityIndexHohenBichler() << Os::GetEndOfLine() << offset;
   }
   catch (...)
   {
-    oss << "Probability estimate and generalised reliability index (HohenBichler) not defined." << "\n";
+    oss << "Probability estimate and generalised reliability index (HohenBichler) not defined." << Os::GetEndOfLine() << offset;
   }
   try
   {
-    oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << "\n";
-    oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << "\n";
+    oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << Os::GetEndOfLine() << offset;
+    oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << Os::GetEndOfLine() << offset;
   }
   catch (...)
   {
-    oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << "\n";
+    oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << Os::GetEndOfLine() << offset;
   }
   return oss;
 }

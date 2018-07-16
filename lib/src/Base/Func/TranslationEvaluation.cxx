@@ -67,7 +67,7 @@ String TranslationEvaluation::__repr__() const
   return oss;
 }
 
-String TranslationEvaluation::__str__(const String & offset) const
+String TranslationEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
   oss << "class=" << TranslationEvaluation::GetClassName()

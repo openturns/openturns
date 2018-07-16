@@ -184,7 +184,7 @@ String SobolIndicesAlgorithm::__repr__() const
 }
 
 /* String converter */
-String SobolIndicesAlgorithm::__str__(const String & offset) const
+String SobolIndicesAlgorithm::__str__(const String & ) const
 {
   return getImplementation()->__str__();
 }

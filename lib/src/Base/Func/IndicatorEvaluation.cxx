@@ -61,7 +61,7 @@ IndicatorEvaluation * IndicatorEvaluation::clone() const
 
 
 /* Comparison operator */
-Bool IndicatorEvaluation::operator ==(const IndicatorEvaluation & other) const
+Bool IndicatorEvaluation::operator ==(const IndicatorEvaluation & ) const
 {
   return true;
 }

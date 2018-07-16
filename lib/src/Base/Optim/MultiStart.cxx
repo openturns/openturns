@@ -57,7 +57,7 @@ void MultiStart::setProblem(const OptimizationProblem & problem)
 
 
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-void MultiStart::checkProblem(const OptimizationProblem & problem) const
+void MultiStart::checkProblem(const OptimizationProblem & ) const
 {
   // Nothing to do
 }

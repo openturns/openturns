@@ -60,7 +60,7 @@ String MonomialFunction::__repr__() const
 }
 
 
-String MonomialFunction::__str__(const String & offset) const
+String MonomialFunction::__str__(const String & ) const
 {
   // Pretty print
   if (degree_ == 0)

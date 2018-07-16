@@ -156,7 +156,7 @@ field 4:
  9 : [  0.9      -1.12041   0.890979 ]
 10 : [  1         0.64585   0.891571 ]]
 myFunc= FieldFunction :
-class=PythonFieldFunction name=OpenTURNSPythonFieldFunction
+  class=PythonFieldFunction name=OpenTURNSPythonFieldFunction
 X=     [ v0         v1         v2         X0         X1         X2         ]
 0 : [  0          0          0         -1.03808   -0.856712   0.473617  ]
 1 : [  0          0          1         -0.125498   0.351418   1.78236   ]

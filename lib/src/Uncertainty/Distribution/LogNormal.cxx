@@ -99,10 +99,10 @@ String LogNormal::__repr__() const
   return oss;
 }
 
-String LogNormal::__str__(const String & offset) const
+String LogNormal::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(muLog = " << muLog_ << ", sigmaLog = " << sigmaLog_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(muLog = " << muLog_ << ", sigmaLog = " << sigmaLog_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

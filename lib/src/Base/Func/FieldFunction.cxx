@@ -20,6 +20,7 @@
  */
 #include "openturns/FieldFunction.hxx"
 #include "openturns/ValueFunction.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,7 +65,7 @@ FieldFunction::FieldFunction(FieldFunctionImplementation * p_implementation)
 }
 
 /* Comparison operator */
-Bool FieldFunction::operator ==(const FieldFunction & other) const
+Bool FieldFunction::operator ==(const FieldFunction & ) const
 {
   return true;
 }
@@ -80,7 +81,7 @@ String FieldFunction::__repr__() const
 /* String converter */
 String FieldFunction::__str__(const String & offset) const
 {
-  return OSS(false) << offset << getClassName() << " :\n" << getImplementation()->__str__( offset + "  ");
+  return OSS(false) << getClassName() << " :" << Os::GetEndOfLine() << offset << "  " << getImplementation()->__str__( offset + "  ");
 }
 
 /* Get the i-th marginal function */

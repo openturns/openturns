@@ -116,10 +116,10 @@ String Histogram::__repr__() const
   return oss;
 }
 
-String Histogram::__str__(const String & offset) const
+String Histogram::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(origin = " << first_;
+  oss << getClassName() << "(origin = " << first_;
   for (UnsignedInteger i = 0; i < width_.getSize(); ++i) oss << ", {w" << i << " = " << width_[i] << ", h" << i << " = " << height_[i] << "}";
   oss << ")";
   return oss;
@@ -492,7 +492,7 @@ Graph Histogram::drawPDF() const
 /* Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF(const Scalar xMin,
                          const Scalar xMax,
-                         const UnsignedInteger pointNumber) const
+                         const UnsignedInteger ) const
 {
   if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");

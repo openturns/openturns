@@ -82,7 +82,7 @@ Point ContinuousDistribution::computeDDF(const Point & point) const
 }
 
 /* Get the PDF of the distribution */
-Scalar ContinuousDistribution::computePDF(const Point & point) const
+Scalar ContinuousDistribution::computePDF(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In ContinuousDistribution::computePDF(const Point & point) const";
 }

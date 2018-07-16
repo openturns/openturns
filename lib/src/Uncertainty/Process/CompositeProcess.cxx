@@ -77,7 +77,7 @@ String CompositeProcess::__repr__() const
   return oss;
 }
 
-String CompositeProcess::__str__(const String & offset) const
+String CompositeProcess::__str__(const String & ) const
 {
   OSS oss(false);
   oss << getClassName() << "(" << function_.__str__()

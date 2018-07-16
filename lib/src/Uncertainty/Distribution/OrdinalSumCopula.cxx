@@ -96,10 +96,10 @@ String OrdinalSumCopula::__repr__() const
   return oss;
 }
 
-String OrdinalSumCopula::__str__(const String & offset) const
+String OrdinalSumCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(";
+  oss << getClassName() << "(";
   const UnsignedInteger size = copulaCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -410,19 +410,19 @@ Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar , const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const";
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar , const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const";
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar , const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const";
 }

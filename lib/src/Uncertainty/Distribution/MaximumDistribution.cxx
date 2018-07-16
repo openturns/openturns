@@ -116,10 +116,10 @@ String MaximumDistribution::__repr__() const
   return oss;
 }
 
-String MaximumDistribution::__str__(const String & offset) const
+String MaximumDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(" << getDistribution().__str__() << ")";
+  oss << getClassName() << "(" << getDistribution().__str__() << ")";
   return oss;
 }
 

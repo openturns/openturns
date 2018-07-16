@@ -74,10 +74,10 @@ String Frechet::__repr__() const
   return oss;
 }
 
-String Frechet::__str__(const String & offset) const
+String Frechet::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 

@@ -195,7 +195,7 @@ String OptimizationAlgorithm::__repr__() const
 }
 
 /* String converter */
-String OptimizationAlgorithm::__str__(const String & offset) const
+String OptimizationAlgorithm::__str__(const String & ) const
 {
   return __repr__();
 }

@@ -77,14 +77,14 @@ String ConditionedGaussianProcess::__repr__() const
   return oss;
 }
 
-String ConditionedGaussianProcess::__str__(const String & offset) const
+String ConditionedGaussianProcess::__str__(const String & ) const
 {
   OSS oss(false);
   oss << "ConditionedGaussianProcess("
-      << "mesh=" << mesh_.__str__(offset)
-      << ", trend=" << trend_.__str__(offset)
-      << ", covariance=" << covarianceModel_.__str__(offset)
-      << ", conditional covariance =" << covarianceCholeskyFactor_.__str__(offset)
+      << "mesh=" << mesh_.__str__()
+      << ", trend=" << trend_.__str__()
+      << ", covariance=" << covarianceModel_.__str__()
+      << ", conditional covariance =" << covarianceCholeskyFactor_.__str__()
       << ")";
   return oss;
 }
@@ -135,7 +135,7 @@ void ConditionedGaussianProcess::setTimeGrid(const RegularGrid & timeGrid)
 }
 
 /** Set sampling method accessor */
-void ConditionedGaussianProcess::setSamplingMethod(const UnsignedInteger samplingMethod)
+void ConditionedGaussianProcess::setSamplingMethod(const UnsignedInteger )
 {
   // Nothing to do
   LOGWARN(OSS(false) << "Only the cholesky factor method is implemented. The method has no effect here");

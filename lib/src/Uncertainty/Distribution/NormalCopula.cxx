@@ -92,7 +92,7 @@ String NormalCopula::__repr__() const
 String NormalCopula::__str__(const String & offset) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(R = " << correlation_.__str__(offset) << ")";
+  oss << getClassName() << "(R = " << correlation_.__str__(offset) << ")";
   return oss;
 }
 

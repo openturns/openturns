@@ -174,7 +174,7 @@ String SoizeGhanemFactorEvaluation::__repr__() const
   return oss;
 }
 
-String SoizeGhanemFactorEvaluation::__str__(const String & offset) const
+String SoizeGhanemFactorEvaluation::__str__(const String & ) const
 {
   OSS oss(true);
   const Description input(getInputDescription());

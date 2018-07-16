@@ -168,14 +168,14 @@ CovarianceMatrix CovarianceModelImplementation::operator() (const Point & s,
 }
 
 // compute standard representative computes the term \rho(s, t)
-Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point & s,
-    const Point & t) const
+Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point & ,
+    const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Point & s, const Point & t) const";
 }
 
-Scalar CovarianceModelImplementation::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar CovarianceModelImplementation::computeStandardRepresentative(const Collection<Scalar>::const_iterator & ,
+    const Collection<Scalar>::const_iterator & ) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
 }
@@ -537,6 +537,7 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices
   }
   return covarianceHMatrix;
 #else
+  (void) vertices; (void) nuggetFactor; (void) parameters;
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::discretizeHMatrix, OpenTURNS had been compiled without HMat support";
 #endif
 }
@@ -890,10 +891,10 @@ String CovarianceModelImplementation::__repr__() const
 }
 
 /* String converter */
-String CovarianceModelImplementation::__str__(const String & offset) const
+String CovarianceModelImplementation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class= " << CovarianceModelImplementation::GetClassName();
+  oss << "class= " << CovarianceModelImplementation::GetClassName();
   return oss;
 }
 

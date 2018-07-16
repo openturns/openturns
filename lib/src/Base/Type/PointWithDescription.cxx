@@ -100,13 +100,13 @@ public:
   {
     return OSS() << key_ << " : " << value_;
   }
-  String __str__(const String & offset) const
+  String __str__(const String & ) const
   {
     return OSS() << key_ << " : " << value_;
   }
 };
 
-String PointWithDescription::__str__(const String & offset) const
+String PointWithDescription::__str__(const String & ) const
 {
   const UnsignedInteger size = getSize();
   const Description desc = getDescription();

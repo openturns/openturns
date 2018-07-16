@@ -72,10 +72,10 @@ String IndependentCopula::__repr__() const
 }
 
 /* String converter */
-String IndependentCopula::__str__(const String & offset) const
+String IndependentCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(dimension = " << getDimension() << ")";
+  oss << getClassName() << "(dimension = " << getDimension() << ")";
   return oss;
 }
 
@@ -251,7 +251,7 @@ void IndependentCopula::computeCovariance() const
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar IndependentCopula::computeConditionalDDF(const Scalar x, const Point & y) const
+Scalar IndependentCopula::computeConditionalDDF(const Scalar , const Point & ) const
 {
   return 0.0;
 }

@@ -25,6 +25,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/SymbolicFunction.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -89,7 +90,7 @@ String PosteriorDistribution::__repr__() const
 String PosteriorDistribution::__str__(const String & offset) const
 {
   OSS oss;
-  oss << offset << getClassName() << "(conditional distribution = " << conditionalDistribution_.__str__() << ", observations = \n" << observations_.__str__(offset) << ")";
+  oss << getClassName() << "(conditional distribution = " << conditionalDistribution_.__str__() << ", observations = " << Os::GetEndOfLine() << offset << observations_.__str__(offset) << ")";
   return oss;
 }
 
@@ -148,7 +149,7 @@ PosteriorDistribution::PointWithDescriptionCollection PosteriorDistribution::get
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::getParametersCollection() const";
 }
 
-void PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)
+void PosteriorDistribution::setParametersCollection(const PointCollection & )
 {
   throw NotYetImplementedException(HERE) << "In PosteriorDistribution::setParametersCollection(const PointCollection & parametersCollection)";
 }

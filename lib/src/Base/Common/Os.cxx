@@ -187,6 +187,8 @@ convert_backslashes(String & path)
   {
     if (*current_char == '\\') path[pos] = '/';
   }
+#else
+  (void) path;
 #endif
 }
 
@@ -227,9 +229,9 @@ int Os::MakeDirectory(const String & path)
 
 #ifndef WIN32
 static int deleteRegularFileOrDirectory(const char * path,
-                                        const struct stat * p_sb,
+                                        const struct stat * ,
                                         int typeflag,
-                                        struct FTW * ftwbuf)
+                                        struct FTW * )
 {
   int rc;
 

@@ -120,10 +120,10 @@ String MaximumEntropyOrderStatisticsDistribution::__repr__() const
   return oss;
 }
 
-String MaximumEntropyOrderStatisticsDistribution::__str__(const String & offset) const
+String MaximumEntropyOrderStatisticsDistribution::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(collection = " << distributionCollection_ << ")";
+  oss << getClassName() << "(collection = " << distributionCollection_ << ")";
   return oss;
 }
 

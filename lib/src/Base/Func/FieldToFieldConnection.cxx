@@ -22,6 +22,7 @@
 
 #include "openturns/FieldToFieldConnection.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -119,16 +120,16 @@ String FieldToFieldConnection::__repr__() const
 String FieldToFieldConnection::__str__(const String & offset) const
 {
   OSS oss(false);
-  if (hasVisibleName()) oss << offset << "name=" << getName() << "\n";
+  if (hasVisibleName()) oss << "name=" << getName() << Os::GetEndOfLine() << offset;
   if (isFieldFunctionComposition_)
   {
-    oss << "(" << leftFieldFunction_.__str__() << ")o(";
-    oss << rightFieldFunction_.__str__() << ")";
+    oss << "(" << leftFieldFunction_.__str__(offset) << ")o(";
+    oss << rightFieldFunction_.__str__(offset) << ")";
   }
   else
   {
-    oss << "(" << fieldToPointFunction_.__str__() << ")o(";
-    oss << pointToFieldFunction_.__str__() << ")";
+    oss << "(" << fieldToPointFunction_.__str__(offset) << ")o(";
+    oss << pointToFieldFunction_.__str__(offset) << ")";
   }
   return oss;
 }

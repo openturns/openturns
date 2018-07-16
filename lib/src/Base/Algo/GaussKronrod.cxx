@@ -235,7 +235,7 @@ String GaussKronrod::__repr__() const
 String GaussKronrod::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << GaussKronrod::GetClassName()
+  oss << GaussKronrod::GetClassName()
       << "(maximum sub intervals=" << maximumSubIntervals_
       << ", maximum error=" << maximumError_
       << ", rule=" << rule_.__str__(offset)

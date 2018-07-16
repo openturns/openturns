@@ -51,7 +51,7 @@ GradientImplementation * GradientImplementation::clone() const
 }
 
 /* Comparison operator */
-Bool GradientImplementation::operator ==(const GradientImplementation & other) const
+Bool GradientImplementation::operator ==(const GradientImplementation & ) const
 {
   return true;
 }
@@ -66,9 +66,9 @@ String GradientImplementation::__repr__() const
 }
 
 /* String converter */
-String GradientImplementation::__str__(const String & offset) const
+String GradientImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << "GradientImplementation";
+  return OSS(false) << "GradientImplementation";
 }
 
 
@@ -81,7 +81,7 @@ Bool GradientImplementation::isActualImplementation() const
 /* Here is the interface that all derived class must implement */
 
 /* Gradient method */
-Matrix GradientImplementation::gradient(const Point & inP) const
+Matrix GradientImplementation::gradient(const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In GradientImplementation::gradient(const Point & inP) const";
 }

@@ -64,7 +64,7 @@ FieldToPointFunctionImplementation * FieldToPointFunctionImplementation::clone()
 }
 
 /* Comparison operator */
-Bool FieldToPointFunctionImplementation::operator ==(const FieldToPointFunctionImplementation & other) const
+Bool FieldToPointFunctionImplementation::operator ==(const FieldToPointFunctionImplementation & ) const
 {
   return true;
 }
@@ -82,9 +82,9 @@ String FieldToPointFunctionImplementation::__repr__() const
 }
 
 /* String converter */
-String FieldToPointFunctionImplementation::__str__(const String & offset) const
+String FieldToPointFunctionImplementation::__str__(const String & ) const
 {
-  return OSS(false) << offset << __repr__();
+  return OSS(false) << __repr__();
 }
 
 /* Get the i-th marginal function */
@@ -127,7 +127,7 @@ Description FieldToPointFunctionImplementation::getOutputDescription() const
 
 
 /* Operator () */
-Point FieldToPointFunctionImplementation::operator() (const Sample & inFld) const
+Point FieldToPointFunctionImplementation::operator() (const Sample & ) const
 {
   throw NotYetImplementedException(HERE) << "In FieldToPointFunctionImplementation::operator() (const Field & inFld) const";
 }

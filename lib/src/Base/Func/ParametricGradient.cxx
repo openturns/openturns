@@ -106,10 +106,10 @@ String ParametricGradient::__repr__() const
   return oss;
 }
 
-String ParametricGradient::__str__(const String & offset) const
+String ParametricGradient::__str__(const String & ) const
 {
   OSS oss;
-  oss << offset << ParametricGradient::GetClassName();
+  oss << ParametricGradient::GetClassName();
   return oss;
 }
 

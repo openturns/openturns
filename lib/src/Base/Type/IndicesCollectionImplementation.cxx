@@ -121,7 +121,7 @@ String IndicesCollectionImplementation::__repr__() const
   return toString(true);
 }
 
-String IndicesCollectionImplementation::__str__(const String & offset) const
+String IndicesCollectionImplementation::__str__(const String & ) const
 {
   OSS oss;
   oss << toString(false);

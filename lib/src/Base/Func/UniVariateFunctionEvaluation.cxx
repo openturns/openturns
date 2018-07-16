@@ -62,10 +62,10 @@ String UniVariateFunctionEvaluation::__repr__() const
          << " function=" << function_;
 }
 
-String UniVariateFunctionEvaluation::__str__(const String & offset) const
+String UniVariateFunctionEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << __repr__();
+  oss << __repr__();
   return oss;
 }
 

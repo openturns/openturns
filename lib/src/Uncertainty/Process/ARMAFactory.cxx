@@ -71,7 +71,7 @@ String ARMAFactory::__repr__() const
 }
 
 /* String converter */
-String ARMAFactory::__str__(const String & offset) const
+String ARMAFactory::__str__(const String & ) const
 {
   return __repr__();
 }

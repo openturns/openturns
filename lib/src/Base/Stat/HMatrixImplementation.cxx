@@ -515,10 +515,10 @@ String HMatrixImplementation::__repr__() const
 }
 
 /* String converter */
-String HMatrixImplementation::__str__(const String & offset) const
+String HMatrixImplementation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << "class= " << HMatrixImplementation::GetClassName();
+  oss << "class= " << HMatrixImplementation::GetClassName();
   return oss;
 }
 

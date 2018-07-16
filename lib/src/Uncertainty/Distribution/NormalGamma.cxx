@@ -237,7 +237,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & offset) const
+  String __str__(const String & ) const
   {
     OSS oss(false);
     oss << "KernelProbability("
@@ -385,10 +385,10 @@ String NormalGamma::__repr__() const
   return oss;
 }
 
-String NormalGamma::__str__(const String & offset) const
+String NormalGamma::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(mu=" << mu_ << ", kappa=" << kappa_ << ", alpha=" << alpha_ << ", beta=" << beta_ << ")";
+  oss << getClassName() << "(mu=" << mu_ << ", kappa=" << kappa_ << ", alpha=" << alpha_ << ", beta=" << beta_ << ")";
   return oss;
 }
 

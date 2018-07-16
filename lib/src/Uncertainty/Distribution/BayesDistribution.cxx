@@ -133,10 +133,10 @@ String BayesDistribution::__repr__() const
   return oss;
 }
 
-String BayesDistribution::__str__(const String & offset) const
+String BayesDistribution::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(X, Y with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
+  oss << getClassName() << "(X, Y with X|Theta~" << conditionedDistribution_.getImplementation()->getClassName() << "(Theta), Theta=f(Y), f=" << linkFunction_.getEvaluation().__str__() << ", Y~" << conditioningDistribution_.__str__() << ")";
   return oss;
 }
 
@@ -379,7 +379,7 @@ public:
     return oss;
   }
 
-  String __str__(const String & offset) const
+  String __str__(const String & ) const
   {
     OSS oss(false);
     oss << "KernelCovariance("

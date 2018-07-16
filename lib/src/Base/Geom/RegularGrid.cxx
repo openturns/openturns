@@ -161,9 +161,9 @@ String RegularGrid::__repr__() const
          << " n=" << n_;
 }
 
-String RegularGrid::__str__(const String & offset) const
+String RegularGrid::__str__(const String & ) const
 {
-  return OSS(false) << offset
+  return OSS(false)
          << "RegularGrid(start=" << start_
          << ", step=" << step_
          << ", n=" << n_

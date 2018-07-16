@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int argc, char *argv[])
+int main(int , char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
     RandomGenerator::SetSeed(0);
 
     UnsignedInteger inputDimension = 3;
-    UnsignedInteger outputDimension = 1;
 
     Description inputName(inputDimension);
     inputName[0] = "X1";

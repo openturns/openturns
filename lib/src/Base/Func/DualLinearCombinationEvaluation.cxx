@@ -101,10 +101,9 @@ String DualLinearCombinationEvaluation::__repr__() const
          << " coefficients=" << coefficients_.__repr__();
 }
 
-String DualLinearCombinationEvaluation::__str__(const String & offset) const
+String DualLinearCombinationEvaluation::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << offset;
   const UnsignedInteger size = functionsCollection_.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
   Bool first = true;
@@ -309,7 +308,7 @@ UnsignedInteger DualLinearCombinationEvaluation::getOutputDimension() const
 
 
 /* Gradient according to the marginal parameters */
-Matrix DualLinearCombinationEvaluation::parameterGradient(const Point & inP) const
+Matrix DualLinearCombinationEvaluation::parameterGradient(const Point & ) const
 {
   Matrix result(getParameter().getDimension(), getOutputDimension());
   // const UnsignedInteger size(functionsCollection_.getSize());

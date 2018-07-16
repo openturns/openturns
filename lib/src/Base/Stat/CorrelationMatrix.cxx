@@ -80,7 +80,7 @@ CorrelationMatrix CorrelationMatrix::transpose () const
 }
 
 /* CorrelationMatrix multiplication (must have consistent dimensions) */
-CorrelationMatrix CorrelationMatrix::operator * (const IdentityMatrix & m) const
+CorrelationMatrix CorrelationMatrix::operator * (const IdentityMatrix & ) const
 {
   return *this;
 }
