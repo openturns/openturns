@@ -12,4 +12,24 @@ cdf      =0.856594
 pdf gradient      = [0.00830329,0.0103036,0.0171714,-0.00243373]
 cdf gradient      = [-0.034449,-0.102285,-0.0746378,-0.0477418]
 quantile     = [4.65046]
-t_ProductDistribution_std.py <class 'ValueError'> incomplete format
+cdf(quantile)=0.95
+entropy=2.04312
+entropy (MC)=2.04103
+mean      = [0.5]
+standard deviation      = [2.17945]
+skewness      = [0.869365]
+kurtosis      = [6.00166]
+covariance      = [[ 4.75 ]]
+parameters      = [[a : -1, b : 2, mean_0 : 1, standard_deviation_0 : 2]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [0.5]
+standard moment n= 2 , value= [5]
+standard moment n= 3 , value= [16.25]
+standard moment n= 4 , value= [160.6]
+standard moment n= 5 , value= [983.5]
+Standard representative= ProductDistribution(Uniform(a = -1, b = 2) * Normal(mu = 1, sigma = 2))
+left= Uniform(a = -1, b = 2)
+right= Normal(mu = 1, sigma = 2)
+distribution= ProductDistribution(ProductDistribution(Uniform(a = -1, b = 1) * Uniform(a = -1, b = 1)) * Uniform(a = -1, b = 1))
+mean= [0]
+standard deviation= [0.19245]

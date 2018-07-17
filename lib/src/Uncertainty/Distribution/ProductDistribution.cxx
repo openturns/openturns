@@ -940,6 +940,44 @@ void ProductDistribution::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
+/* Get the skewness of the distribution */
+Point ProductDistribution::getSkewness() const
+{
+  const Scalar meanLeft = left_.getMean()[0];
+  const Scalar meanRight = right_.getMean()[0];
+  const Scalar varLeft = left_.getCovariance()(0, 0);
+  const Scalar varRight = right_.getCovariance()(0, 0);
+  const Scalar mu3Left = left_.getSkewness()[0] * std::pow(varLeft, 1.5);
+  const Scalar mu3Right = right_.getSkewness()[0] * std::pow(varRight, 1.5);
+  const Scalar variance = meanLeft * meanLeft * varRight + meanRight * meanRight * varLeft + varLeft * varRight;
+  return Point(1, (mu3Left * mu3Right + mu3Left * std::pow(meanRight, 3.0) + mu3Right * std::pow(meanLeft, 3.0) + 3.0 * (mu3Left * varRight * meanRight + mu3Right * varLeft * meanLeft) + 6.0 * varLeft * varRight * meanLeft * meanRight) / std::pow(variance, 1.5));
+}
+
+/* Get the kurtosis of the distribution */
+Point ProductDistribution::getKurtosis() const
+{
+  const Scalar meanLeft = left_.getMean()[0];
+  const Scalar meanLeft2 = meanLeft * meanLeft;
+  const Scalar meanLeft4 = meanLeft2 * meanLeft2;
+  const Scalar meanRight = right_.getMean()[0];
+  const Scalar meanRight2 = meanRight * meanRight;
+  const Scalar meanRight4 = meanRight2 * meanRight2;
+  const Scalar varLeft = left_.getCovariance()(0, 0);
+  const Scalar varRight = right_.getCovariance()(0, 0);
+  const Scalar mu3Left = left_.getSkewness()[0] * std::pow(varLeft, 1.5);
+  const Scalar mu3Right = right_.getSkewness()[0] * std::pow(varRight, 1.5);
+  const Scalar mu4Left = left_.getKurtosis()[0] * varLeft * varLeft;
+  const Scalar mu4Right = right_.getKurtosis()[0] * varRight * varRight;
+  const Scalar variance = meanLeft * meanLeft * varRight + meanRight * meanRight * varLeft + varLeft * varRight;
+  return Point(1, (mu4Left * mu4Right + mu4Left * meanRight4 + mu4Right * meanLeft4 + 4.0 * (mu4Left * mu3Right * meanRight + mu4Right * mu3Left * meanLeft) + 6.0 * (varLeft * meanLeft2 * varRight * meanRight2 + mu4Left * varRight * meanRight2 + mu4Right * varLeft * meanLeft2) + 12.0 * (mu3Left * meanLeft * mu3Right * meanRight + mu3Left * meanLeft * varRight * meanRight2 + mu3Right * meanRight * varLeft * meanLeft2)) / (variance * variance));
+}
+
+/* Get the raw moments of the distribution */
+Point ProductDistribution::getMoment(const UnsignedInteger n) const
+{
+  return Point(1, left_.getMoment(n)[0] * right_.getMoment(n)[0]);
+}
+
 
 /* Parameters value accessor */
 Point ProductDistribution::getParameter() const

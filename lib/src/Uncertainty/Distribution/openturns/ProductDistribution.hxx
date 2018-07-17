@@ -120,6 +120,15 @@ public:
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const;
 
+  /** Get the skewness of the distribution */
+  Point getSkewness() const;
+
+  /** Get the kurtosis of the distribution */
+  Point getKurtosis() const;
+
+  /** Get the raw moments of the distribution */
+  Point getMoment(const UnsignedInteger n) const;
+
   /** Parameters value accessors */
   void setParameter(const Point & parameter);
   Point getParameter() const;

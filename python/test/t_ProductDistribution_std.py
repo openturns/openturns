@@ -46,7 +46,7 @@ try:
     print("cdf gradient      =", CDFgr)
     quantile = distribution.computeQuantile( 0.95 )
     print("quantile     =", quantile)
-    print("cdf(quantile)=%.6" % distribution.computeCDF(quantile))
+    print("cdf(quantile)=%.6g" % distribution.computeCDF(quantile))
     print("entropy=%.6g" % distribution.computeEntropy())
     print("entropy (MC)=%.6g" % -distribution.computeLogPDF(distribution.getSample(10000)).computeMean()[0])
     mean = distribution.getMean()
