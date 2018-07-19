@@ -109,6 +109,10 @@ Bibliography
     *Estimating the extreme value index and high quantiles with exponential regression models*,
     Statistica Sinica, 13, 850-880, 2003.
     `pdf <http://doc.openturns.org/papers/matthys2003.pdf>`__
+.. [Mauricio1995] J. A. Mauricio,
+    *Exact Maximum Likelihood Estimation of Stationary Vector ARMA Models*,
+    Journal of the American Statistical Association 90, 282-291, 1995.
+    `pdf <http://doc.openturns.org/papers/mauricio1995.pdf>`__
 .. [McKay1979] McKay M, Beckman R and Conover W (1979). *A comparison of three
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.
