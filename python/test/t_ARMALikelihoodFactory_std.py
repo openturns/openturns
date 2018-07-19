@@ -9,7 +9,7 @@ p = 2
 q = 1
 dimension = 2
 
-# ARMACoefficients intializing
+# ARMACoefficients initializing
 # Overwide bug 471
 ResourceMap.SetAsScalar('BoxCox-RootEpsilon', 1.0e-6)
 

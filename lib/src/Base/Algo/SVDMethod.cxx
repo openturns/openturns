@@ -102,10 +102,10 @@ void SVDMethod::update(const Indices& addedIndices,
     Matrix psiAk(computeWeightedDesign());
     singularValues_ = psiAk.computeSVD(u_, vT_, false, false);
 
-    // check eigen values
+    // check eigenvalues
     const UnsignedInteger svdSize = singularValues_.getSize();
     for (UnsignedInteger i = 0; i < svdSize; ++ i)
-      if (!(singularValues_[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: null eigen value in svd decomposition";
+      if (!(singularValues_[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: null eigenvalue in svd decomposition";
 
   } // Something has changed
 }

@@ -667,7 +667,7 @@ Raises
 ------
 RuntimeError : If the estimated covariance matrix is not positive definite. In
     this case, you might want to estimate the covariance and manually shrink
-    negative eigen values.
+    negative eigenvalues.
 
 Examples
 --------

@@ -13,7 +13,7 @@ Notes
 -----
 This class is a static class which enables the evaluation of the Wilks number:
 the minimal sample size :math:`N_{\alpha, \beta, i}` to perform in order to
-garantee that the empirical quantile :math:`\alpha`, noted
+guarantee that the empirical quantile :math:`\alpha`, noted
 :math:`\tilde{q}_{\alpha} N_{\alpha, \beta, i}` evaluated with the
 :math:`(n - i)^{th}` maximum of the sample, noted :math:`X_{n - i}` be greater
 than the theoretical quantile :math:`q_{\alpha}` with a probability at least

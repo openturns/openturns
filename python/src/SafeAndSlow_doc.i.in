@@ -41,6 +41,6 @@ detected the presence of a root, we research the root with the selected non
 linear solver. We evaluate the contribution to the failure probability of each
 segment.
 
-If *stepSize* is small enough, this strategy garantees us to find all the roots
+If *stepSize* is small enough, this strategy guarantees us to find all the roots
 in the direction and the contribution of this direction to the failure
 probability is precisely evaluated."
