@@ -30,3 +30,4 @@ ARMA stochastic process
 .. toctree::
 
     arma_process
+    arma_estimation

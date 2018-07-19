@@ -1,0 +1,113 @@
+ARMA process estimation
+=======================
+
+| From the order :math:`(p,q)` or a range of orders :math:`(p,q) \in Ind_p \times Ind_q`,
+  where :math:`Ind_p = [p_1, p_2]`
+  and :math:`Ind_q = [q_1, q_2]`, the methods aims to find the *best* model
+  :math:`ARMA(p,q)` that fits the data and estimate the
+  corresponding coefficients. The *best* model is considered with
+  respect to the :math:`AIC_c` criteria (corrected Akaike Information
+  Criterion), defined by:
+
+  .. math::
+
+      AICc = -2\log L_w + 2(p + q + 1)\frac{m}{m - p - q - 2}
+
+  where :math:`m` is half the number of points of the time grid of the
+  process sample (if the data are a process sample) or in a block of the
+  time series (if the data are a time series).
+
+Two other criteria are computed for each order :math:`(p,q)`:
+
+-  the AIC criterion:
+
+   .. math::
+
+      AIC = -2\log L_w + 2(p + q + 1)
+
+-  and the BIC criterion:
+
+   .. math::
+
+      BIC = -2\log L_w + 2(p + q + 1)\log(p + q + 1)
+
+| The *BIC* criterion leads to a model that gives a better prediction;
+  the *AIC* criterion selects the best model that fits the given data;
+  the :math:`AIC_c` criterion improves the previous one by penalizing a
+  too high order that would artificially fit to the data.
+| For each order :math:`(p,q)`, the estimation of the coefficients
+  :math:`(a_k)_{1\leq k\leq p}`, :math:`(b_k)_{1\leq k\leq q}` and the
+  variance :math:`\sigma^2` is done using the Whittle estimator which is
+  based on the maximization of the likelihood function in the frequency
+  domain.
+| The principle is detailed hereafter for the case of a time series: in
+  the case of a process sample, the estimator is similar except for the
+  periodogram which is computed differently.
+| We consider a time series associated to the time grid
+  :math:`(t_0, \hdots, t_{n-1})` and a particular order :math:`(p,q)`.
+  Using the notation ([dim1]), the spectral density function of the
+  :math:`ARMA(p,q)` process writes:
+
+.. math::
+  :label: arma_spectrum
+
+    f(\lambda, \vect{\theta}, \sigma^2) = \frac{\sigma^2}{2 \pi} \frac{|1 + b_1 \exp(-i \lambda) + \ldots + b_q \exp(-i q \lambda)|^2}{|1 + a_1 \exp(-i \lambda) + \ldots + a_p \exp(-i p \lambda)|^2} = \frac{\sigma^2}{2 \pi} g(\lambda, \vect{\theta})
+
+where :math:`\vect{\theta} = (a_1, a_2,...,a_p,b_1,...,b_q)` and
+:math:`\lambda` is the frequency value.
+
+The Whittle log-likelihood writes:
+
+.. math::
+  :label: arma_likelihood
+
+    \log L_w(\vect{\theta}, \sigma^2) = - \sum_{j=1}^{m} \log f(\lambda_j,  \vect{\theta}, \sigma^2) - \frac{1}{2 \pi} \sum_{j=1}^{m} \frac{I(\lambda_j)}{f(\lambda_j,  \vect{\theta}, \sigma^2)}
+
+where:
+
+-  :math:`I` is the non parametric estimate of the spectral density,
+   expressed in the Fourier space (frequencies in :math:`[0,2\pi]`
+   instead of :math:`[-f_{max}, f_{max}]`). By default the Welch estimator is used.
+
+-  :math:`\lambda_j` is the :math:`j-th` Fourier frequency,
+   :math:`\lambda_j = \frac{2 \pi j}{n}`, :math:`j=1 \ldots m` with
+   :math:`m` the largest integer :math:`\leq \frac{n-1}{2}`.
+
+We estimate the :math:`(p+q+1)` scalar coefficients by maximizing the
+log-likelihood function. The corresponding equations lead to the
+following relation:
+
+.. math::
+  :label: optSigma
+
+    \sigma^{2*} = \frac{1}{m} \sum_{j=1}^{m} \frac{I(\lambda_j)}{g(\lambda_j, \vect{\theta}^{*})}
+
+where :math:`\vect{\theta}^{*}` maximizes:
+
+.. math::
+  :label: lik2
+
+    \log L_w(\vect{\theta}) = m (\log(2 \pi) - 1) - m \log\left( \frac{1}{m} \sum_{j=1}^{m} \frac{I(\lambda_j)}{g(\lambda_j, \vect{\theta})}\right) - \sum_{j=1}^{m} g(\lambda_j, \vect{\theta})
+
+The Whitle estimation requires that:
+
+-  the determinant of the eigen values of the companion matrix
+   associated to the polynomial :math:`1 + a_1X + \dots + a_pX^p` are
+   outside the unit disc,, which garantees the stationarity of the
+   process;
+
+-  the determinant of the eigen values of thez companion matrix
+   associated to the polynomial :math:`1 + ba_1X + \dots + b_qX^q` are
+   outside the unit disc, which garantees the invertibility of the
+   process.
+
+
+.. topic:: API:
+
+    - See :class:`~openturns.WhittleFactory`
+    - See :class:`~openturns.WelchFactory`
+    - See :class:`~openturns.ARMA`
+
+.. topic:: Examples:
+
+    - See :doc:`/examples/data_analysis/estimate_arma`
