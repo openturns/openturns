@@ -30,7 +30,7 @@ SORM is to evaluate the probability content of the event
   decreasing.
 
 | The difference with FORM comes from the approximation of the limit
-  state surface at the design point :math:` \vect{P}^*` in the standard
+  state surface at the design point :math:`\vect{P}^*` in the standard
   space: SORM approximates it by a quadratic surface that has the same
   main curvatures at the design point.
 | Let us denote by :math:`n` the dimension of the random vector
