@@ -1,88 +1,58 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
-
+import openturns as ot
 
 # ARMA(p, q)
 p = 2
 q = 1
-dimension = 2
-
-# ARMACoefficients initializing
-# Overwide bug 471
-ResourceMap.SetAsScalar('BoxCox-RootEpsilon', 1.0e-6)
+dim = 2
 
 # Make a realization of an ARMA model
 # Tmin , Tmax and N points for TimeGrid
 dt = 1.0
 size = 400
-timeGrid = RegularGrid(0.0, dt, size)
+timeGrid = ot.RegularGrid(0.0, dt, size)
 
-# Fixing the distributions for the WhiteNoise
-sigma = 0.1
-cov = CovarianceMatrix(dimension)
-cov[0, 0] = sigma
-cov[1, 1] = 2.0 * sigma
-whiteNoiseDistribution = Normal(Point(dimension, 0.0), cov)
+# white noise
+cov = ot.CovarianceMatrix([[0.1, 0.0], [0.0, 0.2]])
+whiteNoise = ot.WhiteNoise(ot.Normal([0.0] * dim, cov), timeGrid)
 
-# Building a process from a White Noise
-whiteNoise = WhiteNoise(whiteNoiseDistribution)
-whiteNoise.setTimeGrid(timeGrid)
+# AR/MA coefficients
+ar = ot.ARMACoefficients(p, dim)
+ar[0] = ot.SquareMatrix([[-0.5, -0.1], [-0.4, -0.5]])
+ar[1] = ot.SquareMatrix([[0.0, 0.0], [-0.25, 0.0]])
 
-arCoefficients = SquareMatrixCollection(p)
-maCoefficients = SquareMatrixCollection(q)
-
-alpha = SquareMatrix(dimension)
-alpha[0, 0] = -0.5
-alpha[0, 1] = -0.1
-alpha[1, 0] = -0.4
-alpha[1, 1] = -0.5
-
-arCoefficients[0] = alpha
-
-alpha[0, 0] = 0.0
-alpha[0, 1] = 0.0
-alpha[1, 0] = -0.25
-alpha[1, 1] = 0.0
-
-arCoefficients[1] = alpha
-
-alpha[0, 0] = -0.4
-alpha[0, 1] = 0.0
-alpha[1, 0] = 0.0
-alpha[1, 1] = -0.4
-
-maCoefficients[0] = alpha
-
-phi = ARMACoefficients(arCoefficients)
-theta = ARMACoefficients(maCoefficients)
+ma = ot.ARMACoefficients(q, dim)
+ma[0] = ot.SquareMatrix([[-0.4, 0.0], [0.0, -0.4]])
 
 # ARMA model creation
-myARMA = ARMA(phi, theta, whiteNoise)
+myARMA = ot.ARMA(ar, ma, whiteNoise)
 
 # Create a realization
-timeSeries = TimeSeries(myARMA.getRealization())
+timeSeries = ot.TimeSeries(myARMA.getRealization())
 
-cov[0, 0] += 0.01 * DistFunc.rNormal()
-cov[1, 1] += 0.01 * DistFunc.rNormal()
+cov[0, 0] += 0.01 * ot.DistFunc.rNormal()
+cov[1, 1] += 0.01 * ot.DistFunc.rNormal()
+
+alpha = ot.SquareMatrix(dim)
+
 for k in range(p):
-    for j in range(dimension):
-        for i in range(dimension):
-            alpha[i, j] = 0.01 * DistFunc.rNormal()
-    phi[k] = phi[k] + alpha
+    for j in range(dim):
+        for i in range(dim):
+            alpha[i, j] = 0.01 * ot.DistFunc.rNormal()
+    ar[k] = ar[k] + alpha
 
-#
 for k in range(q):
-    for j in range(dimension):
-        for i in range(dimension):
-            alpha[i, j] = 0.01 * DistFunc.rNormal()
-    theta[k] = theta[k] + alpha
+    for j in range(dim):
+        for i in range(dim):
+            alpha[i, j] = 0.01 * ot.DistFunc.rNormal()
+    ma[k] = ma[k] + alpha
 
-factory = ARMALikelihoodFactory(p, q, dimension)
+factory = ot.ARMALikelihoodFactory(p, q, dim)
 print('factory=', factory)
-factory.setInitialConditions(phi, theta, cov)
+factory.setInitialConditions(ar, ma, cov)
 
-result = ARMA(factory.build(timeSeries))
+result = ot.ARMA(factory.build(timeSeries))
 print('original process = ', myARMA)
-# print('Estimated ARMA= ', result)
+#print('Estimated ARMA= ', result)
