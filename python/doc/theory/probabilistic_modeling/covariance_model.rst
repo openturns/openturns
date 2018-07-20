@@ -97,3 +97,6 @@ The global correlation is given by two separate correlations:
     - See :class:`~openturns.UserDefinedStationaryCovarianceModel`
     - See :class:`~openturns.SquaredExponential`
 
+.. topic:: Examples:
+
+    - See :doc:`/examples/probabilistic_modeling/create_stationary_covmodel`
