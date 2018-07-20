@@ -187,6 +187,13 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
   return outputCovariance_(0, 0) * computeStandardRepresentative(s, t);
 }
 
+Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
+  return outputCovariance_(0, 0) * computeStandardRepresentative(s_begin, t_begin);
+}
+
 /* Computation of the covariance function */
 CovarianceMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
 {

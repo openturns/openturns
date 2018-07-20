@@ -47,13 +47,13 @@ be performed:
 
 3. Assembly: coefficients computations
    The hierarchical structure of the matrix has been computed during step 2.
-   To compute coefficients, we call the assembleReal method and provide a
-   callable to compute interaction between two nodes.  Full blocks are computed
-   by calling this callable for the whole block.  If compression method is
-   'SVD', low-rank approximation is computed by first computing the whole
-   block, then finding its singular value decomposition, and rank is truncated
-   so that error does not exceed assemblyEpsilon.  This method is precise, but
-   very costly.  If compression method is a variant of ACA, only few rows and
+   To compute coefficients, we call the assemble method and provide a callable
+   to compute interaction between two nodes.  Full blocks are computed by
+   calling this callable for the whole block.  If compression method is 'SVD',
+   low-rank approximation is computed by first computing the whole block, then
+   finding its singular value decomposition, and rank is truncated so that
+   error does not exceed assemblyEpsilon.  This method is precise, but very
+   costly.  If compression method is a variant of ACA, only few rows and
    columns are computed.  This is much more efficient, but error may be larger
    than expected on some problems.
 
@@ -119,6 +119,53 @@ OT_HMatrix_norm_doc
 %enddef
 %feature("docstring") OT::HMatrixImplementation::transpose
 OT_HMatrix_transpose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_assemble_doc
+"Assemble matrix.
+
+Parameters
+----------
+f : :class:`~openturns.HMatrixRealAssemblyFunction` or :class:`~openturns.HMatrixTensorRealAssemblyFunction`
+    Assembly function.
+symmetry : str
+    Symmetry flag, either N or L"
+%enddef
+%feature("docstring") OT::HMatrixImplementation::assemble
+OT_HMatrix_assemble_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_assembleReal_doc
+"Assemble matrix.
+
+Parameters
+----------
+f : assembly function
+    Callable that takes i,j int parameters and returns a float
+symmetry : str
+    Symmetry flag, either N or L"
+%enddef
+%feature("docstring") OT::HMatrixImplementation::assembleReal
+OT_HMatrix_assembleReal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_assembleTensor_doc
+"Assemble matrix by block.
+
+Parameters
+----------
+f : assembly function
+    Callable that takes i,j int parameters and returns a Matrix
+outputDimension : int
+    Block dimension
+symmetry : str
+    Symmetry flag, either N or L"
+%enddef
+%feature("docstring") OT::HMatrixImplementation::assembleTensor
+OT_HMatrix_assembleTensor_doc
 
 // ---------------------------------------------------------------------
 
@@ -283,35 +330,3 @@ beta : float
 %enddef
 %feature("docstring") OT::HMatrixImplementation::gemm
 OT_HMatrix_gemm_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_HMatrix_assembleReal_doc
-"Assemble matrix.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a float
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleReal
-OT_HMatrix_assembleReal_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_HMatrix_assembleTensor_doc
-"Assemble matrix by block.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a Matrix
-outputDimension : int
-    Block dimension
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleTensor
-OT_HMatrix_assembleTensor_doc

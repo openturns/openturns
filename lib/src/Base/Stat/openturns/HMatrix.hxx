@@ -53,6 +53,9 @@ class OT_API HMatrix :
   /** Number of columns */
   UnsignedInteger getNbColumns() const;
 
+  /** Copy matrix and its cluster trees */
+  HMatrix copy() const;
+
   void assemble(const HMatrixRealAssemblyFunction& f, char symmetry);
 
   void assemble(const HMatrixTensorRealAssemblyFunction& f, char symmetry);

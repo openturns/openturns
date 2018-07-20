@@ -198,63 +198,41 @@ private:
 // This is going to be very slow, because each local
 // covariance matrix of size 3x3 is computed, but a single
 // coefficient is stored.
-class CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
+class OT_API CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 {
+public:
+  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon);
+
+  Scalar operator()(UnsignedInteger i, UnsignedInteger j) const;
+
 private:
   const CovarianceModel covarianceModel_;
+  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
+  const Collection<Scalar>::const_iterator verticesBegin_;
+  const UnsignedInteger inputDimension_;
   const UnsignedInteger covarianceDimension_;
   const double epsilon_;
-
-public:
-  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
-    : HMatrixRealAssemblyFunction()
-    , covarianceModel_(covarianceModel)
-    , vertices_(vertices)
-    , covarianceDimension_(covarianceModel.getOutputDimension())
-    , epsilon_(epsilon) {}
-
-  Scalar operator()(UnsignedInteger i, UnsignedInteger j) const
-  {
-    const UnsignedInteger rowIndex = i / covarianceDimension_;
-    const UnsignedInteger columnIndex = j / covarianceDimension_;
-    const CovarianceMatrix localCovarianceMatrix(covarianceModel_( vertices_[rowIndex],  vertices_[columnIndex] ));
-    const UnsignedInteger rowIndexLocal = i % covarianceDimension_;
-    const UnsignedInteger columnIndexLocal = j % covarianceDimension_;
-    return localCovarianceMatrix(rowIndexLocal, columnIndexLocal) + (i != j ? 0.0 : epsilon_);
-  }
 };
 
 // Second implementation, by using HMatrixTensorRealAssemblyFunction
 // Each local covariance matrix is built only once, and its components
 // are dispatched into the global covariance matrix
-class CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
+class OT_API CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
+public:
+  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon);
+
+  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const;
+
 private:
   const CovarianceModel covarianceModel_;
+  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
+  const Collection<Scalar>::const_iterator verticesBegin_;
+  const UnsignedInteger inputDimension_;
   const double epsilon_;
   CovarianceMatrix epsilonId_;
-
-public:
-  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
-    : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
-    , covarianceModel_(covarianceModel)
-    , vertices_(vertices)
-    , epsilon_(epsilon)
-  {
-    Matrix eps = epsilon_ * IdentityMatrix(covarianceModel.getOutputDimension());
-    Pointer<MatrixImplementation> impl = eps.getImplementation();
-    epsilonId_ = CovarianceMatrix(covarianceModel.getOutputDimension(), *impl.get());
-  }
-
-  void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const
-  {
-    CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
-    if (i == j && epsilon_ != 0.0)
-      localResult = localResult + epsilonId_;
-    memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
-  }
 };
 
 END_NAMESPACE_OPENTURNS
