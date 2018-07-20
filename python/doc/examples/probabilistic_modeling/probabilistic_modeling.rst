@@ -47,6 +47,7 @@ Stochastic processes
     timeseries_manipulation.ipynb
     processsample_manipulation.ipynb
     create_stationary_covmodel.ipynb
+    user_stationary_covmodel.ipynb
     gaussian_process_covariance.ipynb
     gaussian_process_spectral.ipynb
     userdefined_covariance_model.ipynb

@@ -100,3 +100,4 @@ The global correlation is given by two separate correlations:
 .. topic:: Examples:
 
     - See :doc:`/examples/probabilistic_modeling/create_stationary_covmodel`
+    - See :doc:`/examples/probabilistic_modeling/user_stationary_covmodel`
