@@ -160,3 +160,4 @@ The multivariate Whittle estimation requires that:
 .. topic:: Examples:
 
     - See :doc:`/examples/data_analysis/estimate_arma`
+    - See :doc:`/examples/data_analysis/estimate_multivariate_arma`

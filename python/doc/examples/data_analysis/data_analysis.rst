@@ -31,6 +31,7 @@ Data analysis
     kendallplot_test.ipynb
     visualize_copula_validation.ipynb
     estimate_arma.ipynb
+    estimate_multivariate_arma.ipynb
     linear_regression.ipynb
     bayesian_calibration.ipynb
     quantile_estimation_wilks.ipynb
