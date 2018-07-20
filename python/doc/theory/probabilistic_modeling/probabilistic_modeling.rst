@@ -31,3 +31,10 @@ ARMA stochastic process
 
     arma_process
     arma_estimation
+
+Normal processes
+~~~~~~~~~~~~~~~~
+
+.. toctree::
+
+    covariance_model
