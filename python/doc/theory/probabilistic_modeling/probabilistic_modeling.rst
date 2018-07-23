@@ -43,3 +43,4 @@ Normal processes
 
     covariance_model
     estimate_stationary_covariance_model
+    estimate_non_stationary_covariance_model
