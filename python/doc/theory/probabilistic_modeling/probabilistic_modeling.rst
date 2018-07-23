@@ -15,6 +15,10 @@ The current section is dedicated to probabilistic methods and concepts.
 Stochastic process
 ------------------
 
+.. toctree::
+
+    process_definitions
+
 Transformation of fields
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
