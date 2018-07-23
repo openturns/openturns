@@ -152,7 +152,7 @@ procedure is continued. The LAR algorithm is detailed below:
 
 It has been shown that with only one modification, the LAR procedure
 provides in one shot the entire paths of LASSO solution coefficients as
-the tuning parameter :math:`C` in Eq.([eq:5-2.5]) is increased from 0 up
+the tuning parameter :math:`C` in :eq:`5-2.5` is increased from 0 up
 to a maximum value. The modified algorithm is as follows:
 
 -  Run the LAR procedure from Steps 1 to 4.

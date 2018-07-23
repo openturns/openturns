@@ -107,7 +107,6 @@ expressed according to Bayes’ theorem:
   :label: postdistribution
 
    \begin{aligned}
-   \label{eq:post_distribution}
        \pi(\vect{\theta} | \mat{y}) &=& \frac{L(\mat{y} | \vect{\theta}) \times \pi(\vect{\theta})}{m(\mat{y})},
      \end{aligned}
 

@@ -6,6 +6,10 @@ Bibliography
 .. [Aas2004] Aas K., *Modelling the dependence structure of financial assets: a survey of four copulas*,
     Norwegian Computing Center report nr. SAMBA/22/04, December 2004.
     `pdf <http://doc.openturns.org/papers/aas2004.pdf>`__
+.. [Abate1992] Abate, J. and Whitt, W. (1992). *The Fourier-series method for
+    inverting transforms of probability distributions*.
+    Queueing Systems 10, 5--88., 1992, formula 5.5.
+    `pdf <http://doc.openturns.org/papers/abate1992.pdf>`__
 .. [Au2001] Au, S. K. *Estimation of small failure probabilities in high 
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://doc.openturns.org/papers/au2001.pdf>`__

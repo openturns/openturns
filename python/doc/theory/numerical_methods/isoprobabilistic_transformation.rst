@@ -14,9 +14,9 @@ One way to evaluate the probability content :math:`P_f` of the event
 :math:`\cD_f`:
 
 .. math::
+  :label: PfXIsoProb
 
-    \label{PfXIsoProb}
-        P_f = \Prob{g(\vect{X}\,,\,\vect{d})\leq 0}=   \int_{\cD_f} \pdf\, d\vect{x}
+    P_f = \Prob{g(\vect{X}\,,\,\vect{d})\leq 0}=   \int_{\cD_f} \pdf\, d\vect{x}
 
 is to introduce an isoprobabilistic transformation :math:`T` which is
 a diffeomorphism from :math:`\supp{\vect{X}}` into :math:`\Rset^n`,
@@ -31,13 +31,13 @@ Such transformations exist and the most widely used are:
 -  the Rosenblatt transformation (refer to ).
 
 If we suppose that the numerical model :math:`g` has suitable properties
-of differentiability, the evaluation of the probability ([PfXIsoProb])
+of differentiability, the evaluation of the probability :eq:`PfXIsoProb`
 can be transformed in the evaluation of the probability:
 
 .. math::
+ :label: StandardSpace
 
-   \label{StandardSpace}
-       P_f = \Prob{G(\vect{U}\,,\,\vect{d})\leq 0} = \int_{\Rset^n} \boldsymbol{1}_{G(\vect{u}\,,\,\vect{d}) \leq 0}\,f_{\vect{U}}(\vect{u})\,d\vect{u}
+    P_f = \Prob{G(\vect{U}\,,\,\vect{d})\leq 0} = \int_{\Rset^n} \boldsymbol{1}_{G(\vect{u}\,,\,\vect{d}) \leq 0}\,f_{\vect{U}}(\vect{u})\,d\vect{u}
 
 where :math:`T` is a :math:`C^1`-diffeomorphism called an
 *isoprobabilistic transformation*, :math:`f_{\vect{U}}` the
