@@ -102,6 +102,13 @@ int main(int , char *[])
     fullprint << "left=" << distribution.getLeft() << std::endl;
     fullprint << "right=" << distribution.getRight() << std::endl;
 
+    // For ticket 957
+    {
+      Distribution distribution = Uniform() * Uniform() * Uniform();
+      fullprint << "distribution=" << distribution << std::endl;
+      fullprint << "mean=" << distribution.getMean() << std::endl;
+      fullprint << "standard deviation=" << distribution.getStandardDeviation() << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {
