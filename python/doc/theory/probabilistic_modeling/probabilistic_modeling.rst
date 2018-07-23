@@ -42,3 +42,4 @@ Normal processes
 .. toctree::
 
     covariance_model
+    estimate_stationary_covariance_model
