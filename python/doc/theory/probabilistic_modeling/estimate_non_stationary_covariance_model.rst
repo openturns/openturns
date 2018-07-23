@@ -61,3 +61,7 @@ nearest to :math:`\vect{t}`.
 
     - See :class:`~openturns.NonStationaryCovarianceModelFactory`
     - See :class:`~openturns.UserDefinedCovarianceModel`
+
+.. topic:: Examples:
+
+    - See :doc:`/examples/data_analysis/estimate_non_stationary_covariance_model`

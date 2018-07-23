@@ -33,6 +33,7 @@ Data analysis
     estimate_arma.ipynb
     estimate_multivariate_arma.ipynb
     estimate_stationary_covariance_model.ipynb
+    estimate_non_stationary_covariance_model.ipynb
     linear_regression.ipynb
     bayesian_calibration.ipynb
     quantile_estimation_wilks.ipynb
