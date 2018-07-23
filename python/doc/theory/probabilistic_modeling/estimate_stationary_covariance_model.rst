@@ -142,3 +142,6 @@ It follows that:
     - See :class:`~openturns.WelchFactory`
     - See :class:`~openturns.Hanning`
 
+.. topic:: Examples:
+
+    - See :doc:`/examples/data_analysis/estimate_stationary_covariance_model`
