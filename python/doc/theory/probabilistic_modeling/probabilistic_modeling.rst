@@ -46,3 +46,4 @@ Normal processes
     estimate_stationary_covariance_model
     estimate_non_stationary_covariance_model
     estimate_spectral_density_function
+    parametric_spectral_model
