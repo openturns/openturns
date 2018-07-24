@@ -23,7 +23,7 @@ fillStyle : str
     Fill style of the surfaces. If not specified, by default it is 'solid'.
 lineStyle : str
     Style of the curve. If not specified, by default it is 'solid'.
-lineWidth : int
+lineWidth : float
     Width of the curve. If not specified, by default it is 1.
 
 Examples

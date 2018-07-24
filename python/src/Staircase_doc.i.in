@@ -19,7 +19,7 @@ color : str
     Color of the curve. If not specified, by default it is 'blue'.
 lineStyle : str
     Style of the curve. If not specified, by default it is 'solid'.
-lineWidth : int
+lineWidth : float 
     Width of the curve. If not specified, by default it is 1.
 pattern : str
     Pattern which is 'S' or 's'. By default the pattern is equal to 's'. Going

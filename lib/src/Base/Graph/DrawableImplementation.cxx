@@ -954,7 +954,7 @@ DrawableImplementation::DrawableImplementation()
   , fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle"))
   , lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle"))
   , pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle"))
-  , lineWidth_(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultLineWidth"))
+  , lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
   , dataFileName_("")
 {
   // Nothing to do
@@ -970,7 +970,7 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
     fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle")),
     lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle")),
     pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle")),
-    lineWidth_(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultLineWidth")),
+    lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth")),
     dataFileName_("")
 {
   setName(legend);
@@ -1257,15 +1257,15 @@ void DrawableImplementation::setPointStyle(const String & pointStyle)
 }
 
 /* Accessor for line width */
-UnsignedInteger DrawableImplementation::getLineWidth() const
+Scalar DrawableImplementation::getLineWidth() const
 {
   return lineWidth_;
 }
 
 /* Accessor for line width */
-void DrawableImplementation::setLineWidth(const UnsignedInteger lineWidth)
+void DrawableImplementation::setLineWidth(const Scalar lineWidth)
 {
-  if(lineWidth == 0) throw InvalidArgumentException(HERE) << "Given line width=" << lineWidth << " is incorrect";
+  if (!(lineWidth > 0.0)) throw InvalidArgumentException(HERE) << "Given line width=" << lineWidth << " is incorrect";
   lineWidth_ = lineWidth;
 }
 

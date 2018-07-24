@@ -309,7 +309,7 @@ OT_Drawable_GetValidFillStyles_doc
 
 Returns
 -------
-lineWidth : int
+lineWidth : float
     Width of the line within the drawable element."
 %enddef
 %feature("docstring") OT::DrawableImplementation::getLineWidth
@@ -322,7 +322,7 @@ OT_Drawable_getLineWidth_doc
 
 Parameters
 ----------
-lineWidth : positive int
+lineWidth : positive float
     Width of the line within the drawable element."
 %enddef
 %feature("docstring") OT::DrawableImplementation::setLineWidth

@@ -70,8 +70,8 @@ public:
   void setFillStyle(const String & fillStyle);
 
   /** Line width accessor */
-  UnsignedInteger getLineWidth() const;
-  void setLineWidth(const UnsignedInteger lineWidth);
+  Scalar getLineWidth() const;
+  void setLineWidth(const Scalar lineWidth);
 
   /** Accessor for color */
   String getColor() const;

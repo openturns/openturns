@@ -133,13 +133,13 @@ String Drawable::getEdgeColor() const
 }
 
 /* Accessor for line width */
-UnsignedInteger Drawable::getLineWidth() const
+Scalar Drawable::getLineWidth() const
 {
   return getImplementation()->getLineWidth();
 }
 
 /* Accessor for line width */
-void Drawable::setLineWidth(const UnsignedInteger lineWidth)
+void Drawable::setLineWidth(const Scalar lineWidth)
 {
   copyOnWrite();
   getImplementation()->setLineWidth(lineWidth);

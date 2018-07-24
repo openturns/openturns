@@ -53,7 +53,7 @@ public:
   Staircase(const Sample & data,
             const String & color,
             const String & lineStyle,
-            const UnsignedInteger lineWidth,
+            const Scalar lineWidth,
             const String & pattern,
             const String & legend = "");
 
