@@ -12,8 +12,14 @@ OT_FieldFunction_getInputDimension_doc
 OT_FieldFunction_getMarginal_doc
 %feature("docstring") OT::FieldFunction::getOutputMesh
 OT_FieldFunction_getOutputMesh_doc
+%feature("docstring") OT::FieldFunction::setOutputMesh
+OT_FieldFunction_setOutputMesh_doc
+%feature("docstring") OT::FieldFunction::setInputMesh
+OT_FieldFunction_setInputMesh_doc
 %feature("docstring") OT::FieldFunction::getInputMesh
 OT_FieldFunction_getInputMesh_doc
+%feature("docstring") OT::FieldFunction::isActingPointwise
+OT_FieldFunction_isActingPointwise_doc
 %feature("docstring") OT::FieldFunction::getOutputDescription
 OT_FieldFunction_getOutputDescription_doc
 %feature("docstring") OT::FieldFunction::getOutputDimension

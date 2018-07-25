@@ -799,9 +799,41 @@ Bool CovarianceModelImplementation::isDiagonal() const
 /* Marginal accessor */
 CovarianceModel CovarianceModelImplementation::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
-  if (outputDimension_ != 1) throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::getMarginal(const UnsignedInteger index) const";
-  return clone();
+  return getMarginal(Indices(1, index));
+}
+
+/* Marginal accessor */
+CovarianceModel CovarianceModelImplementation::getMarginal(const Indices & indices) const
+{
+  if (!indices.check(outputDimension_)) throw InvalidArgumentException(HERE) << "Error: index=" << indices << " must be less than output dimension=" << outputDimension_;
+  CovarianceModel result(clone());
+  if (outputDimension_ > 1)
+  {
+    result.getImplementation()->outputDimension_ = indices.getSize();
+    Point newAmplitude;
+    for (UnsignedInteger i = 0; i < indices.getSize(); ++ i)
+    {
+      newAmplitude.add(amplitude_[indices[i]]);
+    }
+    result.getImplementation()->setAmplitude(newAmplitude);
+    if (!isDiagonal())
+    {
+      CorrelationMatrix newCorrelationMatrix(indices.getSize());
+      for (UnsignedInteger i = 0; i < indices.getSize(); ++ i)
+      {
+        for (UnsignedInteger j = 0; j < i; ++ j)
+        {
+          newCorrelationMatrix(i, j) = result.getImplementation()->outputCorrelation_(indices[i], indices[j]);
+        }
+      }
+      result.getImplementation()->setOutputCorrelation(newCorrelationMatrix);
+    }
+
+    // reset activeParameter_
+    result.getImplementation()->activeParameter_ = Indices(inputDimension_ + indices.getSize());
+    result.getImplementation()->activeParameter_.fill();
+  }
+  return result;
 }
 
 /* Drawing method */

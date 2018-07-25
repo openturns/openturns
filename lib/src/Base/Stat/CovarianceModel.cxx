@@ -339,5 +339,10 @@ CovarianceModel CovarianceModel::getMarginal(const UnsignedInteger index) const
   return getImplementation()->getMarginal(index);
 }
 
+CovarianceModel CovarianceModel::getMarginal(const Indices & indices) const
+{
+  return getImplementation()->getMarginal(indices);
+}
+
 
 END_NAMESPACE_OPENTURNS

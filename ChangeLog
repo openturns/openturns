@@ -46,6 +46,7 @@
  * #949 (LowDiscrepancyExperiment for distributions having dependent copula)
  * #952 (Limitation on distribution type for polynomial chaos?)
  * #953 (RandomMixture can fail with truncated distribution)
+ * #954 (CompositeProcess::getFuture() broken)
  * #957 (RandomMixture::getDispersionIndicator() takes a long time)
 
 == 1.11 release (2018-05-11) == #release-1.11

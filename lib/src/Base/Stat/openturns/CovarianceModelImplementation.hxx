@@ -187,6 +187,9 @@ public:
   /** Marginal accessor */
   virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
 
+  /** Marginal accessor */
+  virtual CovarianceModel getMarginal(const Indices & indices) const;
+
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,
                      const UnsignedInteger columnIndex = 0,

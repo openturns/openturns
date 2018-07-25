@@ -137,6 +137,19 @@ OT_FieldFunction_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_FieldFunction_setInputMesh_doc
+"Set the mesh associated to the input domain.
+
+Parameters
+----------
+inputMesh : :class:`~openturns.Mesh`
+    The input mesh :math:`\cM_{N'}`."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::setInputMesh
+OT_FieldFunction_setInputMesh_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_FieldFunction_getInputMesh_doc
 "Get the mesh associated to the input domain.
 
@@ -150,6 +163,19 @@ OT_FieldFunction_getInputMesh_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_FieldFunction_setOutputMesh_doc
+"Set the mesh associated to the output domain.
+
+Parameters
+----------
+outputMesh : :class:`~openturns.Mesh`
+    The output mesh :math:`\cM_{N'}`."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::setOutputMesh
+OT_FieldFunction_setOutputMesh_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_FieldFunction_getOutputMesh_doc
 "Get the mesh associated to the output domain.
 
@@ -160,6 +186,20 @@ outputMesh : :class:`~openturns.Mesh`
 %enddef
 %feature("docstring") OT::FieldFunctionImplementation::getOutputMesh
 OT_FieldFunction_getOutputMesh_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_FieldFunction_isActingPointwise_doc
+"Whether the function acts point-wise.
+
+Returns
+-------
+pointWise : bool
+    Returns true if the function evaluation at each vertex depends only on the
+    vertex or the value at the vertex."
+%enddef
+%feature("docstring") OT::FieldFunctionImplementation::isActingPointwise
+OT_FieldFunction_isActingPointwise_doc
 
 // ---------------------------------------------------------------------
 

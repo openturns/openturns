@@ -109,15 +109,30 @@ Description FieldFunction::getOutputDescription() const
 }
 
 /* Input mesh accessor */
+void FieldFunction::setInputMesh(const Mesh & inputMesh)
+{
+  getImplementation()->setInputMesh(inputMesh);
+}
+
 Mesh FieldFunction::getInputMesh() const
 {
   return getImplementation()->getInputMesh();
 }
 
 /* Output mesh accessor */
+void FieldFunction::setOutputMesh(const Mesh & outputMesh)
+{
+  getImplementation()->setOutputMesh(outputMesh);
+}
+
 Mesh FieldFunction::getOutputMesh() const
 {
   return getImplementation()->getOutputMesh();
+}
+
+Bool FieldFunction::isActingPointwise() const
+{
+  return getImplementation()->isActingPointwise();
 }
 
 /* Operator () */

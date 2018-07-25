@@ -174,6 +174,9 @@ public:
   /** Marginal accessor */
   CovarianceModel getMarginal(const UnsignedInteger index) const;
 
+  /** Marginal accessor */
+  CovarianceModel getMarginal(const Indices & indices) const;
+
 } ; /* class CovarianceModel */
 
 END_NAMESPACE_OPENTURNS

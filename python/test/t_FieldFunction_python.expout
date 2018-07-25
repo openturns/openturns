@@ -155,6 +155,7 @@ field 4:
  8 : [  0.8       1.99159  -0.278906 ]
  9 : [  0.9      -1.12041   0.890979 ]
 10 : [  1         0.64585   0.891571 ]]
+point-wise? True
 myFunc= FieldFunction :
   class=PythonFieldFunction name=OpenTURNSPythonFieldFunction
 X=     [ v0         v1         v2         X0         X1         X2         ]

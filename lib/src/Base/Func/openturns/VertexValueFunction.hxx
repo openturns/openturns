@@ -80,6 +80,9 @@ public:
   /** Function accessor */
   Function getFunction() const;
 
+  /** Acts point-wise ? */
+  virtual Bool isActingPointwise() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

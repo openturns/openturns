@@ -10,7 +10,7 @@
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -53,7 +53,7 @@ class=TestResult name=Unnamed type=TwoSampleChiSquared binaryQualityMeasure=true
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -112,7 +112,7 @@ Examples
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -172,7 +172,7 @@ Examples
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -225,7 +225,7 @@ Examples
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -282,7 +282,7 @@ Examples
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -341,7 +341,7 @@ HypothesisTest_PartialSpearman(*firstSample, secondSample, selection, level*)
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -395,7 +395,7 @@ Examples
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -444,7 +444,7 @@ class=TestResult name=Unnamed type=TwoSamplePearson binaryQualityMeasure=true p-
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
@@ -496,7 +496,7 @@ class=TestResult name=Unnamed type=TwoSampleSmirnov binaryQualityMeasure=true p-
 
 Parameters
 ----------
-fisrtSample : 2-d sequence of float
+firstSample : 2-d sequence of float
     First tested sample, of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.

@@ -331,7 +331,7 @@ OT_CovarianceModel_getOutputDimension_doc
 
 Returns
 -------
-marginal : int
+marginal : int or sequence of int
     index of marginal of the model."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getMarginal

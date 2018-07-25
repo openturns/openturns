@@ -88,10 +88,15 @@ public:
   virtual Description getOutputDescription() const;
 
   /** Accessor for the output mesh */
+  virtual void setInputMesh(const Mesh & inputMesh);
   virtual Mesh getInputMesh() const;
 
   /** Accessor for the output mesh */
+  virtual void setOutputMesh(const Mesh & outputMesh);
   virtual Mesh getOutputMesh() const;
+
+  /** Acts point-wise ? */
+  virtual Bool isActingPointwise() const;
 
   /** Get the i-th marginal function */
   virtual Implementation getMarginal(const UnsignedInteger i) const;

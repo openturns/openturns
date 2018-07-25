@@ -129,13 +129,11 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   /* TimeGrid associated with the possible future */
   const Scalar timeStep = timeGrid.getStep();
   const RegularGrid futurTimeGrid(timeGrid.getEnd(), timeStep, stepNumber);
-  return TimeSeries(futurTimeGrid, function_(antecedent_.getFuture(stepNumber).getValues()));
-}
-
-/* Get the random vector corresponding to the i-th marginal component */
-Process CompositeProcess::getMarginal(const UnsignedInteger i) const
-{
-  return new CompositeProcess(function_.getMarginal(i), antecedent_.getMarginal(i));
+  FieldFunction function(function_);
+  if (!function.isActingPointwise())
+    throw NotDefinedException(HERE) << "Error: can only ask future of a process with a point-wise function";
+  function.setInputMesh(futurTimeGrid);
+  return TimeSeries(futurTimeGrid, function(antecedent_.getFuture(stepNumber).getValues()));
 }
 
 /* Get the marginal random vector corresponding to indices components */

@@ -139,6 +139,11 @@ Function VertexValueFunction::getFunction() const
   return function_;
 }
 
+Bool VertexValueFunction::isActingPointwise() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void VertexValueFunction::save(Advocate & adv) const
 {

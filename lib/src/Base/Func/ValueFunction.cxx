@@ -119,17 +119,22 @@ ValueFunction::Implementation ValueFunction::getMarginal(const Indices & indices
   return new ValueFunction(function_.getMarginal(indices), getInputMesh());
 }
 
+/* Function accessor */
+Function ValueFunction::getFunction() const
+{
+  return function_;
+}
+
+Bool ValueFunction::isActingPointwise() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void ValueFunction::save(Advocate & adv) const
 {
   FieldFunctionImplementation::save(adv);
   adv.saveAttribute( "function_", function_ );
-}
-
-/* Function accessor */
-Function ValueFunction::getFunction() const
-{
-  return function_;
 }
 
 /* Method load() reloads the object from the StorageManager */

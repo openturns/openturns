@@ -111,7 +111,8 @@ public:
   ProcessSampleImplementation getMarginal(const Indices & indices) const;
 
   /** Draw a marginal of the timeSerie */
-  Graph drawMarginal(const UnsignedInteger index = 0) const;
+  Graph drawMarginal(const UnsignedInteger index = 0,
+                     const Bool interpolate = true) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

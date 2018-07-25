@@ -17,10 +17,10 @@ myARMAProcess.setTimeGrid(timeGrid)
 print('myAntecedentProcess = ',  myARMAProcess)
 
 # Creation of a function
-f = ot.SymbolicFunction(['x'], ['2 * x + 5.0'])
+f = ot.SymbolicFunction(['t', 'x'], ['t+0.1*x^2'])
 
 # We build a dynamical function
-myFieldFunction = ot.FieldFunction(ot.ValueFunction(f, timeGrid))
+myFieldFunction = ot.FieldFunction(ot.VertexValueFunction(f, timeGrid))
 
 # finally we get the compsite process
 myCompositeProcess = ot.CompositeProcess(myFieldFunction, myARMAProcess)
@@ -30,6 +30,8 @@ print('myCompositeProcess = ',  repr(myCompositeProcess))
 print('One realization= ')
 print(myCompositeProcess.getRealization())
 
+# future
+print('future=', myCompositeProcess.getFuture(5))
 
 #
 # Create a spatial  dynamical function

@@ -10,6 +10,16 @@ OTTypedInterfaceObjectHelper(Field)
 
 %include openturns/Field.hxx
 
+
+%pythoncode %{
+def Field__repr_html_(self):
+    """Get HTML representation."""
+    data = self.getMesh().getVertices()
+    data.stack(self.getValues())
+    return data._repr_html_()
+Field._repr_html_ = Field__repr_html_
+%}
+
 namespace OT {
 %extend Field {
 

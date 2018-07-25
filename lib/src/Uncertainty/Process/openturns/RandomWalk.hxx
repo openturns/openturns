@@ -72,9 +72,6 @@ public:
   using ProcessImplementation::getFuture;
   TimeSeries getFuture(const UnsignedInteger stepNumber) const;
 
-  /** Get the process corresponding to the i-th marginal component */
-  Process getMarginal(const UnsignedInteger i) const;
-
   /** Get the marginal process corresponding to indices components */
   Process getMarginal(const Indices & indices) const;
 

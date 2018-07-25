@@ -63,7 +63,6 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
 
 inputDimension = 2
 
-
 myDefautModel = ot.SquaredExponential([2.0], [3.0])
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)

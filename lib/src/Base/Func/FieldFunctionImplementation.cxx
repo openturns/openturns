@@ -125,15 +125,35 @@ Description FieldFunctionImplementation::getOutputDescription() const
 }
 
 /* Accessor for the input mesh */
+void FieldFunctionImplementation::setInputMesh(const Mesh & inputMesh)
+{
+  if (inputMesh.getDimension() != inputMesh_.getDimension())
+    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
+
+  inputMesh_ = inputMesh;
+}
+
 Mesh FieldFunctionImplementation::getInputMesh() const
 {
   return inputMesh_;
 }
 
 /* Accessor for the output mesh */
+void FieldFunctionImplementation::setOutputMesh(const Mesh & outputMesh)
+{
+  if (outputMesh.getDimension() != outputMesh_.getDimension())
+    throw InvalidArgumentException(HERE) << "Mesh must have the same dimension";
+  outputMesh_ = outputMesh;
+}
+
 Mesh FieldFunctionImplementation::getOutputMesh() const
 {
   return outputMesh_;
+}
+
+Bool FieldFunctionImplementation::isActingPointwise() const
+{
+  return false;
 }
 
 /* Operator () */
