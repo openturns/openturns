@@ -54,3 +54,4 @@ Process transformation
 .. toctree::
 
     field_function
+    process_transformation
