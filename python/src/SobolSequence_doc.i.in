@@ -6,7 +6,7 @@ Available constructors:
 
 Parameters
 ----------
-dimension : positive int
+dimension : positive int, :math:`1\leq d \leq 1111`
     Dimension of the points.
 
 Examples

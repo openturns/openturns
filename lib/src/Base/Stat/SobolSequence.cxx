@@ -31,64 +31,11 @@ CLASSNAMEINIT(SobolSequence)
 static const Factory<SobolSequence> Factory_SobolSequence;
 
 
-const UnsignedInteger    SobolSequence::MaximumNumberOfDimension = 40;
-const UnsignedInteger    SobolSequence::MaximumBase2Logarithm    = 62;
-const Scalar SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
-const UnsignedInteger    SobolSequence::MaximumInitialDegree     = 8;
+const UnsignedInteger SobolSequence::MaximumBase2Logarithm    = 62;
+const Scalar          SobolSequence::Epsilon                  = 1.0 / power2(MaximumBase2Logarithm);
 
-const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension * MaximumInitialDegree] =
-{
-  1,   0,   0,   0,   0,   0,   0,   0,
-  1,   0,   0,   0,   0,   0,   0,   0,
-  1,   1,   0,   0,   0,   0,   0,   0,
-  1,   3,   7,   0,   0,   0,   0,   0,
-  1,   1,   5,   0,   0,   0,   0,   0,
-  1,   3,   1,   1,   0,   0,   0,   0,
-  1,   1,   3,   7,   0,   0,   0,   0,
-  1,   3,   3,   9,   9,   0,   0,   0,
-  1,   3,   7,  13,   3,   0,   0,   0,
-  1,   1,   5,  11,  27,   0,   0,   0,
-  1,   3,   5,   1,  15,   0,   0,   0,
-  1,   1,   7,   3,  29,   0,   0,   0,
-  1,   3,   7,   7,  21,   0,   0,   0,
-  1,   1,   1,   9,  23,  37,   0,   0,
-  1,   3,   3,   5,  19,  33,   0,   0,
-  1,   1,   3,  13,  11,   7,   0,   0,
-  1,   1,   7,  13,  25,   5,   0,   0,
-  1,   3,   5,  11,   7,  11,   0,   0,
-  1,   1,   1,   3,  13,  39,   0,   0,
-  1,   3,   1,  15,  17,  63,  13,   0,
-  1,   1,   5,   5,   1,  27,  33,   0,
-  1,   3,   3,   3,  25,  17, 115,   0,
-  1,   1,   3,  15,  29,  15,  41,   0,
-  1,   3,   1,   7,   3,  23,  79,   0,
-  1,   3,   7,   9,  31,  29,  17,   0,
-  1,   1,   5,  13,  11,   3,  29,   0,
-  1,   3,   1,   9,   5,  21, 119,   0,
-  1,   1,   3,   1,  23,  13,  75,   0,
-  1,   3,   3,  11,  27,  31,  73,   0,
-  1,   1,   7,   7,  19,  25, 105,   0,
-  1,   3,   5,   5,  21,   9,   7,   0,
-  1,   1,   1,  15,   5,  49,  59,   0,
-  1,   1,   1,   1,   1,  33,  65,   0,
-  1,   3,   5,  15,  17,  19,  21,   0,
-  1,   1,   7,  11,  13,  29,   3,   0,
-  1,   3,   7,   5,   7,  11, 113,   0,
-  1,   1,   5,   3,  15,  19,  61,   0,
-  1,   3,   1,   1,   9,  27,  89,   7,
-  1,   1,   3,   7,  31,  15,  45,  23,
-  1,   3,   3,   9,   9,  25, 107,  39
-} ;
-
-const Unsigned64BitsInteger SobolSequence::PrimitivePolynomial[MaximumNumberOfDimension] =
-{
-  1,   3,   7,  11,  13,  19,  25,  37,
-  59,  47,  61,  55,  41,  67,  97,  91,
-  109, 103, 115, 131, 193, 137, 145, 143,
-  241, 157, 185, 167, 229, 171, 213, 191,
-  253, 203, 211, 239, 247, 285, 369, 299
-} ;
-
+// Not in the openturns subdir as it has not to be visible
+#include "SobolSequenceDirections.hxx"
 
 /* Constructor with parameters */
 SobolSequence::SobolSequence(const UnsignedInteger dimension) :
@@ -121,7 +68,6 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
   // initialize row 0 (first dimension)
   for ( UnsignedInteger j = 0; j < MaximumBase2Logarithm; ++ j )
     base_[j] = 1;
-
   // initialize remaining direction numbers, for each dimension <-> rows of base_[][]
   for ( UnsignedInteger i = 1; i < dimension_; ++ i )
   {
