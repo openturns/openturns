@@ -55,3 +55,10 @@ Process transformation
 
     field_function
     process_transformation
+
+Stationarity tests
+~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+
+    dickey_fuller
