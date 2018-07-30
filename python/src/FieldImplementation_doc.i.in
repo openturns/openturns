@@ -54,13 +54,20 @@ OT_Field_doc
 %define OT_Field_asDeformedMesh_doc
 "Get the mesh deformed according to the values of the field.
 
+Parameters
+----------
+verticesPadding : sequence of int
+       The positions at which the coordinates of vertices are set to zero when extending the vertices dimension. By default the sequence is empty.
+valuesPadding : sequence of int
+       The positions at which the components of values are set to zero when extending the values dimension. By default the sequence is empty.
+
 Returns
 -------
 deformedMesh : :class:`~openturns.Mesh`
     The initial mesh is deformed as follows: each vertex of the mesh is
-    replaced by the sum of the vertex and the value of the field at this
-    vertex. Only works when the input dimension :math:`n`: is
-    equal to the dimension of the field :math:`d`."
+    translated by the value of the field at this vertex. Only works when
+    the input dimension :math:`n`: is equal to the dimension of the field
+    :math:`d` after extension."
 %enddef
 %feature("docstring") OT::FieldImplementation::asDeformedMesh
 OT_Field_asDeformedMesh_doc

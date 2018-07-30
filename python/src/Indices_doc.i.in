@@ -58,6 +58,28 @@ check : bool
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Indices::complement
+"Build the complement of the current indices wrt :math:`\{0,\dots,n-1\}`.
+
+Parameters
+----------
+bound : positive int
+    The value of :math:`n`.
+
+Returns
+-------
+complement : :class:`~openturns.Indices`
+    The increasing collection of integers in :math:`\{0,\dots,n-1\}` not in the current indices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> indices = ot.Indices([1, 3, 4])
+>>> print(indices.complement(7))
+[0,2,5,6]"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Indices::fill
 "Fill the indices with a linear progression.
 

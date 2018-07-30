@@ -33,16 +33,14 @@ int main(int , char *[])
   {
     UnsignedInteger size = 4;
     Indices indices(size, 0);
-    for (UnsignedInteger i = 0; i < size; i++)
-    {
-      indices[i] = i;
-    }
+    indices.fill();
     fullprint << "indices=" << indices << std::endl;
     fullprint << "are indices valid with bound=" << size << "? " << (indices.check(size) ? "true" : "false") << std::endl;
     fullprint << "are indices valid with bound=" << size / 2 << "? " << (indices.check(size / 2) ? "true" : "false") << std::endl;
     indices[0] = indices[size - 1];
     fullprint << "indices after transformation=" << indices << std::endl;
     fullprint << "are indices valid with bound=" << size << "? " << (indices.check(size) ? "true" : "false") << std::endl;
+    fullprint << "complement wrt 7=" << indices.complement(7) << std::endl;
   }
   catch (TestFailed & ex)
   {

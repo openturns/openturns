@@ -80,6 +80,10 @@ public:
   /** Fill the indices with a linear progression, starting from start value by step stepsize */
   void fill(const UnsignedInteger initialValue = 0,
             const UnsignedInteger stepSize = 1);
+
+  /** Compute the complement between the indices and {0,...,n-1} for a given n */
+  Indices complement(const UnsignedInteger n) const;
+  
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
   virtual String __repr__() const;
