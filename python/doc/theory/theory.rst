@@ -1,8 +1,8 @@
 .. _theory:
 
-===============
-Reference guide
-===============
+======
+Theory
+======
 
 The theoretical documentation. This contains an in-depth description of all algorithms.
 
