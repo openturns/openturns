@@ -344,7 +344,7 @@ void ResourceMap::loadDefaultConfiguration()
   set( "Drawable-DefaultLineStyle", "solid" );
   set( "Drawable-DefaultPattern", "s" );
   set( "Drawable-AlternativePattern", "S" );
-  setAsUnsignedInteger( "Drawable-DefaultLineWidth", 1 );
+  setAsScalar( "Drawable-DefaultLineWidth", 1.0 );
   setAsUnsignedInteger( "Drawable-DataThreshold", 2000 );
 
   // GraphImplementation parameters //

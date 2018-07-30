@@ -90,8 +90,8 @@ public:
   virtual void setFillStyle(const String & fillStyle);
 
   /** Line width accessor */
-  virtual UnsignedInteger getLineWidth() const;
-  virtual void setLineWidth(const UnsignedInteger lineWidth);
+  virtual Scalar getLineWidth() const;
+  virtual void setLineWidth(const Scalar lineWidth);
 
   /** Accessor for pattern */
   virtual String getPattern() const;
@@ -283,7 +283,7 @@ protected:
   String pointStyle_;
 
   /** Line width of the curve */
-  UnsignedInteger lineWidth_;
+  Scalar lineWidth_;
 
   /** Initialize Valid parameter list */
   static void InitializeValidParameterList();

@@ -20,7 +20,7 @@ color : str
     Color of the curve. If not specified, by default it is 'blue'.
 lineStyle : str
     Style of the curve. If not specified, by default it is 'solid'.
-lineWidth : int
+lineWidth : float
     Width of the curve. If not specified, by default it is 1.
 
 Examples

@@ -102,7 +102,7 @@ Curve::Curve(const Point & dataX,
 Curve::Curve(const Sample & data,
              const String & color,
              const String & lineStyle,
-             const UnsignedInteger lineWidth,
+             const Scalar lineWidth,
              const String & legend)
   : DrawableImplementation(Sample(0, 2), legend)
 {

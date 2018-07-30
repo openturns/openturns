@@ -52,7 +52,7 @@ BarPlot::BarPlot(const Sample & data,
                  const String & color,
                  const String & fillStyle,
                  const String & lineStyle,
-                 const UnsignedInteger lineWidth,
+                 const Scalar lineWidth,
                  const String & legend)
   : DrawableImplementation(data, legend)
   , origin_(origin)

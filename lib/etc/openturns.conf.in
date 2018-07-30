@@ -81,7 +81,7 @@
   <Drawable-DefaultLineStyle    value="solid" />
   <Drawable-DefaultPattern      value="s"     />
   <Drawable-AlternativePattern  value="S"     />
-  <Drawable-DefaultLineWidth    value="1"     />
+  <Drawable-DefaultLineWidth    value="1.0"   />
   <Drawable-DataThreshold       value="2000"  />
 
   <!-- OT::GraphImplementation parameters -->
