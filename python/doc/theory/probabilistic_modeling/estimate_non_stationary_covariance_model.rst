@@ -1,3 +1,5 @@
+.. _estimate_non_stationary_covariance_model:
+
 Estimation of a non stationary cov. model
 =========================================
 

@@ -1,3 +1,5 @@
+.. _estimate_stationary_covariance_model:
+
 Estimation of a stationary covariance model
 ===========================================
 

@@ -1,3 +1,5 @@
+.. _parametric_spectral_model:
+
 Parametric spectral density functions
 =====================================
 

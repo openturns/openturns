@@ -1,3 +1,5 @@
+.. _sphere_sampling:
+
 Sphere sampling method
 ----------------------
 

@@ -1,3 +1,5 @@
+.. _covariance_model:
+
 Covariance models
 =================
 

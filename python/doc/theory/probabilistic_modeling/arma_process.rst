@@ -1,3 +1,5 @@
+.. _arma_process:
+
 ARMA stochastic process
 =======================
 

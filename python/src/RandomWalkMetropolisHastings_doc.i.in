@@ -1,6 +1,8 @@
 %feature("docstring") OT::RandomWalkMetropolisHastings
 "Random Walk Metropolis-Hastings method.
 
+Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
+
 Available constructor:
     RandomWalkMetropolisHastings(*prior, conditional, observations, initialState, proposal*)
 

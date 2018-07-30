@@ -1,3 +1,5 @@
+.. _field_function:
+
 Field functions
 ===============
 

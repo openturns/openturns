@@ -1,3 +1,5 @@
+.. _arma_estimation:
+
 ARMA process estimation
 =======================
 

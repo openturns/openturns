@@ -1,3 +1,5 @@
+.. _design_experiment:
+
 Design of Experiments
 ---------------------
 

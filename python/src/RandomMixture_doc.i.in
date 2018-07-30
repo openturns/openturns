@@ -1,6 +1,8 @@
 %feature("docstring") OT::RandomMixture
 "RandomMixture distribution.
 
+Refer to :ref:`random_mixture`.
+
 Available constructors:
     RandomMixture(*coll, cst*)
 

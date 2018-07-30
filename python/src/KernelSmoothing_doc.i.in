@@ -1,6 +1,8 @@
 %feature("docstring") OT::KernelSmoothing
 "Non parametric fitting technique with kernel smoothing.
 
+Refer to :ref:`kernel_smoothing`.
+
 Parameters
 ----------
 kernel : :class:`~openturns.Distribution`, optional

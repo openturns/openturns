@@ -1,3 +1,5 @@
+.. _parametric_estimation:
+
 Parametric Estimation
 ---------------------
 

@@ -1,3 +1,5 @@
+.. _quantile_estimation_wilks:
+
 Estimating a quantile by Wilks' method
 --------------------------------------
 

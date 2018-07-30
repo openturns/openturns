@@ -1,3 +1,5 @@
+.. _estimate_spectral_density_function:
+
 Estimation of a spectral density function
 ==========================================
 
@@ -136,3 +138,5 @@ fixing the number of segments, the *overlap* size parameter and a
     - See :class:`~openturns.Hanning`
     - See :class:`~openturns.Hamming`
     - See :class:`~openturns.WelchFactory`
+
+  

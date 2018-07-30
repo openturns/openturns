@@ -1,3 +1,5 @@
+.. _orthogonal_polynomials:
+
 Orthogonal polynomials
 ----------------------
 

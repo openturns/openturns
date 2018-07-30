@@ -133,6 +133,8 @@ Correlation analysis
 Sensitivity Analysis
 ====================
 
+Refer to :ref:`sensitivity_sobol`.
+
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t

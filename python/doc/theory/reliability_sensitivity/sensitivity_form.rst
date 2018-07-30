@@ -1,3 +1,5 @@
+.. _sensitivity_form:
+
 Sensitivity Factors from FORM method
 ------------------------------------
 

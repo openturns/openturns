@@ -1,3 +1,5 @@
+.. _random_mixture:
+
 Random Mixture: affine combination of independent univariate distributions
 --------------------------------------------------------------------------
 

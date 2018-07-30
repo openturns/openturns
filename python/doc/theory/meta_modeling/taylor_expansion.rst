@@ -1,3 +1,5 @@
+.. _taylor_expansion:
+
 Linear and Quadratic Taylor Expansions
 --------------------------------------
 

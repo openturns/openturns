@@ -1,3 +1,5 @@
+.. _qqplot_graph:
+
 Using QQ-plot to compare two samples
 ------------------------------------
 

@@ -1,3 +1,5 @@
+.. _directional_simulation:
+
 Directional Simulation
 ----------------------
 

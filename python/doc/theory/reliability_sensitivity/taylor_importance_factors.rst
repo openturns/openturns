@@ -1,3 +1,5 @@
+.. _taylor_importance_factors:
+
 Taylor decomposition importance factors
 ---------------------------------------
 

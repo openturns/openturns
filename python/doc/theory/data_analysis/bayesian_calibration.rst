@@ -1,4 +1,6 @@
-Bayesian Calibration
+.. _bayesian_calibration:
+
+Bayesian calibration
 --------------------
 
 We consider a computer model :math:`h` (*i.e.* a deterministic function)

@@ -1,3 +1,5 @@
+.. _anderson_darling_test:
+
 Anderson-Darling goodness-of-fit test
 -------------------------------------
 

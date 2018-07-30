@@ -1,6 +1,8 @@
 %feature("docstring") OT::MetaModelValidation
 "Base class to score a metamodel and perform validations.
 
+Refer to :ref:`cross_validation`.
+
 Available constructor:
     MetaModelValidation(*inputValidationSample, outputValidationSample, metaModel*)
 

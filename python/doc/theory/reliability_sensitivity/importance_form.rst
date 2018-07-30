@@ -1,3 +1,5 @@
+.. _importance_form:
+
 Importance factors from FORM method
 -----------------------------------
 

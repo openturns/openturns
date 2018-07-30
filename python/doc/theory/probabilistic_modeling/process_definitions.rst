@@ -1,3 +1,5 @@
+.. _process_definitions:
+
 Stochastic process definitions
 ==============================
 

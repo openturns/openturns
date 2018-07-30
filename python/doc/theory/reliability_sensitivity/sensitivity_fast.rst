@@ -1,3 +1,5 @@
+.. _sensitivity_fast:
+
 Sensivity analysis by Fourier decomposition
 -------------------------------------------
 

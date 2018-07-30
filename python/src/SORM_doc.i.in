@@ -1,6 +1,8 @@
 %feature("docstring") OT::SORM
 "Second Order Reliability Method (SORM).
 
+Refer to :ref:`sorm_approximation`.
+
 Available constructors:
     SORM(*nearestPointAlgorithm, event, physicalStartingPoint*)
 

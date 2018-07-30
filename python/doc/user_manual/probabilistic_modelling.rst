@@ -165,6 +165,8 @@ Combining and transforming distributions
 Copulas
 =======
 
+Refer to :ref:`copula`.
+
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t

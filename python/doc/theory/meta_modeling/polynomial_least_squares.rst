@@ -1,3 +1,5 @@
+.. _polynomial_least_squares:
+
 Least squares polynomial response surface
 -----------------------------------------
 

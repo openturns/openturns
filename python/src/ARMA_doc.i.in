@@ -1,6 +1,8 @@
 %feature("docstring") OT::ARMA
 "ARMA process.
 
+Refer to :ref:`arma_process`.
+
 Available constructors:
     ARMA()
 

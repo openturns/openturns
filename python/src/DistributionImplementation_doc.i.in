@@ -1856,6 +1856,8 @@ OT_Distribution_getInverseIsoProbabilisticTransformation_doc
 %define OT_Distribution_getIsoProbabilisticTransformation_doc
 "Accessor to the iso-probabilistic transformation.
 
+Refer to :ref:`isoprobabilistic_transformation`.
+
 Returns
 -------
 T : :class:`~openturns.Function`
@@ -2205,6 +2207,8 @@ OT_Distribution_getRange_doc
 
 %define OT_Distribution_getRealization_doc
 "Accessor to a pseudo-random realization from the distribution.
+
+Refer to :ref:`distribution_realization`.
 
 Returns
 -------

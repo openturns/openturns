@@ -1,3 +1,5 @@
+.. _stationary_covariance_model:
+
 Parametric stationary covariance models
 =======================================
 

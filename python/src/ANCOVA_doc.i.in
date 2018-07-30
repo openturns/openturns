@@ -1,6 +1,8 @@
 %feature("docstring") OT::ANCOVA
 "ANalysis of COVAriance method (ANCOVA).
 
+Refer to :ref:`sensitivity_ancova`.
+
 Available constructor:
     ANCOVA(*functionalChaosResult, correlatedInput*)
 

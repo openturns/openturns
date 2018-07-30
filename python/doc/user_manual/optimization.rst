@@ -4,6 +4,8 @@
 Optimization
 ============
 
+Refer to :ref:`optimization_algorithm`.
+
 .. currentmodule:: openturns
 
 Generic optimization classes

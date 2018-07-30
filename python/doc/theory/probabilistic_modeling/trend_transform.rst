@@ -1,3 +1,5 @@
+.. _trend_transform:
+
 Trend computation
 -----------------
 

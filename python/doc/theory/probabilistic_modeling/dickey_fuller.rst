@@ -1,3 +1,5 @@
+.. _dickey_fuller:
+
 Dickey-Fuller stationarity test
 ===============================
 

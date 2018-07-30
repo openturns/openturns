@@ -1,6 +1,8 @@
 %feature("docstring") OT::DickeyFullerTest
 "The Dickey-Fuller stationarity test.
 
+Refer to :ref:`dickey_fuller`.
+
 Notes
 -----
 The Dickey-Fuller test checks the stationarity of a scalar time series using one time series.

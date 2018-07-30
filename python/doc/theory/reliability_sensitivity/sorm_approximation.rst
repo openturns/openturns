@@ -1,3 +1,5 @@
+.. _sorm_approximation:
+
 SORM
 ----
 

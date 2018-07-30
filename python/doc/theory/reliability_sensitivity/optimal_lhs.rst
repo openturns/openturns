@@ -1,3 +1,5 @@
+.. _optimal_lhs:
+
 Optimal LHS design
 ^^^^^^^^^^^^^^^^^^
 

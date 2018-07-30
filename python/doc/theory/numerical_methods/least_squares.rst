@@ -1,3 +1,5 @@
+.. _least_squares:
+
 Least squares problems numerical methods
 ----------------------------------------
 

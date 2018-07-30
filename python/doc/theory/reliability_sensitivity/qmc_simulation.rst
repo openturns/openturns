@@ -1,3 +1,5 @@
+.. _qmc_simulation:
+
 Quasi Monte Carlo
 -----------------
 

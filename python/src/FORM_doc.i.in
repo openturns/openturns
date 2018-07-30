@@ -1,6 +1,8 @@
 %feature("docstring") OT::FORM
 "First Order Reliability Method (FORM).
 
+Refer to :ref:`form_approximation`.
+
 Available constructors:
     FORM(*nearestPointAlgorithm, event, physicalStartingPoint*)
 

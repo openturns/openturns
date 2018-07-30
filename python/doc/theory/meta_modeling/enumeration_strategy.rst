@@ -1,3 +1,5 @@
+.. _enumeration_strategy:
+
 Chaos basis enumeration strategies
 ----------------------------------
 

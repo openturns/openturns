@@ -1,3 +1,5 @@
+.. _lhs_simulation:
+
 Latin Hypercube Simulation
 --------------------------
 

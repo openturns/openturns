@@ -1,3 +1,5 @@
+.. _nataf_transformation:
+
 Generalized Nataf Transformation
 --------------------------------
 

@@ -1,6 +1,8 @@
 %feature("docstring") OT::NonStationaryCovarianceModelFactory
 "Estimation of a non stationary covariance model.
 
+Refer to :ref:`estimate_non_stationary_covariance_model`.
+
 Notes
 -----
 We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d` be a multivariate process of dimension *d* where :math:`\cD \in \Rset^n`. 

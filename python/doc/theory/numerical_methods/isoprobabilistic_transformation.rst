@@ -1,3 +1,5 @@
+.. _isoprobabilistic_transformation:
+
 Isoprobabilistic transformations
 --------------------------------
 
@@ -26,9 +28,9 @@ such that the distribution of the random vector
 distribution for all rotations :math:`\mat{R}\in{\cS\cO}_n(\Rset)`.
 Such transformations exist and the most widely used are:
 
--  the Generalized Nataf transformation (refer to ),
+-  the Generalized Nataf transformation (refer to [Lebrun2009b]_),
 
--  the Rosenblatt transformation (refer to ).
+-  the Rosenblatt transformation (refer to [Rosenblatt1952]_).
 
 If we suppose that the numerical model :math:`g` has suitable properties
 of differentiability, the evaluation of the probability :eq:`PfXIsoProb`
@@ -59,13 +61,13 @@ The following transformations verify that property, under
 some specific conditions on the dependence structure of the random
 vector :math:`\vect{X}` :
 
-- the Nataf transformation (see [Nataf1962]_): :math:`\vect{X}` must
+- the Nataf transformation (see [Nataf1962]_, [Lebrun2009a]_): :math:`\vect{X}` must
   have a normal copula,
 
 - the Generalized Nataf transformation (see [Lebrun2009b]_):
   :math:`\vect{X}` must have an elliptical copula,
 
-- the Rosenblatt transformation (see [Rosenblatt1952]_) : there is no
+- the Rosenblatt transformation (see [Rosenblatt1952]_, [Lebrun2009c]_): there is no
   condition on the copula of :math:`\vect{X}` .
 
 The Generalized Nataf transformation is automatically used when
@@ -77,12 +79,11 @@ case.
 
     - See the available :ref:`isoprobabilistic transformations <isoprobabilistic_transformations>`.
 
-
 .. topic:: References:
 
     - A. Der Kiureghian, P.L. Liu, 1986,"Structural Reliability Under Incomplete Probabilistic Information", Journal of Engineering Mechanics, vol 112, no. 1, pp85-104.
+    - [Lebrun2009a]_
     - [Lebrun2009b]_
     - [Lebrun2009c]_
     - [Nataf1962]_
     - [Rosenblatt1952]_
-

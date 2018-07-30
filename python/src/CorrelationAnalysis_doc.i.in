@@ -1,7 +1,7 @@
 %feature("docstring") OT::CorrelationAnalysis::PCC
 "Correlation evaluation based on the Partial Correlation Coefficient.
 
-Refer to :ref:`Partial Correlation Coefficient <ranking_pcc>`.
+Refer to :ref:`ranking_pcc`.
 
 Parameters
 ----------
@@ -26,7 +26,7 @@ CorrelationAnalysis_PRCC"
 %feature("docstring") OT::CorrelationAnalysis::PRCC
 "Correlation evaluation based on the Partial Rank Correlation Coefficient.
 
-Refer to :ref:`Partial Rank Correlation Coefficient <ranking_prcc>`.
+Refer to :ref:`ranking_prcc`.
 
 Parameters
 ----------
@@ -51,7 +51,7 @@ CorrelationAnalysis_PCC"
 %feature("docstring") OT::CorrelationAnalysis::PearsonCorrelation
 "Correlation evaluation based on the Pearson correlation coefficient.
 
-Refer to :ref:`Pearson coefficient <pearson_coefficient>`.
+Refer to :ref:`pearson_coefficient`.
 
 Parameters
 ----------
@@ -76,7 +76,7 @@ CorrelationAnalysis_SpearmanCorrelation"
 %feature("docstring") OT::CorrelationAnalysis::SpearmanCorrelation
 "Correlation evaluation based on the Spearman correlation coefficient.
 
-Refer to :ref:`Spearman coefficient <spearman_coefficient>`.
+Refer to :ref:`spearman_coefficient`.
 
 Parameters
 ----------
@@ -101,7 +101,7 @@ CorrelationAnalysis_PearsonCorrelation"
 %feature("docstring") OT::CorrelationAnalysis::SRC
 "Correlation evaluation based on the Standard Regression Coefficient.
 
-Refer to :ref:`Standard Regression Coefficient <ranking_src>`.
+Refer to :ref:`ranking_src`.
 
 Parameters
 ----------

@@ -1,6 +1,8 @@
 %feature("docstring") OT::FAST
 "Fourier Amplitude Sensitivity Testing (FAST).
 
+Refer to :ref:`sensitivity_fast`.
+
 Available constructor:
     FAST(*model, distribution, N, Nr=1, M=4*)
 

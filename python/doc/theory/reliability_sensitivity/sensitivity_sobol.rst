@@ -1,3 +1,5 @@
+.. _sensitivity_sobol:
+
 Sensivity analysis using Sobol indices
 --------------------------------------
 

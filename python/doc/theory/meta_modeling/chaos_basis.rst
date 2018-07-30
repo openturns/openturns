@@ -1,3 +1,5 @@
+.. _chaos_basis:
+
 Polynomial chaos basis
 ----------------------
 

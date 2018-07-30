@@ -1,3 +1,5 @@
+.. _boxcox_transformation:
+
 Box Cox transformation
 ======================
 

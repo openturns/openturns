@@ -4,6 +4,8 @@
 Designs of experiments
 ======================
 
+Refer to :ref:`design_experiment`.
+
 .. currentmodule:: openturns
 
 .. autosummary::
@@ -72,6 +74,8 @@ Deterministic weighted experiments
 Low Discrepancy Sequences
 =========================
 
+Refer to :ref:`low_discrepancy_sequence`.
+
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
@@ -90,6 +94,7 @@ Low Discrepancy Sequences
 
 Optimal LHS generation
 ----------------------
+Refer to :ref:`optimal_lhs`.
 
 .. autosummary::
     :toctree: _generated/

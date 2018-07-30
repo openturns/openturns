@@ -1,6 +1,8 @@
 %feature("docstring") OT::MaximumLikelihoodFactory
 "Maximum likelihood factory.
 
+Refer to :ref:`maximum_likelihood`.
+
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
@@ -8,7 +10,6 @@ distribution : :class:`~openturns.Distribution`
 
 Notes
 -----
-
 Implements generic maximum likelihood estimation.
 
 Let us denote :math:`(\vect{x}_1, \dots, \vect{x}_n)` the sample, :math:`p_{\vect{\theta}}`

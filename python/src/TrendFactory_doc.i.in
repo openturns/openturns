@@ -1,6 +1,8 @@
 %feature("docstring") OT::TrendFactory
 "Trend estimator.
 
+Refer to :ref:`trend_transform`.
+
 Available constructors:
     TrendFactory(*basisSequenceFactory=LARS(), fittingAlgorithm=CorrectedLeaveOneOut()*)
 

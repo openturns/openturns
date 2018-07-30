@@ -1,8 +1,7 @@
 %feature("docstring") OT::Wilks
 "Class to evaluate the Wilks number.
 
-Available constructor:
-    Wilks(*randomVector*)
+Refer to :ref:`quantile_estimation_wilks`.
 
 Parameters
 ----------

@@ -21,6 +21,8 @@ General objects
 Temporal information
 ====================
 
+Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
+
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t

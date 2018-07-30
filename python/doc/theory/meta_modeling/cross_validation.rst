@@ -1,3 +1,5 @@
+.. _cross_validation:
+
 Cross validation assessment of PC models
 ----------------------------------------
 
