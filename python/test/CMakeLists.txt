@@ -511,6 +511,9 @@ ot_pyinstallcheck_test (Distribution_arithmetic)
 if (SCIPY_FOUND)
   ot_pyinstallcheck_test (Distribution_scipy)
 endif ()
+if (CHAOSPY_FOUND)
+  ot_pyinstallcheck_test (Distribution_chaospy)
+endif ()
 
 ## Bayesian
 ot_pyinstallcheck_test (CalibrationStrategy_std)

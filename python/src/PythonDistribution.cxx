@@ -302,7 +302,7 @@ Scalar PythonDistribution::computeComplementaryCDF(const Point & inP) const
 }
 
 
-/* Get the PDFGradient of the distribution */
+/* Get the quantile of the distribution */
 Point PythonDistribution::computeQuantile(const Scalar prob, const Bool tail) const
 {
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeQuantile")))
@@ -414,10 +414,11 @@ Scalar PythonDistribution::computeScalarQuantile(const Scalar prob,
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeScalarQuantile") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeScalarQuantile"));
-    ScopedPyObjectPointer cProb(convert< Scalar, _PyFloat_ >(tail ? 1.0 - prob : prob));
+    ScopedPyObjectPointer probArg(convert< Scalar, _PyFloat_ >(prob));
+    ScopedPyObjectPointer tailArg(convert< Bool, _PyBool_ >(tail));
     ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
                                      methodName.get(),
-                                     cProb.get(), NULL));
+                                     probArg.get(), tailArg.get(), NULL));
 
     if (callResult.isNull())
     {

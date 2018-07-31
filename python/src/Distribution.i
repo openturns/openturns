@@ -113,8 +113,8 @@ class SciPyDistribution(PythonDistribution):
         moment = self._dist.moment(n)
         return [moment]
 
-    def computeScalarQuantile(self, p):
-        q = self._dist.ppf(p)
+    def computeScalarQuantile(self, p, tail=False):
+        q = self._dist.ppf(1.0 - p if tail else p)
         return q
 
     def computeQuantile(self, prob, tail=False):
@@ -134,6 +134,61 @@ class SciPyDistribution(PythonDistribution):
     def getParameterDescription(self):
         size = len(self._dist.args)
         return ['parameter' + str(i + 1) for i in range(size)]
+
+
+class ChaospyDistribution(PythonDistribution):
+    """
+    Allow to override Distribution from a chaospy distribution.
+
+    Parameters
+    ----------
+    dist : a chaospy.stats distribution
+        The distribution to wrap. It is currently limited to 1D distributions
+        as chaopy multivariate distributions don't implement CDF computation.
+
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> # import chaospy as cp
+    >>> # chaospy_dist = st.Triangular(1.0, 2.0, 3.0)
+    >>> # distribution = ot.Distribution(ot.ChaospyDistribution(chaospy_dist))
+    >>> # distribution.getRealization()
+    """
+    def __init__(self, dist):
+        super(ChaospyDistribution, self).__init__(len(dist))
+        if len(dist)>1:
+            raise Exception("Multivariate chaospy don't implement CDF computation")
+        self._dist = dist
+        bounds = dist.range()
+        self.__range = Interval(bounds[0], bounds[1])
+
+    def getRange(self):
+        return self.__range
+
+    def getRealization(self):
+        rvs = self._dist.sample(1).flatten()
+        return rvs
+
+    def getSample(self, size):
+        rvs = self._dist.sample(size)
+        return rvs.reshape(size, 1)
+
+    def computePDF(self, X):
+        pdf = self._dist.pdf(X)
+        return pdf
+
+    def computeCDF(self, X):
+        cdf = self._dist.cdf(X)
+        return cdf
+
+    def computeScalarQuantile(self, p, tail=False):
+        q = self._dist.inv(1 - p if tail else p)
+        return float(q)
+
+    def computeQuantile(self, prob, tail=False):
+        p = 1.0 - prob if tail else prob
+        q = self._dist.inv(p)
+        return [float(q)]
 %}
 
 %include UncertaintyModelCopulaCollection.i

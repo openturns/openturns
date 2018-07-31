@@ -1,0 +1,46 @@
+distribution= class=PythonDistribution name=ChaospyDistribution
+realization= [3.06001]
+sample=     [ v0      ]
+0 : [ 3.778   ]
+1 : [ 3.48188 ]
+2 : [ 3.34014 ]
+3 : [ 2.68415 ]
+4 : [ 2.68409 ]
+pdf= 0.4
+cdf= 0.12
+quantile= [2.6]
+quantile (tail)= [3.65359]
+scalar quantile=2.6
+scalar quantile (tail)=3.65359
+mean= [3.16667]
+mean(sampling)= [3.10687]
+std= [0.424918]
+std(sampling)= [0.544844]
+skewness= [-0.422404]
+skewness(sampling)= [-0.464307]
+kurtosis= [2.4]
+kurtosis(sampling)= [1.51839]
+range= [2, 4]
+distribution= class=PythonDistribution name=ChaospyDistribution
+realization= [0.902645]
+sample=     [ v0       ]
+0 : [ 2.97919  ]
+1 : [ 1.9802   ]
+2 : [ 1.56111  ]
+3 : [ 0.172315 ]
+4 : [ 0.172219 ]
+pdf= 0.200395
+cdf= 0.888298
+quantile= [2.6]
+quantile (tail)= [-0.0162159]
+scalar quantile=2.6
+scalar quantile (tail)=-0.0162159
+mean= [1.28571]
+mean(sampling)= [1.19474]
+std= [1.01267]
+std(sampling)= [1.23586]
+skewness= [0.0711194]
+skewness(sampling)= [-0.16734]
+kurtosis= [2.26575]
+kurtosis(sampling)= [1.54451]
+range= [-1, 4]
