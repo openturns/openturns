@@ -23,6 +23,7 @@ Reliability, sensitivity
     low_discrepancy_sequence.ipynb
     estimate_moments_taylor.ipynb
     sensitivity_sobol.ipynb
+    functional_chaos_sensitivity.ipynb
     sensitivity_ancova.ipynb
     sensitivity_fast.ipynb
     sensitivity_cobweb.ipynb
