@@ -661,7 +661,7 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND)
+if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND AND NLOPT_FOUND)
   file (GLOB_RECURSE IPYNBS "${CMAKE_SOURCE_DIR}/python/doc/examples/*.ipynb")
   foreach (IPYNB ${IPYNBS})
     if (NOT IPYNB MATCHES checkpoint)
