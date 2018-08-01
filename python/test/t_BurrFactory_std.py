@@ -1,16 +1,15 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 try:
-    distribution = Burr(2.5, 1.5)
+    distribution = ot.Burr(2.5, 1.5)
     size = 10000
     sample = distribution.getSample(size)
-    factory = BurrFactory()
+    factory = ot.BurrFactory()
     estimatedDistribution = factory.build(sample)
     print("distribution=", repr(distribution))
     print("Estimated distribution=", repr(estimatedDistribution))
@@ -28,10 +27,18 @@ try:
     print("Burr from parameters=", estimatedBurr)
 
     try:
-        estimatedBurr = BurrFactory().build(Normal(1e-3, 1e-5).getSample(100))
+        estimatedBurr = factory.build(ot.Normal(1e-3, 1e-5).getSample(100))
         print('Estimated burr=', estimatedBurr)
     except:
         pass
+
+    ot.RandomGenerator.SetSeed(0)
+    try:
+        estimatedBurr = factory.build(ot.UserDefined(ot.LogNormal(7.71, 1.0056).getSample(500)).getSupport())
+        print('Estimated burr=', estimatedBurr)
+    except:
+        pass
+
 except:
     import sys
     print("t_BurrFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])
