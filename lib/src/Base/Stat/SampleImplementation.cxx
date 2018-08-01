@@ -896,7 +896,7 @@ String SampleImplementation::__str__(const String & offset) const
 
   const UnsignedInteger printEllipsisThreshold = ResourceMap::GetAsUnsignedInteger("Sample-PrintEllipsisThreshold");
   const UnsignedInteger printEllipsisSize = ResourceMap::GetAsUnsignedInteger("Sample-PrintEllipsisSize");
-  const Bool ellipsis = (data_.getSize() > printEllipsisThreshold);
+  const Bool ellipsis = (size_ >= printEllipsisThreshold);
 
   size_t twidth = 0; // column title max width
   size_t lwidth = 0; // LHS number max width
