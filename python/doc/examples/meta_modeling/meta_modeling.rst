@@ -14,6 +14,7 @@ Meta modeling
     expert_mixture.ipynb
     general_linear_model.ipynb
     kriging.ipynb
+    kriging_advanced.ipynb
     fieldfunction_metamodel.ipynb
     viscous_fall_metamodel.ipynb
 
