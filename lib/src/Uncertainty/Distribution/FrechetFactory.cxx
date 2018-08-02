@@ -70,7 +70,7 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution if data contains NaN or Inf";
   // If the minimum value is zero then one of the shifted values will be zero, leading to an undefined logarithm. The small perturbation is harmless as it is just a matter of getting a reasonable starting point for a further MLE.
   // In any case, if the given sample is pathological (lots of zeros, a few positive values) a Frechet distribution is not a plausible candidate.
-  if (gamma == 0.0) gamma -= ResourceMap::GetAsScalar("Distribution-QuantileEpsilon");
+  if (gamma == 0.0) gamma -= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   // Convert the translated sample in logarithmic scale, in order for the new sample to be distributed according to the Gumbel distribution
   Sample logSample(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
