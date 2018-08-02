@@ -1,18 +1,17 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
 
 try:
     l = [1.0, 0.7, 1.2, 0.9]
     h = [0.5, 1.5, 3.5, 2.5]
-    distribution = Histogram(-1.5, l, h)
+    distribution = ot.Histogram(-1.5, l, h)
     size = 10000
     sample = distribution.getSample(size)
-    factory = HistogramFactory()
+    factory = ot.HistogramFactory()
     estimatedDistribution = factory.build(sample)
     print("distribution=", repr(distribution))
     print("Estimated distribution=", repr(estimatedDistribution))
@@ -36,6 +35,10 @@ try:
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
 
+
+    sample = ot.ChiSquare(0.0120637).getSample(32)
+    for useQuantile in [True, False]:
+        print('silverman useQuantile=', useQuantile, ot.Point(1, ot.HistogramFactory().computeSilvermanBandwidth(sample, useQuantile)))
 except:
     import sys
     print("t_HistogramFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])
