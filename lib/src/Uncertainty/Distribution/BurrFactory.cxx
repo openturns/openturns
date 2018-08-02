@@ -75,8 +75,8 @@ struct BurrFactoryParameterConstraint
       sumLogXC += log1p(xC);
     }
     /* MLE second parameter */
+    if (!SpecFunc::IsNormal(sumLogXC) || !(sumLogXC > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate the k parameter";
     const Scalar k = size / sumLogXC;
-    if (!SpecFunc::IsNormal(k)) throw InvalidArgumentException(HERE) << "Error: cannot estimate the k parameter";
 
     /* MLE equation first parameter */
     const Scalar relation = 1.0 + (c / size) * (sumRatio - k * sumScaledRatio);
