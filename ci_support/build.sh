@@ -14,7 +14,7 @@ cmake -DCMAKE_INSTALL_PREFIX=~/.local \
       -DSWIG_EXECUTABLE=~/.local/bin/swig \
       -DHMAT_DIR=~/.local/lib/cmake/hmat \
       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j2" \
-      -DCMAKE_CXX_FLAGS="-Wall -D_GLIBCXX_ASSERTIONS" \
+      -DCMAKE_CXX_FLAGS="-Wall -Werror -D_GLIBCXX_ASSERTIONS" \
       .
 make install -j2
 ctest -R pyinstallcheck --output-on-failure --timeout 100 -j2
