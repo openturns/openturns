@@ -293,7 +293,7 @@ public:
     return *this;
   }
 
-  OSS_iterator&
+  OSS_iterator
   operator++(int)
   {
     return *this;
