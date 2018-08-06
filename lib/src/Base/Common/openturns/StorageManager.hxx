@@ -473,7 +473,7 @@ public:
   {
     return *this;
   }
-  AdvocateIterator & operator ++ (int)
+  AdvocateIterator operator ++ (int)
   {
     return *this;
   }
