@@ -77,7 +77,7 @@ endmacro (ot_add_python_module)
 
 install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
-if (LIBXML2_FOUND)
+if (LIBXML2_FOUND AND CMAKE_VERSION VERSION_LESS 3.12)
   list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_LIBXML2=1)
 endif ()
 
@@ -112,6 +112,10 @@ ot_add_python_module(common common_module.i
                       TypedCollectionInterfaceObject.i
                       BaseCommonTemplateDefs.i
                    )
+
+if (LIBXML2_FOUND AND NOT CMAKE_VERSION VERSION_LESS 3.12)
+  set_property (TARGET ${SWIG_MODULE_common_REAL_NAME} PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_LIBXML2=1)
+endif ()
 
 ot_add_python_module(typ typ_module.i
                       Collection.i Collection_doc.i.in
