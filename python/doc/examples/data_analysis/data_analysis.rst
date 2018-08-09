@@ -34,6 +34,7 @@ Data analysis
     estimate_multivariate_arma.ipynb
     estimate_stationary_covariance_model.ipynb
     estimate_non_stationary_covariance_model.ipynb
+    estimate_spectral_density_function.ipynb
     linear_regression.ipynb
     bayesian_calibration.ipynb
     quantile_estimation_wilks.ipynb

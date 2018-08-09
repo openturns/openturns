@@ -139,4 +139,7 @@ fixing the number of segments, the *overlap* size parameter and a
     - See :class:`~openturns.Hamming`
     - See :class:`~openturns.WelchFactory`
 
-  
+.. topic:: Examples:
+
+    - See :doc:`/examples/data_analysis/estimate_spectral_density_function`
+
