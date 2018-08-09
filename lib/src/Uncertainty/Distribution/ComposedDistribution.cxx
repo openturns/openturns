@@ -201,7 +201,16 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
   distributionCollection_ = coll;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
+
+  // avoid description warning with identical entries
+  Description test(description);
+  Description::const_iterator it = std::unique(test.begin(), test.end());
+  if (it != test.end())
+  {
+    description = Description::BuildDefault(dimension_, "X");
+  }
   setDescription(description);
+
   setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
