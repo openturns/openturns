@@ -587,7 +587,9 @@ OT_Graph_getPDF_doc
 Parameters
 ----------
 xMargin : float
-    Horizontal margin ratio.
+    Horizontal margin ratio, defaults to 5% of the range on each side.
+    In log-scale, it is interpreted as a power of 10;
+    setting a value of 1 means a margin of one decade on each side.
     Defaults to *Graph-DefaultHorizontalMargin* map value."
 %enddef
 %feature("docstring") OT::GraphImplementation::setXMargin
@@ -601,7 +603,9 @@ OT_Graph_setXMargin_doc
 Parameters
 ----------
 yMargin : float
-    Vertical margin ratio.
+    Vertical margin ratio, defaults to 5% of the range on each side.
+    In log-scale, it is interpreted as a power of 10;
+    setting a value of 1 means a margin of one decade on each side.
     Defaults to *Graph-DefaultVerticalMargin* map value."
 %enddef
 %feature("docstring") OT::GraphImplementation::setYMargin
