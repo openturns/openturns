@@ -491,11 +491,6 @@ Bool HMatrixImplementation::setKey(const String & name, const String & value)
     std::istringstream iss( value );
     iss >> settings.recompressionEpsilon;
   }
-  else if (name == "max-parallel-leaves")
-  {
-    std::istringstream iss( value );
-    iss >> settings.maxParallelLeaves;
-  }
   else
     LOGWARN( OSS() << "Unknown parameter: " << name);
 

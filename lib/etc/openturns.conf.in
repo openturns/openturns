@@ -634,7 +634,6 @@
   <HMatrix-AssemblyEpsilon      value="1.0e-4"/>
   <HMatrix-RecompressionEpsilon value="1.0e-4"/>
   <HMatrix-MaxLeafSize          value="100"   />
-  <HMatrix-MaxParallelLeaves    value="5000"/>
   <HMatrix-ValidationError      value="0.0" />
   <HMatrix-ValidationRerun      value="0"   />
   <HMatrix-ValidationDump       value="0"   />
