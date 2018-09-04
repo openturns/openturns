@@ -49,6 +49,7 @@
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/FittingTest.hxx"
 #include "openturns/DistributionTransformation.hxx"
+#include "openturns/HypothesisTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -165,6 +166,17 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   // Recover the distribution, taking into account that we look for performance
   // so we avoid to rebuild expensive distributions as much as possible
   const UnsignedInteger inputDimension = inputSample.getDimension();
+  // For the dependence structure, we use the Spearman independence test to decide between an independent and a Normal copula.
+  Bool isIndependent = true;
+  for (UnsignedInteger j = 0; j < inputDimension && isIndependent; ++ j)
+  {
+    const Sample marginalJ = inputSample.getMarginal(j);
+    for (UnsignedInteger i = j + 1; i < inputDimension && isIndependent; ++ i)
+    {
+      TestResult testResult(HypothesisTest::Spearman(inputSample.getMarginal(i), marginalJ));
+      isIndependent = isIndependent && testResult.getBinaryQualityMeasure();
+    }
+  }
   Collection< Distribution > marginals(inputDimension);
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
   // The strategy for the marginals is to find the best continuous 1-d parametric model else fallback to a kernel smoothing
@@ -195,8 +207,12 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
     polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
   }
-  // For the dependence structure, we test first the independent copula, then the normal copula, but not a non-parametric copula as the penalty on the meta-model evaluation speed is most of the time prohibitive
-  setDistribution(ComposedDistribution(marginals, NormalCopulaFactory().build(inputSample)));
+
+  ComposedDistribution distribution(marginals);
+  if (!isIndependent)
+    distribution.setCopula(NormalCopulaFactory().build(inputSample));
+  setDistribution(distribution);
+
   const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-QNorm" ));
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
   const UnsignedInteger maximumTotalDegree = ResourceMap::GetAsUnsignedInteger( "FunctionalChaosAlgorithm-MaximumTotalDegree" );
