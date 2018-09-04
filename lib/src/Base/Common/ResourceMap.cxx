@@ -896,7 +896,6 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "HMatrix-AssemblyEpsilon", 1.0e-4);
   setAsScalar( "HMatrix-RecompressionEpsilon", 1.0e-4);
   setAsUnsignedInteger( "HMatrix-MaxLeafSize", 100);
-  setAsUnsignedInteger( "HMatrix-MaxParallelLeaves", 5000);
   setAsScalar( "HMatrix-ValidationError", 0.0);
   setAsUnsignedInteger( "HMatrix-ValidationRerun", 0);
   setAsUnsignedInteger( "HMatrix-ValidationDump", 0);
