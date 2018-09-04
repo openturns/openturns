@@ -167,7 +167,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   const UnsignedInteger inputDimension = inputSample.getDimension();
   Collection< Distribution > marginals(inputDimension);
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
-  // The strategy is to test first a Uniform distribution, then a Normal distribution, then a kernel smoothing for the marginals
+  // The strategy for the marginals is to find the best continuous 1-d parametric model else fallback to a kernel smoothing
   KernelSmoothing ks;
   Collection< DistributionFactory > factories(DistributionFactory::GetContinuousUniVariateFactories());
   LOGINFO("In FunctionalChaosAlgorithm, identify marginal distributions");
@@ -180,7 +180,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
     if (bestResult.getPValue() > ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
-    else marginals[i] = ks.build(marginalSample.getMarginal(i));
+    else marginals[i] = ks.build(marginalSample);
     marginals[i].setDescription(Description(1, inputDescription[i]));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
     polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
