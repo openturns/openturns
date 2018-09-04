@@ -158,8 +158,11 @@ Scalar HistogramFactory::computeSilvermanBandwidth(const Sample & sample,
     // We use the standard deviation
     hOpt = sample.computeStandardDeviationPerComponent()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
     // If we get zero it is due to a constant sample
-    if (hOpt == 0.0) LOGWARN(OSS() << "All the values are equal in the given sample. We switch to a bandwidth equal to QuantileEpsilon.");
-    hOpt =  ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+    if (hOpt == 0.0)
+    {
+      LOGWARN(OSS() << "All the values are equal in the given sample. We switch to a bandwidth equal to QuantileEpsilon.");
+      hOpt =  ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+    }
   }
   return hOpt;
 }
