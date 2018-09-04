@@ -629,10 +629,9 @@ void GraphImplementation::computeBoundingBox() const
     return;
   }
 
+  // compute the enclosing bounding box
   Sample minBoxes(0, 2);
   Sample maxBoxes(0, 2);
-
-  // first, get each Drawable's bounding box and drawing command
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     if (drawablesCollection_[i].getData().getSize() != 0)
@@ -642,17 +641,48 @@ void GraphImplementation::computeBoundingBox() const
       maxBoxes.add(boundingBox.getUpperBound());
     }
   }
+  Point min(minBoxes.getMin());
+  Point max(maxBoxes.getMax());
 
-  const Point min(minBoxes.getMin());
-  const Point max(maxBoxes.getMax());
+  // apply margins:
+  if (logScale_ & LOGX)
+  {
+    if (min[0] > 0.0)
+    {
+      const Scalar margin = std::pow(10.0, xMargin_);
+      min[0] /= margin;
+      max[0] *= margin;
+    }
+    else
+      LOGWARN("Negative x values in log-scale axis");
+  }
+  else
+  {
+    const Scalar delta = max[0] - min[0];
+    const Scalar margin = delta > 0.0 ? xMargin_ * delta : 0.5;
+    min[0] -= margin;
+    max[0] += margin;
+  }
 
-  const Point delta(max - min);
-
-  Point margin(2);
-  margin[0] = delta[0] > 0.0 ? xMargin_ * delta[0] : 0.5;
-  margin[1] = delta[1] > 0.0 ? yMargin_ * delta[1] : 0.5;
-
-  boundingBox_ = Interval(min - margin, max + margin);
+  if (logScale_ & LOGY)
+  {
+    if (min[1] > 0.0)
+    {
+      const Scalar margin = std::pow(10.0, yMargin_);
+      min[1] /= margin;
+      max[1] *= margin;
+    }
+    else
+      LOGWARN("Negative y values in log-scale axis");
+  }
+  else
+  {
+    const Scalar delta = max[1] - min[1];
+    const Scalar margin = delta > 0.0 ? yMargin_ * delta : 0.5;
+    min[1] -= margin;
+    max[1] += margin;
+  }
+  boundingBox_ = Interval(min, max);
 }
 
 /* Get the legend position */
