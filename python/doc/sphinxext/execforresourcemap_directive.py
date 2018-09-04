@@ -21,10 +21,11 @@ class execforresourcemap_directive(Directive):
 
             table = nodes.table()
 
-            tgroup = nodes.tgroup(cols=2)
+            tgroup = nodes.tgroup(cols=3)
             table += tgroup
             tgroup += nodes.colspec(colwidth=25, classes=['key'])
             tgroup += nodes.colspec(colwidth=8, classes=['value'])
+            tgroup += nodes.colspec(colwidth=8, classes=['type'])
             thead = nodes.thead()
             tgroup += thead
 
@@ -40,6 +41,11 @@ class execforresourcemap_directive(Directive):
             entry = nodes.entry()
             row += entry
             node = nodes.paragraph(text='Value')
+            entry += node
+
+            entry = nodes.entry()
+            row += entry
+            node = nodes.paragraph(text='Type')
             entry += node
 
             # Add body
@@ -69,6 +75,13 @@ class execforresourcemap_directive(Directive):
                 node = nodes.paragraph(text=value)
                 entry += node
 
+                entry = nodes.entry()
+                row += entry
+
+                keyType = ot.ResourceMap.GetType(key)
+                node = nodes.paragraph(text=keyType)
+                entry += node
+                
             return [table]
         except Exception:
             return [nodes.error(None, nodes.paragraph(text="Unable to execute python code at %s:%d:" % (basename(source), self.lineno)), nodes.paragraph(text=str(sys.exc_info()[1])))]

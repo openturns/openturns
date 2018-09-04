@@ -61,7 +61,7 @@ LinearModel LinearModelFactory::build(const Sample & samplePred,
   cmdFile << "cat(res$parameterEstimate, res$confidenceIntervalLow, res$confidenceIntervalHigh, res$pValues, sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;
   cmdFile.close();
-  const String RExecutable(ResourceMap::Get("R-executable-command"));
+  const String RExecutable(ResourceMap::GetAsString("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
   else throw NotYetImplementedException(HERE) << "In LinearModelFactory::build(const Sample & samplePred, const Sample & sampleLab, const Scalar levelValue) const: needs R. Please install it and set the absolute path of the R executable in ResourceMap.";

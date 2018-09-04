@@ -51,7 +51,7 @@ KrigingAlgorithm::KrigingAlgorithm()
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
+  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
   else glmAlgo_.setMethod(0);
 }
 
@@ -75,7 +75,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
+  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
   else glmAlgo_.setMethod(0);
 }
 
@@ -99,7 +99,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
+  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
   else glmAlgo_.setMethod(0);
 }
 
@@ -113,7 +113,7 @@ void KrigingAlgorithm::computeGamma()
 {
   // Get cholesky factor & rho from glm
   LOGINFO("Solve L^t.gamma = rho");
-  if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT")
+  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT")
   {
     gamma_ = covarianceCholeskyFactorHMatrix_.solveLower(rho_, true);
   }
@@ -136,7 +136,7 @@ void KrigingAlgorithm::run()
 
   /* Method that returns the covariance factor - hmat */
   const GeneralLinearModelResult glmResult(glmAlgo_.getResult());
-  if (ResourceMap::Get("KrigingAlgorithm-LinearAlgebra") == "HMAT")
+  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT")
     covarianceCholeskyFactorHMatrix_ = glmResult.getHMatCholeskyFactor();
   else
     covarianceCholeskyFactor_ = glmResult.getCholeskyFactor();

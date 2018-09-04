@@ -35,8 +35,29 @@ value : str
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.Get('DiscreteDistribution-SupportEpsilon')
-'1.0e-14'"
+>>> ot.ResourceMap.Get('WeightedExperiment-DefaultSize')
+'100'"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetType
+"Access the type of a parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+
+Returns
+-------
+type : str
+    The type associated to that key.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.GetType('DiscreteDistribution-SupportEpsilon')
+'float'"
 
 // ---------------------------------------------------------------------
 
@@ -48,7 +69,9 @@ Parameters
 key : str
     An identifier associated to the parameter.
 value : str
-    The value associated to that key.
+    The value associated to that key. If the key already exists as a *float*,
+    an *unsigned int* or a *bool*, the given string is converted into the
+    corresponding type.
 
 Examples
 --------
@@ -86,7 +109,8 @@ Parameters
 key : str
     An identifier associated to the parameter.
 value : bool
-    The value associated to that key.
+    The value associated to that key. The key is added to the bool map even if
+    it already exists in another map (float, unsigned int or string).
 
 Examples
 --------
@@ -103,7 +127,8 @@ Parameters
 key : str
     An identifier associated to the parameter.
 value : float
-    The value associated to that key.
+    The value associated to that key. The key is added to the float map even if
+    it already exists in another map (string, unsigned int or bool).
 
 Examples
 --------
@@ -133,6 +158,45 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ResourceMap::SetAsString
+"Access a parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : str
+    The value associated to that key. The key is added to the string map even if
+    it already exists in another map (float, unsigned int or bool).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.SetAsString('View-ImageFormat', 'png')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetAsString
+"Access a parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+
+Returns
+-------
+value : str
+    The value associated to that key.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.Get('WeightedExperiment-DefaultSize')
+'100'"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ResourceMap::SetAsUnsignedInteger
 "Access an integer parameter.
 
@@ -141,7 +205,8 @@ Parameters
 key : str
     An identifier associated to the parameter.
 value : int
-    The value associated to that key.
+    The value associated to that key. The key is added to the unsigned integer
+    map even if it already exists in another map (float, string or bool).
 
 Examples
 --------
@@ -181,6 +246,46 @@ size : positive int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ResourceMap::GetBoolSize
+"Get the size of the bool map in ResourceMap.
+
+Returns
+-------
+size : positive int
+    The number of *bool* constants defined in the ResourceMap."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetScalarSize
+"Get the size of the float map in ResourceMap.
+
+Returns
+-------
+size : positive int
+    The number of *float* constants defined in the ResourceMap."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetStringSize
+"Get the size of the string map in ResourceMap.
+
+Returns
+-------
+size : positive int
+    The number of *string* constants defined in the ResourceMap."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetUnsignedIntegerSize
+"Get the size of the unsigned integer map in ResourceMap.
+
+Returns
+-------
+size : positive int
+    The number of *unsigned integer* constants defined in the ResourceMap."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ResourceMap::GetKeys
 "Get the keys of the ResourceMap.
 
@@ -188,4 +293,44 @@ Returns
 -------
 keys : tuple of str
     The list of identifiers."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetBoolKeys
+"Get the bool keys of the ResourceMap.
+
+Returns
+-------
+keys : tuple of str
+    The list of *bool* identifiers."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetScalarKeys
+"Get the float keys of the ResourceMap.
+
+Returns
+-------
+keys : tuple of str
+    The list of *float* identifiers."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetStringKeys
+"Get the string keys of the ResourceMap.
+
+Returns
+-------
+keys : tuple of str
+    The list of *string* identifiers."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::GetUnsignedIntegerKeys
+"Get the unsigned integer keys of the ResourceMap.
+
+Returns
+-------
+keys : tuple of str
+    The list of *unsigned integer* identifiers."
 

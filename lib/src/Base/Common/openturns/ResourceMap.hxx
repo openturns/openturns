@@ -49,85 +49,154 @@ public:
   static MutexLockSingleton<ResourceMap> GetInstance();
 #endif
 
-  /** Get a value in the map */
-  static String Get(String key);
-  static Bool GetAsBool(String key);
-  static UnsignedInteger GetAsUnsignedInteger(String key);
-  static Scalar GetAsScalar(String key);
+  /** Get a value in the maps */
+  static String GetType(const String & key);
+  static String Get(const String & key);
+  static String GetAsString(const String & key);
+  static Bool GetAsBool(const String & key);
+  static UnsignedInteger GetAsUnsignedInteger(const String & key);
+  static Scalar GetAsScalar(const String & key);
 
-  /** Set a value in the map */
-  static void Set(String key, String value);
-  static void SetAsBool(String key, Bool value);
-  static void SetAsUnsignedInteger(String key, UnsignedInteger value);
-  static void SetAsScalar(String key, Scalar value);
+  /** Set a value in the maps */
+  static void Set(const String & key, const String & value);
+  static void SetAsString(const String & key, const String & value);
+  static void SetAsBool(const String & key, Bool value);
+  static void SetAsUnsignedInteger(const String & key, UnsignedInteger value);
+  static void SetAsScalar(const String & key, Scalar value);
 
-  /** Get the size of the map */
+  /** Get the total size of the maps */
   static UnsignedInteger GetSize();
+  static UnsignedInteger GetStringSize();
+  static UnsignedInteger GetScalarSize();
+  static UnsignedInteger GetUnsignedIntegerSize();
+  static UnsignedInteger GetBoolSize();
 
-  /** Get the list of keys */
+  /** Get the list of keys in the maps */
   static std::vector<String> GetKeys();
+  static std::vector<String> GetStringKeys();
+  static std::vector<String> GetScalarKeys();
+  static std::vector<String> GetUnsignedIntegerKeys();
+  static std::vector<String> GetBoolKeys();
 
   /** @copydoc Object::__repr__() const */
   String __repr__() const;
 
 protected:
   /** Method for retrieving information from the resource map
-   * @return The list of keys
+   * @return The list of keys in the maps
    */
   std::vector<String> getKeys() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The list of keys in the string map
+   */
+  std::vector<String> getStringKeys() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The list of keys in the scalar map
+   */
+  std::vector<String> getScalarKeys() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The list of keys in the unsigned integer map
+   */
+  std::vector<String> getUnsignedIntegerKeys() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The list of keys in the bool map
+   */
+  std::vector<String> getBoolKeys() const;
+
+  /** Method for retrieving information from the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @return the type of the key
+   */
+  String getType(const String & key) const;
+
+  /** Method for retrieving information from the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @return The value written into a string if it is not already present in a dedicated map
+   */
+  String get(const String & key) const;
 
   /** Method for retrieving information from the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @return The value written into a string
    */
-  String get(String key) const;
+  String getAsString(const String & key) const;
 
   /** Method for retrieving information from the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @return The value if the value is boolean castable, false otherwise
    */
-  Bool getAsBool(String key) const;
+  Bool getAsBool(const String & key) const;
 
   /** Method for retrieving information from the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @return The value if the value is integer castable, zero otherwise
    */
-  UnsignedInteger getAsUnsignedInteger(String key) const;
+  UnsignedInteger getAsUnsignedInteger(const String & key) const;
 
   /** Method for retrieving information from the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @return The value if the value is double castable, zero otherwise
    */
-  Scalar getAsScalar(String key) const;
+  Scalar getAsScalar(const String & key) const;
 
   /** Method for retrieving information from the resource map
-   * @return The number of constants defined in the ResourceMap
+   * @return The number of constants defined in one of the maps
    */
   UnsignedInteger getSize() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The number of constants defined in the string map
+   */
+  UnsignedInteger getStringSize() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The number of constants defined in the scalar map
+   */
+  UnsignedInteger getScalarSize() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The number of constants defined in the unsigned integer map
+   */
+  UnsignedInteger getUnsignedIntegerSize() const;
+
+  /** Method for retrieving information from the resource map
+   * @return The number of constants defined in the bool map
+   */
+  UnsignedInteger getBoolSize() const;
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value written to a string
    */
-  void set(String key, String value);
+  void set(const String & key, const String & value);
+
+  /** Method for setting information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value written to a string
+   */
+  void setAsString(const String & key, const String & value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as a boolean
    */
-  void setAsBool(String key, Bool value);
+  void setAsBool(const String & key, Bool value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as an integer
    */
-  void setAsUnsignedInteger(String key, UnsignedInteger value);
+  void setAsUnsignedInteger(const String & key, UnsignedInteger value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as a double
    */
-  void setAsScalar(String key, Scalar value);
+  void setAsScalar(const String & key, Scalar value);
 
   /** Update the ResourceMap with information from the configuration file */
   void readConfigurationFile(const FileName & configurationFile);
@@ -147,11 +216,23 @@ private:
   ResourceMap();
 
   /** Default constructor */
-  ResourceMap(const ResourceMap & other) : map_(other.map_) {}
+  ResourceMap(const ResourceMap & other)
+    : mapString_(other.mapString_)
+    , mapScalar_(other.mapScalar_)
+    , mapUnsignedInteger_(other.mapUnsignedInteger_)
+    , mapBool_(other.mapBool_)
+    {}
 
   /** The actual map that stores the key/value pairs */
-  typedef std::map< String, String > MapType;
-  MapType map_;
+  typedef std::map< String, String > MapStringType;
+  typedef std::map< String, Scalar > MapScalarType;
+  typedef std::map< String, UnsignedInteger > MapUnsignedIntegerType;
+  typedef std::map< String, Bool > MapBoolType;
+  
+  MapStringType mapString_;
+  MapScalarType mapScalar_;
+  MapUnsignedIntegerType mapUnsignedInteger_;
+  MapBoolType mapBool_;
 
   friend struct ResourceMap_init;
 }; /* class ResourceMap */

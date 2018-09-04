@@ -108,7 +108,7 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
   cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;
   cmdFile.close();
-  const String RExecutable(ResourceMap::Get("R-executable-command"));
+  const String RExecutable(ResourceMap::GetAsString("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
   else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample, const Sample & secondSample, const Scalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
@@ -242,7 +242,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;
   cmdFile.close();
-  const String RExecutable(ResourceMap::Get("R-executable-command"));
+  const String RExecutable(ResourceMap::GetAsString("R-executable-command"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
   else throw NotYetImplementedException(HERE) << "In HypothesisTest::RunTwoSamplesASelectionRTest(const Sample & firstSample, const Sample & secondSample, const Indices & selection, const Scalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";

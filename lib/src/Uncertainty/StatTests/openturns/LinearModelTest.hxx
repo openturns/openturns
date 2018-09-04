@@ -111,13 +111,13 @@ public:
   static TestResult LinearModelDurbinWatson(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModel & linearModel,
-      const String hypothesis = ResourceMap::Get( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
+      const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelDurbinWatson(const Sample & firstSample,
       const Sample & secondSample,
-      const String hypothesis = ResourceMap::Get( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
+      const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
 protected:
