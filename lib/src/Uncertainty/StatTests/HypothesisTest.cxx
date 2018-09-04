@@ -28,6 +28,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/LinearModelFactory.hxx"
 #include "openturns/Exception.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
 
@@ -65,13 +66,22 @@ TestResult HypothesisTest::Smirnov(const Sample & firstSample,
   return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleSmirnov");
 }
 
-/* Spearman test between 2 scalar samples : test the monotonous relation  (only for continuous distributions) */
+/* Spearman test between 2 samples of dimension 1: it tests for null rank correlation between the two samples.*/
 TestResult HypothesisTest::Spearman(const Sample & firstSample,
                                     const Sample & secondSample,
                                     const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only between two 1D samples.";
-  return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleSpearman");
+  const UnsignedInteger size = firstSample.getSize();
+  if (secondSample.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only between two samples of same size.";
+  
+  const Bool ties = (firstSample.sortUnique().getSize() < size) || (secondSample.sortUnique().getSize() < size);
+  Sample fullSample(firstSample);
+  fullSample.stack(secondSample);
+  const Scalar rho = fullSample.computeSpearmanCorrelation()(0, 1);
+  // Here we check if rho is significantly different from 0
+  const Scalar pValue = 2.0 * DistFunc::pSpearmanCorrelation(size, std::abs(rho), true, ties);
+  return TestResult("Spearman", pValue > level, pValue, level);
 }
 
 /* Generic invocation of a R script for executing a test between two 1D samples */
@@ -134,7 +144,7 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only with an 1-d ouput sample.";
+  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Pearson test can be performed only with an 1-d ouput sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
   return RunTwoSamplesASelectionRTest(firstSample, secondSample, selection, level, "PartialPearson");
 }
@@ -154,15 +164,19 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const Sam
   return RunTwoSamplesASelectionRTest(secondSample, firstSample, selection, level, "PartialRegression");
 }
 
-/* Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on firstSample[i] and secondSample, for i in the selection. */
+/* Spearman test between 2 samples : firstSample if of dimension n and secondSample of dimension 1. PartialSpearman tests for null rank correlation between the selected marginals of the first sample wrt the second sample.*/
 HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Sample & firstSample,
     const Sample & secondSample,
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only with an 1-d ouput sample.";
+  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Spearman test can be performed only with an 1-d ouput sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
-  return RunTwoSamplesASelectionRTest(firstSample, secondSample, selection, level, "PartialSpearman");
+  const UnsignedInteger size = selection.getSize();
+  TestResultCollection results(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    results[i] = Spearman(firstSample.getMarginal(selection[i]), secondSample, level);
+  return results;
 }
 
 /* Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullPearson performs the Independence Pearson test simultaneously on all firstSample[i] and secondSample. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */
@@ -187,7 +201,7 @@ HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Sample
   return PartialRegression(firstSample, secondSample, selection, level);
 }
 
-/* Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on all firstSample[i] and secondSample. */
+/* Spearman test between 2 samples : firstSample if of dimension n and secondSample of dimension 1. FullSpearman tests for null rank correlation between the marginals of the first sample wrt the second sample.*/
 HypothesisTest::TestResultCollection HypothesisTest::FullSpearman(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)

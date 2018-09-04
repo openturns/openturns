@@ -1,0 +1,7 @@
+Spearman= class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.1 p-value=0.903001 description=[]
+FullSpearmanXZ= [class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.1 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.1 p-value=0.903001 description=[]]
+FullSpearmanYY= [class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.1 p-value=0 description=[]]
+PartialSpearmanX0Y= [class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.1 p-value=0.903001 description=[]]
+SpearmanX0Y= class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.1 p-value=0.903001 description=[]
+FullSpearmanX0Y= [class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.1 p-value=0.903001 description=[]]
+PartialSpearmanXY= [class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.1 p-value=0.903001 description=[]]

@@ -1006,6 +1006,56 @@ Indices DistFunc::rPoisson(const Scalar lambda,
   return result;
 }
 
+/********************************************************************************************/
+/* Spearman rho distribution: let (X_i) and (Y_i) be two samples of size n and dimension 1. */
+/* This function computes the probability that the Spearman correlation between the samples */
+/* is less or equal (tail = false) or is greater (tail = ture) than the given value under   */
+/* the assumption that the permutation that reorder the first sample in the same order as   */
+/* the second sample is uniformly distributed among the n-permutations. It is the case in   */
+/* particular when the two samples are independent and iid.                                 */
+/********************************************************************************************/
+Scalar DistFunc::pSpearmanCorrelation(const UnsignedInteger size, const Scalar rho, const Bool tail, const Bool ties)
+{
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: in pSpearmanCorrelation, size must be > 1";
+  // Border values for rho
+  if (rho >=  1.0) return (tail ? 0.0 : 1.0);
+  if (rho < -1.0) return (tail ? 1.0 : 0.0);
+  // If ties, the exact method or the Edgeworth expansion cannot be used.
+  // Use a Student asymptotic approximation
+  if (ties)
+    {
+      // In this case rho is seen as a continuous variable so the border cases
+      // have to be a little bit fuzzier
+      if (rho <= -1.0 + SpecFunc::Precision) return (tail ? 1.0 : 0.0);
+      if (rho >=  1.0 - SpecFunc::Precision) return (tail ? 0.0 : 1.0);
+      const Scalar t = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
+      return pStudent(size - 2.0, t, tail);
+    }
+  // Exact computation for small sample size thanks to the values given
+  // in http://www.luke-g.com/math/spearman/index.html
+  // The case n==2 has been addded to the table
+  if (size <= 26)
+    {
+      // Include the tabulated exact distribution
+#include "pSpearmanCorrelation.hxx"
+      const UnsignedInteger start = shiftSpearman[size-2];
+      const UnsignedInteger stop = shiftSpearman[size-1];
+      for (UnsignedInteger i = start+1; i < stop; ++i)
+	if (rho < rhoSpearman[i])
+	  return (tail ? 1.0 - cdfSpearman[i - 1] : cdfSpearman[i - 1]);
+    } // size <= 26
+  // Edgeworth expansion for the other sample sizes
+  // Coefficients from AS89. More digits would be desirable...
+  static const Scalar c[12] = {0.2274,0.2531,0.1745,0.0758,0.1033,0.3932,0.0879,0.0151,0.0072,0.0831,0.0131,4.6e-4};
+  const Scalar y = 1.0 * size;
+  const Scalar b = 1.0 / y;
+  const Scalar x = (rho + 6.0 / (y * (y + 1.0) * (y - 1.0))) * std::sqrt(y - 1);
+  const Scalar x2 = x * x;
+  const Scalar u = x * b * (c[0] + b * (c[1] + c[2] * b) + x2 * (-c[3] + b * (c[4] + c[5] * b) - x2 * b * (c[6] + c[7] * b - x2 * (c[8] - c[9] * b + x2 * b * (c[10] - c[11] * x2)))));
+  const Scalar beta = u / std::exp(0.5 * x2);
+  const Scalar value = (tail ? beta : -beta) + pNormal(x, tail);
+  return (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
+}
 /********************************************************************************************************************************/
 /* Normalized Student distribution, i.e. with a PDF equals to (1 + x^2 / nu)^(-(1 + nu) / 2) / (sqrt(nu) . Beta(1 / 2, nu / 2)) */
 /********************************************************************************************************************************/

@@ -499,6 +499,7 @@ ot_check_test (DistFunc_noncentralchisquare)
 ot_check_test (DistFunc_noncentralstudent)
 ot_check_test (DistFunc_normal)
 ot_check_test (DistFunc_poisson)
+ot_check_test (DistFunc_spearman)
 ot_check_test (DistFunc_student)
 
 # Model
@@ -647,6 +648,7 @@ ot_check_test (HypothesisTest_correlation)
 ot_check_test (LinearModelTest_std)
 ot_check_test (NormalityTest_std)
 endif ()
+ot_check_test (HypothesisTest_spearman)
 ot_check_test (DickeyFullerTest_std)
 ot_check_test (TaylorExpansionMoments_std)
 

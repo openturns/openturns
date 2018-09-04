@@ -34,31 +34,17 @@ int main(int , char *[])
   UnsignedInteger dim = 10;
   CorrelationMatrix R(dim);
   for (UnsignedInteger i = 0; i < dim; i++)
-  {
     for (UnsignedInteger j = 0; j < i; j++)
-    {
       R(i, j) = (i + j + 1.0) / (2.0 * dim);
-    }
-  }
   Point mean(dim, 2.0);
   Point sigma(dim, 3.0);
   Normal distribution(mean, sigma, R);
   Sample sample(distribution.getSample(size));
-  Sample sampleX(size, dim - 1);
-  Sample sampleY(size, 1);
-  for (UnsignedInteger i = 0; i < size; i++)
-  {
-    sampleY[i][0] = sample[i][0];
-    for (UnsignedInteger j = 1; j < dim; j++)
-    {
-      sampleX[i][j - 1] = sample[i][j];
-    }
-  }
-  Sample sampleZ(size, 1);
-  for (UnsignedInteger i = 0; i < size; i++)
-  {
-    sampleZ[i][0] = sampleY[i][0] * sampleY[i][0];
-  }
+  Indices indices(dim-1);
+  indices.fill(1, 1);
+  Sample sampleX(sample.getMarginal(indices));
+  Sample sampleY(sample.getMarginal(0));
+  Sample sampleZ(SymbolicFunction("x", "x^2")(sampleY));
 
   Sample discreteSample1(Poisson(0.1).getSample(size));
   Sample discreteSample2(Geometric(0.4).getSample(size));
@@ -93,13 +79,5 @@ int main(int , char *[])
 
   fullprint << "Smirnov=" << HypothesisTest::Smirnov(sampleY, sampleZ, 0.90) << std::endl;
 
-  // Spearman Test : test if two samples have a monotonous relation
-  // H0 = no monotonous relation between both samples
-  // Test = True <=> no monotonous relation
-  // p-value threshold : probability of the H0 reject zone : 1-0.90
-  // p-value : probability (test variable decision > test variable decision evaluated on the samples)
-  // Test = True <=> p-value > p-value threshold
-
-  fullprint << "Spearman=" << HypothesisTest::Spearman(sampleY, sampleZ, 0.90) << std::endl;
   return ExitCode::Success;
 }

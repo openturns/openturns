@@ -62,14 +62,6 @@ try:
     # Test = True <=> p-value > p-value threshold
     print("Smirnov=", HypothesisTest.Smirnov(sampleY, sampleZ, 0.90))
 
-    # Spearman Test : test if two samples have a monotonous relation
-    # H0 = no monotonous relation between both samples
-    # Test = True <=> no monotonous relation
-    # p-value threshold : probability of the H0 reject zone : 1-0.90
-    # p-value : probability (test variable decision > test variable decision evaluated on the samples)
-    # Test = True <=> p-value > p-value threshold
-    print("Spearman=", HypothesisTest.Spearman(sampleY, sampleZ, 0.90))
-
 except:
     import sys
     print("t_HypothesisTest_std.py", sys.exc_info()[0], sys.exc_info()[1])

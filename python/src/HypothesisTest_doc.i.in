@@ -161,7 +161,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::HypothesisTest::FullSpearman
-"Test whether two discrete samples are not monotonous.
+"Test whether two samples have no rank correlation.
 
 **Available usages**:
 
@@ -173,17 +173,17 @@ Examples
 Parameters
 ----------
 firstSample : 2-d sequence of float
-    First tested sample, of dimension :math:`n \geq 1`.
+    Sample of dimension :math:`n \geq 1`.
 secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1.
+    Sample of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
+testResult : :class:`~openturns.TestResultCollection`
+    Collection of :class:`~openturns.TestResult` of size :math:`n`, one result per component of the first sample.
 
 See Also
 --------
@@ -191,12 +191,9 @@ HypothesisTest_Spearman, HypothesisTest_PartialSpearman
 
 Notes
 -----
-The Full Spearman Test is used to check hypothesis of non monotonous relation
-between two samples: *firstSample* of dimension *n* and *secondSample* of
-dimension 1. If *firstSample[i]* is the numerical sample extracted from
-*firstSample* (:math:`i^{th}` coordinate of each point of the numerical sample),
-FullSpearman performs the independence Spearman test simultaneously on all
-*firstSample[i]* and *secondSample*.
+The Full Spearman Test is used to check the hypothesis of no rank correlation
+between two samples: *firstSample* of dimension :math:`n` and *secondSample* of
+dimension 1. The test is done marginal by marginal on the first sample.
 
 Examples
 --------
@@ -206,9 +203,9 @@ Examples
 >>> sample = distribution.getSample(30)
 >>> func = ot.SymbolicFunction(['x'], ['x', 'x^2'])
 >>> testedSample = func(sample)
->>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample)
+>>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample, 0.05)
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.44348 description=[]]
+[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 description=[]]
 "
 
 // ---------------------------------------------------------------------
@@ -330,7 +327,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::HypothesisTest::PartialSpearman
-"Test whether two discrete samples are not monotonous.
+"Test whether two sample have no rank correlation.
 
 **Available usages**:
 
@@ -363,10 +360,10 @@ HypothesisTest_Spearman, HypothesisTest_FullSpearman
 
 Notes
 -----
-The Partial Spearman Test is used to check hypothesis of non monotonous relation
-between two samples: *firstSample* of dimension *n* and *secondSample* of
-dimension 1. The parameter *selection* enables to select specific subsets of the
-*firstSample* to be tested.
+The Partial Spearman Test is used to check hypothesis of no rank correlation
+between two samples: *firstSample* of dimension :math:`n` and *secondSample* of
+dimension 1. The parameter *selection* enables to select specific subsets of
+marginals of *firstSample* to be tested.
 
 Examples
 --------
@@ -378,7 +375,7 @@ Examples
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.PartialSpearman(testedSample, sample, [0,3])
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.57214 description=[]]
+[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 description=[]]
 "
 
 // ---------------------------------------------------------------------
@@ -485,7 +482,7 @@ class=TestResult name=Unnamed type=TwoSampleSmirnov binaryQualityMeasure=true p-
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::HypothesisTest::Spearman
-"Test whether two discrete samples are not monotonous.
+"Test whether two samples have no rank correlation.
 
 **Available usages**:
 
@@ -515,8 +512,8 @@ HypothesisTest_Smirnov, HypothesisTest_Pearson
 
 Notes
 -----
-The Spearman Test is used to check whether two scalar samples have a monotonous
-relation.
+The Spearman Test is used to check whether two samples of dimension 1
+have no rank correlation.
 
 Examples
 --------
@@ -528,5 +525,5 @@ Examples
 >>> secondSample = func(firstSample)
 >>> test_result = ot.HypothesisTest.Spearman(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=TwoSampleSpearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.44348 description=[]
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 description=[]
 "
