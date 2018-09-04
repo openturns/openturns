@@ -22,7 +22,6 @@
 #include "openturns/FunctionalBasisProcess.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/ResourceMap.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/SymbolicFunction.hxx"
