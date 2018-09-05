@@ -18,7 +18,7 @@ jobs:
             git clone https://github.com/jeromerobert/hmat-oss.git && cd hmat-oss && cmake -DCMAKE_INSTALL_PREFIX=~/.local . && make install -j2
       - run:
           name: Build and test
-          command: SOURCE_DATE_EPOCH=1514761200 && export SOURCE_DATE_EPOCH && ./.circleci/build.sh
+          command: SOURCE_DATE_EPOCH=1514764800 && export SOURCE_DATE_EPOCH && ./.circleci/build.sh
       - deploy:
           name: Upload documentation
           command: export GH_TOKEN && ./.circleci/upload_github_io.sh
