@@ -70,7 +70,6 @@
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
 #include "openturns/KarhunenLoeveAlgorithm.hxx"
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
-#include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
 #include "openturns/KarhunenLoeveProjection.hxx"
 #include "openturns/KarhunenLoeveLifting.hxx"
 #include "openturns/P1LagrangeInterpolation.hxx"

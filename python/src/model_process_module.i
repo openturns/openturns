@@ -46,6 +46,7 @@
 %include ARMAFactory.i
 %include ConditionedGaussianProcess.i
 %include KarhunenLoeveQuadratureAlgorithm.i
+%include KarhunenLoeveSVDAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintyProcessTemplateDefs.i

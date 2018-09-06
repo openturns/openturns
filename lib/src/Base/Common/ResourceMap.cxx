@@ -429,6 +429,13 @@ void ResourceMap::loadDefaultConfiguration()
   // KarhunenLoeveQuadratureAlgorithm parameters //
   setAsScalar( "KarhunenLoeveQuadratureAlgorithm-RegularizationFactor", 0.0);
 
+  // KarhunenLoeveSVDAlgorithm parameters //
+  setAsBool( "KarhunenLoeveSVDAlgorithm-UseRandomSVD", false);
+  set("KarhunenLoeveSVDAlgorithm-RandomSVDVariant", "tygert");
+  setAsUnsignedInteger( "KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank", 1000);
+  setAsUnsignedInteger( "KarhunenLoeveSVDAlgorithm-TygertMargin", 2);
+  setAsUnsignedInteger( "KarhunenLoeveSVDAlgorithm-TygertIterations", 2);
+
   // KarhunenLoeveP1Algorithm parameters //
   setAsScalar( "KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
 
@@ -465,6 +472,11 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SobolSequence parameters //
   setAsUnsignedInteger( "SobolSequence-InitialSeed", 1 );
+
+  // ProcessSample parameters //
+  setAsUnsignedInteger( "ProcessSample-RobbinsMonroProximalIterations", 10 );
+  setAsScalar( "ProcessSample-RobbinsMonroProximalFactor", 1.0 );
+  setAsScalar( "ProcessSample-RobbinsMonroExponent", 0.75 );
 
   // SensitivityAlgorithm parameters //
   setAsBool( "SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution", false );

@@ -264,6 +264,8 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, data_[0]);
+  if (ResourceMap::GetAsBool("ProcessSample-UseRobbinsMonroQuantile")) return Field(mesh_, computeQuantilePerComponentRobbinsMonro(prob));
+  
   const UnsignedInteger dimension = data_[0].getDimension();
   const UnsignedInteger length = data_[0].getSize();
   const UnsignedInteger sampleSize = dimension * length;
@@ -304,6 +306,13 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
   const UnsignedInteger size = getSize();
   if (size == 0) return ProcessSampleImplementation();
   if (size == 1) return *this;
+  if (ResourceMap::GetAsBool("ProcessSample-UseRobbinsMonroQuantile"))
+    {
+      ProcessSampleImplementation output(mesh_, prob.getSize(), getDimension());
+      for (UnsignedInteger i = 0; i < prob.getSize(); ++i)
+	output[i] = computeQuantilePerComponentRobbinsMonro(prob[i]);
+      return output;
+    }
 
   // Check that prob is inside bounds
   const UnsignedInteger probSize = prob.getSize();
@@ -351,6 +360,124 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
   return result;
 }
 
+/*
+ * Method computeQuantilePerComponent() gives the quantile per component of the sample using Robbins Monro approximation
+ */
+Sample ProcessSampleImplementation::computeQuantilePerComponentRobbinsMonro(const Scalar prob) const
+{
+  const UnsignedInteger size = getSize();
+  if (size == 0) return Sample();
+  if (size == 1) return data_[0];
+  const UnsignedInteger K = ResourceMap::GetAsUnsignedInteger("ProcessSample-RobbinsMonroProximalIterations");
+  const Scalar a1 = ResourceMap::GetAsScalar("ProcessSample-RobbinsMonroProximalFactor");
+  const Scalar gamma = ResourceMap::GetAsScalar("ProcessSample-RobbinsMonroExponent");
+  const UnsignedInteger dimension = data_[0].getDimension();
+  const UnsignedInteger length = data_[0].getSize();
+  const UnsignedInteger flatSize = length * dimension;
+  Point quantiles(data_[0].getImplementation()->getData());
+  for (UnsignedInteger i = 1; i < size; ++i)
+    {
+      const Point & Xi = data_[i].getImplementation()->getData();
+      const Scalar tau = 1.0 / pow(i + 1.0, gamma);
+      for (UnsignedInteger j = 0; j < flatSize; ++j)
+	{
+	  const Scalar theta0 = quantiles[j];
+	  const Scalar xij = Xi[j];
+	  Scalar thetaj = theta0;
+	  for (UnsignedInteger k = 0; k < K; ++k)
+	    {
+	      const Scalar ak = 1.0 / std::pow(k + 1.0, gamma);
+	      thetaj -= ak * (tau * (int(xij <= thetaj) - prob) + thetaj - theta0);
+	    }
+	  //quantiles[j] = thetaj;
+	  quantiles[j] -= tau * (int(Xi[j] <= thetaj) - prob);
+	} // j
+    } // i
+  SampleImplementation result(length, dimension);
+  result.setData(quantiles);
+  result.setDescription(Description::BuildDefault(dimension, "q"));
+  return result;
+}
+
+#ifdef toto
+Field ProcessSampleImplementation::computeQuantilePerComponentRobbinsMonro(const Scalar prob) const
+{
+  const UnsignedInteger size = getSize();
+  if (size == 0) return Field();
+  if (size == 1) return Field(mesh_, data_[0]);
+  const UnsignedInteger dimension = data_[0].getDimension();
+  const UnsignedInteger length = data_[0].getSize();
+  const UnsignedInteger flatSize = length * dimension;
+  Point quantiles(data_[0].getImplementation()->getData());
+  const Scalar gamma = ResourceMap::GetAsScalar("ProcessSample-RobbinsMonroExponent");
+  for (UnsignedInteger i = 1; i < size; ++i)
+    {
+      const Point & Xi = data_[i].getImplementation()->getData();
+      const Scalar tau = std::pow(i + 1.0, -gamma);
+      for (UnsignedInteger j = 0; j < flatSize; ++j)
+	quantiles[j] -= tau * (int(Xi[j] <= quantiles[j]) - prob);
+    } // i
+  SampleImplementation result(length, dimension);
+  result.setData(quantiles);
+  return Field(mesh_, result);
+}
+
+Field ProcessSampleImplementation::computeQuantilePerComponentRobbinsMonro(const Scalar prob) const
+{
+  const UnsignedInteger size = getSize();
+  if (size == 0) return Field();
+  if (size == 1) return Field(mesh_, data_[0]);
+  const UnsignedInteger dimension = data_[0].getDimension();
+  const UnsignedInteger length = data_[0].getSize();
+  const UnsignedInteger flatSize = length * dimension;
+  Point quantiles(data_[0].getImplementation()->getData());
+  for (UnsignedInteger i = 1; i < size; ++i)
+    {
+      const Point & Xi = data_[i].getImplementation()->getData();
+      const Scalar tau = 1.0 / (i + 1.0);
+      for (UnsignedInteger j = 0; j < flatSize; ++j)
+	quantiles[j] -= tau * (int(Xi[j] <= quantiles[j]) - prob);
+    } // i
+  SampleImplementation result(length, dimension);
+  result.setData(quantiles);
+  return Field(mesh_, result);
+}
+
+Field ProcessSampleImplementation::computeQuantilePerComponentRobbinsMonro1(const Scalar prob) const
+{
+  const UnsignedInteger size = getSize();
+  if (size == 0) return Field();
+  if (size == 1) return Field(mesh_, data_[0]);
+  const UnsignedInteger K = ResourceMap::GetAsUnsignedInteger("ProcessSample-RobbinsMonroProximalIterations");
+  const Scalar a1 = ResourceMap::GetAsScalar("ProcessSample-RobbinsMonroProximalFactor");
+  const Scalar gamma = ResourceMap::GetAsScalar("ProcessSample-RobbinsMonroExponent");
+  const UnsignedInteger dimension = data_[0].getDimension();
+  const UnsignedInteger length = data_[0].getSize();
+  const UnsignedInteger flatSize = length * dimension;
+  Point quantiles(data_[0].getImplementation()->getData());
+  for (UnsignedInteger i = 1; i < size; ++i)
+    {
+      const Point & Xi = data_[i].getImplementation()->getData();
+      const Scalar tau = 1.0 / pow(i + 1.0, gamma);
+      for (UnsignedInteger j = 0; j < flatSize; ++j)
+	{
+	  const Scalar theta0 = quantiles[j];
+	  const Scalar xij = Xi[j];
+	  Scalar thetaj = theta0;
+	  for (UnsignedInteger k = 0; k < K; ++k)
+	    {
+	      const Scalar ak = 1.0 / std::pow(k + 1.0, exponent);
+	      thetaj -= ak * (tau * (int(xij <= thetaj) - prob) + thetaj - theta0);
+	    }
+	  //quantiles[j] = thetaj;
+	  quantiles[j] -= tau * (int(Xi[j] <= thetaj) - prob)
+	} // j
+    } // i
+  SampleImplementation result(length, dimension);
+  result.setData(quantiles);
+  return Field(mesh_, result);
+}
+#endif
 /* Get the i-th marginal process sample */
 ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const UnsignedInteger index) const
 {
