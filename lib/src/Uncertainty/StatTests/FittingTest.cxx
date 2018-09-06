@@ -281,7 +281,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
     value = std::max(value, std::max(std::abs(Scalar(i) / size - cdfValue), std::abs(cdfValue - Scalar(i + 1) / size)));
   }
   const Scalar pValue = DistFunc::pKolmogorov(size, value, true);
-  TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), (pValue > 1.0 - level), pValue, 1.0 - level);
+  TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), pValue > level, pValue, level);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -326,7 +326,7 @@ TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
     value = std::max(value, std::abs(cdf1 - cdf2));
   }
   const Scalar pValue = DistFunc::pKolmogorov((size1 * size2) / (size1 + size2), value, true);
-  TestResult result(OSS(false) << "Kolmogorov " << sample1.getName() << "/" << sample2.getName(), (pValue > 1.0 - level), pValue, 1.0 - level);
+  TestResult result(OSS(false) << "Kolmogorov " << sample1.getName() << "/" << sample2.getName(), pValue > level, pValue, level);
   result.setDescription(Description(1, String(OSS() << "sample" << sample1.getName() << " vs sample " << sample2.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -404,7 +404,7 @@ TestResult FittingTest::RunRTest(const Sample & sample,
   const Point parameters(distribution.getParametersCollection()[0]);
   const UnsignedInteger parametersNumber = parameters.getDimension();
   for (UnsignedInteger i = 0; i < parametersNumber; ++i) cmdFile << parameters[i] << ", ";
-  cmdFile << level << ", " << estimatedParameters << ")" << std::endl;
+  cmdFile << 1.0 - level << ", " << estimatedParameters << ")" << std::endl;
   cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
   cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;

@@ -50,28 +50,28 @@ public:
   virtual DickeyFullerTest * clone() const;
 
   /** Test H0: there is a unit root in a drift and linear trend model */
-  TestResult testUnitRootInDriftAndLinearTrendModel(const Scalar level = 0.95);
+  TestResult testUnitRootInDriftAndLinearTrendModel(const Scalar level = 0.05);
 
   /** Test H0: there is a unit root in a drift model */
-  TestResult testUnitRootInDriftModel(const Scalar level = 0.95);
+  TestResult testUnitRootInDriftModel(const Scalar level = 0.05);
 
   /** Test H0: there is a unit root in an AR1 model */
-  TestResult testUnitRootInAR1Model(const Scalar level = 0.95);
+  TestResult testUnitRootInAR1Model(const Scalar level = 0.05);
 
   /** Strategy of tests */
-  TestResult runStrategy(const Scalar level = 0.95);
+  TestResult runStrategy(const Scalar level = 0.05);
 
   /** Test H0: there is no linear trend in a drift and linear trend model knowing that there is a unit root */
-  TestResult testUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const Scalar level = 0.95);
+  TestResult testUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const Scalar level = 0.05);
 
   /** Test H0: there is no linear trend in a drift and linear trend model knowing that there is no unit root */
-  TestResult testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const Scalar level = 0.95);
+  TestResult testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(const Scalar level = 0.05);
 
   /** Test H0: there is no drift in a drift model knowing that there is a unit root */
-  TestResult testUnitRootAndNoDriftInDriftModel(const Scalar level = 0.95);
+  TestResult testUnitRootAndNoDriftInDriftModel(const Scalar level = 0.05);
 
   /** Test the nullity of drift coefficient with assumption that there is no unit root */
-  TestResult testNoUnitRootAndNoDriftInDriftModel(const Scalar level = 0.95);
+  TestResult testNoUnitRootAndNoDriftInDriftModel(const Scalar level = 0.05);
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
@@ -86,13 +86,13 @@ public:
 protected:
 
   /** Test of general model ==> run a part of strategy */
-  TestResult runTrendModelTest(const Scalar level = 0.95);
+  TestResult runTrendModelTest(const Scalar level = 0.05);
 
   /** Test of drift model ==> run a part of strategy */
-  TestResult runDriftModelStrategyTest(const Scalar level = 0.95);
+  TestResult runDriftModelStrategyTest(const Scalar level = 0.05);
 
   /** Test of random walk model ==> run a part of strategy */
-  TestResult runRandomWalkModelStrategyTest(const Scalar level = 0.95);
+  TestResult runRandomWalkModelStrategyTest(const Scalar level = 0.05);
 
   /** Estimate the coefficients of a model with drift and linear trend */
   void estimateDriftAndLinearTrendModel();

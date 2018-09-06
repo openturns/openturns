@@ -52,32 +52,32 @@ int main(int , char *[])
   // ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independant ?
   // Care : discrete samples only
   // H0 = independent samples
-  // p-value threshold : probability of the H0 reject zone : 1-0.90
+  // p-value threshold : probability of the H0 reject zone : 0.10
   // p-value : probability (test variable decision > test variable decision evaluated on the samples)
   // Test = True <=> p-value > p-value threshold
-  fullprint << "ChiSquared=" << HypothesisTest::ChiSquared(discreteSample1, discreteSample2, 0.90) << std::endl;
-  fullprint << "ChiSquared2=" << HypothesisTest::ChiSquared(discreteSample1, discreteSample1, 0.90) << std::endl;
+  fullprint << "ChiSquared=" << HypothesisTest::ChiSquared(discreteSample1, discreteSample2, 0.10) << std::endl;
+  fullprint << "ChiSquared2=" << HypothesisTest::ChiSquared(discreteSample1, discreteSample1, 0.10) << std::endl;
 
 
   // Pearson Test : test if two gaussian samples are independent (based on the evaluation of the linear correlation coefficient)
   // H0 : independent samples (linear correlation coefficient = 0)
   // Test = True <=> independent samples (linear correlation coefficient = 0)
-  // p-value threshold : probability of the H0 reject zone : 1-0.90
+  // p-value threshold : probability of the H0 reject zone : 0.10
   // p-value : probability (test variable decision > test variable decision evaluated on the samples)
   // Test = True <=> p-value > p-value threshold
 
-  fullprint << "Pearson=" << HypothesisTest::Pearson(sampleY, sampleZ, 0.90) << std::endl;
+  fullprint << "Pearson=" << HypothesisTest::Pearson(sampleY, sampleZ, 0.10) << std::endl;
 
 
   // Smirnov Test : test if two samples (of sizes not necessarily equal) follow the same distribution
   // Care : continuous distributions only
   // H0 = same continuous distribution
   // Test = True <=> same distribution
-  // p-value threshold : probability of the H0 reject zone : 1-0.90
+  // p-value threshold : probability of the H0 reject zone : 0.10
   // p-value : probability (test variable decision > test variable decision evaluated on the samples)
   // Test = True <=> p-value > p-value threshold
 
-  fullprint << "Smirnov=" << HypothesisTest::Smirnov(sampleY, sampleZ, 0.90) << std::endl;
+  fullprint << "Smirnov=" << HypothesisTest::Smirnov(sampleY, sampleZ, 0.10) << std::endl;
 
   return ExitCode::Success;
 }

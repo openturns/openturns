@@ -401,9 +401,9 @@ Test the stationarity knowing you have an AR1 model:
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`.
+    By default, :math:`\alpha=0.05`.
 
 Returns
 -------
@@ -418,9 +418,9 @@ testResult : :class:`~openturns.TestResult`
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`.
+    By default, :math:`\alpha=0.05`.
 
 Returns
 -------
@@ -435,9 +435,9 @@ testResult : :class:`~openturns.TestResult`
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`.
+    By default, :math:`\alpha=0.05`.
 
 Returns
 -------
@@ -453,9 +453,9 @@ testResult : :class:`~openturns.TestResult`
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`
+    By default, :math:`\alpha=0.05`
 
 Returns
 -------
@@ -470,9 +470,9 @@ testResult : :class:`~openturns.TestResult`
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`.
+    By default, :math:`\alpha=0.05`.
 
 Returns
 -------
@@ -487,9 +487,9 @@ testResult : :class:`~openturns.TestResult`
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`.
+    By default, :math:`\alpha=0.05`.
 
 Returns
 -------
@@ -504,9 +504,9 @@ testResult : :class:`~openturns.TestResult`
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`.
+    By default, :math:`\alpha=0.05`.
 
 Returns
 -------
@@ -521,9 +521,9 @@ testResult : :class:`~openturns.TestResult`
 Parameters
 ----------
 alpha : float, :math:`0 < \alpha < 1`
-    The first order error of the test.
+    The first kind risk of the test.
 
-    By default, :math:`\alpha=0.95`.
+    By default, :math:`\alpha=0.05`.
 
 Returns
 -------

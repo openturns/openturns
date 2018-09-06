@@ -103,7 +103,7 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
   cmdFile << "firstSample <- data.matrix(read.table(\"" << firstDataFileName << "\"))" << std::endl;
   cmdFile << "secondSample <- data.matrix(read.table(\"" << secondDataFileName << "\"))" << std::endl;
   cmdFile << "res <- computeTest" << testName;
-  cmdFile << "(firstSample, secondSample, " << level << ")" << std::endl;
+  cmdFile << "(firstSample, secondSample, " << 1.0-level << ")" << std::endl;
   cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
   cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;
@@ -237,7 +237,7 @@ HypothesisTest::TestResultCollection HypothesisTest::RunTwoSamplesASelectionRTes
   cmdFile << "secondSample <- data.matrix(read.table(\"" << secondDataFileName << "\"))" << std::endl;
   cmdFile << "selection <- data.matrix(read.table(\"" << selectionFileName << "\"))" << std::endl;
   cmdFile << "res <- computeTest" << testName;
-  cmdFile << "(firstSample, secondSample, selection, " << level << ")" << std::endl;
+  cmdFile << "(firstSample, secondSample, selection, " << 1.0 - level << ")" << std::endl;
   cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
   cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;

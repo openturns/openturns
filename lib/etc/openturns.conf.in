@@ -177,7 +177,7 @@
   <LinearModelFactory-DefaultLevelValue value="0.95" />
 
   <!-- OT::LinearModelTest parameters -->
-  <LinearModelTest-DefaultLevel                         value="0.95"  />
+  <LinearModelTest-DefaultLevel                         value="0.05"  />
   <LinearModelTest-DefaultHarrisonMcCabeBreakpoint      value="0.5"   />
   <LinearModelTest-DefaultHarrisonMcCabeSimulationSize  value="1000"  />
   <LinearModelTest-DefaultDurbinWatsonHypothesis        value="Equal" />

@@ -83,29 +83,29 @@ public:
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const Distribution & distribution,
-                               const Scalar level = 0.95,
+                               const Scalar level = 0.05,
                                const UnsignedInteger estimatedParameters = 0);
 
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const DistributionFactory & factory,
-                               const Scalar level = 0.95);
+                               const Scalar level = 0.05);
 
   /** Two-sample Kolmogorov–Smirnov test */
   static TestResult TwoSamplesKolmogorov (const Sample & sample1,
                                           const Sample & sample2,
-                                          const Scalar level = 0.95);
+                                          const Scalar level = 0.05);
 
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const Sample & sample,
                                const Distribution & distribution,
-                               const Scalar level = 0.95,
+                               const Scalar level = 0.05,
                                const UnsignedInteger estimatedParameters = 0);
 
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const Sample & sample,
                                const DistributionFactory & factory,
-                               const Scalar level = 0.95);
+                               const Scalar level = 0.05);
 
 protected:
   /** Generic invocation of a R script for testing a distribution against a sample */
