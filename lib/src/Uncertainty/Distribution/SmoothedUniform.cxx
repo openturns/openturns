@@ -47,7 +47,6 @@ SmoothedUniform::SmoothedUniform()
   coll[1] = Normal(0.0, sigma_);
   setDistributionCollectionAndWeights(coll, Matrix(1, 2, Point(2, 1.0)), false);
   computeRange();
-  setParallel(true);
 }
 
 /* Parameters constructor */
@@ -68,7 +67,6 @@ SmoothedUniform::SmoothedUniform(const Scalar a,
   coll[1] = Normal(0.0, sigma_);
   setDistributionCollectionAndWeights(coll, Matrix(1, 2, Point(2, 1.0)), false);
   computeRange();
-  setParallel(true);
 }
 
 /* Comparison operator */

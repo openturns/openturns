@@ -29,7 +29,7 @@ int main(int , char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-  ResourceMap::Set("Distribution-Parallel", "0");
+  ResourceMap::SetAsBool("Distribution-Parallel", false);
 
   try
   {
@@ -96,7 +96,6 @@ int main(int , char *[])
     // Test for realization of distribution
     Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
-
     // Test for sampling
     UnsignedInteger size = 10;
     Sample oneSample = distribution.getSample( size );

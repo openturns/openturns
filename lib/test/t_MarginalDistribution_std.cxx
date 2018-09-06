@@ -29,7 +29,7 @@ int main(int , char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-  ResourceMap::Set("Distribution-Parallel", "0");
+  ResourceMap::SetAsBool("Distribution-Parallel", false);
 
   try
   {

@@ -90,13 +90,13 @@ public:
                                      const Scalar lambda,
                                      const Scalar x,
                                      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-                                     const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                     const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"));
   static Scalar pNonCentralChiSquare(const Scalar nu,
                                      const Scalar lambda,
                                      const Scalar x,
                                      const Bool tail = false,
                                      const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-                                     const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                     const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"));
   static Scalar rNonCentralChiSquare(const Scalar nu,
                                      const Scalar lambda);
   static Point rNonCentralChiSquare(const Scalar nu,
@@ -110,7 +110,7 @@ public:
                                        const Scalar delta,
                                        const Scalar x,
                                        const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-                                       const UnsignedInteger maximumIteration = ResourceMap::GetAsScalar("DistFunc-MaximumIteration"));
+                                       const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"));
   static Scalar pNonCentralStudent(const Scalar nu,
                                    const Scalar delta,
                                    const Scalar x,
