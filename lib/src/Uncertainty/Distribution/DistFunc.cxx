@@ -46,44 +46,44 @@ const UnsignedInteger    DistFunc::NumberOfBandNormalZigurrat = 129;
 const Scalar DistFunc::NormalZigguratTail = 3.44508288805539135654449538289;
 const Scalar DistFunc::NormalZigguratAbscissa[DistFunc::NumberOfBandNormalZigurrat + 1] =
 {
-  0.0                             , 0.271599048510693754998163050702, 0.361898145612134821317157669025, 0.425392047157312675983415424660,
+  0.0, 0.271599048510693754998163050702, 0.361898145612134821317157669025, 0.425392047157312675983415424660,
   0.476131717888617028166988513439, 0.519219013293501476350033678035, 0.557137093511580298809061311694, 0.591298984443313319787098187809,
   0.622592649542783642315521009315, 0.651616031063230052452116746597, 0.678792877347767760686380971868, 0.704435546364376654764501920124,
   0.728781608504968321114578996184, 0.752016422469955992826848889422, 0.774287710877425340184686032696, 0.795715332287609618751456615712,
   0.816398043479172731605919440849, 0.836418306930649053279379059005, 0.855845789056994122927551923075, 0.874739957924955634206040955649,
   0.893152046999867275098199151897, 0.911126563328297873672484801050, 0.928702462334730770821130245805, 0.945914074632515687029155431559,
-  0.962791845646485921191452370469, 0.979362932051085821966553188665, 0.995651687354039595085786832964, 1.01168006070531516232965392900 ,
-  1.02746792709172237058780318928 , 1.04303336277130264040166296783 , 1.05839287662899292124745211169 , 1.07356160576994269038108408924 ,
-  1.08855348188453823734559909469 , 1.10338137356245140332933074704 , 1.11805720869053844255517390583 , 1.13259208026135637042889232625 ,
-  1.14699633828758735801507046149 , 1.16127967002039429336339539399 , 1.17545117027533417287473048372 , 1.18951940335453972086012397336 ,
-  1.20349245780083403835096451764 , 1.21737799501490321160206827336 , 1.23118329260039645151126944958 , 1.24491528316597898248595200283 ,
-  1.25858058920182308169327058845 , 1.27218555455602081689118701416 , 1.28573627296019479845973032796 , 1.29923861399021398514811910954 ,
-  1.31269824679504233415845967597 , 1.32612066188248490208347357933 , 1.33951119121344617033356972221 , 1.35287502682506865937549704692 ,
-  1.36621723817679783092212387778 , 1.37954278839122803847614338568 , 1.39285654954287803582443862287 , 1.40616331713229672637906532114 ,
-  1.41946782386968059570797384556 , 1.43277475288114273351645465423 , 1.44608875044162355949759042785 , 1.45941443833094318522780953546 ,
-  1.47275642590347769759399918804 , 1.48611932195724762500809972081 , 1.49950774648472030334842211111 , 1.51292634238526126953827654531 ,
-  1.52637978721786115033208986070 , 1.53987280507247501439918234146 , 1.55341017863902384055596007811 , 1.56699676155482666996780634172 ,
-  1.58063749111398211301308134969 , 1.59433740142604557618725800299 , 1.60810163711632290631602733261 , 1.62193546766631570500142829940 ,
-  1.63584430250042915164619942820 , 1.64983370693414137939082821110 , 1.66390941910962125167951454089 , 1.67807736805749698528091063361 ,
-  1.69234369303839820145325283038 , 1.70671476433535309787605152682 , 1.72119720568852405198043944381 , 1.73579791858759592141174442291 ,
-  1.75052410866497944355179477982 , 1.76538331446556845629758885967 , 1.78038343890695608962355720514 , 1.79553278378881937566665179110 ,
-  1.81084008776290159625982126988 , 1.82631456823722069305589567937 , 1.84196596776173086857556181334 , 1.85780460553003206309142077930 ,
-  1.87384143473579289060235282188 , 1.89008810664697886815311451817 , 1.90655704241032628459974673316 , 1.92326151377851307313333422169 ,
-  1.94021573417040550238786161927 , 1.95743496173982213662503222153 , 1.97493561645224006631535036596 , 1.99273541356693511100128687843 ,
-  2.01085351641383291996867861457 , 2.02931071196545767371544926885 , 2.04812961346843841880165860053 , 2.06733489536060750602383910558 ,
-  2.08695356691825680949271767439 , 2.10701529263367409420415792810 , 2.12755276932450072216751946158 , 2.14860217257314763105233505342 ,
-  2.17020368849378343938267967922 , 2.19240215131716394363476960255 , 2.21524781328299046507842208032 , 2.23879728143015418864904200351 ,
-  2.26311466694490835351573544076 , 2.28827300805157643267084011891 , 2.31435604894699812266939486476 , 2.34146048795978434043531292659 ,
-  2.36969885260647551209738645471 , 2.39920322494817055544917817450 , 2.43013013978464913728162829644 , 2.46266713119979698270547205291 ,
-  2.49704164517949055368308433652 , 2.53353343078795745430738206406 , 2.57249218737695205289488067611 , 2.61436340874381837128188016042 ,
-  2.65972749227020134812347957976 , 2.70936127691136762243924804229 , 2.76433956507998809402134093896 , 2.82621272644033894046564603318 ,
-  2.89734153514829733018851271394 , 2.98159419140365968437694926385 , 3.08601280427975485670709771297 , 3.22573136821851522103605577983 ,
-  3.44508288805539135654449538289 , 3.71537970891694553086615539964
+  0.962791845646485921191452370469, 0.979362932051085821966553188665, 0.995651687354039595085786832964, 1.01168006070531516232965392900,
+  1.02746792709172237058780318928, 1.04303336277130264040166296783, 1.05839287662899292124745211169, 1.07356160576994269038108408924,
+  1.08855348188453823734559909469, 1.10338137356245140332933074704, 1.11805720869053844255517390583, 1.13259208026135637042889232625,
+  1.14699633828758735801507046149, 1.16127967002039429336339539399, 1.17545117027533417287473048372, 1.18951940335453972086012397336,
+  1.20349245780083403835096451764, 1.21737799501490321160206827336, 1.23118329260039645151126944958, 1.24491528316597898248595200283,
+  1.25858058920182308169327058845, 1.27218555455602081689118701416, 1.28573627296019479845973032796, 1.29923861399021398514811910954,
+  1.31269824679504233415845967597, 1.32612066188248490208347357933, 1.33951119121344617033356972221, 1.35287502682506865937549704692,
+  1.36621723817679783092212387778, 1.37954278839122803847614338568, 1.39285654954287803582443862287, 1.40616331713229672637906532114,
+  1.41946782386968059570797384556, 1.43277475288114273351645465423, 1.44608875044162355949759042785, 1.45941443833094318522780953546,
+  1.47275642590347769759399918804, 1.48611932195724762500809972081, 1.49950774648472030334842211111, 1.51292634238526126953827654531,
+  1.52637978721786115033208986070, 1.53987280507247501439918234146, 1.55341017863902384055596007811, 1.56699676155482666996780634172,
+  1.58063749111398211301308134969, 1.59433740142604557618725800299, 1.60810163711632290631602733261, 1.62193546766631570500142829940,
+  1.63584430250042915164619942820, 1.64983370693414137939082821110, 1.66390941910962125167951454089, 1.67807736805749698528091063361,
+  1.69234369303839820145325283038, 1.70671476433535309787605152682, 1.72119720568852405198043944381, 1.73579791858759592141174442291,
+  1.75052410866497944355179477982, 1.76538331446556845629758885967, 1.78038343890695608962355720514, 1.79553278378881937566665179110,
+  1.81084008776290159625982126988, 1.82631456823722069305589567937, 1.84196596776173086857556181334, 1.85780460553003206309142077930,
+  1.87384143473579289060235282188, 1.89008810664697886815311451817, 1.90655704241032628459974673316, 1.92326151377851307313333422169,
+  1.94021573417040550238786161927, 1.95743496173982213662503222153, 1.97493561645224006631535036596, 1.99273541356693511100128687843,
+  2.01085351641383291996867861457, 2.02931071196545767371544926885, 2.04812961346843841880165860053, 2.06733489536060750602383910558,
+  2.08695356691825680949271767439, 2.10701529263367409420415792810, 2.12755276932450072216751946158, 2.14860217257314763105233505342,
+  2.17020368849378343938267967922, 2.19240215131716394363476960255, 2.21524781328299046507842208032, 2.23879728143015418864904200351,
+  2.26311466694490835351573544076, 2.28827300805157643267084011891, 2.31435604894699812266939486476, 2.34146048795978434043531292659,
+  2.36969885260647551209738645471, 2.39920322494817055544917817450, 2.43013013978464913728162829644, 2.46266713119979698270547205291,
+  2.49704164517949055368308433652, 2.53353343078795745430738206406, 2.57249218737695205289488067611, 2.61436340874381837128188016042,
+  2.65972749227020134812347957976, 2.70936127691136762243924804229, 2.76433956507998809402134093896, 2.82621272644033894046564603318,
+  2.89734153514829733018851271394, 2.98159419140365968437694926385, 3.08601280427975485670709771297, 3.22573136821851522103605577983,
+  3.44508288805539135654449538289, 3.71537970891694553086615539964
 };
 
 const Scalar DistFunc::NormalZigguratRatio[DistFunc::NumberOfBandNormalZigurrat] =
 {
-  0.0                             , 0.750484775353838553484969850043, 0.850740271310955168539797476445, 0.893433541969631939167066002439,
+  0.0, 0.750484775353838553484969850043, 0.850740271310955168539797476445, 0.893433541969631939167066002439,
   0.917015181837094471851335493153, 0.931941203234046233441298028733, 0.942225689827803086945282581056, 0.949736532992396229158449917333,
   0.955459380775071654971678008833, 0.959962976643589437257667346996, 0.963598275031758611303047864447, 0.966593473467949497522283939333,
   0.969103315737874152720557392852, 0.971236417555650662146408519772, 0.973071247290683962507094254337, 0.974665898140297597377304564176,
@@ -1023,30 +1023,30 @@ Scalar DistFunc::pSpearmanCorrelation(const UnsignedInteger size, const Scalar r
   // If ties, the exact method or the Edgeworth expansion cannot be used.
   // Use a Student asymptotic approximation
   if (ties)
-    {
-      // In this case rho is seen as a continuous variable so the border cases
-      // have to be a little bit fuzzier
-      if (rho <= -1.0 + SpecFunc::Precision) return (tail ? 1.0 : 0.0);
-      if (rho >=  1.0 - SpecFunc::Precision) return (tail ? 0.0 : 1.0);
-      const Scalar t = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
-      return pStudent(size - 2.0, t, tail);
-    }
+  {
+    // In this case rho is seen as a continuous variable so the border cases
+    // have to be a little bit fuzzier
+    if (rho <= -1.0 + SpecFunc::Precision) return (tail ? 1.0 : 0.0);
+    if (rho >=  1.0 - SpecFunc::Precision) return (tail ? 0.0 : 1.0);
+    const Scalar t = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
+    return pStudent(size - 2.0, t, tail);
+  }
   // Exact computation for small sample size thanks to the values given
   // in http://www.luke-g.com/math/spearman/index.html
   // The case n==2 has been addded to the table
   if (size <= 26)
-    {
-      // Include the tabulated exact distribution
+  {
+    // Include the tabulated exact distribution
 #include "pSpearmanCorrelation.hxx"
-      const UnsignedInteger start = shiftSpearman[size-2];
-      const UnsignedInteger stop = shiftSpearman[size-1];
-      for (UnsignedInteger i = start+1; i < stop; ++i)
-	if (rho < rhoSpearman[i])
-	  return (tail ? 1.0 - cdfSpearman[i - 1] : cdfSpearman[i - 1]);
-    } // size <= 26
+    const UnsignedInteger start = shiftSpearman[size - 2];
+    const UnsignedInteger stop = shiftSpearman[size - 1];
+    for (UnsignedInteger i = start + 1; i < stop; ++i)
+      if (rho < rhoSpearman[i])
+        return (tail ? 1.0 - cdfSpearman[i - 1] : cdfSpearman[i - 1]);
+  } // size <= 26
   // Edgeworth expansion for the other sample sizes
   // Coefficients from AS89. More digits would be desirable...
-  static const Scalar c[12] = {0.2274,0.2531,0.1745,0.0758,0.1033,0.3932,0.0879,0.0151,0.0072,0.0831,0.0131,4.6e-4};
+  static const Scalar c[12] = {0.2274, 0.2531, 0.1745, 0.0758, 0.1033, 0.3932, 0.0879, 0.0151, 0.0072, 0.0831, 0.0131, 4.6e-4};
   const Scalar y = 1.0 * size;
   const Scalar b = 1.0 / y;
   const Scalar x = (rho + 6.0 / (y * (y + 1.0) * (y - 1.0))) * std::sqrt(y - 1);
@@ -1158,7 +1158,7 @@ Scalar DistFunc::pDickeyFullerTrend(const Scalar x,
   if (x < q001)
   {
     LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
-    return p001;
+    return (tail ? 1.0 - p001 : p001);
   }
 
   if (x <= q005)
@@ -1168,7 +1168,7 @@ Scalar DistFunc::pDickeyFullerTrend(const Scalar x,
     // We use information available : quantile values for levels 0.01 and 0.05
     const Scalar a = (p005 - p001) / (q005 - q001);
     const Scalar b = p001 - a * q001;
-    return (a * x + b);
+    return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
 
   if (x <= q010)
@@ -1178,12 +1178,12 @@ Scalar DistFunc::pDickeyFullerTrend(const Scalar x,
     // We use information available : quantile values for levels 0.05 and 0.10
     const Scalar a = (p010 - p005) / (q010 - q005);
     const Scalar b = p005 - a * q005;
-    return (a * x + b);
+    return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
 
   // Arbitrary we seek values until level 0.15
   LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.10 quantile levels ");
-  return p010;
+  return (tail ? 1.0 - p010 : p010);
 }
 
 Scalar DistFunc::pDickeyFullerConstant(const Scalar x,
@@ -1199,7 +1199,7 @@ Scalar DistFunc::pDickeyFullerConstant(const Scalar x,
   if (x < q001)
   {
     LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
-    return p001;
+    return (tail ? 1.0 - p001 : p001);
   }
 
   if (x <= q005)
@@ -1209,7 +1209,7 @@ Scalar DistFunc::pDickeyFullerConstant(const Scalar x,
     // We use information available : quantile values for levels 0.01 and 0.05
     const Scalar a = (p005 - p001) / (q005 - q001);
     const Scalar b = p001 - a * q001;
-    return (a * x + b);
+    return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
 
   if (x <= q010)
@@ -1219,10 +1219,10 @@ Scalar DistFunc::pDickeyFullerConstant(const Scalar x,
     // We use information available : quantile values for levels 0.05 and 0.10
     const Scalar a = (p010 - p005) / (q010 - q005);
     const Scalar b = p005 - a * q005;
-    return (a * x + b);
+    return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
   LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.10 quantile levels ");
-  return p010;
+  return (tail ? 1.0 - p010 : p010);
 }
 
 Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
@@ -1238,7 +1238,7 @@ Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
   if (x < q001)
   {
     LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.01 quantile level ");
-    return p001;
+    return (tail ? 1.0 - p001 : p001);
   }
 
   if (x <= q005)
@@ -1248,7 +1248,7 @@ Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
     // We use information available : quantile values for levels 0.01 and 0.05
     const Scalar a = (p005 - p001) / (q005 - q001);
     const Scalar b = p001 - a * q001;
-    return (a * x + b);
+    return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
 
   if (x <= q010)
@@ -1258,11 +1258,11 @@ Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
     // We use information available : quantile values for levels 0.05 and 0.10
     const Scalar a = (p010 - p005) / (q010 - q005);
     const Scalar b = p005 - a * q005;
-    return (a * x + b);
+    return (tail ? 1.0 - (a * x + b) : a * x + b);
   }
 
   LOGWARN(OSS() <<  "Warning! Result p-value is missing. The return result is the 0.10 quantile levels ");
-  return p010;
+  return (tail ? 1.0 - p010 : p010);
 }
 
 // We currently use the asymptotic distribution
@@ -1275,39 +1275,40 @@ Scalar DistFunc::pDickeyFullerNoConstant(const Scalar x,
 Scalar DistFunc::qDickeyFullerTrend(const Scalar p,
                                     const Bool tail)
 {
+  const Scalar prob = (tail ? 1.0 - p : p);
   // Asymptotic distribution
   // quantile values for levels 0.01, 0.05 and 0.10
   const Scalar x001 = -4.96;
   const Scalar x005 = -3.41;
   const Scalar x010 = -3.13;
-  if (p < 0.01)
+  if (prob < 0.01)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
     return x001;
   }
 
-  if (p <= 0.05)
+  if (prob <= 0.05)
   {
     // Linear approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.01 and 0.05
     const Scalar a = (x005 - x001) / (0.05 - 0.01);
     const Scalar b = x001 - a * 0.01;
-    return (a * p + b);
+    return (a * prob + b);
   }
 
-  if (p <= 0.10)
+  if (prob <= 0.10)
   {
     // Linear approach using the same approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.05 and 0.10
     const Scalar a = (x010 - x005) / (0.10 - 0.05);
     const Scalar b = x005 - a * 0.05;
-    return (a * p + b);
+    return (a * prob + b);
   }
 
   // Arbitrary we seek values until level 0.15
-  if (p <= 0.15)
+  if (prob <= 0.15)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
@@ -1318,39 +1319,40 @@ Scalar DistFunc::qDickeyFullerTrend(const Scalar p,
 Scalar DistFunc::qDickeyFullerConstant(const Scalar p,
                                        const Bool tail)
 {
+  const Scalar prob = (tail ? 1.0 - p : p);
   // Asymptotic distribution
   // quantile values for levels 0.01, 0.05 and 0.10
   const Scalar x001 = -3.43;
   const Scalar x005 = -2.86;
   const Scalar x010 = -2.57;
-  if (p < 0.01)
+  if (prob < 0.01)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
     return x001;
   }
 
-  if (p <= 0.05)
+  if (prob <= 0.05)
   {
     // Linear approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.01 and 0.05
     const Scalar a = (x005 - x001) / (0.05 - 0.01);
     const Scalar b = x001 - a * 0.01;
-    return (a * p + b);
+    return (a * prob + b);
   }
 
-  if (p <= 0.10)
+  if (prob <= 0.10)
   {
     // Linear approach using the same approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.05 and 0.10
     const Scalar a = (x010 - x005) / (0.10 - 0.05);
     const Scalar b = x005 - a * 0.05;
-    return (a * p + b);
+    return (a * prob + b);
   }
 
   // Arbitrary we seek values until level 0.15
-  if (p <= 0.15)
+  if (prob <= 0.15)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
@@ -1362,39 +1364,40 @@ Scalar DistFunc::qDickeyFullerConstant(const Scalar p,
 Scalar DistFunc::qDickeyFullerNoConstant(const Scalar p,
     const Bool tail)
 {
+  const Scalar prob = (tail ? 1.0 - p : p);
   // Asymptotic distribution
   // quantile values for levels 0.01, 0.05 and 0.10
   const Scalar x001 = -2.57;
   const Scalar x005 = -1.94;
   const Scalar x010 = -1.62;
-  if (p < 0.01)
+  if (prob < 0.01)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.01 ");
     return x001;
   }
 
-  if (p <= 0.05)
+  if (prob <= 0.05)
   {
     // Linear approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.01 and 0.05
     const Scalar a = (x005 - x001) / (0.05 - 0.01);
     const Scalar b = x001 - a * 0.01;
-    return (a * p + b);
+    return (a * prob + b);
   }
 
-  if (p <= 0.10)
+  if (prob <= 0.10)
   {
     // Linear approach using the same approach
     // quantileFunction(p) = a * p + b
     // We use information available : quantile values for levels 0.05 and 0.10
     const Scalar a = (x010 - x005) / (0.10 - 0.05);
     const Scalar b = x005 - a * 0.05;
-    return (a * p + b);
+    return (a * prob + b);
   }
 
   // Arbitrary we seek values until level 0.15
-  if (p <= 0.15)
+  if (prob <= 0.15)
   {
     LOGWARN(OSS() <<  "Warning! Result quantile value is missing. The return result is for level 0.10 ");
     return x010;
