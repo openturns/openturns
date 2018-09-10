@@ -226,7 +226,7 @@ protected:
   static Bool IsFirstInitialization;
 
   /** Check validity of color */
-  static Bool ScanColorCode(const String & key,
+  static void ScanColorCode(const String & key,
                             Indices & rgba);
   static Bool IsValidColorCode(const String & key);
   static Bool IsValidColorName(const String & key);

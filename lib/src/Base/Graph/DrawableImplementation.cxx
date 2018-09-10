@@ -817,9 +817,8 @@ String DrawableImplementation::ConvertFromName(const String & name)
 Indices DrawableImplementation::ConvertToRGB(const String & key)
 {
   Indices rgba;
-  if (!ScanColorCode(key, rgba))
-    LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
-  // Drop the a component
+  ScanColorCode(key, rgba);
+  // Drop the alpha component
   rgba.resize(3);
   return rgba;
 }
@@ -828,8 +827,7 @@ Indices DrawableImplementation::ConvertToRGB(const String & key)
 Indices DrawableImplementation::ConvertToRGBA(const String & key)
 {
   Indices rgba;
-  if (!ScanColorCode(key, rgba))
-    LOGWARN(OSS() << "Code " << key << " is an invalid color code. Default to black.");
+  ScanColorCode(key, rgba);
   return rgba;
 }
 
@@ -1057,19 +1055,19 @@ Bool DrawableImplementation::IsValidColorName(const String & key)
   return (it != ColorCodes.end());
 }
 
-Bool DrawableImplementation::ScanColorCode(const String & key,
-    Indices & rgba)
+void DrawableImplementation::ScanColorCode(const String & key,
+                                           Indices & rgba)
 {
   rgba = Indices(4, 0);
   // First, check if the color is given in RGB format
   const UnsignedInteger keySize = key.size();
-  if (keySize == 0) return false;
+  if (keySize == 0) throw InvalidArgumentException(HERE) << "Empty hex color";
   // Check if it is a #RRGGBB[AA] rgba
-  if (key[0] != '#') return false;
+  if (key[0] != '#') throw InvalidArgumentException(HERE) << "Hex color should start with #";
   // First, check the key length:
   // 7 for #RRGGBB
   // 9 for #RRGGBBAA
-  if ((keySize != 7) && (keySize != 9)) return false;
+  if ((keySize != 7) && (keySize != 9)) throw InvalidArgumentException(HERE) << "Hex color not in #RRGGBB nor #RRGGBBAA format";
   // Second, check that the values are ok
   for (UnsignedInteger i = 0; i < keySize - 1; ++i)
   {
@@ -1079,20 +1077,27 @@ Bool DrawableImplementation::ScanColorCode(const String & key,
     const Bool isNum = (c >= '0') && (c <= '9');
     const Bool isValidLower = (c >= 'a') && (c <= 'f');
     const Bool isValidUpper = (c >= 'A') && (c <= 'F');
-    if ((!isNum) && !(isValidLower) && !(isValidUpper)) return false;
+    if ((!isNum) && !(isValidLower) && !(isValidUpper)) throw InvalidArgumentException(HERE) << "Invalid character in hex color";
     if (isNum)        rgba[i / 2] += (c - '0'     ) * shift;
     if (isValidLower) rgba[i / 2] += (c - 'a' + 10) * shift;
     if (isValidUpper) rgba[i / 2] += (c - 'A' + 10) * shift;
   }
   // If no A value, set it to 255
   if (keySize == 7) rgba[3] = 255;
-  return true;
 }
 
 Bool DrawableImplementation::IsValidColorCode(const String & key)
 {
   Indices rgba;
-  return ScanColorCode(key, rgba);
+  try
+  {
+    ScanColorCode(key, rgba);
+    return true;
+  }
+  catch (InvalidArgumentException &)
+  {
+    return false;
+  }
 }
 
 Bool DrawableImplementation::IsValidColor(const String & key)
@@ -1329,10 +1334,10 @@ Sample DrawableImplementation::getPaletteAsNormalizedRGBA() const
   const Description palette(getPalette());
   const UnsignedInteger size = palette.getSize();
   Sample normalizedRGBA(size, 4);
-  Indices rgba(4);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    (void) ScanColorCode(palette[i], rgba);
+    const String hexCode(ConvertFromName(palette[i]));
+    const Indices rgba(ConvertToRGBA(hexCode));
     normalizedRGBA(i, 0) = rgba[0] / 255.0;
     normalizedRGBA(i, 1) = rgba[1] / 255.0;
     normalizedRGBA(i, 2) = rgba[2] / 255.0;
