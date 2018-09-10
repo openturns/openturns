@@ -1,0 +1,69 @@
+%feature("docstring") OT::SobolSimulationResult
+"Sobol simulation result.
+
+Gathers the results of a :class:`~openturns.SobolSimulationAlgorithm`
+algorithm.
+
+See also
+--------
+SobolSimulationAlgorithm"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::getFirstOrderIndicesDistribution
+"Accessor to the first order indices distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution of the first order indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::getFirstOrderIndicesEstimate
+"Accessor to the first order indices estimate.
+
+Returns
+-------
+estimate : :class:`~openturns.Point`
+    Estimate of the first order indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::getTotalOrderIndicesDistribution
+"Accessor to the total order indices distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Distribution of the total order indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::getTotalOrderIndicesEstimate
+"Accessor to the total order indices estimate.
+
+Returns
+-------
+estimate : :class:`~openturns.Point`
+    Estimate of the total order indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::setFirstOrderIndicesDistribution
+"Accessor to the first order indices distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution of the first order indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::setTotalOrderIndicesDistribution
+"Accessor to the total order indices distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Distribution of the total order indices."

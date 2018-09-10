@@ -111,6 +111,11 @@ public:
   /** Method that draw  the sensitivity graph of a fixed marginal */
   virtual Graph draw(UnsignedInteger marginalIndex) const;
 
+  /** Design accessor */
+  void setDesign(const Sample & inputDesign,
+                 const Sample & outputDesign,
+                 const UnsignedInteger size);
+
   /** String converter */
   virtual String __repr__() const;
 

@@ -37,6 +37,17 @@
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
 
+/* Uncertainty/Algorithm/Sensitivity */
+%include ANCOVA.i
+%include FAST.i
+%include SobolIndicesAlgorithmImplementation.i
+%include SobolIndicesAlgorithm.i
+%include MartinezSensitivityAlgorithm.i
+%include SaltelliSensitivityAlgorithm.i
+%include JansenSensitivityAlgorithm.i
+%include MauntzKucherenkoSensitivityAlgorithm.i
+%include SobolIndicesExperiment.i
+
 /* Uncertainty/Algorithm/EventSimulation */
 %include SimulationResult.i
 %include ProbabilitySimulationResult.i
@@ -64,6 +75,8 @@
 %include AdaptiveDirectionalSampling.i
 %include ExpectationSimulationResult.i
 %include ExpectationSimulationAlgorithm.i
+%include SobolSimulationResult.i
+%include SobolSimulationAlgorithm.i
 
 /* At last we include template definitions */
 %include UncertaintySimulationTemplateDefs.i

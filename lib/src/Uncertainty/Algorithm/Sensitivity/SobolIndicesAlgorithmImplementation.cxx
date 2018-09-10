@@ -65,9 +65,9 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const S
     const Sample & outputDesign,
     const UnsignedInteger size)
   : PersistentObject()
-  , inputDesign_(inputDesign)
-  , outputDesign_(outputDesign)
-  , size_(size)
+  , inputDesign_()
+  , outputDesign_()
+  , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
   , referenceVariance_()
@@ -81,21 +81,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const S
   , alreadyComputedIndicesDistribution_(false)
   , useAsymptoticDistribution_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution"))
 {
-  if (outputDesign.getSize() == 0)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
-
-  // center Y
-  Point muY(outputDesign_.computeMean());
-  outputDesign_ -= muY;
-
-  // Check if desing result is coherant
-  if (inputDesign.getSize() != outputDesign.getSize())
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, input and output designs have different size. Input design size=" << inputDesign.getSize()
-                                         << ", wheras output design size=" << outputDesign.getSize();
-  // Reference sample and its variance
-  Sample outReference(size, outputDesign.getDimension());
-  for (UnsignedInteger k = 0; k < size; ++k) outReference[k] = outputDesign[k];
-  referenceVariance_ = outReference.computeVariance();
+  setDesign(inputDesign, outputDesign, size);
 }
 
 /* Virtual constructor */
@@ -112,7 +98,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   : PersistentObject()
   , inputDesign_()
   , outputDesign_()
-  , size_(size)
+  , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
   , referenceVariance_()
@@ -131,26 +117,19 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. distribution dimension=" << distribution.getDimension()
                                          << ", model input dimension = " << inputDimension;
   const SobolIndicesExperiment sobolExperiment(distribution, size, computeSecondOrder);
-  inputDesign_ = sobolExperiment.generate();
-  outputDesign_ = model(inputDesign_);
+  const Sample inputDesign(sobolExperiment.generate());
+  Sample outputDesign(model(inputDesign));
 
   if (computeSecondOrder && (inputDimension == 2))
   {
     // Special case: the experiment does not contain the C=[E_2, E_1] sample
-    Sample E1(outputDesign_, size * 2, size * 3);
-    Sample E2(outputDesign_, size * 3, size * 4);
-    outputDesign_.add(E2);
-    outputDesign_.add(E1);
+    Sample E1(outputDesign, size * 2, size * 3);
+    Sample E2(outputDesign, size * 3, size * 4);
+    outputDesign.add(E2);
+    outputDesign.add(E1);
   }
 
-  // center Y
-  Point muY(outputDesign_.computeMean());
-  outputDesign_ -= muY;
-
-  // Reference sample and its variance
-  Sample outReference(size, outputDesign_.getDimension());
-  for (UnsignedInteger k = 0; k < size_; ++k) outReference[k] = outputDesign_[k];
-  referenceVariance_ = outReference.computeVariance();
+  setDesign(inputDesign, outputDesign, size);
 }
 
 /** Constructor with distribution / model parameters */
@@ -179,17 +158,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. Experiment dimension=" << experiment.getDistribution().getDimension()
                                          << ", model input dimension = " << inputDimension;
   const SobolIndicesExperiment sobolExperiment(experiment, computeSecondOrder);
-  inputDesign_ = sobolExperiment.generate();
-  outputDesign_ = model(inputDesign_);
+  const Sample inputDesign(sobolExperiment.generate());
+  const Sample outputDesign(model(inputDesign));
 
-  // center Y
-  Point muY(outputDesign_.computeMean());
-  outputDesign_ -= muY;
-
-  // Reference sample and its variance
-  Sample outReference(size_, outputDesign_.getDimension());
-  for (UnsignedInteger k = 0; k < size_; ++k) outReference[k] = outputDesign_[k];
-  referenceVariance_ = outReference.computeVariance();
+  setDesign(inputDesign, outputDesign, experiment.getSize());
 }
 
 
@@ -604,7 +576,7 @@ String SobolIndicesAlgorithmImplementation::__str__(const String & ) const
 Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & ,
     Sample & ) const
 {
-  // Method is defined in Jansan/Saltelli/Martinez/Mauntz classes
+  // Method is defined in Jansen/Saltelli/Martinez/Mauntz classes
   throw new NotYetImplementedException(HERE);
 }
 
@@ -822,6 +794,31 @@ void SobolIndicesAlgorithmImplementation::setUseAsymptoticDistribution(Bool useA
 Bool SobolIndicesAlgorithmImplementation::getUseAsymptoticDistribution() const
 {
   return useAsymptoticDistribution_;
+}
+
+/* Design accessor */
+void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
+                                                    const Sample & outputDesign,
+                                                    const UnsignedInteger size)
+{
+  if (outputDesign.getSize() == 0)
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
+
+  // Check if desing result is coherant
+  if (inputDesign.getSize() != outputDesign.getSize())
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, input and output designs have different size. Input design size=" << inputDesign.getSize()
+                                         << ", wheras output design size=" << outputDesign.getSize();
+  inputDesign_ = inputDesign;
+  size_ = size;
+
+  // center Y
+  Point muY(outputDesign.computeMean());
+  outputDesign_ = outputDesign - muY;
+
+  // yA variance
+  referenceVariance_ = Sample(outputDesign, 0, size).computeVariance();
+
+  alreadyComputedIndicesDistribution_ = false;
 }
 
 /* Method save() stores the object through the StorageManager */

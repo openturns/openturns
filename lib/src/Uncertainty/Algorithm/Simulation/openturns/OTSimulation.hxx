@@ -47,5 +47,6 @@
 #include "openturns/AdaptiveDirectionalSampling.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/ExpectationSimulationAlgorithm.hxx"
+#include "openturns/SobolSimulationAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

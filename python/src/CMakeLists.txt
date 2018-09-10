@@ -841,6 +841,13 @@ ot_add_python_module(analytical analytical_module.i
                    )
 
 ot_add_python_module(simulation simulation_module.i
+                      SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
+                      SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
+                      MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in
+                      SaltelliSensitivityAlgorithm.i SaltelliSensitivityAlgorithm_doc.i.in
+                      JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
+                      MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
+                      SobolIndicesExperiment.i SobolIndicesExperiment_doc.i.in
                       SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i.in
                       ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i.in
                       SimulationResult.i SimulationResult_doc.i.in
@@ -867,6 +874,8 @@ ot_add_python_module(simulation simulation_module.i
                       AdaptiveDirectionalSampling.i AdaptiveDirectionalSampling_doc.i.in
                       ExpectationSimulationAlgorithm.i ExpectationSimulationAlgorithm_doc.i.in
                       ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
+                      SobolSimulationAlgorithm.i SobolSimulationAlgorithm_doc.i.in
+                      SobolSimulationResult.i SobolSimulationResult_doc.i.in
                       UncertaintySimulationTemplateDefs.i
                     )
 
@@ -885,13 +894,6 @@ ot_add_python_module(uncertainty uncertainty_module.i
                       FAST.i FAST_doc.i.in
                       EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
                       TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in
-		      SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
-		      SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
-		      MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in
-		      SaltelliSensitivityAlgorithm.i SaltelliSensitivityAlgorithm_doc.i.in
-		      JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
-		      MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
-                      SobolIndicesExperiment.i SobolIndicesExperiment_doc.i.in
                       UncertaintyTemplateDefs.i
                     )
 

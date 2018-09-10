@@ -1,0 +1,199 @@
+%feature("docstring") OT::SobolSimulationAlgorithm
+"Sobol indices computation using iterative sampling.
+
+The algorithm uses sampling of the distribution of the random vector :math:`\vect{X}` through the model :math:`f`
+to iteratively estimate the Sobol indices.
+
+At each iteration a fixed number :math:`N = blockSize * (d + 2)` of replications inputs is generated.
+These inputs are evaluated by blocks of size :math:`batchSize` through the model :math:`f`.
+Then the distribution of the indices (first and total order) is computed on this current replication sample.
+At the end of each iteration we update the global distribution of the indices.
+
+Parameters
+----------
+X : :class:`~openturns.Distribution`
+    The random vector to study.
+f : :class:`~openturns.Function`
+    The function to study.
+estimator : :class:`~openturns.SobolIndicesAlgorithm`
+    The estimator of the indices.
+
+Notes
+-----
+The algorithm can operate on a multivariate model :math:`f`, in this case it operates on aggregated indices.
+
+Several estimators are available (Saltelli, Jansen, ...).
+
+The algorithms stops when, on all components, first and total order indices haved been estimated with enough precision or the first order indices are
+*separable* from the total order indices:
+
+.. math::
+
+    \forall{j}
+
+    \Phi^{F}_j(1-\alpha)-\Phi^{F}_j(\alpha) \leq \epsilon \cap \Phi^{T}_j(1-\alpha)-\Phi^{T}_j(\alpha) \leq \epsilon
+
+    or
+
+    \Phi^{T}_j(\alpha) \ge \Phi^{F}_j(1-\alpha)
+
+
+
+See also
+--------
+SobolSimulationResult
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
+>>> model = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['x1*x2+x3'])
+>>> estimator = ot.SaltelliSensitivityAlgorithm()
+>>> estimator.setUseAsymptoticDistribution(True)
+>>> algo = ot.SobolSimulationAlgorithm(distribution, model, estimator)
+>>> algo.setMaximumOuterSampling(25) # number of iterations
+>>> algo.setBlockSize(100) # size of Sobol experiment at each iteration
+>>> algo.setBatchSize(4) # number of points evaluated simultaneously
+>>> algo.setIndexQuantileLevel(0.05) # alpha
+>>> algo.setIndexQuantileEpsilon(1e-2) # epsilon
+>>> algo.run()
+>>> result = algo.getResult()
+>>> fo = result.getFirstOrderIndicesEstimate()
+>>> foDist = result.getFirstOrderIndicesDistribution()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::getResult
+"Accessor to the result.
+
+Returns
+-------
+result : :class:`~openturns.SobolSimulationResult`
+    The simulation result."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::setIndexQuantileLevel
+"Accessor to the quantile level.
+
+Parameters
+----------
+alpha : float
+    The quantile level."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::getIndexQuantileLevel
+"Accessor to the quantile level.
+
+Returns
+-------
+alpha : float
+    The quantile level."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::setIndexQuantileEpsilon
+"Accessor to the quantile tolerance.
+
+Parameters
+----------
+epsilon : float
+    The quantile tolerance"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::getIndexQuantileEpsilon
+"Accessor to the criterion operator.
+
+Returns
+-------
+epsilon : float
+    The quantile tolerance"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::drawFirstOrderIndexConvergence
+"Draw the first order Sobol index convergence at a given level.
+
+Parameters
+----------
+marginalIndex : int
+    Index of the random vector component to consider
+level : float, optional
+    The expectation convergence is drawn at this given confidence length
+    *level*. By default *level* is 0.95.
+
+Returns
+-------
+graph : a :class:`~openturns.Graph`
+    expectation convergence graph"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::drawTotalOrderIndexConvergence
+"Draw the total order Sobol index convergence at a given level.
+
+Parameters
+----------
+marginalIndex : int
+    Index of the random vector component to consider
+level : float, optional
+    The expectation convergence is drawn at this given confidence length
+    *level*. By default *level* is 0.95.
+
+Returns
+-------
+graph : a :class:`~openturns.Graph`
+    expectation convergence graph"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::setEstimator
+"Sobol estimator accessor.
+
+Parameters
+----------
+estimator : :class:`~openturns.SobolIndicesAlgorithm`
+    The estimator of the indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::getEstimator
+"Sobol estimator accessor.
+
+Returns
+-------
+estimator : :class:`~openturns.SobolIndicesAlgorithm`
+    The estimator of the indices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::setBatchSize
+"Accessor to the batch size.
+
+Parameters
+----------
+batchSize : int
+    Number of points evaluated simultaneously."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::getBatchSize
+"Accessor to the batch size.
+
+Returns
+-------
+batchSize : int
+    Number of points evaluated simultaneously."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationAlgorithm::getDistribution
+"Accessor to the batch size.
+
+Returns
+-------
+distibution : :class:`~openturns.Distribution`
+    Distribution of the random variable."

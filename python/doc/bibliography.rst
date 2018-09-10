@@ -129,6 +129,9 @@ Bibliography
     http://www.itl.nist.gov/div898/handbook/
 .. [NLopt] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [PMFRE-01116] Dumas A., *Lois asymptotiques des estimateurs des indices de Sobol'*,
+    Technical report, Phimeca, 2018.
+    `pdf <http://doc.openturns.org/papers/RT-PMFRE-01116-001C_-_Rapport_loi_estimateur_sobol.pdf>`__
 .. [Pronzato2012] Pronzato L and Muller W (2012).
     *Design of computer experiments: Space filling and beyond.*
     Statistics and Computing 22(3): 681-701.

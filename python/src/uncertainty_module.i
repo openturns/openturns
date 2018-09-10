@@ -50,17 +50,6 @@
 /* Uncertainty/Algorithm/Optimization */
 %include EfficientGlobalOptimization.i
 
-/* Uncertainty/Algorithm/Sensitivity */
-%include ANCOVA.i
-%include FAST.i
-%include SobolIndicesAlgorithmImplementation.i
-%include SobolIndicesAlgorithm.i
-%include MartinezSensitivityAlgorithm.i
-%include SaltelliSensitivityAlgorithm.i
-%include JansenSensitivityAlgorithm.i
-%include MauntzKucherenkoSensitivityAlgorithm.i
-%include SobolIndicesExperiment.i
-
  /* Uncertainty/Algorithm/Transformation */
 %import transformation_module.i
 %import UncertaintyTransformationTemplateDefs.i
