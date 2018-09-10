@@ -137,22 +137,23 @@ Note finally that the distribution of indices can be computed for first
 and total order thanks to the :meth:`getFirstOrderIndicesDistribution` and
 :meth:`getTotalOrderIndicesDistribution` methods.
 
-This can be done by either bootstrap or by using an asymptotic estimator,
-this behavior can be changed using :meth:`setUseAsymptoticDistribution`. Its value in initialized by the
+This can be done either by bootstrap or using an asymptotic estimator,
+this behavior can be changed using :meth:`setUseAsymptoticDistribution`.
+Its value in initialized by the
 `SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution` resourcemap key.
 
 For the bootstrap method the size is set by :meth:`setBootstrapSize`
 values and initialized by `SobolIndicesAlgorithm-DefaultBootstrapSize` resourcemap key.
 
-The asymptotic estimators are computed using the [Janon2014]_ delta method,
-refer to the documentation of each estimator's class.
+The asymptotic estimator of the variance are computed using the [Janon2014]_
+delta method, in the technical report [PMFRE-01116]_.
 
 The corresponding confidence interval is also provided using
 :meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.
 The confidence level is set by `setConfidenceLevel`
 and is initialized by the `SobolIndicesAlgorithm-DefaultConfidenceLevel` resourcemap key.
 
-Also note that for numerical stability reasons the ouputs are centered before indices estimation:
+Also note that for numerical stability reasons the outputs are centered before indices estimation:
 
 .. math::
 

@@ -1,8 +1,13 @@
 %feature("docstring") OT::SobolSimulationAlgorithm
 "Sobol indices computation using iterative sampling.
 
-Iterative Sobol indices estimation of the output of random vector :math:`\vect{X}`
-through a function :math:`f`.
+The algorithm uses sampling of the distribution of the random vector :math:`\vect{X}` through the model :math:`f`
+to iteratively estimate the Sobol indices.
+
+At each iteration a fixed number :math:`N = blockSize * (d + 2)` of replications inputs is generated.
+These inputs are evaluated by blocks of size :math:`batchSize` through the model :math:`f`.
+Then the distribution of the indices (first and total order) is computed on this current replication sample.
+At the end of each iteration we update the global distribution of the indices.
 
 Parameters
 ----------
@@ -16,6 +21,8 @@ estimator : :class:`~openturns.SobolIndicesAlgorithm`
 Notes
 -----
 The algorithm can operate on a multivariate model :math:`f`, in this case it operates on aggregated indices.
+
+Several estimators are available (Saltelli, Jansen, ...).
 
 The algorithms stops when, on all components, first and total order indices haved been estimated with enough precision or the first order indices are
 *separable* from the total order indices:
