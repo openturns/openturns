@@ -47,6 +47,7 @@ TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSamp
     const LinearModel & linearModel,
     const Scalar level)
 {
+  Log::Warn(OSS() << "LinearModelAdjustedRSquared is deprecated and will be removed in a future version");
   return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmAdjustedRSquare");
 }
 
@@ -98,6 +99,7 @@ TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
     const LinearModel & linearModel,
     const Scalar level)
 {
+  Log::Warn(OSS() << "LinearModelRSquared is deprecated and will be removed in a future version");
   return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmRsquared");
 }
 

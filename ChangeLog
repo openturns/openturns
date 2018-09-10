@@ -39,6 +39,7 @@
  * Deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
  * Deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
  * Removed VertexFunction class
+ * Deprecated LinearModelRSquared, LinearModelAdjustedRSquared
 
 === Python module ===
 

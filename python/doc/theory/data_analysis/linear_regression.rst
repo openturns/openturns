@@ -231,9 +231,7 @@ be abandoned, or at least used very cautiously.
     - See :class:`~openturns.LinearModelFactory` to build a linear model
     - See :class:`~openturns.LinearModel` for the linear model itself
     - See :py:func:`~openturns.VisualTest_DrawLinearModel` to draw a linear model
-    - See :py:func:`~openturns.VisualTest_DrawLinearModelResidual` to assess the quality of the regression
-    - See :py:func:`~openturns.LinearModelTest_LinearModelRSquared` to assess the quality of the regression
-    - See :py:func:`~openturns.LinearModelTest_LinearModelAdjustedRSquared` to draw the residual
+    - See :py:func:`~openturns.VisualTest_DrawLinearModelResidual` to draw the residual
     - See :py:func:`~openturns.LinearModelTest_LinearModelFisher` to assess the nullity of the coefficients
     - See :py:func:`~openturns.LinearModelTest_LinearModelResidualMean` to assess the mean residual
     - See :py:func:`~openturns.LinearModelTest_LinearModelHarrisonMcCabe` to assess the homoskedasticity of the residual
