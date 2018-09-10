@@ -36,13 +36,17 @@ int main(int , char *[])
     UnsignedInteger size = 50;
     Collection<OT::Polygon > array(size);
     Description palette(Drawable::BuildDefaultPalette(size));
+    palette[8] = "blue";
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       Sample vertices(generator.getSample(3));
       array[i] = OT::Polygon(vertices, palette[i], palette[size - i - 1]);
     }
     Graph graph("An array of polygons", "x", "y", true, "");
-    graph.add(PolygonArray(array));
+    PolygonArray polygonArray(array);
+    std::cout << "palette" << polygonArray.getPalette() << std::endl;
+    std::cout << "palette (RGBA)" << polygonArray.getPaletteAsNormalizedRGBA() << std::endl;
+    graph.add(polygonArray);
     graph.draw("polygon_array.png");
   }
   catch (TestFailed & ex)
