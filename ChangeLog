@@ -14,6 +14,7 @@
  * ExpectationSimulationAlgorithm, ExpectationSimulationResult
  * ExtremeValueCopula
  * ChaospyDistribution
+ * SobolSimulationAlgorithm, SobolSimulationResult
 
 ==== API changes ====
  * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes
@@ -28,7 +29,7 @@
  * Removed deprecated Domain(a, b) constructor
  * Removed deprecated Domain,DomainImplementation::numericallyContains, isEmpty, isNumericallyEmpty, getVolume, getNumericalVolume, computeVolume
  * Removed deprecated Domain,DomainImplementation::getLowerBound, getUpperBound methods
- * Removed deprecated Interval,Mesh::computeVolume in 1.12
+ * Removed deprecated Interval,Mesh::computeVolume
  * Removed deprecated SobolIndicesAlgorithm::[sg]etBootstrapConfidenceLevel
  * Removed deprecated Mesh::getVerticesToSimplicesMap,computeSimplexVolume
  * Removed deprecated Evaluation,EvaluationImplementation,EvaluationProxy,Function,FunctionImplementation,ParametricEvaluation::operator(inP,parameter)
