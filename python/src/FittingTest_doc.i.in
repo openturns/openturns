@@ -167,10 +167,9 @@ sample : 2-d sequence of float
     Tested sample.
 model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
     Tested distribution.
-level : float, :math:`0 \leq {\rm level} \leq 1`, optional
-    This the value such that :math:`\alpha = 1 - {\rm level}` is the risk of
-    committing a Type I error, that is an incorrect rejection of a true
-    null hypothesis.
+level : float, :math:`0 \leq \alpha \leq 1`, optional
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
 n_parameters : int, :math:`0 \leq k`, optional
     The number of parameters in the distribution that have been estimated from
     the sample.
@@ -201,7 +200,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Poisson()
 >>> sample = distribution.getSample(30)
->>> ot.FittingTest.ChiSquared(sample, ot.PoissonFactory(), .99)
+>>> ot.FittingTest.ChiSquared(sample, ot.PoissonFactory(), 0.01)
 class=TestResult name=Unnamed type=ChiSquaredPoisson binaryQualityMeasure=true p-value threshold=0.01 p-value=0.606136 description=[]"
 
 // ---------------------------------------------------------------------
@@ -215,10 +214,9 @@ sample : 2-d sequence of float
     Tested sample.
 model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
     Tested distribution.
-level : float, :math:`0 \leq {\rm level} \leq 1`, optional
-    This is the value such that :math:`\alpha = 1 - {\rm level}` is the risk of
-    committing a Type I error, that is an incorrect rejection of a true
-    null hypothesis.
+level : float, :math:`0 \leq \alpha \leq 1`, optional
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
 n_parameters : int, :math:`0 \leq k`, optional
     The number of parameters in the distribution that have been estimated from
     the sample.
@@ -250,7 +248,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), .99)
+>>> ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
 class=TestResult name=Unnamed type=KolmogorovDistribution binaryQualityMeasure=true p-value threshold=0.01 p-value=0.846896 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
 
 // ---------------------------------------------------------------------
@@ -267,10 +265,9 @@ sample1 : 2-d float array
     A continuous distribution sample.
 sample2 : 2-d float array
     Another continuous distribution sample, can be of different size.
-level : float, :math:`0 \leq {\rm level} \leq 1`, optional
-    This the value such that :math:`\alpha = 1 - {\rm level}` is the risk of
-    committing a Type I error, that is an incorrect rejection of a true
-    null hypothesis.
+level : float, :math:`0 \leq \alpha \leq 1`, optional
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
 
 Returns
 -------

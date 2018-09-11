@@ -37,30 +37,30 @@ try:
     # ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independant ?
     # Care : discrete samples only
     # H0 = independent samples
-    # p-value threshold : probability of the H0 reject zone : 1-0.90
+    # p-value threshold : probability of the H0 reject zone : 0.10
     # p-value : probability (test variable decision > test variable decision evaluated on the samples)
     # Test = True <=> p-value > p-value threshold
     print("ChiSquared=", HypothesisTest.ChiSquared(
-        discreteSample1, discreteSample2, 0.90))
+        discreteSample1, discreteSample2, 0.10))
     print("ChiSquared2=", HypothesisTest.ChiSquared(
-        discreteSample1, discreteSample1, 0.90))
+        discreteSample1, discreteSample1, 0.10))
 
     # Pearson Test : test if two gaussian samples are independent (based on the evaluation of the linear correlation coefficient)
     # H0 : independent samples (linear correlation coefficient = 0)
     # Test = True <=> independent samples (linear correlation coefficient = 0)
-    # p-value threshold : probability of the H0 reject zone : 1-0.90
+    # p-value threshold : probability of the H0 reject zone : 0.10
     # p-value : probability (test variable decision > test variable decision evaluated on the samples)
     # Test = True <=> p-value > p-value threshold
-    print("Pearson=", HypothesisTest.Pearson(sampleY, sampleZ, 0.90))
+    print("Pearson=", HypothesisTest.Pearson(sampleY, sampleZ, 0.10))
 
     # Smirnov Test : test if two samples (of sizes not necessarily equal) follow the same distribution
     # Care : continuous distributions only
     # H0 = same continuous distribution
     # Test = True <=> same distribution
-    # p-value threshold : probability of the H0 reject zone : 1-0.90
+    # p-value threshold : probability of the H0 reject zone : 0.10
     # p-value : probability (test variable decision > test variable decision evaluated on the samples)
     # Test = True <=> p-value > p-value threshold
-    print("Smirnov=", HypothesisTest.Smirnov(sampleY, sampleZ, 0.90))
+    print("Smirnov=", HypothesisTest.Smirnov(sampleY, sampleZ, 0.10))
 
 except:
     import sys

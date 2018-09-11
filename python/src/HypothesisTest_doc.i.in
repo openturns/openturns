@@ -15,8 +15,8 @@ firstSample : 2-d sequence of float
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -58,8 +58,8 @@ firstSample : 2-d sequence of float
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -74,8 +74,8 @@ Notes
 -----
 The Full Pearson Test is the independence Pearson test between 2 samples :
 *firstSample* of dimension *n* and *secondSample* of dimension 1. If
-*firstSample[i]* is the numerical sample extracted from *firstSample*
-(:math:`i^{th}` coordinate of each point of the numerical sample), FullPearson
+*firstSample[i]* is the sample extracted from *firstSample*
+(:math:`i^{th}` coordinate of each point of the sample), FullPearson
 performs the independence Pearson test simultaneously on *firstSample[i]* and 
 secondSample. For all *i*, it is supposed that the couple (*firstSample[i]* and
 *secondSample*) is issued from a gaussian vector.
@@ -117,8 +117,8 @@ firstSample : 2-d sequence of float
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -133,11 +133,11 @@ Notes
 -----
 The Full Regression Test is used to check the quality of the linear regression
 model between two samples: *firstSample* of dimension *n* and *secondSample* of
-dimension 1. If *firstSample[i]* is the numerical sample extracted from
-*firstSample* (:math:`i^{th}` coordinate of each point of the numerical sample),
+dimension 1. If *firstSample[i]* is the sample extracted from
+*firstSample* (:math:`i^{th}` coordinate of each point of the sample),
 FullRegression performs the linear regression test simultaneously on all
 *firstSample[i]* and *secondSample*. The linear regression test tests if the
-linear regression model between two scalar numerical samples is not significant.
+linear regression model between two scalar samples is not significant.
 It is based on the deviation analysis of the regression. The Fisher distribution
 is used.
 
@@ -230,8 +230,8 @@ selection : sequence of integers, maximum integer value :math:`< n`
     List of indices selecting which subsets of the first sample will successively
     be tested with the second sample through the Pearson test.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -287,8 +287,8 @@ selection : sequence of int, maximum integer value :math:`< n`
     List of indices selecting which subsets of the first sample will successively
     be tested with the second sample through the regression test.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -346,8 +346,8 @@ selection : sequence of integers, maximum integer value :math:`< n`
     List of indices selecting which subsets of the first sample will successively
     be tested with the second sample through the Spearman test.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -397,8 +397,8 @@ firstSample : 2-d sequence of float
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -446,8 +446,8 @@ firstSample : 2-d sequence of float
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -498,8 +498,8 @@ firstSample : 2-d sequence of float
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------

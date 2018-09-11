@@ -219,9 +219,7 @@ Linear model tests
     :toctree: _generated/
     :template: function.rst_t
 
-    LinearModelTest_LinearModelAdjustedRSquared
     LinearModelTest_LinearModelFisher
-    LinearModelTest_LinearModelRSquared
     LinearModelTest_LinearModelResidualMean
     LinearModelTest_LinearModelHarrisonMcCabe
     LinearModelTest_LinearModelBreuschPagan

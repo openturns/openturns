@@ -325,7 +325,7 @@ TestResult DickeyFullerTest::testUnitRootInDriftAndLinearTrendModel(const Scalar
   const Scalar statistic ((rho_ - 1.0) / sigmaRho_);
   // Statistical test : the null hypothesis is that there is a unit root
   const Scalar pValue = DistFunc::pDickeyFullerTrend(statistic);
-  return TestResult("DickeyFullerUnitRootInDriftAndLinearTrendModel", pValue > 1.0 - level, pValue, 1.0 - level);
+  return TestResult("DickeyFullerUnitRootInDriftAndLinearTrendModel", pValue > level, pValue, level);
 }
 
 /* Test H0: there is a unit root in a drift model */
@@ -338,7 +338,7 @@ TestResult DickeyFullerTest::testUnitRootInDriftModel(const Scalar level)
 
   // We compare the statistic of the test with the critical value of the DF test
   Scalar pValue = DistFunc::pDickeyFullerConstant(statistic);
-  return TestResult("DickeyFullerUnitRootInDriftModel", pValue > 1.0 - level, pValue, 1.0 - level);
+  return TestResult("DickeyFullerUnitRootInDriftModel", pValue > level, pValue, level);
 }
 
 /* Test H0: there is a unit root in an AR1 model */
@@ -348,7 +348,7 @@ TestResult DickeyFullerTest::testUnitRootInAR1Model(const Scalar level)
   const Scalar statistic = (rho_ - 1.0) / sigmaRho_;
   // We get now the statistic of the test and compare it with the critical value of the DF test
   const Scalar pValue = DistFunc::pDickeyFullerNoConstant(statistic);
-  return TestResult("DickeyFullerUnitRootAR1Model", pValue > 1.0 - level, pValue, 1.0 - level);
+  return TestResult("DickeyFullerUnitRootAR1Model", pValue > level, pValue, level);
 }
 
 
@@ -520,7 +520,7 @@ TestResult DickeyFullerTest::testUnitRootAndNoLinearTrendInDriftAndLinearTrendMo
   const Scalar pValueNullTrend = fisherSnedecor.computeCDF(fisherStatisticNullTrend);
 
   // Decision
-  const TestResult result("DickeyFullerTrendNullWithUnitRoot", pValueNullTrend < level, 1.0 - pValueNullTrend, 1.0 - level);
+  const TestResult result("DickeyFullerTrendNullWithUnitRoot", pValueNullTrend < level, pValueNullTrend, level);
   return result;
 }
 
@@ -549,7 +549,7 @@ TestResult DickeyFullerTest::testNoUnitRootAndNoLinearTrendInDriftAndLinearTrend
   // True pValue = 1 - F(s) with s the student statistic and F the Student cumulative function
 
   // Test is rejected if the the statistic is greater than the quantile
-  const TestResult result("DickeyFullerTrendNullWithoutUnitRoot", complementaryCDFNullTrend > 1.0 - level, complementaryCDFNullTrend, 1.0 - level);
+  const TestResult result("DickeyFullerTrendNullWithoutUnitRoot", complementaryCDFNullTrend > level, complementaryCDFNullTrend, level);
   return result;
 
 }
@@ -597,7 +597,7 @@ TestResult DickeyFullerTest::testUnitRootAndNoDriftInDriftModel(const Scalar lev
   const Scalar pValueNullDrift = fisherSnedecor.computeCDF(fisherStatisticNullDrift);
 
   // Decision
-  TestResult result("DickeyFullerDriftNullWithUnitRoot", pValueNullDrift < level, 1.0 - pValueNullDrift, 1.0 - level);
+  TestResult result("DickeyFullerDriftNullWithUnitRoot", pValueNullDrift < level, pValueNullDrift, level);
   return result;
 
 }
@@ -623,7 +623,7 @@ TestResult DickeyFullerTest::testNoUnitRootAndNoDriftInDriftModel(const Scalar l
   const Scalar complementaryCDFNullDrift = DistFunc::pStudent(T_ - 2, studentStatisticNullDrift);
 
   // Test is rejected if the the statistic is greater than the quantile
-  const TestResult result("DickeyFullerDriftNullWithoutUnitRoot", complementaryCDFNullDrift < 1.0 - level, complementaryCDFNullDrift, 1.0 - level);
+  const TestResult result("DickeyFullerDriftNullWithoutUnitRoot", complementaryCDFNullDrift < level, complementaryCDFNullDrift, level);
   return result;
 
 }

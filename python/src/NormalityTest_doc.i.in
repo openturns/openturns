@@ -14,8 +14,8 @@ Parameters
 sample : 2-d sequence of float
     Tested sample.
 level : positive float
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -60,8 +60,8 @@ Parameters
 sample : 2-d sequence of float
     Tested sample.
 level : positive float
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------

@@ -23,8 +23,8 @@ secondSample : 2-d sequence of float
 linearModel : :class:`~openturns.LinearModel`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -94,8 +94,8 @@ secondSample : 2-d sequence of float
 linearModel : :class:`~openturns.LinearModel`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -164,8 +164,8 @@ secondSample : 2-d sequence of float
 linearModel : :class:`~openturns.LinearModel`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -234,8 +234,8 @@ secondSample : 2-d sequence of float
 linearModel : :class:`~openturns.LinearModel`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -303,8 +303,8 @@ secondSample : 2-d sequence of float
 linearModel : :class:`~openturns.LinearModel`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 breakPoint : positive float :math:`< 1`
     Percentage of data to be taken as breakPoint in the variances. It must be
     :math:`< 1`, equal to 0.5 by default.
@@ -351,7 +351,7 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelHarrisonMcCabe(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.95 p-value=0.142 description=[]
+class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.05 p-value=0.142 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -378,8 +378,8 @@ secondSample : 2-d sequence of float
 linearModel : :class:`~openturns.LinearModel`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -422,7 +422,7 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelBreuschPagan(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-value threshold=0.95 p-value=0.700772 description=[]
+class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-value threshold=0.05 p-value=0.700772 description=[]
 "
 
 
@@ -453,8 +453,8 @@ hypothesis : string
     Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or
     'Greater' than 0. Default is set to 'Equal' to 0.
 level : positive float :math:`< 1`
-    Threshold p-value of the test (= 1 - first type risk), it must be
-    :math:`< 1`, equal to 0.95 by default.
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
 
 Returns
 -------
@@ -496,5 +496,5 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelDurbinWatson(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.95 p-value=0.653603 description=[Hypothesis test: autocorrelation equals 0.]
+class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.653603 description=[Hypothesis test: autocorrelation equals 0.]
 "

@@ -137,7 +137,7 @@ try:
     for i in range(continuousDistributionNumber):
         for j in range(continuousDistributionNumber):
             value = FittingTest.Kolmogorov(continuousSampleCollection[
-                                           i], continuousDistributionCollection[j], 0.95, 0).getPValue()
+                                           i], continuousDistributionCollection[j], 0.05, 0).getPValue()
             if (fabs(value) < 1.0e-6):
                 value = 0.0
             resultKolmogorov[i, j] = value
@@ -148,7 +148,7 @@ try:
     for i in range(discreteDistributionNumber - 1):
         for j in range(discreteDistributionNumber - 1):
             value = FittingTest.ChiSquared(discreteSampleCollection[
-                                           i], discreteDistributionCollection[j], 0.95, 0).getPValue()
+                                           i], discreteDistributionCollection[j], 0.05, 0).getPValue()
             if (fabs(value) < 1.0e-6):
                 value = 0.0
             resultChiSquared[i, j] = value

@@ -21,7 +21,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.99)
+>>> test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
 >>> print(test_result.getPValue())
 0.846896...
 >>> print(test_result.getThreshold())

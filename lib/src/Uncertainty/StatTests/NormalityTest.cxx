@@ -80,7 +80,7 @@ TestResult NormalityTest::AndersonDarlingNormal(const Sample & sample,
   {
     pValue = 0.0;
   }
-  return TestResult("AndersonDarlingNormal", pValue > 1.0 - level, pValue, 1.0 - level);
+  return TestResult("AndersonDarlingNormal", pValue > level, pValue, level);
 }
 
 /* Cramer Von Mises normality test for normal distributions. */
@@ -124,7 +124,7 @@ TestResult NormalityTest::CramerVonMisesNormal(const Sample & sample,
   {
     pValue = 0.0;
   }
-  return TestResult("CramerVonMisesNormal", pValue > 1.0 - level, pValue, 1.0 - level);
+  return TestResult("CramerVonMisesNormal", pValue > level, pValue, level);
 }
 
 END_NAMESPACE_OPENTURNS
