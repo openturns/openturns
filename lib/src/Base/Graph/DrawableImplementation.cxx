@@ -1457,7 +1457,8 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
   UnsignedInteger paletteIndex = 0;
   for (UnsignedInteger iCycle = 0; iCycle < cycles; ++iCycle)
   {
-    const Scalar value = 1.0 - iCycle / static_cast< Scalar >(cycles);
+    const volatile Scalar p = iCycle / static_cast< Scalar >(cycles);
+    const Scalar value = 1.0 - p;
     const UnsignedInteger iHueMax = std::min(size - paletteIndex, static_cast< UnsignedInteger >(12));
     for (UnsignedInteger iHue = 0; iHue < iHueMax; ++iHue)
     {
