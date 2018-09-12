@@ -153,16 +153,8 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
 }
 
-/* Constructor */
-FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
-    const Sample & outputSample)
-  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample))
-  , adaptiveStrategy_()
-  , projectionStrategy_()
-  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+Distribution FunctionalChaosAlgorithm::BuildDistribution(const Sample & inputSample)
 {
-  // Check sample size
-  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
   // Recover the distribution, taking into account that we look for performance
   // so we avoid to rebuild expensive distributions as much as possible
   const UnsignedInteger inputDimension = inputSample.getDimension();
@@ -178,11 +170,9 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     }
   }
   Collection< Distribution > marginals(inputDimension);
-  Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
   // The strategy for the marginals is to find the best continuous 1-d parametric model else fallback to a kernel smoothing
   KernelSmoothing ks;
   Collection< DistributionFactory > factories(DistributionFactory::GetContinuousUniVariateFactories());
-  LOGINFO("In FunctionalChaosAlgorithm, identify marginal distributions");
   const Description inputDescription(inputSample.getDescription());
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
@@ -191,27 +181,47 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
     const Sample marginalSample(inputSample.getMarginal(i).sortUnique());
     Collection<Distribution> possibleDistributions(0);
     for (UnsignedInteger j = 0; j < factories.getSize(); ++j)
-      try
-	{
-	  possibleDistributions.add(factories[j].build(marginalSample));
-	}
-      catch (...)
-	{
-	  // Just skip the factories incompatible with the current marginal sample
-	}
+    try
+    {
+      possibleDistributions.add(factories[j].build(marginalSample));
+    }
+    catch (...)
+    {
+      // Just skip the factories incompatible with the current marginal sample
+    }
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, possibleDistributions, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
     if (bestResult.getPValue() >= ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
     else marginals[i] = ks.build(marginalSample);
     marginals[i].setDescription(Description(1, inputDescription[i]));
-    LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);
-    polynomials[i] = StandardDistributionPolynomialFactory(marginals[i]);
   }
 
   ComposedDistribution distribution(marginals);
   if (!isIndependent)
     distribution.setCopula(NormalCopulaFactory().build(inputSample));
-  setDistribution(distribution);
+  return distribution;
+}
+
+
+/* Constructor */
+FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
+    const Sample & outputSample)
+  : MetaModelAlgorithm(Distribution(), DatabaseFunction(inputSample, outputSample))
+  , adaptiveStrategy_()
+  , projectionStrategy_()
+  , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
+{
+  // Check sample size
+  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
+  // Recover the distribution
+  LOGINFO("In FunctionalChaosAlgorithm, identify marginal distribution");
+  setDistribution(BuildDistribution(inputSample));
+  const UnsignedInteger inputDimension = inputSample.getDimension();
+  Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
+  for (UnsignedInteger i = 0; i < inputDimension; ++ i)
+  {
+    polynomials[i] = StandardDistributionPolynomialFactory(getDistribution().getMarginal(i));
+  }
 
   const HyperbolicAnisotropicEnumerateFunction enumerate(inputDimension, ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-QNorm" ));
   OrthogonalProductPolynomialFactory basis(polynomials, enumerate);
