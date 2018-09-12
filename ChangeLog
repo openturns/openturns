@@ -8,6 +8,7 @@
  * FieldFunction and co knows its input/output meshes before evaluation
  * SobolSequence has been extended from maximum dimension 40 to 1111
  * Parametrized statistical tests by first kind risk instead of 1-risk
+ * FittingTest now compute a correct p-value in Kolmogorov tests even if the parameters are estimated from the tested sample
 
 ==== New classes ====
  * ProbabilitySimulationResult

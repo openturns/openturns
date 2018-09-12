@@ -175,11 +175,21 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     TestResult bestResult;
-    // Here we remove the duplicate entries in the marginal sample using the automatic compaction of the support in the UserDefined class
-    const Sample marginalSample(UserDefined(inputSample.getMarginal(i)).getSupport());
-    const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, factories, bestResult));
+    // Here we remove the duplicate entries in the marginal sample as we are suppose to have a continuous distribution. The duplicates are mostly due to truncation in the file export.
+    const Sample marginalSample(inputSample.getMarginal(i).sortUnique());
+    Collection<Distribution> possibleDistributions(0);
+    for (UnsignedInteger j = 0; j < factories.getSize(); ++j)
+      try
+	{
+	  possibleDistributions.add(factories[j].build(marginalSample));
+	}
+      catch (...)
+	{
+	  // Just skip the factories incompatible with the current marginal sample
+	}
+    const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, possibleDistributions, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
-    if (bestResult.getPValue() > ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
+    if (bestResult.getPValue() >= ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
     else marginals[i] = ks.build(marginalSample.getMarginal(i));
     marginals[i].setDescription(Description(1, inputDescription[i]));
     LOGINFO(OSS() << "In FunctionalChaosAlgorithm constructor, selected distribution for marginal " << i << "=" << marginals[i]);

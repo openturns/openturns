@@ -223,7 +223,7 @@ n_parameters : int, :math:`0 \leq k`, optional
     This parameter must not be provided if a :class:`~openturns.DistributionFactory`
     was provided as the second argument (it will internally be set to the
     number of parameters estimated by the :class:`~openturns.DistributionFactory`).
-    It can be specified if  a :class:`~openturns.Distribution` was provided
+    It can be specified if a :class:`~openturns.Distribution` was provided
     as the second argument, but if it is not, it will be set equal to 0.
 
 Returns
@@ -241,6 +241,7 @@ Notes
 The present implementation of the Kolmogorov goodness-of-fit test is
 two-sided. This uses an external C implementation of the Kolmogorov cumulative
 distribution function by [Simard2011]_.
+If it is called with a distribution, it is supposed to be fully specified ie no parameter has been estimated from the given sample. Otherwise, the distribution is estimated using the given factory based on the given sample and the distribution of the test statistics is estimated using a Monte Carlo approach (see the *FittingTest-KolmogorovSamplingSize* key in :class:`~openturns.ResourceMap`).
 
 Examples
 --------
@@ -249,7 +250,7 @@ Examples
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
 >>> ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
-class=TestResult name=Unnamed type=KolmogorovDistribution binaryQualityMeasure=true p-value threshold=0.01 p-value=0.846896 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
+class=TestResult name=Unnamed type=KolmogorovDistribution binaryQualityMeasure=true p-value threshold=0.01 p-value=0.7 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
 
 // ---------------------------------------------------------------------
 
@@ -282,3 +283,32 @@ Examples
 >>> sample2 = ot.Normal(0.1, 1.1).getSample(30)
 >>> ot.FittingTest.TwoSamplesKolmogorov(sample1, sample2)
 class=TestResult name=Unnamed type=Kolmogorov Normal/Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 description=[sampleNormal vs sample Normal]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::ComputeKolmogorovStatistics
+"Compute the unscaled Kolmogorov distance between a sample and a distribution.
+
+The distance is the maximum absolute deviation between the empirical CDF of the
+given sample and the CDF of the given distribution.
+
+Parameters
+----------
+sample : 2-d float array
+    A continuous 1D distribution sample.
+distribution : :class:`~openturns.Distribution`
+    A continuous 1D distribution.
+
+Returns
+-------
+distance : float
+    The Kolmogorov distance.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(20)
+>>> ot.FittingTest.ComputeKolmogorovStatistics(sample, distribution)
+0.14727..."

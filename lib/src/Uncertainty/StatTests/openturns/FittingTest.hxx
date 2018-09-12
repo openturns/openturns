@@ -83,13 +83,16 @@ public:
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const Distribution & distribution,
-                               const Scalar level = 0.05,
-                               const UnsignedInteger estimatedParameters = 0);
+                               const Scalar level = 0.05);
 
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const DistributionFactory & factory,
                                const Scalar level = 0.05);
+
+  /** Kolmogorov statistics computation */
+  static Scalar ComputeKolmogorovStatistics(const Sample & sample,
+					    const Distribution & distribution);
 
   /** Two-sample Kolmogorov–Smirnov test */
   static TestResult TwoSamplesKolmogorov (const Sample & sample1,
