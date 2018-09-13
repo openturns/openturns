@@ -125,6 +125,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
+  /** Recover the distribution */
+  static Distribution BuildDistribution(const Sample & inputSample);
 
 private:
 
