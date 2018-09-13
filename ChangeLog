@@ -56,6 +56,7 @@
  * #957 (RandomMixture::getDispersionIndicator() takes a long time)
  * #959 (The PolygonArray and Polygon classes poorly manage the colors)
  * #964 (Study does not load LogNormalMuSigma variables from XML)
+ * #962 (The doc of MetaModelValidation.computePredictivityFactor is wrong)
 
 == 1.11 release (2018-05-11) == #release-1.11
 
