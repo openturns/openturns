@@ -205,7 +205,34 @@ try:
     tensorIn = [0.4]
     tensorRef = tensorResult.getMetaModel()(tensorIn)
 
-    # print 'Study = ' , myStudy
+    # Distribution parameters
+
+    # ArcsineMuSigma parameter ave
+    ams_parameters = ot.ArcsineMuSigma(8.4, 2.25)
+    myStudy.add('ams_parameters', ams_parameters)
+    # BetaMuSigma parameter save
+    bms_parameters = ot.BetaMuSigma(0.2, 0.6, -1, 2)
+    myStudy.add('bms_parameters', bms_parameters)
+    # GammaMuSigma parameter save
+    gmms_parameters = ot.GammaMuSigma(1.5, 2.5, -0.5)
+    myStudy.add('gmms_parameters', gmms_parameters)
+    # GumbelAB parameter save
+    gab_parameters = ot.GumbelAB(-0.5, 0.5)
+    myStudy.add('gab_parameters', gab_parameters)
+    # GumbelMuSigma parameter save
+    gms_parameters = ot.GumbelMuSigma(1.5, 1.3)
+    myStudy.add('gms_parameters', gms_parameters)
+    # LogNormalMuSigma parameter save
+    lnms_parameters = ot.LogNormalMuSigma(30000.0, 9000.0, 15000)
+    myStudy.add('lnms_parameters', lnms_parameters)
+    # LogNormalMuSigmaOverMu parameter save
+    lnmsm_parameters = ot.LogNormalMuSigmaOverMu(0.63, 5.24, -0.5)
+    myStudy.add('lnmsm_parameters', lnmsm_parameters)
+    # WeibullMuSigma parameter save
+    wms_parameters = ot.WeibullMuSigma(1.3, 1.23, -0.5)
+    myStudy.add('wms_parameters', wms_parameters)
+
+    # print ('Study = ' , myStudy)
     myStudy.save()
 
     # Create a new Study Object
@@ -286,6 +313,31 @@ try:
     myStudy.fillObject('tensorResult', tensorResult)
     ot.testing.assert_almost_equal(
         tensorResult.getMetaModel()(tensorIn), tensorRef)
+
+    # ArcsineMuSigma parameter loading
+    ams_parameters = ot.ArcsineMuSigma()
+    myStudy.fillObject('ams_parameters', ams_parameters)
+    # BetaMuSigma parameter loading
+    bms_parameters = ot.BetaMuSigma()
+    myStudy.fillObject('bms_parameters', bms_parameters)
+    # GammaMuSigma parameter loading
+    gmms_parameters = ot.GammaMuSigma()
+    myStudy.fillObject('gmms_parameters', gmms_parameters)
+    # GumbelAB parameter loading
+    gab_parameters = ot.GumbelAB()
+    myStudy.fillObject('gab_parameters', gab_parameters)
+    # GumbelMuSigma parameter loading
+    gms_parameters = ot.GumbelMuSigma()
+    myStudy.fillObject('gms_parameters', gms_parameters)
+    # LogNormalMuSigma parameter loading
+    lnms_parameters = ot.LogNormalMuSigma()
+    myStudy.fillObject('lnms_parameters', lnms_parameters)
+    # LogNormalMuSigmaOverMu parameter loading
+    lnmsm_parameters = ot.LogNormalMuSigmaOverMu()
+    myStudy.fillObject('lnmsm_parameters', lnmsm_parameters)
+    # WeibullMuSigma parameter loading
+    wms_parameters = ot.WeibullMuSigma()
+    myStudy.fillObject('wms_parameters', wms_parameters)
 
     # cleanup
     os.remove(fileName)

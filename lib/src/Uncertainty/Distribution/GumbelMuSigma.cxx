@@ -23,10 +23,12 @@
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/GumbelMuSigma.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GumbelMuSigma)
+static const Factory<GumbelMuSigma> Factory_GumbelMuSigma;
 
 /* Default constructor */
 GumbelMuSigma::GumbelMuSigma()
@@ -170,6 +172,20 @@ String GumbelMuSigma::__str__(const String & ) const
   OSS oss(false);
   oss << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ")";
   return oss;
+}
+
+void GumbelMuSigma::save(Advocate & adv) const
+{
+  DistributionParametersImplementation::save(adv);
+  adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "sigma_", sigma_ );
+}
+
+void GumbelMuSigma::load(Advocate & adv)
+{
+  DistributionParametersImplementation::load(adv);
+  adv.loadAttribute( "mu_", mu_ );
+  adv.loadAttribute( "sigma_", sigma_ );
 }
 
 END_NAMESPACE_OPENTURNS

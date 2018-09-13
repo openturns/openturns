@@ -23,11 +23,13 @@
 #include "openturns/ArcsineFactory.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/ArcsineMuSigma.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ArcsineMuSigma)
 
+static const Factory<ArcsineMuSigma> Factory_ArcsineMuSigma;
 /* Default constructor */
 ArcsineMuSigma::ArcsineMuSigma()
   : DistributionParametersImplementation()
@@ -170,6 +172,21 @@ String ArcsineMuSigma::__str__(const String & ) const
   OSS oss(false);
   oss << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ")";
   return oss;
+}
+
+void ArcsineMuSigma::save(Advocate & adv) const
+{
+  DistributionParametersImplementation::save(adv);
+  adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "sigma_", sigma_ );
+}
+
+/* Method load() reloads the object from the StorageManager */
+void ArcsineMuSigma::load(Advocate & adv)
+{
+  DistributionParametersImplementation::load(adv);
+  adv.loadAttribute( "mu_", mu_ );
+  adv.loadAttribute( "sigma_", sigma_ );
 }
 
 END_NAMESPACE_OPENTURNS

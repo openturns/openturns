@@ -22,10 +22,12 @@
 #include "openturns/LogNormalFactory.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/LogNormalMuSigma.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LogNormalMuSigma)
+static const Factory<LogNormalMuSigma> Factory_LogNormalMuSigma;
 
 /* Default constructor */
 LogNormalMuSigma::LogNormalMuSigma()
@@ -194,6 +196,22 @@ String LogNormalMuSigma::__str__(const String & ) const
   OSS oss(false);
   oss << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ", gamma = " << gamma_ << ")";
   return oss;
+}
+
+void LogNormalMuSigma::save(Advocate & adv) const
+{
+  DistributionParametersImplementation::save(adv);
+  adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "sigma_", sigma_ );
+  adv.saveAttribute( "gamma_", gamma_ );
+}
+
+void LogNormalMuSigma::load(Advocate & adv)
+{
+  DistributionParametersImplementation::load(adv);
+  adv.loadAttribute( "mu_", mu_ );
+  adv.loadAttribute( "sigma_", sigma_ );
+  adv.loadAttribute( "gamma_", gamma_ );
 }
 
 END_NAMESPACE_OPENTURNS

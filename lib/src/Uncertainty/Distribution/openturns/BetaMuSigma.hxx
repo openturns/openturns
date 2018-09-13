@@ -74,6 +74,12 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
+
 private:
   /** The main parameter set of the distribution */
   Scalar mu_;

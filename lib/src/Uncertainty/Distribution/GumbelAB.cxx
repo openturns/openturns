@@ -22,10 +22,12 @@
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/GumbelAB.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GumbelAB)
+static const Factory<GumbelAB> Factory_GumbelAB;
 
 /* Default constructor */
 GumbelAB::GumbelAB()
@@ -167,6 +169,20 @@ String GumbelAB::__str__(const String & ) const
   OSS oss(false);
   oss << getClassName() << "(a = " << a_ << ", b = " << b_ << ")";
   return oss;
+}
+
+void GumbelAB::save(Advocate & adv) const
+{
+  DistributionParametersImplementation::save(adv);
+  adv.saveAttribute( "a_", a_ );
+  adv.saveAttribute( "b_", b_ );
+}
+
+void GumbelAB::load(Advocate & adv)
+{
+  DistributionParametersImplementation::load(adv);
+  adv.loadAttribute( "a_", a_ );
+  adv.loadAttribute( "b_", b_ );
 }
 
 END_NAMESPACE_OPENTURNS
