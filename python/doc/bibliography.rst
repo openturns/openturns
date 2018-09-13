@@ -48,6 +48,13 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
 .. [Hormann1992] Hormann W., *The generation of Binomial Random Variates*
     `pdf <http://doc.openturns.org/papers/hormann1992.pdf>`__
+.. [Halko2010] Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, *Finding
+    structure with randomness: Probabilistic algorithms for constructing
+    approximate matrix decompositions*,
+    `pdf <https://arxiv.org/pdf/0909.4061.pdf>`__
+.. [Halko2011] Nathan Halko, Per-Gunnar Martisson, Yoel Shkolnisky and Mark Tygert,
+    *An algorithm for the principal component analysis of large data sets*,
+    `pdf <https://arxiv.org/pdf/1007.5510.pdf>`__
 .. [Janon2014] Janon A., Klein T., Lagnoux-Renaudie A., Prieur C., *Asymptotic
     normality and efficiency of two Sobol index estimators*,
     ESAIM: Probability and Statistics, EDP Sciences, 2014, 18, pp.342-364.

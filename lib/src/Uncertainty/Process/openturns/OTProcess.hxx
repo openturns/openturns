@@ -39,5 +39,6 @@
 #include "openturns/ARMALikelihoodFactory.hxx"
 #include "openturns/ConditionedGaussianProcess.hxx"
 #include "openturns/KarhunenLoeveQuadratureAlgorithm.hxx"
+#include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSTOCHASTICPROCESS_HXX */

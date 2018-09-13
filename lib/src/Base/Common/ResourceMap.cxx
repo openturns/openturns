@@ -429,6 +429,13 @@ void ResourceMap::loadDefaultConfiguration()
   // KarhunenLoeveQuadratureAlgorithm parameters //
   setAsScalar( "KarhunenLoeveQuadratureAlgorithm-RegularizationFactor", 0.0);
 
+  // KarhunenLoeveSVDAlgorithm parameters //
+  setAsBool( "KarhunenLoeveSVDAlgorithm-UseRandomSVD", false);
+  set("KarhunenLoeveSVDAlgorithm-RandomSVDVariant", "Halko2010");
+  setAsUnsignedInteger( "KarhunenLoeveSVDAlgorithm-Halko2011Margin", 2);
+  setAsUnsignedInteger( "KarhunenLoeveSVDAlgorithm-Halko2011Iterations", 2);
+  setAsUnsignedInteger( "KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank", 1000);
+
   // KarhunenLoeveP1Algorithm parameters //
   setAsScalar( "KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
 

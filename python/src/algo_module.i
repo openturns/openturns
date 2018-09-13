@@ -80,7 +80,6 @@
 %include KarhunenLoeveAlgorithmImplementation.i
 %include KarhunenLoeveAlgorithm.i
 %include KarhunenLoeveP1Algorithm.i
-%include KarhunenLoeveSVDAlgorithm.i
 %include KarhunenLoeveProjection.i
 %include KarhunenLoeveLifting.i
 
