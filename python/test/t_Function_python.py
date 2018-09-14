@@ -155,3 +155,15 @@ for n in range(2):
     except Exception as exc:
         # print exc
         print('exception handling: ok')
+
+
+def a_exec(X):
+    X[8000] # index error
+    return [X[0] + X[1]]
+myFunc = PythonFunction(2, 1, a_exec)
+print('index check: ', end='')
+try:
+    myFunc([5, 6])
+    print('fail')
+except RuntimeError:
+    print('ok')
