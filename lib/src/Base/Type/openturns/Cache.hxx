@@ -252,7 +252,8 @@ public:
   void add(const KeyType & key,
            const ValueType & value)
   {
-    if (!enabled_) return;
+    // Do not allow the key to be added twice
+    if (!enabled_ || (points_.find(key) != points_.end())) return;
 
     if (points_.size() == maxSize_)
     {
@@ -262,8 +263,10 @@ public:
       points_.erase(*last);
       keys_.erase(last);
     }
+
     // Insert the element at the beginning
     keys_.push_front(key);
+
     points_[key] = std::make_pair(value, keys_.begin());
   }
 
