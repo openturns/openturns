@@ -331,8 +331,15 @@ public:
    */
   inline PersistentCollection<KeyType> getKeys() const
   {
-    if (enabled_) return PersistentCollection<KeyType>(keys_.begin(), keys_.end());
-    return PersistentCollection<KeyType>();
+    PersistentCollection<KeyType> keysColl;
+    if (enabled_)
+    {
+      for (typename map_type::iterator it = points_.begin(); it != points_.end(); ++ it)
+      {
+        keysColl.add(it->first);
+      }
+    }
+    return keysColl;
   }
 
   /** @brief return the values

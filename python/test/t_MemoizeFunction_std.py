@@ -36,3 +36,9 @@ mem2 = ot.MemoizeFunction(mem.getMarginal(1))
 y = mem2([1, 2])
 print('mem2.in', mem2.getCacheInput())
 print('mem2.out', mem2.getCacheOutput())
+
+# check getCacheInput/getCacheOutput order
+for i in range(5):
+    mem([i+2, i+3])
+assert mem(mem.getCacheInput()) == mem.getCacheOutput(), "wrong order"
+print('ok')
