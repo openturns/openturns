@@ -61,56 +61,56 @@ Sample MemoizeFunction::operator() (const Sample & inSample) const
 void MemoizeFunction::setEvaluation(const Evaluation & evaluation)
 {
   // Ensure that p_evaluation_ always points to an MemoizeEvaluation
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->setEvaluation(evaluation);
 }
 
 /* Enable or disable the internal cache */
 void MemoizeFunction::enableCache() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->enableCache();
 }
 
 void MemoizeFunction::disableCache() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->disableCache();
 }
 
 Bool MemoizeFunction::isCacheEnabled() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->isCacheEnabled();
 }
 
 UnsignedInteger MemoizeFunction::getCacheHits() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getCacheHits();
 }
 
 void MemoizeFunction::addCacheContent(const Sample & inSample, const Sample & outSample)
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->addCacheContent(inSample, outSample);
 }
 
 Sample MemoizeFunction::getCacheInput() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getCacheInput();
 }
 
 Sample MemoizeFunction::getCacheOutput() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getCacheOutput();
 }
 
 void MemoizeFunction::clearCache() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->clearCache();
 }
 
@@ -118,20 +118,20 @@ void MemoizeFunction::clearCache() const
 /* Enable or disable the input/output history */
 void MemoizeFunction::enableHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->enableHistory();
 }
 
 void MemoizeFunction::disableHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->disableHistory();
 }
 
 /* Test the history mechanism activity */
 Bool MemoizeFunction::isHistoryEnabled() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->isHistoryEnabled();
 }
 
@@ -139,21 +139,21 @@ Bool MemoizeFunction::isHistoryEnabled() const
 /** Clear history of the input and output values */
 void MemoizeFunction::clearHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   p_evaluation->clearHistory();
 }
 
 /** Retrieve the history of the input values */
 Sample MemoizeFunction::getInputHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getInputHistory();
 }
 
 /** Retrieve the history of the output values */
 Sample MemoizeFunction::getOutputHistory() const
 {
-  MemoizeEvaluation* p_evaluation = static_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getOutputHistory();
 }
 
