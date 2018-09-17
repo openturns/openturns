@@ -64,19 +64,7 @@ MemoizeEvaluation::MemoizeEvaluation(const Evaluation & evaluation, const Histor
   , isHistoryEnabled_(true)
   , p_cache_(new CacheType)
 {
-  inputStrategy_.setDimension(evaluation_.getInputDimension());
-  outputStrategy_.setDimension(evaluation_.getOutputDimension());
-  // If argument is an MemoizeEvaluation, copy history and cache
-  MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(evaluation.getImplementation().get());
-  if (p_MemoizeEvaluation)
-  {
-    const Sample inSample(p_MemoizeEvaluation->getInputHistory());
-    const Sample outSample(p_MemoizeEvaluation->getOutputHistory());
-    inputStrategy_.store(inSample);
-    outputStrategy_.store(outSample);
-    isHistoryEnabled_ = p_MemoizeEvaluation->isHistoryEnabled_;
-    p_cache_ = p_MemoizeEvaluation->p_cache_;
-  }
+  setEvaluation(evaluation);
 }
 
 /* Virtual constructor */
@@ -91,7 +79,7 @@ void MemoizeEvaluation::setEvaluation(const Evaluation & evaluation)
   evaluation_ = evaluation;
   inputStrategy_.setDimension(evaluation_.getInputDimension());
   outputStrategy_.setDimension(evaluation_.getOutputDimension());
-  // If argument is a MemoizeEvaluation, copy history
+  // If argument is a MemoizeEvaluation, copy history and cache
   MemoizeEvaluation * p_MemoizeEvaluation = dynamic_cast<MemoizeEvaluation*>(evaluation.getImplementation().get());
   if (p_MemoizeEvaluation)
   {
@@ -100,6 +88,7 @@ void MemoizeEvaluation::setEvaluation(const Evaluation & evaluation)
     inputStrategy_.store(inSample);
     outputStrategy_.store(outSample);
     isHistoryEnabled_ = p_MemoizeEvaluation->isHistoryEnabled_;
+    p_cache_ = p_MemoizeEvaluation->p_cache_;
   }
 }
 
