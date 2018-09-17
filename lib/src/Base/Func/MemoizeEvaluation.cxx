@@ -100,16 +100,16 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
   {
     // If cache is enabled
     CacheKeyType inKey = inPoint.getCollection();
-    if ( p_cache_->hasKey( inKey ) )
+    if (p_cache_->hasKey(inKey))
     {
-      outPoint = Point::ImplementationType( p_cache_->find( inKey ) );
+      outPoint = Point::ImplementationType(p_cache_->find(inKey));
     }
     else
     {
       outPoint = evaluation_.operator()(inPoint);
       callsNumber_.increment();
       CacheValueType outValue(outPoint.getCollection());
-      p_cache_->add( inKey, outValue );
+      p_cache_->add(inKey, outValue);
     }
   }
   else
@@ -164,8 +164,8 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
     {
       const Sample result(evaluation_.operator()(toDo));
       callsNumber_.fetchAndAdd(toDoSize);
-      for ( UnsignedInteger i = 0; i < toDoSize; ++ i )
-        tempCache.add( toDo[i], result[i] );
+      for (UnsignedInteger i = 0; i < toDoSize; ++ i)
+        tempCache.add(toDo[i], result[i]);
     }
     // Fill all the output values
     for(UnsignedInteger i = 0; i < size; ++ i)
@@ -227,9 +227,9 @@ void MemoizeEvaluation::addCacheContent(const Sample& inSample, const Sample& ou
   const UnsignedInteger size = inSample.getSize();
   const UnsignedInteger cacheSize = p_cache_->getMaxSize();
   const UnsignedInteger start = size <= cacheSize ? 0 : size - cacheSize;
-  for ( UnsignedInteger i = start; i < size; ++ i )
+  for (UnsignedInteger i = start; i < size; ++ i)
   {
-    p_cache_->add( inSample[i], outSample[i] );
+    p_cache_->add(inSample[i], outSample[i]);
   }
 }
 
@@ -237,11 +237,11 @@ Sample MemoizeEvaluation::getCacheInput() const
 {
   Bool cacheEnabled = isCacheEnabled();
   enableCache();
-  PersistentCollection<CacheKeyType> keyColl( p_cache_->getKeys() );
-  if ( ! cacheEnabled )
+  PersistentCollection<CacheKeyType> keyColl(p_cache_->getKeys());
+  if (!cacheEnabled)
     disableCache();
   Sample inSample(0, getInputDimension());
-  for ( UnsignedInteger i = 0; i < keyColl.getSize(); ++ i ) inSample.add( keyColl[i] );
+  for (UnsignedInteger i = 0; i < keyColl.getSize(); ++ i) inSample.add(keyColl[i]);
   return inSample;
 }
 
@@ -249,13 +249,13 @@ Sample MemoizeEvaluation::getCacheOutput() const
 {
   Bool cacheEnabled = isCacheEnabled();
   enableCache();
-  PersistentCollection<CacheValueType> valuesColl( p_cache_->getValues() );
-  if ( ! cacheEnabled )
+  PersistentCollection<CacheValueType> valuesColl(p_cache_->getValues());
+  if (! cacheEnabled)
     disableCache();
   Sample outSample(0, getOutputDimension());
-  for ( UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i )
+  for (UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i)
   {
-    outSample.add( valuesColl[i] );
+    outSample.add(valuesColl[i]);
   }
   return outSample;
 }
@@ -327,21 +327,21 @@ String MemoizeEvaluation::__str__(const String & offset) const
 void MemoizeEvaluation::save(Advocate & adv) const
 {
   EvaluationProxy::save(adv);
-  adv.saveAttribute( "inputStrategy_", inputStrategy_ );
-  adv.saveAttribute( "outputStrategy_", outputStrategy_ );
-  adv.saveAttribute( "isHistoryEnabled_", isHistoryEnabled_ );
-  adv.saveAttribute( "cache_", *p_cache_ );
+  adv.saveAttribute("inputStrategy_", inputStrategy_);
+  adv.saveAttribute("outputStrategy_", outputStrategy_);
+  adv.saveAttribute("isHistoryEnabled_", isHistoryEnabled_);
+  adv.saveAttribute("cache_", *p_cache_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MemoizeEvaluation::load(Advocate & adv)
 {
   EvaluationProxy::load(adv);
-  adv.loadAttribute( "inputStrategy_", inputStrategy_ );
-  adv.loadAttribute( "outputStrategy_", outputStrategy_ );
-  adv.loadAttribute( "isHistoryEnabled_", isHistoryEnabled_ );
+  adv.loadAttribute("inputStrategy_", inputStrategy_);
+  adv.loadAttribute("outputStrategy_", outputStrategy_);
+  adv.loadAttribute("isHistoryEnabled_", isHistoryEnabled_);
   TypedInterfaceObject<CacheType> cache;
-  adv.loadAttribute( "cache_", cache );
+  adv.loadAttribute("cache_", cache);
   p_cache_ = cache.getImplementation();
 }
 
