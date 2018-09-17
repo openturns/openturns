@@ -67,13 +67,13 @@ String TranslationFunction::__str__(const String & offset) const
 /* Accessor for the constant term */
 Point TranslationFunction::getConstant() const
 {
-  return static_cast<TranslationEvaluation*>(getImplementation()->getEvaluation().getImplementation().get())->getConstant();
+  return dynamic_cast<TranslationEvaluation*>(getImplementation()->getEvaluation().getImplementation().get())->getConstant();
 }
 
 void TranslationFunction::setConstant(const Point & constant)
 {
   copyOnWrite();
-  static_cast<TranslationEvaluation*>(getImplementation()->getEvaluation().getImplementation().get())->setConstant(constant);
+  dynamic_cast<TranslationEvaluation*>(getImplementation()->getEvaluation().getImplementation().get())->setConstant(constant);
 }
 
 END_NAMESPACE_OPENTURNS
