@@ -132,7 +132,7 @@ String FunctionalChaosSobolIndices::summary() const
     // table of part of variance for each basis term
     oss << "Index   | Multi-indice                  | Part of variance  \n";
     oss << String(60, '-') << "\n";
-    for (UnsignedInteger i = 0; i < basisSize; ++ i)
+    for (UnsignedInteger i = 0; i < varianceOrder.size(); ++ i)
     {
       // stop when the variance contribution becomes less than epsilon
       if (varianceOrder[i].second < ResourceMap::GetAsScalar("FunctionalChaosSobolIndices-VariancePartThreshold"))
