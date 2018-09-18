@@ -119,7 +119,7 @@ public:
   }
 
 #ifdef SWIG
-  Cache(const Cache & other ) : PersistentObject(other),
+  Cache(const Cache & other) : PersistentObject(other),
     enabled_(other.enabled_),
     maxSize_(other.maxSize_),
     hits_(other.hits_),
@@ -147,9 +147,9 @@ public:
   {
     OSS oss;
     oss << "class=" << Cache::GetClassName()
-        << " enabled=" << this->enabled_
+        << " enabled=" << enabled_
         << " name=" << getName()
-        << " maxSize=" << this->maxSize_
+        << " maxSize=" << maxSize_
         << " size=" << getSize()
         << " hits=" << getHits()
         << " points={" ;
@@ -176,10 +176,10 @@ public:
     {
       clear();
       PersistentObject::operator=(other);
-      const_cast<UnsignedInteger&>(this->maxSize_) = other.maxSize_;
-      this->keys_                                  = other.keys_;
-      this->hits_                                  = other.hits_;
-      this->enabled_                               = other.enabled_;
+      const_cast<UnsignedInteger&>(maxSize_) = other.maxSize_;
+      keys_                                  = other.keys_;
+      hits_                                  = other.hits_;
+      enabled_                               = other.enabled_;
       for(list_key_reverse_iterator it = other.keys_.rbegin(); it != other.keys_.rend(); ++it)
       {
         const KeyType & key = *it;
@@ -212,7 +212,7 @@ public:
   /** Returns the number of successful hits in the cache */
   inline UnsignedInteger getHits() const
   {
-    return this->hits_;
+    return hits_;
   }
 
   /** Query the cache for the key presence */
@@ -220,7 +220,7 @@ public:
   Bool hasKey(const KeyType & key) const
   {
     if (!enabled_) return false;
-    Bool found = ( this->points_.find( key ) != this->points_.end() );
+    Bool found = (points_.find(key) != points_.end());
     return found;
   }
 
@@ -230,8 +230,8 @@ public:
   {
     if (!enabled_) return ValueType();
 
-    typename map_type::iterator it = this->points_.find( key );
-    Bool found = ( it != this->points_.end() );
+    typename map_type::iterator it = points_.find(key);
+    Bool found = (it != points_.end());
     if (!found) return ValueType();
 
     list_key_iterator pos = it->second.second;
@@ -252,7 +252,8 @@ public:
   void add(const KeyType & key,
            const ValueType & value)
   {
-    if (!enabled_) return;
+    // Do not allow the key to be added twice
+    if (!enabled_ || (points_.find(key) != points_.end())) return;
 
     if (points_.size() == maxSize_)
     {
@@ -262,8 +263,10 @@ public:
       points_.erase(*last);
       keys_.erase(last);
     }
+
     // Insert the element at the beginning
     keys_.push_front(key);
+
     points_[key] = std::make_pair(value, keys_.begin());
   }
 
@@ -272,7 +275,7 @@ public:
   inline
   void save(Advocate & adv) const
   {
-    const UnsignedInteger size = this->points_.size();
+    const UnsignedInteger size = points_.size();
     PersistentCollection< KeyType >   keyColl(size);
     PersistentCollection< ValueType > valueColl(size);
     UnsignedInteger index = 0;
@@ -303,7 +306,7 @@ public:
     adv.loadAttribute( "valueColl", valueColl );
 
     clear();
-    for( UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
       add(keyColl[i], valueColl[i]);
   }
 
@@ -328,8 +331,15 @@ public:
    */
   inline PersistentCollection<KeyType> getKeys() const
   {
-    if (enabled_) return PersistentCollection<KeyType>(keys_.begin(), keys_.end());
-    return PersistentCollection<KeyType>();
+    PersistentCollection<KeyType> keysColl;
+    if (enabled_)
+    {
+      for (typename map_type::iterator it = points_.begin(); it != points_.end(); ++ it)
+      {
+        keysColl.add(it->first);
+      }
+    }
+    return keysColl;
   }
 
   /** @brief return the values
@@ -339,9 +349,9 @@ public:
     PersistentCollection<ValueType> valuesColl;
     if (enabled_)
     {
-      for( typename map_type::iterator it = points_.begin(); it != points_.end(); ++ it )
+      for (typename map_type::iterator it = points_.begin(); it != points_.end(); ++ it)
       {
-        valuesColl.add( it->second.first );
+        valuesColl.add(it->second.first);
       }
     }
     return valuesColl;
@@ -350,15 +360,15 @@ public:
   /** Enable or disable the cache */
   inline void enable()  const
   {
-    this->enabled_ = true;
+    enabled_ = true;
   }
   inline void disable() const
   {
-    this->enabled_ = false;
+    enabled_ = false;
   }
   inline Bool isEnabled() const
   {
-    return this->enabled_;
+    return enabled_;
   }
 
   /** Empty the cache */
