@@ -325,7 +325,12 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
           for(UnsignedInteger i = 0; i < size; ++i)
           {
             ScopedPyObjectPointer itemObj(Py_TYPE(readOnlyBufferObj.get())->tp_as_sequence->sq_item(readOnlyBufferObj.get(), i));
-            PyTuple_SetItem(result.get(), i, PyObject_CallMethodObjArgs(pyObj_, execName.get(), itemObj.get(), NULL));
+            PyObject * pointI = PyObject_CallMethodObjArgs(pyObj_, execName.get(), itemObj.get(), NULL);
+            if (!pointI)
+            {
+              handleException();
+            }
+            PyTuple_SetItem(result.get(), i, pointI);
           }
         }
       }
