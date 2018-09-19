@@ -746,7 +746,7 @@ void DrawableImplementation::InitializeValidParameterList()
 
   /* Accepted fill styles */
   ValidFillStyles.setName("ValidFillStyles");
-  ValidFillStyles.add(ResourceMap::Get("Drawable-DefaultFillStyle"));
+  ValidFillStyles.add(ResourceMap::GetAsString("Drawable-DefaultFillStyle"));
   ValidFillStyles.add("shaded");
 }
 
@@ -948,10 +948,10 @@ DrawableImplementation::DrawableImplementation()
   : PersistentObject()
   , legend_("")
   , data_()
-  , color_(ResourceMap::Get("Drawable-DefaultColor"))
-  , fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle"))
-  , lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle"))
-  , pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle"))
+  , color_(ResourceMap::GetAsString("Drawable-DefaultColor"))
+  , fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle"))
+  , lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle"))
+  , pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle"))
   , lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth"))
   , dataFileName_("")
 {
@@ -964,10 +964,10 @@ DrawableImplementation::DrawableImplementation(const Sample & data,
   : PersistentObject(),
     legend_(legend),
     data_(data),
-    color_(ResourceMap::Get("Drawable-DefaultColor")),
-    fillStyle_(ResourceMap::Get("Drawable-DefaultFillStyle")),
-    lineStyle_(ResourceMap::Get("Drawable-DefaultLineStyle")),
-    pointStyle_(ResourceMap::Get("Drawable-DefaultPointStyle")),
+    color_(ResourceMap::GetAsString("Drawable-DefaultColor")),
+    fillStyle_(ResourceMap::GetAsString("Drawable-DefaultFillStyle")),
+    lineStyle_(ResourceMap::GetAsString("Drawable-DefaultLineStyle")),
+    pointStyle_(ResourceMap::GetAsString("Drawable-DefaultPointStyle")),
     lineWidth_(ResourceMap::GetAsScalar("Drawable-DefaultLineWidth")),
     dataFileName_("")
 {
@@ -1153,7 +1153,7 @@ Bool DrawableImplementation::IsValidPattern(const String & pattern)
     InitializeValidParameterList();
     IsFirstInitialization = false;
   }
-  return (pattern == ResourceMap::Get("Drawable-DefaultPattern") || pattern == ResourceMap::Get("Drawable-AlternativePattern"));
+  return (pattern == ResourceMap::GetAsString("Drawable-DefaultPattern") || pattern == ResourceMap::GetAsString("Drawable-AlternativePattern"));
 }
 
 /* Check validity of the data */

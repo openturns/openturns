@@ -154,7 +154,7 @@ void TensorApproximationAlgorithm::runMarginal(const UnsignedInteger marginalInd
     }
   }
 
-  const String method(ResourceMap::Get("TensorApproximationAlgorithm-Method"));
+  const String method(ResourceMap::GetAsString("TensorApproximationAlgorithm-Method"));
   if (method == "GreedyRankOne")
   {
     greedyRankOne(transformedInputSample_,
@@ -214,7 +214,7 @@ void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
     full.fill();
 
     // update radius
-    const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
+    const String methodName(ResourceMap::GetAsString("TensorApproximationAlgorithm-DecompositionMethod"));
     LeastSquaresMethod internalMethod(LeastSquaresMethod::Build(methodName, proxy, full));
     SparseMethod method(internalMethod);
     Point yFlat(y.getImplementation()->getData());
@@ -293,7 +293,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
       proxy_[j].setWeight(w);
 
       // solve a least-squares problem along component j
-      const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
+      const String methodName(ResourceMap::GetAsString("TensorApproximationAlgorithm-DecompositionMethod"));
       LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy_[j], full));
       tensor.setCoefficients(i, j, method.solve(yFlat));
       proxy_[j].setWeight(Point(0));
@@ -414,7 +414,7 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
     full.fill();
 
     // update radius
-    const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
+    const String methodName(ResourceMap::GetAsString("TensorApproximationAlgorithm-DecompositionMethod"));
     LeastSquaresMethod internalMethod(LeastSquaresMethod::Build(methodName, proxy, full));
     SparseMethod method(internalMethod);
     Point yFlat(y.getImplementation()->getData());
@@ -501,7 +501,7 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
   Indices full(nj * m);
   full.fill();
   Point yFlat(y.getImplementation()->getData());
-  const String methodName(ResourceMap::Get("TensorApproximationAlgorithm-DecompositionMethod"));
+  const String methodName(ResourceMap::GetAsString("TensorApproximationAlgorithm-DecompositionMethod"));
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy, full));
   Point beta_ij(method.solve(yFlat));
 

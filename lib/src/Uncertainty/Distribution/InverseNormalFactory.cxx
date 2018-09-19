@@ -66,7 +66,7 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) 
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of dimension different from 1";
   const Scalar mu = sample.computeMean()[0];
   Scalar lambda = -1.0;
-  if (ResourceMap::Get("InverseNormalFactory-Method") == "MLE")
+  if (ResourceMap::GetAsString("InverseNormalFactory-Method") == "MLE")
     // Maximum likelihood estimation
   {
     Scalar sum = 0.0;

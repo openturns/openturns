@@ -51,7 +51,7 @@ Scalar IncompleteBetaInverse(const Scalar a,
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "Error: b must be positive, here b=" << b;
-  return RegularizedIncompleteBetaInverse(a, b, x * SpecFunc::Beta(a, b));
+  return (tail ? RegularizedIncompleteBetaInverse(a, b, 1.0 - x * SpecFunc::Beta(a, b)) : RegularizedIncompleteBetaInverse(a, b, x * SpecFunc::Beta(a, b)));
 }
 
 Scalar RegularizedIncompleteBeta(const Scalar a,

@@ -192,7 +192,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     const UnsignedInteger rank = std::min(std::min(ResourceMap::GetAsUnsignedInteger("KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank"), A.getNbColumns()), A.getNbRows());
     LOGINFO(OSS() << "Maximum rank=" << rank);
     LOGINFO(OSS() << "A=" << A.getNbRows() << "x" << A.getNbColumns());
-    if (ResourceMap::Get("KarhunenLoeveSVDAlgorithm-RandomSVDVariant") == "Halko2010")
+    if (ResourceMap::GetAsString("KarhunenLoeveSVDAlgorithm-RandomSVDVariant") == "Halko2010")
     {
       // Here we use the algorithm described in:
       // Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, "Finding structure with randomness: Probabilistic algorithms for constructing approximate matrix decompositions", https://arxiv.org/pdf/0909.4061.pdf

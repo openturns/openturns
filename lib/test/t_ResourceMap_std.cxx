@@ -32,7 +32,7 @@ int main(int , char *[])
   // Create a ResourceMap Object
   fullprint << ResourceMap::GetInstance() << std::endl;
 
-  fullprint << "Extract from ResourceMap : R-executable-command -> " << ResourceMap::Get("R-executable-command") << std::endl;
+  fullprint << "Extract from ResourceMap : R-executable-command -> " << ResourceMap::GetAsString("R-executable-command") << std::endl;
 
   return ExitCode::Success;
 }

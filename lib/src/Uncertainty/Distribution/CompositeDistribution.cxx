@@ -48,6 +48,7 @@ CompositeDistribution::CompositeDistribution()
   , increasing_(0)
   , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
+  // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
   setParallel(false);
   setName("CompositeDistribution");
   setDimension(1);
@@ -67,6 +68,7 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   , increasing_(0)
   , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
+  // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
   setParallel(false);
   setName("CompositeDistribution");
   // This method check everything and call the update() method.
@@ -87,6 +89,7 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   , increasing_(0)
   , solver_(Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon")))
 {
+  // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
   setParallel(false);
   setName("CompositeDistribution");
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();

@@ -37,7 +37,7 @@ CLASSNAMEINIT(SymbolicParser)
 SymbolicParser::SymbolicParser()
   : TypedInterfaceObject<SymbolicParserImplementation>()
 {
-  String name = ResourceMap::Get("SymbolicParser-Backend");
+  String name = ResourceMap::GetAsString("SymbolicParser-Backend");
 #ifdef OPENTURNS_HAVE_EXPRTK
   if (name == "ExprTk")
   {
@@ -59,7 +59,7 @@ SymbolicParser::SymbolicParser()
 SymbolicParser::SymbolicParser(const Description & outputVariablesNames)
   : TypedInterfaceObject<SymbolicParserImplementation>()
 {
-  String name = ResourceMap::Get("SymbolicParser-Backend");
+  String name = ResourceMap::GetAsString("SymbolicParser-Backend");
 #ifdef OPENTURNS_HAVE_EXPRTK
   if (name == "ExprTk")
   {

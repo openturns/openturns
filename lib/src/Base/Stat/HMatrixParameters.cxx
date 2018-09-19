@@ -34,7 +34,7 @@ HMatrixParameters::HMatrixParameters()
   , assemblyEpsilon_(ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon"))
   , recompressionEpsilon_(ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon"))
   , admissibilityFactor_(ResourceMap::GetAsScalar("HMatrix-AdmissibilityFactor"))
-  , clusteringAlgorithm_(ResourceMap::Get("HMatrix-ClusteringAlgorithm"))
+  , clusteringAlgorithm_(ResourceMap::GetAsString("HMatrix-ClusteringAlgorithm"))
 {
   // Convert numerical value into a string
   const UnsignedInteger resourceCompressionMethod = ResourceMap::GetAsUnsignedInteger("HMatrix-CompressionMethod");

@@ -42,7 +42,7 @@ public:
   /** Parameter constructor */
   explicit Fehlberg(const Function & transitionFunction,
                     const Scalar localPrecision = ResourceMap::GetAsScalar("Fehlberg-LocalPrecision"),
-                    const UnsignedInteger order = ResourceMap::GetAsScalar("Fehlberg-DefaultOrder"));
+                    const UnsignedInteger order = ResourceMap::GetAsUnsignedInteger("Fehlberg-DefaultOrder"));
 
   /** Virtual constructor */
   virtual Fehlberg * clone() const;

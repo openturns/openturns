@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief StatTest implements statistical tests
+ *  @brief VisualTest implements statistical tests
  *
  *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
  *

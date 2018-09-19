@@ -106,7 +106,7 @@ int Os::ExecuteCommand(const String & command)
   int rc = -1;
   LOGINFO( OSS() << "Execute command=" << command );
 #ifdef WIN32
-  if ( ResourceMap::GetAsUnsignedInteger("Os-create-process") == 1 )
+  if ( ResourceMap::GetAsBool("Os-create-process"))
   {
     // Startup information
     STARTUPINFO si;
@@ -163,7 +163,7 @@ int Os::ExecuteCommand(const String & command)
 
 void Os::Remove(const String& fileName)
 {
-  if (ResourceMap::GetAsUnsignedInteger("Os-RemoveFiles") == 0) return;
+  if (!ResourceMap::GetAsBool("Os-RemoveFiles")) return;
   if (remove(fileName.c_str()) == -1)
   {
     Log::Warn(OSS() << "Warning: cannot remove file " << fileName);

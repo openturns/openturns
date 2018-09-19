@@ -117,7 +117,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   // for each sub-basis ...
   Scalar minimumError = SpecFunc::MaxScalar;
 
-  const String methodName(ResourceMap::Get("LeastSquaresMetaModelSelection-DecompositionMethod"));
+  const String methodName(ResourceMap::GetAsString("LeastSquaresMetaModelSelection-DecompositionMethod"));
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy, weight_, currentIndices_));
 
   Indices optimalBasisIndices;

@@ -2336,7 +2336,7 @@ Sample RandomMixture::computeQuantile(const Scalar qMin,
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot compute the quantile over a regular 1D grid if the dimension is > 1";
   Sample result(pointNumber, 2);
-  Scalar q = qMin;
+  Scalar q = (tail ? 1.0 - qMax : qMin);
   const Scalar step = (qMax - qMin) / Scalar(pointNumber - 1.0);
   for (UnsignedInteger i = 0; i < pointNumber; ++i)
   {

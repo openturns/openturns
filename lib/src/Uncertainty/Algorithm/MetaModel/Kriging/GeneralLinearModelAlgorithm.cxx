@@ -433,7 +433,7 @@ void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 
 void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
-  String solverName(ResourceMap::Get("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
+  String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   // for backward compatibility
   if (solverName == "NELDER-MEAD")
     solverName = "LN_NELDERMEAD";
@@ -1009,7 +1009,7 @@ Function GeneralLinearModelAlgorithm::getObjectiveFunction()
 
 void GeneralLinearModelAlgorithm::initializeMethod()
 {
-  if (ResourceMap::Get("GeneralLinearModelAlgorithm-LinearAlgebra") == "HMAT")
+  if (ResourceMap::GetAsString("GeneralLinearModelAlgorithm-LinearAlgebra") == "HMAT")
     method_ = 1;
 }
 

@@ -41,8 +41,8 @@ static const Factory<ExpectationSimulationAlgorithm> Factory_ExpectationSimulati
 /** For save/load mechanism */
 ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm()
   : SimulationAlgorithm()
-  , coefficientOfVariationCriterionType_(ResourceMap::Get("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
-  , standardDeviationCriterionType_(ResourceMap::Get("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
+  , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
+  , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
 {
 //   setVerbose(verbose);
 }
@@ -51,8 +51,8 @@ ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm()
 ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm(const RandomVector & randomVector)
   : SimulationAlgorithm()
   , randomVector_(randomVector)
-  , coefficientOfVariationCriterionType_(ResourceMap::Get("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
-  , standardDeviationCriterionType_(ResourceMap::Get("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
+  , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
+  , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
 {
 //   setVerbose(verbose);
 }

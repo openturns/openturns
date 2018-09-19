@@ -476,7 +476,7 @@ public:
 
   /** Factory of SampleImplementation from CSV file */
   static SampleImplementation BuildFromCSVFile(const FileName & fileName,
-      const String & csvSeparator = ResourceMap::Get( "csv-file-separator" ));
+      const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" ));
 
   /** Factory of SampleImplementation from Text file */
   static SampleImplementation BuildFromTextFile(const FileName & fileName,
@@ -796,7 +796,7 @@ public:
 
   /** Save to CSV file */
   void exportToCSVFile(const FileName & filename,
-                       const String & csvSeparator = ResourceMap::Get( "csv-file-separator" )) const;
+                       const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" )) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

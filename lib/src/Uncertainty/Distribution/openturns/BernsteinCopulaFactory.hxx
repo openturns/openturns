@@ -53,7 +53,7 @@ public:
   virtual Distribution build();
 
   virtual Distribution build(const Sample & sample,
-                             const String & method = ResourceMap::Get("BernsteinCopulaFactory-BinNumberSelectionMethod"),
+                             const String & method = ResourceMap::GetAsString("BernsteinCopulaFactory-BinNumberSelectionMethod"),
                              const Function & objective = Function());
 
   /** Build a Bernstein copula based on the given sample and bin number */
@@ -64,7 +64,7 @@ public:
   EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula();
 
   EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula(const Sample & sample,
-      const String & method = ResourceMap::Get("BernsteinCopulaFactory-BinNumberSelectionMethod"),
+      const String & method = ResourceMap::GetAsString("BernsteinCopulaFactory-BinNumberSelectionMethod"),
       const Function & objective = Function());
 
   EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula(const Sample & sample,
