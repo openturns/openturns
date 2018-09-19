@@ -21,15 +21,8 @@ for k in range(len(vertices)):
         myCovariance[k, l] = C(s[0], t[0])
 
 covarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovariance)
-
-
-def f(x):
-    return [covarianceModel([x[0]], [x[1]])[0, 0]]
-
-func = ot.PythonFunction(2, 1, f)
-func.setDescription(['$s$', '$t$', '$cov$'])
-cov_graph = func.draw([-a] * 2, [a] * 2, [512] * 2)
+cov_graph = covarianceModel.draw(0, 0, -a, a, 512)
 fig = plt.figure(figsize=(10, 4))
 plt.suptitle('User defined covariance model')
 cov_axis = fig.add_subplot(111)
-View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
+View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)

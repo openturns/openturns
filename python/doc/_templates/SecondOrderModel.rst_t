@@ -15,7 +15,7 @@
         func = ot.PythonFunction(1,1,f)
         func.setDescription(['$tau$', '$cov$'])
         cov_graph = func.draw(-3.0 * scale, 3.0 * scale, 129)
-	# Sepctral density
+	# Spectral density
 	def g(x):
             return [secondOrderModel.computeSpectralDensity(x)[0, 0]]
         func2 = ot.PythonFunction(1,1,f)
