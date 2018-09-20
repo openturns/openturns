@@ -210,7 +210,10 @@
   <!-- OT::SobolSequence parameters -->
   <SobolSequence-InitialSeed value_unsigned_integer="1" />
 
-  <!-- OT::SensitivityAlgorithm parameters -->
+  <!-- OT::SobolIndicesExperiment parameters -->
+  <SobolIndicesExperiment-SamplingMethod value_string="MonteCarlo" />
+
+  <!-- OT::SobolIndicesAlgorithm parameters -->
   <SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution value_bool="0"               />
   <SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel  value_scalar="0.95"          />
   <SobolIndicesAlgorithm-DefaultBlockSize                 value_unsigned_integer="1"   />

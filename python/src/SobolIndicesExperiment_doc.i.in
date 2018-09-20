@@ -15,7 +15,7 @@ size : positive int
     Size :math:`N` of each of the two independent initial samples.
     For the total size of the experiment see notes below.
 experiment : :class:`~openturns.WeightedExperiment`
-    Design of experiment
+    Design of experiment used to sample the distribution.
 computeSecondOrder : bool, defaults to True
     Whether to add points to compute second order indices
 
@@ -23,16 +23,23 @@ Notes
 -----
 Sensitivity algorithms rely on the definition of specific designs.
 The method generates design for the Saltelli method.
-Such designs could be used for Jansen, Martinez and MauntzKucherenko methods.
+Such designs can be used for Jansen, Martinez and MauntzKucherenko methods.
 This precomputes such input designs using distribution or experiment by
-generating two independent samples and mixing columns of these ones to define
-the huge sample (design).
-If computeSecondOrder is disabled, result design is of size :math:`N*(d+2)`
-where d is the input dimension.
-If computeSecondOrder is enabled, design's size is :math:`N*(2d+2)`, see
-[Saltelli2002]_, except in dimension 2.
-Model's answer could be evaluated outside the platform.
+generating two samples :math:`A` and :math:`B` according to the given experiment
+and mixing columns of these ones to define the huge sample (design).
+If *computeSecondOrder* is set to *False*, the result design is of size
+:math:`N(d+2)` where :math:`d` is the dimension of the distribution.
+If *computeSecondOrder* is set to *True*, the design size is :math:`N(2d+2)`, see
+[Saltelli2002]_, excepted in dimension 2.
+If the constructor based on the distribution is used, an experiment is built
+according to the value of 'SobolIndicesExperiment-SamplingMethod' in :class:`~openturns.ResourceMap`:
 
+    - If it is equal to 'LHS', a :class:`~openturns.LHSExperiment` is used, with *AlwaysShuffle* and *RandomShift* set to *True*
+    - If it is equal to 'QMC' and :math:`d\leq SobolSequence.MaximumNumberOfDimension`, a :class:`~openturns.LowDiscrepancyExperiment` is used in conjunction with :class:`~openturns.SobolSequence`, with *Restart* and *Randomize* set to *True*. If :math:`d` is too large, it falls back to the 'LHS' case.
+    - Otherwise a :class:`~openturns.MonteCarloExperiment` is used. It is the default choice in order to allow :class:`~openturns.SobolIndicesAlgorithm` to use the asymptotic distribution of the indices estimates.
+
+The corresponding output values of a model can be evaluated outside of the
+platform.
 
 See also
 --------

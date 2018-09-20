@@ -53,7 +53,7 @@ Available functions:
     - trunc
     - round
 
-    Available operators:
+Available operators:
 
     - <= (less or equal)
     - >= (greater or equal)
@@ -67,7 +67,7 @@ Available functions:
     - / (division)
     - ^ (raise x to the power of y)
 
-    Available constants:
+Available constants:
 
     - e\_ (Euler's constant)
     - pi\_ (Pi)

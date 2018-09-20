@@ -73,6 +73,9 @@ public:
   /** Sample generation */
   Sample generateWithWeights(Point & weights) const;
 
+  /** WeightedExperiment accessor */
+  WeightedExperiment getWeightedExperiment() const;
+  
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
