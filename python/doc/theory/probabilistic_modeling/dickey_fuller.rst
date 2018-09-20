@@ -129,7 +129,7 @@ where the statistics :math:`t_n = \frac{|\hat{b}_n|}{\sigma_{b_n}}` converges in
     \sigma_{b_n}=\mat{M}^{-1}_{22}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{b}_nt_i+\hat{\rho}_ny_{i-1})\right)^2}
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is rejected, then the model 1 :eq:`Model1` is confirmed. And the test :eq:`TestModel1` proved that the unit root is rejected : :math:`\rho < 1`. We then conclude that the final model is : :math:`\boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}` whith :math:`\boldsymbol{\rho < 1}` which is a **trend stationary model**.
+    - If :math:`\cH_0` from :eq:`TestSousModele1_1` is rejected, then the model 1 :eq:`Model1` is confirmed. And the test :eq:`TestModel1` proved that the unit root is rejected : :math:`\rho < 1`. We then conclude that the final model is : :math:`\boldsymbol{X_t = a + bt + \rho X_{t-1} + \varepsilon_{t}}` with :math:`\boldsymbol{\rho < 1}` which is a **trend stationary model**.
 
     - If :math:`\cH_0` from :eq:`TestSousModele1_1` is accepted, then the model 1 :eq:`Model1` is not confirmed, since the trend presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model). **We then have to test the second model** :eq:`Model2`.
 
@@ -262,7 +262,7 @@ where the statistics :math:`t_n = \frac{|\hat{a}_n|}{\sigma_{a_n}}` converges in
     \sigma_{a_n}=\mat{N}^{-1}_{11}\sqrt{\frac{1}{n-1}\sum_{i=2}^n\left(y_{i}-(\hat{a}_n+\hat{\rho}_ny_{i-1})\right)^2}
 
 The decision to be taken is:
-    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is rejected, then the model 2 :eq:`Model2` is confirmed. And the test :eq:`TestModel2` proved that the unit root is rejected: :math:`\rho < 1`. We then conclude that the final model is: :math:`\boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}` whith :math:`\boldsymbol{\rho < 1}` which is a **stationary model**.
+    - If :math:`\cH_0` from :eq:`TestSousModele2_1` is rejected, then the model 2 :eq:`Model2` is confirmed. And the test :eq:`TestModel2` proved that the unit root is rejected: :math:`\rho < 1`. We then conclude that the final model is: :math:`\boldsymbol{X_t = a + \rho X_{t-1} + \varepsilon_{t}}` with :math:`\boldsymbol{\rho < 1}` which is a **stationary model**.
 
     - If :math:`\cH_0` from :eq:`TestSousModele2_1` is accepted, then the model 2 :eq:`Model2` is not confirmed, since the drift presence is rejected and the test :eq:`TestModel1` is not conclusive (since based on a wrong model). **We then have to test the third model** :eq:`Model3`.
 

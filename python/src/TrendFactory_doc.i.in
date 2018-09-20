@@ -33,7 +33,7 @@ We consider the functional basis :math:`\cB = (f_1, f_2, \ldots, f_K)` with :mat
 
     f_{trend}(\vect{t}) = \sum_{j=1}^{K} \alpha_j f_j(\vect{t})
 
-The coefficients :math:`\alpha_j \in \Rset` have to be computed. In the case where the number of available data  is of the same ordre as *K*, the least square system is ill-posed and a  more complex algorithm should be used. Some algorithms combine cross validation techniques and advanced regression strategies, in order to provide the estimation of the  coefficients associated to the best model among the  basis functions (sparse model). For example, we can use the *least angle regression* (LARS) method for the choice of sparse models.  Then, some fitting algorithms like the *leave one out*, coupled to the regression strategy, assess the error on the prediction and enable the selection of the best sparse model.
+The coefficients :math:`\alpha_j \in \Rset` have to be computed. In the case where the number of available data is of the same order as *K*, the least square system is ill-posed and a  more complex algorithm should be used. Some algorithms combine cross validation techniques and advanced regression strategies, in order to provide the estimation of the  coefficients associated to the best model among the  basis functions (sparse model). For example, we can use the *least angle regression* (LARS) method for the choice of sparse models.  Then, some fitting algorithms like the *leave one out*, coupled to the regression strategy, assess the error on the prediction and enable the selection of the best sparse model.
 
 "
 
