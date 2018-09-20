@@ -1,4 +1,6 @@
-Bayesian Calibration
+.. _bayesian_calibration:
+
+Bayesian calibration
 --------------------
 
 We consider a computer model :math:`h` (*i.e.* a deterministic function)
@@ -107,7 +109,6 @@ expressed according to Bayes’ theorem:
   :label: postdistribution
 
    \begin{aligned}
-   \label{eq:post_distribution}
        \pi(\vect{\theta} | \mat{y}) &=& \frac{L(\mat{y} | \vect{\theta}) \times \pi(\vect{\theta})}{m(\mat{y})},
      \end{aligned}
 

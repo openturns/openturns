@@ -15,7 +15,7 @@ PlatformInfo.SetNumericalPrecision(4)
 p = 1
 q = 1
 
-# ARMACoefficients intializing
+# ARMACoefficients initializing
 arCoefficients = Point(p, 0.80)
 maCoefficients = Point(q, 0.50)
 

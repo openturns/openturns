@@ -1,6 +1,8 @@
 %feature("docstring") OT::StrongMaximumTest
 "Strong Maximum Test.
 
+Refer to :ref:`strong_maximum_test`.
+
 Available constructors:
     StrongMaximumTest(*event, designPoint, importanceLevel, accuracyLevel, confidenceLevel*)
 

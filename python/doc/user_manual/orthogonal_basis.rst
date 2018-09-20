@@ -23,10 +23,13 @@ Univariate polynomial families
 
     MonomialFunctionFactory
 
+Refer to :ref:`chaos_basis`.
+
 .. _orthogonal_basis:
 
 Multivariate polynomial functions
 =================================
+
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
@@ -45,6 +48,8 @@ Orthonormalization algorithms
 
 Orthogonal univariate polynomial families
 -----------------------------------------
+
+Refer to :ref:`orthogonal_polynomials`.
 
 .. autosummary::
     :toctree: _generated/
@@ -104,6 +109,8 @@ Making orthogonal multivariate functions from orthogonal univariate functions
 
 Truncation schemes
 ------------------
+
+Refer to :ref:`enumeration_strategy`.
 
 .. autosummary::
     :toctree: _generated/

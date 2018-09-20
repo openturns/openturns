@@ -1,3 +1,5 @@
+.. _smirnov_test:
+
 Smirnov samples comparison test
 -------------------------------
 

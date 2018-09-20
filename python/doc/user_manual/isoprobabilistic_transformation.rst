@@ -4,6 +4,8 @@
 Isoprobabilistic transformation
 ===============================
 
+Refer to :ref:`isoprobabilistic_transformation`.
+
 .. currentmodule:: openturns
 
 .. autosummary::

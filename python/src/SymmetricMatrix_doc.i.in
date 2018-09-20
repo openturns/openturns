@@ -50,7 +50,7 @@ and back
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SymmetricMatrix::computeEigenValues
-"Compute eigen values.
+"Compute eigenvalues.
 
 Parameters
 ----------
@@ -61,7 +61,7 @@ keep_intact : bool, optional
 Returns
 -------
 eigenvalues : :class:`~openturns.Point`
-    Eigen values.
+    Eigenvalues.
 
 See Also
 --------
@@ -77,9 +77,9 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SymmetricMatrix::computeEV
-"Compute the eigen values decomposition (EVD).
+"Compute the eigenvalues decomposition (EVD).
 
-The eigen values decomposition of a square matrix :math:`\mat{M}` with
+The eigenvalues decomposition of a square matrix :math:`\mat{M}` with
 size :math:`n` reads:
 
 .. math::
@@ -97,8 +97,8 @@ keep_intact : bool, optional
 
 Returns
 -------
-eigen_values : :class:`~openturns.Point`
-    The vector of eigen values with size :math:`n` that form the diagonal of
+eigenvalues : :class:`~openturns.Point`
+    The vector of eigenvalues with size :math:`n` that form the diagonal of
     the :math:`n \times n` matrix :math:`\mat{\Lambda}` of the EVD.
 Phi : :class:`~openturns.SquareComplexMatrix`
     The left matrix of the EVD.

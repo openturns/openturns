@@ -1,3 +1,5 @@
+.. _strong_maximum_test:
+
 Strong Maximum Test
 -------------------
 

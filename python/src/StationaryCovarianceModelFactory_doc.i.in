@@ -1,6 +1,8 @@
 %feature("docstring") OT::StationaryCovarianceModelFactory
 "Estimation of the covariance model of a stationary process.
 
+Refer to :ref:`estimate_stationary_covariance_model`.
+
 Parameters
 ----------
 spectralModelFactory : :class:`~openturns.SpectralModelFactory`

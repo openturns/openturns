@@ -1,3 +1,5 @@
+.. _nataf_transformation:
+
 Generalized Nataf Transformation
 --------------------------------
 
@@ -17,9 +19,9 @@ One way to evaluate the probability content of the event
 :math:`\cD_f`:
 
 .. math::
+ :label: PfX
 
-    \label{PfX}
-        P_f = \Prob{g(\vect{X}\,,\,\vect{d})\leq 0}=   \int_{\cD_f}  \pdf\, d\vect{x}
+    P_f = \Prob{g(\vect{X}\,,\,\vect{d})\leq 0}=   \int_{\cD_f}  \pdf\, d\vect{x}
 
 is to use the Generalized Nataf transformation :math:`T` which is a
 diffeomorphism from :math:`\supp{\vect{X}}` into the standard space

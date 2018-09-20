@@ -73,7 +73,7 @@ Returns
 -------
 value : :class:`~openturns.Point`
     Approximation of the integral. Its dimension is :math:`p` if
-    :math:`kind\in\{0,1\}`, otherwise it is :math:`2p` whith the :math:`p` first
+    :math:`kind\in\{0,1\}`, otherwise it is :math:`2p` with the :math:`p` first
     components corresponding to the real part of the integral and the remaining
     ones to the imaginary part.
 

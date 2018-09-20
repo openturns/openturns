@@ -1,9 +1,7 @@
 %feature("docstring") OT::LinearModelFactory
 "Class used to create a linear model from numerical samples.
 
-**Available usages**:
-
-    LinearModelFactory()
+Refer to :ref:`linear_regression`.
 
 See Also
 --------

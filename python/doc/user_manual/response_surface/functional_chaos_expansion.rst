@@ -52,6 +52,8 @@ Computation of the polynomial chaos coefficients
 Least Squares problem resolution
 ================================
 
+Refer to :ref:`least_squares`.
+
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t

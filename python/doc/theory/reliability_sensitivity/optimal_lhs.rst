@@ -1,3 +1,5 @@
+.. _optimal_lhs:
+
 Optimal LHS design
 ^^^^^^^^^^^^^^^^^^
 
@@ -82,6 +84,7 @@ Let us first illustrate with the :math:`C_2` criterion. We set :math:`z_{ik}=x_{
 with:
 
 .. math::
+ :label: prior_GN
 
     c_{ij}= \,\,\,\left \{
     \begin{aligned}
@@ -89,12 +92,12 @@ with:
     &\frac{1}{N^2}\prod_{k=1}^{d}(1+|z_{ik}|)-\frac{2}{N}\prod_{k=1}^{d}(1+\frac{1}{2}|z_{ik}|-\frac{1}{2}z_{ik}^2) \,\,\,\,\textrm{otherwise} \\
     \end{aligned}
     \right.
-    \label{prior_GN}
 
 We set :math:`c^{\prime}` the elements of a new design :math:`X^{\prime N}_{d}` obtained by permuting a coordinate of sample points :math:`i_1` and :math:`i_2`.
 We can see that
 
 .. math::
+ :label: cond_update
 
     \left \{
     \begin{aligned}
@@ -103,7 +106,6 @@ We can see that
     & c_{ij}=c_{ji} \;\forall 1\leq i,j\leq N
     \end{aligned}
     \right.
-    \label{cond_update}
 
 and thus, :math:`C_2(X')` becomes:
 

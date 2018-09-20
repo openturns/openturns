@@ -1,8 +1,7 @@
 %feature("docstring") OT::LARS
 "Least Angle Regression.
 
-Available constructors:
-    LARS()
+Refer to :ref:`polynomial_sparse_least_squares`.
 
 See also
 --------

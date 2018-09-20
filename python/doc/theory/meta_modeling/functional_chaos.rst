@@ -1,3 +1,5 @@
+.. _functional_chaos:
+
 Functional Chaos Expansion
 --------------------------
 

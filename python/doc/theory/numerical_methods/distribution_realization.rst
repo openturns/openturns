@@ -1,3 +1,5 @@
+.. _distribution_realization:
+
 Distribution realizations
 -------------------------
 

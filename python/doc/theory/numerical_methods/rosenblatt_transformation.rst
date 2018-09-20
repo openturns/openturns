@@ -1,3 +1,5 @@
+.. _rosenblatt_transformation:
+
 Rosenblatt Transformation
 -------------------------
 

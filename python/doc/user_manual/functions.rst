@@ -44,6 +44,8 @@ Algebra of functions
 Field and mixed functions
 =========================
 
+Refer to :ref:`field_function`.
+
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t

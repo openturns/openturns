@@ -1,3 +1,5 @@
+.. _optimization_algorithm:
+
 Optimization Algorithms
 -----------------------
 
@@ -76,7 +78,7 @@ where :math:`\alpha_k` is the parameter *stepmx*.
 .. topic:: Examples:
 
     - See :doc:`/examples/numerical_methods/optimization_constraints`
-
+    - See :doc:`/examples/numerical_methods/optimization_nlopt`
 
 .. topic:: References:
 

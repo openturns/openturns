@@ -383,6 +383,8 @@ Examples
 %feature("docstring") OT::HypothesisTest::Pearson
 "Test whether two discrete samples are independent.
 
+Refer to :ref:`pearson_test`.
+
 **Available usages**:
 
     HypothesisTest.Pearson(*firstSample, secondSample*)
@@ -431,6 +433,8 @@ class=TestResult name=Unnamed type=TwoSamplePearson binaryQualityMeasure=true p-
 
 %feature("docstring") OT::HypothesisTest::Smirnov
 "Test whether two samples follows the same distribution.
+
+Refer to :ref:`smirnov_test`.
 
 **Available usages**:
 
@@ -483,6 +487,8 @@ class=TestResult name=Unnamed type=TwoSampleSmirnov binaryQualityMeasure=true p-
 
 %feature("docstring") OT::HypothesisTest::Spearman
 "Test whether two samples have no rank correlation.
+
+Refer to :ref:`spearman_test`.
 
 **Available usages**:
 

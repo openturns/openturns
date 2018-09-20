@@ -1,6 +1,8 @@
 %feature("docstring") OT::KrigingAlgorithm
 "Kriging algorithm.
 
+Refer to :ref:`kriging`.
+
 Available constructors:
     KrigingAlgorithm(*inputSample, outputSample, covarianceModel, basis, normalize=True*)
 

@@ -1,6 +1,8 @@
 %feature("docstring") OT::DirectionalSampling
 "Directional simulation.
 
+Refer to :ref:`directional_simulation`.
+
 Available constructors:
     DirectionalSampling(*event=ot.Event()*)
 

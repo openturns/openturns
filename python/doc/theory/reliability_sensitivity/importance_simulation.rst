@@ -1,3 +1,5 @@
+.. _importance_simulation:
+
 Importance Simulation
 ---------------------
 

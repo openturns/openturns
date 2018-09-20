@@ -1,6 +1,8 @@
 %feature("docstring") OT::TaylorExpansionMoments
 "First and second order Taylor expansion formulas.
 
+Refer to :ref:`taylor_importance_factors`.
+
 Available constructors:
     TaylorExpansionMoments(*limitStateVariable*)
 

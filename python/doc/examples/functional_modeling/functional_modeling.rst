@@ -1,6 +1,9 @@
 Functional modeling
 ===================
 
+Vectorial functions
+-------------------
+
   .. toctree::
     :maxdepth: 1
 
@@ -12,3 +15,12 @@ Functional modeling
     linear_combination_function.ipynb
     aggregated_function.ipynb
     parametric_function.ipynb
+
+Field functions
+---------------
+
+  .. toctree::
+    :maxdepth: 1
+
+    value_function.ipynb
+    vertexvalue_function.ipynb

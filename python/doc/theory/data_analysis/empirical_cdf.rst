@@ -1,3 +1,5 @@
+.. _empirical_cdf:
+
 Empirical cumulative distribution function
 ------------------------------------------
 

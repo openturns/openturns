@@ -27,7 +27,7 @@ spatialCovariance : :class:`~openturns.CovarianceMatrix`
 
 Notes
 -----
-The *exponential* function is a stationary covariance function whith dimension :math:`d\geq1`.
+The *exponential* function is a stationary covariance function with dimension :math:`d\geq1`.
 
 We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset^d`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
 

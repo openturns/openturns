@@ -39,5 +39,5 @@ At the first sign changement, we research one root in the concerned segment
 with the selected non linear solver. Then, the segment
 *[root, maximum distant point]* is considered within the failure space.
 
-If *stepSize* is small enough, this strategy garantees us to find the root which
+If *stepSize* is small enough, this strategy guarantees us to find the root which
 is the nearest from the origin."

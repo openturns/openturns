@@ -1,3 +1,5 @@
+.. _sensitivity_sobol:
+
 Sensivity analysis using Sobol indices
 --------------------------------------
 
@@ -50,6 +52,7 @@ For the :math:`n_X` total order indices :math:`T_i`, we only swap the variable :
 .. topic:: Examples:
 
     - See :doc:`/examples/reliability_sensitivity/sensitivity_sobol`
+    - See :doc:`/examples/reliability_sensitivity/functional_chaos_sensitivity`
 
 .. topic:: References:
 

@@ -1,6 +1,8 @@
 %feature("docstring") OT::ARMA
 "ARMA process.
 
+Refer to :ref:`arma_process`.
+
 Available constructors:
     ARMA()
 
@@ -191,7 +193,7 @@ eps : float, :math:`\epsilon > 0`
 Returns
 -------
 Nther : int, :math:`N_{ther} \geq 1`
-    The number of iterations of the ARMA process before being stationary and independent of its intial state.
+    The number of iterations of the ARMA process before being stationary and independent of its initial state.
 
 Notes
 -----

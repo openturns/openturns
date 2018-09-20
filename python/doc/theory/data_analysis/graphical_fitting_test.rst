@@ -1,3 +1,5 @@
+.. _graphical_fitting_test:
+
 Graphical goodness-of-fit tests
 -------------------------------
 

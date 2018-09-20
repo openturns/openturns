@@ -1,3 +1,5 @@
+.. _monte_carlo_moments:
+
 Estimating moments with Monte Carlo
 -----------------------------------
 

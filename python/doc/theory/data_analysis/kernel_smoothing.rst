@@ -1,3 +1,4 @@
+.. _kernel_smoothing:
 
 Kernel smoothing
 ----------------

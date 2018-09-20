@@ -1,8 +1,8 @@
 .. _user_manual:
 
-=============
-API Reference
-=============
+===
+API
+===
 
 This section details classes, functions included in the Python bindings.
 

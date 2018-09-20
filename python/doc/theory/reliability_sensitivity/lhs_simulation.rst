@@ -1,3 +1,5 @@
+.. _lhs_simulation:
+
 Latin Hypercube Simulation
 --------------------------
 
@@ -37,7 +39,7 @@ Latin Hypercube Simulation
 
     \hat{P}_{f,LHS}^N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}_{\{g(\uX^i,\underline{d}) \leq 0 \}}
 
-  where the sample of :math:` \{ \uX^i,i=1 \hdots N \}` is obtained as
+  where the sample of :math:`\{ \uX^i,i=1 \hdots N \}` is obtained as
   described previously.
 
 | One can show that:

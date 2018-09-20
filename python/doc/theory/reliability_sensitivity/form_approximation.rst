@@ -1,3 +1,5 @@
+.. _form_approximation:
+
 FORM
 ----
 
@@ -55,7 +57,7 @@ The method proceeds in three steps:
 
 #. | In the standard space, approximate the limit state surface in the
      standard space by a linear surface at the design point
-     :math:` \vect{u}^*`. Then, the probability :math:`P_f` (:eq:`PfU3`) where
+     :math:`\vect{u}^*`. Then, the probability :math:`P_f` (:eq:`PfU3`) where
      the limit state surface has been approximated by a linear surface
      (hyperplane) can be obtained exactly, thanks to the rotation
      invariance of the standard distribution :math:`f_{\vect{U}}` :

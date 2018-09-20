@@ -1,3 +1,5 @@
+.. _parametric_models:
+
 Standard parametric models
 --------------------------
 

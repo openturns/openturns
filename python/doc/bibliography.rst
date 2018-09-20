@@ -6,6 +6,10 @@ Bibliography
 .. [Aas2004] Aas K., *Modelling the dependence structure of financial assets: a survey of four copulas*,
     Norwegian Computing Center report nr. SAMBA/22/04, December 2004.
     `pdf <http://doc.openturns.org/papers/aas2004.pdf>`__
+.. [Abate1992] Abate, J. and Whitt, W. (1992). *The Fourier-series method for
+    inverting transforms of probability distributions*.
+    Queueing Systems 10, 5--88., 1992, formula 5.5.
+    `pdf <http://doc.openturns.org/papers/abate1992.pdf>`__
 .. [Au2001] Au, S. K. *Estimation of small failure probabilities in high 
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://doc.openturns.org/papers/au2001.pdf>`__
@@ -109,6 +113,10 @@ Bibliography
     *Estimating the extreme value index and high quantiles with exponential regression models*,
     Statistica Sinica, 13, 850-880, 2003.
     `pdf <http://doc.openturns.org/papers/matthys2003.pdf>`__
+.. [Mauricio1995] J. A. Mauricio,
+    *Exact Maximum Likelihood Estimation of Stationary Vector ARMA Models*,
+    Journal of the American Statistical Association 90, 282-291, 1995.
+    `pdf <http://doc.openturns.org/papers/mauricio1995.pdf>`__
 .. [McKay1979] McKay M, Beckman R and Conover W (1979). *A comparison of three
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.

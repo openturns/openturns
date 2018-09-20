@@ -41,14 +41,24 @@ Stochastic processes
     :maxdepth: 1
 
     mesh_creation.ipynb
+    regular_grid_creation.ipynb
+    process_manipulation.ipynb
+    field_manipulation.ipynb
+    timeseries_manipulation.ipynb
+    processsample_manipulation.ipynb
+    create_stationary_covmodel.ipynb
+    user_stationary_covmodel.ipynb
+    userdefined_covariance_model.ipynb
     gaussian_process_covariance.ipynb
     gaussian_process_spectral.ipynb
-    userdefined_covariance_model.ipynb
+    parametric_spectral_density.ipynb
     userdefined_spectral_model.ipynb
-    arma_process.ipynb
+    arma_creation.ipynb
+    arma_manipulation.ipynb
     white_noise_process.ipynb
     random_walk_process.ipynb
     functional_basis_process.ipynb
+    add_trend.ipynb
     trend_transform.ipynb
     box_cox_transform.ipynb
     aggregated_process.ipynb

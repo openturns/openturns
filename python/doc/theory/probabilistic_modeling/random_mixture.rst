@@ -1,3 +1,5 @@
+.. _random_mixture:
+
 Random Mixture: affine combination of independent univariate distributions
 --------------------------------------------------------------------------
 
@@ -28,9 +30,9 @@ easily defined from the characteristic function of :math:`X_k` denoted
 :math:`\phi_{X_k}` as follows :
 
 .. math::
+  :label: CharactFuncY
 
    \displaystyle \phi_Y(u_1,\hdots,u_d)=\prod_{j=1}^de^{iu_j{y_0}_j}\prod_{k=1}^n\phi_{X_k}((M^tu)_k), \mbox{  for } \vect{u}\in\mathbb{R}^d
-       \label{CharactFuncY}
 
 | Once :math:`\phi_Y` evaluated, it is possible to evaluate the
   probability density function of :math:`Y`, denoted :math:`p_Y` :
@@ -68,10 +70,10 @@ easily defined from the characteristic function of :math:`X_k` denoted
   subtraction:
 
   .. math::
+    :label: algoPoisson
 
      \displaystyle  p_Y\left(y\right) = \sum_{j\in\mathbb{Z}^d} q_Y\left(y_1+\frac{2\pi j_1}{h_1},\cdots,y_d+\frac{2\pi j_d}{h_d}\right)+
        \frac{H}{2^d\pi^d}\sum_{|k_1|\leq N}\cdots\sum_{|k_d|\leq N} \delta_Y\left(k_1h_1,\cdots,k_dh_d\right)e^{-\imath(\sum_{m=1}^{d}k_m h_m y_m)}
-       \label{algoPoisson}
 
 where :math:`H = h_1\times\cdots\times h_d`,
 :math:`j=(j_1,\cdots,j_d)`, :math:`\delta_Y:=\phi_Y - \psi_Y`
@@ -87,11 +89,7 @@ where :math:`H = h_1\times\cdots\times h_d`,
 The parameters :math:`h_1, \dots  h_d` are calibrated using the
 following formula:
 
-.. math::
-
-   \begin{aligned}
-       h_\ell = \frac{2\pi}{(\beta+4\alpha)\sigma_\ell}
-     \end{aligned}
+.. math::  h_\ell = \frac{2\pi}{(\beta+4\alpha)\sigma_\ell}
 
 where :math:`\sigma_\ell=\sqrt{\Cov{\vect{Y}}_{\ell,\ell}}` and
 :math:`\alpha`, :math:`\beta` are respectively the number of standard
@@ -194,12 +192,13 @@ which extension to dimensions 2 and 3 are respectively:
 We decompose sums of  on the interval :math:`[-N,N]` into three parts:
 
 .. math::
+ :label: decomposition-sum
 
    \begin{aligned}
      \sum_{k_j=-N}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d)
        = & \sum_{k_j=-N}^{-1} \delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \notag\\
        & + \delta\left(k_1h_1,\hdots,0,\hdots,k_dh_d\right) E_{m_1,\hdots,0,\hdots,m_d}(k_1,\hdots,0,\hdots,k_d) \notag\\
-       & + \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d) \label{Eq:decomposition-sum}
+       & + \sum_{k_j=1}^{N}\delta\left(k_1h_1,\hdots,k_dh_d\right) E_{m_1,\hdots,m_d}(k_1,\hdots,k_d)
      \end{aligned}
 
 If we already computed :math:`E` for dimension :math:`d-1`, then the
@@ -299,4 +298,4 @@ To summarize:
 
 .. topic:: References:
 
-    - Abate, J. and Whitt, W. (1992). *The Fourier-series method for inverting transforms of probability distributions*. Queueing Systems 10, 5--88., 1992, formula 5.5.
+    -  [Abate1992]_

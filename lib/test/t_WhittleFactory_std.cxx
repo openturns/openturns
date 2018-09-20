@@ -39,7 +39,7 @@ int main(int , char *[])
     const UnsignedInteger p = 1;
     const UnsignedInteger q = 2;
 
-    /* ARMACoefficients intializing */
+    /* ARMACoefficients initializing */
     Point arCoefficients(p, 0.80);
     Point maCoefficients(q, 0.50);
 

@@ -1,3 +1,5 @@
+.. _sensitivity_ancova:
+
 Sensivity analysis with correlated inputs
 -----------------------------------------
 

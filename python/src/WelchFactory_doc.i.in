@@ -1,5 +1,7 @@
 %feature("docstring") OT::WelchFactory
-"Welch estimator of the spectral model of a  stationary process.
+"Welch estimator of the spectral model of a stationary process.
+
+Refer to :ref:`estimate_spectral_density_function`.
 
 Parameters
 ----------

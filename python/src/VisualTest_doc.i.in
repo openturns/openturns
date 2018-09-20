@@ -1,6 +1,8 @@
 %feature("docstring") OT::VisualTest::DrawHenryLine
 "Draw an Henry plot.
 
+Refer to :ref:`graphical_fitting_test`.
+
 Parameters
 ----------
 sample : 2-d sequence of float
@@ -75,6 +77,8 @@ Draw an Henry plot against an inferred Normal distribution:
 
 %feature("docstring") OT::VisualTest::DrawQQplot
 "Draw a QQ-plot.
+
+Refer to :ref:`qqplot_graph`.
 
 Available usages:
     VisualTest.DrawQQplot(*sample1, sample2, n_points*)
@@ -267,6 +271,8 @@ Draw an histogram:
 %feature("docstring") OT::VisualTest::DrawEmpiricalCDF
 "Draw an empirical CDF.
 
+Refer to :ref:`empirical_cdf`.
+
 Available usages:
     VisualTest.DrawEmpiricalCDF(*sample*)
     VisualTest.DrawEmpiricalCDF(*sample, Xmin, Xmax*)
@@ -339,6 +345,8 @@ Examples
 
 %feature("docstring") OT::VisualTest::DrawKendallPlot
 "Draw kendall plot.
+
+Refer to :ref:`graphical_fitting_test`.
 
 Available usages:
     VisualTest.DrawKendallPlot(*sample, distribution*)

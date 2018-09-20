@@ -1,76 +1,3 @@
-%feature("docstring") OT::LinearModelTest::LinearModelAdjustedRSquared
-"Test the quality of the linear regression model Test.
-
-Based on the adjusted :math:`R^2` indicator.
-
-**Available usages**:
-
-    LinearModelTest.LinearModelAdjustedRSquared(*firstSample, secondSample*)
-
-    LinearModelTest.LinearModelAdjustedRSquared(*firstSample, secondSample, level*)
-
-    LinearModelTest.LinearModelAdjustedRSquared(*firstSample, secondSample, linearModel*)
-
-    LinearModelTest.LinearModelAdjustedRSquared(*firstSample, secondSample, linearModel, level*)
-
-
-Parameters
-----------
-firstSample : 2-d sequence of float
-    First tested sample, of dimension 1.
-secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
-    A linear model. If not provided, it is built using the given samples.
-level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
-
-Returns
--------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
-
-See Also
---------
-LinearModelTest_LinearModelRSquared, LinearModelTest_LinearModelFisher,
-LinearModelTest_LinearModelResidualMean
-
-Notes
------
-The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
-scalar variable :math:`Y` and the :math:`n`-dimensional one
-:math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
-
-.. math::
-
-    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
-
-where :math:`\epsilon` is the residual, supposed to follow the standard Normal
-distribution.
-
-The LinearModelAdjustedRSquared test checks the quality of the linear
-regression model. It evaluates the indicator :math:`R^2` adjusted (regression
-variance analysis) and compares it to a level.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Normal()
->>> sample = distribution.getSample(30)
->>> func = ot.SymbolicFunction('x', '2 * x + 1')
->>> firstSample = sample
->>> secondSample = func(sample) + ot.Normal().getSample(30)
->>> test_result = ot.LinearModelTest.LinearModelAdjustedRSquared(firstSample, secondSample)
->>> print(test_result)
-class=TestResult name=Unnamed type=AdjustedRSquared binaryQualityMeasure=false p-value threshold=0.95 p-value=0.815998 description=[]
-"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LinearModelTest::LinearModelFisher
 "Test the nullity of the linear regression model coefficients.
 
@@ -104,7 +31,6 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelRSquared, LinearModelTest_LinearModelAdjustedRSquared,
 LinearModelTest_LinearModelResidualMean
 
 Notes
@@ -137,76 +63,6 @@ Examples
 >>> test_result = ot.LinearModelTest.LinearModelFisher(firstSample, secondSample)
 >>> print(test_result)
 class=TestResult name=Unnamed type=Fisher binaryQualityMeasure=false p-value threshold=0.05 p-value=1 description=[]
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearModelTest::LinearModelRSquared
-"Test the quality of the linear regression model based on the :math:`R^2` indicator.
-
-**Available usages**:
-
-    LinearModelTest.LinearModelRSquared(*firstSample, secondSample*)
-
-    LinearModelTest.LinearModelRSquared(*firstSample, secondSample, level*)
-
-    LinearModelTest.LinearModelRSquared(*firstSample, secondSample, linearModel*)
-
-    LinearModelTest.LinearModelRSquared(*firstSample, secondSample, linearModel, level*)
-
-
-Parameters
-----------
-firstSample : 2-d sequence of float
-    First tested sample, of dimension 1.
-secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
-    A linear model. If not provided, it is built using the given samples.
-level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
-
-Returns
--------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
-
-See Also
---------
-LinearModelTest_LinearModelAdjustedRSquared,  LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelResidualMean
-
-Notes
------
-The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
-scalar variable :math:`Y` and the :math:`n`-dimensional one
-:math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
-
-.. math::
-
-    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
-
-where :math:`\epsilon` is the residual, supposed to follow the standard Normal
-distribution.
-
-The LinearModelRSquared test checks the quality of the linear
-regression model. It evaluates the indicator :math:`R^2` (regression
-variance analysis) and compares it to a level.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Normal()
->>> sample = distribution.getSample(30)
->>> func = ot.SymbolicFunction('x', '2 * x + 1')
->>> firstSample = sample
->>> secondSample = func(sample) + ot.Normal().getSample(30)
->>> test_result = ot.LinearModelTest.LinearModelRSquared(firstSample, secondSample)
->>> print(test_result)
-class=TestResult name=Unnamed type=RSquared binaryQualityMeasure=false p-value threshold=0.95 p-value=0.822343 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -244,7 +100,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-LinearModelTest_LinearModelAdjustedRSquared,  LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelRSquared, LinearModelTest_LinearModelHarrisonMcCabe
+LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelHarrisonMcCabe
 
 Notes
 -----

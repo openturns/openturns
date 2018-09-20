@@ -1,3 +1,5 @@
+.. _polynomial_sparse_least_squares:
+
 Sparse least squares polynomial metamodel
 -----------------------------------------
 
@@ -113,7 +115,7 @@ term most correlated with current residual :math:`\underline{R}`, the
 related coefficient is directly increased up to the point where some
 other basis predictor has as much correlation with
 :math:`\underline{R}`. Then the new predictor is entered, and the
-procedure is continued. The LAR algorithm is detailed below:
+procedure is continued. The LARS algorithm is detailed below:
 
 #. Initialize the coefficients to :math:`a_{0},\dots,a_{P-1} = 0`. Set
    the initial residual equal to the vector of observations :math:`\cY`.
@@ -140,22 +142,22 @@ procedure is continued. The LAR algorithm is detailed below:
   form
   :math:`\hat{\underline{a}}^{(k+1)} = \hat{\underline{a}}^{(k)} + \gamma^{(k)} \tilde{\underline{w}}^{(k)}`.
   Vector :math:`\tilde{\underline{w}}^{(k)}` and coefficient
-  :math:`\gamma^{(k)}` are referred to as the LAR *descent direction*
+  :math:`\gamma^{(k)}` are referred to as the LARS *descent direction*
   and *step*, respectively. Both quantities may be derived
   algebraically.
-| Note that if :math:`N \geq P`, then the last step of LAR provides the
-  ordinary least-square solution. It is shown that LAR is noticeably
+| Note that if :math:`N \geq P`, then the last step of LARS provides the
+  ordinary least-square solution. It is shown that LARS is noticeably
   efficient since it only requires the computational cost of ordinary
   least-square regression on :math:`P` predictors for producing a
   *collection* of :math:`m` metamodels.
-| **LASSO and Forward Stagewise as variants of LAR**
+| **LASSO and Forward Stagewise as variants of LARS**
 
-It has been shown that with only one modification, the LAR procedure
+It has been shown that with only one modification, the LARS procedure
 provides in one shot the entire paths of LASSO solution coefficients as
-the tuning parameter :math:`C` in Eq.([eq:5-2.5]) is increased from 0 up
+the tuning parameter :math:`C` in :eq:`5-2.5` is increased from 0 up
 to a maximum value. The modified algorithm is as follows:
 
--  Run the LAR procedure from Steps 1 to 4.
+-  Run the LARS procedure from Steps 1 to 4.
 
 -  If a non zero coefficient hits zero, discard it from the current
    metamodel and recompute the current joint least-square direction.
@@ -167,11 +169,11 @@ to a maximum value. The modified algorithm is as follows:
   steps since the predictors are allowed to be discarded and introduced
   later again into the metamodel. In a similar fashion, a limiting
   version of the forward stagewise method when :math:`\varepsilon \to 0`
-  may be obtained by slightly modifying the original LAR algorithm. In
+  may be obtained by slightly modifying the original LARS algorithm. In
   the literature, one commonly uses the label LARS when referring to all
   these LAR-based algorithms (with *S* referring to *Stagewise* and
   *LASSO*).
-| **Selection of the optimal LAR solution**
+| **Selection of the optimal LARS solution**
 
 The LAR-based approaches (i.e. original LAR, LASSO and forward
 stagewise) provide a *collection* of less and less sparse PC

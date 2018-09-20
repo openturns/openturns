@@ -59,6 +59,8 @@ graph : :class:`~openturns.Graph`
 %feature("docstring") OT::AnalyticalResult::getImportanceFactors
 "Accessor to the importance factors.
 
+Refer :ref:`importance_form`.
+
 Parameters
 ----------
 type : int, optional
@@ -167,6 +169,8 @@ index : float
 
 %feature("docstring") OT::AnalyticalResult::getHasoferReliabilityIndexSensitivity
 "Accessor to the sensitivities of the Hasofer Reliability Index.
+
+Refer to :ref:`sensitivity_form`.
 
 Returns
 -------

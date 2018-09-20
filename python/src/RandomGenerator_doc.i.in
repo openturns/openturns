@@ -1,6 +1,8 @@
 %feature("docstring") OT::RandomGenerator
 "Uniform random generator.
 
+Refer to :ref:`uniform_random_generator`.
+
 The random generator of uniform(0,1) samples is based on the DSFTM
 (Double precision SIMD oriented Fast Mersenne Twister) algorithm."
 

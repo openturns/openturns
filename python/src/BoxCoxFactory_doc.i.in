@@ -172,7 +172,7 @@ We suppose the general linear model link :math:`h_\lambda(Y) = \vect{F}^t(\vect{
        \end{array}
      \right)
 
-:math:`(f_1, \dots, f_M)` is a functional basis whith :math:`f_i: \Rset^d \mapsto \Rset^p` for all *i*, :math:`\beta` are the coefficients of the linear combination and :math:`Z` is a zero-mean gaussian process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}}`
+:math:`(f_1, \dots, f_M)` is a functional basis with :math:`f_i: \Rset^d \mapsto \Rset^p` for all *i*, :math:`\beta` are the coefficients of the linear combination and :math:`Z` is a zero-mean gaussian process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}}`
 Thus implies that :math:`h_\lambda(Y) \sim \cN(\vect{F}^t(\vect{x}) \vect{\beta}, C_{\vect{\sigma}, \vect{\theta}})`.
 
 The likelihood function to be maximized writes as follows:

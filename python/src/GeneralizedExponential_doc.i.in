@@ -27,7 +27,7 @@ p : float, :math:`0<p \leq 2`
 
 Notes
 -----
-The *generalized exponential function* is a stationary covariance function whith dimension :math:`d=1`.
+The *generalized exponential function* is a stationary covariance function with dimension :math:`d=1`.
 
 We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
 

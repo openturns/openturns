@@ -107,6 +107,8 @@ Normal(mu = -0.0944924, sigma = 0.989808)"
 %feature("docstring") OT::FittingTest::BIC
 "Compute the Bayesian information criterion.
 
+Refer to :ref:`bic`.
+
 Parameters
 ----------
 sample : 2-d sequence of float
@@ -129,18 +131,6 @@ BIC : float
 
 Notes
 -----
-The Bayesian information criterion is defined as follows:
-
-.. math::
-
-    {\rm BIC} = \frac{1}{m}
-                \left(- 2 \log L(\vect{x}^{(i)}, i = 1, \ldots, m)
-                      + k \log m\right)
-
-where :math:`\log L` denotes the log-likelihood of the sample with respect to
-the given distribution, and :math:`k` denotes the number of estimated
-parameters in the distribution.
-
 This is used for model selection.
 
 Examples
@@ -160,6 +150,8 @@ Examples
 
 %feature("docstring") OT::FittingTest::ChiSquared
 "Perform a :math:`\chi^2` goodness-of-fit test for 1-d discrete distributions.
+
+Refer to :ref:`chi2_fitting_test`.
 
 Parameters
 ----------
@@ -207,6 +199,8 @@ class=TestResult name=Unnamed type=ChiSquaredPoisson binaryQualityMeasure=true p
 
 %feature("docstring") OT::FittingTest::Kolmogorov
 "Perform a Kolmogorov goodness-of-fit test for 1-d continuous distributions.
+
+Refer to :ref:`kolmogorov_smirnov_test`.
 
 Parameters
 ----------
