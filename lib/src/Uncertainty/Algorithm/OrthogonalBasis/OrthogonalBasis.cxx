@@ -51,6 +51,13 @@ Function OrthogonalBasis::build(const UnsignedInteger index) const
 }
 
 
+/* Build the Function of the given multi-indices */
+Function OrthogonalBasis::build(const Indices & indices) const
+{
+  return getImplementation()->build(indices);
+}
+
+
 /* Return the measure upon which the basis is orthogonal */
 Distribution OrthogonalBasis::getMeasure() const
 {
