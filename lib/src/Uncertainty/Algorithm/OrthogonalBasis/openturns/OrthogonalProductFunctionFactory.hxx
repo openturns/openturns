@@ -88,6 +88,7 @@ private:
                                       const EnumerateFunction & phi);
 
   /** Build the measure based on the one found in the family collection */
+  using OrthogonalFunctionFactory::build;
   void buildMeasure(const FunctionFamilyCollection & coll);
 
   /** The product function factory */

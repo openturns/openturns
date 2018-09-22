@@ -60,6 +60,7 @@ public:
                      const Bool useCopula = true);
 
   /** Build the Function of the given index */
+  using OrthogonalFunctionFactory::build;
   Function build(const UnsignedInteger index) const;
 
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */

@@ -62,6 +62,20 @@ Function OrthogonalFunctionFactory::build(const UnsignedInteger ) const
 }
 
 
+/* Build the Function of the given multi-indices */
+Function OrthogonalFunctionFactory::build(const Indices & indices) const
+{
+  try
+    {
+      return build(getEnumerateFunction().inverse(indices));
+    }
+  catch (const NotYetImplementedException &)
+    {
+      throw NotDefinedException(HERE) << "The construction of a function based on a multi-indices is not supported by this OrthogonalFunctionFactory=" << *this;
+    }
+}
+
+
 /* Return the measure upon which the basis is orthogonal */
 Distribution OrthogonalFunctionFactory::getMeasure() const
 {
@@ -93,7 +107,6 @@ void OrthogonalFunctionFactory::save(Advocate & adv) const
 {
   BasisImplementation::save(adv);
   adv.saveAttribute( "measure_", measure_ );
-  adv.saveAttribute( "enumerateFunction_", enumerateFunction_ );
 }
 
 
@@ -102,7 +115,6 @@ void OrthogonalFunctionFactory::load(Advocate & adv)
 {
   BasisImplementation::load(adv);
   adv.loadAttribute( "measure_", measure_ );
-  adv.loadAttribute( "enumerateFunction_", enumerateFunction_ );
 }
 
 

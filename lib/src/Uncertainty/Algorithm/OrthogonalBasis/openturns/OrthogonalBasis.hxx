@@ -50,6 +50,9 @@ public:
   /** Build the Function of the given index */
   Function build(const UnsignedInteger index) const;
 
+  /** Build the Function of the given multi-indices */
+  Function build(const Indices & indices) const;
+
   /** Return the measure upon which the basis is orthogonal */
   Distribution getMeasure() const;
 
