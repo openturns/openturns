@@ -128,6 +128,13 @@ Returns
 listColors : :class:`~openturns.Description`
     List of n color codes defined according to the default palette.
 
+Notes
+-----
+The colors are generated in the HSV space, with H (the hue) varying in a number
+of different values given by 'Drawable-DefaultPalettePhase' in
+:class:`~openturns.ResourceMap` and V (the value) being decreased linearly at each
+cycle of the hue.
+
 Examples
 --------
 >>> import openturns as ot

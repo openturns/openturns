@@ -83,6 +83,7 @@
   <Drawable-DefaultSurfaceColor value_string="white"          />
   <Drawable-NoSpecifiedLabel    value_string=""               />
   <Drawable-DataThreshold       value_unsigned_integer="2000" />
+  <Drawable-DefaultPalettePhase value_unsigned_integer="12"   />
 
   <!-- OT::GraphImplementation parameters -->
   <Graph-DefaultHorizontalMargin value_scalar="0.05"          />
