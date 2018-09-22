@@ -38,12 +38,19 @@ int main(int , char *[])
     polynomCollection[2] = HermiteFactory();
     OrthogonalProductPolynomialFactory basisFactory(polynomCollection);
     OrthogonalBasis basis(basisFactory);
-    fullprint << "Basis=" << basis << std::endl;
     Point point(dim, 0.5);
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
       Function f(basis.build(i));
       fullprint << "i=" << i << " f(point)=" << f(point) << std::endl;
+    }
+    // Using multi-indices
+    EnumerateFunction enumFunction(basis.getEnumerateFunction());
+    for (UnsignedInteger i = 0; i < 10; ++i)
+    {
+      Indices indices(enumFunction(i));
+      Function f(basis.build(indices));
+      fullprint << "indices=" << indices << " f(point)=" << f(point) << std::endl;
     }
   }
   catch (TestFailed & ex)

@@ -15,6 +15,13 @@ for i in range(10):
     f = basis.build(i)
     print('i=', i, 'f(X)=', f(x))
 
+# Using multi-indices
+enum = basis.getEnumerateFunction()
+for i in range(10):
+    indices = enum(i)
+    f = basis.build(indices)
+    print('indices=', indices, 'f(X)=', f(x))
+
 # Other factories
 factoryCollection = [ot.OrthogonalUniVariatePolynomialFunctionFactory(
     ot.LaguerreFactory(2.5)),
@@ -27,3 +34,10 @@ x = [0.5] * dim
 for i in range(10):
     f = basis.build(i)
     print('i=', i, 'f(X)=', f(x))
+
+# Using multi-indices
+enum = basis.getEnumerateFunction()
+for i in range(10):
+    indices = enum(i)
+    f = basis.build(indices)
+    print('indices=', indices, 'f(X)=', f(x))
