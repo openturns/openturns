@@ -100,20 +100,24 @@ void ProbabilitySimulationResult::setVarianceEstimate(const Scalar varianceEstim
 /* Coefficient of variation estimate accessor */
 Scalar ProbabilitySimulationResult::getCoefficientOfVariation() const
 {
-  // The usual case: the variance estimate is > 0.0 and the probability estimate is in ]0,1]
+  // The usual case: the variance estimate is > 0.0 and the probability estimate is in ]0,1] or the user accept a zero variance
   if ((varianceEstimate_ > 0.0) && (probabilityEstimate_ > 0.0) && (probabilityEstimate_ <= 1.0)) return sqrt(varianceEstimate_) / probabilityEstimate_;
+  // when covarianceEstimate_ == 0.0 and 0.0 < probabilityEstimate_ < 1.0
+  const Bool checkPositiveVariance = ResourceMap::GetAsBool("ProbabilitySimulationResult-CheckPositiveVariance");
+  if (!checkPositiveVariance && (probabilityEstimate_ > 0.0) && (probabilityEstimate_ < 1.0) && (outerSampling_ * blockSize_ > 1)) return sqrt(varianceEstimate_) / probabilityEstimate_;
   // In all the other cases, return -1.0, waiting for a better strategy
-  // when covarianceEstimate_ == 0.0 and probabilityEstimate_ > 0.0
   return -1.0;
 }
 
 /* Standard deviation estimate accessor */
 Scalar ProbabilitySimulationResult::getStandardDeviation() const
 {
-  // The usual case: the variance estimate is > 0.0
+  // The usual case: the variance estimate is > 0.0 or the user accept a zero variance
   if (varianceEstimate_ > 0.0) return sqrt(varianceEstimate_);
+  // when covarianceEstimate_ == 0.0 and 0.0 < probabilityEstimate_ < 1.0
+  const Bool checkPositiveVariance = ResourceMap::GetAsBool("ProbabilitySimulationResult-CheckPositiveVariance");
+  if (!checkPositiveVariance && (probabilityEstimate_ > 0.0) && (probabilityEstimate_ < 1.0) && (outerSampling_ * blockSize_ > 1)) return sqrt(varianceEstimate_);
   // In all the other cases, return -1.0, waiting for a better strategy
-  // when covarianceEstimate_ == 0.0 and probabilityEstimate_ > 0.0
   return -1.0;
 }
 

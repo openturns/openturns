@@ -71,8 +71,8 @@ try:
 
     X1 = RandomVector(Uniform(-2, 1.99999))
     X2 = RandomVector(Uniform(-2, 2.0))
+
     for X in [X1, X2]:
-        n = 0
         vector = RandomVector(myFunction, X)
         event = Event(vector, GreaterOrEqual(), 0.0)
 
