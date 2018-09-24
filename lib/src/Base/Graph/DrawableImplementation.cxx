@@ -1451,7 +1451,9 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
 {
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0";
   Description palette(size);
-  const UnsignedInteger divider = std::min(size + 1, static_cast< UnsignedInteger >(12));
+  UnsignedInteger phase(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultPalettePhase"));
+  if (phase == 0) phase = 1;
+  const UnsignedInteger divider = std::min(size + 1, phase);
   const Scalar multiplier = 360.0 / divider;
   const UnsignedInteger cycles = size / divider + 1;
   UnsignedInteger paletteIndex = 0;
@@ -1459,7 +1461,7 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
   {
     const volatile Scalar p = iCycle / static_cast< Scalar >(cycles);
     const Scalar value = 1.0 - p;
-    const UnsignedInteger iHueMax = std::min(size - paletteIndex, static_cast< UnsignedInteger >(12));
+    const UnsignedInteger iHueMax = std::min(size - paletteIndex, phase);
     for (UnsignedInteger iHue = 0; iHue < iHueMax; ++iHue)
     {
       const Scalar hue = multiplier * iHue;

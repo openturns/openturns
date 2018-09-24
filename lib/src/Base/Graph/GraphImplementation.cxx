@@ -209,7 +209,8 @@ void GraphImplementation::setColors(const Description & colors)
 {
   const UnsignedInteger size = drawablesCollection_.getSize();
   const UnsignedInteger inputSize = colors.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setColor(colors[i % inputSize]);
+  if (inputSize > 0)
+    for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setColor(colors[i % inputSize]);
 }
 
 void GraphImplementation::setDefaultColors()
@@ -231,7 +232,8 @@ void GraphImplementation::setLegends(const Description & legends)
 {
   const UnsignedInteger size = drawablesCollection_.getSize();
   const UnsignedInteger inputSize = legends.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setLegend(legends[i % inputSize]);
+  if (inputSize > 0)
+    for (UnsignedInteger i = 0; i < size; ++i) drawablesCollection_[i].setLegend(legends[i % inputSize]);
 }
 
 

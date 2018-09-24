@@ -600,6 +600,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsString( "Drawable-DefaultSurfaceColor", "white" );
   setAsString( "Drawable-NoSpecifiedLabel", "" );
   setAsUnsignedInteger( "Drawable-DataThreshold", 2000 );
+  setAsUnsignedInteger( "Drawable-DefaultPalettePhase", 12 );
 
   // GraphImplementation parameters //
   setAsScalar( "Graph-DefaultHorizontalMargin", 0.05 );

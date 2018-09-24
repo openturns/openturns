@@ -141,6 +141,25 @@ int main(int , char *[])
     firstGraph.add(secondGraph.getDrawables()[0]);
     firstGraph.draw("OverallGraph.png");
 
+    //  Set new colors
+    Description colors(0);
+    colors.add("red");
+    colors.add("green");
+    colors.add("#120345");
+    myGraph.setColors(colors);
+
+    // Test empty new colors
+    myGraph.setColors(Description());
+    
+    // Set new legends
+    Description legends(0);
+    legends.add("item1");
+    legends.add("item2");
+    legends.add("item3");
+    myGraph.setLegends(legends);
+
+    // Test empty new legends
+    myGraph.setLegends(Description());
   }
   catch (TestFailed & ex)
   {
