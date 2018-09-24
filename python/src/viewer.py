@@ -228,10 +228,20 @@ class View(object):
 
         has_labels = False
         self._ax[0].grid(b=graph.getGrid())
+
+        # use scientific notation on non-log axis
+        axis_mask = {ot.GraphImplementation.NONE: 'both',
+                     ot.GraphImplementation.LOGX: 'y',
+                     ot.GraphImplementation.LOGY: 'x',
+                     ot.GraphImplementation.LOGXY: None}
+        axis = axis_mask[graph.getLogScale()]
+        if axis is not None:
+            self._ax[0].ticklabel_format(axis=axis, style='sci', scilimits=(-3, 5))
+
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
 
-            # reset working dictionaries by excplicitely creating copies
+            # reset working dictionaries by explicitely creating copies
             plot_kwargs = dict(plot_kwargs_default)
             bar_kwargs = dict(bar_kwargs_default)
             pie_kwargs = dict(pie_kwargs_default)
@@ -303,6 +313,8 @@ class View(object):
                     plot_kwargs.setdefault('label', label)
                     bar_kwargs.setdefault('label', label)
                     step_kwargs.setdefault('label', label)
+                    polygon_kwargs.setdefault('label', label)
+                    polygoncollection_kwargs.setdefault('label', label)
 
             if drawableKind == 'BarPlot':
                 # linestyle for bar() is different than the one for plot()
