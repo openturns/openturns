@@ -228,6 +228,16 @@ class View(object):
 
         has_labels = False
         self._ax[0].grid(b=graph.getGrid())
+
+        # use scientific notation on non-log axis
+        axis_mask = {ot.GraphImplementation.NONE: 'both',
+                     ot.GraphImplementation.LOGX: 'y',
+                     ot.GraphImplementation.LOGY: 'x',
+                     ot.GraphImplementation.LOGXY: None}
+        axis = axis_mask[graph.getLogScale()]
+        if axis is not None:
+            self._ax[0].ticklabel_format(axis=axis, style='sci', scilimits=(-3, 5))
+
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
 

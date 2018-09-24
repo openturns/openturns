@@ -59,6 +59,7 @@
  * #959 (The PolygonArray and Polygon classes poorly manage the colors)
  * #961 (The PolygonArray class seem to ignore the legends)
  * #962 (The doc of MetaModelValidation.computePredictivityFactor is wrong)
+ * #963 (VisualTest_DrawHistogram sometimes has overlapping X labels)
  * #964 (Study does not load LogNormalMuSigma variables from XML)
  * #965 (A RandomVector from a RandomVector can make OT crash)
  * #968 (Empty legend make OT crash)
