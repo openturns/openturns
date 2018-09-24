@@ -241,7 +241,7 @@ class View(object):
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
 
-            # reset working dictionaries by excplicitely creating copies
+            # reset working dictionaries by explicitely creating copies
             plot_kwargs = dict(plot_kwargs_default)
             bar_kwargs = dict(bar_kwargs_default)
             pie_kwargs = dict(pie_kwargs_default)
