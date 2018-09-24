@@ -168,6 +168,9 @@ Indices HyperbolicAnisotropicEnumerateFunction::operator() (const UnsignedIntege
 /* The cardinal of the given strata */
 UnsignedInteger HyperbolicAnisotropicEnumerateFunction::inverse(const Indices & indices) const
 {
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = indices.getSize();
+  if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension.";
   UnsignedInteger result = 0;
   while ((cache_[result] != indices) && (result < cache_.getSize())) ++ result;
   if (result == cache_.getSize())
