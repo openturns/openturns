@@ -24,7 +24,7 @@
 #include "openturns/Analytical.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/SobolIndicesAlgorithmImplementation.hxx"
+#include "openturns/SobolIndicesAlgorithm.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/BarPlot.hxx"
 #include "openturns/Description.hxx"
@@ -292,7 +292,7 @@ Graph AnalyticalResult::drawImportanceFactors(const ImportanceFactorType type) c
   /* we build the graph with a title */
   OSS oss;
   oss << "Importance Factors from Design Point - " << limitStateVariable_.getName();
-  return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(importanceFactors_, String(oss));
+  return SobolIndicesAlgorithm::DrawImportanceFactors(importanceFactors_, oss.str());
 }
 
 /* HasoferReliabilityIndex evaluation */

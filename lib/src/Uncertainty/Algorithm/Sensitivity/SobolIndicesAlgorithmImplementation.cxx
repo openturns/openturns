@@ -594,54 +594,73 @@ Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & ,
   throw new NotYetImplementedException(HERE);
 }
 
-/** Method that draw (plot) the sensitivity graph */
-Graph SobolIndicesAlgorithmImplementation::draw() const
+
+Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & inputDescription,
+                                                            const Point & firstOrderIndices,
+                                                            const Point & totalOrderIndices)
 {
-  Graph graph(OSS() << " Aggregated sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
-  // Define cloud for first order and total order indices
-  const Point aggregatedFO(getAggregatedFirstOrderIndices());
-  const Point aggregatedTO(getAggregatedTotalOrderIndices());
-  const Description inputDescription(inputDesign_.getDescription());
-  const UnsignedInteger dimension = aggregatedFO.getDimension();
+  Graph graph("Sobol' indices", "inputs", "index value", true, "");
+
+  const UnsignedInteger dimension = firstOrderIndices.getDimension();
+
+  // Define cloud for FO
   Sample data(dimension, 2);
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = k + 1;
-    data(k, 1) = aggregatedFO[k];
+    data(k, 0) = k + 1.0;
+    data(k, 1) = firstOrderIndices[k];
   }
-  // Define cloud for FO
-  Cloud firstOrderIndicesGraph(data, "red", "circle", "Aggregated FO");
+  Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
   graph.add(firstOrderIndicesGraph);
-  // Total order
+
+  // Define cloud for TO
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = (k + 1) + 0.1;
-    data(k, 1) = aggregatedTO[k];
+    data(k, 0) = (k + 1.0) + dimension / 40.0;
+    data(k, 1) = totalOrderIndices[k];
   }
-  // Define cloud for TO
-  Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
+  Cloud totalOrderIndicesGraph(data, "blue", "square", "Total order");
   graph.add(totalOrderIndicesGraph);
+
   // Description
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = (k + 1) + 0.2;
-    data(k, 1) = 0.5 * (aggregatedTO[k] + aggregatedFO[k]);
+    data(k, 0) = (k + 1.0) + dimension / 20.0;
+    data(k, 1) = 0.5 * (totalOrderIndices[k] + firstOrderIndices[k]);
   }
   Text text(data, inputDescription, "right");
   text.setColor("black");
   graph.add(text);
+
   // Set bounding box
   Point lowerBound(2, -0.1);
-  Point upperBound(2);
-  upperBound[0] = dimension + 1.0;
-  upperBound[1] = 1.1;
-  if (bootstrapSize_ > 0 && confidenceLevel_ > 0.0)
+  lowerBound[0] = 1.0-dimension/10.0;
+  Point upperBound(2, 1.1);
+  const Scalar descriptionMargin = 1.6 * (dimension - 1.0) / (dimension + 2.0);
+  upperBound[0] = dimension + descriptionMargin;
+  graph.setBoundingBox(Interval(lowerBound, upperBound));
+
+  graph.setLegendPosition("topright");
+  return graph;
+}
+
+/** Method that draw (plot) the sensitivity graph */
+Graph SobolIndicesAlgorithmImplementation::draw() const
+{
+  Graph graph(DrawSobolIndices(inputDesign_.getDescription(), getAggregatedFirstOrderIndices(), getAggregatedTotalOrderIndices()));
+  if (outputDesign_.getDimension() > 1)
+    graph.setTitle(OSS() << "Aggregated Sobol' indices - " << getClassName());
+  else
+    graph.setTitle(OSS() << "Sobol' indices - " << getClassName());
+  const UnsignedInteger dimension = mergedFirstOrderIndices_.getDimension();
+
+  // Draw confidence intervals
+  if (confidenceLevel_ > 0.0)
   {
-    // Add plot of intervals
     const Interval foInterval(getFirstOrderIndicesInterval());
     const Interval toInterval(getTotalOrderIndicesInterval());
     // transform data
-    data = Sample(2, 2);
+    Sample data(2, 2);
     for (UnsignedInteger k = 0; k < dimension; ++k)
     {
       // Relative to FirstOrder
@@ -652,50 +671,24 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
       graph.add(Curve(data, "red", "solid", 2, ""));
 
       // Relative to TotalOrder
-      data(0, 0) = (k + 1) + 0.1;
+      data(0, 0) = (k + 1) + dimension / 40.0;
       data(0, 1) = toInterval.getLowerBound()[k];
-      data(1, 0) = (k + 1) + 0.1;
+      data(1, 0) = (k + 1) + dimension / 40.0;
       data(1, 1) = toInterval.getUpperBound()[k];
       graph.add(Curve(data, "blue", "solid", 2, ""));
     }
   }
-  graph.setBoundingBox(Interval(lowerBound, upperBound));
-  graph.setLegendPosition("topright");
   return graph;
 }
 
 /** Method that draw the sensitivity graph of a fixed marginal */
 Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) const
 {
-  Graph graph(OSS() << " Sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
-  // Define cloud for first order and total order indices
-  const Point foIndices(getFirstOrderIndices(marginalIndex));
-  const Point toIndices(getTotalOrderIndices(marginalIndex));
-  Sample data(foIndices.getDimension(), 2);
-  for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
-  {
-    data(k, 0) = k + 1;
-    data(k, 1) = foIndices[k];
-  }
-  // Define cloud for FO
-  Cloud firstOrderIndicesGraph(data, "red", "circle", "Aggregated FO");
-  graph.add(firstOrderIndicesGraph);
-  // Total order
-  for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
-  {
-    data(k, 0) = (k + 1) + 0.1;
-    data(k, 1) = toIndices[k];
-  }
-  // Define cloud for TO
-  Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
-  graph.add(totalOrderIndicesGraph);
-  // Set bounding box
-  Point lowerBound(2, -0.1);
-  Point upperBound(2);
-  upperBound[0] = foIndices.getDimension() + 1;
-  upperBound[1] = 1.1 ;
-  graph.setBoundingBox(Interval(lowerBound, upperBound));
-  graph.setLegendPosition("topright");
+  Graph graph(DrawSobolIndices(inputDesign_.getDescription(), getFirstOrderIndices(marginalIndex), getTotalOrderIndices(marginalIndex)));
+  if (outputDesign_.getDimension() > 1)
+    graph.setTitle(OSS() << "Marginal #" << marginalIndex << " Sobol' indices - " << getClassName());
+  else
+    graph.setTitle(OSS() << "Sobol' indices - " << getClassName());
   return graph;
 }
 

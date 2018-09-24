@@ -25,7 +25,7 @@
 #include "openturns/Pointer.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/SobolIndicesAlgorithmImplementation.hxx"
+#include "openturns/SobolIndicesAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -152,7 +152,7 @@ Graph TaylorExpansionMoments::drawImportanceFactors() const
   getImportanceFactors();
   OSS oss;
   oss << "Importance Factors from Taylor expansions - " << limitStateVariable_.getDescription()[0];
-  return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(importanceFactors_, String(oss));
+  return SobolIndicesAlgorithm::DrawImportanceFactors(importanceFactors_, oss.str());
 }
 
 /* the function that computes the first order evaluation of the mean vector and the matrix covariance */

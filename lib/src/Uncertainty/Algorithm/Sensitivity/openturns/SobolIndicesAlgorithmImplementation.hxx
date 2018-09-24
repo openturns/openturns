@@ -121,6 +121,10 @@ public:
                                      const Description & names,
                                      const String & title);
 
+  static Graph DrawSobolIndices(const Description & inputDescription,
+                                const Point & firstOrderIndices,
+                                const Point & secondOrderIndices);
+
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;
 
@@ -180,8 +184,6 @@ protected:
 
   /** Designs : input & output designs */
   Sample inputDesign_;
-
-  /** Designs : input & output designs */
   Sample outputDesign_;
 
   /** Simulation size */
