@@ -20,6 +20,9 @@
  */
 #include "openturns/SobolIndicesExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/LHSExperiment.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -45,9 +48,9 @@ SobolIndicesExperiment::SobolIndicesExperiment(const WeightedExperiment & experi
   , computeSecondOrder_(computeSecondOrder)
 {
   if (!experiment.getDistribution().hasIndependentCopula())
-    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment weighted's distribution should have independent copula";
+    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the distribution must have an independent copula";
   if (!experiment.hasUniformWeights())
-    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment experiment should have uniform weights";
+    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the underlyng weighted experiment must have uniform weights";
 
   const UnsignedInteger size = experiment.getSize();
   const UnsignedInteger dimension = experiment.getDistribution().getDimension();
@@ -64,7 +67,58 @@ SobolIndicesExperiment::SobolIndicesExperiment(const Distribution & distribution
     const Bool computeSecondOrder)
   : WeightedExperimentImplementation()
 {
-  const MonteCarloExperiment experiment(distribution, size);
+  if (!distribution.hasIndependentCopula())
+    throw InvalidArgumentException(HERE) << "In SobolIndicesExperiment the distribution must have an independent copula";
+  const UnsignedInteger dimension = distribution.getDimension();
+  WeightedExperiment experiment;
+  // The default method is to use MonteCarloExperiment in order to use the
+  // asymptotic distribution of the estimate in SobolIndicesAlgorithm
+  short method = 0;
+  if (ResourceMap::GetAsString("SobolIndicesExperiment-SamplingMethod") == "LHS")
+    {
+      method = 1;
+    } // LHS
+  else if (ResourceMap::GetAsString("SobolIndicesExperiment-SamplingMethod") == "QMC")
+    {
+      if (dimension <= SobolSequence::MaximumNumberOfDimension)
+	{
+	  method = 2;
+	} // QMC
+      else
+	{
+	  LOGWARN(OSS() << "Can use Sobol sequence in SobolIndicesExperiment only for dimension not greater than " << SobolSequence::MaximumNumberOfDimension << ", here dimension=" << dimension << ". Using LHS instead.");
+	  method = 1;
+	} // QMC->LHS
+    } // QMC
+  switch (method)
+    {
+      // MonteCarlo
+    case 0:
+      {
+	experiment = MonteCarloExperiment(distribution, size);
+      }
+      break;
+      // LHS
+    case 1:
+      {
+	LHSExperiment lhsExperiment(distribution, size);
+	lhsExperiment.setAlwaysShuffle(true);
+	lhsExperiment.setRandomShift(true);
+	experiment = lhsExperiment;
+      }
+      break;
+      // QMC
+    case 2:
+      {
+	LowDiscrepancyExperiment sobolExperiment(SobolSequence(dimension), distribution, size);
+	sobolExperiment.setRestart(true);
+	sobolExperiment.setRandomize(true);
+	experiment = sobolExperiment;
+      }
+      break;
+    default:
+      throw InternalException(HERE) << "Error: unknown sampling method=" << method << " in SobolIndicesExperiment.";
+    }
   *this = SobolIndicesExperiment(experiment, computeSecondOrder);
 }
 
@@ -105,6 +159,13 @@ Distribution SobolIndicesExperiment::getDistribution() const
 }
 
 
+/* WeightedExperiment accessor */
+WeightedExperiment SobolIndicesExperiment::getWeightedExperiment() const
+{
+  return experiment_;
+}
+
+
 Bool SobolIndicesExperiment::hasUniformWeights() const
 {
   return true;
@@ -114,8 +175,8 @@ Bool SobolIndicesExperiment::hasUniformWeights() const
 Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
 {
   const UnsignedInteger size = experiment_.getSize();
-  Sample design(experiment_.generate());// A
-  design.add(experiment_.generate());// B
+  Sample design(experiment_.generate()); // A
+  design.add(experiment_.generate()); // B
   const UnsignedInteger dimension = design.getDimension();
 
   // Compute designs of type Saltelli/Martinez for 1st order

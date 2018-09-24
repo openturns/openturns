@@ -727,7 +727,10 @@ void ResourceMap::loadDefaultConfiguration()
   // SobolSequence parameters //
   setAsUnsignedInteger( "SobolSequence-InitialSeed", 1 );
 
-  // SensitivityAlgorithm parameters //
+  // SobolIndicesExperiment parameters //
+  setAsString( "SobolIndicesExperiment-SamplingMethod", "MonteCarlo");
+  
+  // SobolIndicesAlgorithm parameters //
   setAsBool( "SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution", false );
   setAsScalar( "SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel", 0.95 );
   setAsUnsignedInteger( "SobolIndicesAlgorithm-DefaultBlockSize", 1 );

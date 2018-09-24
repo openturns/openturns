@@ -23,51 +23,51 @@ size = 10000
 # Test with the various implementation methods
 methods = ["Saltelli", "Jansen", "MauntzKucherenko", "Martinez"]
 
+# Test the different sampling options
+samplings = ["MonteCarlo", "LHS", "QMC"]
+
 # Generate input/output designs
 computeSO = True
-inputDesign = ot.SobolIndicesExperiment(
-    distribution, size, computeSO).generate()
-outputDesign = model(inputDesign)
 # Case 1 : Estimation of sensitivity using estimator and no bootstrap
 for method in methods:
-    sensitivity_algorithm = eval(
-        'ot.' + method + "SensitivityAlgorithm(inputDesign, outputDesign, size)")
-    print("Method of evaluation=", method)
+    for sampling in samplings:
+        ot.ResourceMap.SetAsString("SobolIndicesExperiment-SamplingMethod", sampling)
+        sensitivity_algorithm = eval(
+            'ot.' + method + "SensitivityAlgorithm(distribution, size, model, computeSO)")
+        print("Method of evaluation=", method)
+        print("Method of sampling=", sampling)
+        # Get first order indices
+        fo = sensitivity_algorithm.getFirstOrderIndices()
+        print("First order indices = ", fo)
+        # Get total order indices
+        to = sensitivity_algorithm.getTotalOrderIndices()
+        print("Total order indices = ", to)
 
-    # Get first order indices
-    fo = sensitivity_algorithm.getFirstOrderIndices()
-    print("First order indices = ", fo)
-    # Get total order indices
-    to = sensitivity_algorithm.getTotalOrderIndices()
-    print("Total order indices = ", to)
+        # Get the confidence interval thanks to Bootstrap
+        nr_bootstrap = 100
+        confidence_level = 0.95
+        sensitivity_algorithm.setBootstrapSize(nr_bootstrap)
+        sensitivity_algorithm.setConfidenceLevel(confidence_level)
+        sensitivity_algorithm.setUseAsymptoticDistribution(False)
+        interval_fo = sensitivity_algorithm.getFirstOrderIndicesInterval()
+        interval_to = sensitivity_algorithm.getTotalOrderIndicesInterval()
+        print("bootstrap intervals")
+        print("First order indices interval = ", interval_fo)
+        print("Total order indices interval = ", interval_to)
 
-    # Get the confidence interval thanks to Bootstrap
-    nr_bootstrap = 100
-    confidence_level = 0.95
-    # sensitivity_algorithm = ot.MartinezSensitivityAlgorithm(
-        # inputDesign, outputDesign, size)
-    sensitivity_algorithm.setBootstrapSize(nr_bootstrap)
-    sensitivity_algorithm.setConfidenceLevel(confidence_level)
-    sensitivity_algorithm.setUseAsymptoticDistribution(False)
-    interval_fo = sensitivity_algorithm.getFirstOrderIndicesInterval()
-    interval_to = sensitivity_algorithm.getTotalOrderIndicesInterval()
-    print("bootstrap intervals")
-    print("First order indices interval = ", interval_fo)
-    print("Total order indices interval = ", interval_to)
-
-    # Asymptotic confidence interval
-    sensitivity_algorithm.setUseAsymptoticDistribution(True)
-    interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval(
-    )
-    interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval(
-    )
-    print("asymptotic intervals:")
-    print("First order indices distribution = ",
-          sensitivity_algorithm.getFirstOrderIndicesDistribution())
-    print("Total order indices distribution = ",
-          sensitivity_algorithm.getTotalOrderIndicesDistribution())
-    print("First order indices interval = ", interval_fo_asymptotic)
-    print("Total order indices interval = ", interval_to_asymptotic)
+        # Asymptotic confidence interval
+        sensitivity_algorithm.setUseAsymptoticDistribution(True)
+        interval_fo_asymptotic = sensitivity_algorithm.getFirstOrderIndicesInterval(
+        )
+        interval_to_asymptotic = sensitivity_algorithm.getTotalOrderIndicesInterval(
+        )
+        print("asymptotic intervals:")
+        print("First order indices distribution = ",
+              sensitivity_algorithm.getFirstOrderIndicesDistribution())
+        print("Total order indices distribution = ",
+              sensitivity_algorithm.getTotalOrderIndicesDistribution())
+        print("First order indices interval = ", interval_fo_asymptotic)
+        print("Total order indices interval = ", interval_to_asymptotic)
 
 # with experiment
 sequence = ot.SobolSequence(input_dimension)

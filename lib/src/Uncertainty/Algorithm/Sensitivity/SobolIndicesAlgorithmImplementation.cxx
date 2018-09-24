@@ -117,6 +117,13 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. distribution dimension=" << distribution.getDimension()
                                          << ", model input dimension = " << inputDimension;
   const SobolIndicesExperiment sobolExperiment(distribution, size, computeSecondOrder);
+  // Here we check that we can use the asymptotic distributions
+  const String experimentKind(sobolExperiment.getWeightedExperiment().getImplementation()->getClassName());
+  if (useAsymptoticDistribution_ && (experimentKind != "MonteCarloExperiment"))
+    {
+      LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID sampling, here sampling is " << sobolExperiment.getWeightedExperiment().getClassName());
+      useAsymptoticDistribution_ = false;
+    }
   const Sample inputDesign(sobolExperiment.generate());
   Sample outputDesign(model(inputDesign));
 
@@ -157,6 +164,13 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   if (inputDimension != experiment.getDistribution().getDimension())
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, incompatible dimension between model and distribution. Experiment dimension=" << experiment.getDistribution().getDimension()
                                          << ", model input dimension = " << inputDimension;
+  // Here we check that we can use the asymptotic distributions
+  const String experimentKind(experiment.getImplementation()->getClassName());
+  if (useAsymptoticDistribution_ && (experimentKind != "MonteCarloExperiment"))
+    {
+      LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID sampling, here sampling is " << experiment.getClassName());
+      useAsymptoticDistribution_ = false;
+    }
   const SobolIndicesExperiment sobolExperiment(experiment, computeSecondOrder);
   const Sample inputDesign(sobolExperiment.generate());
   const Sample outputDesign(model(inputDesign));
