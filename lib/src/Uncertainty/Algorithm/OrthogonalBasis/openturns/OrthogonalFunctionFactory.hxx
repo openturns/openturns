@@ -50,6 +50,8 @@ public:
   /** Build the Function of the given index */
   virtual Function build(const UnsignedInteger index) const;
 
+  /** Build the Function of the given multi-indices */
+  virtual Function build(const Indices & indices) const;
 
   /** Return the measure upon which the basis is orthogonal */
   virtual Distribution getMeasure() const;
@@ -75,9 +77,6 @@ public:
 protected:
   /** The measure that defines the scalar product */
   Distribution measure_;
-
-  /** The enumerate function for product orthogonal functions */
-  EnumerateFunction enumerateFunction_;
 
 private:
 

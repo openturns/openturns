@@ -44,6 +44,7 @@
  * Removed VertexFunction class
  * Deprecated LinearModelRSquared, LinearModelAdjustedRSquared
  * Added ResourceMap::GetType to access the type of a given key.
+ * Extended OrthogonalBasis::build() to multi-indices (see ticket #967)
 
 === Python module ===
 
