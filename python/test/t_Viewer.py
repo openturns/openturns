@@ -2,12 +2,14 @@
 
 import os
 import traceback
+import sys
 
 try:
 
     # use non-interactive backend
     import matplotlib
-    matplotlib.use('Agg')
+    if len(sys.argv) == 1:
+        matplotlib.use('Agg')
 
     from openturns.viewer import View
     import openturns as ot
@@ -196,9 +198,11 @@ try:
     graph = ot.Graph('Some polygons', 'x1', 'x2', True, 'topright', 1.0)
     myPolygon1 = ot.Polygon(data1)
     myPolygon1.setColor('blue')
+    myPolygon1.setLegend('polygon 1')
     graph.add(myPolygon1)
     myPolygon2 = ot.Polygon(data2)
     myPolygon2.setColor('red')
+    myPolygon2.setLegend('polygon 2')
     graph.add(myPolygon2)
     # graph.draw('curve11.png')
     view = View(graph)
@@ -214,8 +218,10 @@ try:
     for i in range(size):
         vertices = generator.getSample(3)
         array[i] = ot.Polygon(vertices, palette[i], palette[size - i - 1])
-    graph = ot.Graph('An array of polygons', 'x', 'y', True, '')
-    graph.add(ot.PolygonArray(array))
+    graph = ot.Graph('An array of polygons', 'x', 'y', True, 'topright')
+    parray = ot.PolygonArray(array)
+    parray.setLegend('array of polys')
+    graph.add(parray)
     # graph.draw('curve12.png')
     view = View(graph)
     # view.save('curve12.png')

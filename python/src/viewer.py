@@ -303,6 +303,8 @@ class View(object):
                     plot_kwargs.setdefault('label', label)
                     bar_kwargs.setdefault('label', label)
                     step_kwargs.setdefault('label', label)
+                    polygon_kwargs.setdefault('label', label)
+                    polygoncollection_kwargs.setdefault('label', label)
 
             if drawableKind == 'BarPlot':
                 # linestyle for bar() is different than the one for plot()
