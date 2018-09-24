@@ -35,6 +35,7 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     DiracCovarianceModel
     ExponentialModel
     ExponentiallyDampedCosineModel
+    FractionalBrownianMotionModel
     GeneralizedExponential
     MaternModel
     ProductCovarianceModel

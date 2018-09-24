@@ -10,6 +10,10 @@ Bibliography
     inverting transforms of probability distributions*.
     Queueing Systems 10, 5--88., 1992, formula 5.5.
     `pdf <http://doc.openturns.org/papers/abate1992.pdf>`__
+.. [Amblard2012] Pierre-Olivier Amblard, Jean-François Coeurjolly,
+    Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
+    Fractional Brownian Motion*,
+    `pdf <https://arxiv.org/pdf/1007.0828.pdf>`__
 .. [Au2001] Au, S. K. *Estimation of small failure probabilities in high 
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
     `pdf <http://doc.openturns.org/papers/au2001.pdf>`__
@@ -22,7 +26,7 @@ Bibliography
 .. [Burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
-.. [Cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, "Quasi-Random numbers for copula models", Stat. Comp., 2017, 27(5), 1307-1329.
+.. [Cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, *Quasi-Random numbers for copula models*, Stat. Comp., 2017, 27(5), 1307-1329.
     `pdf <http://doc.openturns.org/papers/cambou2017.pdf>`__
 .. [Caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,

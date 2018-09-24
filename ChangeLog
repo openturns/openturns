@@ -16,6 +16,7 @@
  * ExtremeValueCopula
  * ChaospyDistribution
  * SobolSimulationAlgorithm, SobolSimulationResult
+ * FractionalBrownianMotionModel
 
 ==== API changes ====
  * Removed deprecated MonteCarlo, ImportanceSampling, QuasiMonteCarlo, RandomizedQuasiMonteCarlo, RandomizedLHS classes

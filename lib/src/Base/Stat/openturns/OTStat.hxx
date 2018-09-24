@@ -76,6 +76,7 @@
 #include "openturns/SquaredExponential.hxx"
 #include "openturns/GeneralizedExponential.hxx"
 #include "openturns/AbsoluteExponential.hxx"
+#include "openturns/FractionalBrownianMotionModel.hxx"
 #include "openturns/SphericalModel.hxx"
 #include "openturns/MaternModel.hxx"
 #include "openturns/DiracCovarianceModel.hxx"

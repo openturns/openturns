@@ -94,4 +94,4 @@ for i in range(alld.getSize()):
 fig = plt.figure(figsize=(10, 4))
 plt.suptitle('Non stationary covariance model estimation')
 cov_axis = fig.add_subplot(111)
-View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
+View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)

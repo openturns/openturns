@@ -21,10 +21,8 @@
     plt.suptitle(str(copula))
     pdf_axis = fig.add_subplot(121)
     cdf_axis = fig.add_subplot(122)
-    View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
-    View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False)
-    pdf_axis.set_aspect('equal')
-    cdf_axis.set_aspect('equal')
+    View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
+    View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False, square_axes=True)
 
 .. currentmodule:: {{ module }}
 

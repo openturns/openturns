@@ -1,0 +1,131 @@
+%feature("docstring") OT::FractionalBrownianMotionModel
+"Multivariate fractional Brownian motion covariance function.
+
+Available constructors:
+    FractionalBrownianMotionModel()
+
+    FractionalBrownianMotionModel(*scale, amplitude, exponent*)
+
+    FractionalBrownianMotionModel(*scale, amplitude, exponent, eta, rho*)
+
+
+Parameters
+----------
+scale : positive float
+    Correlation scale between two locations.
+amplitude : sequence of positive floats
+    Standard deviations of the model :math:`\vect{\sigma}\in \Rset^d`.
+exponent : sequence of float, :math:`0<exponent_i<1`
+    Hurst exponents of the model, ie homogeneity degrees of the self-similarity
+    property.
+eta : :class:`~openturns.SquareMatrix`
+    Disymmetry matrix. This matrix expresses the antisymmetric part of the
+    dependence between the components of the model. It is antisymmetric, only its
+    strictly lower part is addressed.
+rho : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix. This matrix expresses the symmetric part of the dependence
+    between the components of the model.
+
+Notes
+-----
+The *multivariate fractional Brownian motion model* is a nonstationary covariance
+function of input dimension 1 defined by:
+
+.. math::
+    :nowrap:
+
+    \begin{align*}
+      \forall s, t\in \Rset, &\\
+      C_{i,j}(s, t)=&\dfrac{\sigma_i\sigma_j}{2}\left\{\rho_{i,j}\left(\left|\dfrac{s}{\theta}\right|^{H_{ij}}+\left|\dfrac{t}{\theta}\right|^{H_{ij}}-\left|\dfrac{t-s}{\theta}\right|^{H_{ij}}\right)-\eta_{i,j}(H_{ij}-1)\left(\sgn(s)\left|\dfrac{s}{\theta}\right|^{H_{ij}}-\sgn(t)\left|\dfrac{t}{\theta}\right|^{H_{ij}}+\sgn(t-s)\left|\dfrac{t-s}{\theta}\right|^{H_{ij}}\right)\right\}
+    \end{align*}
+
+for :math:`H_{ij}=H_i+H_j\neq 1` and:
+
+.. math::
+
+    \forall s, t\in \Rset, C_{i,j}(s, t)=&\dfrac{\sigma_i\sigma_j}{2}\left\{\rho_{i,j}\left(\left|\dfrac{s}{\theta}\right|+\left|\dfrac{t}{\theta}\right|-\left|\dfrac{t-s}{\theta}\right|\right)-\dfrac{\eta_{i,j}}{\theta}\left(s\log|s|-t\log|t|+(t-s)\log|t-s|\right)\right\}
+
+for :math:`H_i + H_j=1`, where :math:`H_i` is the Hurst exponent of the
+:math:`i`-th component and :math:`\sigma_i` its amplitude. Not that the scale
+coefficient simplifies in the antisymmetric part when :math:`H_{ij}=1`. The
+compatibility conditions between the vector of exponents, the correlation matrix
+and the disymmetry matrix are quite evolved, see [Amblard2012]_. 
+
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a standard fractional Brownian motion covariance, corresponding to the
+univariate standard Brownian motion:
+
+>>> import openturns as ot
+>>> covModel = ot.FractionalBrownianMotionModel()
+>>> s = 0.1
+>>> t = 0.2
+>>> print(covModel(s, t))
+[[ 0.223607 ]]
+
+Create an univariate fractional Brownian motion covariance:
+
+>>> covModel2 = ot.FractionalBrownianMotionModel(0.5, 1.5, 0.25)
+
+Create a multivariate fractional Brownian motion covariance:
+
+>>> covModel3 = ot.FractionalBrownianMotionModel(0.5, [1.5, 1.0], [0.25, 0.6], ot.SquareMatrix([[0.0, 0.2], [-0.2, 0.0]]), ot.CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]]))"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FractionalBrownianMotionModel::setExponentEtaRho
+"Multivariate parameters accessor.
+
+Parameters
+----------
+exponent : sequence of float, :math:`H_i\in(0,1)`
+    Define the Hurst exponents of the components.
+eta : 2-d sequence of floats
+    Disymmetry matrix. This matrix express the antisymmetric part of the
+    dependence between the components of the model. It is antisymmetric, only its
+    strictly lower part is addressed.
+rho : 2-d sequence of floats
+    Correlation matrix. This matrix express the symmetric part of the dependence
+    between the components of the model.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FractionalBrownianMotionModel::getExponent
+"Exponent accessor.
+
+Returns
+-------
+exponent : seqence of float, :math:`H_i\in(0,1)`
+    Define the Hurst exponents of the components."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FractionalBrownianMotionModel::getEta
+"Eta accessor.
+
+Returns
+-------
+eta : 2-d sequence of floats
+    Disymmetry matrix. This matrix express the antisymmetric part of the dependence
+    between the components of the model. It is antisymmetric, only its strictly
+    lower part is addressed."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FractionalBrownianMotionModel::getRho
+"Rho accessor.
+
+Returns
+-------
+rho : 2-d sequence of floats
+    Correlation matrix. This matrix express the symmetric part of the dependence
+    between the components of the model."
+
