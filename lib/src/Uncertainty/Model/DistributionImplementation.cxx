@@ -2190,8 +2190,8 @@ Point DistributionImplementation::computeQuantile(const Scalar prob,
   const Scalar q = tail ? 1.0 - prob : prob;
   marginalProb = q;
   // Special case for bording values
-  if (prob < 0.0) return (tail ? getRange().getUpperBound() : getRange().getLowerBound());
-  if (prob >= 1.0) return (tail ? getRange().getLowerBound() : getRange().getUpperBound());
+  if (prob < quantileEpsilon_) return (tail ? getRange().getUpperBound() : getRange().getLowerBound());
+  if (prob >= 1.0 - quantileEpsilon_) return (tail ? getRange().getLowerBound() : getRange().getUpperBound());
   // Special case for dimension 1
   if (dimension_ == 1) return Point(1, computeScalarQuantile(prob, tail));
   // Special case for independent copula
