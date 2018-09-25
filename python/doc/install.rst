@@ -61,10 +61,10 @@ repository address to your sources list. To do so, you may either use the
 graphical user interface of aptitude or you can edit the sources-list file
 (`/etc/apt/sources.list`).
 
-For instance, assuming you are running Ubuntu 16.04,
+For instance, assuming you are running Ubuntu 18.04,
 add the following source to your sources list::
 
-    echo deb http://ubuntu.openturns.org xenial main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb http://ubuntu.openturns.org bionic main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
@@ -74,7 +74,7 @@ add the following source to your sources list::
 After editing aptitude's sources-list, you must update your packages database
 using either the graphical interface or by issuing the following command::
 
-    sudo aptitude update
+    sudo apt update
 
 The following packages should now be available:
 
@@ -100,7 +100,11 @@ The following packages should now be available:
 
 Use the following command to check::
 
-    apt-cache search openturns
+    apt search openturns
+
+For example, to install the Python 3 module::
+
+    sudo apt install python3-openturns
 
 RPM-based distributions
 -----------------------
