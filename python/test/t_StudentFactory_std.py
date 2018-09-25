@@ -5,15 +5,28 @@ from openturns import *
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
+PlatformInfo.SetNumericalPrecision(3)
 
 try:
-    distribution = Student(3.5, 2.5)
+    distributions = [Student(3.5, 2.5)]
+    R = CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]])
+    distributions.append(Student(4.5, [2.5]*2, [1.5]*2, R))
+    R = CorrelationMatrix(10)
+    mu = Point(10)
+    sigma = Point(10)
+    for i in range(10):
+        mu[i] = 0.5 * i
+        sigma[i] = 0.5 + i
+        for j in range(i):
+            R[i, j] = 1.0 / (i + j + 2.0)**2.0
+    distributions.append(Student(4.5, mu, sigma, R))
     size = 10000
-    sample = distribution.getSample(size)
     factory = StudentFactory()
-    estimatedDistribution = factory.build(sample)
-    print("distribution=", repr(distribution))
-    print("Estimated distribution=", repr(estimatedDistribution))
+    for distribution in distributions:
+        sample = distribution.getSample(size)
+        estimatedDistribution = factory.build(sample)
+        print("distribution=", distribution)
+        print("Estimated distribution=", estimatedDistribution)
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedStudent = factory.buildAsStudent(sample)

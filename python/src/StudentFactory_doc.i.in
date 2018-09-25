@@ -4,16 +4,21 @@
 Available constructor:
     StudentFactory()
 
-The parameters are estimated by method of moments:
+The parameters are estimated by a mixed method of moments and reduces MLE:
 
 .. math::
     :nowrap:
 
-    \begin{eqnarray*}
-      \displaystyle \Hat{\nu} = 2 + \frac{2}{(\Hat{\sigma}_x)^2 - 1}\\
-      \displaystyle \Hat{\mu} = \Hat{\mu}_x
-    \end{eqnarray*}
+    \begin{align*}
+      \Hat{\mu} = &\Hat{\mu}_x \\
+      \Hat{\sigma} = &\Hat{\sigma}_x\sqrt{\dfrac{\Hat{\nu}-2}{\Hat{\nu}}} \\
+      \Hat{R}_{ij} = &\dfrac{2}{\pi}\arcsin(\tau_{ij})
+    \end{align*}
 
+where :math:`\mat{\tau}` is the sample Kendall tau matrix and :math:`\Hat{\nu}`
+maximizes the reduced likelihood associated to :class:`~openturns.Student` with
+parameters :math:`(\Hat{\nu}, \Hat{\mu}, \hat{\sigma}(\Hat{\nu}), \Hat{\mat{R}})`.
+    
 See also
 --------
 DistributionFactory, Student"

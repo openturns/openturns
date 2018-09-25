@@ -29,25 +29,42 @@ int main(int , char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-
+  PlatformInfo::SetNumericalPrecision(3);
   try
   {
-    Student distribution(3.5, 2.5);
+    Collection<Student> distributions;
+    distributions.add(Student(3.5, 2.5, 2.0));
+    {
+      CorrelationMatrix R(2);
+      R(0, 1) = 0.5;
+      distributions.add(Student(4.5, Point(2, 2.5), Point(2, 1.5), R));
+    }
+    {
+      CorrelationMatrix R(10);
+      Point mu(10);
+      Point sigma(10);
+      for (UnsignedInteger i = 0; i < 10; ++i)
+	{
+	  mu[i] = 0.5 * i;
+	  sigma[i] = 0.5 + i;
+	  for (UnsignedInteger j = 0; j < i; ++j)
+	    R(i, j) = 1.0 / std::pow(i + j + 2.0, 1.0);
+	}
+      distributions.add(Student(4.5, mu, sigma, R));
+    }
     UnsignedInteger size = 10000;
-    Sample sample(distribution.getSample(size));
     StudentFactory factory;
-    CovarianceMatrix covariance;
-    // Distribution estimatedDistribution(factory.build(sample, covariance));
-    Distribution estimatedDistribution(factory.build(sample));
-    fullprint << "Distribution          =" << distribution << std::endl;
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    // fullprint << "Covariance=" << covariance << std::endl;
-    estimatedDistribution = factory.build();
+    for (UnsignedInteger i = 0; i < distributions.getSize(); ++i)
+      {
+	Student distribution = distributions[i];
+	Sample sample(distribution.getSample(size));
+	Distribution estimatedDistribution(factory.build(sample));
+	fullprint << "Distribution          =" << distribution << std::endl;
+	fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+      }
+    Distribution estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    Student estimatedStudent(factory.buildAsStudent(sample));
-    fullprint << "Student          =" << distribution << std::endl;
-    fullprint << "Estimated student=" << estimatedStudent << std::endl;
-    estimatedStudent = factory.buildAsStudent();
+    Student estimatedStudent = factory.buildAsStudent();
     fullprint << "Default student=" << estimatedStudent << std::endl;
   }
   catch (TestFailed & ex)

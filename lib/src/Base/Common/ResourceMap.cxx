@@ -956,6 +956,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Student-MinimumNumberOfPoints", 100000 );
   setAsUnsignedInteger( "Student-SmallDimension", 6 );
 
+  // StudentFactory parameters //
+  setAsScalar( "StudentFactory-NuMax", 1.0e3 );
+
   // NonCentralStudent parameters //
   setAsUnsignedInteger( "NonCentralStudent-CDFAlgo", 0 );
 
