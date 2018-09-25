@@ -47,8 +47,8 @@ polynomialFactory( Normal = class=StandardDistributionPolynomialFactory hasSpeci
 Normal  polynomial( 0 )= 1
 Normal  polynomial( 1 )= -1 + X
 Normal  polynomial( 2 )= -1.41421 * X + 0.707107 * X^2
-Normal  polynomial( 3 )= 0.816497 + 2.89382e-11 * X - 1.22474 * X^2 + 0.408248 * X^3
-Normal  polynomial( 4 )= -0.408248 + 1.63299 * X + 4.02503e-10 * X^2 - 0.816497 * X^3 + 0.204124 * X^4
+Normal  polynomial( 3 )= 0.816497 - 1.22474 * X^2 + 0.408248 * X^3
+Normal  polynomial( 4 )= -0.408248 + 1.63299 * X - 0.816497 * X^3 + 0.204124 * X^4
 Normal  polynomial( 4 ) roots= [-1.33441,0.258036,1.74196,3.33441]
 Normal  polynomial( 4 ) nodes= [-1.33441,0.258036,1.74196,3.33441]  and weights= [0.0458759,0.454124,0.454124,0.0458759]
 M=

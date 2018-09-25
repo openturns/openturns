@@ -140,11 +140,11 @@ Examples
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
 >>> ot.FittingTest.BIC(sample, distribution)
-2.7938693005063415
+2.793869...
 >>> ot.FittingTest.BIC(sample, distribution, 2)
-3.0206157926171517
+3.020615...
 >>> ot.FittingTest.BIC(sample, ot.NormalFactory())
-3.0108025506670955"
+3.010802..."
 
 // ---------------------------------------------------------------------
 

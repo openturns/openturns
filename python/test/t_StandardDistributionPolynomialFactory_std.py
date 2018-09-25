@@ -10,7 +10,7 @@ ot.RandomGenerator.SetSeed(0)
 def clean(polynomial):
     coefficients = polynomial.getCoefficients()
     for i in range(coefficients.getDimension()):
-        if abs(coefficients[i]) < 1.0e-12:
+        if abs(coefficients[i]) < 1.0e-8:
             coefficients[i] = 0.0
     return ot.UniVariatePolynomial(coefficients)
 
