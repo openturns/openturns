@@ -73,6 +73,8 @@ public:
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const;
+  using ContinuousDistribution::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;

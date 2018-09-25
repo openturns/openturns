@@ -312,6 +312,77 @@ Scalar EllipticalDistribution::computePDF(const Point & point) const
   }
 }
 
+/* Get the log-PDF of the distribution */
+Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
+{
+  if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const UnsignedInteger dimension = getDimension();
+  switch(dimension)
+  {
+    case 1:
+    {
+      const Scalar iLx = (point[0] - mean_[0]) / sigma_[0];
+      const Scalar betaSquare = iLx * iLx;
+      const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      return std::log(normalizationFactor_) + logDensityGenerator;
+    }
+    break;
+    case 2:
+    {
+      const Scalar deltaX = point[0] - mean_[0];
+      const Scalar deltaY = point[1] - mean_[1];
+      Scalar iLx, iLy;
+      if (inverseCholesky_.isLowerTriangular())
+      {
+        iLx = inverseCholesky_(0, 0) * deltaX;
+        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
+      }
+      else
+      {
+        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY;
+        iLy = inverseCholesky_(1, 1) * deltaY;
+      }
+      const Scalar betaSquare = iLx * iLx + iLy * iLy;
+      const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      return std::log(normalizationFactor_) + logDensityGenerator;
+    }
+    break;
+    case 3:
+    {
+      const Scalar deltaX = point[0] - mean_[0];
+      const Scalar deltaY = point[1] - mean_[1];
+      const Scalar deltaZ = point[2] - mean_[2];
+      Scalar iLx, iLy, iLz;
+      if (inverseCholesky_.isLowerTriangular())
+      {
+        iLx = inverseCholesky_(0, 0) * deltaX;
+        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
+        iLz = inverseCholesky_(2, 0) * deltaX + inverseCholesky_(2, 1) * deltaY + inverseCholesky_(2, 2) * deltaZ;
+      }
+      else
+      {
+        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY + inverseCholesky_(0, 2) * deltaZ;
+        iLy = inverseCholesky_(1, 1) * deltaY + inverseCholesky_(1, 2) * deltaZ;
+        iLz = inverseCholesky_(2, 2) * deltaZ;
+      }
+      const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
+      const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      return std::log(normalizationFactor_) + logDensityGenerator;
+    }
+    break;
+    default:
+      const Point iLx(inverseCholesky_ * (point - mean_));
+      const Scalar betaSquare = iLx.normSquare();
+      const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      return std::log(normalizationFactor_) + logDensityGenerator;
+  }
+}
+
 /* Get the PDF gradient of the distribution */
 Point EllipticalDistribution::computePDFGradient(const Point & point) const
 {

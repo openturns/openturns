@@ -49,7 +49,7 @@ Normal::Normal(const UnsignedInteger dimension)
                            , Point(dimension, 1.0)
                            , CorrelationMatrix(dimension),
                            1.0)
-  , normalizationFactor_(1.0 / std::sqrt(std::pow(2.0 * M_PI, static_cast<int>(dimension))))
+  , logNormalizationFactor_((-1.0 * dimension) * SpecFunc::LOGSQRT2PI)
   , hasIndependentCopula_(true)
 {
   setName("Normal");
@@ -64,7 +64,7 @@ Normal::Normal(const Scalar mu,
                            , Point(1, sd)
                            , CorrelationMatrix(1)
                            , 1.0)
-  , normalizationFactor_(1.0 / std::sqrt(2 * M_PI))
+  , logNormalizationFactor_(-SpecFunc::LOGSQRT2PI)
   , hasIndependentCopula_(true)
 {
   setName("Normal");
@@ -80,7 +80,7 @@ Normal::Normal(const Point & mean,
                            , sigma
                            , R
                            , 1.0)
-  , normalizationFactor_(1.0 / std::sqrt(std::pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
+  , logNormalizationFactor_((-1.0 * mean.getDimension()) * SpecFunc::LOGSQRT2PI)
   , hasIndependentCopula_(false)
 {
   setName("Normal");
@@ -95,7 +95,7 @@ Normal::Normal(const Point & mean,
                            , Point(mean.getDimension(), 1.0)
                            , IdentityMatrix(mean.getDimension())
                            , 1.0)
-  , normalizationFactor_(1.0 / std::sqrt(std::pow(2.0 * M_PI, static_cast<int>(mean.getDimension()))))
+  , logNormalizationFactor_((-1.0 * mean.getDimension()) * SpecFunc::LOGSQRT2PI)
   , hasIndependentCopula_(false)
 {
   setName("Normal");
@@ -191,19 +191,24 @@ Sample Normal::getSample(const UnsignedInteger size) const
  *  be written as p(x) = phi(t(x-mu)S^(-1)(x-mu))                      */
 Scalar Normal::computeDensityGenerator(const Scalar betaSquare) const
 {
-  return normalizationFactor_ * std::exp(-0.5 * betaSquare);
+  return std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
+}
+
+Scalar Normal::computeLogDensityGenerator(const Scalar betaSquare) const
+{
+  return logNormalizationFactor_ - 0.5 * betaSquare;
 }
 
 /* Compute the derivative of the density generator */
 Scalar Normal::computeDensityGeneratorDerivative(const Scalar betaSquare) const
 {
-  return -0.5 * normalizationFactor_ * std::exp(-0.5 * betaSquare);
+  return -0.5 * std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
 }
 
 /* Compute the seconde derivative of the density generator */
 Scalar Normal::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const
 {
-  return 0.25 * normalizationFactor_ * std::exp(-0.5 * betaSquare);
+  return 0.25 * std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
 }
 
 /* Get the CDF of the distribution */
@@ -357,8 +362,8 @@ Scalar Normal::computeCDF(const Point & point) const
 Scalar Normal::computeEntropy() const
 {
   // EllipticalDistribution::normalizationFactor_ == 1/sqrt(det(Sigma))
-  // normalizationFactor_ == 1/sqrt(2*Pi)^dim
-  return 0.5 * getDimension() - std::log(EllipticalDistribution::normalizationFactor_) - std::log(normalizationFactor_);
+  // logNormalizationFactor_ == log(1/sqrt(2*Pi)^dim)
+  return 0.5 * getDimension() - std::log(EllipticalDistribution::normalizationFactor_) - logNormalizationFactor_;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -689,7 +694,7 @@ void Normal::checkIndependentCopula()
 void Normal::save(Advocate & adv) const
 {
   EllipticalDistribution::save(adv);
-  adv.saveAttribute( "normalizationFactor_duplicate", normalizationFactor_ );
+  adv.saveAttribute( "logNormalizationFactor", logNormalizationFactor_ );
   adv.saveAttribute( "hasIndependentCopula_", hasIndependentCopula_ );
 }
 
@@ -697,7 +702,7 @@ void Normal::save(Advocate & adv) const
 void Normal::load(Advocate & adv)
 {
   EllipticalDistribution::load(adv);
-  adv.loadAttribute( "normalizationFactor_duplicate", normalizationFactor_ );
+  adv.loadAttribute( "logNormalizationFactor", logNormalizationFactor_ );
   adv.loadAttribute( "hasIndependentCopula_", hasIndependentCopula_ );
   computeRange();
 }
