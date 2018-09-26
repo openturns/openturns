@@ -73,9 +73,9 @@ cmake-configure-%:
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.12 \
-            -DLIB_VERSION=0.12.0 \
-            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.11 \
+            -DLIB_SOVERSION=0.13 \
+            -DLIB_VERSION=0.13.0 \
+            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.12 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DLINK_PYTHON_LIBRARY:BOOL=OFF \
             -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
@@ -105,7 +105,7 @@ override_dh_makeshlibs:
 	dh_makeshlibs -Xpyshared
 
 override_dh_strip:
-	dh_strip -plibopenturns0.12 -ppython-openturns -ppython3-openturns
+	dh_strip -plibopenturns0.13 -ppython-openturns -ppython3-openturns
 
 override_dh_python2:
 	dh_python2 -p python-openturns
