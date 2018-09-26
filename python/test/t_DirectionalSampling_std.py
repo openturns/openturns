@@ -66,6 +66,25 @@ try:
     # Stream out the result */
     print("DirectionalSampling result=", myAlgo2.getResult())
 
+    # Ticket #778
+    myFunction = SymbolicFunction('x', 'x')
+
+    X1 = RandomVector(Uniform(-2, 1.99999))
+    X2 = RandomVector(Uniform(-2, 2.0))
+
+    for X in [X1, X2]:
+        vector = RandomVector(myFunction, X)
+        event = Event(vector, GreaterOrEqual(), 0.0)
+
+        print('X:', X.getDistribution())
+
+        myAlgo3 = DirectionalSampling(event)
+        n1 = myFunction.getCallsNumber()
+        myAlgo3.run()
+        n2 = myFunction.getCallsNumber()
+        result = myAlgo3.getResult().getProbabilityEstimate()
+        print('p=%.6g (ncalls = %d)' % (result, n2 - n1))
+
 except:
     import sys
     print("t_DirectionalSampling.py", sys.exc_info()[0], sys.exc_info()[1])

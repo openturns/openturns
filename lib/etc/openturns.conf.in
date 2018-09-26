@@ -501,6 +501,7 @@
   <SimulationAlgorithm-DefaultMaximumOuterSampling          value_unsigned_integer="1000" />
 
   <!-- OT::ProbabilitySimulationResult parameters -->
+  <ProbabilitySimulationResult-CheckPositiveVariance  value_bool="false"  />
   <ProbabilitySimulationResult-DefaultConfidenceLevel value_scalar="0.95" />
 
   <!-- OT::ExpectationSimulationAlgorithm parameters -->

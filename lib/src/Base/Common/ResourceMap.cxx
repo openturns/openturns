@@ -1018,6 +1018,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "SimulationAlgorithm-DefaultMaximumOuterSampling", 1000 );
 
   // ProbabilitySimulationResult parameters //
+  setAsBool( "ProbabilitySimulationResult-CheckPositiveVariance", false );
   setAsScalar( "ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95 );
 
   // ExpectationSimulationAlgorithm parameters //
