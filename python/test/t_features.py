@@ -11,7 +11,7 @@ try:
     try:
         import openturns as ot
         print('OK')
-    except:
+    except ImportError:
         print('no')
 
     # check that python can find the Viewer module
@@ -20,7 +20,7 @@ try:
     try:
         import openturns.viewer
         print('OK')
-    except:
+    except ImportError:
         print('no')
 
     # check that OpenTURNS can run R
@@ -29,11 +29,8 @@ try:
     try:
         graph = ot.Normal().drawPDF()
         fname = 'testDraw.png'
-        try:
-            graph.draw(fname)
-            os.remove(fname)
-        except:
-            raise
+        graph.draw(fname)
+        os.remove(fname)
         print('OK')
     except:
         print('no')
@@ -55,9 +52,10 @@ try:
     except:
         print('no')
 
-    # check that analytical function are available
+    # check that math parser is available
     print('6: analytical function (muParser)'.ljust(width), end=' ')
     try:
+        ot.ResourceMap.Set("SymbolicParser-Backend", "MuParser")
         f = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
         print('OK')
     except:
@@ -82,6 +80,14 @@ try:
     if ot.TBB.IsAvailable():
         print('OK')
     else:
+        print('no')
+
+    # check that psutil was found
+    print('10: process control (psutil)'.ljust(width), end=' ')
+    try:
+        import psutil
+        print('OK')
+    except ImportError:
         print('no')
 
 except:

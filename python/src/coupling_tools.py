@@ -177,7 +177,9 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     get_stderr : bool, default=False
         Whether the standard error of the command is returned
     timeout : int
-        Child process timeout (Python >= 3.3 only)
+        Process timeout (Python >=3.3 only)
+        On timeout and if psutil is available the children of the process
+        are killed before the process itself
 
     Returns
     -------
@@ -223,9 +225,18 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
         try:
             stdout_data, stderr_data = proc.communicate(timeout=timeout)
         except subprocess.TimeoutExpired:
+            # kill children is psutil is available
+            try:
+                import psutil
+            except ImportError:
+                pass
+            else:
+                parent = psutil.Process(proc.pid)
+                for child in parent.children(recursive=True):
+                    child.kill()
             proc.kill()
             stdout_data, stderr_data = proc.communicate()
-            raise RuntimeError('Command (' + cmd + ') times out after ' +
+            raise RuntimeError('Command "' + cmd + '" times out after ' +
                                str(timeout) + 's')
     else:
         stdout_data, stderr_data = proc.communicate()
@@ -234,7 +245,7 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     # check return code
     if check_exit_code and ret != 0:
         raise RuntimeError(
-            'Command (' + cmd + ') returned exit code ' + str(ret))
+            'Command "' + cmd + '" returned exit code ' + str(ret))
 
     if get_stdout and get_stderr:
         return ret, stdout_data, stderr_data

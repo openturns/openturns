@@ -229,6 +229,8 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Python notebook  (optional for doc)   | `IPython <https://ipython.org/>`_                         | N/A               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
+| psutil  (optional for coupling)       | `psutil <https://github.com/giampaolo/psutil/>`_          | N/A               |
++---------------------------------------+-----------------------------------------------------------+-------------------+
 
 The versions given here are only meant as indications of minimum version and newer ones
 may be used.
