@@ -86,9 +86,7 @@ Notes
 The predictivity factor :math:`Q_2` is given by :
 
 .. math::
-    Q_2 = 1 - \frac{Var(\epsilon)}{Var(Y)}
-
-with :math:`\epsilon` the residual."
+    Q_2 = 1 - \frac{\sum_{l=1}^{N} (Y_{l} -\hat{f}(X_l))^2}{Var(Y)}"
 
 // ---------------------------------------------------------------------
 
