@@ -20,7 +20,7 @@ which can be re written :
 
   .. math::
 
-     1 \approx \sum_{i=1}^{n_X}\frac{\partial h(\muX)}{\partial X^i}\times\frac{  \sum_{j=1}^{n_X} \frac{\partial h(\muX)}{\partial x^j}.(\Cov \uX)_{ij} }{\Var Y} \approx & \cF_1 + \cF_2 + \ldots + \cF_{n_X}
+     1 \approx \sum_{i=1}^{n_X}\frac{\partial h(\muX)}{\partial X^i}\times\frac{  \sum_{j=1}^{n_X} \frac{\partial h(\muX)}{\partial x^j}.(\Cov \uX)_{ij} }{\Var Z} \approx & \cF_1 + \cF_2 + \ldots + \cF_{n_X}
 
 
   .. math::
@@ -30,7 +30,7 @@ which can be re written :
 
   .. math::
 
-     \cF_i = \frac{\partial h(\muX)}{\partial x^i} \times \frac{\sum_{j=1}^{n_X} \frac{\partial h(\muX)}{\partial x^j}.(\Cov \uX)_{ij} }{\Var Y}
+     \cF_i = \frac{\partial h(\muX)}{\partial x^i} \times \frac{\sum_{j=1}^{n_X} \frac{\partial h(\muX)}{\partial x^j}.(\Cov \uX)_{ij} }{\Var Z}
 
 
 where:
