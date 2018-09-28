@@ -3,7 +3,7 @@
 
 set -e
 
-test -z "${CI_PULL_REQUEST}" || exit 0
+test -z "${CIRCLE_PULL_REQUEST}" || exit 0
 
 git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
 if test -n "${CIRCLE_TAG}"

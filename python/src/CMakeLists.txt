@@ -72,6 +72,12 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   endif ()
 
   set_target_properties (${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES NO_SONAME ON)
+
+  # allows to pass compile flags like -O1 to reduce memory usage
+  if (DEFINED SWIG_COMPILE_FLAGS)
+    set_target_properties (${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES COMPILE_FLAGS ${SWIG_COMPILE_FLAGS})
+  endif ()
+
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
 endmacro (ot_add_python_module)
 
