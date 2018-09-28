@@ -78,7 +78,6 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 %pythoncode %{
 # We have to make sure the submodule is loaded with absolute path
 import openturns.geom
-import openturns.typ
 
 class OpenTURNSPythonFieldFunction(object):
     """

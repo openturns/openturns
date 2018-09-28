@@ -120,8 +120,4 @@ FieldImplementation(const FieldImplementation & other)
 
 
 } // %extend
-}
-
-%include openturns/FieldImplementation.hxx
-namespace OT { %extend FieldImplementation { FieldImplementation(const FieldImplementation & other) { return new OT::FieldImplementation(other); } } }
-
+} // OT
