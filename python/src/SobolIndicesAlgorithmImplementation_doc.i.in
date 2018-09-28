@@ -358,11 +358,11 @@ the graph includes confidence interval plots in the first usage."
 OT_SobolIndicesAlgorithm_draw_doc
 
 // ---------------------------------------------------------------------
-%define OT_SobolIndicesAlgorithm_DrawImportanceFactors_doc
 
+%define OT_SobolIndicesAlgorithm_DrawImportanceFactors_doc
 "Draw the importance factors.
 
-:Available usages:
+Available usages:
     DrawImportanceFactors(*importanceFactors, title='Importance Factors'*)
 
     DrawImportanceFactors(*values, names, title='Importance Factors'*)
@@ -388,6 +388,28 @@ Graph : :class:`~openturns.Graph`
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawImportanceFactors
 OT_SobolIndicesAlgorithm_DrawImportanceFactors_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_SobolIndicesAlgorithm_DrawSobolIndices_doc
+"Draw the Sobol' indices.
+
+Parameters
+----------
+inputDescription : sequence of str
+    Variable names
+firstOrderIndices : sequence of float
+    First order indices values
+secondOrderIndices : sequence of float
+    Total order indices values
+
+Returns
+-------
+Graph : :class:`~openturns.Graph`
+    For each variable, draws first and total indices"
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawSobolIndices
+OT_SobolIndicesAlgorithm_DrawSobolIndices_doc
 
 // ---------------------------------------------------------------------
 

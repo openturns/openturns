@@ -200,4 +200,26 @@ void SobolIndicesAlgorithm::setDesign(const Sample & inputDesign,
   getImplementation()->setDesign(inputDesign, outputDesign, size);
 }
 
+
+Graph SobolIndicesAlgorithm::DrawSobolIndices(const Description & inputDescription,
+                                              const Point & firstOrderIndices,
+                                              const Point & totalOrderIndices)
+{
+  return SobolIndicesAlgorithmImplementation::DrawSobolIndices(inputDescription, firstOrderIndices, totalOrderIndices);
+}
+
+Graph SobolIndicesAlgorithm::DrawImportanceFactors(const PointWithDescription & importanceFactors,
+                                                                 const String & title)
+{
+  return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(importanceFactors, title);
+}
+
+/* ImportanceFactors graph */
+Graph SobolIndicesAlgorithm::DrawImportanceFactors(const Point & values,
+                                                                const Description & names,
+                                                                const String & title)
+{
+  return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(values, names, title);
+}
+
 END_NAMESPACE_OPENTURNS

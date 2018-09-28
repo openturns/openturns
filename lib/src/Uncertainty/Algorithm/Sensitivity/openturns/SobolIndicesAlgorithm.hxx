@@ -105,6 +105,17 @@ public:
   Distribution getFirstOrderIndicesDistribution() const;
   Distribution getTotalOrderIndicesDistribution() const;
 
+  static Graph DrawImportanceFactors(const PointWithDescription & importanceFactors,
+                                     const String & title);
+
+  static Graph DrawImportanceFactors(const Point & values,
+                                     const Description & names,
+                                     const String & title);
+
+  static Graph DrawSobolIndices(const Description & inputDescription,
+                                const Point & firstOrderIndices,
+                                const Point & secondOrderIndices);
+
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;
 

@@ -121,6 +121,10 @@ public:
                                      const Description & names,
                                      const String & title);
 
+  static Graph DrawSobolIndices(const Description & inputDescription,
+                                const Point & firstOrderIndices,
+                                const Point & secondOrderIndices);
+
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;
 
@@ -140,11 +144,11 @@ protected:
   /** Internal method that returns a boostrap NS collection of size inputDimension + 2 */
   Sample getBootstrapDesign(const Indices & indices) const;
 
-  /** Function that computes merged indices using Vi/VTi + variance  */
+  /** Function that computes aggregated indices using Vi/VTi + variance  */
   Point computeAggregatedIndices(const Sample & Vi,
                                  const Sample & VTi,
                                  const Point & variance,
-                                 Point & mergedTotal) const;
+                                 Point & aggregatedTotal) const;
 
   /** void method that computes bootstrap confidence interval */
   void computeBootstrapDistribution() const;
@@ -180,8 +184,6 @@ protected:
 
   /** Designs : input & output designs */
   Sample inputDesign_;
-
-  /** Designs : input & output designs */
   Sample outputDesign_;
 
   /** Simulation size */
@@ -203,10 +205,10 @@ protected:
   mutable Sample varianceTI_;
 
   /** Aggregated first order indices */
-  mutable Point mergedFirstOrderIndices_;
+  mutable Point aggregatedFirstOrderIndices_;
 
   /** Aggregated total order indices */
-  mutable Point mergedTotalOrderIndices_;
+  mutable Point aggregatedTotalOrderIndices_;
 
   /** Second order indices */
   mutable SymmetricTensor secondOrderIndices_;

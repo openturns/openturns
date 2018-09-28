@@ -49,8 +49,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()
   , referenceVariance_()
   , varianceI_()
   , varianceTI_()
-  , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , aggregatedFirstOrderIndices_()
+  , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -73,8 +73,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const S
   , referenceVariance_()
   , varianceI_()
   , varianceTI_()
-  , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , aggregatedFirstOrderIndices_()
+  , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -104,8 +104,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   , referenceVariance_()
   , varianceI_()
   , varianceTI_()
-  , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , aggregatedFirstOrderIndices_()
+  , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -152,8 +152,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   , referenceVariance_()
   , varianceI_()
   , varianceTI_()
-  , mergedFirstOrderIndices_()
-  , mergedTotalOrderIndices_()
+  , aggregatedFirstOrderIndices_()
+  , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -230,7 +230,7 @@ struct BootstrapPolicy
   {
     Indices slice(size_);
     Sample VTi;
-    Point mergedTotal;
+    Point aggregatedTotal;
 
     for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
     {
@@ -246,9 +246,9 @@ struct BootstrapPolicy
       // Compute indices using this collection
       const Sample Vi(sai_.computeIndices(randomCollection, VTi));
       // Compute aggregated indices
-      bsFO_[k] = sai_.computeAggregatedIndices(Vi, VTi, variance, mergedTotal);
+      bsFO_[k] = sai_.computeAggregatedIndices(Vi, VTi, variance, aggregatedTotal);
       // Add to sample
-      bsTO_[k] = mergedTotal;
+      bsTO_[k] = aggregatedTotal;
     }
   }
 }; /* end struct BootstrapPolicy */
@@ -462,13 +462,13 @@ Point SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndices() cons
     // Invoke internal method to compute first/ total order indices indices
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
-  if (0 == mergedFirstOrderIndices_.getDimension())
+  if (0 == aggregatedFirstOrderIndices_.getDimension())
   {
     // Compute aggregate indices
-    mergedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, mergedTotalOrderIndices_);
+    aggregatedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, aggregatedTotalOrderIndices_);
   }
   // Indices computed
-  return mergedFirstOrderIndices_;
+  return aggregatedFirstOrderIndices_;
 }
 
 /* Aggregated total order indices accessor for multivariate samples */
@@ -479,13 +479,13 @@ Point SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices() cons
     // Invoke internal method to compute first/ total order indices indices
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
-  if (0 == mergedFirstOrderIndices_.getDimension())
+  if (0 == aggregatedFirstOrderIndices_.getDimension())
   {
     // Compute aggregate indices
-    mergedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, mergedTotalOrderIndices_);
+    aggregatedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, aggregatedTotalOrderIndices_);
   }
   // Indices computed
-  return mergedTotalOrderIndices_;
+  return aggregatedTotalOrderIndices_;
 }
 
 // Getter for bootstrap size
@@ -594,54 +594,73 @@ Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & ,
   throw new NotYetImplementedException(HERE);
 }
 
-/** Method that draw (plot) the sensitivity graph */
-Graph SobolIndicesAlgorithmImplementation::draw() const
+
+Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & inputDescription,
+                                                            const Point & firstOrderIndices,
+                                                            const Point & totalOrderIndices)
 {
-  Graph graph(OSS() << " Aggregated sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
-  // Define cloud for first order and total order indices
-  const Point aggregatedFO(getAggregatedFirstOrderIndices());
-  const Point aggregatedTO(getAggregatedTotalOrderIndices());
-  const Description inputDescription(inputDesign_.getDescription());
-  const UnsignedInteger dimension = aggregatedFO.getDimension();
+  Graph graph("Sobol' indices", "inputs", "index value", true, "");
+
+  const UnsignedInteger dimension = firstOrderIndices.getDimension();
+
+  // Define cloud for FO
   Sample data(dimension, 2);
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = k + 1;
-    data(k, 1) = aggregatedFO[k];
+    data(k, 0) = k + 1.0;
+    data(k, 1) = firstOrderIndices[k];
   }
-  // Define cloud for FO
-  Cloud firstOrderIndicesGraph(data, "red", "circle", "Aggregated FO");
+  Cloud firstOrderIndicesGraph(data, "red", "circle", "First order");
   graph.add(firstOrderIndicesGraph);
-  // Total order
+
+  // Define cloud for TO
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = (k + 1) + 0.1;
-    data(k, 1) = aggregatedTO[k];
+    data(k, 0) = (k + 1.0) + dimension / 40.0;
+    data(k, 1) = totalOrderIndices[k];
   }
-  // Define cloud for TO
-  Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
+  Cloud totalOrderIndicesGraph(data, "blue", "square", "Total order");
   graph.add(totalOrderIndicesGraph);
+
   // Description
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = (k + 1) + 0.2;
-    data(k, 1) = 0.5 * (aggregatedTO[k] + aggregatedFO[k]);
+    data(k, 0) = (k + 1.0) + dimension / 20.0;
+    data(k, 1) = 0.5 * (totalOrderIndices[k] + firstOrderIndices[k]);
   }
   Text text(data, inputDescription, "right");
   text.setColor("black");
   graph.add(text);
+
   // Set bounding box
   Point lowerBound(2, -0.1);
-  Point upperBound(2);
-  upperBound[0] = dimension + 1.0;
-  upperBound[1] = 1.1;
-  if (bootstrapSize_ > 0 && confidenceLevel_ > 0.0)
+  lowerBound[0] = 1.0-dimension/10.0;
+  Point upperBound(2, 1.1);
+  const Scalar descriptionMargin = 1.6 * (dimension - 1.0) / (dimension + 2.0);
+  upperBound[0] = dimension + descriptionMargin;
+  graph.setBoundingBox(Interval(lowerBound, upperBound));
+
+  graph.setLegendPosition("topright");
+  return graph;
+}
+
+/** Method that draw (plot) the sensitivity graph */
+Graph SobolIndicesAlgorithmImplementation::draw() const
+{
+  Graph graph(DrawSobolIndices(inputDesign_.getDescription(), getAggregatedFirstOrderIndices(), getAggregatedTotalOrderIndices()));
+  if (outputDesign_.getDimension() > 1)
+    graph.setTitle(OSS() << "Aggregated Sobol' indices - " << getClassName());
+  else
+    graph.setTitle(OSS() << "Sobol' indices - " << getClassName());
+  const UnsignedInteger dimension = aggregatedFirstOrderIndices_.getDimension();
+
+  // Draw confidence intervals
+  if (confidenceLevel_ > 0.0)
   {
-    // Add plot of intervals
     const Interval foInterval(getFirstOrderIndicesInterval());
     const Interval toInterval(getTotalOrderIndicesInterval());
     // transform data
-    data = Sample(2, 2);
+    Sample data(2, 2);
     for (UnsignedInteger k = 0; k < dimension; ++k)
     {
       // Relative to FirstOrder
@@ -652,50 +671,24 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
       graph.add(Curve(data, "red", "solid", 2, ""));
 
       // Relative to TotalOrder
-      data(0, 0) = (k + 1) + 0.1;
+      data(0, 0) = (k + 1) + dimension / 40.0;
       data(0, 1) = toInterval.getLowerBound()[k];
-      data(1, 0) = (k + 1) + 0.1;
+      data(1, 0) = (k + 1) + dimension / 40.0;
       data(1, 1) = toInterval.getUpperBound()[k];
       graph.add(Curve(data, "blue", "solid", 2, ""));
     }
   }
-  graph.setBoundingBox(Interval(lowerBound, upperBound));
-  graph.setLegendPosition("topright");
   return graph;
 }
 
 /** Method that draw the sensitivity graph of a fixed marginal */
 Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) const
 {
-  Graph graph(OSS() << " Sensitivity indices - " << getClassName(), "inputs", "Sensitivity indices ", true, "");
-  // Define cloud for first order and total order indices
-  const Point foIndices(getFirstOrderIndices(marginalIndex));
-  const Point toIndices(getTotalOrderIndices(marginalIndex));
-  Sample data(foIndices.getDimension(), 2);
-  for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
-  {
-    data(k, 0) = k + 1;
-    data(k, 1) = foIndices[k];
-  }
-  // Define cloud for FO
-  Cloud firstOrderIndicesGraph(data, "red", "circle", "Aggregated FO");
-  graph.add(firstOrderIndicesGraph);
-  // Total order
-  for (UnsignedInteger k = 0; k < foIndices.getDimension(); ++k)
-  {
-    data(k, 0) = (k + 1) + 0.1;
-    data(k, 1) = toIndices[k];
-  }
-  // Define cloud for TO
-  Cloud totalOrderIndicesGraph(data, "blue", "square", "Aggregated TO");
-  graph.add(totalOrderIndicesGraph);
-  // Set bounding box
-  Point lowerBound(2, -0.1);
-  Point upperBound(2);
-  upperBound[0] = foIndices.getDimension() + 1;
-  upperBound[1] = 1.1 ;
-  graph.setBoundingBox(Interval(lowerBound, upperBound));
-  graph.setLegendPosition("topright");
+  Graph graph(DrawSobolIndices(inputDesign_.getDescription(), getFirstOrderIndices(marginalIndex), getTotalOrderIndices(marginalIndex)));
+  if (outputDesign_.getDimension() > 1)
+    graph.setTitle(OSS() << "Marginal #" << marginalIndex << " Sobol' indices - " << getClassName());
+  else
+    graph.setTitle(OSS() << "Sobol' indices - " << getClassName());
   return graph;
 }
 
@@ -720,26 +713,26 @@ Sample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & i
   return bootstrapDesign;
 }
 
-/** Function that computes merged indices using Vi/VTi + variance  */
+/** Function that computes aggregated indices using Vi/VTi + variance  */
 Point SobolIndicesAlgorithmImplementation::computeAggregatedIndices(const Sample & Vi,
     const Sample & VTi,
     const Point & variance,
-    Point & mergedTotal) const
+    Point & aggregatedTotal) const
 {
   // Generic implementation
   const UnsignedInteger inputDimension = Vi.getDimension();
   const UnsignedInteger outputDimension = Vi.getSize();
   if (inputDimension == 1)
   {
-    mergedTotal = Point(VTi[0]);
+    aggregatedTotal = Point(VTi[0]);
     return Point(Vi[0]);
   }
 
   // Compute sum of Var(Y^k)
   Scalar sumVariance = variance.norm1();
 
-  // Compute merged indices
-  mergedTotal = VTi.computeMean() * (outputDimension / sumVariance);
+  // Compute aggregated indices
+  aggregatedTotal = VTi.computeMean() * (outputDimension / sumVariance);
   return Point(Vi.computeMean() * (outputDimension / sumVariance));
 }
 
@@ -847,8 +840,8 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "referenceVariance_",  referenceVariance_);
   adv.saveAttribute( "varianceI_", varianceI_);
   adv.saveAttribute( "varianceTI_", varianceTI_);
-  adv.saveAttribute( "mergedFirstOrderIndices_", mergedFirstOrderIndices_);
-  adv.saveAttribute( "mergedTotalOrderIndices_", mergedTotalOrderIndices_);
+  adv.saveAttribute( "aggregatedFirstOrderIndices_", aggregatedFirstOrderIndices_);
+  adv.saveAttribute( "aggregatedTotalOrderIndices_", aggregatedTotalOrderIndices_);
   adv.saveAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.saveAttribute( "firstOrderIndiceDistribution_", firstOrderIndiceDistribution_);
   adv.saveAttribute( "totalOrderIndiceDistribution_", totalOrderIndiceDistribution_);
@@ -868,8 +861,8 @@ void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "referenceVariance_",  referenceVariance_);
   adv.loadAttribute( "varianceI_", varianceI_);
   adv.loadAttribute( "varianceTI_", varianceTI_);
-  adv.loadAttribute( "mergedFirstOrderIndices_", mergedFirstOrderIndices_);
-  adv.loadAttribute( "mergedTotalOrderIndices_", mergedTotalOrderIndices_);
+  adv.loadAttribute( "aggregatedFirstOrderIndices_", aggregatedFirstOrderIndices_);
+  adv.loadAttribute( "aggregatedTotalOrderIndices_", aggregatedTotalOrderIndices_);
   adv.loadAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.loadAttribute( "firstOrderIndiceDistribution_", firstOrderIndiceDistribution_);
   adv.loadAttribute( "totalOrderIndiceDistribution_", totalOrderIndiceDistribution_);

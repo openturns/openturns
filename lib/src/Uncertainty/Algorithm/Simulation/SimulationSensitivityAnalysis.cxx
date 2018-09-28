@@ -22,7 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/MemoizeFunction.hxx"
-#include "openturns/SobolIndicesAlgorithmImplementation.hxx"
+#include "openturns/SobolIndicesAlgorithm.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Exception.hxx"
@@ -151,7 +151,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactors() const
 {
   OSS oss;
   oss << "Importance Factors from Simulation - " << outputSample_.getDescription()[0];
-  return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(computeImportanceFactors(), String(oss));
+  return SobolIndicesAlgorithm::DrawImportanceFactors(computeImportanceFactors(), oss.str());
 
 }
 

@@ -132,7 +132,7 @@ try:
     view.ShowAll(block=True)
 
     # Pie
-    graph = ot.SobolIndicesAlgorithmImplementation.DrawImportanceFactors(
+    graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
         [.4, .3, .2, .1], ['a0', 'a1', 'a2', 'a3'], 'Zou')
     # graph.draw('curve8.png')
     view = View(graph)
