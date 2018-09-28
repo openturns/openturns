@@ -132,22 +132,6 @@ public:
   Description getParameterDescription() const;
 
 protected:
-  /** Constructor for event vector */
-  RandomVector(const RandomVector & antecedent,
-               const ComparisonOperator & op,
-               const Scalar threshold);
-
-  /** Constructor for event vector */
-  RandomVector(const RandomVector & antecedent,
-               const Domain & domain);
-
-  /** Constructor for event vector */
-  RandomVector(const RandomVector & antecedent,
-               const Interval & interval);
-
-  /** Constructor for event vector */
-  RandomVector(const Process & process,
-               const Domain & domain);
 
 }; /* class RandomVector */
 
