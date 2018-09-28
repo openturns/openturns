@@ -41,6 +41,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation()
   , inputDistributionCollection_()
   , outputDistributionCollection_()
   , parameterSide_(NONE)
+  , tailThreshold_(ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" ))
 {
   // Nothing to do
 }
@@ -53,6 +54,7 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   , inputDistributionCollection_(inputDistributionCollection)
   , outputDistributionCollection_(outputDistributionCollection)
   , parameterSide_(BOTH)
+  , tailThreshold_(ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" ))
 {
   initialize(simplify);
 }
@@ -305,7 +307,6 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
   const UnsignedInteger dimension = getOutputDimension();
   Point result(dimension);
   // The marginal transformation apply G^{-1} o F to each component of the input, where F is the ith input CDF and G the ith output CDf
-  const Scalar tailThreshold = ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" );
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     if (simplifications_[i]) result[i] = expressions_[i](Point(1, inP[i]))[0];
@@ -313,7 +314,7 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
     {
       Scalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
       // For accuracy reason, check if we are in the upper tail of the distribution
-      const Bool upperTail = inputCDF > tailThreshold;
+      const Bool upperTail = inputCDF > tailThreshold_;
       if (upperTail) inputCDF = inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
       // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
       // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
