@@ -162,7 +162,7 @@
   <!-- OT::Fehlberg parameters -->
   <Fehlberg-InitialStep    value_scalar="1.0e-7"                       />
   <Fehlberg-LocalPrecision value_scalar="1.0e-10"                      />
-  <Fehlberg-DefaultOrder   value_unsigned_integer_unsigned_integer="4" />
+  <Fehlberg-DefaultOrder   value_unsigned_integer="4" />
 
   <!-- OT::KarhunenLoeveQuadratureAlgorithm parameters -->
   <KarhunenLoeveQuadratureAlgorithm-RegularizationFactor value_scalar="0.0" />
