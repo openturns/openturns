@@ -96,6 +96,15 @@ try:
 
     # html conversion
     print(sample1._repr_html_())
+
+    # check conversion
+    v1 = [Point([12.]), Point([1.])]
+    v2 = [Point([13.]), Point([2.])]
+    try:
+        s = Sample([v1, v2])
+    except:
+        print('ok')
+
 except:
     import sys
     print("t_Sample_std.py", sys.exc_info()[0], sys.exc_info()[1])

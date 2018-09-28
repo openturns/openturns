@@ -877,8 +877,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
     for(UnsignedInteger j = 0; j < dimension; ++j)
     {
       PyObject * value = PySequence_Fast_GET_ITEM( newPyPointObj.get(), j );
-      sample(i, j) = PyFloat_AsDouble(value);
-      handleException();
+      sample(i, j) = checkAndConvert<_PyFloat_, Scalar>(value);
     }
   }
   return sample;
@@ -1051,8 +1050,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
     for(UnsignedInteger j = 0; j < dimension; ++j)
     {
       PyObject * value = PySequence_Fast_GET_ITEM( newPyIndicesObj.get(), j );
-      newIndices[j] = PyLong_AsUnsignedLong(value);
-      handleException();
+      newIndices[j] = checkAndConvert<_PyInt_, UnsignedInteger>(value);
     }
     coll[i] = newIndices;
   }
