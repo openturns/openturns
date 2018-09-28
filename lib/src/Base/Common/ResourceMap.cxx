@@ -33,9 +33,9 @@ BEGIN_NAMESPACE_OPENTURNS
 static const char * ConfigurationFileName = "openturns.conf";
 #if defined OPENTURNS_HAVE_LIBXML2
 static const char * RootElementName = "openturns-configuration";
-static const char * XMLTag_value                  = "value_string";
-static const char * XMLTag_value_scalar           = "value_scalar";
-static const char * XMLTag_value_unsigned_integer = "value_unsigned_integer";
+static const char * XMLTag_value_str              = "value_str";
+static const char * XMLTag_value_float            = "value_float";
+static const char * XMLTag_value_int              = "value_int";
 static const char * XMLTag_value_bool             = "value_bool";
 #endif
 
@@ -436,7 +436,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
         const String key = XML::ToString(current->name);
 	// Try to get a String value
 	{
-	  String value = XML::GetAttributeByName( current, XMLTag_value );
+	  String value = XML::GetAttributeByName(current, XMLTag_value_str);
 	  if (value.size() > 0)
 	    {
 	      mapString_[ key ] = value;
@@ -445,7 +445,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
 	} // String
 	// Try to get a Scalar value
 	{
-	  String value = XML::GetAttributeByName( current, XMLTag_value_scalar );
+	  String value = XML::GetAttributeByName(current, XMLTag_value_float);
 	  if (value.size() > 0)
 	    {
 	      Scalar scalarValue = -1.0;
@@ -457,7 +457,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
 	} // Scalar
 	// Try to get an UnsignedInteger value
 	{
-	  String value = XML::GetAttributeByName( current, XMLTag_value_unsigned_integer );
+	  String value = XML::GetAttributeByName(current, XMLTag_value_int);
 	  if (value.size() > 0)
 	    {
 	      UnsignedInteger unsignedIntegerValue = 0;

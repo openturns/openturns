@@ -12,547 +12,547 @@
 <!DOCTYPE configuration>
   <openturns-configuration version="1" >
 
-  <R-executable-command    value_string="@R_EXECUTABLE@" />
-  <csv-file-separator      value_string=";"              />
-  <temporary-directory     value_string="@TEMPDIR@"      />
+  <R-executable-command    value_str="@R_EXECUTABLE@" />
+  <csv-file-separator      value_str=";"              />
+  <temporary-directory     value_str="@TEMPDIR@"      />
   <!-- parallel-threads is set by default to the number of core of the machine.
        To set manually the number of thread used for parallel computing, uncomment the following line: 
     -->
-  <!--<parallel-threads    value_unsigned_integer="1"    />-->
-  <cache-max-size          value_unsigned_integer="1024" />
-  <output-files-timeout    value_unsigned_integer="2"    />
+  <!--<parallel-threads    value_int="1"    />-->
+  <cache-max-size          value_int="1024" />
+  <output-files-timeout    value_int="2"    />
 
   <!-- OT::Os parameters -->
   <Os-create-process value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
   
   <!-- OT::XMLStorageManager parameters -->
-  <XMLStorageManager-DefaultCompressionLevel value_unsigned_integer="0" />
+  <XMLStorageManager-DefaultCompressionLevel value_int="0" />
 
   <!-- OT::Collection parameters -->
-  <Collection-size-visible-in-str-from value_unsigned_integer="10" />
+  <Collection-size-visible-in-str-from value_int="10" />
     
   <!-- OT::SpecFunc parameters -->
-  <SpecFunc-Precision        value_scalar="2.0e-16"        />
-  <SpecFunc-MaximumIteration value_unsigned_integer="1000" />
+  <SpecFunc-Precision        value_float="2.0e-16"        />
+  <SpecFunc-MaximumIteration value_int="1000" />
 
   <!-- OT::SymbolicParser parameters -->
   <SymbolicParser-CheckResult value_bool="true"                               />
-  <SymbolicParser-Backend     value_string="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
+  <SymbolicParser-Backend     value_str="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
 
   <!-- OT::DesignProxy parameters -->
-  <DesignProxy-DefaultCacheSize value_unsigned_integer="16777216" />
+  <DesignProxy-DefaultCacheSize value_int="16777216" />
 
   <!-- OT::KFold parameters -->
-  <KFold-DefaultK value_unsigned_integer="10" />
+  <KFold-DefaultK value_int="10" />
   
   <!-- OT::BlendedStep parameters -->
-  <BlendedStep-DefaultEta value_scalar="1.0" />
+  <BlendedStep-DefaultEta value_float="1.0" />
 
   <!-- OT::CenteredFiniteDifferenceGradient parameters -->
-  <CenteredFiniteDifferenceGradient-DefaultEpsilon value_scalar="1.0e-5" />
+  <CenteredFiniteDifferenceGradient-DefaultEpsilon value_float="1.0e-5" />
 
   <!-- OT::CenteredFiniteDifferenceHessian parameters -->
-  <CenteredFiniteDifferenceHessian-DefaultEpsilon value_scalar="1.0e-4" />
+  <CenteredFiniteDifferenceHessian-DefaultEpsilon value_float="1.0e-4" />
 
   <!-- OT::NonCenteredFiniteDifferenceGradient parameters -->
-  <NonCenteredFiniteDifferenceGradient-DefaultEpsilon value_scalar="1.0e-7" />
+  <NonCenteredFiniteDifferenceGradient-DefaultEpsilon value_float="1.0e-7" />
 
   <!-- OT::PiecewiseHermiteEvaluation parameters -->
-  <PiecewiseHermiteEvaluation-EpsilonRegular value_scalar="1.0e-12" />
+  <PiecewiseHermiteEvaluation-EpsilonRegular value_float="1.0e-12" />
   
   <!-- OT::PiecewiseHermiteEvaluation parameters -->
-  <PiecewiseLinearEvaluation-EpsilonRegular value_scalar="1.0e-12" />
+  <PiecewiseLinearEvaluation-EpsilonRegular value_float="1.0e-12" />
   
   <!-- OT::UniVariatePolynomialImplementation parameters -->
-  <UniVariatePolynomial-SmallDegree value_unsigned_integer="400" />
+  <UniVariatePolynomial-SmallDegree value_int="400" />
 
   <!-- OT::Pie parameters -->
-  <Pie-HorizontalMargin value_scalar="0.3"  />
-  <Pie-LabelThreshold   value_scalar="0.02" />
-  <Pie-VerticalMargin   value_scalar="0.1"  />
+  <Pie-HorizontalMargin value_float="0.3"  />
+  <Pie-LabelThreshold   value_float="0.02" />
+  <Pie-VerticalMargin   value_float="0.1"  />
 
   <!-- OT::DrawableImplementation parameters -->
-  <Drawable-DefaultLineWidth    value_scalar="1.0"            />
-  <Drawable-AlternativePattern  value_string="S"              />
-  <Drawable-DefaultColor        value_string="blue"           />
-  <Drawable-DefaultFillStyle    value_string="solid"          />
-  <Drawable-DefaultLineStyle    value_string="solid"          />
-  <Drawable-DefaultPattern      value_string="s"              />
-  <Drawable-DefaultPointStyle   value_string="plus"           />
-  <Drawable-DefaultSurfaceColor value_string="white"          />
-  <Drawable-NoSpecifiedLabel    value_string=""               />
-  <Drawable-DataThreshold       value_unsigned_integer="2000" />
-  <Drawable-DefaultPalettePhase value_unsigned_integer="12"   />
+  <Drawable-DefaultLineWidth    value_float="1.0"            />
+  <Drawable-AlternativePattern  value_str="S"              />
+  <Drawable-DefaultColor        value_str="blue"           />
+  <Drawable-DefaultFillStyle    value_str="solid"          />
+  <Drawable-DefaultLineStyle    value_str="solid"          />
+  <Drawable-DefaultPattern      value_str="s"              />
+  <Drawable-DefaultPointStyle   value_str="plus"           />
+  <Drawable-DefaultSurfaceColor value_str="white"          />
+  <Drawable-NoSpecifiedLabel    value_str=""               />
+  <Drawable-DataThreshold       value_int="2000" />
+  <Drawable-DefaultPalettePhase value_int="12"   />
 
   <!-- OT::GraphImplementation parameters -->
-  <Graph-DefaultHorizontalMargin value_scalar="0.05"          />
-  <Graph-DefaultLegendFontSize   value_scalar="1.0"           />
-  <Graph-DefaultVerticalMargin   value_scalar="0.05"          />
-  <Graph-NoSpecifiedLabel        value_string=""              />
-  <Graph-DefaultHeight           value_unsigned_integer="480" />
-  <Graph-DefaultWidth            value_unsigned_integer="640" />
+  <Graph-DefaultHorizontalMargin value_float="0.05"          />
+  <Graph-DefaultLegendFontSize   value_float="1.0"           />
+  <Graph-DefaultVerticalMargin   value_float="0.05"          />
+  <Graph-NoSpecifiedLabel        value_str=""              />
+  <Graph-DefaultHeight           value_int="480" />
+  <Graph-DefaultWidth            value_int="640" />
 
   <!-- OT::Contour parameters -->
-  <Contour-DefaultLevelsNumber value_unsigned_integer="10" />
+  <Contour-DefaultLevelsNumber value_int="10" />
 
   <!-- OT::IntervalMesher parameters -->
   <IntervalMesher-UseDiamond value_bool="false" />
 
   <!-- OT::PointToPointEvaluation parameters -->
-  <PointToPointEvaluation-BlockSize value_unsigned_integer="256" />
+  <PointToPointEvaluation-BlockSize value_int="256" />
 
   <!-- OT::SQP parameters -->
-  <SQP-DefaultOmega                   value_scalar="1.0e-4"           />
-  <SQP-DefaultSmooth                  value_scalar="1.2"              />
-  <SQP-DefaultTau                     value_scalar="0.5"              />
-  <SQP-DefaultMaximumEvaluationNumber value_unsigned_integer="100000" />
+  <SQP-DefaultOmega                   value_float="1.0e-4"           />
+  <SQP-DefaultSmooth                  value_float="1.2"              />
+  <SQP-DefaultTau                     value_float="0.5"              />
+  <SQP-DefaultMaximumEvaluationNumber value_int="100000" />
 
   <!-- OT::TNC parameters -->
-  <TNC-DefaultAccuracy value_scalar="1.0e-4"       />
-  <TNC-DefaultEta      value_scalar="0.25"         />
-  <TNC-DefaultFmin     value_scalar="1.0"          />
-  <TNC-DefaultRescale  value_scalar="1.3"          />
-  <TNC-DefaultStepmx   value_scalar="10.0"         />
-  <TNC-DefaultMaxCGit  value_unsigned_integer="50" />
+  <TNC-DefaultAccuracy value_float="1.0e-4"       />
+  <TNC-DefaultEta      value_float="0.25"         />
+  <TNC-DefaultFmin     value_float="1.0"          />
+  <TNC-DefaultRescale  value_float="1.3"          />
+  <TNC-DefaultStepmx   value_float="10.0"         />
+  <TNC-DefaultMaxCGit  value_int="50" />
 
   <!-- OT::AbdoRackwitz parameters -->
-  <AbdoRackwitz-DefaultOmega                   value_scalar="1.0e-4"           />
-  <AbdoRackwitz-DefaultSmooth                  value_scalar="1.2"              />
-  <AbdoRackwitz-DefaultTau                     value_scalar="0.5"              />
-  <AbdoRackwitz-DefaultMaximumEvaluationNumber value_unsigned_integer="100000" />
+  <AbdoRackwitz-DefaultOmega                   value_float="1.0e-4"           />
+  <AbdoRackwitz-DefaultSmooth                  value_float="1.2"              />
+  <AbdoRackwitz-DefaultTau                     value_float="0.5"              />
+  <AbdoRackwitz-DefaultMaximumEvaluationNumber value_int="100000" />
 
   <!-- OT::OptimizationAlgorithm parameters -->
-  <OptimizationAlgorithm-DefaultLevelValue              value_scalar="0.0"           />
-  <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value_scalar="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumConstraintError  value_scalar="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumRelativeError    value_scalar="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumResidualError    value_scalar="1.0e-5"        />
-  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_unsigned_integer="100" />
-  <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_unsigned_integer="100" />
+  <OptimizationAlgorithm-DefaultLevelValue              value_float="0.0"           />
+  <OptimizationAlgorithm-DefaultMaximumAbsoluteError    value_float="1.0e-5"        />
+  <OptimizationAlgorithm-DefaultMaximumConstraintError  value_float="1.0e-5"        />
+  <OptimizationAlgorithm-DefaultMaximumRelativeError    value_float="1.0e-5"        />
+  <OptimizationAlgorithm-DefaultMaximumResidualError    value_float="1.0e-5"        />
+  <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="100" />
+  <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
   
   <!-- OT::EfficientGlobalOptimization parameters -->
-  <EfficientGlobalOptimization-DefaultAEITradeoff               value_scalar="1.0"           />
-  <EfficientGlobalOptimization-DefaultCorrelationLengthFactor   value_scalar="1.0"           />
-  <EfficientGlobalOptimization-DefaultImprovementFactor         value_scalar="1.0"           />
-  <EfficientGlobalOptimization-DefaultMultiStartExperimentSize  value_unsigned_integer="100" />
-  <EfficientGlobalOptimization-DefaultMultiStartNumber          value_unsigned_integer="20"  />
-  <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_unsigned_integer="1"   />
+  <EfficientGlobalOptimization-DefaultAEITradeoff               value_float="1.0"           />
+  <EfficientGlobalOptimization-DefaultCorrelationLengthFactor   value_float="1.0"           />
+  <EfficientGlobalOptimization-DefaultImprovementFactor         value_float="1.0"           />
+  <EfficientGlobalOptimization-DefaultMultiStartExperimentSize  value_int="100" />
+  <EfficientGlobalOptimization-DefaultMultiStartNumber          value_int="20"  />
+  <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_int="1"   />
 
   <!-- OT::Cobyla parameters -->
-  <Cobyla-DefaultRhoBeg value_scalar="0.1" />
+  <Cobyla-DefaultRhoBeg value_float="0.1" />
 
   <!-- OT::SolverImplementation parameters -->
-  <Solver-DefaultAbsoluteError             value_scalar="1.0e-5"        />
-  <Solver-DefaultRelativeError             value_scalar="1.0e-5"        />
-  <Solver-DefaultResidualError             value_scalar="1.0e-8"        />
-  <Solver-DefaultMaximumFunctionEvaluation value_unsigned_integer="100" />
+  <Solver-DefaultAbsoluteError             value_float="1.0e-5"        />
+  <Solver-DefaultRelativeError             value_float="1.0e-5"        />
+  <Solver-DefaultResidualError             value_float="1.0e-8"        />
+  <Solver-DefaultMaximumFunctionEvaluation value_int="100" />
 
   <!-- OT::GaussKronrod parameters -->
-  <GaussKronrod-MaximumError        value_scalar="1.0e-12"       />
-  <GaussKronrod-MaximumSubIntervals value_unsigned_integer="100" />
+  <GaussKronrod-MaximumError        value_float="1.0e-12"       />
+  <GaussKronrod-MaximumSubIntervals value_int="100" />
 
   <!-- OT::GaussLegendre parameters -->
-  <GaussLegendre-DefaultMarginalIntegrationPointsNumber value_unsigned_integer="64" />
+  <GaussLegendre-DefaultMarginalIntegrationPointsNumber value_int="64" />
 
   <!-- OT::IteratedQuadrature parameters -->
-  <IteratedQuadrature-MaximumError        value_scalar="1.0e-7"       />
-  <IteratedQuadrature-MaximumSubIntervals value_unsigned_integer="32" />
+  <IteratedQuadrature-MaximumError        value_float="1.0e-7"       />
+  <IteratedQuadrature-MaximumSubIntervals value_int="32" />
 
   <!-- OT::Fehlberg parameters -->
-  <Fehlberg-InitialStep    value_scalar="1.0e-7"                       />
-  <Fehlberg-LocalPrecision value_scalar="1.0e-10"                      />
-  <Fehlberg-DefaultOrder   value_unsigned_integer="4" />
+  <Fehlberg-InitialStep    value_float="1.0e-7"                       />
+  <Fehlberg-LocalPrecision value_float="1.0e-10"                      />
+  <Fehlberg-DefaultOrder   value_int="4" />
 
   <!-- OT::KarhunenLoeveQuadratureAlgorithm parameters -->
-  <KarhunenLoeveQuadratureAlgorithm-RegularizationFactor value_scalar="0.0" />
+  <KarhunenLoeveQuadratureAlgorithm-RegularizationFactor value_float="0.0" />
 
   <!-- OT::KarhunenLoeveSVDAlgorithm parameters -->
   <KarhunenLoeveSVDAlgorithm-UseRandomSVD         value_bool="false"            />
-  <KarhunenLoeveSVDAlgorithm-RandomSVDVariant     value_string="Halko2010"      />
-  <KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank value_unsigned_integer="1000" />
-  <KarhunenLoeveSVDAlgorithm-Halko2011Margin      value_unsigned_integer="2"    />
-  <KarhunenLoeveSVDAlgorithm-Halko2011Iterations  value_unsigned_integer="2"    />
+  <KarhunenLoeveSVDAlgorithm-RandomSVDVariant     value_str="Halko2010"      />
+  <KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank value_int="1000" />
+  <KarhunenLoeveSVDAlgorithm-Halko2011Margin      value_int="2"    />
+  <KarhunenLoeveSVDAlgorithm-Halko2011Iterations  value_int="2"    />
 
   <!-- OT::KarhunenLoeveP1Algorithm parameters -->
-  <KarhunenLoeveP1Algorithm-RegularizationFactor value_scalar="0.0" />
+  <KarhunenLoeveP1Algorithm-RegularizationFactor value_float="0.0" />
 
   <!-- OT::AdaptiveStieltjesAlgorithm parameters -->
-  <AdaptiveStieltjesAlgorithm-MaximumError                    value_scalar="1.0e-12"      />
-  <AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots value_unsigned_integer="64" />
+  <AdaptiveStieltjesAlgorithm-MaximumError                    value_float="1.0e-12"      />
+  <AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots value_int="64" />
 
   <!-- OT::LinearModelFactory parameters -->
-  <LinearModelFactory-DefaultLevelValue value_scalar="0.95" />
+  <LinearModelFactory-DefaultLevelValue value_float="0.95" />
 
   <!-- OT::LinearModelTest parameters -->
-  <LinearModelTest-DefaultHarrisonMcCabeBreakpoint     value_scalar="0.5"            />
-  <LinearModelTest-DefaultLevel                        value_scalar="0.05"           />
-  <LinearModelTest-DefaultDurbinWatsonHypothesis       value_string="Equal"                 />
-  <LinearModelTest-DefaultHarrisonMcCabeSimulationSize value_unsigned_integer="1000" />
+  <LinearModelTest-DefaultHarrisonMcCabeBreakpoint     value_float="0.5"            />
+  <LinearModelTest-DefaultLevel                        value_float="0.05"           />
+  <LinearModelTest-DefaultDurbinWatsonHypothesis       value_str="Equal"                 />
+  <LinearModelTest-DefaultHarrisonMcCabeSimulationSize value_int="1000" />
 
   <!-- OT::Last parameters -->
-  <Last-DefaultMaximumSize value_unsigned_integer="65536" />
+  <Last-DefaultMaximumSize value_int="65536" />
 
   <!-- OT::Compact parameters -->
-  <Compact-DefaultHalfMaximumSize value_unsigned_integer="1024" />
+  <Compact-DefaultHalfMaximumSize value_int="1024" />
 
   <!-- OT::FaureSequence parameters -->
-  <FaureSequence-InitialSeed value_unsigned_integer="1" />
+  <FaureSequence-InitialSeed value_int="1" />
 
   <!-- OT::HaltonSequence parameters -->
-  <HaltonSequence-InitialSeed value_unsigned_integer="1" />
+  <HaltonSequence-InitialSeed value_int="1" />
 
   <!-- OT::HaselgroveSequence parameters -->
-  <HaselgroveSequence-InitialSeed value_unsigned_integer="1" />
+  <HaselgroveSequence-InitialSeed value_int="1" />
 
   <!-- OT::ReverseHaltonSequence parameters -->
-  <ReverseHaltonSequence-InitialSeed value_unsigned_integer="1" />
+  <ReverseHaltonSequence-InitialSeed value_int="1" />
 
   <!-- OT::SobolSequence parameters -->
-  <SobolSequence-InitialSeed value_unsigned_integer="1" />
+  <SobolSequence-InitialSeed value_int="1" />
 
   <!-- OT::SobolIndicesExperiment parameters -->
-  <SobolIndicesExperiment-SamplingMethod value_string="MonteCarlo" />
+  <SobolIndicesExperiment-SamplingMethod value_str="MonteCarlo" />
 
   <!-- OT::SobolIndicesAlgorithm parameters -->
   <SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution value_bool="0"               />
-  <SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel  value_scalar="0.95"          />
-  <SobolIndicesAlgorithm-DefaultBlockSize                 value_unsigned_integer="1"   />
-  <SobolIndicesAlgorithm-DefaultBootstrapSize             value_unsigned_integer="100" />
+  <SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel  value_float="0.95"          />
+  <SobolIndicesAlgorithm-DefaultBlockSize                 value_int="1"   />
+  <SobolIndicesAlgorithm-DefaultBootstrapSize             value_int="100" />
 
   <!-- OT::FAST parameters -->
-  <FAST-DefaultInterferenceFactor value_unsigned_integer="4" />
-  <FAST-DefaultResamplingSize     value_unsigned_integer="1" />
+  <FAST-DefaultInterferenceFactor value_int="4" />
+  <FAST-DefaultResamplingSize     value_int="1" />
 
   <!-- OT::RandomGenerator parameters -->
-  <RandomGenerator-InitialSeed value_unsigned_integer="0" />
+  <RandomGenerator-InitialSeed value_int="0" />
   
   <!-- OT::CovarianceModelImplementation parameters -->
-  <CovarianceModel-DefaultNuggetFactor value_scalar="1e-12"         />
-  <CovarianceModel-DefaultTMax         value_scalar="5.0"           />
-  <CovarianceModel-DefaultTMin         value_scalar="-5.0"          />
-  <CovarianceModel-DefaultPointNumber  value_unsigned_integer="129" />
+  <CovarianceModel-DefaultNuggetFactor value_float="1e-12"         />
+  <CovarianceModel-DefaultTMax         value_float="5.0"           />
+  <CovarianceModel-DefaultTMin         value_float="-5.0"          />
+  <CovarianceModel-DefaultPointNumber  value_int="129" />
 
   <!-- OT::SpectralModelImplementation parameters -->
-  <SpectralModel-DefaultMaximumFrequency value_scalar="5.0"           />
-  <SpectralModel-DefaultMinimumFrequency value_scalar="-5.0"          />
-  <SpectralModel-DefaultFrequencyNumber  value_unsigned_integer="129" />
+  <SpectralModel-DefaultMaximumFrequency value_float="5.0"           />
+  <SpectralModel-DefaultMinimumFrequency value_float="-5.0"          />
+  <SpectralModel-DefaultFrequencyNumber  value_int="129" />
 
   <!-- OT::FieldImplementation parameters -->
-  <Field-ArrowRatio   value_scalar="0.01"         />
-  <Field-ArrowScaling value_scalar="1.0"          />
-  <Field-LevelNumber  value_unsigned_integer="30" />
+  <Field-ArrowRatio   value_float="0.01"         />
+  <Field-ArrowScaling value_float="1.0"          />
+  <Field-LevelNumber  value_int="30" />
 
   <!-- OT::SampleImplementation parameters -->
-  <Sample-CommentMarkers         value_string="#"              />
-  <Sample-PrintEllipsisSize      value_unsigned_integer="3"    />
-  <Sample-PrintEllipsisThreshold value_unsigned_integer="1000" />
-  <Sample-SmallKendallTau        value_unsigned_integer="23"   />
+  <Sample-CommentMarkers         value_str="#"              />
+  <Sample-PrintEllipsisSize      value_int="3"    />
+  <Sample-PrintEllipsisThreshold value_int="1000" />
+  <Sample-SmallKendallTau        value_int="23"   />
 
   <!-- OT::DomainImplementation parameters -->
-  <Domain-SmallVolume value_scalar="1.0e-12" />
+  <Domain-SmallVolume value_float="1.0e-12" />
 
   <!-- OT::Mesh parameters -->
   <Mesh-BackfaceCulling value_bool="false"            />
-  <Mesh-AmbientFactor   value_scalar="0.1"            />
-  <Mesh-DiffuseFactor   value_scalar="0.7"            />
-  <Mesh-Shininess       value_scalar="100.0"          />
-  <Mesh-SpecularFactor  value_scalar="0.2"            />
-  <Mesh-VertexEpsilon   value_scalar="1.0e-6"         />
-  <Mesh-LargeSize       value_unsigned_integer="5000" />
+  <Mesh-AmbientFactor   value_float="0.1"            />
+  <Mesh-DiffuseFactor   value_float="0.7"            />
+  <Mesh-Shininess       value_float="100.0"          />
+  <Mesh-SpecularFactor  value_float="0.2"            />
+  <Mesh-VertexEpsilon   value_float="1.0e-6"         />
+  <Mesh-LargeSize       value_int="5000" />
 
   <!-- OT::BoundingVolumeHierarchy parameters -->
-  <BoundingVolumeHierarchy-Strategy  value_string="Mean"         />
-  <BoundingVolumeHierarchy-BinNumber value_unsigned_integer="50" />
+  <BoundingVolumeHierarchy-Strategy  value_str="Mean"         />
+  <BoundingVolumeHierarchy-BinNumber value_int="50" />
 
   <!-- OT::EnclosingSimplexAlgorithm parameters -->
-  <EnclosingSimplexAlgorithm-LargeDimension value_unsigned_integer="5" />
+  <EnclosingSimplexAlgorithm-LargeDimension value_int="5" />
 
   <!-- OT::Matrix parameters -->
-  <Matrix-size-visible-in-str-from value_unsigned_integer="5" />
+  <Matrix-size-visible-in-str-from value_int="5" />
 
   <!-- OT::Tensor parameters -->
-  <Tensor-size-visible-in-str-from value_unsigned_integer="5" />
+  <Tensor-size-visible-in-str-from value_int="5" />
 
   <!-- OT::Tensor parameters -->
-  <ComplexTensor-size-visible-in-str-from value_unsigned_integer="6" />
+  <ComplexTensor-size-visible-in-str-from value_int="6" />
 
   <!-- OT::MatrixImplementation parameters -->
-  <Matrix-DefaultSmallPivot value_scalar="1.0e-7"  />
-  <Matrix-SymmetryThreshold value_scalar="1.0e-12" />
+  <Matrix-DefaultSmallPivot value_float="1.0e-7"  />
+  <Matrix-SymmetryThreshold value_float="1.0e-12" />
 
   <!-- OT::BernsteinCopulaFactory parameters -->
-  <BernsteinCopulaFactory-alpha                    value_scalar="1.0"             />
-  <BernsteinCopulaFactory-BinNumberSelectionMethod value_string="LogLikelihood"   />
-  <BernsteinCopulaFactory-kFraction                value_unsigned_integer="2"     />
-  <BernsteinCopulaFactory-MaxM                     value_unsigned_integer="1"     />
-  <BernsteinCopulaFactory-MinM                     value_unsigned_integer="2"     />
-  <BernsteinCopulaFactory-SamplingSize             value_unsigned_integer="10000" />
+  <BernsteinCopulaFactory-alpha                    value_float="1.0"             />
+  <BernsteinCopulaFactory-BinNumberSelectionMethod value_str="LogLikelihood"   />
+  <BernsteinCopulaFactory-kFraction                value_int="2"     />
+  <BernsteinCopulaFactory-MaxM                     value_int="1"     />
+  <BernsteinCopulaFactory-MinM                     value_int="2"     />
+  <BernsteinCopulaFactory-SamplingSize             value_int="10000" />
 
   <!-- OT::BurrFactory parameters -->
-  <BurrFactory-AbsolutePrecision value_scalar="1e-12"        />
-  <BurrFactory-RelativePrecision value_scalar="1e-12"        />
-  <BurrFactory-ResidualPrecision value_scalar="1e-12"        />
-  <BurrFactory-MaximumIteration  value_unsigned_integer="10" />
+  <BurrFactory-AbsolutePrecision value_float="1e-12"        />
+  <BurrFactory-RelativePrecision value_float="1e-12"        />
+  <BurrFactory-ResidualPrecision value_float="1e-12"        />
+  <BurrFactory-MaximumIteration  value_int="10" />
   
   <!-- OT::ConditionalDistribution parameters -->
-  <ConditionalDistribution-MarginalIntegrationNodesNumber value_unsigned_integer="256"    />
-  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_unsigned_integer="100000" />
+  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"    />
+  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000" />
   
   <!-- OT::ComposedDistribution parameters -->
   <ComposedDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
   <!-- OT::CompositeDistribution parameters -->
-  <CompositeDistribution-SolverEpsilon value_scalar="1.0e-10"       />
-  <CompositeDistribution-StepNumber    value_unsigned_integer="256" />
+  <CompositeDistribution-SolverEpsilon value_float="1.0e-10"       />
+  <CompositeDistribution-StepNumber    value_int="256" />
 
   <!-- OT::Dirichlet parameters -->
-  <Dirichlet-DefaultIntegrationSize  value_unsigned_integer="50"     />
-  <Dirichlet-DefaultSamplingSize     value_unsigned_integer="500000" />
+  <Dirichlet-DefaultIntegrationSize  value_int="50"     />
+  <Dirichlet-DefaultSamplingSize     value_int="500000" />
 
   <!-- OT::DirichletFactory parameters -->
-  <DirichletFactory-ParametersEpsilon value_scalar="1.0e-12"      />
-  <DirichletFactory-MaximumIteration  value_unsigned_integer="10" />
+  <DirichletFactory-ParametersEpsilon value_float="1.0e-12"      />
+  <DirichletFactory-MaximumIteration  value_int="10" />
 
   <!-- OT::ExtremeValueCopula parameters -->
   <ExtremeValueCopula-CheckPickandFunction value_bool="true"           />
-  <ExtremeValueCopula-CheckGridSize        value_unsigned_integer="11" />
+  <ExtremeValueCopula-CheckGridSize        value_int="11" />
 
   <!-- OT::FisherSnedecorFactory parameters -->
-  <FisherSnedecorFactory-D1LowerBound value_scalar="1.0e-2" />
-  <FisherSnedecorFactory-D2LowerBound value_scalar="1.0e-2" />
+  <FisherSnedecorFactory-D1LowerBound value_float="1.0e-2" />
+  <FisherSnedecorFactory-D2LowerBound value_float="1.0e-2" />
 
   <!-- OT::FrechetFactory parameters -->
-  <FrechetFactory-BoundMargin value_scalar="10.0" />
+  <FrechetFactory-BoundMargin value_float="10.0" />
 
   <!-- OT::GeneralizedParetoFactory parameters -->
-  <GeneralizedExtremeValue-XiThreshold value_scalar="1.0e-6" />
+  <GeneralizedExtremeValue-XiThreshold value_float="1.0e-6" />
 
   <!-- OT::GeneralizedParetoFactory parameters -->
-  <GeneralizedParetoFactory-MaximumAbsoluteError    value_scalar="1.0e-10"        />
-  <GeneralizedParetoFactory-MaximumConstraintError  value_scalar="1.0e-10"        />
-  <GeneralizedParetoFactory-MaximumObjectiveError   value_scalar="1.0e-10"        />
-  <GeneralizedParetoFactory-MaximumRelativeError    value_scalar="1.0e-10"        />
-  <GeneralizedParetoFactory-MaximumEvaluationNumber value_unsigned_integer="1000" />
-  <GeneralizedParetoFactory-SmallSize               value_unsigned_integer="20"   />
+  <GeneralizedParetoFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
+  <GeneralizedParetoFactory-MaximumConstraintError  value_float="1.0e-10"        />
+  <GeneralizedParetoFactory-MaximumObjectiveError   value_float="1.0e-10"        />
+  <GeneralizedParetoFactory-MaximumRelativeError    value_float="1.0e-10"        />
+  <GeneralizedParetoFactory-MaximumEvaluationNumber value_int="1000" />
+  <GeneralizedParetoFactory-SmallSize               value_int="20"   />
   
   <!-- OT::InverseNormalFactory parameters -->
-  <InverseNormalFactory-Method value_string="MLE" />
+  <InverseNormalFactory-Method value_str="MLE" />
 
   <!-- OT::KernelMixture parameters -->
-  <KernelMixture-LargeSize            value_unsigned_integer="20"   />
-  <KernelMixture-PDFCDFDiscretization value_unsigned_integer="1000" />
-  <KernelMixture-SmallSize            value_unsigned_integer="50"   />
+  <KernelMixture-LargeSize            value_int="20"   />
+  <KernelMixture-PDFCDFDiscretization value_int="1000" />
+  <KernelMixture-SmallSize            value_int="50"   />
   
   <!-- OT::KernelSmoothing parameters -->
-  <KernelSmoothing-AbsolutePrecision   value_scalar="0.0"            />
-  <KernelSmoothing-CutOffPlugin        value_scalar="5.0"            />
-  <KernelSmoothing-RelativePrecision   value_scalar="1.0e-5"         />
-  <KernelSmoothing-ResidualPrecision   value_scalar="1.0e-10"        />
-  <KernelSmoothing-BinNumber           value_unsigned_integer="1024" />
-  <KernelSmoothing-MaximumIteration    value_unsigned_integer="50"   />
-  <KernelSmoothing-SmallSize           value_unsigned_integer="250"  />
+  <KernelSmoothing-AbsolutePrecision   value_float="0.0"            />
+  <KernelSmoothing-CutOffPlugin        value_float="5.0"            />
+  <KernelSmoothing-RelativePrecision   value_float="1.0e-5"         />
+  <KernelSmoothing-ResidualPrecision   value_float="1.0e-10"        />
+  <KernelSmoothing-BinNumber           value_int="1024" />
+  <KernelSmoothing-MaximumIteration    value_int="50"   />
+  <KernelSmoothing-SmallSize           value_int="250"  />
   
   <!-- OT::LogNormal parameters -->
-  <LogNormal-CharacteristicFunctionSmallSigmaThreshold value_scalar="0.2"           />
-  <LogNormal-CharacteristicFunctionIntegrationNodes    value_unsigned_integer="256" />
+  <LogNormal-CharacteristicFunctionSmallSigmaThreshold value_float="0.2"           />
+  <LogNormal-CharacteristicFunctionIntegrationNodes    value_int="256" />
 
   <!-- OT::LogNormalFactory parameters -->
-  <LogNormalFactory-AbsolutePrecision value_scalar="1e-12"        />
-  <LogNormalFactory-RelativePrecision value_scalar="1e-12"        />
-  <LogNormalFactory-ResidualPrecision value_scalar="1e-12"        />
-  <LogNormalFactory-MaximumIteration  value_unsigned_integer="50" />
-  <LogNormalFactory-EstimationMethod  value_unsigned_integer="0"  />
+  <LogNormalFactory-AbsolutePrecision value_float="1e-12"        />
+  <LogNormalFactory-RelativePrecision value_float="1e-12"        />
+  <LogNormalFactory-ResidualPrecision value_float="1e-12"        />
+  <LogNormalFactory-MaximumIteration  value_int="50" />
+  <LogNormalFactory-EstimationMethod  value_int="0"  />
 
   <!-- Meixner parameters -->
-  <MeixnerDistribution-MaximumAbsoluteError      value_scalar="1.0e-12"         />
-  <MeixnerDistribution-MaximumConstraintError    value_scalar="1.0e-12"         />
-  <MeixnerDistribution-MaximumObjectiveError     value_scalar="1.0e-12"         />
-  <MeixnerDistribution-MaximumRelativeError      value_scalar="1.0e-12"         />
-  <MeixnerDistribution-CDFDiscretization         value_unsigned_integer="10000" />
-  <MeixnerDistribution-CDFIntegrationNodesNumber value_unsigned_integer="32"    />
+  <MeixnerDistribution-MaximumAbsoluteError      value_float="1.0e-12"         />
+  <MeixnerDistribution-MaximumConstraintError    value_float="1.0e-12"         />
+  <MeixnerDistribution-MaximumObjectiveError     value_float="1.0e-12"         />
+  <MeixnerDistribution-MaximumRelativeError      value_float="1.0e-12"         />
+  <MeixnerDistribution-CDFDiscretization         value_int="10000" />
+  <MeixnerDistribution-CDFIntegrationNodesNumber value_int="32"    />
 
   <!-- OT::Mixture parameters -->
-  <Mixture-SmallWeight          value_scalar="1.0e-12"        />
-  <Mixture-LargeSize            value_unsigned_integer="20"   />
-  <Mixture-PDFCDFDiscretization value_unsigned_integer="1000" />
-  <Mixture-SmallSize            value_unsigned_integer="50"   />
+  <Mixture-SmallWeight          value_float="1.0e-12"        />
+  <Mixture-LargeSize            value_int="20"   />
+  <Mixture-PDFCDFDiscretization value_int="1000" />
+  <Mixture-SmallSize            value_int="50"   />
 
   <!-- OT::Multinomial parameters -->
-  <Multinomial-eta    value_scalar="1.0e-9" />
-  <Multinomial-smallA value_scalar="10.0"   />
+  <Multinomial-eta    value_float="1.0e-9" />
+  <Multinomial-smallA value_float="10.0"   />
 
   <!-- OT::NegativeBinomialFactory parameters -->
-  <NegativeBinomialFactory-AbsolutePrecision value_scalar="1e-12"        />
-  <NegativeBinomialFactory-RelativePrecision value_scalar="1e-12"        />
-  <NegativeBinomialFactory-ResidualPrecision value_scalar="1e-12"        />
-  <NegativeBinomialFactory-MaximumIteration  value_unsigned_integer="50" />
+  <NegativeBinomialFactory-AbsolutePrecision value_float="1e-12"        />
+  <NegativeBinomialFactory-RelativePrecision value_float="1e-12"        />
+  <NegativeBinomialFactory-ResidualPrecision value_float="1e-12"        />
+  <NegativeBinomialFactory-MaximumIteration  value_int="50" />
 
   <!-- OT::Normal parameters -->
-  <Normal-MaximumCDFEpsilon              value_scalar="5.0e-6"             />
-  <Normal-MinimumCDFEpsilon              value_scalar="5.0e-2"             />
-  <Normal-MarginalIntegrationNodesNumber value_unsigned_integer="16"       />
-  <Normal-MaximumNumberOfPoints          value_unsigned_integer="10000000" />
-  <Normal-MinimumNumberOfPoints          value_unsigned_integer="100000"   />
-  <Normal-SmallDimension                 value_unsigned_integer="6"        />
+  <Normal-MaximumCDFEpsilon              value_float="5.0e-6"             />
+  <Normal-MinimumCDFEpsilon              value_float="5.0e-2"             />
+  <Normal-MarginalIntegrationNodesNumber value_int="16"       />
+  <Normal-MaximumNumberOfPoints          value_int="10000000" />
+  <Normal-MinimumNumberOfPoints          value_int="100000"   />
+  <Normal-SmallDimension                 value_int="6"        />
 
   <!-- OT::ProductDistribution parameters -->
-  <ProductDistribution-LargeCharacteristicFunctionArgument value_scalar="10.0" />
+  <ProductDistribution-LargeCharacteristicFunctionArgument value_float="10.0" />
 
   <!-- OT::RiceFactory parameters -->
-  <RiceFactory-AbsolutePrecision value_scalar="1e-12"        />
-  <RiceFactory-RelativePrecision value_scalar="1e-12"        />
-  <RiceFactory-ResidualPrecision value_scalar="1e-12"        />
-  <RiceFactory-MaximumIteration  value_unsigned_integer="10" />
+  <RiceFactory-AbsolutePrecision value_float="1e-12"        />
+  <RiceFactory-RelativePrecision value_float="1e-12"        />
+  <RiceFactory-ResidualPrecision value_float="1e-12"        />
+  <RiceFactory-MaximumIteration  value_int="10" />
   
   <!-- OT::TrapezoidalFactory parameters -->
-  <TrapezoidalFactory-RhoBeg           value_scalar="0.1"            />
-  <TrapezoidalFactory-RhoEnd           value_scalar="1.0e-5"         />
-  <TrapezoidalFactory-MaximumIteration value_unsigned_integer="2000" />
+  <TrapezoidalFactory-RhoBeg           value_float="0.1"            />
+  <TrapezoidalFactory-RhoEnd           value_float="1.0e-5"         />
+  <TrapezoidalFactory-MaximumIteration value_int="2000" />
 
   <!-- OT::TruncatedDistribution parameters -->
-  <TruncatedDistribution-DefaultThresholdRealization value_scalar="0.5" />
+  <TruncatedDistribution-DefaultThresholdRealization value_float="0.5" />
 
   <!-- OT::TruncatedNormalFactory parameters -->
-  <TruncatedNormalFactory-SigmaLowerBound value_scalar="1.0e-4" />
+  <TruncatedNormalFactory-SigmaLowerBound value_float="1.0e-4" />
 
   <!-- OT::MaximumLikelihoodFactory parameters -->
-  <MaximumLikelihoodFactory-MaximumAbsoluteError         value_scalar="1.0e-10"        />
-  <MaximumLikelihoodFactory-MaximumConstraintError       value_scalar="1.0e-10"        />
-  <MaximumLikelihoodFactory-MaximumObjectiveError        value_scalar="1.0e-10"        />
-  <MaximumLikelihoodFactory-MaximumRelativeError         value_scalar="1.0e-10"        />
-  <MaximumLikelihoodFactory-DefaultOptimizationAlgorithm value_string="TNC"            />
-  <MaximumLikelihoodFactory-MaximumEvaluationNumber      value_unsigned_integer="1000" />
+  <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
+  <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />
+  <MaximumLikelihoodFactory-MaximumObjectiveError        value_float="1.0e-10"        />
+  <MaximumLikelihoodFactory-MaximumRelativeError         value_float="1.0e-10"        />
+  <MaximumLikelihoodFactory-DefaultOptimizationAlgorithm value_str="TNC"            />
+  <MaximumLikelihoodFactory-MaximumEvaluationNumber      value_int="1000" />
 
   <!-- OT::MethodOfMomentsFactory parameters -->
-  <MethodOfMomentsFactory-MaximumAbsoluteError    value_scalar="1.0e-10"        />
-  <MethodOfMomentsFactory-MaximumConstraintError  value_scalar="1.0e-10"        />
-  <MethodOfMomentsFactory-MaximumObjectiveError   value_scalar="1.0e-10"        />
-  <MethodOfMomentsFactory-MaximumRelativeError    value_scalar="1.0e-10"        />
-  <MethodOfMomentsFactory-MaximumEvaluationNumber value_unsigned_integer="1000" />
+  <MethodOfMomentsFactory-MaximumAbsoluteError    value_float="1.0e-10"        />
+  <MethodOfMomentsFactory-MaximumConstraintError  value_float="1.0e-10"        />
+  <MethodOfMomentsFactory-MaximumObjectiveError   value_float="1.0e-10"        />
+  <MethodOfMomentsFactory-MaximumRelativeError    value_float="1.0e-10"        />
+  <MethodOfMomentsFactory-MaximumEvaluationNumber value_int="1000" />
 
   <!-- OT::Student parameters -->
-  <Student-MaximumCDFEpsilon              value_scalar="5.0e-6"             />
-  <Student-MinimumCDFEpsilon              value_scalar="5.0e-2"             />
-  <Student-MarginalIntegrationNodesNumber value_unsigned_integer="16"       />
-  <Student-MaximumNumberOfPoints          value_unsigned_integer="10000000" />
-  <Student-MinimumNumberOfPoints          value_unsigned_integer="100000"   />
-  <Student-SmallDimension                 value_unsigned_integer="6"        />
+  <Student-MaximumCDFEpsilon              value_float="5.0e-6"             />
+  <Student-MinimumCDFEpsilon              value_float="5.0e-2"             />
+  <Student-MarginalIntegrationNodesNumber value_int="16"       />
+  <Student-MaximumNumberOfPoints          value_int="10000000" />
+  <Student-MinimumNumberOfPoints          value_int="100000"   />
+  <Student-SmallDimension                 value_int="6"        />
   
   <!-- OT::NonCentralStudent parameters -->
-  <NonCentralStudent-CDFAlgo value_unsigned_integer="0" />
+  <NonCentralStudent-CDFAlgo value_int="0" />
   
   <!-- OT::UserDefined parameters -->
-  <UserDefined-SmallSize value_unsigned_integer="10000" />
+  <UserDefined-SmallSize value_int="10000" />
   
   <!-- OT::AliMikhailHaqCopulaFactory parameters -->
-  <AliMikhailHaqCopulaFactory-ThetaEpsilon value_scalar="1.0e-14" />
+  <AliMikhailHaqCopulaFactory-ThetaEpsilon value_float="1.0e-14" />
 
   <!-- OT::FrankCopulaFactory parameters -->
-  <FrankCopulaFactory-AbsolutePrecision value_scalar="1.0e-14"       />
-  <FrankCopulaFactory-RelativePrecision value_scalar="1.0e-14"       />
-  <FrankCopulaFactory-ResidualPrecision value_scalar="1.0e-14"       />
-  <FrankCopulaFactory-MaximumIteration  value_unsigned_integer="100" />
+  <FrankCopulaFactory-AbsolutePrecision value_float="1.0e-14"       />
+  <FrankCopulaFactory-RelativePrecision value_float="1.0e-14"       />
+  <FrankCopulaFactory-ResidualPrecision value_float="1.0e-14"       />
+  <FrankCopulaFactory-MaximumIteration  value_int="100" />
 
   <!-- OT::RandomMixture parameters -->
   <RandomMixture-SimplifyAtoms                  value_bool="true"              />
-  <RandomMixture-DefaultAlpha                   value_scalar="5.0"             />
-  <RandomMixture-DefaultBeta                    value_scalar="8.5"             />
-  <RandomMixture-DefaultCDFEpsilon              value_scalar="1.0e-10"         />
-  <RandomMixture-DefaultPDFEpsilon              value_scalar="1.0e-10"         />
-  <RandomMixture-GraphCDFEpsilon                value_scalar="1.0e-5"          />
-  <RandomMixture-GraphPDFEpsilon                value_scalar="1.0e-5"          />
-  <RandomMixture-DefaultBlockMax                value_unsigned_integer="16"    />
-  <RandomMixture-DefaultBlockMin                value_unsigned_integer="3"     />
-  <RandomMixture-DefaultMaxSize                 value_unsigned_integer="65536" />
-  <RandomMixture-MarginalIntegrationNodesNumber value_unsigned_integer="128"   />
-  <RandomMixture-MaximumIntegrationNodesNumber  value_unsigned_integer="1024"  />
-  <RandomMixture-MaximumSupportSize             value_unsigned_integer="2048"  />
-  <RandomMixture-ProjectionDefaultSize          value_unsigned_integer="25"    />
-  <RandomMixture-SmallSize                      value_unsigned_integer="100"   />
+  <RandomMixture-DefaultAlpha                   value_float="5.0"             />
+  <RandomMixture-DefaultBeta                    value_float="8.5"             />
+  <RandomMixture-DefaultCDFEpsilon              value_float="1.0e-10"         />
+  <RandomMixture-DefaultPDFEpsilon              value_float="1.0e-10"         />
+  <RandomMixture-GraphCDFEpsilon                value_float="1.0e-5"          />
+  <RandomMixture-GraphPDFEpsilon                value_float="1.0e-5"          />
+  <RandomMixture-DefaultBlockMax                value_int="16"    />
+  <RandomMixture-DefaultBlockMin                value_int="3"     />
+  <RandomMixture-DefaultMaxSize                 value_int="65536" />
+  <RandomMixture-MarginalIntegrationNodesNumber value_int="128"   />
+  <RandomMixture-MaximumIntegrationNodesNumber  value_int="1024"  />
+  <RandomMixture-MaximumSupportSize             value_int="2048"  />
+  <RandomMixture-ProjectionDefaultSize          value_int="25"    />
+  <RandomMixture-SmallSize                      value_int="100"   />
 
   <!-- OT::NumericalMathEvaluation parameters -->
-  <NumericalMathEvaluation-ParameterEpsilon   value_scalar="1.0e-7"        />
-  <NumericalMathEvaluation-DefaultPointNumber value_unsigned_integer="129" />
+  <NumericalMathEvaluation-ParameterEpsilon   value_float="1.0e-7"        />
+  <NumericalMathEvaluation-DefaultPointNumber value_int="129" />
 
   <!-- OT::DualLinearCombinationEvaluation parameters -->
-  <DualLinearCombinationEvaluation-SmallCoefficient value_scalar="0.0" />
+  <DualLinearCombinationEvaluation-SmallCoefficient value_float="0.0" />
 
   <!-- OT::LinearCombinationEvaluation parameters -->
-  <LinearCombinationEvaluation-SmallCoefficient value_scalar="0.0" />
+  <LinearCombinationEvaluation-SmallCoefficient value_float="0.0" />
 
   <!-- OT::DistFunc parameters -->
-  <DistFunc-Precision        value_scalar="1.0e-14"        />
-  <DistFunc-MaximumIteration value_unsigned_integer="5000" />
+  <DistFunc-Precision        value_float="1.0e-14"        />
+  <DistFunc-MaximumIteration value_int="5000" />
 
   <!-- OT::KFactor parameters -->
-  <KFactor-Precision                     value_scalar="1.0e-8"        />
-  <KFactor-DefaultIntegrationNodesNumber value_unsigned_integer="256" />
-  <KFactor-MaximumIteration              value_unsigned_integer="32"  />
+  <KFactor-Precision                     value_float="1.0e-8"        />
+  <KFactor-DefaultIntegrationNodesNumber value_int="256" />
+  <KFactor-MaximumIteration              value_int="32"  />
 
   <!-- OT::RootStrategyImplementation parameters -->
-  <RootStrategy-DefaultMaximumDistance value_scalar="8.0" />
-  <RootStrategy-DefaultStepSize        value_scalar="1.0" />
+  <RootStrategy-DefaultMaximumDistance value_float="8.0" />
+  <RootStrategy-DefaultStepSize        value_float="1.0" />
 
   <!-- OT::SimulationAlgorithm parameters -->
-  <SimulationAlgorithm-DefaultMaximumCoefficientOfVariation value_scalar="1.0e-1"         />
-  <SimulationAlgorithm-DefaultMaximumStandardDeviation      value_scalar="0.0"            />
-  <SimulationAlgorithm-DefaultBlockSize                     value_unsigned_integer="1"    />
-  <SimulationAlgorithm-DefaultMaximumOuterSampling          value_unsigned_integer="1000" />
+  <SimulationAlgorithm-DefaultMaximumCoefficientOfVariation value_float="1.0e-1"         />
+  <SimulationAlgorithm-DefaultMaximumStandardDeviation      value_float="0.0"            />
+  <SimulationAlgorithm-DefaultBlockSize                     value_int="1"    />
+  <SimulationAlgorithm-DefaultMaximumOuterSampling          value_int="1000" />
 
   <!-- OT::ProbabilitySimulationResult parameters -->
   <ProbabilitySimulationResult-CheckPositiveVariance  value_bool="false"  />
-  <ProbabilitySimulationResult-DefaultConfidenceLevel value_scalar="0.95" />
+  <ProbabilitySimulationResult-DefaultConfidenceLevel value_float="0.95" />
 
   <!-- OT::ExpectationSimulationAlgorithm parameters -->
-  <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_string="MAX"  />
-  <ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType      value_string="NONE" />
+  <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_str="MAX"  />
+  <ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType      value_str="NONE" />
 
   <!-- OT::SobolSimulationAlgorithm parameters -->
-  <SobolSimulationAlgorithm-DefaultIndexQuantileLevel   value_scalar="0.05"           />
-  <SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon value_scalar="1.0e-2"         />
-  <SobolSimulationAlgorithm-DefaultBlockSize            value_unsigned_integer="1000" />
-  <SobolSimulationAlgorithm-DefaultBatchSize            value_unsigned_integer="1000" />
+  <SobolSimulationAlgorithm-DefaultIndexQuantileLevel   value_float="0.05"           />
+  <SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon value_float="1.0e-2"         />
+  <SobolSimulationAlgorithm-DefaultBlockSize            value_int="1000" />
+  <SobolSimulationAlgorithm-DefaultBatchSize            value_int="1000" />
 
   <!-- OT::SimulationSensitivityAnalysis parameters -->
-  <SimulationSensitivityAnalysis-DefaultSampleMargin value_unsigned_integer="400" />
+  <SimulationSensitivityAnalysis-DefaultSampleMargin value_int="400" />
 
   <!-- OT::SubsetSampling parameters -->
-  <SubsetSampling-DefaultBetaMin                value_scalar="2.0"             />
-  <SubsetSampling-DefaultConditionalProbability value_scalar="0.1"             />
-  <SubsetSampling-DefaultProposalRange          value_scalar="2.0"             />
-  <SubsetSampling-DefaultMaximumOuterSampling   value_unsigned_integer="10000" />
+  <SubsetSampling-DefaultBetaMin                value_float="2.0"             />
+  <SubsetSampling-DefaultConditionalProbability value_float="0.1"             />
+  <SubsetSampling-DefaultProposalRange          value_float="2.0"             />
+  <SubsetSampling-DefaultMaximumOuterSampling   value_int="10000" />
 
   <!-- OT::DirectionalSampling parameters -->
-  <DirectionalSampling-MeanContributionIntegrationNodesNumber value_unsigned_integer="255" />
+  <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 
   <!-- OT::AdaptiveDirectionalSampling parameters -->
-  <AdaptiveDirectionalSampling-DefaultGamma                          value_scalar="0.5"         />
-  <AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension value_unsigned_integer="3" />
-  <AdaptiveDirectionalSampling-DefaultNumberOfSteps                  value_unsigned_integer="2" />
+  <AdaptiveDirectionalSampling-DefaultGamma                          value_float="0.5"         />
+  <AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension value_int="3" />
+  <AdaptiveDirectionalSampling-DefaultNumberOfSteps                  value_int="2" />
 
   <!-- OT::AnalyticalResult parameters -->
-  <AnalyticalResult-DefaultWidth                    value_scalar="1.0"           />
-  <AnalyticalResult-MeanPointIntegrationNodesNumber value_unsigned_integer="255" />
+  <AnalyticalResult-DefaultWidth                    value_float="1.0"           />
+  <AnalyticalResult-MeanPointIntegrationNodesNumber value_int="255" />
 
   <!-- OT::StrongMaximumTest parameters -->
-  <StrongMaximumTest-DefaultDeltaPrecision     value_scalar="1.0e-7"  />
-  <StrongMaximumTest-Epsilon                   value_scalar="1.0e-10" />
+  <StrongMaximumTest-DefaultDeltaPrecision     value_float="1.0e-7"  />
+  <StrongMaximumTest-Epsilon                   value_float="1.0e-10" />
 
   <!-- OT::CleaningStrategy parameters -->
-  <CleaningStrategy-DefaultSignificanceFactor value_scalar="1.0e-4"       />
-  <CleaningStrategy-DefaultMaximumSize        value_unsigned_integer="20" />
+  <CleaningStrategy-DefaultSignificanceFactor value_float="1.0e-4"       />
+  <CleaningStrategy-DefaultMaximumSize        value_int="20" />
 
   <!-- OT::FunctionalChaosAlgorithm parameters -->
-  <FunctionalChaosAlgorithm-DefaultMaximumResidual value_scalar="1.0e-6"          />
-  <FunctionalChaosAlgorithm-PValueThreshold        value_scalar="1.0e-3"          />
-  <FunctionalChaosAlgorithm-QNorm                  value_scalar="0.5"             />
-  <FunctionalChaosAlgorithm-LargeSampleSize        value_unsigned_integer="10000" />
-  <FunctionalChaosAlgorithm-MaximumTotalDegree     value_unsigned_integer="10"    />
-  <FunctionalChaosAlgorithm-SmallSampleSize        value_unsigned_integer="1000"  />
+  <FunctionalChaosAlgorithm-DefaultMaximumResidual value_float="1.0e-6"          />
+  <FunctionalChaosAlgorithm-PValueThreshold        value_float="1.0e-3"          />
+  <FunctionalChaosAlgorithm-QNorm                  value_float="0.5"             />
+  <FunctionalChaosAlgorithm-LargeSampleSize        value_int="10000" />
+  <FunctionalChaosAlgorithm-MaximumTotalDegree     value_int="10"    />
+  <FunctionalChaosAlgorithm-SmallSampleSize        value_int="1000"  />
 
   <!-- OT::FunctionalChaosSobolIndices parameters -->
-  <FunctionalChaosSobolIndices-VariancePartThreshold value_scalar="1.0e-2" />
+  <FunctionalChaosSobolIndices-VariancePartThreshold value_float="1.0e-2" />
 
   <!-- OT::GeneralLinearModelAlgorithm parameters -->
   <GeneralLinearModelAlgorithm-KeepCovariance                 value_bool="true"      />
@@ -560,180 +560,180 @@
   <GeneralLinearModelAlgorithm-OptimizeParameters             value_bool="true"      />
   <GeneralLinearModelAlgorithm-UnbiasedVariance               value_bool="true"      />
   <GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value_bool="true"      />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound  value_scalar="1.0e-2"  />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor value_scalar="2.0"     />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound  value_scalar="1.0e2"   />
-  <GeneralLinearModelAlgorithm-MaximalScaling                 value_scalar="1.0e5"   />
-  <GeneralLinearModelAlgorithm-MeanEpsilon                    value_scalar="1.0e-12" />
-  <GeneralLinearModelAlgorithm-StartingScaling                value_scalar="1.0e-13" />
-  <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm   value_string="TNC"     />
-  <GeneralLinearModelAlgorithm-LinearAlgebra                  value_string="LAPACK"  />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound  value_float="1.0e-2"  />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor value_float="2.0"     />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound  value_float="1.0e2"   />
+  <GeneralLinearModelAlgorithm-MaximalScaling                 value_float="1.0e5"   />
+  <GeneralLinearModelAlgorithm-MeanEpsilon                    value_float="1.0e-12" />
+  <GeneralLinearModelAlgorithm-StartingScaling                value_float="1.0e-13" />
+  <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm   value_str="TNC"     />
+  <GeneralLinearModelAlgorithm-LinearAlgebra                  value_str="LAPACK"  />
 
   <!-- OT::KrigingAlgorithm parameters -->
-  <KrigingAlgorithm-MaximalScaling  value_scalar="1.0e5"   />
-  <KrigingAlgorithm-StartingScaling value_scalar="1.0e-13" />
-  <KrigingAlgorithm-LinearAlgebra   value_string="LAPACK"  />
+  <KrigingAlgorithm-MaximalScaling  value_float="1.0e5"   />
+  <KrigingAlgorithm-StartingScaling value_float="1.0e-13" />
+  <KrigingAlgorithm-LinearAlgebra   value_str="LAPACK"  />
 
   <!-- OT::SquaredExponential parameters -->
-  <SquaredExponential-DefaultTheta value_scalar="1.0" />
+  <SquaredExponential-DefaultTheta value_float="1.0" />
   
   <!-- OT::AbsoluteExponential parameters -->
-  <AbsoluteExponential-DefaultTheta value_scalar="1.0" />
+  <AbsoluteExponential-DefaultTheta value_float="1.0" />
   
   <!-- OT::GeneralizedExponential parameters -->
-  <GeneralizedExponential-DefaultTheta value_scalar="1.0" />
+  <GeneralizedExponential-DefaultTheta value_float="1.0" />
   
   <!-- OT::MaternModel parameters -->
-  <MaternModel-DefaultNu    value_scalar="1.5" />
-  <MaternModel-DefaultTheta value_scalar="1.0" />
+  <MaternModel-DefaultNu    value_float="1.5" />
+  <MaternModel-DefaultTheta value_float="1.0" />
   
   <!-- OT::WeightedExperimentImplementation parameters -->
-  <WeightedExperiment-DefaultSize value_unsigned_integer="100" />
+  <WeightedExperiment-DefaultSize value_int="100" />
 
   <!-- OT::GaussProductExperiment parameters -->
-  <GaussProductExperiment-DefaultMarginalDegree value_unsigned_integer="5" />
+  <GaussProductExperiment-DefaultMarginalDegree value_int="5" />
 
   <!-- OT::HyperbolicAnisotropicEnumerateFunction parameters -->
-  <HyperbolicAnisotropicEnumerateFunction-DefaultQ value_scalar="0.4" />
+  <HyperbolicAnisotropicEnumerateFunction-DefaultQ value_float="0.4" />
 
   <!-- OT::MarginalTransformationEvaluation parameters -->
   <MarginalTransformationEvaluation-Simplify             value_bool="true"      />
-  <MarginalTransformationEvaluation-DefaultTailThreshold value_scalar="0.99"    />
-  <MarginalTransformationEvaluation-ParametersEpsilon    value_scalar="1.0e-14" />
+  <MarginalTransformationEvaluation-DefaultTailThreshold value_float="0.99"    />
+  <MarginalTransformationEvaluation-ParametersEpsilon    value_float="1.0e-14" />
 
   <!-- OT::DistributionImplementation parameters -->
   <Distribution-MinimumVolumeLevelSetBySampling   value_bool="false"               />
   <Distribution-Parallel                          value_bool="true"                />
   <Distribution-UseCovarianceAdaptiveAlgorithm    value_bool="true"                />
-  <Distribution-DefaultCDFEpsilon                 value_scalar="1.0e-14"           />
-  <Distribution-DefaultPDFEpsilon                 value_scalar="1.0e-14"           />
-  <Distribution-DefaultQuantileEpsilon            value_scalar="1.0e-12"           />
-  <Distribution-QMax                              value_scalar="0.85"              />
-  <Distribution-QMin                              value_scalar="0.15"              />
-  <Distribution-CharacteristicFunctionBlockMax    value_unsigned_integer="20"      />
-  <Distribution-CharacteristicFunctionNMax        value_unsigned_integer="1000000" />
-  <Distribution-DefaultIntegrationNodesNumber     value_unsigned_integer="255"     />
-  <Distribution-DefaultLevelNumber                value_unsigned_integer="10"      />
-  <Distribution-DefaultPointNumber                value_unsigned_integer="129"     />
-  <Distribution-DefaultQuantileCacheSize          value_unsigned_integer="128"     />
-  <Distribution-DefaultQuantileIteration          value_unsigned_integer="100"     />
-  <Distribution-EntropySamplingSize               value_unsigned_integer="1048576" />
-  <Distribution-MinimumVolumeLevelSetSamplingSize value_unsigned_integer="1048576" />
-  <Distribution-SmallDimensionEntropy             value_unsigned_integer="3"       />
+  <Distribution-DefaultCDFEpsilon                 value_float="1.0e-14"           />
+  <Distribution-DefaultPDFEpsilon                 value_float="1.0e-14"           />
+  <Distribution-DefaultQuantileEpsilon            value_float="1.0e-12"           />
+  <Distribution-QMax                              value_float="0.85"              />
+  <Distribution-QMin                              value_float="0.15"              />
+  <Distribution-CharacteristicFunctionBlockMax    value_int="20"      />
+  <Distribution-CharacteristicFunctionNMax        value_int="1000000" />
+  <Distribution-DefaultIntegrationNodesNumber     value_int="255"     />
+  <Distribution-DefaultLevelNumber                value_int="10"      />
+  <Distribution-DefaultPointNumber                value_int="129"     />
+  <Distribution-DefaultQuantileCacheSize          value_int="128"     />
+  <Distribution-DefaultQuantileIteration          value_int="100"     />
+  <Distribution-EntropySamplingSize               value_int="1048576" />
+  <Distribution-MinimumVolumeLevelSetSamplingSize value_int="1048576" />
+  <Distribution-SmallDimensionEntropy             value_int="3"       />
   
   <!-- OT::ContinuousDistribution parameters -->
-  <ContinuousDistribution-DefaultIntegrationNodesNumber value_unsigned_integer="256" />
+  <ContinuousDistribution-DefaultIntegrationNodesNumber value_int="256" />
 
   <!-- OT::DiscreteDistribution parameters -->
-  <DiscreteDistribution-SupportEpsilon value_scalar="1.0e-14" />
+  <DiscreteDistribution-SupportEpsilon value_float="1.0e-14" />
 
   <!-- OT::DistributionFactoryImplementation parameters -->
-  <DistributionFactory-BootstrapErrorTolerance value_scalar="0.1"           />
-  <DistributionFactory-DefaultBootstrapSize    value_unsigned_integer="100" />
+  <DistributionFactory-BootstrapErrorTolerance value_float="0.1"           />
+  <DistributionFactory-DefaultBootstrapSize    value_int="100" />
 
   <!-- OT::OrderStatisticsMarginalChecker parameters -->
-  <OrderStatisticsMarginalChecker-OptimizationEpsilon value_scalar="1.0e-7"        />
-  <OrderStatisticsMarginalChecker-QuantileIteration   value_unsigned_integer="100" />
+  <OrderStatisticsMarginalChecker-OptimizationEpsilon value_float="1.0e-7"        />
+  <OrderStatisticsMarginalChecker-QuantileIteration   value_int="100" />
 
   <!-- OT::MaximumEntropyOrderStatisticsDistribution parameters -->
   <MaximumEntropyOrderStatisticsDistribution-CheckMarginals                  value_bool="true"            />
   <MaximumEntropyOrderStatisticsDistribution-UseApproximation                value_bool="true"            />
-  <MaximumEntropyOrderStatisticsDistribution-SupportShift                    value_scalar="1.0e-15"       />
-  <MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber       value_unsigned_integer="16"  />
-  <MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization value_unsigned_integer="100" />
-  <MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision value_unsigned_integer="2"   />
-  <MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration        value_unsigned_integer="10"  />
+  <MaximumEntropyOrderStatisticsDistribution-SupportShift                    value_float="1.0e-15"       />
+  <MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber       value_int="16"  />
+  <MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization value_int="100" />
+  <MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision value_int="2"   />
+  <MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration        value_int="10"  />
 
   <!-- OT::HMatrix parameters -->
   <HMatrix-ForceSequential      value_bool="false"            />
-  <HMatrix-AdmissibilityFactor  value_scalar="2.0"            />
-  <HMatrix-AssemblyEpsilon      value_scalar="1.0e-4"         />
-  <HMatrix-RecompressionEpsilon value_scalar="1.0e-4"         />
-  <HMatrix-ValidationError      value_scalar="0.0"            />
-  <HMatrix-ClusteringAlgorithm  value_string="median"         />
-  <HMatrix-CompressionMethod    value_unsigned_integer="1"    />
-  <HMatrix-MaxLeafSize          value_unsigned_integer="100"  />
-  <HMatrix-MaxParallelLeaves    value_unsigned_integer="5000" />
-  <HMatrix-ValidationDump       value_unsigned_integer="0"    />
-  <HMatrix-ValidationRerun      value_unsigned_integer="0"    />
+  <HMatrix-AdmissibilityFactor  value_float="2.0"            />
+  <HMatrix-AssemblyEpsilon      value_float="1.0e-4"         />
+  <HMatrix-RecompressionEpsilon value_float="1.0e-4"         />
+  <HMatrix-ValidationError      value_float="0.0"            />
+  <HMatrix-ClusteringAlgorithm  value_str="median"         />
+  <HMatrix-CompressionMethod    value_int="1"    />
+  <HMatrix-MaxLeafSize          value_int="100"  />
+  <HMatrix-MaxParallelLeaves    value_int="5000" />
+  <HMatrix-ValidationDump       value_int="0"    />
+  <HMatrix-ValidationRerun      value_int="0"    />
 
   <!-- OT::GaussianProcess parameters -->
-  <GaussianProcess-StartingScaling       value_scalar="1.0e-13"       />
-  <GaussianProcess-MaximalScaling        value_scalar="1.0e5"         />
-  <GaussianProcess-GibbsMaximumIteration value_unsigned_integer="100" />
+  <GaussianProcess-StartingScaling       value_float="1.0e-13"       />
+  <GaussianProcess-MaximalScaling        value_float="1.0e5"         />
+  <GaussianProcess-GibbsMaximumIteration value_int="100" />
 
   <!-- OT::SpectralGaussianProcess parameters -->
-  <SpectralGaussianProcess-MaximalScaling    value_scalar="1.0e5"           />
-  <SpectralGaussianProcess-StartingScaling   value_scalar="1.0e-13"         />
-  <SpectralGaussianProcess-CholeskyCacheSize value_unsigned_integer="16384" />
+  <SpectralGaussianProcess-MaximalScaling    value_float="1.0e5"           />
+  <SpectralGaussianProcess-StartingScaling   value_float="1.0e-13"         />
+  <SpectralGaussianProcess-CholeskyCacheSize value_int="16384" />
 
   <!-- OT::WhittleFactory parameters -->
-  <WhittleFactory-DefaultRhoBeg             value_scalar="0.1"            />
-  <WhittleFactory-DefaultRhoEnd             value_scalar="1.0e-10"        />
-  <WhittleFactory-DefaultStartingPointScale value_scalar="1.0"            />
-  <WhittleFactory-RootEpsilon               value_scalar="1.0e-6"         />
-  <WhittleFactory-DefaultMaxFun             value_unsigned_integer="2000" />
+  <WhittleFactory-DefaultRhoBeg             value_float="0.1"            />
+  <WhittleFactory-DefaultRhoEnd             value_float="1.0e-10"        />
+  <WhittleFactory-DefaultStartingPointScale value_float="1.0"            />
+  <WhittleFactory-RootEpsilon               value_float="1.0e-6"         />
+  <WhittleFactory-DefaultMaxFun             value_int="2000" />
 
   <!-- OT::BoxCoxFactory parameters -->
-  <BoxCoxFactory-DefaultRhoBeg      value_scalar="0.1"            />
-  <BoxCoxFactory-DefaultRhoEnd      value_scalar="1.0e-10"        />
-  <BoxCoxFactory-DefaultMaxFun      value_unsigned_integer="2000" />
-  <BoxCoxFactory-DefaultPointNumber value_unsigned_integer="201"  />
+  <BoxCoxFactory-DefaultRhoBeg      value_float="0.1"            />
+  <BoxCoxFactory-DefaultRhoEnd      value_float="1.0e-10"        />
+  <BoxCoxFactory-DefaultMaxFun      value_int="2000" />
+  <BoxCoxFactory-DefaultPointNumber value_int="201"  />
 
   <!-- OT::VisualTest parameters -->
-  <VisualTest-KendallPlot-MonteCarloSize value_unsigned_integer="100" />
+  <VisualTest-KendallPlot-MonteCarloSize value_int="100" />
   
   <!--  OT::CalibrationStrategyImplementation parameters -->
-  <CalibrationStrategy-DefaultExpansionFactor value_scalar="1.2"           />
-  <CalibrationStrategy-DefaultLowerBound      value_scalar="0.117"         /> <!-- = 0.5 * 0.234 -->
-  <CalibrationStrategy-DefaultShrinkFactor    value_scalar="0.8"           />
-  <CalibrationStrategy-DefaultUpperBound      value_scalar="0.468"         /> <!-- = 2.0 * 0.234 -->
-  <CalibrationStrategy-DefaultCalibrationStep value_unsigned_integer="100" />
+  <CalibrationStrategy-DefaultExpansionFactor value_float="1.2"           />
+  <CalibrationStrategy-DefaultLowerBound      value_float="0.117"         /> <!-- = 0.5 * 0.234 -->
+  <CalibrationStrategy-DefaultShrinkFactor    value_float="0.8"           />
+  <CalibrationStrategy-DefaultUpperBound      value_float="0.468"         /> <!-- = 2.0 * 0.234 -->
+  <CalibrationStrategy-DefaultCalibrationStep value_int="100" />
   
   <!-- OT::MCMC parameters -->
-  <MCMC-DefaultBurnIn   value_unsigned_integer="0" />
-  <MCMC-DefaultThinning value_unsigned_integer="1" />
+  <MCMC-DefaultBurnIn   value_int="0" />
+  <MCMC-DefaultThinning value_int="1" />
 
   <!-- OT::ARMA parameters -->
-  <ARMA-MeanEpsilon value_scalar="1.0e-14" />
+  <ARMA-MeanEpsilon value_float="1.0e-14" />
 
   <!-- OT::ARMALikelihoodFactoryFactory parameters -->
-  <ARMALikelihoodFactory-DefaultRhoBeg             value_scalar="0.01"            />
-  <ARMALikelihoodFactory-DefaultRhoEnd             value_scalar="1.0e-10"         />
-  <ARMALikelihoodFactory-DefaultStartingPointScale value_scalar="1.0"             />
-  <ARMALikelihoodFactory-MaximalScaling            value_scalar="1.0e5"           />
-  <ARMALikelihoodFactory-RootEpsilon               value_scalar="1.0e-6"          />
-  <ARMALikelihoodFactory-StartingScaling           value_scalar="1.0e-13"         />
-  <ARMALikelihoodFactory-DefaultMaxFun             value_unsigned_integer="10000" />
+  <ARMALikelihoodFactory-DefaultRhoBeg             value_float="0.01"            />
+  <ARMALikelihoodFactory-DefaultRhoEnd             value_float="1.0e-10"         />
+  <ARMALikelihoodFactory-DefaultStartingPointScale value_float="1.0"             />
+  <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e5"           />
+  <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
+  <ARMALikelihoodFactory-StartingScaling           value_float="1.0e-13"         />
+  <ARMALikelihoodFactory-DefaultMaxFun             value_int="10000" />
 
   <!-- OT::FittingTest parameters -->
-  <FittingTest-KolmogorovSamplingSize value_unsigned_integer="10" />
-  <FittingTest-ChiSquaredMinFrequency value_unsigned_integer="5"  />
+  <FittingTest-KolmogorovSamplingSize value_int="10" />
+  <FittingTest-ChiSquaredMinFrequency value_int="5"  />
 
   <!-- OT::LeastSquaresMetaModelSelection parameters -->
-  <LeastSquaresMetaModelSelection-ErrorThreshold      value_scalar="0.0" />
-  <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_scalar="2.0" />
-  <LeastSquaresMetaModelSelection-DecompositionMethod value_string="SVD"        />
+  <LeastSquaresMetaModelSelection-ErrorThreshold      value_float="0.0" />
+  <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />
+  <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"        />
 
   <!-- OT::SparseMethod parameters -->
-  <SparseMethod-ErrorThreshold     value_scalar="1.0e-3" />
-  <SparseMethod-MaximumErrorFactor value_scalar="2.0"    />
+  <SparseMethod-ErrorThreshold     value_float="1.0e-3" />
+  <SparseMethod-MaximumErrorFactor value_float="2.0"    />
 
   <!-- OT::CholeskyMethod parameters -->
-  <CholeskyMethod-LargeCase value_unsigned_integer="128" />
+  <CholeskyMethod-LargeCase value_int="128" />
 
   <!-- OT::Classifier parameters -->
   <Classifier-Parallel value_bool="true" />
 
   <!-- OT::TensorApproximationAlgorithm parameters -->
-  <TensorApproximationAlgorithm-DefaultMaximumRadiusError                      value_scalar="1.0e-5"        />
-  <TensorApproximationAlgorithm-DefaultMaximumResidualError                    value_scalar="1.0e-5"        />
-  <TensorApproximationAlgorithm-DecompositionMethod                            value_string="SVD"           />
-  <TensorApproximationAlgorithm-Method                                         value_string="GreedyRankOne" />
-  <TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration value_unsigned_integer="100" />
+  <TensorApproximationAlgorithm-DefaultMaximumRadiusError                      value_float="1.0e-5"        />
+  <TensorApproximationAlgorithm-DefaultMaximumResidualError                    value_float="1.0e-5"        />
+  <TensorApproximationAlgorithm-DecompositionMethod                            value_str="SVD"           />
+  <TensorApproximationAlgorithm-Method                                         value_str="GreedyRankOne" />
+  <TensorApproximationAlgorithm-DefaultMaximumAlternatingLeastSquaresIteration value_int="100" />
 
   <!-- viewer.View parameters -->
-  <View-ImageFormat value_string="png" />
+  <View-ImageFormat value_str="png" />
 
-  <!-- <-your-variable value_string="its value" /> -->
+  <!-- <-your-variable value_str="its value" /> -->
 </openturns-configuration>
