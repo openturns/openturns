@@ -64,7 +64,7 @@ int main(int , char *[])
       RandomVector vect(myDistribution);
 
       /* We create a composite random vector */
-      RandomVector output(myFunction, vect);
+      CompositeRandomVector output(myFunction, vect);
 
       /* We create a StandardEvent from this RandomVector */
       StandardEvent myStandardEvent(output, Less(), 2.0);

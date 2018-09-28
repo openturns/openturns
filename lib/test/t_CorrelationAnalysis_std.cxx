@@ -55,7 +55,7 @@ int main(int , char *[])
     ComposedDistribution aDistribution(aCollection, IndependentCopula(dimension));
 
     RandomVector randomVector(aDistribution);
-    RandomVector composite(analytical, randomVector);
+    CompositeRandomVector composite(analytical, randomVector);
     fullprint << "composite=" << composite << std::endl;
 
     // we create two input samples for the function

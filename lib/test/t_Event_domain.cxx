@@ -46,7 +46,7 @@ int main(int , char *[])
       Description inVars(Description::BuildDefault(dim, "x"));
       SymbolicFunction model(inVars, inVars);
       // The output vector
-      RandomVector Y(model, X);
+      CompositeRandomVector Y(model, X);
       // The domain: [0, 1]^dim
       Interval domain(dim);
       // The event

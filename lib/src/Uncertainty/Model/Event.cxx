@@ -21,6 +21,7 @@
 
 #include "openturns/Event.hxx"
 #include "openturns/CompositeRandomVector.hxx"
+#include "openturns/ConstantRandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/SymbolicFunction.hxx"
 
@@ -32,7 +33,7 @@ CLASSNAMEINIT(Event)
 
 /* Default constructor for save/load */
 Event::Event()
-  : RandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), RandomVector(Point(1, 0.0))), Less(), 0.0)
+  : RandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0)
 {
   // Nothing to do
 }

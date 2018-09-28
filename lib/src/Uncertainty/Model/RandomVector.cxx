@@ -74,7 +74,7 @@ RandomVector::RandomVector(RandomVectorImplementation * p_implementation)
 RandomVector::RandomVector(const Point & point)
   : TypedInterfaceObject<RandomVectorImplementation>(new ConstantRandomVector(point))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "RandomVector(Point) is deprecated, use ConstantRandomVector");
 }
 
 /* Constructor for distribution-based vector */
@@ -89,7 +89,7 @@ RandomVector::RandomVector(const Distribution & distribution,
                            const RandomVector & randomParameters)
   : TypedInterfaceObject<RandomVectorImplementation>(new ConditionalRandomVector(distribution, randomParameters))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "RandomVector(Distribution, RandomVector) is deprecated, use ConditionalRandomVector");
 }
 
 /* Constructor for composite vector */
@@ -98,14 +98,14 @@ RandomVector::RandomVector(const Function & function,
   : TypedInterfaceObject<RandomVectorImplementation>(new CompositeRandomVector(function,
       antecedent.getImplementation()))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "RandomVector(Function, RandomVector) is deprecated, use CompositeRandomVector");
 }
 
 /* Constructor for functional chaos vector */
 RandomVector::RandomVector(const FunctionalChaosResult & functionalChaosResult)
   : TypedInterfaceObject<RandomVectorImplementation>(new FunctionalChaosRandomVector(functionalChaosResult))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "RandomVector(FunctionalChaosResult) is deprecated, use FunctionalChaosRandomVector");
 }
 
 /* Constructor from event RandomVector */
@@ -153,12 +153,12 @@ RandomVector::RandomVector(const RandomVector & antecedent,
     if (finiteLowerBound[0] && finiteUpperBound[0])
     {
       testFunction = SymbolicFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
-      RandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
+      CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
       *this = RandomVector(newVector, Greater(), 0.0);
     }
     if (!finiteLowerBound[0] && !finiteUpperBound[0])
     {
-      RandomVector newVector(Function(testFunction), antecedent.getAntecedent());
+      CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
       *this = RandomVector(newVector, Less(), 1.0);
     }
   }
@@ -177,7 +177,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
     // No constraint
     if (slacks.getSize() == 0)
     {
-      RandomVector newVector(Function(testFunction), antecedent.getAntecedent());
+      CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
       *this = RandomVector(newVector, Less(), 1.0);
     }
     else
@@ -195,7 +195,7 @@ RandomVector::RandomVector(const RandomVector & antecedent,
         formula += ")";
       }
       testFunction = SymbolicFunction(inVars, Description(1, formula));
-      RandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
+      CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
       *this = RandomVector(newVector, Greater(), 0.0);
     }
   }

@@ -20,7 +20,7 @@ try:
     print("point = ", repr(ref_point))
 
     # We create a 'constant' RandomVector from the Point
-    vect = RandomVector(point)
+    vect = ConstantRandomVector(point)
     print("vect=", vect)
 
     # Check standard methods of class RandomVector
@@ -33,7 +33,7 @@ try:
         ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
     # We create a composite random vector
-    output = RandomVector(myFunction, vect)
+    output = CompositeRandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector
 

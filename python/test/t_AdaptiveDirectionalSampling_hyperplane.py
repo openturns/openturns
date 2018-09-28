@@ -52,7 +52,7 @@ for dim in [3, 5, 8][1:2]:
 
         distribution = ot.Normal(dim)
         randomVector = ot.RandomVector(distribution)
-        composite = ot.RandomVector(function, randomVector)
+        composite = ot.CompositeRandomVector(function, randomVector)
 
         for pft in [1e-4, 1e-6, 1e-8][1:2]:
 

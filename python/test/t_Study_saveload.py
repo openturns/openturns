@@ -127,7 +127,7 @@ try:
     antecedent = ot.RandomVector(
         ot.IndependentCopula(analytical.getInputDimension()))
     antecedent.setName('antecedent')
-    composite = ot.RandomVector(analytical, antecedent)
+    composite = ot.CompositeRandomVector(analytical, antecedent)
     composite.setName('composite')
     taylorExpansionsMoments = ot.TaylorExpansionMoments(composite)
     taylorExpansionsMoments.setName('taylorExpansionsMoments')
@@ -147,7 +147,7 @@ try:
     model.setName('sum')
     input3 = ot.RandomVector(ot.Normal(2))
     input3.setName('input')
-    output3 = ot.RandomVector(model, input3)
+    output3 = ot.CompositeRandomVector(model, input3)
     output3.setName('output')
     event = ot.Event(output3, ot.Greater(), 1.0)
     event.setName('failureEvent')

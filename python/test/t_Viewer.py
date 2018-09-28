@@ -168,7 +168,7 @@ try:
     vect = ot.RandomVector(myDistribution)
     LimitState = ot.SymbolicFunction(
         ('R', 'F'), ('R-F/(pi_*100.0)',))
-    G = ot.RandomVector(LimitState, vect)
+    G = ot.CompositeRandomVector(LimitState, vect)
     myEvent = ot.Event(G, ot.Less(), 0.0)
     experiment = ot.MonteCarloExperiment()
     myAlgo = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
@@ -238,7 +238,7 @@ try:
     R = ot.IdentityMatrix(dim)
     distribution = ot.Normal(mean, sigma, R)
     vect = ot.RandomVector(distribution)
-    output = ot.RandomVector(f, vect)
+    output = ot.CompositeRandomVector(f, vect)
     event = ot.Event(output, ot.Less(), -3.0)
     solver = ot.Cobyla()
     solver.setMaximumEvaluationNumber(400)

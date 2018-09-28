@@ -32,7 +32,7 @@ try:
     vect = RandomVector(myDistribution)
 
     # We create a composite random vector
-    output = RandomVector(myFunction, vect)
+    output = CompositeRandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector
     myEvent = Event(output, Less(), -3)

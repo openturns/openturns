@@ -73,7 +73,7 @@ int main(int , char *[])
 
     RandomVector vect(myDistribution);
 
-    RandomVector output(EtatLimite, vect);
+    CompositeRandomVector output(EtatLimite, vect);
 
     Event myEvent(output, Less(), 0.0);
 

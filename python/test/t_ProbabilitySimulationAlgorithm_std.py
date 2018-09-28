@@ -38,7 +38,7 @@ myDistribution = ot.Normal(mean, sigma, R)
 vect = ot.RandomVector(myDistribution)
 
 # We create a composite random vector
-output = ot.RandomVector(myFunction, vect)
+output = ot.CompositeRandomVector(myFunction, vect)
 
 # We create an Event from this RandomVector
 myEvent = ot.Event(output, ot.Less(), -3.0)
@@ -106,7 +106,7 @@ dim = 2
 distribution = ot.Normal(dim)
 Xvector = ot.RandomVector(distribution)
 f = ot.SymbolicFunction(['x0', 'x1'], ['x0+x1'])
-Yvector = ot.RandomVector(f, Xvector)
+Yvector = ot.CompositeRandomVector(f, Xvector)
 s = 1.0
 event1 = ot.Event(Yvector, ot.Greater(), s)
 description.add('composite vector/domain event')

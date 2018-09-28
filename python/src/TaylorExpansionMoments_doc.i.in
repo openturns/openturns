@@ -111,7 +111,7 @@ Examples
 >>> # We create a distribution-based RandomVector
 >>> X = ot.RandomVector(distribution)
 >>> # We create a composite RandomVector Y from X and myFunc
->>> Y = ot.RandomVector(myFunc, X)
+>>> Y = ot.CompositeRandomVector(myFunc, X)
 >>> # We create a Taylor expansion method to approximate moments
 >>> myTaylorExpansionMoments = ot.TaylorExpansionMoments(Y)
 >>> print(myTaylorExpansionMoments.getMeanFirstOrder())
