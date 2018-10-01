@@ -19,10 +19,8 @@
  *
  */
 #include <algorithm>
-
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/FunctionalChaosSobolIndices.hxx"
-#include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/SpecFunc.hxx"
 
@@ -72,7 +70,6 @@ String FunctionalChaosSobolIndices::summary() const
   const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
   const UnsignedInteger outputDimension = functionalChaosResult_.getMetaModel().getOutputDimension();
   OSS oss;
-  FunctionalChaosRandomVector randomVector(functionalChaosResult_);
 
   const Indices indices(functionalChaosResult_.getIndices());
   const Sample coefficients(functionalChaosResult_.getCoefficients());
@@ -80,12 +77,15 @@ String FunctionalChaosSobolIndices::summary() const
 
   // compute the variance
   Point variance(outputDimension);
+  Point mean(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
     for (UnsignedInteger k = 0; k < basisSize; ++ k)
       // Take into account only non-zero indices as the null index is the mean of the vector
       if (indices[k] > 0)
         variance[i] += coefficients(k, i) * coefficients(k, i);
+      else
+        mean[i] = coefficients(k, i);
   }
 
   // standard deviation
@@ -97,7 +97,7 @@ String FunctionalChaosSobolIndices::summary() const
   oss << " input dimension: " << inputDimension << "\n"
       << " output dimension: " << outputDimension << "\n"
       << " basis size: " << functionalChaosResult_.getReducedBasis().getSize() << "\n"
-      << " mean: " << randomVector.getMean().__str__() << "\n"
+      << " mean: " << mean.__str__() << "\n"
       << " std-dev: " << stdDev.__str__() << "\n";
   oss << String(60, '-') << "\n";
   String st;

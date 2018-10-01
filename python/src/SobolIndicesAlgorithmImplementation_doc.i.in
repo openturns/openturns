@@ -92,8 +92,8 @@ It follows that :math:`V_{i}` and :math:`V_{i,j}` terms are defined as follow:
 .. math::
 
    \begin{array}{ccc}
-    V_i & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) G(C_k) - V_i - V_j - G_0^2 \\
-    V_{i,j} & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) G(D_k) - G_0^2 \\
+    V_i & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) G(C_k) - G_0^2 \\
+    V_{i,j} & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k) G(D_k) - V_i - V_j - G_0^2 \\
     G_0 & = & \frac{1}{n} \sum_{k=1}^{n} G(A_k)
    \end{array}
 
