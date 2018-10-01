@@ -59,6 +59,7 @@
  * #952 (Limitation on distribution type for polynomial chaos?)
  * #953 (RandomMixture can fail with truncated distribution)
  * #954 (CompositeProcess::getFuture() broken)
+ * #955 (StudentFactory does not estimate the standard deviation)
  * #957 (RandomMixture::getDispersionIndicator() takes a long time)
  * #958 (The Sobol' indices plot is wrong for chaos)
  * #959 (The PolygonArray and Polygon classes poorly manage the colors)

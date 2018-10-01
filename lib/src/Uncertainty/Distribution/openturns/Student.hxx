@@ -164,6 +164,7 @@ public:
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^(-1)(x-mu))                      */
   Scalar computeDensityGenerator(const Scalar betaSquare) const;
+  Scalar computeLogDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
   Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;

@@ -129,6 +129,11 @@ Scalar Student::computeDensityGenerator(const Scalar betaSquare) const
   return std::exp(studentNormalizationFactor_ - 0.5 * (nu_ + getDimension()) * log1p(betaSquare / nu_));
 }
 
+Scalar Student::computeLogDensityGenerator(const Scalar betaSquare) const
+{
+  return studentNormalizationFactor_ - 0.5 * (nu_ + getDimension()) * log1p(betaSquare / nu_);
+}
+
 /* Compute the derivative of the density generator */
 Scalar Student::computeDensityGeneratorDerivative(const Scalar betaSquare) const
 {

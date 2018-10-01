@@ -20,6 +20,10 @@
  */
 #include "openturns/StudentFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MethodBoundEvaluation.hxx"
+#include "openturns/TNC.hxx"
+#include "openturns/NormalCopula.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,15 +66,59 @@ DistributionFactoryResult StudentFactory::buildEstimator(const Sample & sample) 
   return buildBootStrapEstimator(sample, true);
 }
 
+
+struct StudentFactoryReducedLogLikelihood
+{
+  /** Constructor from a sample and a derivative factor estimate */
+  StudentFactoryReducedLogLikelihood(const Sample & sample,
+				     const Point & mu,
+				     const Point & stdev,
+				     const CorrelationMatrix & R)
+    : sample_(sample)
+    , mu_(mu)
+    , stdev_(stdev)
+    , R_(R)
+  {
+    // Nothing to do
+  };
+
+  Point computeLogLikelihood(const Point & parameter) const
+  {
+    const Scalar nu = parameter[0];
+    const Scalar factor = 1.0 - 2.0 / nu;
+    if (factor <= 0.0) return Point(1, -SpecFunc::LogMaxScalar);
+    const Point sigma(stdev_ * std::sqrt(factor));
+    return Student(nu, mu_, sigma, R_).computeLogPDF(sample_).computeMean();
+  }
+
+  Sample sample_;
+  Point mu_;
+  Point stdev_;
+  CorrelationMatrix R_;
+};
+
+
 Student StudentFactory::buildAsStudent(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from an empty sample";
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Student distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const Scalar mu = sample.computeMean()[0];
-  const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
-  const Scalar nu = 2.0 + 2.0 / (sigma * sigma - 1.0);
-  if (!(nu > 2.0)) throw InvalidArgumentException(HERE) << "Error: can build a Student distribution only if nu > 2.0, here nu=" << nu;
-  Student result(nu, mu);
+  const Point mu(sample.computeMean());
+  const Point stdev(sample.computeStandardDeviationPerComponent());
+  // The relation between Kendall's tau and shape matrix is universal among the elliptical copulas. Use the method in NormalCopula.
+  const CorrelationMatrix R(NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau()));
+  
+  // Now, nu is found by reduced likelihood maximization
+  StudentFactoryReducedLogLikelihood logLikelihood(sample, mu, stdev, R);
+  const Function objective(bindMethod<StudentFactoryReducedLogLikelihood, Point, Point>(logLikelihood, &StudentFactoryReducedLogLikelihood::computeLogLikelihood, 1, 1));
+  OptimizationProblem problem(objective);
+  const Interval bounds(2.0 * (1.0 + SpecFunc::ScalarEpsilon), ResourceMap::GetAsScalar("StudentFactory-NuMax"));
+  problem.setBounds(bounds);
+  problem.setMinimization(false);
+  TNC solver(problem);
+  solver.setStartingPoint((bounds.getLowerBound() + bounds.getUpperBound()) * 0.5);
+  solver.run();
+  const Scalar nu = solver.getResult().getOptimalPoint()[0];
+  const Point sigma(stdev * std::sqrt(1.0 - 2.0 / nu));
+  Student result(nu, mu, sigma, R);
   result.setDescription(sample.getDescription());
   return result;
 }

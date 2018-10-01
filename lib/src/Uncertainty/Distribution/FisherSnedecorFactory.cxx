@@ -22,7 +22,6 @@
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/TNC.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 

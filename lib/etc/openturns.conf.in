@@ -439,6 +439,9 @@
   <Student-MinimumNumberOfPoints          value_int="100000"   />
   <Student-SmallDimension                 value_int="6"        />
   
+  <!-- OT::StudentFactory parameters -->
+  <StudentFactory-NuMax value_scalar="1.0e3" />
+
   <!-- OT::NonCentralStudent parameters -->
   <NonCentralStudent-CDFAlgo value_int="0" />
   
