@@ -150,16 +150,16 @@
 #cmakedefine OPENTURNS_HAVE_BOOST
 
 /* Define to the full path where OpenTURNS is installed */
-#define INSTALL_PATH "@INSTALL_PATH@"
+#define INSTALL_PATH "@NATIVE_INSTALL_PATH@"
 
 /* Define to the full path where OpenTURNS library is installed */
-#define LIBRARY_PATH "@OPENTURNS_LIBRARY_PATH@"
+#define LIBRARY_PATH "@NATIVE_LIBRARY_PATH@"
 
 /* Define to the full path where OpenTURNS configuration files are installed */
-#define SYSCONFIG_PATH "@SYSCONFIG_PATH@"
+#define SYSCONFIG_PATH "@NATIVE_SYSCONFIG_PATH@"
 
 /* Define to the full path where OpenTURNS shared files are installed */
-#define DATA_PATH "@DATA_PATH@"
+#define DATA_PATH "@NATIVE_DATA_PATH@"
 
 /* Name of OpenTURNS home environment variable. */
 #define OPENTURNS_HOME_ENV_VAR "@OPENTURNS_HOME_ENV_VAR@"

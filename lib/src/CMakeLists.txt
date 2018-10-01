@@ -61,16 +61,14 @@ set_target_properties (linktest PROPERTIES
 export(TARGETS OT FILE "${PROJECT_BINARY_DIR}/OpenTURNS-Targets.cmake")
 
 # Install the export set for use with the install-tree
-install(EXPORT OpenTURNS-Targets DESTINATION
-  "${OPENTURNS_CONFIG_CMAKE_PATH}"
-    COMPONENT    Development)
+install(EXPORT OpenTURNS-Targets DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH} COMPONENT Development)
 
 # Install rules for library and executable
 install (TARGETS OT
           EXPORT  OpenTURNS-Targets
           RUNTIME DESTINATION bin
-          LIBRARY DESTINATION ${LIBRARY_PATH}
-          ARCHIVE DESTINATION ${LIBRARY_PATH}
+	  LIBRARY DESTINATION ${OPENTURNS_LIBRARY_PATH}
+	  ARCHIVE DESTINATION ${OPENTURNS_LIBRARY_PATH}
        )
 
 if (UNIX AND BUILD_SHARED_LIBS)
