@@ -493,36 +493,6 @@ Bool NormalCopula::hasIndependentCopula() const
   return normal_.hasIndependentCopula();
 }
 
-/* Parameters value and description accessor */
-NormalCopula::PointWithDescriptionCollection NormalCopula::getParametersCollection() const
-{
-  const UnsignedInteger dimension = getDimension();
-  PointWithDescriptionCollection parameters(0);
-  if (dimension > 1)
-  {
-    // Put the dependence parameters
-    const UnsignedInteger parametersDimension = dimension * (dimension - 1) / 2;
-    PointWithDescription point(parametersDimension);
-    Description description(parametersDimension);
-    point.setName(getName());
-    UnsignedInteger dependenceIndex = 0;
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      for (UnsignedInteger j = 0; j < i; ++j)
-      {
-        point[dependenceIndex] = correlation_(i, j);
-        OSS oss;
-        oss << "R_" << i + 1 << "_" << j + 1;
-        description[dependenceIndex] = oss;
-        ++dependenceIndex;
-      }
-    }
-    point.setDescription(description);
-    parameters.add(point);
-  } // dimension > 1
-  return parameters;
-} // getParametersCollection
-
 void NormalCopula::setParametersCollection(const PointCollection & parametersCollection)
 {
   // Check if the given parameters are ok

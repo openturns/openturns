@@ -68,6 +68,7 @@
  * #964 (Study does not load LogNormalMuSigma variables from XML)
  * #965 (A RandomVector from a RandomVector can make OT crash)
  * #968 (Empty legend make OT crash)
+ * #970 (Composing gaussian copulas can crash the chaos)
 
 == 1.11 release (2018-05-11) == #release-1.11
 

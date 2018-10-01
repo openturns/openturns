@@ -134,7 +134,6 @@ public:
   Bool hasIndependentCopula() const;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
   using CopulaImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection);
 

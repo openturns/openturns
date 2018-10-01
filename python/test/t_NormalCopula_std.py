@@ -123,6 +123,7 @@ try:
     prob = copula.computeProbability(interval)
     print("prob=%.6f" % prob)
 
+    print(NormalCopula(1).getParametersCollection())
 except:
     import sys
     print("t_NormalCopula_std.py", sys.exc_info()[0], sys.exc_info()[1])
