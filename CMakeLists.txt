@@ -222,7 +222,13 @@ if (USE_BOOST)
   find_package (Boost 1.46 ${BOOST_REQUIRED_ARG})
   if (Boost_FOUND)
     set (OPENTURNS_HAVE_BOOST TRUE)
-    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+
+    # see SpecFunc.hxx
+    if (MSVC)
+      list (APPEND OPENTURNS_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+    else ()
+      list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+    endif ()
   endif ()
 endif ()
 
