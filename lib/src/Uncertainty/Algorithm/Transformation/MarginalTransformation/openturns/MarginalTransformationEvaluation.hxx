@@ -138,8 +138,8 @@ private:
   // Collection of simpler expressions
   mutable Collection<Function> expressions_;
 
-  // Collection of simpler expressions
-  Bool tailThreshold_;
+  // CDF tail threshold
+  Scalar tailThreshold_;
   
 }; /* MarginalTransformationEvaluation */
 

@@ -314,7 +314,7 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
     {
       Scalar inputCDF = inputDistributionCollection_[i].computeCDF(inP[i]);
       // For accuracy reason, check if we are in the upper tail of the distribution
-      const Bool upperTail = inputCDF > tailThreshold_;
+      const Bool upperTail = (inputCDF > tailThreshold_);
       if (upperTail) inputCDF = inputDistributionCollection_[i].computeComplementaryCDF(inP[i]);
       // The upper tail CDF is defined by CDF(x, upper) = P(X>x)
       // The upper tail quantile is defined by Quantile(CDF(x, upper), upper) = x
