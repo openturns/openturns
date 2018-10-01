@@ -62,6 +62,7 @@
  * #957 (RandomMixture::getDispersionIndicator() takes a long time)
  * #958 (The Sobol' indices plot is wrong for chaos)
  * #959 (The PolygonArray and Polygon classes poorly manage the colors)
+ * #960 (Polygon sometimes make OT crash)
  * #961 (The PolygonArray class seem to ignore the legends)
  * #962 (The doc of MetaModelValidation.computePredictivityFactor is wrong)
  * #963 (VisualTest_DrawHistogram sometimes has overlapping X labels)

@@ -51,3 +51,10 @@ except TypeError:
 # loop
 for x in strided2:
     print(x)
+
+try:
+    ot.IndicesCollection([['zou']])
+except:
+    print('ok')
+
+
