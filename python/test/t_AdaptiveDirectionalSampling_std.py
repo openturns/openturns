@@ -15,7 +15,7 @@ distribution = ot.Normal(
     [50., 1.0, 10.0, 5.0], [1.0] * dim,
     ot.IdentityMatrix(dim))
 vect = ot.RandomVector(distribution)
-composite = ot.RandomVector(function, vect)
+composite = ot.CompositeRandomVector(function, vect)
 event = ot.Event(composite, ot.Less(), -3.0)
 
 # create an ADS algorithm

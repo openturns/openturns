@@ -56,7 +56,7 @@ int main(int , char *[])
 
     /* We create a composite random vector */
     MemoizeFunction fh(myFunction);
-    RandomVector output(fh, vect);
+    CompositeRandomVector output(fh, vect);
 
     /* We create an Event from this RandomVector */
     Event myEvent(output, Less(), -3.0);

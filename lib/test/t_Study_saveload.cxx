@@ -346,8 +346,8 @@ int main(int , char *[])
       point[0] = 101;
       point[1] = 202;
       point[2] = 303;
-      RandomVector vect(point);
-      RandomVector output(analytical.getMarginal(0), vect);
+      ConstantRandomVector vect(point);
+      CompositeRandomVector output(analytical.getMarginal(0), vect);
       event = Event (output, Less(), 50);
     }
     study.add("event", event);
@@ -361,7 +361,7 @@ int main(int , char *[])
     {
       RandomVector antecedent(IndependentCopula(analytical.getInputDimension()));
       antecedent.setName("antecedent");
-      RandomVector composite(analytical, antecedent);
+      CompositeRandomVector composite(analytical, antecedent);
       composite.setName("composite");
       taylorExpansionMoments = TaylorExpansionMoments(composite);
       taylorExpansionMoments.setName("taylorExpansionMoments");
@@ -443,7 +443,7 @@ int main(int , char *[])
       model.setName("sum");
       RandomVector input3(Normal(2));
       input3.setName("input");
-      RandomVector output3(model, input3);
+      CompositeRandomVector output3(model, input3);
       output3.setName("output");
       Event event(output3, Greater(), 1.0);
       event.setName("failureEvent");

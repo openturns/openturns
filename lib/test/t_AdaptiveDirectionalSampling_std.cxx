@@ -55,7 +55,7 @@ int main(int , char *[])
   RandomVector vect(myDistribution);
 
   /* We create a composite random vector */
-  RandomVector output(function, vect);
+  CompositeRandomVector output(function, vect);
 
   /* We create an Event from this RandomVector */
   Event myEvent(output, Less(), -3.0);

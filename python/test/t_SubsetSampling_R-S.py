@@ -28,7 +28,7 @@ myDistribution = ot.Normal(mean, sigma, R)
 
 vect = ot.RandomVector(myDistribution)
 
-output = ot.RandomVector(limitState, vect)
+output = ot.CompositeRandomVector(limitState, vect)
 
 myEvent = ot.Event(output, ot.Less(), 0.0)
 

@@ -72,7 +72,7 @@ try:
         vect = RandomVector(myDistribution)
 
         # We create a composite random vector
-        output = RandomVector(myFunction, vect)
+        output = CompositeRandomVector(myFunction, vect)
         outputDescription = Description(1)
         outputDescription[0] = "Interest Variable 1"
         output.setDescription(outputDescription)

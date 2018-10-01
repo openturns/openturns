@@ -54,21 +54,21 @@ public:
   RandomVector(RandomVectorImplementation * p_implementation);
 #endif
 
-  /** Constructor for constant vector */
+  /** @deprecated Constructor for constant vector */
   explicit RandomVector(const Point & point);
 
   /** Constructor for distribution-based vector */
   explicit RandomVector(const Distribution & distribution);
 
-  /** Constructor for distribution-based conditional vector */
+  /** @deprecated Constructor for distribution-based conditional vector */
   RandomVector(const Distribution & distribution,
                const RandomVector & randomParameters);
 
-  /** Constructor for composite vector */
+  /** @deprecated Constructor for composite vector */
   RandomVector(const Function & function,
                const RandomVector & antecedent);
 
-  /** Constructor for functional chaos vector */
+  /** @deprecated Constructor for functional chaos vector */
   explicit RandomVector(const FunctionalChaosResult & functionalChaosResult);
 
 
@@ -132,22 +132,6 @@ public:
   Description getParameterDescription() const;
 
 protected:
-  /** Constructor for event vector */
-  RandomVector(const RandomVector & antecedent,
-               const ComparisonOperator & op,
-               const Scalar threshold);
-
-  /** Constructor for event vector */
-  RandomVector(const RandomVector & antecedent,
-               const Domain & domain);
-
-  /** Constructor for event vector */
-  RandomVector(const RandomVector & antecedent,
-               const Interval & interval);
-
-  /** Constructor for event vector */
-  RandomVector(const Process & process,
-               const Domain & domain);
 
 }; /* class RandomVector */
 

@@ -14,7 +14,7 @@ Examples
 >>> # Enable the history mecanism in order to use the getImportanceFactors method
 >>> limitState = ot.MemoizeFunction(limitState)
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
->>> output = ot.RandomVector(limitState, ot.RandomVector(myDistribution))
+>>> output = ot.CompositeRandomVector(limitState, ot.RandomVector(myDistribution))
 >>> myEvent = ot.Event(output, ot.Less(), -3.0)
 >>> myLHS = ot.LHS(myEvent)
 >>> myLHS.run()

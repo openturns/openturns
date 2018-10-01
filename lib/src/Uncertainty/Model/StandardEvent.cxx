@@ -73,7 +73,7 @@ StandardEvent::StandardEvent(const Event & event)
   // Build the antecedent
   const RandomVector antecedent(standard);
   const ComposedFunction composed(function, inverse);
-  const RandomVector vect(composed, antecedent);
+  const CompositeRandomVector vect(composed, antecedent);
   // Set the random vector implementation
   (*this) = StandardEvent(vect, event.getOperator(), event.getThreshold());
   setName(event.getName());

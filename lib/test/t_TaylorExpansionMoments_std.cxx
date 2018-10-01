@@ -63,7 +63,7 @@ int main(int , char *[])
     RandomVector X(distribution);
 
     /* We create a composite RandomVector Y from X and myFunction */
-    RandomVector Y(myFunc, X);
+    CompositeRandomVector Y(myFunc, X);
 
     // We create a quadraticCumul algorithm
     TaylorExpansionMoments myTaylorExpansionMoments(Y);

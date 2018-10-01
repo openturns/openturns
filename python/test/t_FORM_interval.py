@@ -3,70 +3,6 @@
 from __future__ import print_function
 import openturns as ot
 
-# Build the event 'vector takes its values in interval'
-# using a comparison operator and a threshold in order
-# to be compatible with more algorithms than Monte Carlo
-
-
-def buildEvent(vector, interval):
-    dimension = vector.getDimension()
-    if dimension != interval.getDimension():
-        raise Exception('Dimensions not compatible')
-    finiteLowerBound = interval.getFiniteLowerBound()
-    finiteUpperBound = interval.getFiniteUpperBound()
-    lowerBound = interval.getLowerBound()
-    upperBound = interval.getUpperBound()
-    # Easy case: 1D interval
-    if (dimension == 1):
-        if finiteLowerBound[0] and not finiteUpperBound[0]:
-            print('case 1')
-            return ot.Event(vector, Greater(), lowerBound[0])
-        if not finiteLowerBound[0] and finiteUpperBound[0]:
-            print('case 2')
-            return ot.Event(vector, Less(), upperBound[0])
-        if finiteLowerBound[0] and finiteUpperBound[0]:
-            print('case 3')
-            testFunction = ot.SymbolicFunction(
-                'x', 'min(x-(' + str(lowerBound[0]) + '), (' + str(upperBound[0]) + ') - x)')
-            newVector = ot.RandomVector(ot.Function(
-                testFunction, vector.getFunction()), vector.getAntecedent())
-            return ot.Event(newVector, Greater(), 0.0)
-        # Here we build an event that is always true and much cheaper to
-        # compute
-        print('case 4')
-        inputDimension = vector.getFunction().getInputDimension()
-        return ot.Event(ot.RandomVector(ot.SymbolicFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
-    # General case
-    numConstraints = 0
-    inVars = ot.Description.BuildDefault(dimension, 'y')
-    slacks = ot.Description(0)
-    for i in range(dimension):
-        if finiteLowerBound[i]:
-            slacks.add(inVars[i] + '-(' + str(lowerBound[i]) + ')')
-        if finiteUpperBound[i]:
-            slacks.add('(' + str(upperBound[i]) + ')-' + inVars[i])
-    # No constraint
-    if slacks.getSize() == 0:
-        # Here we build an event that is always true and much cheaper to
-        # compute
-        inputDimension = vector.getFunction().getInputDimension()
-        return ot.Event(ot.RandomVector(ot.SymbolicFunction(ot.Description.BuildDefault(inputDimension, 'x'), ['0.0']), vector.getAntecedent()), Less(), 1.0)
-    # Only one constraint
-    if slacks.getSize() == 1:
-        print('case 6')
-        testFunction = ot.SymbolicFunction(inVars, [slacks[0]])
-    # Several constraints
-    else:
-        print('case 7')
-        formula = 'min(' + slacks[0]
-        for i in range(1, slacks.getSize()):
-            formula += ',' + slacks[i]
-        formula += ')'
-        testFunction = ot.SymbolicFunction(inVars, [formula])
-    newVector = ot.RandomVector(ot.Function(
-        testFunction, vector.getFunction()), vector.getAntecedent())
-    return ot.Event(newVector, Greater(), 0.0)
-
 # Tests
 ot.ResourceMap.SetAsUnsignedInteger('SimulationAlgorithm-DefaultBlockSize', 100)
 ot.ResourceMap.SetAsUnsignedInteger(
@@ -115,8 +51,7 @@ for domain in intervals:
     print('domain=\n', domain)
     outDim = domain.getDimension()
     f = ot.SymbolicFunction(inVars, inVars[0:outDim])
-    Y = ot.RandomVector(f, X)
-    # event = buildEvent(Y, domain)
+    Y = ot.CompositeRandomVector(f, X)
     event = ot.Event(Y, domain)
 
     ot.RandomGenerator.SetSeed(0)

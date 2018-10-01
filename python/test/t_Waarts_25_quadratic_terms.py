@@ -52,7 +52,7 @@ try:
 
     vect = RandomVector(myDistribution)
 
-    output = RandomVector(limitState, vect)
+    output = CompositeRandomVector(limitState, vect)
 
     myEvent = Event(output, Less(), 0.0)
 

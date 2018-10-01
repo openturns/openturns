@@ -51,7 +51,7 @@ int main(int , char *[])
     RandomVector vect(myDistribution);
 
     /* We create a composite random vector */
-    RandomVector output(myFunction, vect);
+    CompositeRandomVector output(myFunction, vect);
 
     /* We create a StandardEvent from this RandomVector */
     StandardEvent myStandardEvent(output, Less(), 1.0);
@@ -76,7 +76,7 @@ int main(int , char *[])
     RandomVector vect2(myDistribution2);
 
     /* We create a composite random vector */
-    RandomVector output2(myFunction, vect2);
+    CompositeRandomVector output2(myFunction, vect2);
 
     /* We create an Event from this RandomVector */
     Event myEvent(output2, Less(), 1.0);
@@ -122,7 +122,7 @@ int main(int , char *[])
     RandomVector vect3(myDistribution3);
 
     /* We create a composite random vector */
-    RandomVector output3(myFunction, vect3);
+    CompositeRandomVector output3(myFunction, vect3);
 
     /* We try to create a StandardEvent from this RandomVector */
     try

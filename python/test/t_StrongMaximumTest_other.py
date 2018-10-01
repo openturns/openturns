@@ -41,7 +41,7 @@ try:
     vect = RandomVector(myDistribution)
 
     # We create a composite random vector
-    output = RandomVector(myFunction, vect)
+    output = CompositeRandomVector(myFunction, vect)
 
     # We create a StandardEvent from this RandomVector  : RandomVector > 4.0
     seuil = 40

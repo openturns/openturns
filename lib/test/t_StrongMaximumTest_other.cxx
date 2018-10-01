@@ -70,7 +70,7 @@ int main(int , char *[])
     RandomVector vect(myDistribution);
 
     /* We create a composite random vector */
-    RandomVector output(myFunction, vect);
+    CompositeRandomVector output(myFunction, vect);
 
     /* We create a StandardEvent from this RandomVector  : RandomVector > 0.0 */
     double seuil(40);

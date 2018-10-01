@@ -83,7 +83,7 @@ int main(int , char *[])
       RandomVector vect(myDistribution);
 
       /* We create a composite random vector */
-      RandomVector output(myFunction, vect);
+      CompositeRandomVector output(myFunction, vect);
       Description outputDescription(1);
       outputDescription[0] = "Interest Variable 1";
       output.setDescription(outputDescription);

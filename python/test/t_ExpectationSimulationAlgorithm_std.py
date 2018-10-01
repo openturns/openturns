@@ -31,7 +31,7 @@ myDistribution = ot.Normal(mean, sigma, R)
 vect = ot.RandomVector(myDistribution)
 
 # We create a composite random vector
-composite = ot.RandomVector(model, vect)
+composite = ot.CompositeRandomVector(model, vect)
 
 ot.RandomGenerator.SetSeed(42)
 algo = ot.ExpectationSimulationAlgorithm(composite)

@@ -38,7 +38,7 @@ fx = function(x)
 
 for k in [0.0, 2.0, 5.0, 8.][0:1]:
     randomVector = ot.RandomVector(distribution)
-    composite = ot.RandomVector(function, randomVector)
+    composite = ot.CompositeRandomVector(function, randomVector)
 
     print('--------------------')
     print('model flood S <', k, 'gamma=', end=' ')

@@ -45,7 +45,7 @@ int main(int , char *[])
     fullprint << "point = " << ref_point << std::endl;
 
     /* We create a 'constant' RandomVector from the Point */
-    RandomVector vect(point);
+    ConstantRandomVector vect(point);
     fullprint << "vect=" << vect << std::endl;
 
     /* Check standard methods of class RandomVector */
@@ -62,7 +62,7 @@ int main(int , char *[])
     SymbolicFunction myFunction(input, Description(1, "-F*L^3/(3*E*I)"));
 
     /* We create a composite random vector */
-    RandomVector output(myFunction, vect);
+    CompositeRandomVector output(myFunction, vect);
 
     /* We create an Event from this RandomVector */
     Event myEvent(output, Less(), 50);

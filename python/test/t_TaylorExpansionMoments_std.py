@@ -24,7 +24,7 @@ distribution = ot.Normal(meanPoint, sigma, R)
 X = ot.RandomVector(distribution)
 
 # We create a composite RandomVector Y from X and myFunction
-Y = ot.RandomVector(myFunc, X)
+Y = ot.CompositeRandomVector(myFunc, X)
 
 # We create a quadraticCumul algorithm
 algo = ot.TaylorExpansionMoments(Y)

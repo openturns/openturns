@@ -80,7 +80,7 @@ def TimerCallback(duration):
     >>> model = ot.SymbolicFunction(['R', 'S'], ['R-S'])
     >>> distribution = ot.Normal(2)
     >>> vect = ot.RandomVector(distribution)
-    >>> output = ot.RandomVector(model, vect)
+    >>> output = ot.CompositeRandomVector(model, vect)
     >>> event = ot.Event(output, ot.Less(), 0.0)
     >>> experiment = ot.MonteCarloExperiment()
     >>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)

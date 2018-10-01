@@ -22,7 +22,7 @@ try:
         inVars[i] = "x" + str(i)
     model = SymbolicFunction(inVars, inVars)
     # The output vector
-    Y = RandomVector(model, X)
+    Y = CompositeRandomVector(model, X)
     # The domain: [0, 1]^dim
     domain = Interval(dim)
     # The event
