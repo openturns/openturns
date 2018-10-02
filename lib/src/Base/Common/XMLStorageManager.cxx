@@ -398,7 +398,7 @@ void toStringConverter(const _Tp & value, String & st)
   }
   else if (SpecFunc::IsInf(value))
   {
-    st = value < 0.0 ? "-inf" : "inf";
+    st = (value < 0.0) ? "-inf" : "inf";
   }
 }
 
@@ -409,7 +409,7 @@ void toStringConverter(const _Tp & value, String & st)
 static inline
 void fromStringConverter(const String & st, Bool & value)
 {
-  value = (st == "true" ) ? true : false;
+  value = (st == "true") ? true : false;
 }
 
 static inline

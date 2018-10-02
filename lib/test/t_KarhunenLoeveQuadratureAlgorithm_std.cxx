@@ -63,17 +63,17 @@ int main(int , char *[])
     // Now using Legendre/Gauss quadrature
     {
       UnsignedInteger marginalDegree = 5;
-      KarhunenLoeveQuadratureAlgorithm algo2(domain, domain, model, marginalDegree, threshold);
-      algo2.run();
-      KarhunenLoeveResult result(algo2.getResult());
-      Point lambda(result.getEigenValues());
-      ProcessSample KLModes(result.getModesAsProcessSample());
+      algo = KarhunenLoeveQuadratureAlgorithm(domain, domain, model, marginalDegree, threshold);
+      algo.run();
+      result = algo.getResult();
+      lambda = result.getEigenValues();
+      KLModes = result.getModesAsProcessSample();
       // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
       // fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
-      Sample coefficients(result.project(sample));
+      coefficients = result.project(sample);
       // fullprint << "KL coefficients=" << coefficients << std::endl;
-      Collection<Function> KLFunctions(result.getModes());
+      KLFunctions = result.getModes();
       // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
       Function lifted(result.lift(coefficients[0]));
       // fullprint << "KL lift=" << lifted.__str__() << std::endl;
