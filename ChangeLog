@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.12 release (in progress) == #release-1.12
+== 1.12rc1 release (2018-10-02) == #release-1.12rc1
 
 === Library ===
 
@@ -9,6 +9,7 @@
  * SobolSequence has been extended from maximum dimension 40 to 1111
  * Parametrized statistical tests by first kind risk instead of 1-risk
  * FittingTest now compute a correct p-value in Kolmogorov tests even if the parameters are estimated from the tested sample
+ * Completed documentation migration with process content
 
 ==== New classes ====
  * ProbabilitySimulationResult
