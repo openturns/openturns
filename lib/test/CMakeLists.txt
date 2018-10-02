@@ -19,8 +19,6 @@
 #
 #
 
-set (NEW_PATH "${INSTALL_DESTDIR}${EXAMPLE_PATH}${PATH_SEP}$ENV{PATH}")
-
 set (ADAPT_CHECK_TESTS_EXPONENT)
 set (REPLACE_EOL " | cat ")
 if (WIN32)
@@ -97,7 +95,7 @@ macro (ot_check_test TESTNAME)
   set_tests_properties (cppcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${CHECK_ENVIRONMENT}")
   list (APPEND CHECK_TO_BE_RUN ${TESTNAME_TGT})
   install (FILES ${TESTNAME_SRC}
-            DESTINATION ${EXAMPLE_PATH}
+	  DESTINATION ${OPENTURNS_EXAMPLE_PATH}
          )
 
 endmacro (ot_check_test)

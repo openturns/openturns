@@ -33,7 +33,8 @@ endmacro(set_and_check _var _value)
       OPENTURNS_INCLUDE_DIR
       OPENTURNS_INCLUDE_DIRS
       OPENTURNS_LIBRARY_DIRS
-      OPENTURNS_SWIG_INCLUDE_DIRS)
+      OPENTURNS_SWIG_INCLUDE_DIRS
+      PYTHON_MODULE_PATH)
     set(PACKAGE_${_var} ${${_var}})
   endforeach ()
 
@@ -42,13 +43,13 @@ endmacro(set_and_check _var _value)
                    ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfig.cmake
                    @ONLY
                 )
-                 
+
   install (FILES UseOpenTURNS.cmake
                   ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfig.cmake
             DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH}
      )
 
-else (CMAKE_VERSION VERSION_LESS 2.8.8)
+else ()
   include(CMakePackageConfigHelpers)
   configure_package_config_file (
     OpenTURNSConfig.cmake.in
@@ -61,8 +62,9 @@ else (CMAKE_VERSION VERSION_LESS 2.8.8)
       OPENTURNS_INCLUDE_DIRS
       OPENTURNS_LIBRARY_DIRS
       OPENTURNS_SWIG_INCLUDE_DIRS
-    NO_CHECK_REQUIRED_COMPONENTS_MACRO
-                               )                   
+      PYTHON_MODULE_PATH
+    NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+
   write_basic_package_version_file(OpenTURNSConfigVersion.cmake VERSION ${OPENTURNS_VERSION_STRING} COMPATIBILITY AnyNewerVersion)               
 
   install (FILES UseOpenTURNS.cmake
@@ -70,7 +72,7 @@ else (CMAKE_VERSION VERSION_LESS 2.8.8)
                   ${CMAKE_CURRENT_BINARY_DIR}/OpenTURNSConfigVersion.cmake
             DESTINATION ${OPENTURNS_CONFIG_CMAKE_PATH}
          )
-endif (CMAKE_VERSION VERSION_LESS 2.8.8)
+endif ()
 
 # Recurse in subdirectories : test should be run after src (for target OT to be built)
 add_subdirectory (test)
@@ -84,18 +86,15 @@ if (DOXYGEN_FOUND)
   configure_file (${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
                    ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
                     @ONLY)
-                    
+
   # generate html doc and compress it
   add_custom_target (html 
                       COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/doc
                       COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
                       COMMAND tar czf doc-api-${PACKAGE_VERSION}.tar.gz doc
                       COMMAND tar cjf doc-api-${PACKAGE_VERSION}.tar.bz2 doc
-                     )                   
-                      
-endif (DOXYGEN_FOUND)
+                     )
 
-install (FILES ${HEADERFILES}
-          DESTINATION ${INCLUDE_PATH}/openturns
-       )
+endif ()
 
+install (FILES ${HEADERFILES} DESTINATION ${OPENTURNS_INCLUDE_PATH}/openturns)

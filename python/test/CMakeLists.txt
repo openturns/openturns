@@ -65,7 +65,7 @@ macro (ot_pyinstallcheck_test TESTNAME)
 
   set_tests_properties (pyinstallcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
   install (FILES ${TESTNAME_SRC}
-            DESTINATION ${EXAMPLE_PATH}
+	  DESTINATION ${OPENTURNS_EXAMPLE_PATH}
             PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
          )
 endmacro (ot_pyinstallcheck_test)

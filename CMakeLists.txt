@@ -98,10 +98,6 @@ set (OPENTURNS_EXAMPLE_PATH
       share/openturns/examples
       CACHE PATH "The directory where the example files are installed"
    )
-set (OPENTURNS_SAMPLE_PATH
-      share/openturns/examples
-      CACHE PATH "The directory where the sample files are installed"
-   )
 set (OPENTURNS_VALIDATION_PATH
       share/openturns/validation
       CACHE PATH "The directory where validation files are installed"
@@ -125,14 +121,6 @@ set (OPENTURNS_TEMPDIR
    )
 set (TEMPDIR ${OPENTURNS_TEMPDIR})
 
-# WARNING: This is where variables without OPENTURNS_ prefix are defined !
-foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH EXAMPLE_PATH SAMPLE_PATH VALIDATION_PATH DOC_PATH)
-  file (TO_NATIVE_PATH "${OPENTURNS_${_var}}" NATIVE_OPENTURNS_${_var})
-  if (NOT IS_ABSOLUTE ${NATIVE_OPENTURNS_${_var}})
-    file (TO_NATIVE_PATH ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_${_var}} NATIVE_OPENTURNS_${_var})
-  endif ()
-  string(REPLACE "\\" "\\\\" ${_var} ${NATIVE_OPENTURNS_${_var}})
-endforeach (_var)
 
 # CMake 2.x does not define MSVC when using Intel compiler on Windows, see
 # http://public.kitware.com/Bug/view.php?id=14476
@@ -234,7 +222,13 @@ if (USE_BOOST)
   find_package (Boost 1.46 ${BOOST_REQUIRED_ARG})
   if (Boost_FOUND)
     set (OPENTURNS_HAVE_BOOST TRUE)
-    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+
+    # see SpecFunc.hxx
+    if (MSVC)
+      list (APPEND OPENTURNS_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+    else ()
+      list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+    endif ()
   endif ()
 endif ()
 
@@ -272,12 +266,24 @@ endif ()
 include (TestBigEndian)
 test_big_endian (__BIG_ENDIAN__) 
 
+if(POLICY CMP0042)
+  # Set MACOSX_RPATH to ON
+  cmake_policy(SET CMP0042 NEW)
+endif()
+if (POLICY CMP0054)
+  cmake_policy (SET CMP0054 NEW)
+endif ()
 if (POLICY CMP0056)
   cmake_policy (SET CMP0056 NEW)
-endif()
+endif ()
 if (POLICY CMP0066)
   cmake_policy (SET CMP0066 NEW)
-endif()
+endif ()
+if (POLICY CMP0068)
+  # RPATH settings on macOS do not affect install_name
+  cmake_policy (SET CMP0068 NEW)
+endif ()
+
 try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/unsignedlong_same_as_uint64_t.cxx)
@@ -413,26 +419,6 @@ add_custom_target (uninstall
   COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
 
-# RPATH settings
-set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH})
-set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-if(POLICY CMP0042)
-  # Set MACOSX_RPATH to ON
-  cmake_policy(SET CMP0042 NEW)
-endif()
-if (POLICY CMP0068)
-  # RPATH settings on macOS do not affect install_name
-  cmake_policy (SET CMP0068 NEW)
-endif ()
-
-set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
-set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=openturns)
-
-# necessary to link against Py_InitModule64
-if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set (OPENTURNS_SWIG_DEFINITIONS "-DMS_WIN64 ${OPENTURNS_SWIG_DEFINITIONS}")
-endif ()
-
 # The tests can't be run if this function is absent
 enable_testing ()
 add_custom_target (tests COMMENT "Build tests")
@@ -510,12 +496,6 @@ if (BUILD_PYTHON)
       file (RELATIVE_PATH OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH})
     endif ()
 
-    if (IS_ABSOLUTE ${OPENTURNS_PYTHON_MODULE_PATH})
-      set(PYTHON_MODULE_PATH ${OPENTURNS_PYTHON_MODULE_PATH})
-    else ()
-      set(PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_PYTHON_MODULE_PATH})
-    endif ()
-
     if (CMAKE_VERSION VERSION_LESS "2.8.6")
       execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.version_info[0])"
                        OUTPUT_VARIABLE PYTHON_VERSION_MAJOR
@@ -527,6 +507,33 @@ if (BUILD_PYTHON)
     set (OPENTURNS_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH ${OPENTURNS_PYTHON_MODULE_PATH})
   endif ()
 endif ()
+
+
+
+# Define variables without OPENTURNS_ prefix with absolute paths
+foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH EXAMPLE_PATH VALIDATION_PATH DOC_PATH PYTHON_MODULE_PATH)
+  if (IS_ABSOLUTE "${OPENTURNS_${_var}}")
+    set (${_var} ${OPENTURNS_${_var}})
+  else ()
+    set (${_var} ${CMAKE_INSTALL_PREFIX}/${OPENTURNS_${_var}})
+  endif ()
+  get_filename_component (${_var} "${${_var}}" ABSOLUTE)
+  file (TO_NATIVE_PATH "${${_var}}" NATIVE_${_var})
+  string (REPLACE "\\" "\\\\" NATIVE_${_var} ${NATIVE_${_var}})
+endforeach (_var)
+
+# RPATH settings
+set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH})
+set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
+set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=openturns)
+
+# necessary to link against Py_InitModule64
+if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+  set (OPENTURNS_SWIG_DEFINITIONS "-DMS_WIN64 ${OPENTURNS_SWIG_DEFINITIONS}")
+endif ()
+
 
 add_subdirectory (lib)
 
