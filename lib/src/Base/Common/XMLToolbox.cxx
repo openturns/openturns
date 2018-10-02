@@ -136,7 +136,7 @@ String XMLDoc::__repr__() const
     return String();
   }
 
-  String data = REINTERPRET_CAST( char * , buf->content );
+  String data = REINTERPRET_CAST( char *, buf->content );
 
   xmlBufferFree( buf );
 
@@ -190,7 +190,7 @@ Bool XMLDoc::validate(const String & name, const FileName & dtd) const
 
 
 
-void XML::WarningHandler( void * , const char * format, ...)
+void XML::WarningHandler( void *, const char * format, ...)
 {
   // int ret = 0;
   va_list args;
@@ -205,7 +205,7 @@ void XML::WarningHandler( void * , const char * format, ...)
 }
 
 
-void XML::ErrorHandler( void * , const char * format, ...)
+void XML::ErrorHandler( void *, const char * format, ...)
 {
   // int ret = 0;
   va_list args;

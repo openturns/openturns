@@ -68,4 +68,3 @@ print('sample*=v:', sample5)
 
 sample5 /= v
 print('sample/=v:', sample5)
-

@@ -43,9 +43,9 @@ SobolSimulationResult::SobolSimulationResult()
 
 /* Standard constructor */
 SobolSimulationResult::SobolSimulationResult(const Distribution & firstOrderIndicesDistribution,
-                        const Distribution & totalOrderIndicesDistribution,
-                        const UnsignedInteger outerSampling,
-                        const UnsignedInteger blockSize)
+    const Distribution & totalOrderIndicesDistribution,
+    const UnsignedInteger outerSampling,
+    const UnsignedInteger blockSize)
   : SimulationResult(outerSampling, blockSize)
   , firstOrderIndicesDistribution_(firstOrderIndicesDistribution)
   , totalOrderIndicesDistribution_(totalOrderIndicesDistribution)

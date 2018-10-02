@@ -51,11 +51,11 @@ public:
 
   /** Default constructor */
   KarhunenLoeveResultImplementation(const CovarianceModel & covariance,
-      const Scalar threshold,
-      const Point & eigenvalues,
-      const FunctionCollection & modes,
-      const ProcessSample & modesAsProcessSample,
-      const Matrix & projection);
+                                    const Scalar threshold,
+                                    const Point & eigenvalues,
+                                    const FunctionCollection & modes,
+                                    const ProcessSample & modesAsProcessSample,
+                                    const Matrix & projection);
 
   /** Virtual constructor */
   virtual KarhunenLoeveResultImplementation * clone() const;

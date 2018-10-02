@@ -35,7 +35,7 @@ try:
         for i in range(2):
             print(
                 "Kolmogorov test for the generator, sample size=", size, " is ",
-                  FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure())
+                FittingTest.Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure())
             size *= size
 
         # Define a point

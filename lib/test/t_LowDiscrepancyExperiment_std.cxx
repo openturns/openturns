@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -73,7 +73,7 @@ int main(int , char *[])
       R(i - 1, i) = 0.5;
     distribution.setCorrelation(R);
     myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, false);
-    fullprint << "sample = " << myPlane.generate() << std::endl;    
+    fullprint << "sample = " << myPlane.generate() << std::endl;
   }
   catch (TestFailed & ex)
   {

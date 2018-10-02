@@ -119,7 +119,7 @@ public:
 
   /** Return the field as a defomed mesh, ie the dimension of the vertices is augmented using zero coordinates at the positions given by the first Indices, the dimension of the values is augmented the same way by adding zero values at the positions given by the second indices, then the vertices are translated by the values */
   Mesh asDeformedMesh(const Indices & addedNullCoordinates = Indices(0),
-		      const Indices & addedNullValues = Indices(0)) const;
+                      const Indices & addedNullValues = Indices(0)) const;
 
   /** Compute the input mean of the field */
   Point getInputMean() const;

@@ -93,25 +93,25 @@ CovarianceMatrix NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix(co
   MatrixImplementation designMatrix(fullDimension, size);
   MatrixImplementation::iterator designBegin = designMatrix.begin();
   if (isCentered)
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, designBegin);
-	  designBegin += fullDimension;
-	}
-    } // isCentered
+      std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, designBegin);
+      designBegin += fullDimension;
+    }
+  } // isCentered
   else
+  {
+    const Point mean(sample.computeMean().getValues().getImplementation()->getData());
+    Point point(fullDimension);
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Point mean(sample.computeMean().getValues().getImplementation()->getData());
-      Point point(fullDimension);
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, &point[0]);
-	  point -= mean;
-	  std::copy(point.begin(), point.end(), designBegin);
-	  designBegin += fullDimension;
-	}
-    } // !isCentered
+      std::copy(&sample[i].getImplementation()->operator()(0, 0), &sample[i].getImplementation()->operator()(0, 0) + fullDimension, &point[0]);
+      point -= mean;
+      std::copy(point.begin(), point.end(), designBegin);
+      designBegin += fullDimension;
+    }
+  } // !isCentered
   MatrixImplementation gram(designMatrix.computeGram(false));
   const CovarianceMatrix result(gram / (isCentered ? size : size - 1.0));
   return result;

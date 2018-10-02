@@ -52,7 +52,7 @@ Scalar SpaceFillingImplementation::evaluate(const Sample & ) const
 }
 
 /** Compute criterion when performing an elementary perturbation */
-Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar ,
+Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar,
     UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
 {
   // Default method uses O(N*N) computations

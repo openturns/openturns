@@ -38,7 +38,7 @@ SimulationResult::SimulationResult()
 
 /* Standard constructor */
 SimulationResult::SimulationResult(const UnsignedInteger outerSampling,
-    const UnsignedInteger blockSize)
+                                   const UnsignedInteger blockSize)
   : PersistentObject()
   , outerSampling_(outerSampling)
   , blockSize_(blockSize)

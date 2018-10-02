@@ -4,7 +4,7 @@
 
 using namespace OT;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   const UnsignedInteger dimension(5);
   const UnsignedInteger size(100);

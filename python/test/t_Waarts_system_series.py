@@ -16,6 +16,7 @@ def cleanScalar(inScalar):
 # initialize the random generator
 #
 
+
 RandomGenerator.SetSeed(0)
 
 try:

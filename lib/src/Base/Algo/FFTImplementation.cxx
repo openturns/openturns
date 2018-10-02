@@ -65,9 +65,9 @@ FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCo
 }
 
 /** FFT transformation on real with a regular sequence of the collection (between first and last, by step = step)*/
-FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCollection & ,
-    const UnsignedInteger ,
-    const UnsignedInteger ,
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCollection &,
+    const UnsignedInteger,
+    const UnsignedInteger,
     const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE);
@@ -80,17 +80,17 @@ FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexC
 }
 
 /* FFT transformation on complex - For some FFT implementation, the transformation is applied on a part of the collection */
-FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & ,
-    const UnsignedInteger ,
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection &,
+    const UnsignedInteger,
     const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
 }
 
 /* FFT transformation on complex - For some FFT implementation, the need is to transform a regular sequence of the collection (between first and last, by step = step)*/
-FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection & ,
-    const UnsignedInteger ,
-    const UnsignedInteger ,
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection &,
+    const UnsignedInteger,
+    const UnsignedInteger,
     const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
@@ -113,9 +113,9 @@ FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const S
 }
 
 /** FFT inverse transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection & ,
-    const UnsignedInteger ,
-    const UnsignedInteger ,
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ScalarCollection &,
+    const UnsignedInteger,
+    const UnsignedInteger,
     const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE);
@@ -128,17 +128,17 @@ FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const C
 }
 
 /* FFT inverse transformation - The transformation is applied on a part of the collection */
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & ,
-    const UnsignedInteger ,
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection &,
+    const UnsignedInteger,
     const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger size) const";
 }
 
 /* FFT transformation on a regular sequence of the collection (between first and last, spearated  by step)*/
-FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection & ,
-    const UnsignedInteger ,
-    const UnsignedInteger ,
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection &,
+    const UnsignedInteger,
+    const UnsignedInteger,
     const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";

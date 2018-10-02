@@ -49,7 +49,7 @@ struct FFTPolicy
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       const UnsignedInteger first = fftSize_ * i;
-      fft_.transform( &input_[first] , &output_[first] );
+      fft_.transform( &input_[first], &output_[first] );
     }
   }
 }; /* end struct FFTPolicy */
@@ -103,7 +103,7 @@ KissFFT::ComplexCollection KissFFT::transform(const ComplexCollection & collecti
 
   // Allocation of memory for final result
   ComplexCollection transformationResult(fftSize);
-  fft.transform( &collection[0] , &transformationResult[0] );
+  fft.transform( &collection[0], &transformationResult[0] );
   return transformationResult;
 }
 
@@ -117,7 +117,7 @@ KissFFT::ComplexCollection KissFFT::transform(const ComplexCollection & collecti
 
   // Allocation of memory for final result
   ComplexCollection transformationResult(size);
-  fft.transform( &collection[first] , &transformationResult[0] );
+  fft.transform( &collection[first], &transformationResult[0] );
   return transformationResult;
 }
 
@@ -135,7 +135,7 @@ KissFFT::ComplexCollection KissFFT::inverseTransform(const ComplexCollection & c
 
   // Inverse transform = transform with the opposite sign in the exponent and a 1/N factor
   // Call inverse transformation
-  fft.transform( &collection[0] , &transformationResult[0] );
+  fft.transform( &collection[0], &transformationResult[0] );
   const Scalar alpha = 1.0 / size;
   for (UnsignedInteger index = 0; index < size; ++index) transformationResult[index] *= alpha;
   return transformationResult;
@@ -151,7 +151,7 @@ KissFFT::ComplexCollection KissFFT::inverseTransform(const ComplexCollection & c
 
   // Allocation of memory for final result
   ComplexCollection transformationResult(size);
-  fft.transform( &collection[first] , &transformationResult[0] );
+  fft.transform( &collection[first], &transformationResult[0] );
   const Scalar alpha = 1.0 / size;
   for (UnsignedInteger index = 0; index < size; ++index) transformationResult[index] *= alpha;
   return transformationResult;

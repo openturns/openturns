@@ -66,13 +66,13 @@ Function OrthogonalFunctionFactory::build(const UnsignedInteger ) const
 Function OrthogonalFunctionFactory::build(const Indices & indices) const
 {
   try
-    {
-      return build(getEnumerateFunction().inverse(indices));
-    }
+  {
+    return build(getEnumerateFunction().inverse(indices));
+  }
   catch (const NotYetImplementedException &)
-    {
-      throw NotDefinedException(HERE) << "The construction of a function based on a multi-indices is not supported by this OrthogonalFunctionFactory=" << *this;
-    }
+  {
+    throw NotDefinedException(HERE) << "The construction of a function based on a multi-indices is not supported by this OrthogonalFunctionFactory=" << *this;
+  }
 }
 
 

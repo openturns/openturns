@@ -15,22 +15,22 @@ coll = [ot.Uniform()] * dim
 # friedman
 # dim = 5
 # model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4', 'x5'],
-                                    #['10*sin(pi_*x1*x2)+20*(x3-0.5)^2+10*x4+5*x5'])
+#['10*sin(pi_*x1*x2)+20*(x3-0.5)^2+10*x4+5*x5'])
 # coll = [ot.Uniform(0., 1.)] * dim
 
 
 # borehole
 # dim = 8
 # model = ot.SymbolicFunction(['rw', 'r', 'Tu', 'Hu', 'Tl', 'Hl', 'L', 'Kw'],
-  #['(2*pi_*Tu*(Hu-Hl))/(ln(r/rw)*(1+(2*L*Tu)/(ln(r/rw)*rw^2*Kw)+Tu/Tl))'])
+#['(2*pi_*Tu*(Hu-Hl))/(ln(r/rw)*(1+(2*L*Tu)/(ln(r/rw)*rw^2*Kw)+Tu/Tl))'])
 # coll = [ot.Normal(0.1, 0.0161812),
-        # ot.LogNormal(7.71, 1.0056),
-        # ot.Uniform(63070.0, 115600.0),
-        # ot.Uniform(990.0, 1110.0),
-        # ot.Uniform(63.1, 116.0),
-        # ot.Uniform(700.0, 820.0),
-        # ot.Uniform(1120.0, 1680.0),
-        # ot.Uniform(9855.0, 12045.0)]
+# ot.LogNormal(7.71, 1.0056),
+# ot.Uniform(63070.0, 115600.0),
+# ot.Uniform(990.0, 1110.0),
+# ot.Uniform(63.1, 116.0),
+# ot.Uniform(700.0, 820.0),
+# ot.Uniform(1120.0, 1680.0),
+# ot.Uniform(9855.0, 12045.0)]
 
 distribution = ot.ComposedDistribution(coll)
 factoryCollection = [ot.OrthogonalUniVariateFunctionFamily(

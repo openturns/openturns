@@ -69,7 +69,7 @@ void SequentialStrategy::computeInitialBasis()
 
 /* Update the basis for the next iteration of approximation */
 void SequentialStrategy::updateBasis(const Point & alpha_k,
-                                     const Scalar ,
+                                     const Scalar,
                                      const Scalar )
 {
   if (verbose_)

@@ -24,7 +24,7 @@ try:
 
     # Test for sampling
     size = 10000
-    oneSample = distribution.getSample( size )
+    oneSample = distribution.getSample(size)
     print("oneSample first=", oneSample[0], " last=", oneSample[size - 1])
     print("mean=", oneSample.computeMean())
     print("covariance=", oneSample.computeCovariance())
@@ -34,21 +34,22 @@ try:
     print("Point= ", point)
 
     # Show PDF and CDF of point
-    DDF = distribution.computeDDF( point )
+    DDF = distribution.computeDDF(point)
     print("ddf      =", DDF)
-    PDF = distribution.computePDF( point )
+    PDF = distribution.computePDF(point)
     print("pdf      =%.6g" % PDF)
-    CDF = distribution.computeCDF( point )
+    CDF = distribution.computeCDF(point)
     print("cdf      =%.6g" % CDF)
-    PDFgr = distribution.computePDFGradient( point )
+    PDFgr = distribution.computePDFGradient(point)
     print("pdf gradient      =", PDFgr)
-    CDFgr = distribution.computeCDFGradient( point )
+    CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient      =", CDFgr)
-    quantile = distribution.computeQuantile( 0.95 )
+    quantile = distribution.computeQuantile(0.95)
     print("quantile     =", quantile)
     print("cdf(quantile)=%.6g" % distribution.computeCDF(quantile))
     print("entropy=%.6g" % distribution.computeEntropy())
-    print("entropy (MC)=%.6g" % -distribution.computeLogPDF(distribution.getSample(10000)).computeMean()[0])
+    print("entropy (MC)=%.6g" % -
+          distribution.computeLogPDF(distribution.getSample(10000)).computeMean()[0])
     mean = distribution.getMean()
     print("mean      =", mean)
     standardDeviation = distribution.getStandardDeviation()
@@ -62,7 +63,8 @@ try:
     parameters = distribution.getParametersCollection()
     print("parameters      =", parameters)
     for i in range(6):
-        print("standard moment n=", i, ", value=", distribution.getStandardMoment(i))
+        print("standard moment n=", i, ", value=",
+              distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 
     # Specific to this distribution
@@ -77,4 +79,3 @@ try:
 except:
     import sys
     print("t_ProductDistribution_std.py", sys.exc_info()[0], sys.exc_info()[1])
-

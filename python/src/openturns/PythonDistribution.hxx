@@ -84,7 +84,7 @@ public:
 
   /** Get the quantile of the distributionImplementation */
   virtual Point computeQuantile(const Scalar prob,
-                                         const Bool tail = false) const;
+                                const Bool tail = false) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const;
@@ -97,7 +97,7 @@ public:
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
-                                        const Bool tail = false) const;
+                               const Bool tail = false) const;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
   Scalar getRoughness() const;

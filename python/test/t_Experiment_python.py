@@ -16,6 +16,8 @@ class RandomExp(object):
             for j in range(self.dim):
                 res[i, j] = ot.RandomGenerator.Generate()
         return res
+
+
 pyexp = RandomExp(10, 2)
 experiment = ot.Experiment(pyexp)
 print(experiment)

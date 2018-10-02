@@ -45,7 +45,8 @@ try:
     for i in range(1, 4):
         R[i - 1, i] = 0.5
     distribution.setCorrelation(R)
-    myPlane = LowDiscrepancyExperiment(HaltonSequence(), distribution, size, False)
+    myPlane = LowDiscrepancyExperiment(
+        HaltonSequence(), distribution, size, False)
     print("sample = ", myPlane.generate())
 except:
     import sys

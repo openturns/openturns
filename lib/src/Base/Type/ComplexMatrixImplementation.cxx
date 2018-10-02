@@ -580,7 +580,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::triangularProd(const Co
   Complex alpha(1.0);
 
   // Lapack routine
-  ztrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<std::complex<double>*>(&((*this)[0])),  &m, const_cast<std::complex<double>*>(&(mult[0])), &m, &lside , &luplo, &ltrans,  &ldiag);
+  ztrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])),  &m, const_cast<std::complex<double>*>(&(mult[0])), &m, &lside, &luplo, &ltrans,  &ldiag);
   return mult;
 }
 

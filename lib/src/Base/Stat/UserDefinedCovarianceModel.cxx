@@ -75,12 +75,12 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < N; ++j)
     for (UnsignedInteger i = 0; i < j + 1; ++i)
-      {
-	for (UnsignedInteger k = 0; k < outputDimension_; ++k)
-	  for (UnsignedInteger l = 0; l < outputDimension_; ++l)
-	    covariance_(i * outputDimension_ + l, j * outputDimension_ + k) = covarianceCollection[index](l, k);
-	++index;
-      } // i
+    {
+      for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+        for (UnsignedInteger l = 0; l < outputDimension_; ++l)
+          covariance_(i * outputDimension_ + l, j * outputDimension_ + k) = covarianceCollection[index](l, k);
+      ++index;
+    } // i
 }
 
 // For a non stationary model, we need N x (N+1)/2 covariance matrices with N the number of vertices in the mesh

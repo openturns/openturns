@@ -67,7 +67,7 @@ struct BurrFactoryParameterConstraint
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Scalar x = sample_(i, 0);
-      const Scalar xC = std::pow(x , c);
+      const Scalar xC = std::pow(x, c);
       const Scalar logX = std::log(x);
       const Scalar ratio = logX / (1.0 + xC);
       sumRatio += ratio;

@@ -267,7 +267,7 @@ void KarhunenLoeveSVDAlgorithm::run()
       {
         AGi = A.genProd(A.genProd(AGi, true, false), false, false);
         std::copy(AGi.begin(), AGi.end(), H.begin() + i * l);
-	LOGINFO(OSS() << "H=" << H.getNbRows() << "x" << H.getNbColumns());
+        LOGINFO(OSS() << "H=" << H.getNbRows() << "x" << H.getNbColumns());
       }
       LOGINFO("Create QR decomposition of H");
       MatrixImplementation R;
@@ -287,8 +287,8 @@ void KarhunenLoeveSVDAlgorithm::run()
       MatrixImplementation W(VTc.getNbColumns(), rank);
       LOGINFO(OSS() << "W=" << W.getNbRows() << "x" << W.getNbColumns());
       for (UnsignedInteger i = 0; i < VTc.getNbColumns(); ++i)
-	for (UnsignedInteger j = 0; j < rank; ++j)
-	  W(i, j) = VTc(j, i);
+        for (UnsignedInteger j = 0; j < rank; ++j)
+          W(i, j) = VTc(j, i);
       U = Q.genProd(W, false, false);
       LOGINFO(OSS() << "U=" << U.getNbRows() << "x" << U.getNbColumns());
     }

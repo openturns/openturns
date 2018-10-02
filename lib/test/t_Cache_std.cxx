@@ -28,7 +28,7 @@ typedef PersistentCollection<Scalar> KeyType;
 typedef PersistentCollection<Scalar> ValueType;
 typedef Cache<KeyType, ValueType>              TestCache;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

@@ -57,15 +57,15 @@ BEGIN_NAMESPACE_OPENTURNS
 
 namespace XML_STMGR
 {
-DEFINE_TAG( root            ,   "openturns-study"   );
-DEFINE_TAG( bool            ,   "bool"              );
-DEFINE_TAG( unsignedlong    ,   "unsignedlong"      );
-DEFINE_TAG( numericalscalar ,   "numericalscalar"   );
+DEFINE_TAG( root,   "openturns-study"   );
+DEFINE_TAG( bool,   "bool"              );
+DEFINE_TAG( unsignedlong,   "unsignedlong"      );
+DEFINE_TAG( numericalscalar,   "numericalscalar"   );
 DEFINE_TAG( numericalcomplex,   "numericalcomplex"  );
-DEFINE_TAG( real            ,   "real"              );
-DEFINE_TAG( imag            ,   "imag"              );
-DEFINE_TAG( string          ,   "string"            );
-DEFINE_TAG( object          ,   "object"            );
+DEFINE_TAG( real,   "real"              );
+DEFINE_TAG( imag,   "imag"              );
+DEFINE_TAG( string,   "string"            );
+DEFINE_TAG( object,   "object"            );
 } // namespace XML_STMGR
 
 /************ Attributes ************/
@@ -77,13 +77,13 @@ DEFINE_TAG( object          ,   "object"            );
 namespace XML_STMGR
 {
 DEFINE_ATTRIBUTE( StudyVisible, "StudyVisible"  );
-DEFINE_ATTRIBUTE( StudyLabel  , "StudyLabel"    );
-DEFINE_ATTRIBUTE( version     , "version"       );
-DEFINE_ATTRIBUTE( class       , "class"         );
-DEFINE_ATTRIBUTE( id          , "id"            );
-DEFINE_ATTRIBUTE( name        , "name"          );
-DEFINE_ATTRIBUTE( index       , "index"         );
-DEFINE_ATTRIBUTE( member      , "member"        );
+DEFINE_ATTRIBUTE( StudyLabel, "StudyLabel"    );
+DEFINE_ATTRIBUTE( version, "version"       );
+DEFINE_ATTRIBUTE( class, "class"         );
+DEFINE_ATTRIBUTE( id, "id"            );
+DEFINE_ATTRIBUTE( name, "name"          );
+DEFINE_ATTRIBUTE( index, "index"         );
+DEFINE_ATTRIBUTE( member, "member"        );
 } // namespace XML_STMGR
 
 
@@ -543,7 +543,7 @@ void AttributeWriter<Complex>(Pointer<StorageManager::InternalObject> & p_obj,
 
 template <typename TAG, typename _Tp>
 static inline
-void AttributeReader(TAG ,
+void AttributeReader(TAG,
                      Pointer<XMLStorageManagerState> & p_state,
                      const String & name,
                      _Tp & value)
@@ -580,7 +580,7 @@ void IndexedValueWriter(TAG tag,
 
 template <>
 inline
-void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, Complex>(XML_STMGR::numericalcomplex_tag ,
+void IndexedValueWriter<XML_STMGR::numericalcomplex_tag, Complex>(XML_STMGR::numericalcomplex_tag,
     Pointer<StorageManager::InternalObject> & p_obj,
     UnsignedInteger index,
     Complex value)
@@ -707,7 +707,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> &,
                                       const String & name,
                                       Bool & value)
 {
@@ -745,7 +745,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> &,
                                       const String & name,
                                       UnsignedInteger & value)
 {
@@ -781,7 +781,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> &,
                                       const String & name,
                                       Unsigned64BitsInteger & value)
 {
@@ -818,7 +818,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> &,
                                       const String & name,
                                       Scalar & value)
 {
@@ -856,7 +856,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> &,
                                       const String & name,
                                       Complex & value)
 {
@@ -894,7 +894,7 @@ void XMLStorageManager::addAttribute(Pointer<InternalObject> & p_obj,
 }
 
 /* Read an attribute */
-void XMLStorageManager::readAttribute(Pointer<InternalObject> & ,
+void XMLStorageManager::readAttribute(Pointer<InternalObject> &,
                                       const String & name,
                                       String & value)
 {

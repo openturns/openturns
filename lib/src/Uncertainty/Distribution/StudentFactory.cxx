@@ -71,9 +71,9 @@ struct StudentFactoryReducedLogLikelihood
 {
   /** Constructor from a sample and a derivative factor estimate */
   StudentFactoryReducedLogLikelihood(const Sample & sample,
-				     const Point & mu,
-				     const Point & stdev,
-				     const CorrelationMatrix & R)
+                                     const Point & mu,
+                                     const Point & stdev,
+                                     const CorrelationMatrix & R)
     : sample_(sample)
     , mu_(mu)
     , stdev_(stdev)
@@ -105,7 +105,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   const Point stdev(sample.computeStandardDeviationPerComponent());
   // The relation between Kendall's tau and shape matrix is universal among the elliptical copulas. Use the method in NormalCopula.
   const CorrelationMatrix R(NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau()));
-  
+
   // Now, nu is found by reduced likelihood maximization
   StudentFactoryReducedLogLikelihood logLikelihood(sample, mu, stdev, R);
   const Function objective(bindMethod<StudentFactoryReducedLogLikelihood, Point, Point>(logLikelihood, &StudentFactoryReducedLogLikelihood::computeLogLikelihood, 1, 1));

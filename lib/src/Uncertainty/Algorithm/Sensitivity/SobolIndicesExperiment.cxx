@@ -75,50 +75,50 @@ SobolIndicesExperiment::SobolIndicesExperiment(const Distribution & distribution
   // asymptotic distribution of the estimate in SobolIndicesAlgorithm
   short method = 0;
   if (ResourceMap::GetAsString("SobolIndicesExperiment-SamplingMethod") == "LHS")
-    {
-      method = 1;
-    } // LHS
+  {
+    method = 1;
+  } // LHS
   else if (ResourceMap::GetAsString("SobolIndicesExperiment-SamplingMethod") == "QMC")
+  {
+    if (dimension <= SobolSequence::MaximumNumberOfDimension)
     {
-      if (dimension <= SobolSequence::MaximumNumberOfDimension)
-	{
-	  method = 2;
-	} // QMC
-      else
-	{
-	  LOGWARN(OSS() << "Can use Sobol sequence in SobolIndicesExperiment only for dimension not greater than " << SobolSequence::MaximumNumberOfDimension << ", here dimension=" << dimension << ". Using LHS instead.");
-	  method = 1;
-	} // QMC->LHS
+      method = 2;
     } // QMC
-  switch (method)
+    else
     {
-      // MonteCarlo
+      LOGWARN(OSS() << "Can use Sobol sequence in SobolIndicesExperiment only for dimension not greater than " << SobolSequence::MaximumNumberOfDimension << ", here dimension=" << dimension << ". Using LHS instead.");
+      method = 1;
+    } // QMC->LHS
+  } // QMC
+  switch (method)
+  {
+    // MonteCarlo
     case 0:
       {
-	experiment = MonteCarloExperiment(distribution, size);
+        experiment = MonteCarloExperiment(distribution, size);
       }
       break;
-      // LHS
+    // LHS
     case 1:
       {
-	LHSExperiment lhsExperiment(distribution, size);
-	lhsExperiment.setAlwaysShuffle(true);
-	lhsExperiment.setRandomShift(true);
-	experiment = lhsExperiment;
+        LHSExperiment lhsExperiment(distribution, size);
+        lhsExperiment.setAlwaysShuffle(true);
+        lhsExperiment.setRandomShift(true);
+        experiment = lhsExperiment;
       }
       break;
-      // QMC
+    // QMC
     case 2:
       {
-	LowDiscrepancyExperiment sobolExperiment(SobolSequence(dimension), distribution, size);
-	sobolExperiment.setRestart(true);
-	sobolExperiment.setRandomize(true);
-	experiment = sobolExperiment;
+        LowDiscrepancyExperiment sobolExperiment(SobolSequence(dimension), distribution, size);
+        sobolExperiment.setRestart(true);
+        sobolExperiment.setRandomize(true);
+        experiment = sobolExperiment;
       }
       break;
     default:
       throw InternalException(HERE) << "Error: unknown sampling method=" << method << " in SobolIndicesExperiment.";
-    }
+  }
   *this = SobolIndicesExperiment(experiment, computeSecondOrder);
 }
 

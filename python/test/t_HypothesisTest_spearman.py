@@ -7,7 +7,7 @@ TESTPREAMBLE()
 
 size = 100
 dim = 2
-  
+
 sampleX = Normal(dim).getSample(size)
 sampleX0 = sampleX.getMarginal(0)
 sampleY = sampleX.getMarginal(1)
@@ -20,7 +20,7 @@ sampleZ = SymbolicFunction("x", "exp(x)")(sampleX0)
 # Test = True <=> p-value > p-value threshold
 
 print("Spearman=", HypothesisTest.Spearman(sampleY, sampleZ, 0.10))
-  
+
 # Full Spearman Test : collection of tests of zero correlation between the 1D marginals of a sample and another 1D sample
 # H0 = zero rank correlation
 # Test = True <=> zero rank correlation
@@ -40,8 +40,10 @@ print("FullSpearmanYY=", HypothesisTest.FullSpearman(sampleY, sampleY, 0.10))
 
 selection = [0]
 # The three tests must be equal
-print("PartialSpearmanX0Y=", HypothesisTest.PartialSpearman(sampleX, sampleY, selection, 0.10))
+print("PartialSpearmanX0Y=", HypothesisTest.PartialSpearman(
+    sampleX, sampleY, selection, 0.10))
 print("SpearmanX0Y=", HypothesisTest.Spearman(sampleX0, sampleY, 0.10))
 print("FullSpearmanX0Y=", HypothesisTest.FullSpearman(sampleX0, sampleY, 0.10))
 
-print("PartialSpearmanXY=", HypothesisTest.PartialSpearman(sampleX, sampleY, selection, 0.10))
+print("PartialSpearmanXY=", HypothesisTest.PartialSpearman(
+    sampleX, sampleY, selection, 0.10))

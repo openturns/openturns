@@ -51,11 +51,11 @@ public:
 
   /** Constructors */
   ProcessSampleImplementation(const UnsignedInteger size,
-                const Field & field);
+                              const Field & field);
 
   ProcessSampleImplementation(const Mesh & mesh,
-                const UnsignedInteger size,
-                const UnsignedInteger dimension);
+                              const UnsignedInteger size,
+                              const UnsignedInteger dimension);
 
   /** Partial copy constructor */
   void add(const Field & field);

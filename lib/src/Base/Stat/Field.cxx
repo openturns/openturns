@@ -230,7 +230,7 @@ Field Field::getMarginal(const Indices & indices) const
 
 /* Return the field as a defomed mesh, ie the dimension of the vertices is augmented using zero coordinates at the positions given by the first Indices, the dimension of the values is augmented the same way by adding zero values at the positions given by the second indices, then the vertices are translated by the values */
 Mesh Field::asDeformedMesh(const Indices & verticesPadding,
-			   const Indices & valuesPadding) const
+                           const Indices & valuesPadding) const
 {
   return getImplementation()->asDeformedMesh(verticesPadding, valuesPadding);
 }

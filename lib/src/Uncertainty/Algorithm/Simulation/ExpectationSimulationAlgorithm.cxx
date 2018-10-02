@@ -287,7 +287,7 @@ Point ExpectationSimulationAlgorithm::getMaximumStandardDeviationPerComponent() 
 
 /* Draw the probability convergence at the given level */
 Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedInteger marginalIndex,
-                                                                 const Scalar level) const
+    const Scalar level) const
 {
   // Check if the given level is in ]0, 1[
   if ((level <= 0.0) || (level >= 1.0))

@@ -4,7 +4,8 @@ from __future__ import print_function
 import openturns as ot
 
 # Tests
-ot.ResourceMap.SetAsUnsignedInteger('SimulationAlgorithm-DefaultBlockSize', 100)
+ot.ResourceMap.SetAsUnsignedInteger(
+    'SimulationAlgorithm-DefaultBlockSize', 100)
 ot.ResourceMap.SetAsUnsignedInteger(
     'SimulationAlgorithm-DefaultMaximumOuterSampling', 100)
 ot.ResourceMap.SetAsScalar(

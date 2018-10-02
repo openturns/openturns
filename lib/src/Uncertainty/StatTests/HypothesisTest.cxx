@@ -74,7 +74,7 @@ TestResult HypothesisTest::Spearman(const Sample & firstSample,
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only between two 1D samples.";
   const UnsignedInteger size = firstSample.getSize();
   if (secondSample.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the Spearman test can be performed only between two samples of same size.";
-  
+
   const Bool ties = (firstSample.sortUnique().getSize() < size) || (secondSample.sortUnique().getSize() < size);
   Sample fullSample(firstSample);
   fullSample.stack(secondSample);
@@ -103,7 +103,7 @@ TestResult HypothesisTest::RunTwoSamplesRTest(const Sample & firstSample,
   cmdFile << "firstSample <- data.matrix(read.table(\"" << firstDataFileName << "\"))" << std::endl;
   cmdFile << "secondSample <- data.matrix(read.table(\"" << secondDataFileName << "\"))" << std::endl;
   cmdFile << "res <- computeTest" << testName;
-  cmdFile << "(firstSample, secondSample, " << 1.0-level << ")" << std::endl;
+  cmdFile << "(firstSample, secondSample, " << 1.0 - level << ")" << std::endl;
   cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
   cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
   cmdFile << "close(f)" << std::endl;

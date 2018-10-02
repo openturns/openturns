@@ -177,7 +177,8 @@ namePython< _PyInt_ >()
 // We could use constexpr instead, if we are sure that compiler support is okay.
 // As only numerical types are concerned, it is unlikely that new types are added,
 // so let us use an array instead and initialize an index into this array.
-static const char* const pyBuf_formats [] = {
+static const char* const pyBuf_formats [] =
+{
   "l",
   "d",
   "Zd"
@@ -802,7 +803,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, &sample(0,0));
+          std::copy(data, data + size * dimension, &sample(0, 0));
         }
         else
         {
@@ -982,7 +983,7 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, &indices(0,0));
+          std::copy(data, data + size * dimension, &indices(0, 0));
         }
         else
         {
@@ -1148,7 +1149,7 @@ convert< _PySequence_, MatrixImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0,0));
+          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0, 0));
         }
         else
         {
@@ -1353,7 +1354,7 @@ convert< _PySequence_, TensorImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0,0,0));
+          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0, 0, 0));
         }
         else
         {
@@ -1440,7 +1441,7 @@ convert< _PySequence_, ComplexMatrixImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 2-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0,0));
+          std::copy(data, data + nbRows * nbColumns, &p_implementation->operator()(0, 0));
         }
         else
         {
@@ -1621,7 +1622,7 @@ convert< _PySequence_, ComplexTensorImplementation* >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'F'))
         {
           // 3-d contiguous array in Fortran notation, we can directly copy memory chunk
-          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0,0,0));
+          std::copy(data, data + nbRows * nbColumns * nbSheets, &p_implementation->operator()(0, 0, 0));
         }
         else
         {

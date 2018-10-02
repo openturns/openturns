@@ -152,39 +152,39 @@ Scalar DirectionalSampling::computeTotalContribution(const Sample & directionSam
   // to detect the first call to getOriginValue
   const Point origin(dimension);
   try
-    {
-      // Doesn't throw an exception if already computed
-      (void) rootStrategy_.getOriginValue();
-    }
+  {
+    // Doesn't throw an exception if already computed
+    (void) rootStrategy_.getOriginValue();
+  }
   catch (const NotDefinedException &)
+  {
+    // Compute the value at the origin
+    const Point originValue = standardFunction_(origin);
+    const Bool inEvent = standardEvent_.getDomain().contains(originValue);
+    // Check if the origin is stable wrt the value at the origin
+    Scalar delta = 0.0;
+    // std::abs is here to test both +0.0 and -0.0
+    if (std::abs(originValue[0]) == 0.0) delta = SpecFunc::ScalarEpsilon;
+    else delta = SpecFunc::ScalarEpsilon * std::abs(originValue[0]);
+    const Scalar valueUp   = originValue[0] + delta;
+    const Scalar valueDown = originValue[0] - delta;
+    const Bool sameAsUp = (inEvent == standardEvent_.getDomain().contains(Point(1, valueUp)));
+    const Bool sameAsDown = (inEvent == standardEvent_.getDomain().contains(Point(1, valueDown)));
+    // If both shift lead to a new point with a different classification than the origin, the algorithm is not applicable. It is hopefully an exceptional situation
+    if ((!sameAsUp) && (!sameAsDown)) throw InternalException(HERE) << "No way to stabilize the origin wrt the event in DirectionalSampling. This algorithm cannot be used to quantified the event=" << standardEvent_;
+    // If a small shift in the value at the origin changes the status wrt the event, it is unstable. Force to be on one side by shifting the standard function toward the stable direction
+    if (sameAsUp != sameAsDown)
     {
-      // Compute the value at the origin
-      const Point originValue = standardFunction_(origin);
-      const Bool inEvent = standardEvent_.getDomain().contains(originValue);
-      // Check if the origin is stable wrt the value at the origin
-      Scalar delta = 0.0;
-      // std::abs is here to test both +0.0 and -0.0
-      if (std::abs(originValue[0]) == 0.0) delta = SpecFunc::ScalarEpsilon;
-      else delta = SpecFunc::ScalarEpsilon * std::abs(originValue[0]);
-      const Scalar valueUp   = originValue[0] + delta;
-      const Scalar valueDown = originValue[0] - delta;
-      const Bool sameAsUp = (inEvent == standardEvent_.getDomain().contains(Point(1, valueUp)));
-      const Bool sameAsDown = (inEvent == standardEvent_.getDomain().contains(Point(1, valueDown)));
-      // If both shift lead to a new point with a different classification than the origin, the algorithm is not applicable. It is hopefully an exceptional situation
-      if ((!sameAsUp) && (!sameAsDown)) throw InternalException(HERE) << "No way to stabilize the origin wrt the event in DirectionalSampling. This algorithm cannot be used to quantified the event=" << standardEvent_;
-      // If a small shift in the value at the origin changes the status wrt the event, it is unstable. Force to be on one side by shifting the standard function toward the stable direction
-      if (sameAsUp != sameAsDown)
-	{
-	  const Scalar shift = (sameAsUp ? delta : -delta);
-	  rootStrategy_.setOriginValue(sameAsUp ? valueUp : valueDown);
-	  standardFunction_ = standardFunction_ + LinearFunction(Point(dimension), Point(1, shift), Matrix(1, dimension));
-	}
-      else
-	{
-	  // Don't forget to set the origin value also when it is stable!
-	  rootStrategy_.setOriginValue(originValue[0]);
-	}
-    } // catch
+      const Scalar shift = (sameAsUp ? delta : -delta);
+      rootStrategy_.setOriginValue(sameAsUp ? valueUp : valueDown);
+      standardFunction_ = standardFunction_ + LinearFunction(Point(dimension), Point(1, shift), Matrix(1, dimension));
+    }
+    else
+    {
+      // Don't forget to set the origin value also when it is stable!
+      rootStrategy_.setOriginValue(originValue[0]);
+    }
+  } // catch
   const UnsignedInteger sampleSize = directionSample.getSize();
   Scalar totalContribution = 0.0;
   // meanPointInEventDomain = Point(dimension);

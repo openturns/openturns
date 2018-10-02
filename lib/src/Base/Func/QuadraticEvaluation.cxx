@@ -147,7 +147,7 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
   Point temp(nbRows);
   for(UnsignedInteger index = 0; index < nbSheets; ++index)
   {
-    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(quadratic_(0,0,index))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &temp[0], &one, &luplo);
+    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(quadratic_(0, 0, index))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &temp[0], &one, &luplo);
     result[index] += 0.5 * ddot_(&n, const_cast<double*>(&delta[0]), &one, &temp[0], &one);
   }
   callsNumber_.increment();
@@ -181,9 +181,9 @@ Sample QuadraticEvaluation::operator() (const Sample & inS) const
   MatrixImplementation temp(nbRows, size);
   for(UnsignedInteger index = 0; index < nbSheets; ++index)
   {
-    dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&(quadratic_(0,0,index))), &m, const_cast<double*>(&(delta(0,0))), &m, &beta, &temp(0,0), &m, &lside, &luplo);
+    dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&(quadratic_(0, 0, index))), &m, const_cast<double*>(&(delta(0, 0))), &m, &beta, &temp(0, 0), &m, &lside, &luplo);
     for(UnsignedInteger i = 0; i < size; ++i)
-      result(i, index) += 0.5 * ddot_(&m, const_cast<double*>(&delta(i,0)), &one, &temp(0,i), &one);
+      result(i, index) += 0.5 * ddot_(&m, const_cast<double*>(&delta(i, 0)), &one, &temp(0, i), &one);
   }
   callsNumber_.fetchAndAdd(size);
   return result;

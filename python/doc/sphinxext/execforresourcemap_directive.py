@@ -81,7 +81,7 @@ class execforresourcemap_directive(Directive):
                 keyType = ot.ResourceMap.GetType(key)
                 node = nodes.paragraph(text=keyType)
                 entry += node
-                
+
             return [table]
         except Exception:
             return [nodes.error(None, nodes.paragraph(text="Unable to execute python code at %s:%d:" % (basename(source), self.lineno)), nodes.paragraph(text=str(sys.exc_info()[1])))]

@@ -29,6 +29,7 @@ def nearest_debug_indices(x):
     a = np.sum(np.square(sample_np - x), axis=1)
     return a.argsort()
 
+
 neighbourIndices = tree.query(test)
 
 neighbourIndices_np = [nearest_debug(x) for x in test]

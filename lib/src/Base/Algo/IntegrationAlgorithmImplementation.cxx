@@ -63,8 +63,8 @@ Point IntegrationAlgorithmImplementation::integrate(const Function & function,
   return integrate(function, interval, error[0]);
 }
 
-Point IntegrationAlgorithmImplementation::integrate(const Function & ,
-    const Interval & ,
+Point IntegrationAlgorithmImplementation::integrate(const Function &,
+    const Interval &,
     Scalar & ) const
 {
   throw NotYetImplementedException(HERE) << "In IntegrationAlgorithmImplementation::integrate(const Function & function, const Interval & interval, Scalar & error) const";

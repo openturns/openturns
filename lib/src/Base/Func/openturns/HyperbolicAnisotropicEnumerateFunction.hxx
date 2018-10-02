@@ -41,7 +41,7 @@ class OT_API HyperbolicAnisotropicEnumerateFunction
   CLASSNAME
 public:
 
-  typedef std::pair< Indices , Scalar > ValueType;
+  typedef std::pair< Indices, Scalar > ValueType;
   typedef std::list<ValueType>                   IndiceCache;
 
   /** Default constructor */

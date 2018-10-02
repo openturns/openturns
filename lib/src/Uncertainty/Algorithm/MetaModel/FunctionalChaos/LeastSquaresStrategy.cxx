@@ -111,9 +111,9 @@ String LeastSquaresStrategy::__repr__() const
 void LeastSquaresStrategy::computeCoefficients(const Function & function,
     const FunctionCollection & basis,
     const Indices & indices,
-    const Indices & ,
-    const Indices & ,
-    const Indices & ,
+    const Indices &,
+    const Indices &,
+    const Indices &,
     const UnsignedInteger marginalIndex)
 {
   // Check if the marginal index is not compatible with the function output dimension
@@ -152,7 +152,7 @@ void LeastSquaresStrategy::computeCoefficients(const Function & function,
 void LeastSquaresStrategy::save(Advocate & adv) const
 {
   ProjectionStrategyImplementation::save(adv);
-  adv.saveAttribute( "p_approximationAlgorithmImplementationFactory_" , *p_approximationAlgorithmImplementationFactory_ );
+  adv.saveAttribute( "p_approximationAlgorithmImplementationFactory_", *p_approximationAlgorithmImplementationFactory_ );
 }
 
 
@@ -161,7 +161,7 @@ void LeastSquaresStrategy::load(Advocate & adv)
 {
   ProjectionStrategyImplementation::load(adv);
   ApproximationAlgorithmImplementationFactory approximationAlgorithmImplementationFactory;
-  adv.loadAttribute( "p_approximationAlgorithmImplementationFactory_" , approximationAlgorithmImplementationFactory );
+  adv.loadAttribute( "p_approximationAlgorithmImplementationFactory_", approximationAlgorithmImplementationFactory );
   p_approximationAlgorithmImplementationFactory_ = approximationAlgorithmImplementationFactory.clone();
 }
 

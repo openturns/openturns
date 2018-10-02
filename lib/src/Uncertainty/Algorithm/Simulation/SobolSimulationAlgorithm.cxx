@@ -53,8 +53,8 @@ SobolSimulationAlgorithm::SobolSimulationAlgorithm()
 
 /* Constructor with parameters */
 SobolSimulationAlgorithm::SobolSimulationAlgorithm(const Distribution & distribution,
-                                                   const Function & model,
-                                                   const SobolIndicesAlgorithm & estimator)
+    const Function & model,
+    const SobolIndicesAlgorithm & estimator)
   : SimulationAlgorithm()
   , distribution_(distribution)
   , model_(model)
@@ -309,7 +309,7 @@ UnsignedInteger SobolSimulationAlgorithm::getBatchSize() const
 
 /* Draw the probability convergence at the given level */
 Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger marginalIndex,
-                                                      const Scalar level, const String & label) const
+    const Scalar level, const String & label) const
 {
   // Check if the given level is in ]0, 1[
   if ((level <= 0.0) || (level >= 1.0))
@@ -326,7 +326,7 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
   for (UnsignedInteger i = 0; i < size; i++)
   {
     const Scalar expectationEstimate = convergenceSample(i, marginalIndex);
-    const Scalar varianceEstimate = convergenceSample(i, 2*dimension + marginalIndex);
+    const Scalar varianceEstimate = convergenceSample(i, 2 * dimension + marginalIndex);
     dataEstimate(i, 0) = i + 1;
     dataEstimate(i, 1) = expectationEstimate;
     // The bounds are drawn only if there is a useable variance estimate
@@ -357,13 +357,13 @@ Graph SobolSimulationAlgorithm::drawIndexConvergence(const UnsignedInteger margi
 }
 
 Graph SobolSimulationAlgorithm::drawFirstOrderIndexConvergence(const UnsignedInteger marginalIndex,
-                                                                const Scalar level) const
+    const Scalar level) const
 {
   return drawIndexConvergence(marginalIndex, level, "First");
 }
 
 Graph SobolSimulationAlgorithm::drawTotalOrderIndexConvergence(const UnsignedInteger marginalIndex,
-                                                                const Scalar level) const
+    const Scalar level) const
 {
   return drawIndexConvergence(marginalIndex + model_.getInputDimension(), level, "Total");
 }

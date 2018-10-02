@@ -21,6 +21,7 @@ def flood_model(X):
     S = Zv + (Q / (Ks * B * m.sqrt((Zm - Zv) / L))) ** (3. / 5) - (Hd + Zb)
     return [S]
 
+
 function = ot.PythonFunction(dim, 1, flood_model)
 
 Q_law = ot.TruncatedDistribution(

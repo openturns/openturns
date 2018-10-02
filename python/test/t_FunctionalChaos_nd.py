@@ -14,6 +14,7 @@ def sobol(indices, a):
         value *= 1.0 / (3.0 * (1.0 + a[indices[i]]) ** 2)
     return value
 
+
 try:
 
     # Problem parameters

@@ -139,7 +139,7 @@ double ExpressionParser::error(const std::string & )
   ++no_of_errors_;
   return 0;
 }
-double ExpressionParser::error(const std::string & ,
+double ExpressionParser::error(const std::string &,
                                const Token_value )
 {
   ++no_of_errors_;

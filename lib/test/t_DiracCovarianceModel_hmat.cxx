@@ -42,7 +42,7 @@ hmatrix__str__(const HMatrix & hmat)
   return res.__str__();
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -73,7 +73,7 @@ int main(int , char *[])
     CorrelationMatrix spatialCorrelation(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++j)
       for (UnsignedInteger i = j + 1; i < dimension; ++i)
-        spatialCorrelation(i , j) = (i + 1.0)  / dimension - (j + 1.0) / dimension;
+        spatialCorrelation(i, j) = (i + 1.0)  / dimension - (j + 1.0) / dimension;
     DiracCovarianceModel myModel2(inputDimension, amplitude, spatialCorrelation);
     fullprint << "myModel2 = " << myModel2 << std::endl;
     fullprint << "Pretty print of myModel2 = " << myModel2.__str__() << std::endl;

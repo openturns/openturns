@@ -98,7 +98,7 @@ void ExpectationSimulationResult::setVarianceEstimate(const Point varianceEstima
 Point ExpectationSimulationResult::getStandardDeviation() const
 {
   Point standardDeviation(varianceEstimate_.getDimension(), -1.0);
-  for (UnsignedInteger j = 0; j< varianceEstimate_.getDimension(); ++ j)
+  for (UnsignedInteger j = 0; j < varianceEstimate_.getDimension(); ++ j)
     if (varianceEstimate_[j] > 0.0)
       standardDeviation[j] = sqrt(varianceEstimate_[j]);
   return standardDeviation;
@@ -107,7 +107,7 @@ Point ExpectationSimulationResult::getStandardDeviation() const
 Point ExpectationSimulationResult::getCoefficientOfVariation() const
 {
   Point coefficientOfVariation(varianceEstimate_.getDimension(), -1.0);
-  for (UnsignedInteger j = 0; j< varianceEstimate_.getDimension(); ++ j)
+  for (UnsignedInteger j = 0; j < varianceEstimate_.getDimension(); ++ j)
     if ((varianceEstimate_[j] > 0.0) && (std::abs(expectationEstimate_[j]) > SpecFunc::Precision))
       coefficientOfVariation[j] = sqrt(varianceEstimate_[j]) / std::abs(expectationEstimate_[j]);
   return coefficientOfVariation;
@@ -117,12 +117,12 @@ Point ExpectationSimulationResult::getCoefficientOfVariation() const
 Distribution ExpectationSimulationResult::getExpectationDistribution() const
 {
   Scalar minVariance = SpecFunc::MaxScalar;
-  for (UnsignedInteger j = 0; j< varianceEstimate_.getDimension(); ++ j)
+  for (UnsignedInteger j = 0; j < varianceEstimate_.getDimension(); ++ j)
     if (varianceEstimate_[j] < minVariance)
       minVariance = varianceEstimate_[j];
   Distribution result;
   if (minVariance > 0.0)
-  { 
+  {
     result = Normal(expectationEstimate_, getStandardDeviation(), CorrelationMatrix(varianceEstimate_.getDimension()));
   }
   else

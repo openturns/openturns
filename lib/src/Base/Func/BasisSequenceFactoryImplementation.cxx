@@ -113,7 +113,7 @@ void BasisSequenceFactoryImplementation::initialize()
 }
 
 
-void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod & , const Sample & )
+void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod &, const Sample & )
 {
   throw NotYetImplementedException(HERE) << " in BasisSequenceFactoryImplementation::updateBasis";
 }

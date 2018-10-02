@@ -50,7 +50,7 @@ void* threadFunc(void* arg)
 }
 
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

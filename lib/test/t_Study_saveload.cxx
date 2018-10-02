@@ -48,7 +48,7 @@ void compare(const T & savedInstance, const Study & study, const String & tag = 
 
 
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -1002,7 +1002,7 @@ int main(int , char *[])
     compare<RandomGeneratorState>( randomGeneratorState, study2 );
 
     // Func
-    compare<Function >( analytical, study2 , "analytical");
+    compare<Function >( analytical, study2, "analytical");
 
     // Optim
     compare<AbdoRackwitz >( abdoRackwitz, study2 );
@@ -1056,13 +1056,13 @@ int main(int , char *[])
 
     // Analytical
     compare<SORM >( sorm, study2, "sorm");
-    compare<FORMResult >( formResult, study2 , "formResult");
+    compare<FORMResult >( formResult, study2, "formResult");
     compare<SORMResult >( sormResult, study2,  "sormResult");
 
     compare<TaylorExpansionMoments >( taylorExpansionMoments, study2 );
 
     // Process
-    compare<ARMACoefficients >( armaCoefficients, study2 , "armaCoefficients");
+    compare<ARMACoefficients >( armaCoefficients, study2, "armaCoefficients");
     compare<ARMAState >( armaState, study2, "armaState");
     compare<WhiteNoise >( whiteNoise, study2 );
     compare<WhittleFactory >( whittleFactory, study2 );

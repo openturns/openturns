@@ -61,6 +61,7 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
         print('dCov/dP=', pGrad)
         ot.PlatformInfo.SetNumericalPrecision(precision)
 
+
 inputDimension = 2
 
 myDefautModel = ot.SquaredExponential([2.0], [3.0])

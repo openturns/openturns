@@ -18,6 +18,7 @@ class TestHMatrixRealAssemblyFunction(object):
         val = m.exp(-difference.norm() / self.scaling)
         return val
 
+
 ot.ResourceMap.SetAsBool('HMatrix-ForceSequential', True)
 ot.ResourceMap.SetAsUnsignedInteger('HMatrix-MaxLeafSize', 10)
 

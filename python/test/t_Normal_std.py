@@ -21,6 +21,7 @@ def cleanPoint(inPoint):
             inPoint[i] = 0.0
     return inPoint
 
+
 try:
     PlatformInfo.SetNumericalPrecision(5)
     # Instanciate one distribution object

@@ -13,8 +13,9 @@ try:
         for ties in [True, False]:
             for tail in [True, False]:
                 for iRho in range(-10, 11):
-                    rho = 0.1 * iRho;
-                    print("size=", size, " ties=", ties, "tail=", tail, " rho=%.6g" % rho, " p=%.6g" % DistFunc.pSpearmanCorrelation(size, rho, tail, ties))
+                    rho = 0.1 * iRho
+                    print("size=", size, " ties=", ties, "tail=", tail, " rho=%.6g" %
+                          rho, " p=%.6g" % DistFunc.pSpearmanCorrelation(size, rho, tail, ties))
 
 except:
     import sys

@@ -106,13 +106,13 @@ try:
 
     # Test empty new colors
     myGraph.setColors([])
-    
+
     # Set new legends
     myGraph.setLegends(["item1", "item2", "item3"])
 
     # Test empty new legends
     myGraph.setLegends([])
-    
+
 except:
     import sys
     print("t_Graph_mix.py", sys.exc_info()[0], sys.exc_info()[1])

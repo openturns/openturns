@@ -56,7 +56,7 @@ TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSamp
     const Sample & secondSample,
     const Scalar level)
 {
-  return LinearModelAdjustedRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0-level), level);
+  return LinearModelAdjustedRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
 }
 
 /*  */
@@ -73,7 +73,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
 {
-  return LinearModelFisher(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0-level), level);
+  return LinearModelFisher(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
 }
 
 /*  */
@@ -90,7 +90,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
 {
-  return LinearModelResidualMean(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0-level), level);
+  return LinearModelResidualMean(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
 }
 
 /*  */
@@ -108,7 +108,7 @@ TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
 {
-  return LinearModelRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0-level), level);
+  return LinearModelRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
 }
 
 /* Generic invocation of a R script for testing a linear model against two samples */
@@ -224,7 +224,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
     const Scalar simulationSize)
 {
   return LinearModelHarrisonMcCabe(firstSample, secondSample,
-                                   LinearModelFactory().build(firstSample, secondSample, 1.0-level),
+                                   LinearModelFactory().build(firstSample, secondSample, 1.0 - level),
                                    level,
                                    breakPoint,
                                    simulationSize);
@@ -272,7 +272,7 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
     const Scalar level)
 {
   return LinearModelBreuschPagan(firstSample, secondSample,
-                                 LinearModelFactory().build(firstSample, secondSample, 1.0-level),
+                                 LinearModelFactory().build(firstSample, secondSample, 1.0 - level),
                                  level);
 }
 
@@ -353,7 +353,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     const Scalar level)
 {
   return LinearModelDurbinWatson(firstSample, secondSample,
-                                 LinearModelFactory().build(firstSample, secondSample, 1.0-level),
+                                 LinearModelFactory().build(firstSample, secondSample, 1.0 - level),
                                  hypothesis,
                                  level);
 }

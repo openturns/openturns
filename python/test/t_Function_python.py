@@ -19,6 +19,7 @@ class FUNC(OpenTURNSPythonFunction):
         Y = [X[0] + X[1]]
         return Y
 
+
 F = FUNC()
 print(('in_dim=' + str(F.getInputDimension())
        + ' out_dim=' + str(F.getOutputDimension())))
@@ -72,6 +73,7 @@ def a_exec_sample(Xs):
         Ys.append([X[0] + X[1]])
     return Ys
 
+
 a_sample = ((100., 100.), (101., 101.), (102., 102.))
 
 print('exec')
@@ -112,6 +114,7 @@ def a_grad(X):
     dY = [[1.], [-1.]]
     return dY
 
+
 print('gradient')
 myFunc = PythonFunction(2, 1, a_exec, gradient=a_grad)
 grad = myFunc.gradient([100., 100.])
@@ -122,6 +125,7 @@ def a_hess(X):
     # wrong but allows to verify
     d2Y = [[[0.1], [0.3]], [[0.3], [0.1]]]
     return d2Y
+
 
 print('hessian')
 myFunc = PythonFunction(2, 1, a_exec, hessian=a_hess)
@@ -147,6 +151,7 @@ def a_exec(X):
         '2' + 2
     return Y
 
+
 for n in range(2):
     myFunc = PythonFunction(1, 1, a_exec)
     try:
@@ -158,8 +163,10 @@ for n in range(2):
 
 
 def a_exec(X):
-    X[8000] # index error
+    X[8000]  # index error
     return [X[0] + X[1]]
+
+
 myFunc = PythonFunction(2, 1, a_exec)
 print('index check: ', end='')
 try:

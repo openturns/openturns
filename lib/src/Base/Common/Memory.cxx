@@ -164,13 +164,13 @@ void * operator new (size_t sz)
 {
   //std::fprintf( stderr, "Entering new (sz = %zu)\n", sz );
 
-  void * buf = std::calloc( 1 , sz ); // Allocates storage and set it to zero
+  void * buf = std::calloc( 1, sz );  // Allocates storage and set it to zero
   if (buf == 0) return buf;
 
   // Keep trace of allocated storage
   LockNewDelete lock;
   MemoryImplementation & inst = Memory::GetInstance();
-  _OpenTURNS_memory * p_chunk = static_cast<_OpenTURNS_memory *>( std::calloc( 1 , sizeof(_OpenTURNS_memory) ) );
+  _OpenTURNS_memory * p_chunk = static_cast<_OpenTURNS_memory *>( std::calloc( 1, sizeof(_OpenTURNS_memory) ) );
   if (p_chunk)
   {
     p_chunk->ptr_  = buf;

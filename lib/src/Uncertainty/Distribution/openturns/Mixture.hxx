@@ -122,7 +122,7 @@ public:
   Point getParameter() const;
   Description getParameterDescription() const;
   void setParameter(const Point & parameter);
-  
+
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
 

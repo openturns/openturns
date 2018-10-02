@@ -24,6 +24,7 @@ def printPoint(point, digits):
     oss += "]"
     return oss
 
+
 # linear
 levelFunction = ot.SymbolicFunction(
     ["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])

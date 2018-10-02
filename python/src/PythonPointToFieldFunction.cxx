@@ -87,8 +87,8 @@ PythonPointToFieldFunction::PythonPointToFieldFunction(PyObject * pyCallable)
   else setOutputDescription(Description::BuildDefault(outputDimension, "y"));
 
   ScopedPyObjectPointer outputMesh(PyObject_CallMethod ( pyObj_,
-                                  const_cast<char *>("getOutputMesh"),
-                                  const_cast<char *>("()")));
+                                   const_cast<char *>("getOutputMesh"),
+                                   const_cast<char *>("()")));
   void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr(outputMesh.get(), &ptr, SWIG_TypeQuery("OT::Mesh *"), 0)))
   {
@@ -180,10 +180,10 @@ Sample PythonPointToFieldFunction::operator() (const Point & inP) const
 
   if (outF.getSize() != outputSize)
     throw InvalidArgumentException(HERE) << "Python Field function returned a sequence object with incorrect size (got "
-                                          << outF.getSize() << ", expected " << outputSize << ")";
+                                         << outF.getSize() << ", expected " << outputSize << ")";
   if (outF.getDimension() != getOutputDimension())
     throw InvalidArgumentException(HERE) << "Python Field function returned a sequence object with incorrect dimension (got "
-                                          << outF.getDimension() << ", expected " << getOutputDimension() << ")";
+                                         << outF.getDimension() << ", expected " << getOutputDimension() << ")";
   outF.setDescription(getOutputDescription());
   return outF;
 }

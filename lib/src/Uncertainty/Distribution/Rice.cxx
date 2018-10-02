@@ -154,7 +154,7 @@ Scalar Rice::computeCDF(const Point & point) const
   if (point[0] <= 0.0) return 0.0;
   const Scalar lambda = std::pow(nu_ / sigma_, 2);
   const Scalar y = std::pow(point[0] / sigma_, 2);
-  return DistFunc::pNonCentralChiSquare(2, lambda , y, false, pdfEpsilon_, maximumIteration_);
+  return DistFunc::pNonCentralChiSquare(2, lambda, y, false, pdfEpsilon_, maximumIteration_);
 }
 
 Scalar Rice::computeComplementaryCDF(const Point & point) const
@@ -164,7 +164,7 @@ Scalar Rice::computeComplementaryCDF(const Point & point) const
   if (point[0] <= 0.0) return 1.0;
   const Scalar lambda = std::pow(nu_ / sigma_, 2);
   const Scalar y = std::pow(point[0] / sigma_, 2);
-  return DistFunc::pNonCentralChiSquare(2, lambda , y, true, pdfEpsilon_, maximumIteration_);
+  return DistFunc::pNonCentralChiSquare(2, lambda, y, true, pdfEpsilon_, maximumIteration_);
 }
 
 /* Compute the mean of the distribution */

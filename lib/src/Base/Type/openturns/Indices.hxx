@@ -83,7 +83,7 @@ public:
 
   /** Compute the complement between the indices and {0,...,n-1} for a given n */
   Indices complement(const UnsignedInteger n) const;
-  
+
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
   virtual String __repr__() const;

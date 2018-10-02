@@ -101,14 +101,14 @@ Log::Log()
     count_(0),
     repeat_(1)
 {
-  logName_[NONE]    = make_prefix( String(TTY::GetColor(TTY::DEFAULT))                                    , "", "   " );
-  logName_[ALL]     = make_prefix( String(TTY::GetColor(TTY::DEFAULT))                                    , "", "ALL" );
-  logName_[DBG]     = make_prefix( String(TTY::GetColor(TTY::DEFAULT))                                    , "", "DBG" );
-  logName_[INFO]    = make_prefix( String(TTY::GetColor(TTY::GREENFG))                                     , "", "INF" );
-  logName_[USER]    = make_prefix( String(TTY::GetColor(TTY::CYANFG))                                     , "", "USR" );
+  logName_[NONE]    = make_prefix( String(TTY::GetColor(TTY::DEFAULT)), "", "   " );
+  logName_[ALL]     = make_prefix( String(TTY::GetColor(TTY::DEFAULT)), "", "ALL" );
+  logName_[DBG]     = make_prefix( String(TTY::GetColor(TTY::DEFAULT)), "", "DBG" );
+  logName_[INFO]    = make_prefix( String(TTY::GetColor(TTY::GREENFG)), "", "INF" );
+  logName_[USER]    = make_prefix( String(TTY::GetColor(TTY::CYANFG)), "", "USR" );
   logName_[WARN]    = make_prefix( String(TTY::GetColor(TTY::BLUEFG)) + String(TTY::GetColor(TTY::BOLD)), "", "WRN" );
   logName_[ERROR]   = make_prefix( String(TTY::GetColor(TTY::REDFG))  + String(TTY::GetColor(TTY::BOLD)), "", "ERR" );
-  logName_[TRACE]   = make_prefix( String(TTY::GetColor(TTY::YELLOWFG))                                   , "", "TRA" );
+  logName_[TRACE]   = make_prefix( String(TTY::GetColor(TTY::YELLOWFG)), "", "TRA" );
 
   initSeverityFromEnvironment();
 

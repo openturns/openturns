@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -44,24 +44,24 @@ int main(int , char *[])
       Point mu(10);
       Point sigma(10);
       for (UnsignedInteger i = 0; i < 10; ++i)
-	{
-	  mu[i] = 0.5 * i;
-	  sigma[i] = 0.5 + i;
-	  for (UnsignedInteger j = 0; j < i; ++j)
-	    R(i, j) = 1.0 / std::pow(i + j + 2.0, 1.0);
-	}
+      {
+        mu[i] = 0.5 * i;
+        sigma[i] = 0.5 + i;
+        for (UnsignedInteger j = 0; j < i; ++j)
+          R(i, j) = 1.0 / std::pow(i + j + 2.0, 1.0);
+      }
       distributions.add(Student(4.5, mu, sigma, R));
     }
     UnsignedInteger size = 10000;
     StudentFactory factory;
     for (UnsignedInteger i = 0; i < distributions.getSize(); ++i)
-      {
-	Student distribution = distributions[i];
-	Sample sample(distribution.getSample(size));
-	Distribution estimatedDistribution(factory.build(sample));
-	fullprint << "Distribution          =" << distribution << std::endl;
-	fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-      }
+    {
+      Student distribution = distributions[i];
+      Sample sample(distribution.getSample(size));
+      Distribution estimatedDistribution(factory.build(sample));
+      fullprint << "Distribution          =" << distribution << std::endl;
+      fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    }
     Distribution estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
     Student estimatedStudent = factory.buildAsStudent();

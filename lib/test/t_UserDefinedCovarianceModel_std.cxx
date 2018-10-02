@@ -26,7 +26,7 @@ using namespace OT;
 using namespace OT::Test;
 
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -93,7 +93,7 @@ int main(int , char *[])
         const Scalar s = timeGrid.getValue(j);
         // We look for cov(s,t) ==> when adding to the collection, we compute cov(t,s)
         // Because of symmetry, we check the right index computation
-        fullprint << "myModel = " << myModel(s, t)(0, 0) << ", referenceModel = " << referenceModel(s, t)(0 , 0) << std::endl;
+        fullprint << "myModel = " << myModel(s, t)(0, 0) << ", referenceModel = " << referenceModel(s, t)(0, 0) << std::endl;
       }
     }
     fullprint << "myModel.discretize()=" << myModel.discretize(timeGrid) << std::endl;

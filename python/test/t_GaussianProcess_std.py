@@ -58,4 +58,4 @@ print("mean over ", size, " realizations = ",
 cov = ot.ExponentialModel([2.0] * inputDimension, [1.0, 2.0, 3.0])
 model = ot.GaussianProcess(cov, myTimeGrid)
 print('model=', model)
-print('marginal=', model.getMarginal([0,2]))
+print('marginal=', model.getMarginal([0, 2]))

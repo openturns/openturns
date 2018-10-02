@@ -2243,13 +2243,13 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   if (interval.isNumericallyEmpty()) return 0.0;
   // Use direct convolution for two continuous atoms of dimension 1
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
-    {
-      const Scalar lower = interval.getLowerBound()[0];
-      const Scalar upper = interval.getUpperBound()[0];
-      const Scalar cdfLower = computeCDF(lower);
-      const Scalar cdfUpper = computeCDF(upper);
-      return std::min(1.0, std::max(0.0, cdfUpper - cdfLower));
-    }
+  {
+    const Scalar lower = interval.getLowerBound()[0];
+    const Scalar upper = interval.getUpperBound()[0];
+    const Scalar cdfLower = computeCDF(lower);
+    const Scalar cdfUpper = computeCDF(upper);
+    return std::min(1.0, std::max(0.0, cdfUpper - cdfLower));
+  }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
     const Scalar oldPDFPrecision = pdfPrecision_;

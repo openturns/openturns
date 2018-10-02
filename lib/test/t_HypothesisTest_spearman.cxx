@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -32,7 +32,7 @@ int main(int , char *[])
 
   UnsignedInteger size = 100;
   UnsignedInteger dim = 2;
-  
+
   Sample sampleX(Normal(dim).getSample(size));
   Sample sampleX0(sampleX.getMarginal(0));
   Sample sampleY(sampleX.getMarginal(1));
@@ -45,7 +45,7 @@ int main(int , char *[])
   // Test = True <=> p-value > p-value threshold
 
   fullprint << "Spearman=" << HypothesisTest::Spearman(sampleY, sampleZ, 0.10) << std::endl;
-  
+
   // Full Spearman Test : collection of tests of zero correlation between the 1D marginals of a sample and another 1D sample
   // H0 = zero rank correlation
   // Test = True <=> zero rank correlation

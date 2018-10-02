@@ -95,7 +95,8 @@ try:
     myStudy.add('point', point)
 
     # Create a Simulation::Result
-    simulationResult = ot.ProbabilitySimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
+    simulationResult = ot.ProbabilitySimulationResult(
+        ot.Event(), 0.5, 0.01, 150, 4)
     myStudy.add('simulationResult', simulationResult)
 
     cNameList = [

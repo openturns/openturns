@@ -150,7 +150,7 @@ Pointer<BaseClass> functionThatReturnPointer(const Pointer<DerivedClass> & p_der
 }
 
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

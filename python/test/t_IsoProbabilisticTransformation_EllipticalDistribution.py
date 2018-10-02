@@ -19,6 +19,7 @@ def cleanSymmetricTensor(inSymmetricTensor):
                     inSymmetricTensor[i, j, k] = 0.0
     return inSymmetricTensor
 
+
 try:
 
     # Instanciate one distribution object

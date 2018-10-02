@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -40,7 +40,7 @@ int main(int , char *[])
   Point sigma(dim, 3.0);
   Normal distribution(mean, sigma, R);
   Sample sample(distribution.getSample(size));
-  Indices indices(dim-1);
+  Indices indices(dim - 1);
   indices.fill(1, 1);
   Sample sampleX(sample.getMarginal(indices));
   Sample sampleY(sample.getMarginal(0));

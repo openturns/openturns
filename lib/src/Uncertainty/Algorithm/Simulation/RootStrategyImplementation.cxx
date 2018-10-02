@@ -80,7 +80,7 @@ RootStrategyImplementation * RootStrategyImplementation::clone() const
 }
 
 /* Solve gives all the roots found applying the root strategy */
-RootStrategyImplementation::ScalarCollection RootStrategyImplementation::solve(const Function & ,
+RootStrategyImplementation::ScalarCollection RootStrategyImplementation::solve(const Function &,
     const Scalar )
 {
   throw NotYetImplementedException(HERE) << "In RootStrategyImplementation::solve(const Function & function, const Scalar value)";

@@ -24,6 +24,7 @@ def printPoint(point, digits):
     oss += "]"
     return oss
 
+
 try:
 
         # We create a numerical math function

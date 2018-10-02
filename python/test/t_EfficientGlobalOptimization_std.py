@@ -97,6 +97,7 @@ def ackley(X):
     # print(X, f)
     return [f]
 
+
 model = ot.PythonFunction(dim, 1, ackley)
 
 # problem
@@ -176,12 +177,10 @@ inputSample = experiment.generate()
 outputSample = model(inputSample)
 covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 basis = ot.ConstantBasisFactory(dim).build()
-kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
+kriging = ot.KrigingAlgorithm(
+    inputSample, outputSample, covarianceModel, basis)
 kriging.run()
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setMaximumEvaluationNumber(2)
 algo.run()
 result = algo.getResult()
-
-
-

@@ -128,7 +128,7 @@ void dgesdd_(char *jobz, int *m, int *n, double *A, int *lda, double *S, double 
 void dtrmv_(char *uplo, char *trans, char *diag, int *n, double *A, int *lda, double *X, int *incx, int *luplo, int *ltrans, int *ldiag);
 
 /** Function dtrmm is to be used to compute the product of a triangular (upper or lower) matrix with another matrix  */
-void dtrmm_(char *side, char *uplo, char *trans, char *diag, int *m, int *n, double *alpha , double *A, int *lda, double *B, int *ldb, int *lside, int *luplo, int *ltrans, int *ldiag);
+void dtrmm_(char *side, char *uplo, char *trans, char *diag, int *m, int *n, double *alpha, double *A, int *lda, double *B, int *ldb, int *lside, int *luplo, int *ltrans, int *ldiag);
 
 /** BLAS routines for complex values */
 
@@ -177,7 +177,7 @@ void zcopy_(int *n, std::complex<double> *x, int *incx, std::complex<double> *y,
 void ztrmv_(char *uplo, char *trans, char *diag, int *n, std::complex<double> *A, int *lda, std::complex<double> *X, int *incx, int *luplo, int *ltrans, int *ldiag);
 
 /** Function ztrmm is to be used to compute the product of a triangular (upper or lower) matrix with another matrix  */
-void ztrmm_(char *side, char *uplo, char *trans, char *diag, int *m, int *n, std::complex<double> *alpha , std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *lside , int *luplo, int *ltrans, int *ldiag);
+void ztrmm_(char *side, char *uplo, char *trans, char *diag, int *m, int *n, std::complex<double> *alpha, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *lside, int *luplo, int *ltrans, int *ldiag);
 
 /** Function ztrmm is to be used to compute the product of a triangular (upper or lower) matrix with another matrix  */
 void zgelsy_(int *m, int *n, int *nrhs, std::complex<double> *A, int *lda, std::complex<double> *B, int *ldb, int *jpvt, double *rcond, int *rank, std::complex<double> *work, int *lwork, double *rwork, int *info);

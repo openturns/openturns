@@ -97,23 +97,23 @@ CovarianceMatrix FractionalBrownianMotionModel::operator() (const Point & s,
       Scalar asymmetry = 0.0;
       // To ensure a full double precision
       if (std::abs(Hij - 1.0) < 1e-7)
-	{
-	  const Scalar sPowHij = (absSOverTheta == 0.0 ? 0.0 : absSOverTheta * std::log(absSOverTheta));
-	  const Scalar tPowHij = (absTOverTheta == 0.0 ? 0.0 : absTOverTheta * std::log(absTOverTheta));
-	  const Scalar stPowHij = (absSTOverTheta == 0.0 ? 0.0 : absSTOverTheta * std::log(absSTOverTheta));
-	  asymmetry = eta_(i, j) * (Hij - 1.0) * (sPowHij - tPowHij + stPowHij);
-	  if (!isDiagonal_)
-	    correlation = outputCorrelation_(i, j) * (absSOverTheta + absTOverTheta - absSTOverTheta);
-	}
+      {
+        const Scalar sPowHij = (absSOverTheta == 0.0 ? 0.0 : absSOverTheta * std::log(absSOverTheta));
+        const Scalar tPowHij = (absTOverTheta == 0.0 ? 0.0 : absTOverTheta * std::log(absTOverTheta));
+        const Scalar stPowHij = (absSTOverTheta == 0.0 ? 0.0 : absSTOverTheta * std::log(absSTOverTheta));
+        asymmetry = eta_(i, j) * (Hij - 1.0) * (sPowHij - tPowHij + stPowHij);
+        if (!isDiagonal_)
+          correlation = outputCorrelation_(i, j) * (absSOverTheta + absTOverTheta - absSTOverTheta);
+      }
       else
-	{
-	  const Scalar sPowHij = (absSOverTheta == 0.0 ? 0.0 : std::pow(absSOverTheta, Hij));
-	  const Scalar tPowHij = (absTOverTheta == 0.0 ? 0.0 : std::pow(absTOverTheta, Hij));
-	  const Scalar stPowHij = (absSTOverTheta == 0.0 ? 0.0 : std::pow(absSTOverTheta, Hij));
-	  asymmetry = eta_(i, j) * (sgnSOverTheta * sPowHij - sgnTOverTheta * tPowHij + sgnSTOverTheta * stPowHij);
-	  if (!isDiagonal_)
-	    correlation = outputCorrelation_(i, j) * (sPowHij + tPowHij - stPowHij);
-	} // |Hij - 1| >= 1e-7
+      {
+        const Scalar sPowHij = (absSOverTheta == 0.0 ? 0.0 : std::pow(absSOverTheta, Hij));
+        const Scalar tPowHij = (absTOverTheta == 0.0 ? 0.0 : std::pow(absTOverTheta, Hij));
+        const Scalar stPowHij = (absSTOverTheta == 0.0 ? 0.0 : std::pow(absSTOverTheta, Hij));
+        asymmetry = eta_(i, j) * (sgnSOverTheta * sPowHij - sgnTOverTheta * tPowHij + sgnSTOverTheta * stPowHij);
+        if (!isDiagonal_)
+          correlation = outputCorrelation_(i, j) * (sPowHij + tPowHij - stPowHij);
+      } // |Hij - 1| >= 1e-7
       result(i, j) = 0.5 * sigmaI * amplitude_[j] * (correlation + asymmetry);
     } // j
     result(i, i) = 0.5 * sigmaI * sigmaI * (std::pow(absSOverTheta, 2.0 * Hi) + std::pow(absTOverTheta, 2.0 * Hi) - std::pow(absSTOverTheta, 2.0 * Hi));
@@ -212,10 +212,10 @@ void FractionalBrownianMotionModel::setFullParameter(const Point & parameter)
   SquareMatrix eta(outputDimension_);
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     for (UnsignedInteger j = 0; j < i; ++j)
-      {
-	eta(i, j) = parameter[index];
-	++index;
-      }
+    {
+      eta(i, j) = parameter[index];
+      ++index;
+    }
   setExponentEtaRho(exponent, eta, getOutputCorrelation());
 }
 

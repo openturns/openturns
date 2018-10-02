@@ -56,5 +56,3 @@ try:
     ot.IndicesCollection([['zou']])
 except:
     print('ok')
-
-

@@ -37,7 +37,7 @@ inline String printPoint(const Point & point, const UnsignedInteger digits)
   return oss;
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

@@ -69,8 +69,8 @@ void FixedStrategy::computeInitialBasis()
 }
 
 /* Update the basis for the next iteration of approximation */
-void FixedStrategy::updateBasis(const Point & ,
-                                const Scalar ,
+void FixedStrategy::updateBasis(const Point &,
+                                const Scalar,
                                 const Scalar )
 {
   // No change to the basis in the fixed strategy

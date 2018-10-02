@@ -51,7 +51,7 @@ ProcessSampleImplementation::ProcessSampleImplementation()
 
 /* Default constructor */
 ProcessSampleImplementation::ProcessSampleImplementation(const UnsignedInteger size,
-                             const Field & field)
+    const Field & field)
   : PersistentObject()
   , mesh_(field.getMesh())
   , data_(SampleCollection(size, field.getValues()))
@@ -60,8 +60,8 @@ ProcessSampleImplementation::ProcessSampleImplementation(const UnsignedInteger s
 }
 
 ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
-                             const UnsignedInteger size,
-                             const UnsignedInteger dimension)
+    const UnsignedInteger size,
+    const UnsignedInteger dimension)
   : PersistentObject()
   , mesh_(mesh)
   , data_(SampleCollection(size, Sample(mesh.getVerticesNumber(), dimension)))
@@ -123,7 +123,7 @@ Field ProcessSampleImplementation::getField(const UnsignedInteger index) const
 }
 
 void ProcessSampleImplementation::setField(const Field & field,
-                             const UnsignedInteger index)
+    const UnsignedInteger index)
 {
   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   if (field.getOutputDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getOutputDimension();
@@ -205,10 +205,10 @@ struct ComputeQuantilePerComponentPolicy
   const Scalar beta_;
 
   ComputeQuantilePerComponentPolicy( Point & contiguous,
-                        SampleImplementation & output,
-                        UnsignedInteger size,
-                        UnsignedInteger index,
-                        Scalar beta)
+                                     SampleImplementation & output,
+                                     UnsignedInteger size,
+                                     UnsignedInteger index,
+                                     Scalar beta)
     : contiguous_(contiguous)
     , output_(output)
     , size_(size)
@@ -371,7 +371,7 @@ ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const Indic
 
 /* Draw a marginal of the ProcessSampleImplementation, ie the collection of all the Field marginals */
 Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
-                                                const Bool interpolate) const
+    const Bool interpolate) const
 {
   if (mesh_.getDimension() != 1) throw NotDefinedException(HERE) << "Error: cannot draw a marginal sample if the mesh is of dimension greater than one. Here dimension=" << mesh_.getDimension();
   if (index > getDimension() - 1 ) throw InvalidArgumentException(HERE) << "Error : indice should be in {0,...," << getDimension() - 1 << "}";

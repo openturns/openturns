@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   ResourceMap::SetAsBool("Distribution-parallel", true);
   TESTPREAMBLE;

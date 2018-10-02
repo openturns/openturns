@@ -56,10 +56,10 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFacto
   return build( x, y, Point( size, 1.0 ), psi, indices);
 }
 
-ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const Sample & ,
-    const Sample & ,
-    const Point & ,
-    const FunctionCollection & ,
+ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFactory::build(const Sample &,
+    const Sample &,
+    const Point &,
+    const FunctionCollection &,
     const Indices & ) const
 {
   throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::build(const Sample & x, const Sample & y, const Point & weight, const FunctionCollection & psi, const Indices & indices) const";

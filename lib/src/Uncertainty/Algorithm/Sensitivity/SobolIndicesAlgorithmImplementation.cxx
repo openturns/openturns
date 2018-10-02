@@ -120,10 +120,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   // Here we check that we can use the asymptotic distributions
   const String experimentKind(sobolExperiment.getWeightedExperiment().getImplementation()->getClassName());
   if (useAsymptoticDistribution_ && (experimentKind != "MonteCarloExperiment"))
-    {
-      LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID sampling, here sampling is " << sobolExperiment.getWeightedExperiment().getClassName());
-      useAsymptoticDistribution_ = false;
-    }
+  {
+    LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID sampling, here sampling is " << sobolExperiment.getWeightedExperiment().getClassName());
+    useAsymptoticDistribution_ = false;
+  }
   const Sample inputDesign(sobolExperiment.generate());
   Sample outputDesign(model(inputDesign));
 
@@ -167,10 +167,10 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   // Here we check that we can use the asymptotic distributions
   const String experimentKind(experiment.getImplementation()->getClassName());
   if (useAsymptoticDistribution_ && (experimentKind != "MonteCarloExperiment"))
-    {
-      LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID sampling, here sampling is " << experiment.getClassName());
-      useAsymptoticDistribution_ = false;
-    }
+  {
+    LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID sampling, here sampling is " << experiment.getClassName());
+    useAsymptoticDistribution_ = false;
+  }
   const SobolIndicesExperiment sobolExperiment(experiment, computeSecondOrder);
   const Sample inputDesign(sobolExperiment.generate());
   const Sample outputDesign(model(inputDesign));
@@ -587,7 +587,7 @@ String SobolIndicesAlgorithmImplementation::__str__(const String & ) const
 }
 
 /** Internal method that compute Vi/VTi using a collection of samples */
-Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & ,
+Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample &,
     Sample & ) const
 {
   // Method is defined in Jansen/Saltelli/Martinez/Mauntz classes
@@ -596,8 +596,8 @@ Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample & ,
 
 
 Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & inputDescription,
-                                                            const Point & firstOrderIndices,
-                                                            const Point & totalOrderIndices)
+    const Point & firstOrderIndices,
+    const Point & totalOrderIndices)
 {
   Graph graph("Sobol' indices", "inputs", "index value", true, "");
 
@@ -634,7 +634,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
 
   // Set bounding box
   Point lowerBound(2, -0.1);
-  lowerBound[0] = 1.0-dimension/10.0;
+  lowerBound[0] = 1.0 - dimension / 10.0;
   Point upperBound(2, 1.1);
   const Scalar descriptionMargin = 1.6 * (dimension - 1.0) / (dimension + 2.0);
   upperBound[0] = dimension + descriptionMargin;
@@ -805,8 +805,8 @@ Bool SobolIndicesAlgorithmImplementation::getUseAsymptoticDistribution() const
 
 /* Design accessor */
 void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
-                                                    const Sample & outputDesign,
-                                                    const UnsignedInteger size)
+    const Sample & outputDesign,
+    const UnsignedInteger size)
 {
   if (outputDesign.getSize() == 0)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
@@ -846,7 +846,7 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "firstOrderIndiceDistribution_", firstOrderIndiceDistribution_);
   adv.saveAttribute( "totalOrderIndiceDistribution_", totalOrderIndiceDistribution_);
   adv.saveAttribute( "alreadyComputedIndicesDistribution_", alreadyComputedIndicesDistribution_);
-  adv.saveAttribute( "useAsymptoticDistribution_" , useAsymptoticDistribution_);
+  adv.saveAttribute( "useAsymptoticDistribution_", useAsymptoticDistribution_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -867,7 +867,7 @@ void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "firstOrderIndiceDistribution_", firstOrderIndiceDistribution_);
   adv.loadAttribute( "totalOrderIndiceDistribution_", totalOrderIndiceDistribution_);
   adv.loadAttribute( "alreadyComputedIndicesDistribution_", alreadyComputedIndicesDistribution_);
-  adv.loadAttribute( "useAsymptoticDistribution_" , useAsymptoticDistribution_);
+  adv.loadAttribute( "useAsymptoticDistribution_", useAsymptoticDistribution_);
 }
 
 END_NAMESPACE_OPENTURNS

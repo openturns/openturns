@@ -250,16 +250,16 @@ Scalar FittingTest::BIC(const Sample & sample,
 /* Kolmogorov test */
 
 Scalar FittingTest::ComputeKolmogorovStatistics(const Sample & sample,
-						const Distribution & distribution)
+    const Distribution & distribution)
 {
   const UnsignedInteger size = sample.getSize();
   Scalar value = 0.0;
   const Sample cdfValues(distribution.computeCDF(sample.sort(0)));
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      const Scalar cdfValue = cdfValues(i, 0);
-      value = std::max(value, std::max(std::abs(Scalar(i) / size - cdfValue), std::abs(cdfValue - Scalar(i + 1) / size)));
-    }
+  {
+    const Scalar cdfValue = cdfValues(i, 0);
+    value = std::max(value, std::max(std::abs(Scalar(i) / size - cdfValue), std::abs(cdfValue - Scalar(i + 1) / size)));
+  }
   return value;
 }
 
@@ -278,10 +278,10 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   Sample kolmogorovStatistics(samplingSize, 1);
   const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < samplingSize; ++i)
-    {
-      const Sample newSample(distribution.getSample(size));
-      kolmogorovStatistics(i, 0) = ComputeKolmogorovStatistics(newSample, factory.build(newSample));
-    }
+  {
+    const Sample newSample(distribution.getSample(size));
+    kolmogorovStatistics(i, 0) = ComputeKolmogorovStatistics(newSample, factory.build(newSample));
+  }
   // The p-value is estimated using the empirical CDF of the K-statistics at the
   // actual sample K-statistics
   const Scalar pValue = kolmogorovStatistics.computeEmpiricalCDF(Point(1, ComputeKolmogorovStatistics(sample, distribution)), true);
