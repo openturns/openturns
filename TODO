@@ -1,4 +1,3 @@
-Remove deprecated FunctionalChaosRandomVector::getSobol*
 Remove deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
 Remove deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
 Remove deprecated LinearModelRSquared, LinearModelAdjustedRSquared
