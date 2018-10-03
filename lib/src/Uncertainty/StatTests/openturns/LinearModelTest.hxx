@@ -38,17 +38,6 @@ class OT_API LinearModelTest
 public:
 
   /**  */
-  static TestResult LinearModelAdjustedRSquared(const Sample & firstSample,
-      const Sample & secondSample,
-      const LinearModel & linearModel,
-      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
-  /**  */
-  static TestResult LinearModelAdjustedRSquared(const Sample & firstSample,
-      const Sample & secondSample,
-      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
-  /**  */
   static TestResult LinearModelFisher(const Sample & firstSample,
                                       const Sample & secondSample,
                                       const LinearModel & linearModel,
@@ -69,17 +58,6 @@ public:
   static TestResult LinearModelResidualMean(const Sample & firstSample,
       const Sample & secondSample,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
-  /**  */
-  static TestResult LinearModelRSquared(const Sample & firstSample,
-                                        const Sample & secondSample,
-                                        const LinearModel & linearModel,
-                                        const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
-  /**  */
-  static TestResult LinearModelRSquared(const Sample & firstSample,
-                                        const Sample & secondSample,
-                                        const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
   static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,

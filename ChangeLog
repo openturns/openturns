@@ -12,6 +12,7 @@
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods
  * Removed deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
  * Removed deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
+ * Removed deprecated LinearModelRSquared, LinearModelAdjustedRSquared
 
 === Python module ===
 

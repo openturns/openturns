@@ -59,9 +59,7 @@ int main(int, char *[])
   {
     sampleZ[i][0] = sampleY[i][0] * sampleY[i][0];
   }
-  fullprint << "LinearModelAdjustedRSquared=" << LinearModelTest::LinearModelAdjustedRSquared(sampleY, sampleZ) << std::endl;
   fullprint << "LinearModelFisher=" << LinearModelTest::LinearModelFisher(sampleY, sampleZ) << std::endl;
   fullprint << "LinearModelResidualMean=" << LinearModelTest::LinearModelResidualMean(sampleY, sampleZ) << std::endl;
-  fullprint << "LinearModelRSquared=" << LinearModelTest::LinearModelRSquared(sampleY, sampleZ) << std::endl;
   return ExitCode::Success;
 }

@@ -1,2 +1,1 @@
-Remove deprecated LinearModelRSquared, LinearModelAdjustedRSquared
 Remove deprecated RandomVector ctors in 1.14
