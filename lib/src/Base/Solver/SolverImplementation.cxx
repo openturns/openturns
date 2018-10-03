@@ -163,11 +163,11 @@ Scalar SolverImplementation::solve(const Function & function,
 }
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
-Scalar SolverImplementation::solve(const Function & ,
-                                   const Scalar ,
-                                   const Scalar ,
-                                   const Scalar ,
-                                   const Scalar ,
+Scalar SolverImplementation::solve(const Function &,
+                                   const Scalar,
+                                   const Scalar,
+                                   const Scalar,
+                                   const Scalar,
                                    const Scalar ) const
 {
   throw NotYetImplementedException(HERE) << "In SolverImplementation::solve(const Function & function, const Scalar value, const Scalar infPoint, const Scalar supPoint, const Scalar infValue, const Scalar supValue) const";

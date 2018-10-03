@@ -17,6 +17,7 @@ def flooding(X):
     S = Zc - Zd
     return [S]
 
+
 myFunction = ot.PythonFunction(4, 1, flooding)
 myParam = ot.GumbelAB(1013.0, 558.0)
 Q = ot.ParametrizedDistribution(myParam)

@@ -4,6 +4,7 @@ from openturns.viewer import View
 
 mesh = ot.RegularGrid(-5.0, 0.1, 101)
 
+
 class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
 
     def __init__(self):
@@ -27,6 +28,7 @@ class GaussianConvolution(ot.OpenTURNSPythonFieldFunction):
             outputValues.add(self.algo_.integrate(
                 weight * f, kernel.getRange()))
         return outputValues
+
 
 N = 5
 X = ot.GaussianProcess(ot.GeneralizedExponential(

@@ -201,7 +201,7 @@ void SpectralModelImplementation::updateOutputCovariance()
     if (!isDiagonal_)
     {
       for (UnsignedInteger i = j + 1; i < outputDimension_; ++i)
-        outputCovariance_(i, j) = outputCorrelation_(i , j) * amplitude_[i] * amplitude_[j];
+        outputCovariance_(i, j) = outputCorrelation_(i, j) * amplitude_[i] * amplitude_[j];
     }
   }
 }

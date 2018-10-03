@@ -20,6 +20,7 @@ def s(f):
         x = f - 5.0
         return exp(-2.0 * x * x)
 
+
 # Create the collection of HermitianMatrix
 myCollection = ot.HermitianMatrixCollection()
 for k in range(N):

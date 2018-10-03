@@ -296,7 +296,7 @@ Field SpectralGaussianProcess::getRealization() const
     }
   } // Loop over the frequencies
   // From the big collection, build the inverse FFT by blocks
-  Sample sampleValues(twoNF , getOutputDimension());
+  Sample sampleValues(twoNF, getOutputDimension());
   for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
   {
     const ComplexCollection inverseFFTResult(fftAlgorithm_.inverseTransform(arrayCollection, i * twoNF, twoNF));

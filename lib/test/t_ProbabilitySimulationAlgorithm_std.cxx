@@ -35,7 +35,7 @@ static void progress(Scalar percent, void * )
   std::cerr << "-- progress=" << percent << "%" << std::endl;
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

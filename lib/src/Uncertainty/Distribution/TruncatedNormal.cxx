@@ -257,7 +257,7 @@ Interval TruncatedNormal::computeMinimumVolumeIntervalWithMarginalProbability(co
     // Find \alpha
     PDFWrapper pdfWrapper(this);
     Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
-    const Scalar alpha = solver.solve(pdfWrapper, normalizationFactor_ * phiANorm_ / sigma_ , mu_, b_);
+    const Scalar alpha = solver.solve(pdfWrapper, normalizationFactor_ * phiANorm_ / sigma_, mu_, b_);
     const Scalar probability = computeProbability(Interval(a_, alpha));
     // 1a)
     if (probability >= prob)

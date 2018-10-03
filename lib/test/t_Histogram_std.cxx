@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -203,13 +203,13 @@ int main(int , char *[])
 
     // non-regression for #599
     {
-      Point l(2);
+      l = Point(2);
       l[0] = 1.0;
       l[1] = 2.0;
-      Point h(2);
+      h = Point(2);
       h[0] = 0.6;
       h[1] = 0.3;
-      Histogram distribution(2.0, l, h);
+      distribution = Histogram(2.0, l, h);
       for ( UnsignedInteger i = 0; i < 10; ++ i )
       {
         const Scalar p = 1.0 * i / 10.0;

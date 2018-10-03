@@ -20,7 +20,7 @@ for regularGrid in grids:
 
     ot.RandomGenerator.SetSeed(0)
     test = ot.Sample(ot.Uniform(lowerBound - 0.2 * (upperBound - lowerBound),
-                     upperBound + 0.2 * (upperBound - lowerBound)).getSample(1000))
+                                upperBound + 0.2 * (upperBound - lowerBound)).getSample(1000))
 
     vertices = regularGrid.getVertices()
     for vertex in test:

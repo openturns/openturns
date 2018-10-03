@@ -251,7 +251,7 @@ void IndependentCopula::computeCovariance() const
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar IndependentCopula::computeConditionalDDF(const Scalar , const Point & ) const
+Scalar IndependentCopula::computeConditionalDDF(const Scalar, const Point & ) const
 {
   return 0.0;
 }

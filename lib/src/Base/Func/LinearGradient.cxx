@@ -126,7 +126,7 @@ Matrix LinearGradient::gradient(const Point & inP) const
   double beta(1.0);
   int luplo(1);
   for(UnsignedInteger k = 0; k < nbSheets; ++k)
-    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(linear_(0,0,k))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &value(0,k), &one, &luplo);
+    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(linear_(0, 0, k))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &value(0, k), &one, &luplo);
   callsNumber_.increment();
   return value;
 }

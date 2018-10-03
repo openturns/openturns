@@ -16,6 +16,7 @@ def stop():
     sys.stderr.write('-- stop?\n')
     return False
 
+
 # We create a numerical math function
 myFunction = ot.Function(
     ["E", "F", "L", "I"], ["d"], ["-F*L^3/(3*E*I)"])

@@ -31,7 +31,7 @@ public:
   virtual ~TestObject() {}
 };
 
-int main(int , char *[])
+int main(int, char *[])
 {
 
   TESTPREAMBLE;

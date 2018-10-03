@@ -7,6 +7,7 @@ from openturns.viewer import View
 def C(tau):
     return 1.0 / (1.0 + tau * tau)
 
+
 t0 = 0.0
 t1 = 20.0
 N = 40
@@ -26,6 +27,7 @@ covarianceModel = ot.UserDefinedStationaryCovarianceModel(
 
 def f(tau):
     return [covarianceModel(tau)[0, 0]]
+
 
 func = ot.PythonFunction(1, 1, f)
 func.setDescription(['$t$', '$cov$'])

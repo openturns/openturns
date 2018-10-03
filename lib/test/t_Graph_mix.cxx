@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -150,7 +150,7 @@ int main(int , char *[])
 
     // Test empty new colors
     myGraph.setColors(Description());
-    
+
     // Set new legends
     Description legends(0);
     legends.add("item1");

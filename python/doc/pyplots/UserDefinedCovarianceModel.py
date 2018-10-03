@@ -7,6 +7,7 @@ from openturns.viewer import View
 def C(s, t):
     return exp(-4.0 * abs(s - t) / (1 + (s * s + t * t)))
 
+
 N = 64
 a = 4.0
 # myMesh = ot.IntervalMesher([N]).build(ot.Interval(-a, a))
@@ -25,4 +26,5 @@ cov_graph = covarianceModel.draw(0, 0, -a, a, 512)
 fig = plt.figure(figsize=(10, 4))
 plt.suptitle('User defined covariance model')
 cov_axis = fig.add_subplot(111)
-View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
+View(cov_graph, figure=fig, axes=[cov_axis],
+     add_legend=False, square_axes=True)

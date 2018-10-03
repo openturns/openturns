@@ -48,11 +48,11 @@ public:
 
   /** Constructor with parameters */
   KarhunenLoeveResult(const CovarianceModel & covariance,
-      const Scalar threshold,
-      const Point & eigenvalues,
-      const FunctionCollection & modes,
-      const ProcessSample & modesAsProcessSample,
-      const Matrix & projection);
+                      const Scalar threshold,
+                      const Point & eigenvalues,
+                      const FunctionCollection & modes,
+                      const ProcessSample & modesAsProcessSample,
+                      const Matrix & projection);
 
   /** Constructor from implementation */
   KarhunenLoeveResult(const KarhunenLoeveResultImplementation & implementation);

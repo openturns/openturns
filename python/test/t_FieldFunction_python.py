@@ -5,6 +5,7 @@ import openturns as ot
 
 mesh = ot.RegularGrid(0.0, 0.1, 11)
 
+
 class FUNC(ot.OpenTURNSPythonFieldFunction):
 
     def __init__(self):
@@ -21,10 +22,11 @@ class FUNC(ot.OpenTURNSPythonFieldFunction):
     def isActingPointwise(self):
         return True
 
+
 F = FUNC()
 print('in_dim=' + str(F.getInputDimension())
-       + ' out_dim=' + str(F.getOutputDimension())
-       + ' spatial_dim=' + str(F.getInputMesh().getDimension()))
+      + ' out_dim=' + str(F.getOutputDimension())
+      + ' spatial_dim=' + str(F.getInputMesh().getDimension()))
 
 
 X = ot.Field(mesh, ot.Normal(2).getSample(11))
@@ -67,12 +69,14 @@ simplicies.append([1, 3, 5, 6])
 simplicies.append([1, 4, 5, 6])
 mesh3D = ot.Mesh(vertices, simplicies)
 
+
 def myPyFunc(X):
     Xs = ot.Sample(X)
     Y = Xs * ([2.0] * Xs.getDimension())
     Y.setDescription(
         ot.Description.BuildDefault(values.getDimension(), "Y"))
     return Y
+
 
 in_dim = 3
 out_dim = 3

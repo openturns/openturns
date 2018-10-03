@@ -100,4 +100,5 @@ def Show(graph):
     view = View(graph)
     view.ShowAll()
 
+
 __version__ = PlatformInfo.GetVersion()

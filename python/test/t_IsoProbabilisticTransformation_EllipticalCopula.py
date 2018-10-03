@@ -21,6 +21,7 @@ def cleanSymmetricTensor(inSymmetricTensor):
                     inSymmetricTensor[i, j, k] = 0.0
     return inSymmetricTensor
 
+
 try:
     # Create a collection of distribution
     aCollection = DistributionCollection()

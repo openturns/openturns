@@ -151,7 +151,7 @@ Point IdentityMatrix::computeSingularValues(const Bool )
 /* Compute singular values */
 Point IdentityMatrix::computeSVD(Matrix & u,
                                  Matrix & vT,
-                                 const Bool ,
+                                 const Bool,
                                  const Bool )
 {
   u = *this;

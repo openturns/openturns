@@ -1056,7 +1056,7 @@ Bool DrawableImplementation::IsValidColorName(const String & key)
 }
 
 void DrawableImplementation::ScanColorCode(const String & key,
-                                           Indices & rgba)
+    Indices & rgba)
 {
   rgba = Indices(4, 0);
   // First, check if the color is given in RGB format

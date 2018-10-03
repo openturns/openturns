@@ -32,7 +32,7 @@ static Point clean(Point in)
   return in;
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -104,10 +104,10 @@ int main(int , char *[])
 
     // For ticket 957
     {
-      Distribution distribution = Uniform() * Uniform() * Uniform();
-      fullprint << "distribution=" << distribution << std::endl;
-      fullprint << "mean=" << distribution.getMean() << std::endl;
-      fullprint << "standard deviation=" << distribution.getStandardDeviation() << std::endl;
+      Distribution distribution2 = Uniform() * Uniform() * Uniform();
+      fullprint << "distribution=" << distribution2 << std::endl;
+      fullprint << "mean=" << distribution2.getMean() << std::endl;
+      fullprint << "standard deviation=" << distribution2.getStandardDeviation() << std::endl;
     }
   }
   catch (TestFailed & ex)

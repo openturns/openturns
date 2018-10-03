@@ -13,6 +13,7 @@ def cleanScalar(inScalar):
         inScalar = 0.0
     return inScalar
 
+
 try:
 
     #

@@ -181,14 +181,14 @@ Distribution FunctionalChaosAlgorithm::BuildDistribution(const Sample & inputSam
     const Sample marginalSample(inputSample.getMarginal(i).sortUnique());
     Collection<Distribution> possibleDistributions(0);
     for (UnsignedInteger j = 0; j < factories.getSize(); ++j)
-    try
-    {
-      possibleDistributions.add(factories[j].build(marginalSample));
-    }
-    catch (...)
-    {
-      // Just skip the factories incompatible with the current marginal sample
-    }
+      try
+      {
+        possibleDistributions.add(factories[j].build(marginalSample));
+      }
+      catch (...)
+      {
+        // Just skip the factories incompatible with the current marginal sample
+      }
     const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, possibleDistributions, bestResult));
     // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
     if (bestResult.getPValue() >= ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;

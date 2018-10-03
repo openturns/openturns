@@ -229,7 +229,7 @@ int Os::MakeDirectory(const String & path)
 
 #ifndef WIN32
 static int deleteRegularFileOrDirectory(const char * path,
-                                        const struct stat * ,
+                                        const struct stat *,
                                         int typeflag,
                                         struct FTW * )
 {

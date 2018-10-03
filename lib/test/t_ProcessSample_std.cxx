@@ -26,7 +26,7 @@ using namespace OT::Test;
 
 typedef Collection<TimeSeries> TimeSeriesCollection;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -161,7 +161,7 @@ int main(int , char *[])
         fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_3[0]) << std::endl;
         for (UnsignedInteger i = 0; i < dimension; ++i)
         {
-          Scalar value = sensitivity.getSobolTotalIndex(i);
+          value = sensitivity.getSobolTotalIndex(i);
           fullprint << "Sobol total index " << i << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_T1[i]) << std::endl;
         }
         indices = Indices(2);
@@ -172,7 +172,7 @@ int main(int , char *[])
           for (UnsignedInteger j = i + 1; j < dimension; ++j)
           {
             indices[1] = j;
-            Scalar value = sensitivity.getSobolIndex(indices);
+            value = sensitivity.getSobolIndex(indices);
             fullprint << "Sobol total index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sob_2[k]) << std::endl;
             k = k + 1;
           }

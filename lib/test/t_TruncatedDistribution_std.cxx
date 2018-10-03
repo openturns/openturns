@@ -32,7 +32,7 @@ static Point clean(Point in)
   return in;
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -139,12 +139,12 @@ int main(int , char *[])
     candidates.add(TruncatedDistribution(Weibull(), 1.5, 7.8));
     intervals.add(Interval(2.5, 6.0));
     candidates.add(Beta(1.5, 7.8, -1.0, 2.0));
-    intervals.add(Interval(-2.5, 6.0));    
+    intervals.add(Interval(-2.5, 6.0));
     for (UnsignedInteger i = 0; i < candidates.getSize(); ++i)
-      {
-	TruncatedDistribution d(candidates[i], intervals[i]);
-	fullprint << "d=" << d << ", simplified=" << d.getSimplifiedVersion() << std::endl;
-      }
+    {
+      TruncatedDistribution d(candidates[i], intervals[i]);
+      fullprint << "d=" << d << ", simplified=" << d.getSimplifiedVersion() << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

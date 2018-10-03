@@ -528,10 +528,13 @@ CovarianceAssemblyFunction::CovarianceAssemblyFunction(const CovarianceModel & c
   , epsilon_(epsilon)
 {
   if (vertices_.getSize() == 0) return;
-  try {
+  try
+  {
     (void) covarianceModel_.computeStandardRepresentative(vertices_[0], vertices_[0]);
     definesComputeStandardRepresentative_ = true;
-  } catch (NotYetImplementedException &) {
+  }
+  catch (NotYetImplementedException &)
+  {
     // Do nothing
   }
 }
@@ -562,10 +565,13 @@ CovarianceBlockAssemblyFunction::CovarianceBlockAssemblyFunction(const Covarianc
   Pointer<MatrixImplementation> impl = eps.getImplementation();
   epsilonId_ = CovarianceMatrix(covarianceModel.getOutputDimension(), *impl.get());
   if (vertices.getSize() == 0) return;
-  try {
+  try
+  {
     (void) covarianceModel_.computeStandardRepresentative(vertices_[0], vertices_[0]);
     definesComputeStandardRepresentative_ = true;
-  } catch (NotYetImplementedException &) {
+  }
+  catch (NotYetImplementedException &)
+  {
     // Do nothing
   }
 }

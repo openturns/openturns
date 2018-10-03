@@ -14,6 +14,7 @@ def sobol(indice, ai):
         val = val * 1.0 / (3.0 * (1.0 + ai[indice[i]]) ** 2.0)
     return val
 
+
 try:
     # Problem parameters
     dimension = 3

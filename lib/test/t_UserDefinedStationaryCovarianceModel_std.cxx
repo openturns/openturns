@@ -26,7 +26,7 @@ using namespace OT;
 using namespace OT::Test;
 
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -79,7 +79,7 @@ int main(int , char *[])
     {
       const Scalar t = timeGrid.getValue(i);
       // We look for cov(t) ==> when adding to the collection, we compute cov(t)
-      fullprint << "myModel = " << myModel(t)(0, 0) << ", referenceModel = " << referenceModel(t)(0 , 0) << std::endl;
+      fullprint << "myModel = " << myModel(t)(0, 0) << ", referenceModel = " << referenceModel(t)(0, 0) << std::endl;
     }
 
     // Test the drawing method as a nonstationary model, in the covariance range

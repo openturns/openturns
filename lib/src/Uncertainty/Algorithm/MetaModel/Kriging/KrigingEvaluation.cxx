@@ -186,7 +186,7 @@ struct KrigingEvaluationSampleFunctor
     const UnsignedInteger start = r.begin();
     const UnsignedInteger dimension = evaluation_.getOutputDimension();
     const UnsignedInteger size = r.end() - start;
-    Matrix R(dimension , trainingSize_ * dimension);
+    Matrix R(dimension, trainingSize_ * dimension);
     for (UnsignedInteger i = 0; i != size; ++i)
     {
       for (UnsignedInteger j = 0; j < trainingSize_; ++j)
@@ -209,7 +209,7 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
 
   Sample result(size, dimension);
   const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-  TBB::ParallelFor( 0, size , functor );
+  TBB::ParallelFor( 0, size, functor );
 
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension

@@ -41,7 +41,7 @@ struct OT_API Atomic
 
 
   static inline
-  int FetchAndAdd( int * p , int d )
+  int FetchAndAdd( int * p, int d )
   {
 #if defined(OPENTURNS_HAVE_SYNC_BUILTINS)
     return __sync_fetch_and_add( p, d );
@@ -111,7 +111,7 @@ struct OT_API Atomic
 
 
   static inline
-  int OrAndFetch( int * p , int d )
+  int OrAndFetch( int * p, int d )
   {
 #if defined(OPENTURNS_HAVE_SYNC_BUILTINS)
     return __sync_or_and_fetch( p, d );

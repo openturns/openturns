@@ -31,7 +31,8 @@ outputSample = f(inputSample)
 print("input history=", f.getInputHistory())
 print("output history=", f.getOutputHistory())
 
-mem = ot.MemoizeFunction(ot.SymbolicFunction(['x1', 'x2'], ['x1+x2', '3*(x1+x2)']))
+mem = ot.MemoizeFunction(ot.SymbolicFunction(
+    ['x1', 'x2'], ['x1+x2', '3*(x1+x2)']))
 mem2 = ot.MemoizeFunction(mem.getMarginal(1))
 y = mem2([1, 2])
 print('mem2.in', mem2.getCacheInput())

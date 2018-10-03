@@ -52,13 +52,13 @@ BEGIN_NAMESPACE_OPENTURNS
 namespace BIN_STMGR
 {
 DEFINE_ATTRIBUTE( StudyVisible, 0 );
-DEFINE_ATTRIBUTE( StudyLabel  , 1 );
-DEFINE_ATTRIBUTE( version     , 2 );
-DEFINE_ATTRIBUTE( class       , 3 );
-DEFINE_ATTRIBUTE( id          , 4 );
-DEFINE_ATTRIBUTE( name        , 5 );
-DEFINE_ATTRIBUTE( index       , 6 );
-DEFINE_ATTRIBUTE( member      , 7 );
+DEFINE_ATTRIBUTE( StudyLabel, 1 );
+DEFINE_ATTRIBUTE( version, 2 );
+DEFINE_ATTRIBUTE( class, 3 );
+DEFINE_ATTRIBUTE( id, 4 );
+DEFINE_ATTRIBUTE( name, 5 );
+DEFINE_ATTRIBUTE( index, 6 );
+DEFINE_ATTRIBUTE( member, 7 );
 } // namespace BIN_STMGR
 
 /** @todo: ensure that reads and writes are actually done */

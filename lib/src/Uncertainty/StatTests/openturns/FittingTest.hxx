@@ -92,7 +92,7 @@ public:
 
   /** Kolmogorov statistics computation */
   static Scalar ComputeKolmogorovStatistics(const Sample & sample,
-					    const Distribution & distribution);
+      const Distribution & distribution);
 
   /** Two-sample Kolmogorov–Smirnov test */
   static TestResult TwoSamplesKolmogorov (const Sample & sample1,

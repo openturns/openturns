@@ -43,7 +43,7 @@ UnsignedInteger debug_squared_minimum_distance(const Point & point, const Sample
 }
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

@@ -32,7 +32,7 @@ public:
 };
 
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -48,9 +48,9 @@ int main(int , char *[])
     all_cases.add(GeneralizedExtremeValue(2.0, 1.5, -0.15));
     all_cases.add(GeneralizedExtremeValue(2.0, 1.5,  0.0));
     all_cases.add(GeneralizedExtremeValue(2.0, 1.5,  0.15));
-    for (UnsignedInteger i = 0; i < all_cases.getSize(); ++i)
+    for (UnsignedInteger j = 0; j < all_cases.getSize(); ++ j)
     {
-      GeneralizedExtremeValue distribution(all_cases[i]);
+      GeneralizedExtremeValue distribution(all_cases[j]);
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
 

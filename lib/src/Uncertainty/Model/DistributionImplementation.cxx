@@ -1939,7 +1939,7 @@ Collection<PiecewiseHermiteEvaluation> DistributionImplementation::interpolatePD
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar DistributionImplementation::computeConditionalDDF(const Scalar ,
+Scalar DistributionImplementation::computeConditionalDDF(const Scalar,
     const Point & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeConditionalDDF(const Scalar x, const Point & y) const";
@@ -3352,7 +3352,7 @@ Distribution DistributionImplementation::getStandardRepresentative() const
 }
 
 /* Compute the radial distribution CDF */
-Scalar DistributionImplementation::computeRadialDistributionCDF(const Scalar ,
+Scalar DistributionImplementation::computeRadialDistributionCDF(const Scalar,
     const Bool ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeRadialDistributionCDF(const Scalar radius, const Bool tail) const";

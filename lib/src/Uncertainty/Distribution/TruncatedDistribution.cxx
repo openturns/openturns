@@ -169,51 +169,51 @@ Distribution TruncatedDistribution::getSimplifiedVersion() const
   Scalar upper = bounds_.getUpperBound()[0];
   // Delve into the antecedents until we get something not truncated
   while (kind == "TruncatedDistribution")
-    {
-      const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
-      localDistribution = truncatedDistribution->getDistribution();
-      kind = localDistribution.getImplementation()->getClassName();
-      lower = std::max(lower, truncatedDistribution->getBounds().getLowerBound()[0]);
-      upper = std::min(upper, truncatedDistribution->getBounds().getUpperBound()[0]);
-    }
+  {
+    const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
+    localDistribution = truncatedDistribution->getDistribution();
+    kind = localDistribution.getImplementation()->getClassName();
+    lower = std::max(lower, truncatedDistribution->getBounds().getLowerBound()[0]);
+    upper = std::min(upper, truncatedDistribution->getBounds().getUpperBound()[0]);
+  }
   const Scalar a = localDistribution.getRange().getLowerBound()[0];
   const Scalar b = localDistribution.getRange().getUpperBound()[0];
   // If no truncation
   const Scalar w = getWeight();
   if ((lower <= a) && (upper >= b))
-    {
-      localDistribution.setWeight(w);
-      return localDistribution;
-    }
+  {
+    localDistribution.setWeight(w);
+    return localDistribution;
+  }
   // Intersect the underlying distribution range and the truncation range
   const Scalar alpha = std::max(lower, a);
   const Scalar beta = std::min(upper, b);
   // Actual simplifications
   if (kind == "Uniform")
-    {
-      Uniform simplified(alpha, beta);
-      simplified.setWeight(getWeight());
-      return simplified;
-    }
+  {
+    Uniform simplified(alpha, beta);
+    simplified.setWeight(getWeight());
+    return simplified;
+  }
   if (kind == "Normal")
-    {
-      const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
-      const Scalar mu = normal->getMean()[0];
-      const Scalar sigma = normal->getSigma()[0];
-      TruncatedNormal simplified(mu, sigma, alpha, beta);
-      simplified.setWeight(getWeight());
-      return simplified;
-    }
+  {
+    const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
+    const Scalar mu = normal->getMean()[0];
+    const Scalar sigma = normal->getSigma()[0];
+    TruncatedNormal simplified(mu, sigma, alpha, beta);
+    simplified.setWeight(getWeight());
+    return simplified;
+  }
   if ((kind == "Exponential") && (upper >= b))
-    {
-      const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
-      const Scalar lambda = exponential->getLambda();
-      Exponential simplified(lambda, alpha);
-      simplified.setWeight(getWeight());
-      return simplified;
-    }
+  {
+    const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
+    const Scalar lambda = exponential->getLambda();
+    Exponential simplified(lambda, alpha);
+    simplified.setWeight(getWeight());
+    return simplified;
+  }
   // No simplification
- return TruncatedDistribution(localDistribution, alpha, beta);
+  return TruncatedDistribution(localDistribution, alpha, beta);
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
@@ -231,7 +231,7 @@ Point TruncatedDistribution::getRealization() const
 {
   // Use CDF inversion only if P([a, b]) < tau
   if ((getDimension() == 1) && (thresholdRealization_ * normalizationFactor_ > 1.0))
-      return computeQuantile(RandomGenerator::Generate());
+    return computeQuantile(RandomGenerator::Generate());
   // Here we use simple rejection of the underlying distribution against the bounds
   for (;;)
   {
@@ -461,12 +461,12 @@ void TruncatedDistribution::setDistribution(const Distribution & distribution)
   setDescription(distribution.getDescription());
   // Precompute some useful quantities for dimension=1
   if (getDimension() == 1)
-    {
-      pdfLowerBound_ = distribution.computePDF(bounds_.getLowerBound());
-      pdfUpperBound_ = distribution.computePDF(bounds_.getUpperBound());
-      cdfLowerBound_ = distribution.computeCDF(bounds_.getLowerBound());
-      cdfUpperBound_ = distribution.computeCDF(bounds_.getUpperBound());
-    }
+  {
+    pdfLowerBound_ = distribution.computePDF(bounds_.getLowerBound());
+    pdfUpperBound_ = distribution.computePDF(bounds_.getUpperBound());
+    cdfLowerBound_ = distribution.computeCDF(bounds_.getLowerBound());
+    cdfUpperBound_ = distribution.computeCDF(bounds_.getUpperBound());
+  }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
@@ -507,7 +507,7 @@ Scalar TruncatedDistribution::getThresholdRealization() const
 
 void TruncatedDistribution::setBounds(const Interval & bounds)
 {
-    if (distribution_.getDimension() != bounds.getDimension()) throw InvalidArgumentException(HERE) << "The truncation interval dimension must match the distribution dimension.";
+  if (distribution_.getDimension() != bounds.getDimension()) throw InvalidArgumentException(HERE) << "The truncation interval dimension must match the distribution dimension.";
   if (bounds_ != bounds)
   {
     bounds_ = bounds;

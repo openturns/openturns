@@ -5,7 +5,8 @@ import unittest as ut
 from math import pi, log, log10, floor
 
 import openturns as ot
-from openturns.testing import assert_almost_equal  # (value, reference, rtol, atol)
+# (value, reference, rtol, atol)
+from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 

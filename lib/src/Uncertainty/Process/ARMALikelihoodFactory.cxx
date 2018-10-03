@@ -405,7 +405,7 @@ Function ARMALikelihoodFactory::getLogLikelihoodFunction() const
 /* Compute the log-likelihood constraint accessor */
 Function ARMALikelihoodFactory::getLogLikelihoodInequalityConstraint() const
 {
-  return bindMethod <ARMALikelihoodFactory, Point, Point> ( *this, &ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint, inputDimension_ , nbInequalityConstraint_);
+  return bindMethod <ARMALikelihoodFactory, Point, Point> ( *this, &ARMALikelihoodFactory::computeLogLikelihoodInequalityConstraint, inputDimension_, nbInequalityConstraint_);
 }
 
 /* Initialize optimization solver parameter using the ResourceMap */

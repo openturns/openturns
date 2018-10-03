@@ -23,7 +23,8 @@ for scipy_dist in [st.uniform(), st.johnsonsu(2.55, 2.25)]:
     print('quantile=', distribution.computeQuantile(cdf))
     print('quantile (tail)=', distribution.computeQuantile(cdf, True))
     print('scalar quantile=%.6g' % distribution.computeScalarQuantile(cdf))
-    print('scalar quantile (tail)=%.6g' % distribution.computeScalarQuantile(cdf, True))
+    print('scalar quantile (tail)=%.6g' %
+          distribution.computeScalarQuantile(cdf, True))
     print('mean=', distribution.getMean())
     print('mean(sampling)=', sample.computeMean())
     print('std=', distribution.getStandardDeviation())

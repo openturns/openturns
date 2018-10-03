@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -40,22 +40,22 @@ int main(int , char *[])
     lSize[3] = 50;
     lSize[4] = 1000;
     for (UnsignedInteger iSize = 0; iSize < lSize.getSize(); ++iSize)
+    {
+      const UnsignedInteger size = lSize[iSize];
+      for (UnsignedInteger iTies = 0; iTies < 2; ++iTies)
       {
-	const UnsignedInteger size = lSize[iSize];
-	for (UnsignedInteger iTies = 0; iTies < 2; ++iTies)
-	  {
-	    const Bool ties = iTies == 0;
-	    for (UnsignedInteger iTail = 0; iTail < 2; ++iTail)
-	      {
-		const Bool tail = iTail == 0;
-		for (int iRho = -10; iRho < 11; ++iRho)
-		  {
-		    const Scalar rho = 0.1 * iRho;
-		    fullprint << "size=" << size << ", ties=" << ties << ", tail=" << tail << ", rho=" << rho << ", p=" << DistFunc::pSpearmanCorrelation(size, rho, tail, ties) << std::endl;
-		  } // rho
-	      } // tail
-	  } // ties
-      } // size
+        const Bool ties = iTies == 0;
+        for (UnsignedInteger iTail = 0; iTail < 2; ++iTail)
+        {
+          const Bool tail = iTail == 0;
+          for (int iRho = -10; iRho < 11; ++iRho)
+          {
+            const Scalar rho = 0.1 * iRho;
+            fullprint << "size=" << size << ", ties=" << ties << ", tail=" << tail << ", rho=" << rho << ", p=" << DistFunc::pSpearmanCorrelation(size, rho, tail, ties) << std::endl;
+          } // rho
+        } // tail
+      } // ties
+    } // size
   }
   catch (TestFailed & ex)
   {

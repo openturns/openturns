@@ -48,8 +48,8 @@ EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & con
 
 /* Constructor with parameters */
 EventSimulation::EventSimulation(const Event & event,
-                       const Bool verbose,
-                       const HistoryStrategy & convergenceStrategy)
+                                 const Bool verbose,
+                                 const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
   , event_(event)
   , result_()

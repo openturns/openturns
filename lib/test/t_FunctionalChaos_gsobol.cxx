@@ -35,7 +35,7 @@ Scalar sobol(const Indices & indices,
   return value;
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

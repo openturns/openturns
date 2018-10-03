@@ -101,8 +101,8 @@ PythonFieldFunction::PythonFieldFunction(PyObject * pyCallable)
   }
 
   ScopedPyObjectPointer outputMesh(PyObject_CallMethod ( pyObj_,
-                                    const_cast<char *>("getOutputMesh"),
-                                    const_cast<char *>("()")));
+                                   const_cast<char *>("getOutputMesh"),
+                                   const_cast<char *>("()")));
   if (SWIG_IsOK(SWIG_ConvertPtr(outputMesh.get(), &ptr, SWIG_TypeQuery("OT::Mesh *"), 0)))
   {
     outputMesh_ = *reinterpret_cast< OT::Mesh * >(ptr);
@@ -244,8 +244,8 @@ Bool PythonFieldFunction::isActingPointwise() const
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isActingPointwise")))
   {
     ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
-                                const_cast<char *>("isActingPointwise"),
-                                const_cast<char *>("()")));
+                                 const_cast<char *>("isActingPointwise"),
+                                 const_cast<char *>("()")));
     return convert< _PyBool_, Bool >(result.get());
   }
   else

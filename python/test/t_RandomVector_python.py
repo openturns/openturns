@@ -30,6 +30,7 @@ class RVEC(PythonRandomVector):
     def getCovariance(self):
         return [[0.0833333, 0.], [0., 0.0833333]]
 
+
 R = RVEC()
 print(R)
 

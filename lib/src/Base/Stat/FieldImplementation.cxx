@@ -359,12 +359,12 @@ Mesh FieldImplementation::asDeformedMesh(const Indices & verticesPadding,
   Sample vertices(mesh_.getVertices());
   Sample deformedVertices(size, augmentedInputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      for (UnsignedInteger j = 0; j < nonZeroCoordinatesSize; ++j)
-	deformedVertices(i, nonZeroCoordinates[j]) = vertices(i, j);
-      for (UnsignedInteger j = 0; j < nonZeroValuesSize; ++j)
-	deformedVertices(i, nonZeroValues[j]) += values_(i, j);
-    }
+  {
+    for (UnsignedInteger j = 0; j < nonZeroCoordinatesSize; ++j)
+      deformedVertices(i, nonZeroCoordinates[j]) = vertices(i, j);
+    for (UnsignedInteger j = 0; j < nonZeroValuesSize; ++j)
+      deformedVertices(i, nonZeroValues[j]) += values_(i, j);
+  }
   // If the input dimension has not changed we can reuse the topology
   const IndicesCollection oldSimplices(mesh_.getSimplices());
   if (verticesPaddingSize == 0) return Mesh(deformedVertices, oldSimplices);

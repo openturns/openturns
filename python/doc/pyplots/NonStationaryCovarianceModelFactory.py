@@ -13,6 +13,7 @@ def C(s, t):
 def covModRef(X):
     return [C(X[0], X[1])]
 
+
 myFuncCovarianceRef = ot.PythonFunction(2, 1, covModRef)
 myFuncCovarianceRef.setDescription(["s", "t", "C"])
 
@@ -77,6 +78,7 @@ myEstimatedModel = myFactory.build(myFieldSample)
 def covMod(X):
     return [myEstimatedModel(X[0], X[1])[0, 0]]
 
+
 myFuncCovariance = ot.PythonFunction(2, 1, covMod)
 
 
@@ -94,4 +96,5 @@ for i in range(alld.getSize()):
 fig = plt.figure(figsize=(10, 4))
 plt.suptitle('Non stationary covariance model estimation')
 cov_axis = fig.add_subplot(111)
-View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False, square_axes=True)
+View(cov_graph, figure=fig, axes=[cov_axis],
+     add_legend=False, square_axes=True)

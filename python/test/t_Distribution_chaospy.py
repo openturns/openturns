@@ -25,7 +25,8 @@ for chaospy_dist in [d0, d1]:
     print('quantile=', distribution.computeQuantile(cdf))
     print('quantile (tail)=', distribution.computeQuantile(cdf, True))
     print('scalar quantile=%.6g' % distribution.computeScalarQuantile(cdf))
-    print('scalar quantile (tail)=%.6g' % distribution.computeScalarQuantile(cdf, True))
+    print('scalar quantile (tail)=%.6g' %
+          distribution.computeScalarQuantile(cdf, True))
     print('mean=', distribution.getMean())
     print('mean(sampling)=', sample.computeMean())
     print('std=', distribution.getStandardDeviation())

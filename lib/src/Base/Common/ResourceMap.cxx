@@ -210,9 +210,9 @@ String ResourceMap::getType(const String & key) const
   {
     Collection<String> keys;
     for (MapStringType::const_iterator it = mapString_.begin(); it != mapString_.end(); ++it)
-      {
-	keys.add(it->first);
-      }
+    {
+      keys.add(it->first);
+    }
     MapStringType::const_iterator it = mapString_.find(key);
     if (it != mapString_.end()) return "string";
   }
@@ -220,9 +220,9 @@ String ResourceMap::getType(const String & key) const
   {
     Collection<String> keys;
     for (MapScalarType::const_iterator it = mapScalar_.begin(); it != mapScalar_.end(); ++it)
-      {
-	keys.add(it->first);
-      }
+    {
+      keys.add(it->first);
+    }
     MapScalarType::const_iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end()) return "float";
   }
@@ -230,9 +230,9 @@ String ResourceMap::getType(const String & key) const
   {
     Collection<String> keys;
     for (MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.begin(); it != mapUnsignedInteger_.end(); ++it)
-      {
-	keys.add(it->first);
-      }
+    {
+      keys.add(it->first);
+    }
     MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end()) return "unsigned int";
   }
@@ -240,9 +240,9 @@ String ResourceMap::getType(const String & key) const
   {
     Collection<String> keys;
     for (MapBoolType::const_iterator it = mapBool_.begin(); it != mapBool_.end(); ++it)
-      {
-	keys.add(it->first);
-      }
+    {
+      keys.add(it->first);
+    }
     MapBoolType::const_iterator it = mapBool_.find(key);
     if (it != mapBool_.end()) return "bool";
   }
@@ -337,52 +337,52 @@ void ResourceMap::set(const String & key, const String & value)
   {
     MapStringType::const_iterator it = mapString_.find(key);
     if (it != mapString_.end())
-      {
-	mapString_[key] = value;
-	return;
-      }
+    {
+      mapString_[key] = value;
+      return;
+    }
   }
   // Second, try to retrieve the value from the Scalar map
   {
     MapScalarType::const_iterator it = mapScalar_.find(key);
     if (it != mapScalar_.end())
-      {
-	Scalar scalarValue = -1.0;
-	std::istringstream iss( value );
-	iss >> scalarValue;
-	mapScalar_[ key ] = scalarValue;
-	return;
-      }
+    {
+      Scalar scalarValue = -1.0;
+      std::istringstream iss( value );
+      iss >> scalarValue;
+      mapScalar_[ key ] = scalarValue;
+      return;
+    }
   }
   // Third, try to retrieve the value from the UnsignedInteger map
   {
     MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
     if (it != mapUnsignedInteger_.end())
-      {
-	UnsignedInteger unsignedIntegerValue = 0;
-	std::istringstream iss( value );
-	iss >> unsignedIntegerValue;
-	mapUnsignedInteger_[ key ] = unsignedIntegerValue;
-	return;
-      }
+    {
+      UnsignedInteger unsignedIntegerValue = 0;
+      std::istringstream iss( value );
+      iss >> unsignedIntegerValue;
+      mapUnsignedInteger_[ key ] = unsignedIntegerValue;
+      return;
+    }
   }
   // Fourth, try to retrieve the value from the Bool map
   {
     MapBoolType::const_iterator it = mapBool_.find(key);
     if (it != mapBool_.end())
+    {
+      Bool boolValue = false;
+      // First, try to recover the bool value from the "true" or "false" strings
+      if (value == "true") boolValue = true;
+      else if (value == "false") boolValue = false;
+      // Second, try to recover the bool from the litteral value
+      else
       {
-	Bool boolValue = false;
-	// First, try to recover the bool value from the "true" or "false" strings
-	if (value == "true") boolValue = true;
-	else if (value == "false") boolValue = false;
-	// Second, try to recover the bool from the litteral value
-	else
-	  {
-	    std::istringstream iss( value );
-	    iss >> boolValue;
-	  }
-	mapBool_[ key ] = boolValue;
+        std::istringstream iss( value );
+        iss >> boolValue;
       }
+      mapBool_[ key ] = boolValue;
+    }
   }
   // Second, set the new value as a string
   mapString_[ key ] = value;
@@ -434,58 +434,58 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
       if (XML::IsElement(current))
       {
         const String key = XML::ToString(current->name);
-	// Try to get a String value
-	{
-	  String value = XML::GetAttributeByName(current, XMLTag_value_str);
-	  if (value.size() > 0)
-	    {
-	      mapString_[ key ] = value;
-	      break;
-	    }
-	} // String
-	// Try to get a Scalar value
-	{
-	  String value = XML::GetAttributeByName(current, XMLTag_value_float);
-	  if (value.size() > 0)
-	    {
-	      Scalar scalarValue = -1.0;
-	      std::istringstream iss( value );
-	      iss >> scalarValue;
-	      mapScalar_[ key ] = scalarValue;
-	      break;
-	    }
-	} // Scalar
-	// Try to get an UnsignedInteger value
-	{
-	  String value = XML::GetAttributeByName(current, XMLTag_value_int);
-	  if (value.size() > 0)
-	    {
-	      UnsignedInteger unsignedIntegerValue = 0;
-	      std::istringstream iss( value );
-	      iss >> unsignedIntegerValue;
-	      mapUnsignedInteger_[ key ] = unsignedIntegerValue;
-	      break;
-	    }
-	} // UnsignedInteger
-	// Try to get a Bool value
-	{
-	  String value = XML::GetAttributeByName( current, XMLTag_value_bool );
-	  if (value.size() > 0)
-	    {
-	      Bool boolValue = false;
-	      // First, try to recover the bool value from the "true" or "false" strings
-	      if (value == "true") boolValue = true;
-	      else if (value == "false") boolValue = false;
-	      // Second, try to recover the bool from the litteral value
-	      else
-		{
-		  std::istringstream iss( value );
-		  iss >> boolValue;
-		}
-	      mapBool_[ key ] = boolValue;
-	      break;
-	    }
-	} // Bool
+        // Try to get a String value
+        {
+          String value = XML::GetAttributeByName(current, XMLTag_value_str);
+          if (value.size() > 0)
+          {
+            mapString_[ key ] = value;
+            break;
+          }
+        } // String
+        // Try to get a Scalar value
+        {
+          String value = XML::GetAttributeByName(current, XMLTag_value_float);
+          if (value.size() > 0)
+          {
+            Scalar scalarValue = -1.0;
+            std::istringstream iss( value );
+            iss >> scalarValue;
+            mapScalar_[ key ] = scalarValue;
+            break;
+          }
+        } // Scalar
+        // Try to get an UnsignedInteger value
+        {
+          String value = XML::GetAttributeByName(current, XMLTag_value_int);
+          if (value.size() > 0)
+          {
+            UnsignedInteger unsignedIntegerValue = 0;
+            std::istringstream iss( value );
+            iss >> unsignedIntegerValue;
+            mapUnsignedInteger_[ key ] = unsignedIntegerValue;
+            break;
+          }
+        } // UnsignedInteger
+        // Try to get a Bool value
+        {
+          String value = XML::GetAttributeByName( current, XMLTag_value_bool );
+          if (value.size() > 0)
+          {
+            Bool boolValue = false;
+            // First, try to recover the bool value from the "true" or "false" strings
+            if (value == "true") boolValue = true;
+            else if (value == "false") boolValue = false;
+            // Second, try to recover the bool from the litteral value
+            else
+            {
+              std::istringstream iss( value );
+              iss >> boolValue;
+            }
+            mapBool_[ key ] = boolValue;
+            break;
+          }
+        } // Bool
       } // if XML::IsElement
     } // for xmlNodePtr
   } // if root
@@ -730,7 +730,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // SobolIndicesExperiment parameters //
   setAsString( "SobolIndicesExperiment-SamplingMethod", "MonteCarlo");
-  
+
   // SobolIndicesAlgorithm parameters //
   setAsBool( "SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution", false );
   setAsScalar( "SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel", 0.95 );
@@ -1295,7 +1295,7 @@ std::vector<String> ResourceMap::getKeys() const
     std::vector<String> boolKeys(getBoolKeys());
     keys.insert(keys.end(), boolKeys.begin(), boolKeys.end());
   }
-  // Then sort the keys  
+  // Then sort the keys
   std::sort(keys.begin(), keys.end());
   return keys;
 }

@@ -35,7 +35,7 @@ Point clean(Point in)
   return in;
 }
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);

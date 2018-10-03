@@ -15,7 +15,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.11
+Version:        1.12rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -109,9 +109,7 @@ Python textual interface to OpenTURNS uncertainty library
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
        -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES=-j16 \
-%ifarch i586 i686
-       -DCMAKE_C_FLAGS_RELEASE="%optflags -O0" \
-%endif
+       -DPYTHON_EXECUTABLE=/usr/bin/python \
        -DOPENTURNS_SYSCONFIG_PATH=/etc .
 make %{?_smp_mflags} OT
 make
@@ -162,6 +160,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}/
 
 %changelog
+* Tue Oct 2 2018 Julien Schueller <schueller at phimeca dot com> 1.12-1
+- New upstream release
+
 * Mon Apr 9 2018 Julien Schueller <schueller at phimeca dot com> 1.11-1
 - New upstream release
 

@@ -73,8 +73,10 @@ try:
           timeGrid, "is=", myHighModel.discretize(timeGrid))
 
     marginal = myHighModel.getMarginal([0, 2])
-    print('parameters=', myHighModel.getParameter(), myHighModel.getParameterDescription())
-    print('marginal=', marginal, 'marginal.parameter=', marginal.getParameter(), marginal.getParameterDescription())
+    print('parameters=', myHighModel.getParameter(),
+          myHighModel.getParameterDescription())
+    print('marginal=', marginal, 'marginal.parameter=',
+          marginal.getParameter(), marginal.getParameterDescription())
 
     # parameter bug
     model = ExponentialModel([1.0] * 3, [2.0] * 2)

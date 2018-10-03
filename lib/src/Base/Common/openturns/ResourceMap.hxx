@@ -221,14 +221,14 @@ private:
     , mapScalar_(other.mapScalar_)
     , mapUnsignedInteger_(other.mapUnsignedInteger_)
     , mapBool_(other.mapBool_)
-    {}
+  {}
 
   /** The actual map that stores the key/value pairs */
   typedef std::map< String, String > MapStringType;
   typedef std::map< String, Scalar > MapScalarType;
   typedef std::map< String, UnsignedInteger > MapUnsignedIntegerType;
   typedef std::map< String, Bool > MapBoolType;
-  
+
   MapStringType mapString_;
   MapScalarType mapScalar_;
   MapUnsignedIntegerType mapUnsignedInteger_;

@@ -14,7 +14,7 @@ ax.annotate("",
             xytext=(0, 0), textcoords='data',
             arrowprops=dict(
                 arrowstyle="-|>", linestyle="dashed", mutation_scale=15,
-                            connectionstyle="arc3", color='black'),
+                connectionstyle="arc3", color='black'),
             )
 
 ax.arrow(1, 0, -0.97, 0.97, head_width=0.08, head_length=0.08, fc='k',

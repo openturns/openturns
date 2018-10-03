@@ -23,6 +23,7 @@ def f(x):
     res = covarianceModel(x)[0, 0]
     return [res]
 
+
 func = ot.PythonFunction(1, 1, f)
 func.setDescription(['$t$', '$cov$'])
 
@@ -30,6 +31,7 @@ func.setDescription(['$t$', '$cov$'])
 def fEst(X):
     res = myEstimatedModel(X)[0, 0]
     return [res]
+
 
 funcEst = ot.PythonFunction(1, 1, fEst)
 funcEst.setDescription(['$t$', '$cov_{est}$'])

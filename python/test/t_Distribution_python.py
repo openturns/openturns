@@ -134,6 +134,7 @@ class UniformNdPy(ot.PythonDistribution):
             self.a[i] = parameter[i]
             self.b[i] = parameter[dim + i]
 
+
 for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
 
     print("pyDist=", pyDist)

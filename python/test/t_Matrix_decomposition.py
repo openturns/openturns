@@ -25,6 +25,7 @@ def testQR(m, n, full, keep):
     if keep:
         print('M2=', matrix1)
 
+
 try:
     # Square case
     matrix1 = quadM(3, 3)

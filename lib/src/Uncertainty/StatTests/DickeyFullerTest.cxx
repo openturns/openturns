@@ -82,7 +82,7 @@ DickeyFullerTest::DickeyFullerTest(const TimeSeries & series,
   , sum_squared_yt_minus_one_(0.0)
   , isComputedDriftCharacteristics_(false)
   , sum_yt_minus_one_(0.0)
-  , sum_yt_(0.0)  , isComputedTrendCharacteristics_(false)
+  , sum_yt_(0.0), isComputedTrendCharacteristics_(false)
   , sum_t_yt_minus_one_(0.0)
   , sum_t_yt_(0.0)
   , sum_ti_(0.0)

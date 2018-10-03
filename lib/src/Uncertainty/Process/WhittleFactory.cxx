@@ -241,7 +241,7 @@ Point WhittleFactory::computeLogLikelihoodInequalityConstraint(const Point & the
 /* Compute the log-likelihood function accessor */
 Function WhittleFactory::getLogLikelihoodFunction() const
 {
-  return bindMethod <WhittleFactory, Scalar, Point> ( *this, &WhittleFactory::computeLogLikelihood, currentP_ + currentQ_ , 1);
+  return bindMethod <WhittleFactory, Scalar, Point> ( *this, &WhittleFactory::computeLogLikelihood, currentP_ + currentQ_, 1);
 }
 
 

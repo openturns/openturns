@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -54,7 +54,7 @@ int main(int , char *[])
     /* Get the input and output dimension, based on description */
     fullprint << "myVertexValueFunc input dimension=" << myVertexValueFunc.getInputDimension() << std::endl;
     fullprint << "myVertexValueFunc output dimension=" << myVertexValueFunc.getOutputDimension() << std::endl;
-    
+
     fullprint << "input time series=" << ts << std::endl;
     fullprint << "output time series=" << myVertexValueFunc(ts.getValues()) << std::endl;
     /* Get the number of calls */

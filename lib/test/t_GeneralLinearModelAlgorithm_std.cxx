@@ -24,7 +24,7 @@
 using namespace OT;
 using namespace OT::Test;
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
@@ -73,22 +73,22 @@ int main(int , char *[])
     // Case of a well specified covariance model
     // Test the optimization when the amplitude is deduced analytically from the scale
     {
-      AbsoluteExponential covarianceModel(inputDimension);
-      GeneralLinearModelAlgorithm algo(X, Y, covarianceModel, basis);
+      AbsoluteExponential covarianceModel2(inputDimension);
+      algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
-      GeneralLinearModelResult result = algo.getResult();
+      result = algo.getResult();
       fullprint << "\ncovariance (reduced, unbiased)=" << result.getCovarianceModel() << std::endl;
       fullprint << "trend (reduced, unbiased)=" << result.getTrendCoefficients() << std::endl;
       fullprint << "===================================================\n" << std::endl;
       ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", false);
-      algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis);
+      algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
       fullprint << "\ncovariance (reduced, biased)=" << result.getCovarianceModel() << std::endl;
       fullprint << "trend (reduced, biased)=" << result.getTrendCoefficients() << std::endl;
       fullprint << "===================================================\n" << std::endl;
       ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", false);
-      algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis);
+      algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
       fullprint << "\ncovariance (full optim)=" << result.getCovarianceModel() << std::endl;

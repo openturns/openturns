@@ -5,6 +5,7 @@ import openturns as ot
 
 mesh = ot.RegularGrid(0.0, 0.1, 11)
 
+
 class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
 
     def __init__(self):
@@ -17,10 +18,11 @@ class FUNC(ot.OpenTURNSPythonFieldToPointFunction):
         Y = ot.Sample(X).computeMean()
         return Y
 
+
 F = FUNC()
 print('in_dim=' + str(F.getInputDimension())
-       + ' out_dim=' + str(F.getOutputDimension())
-       + ' spatial_dim=' + str(F.getInputMesh().getDimension()))
+      + ' out_dim=' + str(F.getOutputDimension())
+      + ' spatial_dim=' + str(F.getInputMesh().getDimension()))
 
 X = ot.Field(mesh, ot.Normal(2).getSample(11))
 print(F(X.getValues()))
@@ -60,9 +62,11 @@ simplicies.append([1, 3, 5, 6])
 simplicies.append([1, 4, 5, 6])
 mesh3D = ot.Mesh(vertices, simplicies)
 
+
 def myPyFunc(X):
     Y = ot.Sample(X).computeMean()
     return Y
+
 
 in_dim = 3
 out_dim = 3

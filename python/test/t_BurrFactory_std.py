@@ -34,7 +34,8 @@ try:
 
     ot.RandomGenerator.SetSeed(0)
     try:
-        estimatedBurr = factory.build(ot.UserDefined(ot.LogNormal(7.71, 1.0056).getSample(500)).getSupport())
+        estimatedBurr = factory.build(ot.UserDefined(
+            ot.LogNormal(7.71, 1.0056).getSample(500)).getSupport())
         #print('Estimated burr=', estimatedBurr)
     except:
         pass

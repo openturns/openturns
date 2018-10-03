@@ -598,6 +598,7 @@ def check_execute():
                 raise Exception("coupling_tools.execute error!")
     print("execute ok")
 
+
 check_execute()
 check_replace()
 check_get_token_escaped()

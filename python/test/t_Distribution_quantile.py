@@ -23,7 +23,7 @@ try:
             print(dist.getName(), '>1', q1, q2)
         q1m = dist.computeQuantile(1.0-ot.SpecFunc.ScalarEpsilon)
         if q1m != q1:
-            print(dist.getName(),'1-', q1m, q1)
+            print(dist.getName(), '1-', q1m, q1)
 except:
     import sys
     print("t_Distributions_quantile.py", sys.exc_info()[0], sys.exc_info()[1])

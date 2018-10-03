@@ -37,6 +37,7 @@ AbdoRackwitz::AbdoRackwitz()
   , omega_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultSmooth"))
 {
+  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   initialize();
 }
 
@@ -49,6 +50,7 @@ AbdoRackwitz::AbdoRackwitz (const OptimizationProblem & problem,
   , omega_(omega)
   , smooth_(smooth)
 {
+  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -60,6 +62,7 @@ AbdoRackwitz::AbdoRackwitz(const OptimizationProblem & problem)
   , omega_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("AbdoRackwitz-DefaultSmooth"))
 {
+  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -72,7 +75,6 @@ AbdoRackwitz * AbdoRackwitz::clone() const
 
 void AbdoRackwitz::initialize()
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber"));
   currentSigma_ = 0.0;
   currentLevelValue_ = 0.0;
   currentLambda_ = 0.0;

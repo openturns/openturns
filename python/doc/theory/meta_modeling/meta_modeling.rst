@@ -24,7 +24,7 @@ Functional chaos
 .. toctree::
     :maxdepth: 1
 
-    orthorgonal_polynomials
+    orthogonal_polynomials
     chaos_basis
     enumeration_strategy
     functional_chaos

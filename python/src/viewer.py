@@ -236,7 +236,8 @@ class View(object):
                      ot.GraphImplementation.LOGXY: None}
         axis = axis_mask[graph.getLogScale()]
         if axis is not None:
-            self._ax[0].ticklabel_format(axis=axis, style='sci', scilimits=(-3, 5))
+            self._ax[0].ticklabel_format(
+                axis=axis, style='sci', scilimits=(-3, 5))
 
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()

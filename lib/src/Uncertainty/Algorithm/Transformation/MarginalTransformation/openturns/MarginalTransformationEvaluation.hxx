@@ -140,7 +140,7 @@ private:
 
   // CDF tail threshold
   Scalar tailThreshold_;
-  
+
 }; /* MarginalTransformationEvaluation */
 
 

@@ -31,7 +31,8 @@ computeSO = True
 # Case 1 : Estimation of sensitivity using estimator and no bootstrap
 for method in methods:
     for sampling in samplings:
-        ot.ResourceMap.SetAsString("SobolIndicesExperiment-SamplingMethod", sampling)
+        ot.ResourceMap.SetAsString(
+            "SobolIndicesExperiment-SamplingMethod", sampling)
         sensitivity_algorithm = eval(
             'ot.' + method + "SensitivityAlgorithm(distribution, size, model, computeSO)")
         print("Method of evaluation=", method)
@@ -101,7 +102,7 @@ for method in methods:
     nr_bootstrap = 100
     confidence_level = 0.95
     # sensitivity_algorithm = ot.MartinezSensitivityAlgorithm(
-        # inputDesign, outputDesign, size)
+    # inputDesign, outputDesign, size)
     sensitivity_algorithm.setBootstrapSize(nr_bootstrap)
     sensitivity_algorithm.setConfidenceLevel(confidence_level)
     sensitivity_algorithm.setUseAsymptoticDistribution(False)

@@ -517,7 +517,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   Scalar alpha = 1.0;
 
   // Lapack routine
-  dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha , const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
+  dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha, const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
   return mult;
 }
 

@@ -37,7 +37,7 @@ public:
   }
 };
 
-int main(int , char *[])
+int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream prettyprint(std::cout);
