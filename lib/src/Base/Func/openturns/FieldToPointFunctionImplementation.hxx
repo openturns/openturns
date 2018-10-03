@@ -68,9 +68,6 @@ public:
   /** Accessor for input mesh */
   virtual Mesh getInputMesh() const;
 
-  /** @deprecated Accessor for mesh dimension */
-  virtual UnsignedInteger getSpatialDimension() const;
-
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 

@@ -177,13 +177,6 @@ ProcessSample FieldFunctionImplementation::operator() (const ProcessSample & inP
   return outSample;
 }
 
-/* Accessor for mesh dimension */
-UnsignedInteger FieldFunctionImplementation::getSpatialDimension() const
-{
-  LOGWARN(OSS() << "FieldFunction::getSpatialDimension is deprecated");
-  return inputMesh_.getDimension();
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger FieldFunctionImplementation::getInputDimension() const
 {

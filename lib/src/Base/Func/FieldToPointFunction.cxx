@@ -136,12 +136,6 @@ Mesh FieldToPointFunction::getInputMesh() const
   return getImplementation()->getInputMesh();
 }
 
-/* Accessor for mesh dimension */
-UnsignedInteger FieldToPointFunction::getSpatialDimension() const
-{
-  return getImplementation()->getSpatialDimension();
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger FieldToPointFunction::getInputDimension() const
 {

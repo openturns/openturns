@@ -85,9 +85,6 @@ public:
   /** Get the function corresponding to indices components */
   FieldFunction getMarginal(const Indices & indices) const;
 
-  /** @deprecated Accessor for mesh dimension */
-  UnsignedInteger getSpatialDimension() const;
-
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const;
 
