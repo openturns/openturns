@@ -62,22 +62,19 @@ int main(int, char *[])
 
     UnsignedInteger size = 20;
     RegularGrid timeGrid(0.0, 0.1, size);
-    const UnsignedInteger collectionSize = size * (size + 1) / 2;
-    UserDefinedCovarianceModel::CovarianceMatrixCollection covarianceCollection(collectionSize);
-    UnsignedInteger k = 0;
+    CovarianceMatrix covariance(size);
     for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
     {
       const Scalar t = timeGrid.getValue(i);
       for (UnsignedInteger j = 0; j <= i; ++j)
       {
         const Scalar s = timeGrid.getValue(j);
-        covarianceCollection[k] = referenceModel(t, s);
-        ++k;
+        covariance(i, j) = referenceModel.computeAsScalar(Point(1, t), Point(1, s));
       }
     }
 
     /* Create a UserDefinedCovarianceModel */
-    UserDefinedCovarianceModel myModel(timeGrid, covarianceCollection);
+    UserDefinedCovarianceModel myModel(timeGrid, covariance);
     fullprint << "myModel= " << myModel << std::endl;
 
     /* Create a UserDefinedCovarianceModel */

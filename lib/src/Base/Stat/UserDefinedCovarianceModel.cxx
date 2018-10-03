@@ -46,45 +46,6 @@ UserDefinedCovarianceModel::UserDefinedCovarianceModel()
 
 // For a non stationary model, we need N x (N+1)/2 covariance matrices with N the number of vertices in the mesh
 UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
-    const CovarianceMatrixCollection & covarianceCollection)
-  : CovarianceModelImplementation()
-  , covariance_(0)
-  , p_mesh_(0)
-  , nearestNeighbour_()
-{
-  Log::Warn(OSS() << "UserDefinedCovarianceModel(Mesh, CovarianceMatrixCollection) is deprecated: use UserDefinedCovarianceModel(Mesh, CovarianceMatrix)");
-  const UnsignedInteger N = mesh.getVerticesNumber();
-  const UnsignedInteger size = (N * (N + 1)) / 2;
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the mesh is empty.";
-  if (size != covarianceCollection.getSize())
-    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent:"
-                                         << " mesh size=" << N << " and covariance collection size=" << covarianceCollection.getSize() << " instead of " << size;
-  outputDimension_ = covarianceCollection[0].getDimension();
-  // Check all the dimensions in the collection
-  for (UnsignedInteger k = 1; k < size; ++k)
-  {
-    if (covarianceCollection[k].getDimension() != outputDimension_)
-      throw InvalidArgumentException(HERE) << " Error with dimension; all the covariance matrices must have the same dimension";
-  }
-  p_mesh_ = mesh.clone();
-  nearestNeighbour_.setSample(p_mesh_->getVertices());
-  inputDimension_ = mesh.getDimension();
-  // Build the full covariance matrix
-  const UnsignedInteger fullDimension = N * outputDimension_;
-  covariance_ = CovarianceMatrix(fullDimension);
-  UnsignedInteger index = 0;
-  for (UnsignedInteger j = 0; j < N; ++j)
-    for (UnsignedInteger i = 0; i < j + 1; ++i)
-    {
-      for (UnsignedInteger k = 0; k < outputDimension_; ++k)
-        for (UnsignedInteger l = 0; l < outputDimension_; ++l)
-          covariance_(i * outputDimension_ + l, j * outputDimension_ + k) = covarianceCollection[index](l, k);
-      ++index;
-    } // i
-}
-
-// For a non stationary model, we need N x (N+1)/2 covariance matrices with N the number of vertices in the mesh
-UserDefinedCovarianceModel::UserDefinedCovarianceModel(const Mesh & mesh,
     const CovarianceMatrix & covariance)
   : CovarianceModelImplementation()
   , covariance_(0)

@@ -43,20 +43,16 @@ myMesh = ot.RegularGrid(t0, dt, N)
 tmax = myMesh.getEnd()
 
 # Create the collection of HermitianMatrix
-myCovarianceCollection = ot.CovarianceMatrixCollection()
-index = 0
+covariance = ot.CovarianceMatrix(N)
 for k in range(N):
     s = myMesh.getValue(k)
     for l in range(k + 1):
         t = myMesh.getValue(l)
-        matrix = ot.CovarianceMatrix(1)
-        matrix[0, 0] = C(s, t)
-        index += 1
-        myCovarianceCollection.add(matrix)
+        covariance[k, l] = C(s, t)
 
 # Create the covariance model
 myCovarianceModel = ot.UserDefinedCovarianceModel(
-    myMesh, myCovarianceCollection)
+    myMesh, covariance)
 
 # Create the non stationary Gaussian process with
 # that covariance model

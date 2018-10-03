@@ -10,6 +10,7 @@
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods
+ * Removed deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
 
 === Python module ===
 

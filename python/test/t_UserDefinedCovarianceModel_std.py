@@ -31,17 +31,15 @@ referenceModel = ExponentialModel(
 
 size = 20
 timeGrid = RegularGrid(0.0, 0.1, size)
-covarianceCollection = CovarianceMatrixCollection((size * (size + 1)) // 2)
+covariance = CovarianceMatrix(size)
 
-k = 0
 for i in range(timeGrid.getN()):
     t = timeGrid.getValue(i)
     for j in range(i + 1):
         s = timeGrid.getValue(j)
-        covarianceCollection[k] = referenceModel(t, s)
-        k = k + 1
+        covariance[i, j] = referenceModel.computeAsScalar([t], [s])
 # Create a UserDefinedCovarianceModel
-myModel = UserDefinedCovarianceModel(timeGrid, covarianceCollection)
+myModel = UserDefinedCovarianceModel(timeGrid, covariance)
 print("myModel=", myModel)
 myModel2 = UserDefinedCovarianceModel(
     timeGrid, referenceModel.discretize(timeGrid))

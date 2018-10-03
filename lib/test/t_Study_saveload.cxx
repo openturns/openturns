@@ -934,18 +934,20 @@ int main(int, char *[])
       {
         const UnsignedInteger collectionSize = size * (size + 1) / 2;
         UserDefinedCovarianceModel::CovarianceMatrixCollection covarianceCollection(collectionSize);
+        CovarianceMatrix covariance(size);
         UnsignedInteger k = 0;
         for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
         {
           const Scalar t = timeGrid.getValue(i);
-          for (UnsignedInteger j = i; j < timeGrid.getN(); ++j)
+          for (UnsignedInteger j = 0; j <= i; ++ j)
           {
             const Scalar s = timeGrid.getValue(j);
             covarianceCollection[k] = referenceModel(t, s);
+            covariance(i, j) = covarianceCollection[k](0, 0);
             k++;
           }
         }
-        userDefinedCovarianceModel = UserDefinedCovarianceModel(timeGrid, covarianceCollection);
+        userDefinedCovarianceModel = UserDefinedCovarianceModel(timeGrid, covariance);
       }
       {
         UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
