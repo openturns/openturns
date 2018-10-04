@@ -31,14 +31,10 @@ try:
     sampleZ = ot.Sample(size, 1)
     for i in range(size):
         sampleZ[i] = ot.Point(1, sampleY[i, 0] * sampleY[i, 0])
-    print("LinearModelAdjustedRSquared=",
-          ot.LinearModelTest.LinearModelAdjustedRSquared(sampleY, sampleZ))
     print("LinearModelFisher=",
           ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ))
     print("LinearModelResidualMean=",
           ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ))
-    print("LinearModelRSquared=",
-          ot.LinearModelTest.LinearModelRSquared(sampleY, sampleZ))
 
     # Durbin Watson
     ot.RandomGenerator.SetSeed(5415)

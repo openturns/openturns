@@ -1,5 +1,26 @@
 = New Features =
 
+== 1.13 release (in progress) == #release-1.13
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated FunctionalChaosRandomVector::getSobol* methods
+ * Removed deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
+ * Removed deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
+ * Removed deprecated LinearModelRSquared, LinearModelAdjustedRSquared
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.12rc1 release (2018-10-02) == #release-1.12rc1
 
 === Library ===

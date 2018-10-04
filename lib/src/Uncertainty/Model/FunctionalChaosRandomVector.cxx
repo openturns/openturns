@@ -97,57 +97,6 @@ void FunctionalChaosRandomVector::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
-/* Sobol index accessor */
-Scalar FunctionalChaosRandomVector::getSobolIndex(const Indices & variableIndices,
-    const UnsignedInteger marginalIndex) const
-{
-  Log::Warn(OSS() << "FunctionalChaosRandomVector::getSobolIndex is deprecated: use FunctionalChaosSobolIndices");
-  return FunctionalChaosSobolIndices(functionalChaosResult_).getSobolIndex(variableIndices, marginalIndex);
-}
-
-/* Sobol index accessor */
-Scalar FunctionalChaosRandomVector::getSobolIndex(const UnsignedInteger variableIndex,
-    const UnsignedInteger marginalIndex) const
-{
-  Indices index(1);
-  index[0] = variableIndex;
-  return getSobolIndex(index, marginalIndex);
-}
-
-/* Sobol total index accessor */
-Scalar FunctionalChaosRandomVector::getSobolTotalIndex(const Indices & variableIndices,
-    const UnsignedInteger marginalIndex) const
-{
-  Log::Warn(OSS() << "FunctionalChaosRandomVector::getSobolTotalIndex is deprecated: use FunctionalChaosSobolIndices");
-  return FunctionalChaosSobolIndices(functionalChaosResult_).getSobolTotalIndex(variableIndices, marginalIndex);
-}
-
-/* Sobol total index accessor */
-Scalar FunctionalChaosRandomVector::getSobolTotalIndex(const UnsignedInteger variableIndex,
-    const UnsignedInteger marginalIndex) const
-{
-  Indices index(1);
-  index[0] = variableIndex;
-  return getSobolTotalIndex(index, marginalIndex);
-}
-
-/* Sobol grouped index accessor */
-Scalar FunctionalChaosRandomVector::getSobolGroupedIndex(const Indices & variableIndices,
-    const UnsignedInteger marginalIndex) const
-{
-  Log::Warn(OSS() << "FunctionalChaosRandomVector::getSobolGroupedIndex is deprecated: use FunctionalChaosSobolIndices");
-  return FunctionalChaosSobolIndices(functionalChaosResult_).getSobolTotalIndex(variableIndices, marginalIndex);
-}
-
-/* Sobol index accessor */
-Scalar FunctionalChaosRandomVector::getSobolGroupedIndex(const UnsignedInteger variableIndex,
-    const UnsignedInteger marginalIndex) const
-{
-  Indices index(1);
-  index[0] = variableIndex;
-  return getSobolGroupedIndex(index, marginalIndex);
-}
-
 /* Functional chaos result accessor */
 FunctionalChaosResult FunctionalChaosRandomVector::getFunctionalChaosResult() const
 {

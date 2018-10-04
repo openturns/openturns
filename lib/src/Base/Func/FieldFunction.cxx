@@ -147,12 +147,6 @@ ProcessSample FieldFunction::operator() (const ProcessSample & inPS) const
   return getImplementation()->operator()(inPS);
 }
 
-/* Accessor for mesh dimension */
-UnsignedInteger FieldFunction::getSpatialDimension() const
-{
-  return getImplementation()->getSpatialDimension();
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger FieldFunction::getInputDimension() const
 {

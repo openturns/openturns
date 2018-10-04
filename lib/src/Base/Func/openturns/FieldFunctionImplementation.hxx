@@ -70,9 +70,6 @@ public:
   virtual Sample operator() (const Sample & inFld) const;
   virtual ProcessSample operator() (const ProcessSample & inPS) const;
 
-  /** @deprecated Accessor for mesh dimension */
-  virtual UnsignedInteger getSpatialDimension() const;
-
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 

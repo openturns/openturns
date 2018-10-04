@@ -154,13 +154,6 @@ Mesh FieldToPointFunctionImplementation::getInputMesh() const
   return inputMesh_;
 }
 
-/* Accessor for mesh dimension */
-UnsignedInteger FieldToPointFunctionImplementation::getSpatialDimension() const
-{
-  LOGWARN(OSS() << "FieldToPointFunction::getSpatialDimension is deprecated");
-  return inputMesh_.getDimension();
-}
-
 /* Accessor for input point dimension */
 UnsignedInteger FieldToPointFunctionImplementation::getInputDimension() const
 {

@@ -58,24 +58,6 @@ public:
   /** Covariance accessor */
   CovarianceMatrix getCovariance() const;
 
-  /** Sobol index accessor @deprecated */
-  Scalar getSobolIndex(const Indices & variableIndices,
-                       const UnsignedInteger marginalIndex = 0) const;
-  Scalar getSobolIndex(const UnsignedInteger variableIndex,
-                       const UnsignedInteger marginalIndex = 0) const;
-
-  /** Sobol total index accessor @deprecated */
-  Scalar getSobolTotalIndex(const Indices & variableIndices,
-                            const UnsignedInteger marginalIndex = 0) const;
-  Scalar getSobolTotalIndex(const UnsignedInteger variableIndex,
-                            const UnsignedInteger marginalIndex = 0) const;
-
-  /** Sobol grouped index accessor @deprecated */
-  Scalar getSobolGroupedIndex(const Indices & variableIndices,
-                              const UnsignedInteger marginalIndex = 0) const;
-  Scalar getSobolGroupedIndex(const UnsignedInteger variableIndex,
-                              const UnsignedInteger marginalIndex = 0) const;
-
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;
 

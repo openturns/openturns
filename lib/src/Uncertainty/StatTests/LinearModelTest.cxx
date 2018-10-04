@@ -40,25 +40,6 @@ LinearModelTest::LinearModelTest()
 {
 }
 
-
-/*  */
-TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const Scalar level)
-{
-  Log::Warn(OSS() << "LinearModelAdjustedRSquared is deprecated and will be removed in a future version");
-  return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmAdjustedRSquare");
-}
-
-/*  */
-TestResult LinearModelTest::LinearModelAdjustedRSquared(const Sample & firstSample,
-    const Sample & secondSample,
-    const Scalar level)
-{
-  return LinearModelAdjustedRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
-}
-
 /*  */
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
@@ -91,24 +72,6 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const Scalar level)
 {
   return LinearModelResidualMean(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
-}
-
-/*  */
-TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const Scalar level)
-{
-  Log::Warn(OSS() << "LinearModelRSquared is deprecated and will be removed in a future version");
-  return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmRsquared");
-}
-
-/*  */
-TestResult LinearModelTest::LinearModelRSquared(const Sample & firstSample,
-    const Sample & secondSample,
-    const Scalar level)
-{
-  return LinearModelRSquared(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
 }
 
 /* Generic invocation of a R script for testing a linear model against two samples */
