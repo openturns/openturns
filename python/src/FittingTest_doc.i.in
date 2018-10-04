@@ -193,7 +193,7 @@ Examples
 >>> distribution = ot.Poisson()
 >>> sample = distribution.getSample(30)
 >>> ot.FittingTest.ChiSquared(sample, ot.PoissonFactory(), 0.01)
-class=TestResult name=Unnamed type=ChiSquaredPoisson binaryQualityMeasure=true p-value threshold=0.01 p-value=0.606136 description=[]"
+class=TestResult name=Unnamed type=ChiSquared Poisson binaryQualityMeasure=true p-value threshold=0.01 p-value=0.698061 description=[Poisson(lambda = 1.06667) vs sample Poisson]"
 
 // ---------------------------------------------------------------------
 
@@ -244,7 +244,7 @@ Examples
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
 >>> ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
-class=TestResult name=Unnamed type=KolmogorovDistribution binaryQualityMeasure=true p-value threshold=0.01 p-value=0.7 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
+class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.01 p-value=0.7 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
 
 // ---------------------------------------------------------------------
 

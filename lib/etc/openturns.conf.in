@@ -710,8 +710,9 @@
   <ARMALikelihoodFactory-DefaultMaxFun             value_int="10000" />
 
   <!-- OT::FittingTest parameters -->
-  <FittingTest-KolmogorovSamplingSize value_int="10" />
-  <FittingTest-ChiSquaredMinFrequency value_int="5"  />
+  <FittingTest-ChiSquaredCheckSample     value_bool="true" />
+  <FittingTest-ChiSquaredMinimumBinCount value_int="5"     />
+  <FittingTest-KolmogorovSamplingSize    value_int="10"    />
 
   <!-- OT::LeastSquaresMetaModelSelection parameters -->
   <LeastSquaresMetaModelSelection-ErrorThreshold      value_float="0.0" />
