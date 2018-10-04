@@ -82,7 +82,15 @@ int main(int, char *[])
   distributionCollection.add(geometric);
   discreteDistributionCollection.add(geometric);
 
-  Poisson poisson(2.0);
+  Binomial binomial(10, 0.25);
+  distributionCollection.add(binomial);
+  discreteDistributionCollection.add(binomial);
+
+  ZipfMandelbrot zipf(20, 5.25, 2.5);
+  distributionCollection.add(zipf);
+  discreteDistributionCollection.add(zipf);
+
+  Poisson poisson(5.0);
   distributionCollection.add(poisson);
   discreteDistributionCollection.add(poisson);
 
@@ -145,15 +153,43 @@ int main(int, char *[])
     }
   }
   fullprint << "resultKolmogorov=" << resultKolmogorov << std::endl;
-  SquareMatrix resultChiSquared(discreteDistributionNumber - 1);
-  for (UnsignedInteger i = 0; i < discreteDistributionNumber - 1; i++)
+  SquareMatrix resultChiSquared(discreteDistributionNumber);
+  for (UnsignedInteger i = 0; i < discreteDistributionNumber; i++)
   {
-    for (UnsignedInteger j = 0; j < discreteDistributionNumber - 1; j++)
+    for (UnsignedInteger j = 0; j < discreteDistributionNumber; j++)
     {
-      const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.05, 0).getPValue();
-      resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
+      try
+	{
+	  const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.05, 0).getPValue();
+	  resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
+	}
+      catch (...)
+	{
+	  fullprint << "Sample=" << discreteSampleCollection[i] << " is not compatible with distribution=" << discreteDistributionCollection[j] << std::endl;
+	}
     }
   }
   fullprint << "resultChiSquared=" << resultChiSquared << std::endl;
+  // Example taken from the R documentation of chisq.test
+  Sample s(89, Point(1, 0.0));
+  s.add(Sample(37, Point(1, 1.0)));
+  s.add(Sample(30, Point(1, 2.0)));
+  s.add(Sample(28, Point(1, 3.0)));
+  s.add(Sample(2, Point(1, 4.0)));
+  Sample support(0, 1);
+  support.add(Point(1, 0.0));
+  support.add(Point(1, 1.0));
+  support.add(Point(1, 2.0));
+  support.add(Point(1, 3.0));
+  support.add(Point(1, 4.0));
+  Point probabilities(0);
+  probabilities.add(0.4);
+  probabilities.add(0.2);
+  probabilities.add(0.2);
+  probabilities.add(0.15);
+  probabilities.add(0.05);
+  UserDefined d(support, probabilities);
+  fullprint << "R example p-value=" << FittingTest::ChiSquared(s, d).getPValue() << std::endl;
+
   return ExitCode::Success;
 }

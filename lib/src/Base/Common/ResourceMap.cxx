@@ -1226,7 +1226,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "ARMALikelihoodFactory-DefaultMaxFun", 10000 );
 
   // FittingTest parameters //
-  setAsUnsignedInteger( "FittingTest-ChiSquaredMinFrequency", 5 );
+  setAsBool( "FittingTest-ChiSquaredCheckSample", true );
+  setAsUnsignedInteger( "FittingTest-ChiSquaredMinimumBinCount", 5 );
   setAsUnsignedInteger( "FittingTest-KolmogorovSamplingSize", 10 );
 
   // LeastSquaresMetaModelSelection parameters //

@@ -110,14 +110,6 @@ public:
                                const DistributionFactory & factory,
                                const Scalar level = 0.05);
 
-protected:
-  /** Generic invocation of a R script for testing a distribution against a sample */
-  static TestResult RunRTest(const Sample & sample,
-                             const Distribution & distribution,
-                             const Scalar level,
-                             const UnsignedInteger estimatedParameters,
-                             const String & testName);
-
 private:
   FittingTest();
 

@@ -29,6 +29,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/NearestNeighbour1D.hxx"
 #include "openturns/OTconfig.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -285,7 +286,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   // The p-value is estimated using the empirical CDF of the K-statistics at the
   // actual sample K-statistics
   const Scalar pValue = kolmogorovStatistics.computeEmpiricalCDF(Point(1, ComputeKolmogorovStatistics(sample, distribution)), true);
-  TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), (pValue > level), pValue, level);
+  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -301,7 +302,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
   const Scalar pValue = DistFunc::pKolmogorov(sample.getSize(), ComputeKolmogorovStatistics(sample, distribution), true);
-  TestResult result(OSS(false) << "Kolmogorov" << distribution.getClassName(), (pValue > level), pValue, level);
+  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -375,85 +376,92 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: ChiSquared test works only with 1D samples";
-  if (distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Chi-squared test cannot be applied to a continuous distribution";
+  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: ChiSquared test works only with 1D distributions";
 
-#if 0
   // First, bin the data such that the theoretical frequency in each bin is at least nMin
-  const UnsignedInteger nMin = ResourceMap::GetAsUnsignedInteger("FittingTest-ChiSquaredMinFrequency");
+  const UnsignedInteger nMin = ResourceMap::GetAsUnsignedInteger("FittingTest-ChiSquaredMinimumBinCount");
   const UnsignedInteger size = sample.getSize();
-  if (size < 2 * nMin) throw InvalidArgumentException(HERE) << "Error: ChiSquared test cannot be used with a sample size smaller than " << 2 * nMin << ". Reduce the value of \"FittingTest-ChiSquaredMinFrequency\" below " << size / 2 << " if you really want to do this test.";
-  // The test statistics
-  Scalar xi = 0.0;
+  if (size < 2 * nMin) throw InvalidArgumentException(HERE) << "Error: ChiSquared test cannot be used with a sample size smaller than " << 2 * nMin << ". Reduce the value of \"FittingTest-ChiSquaredMinimumBinCount\" below " << size / 2 << " if you really want to use this test.";
   // Sort the data
   const Sample sortedSample(sample.sort(0));
-  const UnsignedInteger iMax = static_cast<UnsignedInteger>(round(size / nMin));
-  UnsignedInteger dataIndex = 0;
-  for (UnsignedInteger i = 1; i <= iMax; ++i)
+  UnsignedInteger binNumber = 0;
+  // If the bin number was too high to get only nMin points per bin on average, reduce the number of bins to get only nonempty bins
+  Point ticks(0);
+  Point binProbabilities(0);
+  if (distribution.isContinuous())
   {
-    const Scalar currentBound = distribution.computeQuantile(i / Scalar(iMax))[0];
-    UnsignedInteger count = 0;
-    while (sample(dataIndex, 0) <= currentBound)
-    {
-      ++count;
-      ++dataIndex;
-    }
+    binNumber = size / nMin;
+    if (binNumber < estimatedParameters + 2) throw InvalidArgumentException(HERE) << "Error: the bin number=" << binNumber << " must be at least equal to the number of estimated parameters + 2=" << estimatedParameters + 2 << " to apply ChiSquared test.";
+    // No need to check for repeated quantiles for continuous distributions
+    ticks = distribution.computeQuantile(0.0, 1.0, binNumber + 1).asPoint();
+    binProbabilities = Point(binNumber, 1.0 / binNumber);
   }
-#endif
-  return RunRTest(sample, distribution, level, estimatedParameters, "ChiSquared");
-}
-
-/* Generic invocation of a R script for testing a distribution against a sample */
-TestResult FittingTest::RunRTest(const Sample & sample,
-                                 const Distribution & distribution,
-                                 const Scalar level,
-                                 const UnsignedInteger estimatedParameters,
-                                 const String & testName)
-{
-  const String dataFileName(sample.storeToTemporaryFile());
-  const String resultFileName(Path::BuildTemporaryFileName("RResult.txt.XXXXXX"));
-  const String commandFileName(Path::BuildTemporaryFileName("RCmd.R.XXXXXX"));
-  std::ofstream cmdFile(commandFileName.c_str(), std::ios::out);
-  // Fill-in the command file
-  cmdFile << "library(rot)" << std::endl;
-  cmdFile << "options(digits=17)" << std::endl;
-  cmdFile << "options(warn=-1)" << std::endl;
-  cmdFile << "options(stringsAsFactors = F)" << std::endl;
-  cmdFile << "sample <- data.matrix(read.table(\"" << dataFileName << "\"))" << std::endl;
-  cmdFile << "res <- computeTest" << testName << distribution.getImplementation()->getClassName();
-  cmdFile << "(sample, ";
-  const Point parameters(distribution.getParametersCollection()[0]);
-  const UnsignedInteger parametersNumber = parameters.getDimension();
-  for (UnsignedInteger i = 0; i < parametersNumber; ++i) cmdFile << parameters[i] << ", ";
-  cmdFile << 1.0 - level << ", " << estimatedParameters << ")" << std::endl;
-  cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
-  cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
-  cmdFile << "close(f)" << std::endl;
-  cmdFile.close();
-  const String RExecutable(ResourceMap::GetAsString("R-executable-command"));
-  OSS systemCommand;
-  if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In FittingTest::RunRTest(const Sample & sample, const Distribution & distribution, const Scalar level, const UnsignedInteger estimatedParameters, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
-  const int returnCode(Os::ExecuteCommand(systemCommand));
-  if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
-  // Parse result file
-  std::ifstream resultFile(resultFileName.c_str(), std::ios::in);
-  String testType;
-  resultFile >> testType;
-  Bool testResult;
-  resultFile >> testResult;
-  Scalar pThreshold = -1.0;
-  resultFile >> pThreshold;
-  Scalar pValue = -1.0;
-  resultFile >> pValue;
-
-  // Clean-up everything
-  Os::Remove(dataFileName);
-  Os::Remove(resultFileName);
-  Os::Remove(commandFileName);
-
-  TestResult result(testType, testResult, pValue, pThreshold);
+  else
+  {
+    const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+    const Sample support(distribution.getSupport());
+    // Here we should check that the given sample contains only values in the distribution support
+    if (ResourceMap::GetAsBool("FittingTest-ChiSquaredCheckSample"))
+      {
+	const NearestNeighbour1D proximityAlgorithm(support);
+	const Indices indices(proximityAlgorithm.queryScalar(sortedSample.asPoint()));
+	for (UnsignedInteger i = 0; i < size; ++i)
+	  if (std::abs(sortedSample(i, 0) - support(indices[i], 0)) > epsilon)
+	    throw InvalidArgumentException(HERE) << "Error: the given sample contains points which are not in the support of the given distribution wrt the absolute precision=" << epsilon << ". Check the keys 'DiscreteDistribution-SupportEpsilon' and 'FittingTest-ChiSquaredCheckSample' in ResourceMap";
+      } // Check sample
+    const Point probabilities(distribution.getProbabilities());
+    const Scalar probabilityThreshold = (1.0 * nMin) / size;
+    const UnsignedInteger supportSize = support.getSize();
+    Scalar cumulatedProbabilities = 0.0;
+    ticks.add(support(0 ,0) - epsilon * (1.0 + std::abs(support(0, 0))));
+    for (UnsignedInteger i = 0; i < supportSize; ++i)
+    {
+      cumulatedProbabilities += probabilities[i];
+      if (cumulatedProbabilities >= probabilityThreshold)
+      {
+        binProbabilities.add(cumulatedProbabilities);
+        cumulatedProbabilities = 0.0;
+        if (i == supportSize - 1)
+          ticks.add(support(i, 0) + epsilon * (1.0 + std::abs(support(i, 0))));
+        else
+          ticks.add(0.5 * (support(i, 0) + support(i + 1, 0)));
+      }
+    } // i
+    binNumber = ticks.getSize() - 1;
+    // Check if there is a pending bin
+    if (cumulatedProbabilities > 0.0)
+    {
+      binProbabilities[binNumber - 1] += cumulatedProbabilities;
+      ticks[binNumber] = support(supportSize - 1, 0) + epsilon * (1.0 + std::abs(support(supportSize - 1, 0)));
+    }
+    if (binNumber < 2) throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumber << " must be at least equal to 2.";
+    if (binNumber < estimatedParameters + 2) throw InvalidArgumentException(HERE) << "Error: the bin number=" << binNumber << " must be at least equal to the number of estimated parameters + 2=" << estimatedParameters + 2 << " to apply ChiSquared test.";
+  } // discrete
+  LOGDEBUG(OSS() << "Ticks for ChiSquared test=" << ticks);
+  const Scalar w = 1.0 / size;
+  UnsignedInteger index = 0;
+  Scalar testStatistics = 0.0;
+  for (UnsignedInteger i = 0; i < binNumber; ++i)
+  {
+    const Scalar bound = ticks[i + 1];
+    const Scalar probability = binProbabilities[i];
+    // Aggregate all the points that fall in the current bin
+    Scalar frequency = 0.0;
+    while ((index < size) && (sortedSample(index, 0) <= bound))
+    {
+      frequency += w;
+      ++index;
+    }
+    testStatistics += std::pow(frequency - probability, 2.0) / probability;
+    LOGDEBUG(OSS() << "Bin number=" << i << ", bound=" << bound << ", probability=" << probability << ", frequency=" << frequency << ", test statistic=" << testStatistics);
+  } // i
+  testStatistics *= size;
+  // Use the asymptotic statistics corrected from the number of estimated parameters
+  const Scalar pValue = DistFunc::pGamma(0.5 * (binNumber - (estimatedParameters + 1)), 0.5 * testStatistics, true);
+  TestResult result(OSS(false) << "ChiSquared " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level);
+  result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
+  LOGDEBUG(OSS() << result);
   return result;
 }
-
 
 END_NAMESPACE_OPENTURNS

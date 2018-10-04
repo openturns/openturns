@@ -61,7 +61,15 @@ try:
     distributionCollection.add(geometric)
     discreteDistributionCollection.add(geometric)
 
-    poisson = Poisson(2.0)
+    binomial = Binomial(10, 0.25)
+    distributionCollection.add(binomial)
+    discreteDistributionCollection.add(binomial)
+
+    zipf = ZipfMandelbrot(20, 5.25, 2.5)
+    distributionCollection.add(zipf)
+    discreteDistributionCollection.add(zipf)
+
+    poisson = Poisson(5.0)
     distributionCollection.add(poisson)
     discreteDistributionCollection.add(poisson)
 
@@ -123,7 +131,7 @@ try:
         aSample, factoryCollection)
     print("best model Kolmogorov=", repr(model))
 
-    # BIC ranking
+    # BIC adequation
     resultBIC = SquareMatrix(distributionNumber)
     for i in range(distributionNumber):
         for j in range(distributionNumber):
@@ -132,7 +140,7 @@ try:
             resultBIC[i, j] = value
     print("resultBIC=", repr(resultBIC))
 
-    # Kolmogorov ranking
+    # Kolmogorov adequation
     resultKolmogorov = SquareMatrix(continuousDistributionNumber)
     for i in range(continuousDistributionNumber):
         for j in range(continuousDistributionNumber):
@@ -143,16 +151,23 @@ try:
             resultKolmogorov[i, j] = value
     print("resultKolmogorov=", repr(resultKolmogorov))
 
-    # ChiSquared ranking
-    resultChiSquared = SquareMatrix(discreteDistributionNumber - 1)
-    for i in range(discreteDistributionNumber - 1):
-        for j in range(discreteDistributionNumber - 1):
-            value = FittingTest.ChiSquared(discreteSampleCollection[
-                                           i], discreteDistributionCollection[j], 0.05, 0).getPValue()
-            if (fabs(value) < 1.0e-6):
-                value = 0.0
-            resultChiSquared[i, j] = value
+    # ChiSquared adequation
+    resultChiSquared = SquareMatrix(discreteDistributionNumber)
+    for i in range(discreteDistributionNumber):
+        for j in range(discreteDistributionNumber):
+            try:
+                value = FittingTest.ChiSquared(discreteSampleCollection[
+                    i], discreteDistributionCollection[j], 0.05, 0).getPValue()
+                if (fabs(value) < 1.0e-6):
+                    value = 0.0
+                resultChiSquared[i, j] = value
+            except:
+                print("Sample=", discreteSampleCollection[i], " is not compatible with distribution=", discreteDistributionCollection[j])
     print("resultChiSquared=", repr(resultChiSquared))
+    # Example taken from the R documentation of chisq.test
+    s = [[0.0]]*89 + [[1.0]]*37 + [[2.0]]*30 + [[3.0]]*28 + [[4.0]]*2
+    d = UserDefined([[0.0], [1.0], [2.0], [3.0], [4.0]], [0.4, 0.2, 0.2, 0.15, 0.05])
+    print("R example p-value=%.5g" % FittingTest.ChiSquared(s, d).getPValue())
 
     RandomGenerator.SetSeed(0)
     sample1 = Normal().getSample(20)
