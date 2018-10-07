@@ -648,8 +648,8 @@ convert< _PySequence_, Point >(PyObject * pyObj)
         // 1-d contiguous array, we can directly copy memory chunk
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
-        Point point( size );
-        std::copy(data, data + size, &point[0]);
+        Point point(size);
+        std::copy(data, data + size, (size > 0) ? &point[0] : 0);
         PyBuffer_Release(&view);
         return point;
       }
@@ -717,8 +717,8 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
         // 1-d contiguous array, we can directly copy memory chunk
         const Complex* data = static_cast<const Complex*>(view.buf);
         const UnsignedInteger size = view.shape[0];
-        Collection<Complex> result( size );
-        std::copy(data, data + size, &result[0]);
+        Collection<Complex> result(size);
+        std::copy(data, data + size, (size > 0) ? &result[0] : 0);
         PyBuffer_Release(&view);
         return result;
       }
@@ -799,11 +799,11 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
         const Scalar* data = static_cast<const Scalar*>(view.buf);
         const UnsignedInteger size = view.shape[0];
         const UnsignedInteger dimension = view.shape[1];
-        Sample sample( size, dimension );
+        Sample sample(size, dimension);
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, &sample(0, 0));
+          std::copy(data, data + size * dimension, (Scalar *)sample.__baseaddress__());
         }
         else
         {
