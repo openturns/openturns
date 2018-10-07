@@ -587,11 +587,11 @@ public:
   // INTENTIONALY NOT DOCUMENTED
   const Scalar * __baseaddress__ () const
   {
-    return &data_[0];
+    return (data_.getSize() > 0) ? &data_[0] : 0;
   }
   UnsignedInteger __elementsize__ () const
   {
-    return sizeof( Scalar );
+    return sizeof(Scalar);
   }
 
   /** Virtual constructor */

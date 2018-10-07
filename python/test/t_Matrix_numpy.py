@@ -415,6 +415,12 @@ try:
     m0 = ComplexMatrix(a0.transpose())
     print("with transpose, matrix", a0.transpose(), "=> ComplexMatrix", m0)
 
+    # empty array
+    a0 = np.zeros((0, 3))
+    s0 = Sample(a0)
+    print('empty array => sample', repr(s0))
+    a1 = np.array(s0)
+    print('sample => array', a1, a1.shape)
 except:
     import sys
     import traceback
