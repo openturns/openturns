@@ -23,7 +23,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Mesh.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -51,7 +51,9 @@ Interval::Interval(const Scalar lowerBound,
   , finiteLowerBound_(1, true)
   , finiteUpperBound_(1, true)
 {
-  // Nothing to do
+  // Check if the bounds are finite
+  setLowerBound(Point(1, lowerBound));
+  setUpperBound(Point(1, upperBound));
 }
 
 /* Parameters constructor */
@@ -64,6 +66,9 @@ Interval::Interval(const Point & lowerBound,
   , finiteUpperBound_(getDimension(), true)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
+  // Check if the bounds are finite
+  setLowerBound(lowerBound);
+  setUpperBound(upperBound);
 }
 
 /* Parameters constructor */
@@ -79,6 +84,9 @@ Interval::Interval(const Point & lowerBound,
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot build an Interval from two Point of different dimensions";
   if ((finiteLowerBound.getSize() != getDimension()) || (finiteUpperBound.getSize() != getDimension())) throw InvalidArgumentException(HERE) << "Error: cannot build an interval with lower bound flags or upper bound flags of improper dimension";
+  // Check if the bounds are finite
+  setLowerBound(lowerBound);
+  setUpperBound(upperBound);
 }
 
 /* Clone method */
@@ -173,18 +181,12 @@ Bool Interval::contains(const Point & point) const
 Scalar Interval::getVolume() const
 {
   const UnsignedInteger dimension = getDimension();
-  if (dimension == 0)
-  {
-    return 0.0;
-  }
+  if (dimension == 0) return 0.0;
   Scalar volume = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     volume *= upperBound_[i] - lowerBound_[i];
-    if (volume <= 0.0)
-    {
-      return 0.0;
-    }
+    if (volume <= 0.0) return 0.0;
   }
   return volume;
 }
@@ -385,6 +387,12 @@ void Interval::setLowerBound(const Point & lowerBound)
 {
   if (lowerBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given lower bound has a dimension incompatible with the interval dimension.";
   lowerBound_ = lowerBound;
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+    if (SpecFunc::IsInf(lowerBound[i]))
+    {
+      lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
+      finiteLowerBound_[i] = false;
+    }
 }
 
 /* Upper bound accessor */
@@ -397,6 +405,12 @@ void Interval::setUpperBound(const Point & upperBound)
 {
   if (upperBound.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given upper bound has a dimension incompatible with the interval dimension.";
   upperBound_ = upperBound;
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
+    if (SpecFunc::IsInf(upperBound[i]))
+    {
+      upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
+      finiteUpperBound_[i] = false;
+    }
 }
 
 /* Lower bound flag accessor */
