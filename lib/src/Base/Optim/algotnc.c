@@ -51,6 +51,7 @@ static char const rcsid[] =
 static char const copyright[] =
   "(c) 2002-2003, Jean-Sebastien Roy (js@jeannot.org)";
 
+#include <float.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -201,9 +202,6 @@ static void scaleg(int n, double g[], double xscale[], double fscale);
 static void scalex(int n, double x[], double xscale[], double xoffset[]);
 static void projectConstants(int n, double x[], double xscale[]);
 
-/* Machine precision */
-static double mchpr1(void);
-
 /* Special blas for incx=incy=1 */
 static double ddot1(int n, double dx[], double dy[]);
 static void dxpy1(int n, double dx[], double dy[]);
@@ -241,7 +239,7 @@ extern int tnc(int n, double x[], double *f, double g[], tnc_function *function,
   int rc, frc, i, nc, nfeval_local,
     free_low = TNC_FALSE, free_up = TNC_FALSE,
     free_g = TNC_FALSE;
-  double *xscale = NULL, fscale, epsmch, rteps, *xoffset = NULL;
+  double *xscale = NULL, fscale, rteps, *xoffset = NULL;
 
   if(nfeval==NULL)
     {
@@ -383,8 +381,7 @@ extern int tnc(int n, double x[], double *f, double g[], tnc_function *function,
     }
 
   /* Default values for parameters */
-  epsmch = mchpr1();
-  rteps = sqrt(epsmch);
+  rteps = sqrt(DBL_EPSILON);
 
   if (stepmx < rteps * 10.0) stepmx = 1.0e1;
   if (eta < 0.0 || eta >= 1.0) eta = 0.25;
@@ -396,7 +393,7 @@ extern int tnc(int n, double x[], double *f, double g[], tnc_function *function,
       else if (maxCGit > 50) maxCGit = 50;
     }
   if (maxCGit > n) maxCGit = n;
-  if (accuracy <= epsmch) accuracy = rteps;
+  if (accuracy <= DBL_EPSILON) accuracy = rteps;
   if (ftol < 0.0) ftol = accuracy;
   if (pgtol < 0.0) pgtol = 1e-2 * sqrt(accuracy);
   if (xtol < 0.0) xtol = rteps;
@@ -462,9 +459,6 @@ static void setConstraints(int n, double x[], int pivot[], double xscale[],
                            double xoffset[], double low[], double up[])
 {
   int i;
-  double epsmch;
-
-  epsmch = mchpr1();
 
   for (i = 0; i < n; i++)
     {
@@ -476,12 +470,12 @@ static void setConstraints(int n, double x[], int pivot[], double xscale[],
       else
         {
           if (low[i] != - HUGE_VAL &&
-              (x[i]*xscale[i]+xoffset[i] - low[i] <= epsmch * 10.0 * (fabs(low[i]) + 1.0)))
+              (x[i]*xscale[i]+xoffset[i] - low[i] <= DBL_EPSILON * 10.0 * (fabs(low[i]) + 1.0)))
             pivot[i] = -1;
           else
             {
               if (up[i] != HUGE_VAL &&
-                  (x[i]*xscale[i]+xoffset[i] - up[i] >= epsmch * 10.0 * (fabs(up[i]) + 1.0)))
+                  (x[i]*xscale[i]+xoffset[i] - up[i] >= DBL_EPSILON * 10.0 * (fabs(up[i]) + 1.0)))
                 pivot[i] = 1;
               else
                 pivot[i] = 0;
@@ -505,7 +499,7 @@ static tnc_rc tnc_minimize(int n, double x[],
                            double accuracy, double fmin, double ftol, double xtol, double pgtol,
                            double rescale)
 {
-  double fLastReset, difnew, epsmch, epsred, oldgtp,
+  double fLastReset, difnew, epsred, oldgtp,
     difold, oldf, xnorm, newscale,
     gnorm, ustpmax, fLastConstraint, spe, yrsr, yksk,
     *temp = NULL, *sk = NULL, *yk = NULL, *diagb = NULL, *sr = NULL,
@@ -540,8 +534,6 @@ static tnc_rc tnc_minimize(int n, double x[],
   if (pivot == NULL) goto cleanup;
 
   /* Initialize variables */
-  epsmch = mchpr1();
-
   difnew = 0.0;
   epsred = 0.05;
   upd1 = TNC_TRUE;
@@ -608,7 +600,7 @@ static tnc_rc tnc_minimize(int n, double x[],
 
       /* Rescale function if necessary */
       newscale = dnrm21(n, g);
-      if ((newscale > epsmch) && (fabs(log10(newscale)) > rescale))
+      if ((newscale > DBL_EPSILON) && (fabs(log10(newscale)) > rescale))
         {
           newscale = 1.0/newscale;
 
@@ -678,7 +670,7 @@ static tnc_rc tnc_minimize(int n, double x[],
       oldgtp = ddot1(n, pk, g);
 
       /* Maximum unconstrained step length */
-      ustpmax = stepmx / (dnrm21(n, pk) + epsmch);
+      ustpmax = stepmx / (dnrm21(n, pk) + DBL_EPSILON);
 
       /* Maximum constrained step length */
       spe = stepMax(ustpmax, n, x, pk, pivot, low, up, xscale, xoffset);
@@ -722,7 +714,7 @@ static tnc_rc tnc_minimize(int n, double x[],
 
           /* If we went up to the maximum constrained step,
              a new constraint was encountered */
-          if (alpha - spe >= -epsmch * 10.0)
+          if (alpha - spe >= -DBL_EPSILON * 10.0)
             {
               newcon = TNC_TRUE;
             }
@@ -941,9 +933,7 @@ static logical addConstraint(int n, double x[], double p[], int pivot[],
                              double low[], double up[], double xscale[], double xoffset[])
 {
   int i, newcon = TNC_FALSE;
-  double tol, epsmch;
-
-  epsmch = mchpr1();
+  double tol;
 
   for (i = 0; i < n; i++)
     {
@@ -951,7 +941,7 @@ static logical addConstraint(int n, double x[], double p[], int pivot[],
         {
           if (p[i] < 0.0 && low[i] != - HUGE_VAL)
             {
-              tol = epsmch * 10.0 * (fabs(low[i]) + 1.0);
+              tol = DBL_EPSILON * 10.0 * (fabs(low[i]) + 1.0);
               if (x[i]*xscale[i]+xoffset[i] - low[i] <= tol)
                 {
                   pivot[i] = -1;
@@ -961,7 +951,7 @@ static logical addConstraint(int n, double x[], double p[], int pivot[],
             }
           else if (up[i] != HUGE_VAL)
             {
-              tol = epsmch * 10.0 * (fabs(up[i]) + 1.0);
+              tol = DBL_EPSILON * 10.0 * (fabs(up[i]) + 1.0);
               if (up[i] - (x[i]*xscale[i]+xoffset[i]) <= tol)
                 {
                   pivot[i] = 1;
@@ -1197,7 +1187,7 @@ static double initialStep(double fnew, double fmin, double gtp, double smax)
 
   d = fabs(fnew - fmin);
   alpha = 1.0;
-  if (d * 2.0 <= -(gtp) && d >= mchpr1()) alpha = d * -2.0 / gtp;
+  if (d * 2.0 <= -(gtp) && d >= DBL_EPSILON) alpha = d * -2.0 / gtp;
   if (alpha >= smax) alpha = smax;
 
   return alpha;
@@ -1407,7 +1397,7 @@ static ls_rc linearSearch(int n, tnc_function *function, void *state,
 {
   double b1, big, tol, rmu, fpresn, fu, gu, fw, gw, gtest1, gtest2,
     oldf, fmin, gmin, rtsmll, step, a, b, e, u, ualpha, factor, scxbnd, xw,
-    epsmch, reltol, abstol, tnytol, pe, xnorm, rteps;
+    reltol, abstol, tnytol, pe, xnorm, rteps;
   double *temp = NULL, *tempgfull = NULL, *newgfull = NULL;
   int maxlsit = 64, i, itcnt, frc;
   ls_rc rc;
@@ -1431,18 +1421,17 @@ static ls_rc linearSearch(int n, tnc_function *function, void *state,
   xnorm = dnrm21(n, temp);
 
   /* Compute the absolute and relative tolerances for the linear search */
-  epsmch = mchpr1();
-  rteps = sqrt(epsmch);
-  pe = dnrm21(n, p) + epsmch;
+  rteps = sqrt(DBL_EPSILON);
+  pe = dnrm21(n, p) + DBL_EPSILON;
   reltol = rteps * (xnorm + 1.0) / pe;
-  abstol = -epsmch * (1.0 + fabs(*f)) / (gu - epsmch);
+  abstol = -DBL_EPSILON * (1.0 + fabs(*f)) / (gu - DBL_EPSILON);
 
   /* Compute the smallest allowable spacing between points in the linear
      search */
-  tnytol = epsmch * (xnorm + 1.0) / pe;
+  tnytol = DBL_EPSILON * (xnorm + 1.0) / pe;
 
-  rtsmll = epsmch;
-  big = 1.0 / (epsmch * epsmch);
+  rtsmll = DBL_EPSILON;
+  big = 1.0 / (DBL_EPSILON * DBL_EPSILON);
   itcnt = 0;
 
   /* Set the estimated relative precision in f(x). */
@@ -1832,35 +1821,6 @@ static getptc_rc getptcIter(double big, double
   if (fabs(*step) < *tol && *step < 0.0) *u = -(*tol);
   if (fabs(*step) < *tol && *step >= 0.0) *u = *tol;
   return GETPTC_EVAL;
-}
-
-/*
- * Return epsmch, where epsmch is the smallest possible
- * power of 2 such that 1.0 + epsmch > 1.0
- */
-static double mchpr1(void)
-{
-  static double epsmch = 0.0;
-#ifdef WIN32
-  const double epsmch_linux = 2.220446e-16;
-#endif
-
-  if (epsmch == 0.0)
-    {
-      double eps = 1.0;
-      while((1.0 + (eps*0.5)) > 1.0)
-        eps *= 0.5;
-      epsmch = eps;
-    }
-
-#ifdef WIN32
-  // On linux with SSE extension enabled kernel epsmch = 2.220446e-16 (double computed on 64 bit register),
-  // on mingw32 by default epsmch = 1.084202e-19 (double computed on 80bit register) which results to strange TNC algorithm behavior.
-  if(epsmch < epsmch_linux)
-    epsmch = epsmch_linux;
-#endif
-
-  return epsmch;
 }
 
 /* Blas like routines */
