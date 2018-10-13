@@ -64,19 +64,33 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
   endif ()
 
-  add_dependencies (${SWIG_MODULE_${MODULENAME}_REAL_NAME} generate_swig_runtime)
+  # UseSWIG generates now standard target names
+  if (CMAKE_VERSION VERSION_LESS 3.13)
+    set (module_target ${SWIG_MODULE_${MODULENAME}_REAL_NAME})
+  else ()
+    set (module_target ${MODULENAME})
+  endif ()
+
+  add_dependencies (${module_target} generate_swig_runtime)
   swig_link_libraries (${MODULENAME} OT)
 
   if (LINK_PYTHON_LIBRARY)
     swig_link_libraries (${MODULENAME} ${PYTHON_LIBRARIES})
   endif ()
 
-  set_target_properties (${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES NO_SONAME ON)
+  if (CMAKE_VERSION VERSION_LESS 3.1)
+    set_target_properties (${module_target} PROPERTIES NO_SONAME ON)
+  endif ()
 
   # allows to pass compile flags like -O1 to reduce memory usage
   if (DEFINED SWIG_COMPILE_FLAGS)
-    set_target_properties (${SWIG_MODULE_${MODULENAME}_REAL_NAME} PROPERTIES COMPILE_FLAGS ${SWIG_COMPILE_FLAGS})
+    set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS ${SWIG_COMPILE_FLAGS})
   endif ()
+
+  install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
+           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
+  install (TARGETS ${module_target}
+            LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
 endmacro (ot_add_python_module)
@@ -908,15 +922,6 @@ ot_add_python_module(testing testing_module.i
                     )
 
 set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for the docstring test
-
-foreach (module ${OPENTURNS_PYTHON_MODULES})
-  install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${module}.py
-            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
-           )
-  install (TARGETS _${module}
-            LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
-         )
-endforeach ()
 
 
 # Build and install openturns.memoryview

@@ -283,6 +283,10 @@ if (POLICY CMP0068)
   # RPATH settings on macOS do not affect install_name
   cmake_policy (SET CMP0068 NEW)
 endif ()
+if (POLICY CMP0078)
+  # swig standard target names
+  cmake_policy(SET CMP0078 NEW)
+endif ()
 
 try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
