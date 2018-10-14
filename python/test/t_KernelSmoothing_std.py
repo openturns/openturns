@@ -40,9 +40,9 @@ try:
         smoother = KernelSmoothing(kernel)
         smoothed = smoother.build(sample)
         bw = smoother.getBandwidth()
-        print("kernel bandwidth=[ %.12g" % bw[0], ",  %.12g" % bw[1], "]")
+        print("kernel bandwidth=[ %.6g" % bw[0], ",  %.6g" % bw[1], "]")
         meanSmoothed = smoothed.getMean()
-        print("mean(smoothed)=[ %.12g" % meanSmoothed[0], ",  %.12g" % meanSmoothed[
+        print("mean(smoothed)=[ %.6g" % meanSmoothed[0], ",  %.6g" % meanSmoothed[
               1], "] mean(exact)=[", meanExact[0], ", ", meanExact[1], "]")
         covarianceSmoothed = smoothed.getCovariance()
         print("covariance=", repr(covarianceSmoothed),
@@ -54,10 +54,10 @@ try:
         pointPDF = smoothed.computePDF(point)
         pointCDF = smoothed.computeCDF(point)
         print("Point= ", repr(point))
-        print(" pdf(smoothed)=%.6f" % pointPDF)
-        print(" pdf(exact)=%.6f" % distribution.computePDF(point))
-        print(" cdf(smoothed)=%.6f" % pointCDF)
-        print(" cdf(exact)=%.6f" % distribution.computeCDF(point))
+        print(" pdf(smoothed)=%.6g" % pointPDF)
+        print(" pdf(exact)=%.6g" % distribution.computePDF(point))
+        print(" cdf(smoothed)=%.6g" % pointCDF)
+        print(" cdf(exact)=%.6g" % distribution.computeCDF(point))
 
     # Test for boundary correction
     distributionCollection = DistributionCollection(2)
@@ -81,9 +81,9 @@ try:
                 # Show PDF and CDF of point point
                 pointPDF = smoothed.computePDF(point)
                 pointCDF = smoothed.computeCDF(point)
-                print(" pdf(smoothed)=  %.12g" % pointPDF, " pdf(exact)= %.12g" %
+                print(" pdf(smoothed)=  %.6g" % pointPDF, " pdf(exact)= %.6g" %
                       distributionCollection[j].computePDF(point))
-                print(" cdf(smoothed)=  %.12g" % pointCDF, " cdf(exact)= %.12g" %
+                print(" cdf(smoothed)=  %.6g" % pointCDF, " cdf(exact)= %.6g" %
                       distributionCollection[j].computeCDF(point))
 
     sample = Normal().getSample(5000)
@@ -91,9 +91,67 @@ try:
     ks2 = KernelSmoothing(Normal(), True, 1024).build(sample)
     ks3 = KernelSmoothing(Normal(), False).build(sample)
     point = 0.3
-    print("with low  bin count, pdf=%.6f" % ks1.computePDF(point))
-    print("with high bin count, pdf=%.6f" % ks2.computePDF(point))
-    print("without   binning,   pdf=%.6f" % ks3.computePDF(point))
+    print("with low  bin count, pdf=%.6g" % ks1.computePDF(point))
+    print("with high bin count, pdf=%.6g" % ks2.computePDF(point))
+    print("without   binning,   pdf=%.6g" % ks3.computePDF(point))
+    # Test with varying boundary corrections
+    left = [-0.9]
+    right = [0.9]
+    sample = Uniform().getSample(500)
+    algo1 = KernelSmoothing(Normal(), False)
+    algo1.setBoundingOption(KernelSmoothing.NONE)
+    ks1 = algo1.build(sample)
+    print("with no boundary correction, pdf(left)=%.6g" % ks1.computePDF(left), ", pdf(right)=%.6g" % ks1.computePDF(right))
+
+    algo2 = KernelSmoothing(Normal(), False)
+    algo2.setBoundingOption(KernelSmoothing.LOWER)
+    algo2.setAutomaticLowerBound(True)
+    ks2 = algo2.build(sample)
+    print("with automatic lower boundary correction, pdf(left)=%.6g" % ks2.computePDF(left), ", pdf(right)=%.6g" % ks2.computePDF(right))
+
+    algo3 = KernelSmoothing(Normal(), False)
+    algo3.setBoundingOption(KernelSmoothing.LOWER)
+    algo3.setLowerBound(-1.0)
+    algo3.setAutomaticLowerBound(False)
+    ks3 = algo3.build(sample)
+    print("with user defined lower boundary correction, pdf(left)=%.6g" % ks3.computePDF(left), ", pdf(right)=%.6g" % ks3.computePDF(right))
+
+    algo4 = KernelSmoothing(Normal(), False)
+    algo4.setBoundingOption(KernelSmoothing.UPPER)
+    algo4.setAutomaticUpperBound(True)
+    ks4 = algo4.build(sample)
+    print("with automatic upper boundary correction, pdf(left)=%.6g" % ks4.computePDF(left), ", pdf(right)=%.6g" % ks4.computePDF(right))
+
+    algo5 = KernelSmoothing(Normal(), False)
+    algo5.setBoundingOption(KernelSmoothing.UPPER)
+    algo5.setUpperBound(1.0)
+    algo5.setAutomaticLowerBound(False)
+    ks5 = algo5.build(sample)
+    print("with user defined upper boundary correction, pdf(left)=%.6g" % ks5.computePDF(left), ", pdf(right)=%.6g" % ks5.computePDF(right))
+
+    algo6 = KernelSmoothing(Normal(), False)
+    algo6.setBoundingOption(KernelSmoothing.BOTH)
+    ks6 = algo6.build(sample)
+    print("with automatic boundaries correction, pdf(left)=%.6g" % ks6.computePDF(left), ", pdf(right)=%.6g" % ks6.computePDF(right))
+
+    algo7 = KernelSmoothing(Normal(), False)
+    algo7.setBoundingOption(KernelSmoothing.BOTH)
+    algo7.setLowerBound(-1.0)
+    ks7 = algo7.build(sample)
+    print("with user defined lower/automatic upper boundaries correction, pdf(left)=%.6g" % ks7.computePDF(left), ", pdf(right)=%.6g" % ks7.computePDF(right))
+
+    algo8 = KernelSmoothing(Normal(), False)
+    algo8.setBoundingOption(KernelSmoothing.BOTH)
+    algo8.setUpperBound(1.0)
+    ks8 = algo8.build(sample)
+    print("with automatic lower/user defined upper boundaries correction, pdf(left)=%.6g" % ks8.computePDF(left), ", pdf(right)=%.6g" % ks8.computePDF(right))
+
+    algo9 = KernelSmoothing(Normal(), False)
+    algo9.setBoundingOption(KernelSmoothing.BOTH)
+    algo9.setLowerBound(-1.0)
+    algo9.setUpperBound(1.0)
+    ks9 = algo9.build(sample)
+    print("with user defined boundaries correction, pdf(left)=%.6g" % ks9.computePDF(left), ", pdf(right)=%.6g" % ks9.computePDF(right))
 
 except:
     import sys

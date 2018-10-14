@@ -31,7 +31,6 @@
 %include InverseWishart.i
 %include KPermutationsDistribution.i
 %include KernelMixture.i
-%include KernelSmoothing.i
 %include Laplace.i
 %include LaplaceFactory.i
 %include Logistic.i
@@ -51,6 +50,9 @@
 %include MeixnerDistributionFactory.i
 %include MethodOfMomentsFactory.i
 %include Mixture.i
+%include TruncatedDistribution.i
+/* Must be after TruncatedDistribution */
+%include KernelSmoothing.i
 /* Must be after Mixture */
 %include ConditionalDistribution.i
 /* Must be after ConditionalDistribution */

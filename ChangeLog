@@ -55,6 +55,7 @@
  * The format of openturns.conf has changed to make a distiction between types of keys
 
 === Bug fixes ===
+ * #660 (Strange behavior of KernelSmoothing)
  * #778 (DirectionalSampling is unstable)
  * #915 (Distribution.computeQuantile properties)
  * #949 (LowDiscrepancyExperiment for distributions having dependent copula)
