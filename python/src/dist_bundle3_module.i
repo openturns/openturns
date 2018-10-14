@@ -40,7 +40,6 @@
 %include TrapezoidalFactory.i
 %include Triangular.i
 %include TriangularFactory.i
-%include TruncatedDistribution.i
 %include TruncatedNormal.i
 %include TruncatedNormalFactory.i
 %include Uniform.i

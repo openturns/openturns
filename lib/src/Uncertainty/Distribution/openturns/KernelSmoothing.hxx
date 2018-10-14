@@ -24,6 +24,9 @@
 
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/KernelMixture.hxx"
+#include "openturns/Mixture.hxx"
+#include "openturns/TruncatedDistribution.hxx"
 #include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,14 +42,16 @@ class OT_API KernelSmoothing
   CLASSNAME
 public:
 
+  enum BoundingOption { NONE=0, LOWER, UPPER, BOTH };
+
   /** Default constructor */
   KernelSmoothing();
 
-  /** Default constructor */
+  /** Parameter constructor */
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool bined = true,
                            const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber"),
-                           const Bool boundaryCorrection = false);
+			   const Bool boundaryCorrection = false);
 
   /** Virtual constructor */
   virtual KernelSmoothing * clone() const;
@@ -59,13 +64,34 @@ public:
   virtual Distribution build(const Sample & sample,
                              const Point & bandwidth) const;
 
+  virtual KernelMixture buildAsKernelMixture(const Sample & sample,
+      const Point & bandwidth) const;
+
+  virtual Mixture buildAsMixture(const Sample & sample,
+                                 const Point & bandwidth) const;
+
+  virtual TruncatedDistribution buildAsTruncatedDistribution(const Sample & sample,
+      const Point & bandwidth) const;
+
   /** Bandwidth accessor */
   Point getBandwidth() const;
 
   /** Kernel accessor */
   Distribution getKernel() const;
 
+  /* Boundary correction accessor, shortcut for setBoundingOption(NONE) or setBoundingOption(BOTH) */
   void setBoundaryCorrection(const Bool boundaryCorrection);
+
+  /* Boundary correction accessor */
+  void setBoundingOption(const BoundingOption boundingOption);
+
+  /* Boundary accessor */
+  void setLowerBound(const Scalar lowerBound);
+  void setUpperBound(const Scalar upperBound);
+
+  /* Automatic boundary accessor */
+  void setAutomaticLowerBound(const Bool automaticLowerBound);
+  void setAutomaticUpperBound(const Bool automaticUpperBound);
 
   /** Compute the bandwidth according to Silverman's rule */
   Point computeSilvermanBandwidth(const Sample & sample) const;
@@ -104,11 +130,18 @@ private:
   // Flag to tell if we compute a bined version of the estimator
   Bool bined_;
 
-  // Number of bins
+  // Number of bins in each dimension
   UnsignedInteger binNumber_;
 
-  Bool boundaryCorrection_;
+  // Direction of the boundary treatment
+  BoundingOption boundingOption_;
 
+  // Known bounds
+  Scalar lowerBound_;
+  Bool automaticLowerBound_;
+  Scalar upperBound_;
+  Bool automaticUpperBound_;
+  
 }; /* class KernelSmoothing */
 
 
