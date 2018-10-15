@@ -28,7 +28,6 @@ option (USE_COTIRE                   "Use cotire for unity builds"              
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_VALIDATION             "Build the validation files of the library"                             ON)
-option (LINK_PYTHON_LIBRARY          "Link python modules against python library"                            ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
 if (MSVC)
@@ -444,6 +443,7 @@ if (BUILD_PYTHON)
   endif ()
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
+    include (TargetLinkLibrariesWithDynamicLookup)
   endif ()
 
   find_package (PythonInterp)
