@@ -7,6 +7,7 @@ mkdir build && cd build
 ARCH=i686
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
 PYMAJMIN=37
+export PYTHONHASHSEED=0
 PREFIX=${PWD}/install
 CXXFLAGS="-D_hypot=hypot -D_GLIBCXX_ASSERTIONS" ${ARCH}-w64-mingw32-cmake \
   -DSWIG_COMPILE_FLAGS="-O0" \
