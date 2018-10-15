@@ -17,7 +17,7 @@ correlatedInput : 2-d sequence of float
 
 Notes
 -----
-ANCOVA, a variance-based method described in [Caniou2012]_, is a generalization
+ANCOVA, a variance-based method described in [caniou2012]_, is a generalization
 of the ANOVA (ANalysis Of VAriance) decomposition for models with correlated
 input parameters.
 
@@ -67,7 +67,7 @@ other parameters:
                  {Var[Y]}
 
 As the computational cost of the indices with the numerical model :math:`h`
-can be very high, [Caniou2012]_ suggests to approximate the model response with
+can be very high, [caniou2012]_ suggests to approximate the model response with
 a polynomial chaos expansion:
 
 .. math::

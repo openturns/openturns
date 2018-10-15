@@ -67,7 +67,7 @@ Importance factors from FORM method
    variables :math:`X_i` within the random vector :math:`\vect{X}`.
    Thus, changing this order has an impact on the localisation of the
    design point in the :math:`\bdU`-space and, consequently, on the
-   importance factors ... (see [Lebrun2009c]_ to compare
+   importance factors ... (see [lebrun2009c]_ to compare
    the different isoprobabilistic transformations).
 
 | It is possible to give another definition to the importance factors
@@ -133,5 +133,5 @@ threshold rather than to its variance.
 .. topic:: References:
 
     - H.O. Madsen, "Omission Sensitivity Factors," 1988, Structural Safety, 5, 35-45.
-    - [Lebrun2009c]_
+    - [lebrun2009c]_
 

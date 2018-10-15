@@ -27,6 +27,6 @@ described in the form :math:`\Prob{\vect{X} = \vect{x};\vect{\theta}}`.
 
 .. topic:: References:
 
-    - [Saporta1990]_
-    - [Dixon1983]_
-    - [Bhattacharyya1997]_
+    - [saporta1990]_
+    - [dixon1983]_
+    - [bhattacharyya1997]_

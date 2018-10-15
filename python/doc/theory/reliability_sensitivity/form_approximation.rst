@@ -117,6 +117,6 @@ and the limit state function is :
 .. topic:: References:
 
     - O. Ditlevsen and H.O. Madsen, 2004, "Structural reliability methods", Department of mechanical engineering technical university of Denmark - Maritime engineering, internet publication.
-    - [Lebrun2009b]_
-    - [Lebrun2009c]_
+    - [lebrun2009b]_
+    - [lebrun2009c]_
     - H. O. Madsen, Krenk, S., Lind, N. C., 1986, "Methods of Structural Safety", Prentice Hall.

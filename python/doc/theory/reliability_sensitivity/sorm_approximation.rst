@@ -45,7 +45,7 @@ SORM is to evaluate the probability content of the event
 
 -  Breitung’s formula is an asymptotic results: the
    usual formula used in the normal standard space, has been generalized
-   in [Lebrun2009b]_ to standard spaces where the
+   in [lebrun2009b]_ to standard spaces where the
    distribution is spherical, with :math:`E` the marginal cumulative
    density function of the spherical distributions in the standard space:
 
@@ -105,8 +105,8 @@ standard 1D normal distribution.
     - Breitung K. a, "Asymptotic approximation for probability integral," Probability Engineering Mechanics, 1989, Vol 4, No. 4.
     - Breitung K. b, 1984, "Asymptotic Approximation for multinormal Integrals," Journal of Engineering Mechanics, ASCE, 110(3), 357-366.
     - Hohenbichler M., Rackwitz R., 1988, "Improvement of second order reliability estimates by importance sampling," Journal of Engineering Mechanics, ASCE,114(12), pp 2195-2199.
-    - [Lebrun2009b]_
-    - [Lebrun2009c]_
+    - [lebrun2009b]_
+    - [lebrun2009c]_
     - Tvedt L. 1988, "Second order reliability by an exact integral," proc. of the IFIP Working Conf. Reliability and Optimization of Structural Systems, Thoft-Christensen (Ed), pp377-384.
     - Zhao Y. G., Ono T., 1999, "New approximations for SORM : part 1", Journal of Engineering Mechanics, ASCE,125(1), pp 79-85.
     - Zhao Y. G., Ono T., 1999, "New approximations for SORM : part 2", Journal of Engineering Mechanics, ASCE,125(1), pp 86-93.

@@ -31,7 +31,7 @@ Notes
 -----
 This class is concerned with analyzing the influence the random vector
 :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
-:math:`Y^k` which is being studied for uncertainty, by using the [Jansen1999]_
+:math:`Y^k` which is being studied for uncertainty, by using the [jansen1999]_
 method for the evaluation of both first and total order indices.
 
 These last ones are respectively given as follows:

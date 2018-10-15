@@ -135,7 +135,7 @@ where
 
 The difficulty arises from the great size (:math:`dn \times dn`) of
 :math:`\Sigma_{\vect{W}}` which is a dense matrix in the general case.
-[Mauricio1995]_ proposes an efficient algorithm to evaluate the likelihood
+[mauricio1995]_ proposes an efficient algorithm to evaluate the likelihood
 function. The main point is to use a change of variable that leads to a
 block-diagonal sparse covariance matrix.
 

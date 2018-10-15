@@ -53,7 +53,7 @@ vector of :math:`n_X` independent components.
    the number of harmonics that are retained in the decomposition
    realized in the third step of the procedure.
 
-   In the paper [Saltelli1999]_, for high sample size, it is
+   In the paper [saltelli1999]_, for high sample size, it is
    suggested that :math:`16 \leq \omega_i/N_r \leq 64`.
 
    And the maximum frequency of the complementary set of frequencies is:
@@ -156,5 +156,5 @@ vector of :math:`n_X` independent components.
 
 .. topic:: References:
 
-    - [Saltelli1999]_
+    - [saltelli1999]_
 

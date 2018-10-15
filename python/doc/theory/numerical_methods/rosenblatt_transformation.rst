@@ -110,10 +110,10 @@ where both transformations :math:`T_1`, and :math:`T_2` are given by:
     - O. Ditlevsen and H.O. Madsen, 2004, "Structural reliability methods," Department of mechanical engineering technical university of Denmark - Maritime engineering, internet publication.
     - J. Goyet, 1998,"Sécurité probabiliste des structures - Fiabilité d'un élément de structure," Collège de Polytechnique.
     - A. Der Kiureghian, P.L. Liu, 1986,"Structural Reliability Under Incomplete Probabilistic Information", Journal of Engineering Mechanics, vol 112, no. 1, p85-104.
-    - [Lebrun2009a]_
-    - [Lebrun2009b]_
-    - [Lebrun2009c]_
+    - [lebrun2009a]_
+    - [lebrun2009b]_
+    - [lebrun2009c]_
     -  H.O. Madsen, Krenk, S., Lind, N. C., 1986, "Methods of Structural Safety," Prentice Hall.
-    - [Nataf1962]_
+    - [nataf1962]_
     -  M. Rosenblatt, "Remarks on a Multivariat Transformation", The Annals of Mathematical Statistics, Vol. 23, No 3, pp. 470-472.
 

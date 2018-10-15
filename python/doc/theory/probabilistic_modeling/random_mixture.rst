@@ -298,4 +298,4 @@ To summarize:
 
 .. topic:: References:
 
-    -  [Abate1992]_
+    -  [abate1992]_

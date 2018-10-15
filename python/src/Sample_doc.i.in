@@ -322,7 +322,7 @@ tau : :class:`~openturns.CorrelationMatrix`
 Notes
 -----
 This uses an external implementation provided under the Boost Software License
-by David Simcha based on the paper by [Knight1966]_. It actually switches
+by David Simcha based on the paper by [knight1966]_. It actually switches
 between two implementations depending on the sample size:
 
     - The most basic implementation performing in :math:`O(m^2)` is used when

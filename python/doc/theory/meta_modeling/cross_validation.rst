@@ -179,5 +179,5 @@ Leave-one-out cross validation is also known as jackknife in statistics.
 
 .. topic:: References:
 
-    - [Blatman2009]_
+    - [blatman2009]_
 
