@@ -74,9 +74,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   add_dependencies (${module_target} generate_swig_runtime)
   swig_link_libraries (${MODULENAME} OT)
 
-  if (LINK_PYTHON_LIBRARY)
-    swig_link_libraries (${MODULENAME} ${PYTHON_LIBRARIES})
-  endif ()
+  target_link_libraries_with_dynamic_lookup (${module_target} ${PYTHON_LIBRARIES})
 
   if (CMAKE_VERSION VERSION_LESS 3.1)
     set_target_properties (${module_target} PROPERTIES NO_SONAME ON)
@@ -926,13 +924,11 @@ set (OPENTURNS_PYTHON_MODULES ${OPENTURNS_PYTHON_MODULES} PARENT_SCOPE) # for th
 
 # Build and install openturns.memoryview
 add_library (memoryview MODULE PythonReadOnlyBuffer.c)
-if (LINK_PYTHON_LIBRARY)
-  target_link_libraries (memoryview ${PYTHON_LIBRARIES})
-endif ()
+target_link_libraries_with_dynamic_lookup (memoryview ${PYTHON_LIBRARIES})
 set_target_properties(memoryview PROPERTIES NO_SONAME ON PREFIX "")
-if(WIN32 AND NOT CYGWIN)
+if (WIN32 AND NOT CYGWIN)
   set_target_properties(memoryview PROPERTIES SUFFIX ".pyd")
-endif()
+endif ()
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 
