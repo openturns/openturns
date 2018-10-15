@@ -34,23 +34,6 @@ namespace OT {
       OT::DistributionImplementation * p_dist = reinterpret_cast< OT::DistributionImplementation * >( ptr );
       return *p_dist;
 
-    } else if (isAPython<_PySequence_>( pyObj )) {
-      check<_PySequence_>( pyObj );
-      ScopedPyObjectPointer newPyObj(PySequence_Fast( pyObj, "" ));
-
-      const UnsignedInteger size = PySequence_Fast_GET_SIZE( newPyObj.get() );
-      if (size != 2) {
-        throw OT::InvalidArgumentException(HERE) << "Sequence object has incorrect size " << size << ". Must be 2.";
-      }
-      PyObject * elt1 = PySequence_Fast_GET_ITEM( newPyObj.get(), 0 );
-      check<_PyObject_>( elt1 );
-      PyObject * elt2 = PySequence_Fast_GET_ITEM( newPyObj.get(), 1 );
-      check<_PyString_>( elt2 );
-      OT::Copula copula = convert<_PyObject_,OT::Copula>( elt1 );
-      copula.setName( convert<_PyString_,OT::String>( elt2 ) );
-
-      return copula;
-
     } else {
       throw OT::InvalidArgumentException(HERE) << "Object passed as argument is neither a Copula nor an object convertible to a Copula";
     }

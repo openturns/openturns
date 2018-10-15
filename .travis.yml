@@ -21,12 +21,12 @@ addons:
 
 matrix:
   include:
-    - os: linux
-      compiler: clang
-      env: BUILD_PYTHON=ON
-    - os: linux
-      compiler: clang
-      env: BUILD_PYTHON=OFF
+          #- os: linux
+          #compiler: clang
+          #env: BUILD_PYTHON=ON
+          #- os: linux
+          #compiler: clang
+          #env: BUILD_PYTHON=OFF
     - os: osx
       compiler: clang
 
