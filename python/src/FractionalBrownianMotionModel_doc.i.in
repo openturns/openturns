@@ -49,7 +49,7 @@ for :math:`H_i + H_j=1`, where :math:`H_i` is the Hurst exponent of the
 :math:`i`-th component and :math:`\sigma_i` its amplitude. Not that the scale
 coefficient simplifies in the antisymmetric part when :math:`H_{ij}=1`. The
 compatibility conditions between the vector of exponents, the correlation matrix
-and the disymmetry matrix are quite evolved, see [Amblard2012]_. 
+and the disymmetry matrix are quite evolved, see [amblard2012]_. 
 
 
 See Also

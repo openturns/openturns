@@ -1,7 +1,7 @@
 %feature("docstring") OT::LeastSquaresMetaModelSelection
 "Least squares metamodel selection factory.
 
-Adaptative sparse selection, as proposed in [Blatman2009]_.
+Adaptative sparse selection, as proposed in [blatman2009]_.
 
 See also
 --------

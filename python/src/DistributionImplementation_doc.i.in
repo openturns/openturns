@@ -1897,13 +1897,13 @@ To be more specific:
 
     - if the distribution is elliptical, then the transformed distribution is
       simply made spherical using the **Nataf (linear) transformation**
-      [Nataf1962]_, [Lebrun2009a]_.
+      [nataf1962]_, [lebrun2009a]_.
     - if the distribution has an elliptical Copula, then the transformed
       distribution is made spherical using the **generalized Nataf
-      transformation** [Lebrun2009b]_.
+      transformation** [lebrun2009b]_.
     - otherwise, the transformed distribution is the standard multivariate
       Normal distribution and is obtained by means of the **Rosenblatt
-      transformation** [Rosenblatt1952]_, [Lebrun2009c]_.
+      transformation** [rosenblatt1952]_, [lebrun2009c]_.
 
 .. [#diff] A differentiable map :math:`f` is called a *diffeomorphism* if it
     is a bijection and its inverse :math:`f^{-1}` is differentiable as well.

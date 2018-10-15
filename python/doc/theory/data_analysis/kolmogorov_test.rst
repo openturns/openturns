@@ -117,9 +117,9 @@ This method is also referred to in the literature as Kolmogorov's Test.
 
 .. topic:: References:
 
-    - [Saporta1990]_
-    - [Dixon1983]_
-    - [NISThandbook]_
-    - [Dagostino1986]_
-    - [Sprent2001]_
-    - [Bhattacharyya1997]_
+    - [saporta1990]_
+    - [dixon1983]_
+    - [nisthandbook]_
+    - [dagostino1986]_
+    - [sprent2001]_
+    - [bhattacharyya1997]_

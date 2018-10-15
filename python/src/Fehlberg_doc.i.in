@@ -104,7 +104,7 @@ For :math:`p=2` we have:
     +-----------+------------------+--------------------+--------------------+--------------------+-------------+-------------------+
 
 For :math:`p>2` the coefficients can be found eg in the C++ source code. For
-additional theory on these methods see [Stoer1993]_, chapter 7. 
+additional theory on these methods see [stoer1993]_, chapter 7. 
 
 See also
 --------

@@ -32,7 +32,7 @@ Notes
 The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
 according to the distribution :math:`\mu`. When the :meth:`generate`
 method is called again, the generated sample changes. In case of dependent
-marginals, the approach based on [Cambou2017]_ is used.
+marginals, the approach based on [cambou2017]_ is used.
 
 See also
 --------
@@ -161,7 +161,7 @@ randomize : bool
 Parameters
 ----------
 randomize : bool
-    Use a cyclic scrambling of the low discrepancy sequence. See [Lecuyer2005]_ for
+    Use a cyclic scrambling of the low discrepancy sequence. See [lecuyer2005]_ for
     the interest of such a scrambling.
     Default is false.
 "

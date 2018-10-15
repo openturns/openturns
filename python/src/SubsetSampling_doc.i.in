@@ -21,7 +21,7 @@ The goal is to estimate the following probability
         = \Prob {\{g(\uX,\underline{d}) \leq 0\}}
 
 
-The idea of the subset simulation method [Au2001]_ is to replace simulating a
+The idea of the subset simulation method [au2001]_ is to replace simulating a
 rare failure event in the original probability space by a sequence of
 simulations of more frequent conditional events :math:`F_i`
 

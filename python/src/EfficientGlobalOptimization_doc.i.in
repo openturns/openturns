@@ -1,7 +1,7 @@
 %feature("docstring") OT::EfficientGlobalOptimization
 "Efficient Global Optimization algorithm.
 
-The EGO algorithm [Jones1998]_ is an adaptative optimization method based on
+The EGO algorithm [jones1998]_ is an adaptative optimization method based on
 kriging.
 An initial design of experiment is used to build a first metamodel.
 At each iteration a new point that maximizes a criterion is chosen as

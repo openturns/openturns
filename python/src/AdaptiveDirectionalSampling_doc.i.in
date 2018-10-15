@@ -32,7 +32,7 @@ following probability:
 
 Principles
 
-The ADS-2 method [Munoz2011]_ combines the stratified and directional sampling concepts.
+The ADS-2 method [munoz2011]_ combines the stratified and directional sampling concepts.
 Stratified sampling consists in splitting the support of the random vector
 :math:`\ux` into :math:`m` mutually exclusive and collectively exhaustive subsets.
 Here, ADS-2 splits the standard space into :math:`m = 2^d` quadrants, where

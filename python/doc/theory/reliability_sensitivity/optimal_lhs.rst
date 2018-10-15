@@ -161,11 +161,11 @@ Optimization is performed in :math:`[0,1]^d` and the inverse transformation maps
 
 .. topic:: References:
 
-    - [Damblin2013]_
-    - [Fang2006]_
-    - [Jin2005]_
-    - [Koehler1996]_
-    - [Johnson1990]_
-    - [Morris1995]_
-    - [Pronzato2012]_
+    - [damblin2013]_
+    - [fang2006]_
+    - [jin2005]_
+    - [koehler1996]_
+    - [johnson1990]_
+    - [morris1995]_
+    - [pronzato2012]_
 
