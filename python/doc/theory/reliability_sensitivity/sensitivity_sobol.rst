@@ -56,4 +56,4 @@ For the :math:`n_X` total order indices :math:`T_i`, we only swap the variable :
 
 .. topic:: References:
 
-    - [Saltelli2002]_
+    - [saltelli2002]_

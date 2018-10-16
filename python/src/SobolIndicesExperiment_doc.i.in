@@ -30,7 +30,7 @@ and mixing columns of these ones to define the huge sample (design).
 If *computeSecondOrder* is set to *False*, the result design is of size
 :math:`N(d+2)` where :math:`d` is the dimension of the distribution.
 If *computeSecondOrder* is set to *True*, the design size is :math:`N(2d+2)`, see
-[Saltelli2002]_, excepted in dimension 2.
+[saltelli2002]_, excepted in dimension 2.
 If the constructor based on the distribution is used, an experiment is built
 according to the value of 'SobolIndicesExperiment-SamplingMethod' in :class:`~openturns.ResourceMap`:
 

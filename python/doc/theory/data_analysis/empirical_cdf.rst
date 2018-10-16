@@ -116,5 +116,5 @@ distribution function.
 
 .. topic:: References:
 
-    - [Saporta1990]_
-    - [Dixon1983]_
+    - [saporta1990]_
+    - [dixon1983]_

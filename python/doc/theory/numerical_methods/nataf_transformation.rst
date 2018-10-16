@@ -30,10 +30,10 @@ unit variance and unit correlation matrix. The type of the spherical
 distribution is the type of the elliptical copula :math:`C`.
 
 The Generalized Nataf transformation presented here is a generalisation
-of the traditional Nataf transformation (see [Nataf1962]_): the reference
-[Lebrun2009a]_ shows that the Nataf transformation can be used
+of the traditional Nataf transformation (see [nataf1962]_): the reference
+[lebrun2009a]_ shows that the Nataf transformation can be used
 only if the copula of :math:`\vect{X}` is normal. The Generalized Nataf
-transformation (see [Lebrun2009b]_) extends the Nataf
+transformation (see [lebrun2009b]_) extends the Nataf
 transformation to elliptical copulas.
 
 Let us recall some definitions.
@@ -150,9 +150,9 @@ the standard normal distribution with independent components.
     - O. Ditlevsen and H.O. Madsen, 2004, "Structural reliability methods," Department of mechanical engineering technical university of Denmark - Maritime engineering, internet publication.
     - J. Goyet, 1998, "Sécurité probabiliste des structures - Fiabilité d'un élément de structure," Collège de Polytechnique.
     - A. Der Kiureghian, P.L. Liu, 1986,"Structural Reliability Under Incomplete Probabilistic Information", Journal of Engineering Mechanics, vol 112, no. 1, pp85-104.
-    - [Lebrun2009a]_
-    - [Lebrun2009b]_
-    - [Lebrun2009c]_
+    - [lebrun2009a]_
+    - [lebrun2009b]_
+    - [lebrun2009c]_
     - H.O. Madsen, Krenk, S., Lind, N. C., 1986, "Methods of Structural Safety," Prentice Hall.
-    - [Nataf1962]_
+    - [nataf1962]_
 

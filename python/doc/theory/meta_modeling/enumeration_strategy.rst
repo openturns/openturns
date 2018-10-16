@@ -355,4 +355,4 @@ Anisotropic hyperbolic enumeration strategy
 
 .. topic:: References:
 
-    - [Blatman2009]_
+    - [blatman2009]_

@@ -6,7 +6,7 @@ Notes
 -----
 This method is concerned with analyzing the influence the random vector
 :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
-:math:`Y^k` which is being studied for uncertainty (see also [Sobol1993]_).
+:math:`Y^k` which is being studied for uncertainty (see also [sobol1993]_).
 
 Here we attempt to evaluate the part of variance of :math:`Y^k` due to the different components :math:`X^i`.
 
@@ -118,7 +118,7 @@ The formulas for the evaluation of the indices are given in each class documenta
   - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
   - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method
 
-For multivariate outputs (see [Gamboa2013]_), aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:
+For multivariate outputs (see [gamboa2013]_), aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:
 
 
 .. math::
@@ -145,8 +145,8 @@ Its value in initialized by the
 For the bootstrap method the size is set by :meth:`setBootstrapSize`
 values and initialized by `SobolIndicesAlgorithm-DefaultBootstrapSize` resourcemap key.
 
-The asymptotic estimator of the variance are computed using the [Janon2014]_
-delta method, in the technical report [PMFRE-01116]_.
+The asymptotic estimator of the variance are computed using the [janon2014]_
+delta method, in the technical report [pmfre01116]_.
 
 The corresponding confidence interval is also provided using
 :meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.

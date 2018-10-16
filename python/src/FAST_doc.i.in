@@ -36,7 +36,7 @@ independent components.
 
 OpenTURNS implements the extended FAST method consisting in computing
 alternately the first order and the total-effect indices of each input.
-This approach, widely described in the paper by [Saltelli1999]_, relies upon a
+This approach, widely described in the paper by [saltelli1999]_, relies upon a
 Fourier decomposition of the model response. Its key idea is to recast this
 representation as a function of a *scalar* parameter :math:`s`, by defining
 parametric curves :math:`s \mapsto x_i(s), i=1, \dots, n_X` exploring the

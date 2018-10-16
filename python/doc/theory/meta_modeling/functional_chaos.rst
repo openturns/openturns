@@ -86,5 +86,5 @@ wavelet expansion, polynomial chaos expansion, etc.
 
 .. topic:: References:
 
-    - [SoizeGhanem2004]_
+    - [soizeghanem2004]_
 

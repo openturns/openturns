@@ -94,5 +94,5 @@ chaos.
 
 .. topic:: References:
 
-    - [Caniou2012]_
+    - [caniou2012]_
 

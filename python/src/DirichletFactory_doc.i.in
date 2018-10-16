@@ -7,7 +7,7 @@ Available constructor:
 Notes
 -----
 The estimation is done by maximizing the likelihood of the sample,
-using the algorithm described in [Minka2012]_.
+using the algorithm described in [minka2012]_.
 
 See also
 --------

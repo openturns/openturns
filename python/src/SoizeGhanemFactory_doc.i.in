@@ -23,7 +23,7 @@ useCopula : bool
 
 Notes
 -----
-This class implements the multivariate orthonormal basis associated with an arbitrary multidimensional distribution with continuous copula and marginals with well-defined orthonormal polyomials of arbitrary order. The details are in [SoizeGhanem2004]_.
+This class implements the multivariate orthonormal basis associated with an arbitrary multidimensional distribution with continuous copula and marginals with well-defined orthonormal polyomials of arbitrary order. The details are in [soizeghanem2004]_.
 
 See also
 --------

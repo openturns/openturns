@@ -132,7 +132,7 @@ The techniques implemented in each distribution are:
    - Rejection (Atkinson and Whittaker method 1) for :math:`t > 1, \max(r, t-r) < 1`.
    - Rejection (Atkinson and Whittaker method 2) for :math:`t > 1, \max(r, t-r) > 1`.
 
-- Binomial: Squeeze and Reject method: See [Hormann1992]_.
+- Binomial: Squeeze and Reject method: See [hormann1992]_.
 - Burr: CDF inversion.
 - Chi: Transformation.
 - ChiSquare: See the Gamma distribution.
@@ -145,7 +145,7 @@ The techniques implemented in each distribution are:
 - Exponential: CDF inversion.
 - Fisher-Snedecor: Transformation.
 - FrankCopula: Conditional CDF inversion.
-- Gamma:  Transformation and rejection, see [Marsaglia1993]_.
+- Gamma:  Transformation and rejection, see [marsaglia1993]_.
 - Geometric: CDF inversion.
 - Generalized Pareto: CDF inversion.
 - GumbelCopula: Stable distribution.
@@ -211,9 +211,9 @@ The techniques implemented in each distribution are:
 
 .. topic:: References:
 
-    - [Devroye1986]_
-    - [Hormann1992]_
-    - [Marsaglia1993]_
-    - [Doornik2005]_
-    - [Aas2004]_
-    - [Stadlober1990]_
+    - [devroye1986]_
+    - [hormann1992]_
+    - [marsaglia1993]_
+    - [doornik2005]_
+    - [aas2004]_
+    - [stadlober1990]_

@@ -244,10 +244,10 @@ be abandoned, or at least used very cautiously.
 
 .. topic:: References:
 
-    - [Saporta1990]_
-    - [Dixon1983]_
-    - [NISThandbook]_
-    - [Dagostino1986]_
-    - [Bhattacharyya1997]_
-    - [Sprent2001]_
-    - [Burnham2002]_
+    - [saporta1990]_
+    - [dixon1983]_
+    - [nisthandbook]_
+    - [dagostino1986]_
+    - [bhattacharyya1997]_
+    - [sprent2001]_
+    - [burnham2002]_

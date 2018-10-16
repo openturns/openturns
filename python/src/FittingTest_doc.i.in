@@ -234,7 +234,7 @@ Notes
 -----
 The present implementation of the Kolmogorov goodness-of-fit test is
 two-sided. This uses an external C implementation of the Kolmogorov cumulative
-distribution function by [Simard2011]_.
+distribution function by [simard2011]_.
 If it is called with a distribution, it is supposed to be fully specified ie no parameter has been estimated from the given sample. Otherwise, the distribution is estimated using the given factory based on the given sample and the distribution of the test statistics is estimated using a Monte Carlo approach (see the *FittingTest-KolmogorovSamplingSize* key in :class:`~openturns.ResourceMap`).
 
 Examples

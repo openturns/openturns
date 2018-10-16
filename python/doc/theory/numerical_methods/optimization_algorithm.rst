@@ -82,5 +82,5 @@ where :math:`\alpha_k` is the parameter *stepmx*.
 
 .. topic:: References:
 
-    - [Nash1999]_
+    - [nash1999]_
 

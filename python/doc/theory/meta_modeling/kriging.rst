@@ -134,7 +134,7 @@ Kriging may also be referred to as *Gaussian process regression*.
 
 .. topic:: References:
 
-    - [Dubourg2011]_
+    - [dubourg2011]_
     - S. Lophaven, H. Nielsen and J. Sondergaard, 2002, "DACE, A Matlab kriging toolbox", Technichal University of Denmark. http://www2.imm.dtu.dk/projects/dace/
     - T. Santner, B. Williams and W. Notz, 2003. "The design and analysis of computer experiments", Springer, New York.
     - C. Rasmussen and C. Williams, 2006, T. Dietterich (Ed.), "Gaussian processes for machine learning", MIT Press.

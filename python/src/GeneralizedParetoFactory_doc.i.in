@@ -7,7 +7,7 @@ Available constructor:
 Notes
 -----
 OpenTURNS proposes several estimators to build a GeneralizedPareto distribution
-from a scalar sample (see [Matthys2003]_ for the theory).
+from a scalar sample (see [matthys2003]_ for the theory).
 
 **Moments based estimator:**
 
