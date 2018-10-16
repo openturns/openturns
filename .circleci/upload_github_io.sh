@@ -1,9 +1,13 @@
 #!/bin/sh
 # upload doc to openturns.github.io
 
-set -e
+set -xe
 
-test -z "${CIRCLE_PULL_REQUEST}" || exit 0
+# early exit on PRs
+if test -n "${CIRCLE_PULL_REQUEST}"
+then
+  exit 0
+fi
 
 git clone https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
 if test -n "${CIRCLE_TAG}"
