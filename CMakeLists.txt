@@ -1,6 +1,6 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 2.8.4)
+cmake_minimum_required (VERSION 2.8.8)
 
 # By default, build in Release mode. Must appear before project() command
 if (NOT DEFINED CMAKE_BUILD_TYPE)
@@ -499,14 +499,6 @@ if (BUILD_PYTHON)
       file (RELATIVE_PATH OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH})
     endif ()
 
-    if (CMAKE_VERSION VERSION_LESS "2.8.6")
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import sys; print(sys.version_info[0])"
-                       OUTPUT_VARIABLE PYTHON_VERSION_MAJOR
-                       OUTPUT_STRIP_TRAILING_WHITESPACE)
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "import platform; print(platform.python_version())"
-                       OUTPUT_VARIABLE PYTHON_VERSION_STRING
-                       OUTPUT_STRIP_TRAILING_WHITESPACE)
-    endif ()
     set (OPENTURNS_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH ${OPENTURNS_PYTHON_MODULE_PATH})
   endif ()
 endif ()
@@ -568,7 +560,5 @@ install (FILES COPYING
           DESTINATION ${OPENTURNS_DOC_PATH}
        )
 
-if (CMAKE_VERSION VERSION_GREATER 2.8.5)
-  include(FeatureSummary)
-  feature_summary(WHAT ALL)
-endif ()
+include(FeatureSummary)
+feature_summary(WHAT ALL)

@@ -51,12 +51,6 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     endif ()
   endforeach ()
 
-  # workaround for a bug in UseSWIG script not supporting multiple modules and parallel compilation
-  # http://www.cmake.org/pipermail/cmake/2011-January/042345.html
-  if (CMAKE_VERSION VERSION_LESS 2.8.5)
-    set(swig_extra_generated_files)
-  endif ()
-
   # swig_add_module is deprecated
   if (CMAKE_VERSION VERSION_LESS 3.8)
     swig_add_module (${MODULENAME} python ${SOURCEFILE} ${swig_other_sources})
