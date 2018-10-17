@@ -393,12 +393,11 @@ set (CPACK_PACKAGE_VERSION_MAJOR 1             )
 set (CPACK_PACKAGE_VERSION_MINOR 13dev)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
-set (CPACK_BINARY_STGZ           "OFF"         )
-set (CPACK_BINARY_TBZ2           "ON"          )
-set (CPACK_BINARY_TGZ            "ON"          )
-set (CPACK_BINARY_TZ             "OFF"         )
+set (CPACK_BINARY_STGZ    OFF CACHE BOOL "STGZ")
+set (CPACK_BINARY_TBZ2    ON  CACHE BOOL "TBZ2")
+set (CPACK_BINARY_TGZ     ON  CACHE BOOL "TGZ" )
+set (CPACK_BINARY_TZ      OFF CACHE BOOL "TZ"  )
 set (CPACK_SOURCE_IGNORE_FILES "/.git;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}")
-#set (CPACK_INSTALL_CMAKE_PROJECTS "lib;OpenTURNSLib;ALL;/" "python;OpenTURNSPython;ALL;/")
 
 
 # Set global definitions
