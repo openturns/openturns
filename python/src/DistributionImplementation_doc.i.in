@@ -1874,7 +1874,7 @@ The iso-probabilistic transformation is defined as follows:
             \vect{x} & \mapsto & \vect{u}
        \end{array}\right.
 
-**An** iso-probabilistic transformation is a *diffeomorphism* [#diff]_ from
+An iso-probabilistic transformation is a *diffeomorphism* [#diff]_ from
 :math:`\supp{\vect{X}}` to :math:`\Rset^d` that maps realizations
 :math:`\vect{x}` of a random vector :math:`\vect{X}` into realizations
 :math:`\vect{y}` of another random vector :math:`\vect{Y}` while
@@ -1896,14 +1896,13 @@ random vector :math:`\vect{U}` with *spherical distribution* [#spherical]_.
 To be more specific:
 
     - if the distribution is elliptical, then the transformed distribution is
-      simply made spherical using the **Nataf (linear) transformation**
-      [nataf1962]_, [lebrun2009a]_.
+      simply made spherical using the **Nataf (linear) transformation**.
     - if the distribution has an elliptical Copula, then the transformed
       distribution is made spherical using the **generalized Nataf
-      transformation** [lebrun2009b]_.
+      transformation**.
     - otherwise, the transformed distribution is the standard multivariate
       Normal distribution and is obtained by means of the **Rosenblatt
-      transformation** [rosenblatt1952]_, [lebrun2009c]_.
+      transformation**.
 
 .. [#diff] A differentiable map :math:`f` is called a *diffeomorphism* if it
     is a bijection and its inverse :math:`f^{-1}` is differentiable as well.
