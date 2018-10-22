@@ -78,6 +78,7 @@
 
 === Bug fixes ===
  * #660 (Strange behavior of KernelSmoothing)
+ * #684 (Strange behavior of Student distribution in multidimensional case)
  * #778 (DirectionalSampling is unstable)
  * #915 (Distribution.computeQuantile properties)
  * #949 (LowDiscrepancyExperiment for distributions having dependent copula)
