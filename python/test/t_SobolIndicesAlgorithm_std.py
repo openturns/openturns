@@ -121,3 +121,22 @@ for method in methods:
     print("asymptotic intervals:")
     print("Aggregated first order indices interval = ", interval_fo_asymptotic)
     print("Aggregated total order indices interval = ", interval_to_asymptotic)
+
+
+# special case in dim=2
+ot.ResourceMap.SetAsString('SobolIndicesExperiment-SamplingMethod', 'MonteCarlo')
+ot.RandomGenerator.SetSeed(0)
+distribution = ot.ComposedDistribution([ot.Uniform()] * 2)
+size = 1000
+model = ot.SymbolicFunction(['X1', 'X2'], ['2*X1 + X2'])
+sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(distribution, size, model, True)
+print(sensitivity_algorithm.getSecondOrderIndices())
+ot.RandomGenerator.SetSeed(0)
+experiment = ot.MonteCarloExperiment(distribution, size)
+sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(experiment, model, True)
+print(sensitivity_algorithm.getSecondOrderIndices())
+ot.RandomGenerator.SetSeed(0)
+x = ot.SobolIndicesExperiment(distribution, size, True).generate()
+y = model(x)
+sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(x, y, size)
+print(sensitivity_algorithm.getSecondOrderIndices())

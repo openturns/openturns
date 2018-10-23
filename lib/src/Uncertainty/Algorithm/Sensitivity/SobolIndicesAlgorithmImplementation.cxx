@@ -127,15 +127,6 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   const Sample inputDesign(sobolExperiment.generate());
   Sample outputDesign(model(inputDesign));
 
-  if (computeSecondOrder && (inputDimension == 2))
-  {
-    // Special case: the experiment does not contain the C=[E_2, E_1] sample
-    Sample E1(outputDesign, size * 2, size * 3);
-    Sample E2(outputDesign, size * 3, size * 4);
-    outputDesign.add(E2);
-    outputDesign.add(E1);
-  }
-
   setDesign(inputDesign, outputDesign, size);
 }
 
@@ -808,22 +799,35 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
     const Sample & outputDesign,
     const UnsignedInteger size)
 {
-  if (outputDesign.getSize() == 0)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, output design is empty" ;
-
-  // Check if desing result is coherant
+  // Check data is consistent
+  const UnsignedInteger inputDimension = inputDesign.getDimension();
+  if (outputDesign.getSize() < size * (inputDimension + 2))
+    throw InvalidArgumentException(HERE) << "Sobol experiment is too small ("<< outputDesign.getSize()
+                                         << " vs " << size * (inputDimension + 2)<<")";
   if (inputDesign.getSize() != outputDesign.getSize())
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation, input and output designs have different size. Input design size=" << inputDesign.getSize()
-                                         << ", wheras output design size=" << outputDesign.getSize();
+    throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << inputDesign.getSize()
+                                         << " vs " << outputDesign.getSize() << ")";
+
   inputDesign_ = inputDesign;
   size_ = size;
 
+  Sample fullOutputDesign(outputDesign);
+  if ((inputDimension == 2) && (outputDesign.getSize() == size * (inputDimension + 2)))
+  {
+    // Special case when dim=2, SO=true; the experiment is allowed to be smaller by symmetry
+    // its size is N(d+2) instead of N(2d+2) as it does not contain the C=[E_2, E_1]
+    Sample E1(outputDesign, size * 2, size * 3);
+    Sample E2(outputDesign, size * 3, size * 4);
+    fullOutputDesign.add(E2);
+    fullOutputDesign.add(E1);
+  }
+
   // center Y
-  Point muY(outputDesign.computeMean());
-  outputDesign_ = outputDesign - muY;
+  Point muY(fullOutputDesign.computeMean());
+  outputDesign_ = fullOutputDesign - muY;
 
   // yA variance
-  referenceVariance_ = Sample(outputDesign, 0, size).computeVariance();
+  referenceVariance_ = Sample(fullOutputDesign, 0, size).computeVariance();
 
   alreadyComputedIndicesDistribution_ = false;
 }
