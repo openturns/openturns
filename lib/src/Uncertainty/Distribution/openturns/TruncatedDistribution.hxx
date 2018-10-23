@@ -59,6 +59,9 @@ public:
                         const Interval & truncationInterval,
                         const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
+  /** Parameters constructor to use when the two bounds are finite */
+  explicit TruncatedDistribution(const Distribution & distribution);
+
   /** Comparison operator */
   using DistributionImplementation::operator ==;
   Bool operator ==(const TruncatedDistribution & other) const;
