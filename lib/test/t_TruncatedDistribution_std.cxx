@@ -32,6 +32,15 @@ static Point clean(Point in)
   return in;
 }
 
+static CovarianceMatrix clean(CovarianceMatrix in)
+{
+  UnsignedInteger dim = in.getDimension();
+  for(UnsignedInteger j = 0; j < dim; j++)
+    for(UnsignedInteger i = 0; i < dim; i++)
+      if (std::abs(in(i, j)) < 1.e-10) in(i, j) = 0.0;
+  return in;
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -40,15 +49,27 @@ int main(int, char *[])
 
   try
   {
-    Collection<TruncatedNormal> referenceDistributionCollection(3);
-    referenceDistributionCollection[0] = TruncatedNormal(2.0, 1.5, 1.0, 4.0);
-    referenceDistributionCollection[1] = TruncatedNormal(2.0, 1.5, 1.0, 200.0);
-    referenceDistributionCollection[2] = TruncatedNormal(2.0, 1.5, -200.0, 4.0);
-    Collection<TruncatedDistribution> distributionCollection(3);
-    distributionCollection[0] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, 4.0);
-    distributionCollection[1] = TruncatedDistribution(Normal(2.0, 1.5), 1.0, TruncatedDistribution::LOWER);
-    distributionCollection[2] = TruncatedDistribution(Normal(2.0, 1.5), 4.0, TruncatedDistribution::UPPER);
-    for (UnsignedInteger testCase = 0; testCase < 3; ++testCase)
+    Collection<TruncatedDistribution> distributionCollection(0);
+    distributionCollection.add(TruncatedDistribution(Normal(2.0, 1.5), 1.0, 4.0));
+    distributionCollection.add(TruncatedDistribution(Normal(2.0, 1.5), 1.0, TruncatedDistribution::LOWER));
+    distributionCollection.add(TruncatedDistribution(Normal(2.0, 1.5), 4.0, TruncatedDistribution::UPPER));
+    Collection<Distribution> referenceDistributionCollection(0);
+    referenceDistributionCollection.add(TruncatedNormal(2.0, 1.5, 1.0, 4.0));
+    referenceDistributionCollection.add(TruncatedNormal(2.0, 1.5, 1.0, 200.0));
+    referenceDistributionCollection.add(TruncatedNormal(2.0, 1.5, -200.0, 4.0));
+    referenceDistributionCollection.add(TruncatedNormal(2.0, 1.5, -200.0, 4.0));
+    // This distribution takes too much time for the test
+    // Distribution ks = KernelSmoothing().build(Normal(2).getSample(70));
+    // Use a multivariate Normal distribution instead
+    Distribution ks = Normal(2);
+    TruncatedDistribution truncatedKS(ks, Interval(Point(2, -0.5), Point(2, 2.0)));
+    distributionCollection.add(truncatedKS);
+    referenceDistributionCollection.add(truncatedKS);
+    // Add a non-truncated example
+    Weibull weibull(2.0, 3.0);
+    distributionCollection.add(truncatedKS);
+    referenceDistributionCollection.add(weibull);
+    for (UnsignedInteger testCase = 0; testCase < distributionCollection.getSize(); ++testCase)
     {
       TruncatedDistribution distribution(distributionCollection[testCase]);
       Distribution referenceDistribution(distributionCollection[testCase]);
@@ -73,7 +94,7 @@ int main(int, char *[])
       fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
 
       // Define a point
-      Point point( distribution.getDimension(), 2.5 );
+      Point point( distribution.getDimension(), 1.5 );
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
@@ -112,8 +133,8 @@ int main(int, char *[])
       fullprint << "kurtosis      =" << kurtosis << std::endl;
       fullprint << "kurtosis (ref)=" << referenceDistribution.getKurtosis() << std::endl;
       CovarianceMatrix covariance = distribution.getCovariance();
-      fullprint << "covariance      =" << covariance << std::endl;
-      fullprint << "covariance (ref)=" << referenceDistribution.getCovariance() << std::endl;
+      fullprint << "covariance      =" << clean(covariance) << std::endl;
+      fullprint << "covariance (ref)=" << clean(referenceDistribution.getCovariance()) << std::endl;
       TruncatedDistribution::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters      =" << parameters << std::endl;
       fullprint << "parameters (ref)=" << referenceDistribution.getParametersCollection() << std::endl;
@@ -145,6 +166,7 @@ int main(int, char *[])
       TruncatedDistribution d(candidates[i], intervals[i]);
       fullprint << "d=" << d << ", simplified=" << d.getSimplifiedVersion() << std::endl;
     }
+    // Test 
   }
   catch (TestFailed & ex)
   {

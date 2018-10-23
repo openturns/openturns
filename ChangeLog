@@ -98,6 +98,7 @@
  * #968 (Empty legend make OT crash)
  * #970 (Composing gaussian copulas can crash the chaos)
  * #972 (FittingTest::ChiSquared slow and buggy)
+ * #974 (Default constructor of the TruncatedDistribution)
  * #975 (EmpiricalBernsteinCopula is a copula as sample is truncated)
 
 == 1.11 release (2018-05-11) == #release-1.11
