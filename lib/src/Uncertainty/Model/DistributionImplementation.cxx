@@ -55,8 +55,10 @@
 #include "openturns/SklarCopula.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PlatformInfo.hxx"
+#include "openturns/Cloud.hxx"
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
+#include "openturns/Polygon.hxx"
 #include "openturns/Staircase.hxx"
 #include "openturns/Drawable.hxx"
 #include "openturns/Graph.hxx"
@@ -3455,38 +3457,77 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     const Point & xMax,
     const Indices & pointNumber) const
 {
+  if (dimension_ == 1) return drawPDF(xMin[0], xMax[0], pointNumber[0]);
   if (!(pointNumber[0] >= 2 && pointNumber[1] >= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
-  Point discretization(2);
-  Point scaling(2);
-  Point origin(2);
-  const Scalar nX = pointNumber[0] - 2;
-  discretization[0] = nX;
-  // Discretization of the first component
-  Sample x(Box(Point(1, nX)).generate());
-  origin[0] = xMin[0];
-  scaling[0] = xMax[0] - xMin[0];
-  x *= Point(1, scaling[0]);
-  x += Point(1, origin[0]);
-  const Scalar nY = pointNumber[1] - 2;
-  discretization[1] = nY;
-  // Discretization of the second component
-  Sample y(Box(Point(1, nY)).generate());
-  origin[1] = xMin[1];
-  scaling[1] = xMax[1] - xMin[1];
-  y *= Point(1, scaling[1]);
-  y += Point(1, origin[1]);
-  Sample xy;
-  // Compute the output sample, using possible parallelism or optimized implementation
-  const Sample z(computePDF(xMin, xMax, pointNumber, xy));
-  const String xName(description_[0]);
-  const String yName(description_[1]);
-  const String title(OSS() << getDescription() << " iso-PDF");
-  Graph graph(title, xName, yName, true, "topright");
-  Contour isoValues(Contour(x, y, z, Point(0), Description(0), true, title));
-  isoValues.buildDefaultLevels();
-  isoValues.buildDefaultLabels();
-  graph.add(isoValues);
-  return graph;
+  if (isContinuous())
+    {
+      Point discretization(2);
+      Point scaling(2);
+      Point origin(2);
+      const Scalar nX = pointNumber[0] - 2;
+      discretization[0] = nX;
+      // Discretization of the first component
+      Sample x(Box(Point(1, nX)).generate());
+      origin[0] = xMin[0];
+      scaling[0] = xMax[0] - xMin[0];
+      x *= Point(1, scaling[0]);
+      x += Point(1, origin[0]);
+      const Scalar nY = pointNumber[1] - 2;
+      discretization[1] = nY;
+      // Discretization of the second component
+      Sample y(Box(Point(1, nY)).generate());
+      origin[1] = xMin[1];
+      scaling[1] = xMax[1] - xMin[1];
+      y *= Point(1, scaling[1]);
+      y += Point(1, origin[1]);
+      Sample xy;
+      // Compute the output sample, using possible parallelism or optimized implementation
+      const Sample z(computePDF(xMin, xMax, pointNumber, xy));
+      const String xName(description_[0]);
+      const String yName(description_[1]);
+      const String title(OSS() << getDescription() << " iso-PDF");
+      Graph graph(title, xName, yName, true, "topright");
+      Contour isoValues(Contour(x, y, z, Point(0), Description(0), true, title));
+      isoValues.buildDefaultLevels();
+      isoValues.buildDefaultLabels();
+      graph.add(isoValues);
+      return graph;
+    }
+  if (isDiscrete())
+    {
+      const Sample support(getSupport());
+      const Point probabilities(computePDF(support).asPoint());
+      const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(*std::max_element(probabilities.begin(), probabilities.end()));
+      const UnsignedInteger size = support.getSize();
+      const String xName(description_[0]);
+      const String yName(description_[1]);
+      const String title(OSS() << getDescription() << " PDF");
+      Graph graph(title, xName, yName, true, "topright");
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const Scalar x = support(i, 0);
+	  const Scalar y = support(i, 1);
+	  const Scalar p = std::sqrt(probabilities[i]) * scaling;
+	  Sample square(4, 2);
+	  square(0, 0) = x - p;
+	  square(0, 1) = y - p;
+	  square(1, 0) = x - p;
+	  square(1, 1) = y + p;
+	  square(2, 0) = x + p;
+	  square(2, 1) = y + p;
+	  square(3, 0) = x + p;
+	  square(3, 1) = y - p;
+	  graph.add(Polygon(square));
+	}
+      if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
+	{
+	  Cloud cloud(support);
+	  cloud.setColor("red");
+	  graph.add(cloud);
+	}
+      return graph;
+    }
+  throw NotYetImplementedException(HERE) << "Error: the drawPDF() method is defined only for continuous or discrete distributions.";
 }
 
 /* Draw the PDF of the distribution when its dimension is 2 */

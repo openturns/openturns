@@ -1124,12 +1124,14 @@ void ResourceMap::loadDefaultConfiguration()
   // DistributionImplementation parameters //
   setAsBool( "Distribution-MinimumVolumeLevelSetBySampling", false );
   setAsBool( "Distribution-Parallel", true);
+  setAsBool( "Distribution-ShowSupportDiscretePDF", true);
   setAsBool( "Distribution-UseCovarianceAdaptiveAlgorithm", true );
   setAsScalar( "Distribution-QMin", 0.15 );
   setAsScalar( "Distribution-QMax", 0.85 );
   setAsScalar( "Distribution-DefaultQuantileEpsilon", 1.0e-12 );
   setAsScalar( "Distribution-DefaultPDFEpsilon", 1.0e-14 );
   setAsScalar( "Distribution-DefaultCDFEpsilon", 1.0e-14 );
+  setAsScalar( "Distribution-DiscreteDrawPDFScaling", 0.25 );
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionBlockMax", 20 );
   setAsUnsignedInteger( "Distribution-CharacteristicFunctionNMax", 1000000 );
   setAsUnsignedInteger( "Distribution-DefaultIntegrationNodesNumber", 255 );
