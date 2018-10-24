@@ -716,6 +716,10 @@ void KernelMixture::setParameter(const Point & parameter)
     bandwidth_[j] = parameter[index];
     ++ index;
   }
+  // Use the constructor in order to recompute the PDF/CDF approximation if needed
+  const Scalar w = getWeight();
+  *this = KernelMixture(kernel_, bandwidth_, sample_);
+  setWeight(w);
 }
 
 
