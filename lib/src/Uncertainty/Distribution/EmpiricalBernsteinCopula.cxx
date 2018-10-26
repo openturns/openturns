@@ -149,9 +149,15 @@ void EmpiricalBernsteinCopula::setCopulaSample(const Sample & copulaSample,
   const UnsignedInteger remainder = size % binNumber_;
   // If the given sample is an empirical copula sample of a compatible size
   if (isEmpiricalCopulaSample)
+  {
     copulaSample_ = copulaSample;
+    isCopula_ = (remainder == 0);
+  }
   else
   {
+    // Here we remove last point such as we build a copula
+    // Thus isCopula_ is necessary true
+    isCopula_ = true;
     if (remainder == 0)
       copulaSample_ = copulaSample.rank();
     else
@@ -164,7 +170,6 @@ void EmpiricalBernsteinCopula::setCopulaSample(const Sample & copulaSample,
     copulaSample_ /= 1.0 * (size - remainder);
   } // !(isEmpiricalCopulaSample && remainder == 0)
   setDimension(dimension);
-  isCopula_ = (remainder == 0);
   // Now the sample is correct, compute the by-products
   update();
   computeRange();
