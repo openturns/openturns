@@ -1,0 +1,90 @@
+%feature("docstring") OT::ParametricPointToFieldFunction
+"Parametric Point to Field function.
+
+It defines a parametric function from *function* by freezing the variables
+marked by the *indices* set to the values of *referencePoint*.
+
+Parameters
+----------
+function : :class:`~openturns.PointToFieldFunction`
+    Function with full parameters from which the parametric function is built.
+indices : sequence of int
+    Indices of the frozen variables.
+referencePoint : sequence of float
+    Values of the frozen variables.
+    Must be of size of *indices*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> size = 5
+>>> mesh = ot.RegularGrid(0.0, 0.1, size)
+>>> def f(X):
+...     Y = [ot.Point(X)*i for i in range(size)]
+...     return Y
+>>> inputDim = 2
+>>> outputDim = 2
+>>> function = ot.PythonPointToFieldFunction(inputDim, mesh, outputDim, f)
+
+Then create another function by freezing the parameter x2=5.0:
+
+>>> g = ot.ParametricPointToFieldFunction(function, [1], [5.0])
+>>> print(g.getInputDescription())
+[x0]
+>>> print(g([1.0]))
+    [ y0 y1 ]
+0 : [  0  0 ]
+1 : [  1  5 ]
+2 : [  2 10 ]
+3 : [  3 15 ]
+4 : [  4 20 ]"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParametricPointToFieldFunction::getFunction
+"Function accessor.
+
+Returns
+-------
+function : :class:`~openturns.PointToFieldFunction`
+    Function with full parameters from which the parametric function is built."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParametricPointToFieldFunction::getParametersPositions
+"Parameters positions accessor.
+
+Returns
+-------
+parameters_positions : :class:`~openturns.Indices`
+    Positions of the parameters in the underlying function."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParametricPointToFieldFunction::getInputPositions
+"Indices positions accessor.
+
+Returns
+-------
+indices : :class:`~openturns.Indices`
+    Positions of the inputs in the underlying function."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParametricPointToFieldFunction::setParameter
+"Parameter accessor.
+
+Parameters
+----------
+parameter : :class:`~openturns.Point`
+    Parameter value."
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParametricPointToFieldFunction::getParameter
+"Parameter accessor.
+
+Returns
+-------
+parameter : :class:`~openturns.Point`
+    Parameter value."
