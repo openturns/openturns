@@ -93,49 +93,6 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   setOutputDescription(function_.getOutputDescription());
 }
 
-/* Parameter constructor */
-ParametricEvaluation::ParametricEvaluation(const ParametricEvaluation & evaluation,
-    const Indices & set,
-    const Point & referencePoint)
-  : EvaluationImplementation()
-  , function_()
-  , parametersPositions_(0)
-  , inputPositions_(0)
-{
-  // Here we reuse the antecedent parameters
-  // The function is kept unchanged
-  function_ = evaluation.function_;
-  // The parameters position will be enlarged
-  parametersPositions_ = evaluation.parametersPositions_;
-  // The parameters values too
-  parameter_ = evaluation.getParameter();
-  // And their description
-  Description parametersDescription(parameter_.getDescription());
-  const Description inputDescription(evaluation.getInputDescription());
-  // The input positions will be reduced
-  Indices antecedentInputPosition(evaluation.inputPositions_);
-  const UnsignedInteger inputDimension = evaluation.getInputDimension();
-  const UnsignedInteger size = set.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const UnsignedInteger index = set[i];
-    // Mark the given index as a parameter index
-    parametersPositions_.add(antecedentInputPosition[index]);
-    // And flag it to be removed from the input indices
-    antecedentInputPosition[index] = inputDimension;
-    // Add the parameter value to the parameters
-    parameter_.add(referencePoint[i]);
-    // Add the description to the parameters description
-    parametersDescription.add(inputDescription[antecedentInputPosition[index]]);
-  }
-  parameter_.setDescription(parametersDescription);
-  // And finally the input/output descriptions
-  Description newInputDescription(0);
-  for (UnsignedInteger i = 0; i < inputPositions_.getSize(); ++i) newInputDescription.add(inputDescription[inputPositions_[i]]);
-  setInputDescription(inputDescription);
-  setOutputDescription(function_.getOutputDescription());
-}
-
 /* Virtual constructor method */
 ParametricEvaluation * ParametricEvaluation::clone() const
 {

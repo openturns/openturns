@@ -84,11 +84,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-protected:
-  ParametricEvaluation(const ParametricEvaluation & evaluation,
-                       const Indices & set,
-                       const Point & referencePoint);
-
 private:
 
   friend class ParametricGradient;
