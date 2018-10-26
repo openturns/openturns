@@ -197,7 +197,10 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 /* Get the evaluation corresponding to indices components */
 Evaluation MemoizeEvaluation::getMarginal(const Indices & indices) const
 {
-  return new MemoizeEvaluation(evaluation_.getMarginal(indices), inputStrategy_);
+  MemoizeEvaluation* marginal = new MemoizeEvaluation(evaluation_.getMarginal(indices), inputStrategy_);
+  if (isCacheEnabled())
+    marginal->addCacheContent(getCacheInput(), getCacheOutput().getMarginal(indices));
+  return marginal;
 }
 
 /* Enable or disable the internal cache */
