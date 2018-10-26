@@ -191,22 +191,6 @@ class View(object):
         # set step drawstyle
         step_kwargs_default.setdefault('where', 'post')
 
-        # set title
-        axes_kwargs.setdefault('title', self.ToUnicode(graph.getTitle()))
-
-        # set scale
-        if (graph.getLogScale() == ot.GraphImplementation.LOGX) or (graph.getLogScale() == ot.GraphImplementation.LOGXY):
-            axes_kwargs.setdefault('xscale', 'log')
-        if (graph.getLogScale() == ot.GraphImplementation.LOGY) or (graph.getLogScale() == ot.GraphImplementation.LOGXY):
-            axes_kwargs.setdefault('yscale', 'log')
-
-        # set bounding box
-        bb = graph.getBoundingBox()
-        axes_kwargs.setdefault(
-            'xlim', [bb.getLowerBound()[0], bb.getUpperBound()[0]])
-        axes_kwargs.setdefault(
-            'ylim', [bb.getLowerBound()[1], bb.getUpperBound()[1]])
-
         # set figure
         if figure is None:
             if len(axes) == 0:
@@ -218,15 +202,29 @@ class View(object):
             if len(axes) == 0:
                 axes = self._fig.axes
 
+        # set title
+        self._fig.suptitle(self.ToUnicode(graph.getTitle()))
+
         # set axes
         if len(axes) == 0:
             self._ax = [self._fig.add_subplot(111, **axes_kwargs)]
         else:
             self._ax = axes
+
         # activate axes only if wanted
         self._ax[0].axison = graph.getAxes()
 
-        has_labels = False
+        # set bounding box
+        bb = graph.getBoundingBox()
+        self._ax[0].set_xlim([bb.getLowerBound()[0], bb.getUpperBound()[0]])
+        self._ax[0].set_ylim([bb.getLowerBound()[1], bb.getUpperBound()[1]])
+
+        # set scale
+        if (graph.getLogScale() == ot.GraphImplementation.LOGX) or (graph.getLogScale() == ot.GraphImplementation.LOGXY):
+            self._ax[0].set_xscale('log')
+        if (graph.getLogScale() == ot.GraphImplementation.LOGY) or (graph.getLogScale() == ot.GraphImplementation.LOGXY):
+            self._ax[0].set_yscale('log')
+
         self._ax[0].grid(b=graph.getGrid())
 
         # use scientific notation on non-log axis
@@ -238,6 +236,8 @@ class View(object):
         if axis is not None:
             self._ax[0].ticklabel_format(
                 axis=axis, style='sci', scilimits=(-3, 5))
+
+        has_labels = False
 
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
@@ -406,6 +406,10 @@ class View(object):
                         # https://github.com/matplotlib/matplotlib/issues/9742
                         warnings.warn(
                             'pyplot.clabel likely failed on boundary level')
+                    except UnboundLocalError:
+                        # https://github.com/matplotlib/matplotlib/pull/10710
+                        warnings.warn(
+                            'pyplot.clabel likely failed as in #10710')
                 for i in range(len(contourset.levels)):
                     contourset.collections[i].set_label(
                         '_nolegend_' if i > 0 else drawable.getLegend())
@@ -417,8 +421,6 @@ class View(object):
                 # disable axis : grid, ticks, axis
                 self._ax[0].axison = False
 
-                if 'title' in axes_kwargs:
-                    axes_kwargs.pop('title')
                 axes_kwargs['xticks'] = []
                 axes_kwargs['yticks'] = []
 
@@ -694,8 +696,6 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
     # disable axis : grid, ticks, axis?
     axes[0].axison = False
 
-    if 'title' in axes_kwargs:
-        axes_kwargs.pop('title')
     axes_kwargs['xticks'] = []
     axes_kwargs['yticks'] = []
 
