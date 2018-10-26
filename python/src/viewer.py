@@ -202,6 +202,9 @@ class View(object):
             if len(axes) == 0:
                 axes = self._fig.axes
 
+        # set title
+        self._fig.suptitle(self.ToUnicode(graph.getTitle()))
+
         # set axes
         if len(axes) == 0:
             self._ax = [self._fig.add_subplot(111, **axes_kwargs)]
@@ -221,9 +224,6 @@ class View(object):
             self._ax[0].set_xscale('log')
         if (graph.getLogScale() == ot.GraphImplementation.LOGY) or (graph.getLogScale() == ot.GraphImplementation.LOGXY):
             self._ax[0].set_yscale('log')
-
-        # set title
-        self._ax[0].set_title(self.ToUnicode(graph.getTitle()))
 
         self._ax[0].grid(b=graph.getGrid())
 
@@ -417,8 +417,6 @@ class View(object):
                 # disable axis : grid, ticks, axis
                 self._ax[0].axison = False
 
-                if 'title' in axes_kwargs:
-                    axes_kwargs.pop('title')
                 axes_kwargs['xticks'] = []
                 axes_kwargs['yticks'] = []
 
@@ -694,8 +692,6 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
     # disable axis : grid, ticks, axis?
     axes[0].axison = False
 
-    if 'title' in axes_kwargs:
-        axes_kwargs.pop('title')
     axes_kwargs['xticks'] = []
     axes_kwargs['yticks'] = []
 
