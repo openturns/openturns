@@ -94,6 +94,9 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
   setName("EmpiricalBernsteinCopula");
   setDimension(copulaSample.getDimension());
   computeRange();
+  // If the given sample is an empirical copula sample of a compatible size
+  const UnsignedInteger remainder = size % binNumber; 
+  isCopula_ = (remainder == 0);
 }
 
 /* Virtual constructor */
