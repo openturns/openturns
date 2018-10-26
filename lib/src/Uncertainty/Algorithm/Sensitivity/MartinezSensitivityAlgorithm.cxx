@@ -84,12 +84,20 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
   Sample yA(sample, 0, size);
   const Point muA(yA.computeMean());
   const Point sigmaA(yA.computeStandardDeviationPerComponent());
+  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+    if (!(sigmaA[j] > 0.0))
+      throw InvalidArgumentException(HERE) << "Null output sample variance";
+
   // center sample yA
   yA -= muA;
   // Reference sample yB
   Sample yB(sample, size, 2 * size);
   const Point muB(yB.computeMean());
   const Point sigmaB(yB.computeStandardDeviationPerComponent());
+  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+    if (!(sigmaB[j] > 0.0))
+      throw InvalidArgumentException(HERE) << "Null output sample variance";
+
   // center-reduce sample yB
   yB -= muB;
   yB /= sigmaB;
@@ -99,6 +107,10 @@ Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
     Sample yE(sample, (2 + p) * size, (3 + p) * size);
     const Point muE(yE.computeMean());
     const Point sigmaE(yE.computeStandardDeviationPerComponent());
+    for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+      if (!(sigmaE[j] > 0.0))
+        throw InvalidArgumentException(HERE) << "Null output sample variance";
+
     // center-reduce sample yB
     yE -= muE;
     yE /= sigmaE;

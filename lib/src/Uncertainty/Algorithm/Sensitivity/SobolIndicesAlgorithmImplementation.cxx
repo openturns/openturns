@@ -799,6 +799,9 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
     const Sample & outputDesign,
     const UnsignedInteger size)
 {
+  if (!(size > 1))
+    throw InvalidArgumentException(HERE) << "Sobol design size must be > 1";
+
   // Check data is consistent
   const UnsignedInteger inputDimension = inputDesign.getDimension();
   if (outputDesign.getSize() < size * (inputDimension + 2))
@@ -828,6 +831,9 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
 
   // yA variance
   referenceVariance_ = Sample(fullOutputDesign, 0, size).computeVariance();
+  for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
+    if (!(referenceVariance_[j] > 0.0))
+      throw InvalidArgumentException(HERE) << "Null output sample variance";
 
   alreadyComputedIndicesDistribution_ = false;
 }
