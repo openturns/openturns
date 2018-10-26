@@ -406,6 +406,10 @@ class View(object):
                         # https://github.com/matplotlib/matplotlib/issues/9742
                         warnings.warn(
                             'pyplot.clabel likely failed on boundary level')
+                    except UnboundLocalError:
+                        # https://github.com/matplotlib/matplotlib/pull/10710
+                        warnings.warn(
+                            'pyplot.clabel likely failed as in #10710')
                 for i in range(len(contourset.levels)):
                     contourset.collections[i].set_label(
                         '_nolegend_' if i > 0 else drawable.getLegend())
