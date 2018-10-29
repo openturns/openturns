@@ -53,6 +53,7 @@ Refer to :ref:`field_function`.
     FieldFunction
     FieldToPointFunction
     PointToFieldFunction
+    ParametricPointToFieldFunction
     PythonFieldFunction
     ValueFunction
     VertexValueFunction

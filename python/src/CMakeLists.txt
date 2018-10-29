@@ -314,6 +314,7 @@ ot_add_python_module(func func_module.i
                       FieldToPointFunction.i FieldToPointFunction_doc.i.in
                       PointToFieldFunctionImplementation.i PointToFieldFunctionImplementation_doc.i.in
                       PointToFieldFunction.i PointToFieldFunction_doc.i.in
+		      ParametricPointToFieldFunction.i ParametricPointToFieldFunction_doc.i.in
 		      PointToPointEvaluation.i PointToPointEvaluation_doc.i.in
 		      PointToPointConnection.i PointToPointConnection_doc.i.in
 		      FieldToPointConnection.i FieldToPointConnection_doc.i.in
