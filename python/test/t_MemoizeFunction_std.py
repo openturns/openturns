@@ -33,10 +33,12 @@ print("output history=", f.getOutputHistory())
 
 mem = ot.MemoizeFunction(ot.SymbolicFunction(
     ['x1', 'x2'], ['x1+x2', '3*(x1+x2)']))
+mem([1, 2])
 mem2 = ot.MemoizeFunction(mem.getMarginal(1))
-y = mem2([1, 2])
+mem2([1, 2])
 print('mem2.in', mem2.getCacheInput())
 print('mem2.out', mem2.getCacheOutput())
+print('mem2.hits', mem2.getCacheHits())
 
 # check getCacheInput/getCacheOutput order
 for i in range(5):
