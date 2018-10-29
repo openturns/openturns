@@ -165,7 +165,9 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
     result.add(transformation_(standardOptimalDesign), optimalValue, SpaceFillingC2().evaluate(standardOptimalDesign), SpaceFillingPhiP().evaluate(standardOptimalDesign), SpaceFillingMinDist().evaluate(standardOptimalDesign), history);
   }
   result_ = result;
-  return result.getOptimalDesign();
+  Sample sample(result.getOptimalDesign());
+  sample.setDescription(lhs_.getDistribution().getDescription());
+  return sample;
 }
 
 /* String converter */
