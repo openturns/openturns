@@ -2,7 +2,7 @@ lhs= LHSExperiment(distribution=class=ComposedDistribution name=ComposedDistribu
 Bounds of uniform distributions= [0, 1]
 [0, 1]
 [0, 1]
-design=      [ X0   X1   X2   ]
+design=      [ U0   U1   U2   ]
  0 : [ 0.18 0.86 0.26 ]
  1 : [ 0.66 0.22 0.62 ]
  2 : [ 0.98 0.34 0.86 ]
@@ -30,7 +30,7 @@ design=      [ X0   X1   X2   ]
 24 : [ 0.62 0.38 0.66 ]
 PhiP=7.538512, C2=0.080495
 lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
-Generating design using geometric temperature profile & C2 criterion=      [ y0   y1   y2   ]
+Generating design using geometric temperature profile & C2 criterion=      [ U0   U1   U2   ]
  0 : [ 0.06 0.1  0.3  ]
  1 : [ 0.26 0.82 0.26 ]
  2 : [ 0.34 0.62 0.74 ]
@@ -58,7 +58,7 @@ Generating design using geometric temperature profile & C2 criterion=      [ y0 
 24 : [ 0.54 0.7  0.02 ]
 Final criteria: C2=0.039557, PhiP=4.642392, MinDist=0.215407
 lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=10 profile=class=TemperatureProfile implementation=class=LinearProfile name=Unnamed T0=10 iMax=2000
-Generating design using linear temperature profile & PhiP criterion =      [ y0   y1   y2   ]
+Generating design using linear temperature profile & PhiP criterion =      [ U0   U1   U2   ]
  0 : [ 0.74 0.58 0.46 ]
  1 : [ 0.82 0.42 0.22 ]
  2 : [ 0.7  0.86 0.14 ]
@@ -86,7 +86,7 @@ Generating design using linear temperature profile & PhiP criterion =      [ y0 
 24 : [ 0.66 0.94 0.66 ]
 Final criteria: C2=0.057259, PhiP=5.455553, MinDist=0.183303
 lhs= class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=10 profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
-initial design=      [ y0   y1   y2   ]
+initial design=      [ U0   U1   U2   ]
  0 : [ 0.74 0.58 0.46 ]
  1 : [ 0.82 0.42 0.22 ]
  2 : [ 0.7  0.86 0.14 ]
@@ -113,7 +113,7 @@ initial design=      [ y0   y1   y2   ]
 23 : [ 0.58 0.34 0.94 ]
 24 : [ 0.66 0.94 0.66 ]
 PhiP=5.455553, C2=0.057259
-Generating design using linear temperature profile & PhiP criterion =      [ y0   y1   y2   ]
+Generating design using linear temperature profile & PhiP criterion =      [ U0   U1   U2   ]
  0 : [ 0.14 0.3  0.22 ]
  1 : [ 0.1  0.14 0.62 ]
  2 : [ 0.78 0.1  0.26 ]
@@ -140,7 +140,7 @@ Generating design using linear temperature profile & PhiP criterion =      [ y0 
 23 : [ 0.7  0.9  0.78 ]
 24 : [ 0.98 0.38 0.18 ]
 Final criteria: C2=0.045191, PhiP=3.222263, MinDist=0.312410
-Generating design using linear temperature profile & PhiP criterion =      [ y0   y1   y2   ]
+Generating design using linear temperature profile & PhiP criterion =      [ U0   U1   U2   ]
  0 : [ 0.86 0.38 0.9  ]
  1 : [ 0.7  0.58 0.66 ]
  2 : [ 0.74 0.22 0.1  ]

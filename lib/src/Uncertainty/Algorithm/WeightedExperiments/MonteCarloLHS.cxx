@@ -86,7 +86,9 @@ Sample MonteCarloLHS::generateWithWeights(Point & weights) const
   result.add(transformation_(optimalStandardDesign), optimalValue, SpaceFillingC2().evaluate(optimalStandardDesign), SpaceFillingPhiP().evaluate(optimalStandardDesign), SpaceFillingMinDist().evaluate(optimalStandardDesign), history);
   result_ = result;
   weights = Point(size_, 1.0 / size_);
-  return result.getOptimalDesign();
+  Sample sample(result.getOptimalDesign());
+  sample.setDescription(lhs_.getDistribution().getDescription());
+  return sample;
 }
 
 /* String converter */
