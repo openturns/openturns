@@ -158,11 +158,18 @@ void SobolSimulationAlgorithm::run()
         stop = stopCallback_.first(stopCallback_.second);
         if (stop)
         {
-          break;
+          if (outerSampling == 0)
+            throw InternalException (HERE) << "Stopped without enough samples";
           LOGINFO(OSS() << "Stopped due to user");
+          break;
         }
       }
     }
+
+    // Abort if we stopped before completion
+    if (outputSample.getSize() < experimentSize)
+      break;
+
     LOGDEBUG(OSS() << "SobolSimulationAlgorithm::run: blockSample=\n" << outputSample);
     ++ outerSampling;
 
