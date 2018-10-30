@@ -37,6 +37,11 @@ endif ()
 # Defines our own module path
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+if (POLICY CMP0068)
+  # RPATH settings on macOS do not affect install_name
+  cmake_policy (SET CMP0068 NEW)
+endif ()
+
 if (USE_COTIRE)
   if (POLICY CMP0058)
     # Ninja requires custom command byproducts to be explicit
@@ -277,10 +282,6 @@ if (POLICY CMP0056)
 endif ()
 if (POLICY CMP0066)
   cmake_policy (SET CMP0066 NEW)
-endif ()
-if (POLICY CMP0068)
-  # RPATH settings on macOS do not affect install_name
-  cmake_policy (SET CMP0068 NEW)
 endif ()
 if (POLICY CMP0078)
   # swig standard target names
