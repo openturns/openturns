@@ -652,6 +652,7 @@ Scalar Student::getNu() const
 Scalar Student::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, prob, tail);
 }
 

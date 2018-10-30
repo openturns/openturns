@@ -165,6 +165,7 @@ Point Dirac::computeCDFGradient(const Point & point) const
 Scalar Dirac::computeScalarQuantile(const Scalar,
                                     const Bool ) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   return point_[0];
 }
 

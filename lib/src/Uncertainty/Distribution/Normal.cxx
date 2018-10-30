@@ -481,6 +481,7 @@ Point Normal::computeCDFGradient(const Point & point) const
 Scalar Normal::computeScalarQuantile(const Scalar prob,
                                      const Bool tail) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   return mean_[0] + sigma_[0] * DistFunc::qNormal(prob, tail);
 } // computeScalarQuantile
 
