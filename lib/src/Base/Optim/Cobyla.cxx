@@ -279,7 +279,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   // only take violated constraints into account to compute error
   for (UnsignedInteger j = 0; j < constraintValue.getDimension(); ++ j)
   {
-    if (constraintValue[j] > 0.0) constraintValue[j] = 0.0;
+    constraintValue[j] = std::max(constraintValue[j], 0.0);
   }
   outPoint[1] = constraintValue.normInf();
 
