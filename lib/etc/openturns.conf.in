@@ -215,7 +215,7 @@
   <SobolIndicesExperiment-SamplingMethod value_str="MonteCarlo" />
 
   <!-- OT::SobolIndicesAlgorithm parameters -->
-  <SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution value_bool="0"               />
+  <SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution value_bool="false"          />
   <SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel  value_float="0.95"          />
   <SobolIndicesAlgorithm-DefaultBlockSize                 value_int="1"   />
   <SobolIndicesAlgorithm-DefaultBootstrapSize             value_int="100" />
