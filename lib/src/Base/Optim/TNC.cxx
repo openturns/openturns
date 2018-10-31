@@ -235,11 +235,11 @@ void TNC::run()
     {
       if (finiteLow[j] && (inP[j] < low[j]))
       {
-        constraintError += low[j] - inP[j];
+        constraintError = std::max(constraintError, low[j] - inP[j]);
       }
       if (finiteUp[j] && (up[j] < inP[j]))
       {
-        constraintError += inP[j] - up[j];
+        constraintError = std::max(constraintError, inP[j] - up[j]);
       }
     } // for j
     result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
@@ -428,7 +428,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     // Here we take the sign into account and convert the result into a Point in one shot
     objectiveGradient = problem.getObjective().gradient(inPoint) * Point(1, sign);
   }
-  catch(...)
+  catch (...)
   {
     return 1;
   }
