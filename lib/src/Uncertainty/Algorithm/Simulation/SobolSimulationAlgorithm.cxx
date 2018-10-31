@@ -30,6 +30,8 @@
 #include "openturns/SobolIndicesExperiment.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
 #include "openturns/SaltelliSensitivityAlgorithm.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -210,13 +212,41 @@ void SobolSimulationAlgorithm::run()
     Point stddevTO(dimension);
     const Point reducedVarianceFO(varianceFO / size);
     const Point reducedVarianceTO(varianceTO / size);
+    ComposedDistribution::DistributionCollection marginalsFO(dimension);
+    ComposedDistribution::DistributionCollection marginalsTO(dimension);
+    Bool allNormalFO = true;
+    Bool allNormalTO = true;
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       stddevFO[j] = sqrt(reducedVarianceFO[j]);
+      if (stddevFO[j] > 0.0)
+        marginalsFO[j] = Normal(meanFO[j], stddevFO[j]);
+      else
+      {
+        allNormalFO = false;
+        marginalsFO[j] = Dirac(meanFO[j]);
+      }
+
       stddevTO[j] = sqrt(reducedVarianceTO[j]);
+      if (stddevTO[j] > 0.0)
+        marginalsTO[j] = Normal(meanTO[j], stddevTO[j]);
+      else
+      {
+        allNormalTO = false;
+        marginalsTO[j] = Dirac(meanTO[j]);
+      }
     }
-    result_.setFirstOrderIndicesDistribution(Normal(meanFO, stddevFO, CorrelationMatrix(dimension)));
-    result_.setTotalOrderIndicesDistribution(Normal(meanTO, stddevTO, CorrelationMatrix(dimension)));
+
+    if (allNormalFO)
+      result_.setFirstOrderIndicesDistribution(Normal(meanFO, stddevFO, CorrelationMatrix(dimension)));
+    else
+      result_.setFirstOrderIndicesDistribution(ComposedDistribution(marginalsFO));
+
+    if (allNormalTO)
+      result_.setTotalOrderIndicesDistribution(Normal(meanTO, stddevTO, CorrelationMatrix(dimension)));
+    else
+      result_.setTotalOrderIndicesDistribution(ComposedDistribution(marginalsTO));
+
     result_.setOuterSampling(outerSampling);
     LOGINFO(OSS() << "SobolSimulationAlgorithm::run: FO=" << result_.getFirstOrderIndicesDistribution());
 

@@ -5,7 +5,6 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-
 input_dimension = 3
 output_dimension = 1
 
@@ -140,3 +139,20 @@ x = ot.SobolIndicesExperiment(distribution, size, True).generate()
 y = model(x)
 sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(x, y, size)
 print(sensitivity_algorithm.getSecondOrderIndices())
+
+
+# null contribution case: X3 not in output formula
+model = ot.SymbolicFunction(['X1', 'X2', 'X3'], ['10+3*X1+X2'])
+distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * input_dimension)
+size = 10000
+for method in methods:
+    sensitivity_algorithm = eval('ot.' + method + "SensitivityAlgorithm(distribution, size, model, False)")
+    sensitivity_algorithm.setUseAsymptoticDistribution(True)
+    fo = sensitivity_algorithm.getFirstOrderIndices()
+    print("First order indices = ", fo)
+    to = sensitivity_algorithm.getTotalOrderIndices()
+    #print("Total order indices = ", to)
+    interval_fo = sensitivity_algorithm.getFirstOrderIndicesInterval()
+    interval_to = sensitivity_algorithm.getTotalOrderIndicesInterval()
+    print("Aggregated first order indices interval = ", interval_fo)
+    #print("Aggregated total order indices interval = ", interval_to)
