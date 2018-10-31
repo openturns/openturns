@@ -47,8 +47,8 @@ static const Factory<SobolSimulationAlgorithm> Factory_SobolSimulationAlgorithm;
 SobolSimulationAlgorithm::SobolSimulationAlgorithm()
   : SimulationAlgorithm()
   , batchSize_(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultBatchSize"))
-  , indexQuantileLevel_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultQuantileLevel"))
-  , indexQuantileEpsilon_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultQuantileEpsilon"))
+  , indexQuantileLevel_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel"))
+  , indexQuantileEpsilon_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon"))
 {
   setBlockSize(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultBlockSize"));
 }
