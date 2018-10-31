@@ -145,6 +145,7 @@ void Cobyla::run()
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
+      if (std::abs(outP[0]) > SpecFunc::Precision) residualError /= std::abs(outP[0]);
       constraintError = outP[1];
     }
     result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);

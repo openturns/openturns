@@ -27,6 +27,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -227,6 +228,7 @@ void TNC::run()
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
+      if (std::abs(outP[0]) > SpecFunc::Precision) residualError /= std::abs(outP[0]);
     }
     constraintError = 0.0;
     for (UnsignedInteger j = 0; j < dimension; ++ j)
