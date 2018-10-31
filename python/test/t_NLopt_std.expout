@@ -69,7 +69,7 @@ x^= [-3.000,-3.000,5.000,-3.000]
 -- Not supported: algo= GN_DIRECT inequality= True equality= False
 -- Not supported: algo= GN_DIRECT inequality= False equality= True
 algo= class=NLopt algorithm=GN_DIRECT
-x^= [5.000,5.000,-3.000,5.000]
+x^= [5.000,4.999,-2.999,5.000]
 -- Not supported: algo= GN_DIRECT_L inequality= True equality= True
 -- Not supported: algo= GN_DIRECT_L inequality= True equality= False
 -- Not supported: algo= GN_DIRECT_L inequality= False equality= True

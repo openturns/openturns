@@ -221,7 +221,7 @@ void NLopt::run()
 
   opt.set_xtol_abs(getMaximumAbsoluteError());
   opt.set_xtol_rel(getMaximumRelativeError());
-  opt.set_ftol_abs(getMaximumResidualError());
+  opt.set_ftol_rel(getMaximumResidualError());
   opt.set_maxeval(getMaximumEvaluationNumber());
 
   if (getProblem().hasBounds())
@@ -286,7 +286,7 @@ void NLopt::run()
     nlopt::opt local_opt(local_algo, dimension);
     local_opt.set_xtol_abs(getMaximumAbsoluteError());
     local_opt.set_xtol_rel(getMaximumRelativeError());
-    local_opt.set_ftol_abs(getMaximumResidualError());
+    local_opt.set_ftol_rel(getMaximumResidualError());
     local_opt.set_maxeval(getMaximumEvaluationNumber());
     opt.set_local_optimizer(local_opt);
   }
@@ -297,7 +297,7 @@ void NLopt::run()
     nlopt::opt local_opt(local_algo, dimension);
     local_opt.set_xtol_abs(p_localSolver_->getMaximumAbsoluteError());
     local_opt.set_xtol_rel(p_localSolver_->getMaximumRelativeError());
-    local_opt.set_ftol_abs(p_localSolver_->getMaximumResidualError());
+    local_opt.set_ftol_rel(p_localSolver_->getMaximumResidualError());
     local_opt.set_maxeval(p_localSolver_->getMaximumEvaluationNumber());
     if (p_localSolver_->getInitialStep().getDimension() > 0)
     {
