@@ -353,6 +353,21 @@ void NLopt::run()
   {
     const Point inP(evaluationInputHistory_[i]);
     const Point outP(evaluationOutputHistory_[i]);
+    constraintError = -1.0;
+    if (getProblem().hasEqualityConstraint())
+    {
+      const Point g(getProblem().getEqualityConstraint()(inP));
+      constraintError = std::max(constraintError, g.normInf());
+    }
+    if (getProblem().hasInequalityConstraint())
+    {
+      Point h(getProblem().getInequalityConstraint()(inP));
+      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
+      {
+        h[k] = std::max(h[k], 0.0);// convention h(x)>=0 <=> admissibility
+      }
+      constraintError = std::max(constraintError, h.normInf());
+    }
     if (i > 0)
     {
       const Point inPM(evaluationInputHistory_[i - 1]);
