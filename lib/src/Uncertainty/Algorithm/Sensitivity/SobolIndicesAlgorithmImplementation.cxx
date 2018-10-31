@@ -31,6 +31,8 @@
 #include "openturns/SobolIndicesExperiment.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/KernelSmoothing.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -303,20 +305,47 @@ Scalar SobolIndicesAlgorithmImplementation::computeVariance(const Sample & u, co
 }
 
 void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & varianceFO,
-    const Point & varianceTO) const
+                                                                const Point & varianceTO) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
-  Point stdandardDeviationFO(inputDimension);
-  Point stdandardDeviationTO(inputDimension);
-  for (UnsignedInteger p = 0; p < inputDimension; ++ p)
-  {
-    stdandardDeviationFO[p] = sqrt(varianceFO[p]);
-    stdandardDeviationTO[p] = sqrt(varianceTO[p]);
-  }
+  Point standardDeviationFO(inputDimension);
+  Point standardDeviationTO(inputDimension);
+  ComposedDistribution::DistributionCollection marginalsFO(inputDimension);
+  ComposedDistribution::DistributionCollection marginalsTO(inputDimension);
   const Point aggregatedFO(getAggregatedFirstOrderIndices());
   const Point aggregatedTO(getAggregatedTotalOrderIndices());
-  firstOrderIndiceDistribution_ = Normal(aggregatedFO, stdandardDeviationFO, CorrelationMatrix(inputDimension));
-  totalOrderIndiceDistribution_ = Normal(aggregatedTO, stdandardDeviationTO, CorrelationMatrix(inputDimension));
+  Bool allNormalFO = true;
+  Bool allNormalTO = true;
+  for (UnsignedInteger p = 0; p < inputDimension; ++ p)
+  {
+    standardDeviationFO[p] = sqrt(varianceFO[p]);
+    if (standardDeviationFO[p] > 0.0)
+      marginalsFO[p] = Normal(aggregatedFO[p], standardDeviationFO[p]);
+    else
+    {
+      allNormalFO = false;
+      marginalsFO[p] = Dirac(aggregatedFO[p]);
+    }
+
+    standardDeviationTO[p] = sqrt(varianceTO[p]);
+    if (standardDeviationTO[p] > 0.0)
+      marginalsTO[p] = Normal(aggregatedTO[p], standardDeviationTO[p]);
+    else
+    {
+      allNormalTO = false;
+      marginalsTO[p] = Dirac(aggregatedTO[p]);
+    }
+  }
+
+  if (allNormalFO)
+    firstOrderIndiceDistribution_ = Normal(aggregatedFO, standardDeviationFO, CorrelationMatrix(inputDimension));
+  else
+    firstOrderIndiceDistribution_ = ComposedDistribution(marginalsFO);
+
+  if (allNormalTO)
+    totalOrderIndiceDistribution_ = Normal(aggregatedTO, standardDeviationTO, CorrelationMatrix(inputDimension));
+  else
+    totalOrderIndiceDistribution_ = ComposedDistribution(marginalsTO);
 }
 
 
