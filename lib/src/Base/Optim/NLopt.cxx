@@ -375,6 +375,7 @@ void NLopt::run()
       absoluteError = (inP - inPM).normInf();
       relativeError = absoluteError / inP.normInf();
       residualError = std::abs(outP[0] - outPM[0]);
+      if (std::abs(outP[0]) > SpecFunc::Precision) residualError /= std::abs(outP[0]);
     }
     result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
   }
