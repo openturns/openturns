@@ -1,21 +1,60 @@
 Reference copula GumbelCopula(theta = 3)
 Log-likelihood m= 17
 Max. error=0.03721
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
 AMISE m= 5
 Max. error=0.07077
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
 Penalized Csiszar divergence m= 92
 Max. error=0.02672
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
+
 Reference copula ClaytonCopula(theta = 3)
 Log-likelihood m= 19
 Max. error=0.02447
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
 AMISE m= 5
 Max. error=0.07100
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
 Penalized Csiszar divergence m= 4
 Max. error=0.08412
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
+
 Reference copula FrankCopula(theta = 3)
 Log-likelihood m= 10
 Max. error=0.02165
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
 AMISE m= 5
 Max. error=0.03020
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
 Penalized Csiszar divergence m= 42
 Max. error=0.02709
+Is estimation a copula ? -->  True
+Maginal checking
+Is marginal 0 a copula ? --> True
+Is marginal 1 a copula ? --> True
+
