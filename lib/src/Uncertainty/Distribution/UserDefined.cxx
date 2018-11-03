@@ -23,6 +23,7 @@
 #include "openturns/UserDefined.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,6 +39,8 @@ UserDefined::UserDefined()
   , probabilities_(1, 1.0)
   , cumulativeProbabilities_(1, 1.0)
   , hasUniformWeights_(true)
+  , base_(0)
+  , alias_(0)
 {
   setName("UserDefined");
   // Empty range
@@ -51,6 +54,8 @@ UserDefined::UserDefined(const Sample & sample)
   , probabilities_(0)
   , cumulativeProbabilities_(0)
   , hasUniformWeights_(true)
+  , base_(0)
+  , alias_(0)
 {
   setName("UserDefined");
   const UnsignedInteger size = sample.getSize();
@@ -69,6 +74,8 @@ UserDefined::UserDefined(const Sample & sample,
   , probabilities_(0)
   , cumulativeProbabilities_(0)
   , hasUniformWeights_(false)
+  , base_(0)
+  , alias_(0)
 {
   setName("UserDefined");
   // We set the dimension of the UserDefined distribution
@@ -126,24 +133,29 @@ UserDefined * UserDefined::clone() const
 /* Get one realization of the distribution */
 Point UserDefined::getRealization() const
 {
-  // Efficient algorithm for uniform weights
   const UnsignedInteger size = points_.getSize();
+  UnsignedInteger index = 0;
+  // Efficient algorithm for uniform weights
+  if (hasUniformWeights_) index = RandomGenerator::IntegerGenerate(size);
+  // Alias method for nonuniform weights
+  else index = DistFunc::rDiscrete(base_, alias_);
+  return points_[index];
+}
+
+/* Get a sample of the distribution */
+Sample UserDefined::getSample(const UnsignedInteger size) const
+{
+  const UnsignedInteger supportSize = points_.getSize();
+  Indices indices;
+  // Efficient algorithm for uniform weights
   if (hasUniformWeights_)
-  {
-    const UnsignedInteger j = RandomGenerator::IntegerGenerate(size);
-    return points_[j];
-  }
-  const Scalar uniformRealization = RandomGenerator::Generate();
-  if (uniformRealization <= cumulativeProbabilities_[0]) return points_[0];
-  UnsignedInteger j0 = 0;
-  UnsignedInteger j1 = size - 1;
-  while (j1 - j0 > 1)
-  {
-    const UnsignedInteger jm = (j0 + j1) / 2;
-    if (uniformRealization > cumulativeProbabilities_[jm]) j0 = jm;
-    else j1 = jm;
-  }
-  return points_[j1];
+    {
+      Collection<UnsignedInteger> values(RandomGenerator::IntegerGenerate(size, supportSize));
+      indices = Indices(values.begin(), values.end());
+    }
+  // Alias method for nonuniform weights
+  else indices = DistFunc::rDiscrete(base_, alias_, size);
+  return points_.select(indices);
 }
 
 /* Get the PDF of the distribution */
@@ -535,8 +547,10 @@ void UserDefined::setData(const Sample & sample,
     points_[i] = x;
     probabilities_[i] = std::max(0.0, std::min(1.0, weightedData[i][dimension]));
   }
-  // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0. It stabilizes the sampling procedures without affecting their correctness (i.e. the algoritms are exact, not approximative)
+  // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0.
   cumulativeProbabilities_[size - 1] = 1.0 + 2.0 * supportEpsilon_;
+  // Initialize the alias method if the weigths are not uniform
+  if (!hasUniformWeights_) (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
@@ -714,6 +728,7 @@ void UserDefined::load(Advocate & adv)
   adv.loadAttribute( "probabilities_", probabilities_ );
   adv.loadAttribute( "cumulativeProbabilities_", cumulativeProbabilities_ );
   adv.loadAttribute( "hasUniformWeights_", hasUniformWeights_ );
+  if (!hasUniformWeights_) (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
   computeRange();
 }
 
