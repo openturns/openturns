@@ -1,3 +1,31 @@
+%feature("docstring") OT::DistFunc::rDiscrete
+"Realization of a bounded integral discrete distribution.
+
+Parameters
+----------
+probabilities : sequence of float
+    The probabilities of the discrete distribution :math:`p_k=\Prob{X=k}`, where :math:`p_k\in[0,1]` and :math:`\sum_{k=1}^n p_k=1`.
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : int or :class:`~openturns.Indices`
+    The realizations of the discrete disctribution.
+
+Notes
+-----
+This method implements the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rDiscrete([0.2, 0.3, 0.5])
+>>> r = ot.DistFunc.rDiscrete([0.2, 0.3, 0.5], 10)"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::pNormal
 "CDF of an unit-variance centered Normal distribution.
 

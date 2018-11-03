@@ -72,6 +72,9 @@ public:
   /** Get one realization of the distribution */
   Point getRealization() const;
 
+  /** Get a sample of the distribution */
+  Sample getSample(const UnsignedInteger size) const;
+
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
   Scalar computePDF(const Point & point) const;
@@ -160,6 +163,9 @@ private:
   /** Flag to accelerate computations in case of uniform weights */
   Bool hasUniformWeights_;
 
+  /** Structures for the alias sampling method */
+  Point base_;
+  Indices alias_;
 }; /* class UserDefined */
 
 END_NAMESPACE_OPENTURNS

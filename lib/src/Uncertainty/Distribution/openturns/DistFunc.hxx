@@ -70,6 +70,24 @@ public:
   static Indices rBinomial(const UnsignedInteger n,
                            const Scalar p,
                            const UnsignedInteger size);
+  // For discrete distribution
+#ifndef SWIG
+  static UnsignedInteger rDiscrete(const Point & probabilities,
+                                   Point & base,
+                                   Indices & alias);
+  static Indices rDiscrete(const Point & probabilities,
+                           Point & base,
+                           Indices & alias,
+                           const UnsignedInteger size);
+  static UnsignedInteger rDiscrete(const Point & base,
+                                   const Indices & alias);
+  static Indices rDiscrete(const Point & base,
+                           const Indices & alias,
+                           const UnsignedInteger size);
+#endif
+  static UnsignedInteger rDiscrete(const Point & probabilities);
+  static Indices rDiscrete(const Point & probabilities,
+                           const UnsignedInteger size);
   // For Gamma distribution
   static Scalar pGamma(const Scalar k,
                        const Scalar x,
@@ -157,6 +175,7 @@ public:
   static Scalar rStudent(const Scalar nu);
   static Point rStudent(const Scalar nu,
                         const UnsignedInteger size);
+  // For uniform distribution over a triangle
   static Point rUniformTriangle(const Point & a,
                                 const Point & b,
                                 const Point & c);
@@ -164,7 +183,6 @@ public:
                                  const Point & b,
                                  const Point & c,
                                  const UnsignedInteger size);
-
   // For TruncatedNormal distribution
   //      static Scalar rTruncatedNormal(const Scalar a, const Scalar b);
   // Compute the expectation of the min of n independent standard normal random variables

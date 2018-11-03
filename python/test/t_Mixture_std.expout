@@ -4,10 +4,10 @@ After update, new weights =  class=Point name=Unnamed dimension=3 values=[0.5,0.
 Distribution  class=Mixture name=Mixture dimension=3 distributionCollection=[class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.5,-0.5,1] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1],class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[1.5,0.5,2] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1],class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[2.5,1.5,3] sigma=class=Point name=Unnamed dimension=3 values=[2,3,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1]] weightsDistribution=class=UserDefined name=UserDefined dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=1 data=[[0],[1],[2]] probabilities=class=Point name=Unnamed dimension=3 values=[0.333333,0.333333,0.333333]
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=3 values=[2.07328,-1.03125,2.18976]
-oneSample first= class=Point name=Unnamed dimension=3 values=[-1.86277,-0.862642,2.91223]  last= class=Point name=Unnamed dimension=3 values=[1.56533,-1.10765,2.76013]
-mean= class=Point name=Unnamed dimension=3 values=[1.64038,0.699193,2.03941]
-covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.88439,3.99293,0.644831,3.99293,9.41608,2.09091,0.644831,2.09091,1.58061]
+oneRealization= class=Point name=Unnamed dimension=3 values=[5.34576,3.43009,1.4706]
+oneSample first= class=Point name=Unnamed dimension=3 values=[-0.210014,2.70157,2.4917]  last= class=Point name=Unnamed dimension=3 values=[-1.44725,-1.51101,-0.158348]
+mean= class=Point name=Unnamed dimension=3 values=[1.63988,0.706294,2.03679]
+covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.89088,4.03287,0.659872,4.03287,9.49495,2.09706,0.659872,2.09706,1.58333]
 Point=  class=Point name=Unnamed dimension=3 values=[1,1,1]
 ddf     = class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
 ddf (FD)= class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]

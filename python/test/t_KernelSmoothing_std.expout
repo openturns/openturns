@@ -155,12 +155,12 @@ Bounded underlying distribution?  True  bounded reconstruction?  True
 with low  bin count, pdf=0.364924
 with high bin count, pdf=0.365144
 without   binning,   pdf=0.365145
-with no boundary correction, pdf(left)=0.37857 , pdf(right)=0.358673
-with automatic lower boundary correction, pdf(left)=0.521461 , pdf(right)=0.358673
-with user defined lower boundary correction, pdf(left)=0.506608 , pdf(right)=0.358673
-with automatic upper boundary correction, pdf(left)=0.37857 , pdf(right)=0.505805
-with user defined upper boundary correction, pdf(left)=0.37857 , pdf(right)=0.504241
-with automatic boundaries correction, pdf(left)=0.521461 , pdf(right)=0.505805
-with user defined lower/automatic upper boundaries correction, pdf(left)=0.506608 , pdf(right)=0.505805
-with automatic lower/user defined upper boundaries correction, pdf(left)=0.521461 , pdf(right)=0.504241
-with user defined boundaries correction, pdf(left)=0.506608 , pdf(right)=0.504241
+with no boundary correction, pdf(left)=0.36988 , pdf(right)=0.352641
+with automatic lower boundary correction, pdf(left)=0.514917 , pdf(right)=0.352641
+with user defined lower boundary correction, pdf(left)=0.500626 , pdf(right)=0.352641
+with automatic upper boundary correction, pdf(left)=0.36988 , pdf(right)=0.501202
+with user defined upper boundary correction, pdf(left)=0.36988 , pdf(right)=0.499703
+with automatic boundaries correction, pdf(left)=0.514917 , pdf(right)=0.501202
+with user defined lower/automatic upper boundaries correction, pdf(left)=0.500626 , pdf(right)=0.501202
+with automatic lower/user defined upper boundaries correction, pdf(left)=0.514917 , pdf(right)=0.499703
+with user defined boundaries correction, pdf(left)=0.500626 , pdf(right)=0.499703

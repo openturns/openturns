@@ -437,6 +437,103 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
 }
 
 /*******************************************************************************************************/
+/* Discrete distribution, ie supported by {0,...,n-1} where n = size(weights) */
+/* It implements the alias method as described here: */
+/* http://keithschwarz.com/darts-dice-coins/ */
+/*******************************************************************************************************/
+
+Indices DistFunc::rDiscrete(const Point & probabilities,
+                            const UnsignedInteger size)
+{
+  Point base;
+  Indices alias;
+  return rDiscrete(probabilities, base, alias, size);
+}
+
+Indices DistFunc::rDiscrete(const Point & probabilities,
+                            Point & base,
+                            Indices & alias,
+                            const UnsignedInteger size)
+{
+  // Setup part
+  const UnsignedInteger n = probabilities.getSize();
+  // Weights are normalized such that they sum to n
+  Point weights(probabilities * n);
+  base = Point(n);
+  alias = Indices(n);
+  Indices small(0);
+  Indices large(0);
+  for (UnsignedInteger i = 0; i < n; ++i)
+  {
+    if (weights[i] < 1.0) small.add(i);
+    else large.add(i);
+  } // i
+  UnsignedInteger smallSize = small.getSize();
+  UnsignedInteger largeSize = large.getSize();
+  UnsignedInteger indexSmall = 0;
+  UnsignedInteger indexLarge = 0;
+  while ((indexSmall < smallSize) && (indexLarge < largeSize))
+  {
+    const UnsignedInteger s = small[indexSmall];
+    const Scalar pS = weights[s];
+    ++indexSmall;
+    const UnsignedInteger l = large[indexLarge];
+    ++indexLarge;
+    base[s] = pS;
+    alias[s] = l;
+    weights[l] = (pS + weights[l]) - 1.0;
+    if (weights[l] < 1.0)
+    {
+      small.add(l);
+      ++smallSize;
+    }
+    else
+    {
+      large.add(l);
+      ++largeSize;
+    }
+  } // small and large not empty
+  for (; indexLarge < largeSize; ++indexLarge)
+    base[large[indexLarge]] = 1.0;
+  // The next loop accurs only due to numerical instability
+  for (; indexSmall < smallSize; ++indexSmall)
+    base[small[indexSmall]] = 1.0;
+  return rDiscrete(base, alias, size);
+}
+
+UnsignedInteger DistFunc::rDiscrete(const Point & probabilities)
+{
+  Point base;
+  Indices alias;
+  return rDiscrete(probabilities, base, alias, 1)[0];
+}
+
+UnsignedInteger DistFunc::rDiscrete(const Point & probabilities,
+                                    Point & base,
+                                    Indices & alias)
+{
+  return DistFunc::rDiscrete(probabilities, base, alias, 1)[0];
+}
+
+UnsignedInteger DistFunc::rDiscrete(const Point & base,
+                                    const Indices & alias)
+{
+  const UnsignedInteger i = RandomGenerator::IntegerGenerate(base.getSize());
+  if (RandomGenerator::Generate() < base[i]) return i;
+  return alias[i];
+}
+
+Indices DistFunc::rDiscrete(const Point & base,
+                            const Indices & alias,
+                            const UnsignedInteger size)
+{
+  Indices result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result[i] = rDiscrete(base, alias);
+  return result;
+}
+
+/*******************************************************************************************************/
 /* Normalized Gamma distribution, i.e. with a PDF equals to x ^ (k - 1) . exp(-x) / gamma(k) . (x > 0) */
 /*******************************************************************************************************/
 /* CDF */
@@ -825,21 +922,21 @@ Scalar DistFunc::qNormal(const Scalar p,
   static const Scalar a[6] =
   {
     -3.969683028665376e+01,  2.209460984245205e+02,
-      -2.759285104469687e+02,  1.383577518672690e+02,
-      -3.066479806614716e+01,  2.506628277459239e+00
-    };
+    -2.759285104469687e+02,  1.383577518672690e+02,
+    -3.066479806614716e+01,  2.506628277459239e+00
+  };
   static const Scalar b[5] =
   {
     -5.447609879822406e+01,  1.615858368580409e+02,
-      -1.556989798598866e+02,  6.680131188771972e+01,
-      -1.328068155288572e+01
-    };
+    -1.556989798598866e+02,  6.680131188771972e+01,
+    -1.328068155288572e+01
+  };
   static const Scalar c[6] =
   {
     -7.784894002430293e-03, -3.223964580411365e-01,
-      -2.400758277161838e+00, -2.549732539343734e+00,
-      4.374664141464968e+00,  2.938163982698783e+00
-    };
+    -2.400758277161838e+00, -2.549732539343734e+00,
+    4.374664141464968e+00,  2.938163982698783e+00
+  };
   static const Scalar d[4] =
   {
     7.784695709041462e-03,  3.224671290700398e-01,
