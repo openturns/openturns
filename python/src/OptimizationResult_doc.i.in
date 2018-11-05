@@ -133,7 +133,7 @@ relativeErrorHistory : :class:`~openturns.Sample`
 Returns
 -------
 residualError : float
-    Residual error, defined by :math:`\eta^r_n=\|\nabla\cL{\vect{x}_n}\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`\cL` is the Lagrangian of the problem."
+    Relative error, defined by :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}` if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`."
 
 // ---------------------------------------------------------------------
 
