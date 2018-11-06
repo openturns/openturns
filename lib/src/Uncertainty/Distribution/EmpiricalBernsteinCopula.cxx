@@ -415,6 +415,34 @@ void EmpiricalBernsteinCopula::update()
   } // i
 }
 
+Point EmpiricalBernsteinCopula::getParameter() const
+{
+  const UnsignedInteger size = copulaSample_.getSize();
+  Point parameter;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    parameter.add(copulaSample_[i]);
+  }
+  return parameter;
+}
+
+void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = copulaSample_.getSize();
+  if (parameter.getDimension() != (dimension * size)) throw InvalidArgumentException(HERE) << "Expected " << (dimension * size) << " parameters";
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      copulaSample_(i, j) = parameter[index];
+      ++ index;
+    }
+  }
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void EmpiricalBernsteinCopula::save(Advocate & adv) const
 {
